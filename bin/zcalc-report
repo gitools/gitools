@@ -1,0 +1,16 @@
+#!/bin/bash
+
+BINDIR=$(dirname "$0")
+
+APPDIR="$BINDIR/.."
+LIBDIR=$APPDIR/lib
+CLASSDIR=$APPDIR/class
+
+CP="$CLASSDIR"
+
+for lib in $(ls $LIBDIR); do CP=$CP:$LIBDIR/$lib; done;
+
+JAVA_CMD=java
+[ -n "$JAVA_HOME" ] && JAVA_CMD="$JAVA_HOME/bin/java"
+
+$JAVA_CMD -cp $CP es.imim.bg.ztools.zcalc.html.Main $*
