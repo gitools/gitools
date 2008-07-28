@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>es.imim.bg.ztools</groupId>
+		<artifactId>ztools</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>es.imim.bg.ztools</groupId>
+	<artifactId>ztools-zcalc</artifactId>
+	<name>ztools-zcalc</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>zcalc analysis core</description>
+
+	<repositories>
+		<repository>
+			<id>java.net</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>2.0.8</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-csv</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>20070823</version>
+		</dependency>
+		<dependency>
+			<groupId>es.imim.bg.ztools</groupId>
+			<artifactId>ztools-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	
+	<scm>
+		<connection>
+			scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk/zcalc
+		</connection>
+		<url>https://bg.imim.es/svn/ztools/ztools/trunk/zcalc</url>
+	</scm>
+	
+	<reporting>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-jxr-plugin</artifactId>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-javadoc-plugin</artifactId>
+  			<configuration>
+  				<aggregate>true</aggregate>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-project-info-reports-plugin</artifactId>
+  			<reportSets>
+  				<reportSet>
+  					<reports>
+  						<report>dependencies</report>
+  						<report>project-team</report>
+  						<report>cim</report>
+  						<!--  <report>issue-tracker</report> -->
+  						<report>license</report>
+  						<report>scm</report>
+  					</reports>
+  				</reportSet>
+  			</reportSets>
+  		</plugin>
+  	</plugins>
+  </reporting>
+</project>

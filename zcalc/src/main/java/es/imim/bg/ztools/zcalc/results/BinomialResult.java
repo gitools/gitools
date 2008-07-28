@@ -1,0 +1,61 @@
+package es.imim.bg.ztools.zcalc.results;
+
+public class BinomialResult extends CommonResult {
+
+	public enum AproximationUsed {
+		exact, normal, poisson 
+	};
+	
+	public int observed;
+	public double expectedMean;
+	public double expectedStdev;
+	//public double pvalue;
+	
+	public BinomialResult() {
+		super(0, 0.0, 0.0, 0.0);
+		observed = 0;
+		expectedMean = expectedStdev = 0;
+		//pvalue = 0;
+	}
+	
+	public BinomialResult(
+			int n,
+			double leftPvalue, double rightPvalue, double twoTailPvalue, 
+			int observed, double expectedMean, double expectedStdev) {
+		
+		super(n, leftPvalue, rightPvalue, twoTailPvalue);
+		
+		this.observed = observed;
+		this.expectedMean = expectedMean;
+		this.expectedStdev = expectedStdev;
+		//this.pvalue = pvalue;
+		
+	}
+
+	@Override
+	protected int getNumParams() {
+		return super.getNumParams() + 3;
+	}
+	
+	@Override
+	protected int fillParamNames(String[] array) {
+		int i = super.fillParamNames(array);
+		
+		array[i + 0] = "observed";
+		array[i + 1] = "expected-mean";
+		array[i + 2] = "expected-stdev";
+		
+		return i + 3;
+	}
+	
+	@Override
+	protected int fillParamValues(Object[] array) {
+		int i = super.fillParamValues(array);
+		
+		array[i + 0] = observed;
+		array[i + 1] = expectedMean;
+		array[i + 2] = expectedStdev;
+		
+		return i + 3;
+	}
+}
