@@ -3,14 +3,29 @@ package es.imim.bg.ztools.zcalc.report;
 import static org.kohsuke.args4j.ExampleMode.ALL;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.DataFormatException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.xml.sax.SAXException;
+
+import freemarker.ext.dom.NodeModel;
+import freemarker.template.SimpleHash;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateTransformModel;
 
 public class Main {
 
@@ -40,11 +55,11 @@ public class Main {
 	@Option(name="-o", aliases="-output", usage="Save results into <output> directory.", metaVar="<output>")
 	public String output = System.getProperty("user.dir") + File.separator + "/output";
 	
-	@Argument(required=true, usage="<input>")
-	public List<String> arguments;
+	@Argument(required=true, multiValued = false, usage="Report configuration", metaVar="REPORT")
+	public String reportConfigPath;
 	
 	//@Option(name="-r", aliases="-results", required=true, usage="Use the results file <results>.", metaVar="<results>")
-	public String resultsFileName;
+	//public String resultsFileName;
 	
 	public static void main(String[] args) {
 		new Main().run(args);
@@ -53,14 +68,18 @@ public class Main {
 	protected void run(String[] args) {
 
 		parseArgs(args);
+
+		process(reportConfigPath);
+	}
+
+	private void process(String reportPath) {
 		
-		Map<String, Object> model = null;
-				
+		Map<String, Object> model = new HashMap<String, Object>();
+		
 		try {
-			model = new ResultsModelLoader().load(resultsFileName);
-		}
-		catch (Exception e) {
-			System.err.println("Error loading the analysis from " + resultsFileName);
+			model = new ReportModelLoader().load(model, reportPath);
+		} catch (Exception e) {
+			System.err.println("Error loading the report " + reportPath);
 			if (debug)
 				e.printStackTrace();
 			System.exit(-1);
@@ -75,13 +94,9 @@ public class Main {
 		outputPath.mkdirs();
 		
 		try {
-			/*model.put("showedResultNames", new String[] {
-					"right-p-value",
-					"two-tail-p-value"
-			});*/
-			model.put("showedResultIndices", new Integer[] { 0 });
-			
-			ResultsProcessor proc = new ResultsProcessor(templatePath);
+			Processor proc = new Processor(templatePath, "index.ftl");
+			proc.copyTemplateContents(outputPath);
+			proc.addDirectives(model, outputPath);
 			proc.process(model, outputPath, "index.html");
 		}
 		catch (Exception e) {
@@ -113,12 +128,10 @@ public class Main {
 			System.exit(0);
 		}
 
-		if (arguments.size() < 1) {
-			System.err.println("Input source required.");
+		/*if (reportConfigPath.size() < 1) {
+			System.err.println("Analysis source required.");
 			printUsage(System.err, parser);
-		}
-
-		resultsFileName = arguments.get(0);
+		}*/
 	}
 
 	private void printVersion() {

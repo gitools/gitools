@@ -1,0 +1,86 @@
+/* Default Stylesheet */
+
+															/** BODY ELEMENTS **/
+body {
+	color: #333;
+	background-color: #eee;
+	}
+
+
+
+
+
+
+															/** MAIN CONTAINERS **/
+div#container {
+	margin: 2em auto;
+	}
+	div#header {
+		color: inherit;
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		border-width: 0 2px 2px 0;
+		}
+		div#header-in {
+			padding: 20px;
+			}
+	div#content-wrap {
+		padding: 10px 0;
+		}
+		div.content {
+			color: inherit;
+			background-color: #fff;
+			border: 1px solid #e5e5e5;
+			border-width: 0 2px 2px 0;
+			}
+			div.content-in {
+				padding: 20px;
+				}
+	div#footer {
+		color: inherit;
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		border-width: 0 2px 2px 0;
+		}
+		div#footer-in {
+			padding: 20px;
+			}
+
+
+
+
+
+
+															/** SUB CONTAINERS **/
+* { }
+
+
+
+
+
+
+															/** LISTS **/
+* { }
+
+
+
+
+
+
+															/** TYPOGRAPHY **/
+* { }
+
+
+
+
+
+
+															/** FORMS **/
+* { }
+
+
+
+
+
+
+															/** END **/

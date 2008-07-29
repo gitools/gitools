@@ -1,0 +1,23 @@
+<report>
+	<title>Testing zcalc-report</title>
+	<properties>
+		<property name="Laboratory" value="Biomedical Genomics Lab" />
+		<property name="Url" value="http://bg.imim.es" />
+		<property name="Author" value="Christian" />
+	</properties>
+	<analyses>
+		<analysis path="pru-fisher">
+			<properties>
+				<property name="Notes" value="Used to test zcalc-report" />
+			</properties>
+			<views>
+				<view name="table-right-p-value" />
+			</views>
+		</analysis>
+		<analysis path="pru-fisher">
+			<views>
+				<view name="table-right-p-value" />
+			</views>
+		</analysis>
+	</analyses>
+</report>

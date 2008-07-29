@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,8 +119,9 @@ public class ZCalcResultsFile {
 		if (line.length < 3)
 			throw new DataFormatException("Almost 3 columns expected.");
 		
-		String[] resultNames = new String[line.length - 2];
+		resultNames = new String[line.length - 2];
 		System.arraycopy(line, 2, resultNames, 0, line.length - 2);
+		//System.out.println("=-=-="+Arrays.toString(resultNames));
 		
 		// read body
 		Map<String, Integer> condMap = new HashMap<String, Integer>();
