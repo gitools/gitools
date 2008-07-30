@@ -56,7 +56,7 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		
 		int observed = (int) statCalc.calc(groupItems);
 		
-		// Calculate expected mean and standard deviation from sampling
+		// Calculate expected mean and standard deviation
 	
 		int n = groupItems.size();
 		
@@ -65,9 +65,12 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		double expectedStdev = Math.sqrt(expectedVar);
 		
 		switch (aproxMode) {
-		case onlyExact: return resultWithExact(observed, n, expectedMean, expectedStdev);
-		case onlyNormal: return resultWithNormal(observed, n, expectedMean, expectedStdev);
-		case onlyPoisson: return resultWithPoisson(observed, n, expectedMean, expectedStdev);
+		case onlyExact: 
+			return resultWithExact(observed, n, expectedMean, expectedStdev);
+		case onlyNormal: 
+			return resultWithNormal(observed, n, expectedMean, expectedStdev);
+		case onlyPoisson: 
+			return resultWithPoisson(observed, n, expectedMean, expectedStdev);
 		case automatic:
 			if (n <= 1000)
 				return resultWithExact(observed, n, expectedMean, expectedStdev);
