@@ -1,22 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
 <report>
 	<title>Testing zcalc-report</title>
+	<laboratory>Biomedical Genomics Lab</laboratory>
+	<url>http://bg.imim.es</url>
+	
 	<properties>
-		<property name="Laboratory" value="Biomedical Genomics Lab" />
-		<property name="Url" value="http://bg.imim.es" />
 		<property name="Author" value="Christian" />
 	</properties>
+	
 	<analyses>
-		<analysis path="pru-fisher">
+		<analysis path="pru-fisher" title="Fisher's exact test for testing pourposes">
+	
 			<properties>
 				<property name="Notes" value="Used to test zcalc-report" />
 			</properties>
+	
 			<views>
-				<view name="table-right-p-value" />
+				<view name="colorscale-table" title="P-Values with color scale">
+					<param>right-p-value</param>
+					<scale>log</scale>
+					<min-module-size>3000</min-module-size>
+					<sort>
+						<ascending>true</ascending>
+						<condition>0</condition>
+						<param>right-p-value</param>
+					</sort>
+				</view>
 			</views>
 		</analysis>
+	
 		<analysis path="pru-fisher">
 			<views>
-				<view name="table-right-p-value" />
+				<view name="colorscale-table">
+					<param>left-p-value</param>
+					<scale>log</scale>
+				</view>
 			</views>
 		</analysis>
 	</analyses>

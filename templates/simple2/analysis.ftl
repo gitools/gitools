@@ -14,7 +14,7 @@
 </head>
 <body class="fullwidth">
 	<#assign index = params["analysisIndex"]?number />
-	<#assign analysis = report.analyses.analysis[index] />
+	<#assign analysis = report.analyses.analysis[index][0] />
 	<#assign desc = loadAnalysisDescription(analysis.@path) />
 	
 	<div id="container">
@@ -22,6 +22,9 @@
 		<div id="header">
 			<div id="header-in">
 				<h1>Analysis</h1>
+				<#if analysis.@title?size gt 0>
+					<h4>${analysis.@title}</h4>
+				</#if>
 			</div> <!-- end #header-in -->
 		</div> <!-- end #header -->
 
@@ -30,32 +33,28 @@
 				<div class="content-in">
 				
 					<h2>Description</h2>
-					<table class="descTab">
-						<tr>
-							<td>Name</td>
-							<td>${desc.analysisName}</td>
+					<table class="dtab">
+						<tr class="dtabr">
+							<th class="dtabh">Name</th>
+							<td class="dtabd">${desc.analysisName}</td>
 						</tr>
-						<tr>
-							<td>Method</td>
-							<td>${desc.methodName}</td>
+						<tr class="dtab">
+							<th class="dtah">Method</th>
+							<td class="dtad">${desc.methodName}</td>
 						</tr>
-						<tr>
-							<td>Elapsed time</td>
-							<td>${desc.elapsedTime}</td>
+						<tr class="dtar">
+							<th class="dtah">Elapsed time</th>
+							<td class="dtad">${desc.elapsedTime}</td>
 						</tr>
 					</table>
 					
 					<#if analysis.properties.property?size gt 0>
 						<h2>Properties</h2>
-						<table style="propTab">
-							<tr>
-								<th>Name</th>
-								<th>Value</th>
-							</tr>
+						<table class="ptab">
 							<#list analysis.properties.property as prop>
-								<tr>
-									<td>${prop.@name}</td>
-									<td>${prop.@value}</td>
+								<tr class="ptabr">
+									<th class="ptabh">${prop.@name}</th>
+									<td class="ptabd">${prop.@value}</td>
 								</tr>
 							</#list>
 						</table>
@@ -65,8 +64,13 @@
 						<h2>Views</h2>
 						<ul>
 						<#list analysis.views.view as view>
+							<#if view.@title?size gt 0>
+								<#assign viewTitle = view.@title />
+							<#else>
+								<#assign viewTitle = view.@name />
+							</#if>
 							<li>
-								<a href="#view${view_index}">${view.@name}</a>
+								<a href="#view${view_index}">${viewTitle}</a>
 							</li>
 						</#list>
 						</ul>
@@ -75,8 +79,7 @@
 					<#assign results = loadAnalysisResults(analysis.@path) />
 					
 					<#list analysis.views.view as view>
-						<h3><a name="view${view_index}"></a>${view.@name}</h3>
-						<p>${pvalue}</p>
+						<h3><a name="view${view_index}"></a>${viewTitle}</h3>
 						<#include "view-${view.@name}.ftl" />
 					</#list>
 					 
@@ -88,7 +91,9 @@
 		
 		<div id="footer">
 			<div id="footer-in">
-				footer
+				<#if report.url?size gt 0 && report.laboratory?size gt 0>
+					<h4><a href="${report.url!""}">${report.laboratory!""}</a></h4>
+				</#if>
 			</div> <!-- end #footer-in -->
 		</div> <!-- end #footer -->
 	</div> <!-- end div#container -->
