@@ -19,55 +19,55 @@ public class Main {
 
 	public String versionString = getClass().getPackage().getImplementationVersion();
 	
-	@Option(name="-h",aliases="-help",usage="Print this message.")
+	@Option(name = "-h", aliases = "-help", usage = "Print this message.")
 	public boolean help = false;
-	
-	@Option(name="-version",usage="Print the version information and exit.")
-    public boolean version;
-	
-	@Option(name="-quiet",usage="Don't print any information.")
-    public boolean quiet;
-	
-	@Option(name="-verbose",usage="Print extra information.")
-    public boolean verbose;
-	
-	@Option(name="-debug",usage="Print debug level information.")
-    public boolean debug;
-	
-	@Option(name="-N",aliases="-name",usage="Analysis name (default: unnamed).",metaVar="<name>")
+
+	@Option(name = "-version", usage = "Print the version information and exit.")
+	public boolean version;
+
+	@Option(name = "-quiet", usage = "Don't print any information.")
+	public boolean quiet;
+
+	@Option(name = "-verbose", usage = "Print extra information.")
+	public boolean verbose;
+
+	@Option(name = "-debug", usage = "Print debug level information.")
+	public boolean debug;
+
+	@Option(name = "-N", aliases = "-name", usage = "Analysis name (default: unnamed).", metaVar = "<name>")
 	public String analysisName = "unnamed";
-	
-	@Option(name="-m",aliases="-method",usage="Statistical method to use: zscore-mean, zscore-median,\nzscore-prop, poisson, fisher (default: zscore-mean).",metaVar="<name>")
+
+	@Option(name = "-m", aliases = "-method", usage = "Statistical method to use: zscore-mean, zscore-median,\nzscore-prop, poisson, fisher (default: zscore-mean).", metaVar = "<name>")
 	public String methodName = "zscore-mean";
-	
-	@Option(name="-s",aliases="-num-samples",usage="Number of samples to take when randomizing\n(default: 10000).",metaVar="<n>")
+
+	@Option(name = "-s", aliases = "-num-samples", usage = "Number of samples to take when randomizing\n(default: 10000).", metaVar = "<n>")
 	public int samplingNumSamples = 10000;
-	
-	@Option(name="-d",aliases="-data",usage="File with data to be processed.",metaVar="<file>")
+
+	@Option(name = "-d", aliases = "-data", usage = "File with data to be processed.", metaVar = "<file>")
 	public String dataFile;
-	
+
 	public char dataSep = '\t';
 	public char dataQuote = '"';
-	
-	@Option(name="-c",aliases="-class",usage="File with mappings between items and groups.",metaVar="<file>")
+
+	@Option(name = "-c", aliases = "-class", usage = "File with mappings between items and groups.", metaVar = "<file>")
 	public String groupsFile;
-	
+
 	public char groupsSep = '\t';
 	public char groupsQuote = '"';
 
-	@Option(name="-min-group-size",usage="Discard all groups that have less items than <min>\n(default: 20)",metaVar="<min>")
+	@Option(name = "-min", aliases = "-min-group-size", usage = "Discard all groups that have less items than <min>\n(default: 20)", metaVar = "<min>")
 	private int minGroupSize = 20;
 
-	@Option(name="-max-group-size",usage="Discard all groups that have more items than <max>\n(default: no limit)",metaVar="<max>")
+	@Option(name = "-max", aliases = "-max-group-size", usage = "Discard all groups that have more items than <max>\n(default: no limit)", metaVar = "<max>")
 	private int maxGroupSize = Integer.MAX_VALUE;
-	
-	@Option(name="-w",aliases="-workdir",usage="Working directory (default: current dir).",metaVar="<dir>")
+
+	@Option(name = "-w", aliases = "-workdir", usage = "Working directory (default: current dir).", metaVar = "<dir>")
 	public String workdir = System.getProperty("user.dir");
-	
-	@Option(name="-f",aliases="-out-fmt",usage="Output format: csv, csv-sep, rexml (default: csv).",metaVar="<format>")
+
+	@Option(name = "-f", aliases = "-out-fmt", usage = "Output format: csv, csv-sep, rexml (default: csv).", metaVar = "<format>")
 	public String outputFormat = "csv";
-	
-	@Option(name="-p",aliases="-max-procs",usage="Maximum number of parallel processors allowed\n(default: all available processors).",metaVar="<n>")
+
+	@Option(name = "-p", aliases = "-max-procs", usage = "Maximum number of parallel processors allowed\n(default: all available processors).", metaVar = "<n>")
 	public int maxProcs = ThreadManager.getAvailableProcessors();
 	
 	public static void main(String[] args) {

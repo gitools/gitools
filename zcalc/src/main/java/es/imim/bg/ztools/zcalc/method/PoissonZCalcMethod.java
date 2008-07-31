@@ -65,7 +65,7 @@ public class PoissonZCalcMethod extends AbstractZCalcMethod {
 		try {
 			leftPvalue = Probability.poisson(observed, expectedMean);
 			rightPvalue = 1.0 - leftPvalue;
-			twoTailPvalue = observed <= expectedMean  ? leftPvalue : rightPvalue; 
+			twoTailPvalue = (observed <= expectedMean  ? leftPvalue : rightPvalue) * 2; //FIXME: Review 
 		}
 		catch (ArithmeticException e) {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;

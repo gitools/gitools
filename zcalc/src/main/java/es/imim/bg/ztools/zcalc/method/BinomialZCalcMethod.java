@@ -28,7 +28,15 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 	
 	@Override
 	public String getName() {
-		return "binomial";
+		StringBuilder sb = new StringBuilder();
+		sb.append("binomial");
+		switch (aproxMode) {
+		case automatic: break;
+		case onlyExact: sb.append("-exact"); break;
+		case onlyNormal: sb.append("-normal"); break;
+		case onlyPoisson: sb.append("-poisson"); break;
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -105,8 +113,8 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		zscore = (observed - expectedMean) / expectedStdev;
 		
 		leftPvalue = Probability.normal(zscore);
-		rightPvalue = 1.0 - leftPvalue; // Right tail
-		twoTailPvalue = zscore <= 0 ? leftPvalue : rightPvalue;
+		rightPvalue = 1.0 - leftPvalue;
+		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
 		
 		return new BinomialResult(
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
@@ -125,7 +133,7 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		try {
 			leftPvalue = Probability.poisson(observed, expectedMean);
 			rightPvalue = 1.0 - leftPvalue;
-			twoTailPvalue = observed <= expectedMean  ? leftPvalue : rightPvalue; 
+			twoTailPvalue = (observed <= expectedMean  ? leftPvalue : rightPvalue) * 2; //FIXME: Review 
 		}
 		catch (ArithmeticException e) {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;

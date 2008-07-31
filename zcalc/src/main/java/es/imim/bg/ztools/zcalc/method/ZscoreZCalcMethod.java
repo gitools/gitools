@@ -75,8 +75,8 @@ public abstract class ZscoreZCalcMethod extends AbstractZCalcMethod {
 		zscore = (observed - expected.mean) / expected.stdev;
 		
 		leftPvalue = Probability.normal(zscore);
-		rightPvalue = 1.0 - leftPvalue; // Right tail
-		twoTailPvalue = zscore <= 0 ? leftPvalue : rightPvalue;
+		rightPvalue = 1.0 - leftPvalue;
+		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
 		
 		return new ZScoreResult(
 				sampleSize,
