@@ -148,7 +148,15 @@ public class AnalysisModelLoader {
 				if (args.size() < 2)
 					throw new TemplateModelException("Wrong arguments, required: value, scaleName, [scaleParams]");
 				
-				Double value = Double.parseDouble(args.get(0).toString());
+				//System.out.println(args.get(0).toString());
+				Double value = null;
+				try {
+					value = Double.parseDouble(args.get(0).toString());
+				}
+				catch (Exception e) {
+					return new SimpleScalar("rgb(0,0,0)"); //FIXME
+				}
+				
 				String scaleName = args.get(1).toString();
 				
 				Color color = Color.BLACK;

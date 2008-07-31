@@ -65,12 +65,16 @@ public class ZCalcResultsFile {
 		this.results = results;
 	}
 
-	public void write(Writer writer) {
+	/*public void write(Writer writer) {
+		write(writer, true);
+	}*/
+	
+	public void write(Writer writer, boolean orderByCondition) {
 		RawCsvWriter out = new RawCsvWriter(writer, separator, quote);
 		
 		out.writeQuotedValue("condition");
 		out.writeSeparator();
-		out.writeQuotedValue("group");
+		out.writeQuotedValue("module");
 		for (String resultName : resultNames) {
 			out.writeSeparator();
 			out.writeQuotedValue(resultName);
@@ -81,29 +85,36 @@ public class ZCalcResultsFile {
 		int numProperties = results.columns();
 		int numGroups = results.rows();
 		
-		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
-
-			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
-			
-				out.writeQuotedValue(propNames[propIndex]);
-				out.writeSeparator();
-				out.writeQuotedValue(groupNames[groupIndex]);
-				
-				AbstractZCalcResult cell = 
-					(AbstractZCalcResult) results.getQuick(groupIndex, propIndex);
-				
-				Object[] values = cell.getValues();
-				
-				for (int paramIndex = 0; paramIndex < resultNames.length; paramIndex++) {
-					out.writeSeparator();
-					out.writeValue(String.valueOf(values[paramIndex]));
-				}
-				
-				out.writeNewLine();
-			}
+		if (orderByCondition) {
+			for (int propIndex = 0; propIndex < numProperties; propIndex++)
+				for (int groupIndex = 0; groupIndex < numGroups; groupIndex++)
+					writeLine(out, propIndex, groupIndex);
+		}
+		else {
+			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++)
+				for (int propIndex = 0; propIndex < numProperties; propIndex++)
+					writeLine(out, propIndex, groupIndex);
 		}
 		
 		out.close();
+	}
+
+	private void writeLine(RawCsvWriter out, int propIndex, int groupIndex) {
+		out.writeQuotedValue(propNames[propIndex]);
+		out.writeSeparator();
+		out.writeQuotedValue(groupNames[groupIndex]);
+		
+		AbstractZCalcResult cell = 
+			(AbstractZCalcResult) results.getQuick(groupIndex, propIndex);
+		
+		Object[] values = cell.getValues();
+		
+		for (int paramIndex = 0; paramIndex < resultNames.length; paramIndex++) {
+			out.writeSeparator();
+			out.writeValue(String.valueOf(values[paramIndex]));
+		}
+		
+		out.writeNewLine();
 	}
 	
 	public void read(Reader reader) throws IOException, DataFormatException {

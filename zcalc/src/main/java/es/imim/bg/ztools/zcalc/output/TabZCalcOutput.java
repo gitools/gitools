@@ -13,11 +13,13 @@ import es.imim.bg.ztools.zcalc.method.ZCalcMethod;
 public class TabZCalcOutput implements ZCalcOutput {
 
 	protected String workdir;
+	protected boolean resultsOrderByCond;
 	protected char separator;
 	protected char quote;
 	
-	public TabZCalcOutput(String workdir, char separator, char quote) {
+	public TabZCalcOutput(String workdir, boolean resultsOrderByCond, char separator, char quote) {
 		this.workdir = workdir;
+		this.resultsOrderByCond = resultsOrderByCond;
 		this.separator = separator;
 		this.quote = quote;
 	}
@@ -73,7 +75,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 		file.setResultNames(analysis.getResultNames());
 		file.setResults(analysis.getResults());
 		
-		file.write(writer);
+		file.write(writer, resultsOrderByCond);
 	}
 
 	protected String analysisFileName(String analysisName) {

@@ -16,7 +16,7 @@ import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 public class CsvZCalcOutput extends TabZCalcOutput {
 
 	public CsvZCalcOutput(String workdir, char separator, char quote) {
-		super(workdir, separator, quote);
+		super(workdir, true, separator, quote);
 	}
 
 	public void save(ZCalcAnalysis analysis) throws IOException {

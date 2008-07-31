@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc;
+package es.imim.bg.ztools.zcalc.cli;
 
 import static org.kohsuke.args4j.ExampleMode.ALL;
 
@@ -17,27 +17,27 @@ import es.imim.bg.ztools.threads.ThreadManager;
 
 public class Main {
 
-	public String versionString = getClass().getPackage().getImplementationVersion();
+	public String versionString = "1.0-SNAPSHOT"; //FIXME: getClass().getPackage().getImplementationVersion();
 	
 	@Option(name = "-h", aliases = "-help", usage = "Print this message.")
 	public boolean help = false;
 
 	@Option(name = "-version", usage = "Print the version information and exit.")
-	public boolean version;
+	public boolean version = false;
 
 	@Option(name = "-quiet", usage = "Don't print any information.")
-	public boolean quiet;
+	public boolean quiet = false;
 
 	@Option(name = "-verbose", usage = "Print extra information.")
-	public boolean verbose;
+	public boolean verbose = false;
 
 	@Option(name = "-debug", usage = "Print debug level information.")
-	public boolean debug;
+	public boolean debug = false;
 
 	@Option(name = "-N", aliases = "-name", usage = "Analysis name (default: unnamed).", metaVar = "<name>")
 	public String analysisName = "unnamed";
 
-	@Option(name = "-m", aliases = "-method", usage = "Statistical method to use: zscore-mean, zscore-median,\nzscore-prop, poisson, fisher (default: zscore-mean).", metaVar = "<name>")
+	@Option(name = "-t", aliases = "-test", usage = "Statistical test to use:\nzscore-mean, zscore-median,\nbinomial, binomial-exact, binomial-normal,\nbinomial-poisson, fisher, hypergeom, chi-sqr\n(default: zscore-mean).", metaVar = "<name>")
 	public String methodName = "zscore-mean";
 
 	@Option(name = "-s", aliases = "-num-samples", usage = "Number of samples to take when randomizing\n(default: 10000).", metaVar = "<n>")
@@ -49,24 +49,27 @@ public class Main {
 	public char dataSep = '\t';
 	public char dataQuote = '"';
 
-	@Option(name = "-c", aliases = "-class", usage = "File with mappings between items and groups.", metaVar = "<file>")
+	@Option(name = "-c", aliases = "-class", usage = "File with mappings between items and modules.", metaVar = "<file>")
 	public String groupsFile;
 
 	public char groupsSep = '\t';
 	public char groupsQuote = '"';
 
-	@Option(name = "-min", aliases = "-min-group-size", usage = "Discard all groups that have less items than <min>\n(default: 20)", metaVar = "<min>")
+	@Option(name = "-min", aliases = "-min-mod-size", usage = "Discard all modules that have\nless items than <min> (default: 20)", metaVar = "<min>")
 	private int minGroupSize = 20;
 
-	@Option(name = "-max", aliases = "-max-group-size", usage = "Discard all groups that have more items than <max>\n(default: no limit)", metaVar = "<max>")
+	@Option(name = "-max", aliases = "-max-mod-size", usage = "Discard all modules that have\nmore items than <max> (default: no limit)", metaVar = "<max>")
 	private int maxGroupSize = Integer.MAX_VALUE;
 
 	@Option(name = "-w", aliases = "-workdir", usage = "Working directory (default: current dir).", metaVar = "<dir>")
 	public String workdir = System.getProperty("user.dir");
 
-	@Option(name = "-f", aliases = "-out-fmt", usage = "Output format: csv, csv-sep, rexml (default: csv).", metaVar = "<format>")
+	@Option(name = "-f", aliases = "-out-fmt", usage = "Output format:\ncsv, csv-sep, rexml (default: csv).", metaVar = "<format>")
 	public String outputFormat = "csv";
 
+	@Option(name = "-results-by-module", usage = "Generated csv is arranged by module\ninstead of condition.")
+	public boolean resultsByModule = false;
+	
 	@Option(name = "-p", aliases = "-max-procs", usage = "Maximum number of parallel processors allowed\n(default: all available processors).", metaVar = "<n>")
 	public int maxProcs = ThreadManager.getAvailableProcessors();
 	
@@ -130,7 +133,7 @@ public class Main {
         		dataFile, dataSep, dataQuote, 
         		groupsFile, groupsSep, groupsQuote, 
         		minGroupSize, maxGroupSize,
-        		workdir, outputFormat);
+        		workdir, outputFormat, !resultsByModule);
         
         ProgressMonitor monitor = !quiet ? 
 			new StreamProgressMonitor(System.out, verbose, debug)

@@ -1,9 +1,8 @@
-package es.imim.bg.ztools.zcalc;
+package es.imim.bg.ztools.zcalc.cli;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Formatter.BigDecimalLayoutForm;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
@@ -56,13 +55,14 @@ public class ZCalcCommand {
 	private String workdir;
 	
 	private String outputFormat;
+	private boolean resultsByCond;
 
 	public ZCalcCommand(
 			String analysisName, String methodName, int samplingNumSamples, 
 			String dataFile, char dataSep, char dataQuote, 
 			String groupsFile, char groupsSep, char groupsQuote,
 			int minGroupSize, int maxGroupSize,
-			String workdir, String outputFormat) {
+			String workdir, String outputFormat, boolean resultsByCond) {
 		
 		this.analysisName = analysisName;
 		this.methodName = methodName;
@@ -77,34 +77,33 @@ public class ZCalcCommand {
 		this.maxGroupSize = maxGroupSize;
 		this.workdir = workdir;
 		this.outputFormat = outputFormat;
+		this.resultsByCond = resultsByCond;
 	}
 
 	public void run(ProgressMonitor monitor) 
 			throws IOException, DataFormatException, InterruptedException {
 		
-		monitor.begin("Loading input data ...", 1);
+		// Prepare input
 		
 		ZCalcInput in = new ZCalcInput(
 				dataFile, dataSep, dataQuote,
 				groupsFile, groupsSep, groupsQuote,
 				null, '\t', '"', minGroupSize, maxGroupSize);
 		
-		in.load(monitor.subtask());
-		
-		monitor.end();
-		
 		// Prepare output
 		
 		ZCalcOutput output = null;
 		
 		if (outputFormat.equalsIgnoreCase("csv"))
-			output = new TabZCalcOutput(workdir, defaultSep, defaultQuote);
+			output = new TabZCalcOutput(workdir, resultsByCond, defaultSep, defaultQuote);
 		else if (outputFormat.equalsIgnoreCase("csv-sep"))
 			output = new CsvZCalcOutput(workdir, defaultSep, defaultQuote);
 		else if (outputFormat.equalsIgnoreCase("rexml"))
 			output = new REXmlZCalcOutput(workdir, minGroupSize, maxGroupSize);
 		else
 			throw new IllegalArgumentException("Unknown output format '" + outputFormat + "'");
+		
+		// Prepare method factory
 		
 		ZCalcMethodFactory methodFactory = null;
 	
@@ -165,6 +164,12 @@ public class ZCalcCommand {
 			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
 			//break;
 		}
+		
+		monitor.begin("Loading input data ...", 1);
+		
+		in.load(monitor.subtask());
+		
+		monitor.end();
 		
 		ZCalcAnalysis analysis = 
 			new ZCalcAnalysis(

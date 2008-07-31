@@ -51,7 +51,11 @@
 				<#list results.condNames as condName>
 					<#assign pvalue = results.paramValue(groupName_index, condName_index, paramName) />
 					<#assign N = results.paramValue(groupName_index, condName_index, "N") />
-					<#assign color = results.colorScale(pvalue, scaleName) />
+					<#if pvalue?is_number>
+						<#assign color = results.colorScale(pvalue, scaleName) />
+					<#else>
+						<#assign color = "rgb(0,0,0)" />
+					</#if>
 					<td 
 						class="rtabd" 
 						style="background-color:${color}" 

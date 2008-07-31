@@ -120,7 +120,7 @@ public class ZCalcInput {
 		
 		monitor.end();
 		
-		monitor.begin("Reading groups ...", 1);
+		monitor.begin("Reading modules ...", 1);
 		
 		// read group item indices
 		
