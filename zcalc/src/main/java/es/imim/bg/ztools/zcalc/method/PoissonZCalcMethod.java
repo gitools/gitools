@@ -17,7 +17,7 @@ public class PoissonZCalcMethod extends AbstractZCalcMethod {
 	
 	@Override
 	public String getName() {
-		return "poisson";
+		return "binomial-poisson";
 	}
 
 	public PoissonZCalcMethod() {
@@ -71,7 +71,7 @@ public class PoissonZCalcMethod extends AbstractZCalcMethod {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
 		}
 		
-		return new BinomialResult(
+		return new BinomialResult(BinomialResult.AproximationUsed.poisson,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev);
 	}

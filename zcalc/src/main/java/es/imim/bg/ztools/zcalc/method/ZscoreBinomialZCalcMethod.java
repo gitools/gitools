@@ -13,6 +13,11 @@ public class ZscoreBinomialZCalcMethod extends ZscoreZCalcMethod {
 	}
 
 	@Override
+	public String getName() {
+		return "binomial-normal";
+	}
+	
+	@Override
 	public void startCondition(String propName, DoubleMatrix1D propItems) {
 		
 		super.startCondition(propName, propItems);

@@ -92,7 +92,7 @@
 		<div id="footer">
 			<div id="footer-in">
 				<#if report.url?size gt 0 && report.laboratory?size gt 0>
-					<h4><a href="${report.url!""}">${report.laboratory!""}</a></h4>
+					<h4><a href="${report.url}">${report.laboratory}</a></h4>
 				</#if>
 			</div> <!-- end #footer-in -->
 		</div> <!-- end #footer -->

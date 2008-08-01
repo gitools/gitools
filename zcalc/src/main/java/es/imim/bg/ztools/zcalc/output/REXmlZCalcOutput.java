@@ -114,7 +114,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 							zscoreSt = Double.toString(Util.pvalue2zscore(pcell.rightPvalue));
 							pvalueSt = Double.toString(pcell.rightPvalue);
 							miSt = Double.toString(pcell.expectedMean);
-							sigmaSt = Double.toString(pcell.expectedStdev);
+							sigmaSt = Double.toString(pcell.expectedStdev) + " aprox:" + pcell.aprox.toString();
 						}
 						else
 							throw new DataFormatException("Result type not supported by REXmlZCalcOutput.");

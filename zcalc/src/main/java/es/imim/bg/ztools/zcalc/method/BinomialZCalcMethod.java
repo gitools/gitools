@@ -13,6 +13,11 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		onlyExact, onlyNormal, onlyPoisson, automatic
 	};
 	
+	private abstract class BinomialAproximation {
+		public abstract ZCalcResult getResult(
+				int observed, int n, double expectedMean, double expectedStdev, double expectedVar);
+	}
+	
 	protected StatisticCalc statCalc;
 	
 	protected AproximationMode aproxMode;
@@ -20,10 +25,54 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 	protected DoubleMatrix1D population;
 	
 	private double p;
+
+	private BinomialAproximation aprox;
 	
 	public BinomialZCalcMethod(AproximationMode aproxMode) {
 		this.statCalc = new CountOnesStatisticCalc();
 		this.aproxMode = aproxMode;
+		
+		switch (aproxMode) {
+		case onlyExact: 
+			this.aprox = new BinomialAproximation() {
+				@Override
+				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+					return resultWithExact(observed, n, expectedMean, expectedStdev);
+				}
+			};
+			break;
+		case onlyNormal: 
+			this.aprox = new BinomialAproximation() {
+				@Override
+				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+					return resultWithNormal(observed, n, expectedMean, expectedStdev);
+				}
+			};
+			break;
+		case onlyPoisson: 
+			this.aprox = new BinomialAproximation() {
+				@Override
+				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+					return resultWithPoisson(observed, n, expectedMean, expectedStdev);
+				}
+			};
+			break;
+		case automatic:
+			this.aprox = new BinomialAproximation() {
+				@Override
+				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+					if (n <= 1000)
+						return resultWithExact(observed, n, expectedMean, expectedStdev);
+					else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
+						return resultWithPoisson(observed, n, expectedMean, expectedStdev);
+					else if ((n * p >= 5) && (n * (1 - p) >= 5))
+						return resultWithNormal(observed, n, expectedMean, expectedStdev);
+					else 
+						return resultWithExact(observed, n, expectedMean, expectedStdev);
+				}
+			};
+			break;
+		}
 	}
 	
 	@Override
@@ -72,7 +121,9 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		double expectedVar = n * p * (1.0 - p);
 		double expectedStdev = Math.sqrt(expectedVar);
 		
-		switch (aproxMode) {
+		return aprox.getResult(observed, n, expectedMean, expectedStdev, expectedVar);
+		
+		/*switch (aproxMode) {
 		case onlyExact: 
 			return resultWithExact(observed, n, expectedMean, expectedStdev);
 		case onlyNormal: 
@@ -91,16 +142,26 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 
 		default:
 			return null;
-		}
+		}*/
 	}
 	
-	public ZCalcResult resultWithExact(
+	public final ZCalcResult resultWithExact(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
-		return null;
+		double leftPvalue;
+		double rightPvalue;
+		double twoTailPvalue;
+		
+		leftPvalue = Probability.binomial(observed, n, p);
+		rightPvalue = Probability.binomialComplemented(observed, n, p);
+		twoTailPvalue = leftPvalue + rightPvalue;
+		
+		return new BinomialResult(BinomialResult.AproximationUsed.exact,
+				n, leftPvalue, rightPvalue, twoTailPvalue, 
+				observed, expectedMean, expectedStdev);
 	}
 	
-	public ZCalcResult resultWithNormal(
+	public final ZCalcResult resultWithNormal(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
 		double zscore;
@@ -116,12 +177,12 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 		rightPvalue = 1.0 - leftPvalue;
 		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
 		
-		return new BinomialResult(
+		return new BinomialResult(BinomialResult.AproximationUsed.normal,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev);
 	}
 	
-	public ZCalcResult resultWithPoisson(
+	public final ZCalcResult resultWithPoisson(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
 		double leftPvalue;
@@ -139,7 +200,7 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
 		}
 		
-		return new BinomialResult(
+		return new BinomialResult(BinomialResult.AproximationUsed.poisson,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev);
 	}

@@ -6,6 +6,7 @@ public class BinomialResult extends CommonResult {
 		exact, normal, poisson 
 	};
 	
+	public AproximationUsed aprox;
 	public int observed;
 	public double expectedMean;
 	public double expectedStdev;
@@ -19,12 +20,13 @@ public class BinomialResult extends CommonResult {
 	}
 	
 	public BinomialResult(
-			int n,
+			AproximationUsed aprox, int n,
 			double leftPvalue, double rightPvalue, double twoTailPvalue, 
 			int observed, double expectedMean, double expectedStdev) {
 		
 		super(n, leftPvalue, rightPvalue, twoTailPvalue);
 		
+		this.aprox = aprox;
 		this.observed = observed;
 		this.expectedMean = expectedMean;
 		this.expectedStdev = expectedStdev;
@@ -34,7 +36,7 @@ public class BinomialResult extends CommonResult {
 
 	@Override
 	protected int getNumParams() {
-		return super.getNumParams() + 3;
+		return super.getNumParams() + 4;
 	}
 	
 	@Override
@@ -44,8 +46,9 @@ public class BinomialResult extends CommonResult {
 		array[i + 0] = "observed";
 		array[i + 1] = "expected-mean";
 		array[i + 2] = "expected-stdev";
+		array[i + 3] = "aproximation";
 		
-		return i + 3;
+		return i + 4;
 	}
 	
 	@Override
@@ -55,7 +58,8 @@ public class BinomialResult extends CommonResult {
 		array[i + 0] = observed;
 		array[i + 1] = expectedMean;
 		array[i + 2] = expectedStdev;
+		array[i + 3] = aprox.ordinal();
 		
-		return i + 3;
+		return i + 4;
 	}
 }

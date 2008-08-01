@@ -123,7 +123,7 @@ public class ZCalcCommand {
 		
 		MethodEnum method = methodAliases.get(methodName);
 		if (method == null)
-			throw new IllegalArgumentException("Unknown method " + methodName);
+			throw new IllegalArgumentException("Unknown test " + methodName);
 		
 		switch (method) {
 		case zscoreMean:
@@ -137,13 +137,12 @@ public class ZCalcCommand {
 		case binomial:
 			methodFactory = new BinomialZCalcMethodFactory(
 					AproximationMode.automatic);
-			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
-			//break;
+			break;
 		case binomialExact:
 			methodFactory = new BinomialZCalcMethodFactory(
 					AproximationMode.onlyExact);
-			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
-			//break;
+			//throw new IllegalArgumentException("Method not implemented yet: " + methodName);
+			break;
 		case binomialNormal:
 			/*methodFactory = new BinomialZCalcMethodFactory(
 					AproximationMode.onlyNormal);*/
