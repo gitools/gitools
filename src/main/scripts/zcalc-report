@@ -13,4 +13,4 @@ for lib in $(ls $LIBDIR); do CP=$CP:$LIBDIR/$lib; done;
 JAVA_CMD=java
 [ -n "$JAVA_HOME" ] && JAVA_CMD="$JAVA_HOME/bin/java"
 
-$JAVA_CMD -cp $CP es.imim.bg.ztools.zcalc.report.Main $*
+$JAVA_CMD -cp $CP es.imim.bg.ztools.zcalc.report.velocity.Main $*

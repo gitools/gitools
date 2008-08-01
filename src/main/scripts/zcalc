@@ -1,0 +1,18 @@
+#!/bin/bash
+
+BINDIR=$(dirname "$0")
+
+APPDIR="$BINDIR/.."
+LIBDIR=$APPDIR/lib
+
+CP="$LIBDIR"
+
+#for lib in $(ls $LIBDIR); do CP=$CP:$LIBDIR/$lib; done;
+
+jar=$(ls $LIBDIR/zcalc-cli-*.jar)
+
+javacmd=$JAVACMD
+[ -z "$javacmd" ] && [ -n "$JAVA_HOME" ] && javacmd="$JAVA_HOME/bin/java"
+[ -z "$javacmd" ] && javacmd="java"
+
+$javacmd -jar $jar $*

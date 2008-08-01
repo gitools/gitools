@@ -17,7 +17,8 @@ import es.imim.bg.ztools.threads.ThreadManager;
 
 public class Main {
 
-	public String versionString = "1.0-SNAPSHOT"; //FIXME: getClass().getPackage().getImplementationVersion();
+	private static final String appName = Main.class.getPackage().getImplementationTitle();
+	private static final String versionString = Main.class.getPackage().getImplementationVersion();
 	
 	@Option(name = "-h", aliases = "-help", usage = "Print this message.")
 	public boolean help = false;
@@ -143,7 +144,7 @@ public class Main {
 	}
 
 	private void printVersion() {
-		System.out.println("zcalc version " + versionString);
+		System.out.println(appName + " version " + versionString);
 		System.out.println("Written by Christian Perez Llamas <christian.perez@upf.edu>");
 		//System.out.println();
 	}
