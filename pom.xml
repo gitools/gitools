@@ -46,6 +46,17 @@
 	</scm>
 		
 	<build>
+		<!--<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/command</directory>
+				<includes>
+					<include>zcalc</include>
+				</includes>
+				<targetPath>${basedir}/bin</targetPath>
+			</resource>
+		</resources>-->
+		
 		<pluginManagement>
 			<plugins>
 				<plugin>

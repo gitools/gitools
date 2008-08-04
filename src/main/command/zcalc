@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BINDIR=$(dirname "$0")
+
+APPDIR="$BINDIR/.."
+LIBDIR=$APPDIR/lib
+
+jar=$(ls $LIBDIR/zcalc-cli-*.jar)
+
+#jar=$LIBDIR/${project.build.finalName}.jar
+
+$BINDIR/java-run.sh -jar $jar $*

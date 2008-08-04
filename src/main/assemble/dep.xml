@@ -10,13 +10,15 @@
 	<includeSiteDirectory>false</includeSiteDirectory>
 	<fileSets>
 		<fileSet>
+			<directory>src/main/command</directory>
 			<includes>
-				<include>bin/*</include>
+				<include>*</include>
 			</includes>
+			<outputDirectory>bin</outputDirectory>
 			<fileMode>0770</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>zcalc/templates</directory>
+			<directory>templates</directory>
 			<includes>
 				<include>**/*</include>
 			</includes>
