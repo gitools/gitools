@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mvn install:install-file -Dfile=lib/commons-csv-20070823.jar \ 
+	-DgroupId=commons-csv -DartifactId=commons-csv -Dversion=20070823 \ 
+	-Dpackaging=jar -DgeneratePom=true
