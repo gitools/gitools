@@ -19,7 +19,7 @@ public class Util {
 				pvalue == 1.0 ? -10 :
 				Probability.normalInverse(1.0 - pvalue);
 		}
-		catch (ArithmeticException e) {
+		catch (IllegalArgumentException e) {
 			zscore = Double.NaN;
 		}
 		return zscore;

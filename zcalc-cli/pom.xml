@@ -43,7 +43,7 @@
 			<configuration>
 				<archive>
 					<manifest>
-						<mainClass>es.imim.bg.ztools.zcalc.cli.Main
+						<mainClass>es.imim.bg.ztools.zcalc.cli.Main 
 						</mainClass>
 					</manifest>
 				</archive>

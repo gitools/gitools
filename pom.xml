@@ -22,7 +22,10 @@
 			<id>christian</id>
 			<name>Christian Pérez Llamas</name>
 			<email>christian.perez@upf.edu</email>
-			<roles><role>developer</role></roles>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
 		</developer>
 	</developers>
 	
@@ -138,6 +141,7 @@
 			<url>file://${basedir}/target/deploy</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
 	<reporting>
 		<plugins>
 			<plugin>
