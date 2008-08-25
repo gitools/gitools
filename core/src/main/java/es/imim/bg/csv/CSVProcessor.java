@@ -1,5 +1,6 @@
 package es.imim.bg.csv;
 
+@Deprecated
 public interface CSVProcessor {
 	public boolean start() throws CSVException;
 	public boolean end() throws CSVException;

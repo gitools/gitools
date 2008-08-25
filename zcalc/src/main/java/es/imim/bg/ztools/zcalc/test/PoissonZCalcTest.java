@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
@@ -7,7 +7,8 @@ import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 import es.imim.bg.ztools.zcalc.statcalc.CountOnesStatisticCalc;
 import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
 
-public class PoissonZCalcMethod extends AbstractZCalcMethod {
+@Deprecated
+public class PoissonZCalcTest extends AbstractZCalcTest {
 	
 	protected StatisticCalc statCalc;
 	
@@ -20,7 +21,7 @@ public class PoissonZCalcMethod extends AbstractZCalcMethod {
 		return "binomial-poisson";
 	}
 
-	public PoissonZCalcMethod() {
+	public PoissonZCalcTest() {
 		this.statCalc = new CountOnesStatisticCalc();
 	}
 	

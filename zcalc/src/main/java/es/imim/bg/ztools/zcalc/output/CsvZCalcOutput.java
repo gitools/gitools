@@ -8,9 +8,9 @@ import java.io.PrintWriter;
 import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.method.ZCalcMethod;
 import es.imim.bg.ztools.zcalc.results.AbstractZCalcResult;
 import es.imim.bg.ztools.zcalc.results.ZCalcResult;
+import es.imim.bg.ztools.zcalc.test.ZCalcTest;
 
 //TODO actualizar saveParams usando TabWriter
 public class CsvZCalcOutput extends TabZCalcOutput {
@@ -25,14 +25,14 @@ public class CsvZCalcOutput extends TabZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcMethod method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getMethodFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		
 		//saveResults(workDirFile, analysis, method);
 		
 		saveParams(
-				analysis.getPropNames(), 
+				analysis.getCondNames(), 
 				analysis.getGroupNames(), 
 				analysis.getResults(), 
 				analysis.getResultNames(),

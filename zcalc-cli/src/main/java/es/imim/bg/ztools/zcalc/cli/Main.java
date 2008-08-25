@@ -91,7 +91,7 @@ public class Main {
 			code = -1;
 		}
 		
-		ThreadManager.shutdown();
+		ThreadManager.shutdown(new NullProgressMonitor());
 		
 		System.out.println();
 		System.exit(code);

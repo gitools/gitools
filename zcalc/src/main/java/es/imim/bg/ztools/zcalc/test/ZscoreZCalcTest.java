@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -7,7 +7,7 @@ import es.imim.bg.ztools.zcalc.results.ZScoreResult;
 import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
 
-public abstract class ZscoreZCalcMethod extends AbstractZCalcMethod {
+public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 
 	protected class PopulationStatistics {
 		public double mean;
@@ -25,7 +25,7 @@ public abstract class ZscoreZCalcMethod extends AbstractZCalcMethod {
 	
 	protected DoubleMatrix1D population;
 	
-	public ZscoreZCalcMethod(StatisticCalc statCalc) {
+	public ZscoreZCalcTest(StatisticCalc statCalc) {
 		this.statCalc = statCalc;
 	}
 	

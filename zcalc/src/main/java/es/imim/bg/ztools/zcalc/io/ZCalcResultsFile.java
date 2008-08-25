@@ -16,6 +16,7 @@ import org.apache.commons.csv.CSVStrategy;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 
+import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.ztools.zcalc.results.AbstractZCalcResult;
 
 public class ZCalcResultsFile {

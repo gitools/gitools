@@ -8,12 +8,12 @@ import java.util.zip.DataFormatException;
 import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.method.ZCalcMethod;
-import es.imim.bg.ztools.zcalc.method.ZscoreWithSamplingZCalcMethod;
 import es.imim.bg.ztools.zcalc.results.CommonResult;
 import es.imim.bg.ztools.zcalc.results.FisherResult;
 import es.imim.bg.ztools.zcalc.results.BinomialResult;
 import es.imim.bg.ztools.zcalc.results.ZScoreResult;
+import es.imim.bg.ztools.zcalc.test.ZCalcTest;
+import es.imim.bg.ztools.zcalc.test.ZscoreWithSamplingZCalcTest;
 import es.imim.bg.ztools.zcalc.utils.Util;
 
 public class REXmlZCalcOutput implements ZCalcOutput {
@@ -40,11 +40,11 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println("<analysis name=\"" + analysis.getName() + "\" binomial=\"false\">");
 		
-		String[] propNames = analysis.getPropNames();
+		String[] propNames = analysis.getCondNames();
 		String[] groupNames = analysis.getGroupNames();
 		int[][] groupItemIndices = analysis.getGroupItemIndices();
 		
-		ZCalcMethod method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getMethodFactory().create();
 		String statName = method.getName();
 		
 		ObjectMatrix2D results = analysis.getResults();
@@ -99,7 +99,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 							valueSt = Double.toString(zcell.observed);
 							zscoreSt = Double.toString(zcell.zscore);
 							
-							if (method instanceof ZscoreWithSamplingZCalcMethod)
+							if (method instanceof ZscoreWithSamplingZCalcTest)
 								pvalueSt = Double.toString(zcell.twoTailPvalue);
 							else
 								pvalueSt = Double.toString(zcell.rightPvalue);

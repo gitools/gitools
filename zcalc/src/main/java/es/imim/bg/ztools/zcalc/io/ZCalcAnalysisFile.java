@@ -11,6 +11,8 @@ import java.util.Date;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
+import es.imim.bg.csv.RawCsvWriter;
+
 public class ZCalcAnalysisFile {
 	
 	private static final String tagAnalysisName = "name";

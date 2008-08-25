@@ -3,8 +3,6 @@ package es.imim.bg.ztools.zcalc.analysis;
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -12,25 +10,28 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.analysis.Analysis;
 import es.imim.bg.ztools.threads.ThreadManager;
-import es.imim.bg.ztools.zcalc.method.ZCalcMethod;
-import es.imim.bg.ztools.zcalc.method.factory.ZCalcMethodFactory;
+import es.imim.bg.ztools.zcalc.test.ZCalcTest;
+import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
 
-public class ZCalcAnalysis {
+/* Notes:
+ * 'cond' is an abbreviation for condition.
+ */
+
+public class ZCalcAnalysis extends Analysis {
 	
 	private class RunSlot {
-		public int propIndex;
-		public ZCalcMethod method;
+		public int condIndex;
+		public ZCalcTest test;
 		public RunSlot() {
-			propIndex = -1;
-			method = null;
+			condIndex = -1;
+			test = null;
 		}
 	}
-
-	private String name;
 	
 	// Analysis input
-	protected String[] propNames;
+	protected String[] condNames;
 	protected String[] itemNames;
 	
 	protected DoubleMatrix2D data;
@@ -38,28 +39,25 @@ public class ZCalcAnalysis {
 	protected String[] groupNames;
 	protected int[][] groupItemIndices;
 	
-	// Analysis method factory
-	protected ZCalcMethodFactory methodFactory;
+	// Analysis test factory
+	protected ZCalcTestFactory testFactory;
 	
 	// Analysis output
 	protected String[] resultNames;
 	protected ObjectMatrix2D results;
 	
-	protected Date startTime;
-	protected long elapsedTime;
-	
 	public ZCalcAnalysis(
 			String analysisName, 
-			String[] propNames,
+			String[] condNames,
 			String[] itemNames,			
 			DoubleMatrix2D data,
 			String[] groupNames,			
 			int[][] groupItemIndices,
-			ZCalcMethodFactory methodFactory
+			ZCalcTestFactory methodFactory
 			) {
 		
 		this.name = analysisName;
-		this.propNames = propNames;
+		this.condNames = condNames;
 		this.itemNames = itemNames;
 		
 		this.data = data;
@@ -67,28 +65,23 @@ public class ZCalcAnalysis {
 		this.groupNames = groupNames;
 		this.groupItemIndices = groupItemIndices;
 		
-		this.methodFactory = methodFactory;
+		this.testFactory = methodFactory;
 	}
 	
 	public void run(ProgressMonitor monitor) throws InterruptedException {
 		
-		/*final int maxProcs = ThreadManager.getNumThreads();
-		final Semaphore sem = new Semaphore(maxProcs);
-		final ExecutorService executor = Executors.newCachedThreadPool();*/
-		
 		startTime = new Date();
 		
-		final int numProperties = data.rows();
+		final int numConditions = data.rows();
 		final int numGroups = groupNames.length;
 		
-		monitor.begin("ZCalc analysis...", numProperties * numGroups);
+		monitor.begin("ZCalc analysis...", numConditions * numGroups);
 	
-		resultNames = methodFactory.create().getResultNames();
-		results = ObjectFactory2D.dense.make(numGroups, numProperties);
+		resultNames = testFactory.create().getResultNames();
+		results = ObjectFactory2D.dense.make(numGroups, numConditions);
 		
 		int numProcs = ThreadManager.getNumThreads();
-		//final ExecutorService executor = ThreadManager.getExecutor();
-		final ExecutorService executor = Executors.newCachedThreadPool();
+		final ExecutorService executor = ThreadManager.getExecutor();
 		
 		final ArrayBlockingQueue<RunSlot> queue = 
 			new ArrayBlockingQueue<RunSlot>(numProcs);
@@ -99,20 +92,22 @@ public class ZCalcAnalysis {
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
+		
+		/* Test analysis */
+		
+		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
 			
-		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
+			final String condName = condNames[condIndex];
 			
-			final String propName = propNames[propIndex];
+			final DoubleMatrix1D condItems = data.viewRow(condIndex);
 			
-			final DoubleMatrix1D propItems = data.viewRow(propIndex);
+			final ProgressMonitor condMonitor = monitor.subtask();
 			
-			final ProgressMonitor propMonitor = monitor.subtask();
-			
-			propMonitor.begin("Property " + propName + "...", numGroups);
+			condMonitor.begin("Property " + condName + "...", numGroups);
 			
 			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
 
-				final int propIdx = propIndex;
+				final int propIdx = condIndex;
 				final int groupIdx = groupIndex;
 				
 				final String groupName = groupNames[groupIdx];
@@ -126,10 +121,10 @@ public class ZCalcAnalysis {
 					throw e;
 				}
 				
-				if (slot.propIndex != propIndex) {
-					slot.propIndex = propIndex;
-					slot.method = methodFactory.create();
-					slot.method.startCondition(propName, propItems);
+				if (slot.condIndex != condIndex) {
+					slot.condIndex = condIndex;
+					slot.test = testFactory.create();
+					slot.test.startCondition(condName, condItems);
 				}
 
 				final RunSlot runSlot = slot;
@@ -137,27 +132,27 @@ public class ZCalcAnalysis {
 				executor.execute(new Runnable() {
 					public void run() {
 						results.setQuick(groupIdx, propIdx, 
-							runSlot.method.processGroup(
-								propName, propItems,
+							runSlot.test.processGroup(
+								condName, condItems,
 								groupName, itemIndices));
 						
 						queue.offer(runSlot);
 					}
 				});
 				
-				propMonitor.worked(1);
+				condMonitor.worked(1);
 				monitor.worked(1);
 			}
 
-			propMonitor.end();
+			condMonitor.end();
 			monitor.worked(1);
 		}
 		
-		//ThreadManager.shutdown(); //FIXME
+		/* Multiple test correction */
 		
-		executor.shutdown();
-		while (!executor.isTerminated())
-			executor.awaitTermination(1, TimeUnit.SECONDS);
+		// TODO
+		
+		ThreadManager.shutdown(monitor);
 		
 		elapsedTime = new Date().getTime() - startTime.getTime();
 		
@@ -165,21 +160,13 @@ public class ZCalcAnalysis {
 	}
 
 	// Getters
-	
-	public String getName() {
-		return name;
+
+	public ZCalcTestFactory getMethodFactory() {
+		return testFactory;
 	}
 
-	/*public ZCalcMethod getMethod() {
-		return method;
-	}*/
-	
-	public ZCalcMethodFactory getMethodFactory() {
-		return methodFactory;
-	}
-
-	public String[] getPropNames() {
-		return propNames;
+	public String[] getCondNames() {
+		return condNames;
 	}
 	
 	public String[] getItemNames() {
@@ -204,14 +191,6 @@ public class ZCalcAnalysis {
 	
 	public ObjectMatrix2D getResults() {
 		return results;
-	}
-
-	public Date getStartTime() {
-		return startTime;
-	}
-
-	public long getElapsedTime() {
-		return elapsedTime;
 	}
 
 }

@@ -1,5 +1,6 @@
 package es.imim.bg.csv;
 
+@Deprecated
 public class CSVException extends Exception {
 
 	private static final long serialVersionUID = 8673467489532683989L;

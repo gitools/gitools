@@ -1,13 +1,13 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import es.imim.bg.ztools.stats.FisherExactTest;
 import es.imim.bg.ztools.zcalc.results.FisherResult;
 import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 
-public class FisherZCalcMethod extends AbstractZCalcMethod {
+public class FisherZCalcTest extends AbstractZCalcTest {
 	
-	public FisherZCalcMethod() {
+	public FisherZCalcTest() {
 	}
 	
 	@Override

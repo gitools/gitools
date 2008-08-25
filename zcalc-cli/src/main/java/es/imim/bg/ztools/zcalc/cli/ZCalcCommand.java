@@ -8,19 +8,19 @@ import java.util.zip.DataFormatException;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 import es.imim.bg.ztools.zcalc.input.ZCalcInput;
-import es.imim.bg.ztools.zcalc.method.BinomialZCalcMethod.AproximationMode;
-import es.imim.bg.ztools.zcalc.method.factory.BinomialZCalcMethodFactory;
-import es.imim.bg.ztools.zcalc.method.factory.FisherZCalcMethodFactory;
-import es.imim.bg.ztools.zcalc.method.factory.PoissonZCalcMethodFactory;
-import es.imim.bg.ztools.zcalc.method.factory.ZscoreBinomialZCalcMethodFactory;
-import es.imim.bg.ztools.zcalc.method.factory.ZscoreWithSamplingZCalcMethodFactory;
-import es.imim.bg.ztools.zcalc.method.factory.ZCalcMethodFactory;
 import es.imim.bg.ztools.zcalc.output.CsvZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.REXmlZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.TabZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.ZCalcOutput;
 import es.imim.bg.ztools.zcalc.statcalc.MeanStatisticCalc;
 import es.imim.bg.ztools.zcalc.statcalc.MedianStatisticCalc;
+import es.imim.bg.ztools.zcalc.test.BinomialZCalcTest.AproximationMode;
+import es.imim.bg.ztools.zcalc.test.factory.BinomialZCalcTestFactory;
+import es.imim.bg.ztools.zcalc.test.factory.FisherZCalcTestFactory;
+import es.imim.bg.ztools.zcalc.test.factory.PoissonZCalcTestFactory;
+import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
+import es.imim.bg.ztools.zcalc.test.factory.ZscoreBinomialZCalcTestFactory;
+import es.imim.bg.ztools.zcalc.test.factory.ZscoreWithSamplingZCalcTestFactory;
 
 public class ZCalcCommand {
 
@@ -105,7 +105,7 @@ public class ZCalcCommand {
 		
 		// Prepare method factory
 		
-		ZCalcMethodFactory methodFactory = null;
+		ZCalcTestFactory methodFactory = null;
 	
 		Map<String, MethodEnum> methodAliases = new HashMap<String, MethodEnum>();
 		methodAliases.put("zscore", MethodEnum.zscoreMean);
@@ -127,37 +127,37 @@ public class ZCalcCommand {
 		
 		switch (method) {
 		case zscoreMean:
-			methodFactory = new ZscoreWithSamplingZCalcMethodFactory(
+			methodFactory = new ZscoreWithSamplingZCalcTestFactory(
 					samplingNumSamples, new MeanStatisticCalc());
 			break;
 		case zscoreMedian:
-			methodFactory = new ZscoreWithSamplingZCalcMethodFactory(
+			methodFactory = new ZscoreWithSamplingZCalcTestFactory(
 					samplingNumSamples, new MedianStatisticCalc());
 			break;
 		case binomial:
-			methodFactory = new BinomialZCalcMethodFactory(
+			methodFactory = new BinomialZCalcTestFactory(
 					AproximationMode.automatic);
 			break;
 		case binomialExact:
-			methodFactory = new BinomialZCalcMethodFactory(
+			methodFactory = new BinomialZCalcTestFactory(
 					AproximationMode.onlyExact);
 			//throw new IllegalArgumentException("Method not implemented yet: " + methodName);
 			break;
 		case binomialNormal:
 			/*methodFactory = new BinomialZCalcMethodFactory(
 					AproximationMode.onlyNormal);*/
-			methodFactory = new ZscoreBinomialZCalcMethodFactory();
+			methodFactory = new ZscoreBinomialZCalcTestFactory();
 			break;
 		case binomialPoisson:
 			/*methodFactory = new BinomialZCalcMethodFactory(
 					AproximationMode.onlyPoisson); */
-			methodFactory = new PoissonZCalcMethodFactory();
+			methodFactory = new PoissonZCalcTestFactory();
 			break;
 		case hypergeometric:
 			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
 			//break;
 		case fisherExact:
-			methodFactory = new FisherZCalcMethodFactory();
+			methodFactory = new FisherZCalcTestFactory();
 			break;
 		case chiSquare:
 			throw new IllegalArgumentException("Method not implemented yet: " + methodName);

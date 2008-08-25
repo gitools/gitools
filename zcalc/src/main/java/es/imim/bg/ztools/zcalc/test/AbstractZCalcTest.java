@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.function.DoubleProcedure;
 
-public abstract class AbstractZCalcMethod implements ZCalcMethod {
+public abstract class AbstractZCalcTest implements ZCalcTest {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {

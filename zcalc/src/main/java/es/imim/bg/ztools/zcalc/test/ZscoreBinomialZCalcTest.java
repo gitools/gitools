@@ -1,14 +1,15 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 
 import es.imim.bg.ztools.zcalc.statcalc.CountOnesStatisticCalc;
 
-public class ZscoreBinomialZCalcMethod extends ZscoreZCalcMethod {
+@Deprecated
+public class ZscoreBinomialZCalcTest extends ZscoreZCalcTest {
 
 	private double p;
 	
-	public ZscoreBinomialZCalcMethod() {
+	public ZscoreBinomialZCalcTest() {
 		super(new CountOnesStatisticCalc());
 	}
 

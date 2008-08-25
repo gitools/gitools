@@ -1,9 +1,9 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 
-public interface ZCalcMethod {
+public interface ZCalcTest {
 
 	String getName();
 	

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.random.engine.MersenneTwister;
@@ -6,11 +6,11 @@ import cern.jet.random.engine.RandomEngine;
 import cern.jet.random.sampling.RandomSampler;
 import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
 
-public class ZscoreWithSamplingZCalcMethod extends ZscoreZCalcMethod {
+public class ZscoreWithSamplingZCalcTest extends ZscoreZCalcTest {
 
 	protected int numSamples;
 	
-	public ZscoreWithSamplingZCalcMethod(int numSamples, StatisticCalc statCalc) {
+	public ZscoreWithSamplingZCalcTest(int numSamples, StatisticCalc statCalc) {
 		super(statCalc);
 		this.numSamples = numSamples;
 	}

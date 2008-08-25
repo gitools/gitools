@@ -1,5 +1,6 @@
 package es.imim.bg.csv;
 
+@Deprecated
 public class CSVProcessorAdapter implements CSVProcessor {
 
 	public boolean start() throws CSVException { return true; }

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.method;
+package es.imim.bg.ztools.zcalc.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
@@ -7,8 +7,10 @@ import es.imim.bg.ztools.zcalc.results.ZCalcResult;
 import es.imim.bg.ztools.zcalc.statcalc.CountOnesStatisticCalc;
 import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
 
-public class BinomialZCalcMethod extends AbstractZCalcMethod {
+public class BinomialZCalcTest extends AbstractZCalcTest {
 
+	private static final int exactSizeLimit = 100000;
+	
 	public enum AproximationMode {
 		onlyExact, onlyNormal, onlyPoisson, automatic
 	};
@@ -28,7 +30,7 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 
 	private BinomialAproximation aprox;
 	
-	public BinomialZCalcMethod(AproximationMode aproxMode) {
+	public BinomialZCalcTest(AproximationMode aproxMode) {
 		this.statCalc = new CountOnesStatisticCalc();
 		this.aproxMode = aproxMode;
 		
@@ -61,7 +63,7 @@ public class BinomialZCalcMethod extends AbstractZCalcMethod {
 			this.aprox = new BinomialAproximation() {
 				@Override
 				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
-					if (n <= 1000)
+					if (n <= exactSizeLimit)
 						return resultWithExact(observed, n, expectedMean, expectedStdev);
 					else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
 						return resultWithPoisson(observed, n, expectedMean, expectedStdev);

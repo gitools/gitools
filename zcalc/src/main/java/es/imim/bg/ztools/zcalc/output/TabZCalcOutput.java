@@ -8,7 +8,7 @@ import java.io.Writer;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
 import es.imim.bg.ztools.zcalc.io.ZCalcResultsFile;
-import es.imim.bg.ztools.zcalc.method.ZCalcMethod;
+import es.imim.bg.ztools.zcalc.test.ZCalcTest;
 
 public class TabZCalcOutput implements ZCalcOutput {
 
@@ -32,7 +32,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcMethod method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getMethodFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		
@@ -42,7 +42,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 	protected void saveAnalysis(
 			File workDirFile, 
 			ZCalcAnalysis analysis,
-			ZCalcMethod method) throws IOException {
+			ZCalcTest method) throws IOException {
 		
 		Writer writer = new FileWriter(new File(
 						workDirFile, 
@@ -70,7 +70,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 		
 		ZCalcResultsFile file = new ZCalcResultsFile(separator, quote);
 		
-		file.setPropNames(analysis.getPropNames());
+		file.setPropNames(analysis.getCondNames());
 		file.setGroupNames(analysis.getGroupNames());
 		file.setResultNames(analysis.getResultNames());
 		file.setResults(analysis.getResults());
