@@ -44,7 +44,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 		String[] groupNames = analysis.getGroupNames();
 		int[][] groupItemIndices = analysis.getGroupItemIndices();
 		
-		ZCalcTest method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getTestFactory().create();
 		String statName = method.getName();
 		
 		ObjectMatrix2D results = analysis.getResults();

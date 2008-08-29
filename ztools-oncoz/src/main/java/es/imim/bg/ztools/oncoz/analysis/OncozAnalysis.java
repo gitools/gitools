@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutorService;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectMatrix1D;
+import cern.colt.matrix.ObjectFactory2D;
+import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.analysis.Analysis;
 import es.imim.bg.ztools.threads.ThreadManager;
@@ -34,7 +34,7 @@ public class OncozAnalysis extends Analysis {
 	
 	// Analysis output
 	protected String[] resultNames;
-	protected ObjectMatrix1D results;
+	protected ObjectMatrix2D results;
 	
 	public OncozAnalysis(
 			String analysisName, 
@@ -64,7 +64,7 @@ public class OncozAnalysis extends Analysis {
 		final DoubleMatrix1D population = data.like1D(numCond * numItems);
 		
 		resultNames = testFactory.create().getResultNames();
-		results = ObjectFactory1D.dense.make(numItems);
+		results = ObjectFactory2D.dense.make(numItems, 1);
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();
@@ -103,7 +103,7 @@ public class OncozAnalysis extends Analysis {
 			
 			executor.execute(new Runnable() {
 				public void run() {
-					results.setQuick(itemIdx, 
+					results.setQuick(itemIdx, 0, 
 						runSlot.test.processTest(
 							"", itemValues,
 							itemName, null));
@@ -148,7 +148,7 @@ public class OncozAnalysis extends Analysis {
 		return resultNames;
 	}
 	
-	public ObjectMatrix1D getResults() {
+	public ObjectMatrix2D getResults() {
 		return results;
 	}
 }

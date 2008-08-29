@@ -32,7 +32,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcTest method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getTestFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		

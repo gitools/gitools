@@ -25,7 +25,7 @@ public class CsvZCalcOutput extends TabZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcTest method = analysis.getMethodFactory().create();
+		ZCalcTest method = analysis.getTestFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		

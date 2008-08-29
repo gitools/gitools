@@ -30,10 +30,12 @@ public class ZCalcAnalysis extends Analysis {
 		};
 		
 	private class RunSlot {
-		public int condIndex;
+		//public int condIndex;
+		public DoubleMatrix1D population;
 		public ZCalcTest test;
 		public RunSlot() {
-			condIndex = -1;
+			//condIndex = -1;
+			population = null;
 			test = null;
 		}
 	}
@@ -104,7 +106,7 @@ public class ZCalcAnalysis extends Analysis {
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
-			
+
 		/* Test analysis */
 		
 		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
@@ -113,9 +115,11 @@ public class ZCalcAnalysis extends Analysis {
 			
 			final DoubleMatrix1D condItems = data.viewRow(condIndex);
 			
+			DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
+			
 			final ProgressMonitor condMonitor = monitor.subtask();
 			
-			condMonitor.begin("Property " + condName + "...", numGroups);
+			condMonitor.begin("Condition " + condName + "...", numGroups);
 			
 			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
 
@@ -125,6 +129,12 @@ public class ZCalcAnalysis extends Analysis {
 				final String groupName = groupNames[groupIdx];
 				final int[] itemIndices = groupItemIndices[groupIdx];
 
+				/*if (useAllConditionsAsPopulation) {
+					DoubleMatrix1D populationFromAllConditions = data.like1D(data.size());
+					population = populationFromAllConditions;
+				}
+				else*/
+					
 				RunSlot slot = null;
 				try {
 					slot = queue.take();
@@ -133,11 +143,9 @@ public class ZCalcAnalysis extends Analysis {
 					throw e;
 				}
 				
-				if (slot.condIndex != condIndex) {
-					slot.condIndex = condIndex;
+				if (slot.population != population) {
+					slot.population = population;
 					slot.test = testFactory.create();
-					final DoubleMatrix1D population =
-						condItems.viewSelection(notNaNProc);
 					slot.test.processPopulation(condName, population);
 				}
 
@@ -175,7 +183,7 @@ public class ZCalcAnalysis extends Analysis {
 
 	// Getters
 
-	public ZCalcTestFactory getMethodFactory() {
+	public ZCalcTestFactory getTestFactory() {
 		return testFactory;
 	}
 
