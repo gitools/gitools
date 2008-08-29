@@ -30,11 +30,9 @@ public class ZCalcAnalysis extends Analysis {
 		};
 		
 	private class RunSlot {
-		//public int condIndex;
 		public DoubleMatrix1D population;
 		public ZCalcTest test;
 		public RunSlot() {
-			//condIndex = -1;
 			population = null;
 			test = null;
 		}
@@ -63,7 +61,7 @@ public class ZCalcAnalysis extends Analysis {
 			DoubleMatrix2D data,
 			String[] groupNames,			
 			int[][] groupItemIndices,
-			ZCalcTestFactory methodFactory
+			ZCalcTestFactory testFactory
 			) {
 		
 		this.name = analysisName;
@@ -75,21 +73,21 @@ public class ZCalcAnalysis extends Analysis {
 		this.groupNames = groupNames;
 		this.groupItemIndices = groupItemIndices;
 		
-		this.testFactory = methodFactory;
+		this.testFactory = testFactory;
 	}
 	
 	public void run(ProgressMonitor monitor) throws InterruptedException {
 		
 		startTime = new Date();
 		
+		// transpose data
+		monitor.debug("Transposing data...");
+		DoubleMatrix2D data = this.data.viewDice().copy();
+		
 		final int numConditions = data.rows();
 		final int numGroups = groupNames.length;
 		
 		monitor.begin("ZCalc analysis...", numConditions * numGroups);
-	
-		// transpose data
-		monitor.debug("Transposing data...");
-		DoubleMatrix2D data = this.data.viewDice().copy();
 		
 		resultNames = testFactory.create().getResultNames();
 		results = ObjectFactory2D.dense.make(numGroups, numConditions);
@@ -128,20 +126,8 @@ public class ZCalcAnalysis extends Analysis {
 				
 				final String groupName = groupNames[groupIdx];
 				final int[] itemIndices = groupItemIndices[groupIdx];
-
-				/*if (useAllConditionsAsPopulation) {
-					DoubleMatrix1D populationFromAllConditions = data.like1D(data.size());
-					population = populationFromAllConditions;
-				}
-				else*/
 					
-				RunSlot slot = null;
-				try {
-					slot = queue.take();
-				} catch (InterruptedException e) {
-					monitor.debug("InterruptedException while retrieving a free slot from the run queue: " + e.getLocalizedMessage());
-					throw e;
-				}
+				final RunSlot slot = takeSlot(monitor, queue);
 				
 				if (slot.population != population) {
 					slot.population = population;
@@ -149,16 +135,14 @@ public class ZCalcAnalysis extends Analysis {
 					slot.test.processPopulation(condName, population);
 				}
 
-				final RunSlot runSlot = slot;
-				
 				executor.execute(new Runnable() {
 					public void run() {
 						results.setQuick(groupIdx, condIdx, 
-							runSlot.test.processTest(
+							slot.test.processTest(
 								condName, condItems,
 								groupName, itemIndices));
 						
-						queue.offer(runSlot);
+						queue.offer(slot);
 					}
 				});
 				
@@ -167,7 +151,6 @@ public class ZCalcAnalysis extends Analysis {
 			}
 
 			condMonitor.end();
-			monitor.worked(1);
 		}
 		
 		/* Multiple test correction */
@@ -181,6 +164,20 @@ public class ZCalcAnalysis extends Analysis {
 		monitor.end();
 	}
 
+	private RunSlot takeSlot(
+			ProgressMonitor monitor,
+			final ArrayBlockingQueue<RunSlot> queue) throws InterruptedException {
+		
+		RunSlot slot = null;
+		try {
+			slot = queue.take();
+		} catch (InterruptedException e) {
+			monitor.debug("InterruptedException while retrieving a free slot from the run queue: " + e.getLocalizedMessage());
+			throw e;
+		}
+		return slot;
+	}
+	
 	// Getters
 
 	public ZCalcTestFactory getTestFactory() {

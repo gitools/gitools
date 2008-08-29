@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
+import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory2D;
@@ -16,9 +17,18 @@ import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
 
 public class OncozAnalysis extends Analysis {
 
+	protected static final DoubleProcedure notNaNProc = 
+		new DoubleProcedure() {
+			public boolean apply(double element) {
+				return !Double.isNaN(element);
+			}
+		};
+		
 	private class RunSlot {
+		public DoubleMatrix1D population;
 		public ZCalcTest test;
 		public RunSlot() {
+			population = null;
 			test = null;
 		}
 	}
@@ -28,6 +38,9 @@ public class OncozAnalysis extends Analysis {
 	protected String[] itemNames;
 	
 	protected DoubleMatrix2D data;
+	
+	protected String[] groupNames;
+	protected int[][] groupItemIndices;
 	
 	// Analysis test factory
 	protected ZCalcTestFactory testFactory;
@@ -41,7 +54,9 @@ public class OncozAnalysis extends Analysis {
 			String[] condNames,
 			String[] itemNames,			
 			DoubleMatrix2D data,
-			ZCalcTestFactory methodFactory) {
+			String[] groupNames,			
+			int[][] groupItemIndices,
+			ZCalcTestFactory testFactory) {
 		
 		this.name = analysisName;
 		this.condNames = condNames;
@@ -49,7 +64,10 @@ public class OncozAnalysis extends Analysis {
 		
 		this.data = data;
 		
-		this.testFactory = methodFactory;
+		this.groupNames = groupNames;
+		this.groupItemIndices = groupItemIndices;
+		
+		this.testFactory = testFactory;
 	}
 	
 	public void run(ProgressMonitor monitor) throws InterruptedException {
@@ -58,13 +76,12 @@ public class OncozAnalysis extends Analysis {
 		
 		final int numCond = data.columns();
 		final int numItems = data.rows();
+		final int numGroups = groupNames.length;
 		
-		monitor.begin("Oncoz analysis...", numItems);
+		monitor.begin("Oncoz analysis...", numItems * numGroups);
 	
-		final DoubleMatrix1D population = data.like1D(numCond * numItems);
-		
 		resultNames = testFactory.create().getResultNames();
-		results = ObjectFactory2D.dense.make(numItems, 1);
+		results = ObjectFactory2D.dense.make(numItems, numGroups);
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();
@@ -74,45 +91,62 @@ public class OncozAnalysis extends Analysis {
 		
 		for (int i = 0; i < numProcs; i++)
 			try {
-				RunSlot slot = new RunSlot();
-				slot.test = testFactory.create();
-				slot.test.processPopulation("", population);
-				queue.put(slot);
+				queue.put(new RunSlot());
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
 		
 		/* Test analysis */
 		
-		for (int itemIndex = 0; itemIndex < numItems; itemIndex++) {
+		for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
+		
+			final int groupIdx = groupIndex;
 			
-			final String itemName = itemNames[itemIndex];
+			final String groupName = groupNames[groupIndex];
 			
-			final DoubleMatrix1D itemValues = data.viewRow(itemIndex);
+			final int[] itemIndices = groupItemIndices[groupIndex];
 			
-			RunSlot slot = null;
-			try {
-				slot = queue.take();
-			} catch (InterruptedException e) {
-				monitor.debug("InterruptedException while retrieving a free slot from the run queue: " + e.getLocalizedMessage());
-				throw e;
+			final ProgressMonitor condMonitor = monitor.subtask();
+			
+			condMonitor.begin("Group " + groupName + "...", numItems);
+			
+			final DoubleMatrix1D population = data 
+				.viewSelection(null, itemIndices)
+				.like1D(numCond * numItems)
+				.viewSelection(notNaNProc);
+			
+			for (int itemIndex = 0; itemIndex < numItems; itemIndex++) {
+
+				final int itemIdx = itemIndex;
+				
+				final String itemName = itemNames[itemIndex];
+				
+				final DoubleMatrix1D itemValues = data.viewRow(itemIndex);
+				
+				final RunSlot slot = takeSlot(monitor, queue);
+				
+				if (slot.population != population) {
+					slot.population = population;
+					slot.test = testFactory.create();
+					slot.test.processPopulation(groupName, population);
+				}
+
+				executor.execute(new Runnable() {
+					public void run() {
+						results.setQuick(itemIdx, groupIdx, 
+							slot.test.processTest(
+								groupName, itemValues,
+								itemName, itemIndices)); //FIX: It will be fixed, itemValues has to be filtered for the group and item indices related to all population.
+						
+						queue.offer(slot);
+					}
+				});
+				
+				condMonitor.worked(1);
+				monitor.worked(1);
 			}
 			
-			final int itemIdx = itemIndex;
-			final RunSlot runSlot = slot;
-			
-			executor.execute(new Runnable() {
-				public void run() {
-					results.setQuick(itemIdx, 0, 
-						runSlot.test.processTest(
-							"", itemValues,
-							itemName, null));
-					
-					queue.offer(runSlot);
-				}
-			});
-			
-			monitor.worked(1);
+			condMonitor.end();
 		}
 		
 		/* Multiple test correction */
@@ -124,6 +158,20 @@ public class OncozAnalysis extends Analysis {
 		elapsedTime = new Date().getTime() - startTime.getTime();
 		
 		monitor.end();
+	}
+
+	private RunSlot takeSlot(
+			ProgressMonitor monitor,
+			final ArrayBlockingQueue<RunSlot> queue) throws InterruptedException {
+		
+		RunSlot slot = null;
+		try {
+			slot = queue.take();
+		} catch (InterruptedException e) {
+			monitor.debug("InterruptedException while retrieving a free slot from the run queue: " + e.getLocalizedMessage());
+			throw e;
+		}
+		return slot;
 	}
 
 	// Getters
@@ -142,6 +190,14 @@ public class OncozAnalysis extends Analysis {
 	
 	public DoubleMatrix2D getData() {
 		return data;
+	}
+	
+	public String[] getGroupNames() {
+		return groupNames;
+	}
+	
+	public int[][] getGroupItemIndices() {
+		return groupItemIndices;
 	}
 	
 	public String[] getResultNames() {
