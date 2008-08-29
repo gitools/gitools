@@ -96,20 +96,20 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 	}
 
 	@Override
-	public void startCondition(String propName, DoubleMatrix1D propItems) {
-		population = propItems.viewSelection(notNaNProc);
+	public void startCondition(String condName, DoubleMatrix1D condItems) {
+		population = condItems.viewSelection(notNaNProc);
 		p = statCalc.calc(population) / population.size();
 	}
 	
 	@Override
 	public ZCalcResult processGroup(
-			String propName, DoubleMatrix1D propItems,
+			String condName, DoubleMatrix1D condItems,
 			String groupName, int[] groupItemIndices) {
 		
 		// Create a view with group values (excluding NaN's)
 		
 		final DoubleMatrix1D groupItems =
-			propItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
+			condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
 		
 		// Calculate observed statistic
 		
@@ -124,27 +124,6 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		double expectedStdev = Math.sqrt(expectedVar);
 		
 		return aprox.getResult(observed, n, expectedMean, expectedStdev, expectedVar);
-		
-		/*switch (aproxMode) {
-		case onlyExact: 
-			return resultWithExact(observed, n, expectedMean, expectedStdev);
-		case onlyNormal: 
-			return resultWithNormal(observed, n, expectedMean, expectedStdev);
-		case onlyPoisson: 
-			return resultWithPoisson(observed, n, expectedMean, expectedStdev);
-		case automatic:
-			if (n <= 1000)
-				return resultWithExact(observed, n, expectedMean, expectedStdev);
-			else if ((n * p >= 5) && (n * (1 - p) >= 5))
-				return resultWithNormal(observed, n, expectedMean, expectedStdev);
-			else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
-				return resultWithPoisson(observed, n, expectedMean, expectedStdev);
-			else 
-				return null;
-
-		default:
-			return null;
-		}*/
 	}
 	
 	public final ZCalcResult resultWithExact(

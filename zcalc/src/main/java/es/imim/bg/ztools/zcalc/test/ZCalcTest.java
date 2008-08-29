@@ -9,9 +9,9 @@ public interface ZCalcTest {
 	
 	String[] getResultNames();
 
-	void startCondition(String propName, DoubleMatrix1D propItems);
+	void startCondition(String condName, DoubleMatrix1D condItems);
 	
 	ZCalcResult processGroup(
-			String propName, DoubleMatrix1D propItems, 
+			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices);
 }

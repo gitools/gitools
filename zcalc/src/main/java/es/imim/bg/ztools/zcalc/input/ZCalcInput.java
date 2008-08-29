@@ -243,10 +243,7 @@ public class ZCalcInput {
 		loadData(dataParser, 
 				dataPropNames, dataPropIndices, propNames, 
 				itemDataRow, itemNames, data);
-		
-		// transpose data
-		data = data.viewDice().copy(); //FIXME
-		
+
 		dataReader.close();
 		
 		monitor.end();

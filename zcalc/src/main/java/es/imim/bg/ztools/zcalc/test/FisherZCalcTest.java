@@ -21,17 +21,17 @@ public class FisherZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public void startCondition(String propName, DoubleMatrix1D propItems) {
+	public void startCondition(String condName, DoubleMatrix1D condItems) {
 	}
 	
 	@Override
 	public ZCalcResult processGroup(
-			String propName, DoubleMatrix1D propItems, 
+			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		
 		int[] ctable = new int[4];
 		
-		calcContingencyTable(propItems, groupItemIndices, ctable);
+		calcContingencyTable(condItems, groupItemIndices, ctable);
 		
 		FisherExactTest fisher = new FisherExactTest(ctable);
 		fisher.testContingencyTable();		
@@ -57,12 +57,12 @@ public class FisherZCalcTest extends AbstractZCalcTest {
 	 *  doesn't belongs to the group |      c     |       d      |
 	 * ------------------------------+------------+--------------+
 	 * 
-	 * @param propItems all the data for the items of the property
+	 * @param condItems all the data for the items of the property
 	 * @param groupItems item indices to propItems for the items that belongs to the group
 	 * @param ctable contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
 	 */
 	private void calcContingencyTable(
-			DoubleMatrix1D propItems,
+			DoubleMatrix1D condItems,
 			int[] groupItems, 
 			int[] ctable) {
 		
@@ -72,8 +72,8 @@ public class FisherZCalcTest extends AbstractZCalcTest {
 		
 		// count
 		int k = 0;
-		for (int i = 0; i < propItems.size(); i++) {
-			double value = propItems.getQuick(i);
+		for (int i = 0; i < condItems.size(); i++) {
+			double value = condItems.getQuick(i);
 			
 			boolean belongsToGroup = k < groupItems.length && groupItems[k] == i;
 			if (belongsToGroup)

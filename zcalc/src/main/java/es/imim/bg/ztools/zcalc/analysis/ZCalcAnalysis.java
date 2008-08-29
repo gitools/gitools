@@ -77,6 +77,10 @@ public class ZCalcAnalysis extends Analysis {
 		
 		monitor.begin("ZCalc analysis...", numConditions * numGroups);
 	
+		// transpose data
+		monitor.debug("Transposing data...");
+		DoubleMatrix2D data = this.data.viewDice().copy();
+		
 		resultNames = testFactory.create().getResultNames();
 		results = ObjectFactory2D.dense.make(numGroups, numConditions);
 		
@@ -92,7 +96,7 @@ public class ZCalcAnalysis extends Analysis {
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
-		
+			
 		/* Test analysis */
 		
 		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
@@ -107,7 +111,7 @@ public class ZCalcAnalysis extends Analysis {
 			
 			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
 
-				final int propIdx = condIndex;
+				final int condIdx = condIndex;
 				final int groupIdx = groupIndex;
 				
 				final String groupName = groupNames[groupIdx];
@@ -131,7 +135,7 @@ public class ZCalcAnalysis extends Analysis {
 				
 				executor.execute(new Runnable() {
 					public void run() {
-						results.setQuick(groupIdx, propIdx, 
+						results.setQuick(groupIdx, condIdx, 
 							runSlot.test.processGroup(
 								condName, condItems,
 								groupName, itemIndices));

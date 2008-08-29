@@ -1,6 +1,5 @@
 package es.imim.bg.ztools.zcalc.test;
 
-import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
 import es.imim.bg.ztools.zcalc.results.ZScoreResult;
@@ -13,13 +12,6 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 		public double mean;
 		public double stdev;
 	}
-	
-	protected static final DoubleProcedure notNaNProc = 
-		new DoubleProcedure() {
-			public boolean apply(double element) {
-				return !Double.isNaN(element);
-			}
-		};
 	
 	protected StatisticCalc statCalc;
 	
@@ -40,13 +32,13 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public void startCondition(String propName, DoubleMatrix1D propItems) {
-		population = propItems.viewSelection(notNaNProc);
+	public void startCondition(String condName, DoubleMatrix1D condItems) {
+		population = condItems.viewSelection(notNaNProc);
 	}
 	
 	@Override
 	public ZCalcResult processGroup(
-			String propName, DoubleMatrix1D propItems, 
+			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		
 		double observed;
@@ -58,7 +50,7 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 		// Create a view with group values (excluding NaN's)
 		
 		final DoubleMatrix1D groupItems =
-			propItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
+			condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
 		
 		// Calculate observed statistic
 		
