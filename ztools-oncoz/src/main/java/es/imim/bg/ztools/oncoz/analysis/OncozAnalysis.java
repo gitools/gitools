@@ -76,7 +76,7 @@ public class OncozAnalysis extends Analysis {
 			try {
 				RunSlot slot = new RunSlot();
 				slot.test = testFactory.create();
-				slot.test.startCondition("", population);
+				slot.test.processPopulation("", population);
 				queue.put(slot);
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
@@ -104,7 +104,7 @@ public class OncozAnalysis extends Analysis {
 			executor.execute(new Runnable() {
 				public void run() {
 					results.setQuick(itemIdx, 
-						runSlot.test.processGroup(
+						runSlot.test.processTest(
 							"", itemValues,
 							itemName, null));
 					

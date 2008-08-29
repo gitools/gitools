@@ -17,14 +17,12 @@ import es.imim.bg.ztools.zcalc.statcalc.MedianStatisticCalc;
 import es.imim.bg.ztools.zcalc.test.BinomialZCalcTest.AproximationMode;
 import es.imim.bg.ztools.zcalc.test.factory.BinomialZCalcTestFactory;
 import es.imim.bg.ztools.zcalc.test.factory.FisherZCalcTestFactory;
-import es.imim.bg.ztools.zcalc.test.factory.PoissonZCalcTestFactory;
 import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
-import es.imim.bg.ztools.zcalc.test.factory.ZscoreBinomialZCalcTestFactory;
 import es.imim.bg.ztools.zcalc.test.factory.ZscoreWithSamplingZCalcTestFactory;
 
 public class ZCalcCommand {
 
-	private static enum MethodEnum {
+	private static enum TestEnum {
 		zscoreMean, zscoreMedian, 
 		binomial, binomialExact, binomialNormal, binomialPoisson,
 		hypergeometric, fisherExact, chiSquare
@@ -35,7 +33,7 @@ public class ZCalcCommand {
 	
 	private String analysisName;
 	
-	private String methodName;
+	private String testName;
 
 	private int samplingNumSamples;
 	
@@ -65,7 +63,7 @@ public class ZCalcCommand {
 			String workdir, String outputFormat, boolean resultsByCond) {
 		
 		this.analysisName = analysisName;
-		this.methodName = methodName;
+		this.testName = methodName;
 		this.samplingNumSamples = samplingNumSamples;
 		this.dataFile = dataFile;
 		this.dataSep = dataSep;
@@ -103,64 +101,61 @@ public class ZCalcCommand {
 		else
 			throw new IllegalArgumentException("Unknown output format '" + outputFormat + "'");
 		
-		// Prepare method factory
+		// Prepare test factory
 		
-		ZCalcTestFactory methodFactory = null;
+		ZCalcTestFactory testFactory = null;
 	
-		Map<String, MethodEnum> methodAliases = new HashMap<String, MethodEnum>();
-		methodAliases.put("zscore", MethodEnum.zscoreMean);
-		methodAliases.put("zscore-mean", MethodEnum.zscoreMean);
-		methodAliases.put("zscore-median", MethodEnum.zscoreMedian);
-		methodAliases.put("binomial", MethodEnum.binomial);
-		methodAliases.put("binomial-exact", MethodEnum.binomialExact);
-		methodAliases.put("binomial-normal", MethodEnum.binomialNormal);
-		methodAliases.put("binomial-poisson", MethodEnum.binomialPoisson);
-		methodAliases.put("fisher", MethodEnum.fisherExact);
-		methodAliases.put("hyper-geom", MethodEnum.hypergeometric);
-		methodAliases.put("hyper-geometric", MethodEnum.hypergeometric);
-		methodAliases.put("hypergeometric", MethodEnum.hypergeometric);
-		methodAliases.put("chi-square", MethodEnum.chiSquare);
+		Map<String, TestEnum> testAliases = new HashMap<String, TestEnum>();
+		testAliases.put("zscore", TestEnum.zscoreMean);
+		testAliases.put("zscore-mean", TestEnum.zscoreMean);
+		testAliases.put("zscore-median", TestEnum.zscoreMedian);
+		testAliases.put("binomial", TestEnum.binomial);
+		testAliases.put("binomial-exact", TestEnum.binomialExact);
+		testAliases.put("binomial-normal", TestEnum.binomialNormal);
+		testAliases.put("binomial-poisson", TestEnum.binomialPoisson);
+		testAliases.put("fisher", TestEnum.fisherExact);
+		testAliases.put("hyper-geom", TestEnum.hypergeometric);
+		testAliases.put("hyper-geometric", TestEnum.hypergeometric);
+		testAliases.put("hypergeometric", TestEnum.hypergeometric);
+		testAliases.put("chi-square", TestEnum.chiSquare);
 		
-		MethodEnum method = methodAliases.get(methodName);
-		if (method == null)
-			throw new IllegalArgumentException("Unknown test " + methodName);
+		TestEnum selectedTest = testAliases.get(testName);
+		if (selectedTest == null)
+			throw new IllegalArgumentException("Unknown test " + testName);
 		
-		switch (method) {
+		switch (selectedTest) {
 		case zscoreMean:
-			methodFactory = new ZscoreWithSamplingZCalcTestFactory(
+			testFactory = new ZscoreWithSamplingZCalcTestFactory(
 					samplingNumSamples, new MeanStatisticCalc());
 			break;
 		case zscoreMedian:
-			methodFactory = new ZscoreWithSamplingZCalcTestFactory(
+			testFactory = new ZscoreWithSamplingZCalcTestFactory(
 					samplingNumSamples, new MedianStatisticCalc());
 			break;
 		case binomial:
-			methodFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialZCalcTestFactory(
 					AproximationMode.automatic);
 			break;
 		case binomialExact:
-			methodFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialZCalcTestFactory(
 					AproximationMode.onlyExact);
-			//throw new IllegalArgumentException("Method not implemented yet: " + methodName);
 			break;
 		case binomialNormal:
-			/*methodFactory = new BinomialZCalcMethodFactory(
-					AproximationMode.onlyNormal);*/
-			methodFactory = new ZscoreBinomialZCalcTestFactory();
+			testFactory = new BinomialZCalcTestFactory(
+					AproximationMode.onlyNormal);
 			break;
 		case binomialPoisson:
-			/*methodFactory = new BinomialZCalcMethodFactory(
-					AproximationMode.onlyPoisson); */
-			methodFactory = new PoissonZCalcTestFactory();
+			testFactory = new BinomialZCalcTestFactory(
+					AproximationMode.onlyPoisson);
 			break;
 		case hypergeometric:
-			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
+			throw new IllegalArgumentException("Test not implemented yet: " + testName);
 			//break;
 		case fisherExact:
-			methodFactory = new FisherZCalcTestFactory();
+			testFactory = new FisherZCalcTestFactory();
 			break;
 		case chiSquare:
-			throw new IllegalArgumentException("Method not implemented yet: " + methodName);
+			throw new IllegalArgumentException("Test not implemented yet: " + testName);
 			//break;
 		}
 		
@@ -173,9 +168,9 @@ public class ZCalcCommand {
 		ZCalcAnalysis analysis = 
 			new ZCalcAnalysis(
 				analysisName,
-				in.getPropNames(), in.getItemNames(), in.getData(), 
+				in.getCondNames(), in.getItemNames(), in.getData(), 
 				in.getGroupNames(), in.getGroupItemIndices(),
-				methodFactory);
+				testFactory);
 		
 		analysis.run(monitor);
 		

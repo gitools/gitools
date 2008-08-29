@@ -32,12 +32,12 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public void startCondition(String condName, DoubleMatrix1D condItems) {
-		population = condItems.viewSelection(notNaNProc);
+	public void processPopulation(String name, DoubleMatrix1D population) {
+		this.population = population;
 	}
 	
 	@Override
-	public ZCalcResult processGroup(
+	public ZCalcResult processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		

@@ -21,11 +21,11 @@ public class FisherZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public void startCondition(String condName, DoubleMatrix1D condItems) {
+	public void processPopulation(String name, DoubleMatrix1D population) {
 	}
 	
 	@Override
-	public ZCalcResult processGroup(
+	public ZCalcResult processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		

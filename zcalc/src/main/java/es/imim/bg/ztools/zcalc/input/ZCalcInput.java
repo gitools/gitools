@@ -58,7 +58,7 @@ public class ZCalcInput {
 	
 	// Output
 	
-	protected String[] propNames;
+	protected String[] condNames;
 	protected String[] itemNames;
 	
 	protected String dataName;
@@ -235,13 +235,13 @@ public class ZCalcInput {
 		dataParser = new CSVParser(dataReader, dataCsvStrategy);
 		dataParser.getLine();
 		
-		propNames = new String[numProps];
+		condNames = new String[numProps];
 		
 		itemNames = new String[numItems];
 		data = DoubleFactory2D.dense.make(numItems, numProps);
 		
 		loadData(dataParser, 
-				dataPropNames, dataPropIndices, propNames, 
+				dataPropNames, dataPropIndices, condNames, 
 				itemDataRow, itemNames, data);
 
 		dataReader.close();
@@ -368,8 +368,8 @@ public class ZCalcInput {
 							new File(fileName)));
 	}
 	
-	public String[] getPropNames() {
-		return propNames;
+	public String[] getCondNames() {
+		return condNames;
 	}
 	
 	public String[] getItemNames() {

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
+import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory2D;
@@ -21,6 +22,13 @@ import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
 
 public class ZCalcAnalysis extends Analysis {
 	
+	protected static final DoubleProcedure notNaNProc = 
+		new DoubleProcedure() {
+			public boolean apply(double element) {
+				return !Double.isNaN(element);
+			}
+		};
+		
 	private class RunSlot {
 		public int condIndex;
 		public ZCalcTest test;
@@ -128,7 +136,9 @@ public class ZCalcAnalysis extends Analysis {
 				if (slot.condIndex != condIndex) {
 					slot.condIndex = condIndex;
 					slot.test = testFactory.create();
-					slot.test.startCondition(condName, condItems);
+					final DoubleMatrix1D population =
+						condItems.viewSelection(notNaNProc);
+					slot.test.processPopulation(condName, population);
 				}
 
 				final RunSlot runSlot = slot;
@@ -136,7 +146,7 @@ public class ZCalcAnalysis extends Analysis {
 				executor.execute(new Runnable() {
 					public void run() {
 						results.setQuick(groupIdx, condIdx, 
-							runSlot.test.processGroup(
+							runSlot.test.processTest(
 								condName, condItems,
 								groupName, itemIndices));
 						

@@ -24,7 +24,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 	
 	protected AproximationMode aproxMode;
 	
-	protected DoubleMatrix1D population;
+	//protected DoubleMatrix1D population;
 	
 	private double p;
 
@@ -96,13 +96,12 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 	}
 
 	@Override
-	public void startCondition(String condName, DoubleMatrix1D condItems) {
-		population = condItems.viewSelection(notNaNProc);
+	public void processPopulation(String name, DoubleMatrix1D population) {
 		p = statCalc.calc(population) / population.size();
 	}
 	
 	@Override
-	public ZCalcResult processGroup(
+	public ZCalcResult processTest(
 			String condName, DoubleMatrix1D condItems,
 			String groupName, int[] groupItemIndices) {
 		
