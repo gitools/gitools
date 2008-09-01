@@ -9,7 +9,6 @@ import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.ztools.test.ZCalcTest;
 import es.imim.bg.ztools.test.results.AbstractResult;
-import es.imim.bg.ztools.test.results.ZCalcResult;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 
 //TODO actualizar saveParams usando TabWriter
