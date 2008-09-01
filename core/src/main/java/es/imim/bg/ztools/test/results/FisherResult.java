@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.results;
+package es.imim.bg.ztools.test.results;
 
 public class FisherResult extends CommonResult {
 

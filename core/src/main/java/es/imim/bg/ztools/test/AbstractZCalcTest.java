@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.test;
+package es.imim.bg.ztools.test;
 
 import cern.colt.function.DoubleProcedure;
 

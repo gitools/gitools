@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.zcalc.test.factory;
+package es.imim.bg.ztools.test.factory;
 
-import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
-import es.imim.bg.ztools.zcalc.test.ZscoreWithSamplingZCalcTest;
+import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.ZscoreWithSamplingZCalcTest;
 
 public final class ZscoreWithSamplingZCalcTestFactory implements ZCalcTestFactory {
 

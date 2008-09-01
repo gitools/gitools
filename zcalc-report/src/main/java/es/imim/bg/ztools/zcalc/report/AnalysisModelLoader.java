@@ -14,8 +14,8 @@ import java.util.zip.DataFormatException;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.colorscale.QValueColorScale;
 import es.imim.bg.colorscale.util.ColorUtils;
+import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
-import es.imim.bg.ztools.zcalc.io.ZCalcResultsFile;
 import freemarker.template.SimpleHash;
 import freemarker.template.SimpleNumber;
 import freemarker.template.SimpleScalar;
@@ -83,7 +83,7 @@ public class AnalysisModelLoader {
 	}
 
 	private void loadResults(Reader reader, Map<String, Object> model) throws IOException, DataFormatException {
-		ZCalcResultsFile file = new ZCalcResultsFile(defaultSep, defaultQuote);
+		ResultsFile file = new ResultsFile(defaultSep, defaultQuote);
 		
 		file.read(reader);
 		

@@ -7,13 +7,13 @@ import java.util.zip.DataFormatException;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
+import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.ZscoreWithSamplingZCalcTest;
+import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CommonResult;
+import es.imim.bg.ztools.test.results.FisherResult;
+import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.results.CommonResult;
-import es.imim.bg.ztools.zcalc.results.FisherResult;
-import es.imim.bg.ztools.zcalc.results.BinomialResult;
-import es.imim.bg.ztools.zcalc.results.ZScoreResult;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
-import es.imim.bg.ztools.zcalc.test.ZscoreWithSamplingZCalcTest;
 import es.imim.bg.ztools.zcalc.utils.Util;
 
 public class REXmlZCalcOutput implements ZCalcOutput {

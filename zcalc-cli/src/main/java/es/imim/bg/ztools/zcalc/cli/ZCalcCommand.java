@@ -6,19 +6,20 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.statcalc.MeanStatisticCalc;
+import es.imim.bg.ztools.statcalc.MedianStatisticCalc;
+import es.imim.bg.ztools.test.BinomialZCalcTest.AproximationMode;
+import es.imim.bg.ztools.test.factory.BinomialZCalcTestFactory;
+import es.imim.bg.ztools.test.factory.FisherZCalcTestFactory;
+import es.imim.bg.ztools.test.factory.ZCalcTestFactory;
+import es.imim.bg.ztools.test.factory.ZscoreWithSamplingZCalcTestFactory;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
+import es.imim.bg.ztools.zcalc.input.FileZCalcInput;
 import es.imim.bg.ztools.zcalc.input.ZCalcInput;
 import es.imim.bg.ztools.zcalc.output.CsvZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.REXmlZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.TabZCalcOutput;
 import es.imim.bg.ztools.zcalc.output.ZCalcOutput;
-import es.imim.bg.ztools.zcalc.statcalc.MeanStatisticCalc;
-import es.imim.bg.ztools.zcalc.statcalc.MedianStatisticCalc;
-import es.imim.bg.ztools.zcalc.test.BinomialZCalcTest.AproximationMode;
-import es.imim.bg.ztools.zcalc.test.factory.BinomialZCalcTestFactory;
-import es.imim.bg.ztools.zcalc.test.factory.FisherZCalcTestFactory;
-import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
-import es.imim.bg.ztools.zcalc.test.factory.ZscoreWithSamplingZCalcTestFactory;
 
 public class ZCalcCommand {
 
@@ -83,10 +84,8 @@ public class ZCalcCommand {
 		
 		// Prepare input
 		
-		ZCalcInput in = new ZCalcInput(
-				dataFile, dataSep, dataQuote,
-				groupsFile, groupsSep, groupsQuote,
-				null, '\t', '"', minGroupSize, maxGroupSize);
+		ZCalcInput in = new FileZCalcInput(
+				dataFile, groupsFile, minGroupSize, maxGroupSize);
 		
 		// Prepare output
 		

@@ -12,9 +12,9 @@ import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.analysis.Analysis;
+import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.factory.ZCalcTestFactory;
 import es.imim.bg.ztools.threads.ThreadManager;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
-import es.imim.bg.ztools.zcalc.test.factory.ZCalcTestFactory;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.

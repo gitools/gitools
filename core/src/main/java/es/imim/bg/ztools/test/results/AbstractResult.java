@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.zcalc.results;
+package es.imim.bg.ztools.test.results;
 
-public abstract class AbstractZCalcResult implements ZCalcResult {
+public abstract class AbstractResult implements ZCalcResult {
 	
-	public AbstractZCalcResult() {
+	public AbstractResult() {
 	}
 	
 	public final String[] getNames() {

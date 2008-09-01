@@ -1,6 +1,6 @@
-package es.imim.bg.ztools.zcalc.results;
+package es.imim.bg.ztools.test.results;
 
-public class CommonResult extends AbstractZCalcResult {
+public class CommonResult extends AbstractResult {
 
 	public int numItems;
 	public double leftPvalue;

@@ -1,11 +1,11 @@
-package es.imim.bg.ztools.zcalc.test;
+package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import es.imim.bg.ztools.zcalc.results.BinomialResult;
-import es.imim.bg.ztools.zcalc.results.ZCalcResult;
-import es.imim.bg.ztools.zcalc.statcalc.CountOnesStatisticCalc;
-import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
+import es.imim.bg.ztools.statcalc.CountOnesStatisticCalc;
+import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.ZCalcResult;
 
 public class BinomialZCalcTest extends AbstractZCalcTest {
 

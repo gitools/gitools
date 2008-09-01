@@ -26,6 +26,11 @@
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-csv</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>20070823</version>
+		</dependency>
 	</dependencies>
 
 	<reporting>

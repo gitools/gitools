@@ -1,7 +1,7 @@
-package es.imim.bg.ztools.zcalc.test.factory;
+package es.imim.bg.ztools.test.factory;
 
-import es.imim.bg.ztools.zcalc.test.FisherZCalcTest;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
+import es.imim.bg.ztools.test.FisherZCalcTest;
+import es.imim.bg.ztools.test.ZCalcTest;
 
 public final class FisherZCalcTestFactory implements ZCalcTestFactory {
 

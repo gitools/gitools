@@ -7,10 +7,10 @@ import java.io.PrintWriter;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
+import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.results.AbstractResult;
+import es.imim.bg.ztools.test.results.ZCalcResult;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.results.AbstractZCalcResult;
-import es.imim.bg.ztools.zcalc.results.ZCalcResult;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
 
 //TODO actualizar saveParams usando TabWriter
 public class CsvZCalcOutput extends TabZCalcOutput {
@@ -87,8 +87,8 @@ public class CsvZCalcOutput extends TabZCalcOutput {
 			
 			for (int propIndex = 0; propIndex < numProperties; propIndex++) {
 				
-				AbstractZCalcResult cell = 
-					(AbstractZCalcResult) results.getQuick(groupIndex, propIndex);
+				AbstractResult cell = 
+					(AbstractResult) results.getQuick(groupIndex, propIndex);
 				
 				Object[] values = cell.getValues();
 				

@@ -1,10 +1,10 @@
-package es.imim.bg.ztools.zcalc.test;
+package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import es.imim.bg.ztools.zcalc.results.ZScoreResult;
-import es.imim.bg.ztools.zcalc.results.ZCalcResult;
-import es.imim.bg.ztools.zcalc.statcalc.StatisticCalc;
+import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.test.results.ZCalcResult;
+import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 

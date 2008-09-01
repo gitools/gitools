@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.zcalc.test.factory;
+package es.imim.bg.ztools.test.factory;
 
-import es.imim.bg.ztools.zcalc.test.BinomialZCalcTest;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
-import es.imim.bg.ztools.zcalc.test.BinomialZCalcTest.AproximationMode;
+import es.imim.bg.ztools.test.BinomialZCalcTest;
+import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.BinomialZCalcTest.AproximationMode;
 
 public class BinomialZCalcTestFactory implements ZCalcTestFactory {
 

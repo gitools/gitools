@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.statcalc;
+package es.imim.bg.ztools.statcalc;
 
 import cern.colt.matrix.DoubleMatrix1D;
 

@@ -5,10 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import es.imim.bg.ztools.resources.ResultsFile;
+import es.imim.bg.ztools.test.ZCalcTest;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
-import es.imim.bg.ztools.zcalc.io.ZCalcResultsFile;
-import es.imim.bg.ztools.zcalc.test.ZCalcTest;
 
 public class TabZCalcOutput implements ZCalcOutput {
 
@@ -68,7 +68,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 						workDirFile, 
 						resultsFileName(analysis.getName())));
 		
-		ZCalcResultsFile file = new ZCalcResultsFile(separator, quote);
+		ResultsFile file = new ResultsFile(separator, quote);
 		
 		file.setPropNames(analysis.getCondNames());
 		file.setGroupNames(analysis.getGroupNames());
