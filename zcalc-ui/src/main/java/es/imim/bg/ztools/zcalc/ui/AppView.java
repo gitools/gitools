@@ -5,6 +5,9 @@ import java.awt.Dimension;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
@@ -15,6 +18,9 @@ public class AppView extends JFrame {
 
 	private static final long serialVersionUID = -6899584212813749990L;
 
+	public JMenu menuFile;
+	public JMenuItem menuiFileLoad;
+	
 	private JTabbedPane workspace;
 	
 	private StatusBar statusBar;
@@ -28,6 +34,8 @@ public class AppView extends JFrame {
 	}
 
 	private void createComponents() {
+		setJMenuBar(createMenu());
+		
 		workspace = new JTabbedPane();
 		add(workspace, BorderLayout.CENTER);
 		
@@ -35,6 +43,18 @@ public class AppView extends JFrame {
 		add(statusBar, BorderLayout.SOUTH);
 	}
 	
+	private JMenuBar createMenu() {
+		
+		menuiFileLoad = new JMenuItem("Load...");
+		menuFile = new JMenu("File");
+		menuFile.add(menuiFileLoad);
+		
+		final JMenuBar menuBar = new JMenuBar();
+		menuBar.add(menuFile);
+		
+		return menuBar;
+	}
+
 	public void addWorkspaceView(View view) {
 		final String name = view.getName() != null ? view.getName() : "";
 		final Icon icon = view.getIcon();
