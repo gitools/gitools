@@ -30,13 +30,6 @@
 		</dependency>
 	</dependencies>
 	
-	<scm>
-		<connection>
-			scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk/zcalc
-		</connection>
-		<url>https://bg.imim.es/svn/ztools/ztools/trunk/zcalc</url>
-	</scm>
-	
 	<reporting>
 		<plugins>
 			<plugin>

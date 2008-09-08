@@ -43,9 +43,8 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</connection>
-		<developerConnection>christian</developerConnection>
-		<url>https://bg.imim.es/svn/ztools/ztools/trunk</url>
+		<url>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</url>
+		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</developerConnection>
 	</scm>
 		
 	<build>

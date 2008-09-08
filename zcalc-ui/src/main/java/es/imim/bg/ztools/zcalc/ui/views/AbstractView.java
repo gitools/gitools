@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 
 public abstract class AbstractView extends JPanel implements View {
 
+	private static final long serialVersionUID = -2379950551933668781L;
+
 	protected Icon icon;
 	
 	public Icon getIcon() {

@@ -1,21 +1,21 @@
-package es.imim.bg.ztools.zcalc.ui.views.matrix;
+package es.imim.bg.ztools.zcalc.ui.panels;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableModel;
 
-import es.imim.bg.ztools.zcalc.ui.views.AbstractView;
+public class MatrixPanel extends JPanel {
 
-public class MatrixView extends AbstractView {
-
-	private static final long serialVersionUID = -3339816379068318821L;
+	private static final long serialVersionUID = 1122657712951763672L;
 
 	private JTable table;
 	
-	public MatrixView() {
+	public MatrixPanel() {
+	
 		createComponents();
 	}
 

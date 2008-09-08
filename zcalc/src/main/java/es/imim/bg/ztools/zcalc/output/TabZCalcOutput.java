@@ -64,18 +64,22 @@ public class TabZCalcOutput implements ZCalcOutput {
 			File workDirFile, 
 			ZCalcAnalysis analysis) throws IOException {
 		
-		Writer writer = new FileWriter(new File(
+		/*Writer writer = new FileWriter(new File(
 						workDirFile, 
-						resultsFileName(analysis.getName())));
+						resultsFileName(analysis.getName())));*/
 		
-		ResultsFile file = new ResultsFile(separator, quote);
+		File dest = new File(
+				workDirFile, 
+				resultsFileName(analysis.getName()));
 		
-		file.setPropNames(analysis.getCondNames());
-		file.setGroupNames(analysis.getGroupNames());
-		file.setResultNames(analysis.getResultNames());
-		file.setResults(analysis.getResults());
+		ResultsFile resFile = new ResultsFile(dest);
 		
-		file.write(writer, resultsOrderByCond);
+		resFile.setCondNames(analysis.getCondNames());
+		resFile.setGroupNames(analysis.getGroupNames());
+		resFile.setParamNames(analysis.getResultNames());
+		resFile.setResults(analysis.getResults());
+		
+		resFile.write(resultsOrderByCond);
 	}
 
 	protected String analysisFileName(String analysisName) {

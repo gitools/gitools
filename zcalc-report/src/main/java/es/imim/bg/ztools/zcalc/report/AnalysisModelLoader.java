@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
+import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.colorscale.QValueColorScale;
 import es.imim.bg.colorscale.util.ColorUtils;
@@ -83,16 +84,16 @@ public class AnalysisModelLoader {
 	}
 
 	private void loadResults(Reader reader, Map<String, Object> model) throws IOException, DataFormatException {
-		ResultsFile file = new ResultsFile(defaultSep, defaultQuote);
+		ResultsFile file = new ResultsFile();
 		
 		file.read(reader);
 		
-		model.put("condNames", file.getPropNames());
+		model.put("condNames", file.getCondNames());
 		model.put("groupNames", file.getGroupNames());
 		
 		final Map<String, Integer> paramNameIndexMap = new HashMap<String, Integer>();
 		int i = 0;
-		for (String paramName : file.getResultNames())
+		for (String paramName : file.getParamNames())
 			paramNameIndexMap.put(paramName, i++);
 		
 		final ObjectMatrix2D results = file.getResults();
@@ -111,7 +112,8 @@ public class AnalysisModelLoader {
 				if (resultIndex == null)
 					throw new TemplateModelException("Parameter '" + paramName + "' doesn't exists.");
 				
-				double[] values = (double[]) results.get(groupIndex, condIndex);
+				//double[] values = (double[]) results.get(groupIndex, condIndex);
+				DoubleMatrix1D values = (DoubleMatrix1D) results.get(groupIndex, condIndex);
 				
 				Map<String, Object> map = new HashMap<String, Object>();
 				
@@ -121,7 +123,7 @@ public class AnalysisModelLoader {
 					/*if (resultIndex >= values.length)
 						throw new TemplateModelException("result index out of bounds: " + resultIndex);*/
 
-					value = new SimpleNumber(values[resultIndex]);
+					value = new SimpleNumber(values.get(resultIndex));
 					
 					/*map.put("value", String.valueOf(values[resultIndex]));
 					map.put("color", "rgb(100%,100%,100%)");

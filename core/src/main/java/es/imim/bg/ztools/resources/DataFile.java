@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.resources;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
@@ -31,6 +32,10 @@ public class DataFile extends ResourceFile {
 	
 	public DataFile(String fileName) {
 		super(fileName);
+	}
+	
+	public DataFile(File file) {
+		super(file);
 	}
 	
 	public void load(ProgressMonitor monitor) 

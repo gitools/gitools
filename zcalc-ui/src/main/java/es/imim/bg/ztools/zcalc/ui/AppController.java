@@ -5,15 +5,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import javax.swing.JFileChooser;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
+import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.zcalc.ui.utils.Options;
+import es.imim.bg.ztools.zcalc.ui.views.AnalysisView;
 import es.imim.bg.ztools.zcalc.ui.views.matrix.DoubleMatrixTableModel;
 import es.imim.bg.ztools.zcalc.ui.views.matrix.MatrixView;
+import es.imim.bg.ztools.zcalc.ui.views.matrix.ResultsMatrixTableModel;
 
 public class AppController {
 
@@ -70,18 +76,58 @@ public class AppController {
 		gui.setVisible(true);
 	}
 	
-	private void fileLoadAction() {
-		//FileFilter fileFilter = new FileFilter(LangKey.XMI);
-		//fileFilter.setDescription(LangManager.instance().getString(LangKey.XMI_FILES));			
+	private void fileLoadAction() {			
 		JFileChooser fileChooser = new JFileChooser(
 				Options.instance().getLastPath());
+		fileChooser.setDialogTitle("Select the folder that contains the analysis data");
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		//FileFilter fileFilter = new FileFilter(LangKey.XMI);
+		//fileFilter.setDescription(LangManager.instance().getString(LangKey.XMI_FILES));
 		//fileChooser.addChoosableFileFilter(fileFilter);
 		int retval = fileChooser.showOpenDialog(gui);
 		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			if (file != null) {
-				//umlText.setText(file.getAbsolutePath());
-				Options.instance().setLastPath(file.getParent());
+			File selectedPath = fileChooser.getSelectedFile();
+			if (selectedPath != null) {
+				Options.instance().setLastPath(selectedPath.getParent());
+				Options.instance().save();
+				
+				//TODO: Load analysis data
+				File resultsFile = new File(selectedPath, "results.csv"); //FIXME results.csv from a constant
+				ResultsFile rf = new ResultsFile(resultsFile);
+				try {
+					gui.setStatusText("Reading " + rf.getResourcePath() + "...");
+					
+					rf.read();
+					
+					gui.setStatusText("Initializing view...");
+					
+					/*MatrixView view = new MatrixView();
+					
+					ResultsMatrixTableModel model = 
+						new ResultsMatrixTableModel(
+								rf.getGroupNames(), 
+								rf.getCondNames(), 
+								rf.getResults(),
+								0);
+					
+					view.setModel(model);
+					view.setName(rf.getResourcePath()); //FIXME: use analysis name
+					*/
+					
+					AnalysisView view = new AnalysisView(rf);
+					view.setName(rf.getResourcePath());
+					
+					gui.addWorkspaceView(view); //FIXME: use analysis name
+					
+					gui.setStatusText("Ok");
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (DataFormatException e) {
+					e.printStackTrace();
+				}
 				//refresh();
 			}
 		}

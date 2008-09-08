@@ -86,7 +86,7 @@ public class Main {
 			if (main != null && main.debug)
 				e.printStackTrace();
 			else
-				System.err.println("ERROR: " + e.getMessage());
+				System.err.println("ERROR: " + e.toString());
 			
 			code = -1;
 		}

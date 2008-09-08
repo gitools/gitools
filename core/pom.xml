@@ -14,13 +14,6 @@
 	<name>ztools-core</name>
 	<description>ztools core library</description>
 	
-	<scm>
-		<connection>
-			scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk/core
-		</connection>
-		<url>https://bg.imim.es/svn/ztools/ztools/trunk/core</url>
-	</scm>
-	
 	<dependencies>
 		<dependency>
 			<groupId>colt</groupId>
