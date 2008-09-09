@@ -11,15 +11,18 @@ import java.util.zip.DataFormatException;
 
 import javax.swing.JFileChooser;
 
+import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.ObjectFactory2D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.zcalc.ui.utils.Options;
 import es.imim.bg.ztools.zcalc.ui.views.AnalysisView;
 import es.imim.bg.ztools.zcalc.ui.views.matrix.DoubleMatrixTableModel;
 import es.imim.bg.ztools.zcalc.ui.views.matrix.MatrixView;
-import es.imim.bg.ztools.zcalc.ui.views.matrix.ResultsMatrixTableModel;
 
 public class AppController {
 
@@ -30,9 +33,14 @@ public class AppController {
 		
 		registerActions();
 		
-		MatrixView view = new MatrixView();
+		//MatrixView view = new MatrixView();
 		
-		DoubleMatrix2D data = DoubleFactory2D.dense.random(40, 12);
+		int rows = 40;
+		int cols = 12;
+		ObjectMatrix2D data = ObjectFactory2D.dense.make(rows, cols);
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++)
+				data.setQuick(i, j, DoubleFactory1D.dense.random(2));
 		
 		final String[] rowNames = new String[data.rows()];
 		for (int i = 0; i < rowNames.length; i++)
@@ -42,10 +50,17 @@ public class AppController {
 		for (int i = 0; i < colNames.length; i++)
 			colNames[i] = "col " + (i + 1);
 		
-		DoubleMatrixTableModel model = 
+		/*DoubleMatrixTableModel model = 
 			new DoubleMatrixTableModel(rowNames, colNames, data);
 		view.setModel(model);
-		view.setName("unnamed");
+		view.setName("unnamed");*/
+		
+		AnalysisView view = new AnalysisView(
+				rowNames,
+				colNames,
+				new String[] {"param1", "param2", "param3"},
+				data);
+		view.setName("demo");
 		
 		gui.addWorkspaceView(view);
 		
@@ -114,7 +129,12 @@ public class AppController {
 					view.setName(rf.getResourcePath()); //FIXME: use analysis name
 					*/
 					
-					AnalysisView view = new AnalysisView(rf);
+					AnalysisView view = new AnalysisView(
+							rf.getGroupNames(),
+							rf.getCondNames(),
+							rf.getParamNames(),
+							rf.getResults());
+					
 					view.setName(rf.getResourcePath());
 					
 					gui.addWorkspaceView(view); //FIXME: use analysis name

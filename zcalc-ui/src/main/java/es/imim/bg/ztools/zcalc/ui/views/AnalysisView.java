@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JSplitPane;
 
+import cern.colt.matrix.ObjectMatrix2D;
+
 import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.zcalc.ui.panels.MatrixPanel;
 import es.imim.bg.ztools.zcalc.ui.panels.ParamAndScalePanel;
@@ -14,21 +16,35 @@ public class AnalysisView extends AbstractView {
 
 	private static final long serialVersionUID = -3362979522018421333L;
 
-	private ResultsFile resultsFile;
+	//private ResultsFile resultsFile;
+	
+	private String[] rowNames;
+	private String[] colNames;
+	private String[] paramNames;
+	private ObjectMatrix2D data;
 	
 	private ResultsMatrixTableModel model;
 	
 	private ParamAndScalePanel leftPanel;
 	private MatrixPanel matrixPanel;
 	
-	public AnalysisView(ResultsFile resultsFile) {
+	public AnalysisView(
+			String[] rowNames,
+			String[] colNames,
+			String[] paramNames,
+			ObjectMatrix2D data) {
 		
-		this.resultsFile = resultsFile;
+		//this.resultsFile = resultsFile;
+		
+		this.rowNames = rowNames;
+		this.colNames = colNames;
+		this.paramNames = paramNames;
+		this.data = data;
 		
 		model = new ResultsMatrixTableModel(
-						resultsFile.getGroupNames(), 
-						resultsFile.getCondNames(), 
-						resultsFile.getResults(),
+						rowNames, 
+						colNames, 
+						data,
 						0);
 		
 		createComponents();
@@ -36,7 +52,7 @@ public class AnalysisView extends AbstractView {
 	
 	private void createComponents() {
 		leftPanel = new ParamAndScalePanel(
-				resultsFile.getParamNames(),
+				paramNames,
 				null);
 		leftPanel.setPreferredSize(new Dimension(100, 100));
 		
@@ -51,6 +67,5 @@ public class AnalysisView extends AbstractView {
 		
 		setLayout(new BorderLayout());
 		add(splitPane, BorderLayout.CENTER);
-		//add(matrixPanel, BorderLayout.CENTER);
 	}
 }
