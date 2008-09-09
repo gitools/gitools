@@ -40,8 +40,8 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://bg.imim.es/svn/ztools/ztools/tags/ztools-1.0</connection>
-		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/ztools/tags/ztools-1.0</developerConnection>
+		<connection>scm:svn:https://bg.imim.es/svn/ztools/trunk</connection>
+		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/trunk</developerConnection>
 	</scm>
 		
 	<build>
