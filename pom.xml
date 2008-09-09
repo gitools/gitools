@@ -9,8 +9,7 @@
 	<name>ztools</name>
 	<url>https://bg.imim.es/trac/bg/ztools</url>
 	<version>1.0-SNAPSHOT</version>
-  <!-- <version>0.2</version> -->
-	<description>analysis tools</description>
+	<description>Statistical analysis tools</description>
 
 	<organization>
 		<name>Biomedical Genomics Lab</name>
@@ -43,7 +42,7 @@
 	</issueManagement>
 	
 	<scm>
-		<url>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</url>
+		<connection>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</connection>
 		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/ztools/trunk</developerConnection>
 	</scm>
 		
