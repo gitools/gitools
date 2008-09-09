@@ -104,11 +104,11 @@
 	<modules>
 		<module>core</module>
 		<module>zcalc</module>
-		<module>zcalc-ui</module>
 		<module>zcalc-report</module>
 		<module>zcalc-cli</module>
 		<module>ztools-oncoz</module>
 		<module>ztools-oncoz-cli</module>
+		<module>ztools-ui</module>
 	</modules>
 	
 	<repositories>
