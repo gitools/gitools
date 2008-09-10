@@ -51,10 +51,28 @@ public class AnalysisView extends AbstractView {
 	}
 	
 	private void createComponents() {
+		
 		leftPanel = new ParamAndScalePanel(
 				paramNames,
 				null);
+		
 		leftPanel.setPreferredSize(new Dimension(100, 100));
+		
+		leftPanel.addParameterChangedListener(new ParamAndScalePanel.ParamChangeListener() {
+			@Override
+			public void paramChange(String name) {
+				int i = 0;
+				boolean done = false;
+				while (!done && i < paramNames.length) {
+					if (paramNames[i].equals(name)) {
+						model.setParamIndex(i);
+						done = true;
+					}
+					i++;
+				}
+				//matrixPanel.refresh();
+			}
+		});
 		
 		matrixPanel = new MatrixPanel();
 		matrixPanel.setModel(model);
