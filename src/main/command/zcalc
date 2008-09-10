@@ -5,7 +5,7 @@ BINDIR=$(dirname "$0")
 APPDIR="$BINDIR/.."
 LIBDIR=$APPDIR/lib
 
-jar=$(ls $LIBDIR/zcalc-cli-*.jar)
+jar=$(ls $LIBDIR/ztools-zcalc-cli-*.jar)
 
 #jar=$LIBDIR/${project.build.finalName}.jar
 
