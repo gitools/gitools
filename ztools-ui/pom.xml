@@ -2,13 +2,13 @@
 	<parent>
 		<artifactId>ztools</artifactId>
 		<groupId>es.imim.bg.ztools</groupId>
-		<version>1.0</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>zcalc-ui</artifactId>
-	<name>zcalc-ui</name>
-	<description>zcalc user interface</description>
+	<artifactId>ztools-ui</artifactId>
+	<name>ztools-ui</name>
+	<description>ztools graphical user interface</description>
 	
 	<dependencies>
 		<dependency>

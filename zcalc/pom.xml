@@ -2,13 +2,13 @@
 	<parent>
 		<groupId>es.imim.bg.ztools</groupId>
 		<artifactId>ztools</artifactId>
-		<version>1.0</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.imim.bg.ztools</groupId>
 	<artifactId>ztools-zcalc</artifactId>
-	<name>zcalc</name>
+	<name>ztools-zcalc</name>
 	<description>zcalc analysis core</description>
 
 	<dependencies>
