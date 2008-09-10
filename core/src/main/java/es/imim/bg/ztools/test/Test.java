@@ -1,9 +1,9 @@
 package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
-import es.imim.bg.ztools.test.results.ZCalcResult;
+import es.imim.bg.ztools.test.results.Result;
 
-public interface ZCalcTest {
+public interface Test {
 
 	String getName();
 	
@@ -11,7 +11,7 @@ public interface ZCalcTest {
 
 	void processPopulation(String name, DoubleMatrix1D population);
 	
-	ZCalcResult processTest(
+	Result processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices);
 }

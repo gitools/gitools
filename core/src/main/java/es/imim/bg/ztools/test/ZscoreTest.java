@@ -3,10 +3,10 @@ package es.imim.bg.ztools.test;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
 import es.imim.bg.ztools.statcalc.StatisticCalc;
-import es.imim.bg.ztools.test.results.ZCalcResult;
+import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 
-public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
+public abstract class ZscoreTest extends AbstractTest {
 
 	protected class PopulationStatistics {
 		public double mean;
@@ -17,7 +17,7 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 	
 	protected DoubleMatrix1D population;
 	
-	public ZscoreZCalcTest(StatisticCalc statCalc) {
+	public ZscoreTest(StatisticCalc statCalc) {
 		this.statCalc = statCalc;
 	}
 	
@@ -37,7 +37,7 @@ public abstract class ZscoreZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public ZCalcResult processTest(
+	public Result processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		

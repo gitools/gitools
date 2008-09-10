@@ -3,11 +3,11 @@ package es.imim.bg.ztools.test;
 import cern.colt.matrix.DoubleMatrix1D;
 import es.imim.bg.ztools.stats.FisherExactTest;
 import es.imim.bg.ztools.test.results.FisherResult;
-import es.imim.bg.ztools.test.results.ZCalcResult;
+import es.imim.bg.ztools.test.results.Result;
 
-public class FisherZCalcTest extends AbstractZCalcTest {
+public class FisherTest extends AbstractTest {
 	
-	public FisherZCalcTest() {
+	public FisherTest() {
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public class FisherZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public ZCalcResult processTest(
+	public Result processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		

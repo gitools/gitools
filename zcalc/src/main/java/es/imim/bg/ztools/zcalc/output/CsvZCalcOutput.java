@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
-import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.results.AbstractResult;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 
@@ -24,7 +24,7 @@ public class CsvZCalcOutput extends TabZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcTest method = analysis.getTestFactory().create();
+		Test method = analysis.getTestFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		

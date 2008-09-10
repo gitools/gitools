@@ -5,9 +5,9 @@ import cern.jet.stat.Probability;
 import es.imim.bg.ztools.statcalc.CountOnesStatisticCalc;
 import es.imim.bg.ztools.statcalc.StatisticCalc;
 import es.imim.bg.ztools.test.results.BinomialResult;
-import es.imim.bg.ztools.test.results.ZCalcResult;
+import es.imim.bg.ztools.test.results.Result;
 
-public class BinomialZCalcTest extends AbstractZCalcTest {
+public class BinomialTest extends AbstractTest {
 
 	private static final int exactSizeLimit = 100000;
 	
@@ -16,7 +16,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 	};
 	
 	private abstract class BinomialAproximation {
-		public abstract ZCalcResult getResult(
+		public abstract Result getResult(
 				int observed, int n, double expectedMean, double expectedStdev, double expectedVar);
 	}
 	
@@ -30,7 +30,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 
 	private BinomialAproximation aprox;
 	
-	public BinomialZCalcTest(AproximationMode aproxMode) {
+	public BinomialTest(AproximationMode aproxMode) {
 		this.statCalc = new CountOnesStatisticCalc();
 		this.aproxMode = aproxMode;
 		
@@ -38,7 +38,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		case onlyExact: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
 					return resultWithExact(observed, n, expectedMean, expectedStdev);
 				}
 			};
@@ -46,7 +46,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		case onlyNormal: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
 					return resultWithNormal(observed, n, expectedMean, expectedStdev);
 				}
 			};
@@ -54,7 +54,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		case onlyPoisson: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
 					return resultWithPoisson(observed, n, expectedMean, expectedStdev);
 				}
 			};
@@ -62,7 +62,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		case automatic:
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public ZCalcResult getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
 					if (n <= exactSizeLimit)
 						return resultWithExact(observed, n, expectedMean, expectedStdev);
 					else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
@@ -101,7 +101,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 	}
 	
 	@Override
-	public ZCalcResult processTest(
+	public Result processTest(
 			String condName, DoubleMatrix1D condItems,
 			String groupName, int[] groupItemIndices) {
 		
@@ -125,7 +125,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 		return aprox.getResult(observed, n, expectedMean, expectedStdev, expectedVar);
 	}
 	
-	public final ZCalcResult resultWithExact(
+	public final Result resultWithExact(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
 		double leftPvalue;
@@ -141,7 +141,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 				observed, expectedMean, expectedStdev);
 	}
 	
-	public final ZCalcResult resultWithNormal(
+	public final Result resultWithNormal(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
 		double zscore;
@@ -162,7 +162,7 @@ public class BinomialZCalcTest extends AbstractZCalcTest {
 				observed, expectedMean, expectedStdev);
 	}
 	
-	public final ZCalcResult resultWithPoisson(
+	public final Result resultWithPoisson(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
 		double leftPvalue;

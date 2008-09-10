@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.results;
 
-public abstract class AbstractResult implements ZCalcResult {
+public abstract class AbstractResult implements Result {
 	
 	public AbstractResult() {
 	}

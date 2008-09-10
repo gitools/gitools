@@ -7,8 +7,8 @@ import java.util.zip.DataFormatException;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
-import es.imim.bg.ztools.test.ZCalcTest;
-import es.imim.bg.ztools.test.ZscoreWithSamplingZCalcTest;
+import es.imim.bg.ztools.test.Test;
+import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
 import es.imim.bg.ztools.test.results.BinomialResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
@@ -44,7 +44,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 		String[] groupNames = analysis.getGroupNames();
 		int[][] groupItemIndices = analysis.getGroupItemIndices();
 		
-		ZCalcTest method = analysis.getTestFactory().create();
+		Test method = analysis.getTestFactory().create();
 		String statName = method.getName();
 		
 		ObjectMatrix2D results = analysis.getResults();
@@ -99,7 +99,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 							valueSt = Double.toString(zcell.observed);
 							zscoreSt = Double.toString(zcell.zscore);
 							
-							if (method instanceof ZscoreWithSamplingZCalcTest)
+							if (method instanceof ZscoreWithSamplingTest)
 								pvalueSt = Double.toString(zcell.twoTailPvalue);
 							else
 								pvalueSt = Double.toString(zcell.rightPvalue);

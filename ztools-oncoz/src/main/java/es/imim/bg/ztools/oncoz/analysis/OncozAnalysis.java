@@ -11,8 +11,8 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.analysis.Analysis;
-import es.imim.bg.ztools.test.ZCalcTest;
-import es.imim.bg.ztools.test.factory.ZCalcTestFactory;
+import es.imim.bg.ztools.test.Test;
+import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.threads.ThreadManager;
 
 public class OncozAnalysis extends Analysis {
@@ -26,7 +26,7 @@ public class OncozAnalysis extends Analysis {
 		
 	private class RunSlot {
 		public DoubleMatrix1D population;
-		public ZCalcTest test;
+		public Test test;
 		public RunSlot() {
 			population = null;
 			test = null;
@@ -43,7 +43,7 @@ public class OncozAnalysis extends Analysis {
 	protected int[][] groupItemIndices;
 	
 	// Analysis test factory
-	protected ZCalcTestFactory testFactory;
+	protected TestFactory testFactory;
 	
 	// Analysis output
 	protected String[] resultNames;
@@ -56,7 +56,7 @@ public class OncozAnalysis extends Analysis {
 			DoubleMatrix2D data,
 			String[] groupNames,			
 			int[][] groupItemIndices,
-			ZCalcTestFactory testFactory) {
+			TestFactory testFactory) {
 		
 		this.name = analysisName;
 		this.condNames = condNames;
@@ -176,7 +176,7 @@ public class OncozAnalysis extends Analysis {
 
 	// Getters
 
-	public ZCalcTestFactory getMethodFactory() {
+	public TestFactory getMethodFactory() {
 		return testFactory;
 	}
 

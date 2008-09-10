@@ -8,11 +8,11 @@ import java.util.zip.DataFormatException;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.statcalc.MeanStatisticCalc;
 import es.imim.bg.ztools.statcalc.MedianStatisticCalc;
-import es.imim.bg.ztools.test.BinomialZCalcTest.AproximationMode;
-import es.imim.bg.ztools.test.factory.BinomialZCalcTestFactory;
-import es.imim.bg.ztools.test.factory.FisherZCalcTestFactory;
-import es.imim.bg.ztools.test.factory.ZCalcTestFactory;
-import es.imim.bg.ztools.test.factory.ZscoreWithSamplingZCalcTestFactory;
+import es.imim.bg.ztools.test.BinomialTest.AproximationMode;
+import es.imim.bg.ztools.test.factory.BinomialTestFactory;
+import es.imim.bg.ztools.test.factory.FisherTestFactory;
+import es.imim.bg.ztools.test.factory.TestFactory;
+import es.imim.bg.ztools.test.factory.ZscoreWithSamplingTestFactory;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 import es.imim.bg.ztools.zcalc.input.FileZCalcInput;
 import es.imim.bg.ztools.zcalc.input.ZCalcInput;
@@ -102,7 +102,7 @@ public class ZCalcCommand {
 		
 		// Prepare test factory
 		
-		ZCalcTestFactory testFactory = null;
+		TestFactory testFactory = null;
 	
 		Map<String, TestEnum> testAliases = new HashMap<String, TestEnum>();
 		testAliases.put("zscore", TestEnum.zscoreMean);
@@ -124,34 +124,34 @@ public class ZCalcCommand {
 		
 		switch (selectedTest) {
 		case zscoreMean:
-			testFactory = new ZscoreWithSamplingZCalcTestFactory(
+			testFactory = new ZscoreWithSamplingTestFactory(
 					samplingNumSamples, new MeanStatisticCalc());
 			break;
 		case zscoreMedian:
-			testFactory = new ZscoreWithSamplingZCalcTestFactory(
+			testFactory = new ZscoreWithSamplingTestFactory(
 					samplingNumSamples, new MedianStatisticCalc());
 			break;
 		case binomial:
-			testFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialTestFactory(
 					AproximationMode.automatic);
 			break;
 		case binomialExact:
-			testFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialTestFactory(
 					AproximationMode.onlyExact);
 			break;
 		case binomialNormal:
-			testFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialTestFactory(
 					AproximationMode.onlyNormal);
 			break;
 		case binomialPoisson:
-			testFactory = new BinomialZCalcTestFactory(
+			testFactory = new BinomialTestFactory(
 					AproximationMode.onlyPoisson);
 			break;
 		case hypergeometric:
 			throw new IllegalArgumentException("Test not implemented yet: " + testName);
 			//break;
 		case fisherExact:
-			testFactory = new FisherZCalcTestFactory();
+			testFactory = new FisherTestFactory();
 			break;
 		case chiSquare:
 			throw new IllegalArgumentException("Test not implemented yet: " + testName);

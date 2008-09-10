@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import es.imim.bg.ztools.resources.ResultsFile;
-import es.imim.bg.ztools.test.ZCalcTest;
+import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
 
@@ -32,7 +32,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		ZCalcTest method = analysis.getTestFactory().create();
+		Test method = analysis.getTestFactory().create();
 		
 		saveAnalysis(workDirFile, analysis, method);
 		
@@ -42,7 +42,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 	protected void saveAnalysis(
 			File workDirFile, 
 			ZCalcAnalysis analysis,
-			ZCalcTest method) throws IOException {
+			Test method) throws IOException {
 		
 		Writer writer = new FileWriter(new File(
 						workDirFile, 
