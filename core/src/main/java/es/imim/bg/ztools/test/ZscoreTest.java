@@ -2,7 +2,7 @@ package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.stats.calc.StatisticCalc;
 import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 

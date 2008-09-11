@@ -15,8 +15,8 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.colorscale.QValueColorScale;
 import es.imim.bg.colorscale.util.ColorUtils;
+import es.imim.bg.ztools.resources.DescriptionFile;
 import es.imim.bg.ztools.resources.ResultsFile;
-import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
 import freemarker.template.SimpleHash;
 import freemarker.template.SimpleNumber;
 import freemarker.template.SimpleScalar;
@@ -71,7 +71,7 @@ public class AnalysisModelLoader {
 	}
 
 	protected void loadAnalysis(Reader reader, Map<String, Object> model) throws IOException {
-		ZCalcAnalysisFile file = new ZCalcAnalysisFile(defaultSep, defaultQuote);
+		DescriptionFile file = new DescriptionFile(defaultSep, defaultQuote);
 		
 		file.read(reader);
 		

@@ -10,7 +10,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.analysis.Analysis;
+import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.threads.ThreadManager;

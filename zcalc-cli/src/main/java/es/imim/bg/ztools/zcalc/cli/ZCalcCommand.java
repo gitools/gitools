@@ -6,20 +6,20 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.statcalc.MeanStatisticCalc;
-import es.imim.bg.ztools.statcalc.MedianStatisticCalc;
+import es.imim.bg.ztools.resources.analysis.AnalysisResource;
+import es.imim.bg.ztools.resources.analysis.TabSepAnalysisResource;
+import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
+import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
+import es.imim.bg.ztools.stats.calc.MeanStatisticCalc;
+import es.imim.bg.ztools.stats.calc.MedianStatisticCalc;
 import es.imim.bg.ztools.test.BinomialTest.AproximationMode;
 import es.imim.bg.ztools.test.factory.BinomialTestFactory;
 import es.imim.bg.ztools.test.factory.FisherTestFactory;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.factory.ZscoreWithSamplingTestFactory;
-import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
+import es.imim.bg.ztools.zcalc.analysis.ZCalcProcessor;
 import es.imim.bg.ztools.zcalc.input.FileZCalcInput;
 import es.imim.bg.ztools.zcalc.input.ZCalcInput;
-import es.imim.bg.ztools.zcalc.output.CsvZCalcOutput;
-import es.imim.bg.ztools.zcalc.output.REXmlZCalcOutput;
-import es.imim.bg.ztools.zcalc.output.TabZCalcOutput;
-import es.imim.bg.ztools.zcalc.output.ZCalcOutput;
 
 public class ZCalcCommand {
 
@@ -89,14 +89,14 @@ public class ZCalcCommand {
 		
 		// Prepare output
 		
-		ZCalcOutput output = null;
+		AnalysisResource output = null;
 		
 		if (outputFormat.equalsIgnoreCase("csv"))
-			output = new TabZCalcOutput(workdir, resultsByCond, defaultSep, defaultQuote);
+			output = new TabAnalysisResource(workdir, resultsByCond, defaultSep, defaultQuote);
 		else if (outputFormat.equalsIgnoreCase("csv-sep"))
-			output = new CsvZCalcOutput(workdir, defaultSep, defaultQuote);
+			output = new TabSepAnalysisResource(workdir, defaultSep, defaultQuote);
 		else if (outputFormat.equalsIgnoreCase("rexml"))
-			output = new REXmlZCalcOutput(workdir, minGroupSize, maxGroupSize);
+			output = new REXmlAnalysisResource(workdir, minGroupSize, maxGroupSize);
 		else
 			throw new IllegalArgumentException("Unknown output format '" + outputFormat + "'");
 		
@@ -164,8 +164,8 @@ public class ZCalcCommand {
 		
 		monitor.end();
 		
-		ZCalcAnalysis analysis = 
-			new ZCalcAnalysis(
+		ZCalcProcessor analysis = 
+			new ZCalcProcessor(
 				analysisName,
 				in.getCondNames(), in.getItemNames(), in.getData(), 
 				in.getGroupNames(), in.getGroupItemIndices(),

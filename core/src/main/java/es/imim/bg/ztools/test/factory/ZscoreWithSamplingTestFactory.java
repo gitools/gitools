@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.factory;
 
-import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.stats.calc.StatisticCalc;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
 

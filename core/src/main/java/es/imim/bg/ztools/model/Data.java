@@ -5,20 +5,21 @@ import java.util.List;
 
 import cern.colt.matrix.DoubleMatrix2D;
 
-public class DataMatrix {
+@Deprecated
+public class Data {
 
 	private String dataName;
 	private List<String> colNames;
 	private List<String> rowNames;
 	private DoubleMatrix2D data;
 	
-	public DataMatrix() {
+	public Data() {
 		this.dataName = "";
 		this.colNames = new ArrayList<String>();
 		this.rowNames = new ArrayList<String>();
 	}
 
-	public DataMatrix(
+	public Data(
 			String dataName, List<String> colNames,
 			List<String> rowNames, DoubleMatrix2D data) {
 		this.dataName = dataName;

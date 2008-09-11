@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.io;
+package es.imim.bg.ztools.resources;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -13,7 +13,7 @@ import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.csv.RawCsvWriter;
 
-public class ZCalcAnalysisFile {
+public class DescriptionFile {
 	
 	private static final String tagAnalysisName = "name";
 	private static final String tagMethodName = "method-name";
@@ -37,7 +37,7 @@ public class ZCalcAnalysisFile {
 	
 	protected String userName;
 	
-	public ZCalcAnalysisFile(char separator, char quote) {
+	public DescriptionFile(char separator, char quote) {
 		this.separator = separator;
 		this.quote = quote;
 	}

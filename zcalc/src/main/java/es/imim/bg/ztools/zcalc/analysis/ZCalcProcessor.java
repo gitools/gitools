@@ -11,7 +11,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.analysis.Analysis;
+import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.threads.ThreadManager;
@@ -20,7 +20,7 @@ import es.imim.bg.ztools.threads.ThreadManager;
  * 'cond' is an abbreviation for condition.
  */
 
-public class ZCalcAnalysis extends Analysis {
+public class ZCalcProcessor extends Analysis {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -38,23 +38,7 @@ public class ZCalcAnalysis extends Analysis {
 		}
 	}
 	
-	// Analysis input
-	protected String[] condNames;
-	protected String[] itemNames;
-	
-	protected DoubleMatrix2D data;
-	
-	protected String[] groupNames;
-	protected int[][] groupItemIndices;
-	
-	// Analysis test factory
-	protected TestFactory testFactory;
-	
-	// Analysis output
-	protected String[] resultNames;
-	protected ObjectMatrix2D results;
-	
-	public ZCalcAnalysis(
+	public ZCalcProcessor(
 			String analysisName, 
 			String[] condNames,
 			String[] itemNames,			
@@ -176,40 +160,6 @@ public class ZCalcAnalysis extends Analysis {
 			throw e;
 		}
 		return slot;
-	}
-	
-	// Getters
-
-	public TestFactory getTestFactory() {
-		return testFactory;
-	}
-
-	public String[] getCondNames() {
-		return condNames;
-	}
-	
-	public String[] getItemNames() {
-		return itemNames;
-	}
-	
-	public DoubleMatrix2D getData() {
-		return data;
-	}
-	
-	public String[] getGroupNames() {
-		return groupNames;
-	}
-	
-	public int[][] getGroupItemIndices() {
-		return groupItemIndices;
-	}
-	
-	public String[] getResultNames() {
-		return resultNames;
-	}
-	
-	public ObjectMatrix2D getResults() {
-		return results;
 	}
 
 }

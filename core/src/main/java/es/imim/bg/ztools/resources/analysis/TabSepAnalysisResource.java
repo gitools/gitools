@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.output;
+package es.imim.bg.ztools.resources.analysis;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,18 +7,18 @@ import java.io.PrintWriter;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
+import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.results.AbstractResult;
-import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
 
 //TODO actualizar saveParams usando TabWriter
-public class CsvZCalcOutput extends TabZCalcOutput {
+public class TabSepAnalysisResource extends TabAnalysisResource {
 
-	public CsvZCalcOutput(String workdir, char separator, char quote) {
+	public TabSepAnalysisResource(String workdir, char separator, char quote) {
 		super(workdir, true, separator, quote);
 	}
 
-	public void save(ZCalcAnalysis analysis) throws IOException {
+	public void save(Analysis analysis) throws IOException {
 		
 		File workDirFile = new File(workdir);
 		if (!workDirFile.exists())

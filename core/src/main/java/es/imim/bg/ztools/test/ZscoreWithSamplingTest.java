@@ -4,7 +4,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.random.engine.MersenneTwister;
 import cern.jet.random.engine.RandomEngine;
 import cern.jet.random.sampling.RandomSampler;
-import es.imim.bg.ztools.statcalc.StatisticCalc;
+import es.imim.bg.ztools.stats.calc.StatisticCalc;
 
 public class ZscoreWithSamplingTest extends ZscoreTest {
 

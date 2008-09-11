@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.output;
+package es.imim.bg.ztools.resources.analysis;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,28 +7,28 @@ import java.util.zip.DataFormatException;
 
 import cern.colt.matrix.ObjectMatrix2D;
 
+import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
 import es.imim.bg.ztools.test.results.BinomialResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
-import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.utils.Util;
+import es.imim.bg.ztools.utils.Util;
 
-public class REXmlZCalcOutput implements ZCalcOutput {
+public class REXmlAnalysisResource implements AnalysisResource {
 
 	protected String workdir;
 	protected int minGroupSize;
 	protected int maxGroupSize;
 	
-	public REXmlZCalcOutput(String workdir, int minGroupSize, int maxGroupSize) {
+	public REXmlAnalysisResource(String workdir, int minGroupSize, int maxGroupSize) {
 		this.workdir = workdir;
 		this.minGroupSize = minGroupSize;
 		this.maxGroupSize = maxGroupSize;
 	}
 	
-	public void save(ZCalcAnalysis analysis) throws IOException, DataFormatException {
+	public void save(Analysis analysis) throws IOException, DataFormatException {
 		
 		File workDirFile = new File(workdir);
 		if (!workDirFile.exists())
@@ -44,7 +44,7 @@ public class REXmlZCalcOutput implements ZCalcOutput {
 		String[] groupNames = analysis.getGroupNames();
 		int[][] groupItemIndices = analysis.getGroupItemIndices();
 		
-		Test method = analysis.getTestFactory().create();
+		Test method = analysis.getTestFactory().create(); //FIXME
 		String statName = method.getName();
 		
 		ObjectMatrix2D results = analysis.getResults();

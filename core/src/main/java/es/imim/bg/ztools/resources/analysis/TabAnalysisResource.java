@@ -1,23 +1,23 @@
-package es.imim.bg.ztools.zcalc.output;
+package es.imim.bg.ztools.resources.analysis;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.resources.DescriptionFile;
 import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.test.Test;
-import es.imim.bg.ztools.zcalc.analysis.ZCalcAnalysis;
-import es.imim.bg.ztools.zcalc.io.ZCalcAnalysisFile;
 
-public class TabZCalcOutput implements ZCalcOutput {
+public class TabAnalysisResource implements AnalysisResource {
 
 	protected String workdir;
 	protected boolean resultsOrderByCond;
 	protected char separator;
 	protected char quote;
 	
-	public TabZCalcOutput(String workdir, boolean resultsOrderByCond, char separator, char quote) {
+	public TabAnalysisResource(String workdir, boolean resultsOrderByCond, char separator, char quote) {
 		this.workdir = workdir;
 		this.resultsOrderByCond = resultsOrderByCond;
 		this.separator = separator;
@@ -25,14 +25,14 @@ public class TabZCalcOutput implements ZCalcOutput {
 	}
 	
 	@Override
-	public void save(ZCalcAnalysis analysis) throws IOException {
+	public void save(Analysis analysis) throws IOException {
 		
 		String dirName = workdir + File.separator + analysis.getName();
 		File workDirFile = new File(dirName);
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
-		Test method = analysis.getTestFactory().create();
+		Test method = analysis.getTestFactory().create(); //FIXME
 		
 		saveAnalysis(workDirFile, analysis, method);
 		
@@ -41,14 +41,14 @@ public class TabZCalcOutput implements ZCalcOutput {
 
 	protected void saveAnalysis(
 			File workDirFile, 
-			ZCalcAnalysis analysis,
+			Analysis analysis,
 			Test method) throws IOException {
 		
 		Writer writer = new FileWriter(new File(
 						workDirFile, 
 						analysisFileName(analysis.getName())));
 		
-		ZCalcAnalysisFile file = new ZCalcAnalysisFile(separator, quote);
+		DescriptionFile file = new DescriptionFile(separator, quote);
 		
 		file.setAnalysisName(analysis.getName());
 		file.setMethodName(method.getName());
@@ -62,7 +62,7 @@ public class TabZCalcOutput implements ZCalcOutput {
 	
 	protected void saveResults(
 			File workDirFile, 
-			ZCalcAnalysis analysis) throws IOException {
+			Analysis analysis) throws IOException {
 		
 		/*Writer writer = new FileWriter(new File(
 						workDirFile, 

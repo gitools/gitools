@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.utils;
+package es.imim.bg.ztools.utils;
 
 import cern.jet.stat.Probability;
 
