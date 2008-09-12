@@ -17,7 +17,7 @@
 	  	</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ztools-zcalc</artifactId>
+			<artifactId>ztools-core</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -46,7 +46,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>es.imim.bg.ztools.zcalc.report.velocity.Main</mainClass>
+							<mainClass>es.imim.bg.ztools.zcalc.report.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

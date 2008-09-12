@@ -109,12 +109,10 @@
 	
 	<modules>
 		<module>core</module>
-		<module>zcalc</module>
-		<module>zcalc-report</module>
-		<module>zcalc-cli</module>
-		<module>ztools-oncoz</module>
-		<module>ztools-oncoz-cli</module>
+		<module>ztools-processors</module>
+		<module>ztools-cli</module>
 		<module>ztools-ui</module>
+		<module>zcalc-report</module>
 	</modules>
 	
 	<repositories>

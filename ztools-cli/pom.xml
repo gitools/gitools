@@ -4,13 +4,22 @@
 		<groupId>es.imim.bg.ztools</groupId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ztools-ui</artifactId>
-	<name>ztools-ui</name>
-	<description>ztools graphical user interface</description>
-	
+	<groupId>es.imim.bg.ztools</groupId>
+	<artifactId>ztools-cli</artifactId>
+	<name>ztools-cli</name>
+	<description>ztools command line interface</description>
+
 	<dependencies>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>colt</groupId>
+			<artifactId>colt</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ztools-core</artifactId>
@@ -24,4 +33,20 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>es.imim.bg.ztools.cli.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
