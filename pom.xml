@@ -108,11 +108,11 @@
 	</build>
 	
 	<modules>
-		<module>core</module>
+		<module>ztools-core</module>
 		<module>ztools-processors</module>
 		<module>ztools-cli</module>
 		<module>ztools-ui</module>
-		<module>zcalc-report</module>
+		<module>ztools-report</module>
 	</modules>
 	
 	<repositories>
