@@ -15,32 +15,19 @@ public abstract class AbstractResult implements Result {
 		return paramNames;
 	}
 	
-	public final Object[] getValues() {
+	public final double[] getValues() {
 		
 		final int numParams = getNumParams();
 		
-		final Object[] paramValues = new Object[numParams];
+		final double[] paramValues = new double[numParams];
 		fillParamValues(paramValues);
 		
 		return paramValues;
 	}
 	
-	/*public final Map<String, Object> toMap() {
-		final String[] paramNames = getParamNames();
-		final Object[] array = new Object[paramNames.length];
-		toArray(array);
-		
-		final Map<String, Object> map = new HashMap<String, Object>();
-		
-		for (int i = 0; i < paramNames.length; i++)
-			map.put(paramNames[i], array[i]);
-		
-		return map;
-	}*/
-	
 	protected abstract int getNumParams();
 	
 	protected abstract int fillParamNames(String[] array);
 	
-	protected abstract int fillParamValues(Object[] array);
+	protected abstract int fillParamValues(double[] array);
 }

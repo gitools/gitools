@@ -34,12 +34,12 @@ public class TabAnalysisResource implements AnalysisResource {
 		
 		Test method = analysis.getTestFactory().create(); //FIXME
 		
-		saveAnalysis(workDirFile, analysis, method);
+		saveDescription(workDirFile, analysis, method);
 		
 		saveResults(workDirFile, analysis);
 	}
 
-	protected void saveAnalysis(
+	protected void saveDescription(
 			File workDirFile, 
 			Analysis analysis,
 			Test method) throws IOException {
@@ -52,7 +52,7 @@ public class TabAnalysisResource implements AnalysisResource {
 		
 		file.setAnalysisName(analysis.getName());
 		file.setMethodName(method.getName());
-		file.setResultNames(analysis.getResultNames());
+		file.setResultNames(analysis.getResults().getParamNames());
 		file.setStartTime(analysis.getStartTime());
 		file.setElapsedTime(analysis.getElapsedTime());
 		file.setUserName(System.getProperty("user.name"));
@@ -73,13 +73,7 @@ public class TabAnalysisResource implements AnalysisResource {
 				resultsFileName(analysis.getName()));
 		
 		ResultsFile resFile = new ResultsFile(dest);
-		
-		resFile.setCondNames(analysis.getCondNames());
-		resFile.setGroupNames(analysis.getGroupNames());
-		resFile.setParamNames(analysis.getResultNames());
-		resFile.setResults(analysis.getResults());
-		
-		resFile.write(resultsOrderByCond);
+		resFile.write(analysis.getResults(), resultsOrderByCond);
 	}
 
 	protected String analysisFileName(String analysisName) {

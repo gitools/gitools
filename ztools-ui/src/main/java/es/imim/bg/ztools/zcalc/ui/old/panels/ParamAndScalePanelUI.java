@@ -4,7 +4,7 @@
  * Created on 9 de septiembre de 2008, 7:09
  */
 
-package es.imim.bg.ztools.zcalc.ui.panels;
+package es.imim.bg.ztools.zcalc.ui.old.panels;
 
 public class ParamAndScalePanelUI extends javax.swing.JPanel {
 

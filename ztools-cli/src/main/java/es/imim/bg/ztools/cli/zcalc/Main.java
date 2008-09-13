@@ -40,7 +40,7 @@ public class Main {
 	public String analysisName = "unnamed";
 
 	@Option(name = "-t", aliases = "-test", usage = "Statistical test to use:\nzscore-mean, zscore-median,\nbinomial, binomial-exact, binomial-normal,\nbinomial-poisson, fisher, hypergeom, chi-sqr\n(default: zscore-mean).", metaVar = "<name>")
-	public String methodName = "zscore-mean";
+	public String testName = "zscore-mean";
 
 	@Option(name = "-s", aliases = "-num-samples", usage = "Number of samples to take when randomizing\n(default: 10000).", metaVar = "<n>")
 	public int samplingNumSamples = 10000;
@@ -48,25 +48,19 @@ public class Main {
 	@Option(name = "-d", aliases = "-data", usage = "File with data to be processed.", metaVar = "<file>")
 	public String dataFile;
 
-	public char dataSep = '\t';
-	public char dataQuote = '"';
-
 	@Option(name = "-c", aliases = "-class", usage = "File with mappings between items and modules.", metaVar = "<file>")
 	public String groupsFile;
 
-	public char groupsSep = '\t';
-	public char groupsQuote = '"';
-
 	@Option(name = "-min", aliases = "-min-mod-size", usage = "Discard all modules that have\nless items than <min> (default: 20)", metaVar = "<min>")
-	private int minGroupSize = 20;
+	private int minModuleSize = 20;
 
 	@Option(name = "-max", aliases = "-max-mod-size", usage = "Discard all modules that have\nmore items than <max> (default: no limit)", metaVar = "<max>")
-	private int maxGroupSize = Integer.MAX_VALUE;
+	private int maxModuleSize = Integer.MAX_VALUE;
 
 	@Option(name = "-w", aliases = "-workdir", usage = "Working directory (default: current dir).", metaVar = "<dir>")
 	public String workdir = System.getProperty("user.dir");
 
-	@Option(name = "-f", aliases = "-out-fmt", usage = "Output format:\ncsv, csv-sep, rexml (default: csv).", metaVar = "<format>")
+	@Option(name = "-f", aliases = "-out-fmt", usage = "Output format:\ncsv, rexml (default: csv).", metaVar = "<format>")
 	public String outputFormat = "csv";
 
 	@Option(name = "-results-by-module", usage = "Generated csv is arranged by module\ninstead of condition.")
@@ -123,18 +117,17 @@ public class Main {
         else if (groupsFile == null)
         	requiredArgument("Groups file has to be specified.", parser);
         
-        if (minGroupSize < 1)
-        	minGroupSize = 1;
-        if (maxGroupSize < minGroupSize)
-        	maxGroupSize = minGroupSize;
+        if (minModuleSize < 1)
+        	minModuleSize = 1;
+        if (maxModuleSize < minModuleSize)
+        	maxModuleSize = minModuleSize;
         
         ThreadManager.setNumThreads(maxProcs);
         
         ZCalcCommand cmd = new ZCalcCommand(
-        		analysisName, methodName, samplingNumSamples, 
-        		dataFile, dataSep, dataQuote, 
-        		groupsFile, groupsSep, groupsQuote, 
-        		minGroupSize, maxGroupSize,
+        		analysisName, testName, samplingNumSamples, 
+        		dataFile, groupsFile, 
+        		minModuleSize, maxModuleSize,
         		workdir, outputFormat, !resultsByModule);
         
         ProgressMonitor monitor = !quiet ? 

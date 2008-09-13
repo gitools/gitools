@@ -1,70 +1,67 @@
 package es.imim.bg.ztools.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cern.colt.matrix.DoubleMatrix2D;
 
-@Deprecated
-public class Data {
+public final class Data {
 
-	private String dataName;
-	private List<String> colNames;
-	private List<String> rowNames;
-	private DoubleMatrix2D data;
+	protected String name;
+	
+	protected String[] colNames;
+	protected String[] rowNames;
+	
+	protected DoubleMatrix2D data;
 	
 	public Data() {
-		this.dataName = "";
-		this.colNames = new ArrayList<String>();
-		this.rowNames = new ArrayList<String>();
+		this.name = "";
 	}
 
 	public Data(
-			String dataName, List<String> colNames,
-			List<String> rowNames, DoubleMatrix2D data) {
-		this.dataName = dataName;
+			String name, String[] colNames, 
+			String[] rowNames, DoubleMatrix2D data) {
+		
+		this.name = name;
 		this.colNames = colNames;
 		this.rowNames = rowNames;
 		this.data = data;
 	}
 
-	public void setDataName(String dataName) {
-		this.dataName = dataName;
+	public final String getName() {
+		return name;
 	}
-	
-	public String getDataName() {
-		return dataName;
+
+	public final void setName(String name) {
+		this.name = name;
 	}
-	
-	public void setColNames(List<String> colNames) {
-		this.colNames = colNames;
-	}
-	
-	public List<String> getColNames() {
+
+	public final String[] getColNames() {
 		return colNames;
 	}
-	
-	public void setRowNames(List<String> rowNames) {
-		this.rowNames = rowNames;
+
+	public final void setColNames(String[] colNames) {
+		this.colNames = colNames;
 	}
-	
-	public List<String> getRowNames() {
+
+	public final String[] getRowNames() {
 		return rowNames;
 	}
-	
-	public void setData(DoubleMatrix2D data) {
-		this.data = data;
+
+	public final void setRowNames(String[] rowNames) {
+		this.rowNames = rowNames;
 	}
-	
-	public DoubleMatrix2D getData() {
+
+	public final DoubleMatrix2D getData() {
 		return data;
 	}
-	
+
+	public final void setData(DoubleMatrix2D data) {
+		this.data = data;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(dataName).append('\n');
+		sb.append(name).append('\n');
 		sb.append(colNames).append('\n');
 		sb.append(rowNames).append('\n');
 		sb.append(data).append('\n');

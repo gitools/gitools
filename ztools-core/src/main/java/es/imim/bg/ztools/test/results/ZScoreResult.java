@@ -45,7 +45,7 @@ public class ZScoreResult extends CommonResult {
 	}
 	
 	@Override
-	protected int fillParamValues(Object[] array) {
+	protected int fillParamValues(double[] array) {
 		int i = super.fillParamValues(array);
 		
 		array[i + 0] = observed;

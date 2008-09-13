@@ -3,29 +3,31 @@ package es.imim.bg.ztools.resources.analysis;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.DataFormatException;
 
-import cern.colt.matrix.ObjectMatrix2D;
-
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.test.BinomialTest;
+import es.imim.bg.ztools.test.FisherTest;
 import es.imim.bg.ztools.test.Test;
+import es.imim.bg.ztools.test.ZscoreTest;
 import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
+import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.BinomialResult;
-import es.imim.bg.ztools.test.results.CommonResult;
-import es.imim.bg.ztools.test.results.FisherResult;
-import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.utils.Util;
 
 public class REXmlAnalysisResource implements AnalysisResource {
 
 	protected String workdir;
-	protected int minGroupSize;
-	protected int maxGroupSize;
+	protected int minModuleSize;
+	protected int maxModuleSize;
 	
 	public REXmlAnalysisResource(String workdir, int minGroupSize, int maxGroupSize) {
 		this.workdir = workdir;
-		this.minGroupSize = minGroupSize;
-		this.maxGroupSize = maxGroupSize;
+		this.minModuleSize = minGroupSize;
+		this.maxModuleSize = maxGroupSize;
 	}
 	
 	public void save(Analysis analysis) throws IOException, DataFormatException {
@@ -40,86 +42,128 @@ public class REXmlAnalysisResource implements AnalysisResource {
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println("<analysis name=\"" + analysis.getName() + "\" binomial=\"false\">");
 		
-		String[] propNames = analysis.getCondNames();
-		String[] groupNames = analysis.getGroupNames();
-		int[][] groupItemIndices = analysis.getGroupItemIndices();
+		String[] condNames = analysis.getResults().getColNames();
+		String[] moduleNames = analysis.getResults().getRowNames();
 		
-		Test method = analysis.getTestFactory().create(); //FIXME
+		TestFactory testFactory = analysis.getTestFactory();
+		Test method = testFactory.create(); //FIXME
 		String statName = method.getName();
 		
-		ObjectMatrix2D results = analysis.getResults();
+		Results results = analysis.getResults();
 		
-		int numProperties = propNames.length;
-		int numGroups = groupNames.length;
+		final String[] paramNames = results.getParamNames();
+		final Map<String, Integer> paramIndexMap = new HashMap<String, Integer>();
+		for (int i = 0; i < paramNames.length; i++)
+			paramIndexMap.put(paramNames[i], new Integer(i));
+		
+		int indexOfN = indexOfParam(paramIndexMap, "N");
+		int indexOfRightPvalue = indexOfParam(paramIndexMap, "rigth-p-value");
+		
+		int numConditions = condNames.length;
+		int numModules = moduleNames.length;
 		
 		out.println("\t<property-list>");
-		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
-			final String propName = propNames[propIndex];
-			out.println("\t\t<name>" + propName + "</name>");
+		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
+			final String condName = condNames[condIndex];
+			out.println("\t\t<name>" + condName + "</name>");
 		}
 		out.println("\t</property-list>");
 		
-		for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
-			final String groupName = groupNames[groupIndex];
-			final int[] groupItems = groupItemIndices[groupIndex];
-			final int groupSize = groupItems.length;
+		final int[][] moduleItemIndices = analysis.getModules().getItemIndices();
+		
+		for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
+			final String moduleName = moduleNames[moduleIndex];
 			
-			if (groupSize >= minGroupSize) {
-				out.println("\t<class name=\"" + groupName + "\" size=\"" + groupSize + "\">");
+			int greaterN = 0;
+			for (int condIndex = 0; condIndex < numConditions; condIndex++)
+				greaterN = Math.max(greaterN, 
+						(int)results.getDataValue(condIndex, moduleIndex, indexOfN));
+		
+			int moduleSize = moduleItemIndices[moduleIndex].length;
+			
+			if (greaterN >= minModuleSize && greaterN <= maxModuleSize) {
+				out.println("\t<class name=\"" + moduleName + "\" size=\"" + moduleSize + "\">");
 				
-				for (int propIndex = 0; propIndex < numProperties; propIndex++) {
+				for (int propIndex = 0; propIndex < numConditions; propIndex++) {
 					
-					//if (propGroupSize >= minGroupSize) {
-					final String propName = propNames[propIndex];
-					CommonResult cell = 
-						(CommonResult) results.getQuick(groupIndex, propIndex);
-				
-					//if (cell != null && cell.getN() >= minGroupSize && cell.getN() <= maxGroupSize) {
+					final int N = (int)results.getDataValue(propIndex, moduleIndex, indexOfN);
+					final double rightPvalue = results.getDataValue(propIndex, moduleIndex, indexOfRightPvalue);
+					final double twoTailPvalue = results.getDataValue(
+							propIndex, moduleIndex, indexOfParam(paramIndexMap, "two-tail-p-value"));
+					
+					final String propName = condNames[propIndex];
+					
+					if (N >= minModuleSize && N <= maxModuleSize) {
 						String valueSt = null;
 						String zscoreSt = null;
 						String pvalueSt = null;
 						String miSt = null;
 						String sigmaSt = null;
 						
-						if (cell instanceof FisherResult) {
-							FisherResult fcell = (FisherResult) cell;
+						if (method instanceof FisherTest) {
 							
-							final double expected = ((double)((fcell.a + fcell.b) * (fcell.a + fcell.c)) 
-									/ (double)(fcell.a + fcell.b + fcell.c + fcell.d));
+							int a = (int) results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "a"));
+							int b = (int) results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "b"));
+							int c = (int) results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "c"));
+							int d = (int) results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "d"));
 							
-							valueSt = Integer.toString(fcell.a);
-							zscoreSt = Double.toString(Util.pvalue2zscore(fcell.rightPvalue));
-							pvalueSt = Double.toString(fcell.rightPvalue);
+							final double expected = ((double)((a + b) * (a + c)) 
+									/ (double)(a + b + c + d));
+							
+							valueSt = Integer.toString(a);
+							zscoreSt = Double.toString(Util.pvalue2zscore(rightPvalue));
+							pvalueSt = Double.toString(rightPvalue);
 							miSt = Double.toString(expected);
-							sigmaSt = "[" + fcell.a + ", " + fcell. b + ", " + fcell.c + ", " + fcell.d + "]";
+							sigmaSt = "[" + a + ", " + b + ", " + c + ", " + d + "]";
 						}
-						else if (cell instanceof ZScoreResult) {
-							ZScoreResult zcell = (ZScoreResult) cell;
+						else if (method instanceof ZscoreTest) {
 							
-							valueSt = Double.toString(zcell.observed);
-							zscoreSt = Double.toString(zcell.zscore);
+							double observed = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
+							double expectedMean = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-mean"));
+							double expectedStdev = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-stdev"));
+							double zscore = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "z-score"));
+							
+							valueSt = Double.toString(observed);
+							zscoreSt = Double.toString(zscore);
 							
 							if (method instanceof ZscoreWithSamplingTest)
-								pvalueSt = Double.toString(zcell.twoTailPvalue);
+								pvalueSt = Double.toString(twoTailPvalue);
 							else
-								pvalueSt = Double.toString(zcell.rightPvalue);
+								pvalueSt = Double.toString(rightPvalue);
 							
-							miSt = Double.toString(zcell.expectedMean);
-							sigmaSt = Double.toString(zcell.expectedStdev);
+							miSt = Double.toString(expectedMean);
+							sigmaSt = Double.toString(expectedStdev);
 						}
-						else if (cell instanceof BinomialResult) {
-							BinomialResult pcell = (BinomialResult) cell;
+						else if (method instanceof BinomialTest) {
+							double observed = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
+							double expectedMean = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-mean"));
+							double expectedStdev = results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-stdev"));
+							int aprox = (int) results.getDataValue(
+									propIndex, moduleIndex, indexOfParam(paramIndexMap, "aproximation"));
+							BinomialResult.AproximationUsed apr = 
+								BinomialResult.AproximationUsed.values()[aprox];
 							
-							valueSt = Double.toString(pcell.observed);
-							zscoreSt = Double.toString(Util.pvalue2zscore(pcell.rightPvalue));
-							pvalueSt = Double.toString(pcell.rightPvalue);
-							miSt = Double.toString(pcell.expectedMean);
-							sigmaSt = Double.toString(pcell.expectedStdev) + " aprox:" + pcell.aprox.toString();
+							valueSt = Double.toString(observed);
+							zscoreSt = Double.toString(Util.pvalue2zscore(rightPvalue));
+							pvalueSt = Double.toString(rightPvalue);
+							miSt = Double.toString(expectedMean);
+							sigmaSt = Double.toString(expectedStdev) + " aprox:" + apr.toString();
 						}
 						else
 							throw new DataFormatException("Result type not supported by REXmlZCalcOutput.");
 	
-						out.println("\t\t<property name=\"" + propName + "\" size=\"" + groupSize + "\">");
+						out.println("\t\t<property name=\"" + propName + "\" size=\"" + N + "\">");
 						out.println("\t\t\t<statistics name=\"" + statName + "\">");
 			            
 						out.println("\t\t\t\t<value>" + valueSt + "</value>");
@@ -132,13 +176,15 @@ public class REXmlAnalysisResource implements AnalysisResource {
 		
 						out.println("\t\t\t</statistics>");
 						out.println("\t\t</property>");
-					//}
+					}
 					/*else
 						if (cell == null)
 							System.out.println("cell is null");
 						else
 							System.out.println("cell n = " + cell.getN());*/
 				}
+				
+				//TODO order by sum tag
 				
 				out.println("\t</class>");
 			}
@@ -149,5 +195,16 @@ public class REXmlAnalysisResource implements AnalysisResource {
 		out.print("</analysis>");
 		
 		out.close();
+	}
+
+	private int indexOfParam(Map<String, Integer> paramIndexMap, String name) throws DataFormatException {
+		int index = 0;
+		try {
+			index = paramIndexMap.get(name);
+		}
+		catch (Exception e) {
+			throw new DataFormatException("Parameter called '" + name + "' expected in results.");
+		}
+		return index;
 	}
 }

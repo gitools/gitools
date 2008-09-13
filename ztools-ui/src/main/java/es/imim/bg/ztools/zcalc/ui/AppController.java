@@ -11,18 +11,14 @@ import java.util.zip.DataFormatException;
 
 import javax.swing.JFileChooser;
 
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.ObjectFactory2D;
-import cern.colt.matrix.ObjectMatrix2D;
+import cern.colt.matrix.DoubleFactory3D;
+import cern.colt.matrix.DoubleMatrix3D;
 
+import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.resources.ResultsFile;
 import es.imim.bg.ztools.zcalc.ui.utils.Options;
 import es.imim.bg.ztools.zcalc.ui.views.AnalysisView;
-import es.imim.bg.ztools.zcalc.ui.views.matrix.DoubleMatrixTableModel;
-import es.imim.bg.ztools.zcalc.ui.views.matrix.MatrixView;
 
 public class AppController {
 
@@ -33,14 +29,9 @@ public class AppController {
 		
 		registerActions();
 		
-		//MatrixView view = new MatrixView();
-		
 		int rows = 40;
 		int cols = 12;
-		ObjectMatrix2D data = ObjectFactory2D.dense.make(rows, cols);
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < cols; j++)
-				data.setQuick(i, j, DoubleFactory1D.dense.random(2));
+		DoubleMatrix3D data = DoubleFactory3D.dense.random(cols, rows, 2);
 		
 		final String[] rowNames = new String[data.rows()];
 		for (int i = 0; i < rowNames.length; i++)
@@ -50,16 +41,15 @@ public class AppController {
 		for (int i = 0; i < colNames.length; i++)
 			colNames[i] = "col " + (i + 1);
 		
-		/*DoubleMatrixTableModel model = 
-			new DoubleMatrixTableModel(rowNames, colNames, data);
-		view.setModel(model);
-		view.setName("unnamed");*/
-		
-		AnalysisView view = new AnalysisView(
-				rowNames,
-				colNames,
-				new String[] {"param1", "param2", "param3"},
+		Results results = new Results(
+				colNames, 
+				rowNames, 
+				new String[] {"param1", "param2"}, 
 				data);
+		Analysis analysis = new Analysis();
+		analysis.setResults(results);
+		
+		AnalysisView view = new AnalysisView(analysis);
 		view.setName("demo");
 		
 		gui.addWorkspaceView(view);
@@ -112,28 +102,13 @@ public class AppController {
 				try {
 					gui.setStatusText("Reading " + rf.getResourcePath() + "...");
 					
-					rf.read();
+					Results results = rf.read();
+					Analysis analysis = new Analysis();
+					analysis.setResults(results); //TEMP
 					
 					gui.setStatusText("Initializing view...");
 					
-					/*MatrixView view = new MatrixView();
-					
-					ResultsMatrixTableModel model = 
-						new ResultsMatrixTableModel(
-								rf.getGroupNames(), 
-								rf.getCondNames(), 
-								rf.getResults(),
-								0);
-					
-					view.setModel(model);
-					view.setName(rf.getResourcePath()); //FIXME: use analysis name
-					*/
-					
-					AnalysisView view = new AnalysisView(
-							rf.getGroupNames(),
-							rf.getCondNames(),
-							rf.getParamNames(),
-							rf.getResults());
+					AnalysisView view = new AnalysisView(analysis);
 					
 					view.setName(rf.getResourcePath());
 					

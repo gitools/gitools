@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.ui.panels;
+package es.imim.bg.ztools.zcalc.ui.old.panels;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;

@@ -5,22 +5,26 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
 import cern.colt.function.DoubleProcedure;
+import cern.colt.matrix.DoubleFactory3D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.DoubleMatrix3D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
+import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.threads.ThreadManager;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.
  */
 
-public class ZCalcProcessor extends Analysis {
+public class ZCalcProcessor {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -37,18 +41,21 @@ public class ZCalcProcessor extends Analysis {
 			test = null;
 		}
 	}
+
+	private Analysis analysis;
 	
 	public ZCalcProcessor(
-			String analysisName, 
+			/*String analysisName, 
 			String[] condNames,
 			String[] itemNames,			
 			DoubleMatrix2D data,
 			String[] groupNames,			
 			int[][] groupItemIndices,
-			TestFactory testFactory
+			TestFactory testFactory*/
+			Analysis analysis
 			) {
 		
-		this.name = analysisName;
+		/*this.name = analysisName;
 		this.condNames = condNames;
 		this.itemNames = itemNames;
 		
@@ -57,24 +64,37 @@ public class ZCalcProcessor extends Analysis {
 		this.groupNames = groupNames;
 		this.groupItemIndices = groupItemIndices;
 		
-		this.testFactory = testFactory;
+		this.testFactory = testFactory;*/
+		
+		this.analysis = analysis;
 	}
 	
 	public void run(ProgressMonitor monitor) throws InterruptedException {
 		
-		startTime = new Date();
+		Date startTime = new Date();
 		
-		// transpose data
+		TestFactory testFactory = analysis.getTestFactory();
+		String[] paramNames = testFactory.create().getResultNames();
+		final int numParams = paramNames.length;
+		
+		String[] condNames = analysis.getData().getColNames();
+		
 		monitor.debug("Transposing data...");
-		DoubleMatrix2D data = this.data.viewDice().copy();
+		DoubleMatrix2D data = analysis.getData().getData().viewDice().copy();
+		
+		String[] moduleNames = analysis.getModules().getModuleNames();
+		int[][] moduleItemIndices = analysis.getModules().getItemIndices();
 		
 		final int numConditions = data.rows();
-		final int numGroups = groupNames.length;
+		final int numModules = moduleNames.length;
 		
-		monitor.begin("ZCalc analysis...", numConditions * numGroups);
+		monitor.begin("ZCalc analysis...", numConditions * numModules);
 		
-		resultNames = testFactory.create().getResultNames();
-		results = ObjectFactory2D.dense.make(numGroups, numConditions);
+		final Results results = new Results();
+		results.setColNames(condNames);
+		results.setRowNames(moduleNames);
+		results.setParamNames(paramNames);
+		results.createData();
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();
@@ -101,15 +121,15 @@ public class ZCalcProcessor extends Analysis {
 			
 			final ProgressMonitor condMonitor = monitor.subtask();
 			
-			condMonitor.begin("Condition " + condName + "...", numGroups);
+			condMonitor.begin("Condition " + condName + "...", numModules);
 			
-			for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
+			for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 
 				final int condIdx = condIndex;
-				final int groupIdx = groupIndex;
+				final int moduleIdx = moduleIndex;
 				
-				final String groupName = groupNames[groupIdx];
-				final int[] itemIndices = groupItemIndices[groupIdx];
+				final String moduleName = moduleNames[moduleIdx];
+				final int[] itemIndices = moduleItemIndices[moduleIdx];
 					
 				final RunSlot slot = takeSlot(monitor, queue);
 				
@@ -120,11 +140,15 @@ public class ZCalcProcessor extends Analysis {
 				}
 
 				executor.execute(new Runnable() {
-					public void run() {
-						results.setQuick(groupIdx, condIdx, 
-							slot.test.processTest(
+					public void run() { 
+						Result result = slot.test.processTest(
 								condName, condItems,
-								groupName, itemIndices));
+								moduleName, itemIndices);
+						
+						double[] values = result.getValues();
+						
+						for (int paramIdx = 0; paramIdx < numParams; paramIdx++)
+							results.setDataValue(condIdx, moduleIdx, paramIdx, values[paramIdx]);
 						
 						queue.offer(slot);
 					}
@@ -142,8 +166,11 @@ public class ZCalcProcessor extends Analysis {
 		// TODO
 		
 		ThreadManager.shutdown(monitor);
+
+		analysis.setStartTime(startTime);
+		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 		
-		elapsedTime = new Date().getTime() - startTime.getTime();
+		analysis.setResults(results);
 		
 		monitor.end();
 	}

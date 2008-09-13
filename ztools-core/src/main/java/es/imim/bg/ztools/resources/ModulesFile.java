@@ -18,6 +18,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.model.Modules;
 
 public class ModulesFile extends ResourceFile {
 
@@ -28,21 +29,34 @@ public class ModulesFile extends ResourceFile {
 	public static final int defaultMaxModuleSize = Integer.MAX_VALUE;
 	
 	// Output
-	protected String[] moduleNames;
+	/*protected String[] moduleNames;
 	protected int[][] moduleItemIndices;
 	
-	protected int[] itemsOrder;
+	protected int[] itemsOrder;*/
 	
 	public ModulesFile(String fileName) {
 		super(fileName);
 	}
 	
-	public void load(
+	public Modules load(
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
+		
+		Modules modules = new Modules();
+		load(modules, minModuleSize, maxModuleSize, itemNames, monitor);
+		
+		return modules;
+	}
 	
+	public void load(
+			Modules modules,
+			int minModuleSize, 
+			int maxModuleSize,
+			String[] itemNames,
+			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
+
 		monitor.begin("Reading modules ...", 1);
 		monitor.info("Module size filter: minimum = " + minModuleSize + ", maximum = " + maxModuleSize);
 
@@ -120,15 +134,15 @@ public class ModulesFile extends ResourceFile {
 		final int fileNumModules = numModules;
 		
 		numModules = end - start;
-		moduleNames = new String[numModules];
-		moduleItemIndices = new int[numModules][];
+		String[] moduleNames = new String[numModules];
+		int[][] moduleItemIndices = new int[numModules][];
 		
 		// Prepare map between original item index 
 		// and data row where will be stored,
 		// sorted according to group size.
 		// Get group names and update group item indices.
 		
-		itemsOrder = new int[itemNames.length];
+		int [] itemsOrder = new int[itemNames.length];
 		Arrays.fill(itemsOrder, -1);
 		
 		int numItems = 0;
@@ -158,6 +172,11 @@ public class ModulesFile extends ResourceFile {
 		monitor.info((fileNumModules - numModules) + " modules discarded");
 		
 		monitor.end();
+		
+		modules.setModuleNames(moduleNames);
+		modules.setItemNames(itemNames);
+		modules.setItemIndices(moduleItemIndices);
+		modules.setItemsOrder(itemsOrder);
 	}
 	
 	protected void readModuleMappings(
@@ -189,7 +208,7 @@ public class ModulesFile extends ResourceFile {
 		}
 	}
 	
-	public String[] getModuleNames() {
+	/*public String[] getModuleNames() {
 		return moduleNames;
 	}
 	
@@ -199,5 +218,5 @@ public class ModulesFile extends ResourceFile {
 	
 	public int[] getItemsOrder() {
 		return itemsOrder;
-	}
+	}*/
 }

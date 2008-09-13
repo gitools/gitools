@@ -7,15 +7,15 @@ import java.util.concurrent.ExecutorService;
 import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.ObjectFactory2D;
-import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
+import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.threads.ThreadManager;
 
-public class OncozAnalysis extends Analysis {
+public class OncozAnalysis {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -33,55 +33,38 @@ public class OncozAnalysis extends Analysis {
 		}
 	}
 	
-	// Analysis input
-	protected String[] condNames;
-	protected String[] itemNames;
+	private Analysis analysis;
 	
-	protected DoubleMatrix2D data;
-	
-	protected String[] groupNames;
-	protected int[][] groupItemIndices;
-	
-	// Analysis test factory
-	protected TestFactory testFactory;
-	
-	// Analysis output
-	protected String[] resultNames;
-	protected ObjectMatrix2D results;
-	
-	public OncozAnalysis(
-			String analysisName, 
-			String[] condNames,
-			String[] itemNames,			
-			DoubleMatrix2D data,
-			String[] groupNames,			
-			int[][] groupItemIndices,
-			TestFactory testFactory) {
+	public OncozAnalysis(Analysis analysis) {
 		
-		this.name = analysisName;
-		this.condNames = condNames;
-		this.itemNames = itemNames;
-		
-		this.data = data;
-		
-		this.groupNames = groupNames;
-		this.groupItemIndices = groupItemIndices;
-		
-		this.testFactory = testFactory;
+		this.analysis = analysis;
 	}
 	
 	public void run(ProgressMonitor monitor) throws InterruptedException {
 		
-		startTime = new Date();
-		
-		final int numCond = data.columns();
-		final int numItems = data.rows();
-		final int numGroups = groupNames.length;
-		
-		monitor.begin("Oncoz analysis...", numItems * numGroups);
+		Date startTime = new Date();
 	
-		resultNames = testFactory.create().getResultNames();
-		results = ObjectFactory2D.dense.make(numItems, numGroups);
+		TestFactory testFactory = analysis.getTestFactory();
+		String[] paramNames = testFactory.create().getResultNames();
+		final int numParams = paramNames.length;
+		
+		String[] itemNames = analysis.getData().getRowNames();
+		DoubleMatrix2D data = analysis.getData().getData();
+		
+		String[] moduleNames = analysis.getModules().getModuleNames();
+		int[][] moduleItemIndices = analysis.getModules().getItemIndices();
+		
+		final int numColumns = data.columns();
+		final int numItems = data.rows();
+		final int numModules = moduleNames.length;
+		
+		monitor.begin("Oncoz analysis...", numItems * numModules);
+	
+		final Results results = new Results();
+		results.setColNames(moduleNames);
+		results.setRowNames(itemNames);
+		results.setParamNames(paramNames);
+		results.createData();
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();
@@ -98,21 +81,21 @@ public class OncozAnalysis extends Analysis {
 		
 		/* Test analysis */
 		
-		for (int groupIndex = 0; groupIndex < numGroups; groupIndex++) {
+		for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 		
-			final int groupIdx = groupIndex;
+			final int moduleIdx = moduleIndex;
 			
-			final String groupName = groupNames[groupIndex];
+			final String moduleName = moduleNames[moduleIndex];
 			
-			final int[] itemIndices = groupItemIndices[groupIndex];
+			final int[] itemIndices = moduleItemIndices[moduleIndex];
 			
 			final ProgressMonitor condMonitor = monitor.subtask();
 			
-			condMonitor.begin("Group " + groupName + "...", numItems);
+			condMonitor.begin("Module " + moduleName + "...", numItems);
 			
 			final DoubleMatrix1D population = data 
 				.viewSelection(null, itemIndices)
-				.like1D(numCond * numItems)
+				.like1D(numColumns * numItems) //FIXME numColumns ?
 				.viewSelection(notNaNProc);
 			
 			for (int itemIndex = 0; itemIndex < numItems; itemIndex++) {
@@ -128,15 +111,22 @@ public class OncozAnalysis extends Analysis {
 				if (slot.population != population) {
 					slot.population = population;
 					slot.test = testFactory.create();
-					slot.test.processPopulation(groupName, population);
+					slot.test.processPopulation(moduleName, population);
 				}
 
 				executor.execute(new Runnable() {
 					public void run() {
-						results.setQuick(itemIdx, groupIdx, 
-							slot.test.processTest(
-								groupName, itemValues,
-								itemName, itemIndices)); //FIX: It will be fixed, itemValues has to be filtered for the group and item indices related to all population.
+						//FIXME: It will be fixed, itemValues has to be filtered 
+						//for the group and item indices related to all population.
+						
+						Result result = slot.test.processTest(
+								moduleName, itemValues,
+								itemName, itemIndices);
+						
+						double[] values = result.getValues();
+						
+						for (int paramIdx = 0; paramIdx < numParams; paramIdx++)
+							results.setDataValue(moduleIdx, itemIdx, paramIdx, values[paramIdx]);
 						
 						queue.offer(slot);
 					}
@@ -155,7 +145,10 @@ public class OncozAnalysis extends Analysis {
 		
 		ThreadManager.shutdown(monitor);
 		
-		elapsedTime = new Date().getTime() - startTime.getTime();
+		analysis.setStartTime(startTime);
+		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+		
+		analysis.setResults(results);
 		
 		monitor.end();
 	}
@@ -172,39 +165,5 @@ public class OncozAnalysis extends Analysis {
 			throw e;
 		}
 		return slot;
-	}
-
-	// Getters
-
-	public TestFactory getMethodFactory() {
-		return testFactory;
-	}
-
-	public String[] getCondNames() {
-		return condNames;
-	}
-	
-	public String[] getItemNames() {
-		return itemNames;
-	}
-	
-	public DoubleMatrix2D getData() {
-		return data;
-	}
-	
-	public String[] getGroupNames() {
-		return groupNames;
-	}
-	
-	public int[][] getGroupItemIndices() {
-		return groupItemIndices;
-	}
-	
-	public String[] getResultNames() {
-		return resultNames;
-	}
-	
-	public ObjectMatrix2D getResults() {
-		return results;
 	}
 }

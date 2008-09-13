@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.ui.views.matrix;
+package es.imim.bg.ztools.zcalc.ui.old.views.matrix;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;

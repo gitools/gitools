@@ -31,7 +31,7 @@ public class CommonResult extends AbstractResult {
 		return 4;
 	}
 	
-	protected int fillParamValues(Object[] array) {
+	protected int fillParamValues(double[] array) {
 		array[0] = numItems;
 		array[1] = leftPvalue;
 		array[2] = rightPvalue;

@@ -2,71 +2,74 @@ package es.imim.bg.ztools.model;
 
 import java.util.Date;
 
-import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.ztools.test.factory.TestFactory;
 
-public abstract class Analysis {
+public class Analysis {
 
 	protected String name;
 	protected Date startTime;
 	protected long elapsedTime;
 	
-	protected String[] condNames;
-	protected String[] itemNames;
-	
-	protected DoubleMatrix2D data;
-	
-	protected String[] groupNames;
-	protected int[][] groupItemIndices;
+	protected Data data;
+	protected Modules modules;
+	protected Results results;
 	
 	protected TestFactory testFactory;
 	
-	protected String[] resultNames;
-	protected ObjectMatrix2D results;
-	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Date getStartTime() {
 		return startTime;
 	}
 
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	
 	public long getElapsedTime() {
 		return elapsedTime;
 	}
 	
-	public String[] getCondNames() {
-		return condNames;
+	public void setElapsedTime(long elapsedTime) {
+		this.elapsedTime = elapsedTime;
 	}
 	
-	public String[] getItemNames() {
-		return itemNames;
-	}
-	
-	public DoubleMatrix2D getData() {
+	public Data getData() {
 		return data;
 	}
 	
-	public String[] getGroupNames() {
-		return groupNames;
+	public void setData(Data data) {
+		this.data = data;
 	}
 	
-	public int[][] getGroupItemIndices() {
-		return groupItemIndices;
+	public Modules getModules() {
+		return modules;
+	}
+	
+	public void setModules(Modules modules) {
+		this.modules = modules;
+	}
+	
+	public Results getResults() {
+		return results;
+	}
+	
+	public void setResults(Results results) {
+		this.results = results;
 	}
 	
 	public TestFactory getTestFactory() {
 		return testFactory;
 	}
 	
-	public String[] getResultNames() {
-		return resultNames;
-	}
-	
-	public ObjectMatrix2D getResults() {
-		return results;
+	public void setTestFactory(TestFactory testFactory) {
+		this.testFactory = testFactory;
 	}
 	
 }

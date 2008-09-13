@@ -88,15 +88,15 @@ public class AnalysisModelLoader {
 		
 		file.read(reader);
 		
-		model.put("condNames", file.getCondNames());
-		model.put("groupNames", file.getGroupNames());
+		model.put("condNames", file.getColumnNames());
+		model.put("groupNames", file.getRowNames());
 		
 		final Map<String, Integer> paramNameIndexMap = new HashMap<String, Integer>();
 		int i = 0;
 		for (String paramName : file.getParamNames())
 			paramNameIndexMap.put(paramName, i++);
 		
-		final ObjectMatrix2D results = file.getResults();
+		final ObjectMatrix2D results = file.getData();
 		
 		model.put("paramValue", new TemplateMethodModel() {
 			@Override

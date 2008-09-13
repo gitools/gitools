@@ -15,20 +15,19 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.model.Data;
 
 public class DataFile extends ResourceFile {
 
 	protected static final CSVStrategy csvStrategy = 
 		new CSVStrategy('\t', '"', '#', true, true, true);
 	
-	// Output
-	
-	protected String name;
+	/*protected String name;
 	
 	protected String[] columnNames;
 	protected String[] rowNames;
 	
-	protected DoubleMatrix2D data;
+	protected DoubleMatrix2D data;*/
 	
 	public DataFile(String fileName) {
 		super(fileName);
@@ -38,15 +37,19 @@ public class DataFile extends ResourceFile {
 		super(file);
 	}
 	
-	public void load(ProgressMonitor monitor) 
+	public Data load(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 
-		loadMetadata(monitor);
+		Data data = new Data();
 		
-		loadData(null, null, monitor);
+		loadMetadata(data, monitor);
+		
+		loadData(data, null, null, monitor);
+		
+		return data;
 	}
 
-	public void loadMetadata(ProgressMonitor monitor)
+	public void loadMetadata(Data data, ProgressMonitor monitor)
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		monitor.begin("Reading names ...", 1);
@@ -63,12 +66,13 @@ public class DataFile extends ResourceFile {
 		
 		// Read datafile name and column names
 		
-		name = header[0];
+		data.setName(header[0]);
 		
 		int numColumns = header.length - 1;
 		
-		columnNames = new String[numColumns];
+		String[] columnNames = new String[numColumns];
 		System.arraycopy(header, 1, columnNames, 0, numColumns);
+		data.setColNames(columnNames);
 		
 		// Read row names
 		
@@ -78,7 +82,8 @@ public class DataFile extends ResourceFile {
 		while ((fields = parser.getLine()) != null)
 			names.add(fields[0]);
 		
-		rowNames = names.toArray(new String[names.size()]);
+		String[] rowNames = names.toArray(new String[names.size()]);
+		data.setRowNames(rowNames);
 		
 		reader.close();
 		
@@ -89,14 +94,18 @@ public class DataFile extends ResourceFile {
 	}
 	
 	public void loadData( 
+		Data data, 
 		int[] columnsOrder,
 		int[] rowsOrder, 
 		ProgressMonitor monitor) throws FileNotFoundException, IOException {
 		
 		monitor.begin("Reading data ...", 1);
 		
-		int numColumns = columnNames.length;
-		int numItems = rowNames.length;
+		int numColumns = data.getColNames().length;
+		int numItems = data.getRowNames().length;
+		
+		String[] columnNames = data.getColNames();
+		String[] rowNames = data.getRowNames();
 		
 		// Sort column names ordered by columnsOrder
 		
@@ -114,7 +123,10 @@ public class DataFile extends ResourceFile {
 		
 		parser.getLine(); // discard header
 		
-		data = DoubleFactory2D.dense.make(numItems, numColumns);
+		DoubleMatrix2D dataMatrix = 
+			DoubleFactory2D.dense.make(numItems, numColumns);
+		
+		data.setData(dataMatrix);
 		
 		String[] fields;
 		int row = 0;
@@ -138,14 +150,14 @@ public class DataFile extends ResourceFile {
 					}
 					catch (NumberFormatException e) {}
 					
-					data.setQuick(rowidx, colidx, value);
+					dataMatrix.setQuick(rowidx, colidx, value);
 					col++;
 				}
 				
 				// fill the rest of the columns with NaNs
 				while (col < numColumns) {
 					int colidx = columnsOrder != null ? columnsOrder[col] : col;
-					data.setQuick(rowidx, colidx, Double.NaN);
+					dataMatrix.setQuick(rowidx, colidx, Double.NaN);
 					col++;
 				}
 			}
@@ -157,7 +169,7 @@ public class DataFile extends ResourceFile {
 		monitor.end();
 	}
 	
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 	
@@ -171,5 +183,6 @@ public class DataFile extends ResourceFile {
 	
 	public DoubleMatrix2D getData() {
 		return data;
-	}
+	}*/
+	
 }

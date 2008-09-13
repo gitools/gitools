@@ -50,7 +50,7 @@ public class FisherResult extends CommonResult {
 	}
 	
 	@Override
-	protected int fillParamValues(Object[] array) {
+	protected int fillParamValues(double[] array) {
 		int i = super.fillParamValues(array);
 		
 		array[i + 0] = a;
@@ -62,27 +62,4 @@ public class FisherResult extends CommonResult {
 		return i + 4;
 	}
 
-	/*private static final int paramA = 0;
-	private static final int paramB = 1;
-	private static final int paramC = 2;
-	private static final int paramD = 3;
-	private static final int paramZScore = 4;
-	private static final int paramLeftPvalue = 5;
-	private static final int paramRightPvalue = 6;
-	private static final int paramTwoTailPvalue = 7;*/
-	
-	
-	/*public Object getParamValue(int index) {
-	switch(index) {
-	case paramA: return a;
-	case paramB: return b;
-	case paramC: return c;
-	case paramD: return d;
-	case paramZScore: return zscore;
-	case paramLeftPvalue: return leftPvalue;
-	case paramRightPvalue: return rightPvalue;
-	case paramTwoTailPvalue: return twoTailPvalue;
-	default: return null;
-	}
-}*/
 }
