@@ -14,9 +14,6 @@ import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
-import cern.colt.matrix.DoubleFactory3D;
-import cern.colt.matrix.DoubleMatrix3D;
-
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.ztools.model.Results;
 
@@ -121,8 +118,10 @@ public class ResultsFile extends ResourceFile {
 		String[] rowNames = new String[numRows];
 		rowMap.keySet().toArray(rowNames);
 		
-		DoubleMatrix3D data = 
-			DoubleFactory3D.dense.make(numRows, numColumns, numParams);
+		results.setColNames(columnNames);
+		results.setRowNames(rowNames);
+		results.setParamNames(paramNames);
+		results.createData();
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];
@@ -133,13 +132,8 @@ public class ResultsFile extends ResourceFile {
 			//DoubleMatrix1D params = (DoubleMatrix1D) result[1];
 			
 			for (int pi = 0; pi < numParams; pi++)
-				data.setQuick(columnIndex, rowIndex, pi, paramValues[pi]);
+				results.setDataValue(columnIndex, rowIndex, pi, paramValues[pi]);
 		}
-		
-		results.setColNames(columnNames);
-		results.setRowNames(rowNames);
-		results.setParamNames(paramNames);
-		results.setData(data);
 	}
 	
 	public void write(Results results, boolean orderByColumn) 

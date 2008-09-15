@@ -17,8 +17,10 @@ import cern.colt.matrix.DoubleMatrix3D;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.resources.ResultsFile;
+import es.imim.bg.ztools.zcalc.ui.commands.OpenAnalysisCommand;
 import es.imim.bg.ztools.zcalc.ui.utils.Options;
 import es.imim.bg.ztools.zcalc.ui.views.AnalysisView;
+import es.imim.bg.ztools.zcalc.ui.views.ResultsView;
 
 public class AppController {
 
@@ -31,7 +33,7 @@ public class AppController {
 		
 		int rows = 40;
 		int cols = 12;
-		DoubleMatrix3D data = DoubleFactory3D.dense.random(cols, rows, 2);
+		DoubleMatrix3D data = DoubleFactory3D.dense.random(2, rows, cols);
 		
 		final String[] rowNames = new String[data.rows()];
 		for (int i = 0; i < rowNames.length; i++)
@@ -44,12 +46,13 @@ public class AppController {
 		Results results = new Results(
 				colNames, 
 				rowNames, 
-				new String[] {"param1", "param2"}, 
+				new String[] {"right-p-value", "param2"}, 
 				data);
+		
 		Analysis analysis = new Analysis();
 		analysis.setResults(results);
 		
-		AnalysisView view = new AnalysisView(analysis);
+		ResultsView view = new ResultsView(results);
 		view.setName("demo");
 		
 		gui.addWorkspaceView(view);
@@ -82,50 +85,7 @@ public class AppController {
 	}
 	
 	private void fileLoadAction() {			
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
-		fileChooser.setDialogTitle("Select the folder that contains the analysis data");
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		//FileFilter fileFilter = new FileFilter(LangKey.XMI);
-		//fileFilter.setDescription(LangManager.instance().getString(LangKey.XMI_FILES));
-		//fileChooser.addChoosableFileFilter(fileFilter);
-		int retval = fileChooser.showOpenDialog(gui);
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File selectedPath = fileChooser.getSelectedFile();
-			if (selectedPath != null) {
-				Options.instance().setLastPath(selectedPath.getParent());
-				Options.instance().save();
-				
-				//TODO: Load analysis data
-				File resultsFile = new File(selectedPath, "results.csv"); //FIXME results.csv from a constant
-				ResultsFile rf = new ResultsFile(resultsFile);
-				try {
-					gui.setStatusText("Reading " + rf.getResourcePath() + "...");
-					
-					Results results = rf.read();
-					Analysis analysis = new Analysis();
-					analysis.setResults(results); //TEMP
-					
-					gui.setStatusText("Initializing view...");
-					
-					AnalysisView view = new AnalysisView(analysis);
-					
-					view.setName(rf.getResourcePath());
-					
-					gui.addWorkspaceView(view); //FIXME: use analysis name
-					
-					gui.setStatusText("Ok");
-					
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (DataFormatException e) {
-					e.printStackTrace();
-				}
-				//refresh();
-			}
-		}
+		OpenAnalysisCommand.create(gui).execute();
 	}
 
 }

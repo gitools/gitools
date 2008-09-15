@@ -60,16 +60,29 @@ public class Results {
 
 	public void createData() {
 		data = DoubleFactory3D.dense.make(
-				colNames.length, 
-				rowNames.length, 
-				paramNames.length);
+				paramNames.length,
+				rowNames.length,
+				colNames.length
+				);
 	}
 	
-	public void setDataValue(int colIndex, int rowIndex, int paramIndex, double value) {
-		data.setQuick(colIndex, rowIndex, paramIndex, value);
+	public double getDataValue(int colIndex, int rowIndex, int paramIndex) {
+		return data.getQuick(paramIndex, rowIndex, colIndex);
 	}
 
-	public double getDataValue(int colIndex, int rowIndex, int paramIndex) {
-		return data.getQuick(colIndex, rowIndex, paramIndex);
+	public void setDataValue(int colIndex, int rowIndex, int paramIndex, double value) {
+		data.setQuick(paramIndex, rowIndex, colIndex, value);
+	}
+	
+	public int getParamIndex(String name) {
+		int index = 0;
+		while (index < paramNames.length 
+				&& !paramNames[index].equals(name))
+			index++;
+		
+		if (index >= paramNames.length)
+			throw new RuntimeException("Parameter called '" + name + "' doesn't exists.");
+		
+		return index;
 	}
 }

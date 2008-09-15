@@ -30,16 +30,16 @@ public class ColorMatrix extends JPanel {
 		}
 		
 		public int getColumnCount() {
-			return model.getColumnCount();
+			return model.getColumnCount() + 1;
 		}
 
 		public String getColumnName(int col) {
-			return col < model.getColumnCount() - 1 ? 
+			return col < model.getColumnCount() ? 
 					model.getColumnName(col) : " ";
 		}
 
 		public Object getValueAt(int row, int col) {
-			return col < model.getColumnCount() - 1 ?
+			return col < model.getColumnCount() ?
 					model.getValue(row, col) :
 					model.getRowName(row);
 		}
@@ -58,7 +58,7 @@ public class ColorMatrix extends JPanel {
 		}
 		
 		public Class<?> getColumnClass(int col) {
-			return col < model.getColumnCount() - 1 ? 
+			return col < model.getColumnCount() ? 
 					Double.class : String.class;
 		}
 	}
