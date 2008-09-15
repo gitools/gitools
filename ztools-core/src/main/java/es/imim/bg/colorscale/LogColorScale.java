@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import es.imim.bg.colorscale.util.ColorUtils;
 
-public class QValueColorScale implements ColorScale {
+public class LogColorScale implements ColorScale {
 	
 	private static final Color notANumberColor = Color.WHITE;
 	private static final Color posInfinityColor = Color.GREEN;
@@ -19,11 +19,11 @@ public class QValueColorScale implements ColorScale {
 	
 	private double logFactor;
 
-	public QValueColorScale(double logFactor) {
+	public LogColorScale(double logFactor) {
 		this.logFactor = logFactor;
 	}
 	
-	public QValueColorScale() {
+	public LogColorScale() {
 		this(defaultLogFactor);
 	}
 	

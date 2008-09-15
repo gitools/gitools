@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -97,6 +98,13 @@ public class ColorMatrix extends JPanel {
 			label.setToolTipText(decoration.getToolTip());
 			label.setForeground(decoration.getFgColor());
 			label.setBackground(decoration.getBgColor());
+
+			switch (decoration.textAlign) {
+			case left: label.setHorizontalAlignment(SwingConstants.LEFT); break;
+			case right: label.setHorizontalAlignment(SwingConstants.RIGHT); break;
+			case center: label.setHorizontalAlignment(SwingConstants.CENTER); break;
+			}
+			
 		}
 	}
 

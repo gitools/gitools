@@ -29,7 +29,7 @@ public class AppView extends JFrame {
 		createComponents();
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(600, 500));
+		setPreferredSize(new Dimension(800, 600));
 		pack();
 	}
 

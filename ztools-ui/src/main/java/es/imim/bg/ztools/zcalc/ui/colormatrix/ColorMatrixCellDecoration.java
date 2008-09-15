@@ -4,13 +4,19 @@ import java.awt.Color;
 
 public class ColorMatrixCellDecoration {
 
+	public enum TextAlignment {
+		left, right, center
+	}
+	
 	protected String text;
+	protected TextAlignment textAlign;
 	protected String toolTip;
 	protected Color fgColor;
 	protected Color bgColor;
 	
 	public ColorMatrixCellDecoration() {
 		this.text = "";
+		this.textAlign = TextAlignment.left;
 		this.toolTip = "";
 		this.fgColor = Color.BLACK;
 		this.bgColor = Color.WHITE;
@@ -22,6 +28,14 @@ public class ColorMatrixCellDecoration {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public TextAlignment getTextAlign() {
+		return textAlign;
+	}
+	
+	public void setTextAlign(TextAlignment textAlign) {
+		this.textAlign = textAlign;
 	}
 
 	public String getToolTip() {

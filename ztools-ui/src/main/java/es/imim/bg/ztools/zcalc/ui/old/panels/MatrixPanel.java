@@ -15,7 +15,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import es.imim.bg.colorscale.ColorScale;
-import es.imim.bg.colorscale.QValueColorScale;
+import es.imim.bg.colorscale.LogColorScale;
 
 public class MatrixPanel extends JPanel {
 
@@ -123,7 +123,7 @@ public class MatrixPanel extends JPanel {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setDefaultRenderer(Double.class, new ColorRenderer(
-				new QValueColorScale()));
+				new LogColorScale()));
 		
 		final JScrollPane scroll = new JScrollPane();
 		scroll.setAutoscrolls(true);
