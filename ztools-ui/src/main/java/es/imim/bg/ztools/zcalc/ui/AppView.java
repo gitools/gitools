@@ -40,6 +40,7 @@ public class AppView extends JFrame {
 		add(workspace, BorderLayout.CENTER);
 		
 		statusBar = new StatusBar();
+		
 		add(statusBar, BorderLayout.SOUTH);
 	}
 	
@@ -64,6 +65,8 @@ public class AppView extends JFrame {
 			workspace.addTab(name, panel);
 		else
 			workspace.addTab(name, icon, panel);
+		
+		workspace.setSelectedComponent(panel);
 	}
 	
 	public void setStatusText(String text) {

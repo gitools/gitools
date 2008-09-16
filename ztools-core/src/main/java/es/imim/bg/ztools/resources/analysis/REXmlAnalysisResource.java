@@ -207,4 +207,9 @@ public class REXmlAnalysisResource implements AnalysisResource {
 		}
 		return index;
 	}
+
+	@Override
+	public Analysis load() {
+		throw new UnsupportedOperationException("RE xml loading unsupported.");
+	}
 }

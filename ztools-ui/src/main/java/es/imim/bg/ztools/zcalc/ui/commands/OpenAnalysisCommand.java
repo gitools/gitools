@@ -10,6 +10,8 @@ import javax.swing.JFileChooser;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.resources.ResultsFile;
+import es.imim.bg.ztools.resources.analysis.AnalysisResource;
+import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
 import es.imim.bg.ztools.zcalc.ui.AppView;
 import es.imim.bg.ztools.zcalc.ui.utils.Options;
 import es.imim.bg.ztools.zcalc.ui.views.ResultsView;
@@ -42,36 +44,33 @@ public class OpenAnalysisCommand implements Command {
 			Options.instance().save();
 
 			// TODO: Load analysis data
-			File resultsFile = new File(selectedPath, "results.csv"); // FIXME
+			//File resultsFile = new File(selectedPath, "results.csv"); // FIXME
 																		// results
 																		// .csv
 																		// from
 																		// a
 																		// constant
-			ResultsFile rf = new ResultsFile(resultsFile);
+			//ResultsFile rf = new ResultsFile(resultsFile);
 			try {
+				AnalysisResource analysisRes =
+					new TabAnalysisResource(selectedPath.getAbsolutePath());
+				
+				Analysis analysis = analysisRes.load();
+				
 				appView.setStatusText(
-						"Reading " + rf.getResourcePath() + "...");
-
-				Results results = rf.read();
-				Analysis analysis = new Analysis();
-				analysis.setResults(results); // TEMP
+						"Reading " + selectedPath.getAbsolutePath() + "...");
 
 				appView.setStatusText("Initializing view...");
 
-				ResultsView view = new ResultsView(results);
+				ResultsView view = new ResultsView(analysis.getResults());
 
-				view.setName(rf.getResourcePath()); // FIXME: use analysis name
+				view.setName(analysis.getName());
 
 				appView.addWorkspaceView(view);
 
 				appView.setStatusText("Ok");
 
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (DataFormatException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// refresh();

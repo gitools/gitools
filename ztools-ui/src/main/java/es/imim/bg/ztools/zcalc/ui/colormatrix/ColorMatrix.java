@@ -1,7 +1,14 @@
 package es.imim.bg.ztools.zcalc.ui.colormatrix;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,15 +16,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class ColorMatrix extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
-
+	
 	private class ColorMatrixModelAddapter implements TableModel {
 
 		private ColorMatrixModel model;
@@ -108,9 +118,72 @@ public class ColorMatrix extends JPanel {
 		}
 	}
 
+	public class RotatedTableCellRenderer
+			//extends DefaultTableCellRenderer {
+			extends JLabel implements TableCellRenderer {
+
+		private static final long serialVersionUID = 8878769979396041532L;
+
+		protected double radianAngle = (-90.0 / 180.0) * Math.PI;
+		protected boolean isSelected;
+		
+		public Component getTableCellRendererComponent(
+				JTable table, Object value, boolean isSelected, 
+				boolean hasFocus, int row, int column) {
+			
+			this.setText(value.toString());
+			
+			int[] selColumns = table.getSelectedColumns();
+			Arrays.sort(selColumns);
+			int i = Arrays.binarySearch(selColumns, column);
+			
+			System.out.println(column + " : " + i + " : cols:" + Arrays.toString(selColumns));
+			
+			this.isSelected = i >= 0;
+			
+			return this;
+		}
+
+		public void paint(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			final int w = this.getWidth();
+			final int h = this.getHeight();
+			
+			g2.setClip(0, 0, w, h);
+			g2.setFont(this.getFont());
+			
+			if (isSelected)
+				g2.setBackground(Color.CYAN);
+			g2.clearRect(0, 0, w, h);
+			
+			g2.setColor(Color.GRAY);
+			g2.drawRect(0, 0, w, h);
+			
+			AffineTransform at = new AffineTransform();
+			at.setToTranslation(this.getWidth(), this.getHeight());
+			g2.transform(at);
+			at.setToRotation(radianAngle);
+			g2.transform(at);
+			
+			Rectangle2D r = g2.getFontMetrics().getStringBounds(this.getText(), g2);
+			float textHeight = (float) r.getHeight();
+
+			g2.setColor(Color.BLACK);
+			g2.drawString(this.getText(), 4.0f, -(w + 8 - textHeight) / 2);
+		}
+	}
+	
 	private JTable table;
 	
+	private int columnsHeight;
+	private int columnsWidth;
+	private int rowsHeight;
+	
 	public ColorMatrix() {
+	
+		this.columnsHeight = 160;
+		this.columnsWidth = 30;
+		this.rowsHeight = 30;
 		
 		createComponents();
 	}
@@ -118,28 +191,81 @@ public class ColorMatrix extends JPanel {
 	private void createComponents() {
 		
 		table = new JTable();
+		
+		table.setFillsViewportHeight(true);
+		
+		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
+		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		//table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		final JScrollPane scroll = new JScrollPane();
-		scroll.setAutoscrolls(true);
-		scroll.setViewportView(table);
+		final JScrollPane scroll = new JScrollPane(table);
+		//scroll.setAutoscrolls(true);
+		//scroll.setViewportView(table);
 		
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
 	}
 	
+	private void refreshTableColumnsWidth() {
+		TableColumnModel colModel = table.getColumnModel();
+		final int lastColumn = colModel.getColumnCount() - 1;
+		for (int i = 0; i < lastColumn; i++) {
+			TableColumn col = colModel.getColumn(i);
+			col.setPreferredWidth(columnsWidth);
+			col.setHeaderRenderer(new RotatedTableCellRenderer());
+		}
+		TableColumn col = colModel.getColumn(lastColumn);
+		col.setResizable(true);
+		col.setMinWidth(400);
+		col.setHeaderRenderer(new RotatedTableCellRenderer());
+	}
+	
 	public void refresh() {
 		table.repaint();
+		table.getTableHeader().repaint();
 	}
 	
 	public void setModel(ColorMatrixModel model) {
 		table.setModel(new ColorMatrixModelAddapter(model));
+		
+		refreshTableColumnsWidth();
+		table.setRowHeight(rowsHeight);
+		
 		table.repaint();
 	}
-	
+
 	public void setCellDecorator(ColorMatrixCellDecorator decorator) {
 		table.setDefaultRenderer(Double.class, new TableCellRendererAdapter(decorator));
 		table.repaint();
 	}
+	
+	public int getColumnsWidth() {
+		return columnsWidth;
+	}
+	
+	public void setColumnsWidth(int columnsWidth) {
+		this.columnsWidth = columnsWidth;
+		refreshTableColumnsWidth();
+	}
+	
+	public int getRowsHeight() {
+		return rowsHeight;
+	}
+	
+	public void setRowsHeight(int rowsHeight) {
+		this.rowsHeight = rowsHeight;
+		table.setRowHeight(rowsHeight);
+	}
+	
+	public ListSelectionModel getTableSelectionModel() {
+		return table.getSelectionModel();
+	}
+	
+	public ListSelectionModel getColumnSelectionModel() {
+		return table.getColumnModel().getSelectionModel();	
+	}
+	
+	
 }

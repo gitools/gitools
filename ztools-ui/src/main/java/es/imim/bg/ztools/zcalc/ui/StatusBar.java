@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class StatusBar extends JPanel {
 
@@ -17,7 +18,9 @@ public class StatusBar extends JPanel {
 	
 	private void createComponents() {
 		statusLabel = new JLabel();
-		//statusLabel.setHorizontalAlignment();
+		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		setLayout(new BorderLayout());
 		add(statusLabel, BorderLayout.CENTER);
 	}
 	

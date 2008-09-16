@@ -31,37 +31,11 @@ public class ResourceFile {
 	}
 	
 	protected Reader openReader() throws FileNotFoundException, IOException {
-		if (resourcePath == null)
-			return null;
-		
-		if (resourcePath.endsWith(".gz"))
-			return
-				new InputStreamReader(
-					new GZIPInputStream(
-							new FileInputStream(
-									new File(resourcePath))));
-		else
-			return 
-				new BufferedReader(
-					new FileReader(
-							new File(resourcePath)));
+		return openReader(resourcePath);
 	}
 	
 	protected Writer openWriter() throws FileNotFoundException, IOException {
-		if (resourcePath == null)
-			return null;
-		
-		if (resourcePath.endsWith(".gz"))
-			return
-				new OutputStreamWriter(
-					new GZIPOutputStream(
-							new FileOutputStream(
-									new File(resourcePath))));
-		else
-			return 
-				new BufferedWriter(
-					new FileWriter(
-							new File(resourcePath)));
+		return openWriter(resourcePath);
 	}
 	
 	public String getResourcePath() {
@@ -70,5 +44,49 @@ public class ResourceFile {
 	
 	public File getResourceFile() {
 		return resourceFile;
+	}
+
+	public static Reader openReader(File path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		if (path.getName().endsWith(".gz"))
+			return
+				new InputStreamReader(
+					new GZIPInputStream(
+							new FileInputStream(path)));
+		else
+			return 
+				new BufferedReader(
+					new FileReader(path));
+	}
+	
+	protected Writer openWriter(File path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		if (path.getName().endsWith(".gz"))
+			return
+				new OutputStreamWriter(
+					new GZIPOutputStream(
+							new FileOutputStream(path)));
+		else
+			return 
+				new BufferedWriter(
+					new FileWriter(path));
+	}
+	
+	public static Reader openReader(String path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		return openReader(new File(path));
+	}
+	
+	protected Writer openWriter(String path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		return openWriter(new File(path));
 	}
 }
