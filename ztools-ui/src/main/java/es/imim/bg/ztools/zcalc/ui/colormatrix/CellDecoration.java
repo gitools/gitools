@@ -2,7 +2,7 @@ package es.imim.bg.ztools.zcalc.ui.colormatrix;
 
 import java.awt.Color;
 
-public class ColorMatrixCellDecoration {
+public class CellDecoration {
 
 	public enum TextAlignment {
 		left, right, center
@@ -14,7 +14,7 @@ public class ColorMatrixCellDecoration {
 	protected Color fgColor;
 	protected Color bgColor;
 	
-	public ColorMatrixCellDecoration() {
+	public CellDecoration() {
 		this.text = "";
 		this.textAlign = TextAlignment.left;
 		this.toolTip = "";

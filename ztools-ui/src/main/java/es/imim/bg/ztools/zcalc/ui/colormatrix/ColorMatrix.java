@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -27,6 +26,10 @@ import javax.swing.table.TableModel;
 public class ColorMatrix extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
+	
+	public enum SelectionMode {
+		columns, rows
+	}
 	
 	private class ColorMatrixModelAddapter implements TableModel {
 
@@ -105,7 +108,7 @@ public class ColorMatrix extends JPanel {
 				JLabel label,
 				Object value) {
 
-			ColorMatrixCellDecoration decoration = new ColorMatrixCellDecoration();
+			CellDecoration decoration = new CellDecoration();
 			decorator.decorate(decoration, (Double) value);
 			label.setText(decoration.getText());
 			label.setToolTipText(decoration.getToolTip());
@@ -122,14 +125,20 @@ public class ColorMatrix extends JPanel {
 	}
 
 	public class RotatedTableCellRenderer
-			//extends DefaultTableCellRenderer {
 			extends JLabel implements TableCellRenderer {
 
 		private static final long serialVersionUID = 8878769979396041532L;
 
-		protected double radianAngle = (-90.0 / 180.0) * Math.PI;
+		protected static final double radianAngle = (-90.0 / 180.0) * Math.PI;
+		
+		protected boolean highlightSelected;
+		
 		protected boolean isSelected;
 		
+		public RotatedTableCellRenderer(boolean highlightSelected) {
+			this.highlightSelected = highlightSelected;
+		}
+
 		public Component getTableCellRendererComponent(
 				JTable table, Object value, boolean isSelected, 
 				boolean hasFocus, int row, int column) {
@@ -140,7 +149,7 @@ public class ColorMatrix extends JPanel {
 			Arrays.sort(selColumns);
 			int i = Arrays.binarySearch(selColumns, column);
 			
-			System.out.println(column + " : " + i + " : cols:" + Arrays.toString(selColumns));
+			//System.out.println(column + " : " + i + " : cols:" + Arrays.toString(selColumns));
 			
 			this.isSelected = i >= 0;
 			
@@ -155,8 +164,9 @@ public class ColorMatrix extends JPanel {
 			g2.setClip(0, 0, w, h);
 			g2.setFont(this.getFont());
 			
-			if (isSelected)
-				g2.setBackground(Color.CYAN);
+			if (highlightSelected && isSelected)
+				g2.setBackground(Color.ORANGE);
+			
 			g2.clearRect(0, 0, w, h);
 			
 			g2.setColor(Color.GRAY);
@@ -178,12 +188,16 @@ public class ColorMatrix extends JPanel {
 	
 	private JTable table;
 	
+	private SelectionMode selMode;
+	
 	private int columnsHeight;
 	private int columnsWidth;
 	private int rowsHeight;
 	
 	public ColorMatrix() {
 	
+		this.selMode = SelectionMode.columns;
+		
 		this.columnsHeight = 160;
 		this.columnsWidth = 30;
 		this.rowsHeight = 30;
@@ -201,10 +215,10 @@ public class ColorMatrix extends JPanel {
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		//table.setCellSelectionEnabled(true);
-		table.setRowSelectionAllowed(false);
-		table.setColumnSelectionAllowed(true);
+		
 		table.getTableHeader().setReorderingAllowed(false);
+		
+		refreshSelectionMode();
 		
 		final JScrollPane scroll = new JScrollPane(table);
 		//scroll.setAutoscrolls(true);
@@ -214,18 +228,42 @@ public class ColorMatrix extends JPanel {
 		add(scroll, BorderLayout.CENTER);
 	}
 	
+	private void refreshSelectionMode() {
+		switch(selMode) {
+		case columns:
+			table.setRowSelectionAllowed(false);
+			table.setColumnSelectionAllowed(true);
+			break;
+		case rows:
+			table.setRowSelectionAllowed(true);
+			table.setColumnSelectionAllowed(false);
+			break;
+		}
+		
+		refreshTableColumnsRenderer();
+	}
+	
 	private void refreshTableColumnsWidth() {
 		TableColumnModel colModel = table.getColumnModel();
 		final int lastColumn = colModel.getColumnCount() - 1;
 		for (int i = 0; i < lastColumn; i++) {
 			TableColumn col = colModel.getColumn(i);
 			col.setPreferredWidth(columnsWidth);
-			//col.setHeaderRenderer(new RotatedTableCellRenderer());
 		}
 		TableColumn col = colModel.getColumn(lastColumn);
 		col.setResizable(true);
 		col.setMinWidth(400);
-		//col.setHeaderRenderer(new RotatedTableCellRenderer());
+	}
+	
+	private void refreshTableColumnsRenderer() {
+		TableColumnModel colModel = table.getColumnModel();
+		final int lastColumn = colModel.getColumnCount();
+		for (int i = 0; i < lastColumn; i++) {
+			TableColumn col = colModel.getColumn(i);
+			col.setHeaderRenderer(
+					new RotatedTableCellRenderer(
+							selMode != SelectionMode.rows));
+		}
 	}
 	
 	public void refresh() {
@@ -235,7 +273,8 @@ public class ColorMatrix extends JPanel {
 	
 	public void setModel(ColorMatrixModel model) {
 		table.setModel(new ColorMatrixModelAddapter(model));
-		
+
+		refreshTableColumnsRenderer();
 		refreshTableColumnsWidth();
 		table.setRowHeight(rowsHeight);
 		
@@ -273,5 +312,12 @@ public class ColorMatrix extends JPanel {
 		return table.getColumnModel().getSelectionModel();	
 	}
 	
+	public SelectionMode getSelectionMode() {
+		return selMode;
+	}
 	
+	public void setSelectionMode(SelectionMode mode) {
+		this.selMode = mode;
+		refreshSelectionMode();
+	}
 }
