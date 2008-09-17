@@ -95,6 +95,9 @@ public class ColorMatrix extends JPanel {
 			
 			configureRenderer(tableRenderer, value);
 			
+			if (isSelected)
+				label.setBackground(label.getBackground().darker());
+			
 			return label;
 		}
 
@@ -197,8 +200,11 @@ public class ColorMatrix extends JPanel {
 		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		//table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		//table.setCellSelectionEnabled(true);
+		table.setRowSelectionAllowed(false);
+		table.setColumnSelectionAllowed(true);
+		table.getTableHeader().setReorderingAllowed(false);
 		
 		final JScrollPane scroll = new JScrollPane(table);
 		//scroll.setAutoscrolls(true);
@@ -214,12 +220,12 @@ public class ColorMatrix extends JPanel {
 		for (int i = 0; i < lastColumn; i++) {
 			TableColumn col = colModel.getColumn(i);
 			col.setPreferredWidth(columnsWidth);
-			col.setHeaderRenderer(new RotatedTableCellRenderer());
+			//col.setHeaderRenderer(new RotatedTableCellRenderer());
 		}
 		TableColumn col = colModel.getColumn(lastColumn);
 		col.setResizable(true);
 		col.setMinWidth(400);
-		col.setHeaderRenderer(new RotatedTableCellRenderer());
+		//col.setHeaderRenderer(new RotatedTableCellRenderer());
 	}
 	
 	public void refresh() {
