@@ -1,22 +1,15 @@
 package es.imim.bg.ztools.zcalc.ui.panels.results;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.zcalc.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.zcalc.ui.colormatrix.ColorMatrix;
-import es.imim.bg.ztools.zcalc.ui.colormatrix.CellDecoration;
-import es.imim.bg.ztools.zcalc.ui.colormatrix.ColorMatrixCellDecorator;
 import es.imim.bg.ztools.zcalc.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.zcalc.ui.colormatrix.DefaultColorMatrixCellDecorator;
 import es.imim.bg.ztools.zcalc.ui.panels.results.ResultsConfigPanel.ResultsConfigPanelListener;

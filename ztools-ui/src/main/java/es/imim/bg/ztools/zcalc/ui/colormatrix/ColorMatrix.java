@@ -214,7 +214,8 @@ public class ColorMatrix extends JPanel {
 		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		//table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		table.getTableHeader().setReorderingAllowed(false);
 		
