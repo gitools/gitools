@@ -22,8 +22,7 @@ import es.imim.bg.ztools.model.Modules;
 
 public class ModulesFile extends ResourceFile {
 
-	private static final CSVStrategy csvStrategy = 
-		new CSVStrategy('\t', '"', '#', true, true, true);
+	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public static final int defaultMinModuleSize = 20;
 	public static final int defaultMaxModuleSize = Integer.MAX_VALUE;
@@ -207,16 +206,5 @@ public class ModulesFile extends ResourceFile {
 			}
 		}
 	}
-	
-	/*public String[] getModuleNames() {
-		return moduleNames;
-	}
-	
-	public int[][] getModuleItemIndices() {
-		return moduleItemIndices;
-	}
-	
-	public int[] getItemsOrder() {
-		return itemsOrder;
-	}*/
+
 }

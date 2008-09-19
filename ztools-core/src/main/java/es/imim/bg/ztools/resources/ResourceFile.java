@@ -16,8 +16,13 @@ import java.io.Writer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.csv.CSVStrategy;
+
 public class ResourceFile {
 
+	public static final CSVStrategy defaultCsvStrategy = 
+		new CSVStrategy('\t', '"', '#', true, true, true);
+	
 	private String resourcePath;
 	private File resourceFile;
 	

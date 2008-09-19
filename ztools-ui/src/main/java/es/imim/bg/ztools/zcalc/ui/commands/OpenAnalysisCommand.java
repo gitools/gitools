@@ -43,14 +43,6 @@ public class OpenAnalysisCommand implements Command {
 			Options.instance().setLastPath(selectedPath.getParent());
 			Options.instance().save();
 
-			// TODO: Load analysis data
-			//File resultsFile = new File(selectedPath, "results.csv"); // FIXME
-																		// results
-																		// .csv
-																		// from
-																		// a
-																		// constant
-			//ResultsFile rf = new ResultsFile(resultsFile);
 			try {
 				AnalysisResource analysisRes =
 					new TabAnalysisResource(selectedPath.getAbsolutePath());

@@ -30,7 +30,7 @@ public class Main {
 	@Option(name = "-quiet", usage = "Don't print any information.")
 	public boolean quiet = false;
 
-	@Option(name = "-verbose", usage = "Print extra information.")
+	@Option(name = "-v", aliases = "-verbose", usage = "Print extra information.")
 	public boolean verbose = false;
 
 	@Option(name = "-debug", usage = "Print debug level information.")

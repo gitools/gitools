@@ -31,7 +31,6 @@ public class Options {
 	
 	private Properties getDefaults() {
 		Properties defaults = new Properties();
-		//defaults.setProperty("umltocsp.language", LangManager.KEY_ENGLISH);
 		return defaults;
 	}
 	
@@ -43,20 +42,24 @@ public class Options {
 							new FileInputStream(file)));
 		} catch (FileNotFoundException e) {
 			System.err.println("Configuration file doesn't exist: " + appFile);
-			System.err.println("It will be created with defaults on exit.");
+			System.err.println("Created one with defaults.");
+			save(defaults);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Properties properties = new Properties(
-				System.getProperties());
+		Properties properties = new Properties(System.getProperties());
 		properties.putAll(defaults);
 		properties.putAll(config);
 		return properties;
 	}
 	
 	public void save() {
+		save(props);
+	}
+	
+	public void save(Properties properties) {
 		try {
-			props.storeToXML(
+			properties.storeToXML(
 					new FileOutputStream(appFile), "Options");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

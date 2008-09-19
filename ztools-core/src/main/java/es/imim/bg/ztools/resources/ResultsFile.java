@@ -19,16 +19,8 @@ import es.imim.bg.ztools.model.Results;
 
 public class ResultsFile extends ResourceFile {
 	
-	protected static final CSVStrategy csvStrategy = 
-		new CSVStrategy('\t', '"', '#', true, true, true);
-	
-	/*private String[] columnNames;
-	private String[] rowNames;
-	private String[] paramNames;
-	
-	//private ObjectMatrix2D data;
-	private DoubleMatrix3D data;
-	*/
+	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
+
 	public ResultsFile() {
 		super((String)null); //FIXME
 	}
@@ -145,7 +137,7 @@ public class ResultsFile extends ResourceFile {
 	public void write(Writer writer, Results results, boolean orderByColumn) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
-				csvStrategy.getDelimiter(), csvStrategy.getCommentStart());
+				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
 		
 		out.writeQuotedValue("column");
 		out.writeSeparator();

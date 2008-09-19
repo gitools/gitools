@@ -32,7 +32,8 @@ public class REXmlAnalysisResource implements AnalysisResource {
 	
 	public void save(Analysis analysis) throws IOException, DataFormatException {
 		
-		File workDirFile = new File(workdir);
+		String dirName = workdir + File.separator + analysis.getName();
+		File workDirFile = new File(dirName);
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
 		
@@ -57,7 +58,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 			paramIndexMap.put(paramNames[i], new Integer(i));
 		
 		int indexOfN = indexOfParam(paramIndexMap, "N");
-		int indexOfRightPvalue = indexOfParam(paramIndexMap, "rigth-p-value");
+		int indexOfRightPvalue = indexOfParam(paramIndexMap, "right-p-value");
 		
 		int numConditions = condNames.length;
 		int numModules = moduleNames.length;

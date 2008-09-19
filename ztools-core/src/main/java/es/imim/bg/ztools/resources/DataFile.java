@@ -19,15 +19,7 @@ import es.imim.bg.ztools.model.Data;
 
 public class DataFile extends ResourceFile {
 
-	protected static final CSVStrategy csvStrategy = 
-		new CSVStrategy('\t', '"', '#', true, true, true);
-	
-	/*protected String name;
-	
-	protected String[] columnNames;
-	protected String[] rowNames;
-	
-	protected DoubleMatrix2D data;*/
+	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public DataFile(String fileName) {
 		super(fileName);
@@ -168,21 +160,5 @@ public class DataFile extends ResourceFile {
 		
 		monitor.end();
 	}
-	
-	/*public String getName() {
-		return name;
-	}
-	
-	public String[] getColumnNames() {
-		return columnNames;
-	}
-	
-	public String[] getRowNames() {
-		return rowNames;
-	}
-	
-	public DoubleMatrix2D getData() {
-		return data;
-	}*/
 	
 }

@@ -43,7 +43,7 @@ public class ZCalcCommand {
 	
 	private String dataFile;
 	
-	private String groupsFile;
+	private String modulesFile;
 	
 	private int minGroupSize;
 	private int maxGroupSize;
@@ -63,7 +63,7 @@ public class ZCalcCommand {
 		this.testName = testName;
 		this.samplingNumSamples = samplingNumSamples;
 		this.dataFile = dataFile;
-		this.groupsFile = groupsFile;
+		this.modulesFile = groupsFile;
 		this.minGroupSize = minGroupSize;
 		this.maxGroupSize = maxGroupSize;
 		this.workdir = workdir;
@@ -84,13 +84,15 @@ public class ZCalcCommand {
 		
 		// Load data and modules
 		
-		monitor.begin("Loading input data ...", 1);
+		monitor.begin("Loading ...", 1);
+		monitor.info("Data: " + dataFile);
+		monitor.info("Modules: " + modulesFile);
 		
 		Data data = new Data();
 		Modules modules = new Modules();
 		loadDataAndModules(
 				data, modules, 
-				dataFile, groupsFile, 
+				dataFile, modulesFile, 
 				minGroupSize, maxGroupSize,
 				monitor.subtask());
 		
@@ -111,9 +113,15 @@ public class ZCalcCommand {
 		
 		// Save analysis
 		
-		monitor.begin("Saving analysis in '" + workdir + File.separator + analysisName + "'...", 1);
+		monitor.begin("Saving analysis ...", 1);
+		monitor.info("Location: " + workdir + File.separator + analysisName);
 	
-		output.save(analysis);
+		new TabAnalysisResource(workdir, resultsByCond, defaultSep, defaultQuote)
+			.save(analysis);
+		
+		if (outputFormat.equalsIgnoreCase("rexml"))
+			new REXmlAnalysisResource(workdir, minGroupSize, maxGroupSize)
+				.save(analysis);
 		
 		monitor.end();
 	}
