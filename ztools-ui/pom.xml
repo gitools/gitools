@@ -27,7 +27,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>es.imim.bg.ztools.zcalc.ui.Main</mainClass>
+							<mainClass>es.imim.bg.ztools.ui.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
