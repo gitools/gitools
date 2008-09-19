@@ -8,7 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -23,12 +27,16 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-public class ColorMatrix extends JPanel {
+public class ColorMatrixPanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
 	
 	public enum SelectionMode {
-		columns, rows
+		columns, rows, cells
+	}
+
+	public interface ColorMatrixListener {
+		void selectionChanged();
 	}
 	
 	private class ColorMatrixModelAddapter implements TableModel {
@@ -194,13 +202,22 @@ public class ColorMatrix extends JPanel {
 	private int columnsWidth;
 	private int rowsHeight;
 	
-	public ColorMatrix() {
+	private int selectedLeadColumn;
+	private int selectedLeadRow;
 	
-		this.selMode = SelectionMode.columns;
+	private List<ColorMatrixListener> listeners;
+	
+	public ColorMatrixPanel() {
+	
+		this.selMode = SelectionMode.cells;
 		
 		this.columnsHeight = 160;
 		this.columnsWidth = 30;
 		this.rowsHeight = 30;
+	
+		this.selectedLeadColumn = this.selectedLeadRow = -1;
+	
+		this.listeners = new ArrayList<ColorMatrixListener>(1);
 		
 		createComponents();
 	}
@@ -218,6 +235,22 @@ public class ColorMatrix extends JPanel {
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		table.getTableHeader().setReorderingAllowed(false);
+		
+		final ListSelectionListener listener = new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
+				selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
+				
+				for (ColorMatrixListener listener : listeners)
+					listener.selectionChanged();
+				
+				refresh();
+			}
+		};
+		
+		table.getSelectionModel().addListSelectionListener(listener);
+		table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 		
 		refreshSelectionMode();
 		
@@ -237,6 +270,10 @@ public class ColorMatrix extends JPanel {
 			break;
 		case rows:
 			table.setRowSelectionAllowed(true);
+			table.setColumnSelectionAllowed(false);
+			break;
+		case cells:
+			table.setRowSelectionAllowed(false);
 			table.setColumnSelectionAllowed(false);
 			break;
 		}
@@ -263,7 +300,7 @@ public class ColorMatrix extends JPanel {
 			TableColumn col = colModel.getColumn(i);
 			col.setHeaderRenderer(
 					new RotatedTableCellRenderer(
-							selMode != SelectionMode.rows));
+							selMode == SelectionMode.columns));
 		}
 	}
 	
@@ -320,5 +357,17 @@ public class ColorMatrix extends JPanel {
 	public void setSelectionMode(SelectionMode mode) {
 		this.selMode = mode;
 		refreshSelectionMode();
+	}
+
+	public int getSelectedLeadColumn() {
+		return selectedLeadColumn;
+	}
+	
+	public int getSelectedLeadRow() {
+		return selectedLeadRow;
+	}
+	
+	public void addListener(ColorMatrixListener listener) {
+		listeners.add(listener);
 	}
 }

@@ -9,7 +9,7 @@ import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
 import es.imim.bg.ztools.ui.AppView;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.ResultsView;
+import es.imim.bg.ztools.ui.views.AnalysisView;
 
 public class OpenAnalysisCommand implements Command {
 
@@ -49,7 +49,7 @@ public class OpenAnalysisCommand implements Command {
 
 				appView.setStatusText("Initializing view...");
 
-				ResultsView view = new ResultsView(analysis.getResults());
+				AnalysisView view = new AnalysisView(analysis);
 
 				view.setName(analysis.getName());
 

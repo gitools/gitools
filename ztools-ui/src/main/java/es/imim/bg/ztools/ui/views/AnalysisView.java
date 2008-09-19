@@ -2,35 +2,26 @@ package es.imim.bg.ztools.ui.views;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JSplitPane;
+import javax.swing.JPanel;
 
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.ui.panels.analysis.AnalysisPanel;
 
 public class AnalysisView extends AbstractView {
 
 	private static final long serialVersionUID = -3362979522018421333L;
 	
-	private Analysis analysis;
+	private AnalysisPanel panel;
 	
 	public AnalysisView(Analysis analysis) {
-		
-		this.analysis = analysis;
-		
-		createComponents();
-	}
-	
-	private void createComponents() {
-		
-		Results results = analysis.getResults();
-		
-		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		//splitPane.add(leftPanel);
-		//splitPane.add(colorMatrix);
-		splitPane.setDividerLocation(160);
-		splitPane.setOneTouchExpandable(true);
+		this.panel = new AnalysisPanel(analysis);
 		
 		setLayout(new BorderLayout());
-		add(splitPane, BorderLayout.CENTER);
+		add(panel, BorderLayout.CENTER);
+	}
+	
+	@Override
+	public JPanel getPanel() {
+		return panel;
 	}
 }

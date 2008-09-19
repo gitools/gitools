@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrix;
+import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
 import es.imim.bg.ztools.ui.panels.results.ResultsConfigPanel.ResultsConfigPanelListener;
@@ -31,7 +31,7 @@ public class ResultsPanel extends JPanel {
 	
 	//private JTable paramValuesTable;
 	
-	private ColorMatrix colorMatrix;
+	private ColorMatrixPanel colorMatrixPanel;
 	private DefaultColorMatrixCellDecorator cellDecorator;
 	
 	//private int selColIndex;
@@ -54,7 +54,7 @@ public class ResultsPanel extends JPanel {
 		toolsPanel.addListener(new ResultsToolsListener() {
 			@Override
 			public void selModeChanged() {
-				colorMatrix.setSelectionMode(
+				colorMatrixPanel.setSelectionMode(
 						toolsPanel.getSelMode());
 			}
 
@@ -130,7 +130,7 @@ public class ResultsPanel extends JPanel {
 						configPanel.getCurrentDecorationConfig());
 				
 				refreshColorMatrixWidth();
-				colorMatrix.refresh();
+				colorMatrixPanel.refresh();
 			}
 
 			@Override
@@ -139,17 +139,17 @@ public class ResultsPanel extends JPanel {
 						configPanel.getCurrentDecorationConfig());
 				
 				refreshColorMatrixWidth();
-				colorMatrix.refresh();
+				colorMatrixPanel.refresh();
 			}
 			
 			@Override
 			public void formatChanged() {
-				colorMatrix.refresh();
+				colorMatrixPanel.refresh();
 			}
 
 			@Override
 			public void justificationChanged() {
-				colorMatrix.refresh();
+				colorMatrixPanel.refresh();
 			}
 		});
 		
@@ -216,8 +216,8 @@ public class ResultsPanel extends JPanel {
 		
 		/* Color matrix */
 		
-		colorMatrix = new ColorMatrix();
-		colorMatrix.setModel(new ColorMatrixModel() {
+		colorMatrixPanel = new ColorMatrixPanel();
+		colorMatrixPanel.setModel(new ColorMatrixModel() {
 			@Override
 			public int getColumnCount() {
 				return results.getData().columns();
@@ -243,29 +243,16 @@ public class ResultsPanel extends JPanel {
 		
 		cellDecorator = new DefaultColorMatrixCellDecorator();
 		
-		colorMatrix.setCellDecorator(cellDecorator);
-
-		final ListSelectionListener listener = new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				//selRowIndex = colorMatrix.getTableSelectionModel().getMinSelectionIndex();
-				//selColIndex = colorMatrix.getColumnSelectionModel().getMinSelectionIndex();
-				//paramValuesTable.repaint();
-				colorMatrix.refresh();
-				//System.err.println(selRowIndex + ", " + selColIndex);
-			}
-		};
+		colorMatrixPanel.setCellDecorator(cellDecorator);
 		
-		colorMatrix.getTableSelectionModel().addListSelectionListener(listener);
-		colorMatrix.getColumnSelectionModel().addListSelectionListener(listener);
-		
+		toolsPanel.setSelMode(colorMatrixPanel.getSelectionMode());
 		configPanel.refresh();
 		refreshColorMatrixWidth();
 		
 		final JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(northPanel, BorderLayout.NORTH);
-		centerPanel.add(colorMatrix, BorderLayout.CENTER);
+		centerPanel.add(colorMatrixPanel, BorderLayout.CENTER);
 		
 		setLayout(new BorderLayout());
 		//add(leftPanel, BorderLayout.WEST);
@@ -276,9 +263,13 @@ public class ResultsPanel extends JPanel {
 		CellDecorationConfig config = 
 			configPanel.getCurrentDecorationConfig();
 		
-		colorMatrix.setColumnsWidth(
+		colorMatrixPanel.setColumnsWidth(
 				config.showColors ? 
 						defaultColorColumnsWidth 
 						: defaultValueColumnsWidth);
+	}
+	
+	public ColorMatrixPanel getColorMatrixPanel() {
+		return colorMatrixPanel;
 	}
 }

@@ -71,5 +71,6 @@ public class AppView extends JFrame {
 	
 	public void setStatusText(String text) {
 		statusBar.setText(text);
+		repaint();
 	}
 }
