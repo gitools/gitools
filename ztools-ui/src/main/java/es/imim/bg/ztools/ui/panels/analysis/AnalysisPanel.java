@@ -42,6 +42,9 @@ public class AnalysisPanel extends JPanel {
 				int colIndex = resultsPanel.getColorMatrixPanel().getSelectedLeadColumn();
 				int rowIndex = resultsPanel.getColorMatrixPanel().getSelectedLeadRow();
 				
+				if (colIndex < 0 || rowIndex < 0)
+					return;
+				
 				int numParams = results.getParamNames().length;
 				
 				for (int i = 0; i < numParams; i++)

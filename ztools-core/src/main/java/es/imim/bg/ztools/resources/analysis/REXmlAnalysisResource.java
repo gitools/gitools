@@ -116,7 +116,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 									/ (double)(a + b + c + d));
 							
 							valueSt = Integer.toString(a);
-							zscoreSt = Double.toString(Util.pvalue2zscore(rightPvalue));
+							zscoreSt = Double.toString(Util.pvalue2rightzscore(rightPvalue));
 							pvalueSt = Double.toString(rightPvalue);
 							miSt = Double.toString(expected);
 							sigmaSt = "[" + a + ", " + b + ", " + c + ", " + d + "]";
@@ -156,7 +156,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 								BinomialResult.AproximationUsed.values()[aprox];
 							
 							valueSt = Double.toString(observed);
-							zscoreSt = Double.toString(Util.pvalue2zscore(rightPvalue));
+							zscoreSt = Double.toString(Util.pvalue2rightzscore(rightPvalue));
 							pvalueSt = Double.toString(rightPvalue);
 							miSt = Double.toString(expectedMean);
 							sigmaSt = Double.toString(expectedStdev) + " aprox:" + apr.toString();

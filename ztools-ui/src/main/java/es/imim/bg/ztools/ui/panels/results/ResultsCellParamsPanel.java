@@ -1,11 +1,15 @@
 package es.imim.bg.ztools.ui.panels.results;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public class ResultsCellParamsPanel extends JPanel {
@@ -82,6 +86,24 @@ public class ResultsCellParamsPanel extends JPanel {
 			public void removeTableModelListener(TableModelListener l) {				
 			}
 
+		});
+		
+		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1972045998524527140L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				
+				final JLabel label = (JLabel) super.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
+				
+				label.setToolTipText(label.getText());
+				return label;
+			}
+			
 		});
 		
 		final JScrollPane scroll = new JScrollPane(table);

@@ -132,15 +132,15 @@ public class BinomialTest extends AbstractTest {
 		double rightPvalue;
 		double twoTailPvalue;
 		
-		leftPvalue = Probability.binomial(observed, n, p);
-		rightPvalue = Probability.binomialComplemented(observed, n, p);
+		leftPvalue = /*filterPvalue(*/Probability.binomial(observed, n, p)/*)*/;
+		rightPvalue = /*filterPvalue(*/Probability.binomialComplemented(observed, n, p)/*)*/;
 		twoTailPvalue = leftPvalue + rightPvalue;
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.exact,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev);
 	}
-	
+
 	public final Result resultWithNormal(
 			int observed, int n, double expectedMean, double expectedStdev) {
 		
@@ -185,4 +185,11 @@ public class BinomialTest extends AbstractTest {
 				observed, expectedMean, expectedStdev);
 	}
 
+	/*private double filterPvalue(double pvalue) {
+		if (pvalue < 0.0)
+			pvalue = 0.0;
+		else if (pvalue > 1.0)
+			pvalue = 1.0;
+		return pvalue;
+	}*/
 }

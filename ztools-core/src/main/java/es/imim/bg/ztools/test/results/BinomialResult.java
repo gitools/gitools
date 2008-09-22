@@ -10,13 +10,11 @@ public class BinomialResult extends CommonResult {
 	public int observed;
 	public double expectedMean;
 	public double expectedStdev;
-	//public double pvalue;
 	
 	public BinomialResult() {
 		super(0, 0.0, 0.0, 0.0);
 		observed = 0;
 		expectedMean = expectedStdev = 0;
-		//pvalue = 0;
 	}
 	
 	public BinomialResult(
@@ -30,7 +28,6 @@ public class BinomialResult extends CommonResult {
 		this.observed = observed;
 		this.expectedMean = expectedMean;
 		this.expectedStdev = expectedStdev;
-		//this.pvalue = pvalue;
 		
 	}
 

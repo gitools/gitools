@@ -40,8 +40,9 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://bg.imim.es/svn/ztools/tags/ztools-1.0</connection>
-		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/tags/ztools-1.0</developerConnection>
+		<connection>scm:svn:https://bg.imim.es/svn/ztools/trunk</connection>
+		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/trunk</developerConnection>
+		<url>https://bg.imim.es/svn/ztools/trunk</url>
 	</scm>
 		
 	<build>
@@ -102,6 +103,7 @@
 				<configuration>
 					<username>${ztools.scm.username}</username>
 					<password>${ztools.scm.password}</password>
+					<tagBase>https://bg.imim.es/svn/ztools/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>
