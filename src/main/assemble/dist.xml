@@ -18,6 +18,14 @@
 			<fileMode>0770</fileMode>
 		</fileSet>
 		<fileSet>
+			<directory>ztools-cli/src/main/command</directory>
+			<includes>
+				<include>*</include>
+			</includes>
+			<outputDirectory>bin</outputDirectory>
+			<fileMode>0770</fileMode>
+		</fileSet>
+		<fileSet>
 			<directory>templates</directory>
 			<includes>
 				<include>**/*</include>
@@ -27,10 +35,6 @@
 	</fileSets>
 	<moduleSets>
 		<moduleSet>
-			<!--<includes>
-				<include>es.imim.bg.ztools:ztools-core</include>
-				<include>es.imim.bg.ztools:ztools-zcalc</include>
-			</includes>-->
 			<binaries>
 				<outputDirectory>lib</outputDirectory>
 				<unpack>false</unpack>

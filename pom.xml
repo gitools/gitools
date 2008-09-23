@@ -92,7 +92,7 @@
 				<version>2.2-beta-2</version>
 				<configuration>
 					<descriptors>
-						<descriptor>src/main/assemble/dep.xml</descriptor>
+						<descriptor>src/main/assemble/dist.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
