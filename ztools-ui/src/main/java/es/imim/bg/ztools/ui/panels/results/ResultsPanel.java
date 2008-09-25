@@ -4,14 +4,12 @@ import java.awt.BorderLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
+import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.panels.results.ResultsConfigPanel.ResultsConfigPanelListener;
 import es.imim.bg.ztools.ui.panels.results.ResultsToolsPanel.ResultsToolsListener;
 
@@ -24,12 +22,11 @@ public class ResultsPanel extends JPanel {
 	private static final int defaultColorColumnsWidth = 30;
 	private static final int defaultValueColumnsWidth = 90;
 
-	private Results results;
-
+	//private Results results;
+	private ResultsModel resultsModel;
+	
 	private ResultsToolsPanel toolsPanel;
 	private ResultsConfigPanel configPanel;
-	
-	//private JTable paramValuesTable;
 	
 	private ColorMatrixPanel colorMatrixPanel;
 	private DefaultColorMatrixCellDecorator cellDecorator;
@@ -37,9 +34,9 @@ public class ResultsPanel extends JPanel {
 	//private int selColIndex;
 	//private int selRowIndex;
 	
-	public ResultsPanel(Results results) {
+	public ResultsPanel(ResultsModel resultsModel) {
 		
-		this.results = results;
+		this.resultsModel = resultsModel;
 		
 		//this.selColIndex = this.selRowIndex = -1;
 		
@@ -120,8 +117,8 @@ public class ResultsPanel extends JPanel {
 		});
 		
 		configPanel = new ResultsConfigPanel(
-				results.getParamNames(),
-				results.getParamIndex(defaultParamName));
+				resultsModel.getParamNames(),
+				resultsModel.getParamIndex(defaultParamName));
 		
 		configPanel.addListener(new ResultsConfigPanelListener() {
 			@Override
@@ -220,23 +217,23 @@ public class ResultsPanel extends JPanel {
 		colorMatrixPanel.setModel(new ColorMatrixModel() {
 			@Override
 			public int getColumnCount() {
-				return results.getData().columns();
+				return resultsModel.getColumnCount();
 			}
 			@Override
 			public String getColumnName(int column) {
-				return results.getColNames()[column];
+				return resultsModel.getColumnName(column);
 			}
 			@Override
 			public int getRowCount() {
-				return results.getData().rows();
+				return resultsModel.getRowCount();
 			}
 			@Override
 			public String getRowName(int row) {
-				return results.getRowNames()[row];
+				return resultsModel.getRowName(row);
 			}
 			@Override
 			public Double getValue(int row, int column) {
-				return results.getDataValue(column, row, 
+				return resultsModel.getValue(column, row, 
 						configPanel.getSelectedParamIndex());
 			}
 		});
@@ -271,5 +268,9 @@ public class ResultsPanel extends JPanel {
 	
 	public ColorMatrixPanel getColorMatrixPanel() {
 		return colorMatrixPanel;
+	}
+	
+	public ResultsModel getResultsModel() {
+		return resultsModel;
 	}
 }

@@ -5,28 +5,34 @@ import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.panels.results.ResultsCellParamsPanel;
 
 public class AnalysisLateralPanel extends JPanel {
 
 	private static final long serialVersionUID = -3844597759805854811L;
 
-	private Analysis analysis;
+	private AnalysisModel analysisModel;
 
 	private ResultsCellParamsPanel cellParamsPanel;
 	
-	public AnalysisLateralPanel(Analysis analysis) {
+	public AnalysisLateralPanel(AnalysisModel analysisModel) {
 		
-		this.analysis = analysis;
+		this.analysisModel = analysisModel;
 		
 		createComponents();
 	}
 	
 	private void createComponents() {
 		
-		cellParamsPanel = new ResultsCellParamsPanel(
-				analysis.getResults().getParamNames());
+		ResultsModel rmodel = analysisModel.getResultsModel();
+		
+		String[] names = new String[rmodel.getParamCount()];
+		for (int i = 0; i < names.length; i++)
+			names[i] = rmodel.getParamName(i);
+		
+		cellParamsPanel = new ResultsCellParamsPanel(names);
 		
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		

@@ -45,7 +45,6 @@ public class TabAnalysisResource implements AnalysisResource {
 		return analysis;
 	}
 	
-	//@Override
 	public void load(Analysis analysis) throws FileNotFoundException, IOException, DataFormatException {
 		DescriptionFile descFile = new DescriptionFile(separator, quote);
 		File path = new File(workdir, descFileName);

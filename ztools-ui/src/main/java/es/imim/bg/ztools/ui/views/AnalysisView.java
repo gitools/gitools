@@ -24,4 +24,9 @@ public class AnalysisView extends AbstractView {
 	public JPanel getPanel() {
 		return panel;
 	}
+	
+	@Override
+	public Object getModel() {
+		return panel.getAnalysisModel();
+	}
 }

@@ -11,4 +11,6 @@ public interface View {
 	Icon getIcon();
 	
 	JPanel getPanel();
+	
+	Object getModel();
 }

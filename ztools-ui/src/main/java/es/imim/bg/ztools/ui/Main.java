@@ -12,10 +12,11 @@ public class Main {
 			System.err.println("Error loading Look&Feel: " + e);
 		}
 		
-		AppView gui = new AppView();
-		AppController ctrl = new AppController(gui);
+		AppFrame app = new AppFrame();
+		app.start();
 		
-		ctrl.start();
+		//AppController ctrl = new AppController(gui);
+		//ctrl.start();
 	}
 
 }

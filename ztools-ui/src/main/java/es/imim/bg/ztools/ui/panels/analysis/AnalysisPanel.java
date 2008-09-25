@@ -6,8 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.ColorMatrixListener;
+import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.panels.results.ResultsPanel;
 
 public class AnalysisPanel extends JPanel {
@@ -17,23 +18,28 @@ public class AnalysisPanel extends JPanel {
 	private AnalysisLateralPanel lateralPanel;
 	private ResultsPanel resultsPanel;
 	
-	private Analysis analysis;
+	//private Analysis analysis;
+	
+	private AnalysisModel analysisModel;
 	
 	public AnalysisPanel(Analysis analysis) {
 		
-		this.analysis = analysis;
+		//this.analysis = analysis;
+		
+		analysisModel = new AnalysisModel(analysis);
 		
 		createComponents();
 	}
 	
 	private void createComponents() {
 		
-		final Results results = analysis.getResults();
+		//final Results results = analysis.getResults();
 		
-		lateralPanel = new AnalysisLateralPanel(analysis);
-		resultsPanel = new ResultsPanel(results);
+		lateralPanel = new AnalysisLateralPanel(analysisModel);
+		resultsPanel = new ResultsPanel(analysisModel.getResultsModel());
 		
-		final String[] values = new String[results.getParamNames().length];
+		final ResultsModel resultsModel = analysisModel.getResultsModel();
+		final String[] values = resultsModel.getParamNames();
 		
 		resultsPanel.getColorMatrixPanel().addListener(new ColorMatrixListener() {
 			@Override
@@ -45,11 +51,11 @@ public class AnalysisPanel extends JPanel {
 				if (colIndex < 0 || rowIndex < 0)
 					return;
 				
-				int numParams = results.getParamNames().length;
+				int numParams = resultsModel.getParamCount();
 				
 				for (int i = 0; i < numParams; i++)
 					values[i] = Double.toString(
-							results.getDataValue(colIndex, rowIndex, i));
+							resultsModel.getValue(colIndex, rowIndex, i));
 				
 				lateralPanel.getCellParamsPanel().setValues(values);
 			}
@@ -64,5 +70,9 @@ public class AnalysisPanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 		add(splitPane, BorderLayout.CENTER);
+	}
+	
+	public AnalysisModel getAnalysisModel() {
+		return analysisModel;
 	}
 }
