@@ -370,4 +370,16 @@ public class ColorMatrixPanel extends JPanel {
 	public void addListener(ColorMatrixListener listener) {
 		listeners.add(listener);
 	}
+
+	public int[] getSelectedColumns() {
+		return table.getSelectedColumns();
+	}
+	
+	public int[] getSelectedRows() {
+		return table.getSelectedRows();
+	}
+
+	public void clearSelection() {
+		table.clearSelection();
+	}
 }

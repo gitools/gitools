@@ -75,8 +75,8 @@ public class ResultsPanel extends JPanel {
 			
 			@Override
 			public void hideColumns() {
-				// TODO Auto-generated method stub
-				
+				resultsModel.removeColumns(
+						colorMatrixPanel.getSelectedColumns());
 			}
 
 			@Override
@@ -99,8 +99,10 @@ public class ResultsPanel extends JPanel {
 			
 			@Override
 			public void hideRows() {
-				// TODO Auto-generated method stub
-				
+				resultsModel.removeRows(
+						colorMatrixPanel.getSelectedRows());
+				colorMatrixPanel.clearSelection();
+				colorMatrixPanel.refresh();
 			}
 
 			@Override

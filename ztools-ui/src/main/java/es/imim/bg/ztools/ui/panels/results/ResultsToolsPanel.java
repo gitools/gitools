@@ -1,6 +1,8 @@
 package es.imim.bg.ztools.ui.panels.results;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -125,6 +127,12 @@ public class ResultsToolsPanel extends JPanel {
 		colPanel.add(sortColumnsBtn);
 		
 		hideRowBtn = new JButtonWithToolTip("hr", "Hide selected rows");
+		hideRowBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireHideRows();
+			}
+		});
 		moveRowUpBtn = new JButtonWithToolTip("mu", "Move selected rows up");
 		moveRowDownBtn = new JButtonWithToolTip("md", "Move selected rows down");
 		
@@ -153,6 +161,11 @@ public class ResultsToolsPanel extends JPanel {
 	protected void fireSelModeChanged() {
 		for (ResultsToolsListener listener : listeners)
 			listener.selModeChanged();
+	}
+	
+	protected void fireHideRows() {
+		for (ResultsToolsListener listener : listeners)
+			listener.hideRows();
 	}
 	
 	private void refresh() {

@@ -6,8 +6,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.resources.analysis.AnalysisResource;
-import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.commands.OpenAnalysisCommand;
 import es.imim.bg.ztools.ui.utils.Options;
