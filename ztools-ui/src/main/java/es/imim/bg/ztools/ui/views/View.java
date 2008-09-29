@@ -13,4 +13,10 @@ public interface View {
 	JPanel getPanel();
 	
 	Object getModel();
+	
+	void refresh();
+	
+	void enableActions();
+	void disableActions();
+	
 }

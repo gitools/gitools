@@ -5,13 +5,9 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
 import cern.colt.matrix.DoubleFactory3D;
@@ -20,11 +16,9 @@ import cern.colt.matrix.DoubleMatrix3D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
-import es.imim.bg.ztools.ui.actions.OpenAnalysisAction;
+import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.ResultsView;
-import es.imim.bg.ztools.ui.views.View;
+import es.imim.bg.ztools.ui.views.results.ResultsView;
 
 public class AppFrame extends JFrame {
 
@@ -33,13 +27,19 @@ public class AppFrame extends JFrame {
 	private String appName;
 	private String appVersion;
 	
-	private ActionManager am;
-	
-	private JTabbedPane workspace;
+	private WorkspacePanel workspace;
 	
 	private StatusBar statusBar;
 	
-	public AppFrame() {
+	private static AppFrame instance;
+	
+	public static AppFrame instance() {
+		if (instance == null)
+			instance = new AppFrame();
+		return instance;
+	}
+	
+	private AppFrame() {
 		appName = getClass().getPackage().getImplementationTitle();
 		if (appName == null)
 			appName = "ztools";
@@ -68,16 +68,13 @@ public class AppFrame extends JFrame {
 	}
 
 	private void createActions() {
-		am = new ActionManager();
-		
-		am.put(ActionManager.openAnalysisAction, 
-				new OpenAnalysisAction(this));
+		Actions.openAnalysisAction.setEnabled(true);
 	}
 	
 	private void createComponents() {
 		setJMenuBar(createMenu());
 		
-		workspace = new JTabbedPane();
+		workspace = new WorkspacePanel();
 		
 		statusBar = new StatusBar();
 		
@@ -86,14 +83,23 @@ public class AppFrame extends JFrame {
 	}
 	
 	private JMenuBar createMenu() {
-		final JMenuItem menuiFileLoad = new JMenuItem(
-				am.get(ActionManager.openAnalysisAction));
 		
 		final JMenu menuFile = new JMenu("File");
-		menuFile.add(menuiFileLoad);
+		menuFile.add(Actions.openAnalysisAction);
+		
+		final JMenu editMenu = new JMenu("Edit");
+		editMenu.add(Actions.selectAllAction);
+		//editMenu.add(Actions.invertSelectionAction);
+		editMenu.add(Actions.unselectAllAction);
+		editMenu.addSeparator();
+		//editMenu.add(Actions.hideSelectedColumnsAction);
+		editMenu.add(Actions.sortSelectedColumnsAction);
+		editMenu.addSeparator();
+		editMenu.add(Actions.hideSelectedRowsAction);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
+		menuBar.add(editMenu);
 		
 		return menuBar;
 	}
@@ -120,10 +126,12 @@ public class AppFrame extends JFrame {
 		Analysis analysis = new Analysis();
 		analysis.setResults(results);
 		
-		ResultsView view = new ResultsView(results);
+		ResultsView view = 
+			new ResultsView(
+				new ResultsModel(results));
 		view.setName("demo");
 		
-		addWorkspaceView(view);
+		workspace.addView(view);
 	}
 	
 	public void start() {
@@ -131,22 +139,8 @@ public class AppFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	public void addWorkspaceView(AbstractView view) {
-		final String name = view.getName() != null ? 
-				view.getName() : "";
-				
-		final Icon icon = view.getIcon();
-		
-		if (icon == null)
-			workspace.addTab(name, view);
-		else
-			workspace.addTab(name, icon, view);
-		
-		workspace.setSelectedComponent(view);
-	}
-
-	public AbstractView getWorkspaceCurrentView() {
-		return (AbstractView) workspace.getSelectedComponent();
+	public WorkspacePanel getWorkspace() {
+		return workspace;
 	}
 	
 	public void setStatusText(String text) {
@@ -162,3 +156,4 @@ public class AppFrame extends JFrame {
 		
 	}
 }
+

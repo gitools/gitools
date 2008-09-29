@@ -1,56 +1,29 @@
-package es.imim.bg.ztools.ui.panels.results;
+package es.imim.bg.ztools.ui.views.results;
 
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 
+import es.imim.bg.ztools.ui.Actions;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.SelectionMode;
 
 public class ResultsToolsPanel extends JPanel {
 
 	private static final long serialVersionUID = 7775322349080837516L;
-	
-	private class JButtonWithToolTip extends JButton {
 		
-		private static final long serialVersionUID = 8190800188385197984L;
-
-		public JButtonWithToolTip(String text, String toolTipText) {
-			super(text);
-			this.setToolTipText(toolTipText);
-		}
-	}
-	
 	public interface ResultsToolsListener {
 		void selModeChanged();
-		
-		void selectAll();
-		void unselectAll();
-		void invertSelection();
-		
-		void hideColumns();
-		void moveColumnsLeft();
-		void moveColumnsRight();
-		void sortColumns();
-		
-		void hideRows();
-		void moveRowsUp();
-		void moveRowsDown();
 	}
 	
 	private JComboBox selModeCombo;
 	
-	public JButton selectAllBtn;
+	/*public JButton selectAllBtn;
 	public JButton unselectAllBtn;
 	public JButton invertSelectionBtn;
 	
@@ -64,7 +37,7 @@ public class ResultsToolsPanel extends JPanel {
 	public JButton moveRowDownBtn;
 
 	private JPanel rowPanel;
-	private JPanel colPanel;
+	private JPanel colPanel;*/
 	
 	private List<ResultsToolsListener> listeners;
 
@@ -104,7 +77,7 @@ public class ResultsToolsPanel extends JPanel {
 			}
 		});
 		
-		selectAllBtn = new JButtonWithToolTip("sa", "Select all");
+		/*selectAllBtn = new JButton(Actions.selectAllAction); //new JButtonWithToolTip("sa", "Select all");
 		unselectAllBtn = new JButtonWithToolTip("ua", "Unselect all");
 		invertSelectionBtn = new JButtonWithToolTip("is", "Invert selection");
 		
@@ -114,25 +87,21 @@ public class ResultsToolsPanel extends JPanel {
 		selPanel.add(unselectAllBtn);
 		selPanel.add(invertSelectionBtn);
 		
-		hideColumnBtn = new JButtonWithToolTip("hc", "Hide selected columns");
+		//hideColumnBtn = new JButtonWithToolTip("hc", "Hide selected columns");
+		
 		moveColumnLeftBtn = new JButtonWithToolTip("ml", "Move selected columns to the left");
 		moveColumnRightBtn = new JButtonWithToolTip("mr", "Move selected columns to the right");
 		sortColumnsBtn = new JButtonWithToolTip("sc", "Sort using selected columns");
 		
 		colPanel = new JPanel();
 		colPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		colPanel.add(hideColumnBtn);
+		//colPanel.add(hideColumnBtn);
 		colPanel.add(moveColumnLeftBtn);
 		colPanel.add(moveColumnRightBtn);
 		colPanel.add(sortColumnsBtn);
 		
-		hideRowBtn = new JButtonWithToolTip("hr", "Hide selected rows");
-		hideRowBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fireHideRows();
-			}
-		});
+		hideRowBtn = new JButton(Actions.hideSelectedRowsAction); //new JButtonWithToolTip("hr", "Hide selected rows");
+		
 		moveRowUpBtn = new JButtonWithToolTip("mu", "Move selected rows up");
 		moveRowDownBtn = new JButtonWithToolTip("md", "Move selected rows down");
 		
@@ -141,13 +110,13 @@ public class ResultsToolsPanel extends JPanel {
 		rowPanel.add(hideRowBtn);
 		rowPanel.add(moveRowUpBtn);
 		rowPanel.add(moveRowDownBtn);
-		
+		*/
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		add(new JLabel("Selection"));
 		add(selModeCombo);
 		
-		add(selPanel);
+		/*add(selPanel);
 		
 		add(new JSeparator(SwingConstants.VERTICAL));
 		
@@ -155,7 +124,7 @@ public class ResultsToolsPanel extends JPanel {
 		
 		add(new JSeparator(SwingConstants.VERTICAL));
 		
-		add(rowPanel);
+		add(rowPanel);*/
 	}
 
 	protected void fireSelModeChanged() {
@@ -163,12 +132,17 @@ public class ResultsToolsPanel extends JPanel {
 			listener.selModeChanged();
 	}
 	
+	/*protected void fireHideColumns() {
+		for (ResultsToolsListener listener : listeners)
+			listener.hideColumns();
+	}
+	
 	protected void fireHideRows() {
 		for (ResultsToolsListener listener : listeners)
 			listener.hideRows();
-	}
+	}*/
 	
-	private void refresh() {
+	public void refresh() {
 		switch (selMode) {
 		case columns: 
 			selModeCombo.setSelectedIndex(0);
@@ -191,16 +165,16 @@ public class ResultsToolsPanel extends JPanel {
 	}
 	
 	private void colPanelEnabled(boolean b) {
-		hideColumnBtn.setEnabled(b);
-		moveColumnLeftBtn.setEnabled(b);
-		moveColumnRightBtn.setEnabled(b);
-		sortColumnsBtn.setEnabled(b);
+		//hideColumnBtn.setEnabled(b);
+		//moveColumnLeftBtn.setEnabled(b);
+		//moveColumnRightBtn.setEnabled(b);
+		Actions.sortSelectedColumnsAction.setEnabled(b);
 	}
 
 	private void rowPanelEnabled(boolean b) {
-		hideRowBtn.setEnabled(b);
-		moveRowUpBtn.setEnabled(b);
-		moveRowDownBtn.setEnabled(b);
+		Actions.hideSelectedRowsAction.setEnabled(b);
+		//moveRowUpBtn.setEnabled(b);
+		//moveRowDownBtn.setEnabled(b);
 	}
 	
 	public void addListener(ResultsToolsListener listener) {

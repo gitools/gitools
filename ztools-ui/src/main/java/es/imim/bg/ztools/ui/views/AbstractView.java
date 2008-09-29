@@ -16,4 +16,13 @@ public abstract class AbstractView extends JPanel implements View {
 	public JPanel getPanel() {
 		return this;
 	}
+
+	@Override
+	public void enableActions() {
+	}
+	
+	@Override
+	public void disableActions() {
+	}
+
 }

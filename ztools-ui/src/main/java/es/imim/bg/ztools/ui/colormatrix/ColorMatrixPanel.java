@@ -235,6 +235,7 @@ public class ColorMatrixPanel extends JPanel {
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		table.getTableHeader().setReorderingAllowed(false);
+		table.setSelectionBackground(Color.ORANGE);
 		
 		final ListSelectionListener listener = new ListSelectionListener() {
 			@Override
@@ -255,8 +256,6 @@ public class ColorMatrixPanel extends JPanel {
 		refreshSelectionMode();
 		
 		final JScrollPane scroll = new JScrollPane(table);
-		//scroll.setAutoscrolls(true);
-		//scroll.setViewportView(table);
 		
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
@@ -381,5 +380,16 @@ public class ColorMatrixPanel extends JPanel {
 
 	public void clearSelection() {
 		table.clearSelection();
+	}
+
+	public void selectAll() {
+		int lastRowIndex = table.getRowCount() - 1;
+		table.getSelectionModel()
+			.addSelectionInterval(0, lastRowIndex);
+		
+		int lastColIndex = table.getColumnCount() - 2;
+		table.getColumnModel()
+			.getSelectionModel()
+			.addSelectionInterval(0, lastColIndex);
 	}
 }

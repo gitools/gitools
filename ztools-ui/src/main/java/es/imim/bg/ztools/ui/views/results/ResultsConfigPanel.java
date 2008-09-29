@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.panels.results;
+package es.imim.bg.ztools.ui.views.results;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -6,6 +6,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,6 +204,8 @@ public class ResultsConfigPanel extends JPanel {
 	}
 
 	private int getParamIndexFromName(String name) {
+		System.out.println(name + " in " + Arrays.toString(paramNames));
+		
 		int index = 0;
 		while (index < paramNames.length 
 				&& !paramNames[index].equals(name))

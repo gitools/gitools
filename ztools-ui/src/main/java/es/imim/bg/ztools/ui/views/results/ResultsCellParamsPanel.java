@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.panels.results;
+package es.imim.bg.ztools.ui.views.results;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -9,7 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public class ResultsCellParamsPanel extends JPanel {

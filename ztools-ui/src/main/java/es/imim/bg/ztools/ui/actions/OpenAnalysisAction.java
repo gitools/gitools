@@ -5,18 +5,20 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.commands.OpenAnalysisCommand;
+import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.AnalysisView;
+import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class OpenAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -6528634034161710370L;
 
-	public OpenAnalysisAction(AppFrame app) {
-		super(app, "Open analysis...");
+	public OpenAnalysisAction() {
+		super("Open analysis...");
 	}
 	
 	@Override
@@ -27,32 +29,30 @@ public class OpenAnalysisAction extends BaseAction {
 			Options.instance().setLastPath(selectedPath.getParent());
 			Options.instance().save();
 
+			ProgressMonitor monitor = createProgressMonitor();
+			
 			try {
-				app.setStatusText(
-						"Reading " + selectedPath.getAbsolutePath() + "...");
-				
 				OpenAnalysisCommand cmd = 
 					OpenAnalysisCommand.create(selectedPath);
 				
-				cmd.execute(app.createMonitor());
-
-				app.setStatusText("Initializing view...");
+				cmd.execute(monitor);
 
 				Analysis analysis = cmd.getAnalysis();
 				
-				AnalysisView view = new AnalysisView(analysis);
+				AnalysisView view = 
+					new AnalysisView(
+						new AnalysisModel(analysis));
 
 				view.setName(analysis.getName());
 
-				app.addWorkspaceView(view);
-
-				app.setStatusText("Ok");
+				AppFrame.instance().getWorkspace().addView(view);
+				AppFrame.instance().refresh();
 
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				app.setStatusText("Error loading analysis.");
+				AppFrame.instance()
+					.setStatusText("Error loading analysis.");
 			}
-			app.refresh();
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class OpenAnalysisAction extends BaseAction {
 		//fileFilter.setDescription(LangManager.instance().getString(LangKey.XMI_FILES));
 		//fileChooser.addChoosableFileFilter(fileFilter);
 		
-		int retval = fileChooser.showOpenDialog(app);
+		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION)
 			return fileChooser.getSelectedFile();
 		

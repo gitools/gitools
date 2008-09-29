@@ -1,32 +1,29 @@
-package es.imim.bg.ztools.ui.panels.analysis;
+package es.imim.bg.ztools.ui.views.analysis;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.ColorMatrixListener;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
-import es.imim.bg.ztools.ui.panels.results.ResultsPanel;
+import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.results.ResultsView;
 
-public class AnalysisPanel extends JPanel {
+public class AnalysisView extends AbstractView {
 
 	private static final long serialVersionUID = 9073825159199447872L;
 
 	private AnalysisLateralPanel lateralPanel;
-	private ResultsPanel resultsPanel;
+	private ResultsView resultsView;
 	
 	//private Analysis analysis;
 	
 	private AnalysisModel analysisModel;
 	
-	public AnalysisPanel(Analysis analysis) {
+	public AnalysisView(AnalysisModel analysisModel) {
 		
-		//this.analysis = analysis;
-		
-		analysisModel = new AnalysisModel(analysis);
+		this.analysisModel = analysisModel;
 		
 		createComponents();
 	}
@@ -36,17 +33,17 @@ public class AnalysisPanel extends JPanel {
 		//final Results results = analysis.getResults();
 		
 		lateralPanel = new AnalysisLateralPanel(analysisModel);
-		resultsPanel = new ResultsPanel(analysisModel.getResultsModel());
+		resultsView = new ResultsView(analysisModel.getResultsModel());
 		
 		final ResultsModel resultsModel = analysisModel.getResultsModel();
-		final String[] values = resultsModel.getParamNames();
+		final String[] values = new String[resultsModel.getParamCount()];
 		
-		resultsPanel.getColorMatrixPanel().addListener(new ColorMatrixListener() {
+		resultsView.getColorMatrixPanel().addListener(new ColorMatrixListener() {
 			@Override
 			public void selectionChanged() {
 			
-				int colIndex = resultsPanel.getColorMatrixPanel().getSelectedLeadColumn();
-				int rowIndex = resultsPanel.getColorMatrixPanel().getSelectedLeadRow();
+				int colIndex = resultsView.getColorMatrixPanel().getSelectedLeadColumn();
+				int rowIndex = resultsView.getColorMatrixPanel().getSelectedLeadRow();
 				
 				if (colIndex < 0 || rowIndex < 0)
 					return;
@@ -63,7 +60,7 @@ public class AnalysisPanel extends JPanel {
 		
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.add(lateralPanel);
-		splitPane.add(resultsPanel);
+		splitPane.add(resultsView);
 		splitPane.setDividerLocation(200);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
@@ -74,5 +71,29 @@ public class AnalysisPanel extends JPanel {
 	
 	public AnalysisModel getAnalysisModel() {
 		return analysisModel;
+	}
+
+	public ResultsView getResultsPanel() {
+		return resultsView;
+	}
+	
+	@Override
+	public Object getModel() {
+		return analysisModel;
+	}
+
+	@Override
+	public void refresh() {
+		resultsView.refresh();
+	}
+	
+	@Override
+	public void enableActions() {
+		resultsView.enableActions();
+	}
+	
+	@Override
+	public void disableActions() {
+		resultsView.disableActions();
 	}
 }

@@ -1,19 +1,23 @@
-package es.imim.bg.ztools.ui.panels.results;
+package es.imim.bg.ztools.ui.views.results;
 
 import java.awt.BorderLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import es.imim.bg.ztools.ui.Actions;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
 import es.imim.bg.ztools.ui.model.ResultsModel;
-import es.imim.bg.ztools.ui.panels.results.ResultsConfigPanel.ResultsConfigPanelListener;
-import es.imim.bg.ztools.ui.panels.results.ResultsToolsPanel.ResultsToolsListener;
+import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.results.ResultsConfigPanel.ResultsConfigPanelListener;
+import es.imim.bg.ztools.ui.views.results.ResultsToolsPanel.ResultsToolsListener;
 
-public class ResultsPanel extends JPanel {
+public class ResultsView extends AbstractView {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
@@ -30,16 +34,11 @@ public class ResultsPanel extends JPanel {
 	
 	private ColorMatrixPanel colorMatrixPanel;
 	private DefaultColorMatrixCellDecorator cellDecorator;
-	
-	//private int selColIndex;
-	//private int selRowIndex;
-	
-	public ResultsPanel(ResultsModel resultsModel) {
+
+	public ResultsView(ResultsModel resultsModel) {
 		
 		this.resultsModel = resultsModel;
-		
-		//this.selColIndex = this.selRowIndex = -1;
-		
+			
 		createComponents();
 	}
 
@@ -53,68 +52,6 @@ public class ResultsPanel extends JPanel {
 			public void selModeChanged() {
 				colorMatrixPanel.setSelectionMode(
 						toolsPanel.getSelMode());
-			}
-
-			@Override
-			public void selectAll() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void unselectAll() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void invertSelection() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void hideColumns() {
-				resultsModel.removeColumns(
-						colorMatrixPanel.getSelectedColumns());
-			}
-
-			@Override
-			public void moveColumnsLeft() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void moveColumnsRight() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void sortColumns() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void hideRows() {
-				resultsModel.removeRows(
-						colorMatrixPanel.getSelectedRows());
-				colorMatrixPanel.clearSelection();
-				colorMatrixPanel.refresh();
-			}
-
-			@Override
-			public void moveRowsUp() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void moveRowsDown() {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
@@ -157,62 +94,6 @@ public class ResultsPanel extends JPanel {
 		northPanel.add(toolsPanel);
 		northPanel.add(configPanel);
 		
-		/* Left panel */
-		
-		/*
-		paramValuesTable = new JTable();
-		paramValuesTable.setFillsViewportHeight(true);
-		paramValuesTable.setModel(new TableModel() {
-			
-			@Override public int getColumnCount() { return 2; }
-
-			@Override public int getRowCount() { return results.getParamNames().length; }
-			
-			@Override public String getColumnName(int columnIndex) {
-				switch(columnIndex) {
-				case 0: return "name";
-				case 1: return "value";
-				}
-				return null;
-			}
-
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				switch (columnIndex) {
-				case 0: 
-					return results.getParamNames()[rowIndex];
-				case 1: 
-					return selColIndex != -1 && selRowIndex != -1 ? 
-							results.getDataValue(selColIndex, selRowIndex, rowIndex)
-							: "";
-				}
-				return null;
-			}
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) { return String.class; }
-			
-			@Override
-			public boolean isCellEditable(int rowIndex, int columnIndex) { return false; }
-
-			@Override 
-			public void addTableModelListener(TableModelListener l) { }
-			
-			@Override
-			public void removeTableModelListener(TableModelListener l) { }
-
-			@Override
-			public void setValueAt(Object value, int rowIndex, int columnIndex) { }
-			
-		});
-		
-		final JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new BorderLayout());
-		
-		final JScrollPane scrPanel = new JScrollPane(paramValuesTable);
-		leftPanel.add(scrPanel, BorderLayout.CENTER);
-		*/
-		
 		/* Color matrix */
 		
 		colorMatrixPanel = new ColorMatrixPanel();
@@ -244,6 +125,21 @@ public class ResultsPanel extends JPanel {
 		
 		colorMatrixPanel.setCellDecorator(cellDecorator);
 		
+		colorMatrixPanel.getTableSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				resultsModel.setSelectedRows(
+						colorMatrixPanel.getSelectedRows());
+			}
+		});
+		colorMatrixPanel.getColumnSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				resultsModel.setSelectedColumns(
+						colorMatrixPanel.getSelectedColumns());
+			}
+		});
+		
 		toolsPanel.setSelMode(colorMatrixPanel.getSelectionMode());
 		configPanel.refresh();
 		refreshColorMatrixWidth();
@@ -274,5 +170,41 @@ public class ResultsPanel extends JPanel {
 	
 	public ResultsModel getResultsModel() {
 		return resultsModel;
+	}
+
+	@Override
+	public Object getModel() {
+		return resultsModel;
+	}
+
+	@Override
+	public void refresh() {
+		colorMatrixPanel.refresh();
+	}
+	
+	@Override
+	public void enableActions() {
+		Actions.selectAllAction.setEnabled(true);
+		Actions.invertSelectionAction.setEnabled(true);
+		Actions.unselectAllAction.setEnabled(true);
+		//Actions.hideSelectedColumnsAction.setEnabled(true);
+		Actions.sortSelectedColumnsAction.setEnabled(true);
+		Actions.hideSelectedRowsAction.setEnabled(true);
+		
+		toolsPanel.refresh();
+	}
+	
+	@Override
+	public void disableActions() {
+		Actions.selectAllAction.setEnabled(false);
+		Actions.invertSelectionAction.setEnabled(false);
+		Actions.unselectAllAction.setEnabled(false);
+		//Actions.hideSelectedColumnsAction.setEnabled(false);
+		Actions.sortSelectedColumnsAction.setEnabled(false);
+		Actions.hideSelectedRowsAction.setEnabled(false);
+	}
+
+	public int getSelectedParamIndex() {
+		return configPanel.getSelectedParamIndex();
 	}
 }

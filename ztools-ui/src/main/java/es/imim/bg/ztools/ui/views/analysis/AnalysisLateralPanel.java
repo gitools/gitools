@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.panels.analysis;
+package es.imim.bg.ztools.ui.views.analysis;
 
 import java.awt.BorderLayout;
 
@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
-import es.imim.bg.ztools.ui.panels.results.ResultsCellParamsPanel;
+import es.imim.bg.ztools.ui.views.results.ResultsCellParamsPanel;
 
 public class AnalysisLateralPanel extends JPanel {
 
