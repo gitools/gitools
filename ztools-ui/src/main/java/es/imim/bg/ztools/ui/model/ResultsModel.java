@@ -154,4 +154,45 @@ public class ResultsModel {
 			rows[i] = indices[i];
 	}
 	
+	public void sortByFunc(final int[] selCols, final int paramIndex) {
+			
+		Integer[] indices = new Integer[rowCount];
+		for (int i = 0; i < rowCount; i++)
+			indices[i] = rows[i];
+		
+		Arrays.sort(indices, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer idx1, Integer idx2) {
+				double se1 = 0, s1 = 0, ss1 = 0;
+				double se2 = 0, s2 = 0, ss2 = 0;
+				
+				int N = selCols.length;
+				
+				for (int i = 0; i < N; i++) {
+					double v1 = results.getDataValue(
+							selCols[i], idx1, paramIndex);
+					
+					s1 += v1;
+					ss1 += v1 * v1;
+					se1 += Math.exp(s1);
+					
+					double v2 = results.getDataValue(
+							selCols[i], idx2, paramIndex);
+					
+					s2 += v2;
+					ss2 += v2 * v2;
+					se2 += Math.exp(s2);
+				}
+				
+				double var1 = (N * ss1) - (s1 * s1) / (N * N);
+				double var2 = (N * ss2) - (s2 * s2) / (N * N);
+				
+				int res = (int) Math.signum(se1 - se2);
+				return res != 0 ? res : (int) Math.signum(var1 - var2);
+			}
+		});
+		
+		for (int i = 0; i < rowCount; i++)
+			rows[i] = indices[i];
+	}
 }

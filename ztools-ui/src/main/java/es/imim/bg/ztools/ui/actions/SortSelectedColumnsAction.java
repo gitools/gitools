@@ -62,14 +62,14 @@ public class SortSelectedColumnsAction extends BaseAction {
 		if (resultsModel == null)
 			return;
 		
-		List<SortCriteria> criteriaList = 
+		/*List<SortCriteria> criteriaList = 
 			new ArrayList<SortCriteria>(indices.length);
 		
 		for (int i = 0; i <  indices.length; i++)
 			criteriaList.add(new SortCriteria(
-					indices[i], selParamIndex, true));
+					indices[i], selParamIndex, true));*/
 		
-		resultsModel.sort(criteriaList);
+		resultsModel.sortByFunc(indices, selParamIndex);
 		
 		view.refresh();
 	}
