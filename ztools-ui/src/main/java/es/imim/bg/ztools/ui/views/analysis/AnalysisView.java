@@ -14,6 +14,7 @@ public class AnalysisView extends AbstractView {
 
 	private static final long serialVersionUID = 9073825159199447872L;
 
+	private AnalysisInfoRender infoRender;
 	private AnalysisLateralPanel lateralPanel;
 	private ResultsView resultsView;
 	
@@ -24,6 +25,8 @@ public class AnalysisView extends AbstractView {
 	public AnalysisView(AnalysisModel analysisModel) {
 		
 		this.analysisModel = analysisModel;
+		
+		this.infoRender = new AnalysisInfoRender(analysisModel);
 		
 		createComponents();
 	}
@@ -45,8 +48,10 @@ public class AnalysisView extends AbstractView {
 				int colIndex = resultsView.getColorMatrixPanel().getSelectedLeadColumn();
 				int rowIndex = resultsView.getColorMatrixPanel().getSelectedLeadRow();
 				
-				if (colIndex < 0 || rowIndex < 0)
+				if (colIndex < 0 || rowIndex < 0) {
+					infoRender.setValues(null);
 					return;
+				}
 				
 				int numParams = resultsModel.getParamCount();
 				
@@ -54,7 +59,10 @@ public class AnalysisView extends AbstractView {
 					values[i] = Double.toString(
 							resultsModel.getValue(colIndex, rowIndex, i));
 				
-				lateralPanel.getCellParamsPanel().setValues(values);
+				infoRender.setColName(resultsModel.getColumnName(colIndex));
+				infoRender.setRowName(resultsModel.getRowName(rowIndex));
+				infoRender.setValues(values);
+				lateralPanel.showInfo(infoRender.toString());
 			}
 		});
 		
@@ -68,7 +76,7 @@ public class AnalysisView extends AbstractView {
 		setLayout(new BorderLayout());
 		add(splitPane, BorderLayout.CENTER);
 	}
-	
+
 	public AnalysisModel getAnalysisModel() {
 		return analysisModel;
 	}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
@@ -105,10 +106,12 @@ public class ResultsFile extends ResourceFile {
 		int numRows = rowMap.size();
 		
 		String[] columnNames = new String[numColumns];
-		columnMap.keySet().toArray(columnNames);
+		for (Entry<String, Integer> entry : columnMap.entrySet())
+			columnNames[entry.getValue()] = entry.getKey();
 		
 		String[] rowNames = new String[numRows];
-		rowMap.keySet().toArray(rowNames);
+		for (Entry<String, Integer> entry : rowMap.entrySet())
+			rowNames[entry.getValue()] = entry.getKey();
 		
 		results.setColNames(columnNames);
 		results.setRowNames(rowNames);

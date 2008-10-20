@@ -4,10 +4,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
-import es.imim.bg.ztools.ui.views.results.ResultsCellParamsPanel;
 
 public class AnalysisLateralPanel extends JPanel {
 
@@ -15,7 +16,7 @@ public class AnalysisLateralPanel extends JPanel {
 
 	private AnalysisModel analysisModel;
 
-	private ResultsCellParamsPanel cellParamsPanel;
+	private JTextPane infoPane;
 	
 	public AnalysisLateralPanel(AnalysisModel analysisModel) {
 		
@@ -32,15 +33,17 @@ public class AnalysisLateralPanel extends JPanel {
 		for (int i = 0; i < names.length; i++)
 			names[i] = rmodel.getParamName(i);
 		
-		cellParamsPanel = new ResultsCellParamsPanel(names);
+		infoPane = new JTextPane();
+		infoPane.setContentType("text/html");
+		final JScrollPane scrollPane = new JScrollPane(infoPane);
 		
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		setLayout(new BorderLayout());
-		add(cellParamsPanel);
+		add(scrollPane);
 	}
-	
-	public ResultsCellParamsPanel getCellParamsPanel() {
-		return cellParamsPanel;
+
+	public void showInfo(String info) {
+		infoPane.setText(info);
 	}
 }
