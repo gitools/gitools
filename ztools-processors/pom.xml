@@ -2,14 +2,14 @@
 	<parent>
 		<artifactId>ztools</artifactId>
 		<groupId>es.imim.bg.ztools</groupId>
-		<version>1.1.1</version>
+		<version>1.1.2-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.imim.bg.ztools</groupId>
 	<artifactId>ztools-processors</artifactId>
 	<name>ztools-processors</name>
-	<version>1.1.1</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<description>ztools analysis processors (zcalc, oncoz)</description>
 	
 	<dependencies>
