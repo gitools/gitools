@@ -9,7 +9,11 @@
 	<artifactId>ztools-ui</artifactId>
 	<name>ztools-ui</name>
 	<description>ztools graphical user interface</description>
-	
+
+	<properties>
+		<mainClass>es.imim.bg.ztools.ui.Main</mainClass>
+	</properties>
+		
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -31,9 +35,24 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>es.imim.bg.ztools.ui.Main</mainClass>
+							<mainClass>${mainClass}</mainClass>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase></phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>${mainClass}</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

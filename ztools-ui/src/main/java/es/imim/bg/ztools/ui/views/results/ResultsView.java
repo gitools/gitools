@@ -1,6 +1,8 @@
 package es.imim.bg.ztools.ui.views.results;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -8,11 +10,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.ui.Actions;
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
 import es.imim.bg.ztools.ui.model.ResultsModel;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.results.ResultsConfigPanel.ResultsConfigPanelListener;
 import es.imim.bg.ztools.ui.views.results.ResultsToolsPanel.ResultsToolsListener;
@@ -29,7 +33,6 @@ public class ResultsView extends AbstractView {
 	//private Results results;
 	private ResultsModel resultsModel;
 	
-	private ResultsToolsPanel toolsPanel;
 	private ResultsConfigPanel configPanel;
 	
 	private ColorMatrixPanel colorMatrixPanel;
@@ -40,21 +43,23 @@ public class ResultsView extends AbstractView {
 		this.resultsModel = resultsModel;
 			
 		createComponents();
+		
+		resultsModel.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals(ResultsModel.SELECTION_MODE_PROPERTY)) {
+					SelectionMode mode = (SelectionMode) evt.getNewValue();
+					colorMatrixPanel.setSelectionMode(mode);
+					colorMatrixPanel.refresh();
+				}
+			}
+		});
 	}
 
 	private void createComponents() {
 		
 		/* North panel */
 
-		toolsPanel = new ResultsToolsPanel();
-		toolsPanel.addListener(new ResultsToolsListener() {
-			@Override
-			public void selModeChanged() {
-				colorMatrixPanel.setSelectionMode(
-						toolsPanel.getSelMode());
-			}
-		});
-		
 		configPanel = new ResultsConfigPanel(
 				resultsModel.getParamNames(),
 				resultsModel.getParamIndex(defaultParamName));
@@ -91,7 +96,6 @@ public class ResultsView extends AbstractView {
 		
 		final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-		northPanel.add(toolsPanel);
 		northPanel.add(configPanel);
 		
 		/* Color matrix */
@@ -140,7 +144,6 @@ public class ResultsView extends AbstractView {
 			}
 		});
 		
-		toolsPanel.setSelMode(colorMatrixPanel.getSelectionMode());
 		configPanel.refresh();
 		refreshColorMatrixWidth();
 		
@@ -187,11 +190,12 @@ public class ResultsView extends AbstractView {
 		Actions.selectAllAction.setEnabled(true);
 		Actions.invertSelectionAction.setEnabled(true);
 		Actions.unselectAllAction.setEnabled(true);
+		Actions.columnSelectionModeAction.setEnabled(true);
+		Actions.rowSelectionModeAction.setEnabled(true);
+		Actions.cellSelectionModeAction.setEnabled(true);
 		//Actions.hideSelectedColumnsAction.setEnabled(true);
 		Actions.sortSelectedColumnsAction.setEnabled(true);
 		Actions.hideSelectedRowsAction.setEnabled(true);
-		
-		toolsPanel.refresh();
 	}
 	
 	@Override
@@ -199,6 +203,9 @@ public class ResultsView extends AbstractView {
 		Actions.selectAllAction.setEnabled(false);
 		Actions.invertSelectionAction.setEnabled(false);
 		Actions.unselectAllAction.setEnabled(false);
+		Actions.columnSelectionModeAction.setEnabled(false);
+		Actions.rowSelectionModeAction.setEnabled(false);
+		Actions.cellSelectionModeAction.setEnabled(false);
 		//Actions.hideSelectedColumnsAction.setEnabled(false);
 		Actions.sortSelectedColumnsAction.setEnabled(false);
 		Actions.hideSelectedRowsAction.setEnabled(false);

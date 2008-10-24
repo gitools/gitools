@@ -45,11 +45,10 @@ public class AnalysisInfoRender {
 		// Render parameters & values
 		if (values != null) {
 			sb.append("<p><b>Column:</b><br>");
-			sb.append(colName);
-			sb.append("</p>");
+			sb.append(colName).append("</p>");
 			sb.append("<p><b>Row:</b><br>");
-			sb.append(rowName);
-			sb.append("</p>");
+			sb.append(rowName).append("</p>");
+			
 			for (int i = 0; i < paramNames.length; i++) {
 				final String paramName = paramNames[i];
 				sb.append("<p><b>");

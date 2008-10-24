@@ -1,12 +1,11 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
-import es.imim.bg.ztools.ui.model.SortCriteria;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 import es.imim.bg.ztools.ui.views.results.ResultsView;
@@ -16,7 +15,10 @@ public class SortSelectedColumnsAction extends BaseAction {
 	private static final long serialVersionUID = -582380114189586206L;
 
 	public SortSelectedColumnsAction() {
-		super("Sort using selected columns");
+		super("Sort selected columns");
+		setSmallIconFromResource(IconNames.sortSelectedColumns16);
+		setLargeIconFromResource(IconNames.sortSelectedColumns24);
+		setMnemonic(KeyEvent.VK_S);
 	}
 	
 	@Override

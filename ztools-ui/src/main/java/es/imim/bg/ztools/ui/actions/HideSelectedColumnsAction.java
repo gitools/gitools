@@ -1,7 +1,9 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -14,11 +16,15 @@ public class HideSelectedColumnsAction extends BaseAction {
 
 	public HideSelectedColumnsAction() {
 		super("Hide selected columns");
+		
+		setSmallIconFromResource(IconNames.columnHide16);
+		setLargeIconFromResource(IconNames.columnHide24);
+		setMnemonic(KeyEvent.VK_O);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-AbstractView view = getSelectedView();
+		AbstractView view = getSelectedView();
 		
 		ColorMatrixPanel colorMatrixPanel = null;
 		ResultsModel resultsModel = null;

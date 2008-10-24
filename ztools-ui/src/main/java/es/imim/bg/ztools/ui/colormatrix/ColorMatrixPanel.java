@@ -27,13 +27,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import es.imim.bg.ztools.ui.model.SelectionMode;
+
 public class ColorMatrixPanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
-	
-	public enum SelectionMode {
-		columns, rows, cells
-	}
 
 	public interface ColorMatrixListener {
 		void selectionChanged();

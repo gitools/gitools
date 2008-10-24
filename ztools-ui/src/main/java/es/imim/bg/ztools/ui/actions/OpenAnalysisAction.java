@@ -1,6 +1,7 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -8,6 +9,7 @@ import javax.swing.JFileChooser;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.commands.OpenAnalysisCommand;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.utils.Options;
@@ -19,8 +21,11 @@ public class OpenAnalysisAction extends BaseAction {
 
 	public OpenAnalysisAction() {
 		super("Open analysis...");
+		setSmallIconFromResource(IconNames.open16);
+		setLargeIconFromResource(IconNames.open24);
+		setMnemonic(KeyEvent.VK_O);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		File selectedPath = getSelectedPath();

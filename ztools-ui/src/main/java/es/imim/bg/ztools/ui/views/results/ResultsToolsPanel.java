@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import es.imim.bg.ztools.ui.Actions;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.SelectionMode;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class ResultsToolsPanel extends JPanel {
 

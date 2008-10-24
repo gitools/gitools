@@ -3,9 +3,8 @@ package es.imim.bg.ztools.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JMenuItem;
-
 import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.actions.ChangeSelectionModeAction;
 import es.imim.bg.ztools.ui.actions.HideSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.HideSelectedRowsAction;
 import es.imim.bg.ztools.ui.actions.InvertSelectionAction;
@@ -13,6 +12,7 @@ import es.imim.bg.ztools.ui.actions.OpenAnalysisAction;
 import es.imim.bg.ztools.ui.actions.SelectAllAction;
 import es.imim.bg.ztools.ui.actions.SortSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.UnselectAllAction;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class Actions {
 
@@ -27,6 +27,15 @@ public class Actions {
 	
 	public static final BaseAction unselectAllAction = 
 		new UnselectAllAction();
+	
+	public static final BaseAction columnSelectionModeAction = 
+		new ChangeSelectionModeAction(SelectionMode.columns);
+	
+	public static final BaseAction rowSelectionModeAction = 
+		new ChangeSelectionModeAction(SelectionMode.rows);
+	
+	public static final BaseAction cellSelectionModeAction = 
+		new ChangeSelectionModeAction(SelectionMode.cells);
 	
 	public static final BaseAction hideSelectedColumnsAction = 
 		new HideSelectedColumnsAction();

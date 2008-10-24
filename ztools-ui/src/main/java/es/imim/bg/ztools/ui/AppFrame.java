@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import cern.colt.matrix.DoubleFactory3D;
@@ -74,14 +75,17 @@ public class AppFrame extends JFrame {
 	private void createComponents() {
 		setJMenuBar(createMenu());
 		
+		final JToolBar toolBar = createToolBar();
+		
 		workspace = new WorkspacePanel();
 		
 		statusBar = new StatusBar();
 		
+		add(toolBar, BorderLayout.NORTH);
 		add(workspace, BorderLayout.CENTER);
 		add(statusBar, BorderLayout.SOUTH);
 	}
-	
+
 	private JMenuBar createMenu() {
 		
 		final JMenu menuFile = new JMenu("File");
@@ -102,6 +106,24 @@ public class AppFrame extends JFrame {
 		menuBar.add(editMenu);
 		
 		return menuBar;
+	}
+	
+	private JToolBar createToolBar() {
+		final JToolBar toolBar = new JToolBar();
+		
+		toolBar.add(Actions.openAnalysisAction).setText("");
+		toolBar.addSeparator();
+		toolBar.add(Actions.columnSelectionModeAction).setText("");
+		toolBar.add(Actions.rowSelectionModeAction).setText("");
+		toolBar.add(Actions.cellSelectionModeAction).setText("");
+		toolBar.addSeparator();
+		toolBar.add(Actions.selectAllAction).setText("");
+		toolBar.add(Actions.unselectAllAction).setText("");
+		toolBar.addSeparator();
+		toolBar.add(Actions.hideSelectedRowsAction).setText("");
+		toolBar.add(Actions.sortSelectedColumnsAction).setText("");
+		
+		return toolBar;
 	}
 	
 	private void createDemoView() {

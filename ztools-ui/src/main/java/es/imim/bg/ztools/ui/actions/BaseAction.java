@@ -1,7 +1,11 @@
 package es.imim.bg.ztools.ui.actions;
 
+import java.net.URL;
+
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.AppFrame;
@@ -33,6 +37,42 @@ public abstract class BaseAction extends AbstractAction {
 	
 	public BaseAction(String name) {
 		this(name, null, null, null);
+	}
+	
+	protected void setName(String name) {
+		putValue(NAME, name);
+	}
+	
+	protected void setAccelerator(KeyStroke ks) {
+		putValue(ACCELERATOR_KEY, ks);
+	}
+	
+	protected void setMnemonic(int vk) {
+		putValue(MNEMONIC_KEY, vk);
+	}
+
+	protected void setSmallIcon(Icon icon) {
+		putValue(SMALL_ICON, icon);
+	}
+	
+	protected void setSmallIconFromResource(String name) {
+		setLargeIcon(getIconResource(name));
+	}
+
+	protected void setLargeIcon(Icon icon) {
+		putValue(LARGE_ICON_KEY, icon);
+	}
+	
+	protected void setLargeIconFromResource(String name) {
+		setLargeIcon(getIconResource(name));
+	}
+	
+	private Icon getIconResource(String name) {
+		URL url = getClass().getResource(name);
+		if (url == null)
+			url = getClass().getResource("/null.gif");
+		
+		return new ImageIcon(url);
 	}
 	
 	protected AbstractView getSelectedView() {

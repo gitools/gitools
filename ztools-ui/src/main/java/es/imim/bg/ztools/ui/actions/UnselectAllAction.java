@@ -1,7 +1,9 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
@@ -13,6 +15,10 @@ public class UnselectAllAction extends BaseAction {
 
 	public UnselectAllAction() {
 		super("Unselect all");
+		
+		setSmallIconFromResource(IconNames.unselectAll16);
+		setLargeIconFromResource(IconNames.unselectAll24);
+		setMnemonic(KeyEvent.VK_U);
 	}
 	
 	@Override

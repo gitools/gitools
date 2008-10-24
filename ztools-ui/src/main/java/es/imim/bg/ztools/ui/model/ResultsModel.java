@@ -6,8 +6,10 @@ import java.util.List;
 
 import es.imim.bg.ztools.model.Results;
 
-public class ResultsModel {
+public class ResultsModel extends AbstractModel {
 
+	public static final String SELECTION_MODE_PROPERTY = "selectionMode";
+	
 	private Results results;
 	
 	private int columnCount;
@@ -18,6 +20,8 @@ public class ResultsModel {
 
 	private int[] selectedColumns;
 	private int[] selectedRows;
+
+	protected SelectionMode selectionMode;
 	
 	public ResultsModel(Results results) {
 		this.results = results;
@@ -124,7 +128,7 @@ public class ResultsModel {
 
 	public void sort(final List<SortCriteria> criteriaList) {
 		
-		System.out.println(criteriaList);
+		//System.out.println(criteriaList);
 		
 		Integer[] indices = new Integer[rowCount];
 		for (int i = 0; i < rowCount; i++)
@@ -165,13 +169,15 @@ public class ResultsModel {
 			public int compare(Integer idx1, Integer idx2) {
 				double se1 = 0, s1 = 0, ss1 = 0;
 				double se2 = 0, s2 = 0, ss2 = 0;
+				double m1 = 1.0, m2 = 1.0;
 				
 				int N = selCols.length;
 				
 				for (int i = 0; i < N; i++) {
 					double v1 = results.getDataValue(
 							selCols[i], idx1, paramIndex);
-					
+				
+					m1 *= v1;
 					s1 += v1;
 					ss1 += v1 * v1;
 					se1 += Math.exp(s1);
@@ -179,6 +185,7 @@ public class ResultsModel {
 					double v2 = results.getDataValue(
 							selCols[i], idx2, paramIndex);
 					
+					m2 *= v2;
 					s2 += v2;
 					ss2 += v2 * v2;
 					se2 += Math.exp(s2);
@@ -188,11 +195,23 @@ public class ResultsModel {
 				double var2 = (N * ss2) - (s2 * s2) / (N * N);
 				
 				int res = (int) Math.signum(se1 - se2);
+				//int res = (int) Math.signum(se1 - se2);
+				//int res = (int) Math.signum(m1 - m2);
 				return res != 0 ? res : (int) Math.signum(var1 - var2);
 			}
 		});
 		
 		for (int i = 0; i < rowCount; i++)
 			rows[i] = indices[i];
+	}
+
+	public void setSelectionMode(SelectionMode mode) {
+		SelectionMode old = this.selectionMode;
+		this.selectionMode = mode;
+		firePropertyChange(SELECTION_MODE_PROPERTY, old, mode);
+	}
+	
+	public SelectionMode getSelectionMode() {
+		return selectionMode;
 	}
 }

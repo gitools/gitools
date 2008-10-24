@@ -1,7 +1,9 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -14,6 +16,10 @@ public class HideSelectedRowsAction extends BaseAction {
 
 	public HideSelectedRowsAction() {
 		super("Hide selected rows");
+		
+		setSmallIconFromResource(IconNames.rowHide16);
+		setLargeIconFromResource(IconNames.rowHide24);
+		setMnemonic(KeyEvent.VK_W);
 	}
 	
 	@Override

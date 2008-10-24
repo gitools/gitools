@@ -3,7 +3,9 @@ package es.imim.bg.ztools.ui.views.analysis;
 import java.awt.BorderLayout;
 
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
 
+import es.imim.bg.ztools.ui.Actions;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.ColorMatrixListener;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.model.ResultsModel;
