@@ -10,16 +10,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.ui.Actions;
-import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
+import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.ColorMatrixListener;
 import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.results.ResultsConfigPanel.ResultsConfigPanelListener;
-import es.imim.bg.ztools.ui.views.results.ResultsToolsPanel.ResultsToolsListener;
 
 public class ResultsView extends AbstractView {
 
@@ -144,6 +143,16 @@ public class ResultsView extends AbstractView {
 			}
 		});
 		
+		colorMatrixPanel.addListener(new ColorMatrixListener() {
+			@Override
+			public void selectionChanged() {
+				int colIndex = colorMatrixPanel.getSelectedLeadColumn();
+				int rowIndex = colorMatrixPanel.getSelectedLeadRow();
+				
+				setLeadSelection(colIndex, rowIndex);
+			}
+		});
+
 		configPanel.refresh();
 		refreshColorMatrixWidth();
 		
@@ -155,6 +164,41 @@ public class ResultsView extends AbstractView {
 		setLayout(new BorderLayout());
 		//add(leftPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
+	}
+
+	private void setLeadSelection(int colIndex, int rowIndex) {
+		if (colIndex < 0 || rowIndex < 0)
+			resultsModel.setHtmlInfo("");
+		else {
+			final String colName = 
+				resultsModel.getColumnName(colIndex);
+			final String rowName = 
+				resultsModel.getRowName(rowIndex);
+			final String[] paramNames = 
+				resultsModel.getParamNames();
+			
+			StringBuilder sb = new StringBuilder();
+			
+			// Render parameters & values
+			sb.append("<p><b>Column:</b><br>");
+			sb.append(colName).append("</p>");
+			sb.append("<p><b>Row:</b><br>");
+			sb.append(rowName).append("</p>");
+			
+			for (int i = 0; i < paramNames.length; i++) {
+				final String paramName = paramNames[i];
+				final String value = Double.toString(
+						resultsModel.getValue(colIndex, rowIndex, i));
+				
+				sb.append("<p><b>");
+				sb.append(paramName);
+				sb.append(":</b><br>");
+				sb.append(value);
+				sb.append("</p>");
+			}
+			
+			resultsModel.setHtmlInfo(sb.toString());
+		}
 	}
 
 	private void refreshColorMatrixWidth() {

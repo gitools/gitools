@@ -9,6 +9,7 @@ import es.imim.bg.ztools.model.Results;
 public class ResultsModel extends AbstractModel {
 
 	public static final String SELECTION_MODE_PROPERTY = "selectionMode";
+	public static final String HTML_INFO_PROPERTY = "htmlInfo";
 	
 	private Results results;
 	
@@ -21,7 +22,9 @@ public class ResultsModel extends AbstractModel {
 	private int[] selectedColumns;
 	private int[] selectedRows;
 
-	protected SelectionMode selectionMode;
+	private SelectionMode selectionMode;
+	
+	private String htmlInfo;
 	
 	public ResultsModel(Results results) {
 		this.results = results;
@@ -213,5 +216,15 @@ public class ResultsModel extends AbstractModel {
 	
 	public SelectionMode getSelectionMode() {
 		return selectionMode;
+	}
+	
+	public String getHtmlInfo() {
+		return htmlInfo;
+	}
+	
+	public void setHtmlInfo(String htmlInfo) {
+		String old = this.htmlInfo;
+		this.htmlInfo = htmlInfo;
+		firePropertyChange(HTML_INFO_PROPERTY, old, htmlInfo);
 	}
 }
