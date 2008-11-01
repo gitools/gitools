@@ -16,6 +16,7 @@ public class UnselectAllAction extends BaseAction {
 	public UnselectAllAction() {
 		super("Unselect all");
 		
+		setDesc("Unselect all");
 		setSmallIconFromResource(IconNames.unselectAll16);
 		setLargeIconFromResource(IconNames.unselectAll24);
 		setMnemonic(KeyEvent.VK_U);

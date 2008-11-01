@@ -16,6 +16,8 @@ public class SortSelectedColumnsAction extends BaseAction {
 
 	public SortSelectedColumnsAction() {
 		super("Sort selected columns");
+		
+		setDesc("Sort selected columns");
 		setSmallIconFromResource(IconNames.sortSelectedColumns16);
 		setLargeIconFromResource(IconNames.sortSelectedColumns24);
 		setMnemonic(KeyEvent.VK_S);

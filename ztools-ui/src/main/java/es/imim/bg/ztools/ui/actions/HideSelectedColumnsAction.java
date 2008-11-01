@@ -17,6 +17,7 @@ public class HideSelectedColumnsAction extends BaseAction {
 	public HideSelectedColumnsAction() {
 		super("Hide selected columns");
 		
+		setDesc("Hide selected columns");
 		setSmallIconFromResource(IconNames.columnHide16);
 		setLargeIconFromResource(IconNames.columnHide24);
 		setMnemonic(KeyEvent.VK_O);

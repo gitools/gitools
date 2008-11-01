@@ -8,6 +8,8 @@ public class InvertSelectionAction extends BaseAction {
 
 	public InvertSelectionAction() {
 		super("Invert selection");
+		
+		setDesc("Invert selection");
 	}
 	
 	@Override

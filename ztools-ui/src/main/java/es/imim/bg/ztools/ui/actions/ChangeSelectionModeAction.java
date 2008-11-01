@@ -23,18 +23,21 @@ public class ChangeSelectionModeAction extends BaseAction {
 		switch (mode) {
 		case columns:
 			setName("Column selection mode");
+			setDesc("Change selection mode to columns");
 			setSmallIconFromResource(IconNames.columnSelection16);
 			setLargeIconFromResource(IconNames.columnSelection24);
 			setMnemonic(KeyEvent.VK_C);
 			break;
 		case rows:
 			setName("Row selection mode");
+			setDesc("Change selection mode to rows");
 			setSmallIconFromResource(IconNames.rowSelection16);
 			setLargeIconFromResource(IconNames.rowSelection24);
 			setMnemonic(KeyEvent.VK_R);
 			break;
 		case cells:
 			setName("Cell selection mode");
+			setDesc("Change selection mode to cell");
 			setSmallIconFromResource(IconNames.cellSelection16);
 			setLargeIconFromResource(IconNames.cellSelection24);
 			setMnemonic(KeyEvent.VK_E);

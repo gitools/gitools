@@ -43,6 +43,10 @@ public abstract class BaseAction extends AbstractAction {
 		putValue(NAME, name);
 	}
 	
+	protected void setDesc(String desc) {
+		putValue(SHORT_DESCRIPTION, desc);
+	}
+	
 	protected void setAccelerator(KeyStroke ks) {
 		putValue(ACCELERATOR_KEY, ks);
 	}

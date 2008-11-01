@@ -17,6 +17,7 @@ public class HideSelectedRowsAction extends BaseAction {
 	public HideSelectedRowsAction() {
 		super("Hide selected rows");
 		
+		setDesc("Hide selected rows");
 		setSmallIconFromResource(IconNames.rowHide16);
 		setLargeIconFromResource(IconNames.rowHide24);
 		setMnemonic(KeyEvent.VK_W);

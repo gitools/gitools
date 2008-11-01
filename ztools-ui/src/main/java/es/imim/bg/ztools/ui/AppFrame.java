@@ -88,18 +88,33 @@ public class AppFrame extends JFrame {
 
 	private JMenuBar createMenu() {
 		
+		final JMenu exportMenu = new JMenu("Export");
+		exportMenu.add(Actions.exportParameterDataAction);
+		exportMenu.add(Actions.exportColumnDataAction);
+		exportMenu.add("{row names}");
+		
 		final JMenu menuFile = new JMenu("File");
 		menuFile.add(Actions.openAnalysisAction);
+		menuFile.addSeparator();
+		menuFile.add(exportMenu);
+		menuFile.addSeparator();
+		menuFile.add(Actions.exit);
+		
+		final JMenu selectionModeMenu = new JMenu("Selection mode");
+		selectionModeMenu.add(Actions.columnSelectionModeAction);
+		selectionModeMenu.add(Actions.rowSelectionModeAction);
+		selectionModeMenu.add(Actions.cellSelectionModeAction);
 		
 		final JMenu editMenu = new JMenu("Edit");
 		editMenu.add(Actions.selectAllAction);
 		//editMenu.add(Actions.invertSelectionAction);
 		editMenu.add(Actions.unselectAllAction);
+		editMenu.add(selectionModeMenu);
 		editMenu.addSeparator();
 		//editMenu.add(Actions.hideSelectedColumnsAction);
-		editMenu.add(Actions.sortSelectedColumnsAction);
-		editMenu.addSeparator();
 		editMenu.add(Actions.hideSelectedRowsAction);
+		editMenu.addSeparator();
+		editMenu.add(Actions.sortSelectedColumnsAction);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);

@@ -16,6 +16,7 @@ public class SelectAllAction extends BaseAction {
 	public SelectAllAction() {
 		super("Select all");
 		
+		setDesc("Select all");
 		setSmallIconFromResource(IconNames.selectAll16);
 		setLargeIconFromResource(IconNames.selectAll24);
 		setMnemonic(KeyEvent.VK_A);

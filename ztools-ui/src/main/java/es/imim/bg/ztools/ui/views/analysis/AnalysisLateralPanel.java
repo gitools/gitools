@@ -1,6 +1,7 @@
 package es.imim.bg.ztools.ui.views.analysis;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -34,10 +35,11 @@ public class AnalysisLateralPanel extends JPanel {
 			names[i] = rmodel.getParamName(i);
 		
 		infoPane = new JTextPane();
+		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
 		final JScrollPane scrollPane = new JScrollPane(infoPane);
 		
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		
 		setLayout(new BorderLayout());
 		add(scrollPane);

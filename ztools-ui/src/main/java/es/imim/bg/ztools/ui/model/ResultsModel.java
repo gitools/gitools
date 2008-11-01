@@ -1,8 +1,14 @@
 package es.imim.bg.ztools.ui.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.DoubleMatrix3D;
 
 import es.imim.bg.ztools.model.Results;
 
@@ -13,12 +19,21 @@ public class ResultsModel extends AbstractModel {
 	
 	private Results results;
 	
+	private List<DoubleMatrix2D> data;
+	
 	private int columnCount;
 	private int[] columns;
+	private String[] columnNames;
 	
 	private int rowCount;
 	private int[] rows;
+	private String[] rowNames;
 
+	private int paramCount;
+	private int[] params;
+	private String[] paramNames;
+	private Map<String, Integer> paramIndexMap;
+	
 	private int[] selectedColumns;
 	private int[] selectedRows;
 
@@ -29,19 +44,35 @@ public class ResultsModel extends AbstractModel {
 	public ResultsModel(Results results) {
 		this.results = results;
 		
-		reset();
+		initialize();
 	}
 	
-	public void reset() {
+	public void initialize() {
 		columnCount = results.getData().columns();
 		columns = new int[columnCount];
 		for (int i = 0; i < columnCount; i++)
 			columns[i] = i;
+		columnNames = results.getColNames();
 		
 		rowCount = results.getData().rows();
 		rows = new int[rowCount];
 		for (int i = 0; i < rowCount; i++)
 			rows[i] = i;
+		rowNames = results.getRowNames();
+		
+		DoubleMatrix3D cube = results.getData();
+		data = new ArrayList<DoubleMatrix2D>(cube.slices());
+		for (int i = 0; i < cube.slices(); i++)
+			data.add(cube.viewSlice(i));
+		
+		paramCount = cube.slices();
+		params = new int[paramCount];
+		paramIndexMap = new HashMap<String, Integer>();
+		paramNames = results.getParamNames();
+		for (int i = 0; i < paramCount; i++) {
+			params[i] = i;
+			paramIndexMap.put(paramNames[i], i);
+		}
 		
 		resetSelection();
 	}
@@ -55,7 +86,7 @@ public class ResultsModel extends AbstractModel {
 	}
 
 	public String getColumnName(int column) {
-		return results.getColNames()[columns[column]];
+		return columnNames[columns[column]];
 	}
 
 	public int getRowCount() {
@@ -63,28 +94,31 @@ public class ResultsModel extends AbstractModel {
 	}
 
 	public String getRowName(int row) {
-		return results.getRowNames()[rows[row]];
+		return rowNames[rows[row]];
 	}
 
 	public int getParamCount() {
-		return results.getParamNames().length;
+		return paramCount;
 	}
 	
 	public String getParamName(int param) {
-		return results.getParamNames()[param];
+		return paramNames[param];
 	}
 	
 	public Double getValue(int column, int row, int param) {
-		return results.getDataValue(
-				columns[column], rows[row], param);
+		return getDataValue(columns[column], rows[row], param);
 	}
 
+	private double getDataValue(int column, int row, int param) {
+		return data.get(param).get(row, column);
+	}
+	
 	public String[] getParamNames() {
-		return results.getParamNames();
+		return paramNames;
 	}
 
 	public int getParamIndex(String name) {
-		return results.getParamIndex(name);
+		return paramIndexMap.get(name);
 	}
 	
 	public void removeColumns(int[] indices) {
@@ -129,6 +163,26 @@ public class ResultsModel extends AbstractModel {
 		this.selectedRows = selectedRows;
 	}
 
+	public void setSelectionMode(SelectionMode mode) {
+		SelectionMode old = this.selectionMode;
+		this.selectionMode = mode;
+		firePropertyChange(SELECTION_MODE_PROPERTY, old, mode);
+	}
+	
+	public SelectionMode getSelectionMode() {
+		return selectionMode;
+	}
+	
+	public String getHtmlInfo() {
+		return htmlInfo;
+	}
+	
+	public void setHtmlInfo(String htmlInfo) {
+		String old = this.htmlInfo;
+		this.htmlInfo = htmlInfo;
+		firePropertyChange(HTML_INFO_PROPERTY, old, htmlInfo);
+	}
+	
 	public void sort(final List<SortCriteria> criteriaList) {
 		
 		//System.out.println(criteriaList);
@@ -144,10 +198,10 @@ public class ResultsModel extends AbstractModel {
 				for (int i = 0; i < criteriaList.size() && res == 0; i++) {
 					final SortCriteria c = criteriaList.get(i);
 				
-					double v1 = results.getDataValue(
+					double v1 = getDataValue(
 							c.getColumnIndex(), idx1, c.getParamIndex());
 					
-					double v2 = results.getDataValue(
+					double v2 = getDataValue(
 							c.getColumnIndex(), idx2, c.getParamIndex());
 					
 					res = (int) Math.signum(
@@ -177,16 +231,14 @@ public class ResultsModel extends AbstractModel {
 				int N = selCols.length;
 				
 				for (int i = 0; i < N; i++) {
-					double v1 = results.getDataValue(
-							selCols[i], idx1, paramIndex);
+					double v1 = getDataValue(selCols[i], idx1, paramIndex);
 				
 					m1 *= v1;
 					s1 += v1;
 					ss1 += v1 * v1;
 					se1 += Math.exp(s1);
 					
-					double v2 = results.getDataValue(
-							selCols[i], idx2, paramIndex);
+					double v2 = getDataValue(selCols[i], idx2, paramIndex);
 					
 					m2 *= v2;
 					s2 += v2;
@@ -206,25 +258,5 @@ public class ResultsModel extends AbstractModel {
 		
 		for (int i = 0; i < rowCount; i++)
 			rows[i] = indices[i];
-	}
-
-	public void setSelectionMode(SelectionMode mode) {
-		SelectionMode old = this.selectionMode;
-		this.selectionMode = mode;
-		firePropertyChange(SELECTION_MODE_PROPERTY, old, mode);
-	}
-	
-	public SelectionMode getSelectionMode() {
-		return selectionMode;
-	}
-	
-	public String getHtmlInfo() {
-		return htmlInfo;
-	}
-	
-	public void setHtmlInfo(String htmlInfo) {
-		String old = this.htmlInfo;
-		this.htmlInfo = htmlInfo;
-		firePropertyChange(HTML_INFO_PROPERTY, old, htmlInfo);
 	}
 }
