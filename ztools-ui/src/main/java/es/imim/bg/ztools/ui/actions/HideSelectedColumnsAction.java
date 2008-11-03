@@ -5,10 +5,10 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
-import es.imim.bg.ztools.ui.model.ResultsModel;
+import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.TableView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
-import es.imim.bg.ztools.ui.views.results.ResultsView;
 
 public class HideSelectedColumnsAction extends BaseAction {
 
@@ -27,8 +27,8 @@ public class HideSelectedColumnsAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
 		
-		ColorMatrixPanel colorMatrixPanel = null;
-		ResultsModel resultsModel = null;
+		//ColorMatrixPanel colorMatrixPanel = null;
+		ITableModel resultsModel = null;
 		int[] indices = null;
 		
 		if (view instanceof AnalysisView) {
@@ -37,31 +37,33 @@ public class HideSelectedColumnsAction extends BaseAction {
 				.getAnalysisModel()
 				.getResultsModel();
 			
-			colorMatrixPanel = aview
+			/*colorMatrixPanel = aview
 				.getResultsPanel()
 				.getColorMatrixPanel();
 			
 			indices = colorMatrixPanel
-				.getSelectedColumns();
+				.getSelectedColumns();*/
 		}
-		else if (view instanceof ResultsView) {
-			resultsModel = ((ResultsView) view)
-				.getResultsModel();
+		else if (view instanceof TableView) {
+			resultsModel = ((TableView) view)
+				.getTableModel();
 			
-			colorMatrixPanel = ((ResultsView) view)
+			/*colorMatrixPanel = ((TableView) view)
 				.getColorMatrixPanel();
 			
 			indices = colorMatrixPanel
-				.getSelectedColumns();
+				.getSelectedColumns();*/
 		}
 		
 		if (resultsModel == null)
 			return;
 		
+		indices = resultsModel.getSelectedColumns();
+		
 		resultsModel.removeColumns(indices);
 		
-		colorMatrixPanel.clearSelection();
-		colorMatrixPanel.refresh();
+		/*colorMatrixPanel.clearSelection();
+		colorMatrixPanel.refresh();*/
 	}
 
 }

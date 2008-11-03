@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import es.imim.bg.ztools.ui.Actions;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 
+@Deprecated
 public class ResultsToolsPanel extends JPanel {
 
 	private static final long serialVersionUID = 7775322349080837516L;

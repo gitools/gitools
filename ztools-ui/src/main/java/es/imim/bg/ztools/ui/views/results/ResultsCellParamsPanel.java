@@ -11,6 +11,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
+@Deprecated
 public class ResultsCellParamsPanel extends JPanel {
 
 	private static final long serialVersionUID = -2448266362573432064L;

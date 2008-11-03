@@ -5,10 +5,11 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
-import es.imim.bg.ztools.ui.model.ResultsModel;
+import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.TableView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
-import es.imim.bg.ztools.ui.views.results.ResultsView;
 
 public class SortSelectedColumnsAction extends BaseAction {
 
@@ -27,43 +28,52 @@ public class SortSelectedColumnsAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
 		
-		ColorMatrixPanel colorMatrixPanel = null;
-		ResultsModel resultsModel = null;
+		//FIXME:
+		if (true)
+			return;
+		
+		//ColorMatrixPanel colorMatrixPanel = null;
+		ITableModel tableModel = null;
 		int[] indices = null;
 		int selParamIndex = 0;
 		
 		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view; 
-			resultsModel = aview
-				.getAnalysisModel()
+			AnalysisView aview = (AnalysisView) view;
+			AnalysisModel analysisModel = aview
+				.getAnalysisModel();
+			tableModel = analysisModel
 				.getResultsModel();
 			
-			selParamIndex = aview
+			/*selParamIndex = aview
 				.getResultsPanel()
-				.getSelectedParamIndex();
+				.getSelectedParamIndex();*/
 			
-			colorMatrixPanel = aview
+			//TODO: selParamIndex = analysisModel.getSelectedParamIndex();
+			
+			/*colorMatrixPanel = aview
 				.getResultsPanel()
 				.getColorMatrixPanel();
 			
 			indices = colorMatrixPanel
-				.getSelectedColumns();
+				.getSelectedColumns();*/
 		}
-		else if (view instanceof ResultsView) {
-			resultsModel = ((ResultsView) view)
-				.getResultsModel();
+		else if (view instanceof TableView) {
+			tableModel = ((TableView) view)
+				.getTableModel();
 			
-			selParamIndex = ((ResultsView) view)
-				.getSelectedParamIndex();
+			/*selParamIndex = ((TableView) view)
+				.getSelectedParamIndex();*/
+			
+			selParamIndex = 0;
 				
-			colorMatrixPanel = ((ResultsView) view)
+			/*colorMatrixPanel = ((TableView) view)
 				.getColorMatrixPanel();
 			
 			indices = colorMatrixPanel
-				.getSelectedColumns();
+				.getSelectedColumns();*/
 		}
 		
-		if (resultsModel == null)
+		if (tableModel == null)
 			return;
 		
 		/*List<SortCriteria> criteriaList = 
@@ -73,7 +83,8 @@ public class SortSelectedColumnsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		resultsModel.sortByFunc(indices, selParamIndex);
+		//TODO: sort func must be independent of param index
+		tableModel.sortByFunc(indices, selParamIndex);
 		
 		view.refresh();
 	}

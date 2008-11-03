@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -17,6 +18,8 @@ public class AnalysisLateralPanel extends JPanel {
 
 	private AnalysisModel analysisModel;
 
+	//private JComboBox viewCb;
+	//private JComboBox 
 	private JTextPane infoPane;
 	
 	public AnalysisLateralPanel(AnalysisModel analysisModel) {

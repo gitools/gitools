@@ -6,11 +6,11 @@ import java.awt.event.KeyEvent;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
-import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.model.SelectionMode;
+import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.TableView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
-import es.imim.bg.ztools.ui.views.results.ResultsView;
 
 public class ChangeSelectionModeAction extends BaseAction {
 
@@ -56,9 +56,9 @@ public class ChangeSelectionModeAction extends BaseAction {
 				.getAnalysisModel();
 			analysisModel.setSelectionMode(mode);
 		}
-		else if (view instanceof ResultsView) {
-			ResultsModel resultsModel = ((ResultsView) view)
-				.getResultsModel();
+		else if (view instanceof TableView) {
+			ITableModel resultsModel = ((TableView) view)
+				.getTableModel();
 			if (resultsModel != null)
 				resultsModel.setSelectionMode(mode);
 		}

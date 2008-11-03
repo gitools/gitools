@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.views.results;
+package es.imim.bg.ztools.ui.views;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -6,7 +6,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,44 +20,44 @@ import javax.swing.event.DocumentListener;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.CellDecoration.TextAlignment;
 
-public class ResultsConfigPanel extends JPanel {
+public class TableViewConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = 7931473950086532892L;
 	
-	public interface ResultsConfigPanelListener {
-		void paramChanged();
+	public interface TableViewConfigPanelListener {
+		/*void paramChanged();*/
 		void showModeChanged();
 		void justificationChanged();
 		void formatChanged();
 	}
 	
-	private String[] paramNames;
-	private int paramIndex;
+	/*private String[] paramNames;
+	private int paramIndex;*/
 	
 	private Map<String, CellDecorationConfig> cellDecorationConfig;
 	
-	private List<ResultsConfigPanelListener> listeners;
+	private List<TableViewConfigPanelListener> listeners;
 	
-	private JComboBox paramCombo;
+	//private JComboBox paramCombo;
 	private JComboBox showCombo;
 	private JPanel valuesConfigPanel;
 	private JComboBox justifCombo;
 	private JTextField fmtTxtField;
 	private JPanel colorsConfigPanel;
 	
-	public ResultsConfigPanel(String[] paramNames, int paramIndex) {
-		this.paramNames = paramNames;
-		this.paramIndex = paramIndex;
+	public TableViewConfigPanel(/*String[] paramNames, int paramIndex*/) {
+		/*this.paramNames = paramNames;
+		this.paramIndex = paramIndex;*/
 		
 		this.cellDecorationConfig = new HashMap<String, CellDecorationConfig>();
 		
-		this.listeners = new ArrayList<ResultsConfigPanelListener>(1);
+		this.listeners = new ArrayList<TableViewConfigPanelListener>(1);
 		
 		createComponents();
 	}
 	
 	private void createComponents() {
-		paramCombo = new JComboBox(paramNames);
+		/*paramCombo = new JComboBox(paramNames);
 		paramCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -69,7 +68,7 @@ public class ResultsConfigPanel extends JPanel {
 					refresh();
 				}
 			}
-		});
+		});*/
 		
 		showCombo = new JComboBox(new String[] { "colors", "values" });
 		showCombo.addItemListener(new ItemListener() {
@@ -90,7 +89,7 @@ public class ResultsConfigPanel extends JPanel {
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Parameter"));
-		add(paramCombo);
+		//add(paramCombo);
 		add(new JLabel("Show"));
 		add(showCombo);
 		add(valuesConfigPanel);
@@ -160,26 +159,26 @@ public class ResultsConfigPanel extends JPanel {
 		return panel;
 	}
 
-	public void addListener(ResultsConfigPanelListener listener) {
+	public void addListener(TableViewConfigPanelListener listener) {
 		listeners.add(listener);
 	}
 	
-	public int getSelectedParamIndex() {
+	/*public int getSelectedParamIndex() {
 		return paramIndex;
 	}
 	
 	public String getSelectedParamName() {
 		return paramNames[paramIndex];
-	}
+	}*/
 	
 	public CellDecorationConfig getCurrentDecorationConfig() {
-		String paramName = getSelectedParamName();
-		CellDecorationConfig config = 
-			cellDecorationConfig.get(paramName);
+		//String paramName = getSelectedParamName();
+		CellDecorationConfig config = null/*
+			cellDecorationConfig.get(paramName)*/;
 		
 		if (config == null) {
 			config = new CellDecorationConfig();
-			cellDecorationConfig.put(paramName, config);
+			//cellDecorationConfig.put(paramName, config);
 		}
 		return config;
 	}
@@ -187,7 +186,7 @@ public class ResultsConfigPanel extends JPanel {
 	public void refresh() {
 		CellDecorationConfig config = getCurrentDecorationConfig();
 		
-		paramCombo.setSelectedIndex(paramIndex);
+		//paramCombo.setSelectedIndex(paramIndex);
 		
 		showCombo.setSelectedIndex(config.showColors ? 0 : 1);
 		
@@ -203,7 +202,7 @@ public class ResultsConfigPanel extends JPanel {
 		colorsConfigPanel.setVisible(config.showColors);
 	}
 
-	private int getParamIndexFromName(String name) {
+	/*private int getParamIndexFromName(String name) {
 		System.out.println(name + " in " + Arrays.toString(paramNames));
 		
 		int index = 0;
@@ -215,25 +214,25 @@ public class ResultsConfigPanel extends JPanel {
 			throw new RuntimeException("Parameter called '" + name + "' doesn't exists.");
 		
 		return index;
-	}
+	}*/
 	
-	private void fireParamChanged() {
-		for (ResultsConfigPanelListener listener : listeners)
+	/*private void fireParamChanged() {
+		for (TableViewConfigPanelListener listener : listeners)
 			listener.paramChanged();
-	}
+	}*/
 	
 	private void fireShowModeChanged() {
-		for (ResultsConfigPanelListener listener : listeners)
+		for (TableViewConfigPanelListener listener : listeners)
 			listener.showModeChanged();		
 	}
 	
 	protected void fireJustificationChanged() {
-		for (ResultsConfigPanelListener listener : listeners)
+		for (TableViewConfigPanelListener listener : listeners)
 			listener.justificationChanged();
 	}
 	
 	protected void fireFormatChanged() {
-		for (ResultsConfigPanelListener listener : listeners)
+		for (TableViewConfigPanelListener listener : listeners)
 			listener.formatChanged();
 	}
 }

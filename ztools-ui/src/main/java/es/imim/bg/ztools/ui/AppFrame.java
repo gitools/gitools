@@ -19,7 +19,7 @@ import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.results.ResultsView;
+import es.imim.bg.ztools.ui.views.TableView;
 
 public class AppFrame extends JFrame {
 
@@ -163,8 +163,8 @@ public class AppFrame extends JFrame {
 		Analysis analysis = new Analysis();
 		analysis.setResults(results);
 		
-		ResultsView view = 
-			new ResultsView(
+		TableView view = 
+			new TableView(
 				new ResultsModel(results));
 		view.setName("demo");
 		

@@ -12,10 +12,8 @@ import cern.colt.matrix.DoubleMatrix3D;
 
 import es.imim.bg.ztools.model.Results;
 
-public class ResultsModel extends AbstractModel {
-
-	public static final String SELECTION_MODE_PROPERTY = "selectionMode";
-	public static final String HTML_INFO_PROPERTY = "htmlInfo";
+public class ResultsModel 
+		extends AbstractModel implements ICubeModel {
 	
 	private Results results;
 	
@@ -33,9 +31,12 @@ public class ResultsModel extends AbstractModel {
 	private int[] params;
 	private String[] paramNames;
 	private Map<String, Integer> paramIndexMap;
-	
+	private int selectedParam;
+		
 	private int[] selectedColumns;
 	private int[] selectedRows;
+	private int selectedLeadColumn;
+	private int selectedLeadRow;
 
 	private SelectionMode selectionMode;
 	
@@ -43,7 +44,7 @@ public class ResultsModel extends AbstractModel {
 	
 	public ResultsModel(Results results) {
 		this.results = results;
-		
+
 		initialize();
 	}
 	
@@ -81,58 +82,10 @@ public class ResultsModel extends AbstractModel {
 		return results;
 	}*/
 
-	public int getColumnCount() {
-		return columnCount;
-	}
-
-	public String getColumnName(int column) {
-		return columnNames[columns[column]];
-	}
-
-	public int getRowCount() {
-		return rowCount;
-	}
-
-	public String getRowName(int row) {
-		return rowNames[rows[row]];
-	}
-
-	public int getParamCount() {
-		return paramCount;
-	}
-	
-	public String getParamName(int param) {
-		return paramNames[param];
-	}
-	
-	public Double getValue(int column, int row, int param) {
-		return getDataValue(columns[column], rows[row], param);
-	}
-
 	private double getDataValue(int column, int row, int param) {
 		return data.get(param).get(row, column);
 	}
 	
-	public String[] getParamNames() {
-		return paramNames;
-	}
-
-	public int getParamIndex(String name) {
-		return paramIndexMap.get(name);
-	}
-	
-	public void removeColumns(int[] indices) {
-		//System.out.println(Arrays.toString(columns));
-		arrayRemove(columns, columnCount, indices);
-		//System.out.println(Arrays.toString(columns));
-		columnCount -= indices.length;
-	}
-	
-	public void removeRows(int[] indices) {
-		arrayRemove(rows, rowCount, indices);
-		rowCount -= indices.length;
-	}
-
 	private void arrayRemove(int[] array, int size, int[] indices) {
 		for (int i = 0; i < indices.length; i++)
 			arrayRemove(array, size, indices[i] - i);
@@ -142,47 +95,178 @@ public class ResultsModel extends AbstractModel {
 		System.arraycopy(array, index + 1, array, index, size - index - 1);
 	}
 
-	public void resetSelection() {
-		selectedColumns = new int[0];
-		selectedRows = new int[0];
+	public int getParamIndex(String name) {
+		return paramIndexMap.get(name);
 	}
 	
-	public int[] getSelectedColumns() {
-		return selectedColumns;
-	}
+	// ITableModel
 	
-	public void setSelectedColumns(int[] selectedColumns) {
-		this.selectedColumns = selectedColumns;
-	}
-	
-	public int[] getSelectedRows() {
-		return selectedRows;
-	}
-	
-	public void setSelectedRows(int[] selectedRows) {
-		this.selectedRows = selectedRows;
+	@Override
+	public int getColumnCount() {
+		return columnCount;
 	}
 
+	@Override
+	public String getColumnName(int column) {
+		return columnNames[columns[column]];
+	}
+
+	@Override
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	@Override
+	public String getRowName(int row) {
+		return rowNames[rows[row]];
+	}
+
+	@Override
+	public double getValue(int column, int row) {
+		return getDataValue(column, row, selectedParam);
+	}
+	
+	@Override
+	public void removeColumns(int[] indices) {
+		//System.out.println(Arrays.toString(columns));
+		arrayRemove(columns, columnCount, indices);
+		//System.out.println(Arrays.toString(columns));
+		columnCount -= indices.length;
+	}
+	
+	@Override
+	public void removeRows(int[] indices) {
+		arrayRemove(rows, rowCount, indices);
+		rowCount -= indices.length;
+	}
+
+	@Override
 	public void setSelectionMode(SelectionMode mode) {
 		SelectionMode old = this.selectionMode;
 		this.selectionMode = mode;
 		firePropertyChange(SELECTION_MODE_PROPERTY, old, mode);
 	}
 	
+	@Override
 	public SelectionMode getSelectionMode() {
 		return selectionMode;
 	}
 	
+	@Override
+	public int[] getSelectedColumns() {
+		return selectedColumns;
+	}
+	
+	@Override
+	public void setSelectedColumns(int[] selectedColumns) {
+		int[] oldSelCols= this.selectedColumns;
+		this.selectedColumns = selectedColumns;
+		firePropertyChange(SELECTION_COLUMNS_PROPERTY, oldSelCols, selectedColumns);
+	}
+	
+	@Override
+	public int[] getSelectedRows() {
+		return selectedRows;
+	}
+	
+	@Override
+	public void setSelectedRows(int[] selectedRows) {
+		int[] oldSelRows = this.selectedRows;
+		this.selectedRows = selectedRows;
+		firePropertyChange(SELECTION_ROWS_PROPERTY, oldSelRows, selectedRows);
+	}
+
+	@Override
+	public void setLeadSelection(int column, int row) {
+		int[] oldLead = new int[] {selectedLeadColumn, selectedLeadRow};
+		
+		selectedLeadColumn = column;
+		selectedLeadRow = row;
+		
+		if (column < 0 || row < 0)
+			setHtmlInfo("");
+		else {
+			final String colName = 
+				getColumnName(column);
+			final String rowName = 
+				getRowName(row);
+			final String[] paramNames = 
+				getParamNames();
+			
+			StringBuilder sb = new StringBuilder();
+			
+			// Render parameters & values
+			sb.append("<p><b>Column:</b><br>");
+			sb.append(colName).append("</p>");
+			sb.append("<p><b>Row:</b><br>");
+			sb.append(rowName).append("</p>");
+			
+			for (int i = 0; i < paramNames.length; i++) {
+				final String paramName = paramNames[i];
+				final String value = Double.toString(
+						getValue(column, row, i));
+				
+				sb.append("<p><b>");
+				sb.append(paramName);
+				sb.append(":</b><br>");
+				sb.append(value);
+				sb.append("</p>");
+			}
+			
+			setHtmlInfo(sb.toString());
+		}
+		
+		firePropertyChange(SELECTION_LEAD_PROPERTY, oldLead, 
+				new int[] {selectedLeadColumn, selectedLeadRow});
+	}
+	
+	@Override
+	public int getSelectedLeadColumn() {
+		return selectedLeadColumn;
+	}
+	
+	@Override
+	public int getSelectedLeadRow() {
+		return selectedLeadRow;
+	}
+	
+	@Override
+	public void selectAll() {
+		int rowCount = getRowCount();
+		int[] selRows = new int[rowCount];
+		for (int i = 0; i < rowCount; i++)
+			selRows[i] = i;
+		setSelectedRows(selRows);
+		
+		int colCount = getColumnCount();
+		int[] selCols = new int[colCount];
+		for (int i = 0; i < colCount; i++)
+			selCols[i] = i;
+		setSelectedColumns(selCols);
+	}
+	
+	@Override
+	public void resetSelection() {
+		setSelectedColumns(new int[0]);
+		
+		setSelectedRows(new int[0]);
+		
+		setLeadSelection(-1, -1);		
+	}
+	
+	@Override
 	public String getHtmlInfo() {
 		return htmlInfo;
 	}
 	
+	@Override
 	public void setHtmlInfo(String htmlInfo) {
 		String old = this.htmlInfo;
 		this.htmlInfo = htmlInfo;
 		firePropertyChange(HTML_INFO_PROPERTY, old, htmlInfo);
 	}
 	
+	@Override
 	public void sort(final List<SortCriteria> criteriaList) {
 		
 		//System.out.println(criteriaList);
@@ -215,6 +299,7 @@ public class ResultsModel extends AbstractModel {
 			rows[i] = indices[i];
 	}
 	
+	@Override
 	public void sortByFunc(final int[] selCols, final int paramIndex) {
 			
 		Integer[] indices = new Integer[rowCount];
@@ -258,5 +343,37 @@ public class ResultsModel extends AbstractModel {
 		
 		for (int i = 0; i < rowCount; i++)
 			rows[i] = indices[i];
+	}
+	
+	// ICubeModel
+	
+	@Override
+	public int getParamCount() {
+		return paramCount;
+	}
+	
+	@Override
+	public String getParamName(int param) {
+		return paramNames[param];
+	}
+
+	@Override
+	public int getSelectedParam() {
+		return selectedParam;
+	}
+
+	@Override
+	public void setSelectedParam(int param) {
+		this.selectedParam = param;
+	}
+
+	@Override
+	public String[] getParamNames() {
+		return paramNames;
+	}
+	
+	@Override
+	public double getValue(int column, int row, int param) {
+		return getDataValue(columns[column], rows[row], param);
 	}
 }

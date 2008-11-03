@@ -5,9 +5,10 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
+import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.TableView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
-import es.imim.bg.ztools.ui.views.results.ResultsView;
 
 public class UnselectAllAction extends BaseAction {
 
@@ -26,23 +27,24 @@ public class UnselectAllAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
 		
-		ColorMatrixPanel colorMatrixPanel = null;
+		ITableModel tableModel = null;
+		//ColorMatrixPanel colorMatrixPanel = null;
 		if (view instanceof AnalysisView) {
-			colorMatrixPanel = ((AnalysisView) view)
+			/*colorMatrixPanel = ((AnalysisView) view)
 				.getResultsPanel()
-				.getColorMatrixPanel();
+				.getColorMatrixPanel();*/
 		}
-		else if (view instanceof ResultsView) {
-			colorMatrixPanel = ((ResultsView) view)
-				.getColorMatrixPanel();
+		else if (view instanceof TableView) {
+			/*colorMatrixPanel = ((TableView) view)
+				.getColorMatrixPanel();*/
 		}
 		
-		if (colorMatrixPanel == null)
+		if (tableModel == null)
 			return;
 		
-		colorMatrixPanel.clearSelection();
+		tableModel.resetSelection();
 		
-		colorMatrixPanel.refresh();
+		//colorMatrixPanel.refresh();
 	}
 
 }
