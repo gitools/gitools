@@ -16,6 +16,10 @@ public class AbstractModel implements IModel {
 		listeners.add(listener);
 	}
 	
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.remove(listener);
+	}
+	
 	protected void firePropertyChange(
 			String propName, Object oldValue, Object newValue) {
 		

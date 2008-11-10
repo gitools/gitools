@@ -1,6 +1,9 @@
 package es.imim.bg.ztools.ui.views;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -14,81 +17,65 @@ import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
 import es.imim.bg.ztools.ui.colormatrix.DefaultColorMatrixCellDecorator;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel.ColorMatrixListener;
 import es.imim.bg.ztools.ui.model.ITableModel;
-import es.imim.bg.ztools.ui.views.TableViewConfigPanel.TableViewConfigPanelListener;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class TableView extends AbstractView {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
-	//private static final String defaultParamName = "right-p-value";
-
 	private static final int defaultColorColumnsWidth = 30;
 	private static final int defaultValueColumnsWidth = 90;
 
-	//private Results results;
-	//private ResultsModel resultsModel;
 	private ITableModel tableModel;
 	
 	private TableViewConfigPanel configPanel;
 	
 	private ColorMatrixPanel colorMatrixPanel;
 	private DefaultColorMatrixCellDecorator cellDecorator;
+	
+	protected boolean blockSelectionUpdate;
 
-	public TableView(ITableModel tableModel/*ResultsModel resultsModel*/) {
+	public TableView(final ITableModel tableModel) {
 		
-		//this.resultsModel = resultsModel;
 		this.tableModel = tableModel;
-			
+		
+		this.blockSelectionUpdate = false;
+		
 		createComponents();
 		
-		//resultsModel.addPropertyChangeListener(new PropertyChangeListener() {
-		/*tableModel.addPropertyChangeListener(new PropertyChangeListener() {
+		tableModel.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(ResultsModel.SELECTION_MODE_PROPERTY)) {
+				if (ITableModel.CELL_DECORATION_PROPERTY.equals(evt.getPropertyName())) {
+					cellDecorator.setConfig(
+							tableModel.getCellDecoration());
+					
+					refreshColorMatrixWidth();
+					colorMatrixPanel.refresh();
+				}
+				else if (ITableModel.SELECTION_MODE_PROPERTY.equals(evt.getPropertyName())) {
 					SelectionMode mode = (SelectionMode) evt.getNewValue();
 					colorMatrixPanel.setSelectionMode(mode);
 					colorMatrixPanel.refresh();
 				}
+				else if (ITableModel.SELECTION_PROPERTY.equals(evt.getPropertyName())) {
+					if (!blockSelectionUpdate) {
+						blockSelectionUpdate = true;
+						colorMatrixPanel.setSelectedColumns(tableModel.getSelectedColumns());
+						colorMatrixPanel.setSelectedRows(tableModel.getSelectedRows());
+						colorMatrixPanel.refresh();
+						blockSelectionUpdate = false;
+					}
+				}
 			}
-		});*/
+		});
 	}
 
 	private void createComponents() {
 		
 		/* North panel */
 
-		configPanel = new TableViewConfigPanel();
-		
-		configPanel.addListener(new TableViewConfigPanelListener() {
-			/*@Override
-			public void paramChanged() {
-				cellDecorator.setConfig(
-						configPanel.getCurrentDecorationConfig());
-				
-				refreshColorMatrixWidth();
-				colorMatrixPanel.refresh();
-			}*/
-
-			@Override
-			public void showModeChanged() {
-				cellDecorator.setConfig(
-						configPanel.getCurrentDecorationConfig());
-				
-				refreshColorMatrixWidth();
-				colorMatrixPanel.refresh();
-			}
-			
-			@Override
-			public void formatChanged() {
-				colorMatrixPanel.refresh();
-			}
-
-			@Override
-			public void justificationChanged() {
-				colorMatrixPanel.refresh();
-			}
-		});
+		configPanel = new TableViewConfigPanel(tableModel);
 		
 		final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
@@ -125,20 +112,21 @@ public class TableView extends AbstractView {
 		
 		colorMatrixPanel.setCellDecorator(cellDecorator);
 		
-		colorMatrixPanel.getTableSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				tableModel.setSelectedRows(
-						colorMatrixPanel.getSelectedRows());
+				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
+					blockSelectionUpdate = true;
+					tableModel.setSelection(
+							colorMatrixPanel.getSelectedColumns(),
+							colorMatrixPanel.getSelectedRows());
+					blockSelectionUpdate = false;
+				}
 			}
-		});
-		colorMatrixPanel.getColumnSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				tableModel.setSelectedColumns(
-						colorMatrixPanel.getSelectedColumns());
-			}
-		});
+		};
+		
+		colorMatrixPanel.getTableSelectionModel().addListSelectionListener(selListener);
+		colorMatrixPanel.getColumnSelectionModel().addListSelectionListener(selListener);
 		
 		colorMatrixPanel.addListener(new ColorMatrixListener() {
 			@Override
@@ -159,13 +147,12 @@ public class TableView extends AbstractView {
 		centerPanel.add(colorMatrixPanel, BorderLayout.CENTER);
 		
 		setLayout(new BorderLayout());
-		//add(leftPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
 	}
 
 	private void refreshColorMatrixWidth() {
 		CellDecorationConfig config = 
-			configPanel.getCurrentDecorationConfig();
+			tableModel.getCellDecoration();
 		
 		colorMatrixPanel.setColumnsWidth(
 				config.showColors ? 

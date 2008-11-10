@@ -372,8 +372,66 @@ public class ColorMatrixPanel extends JPanel {
 		return table.getSelectedColumns();
 	}
 	
+	public void setSelectedColumns(int[] selectedColumns) {
+		updateSelection(
+				table.getColumnModel().getSelectionModel(), 
+				getSelectedRows(), 
+				selectedColumns);
+	}
+	
 	public int[] getSelectedRows() {
 		return table.getSelectedRows();
+	}
+
+	public void setSelectedRows(int[] selectedRows) {
+		updateSelection(
+				table.getSelectionModel(), 
+				getSelectedRows(), 
+				selectedRows);
+	}
+	
+	private void updateSelection(
+			ListSelectionModel selModel, int[] oldList, int[] newList) {
+		
+		selModel.setValueIsAdjusting(true);
+		selModel.clearSelection();
+		for (int idx : newList)
+			selModel.addSelectionInterval(idx, idx);
+		selModel.setValueIsAdjusting(false);
+		return;
+		
+		/*Arrays.sort(oldList);
+		Arrays.sort(newList);
+		
+		int i = 0;
+		int j = 0;
+		
+		while (i < oldList.length && j < newList.length) {
+			int ival = oldList[i];
+			int jval = newList[j];
+			if (ival == jval) {
+				i++;
+				j++;
+			}
+			else if (ival < jval) {
+				selModel.removeSelectionInterval(ival, ival);
+				i++;
+			}
+			else {
+				selModel.addSelectionInterval(jval, jval);
+				j++;
+			}
+		}
+		
+		while (i < oldList.length) {
+			int ival = oldList[i++];
+			selModel.removeSelectionInterval(ival, ival);
+		}
+		
+		while (j < newList.length) {
+			int jval = newList[j++];
+			selModel.addSelectionInterval(jval, jval);
+		}*/
 	}
 
 	public void clearSelection() {

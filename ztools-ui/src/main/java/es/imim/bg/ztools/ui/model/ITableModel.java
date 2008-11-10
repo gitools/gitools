@@ -2,13 +2,21 @@ package es.imim.bg.ztools.ui.model;
 
 import java.util.List;
 
+import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
+
 public interface ITableModel extends IModel {
 	
 	String HTML_INFO_PROPERTY = "htmlInfo";
+	
 	String SELECTION_MODE_PROPERTY = "selectionMode";
 	String SELECTION_LEAD_PROPERTY = "selectionLead";
 	String SELECTION_COLUMNS_PROPERTY = "selectionColumns";
 	String SELECTION_ROWS_PROPERTY = "selectionRows";
+	String SELECTION_PROPERTY = "selection";
+	
+	String SELECTION_ALL_PROPERTY = "selectionAll";
+		
+	String CELL_DECORATION_PROPERTY = "cellDecoration";
 
 	int getColumnCount();
 
@@ -28,11 +36,15 @@ public interface ITableModel extends IModel {
 	SelectionMode getSelectionMode();
 
 	int[] getSelectedColumns();
-	void setSelectedColumns(int[] selectedColumns);
+	//void setSelectedColumns(int[] selectedColumns);
 
 	int[] getSelectedRows();
-	void setSelectedRows(int[] selectedRows);
+	//void setSelectedRows(int[] selectedRows);
 
+	void setSelection(
+			int[] selectedColumns,
+			int[] selectedRows);
+	
 	void setLeadSelection(int column, int row);
 	int getSelectedLeadColumn();
 	int getSelectedLeadRow();
@@ -49,4 +61,6 @@ public interface ITableModel extends IModel {
 
 	void selectAll();
 
+	CellDecorationConfig getCellDecoration();
+	void setCellDecoration(CellDecorationConfig cellDecoration);
 }

@@ -6,9 +6,11 @@ import java.awt.event.KeyEvent;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
+import es.imim.bg.ztools.ui.views.SectionView;
 import es.imim.bg.ztools.ui.views.TableView;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
@@ -50,18 +52,18 @@ public class ChangeSelectionModeAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
 		
-		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view; 
-			AnalysisModel analysisModel = aview
-				.getAnalysisModel();
-			analysisModel.setSelectionMode(mode);
+		ITableModel tableModel = null;
+		
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
 		}
-		else if (view instanceof TableView) {
-			ITableModel resultsModel = ((TableView) view)
-				.getTableModel();
-			if (resultsModel != null)
-				resultsModel.setSelectionMode(mode);
-		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
+		
+		if (tableModel != null)
+			tableModel.setSelectionMode(mode);
 		
 		AppFrame.instance()
 			.setStatusText("Selection mode changed to " + mode.toString() + ".");

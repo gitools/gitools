@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.TableView;
@@ -28,29 +29,17 @@ public class SelectAllAction extends BaseAction {
 		AbstractView view = getSelectedView();
 		
 		ITableModel tableModel = null;
-		//ColorMatrixPanel colorMatrixPanel = null;
-		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view; 
-			tableModel = aview
-				.getAnalysisModel()
-				.getResultsModel();
-			/*colorMatrixPanel = ((AnalysisView) view)
-				.getResultsPanel()
-				.getColorMatrixPanel();*/
+		
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
 		}
-		else if (view instanceof TableView) {
-			tableModel = ((TableView) view)
-				.getTableModel();
-			/*colorMatrixPanel = ((TableView) view)
-				.getColorMatrixPanel();*/
-		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
 		
-		if (tableModel == null)
-			return;
-		
-		tableModel.selectAll();
-		
-		//colorMatrixPanel.refresh();
+		if (tableModel != null)
+			tableModel.selectAll();
 	}
 
 }

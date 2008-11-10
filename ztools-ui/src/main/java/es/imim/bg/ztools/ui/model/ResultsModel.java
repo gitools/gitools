@@ -11,9 +11,12 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.DoubleMatrix3D;
 
 import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
 public class ResultsModel 
-		extends AbstractModel implements ICubeModel {
+		extends AbstractModel implements ISectionModel {
+	
+	private static final SectionLayout layout = SectionLayout.left;
 	
 	private Results results;
 	
@@ -42,8 +45,13 @@ public class ResultsModel
 	
 	private String htmlInfo;
 	
+	private Map<String, CellDecorationConfig> cellDecorationConfig;
+	
 	public ResultsModel(Results results) {
 		this.results = results;
+		
+		this.cellDecorationConfig = 
+			new HashMap<String, CellDecorationConfig>();
 
 		initialize();
 	}
@@ -75,13 +83,27 @@ public class ResultsModel
 			paramIndexMap.put(paramNames[i], i);
 		}
 		
+		//FIXME
+		selectedParam = paramIndexMap.get("right-p-value");
+		
 		resetSelection();
 	}
 	
-	/*public Results getResults() {
-		return results;
-	}*/
+	@Override
+	public String getName() {
+		return "Results";
+	}
+	
+	@Override
+	public ITableModel getTableModel() {
+		return this;
+	}
 
+	@Override
+	public SectionLayout getLayout() {
+		return layout;
+	}
+	
 	private double getDataValue(int column, int row, int param) {
 		return data.get(param).get(row, column);
 	}
@@ -157,7 +179,8 @@ public class ResultsModel
 		return selectedColumns;
 	}
 	
-	@Override
+	//@Override
+	@Deprecated
 	public void setSelectedColumns(int[] selectedColumns) {
 		int[] oldSelCols= this.selectedColumns;
 		this.selectedColumns = selectedColumns;
@@ -169,13 +192,24 @@ public class ResultsModel
 		return selectedRows;
 	}
 	
-	@Override
+	//@Override
+	@Deprecated
 	public void setSelectedRows(int[] selectedRows) {
 		int[] oldSelRows = this.selectedRows;
 		this.selectedRows = selectedRows;
 		firePropertyChange(SELECTION_ROWS_PROPERTY, oldSelRows, selectedRows);
 	}
 
+	@Override
+	public void setSelection(
+			int[] selectedColumns,
+			int[] selectedRows) {
+		
+		this.selectedColumns = selectedColumns;
+		this.selectedRows = selectedRows;
+		firePropertyChange(SELECTION_PROPERTY, null, null);
+	}
+	
 	@Override
 	public void setLeadSelection(int column, int row) {
 		int[] oldLead = new int[] {selectedLeadColumn, selectedLeadRow};
@@ -236,21 +270,25 @@ public class ResultsModel
 		int[] selRows = new int[rowCount];
 		for (int i = 0; i < rowCount; i++)
 			selRows[i] = i;
-		setSelectedRows(selRows);
+		//setSelectedRows(selRows);
 		
 		int colCount = getColumnCount();
 		int[] selCols = new int[colCount];
 		for (int i = 0; i < colCount; i++)
 			selCols[i] = i;
-		setSelectedColumns(selCols);
+		//setSelectedColumns(selCols);
+		
+		setSelection(selCols, selRows);
+		
+		//firePropertyChange(SELECTION_ALL_PROPERTY, null, null);
 	}
 	
 	@Override
 	public void resetSelection() {
-		setSelectedColumns(new int[0]);
+		//setSelectedColumns(new int[0]);
+		//setSelectedRows(new int[0]);
 		
-		setSelectedRows(new int[0]);
-		
+		setSelection(new int[0], new int[0]);
 		setLeadSelection(-1, -1);		
 	}
 	
@@ -266,6 +304,18 @@ public class ResultsModel
 		firePropertyChange(HTML_INFO_PROPERTY, old, htmlInfo);
 	}
 	
+	@Override
+	public CellDecorationConfig getCellDecoration() {
+		return getParamDecoration(selectedParam);
+	}
+	
+	@Override
+	public void setCellDecoration(CellDecorationConfig cellDecoration) {
+		CellDecorationConfig old = getCellDecoration();
+		setParamDecoration(selectedParam, cellDecoration);
+		firePropertyChange(CELL_DECORATION_PROPERTY, old, cellDecoration);
+	}
+
 	@Override
 	public void sort(final List<SortCriteria> criteriaList) {
 		
@@ -345,7 +395,7 @@ public class ResultsModel
 			rows[i] = indices[i];
 	}
 	
-	// ICubeModel
+	// ISectionModel
 	
 	@Override
 	public int getParamCount() {
@@ -364,7 +414,16 @@ public class ResultsModel
 
 	@Override
 	public void setSelectedParam(int param) {
+		int old = this.selectedParam;
 		this.selectedParam = param;
+		firePropertyChange(SELECTION_PARAM_PROPERTY, old, param);
+	}
+	
+	@Override
+	public void setSelectedParam(String paramName) {
+		Integer idx = paramIndexMap.get(paramName);
+		if (idx != null && idx.intValue() < paramCount)
+			setSelectedParam(idx);
 	}
 
 	@Override
@@ -375,5 +434,27 @@ public class ResultsModel
 	@Override
 	public double getValue(int column, int row, int param) {
 		return getDataValue(columns[column], rows[row], param);
+	}
+
+	@Override
+	public CellDecorationConfig getParamDecoration(int param) {
+
+		final String paramName = paramNames[param];
+		
+		CellDecorationConfig config = 
+			cellDecorationConfig.get(paramName);
+	
+		if (config == null) {
+			config = new CellDecorationConfig();
+			cellDecorationConfig.put(paramName, config);
+		}
+		return config;
+	}
+	
+	private void setParamDecoration(
+			int param, CellDecorationConfig cellDecoration) {
+
+		final String paramName = paramNames[param];
+		cellDecorationConfig.put(paramName, cellDecoration);
 	}
 }
