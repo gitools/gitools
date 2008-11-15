@@ -1,6 +1,9 @@
 package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import es.imim.bg.ztools.ui.utils.Options;
 
 public class ExitAction extends BaseAction {
 
@@ -8,12 +11,18 @@ public class ExitAction extends BaseAction {
 
 	public ExitAction() {
 		super("Exit");
+		
+		setDesc("Close aplication");
+		setMnemonic(KeyEvent.VK_X);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		
+		//TODO: Ask confirmation !
+		
+		Options.instance().save();
+		System.exit(0);
 	}
 
 }

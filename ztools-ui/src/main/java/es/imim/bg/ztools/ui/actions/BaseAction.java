@@ -9,6 +9,7 @@ import javax.swing.KeyStroke;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public abstract class BaseAction extends AbstractAction {
@@ -74,7 +75,7 @@ public abstract class BaseAction extends AbstractAction {
 	private Icon getIconResource(String name) {
 		URL url = getClass().getResource(name);
 		if (url == null)
-			url = getClass().getResource("/null.gif");
+			url = getClass().getResource(IconNames.nullResource);
 		
 		return new ImageIcon(url);
 	}

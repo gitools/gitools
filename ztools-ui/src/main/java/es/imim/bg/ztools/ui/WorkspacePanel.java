@@ -18,12 +18,13 @@ public class WorkspacePanel extends JTabbedPane {
 		
 		addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
-				if (selectedView != null)
-					selectedView.disableActions();
+				/*if (selectedView != null)
+					selectedView.disableActions();*/
+				refreshActions();
 				
 				selectedView = (AbstractView) getSelectedComponent();
 				if (selectedView != null)
-					selectedView.enableActions();
+					selectedView.refreshActions();
 			}
 		});
 	}
@@ -42,16 +43,41 @@ public class WorkspacePanel extends JTabbedPane {
 		else
 			addTab(name, icon, view);
 		
-		if (selectedView != null)
-			selectedView.disableActions();
+		/*if (selectedView != null)
+			selectedView.disableActions();*/
+		refreshActions();
 		
 		setSelectedComponent(view);
 		
 		selectedView = view;
-		selectedView.enableActions();
+		selectedView.refreshActions();
 	}
 
+	public void removeView(AbstractView view) {
+		if (view == null)
+			return;
+		
+		int i = indexOfComponent(view);
+		if (i != -1)
+			remove(i);
+		
+		refreshActions();
+		
+		view = (AbstractView) getSelectedComponent();
+		if (view != null)
+			view.refreshActions();
+	}
+	
 	public AbstractView getSelectedView() {
 		return (AbstractView) getSelectedComponent();
+	}
+	
+	private void refreshActions() {
+		Actions.disableAll();
+		Actions.openAnalysisAction.setEnabled(true);
+		Actions.closeAction.setEnabled(getTabCount() > 0);
+		Actions.exitAction.setEnabled(true);
+		Actions.zcalcAnalysisAction.setEnabled(true);
+		Actions.aboutAction.setEnabled(true);
 	}
 }

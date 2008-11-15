@@ -3,13 +3,11 @@ package es.imim.bg.ztools.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
-import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class SortSelectedColumnsAction extends BaseAction {
 
@@ -27,53 +25,7 @@ public class SortSelectedColumnsAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
-		
-		//FIXME:
-		if (true)
-			return;
-		
-		//ColorMatrixPanel colorMatrixPanel = null;
-		ITableModel tableModel = null;
-		int[] indices = null;
-		int selParamIndex = 0;
-		
-		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view;
-			AnalysisModel analysisModel = aview
-				.getAnalysisModel();
-			tableModel = analysisModel
-				.getResultsModel();
-			
-			/*selParamIndex = aview
-				.getResultsPanel()
-				.getSelectedParamIndex();*/
-			
-			//TODO: selParamIndex = analysisModel.getSelectedParamIndex();
-			
-			/*colorMatrixPanel = aview
-				.getResultsPanel()
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedColumns();*/
-		}
-		else if (view instanceof TableView) {
-			tableModel = ((TableView) view)
-				.getTableModel();
-			
-			/*selParamIndex = ((TableView) view)
-				.getSelectedParamIndex();*/
-			
-			selParamIndex = 0;
-				
-			/*colorMatrixPanel = ((TableView) view)
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedColumns();*/
-		}
-		
-		if (tableModel == null)
+		if (view == null)
 			return;
 		
 		/*List<SortCriteria> criteriaList = 
@@ -83,10 +35,24 @@ public class SortSelectedColumnsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		//TODO: sort func must be independent of param index
-		tableModel.sortByFunc(indices, selParamIndex);
+		ITableModel tableModel = null;
 		
-		view.refresh();
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
+		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
+		
+		if (tableModel == null)
+			return;
+
+		tableModel.sortByFunc(
+				tableModel.getSelectedColumns());
+		
+		AppFrame.instance()
+			.setStatusText("Selected rows hided.");
 	}
 
 }

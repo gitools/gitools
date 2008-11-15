@@ -18,11 +18,6 @@ public abstract class AbstractView extends JPanel implements View {
 	}
 
 	@Override
-	public void enableActions() {
+	public void refreshActions() {
 	}
-	
-	@Override
-	public void disableActions() {
-	}
-
 }

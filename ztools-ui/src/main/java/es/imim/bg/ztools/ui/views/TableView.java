@@ -3,7 +3,6 @@ package es.imim.bg.ztools.ui.views;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -46,29 +45,41 @@ public class TableView extends AbstractView {
 		tableModel.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (ITableModel.CELL_DECORATION_PROPERTY.equals(evt.getPropertyName())) {
-					cellDecorator.setConfig(
-							tableModel.getCellDecoration());
-					
-					refreshColorMatrixWidth();
-					colorMatrixPanel.refresh();
-				}
-				else if (ITableModel.SELECTION_MODE_PROPERTY.equals(evt.getPropertyName())) {
-					SelectionMode mode = (SelectionMode) evt.getNewValue();
-					colorMatrixPanel.setSelectionMode(mode);
-					colorMatrixPanel.refresh();
-				}
-				else if (ITableModel.SELECTION_PROPERTY.equals(evt.getPropertyName())) {
-					if (!blockSelectionUpdate) {
-						blockSelectionUpdate = true;
-						colorMatrixPanel.setSelectedColumns(tableModel.getSelectedColumns());
-						colorMatrixPanel.setSelectedRows(tableModel.getSelectedRows());
-						colorMatrixPanel.refresh();
-						blockSelectionUpdate = false;
-					}
-				}
+				tableModelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		});
+	}
+
+	protected void tableModelPropertyChange(
+			String propertyName, Object oldValue, Object newValue) {
+		
+		if (ITableModel.CELL_DECORATION_PROPERTY.equals(propertyName)) {
+			cellDecorator.setConfig(
+					tableModel.getCellDecoration());
+			
+			refreshColorMatrixWidth();
+			colorMatrixPanel.refresh();
+		}
+		else if (ITableModel.SELECTION_MODE_PROPERTY.equals(propertyName)) {
+			SelectionMode mode = (SelectionMode) newValue;
+			colorMatrixPanel.setSelectionMode(mode);
+			colorMatrixPanel.refresh();
+			refreshActions();
+		}
+		else if (ITableModel.SELECTION_PROPERTY.equals(propertyName)
+				|| ITableModel.ROWS_CHANGED_PROPERTY.equals(propertyName)
+				|| ITableModel.COLS_CHANGED_PROPERTY.equals(propertyName)) {
+			
+			if (!blockSelectionUpdate) {
+				blockSelectionUpdate = true;
+				if (ITableModel.COLS_CHANGED_PROPERTY.equals(propertyName))
+					colorMatrixPanel.refreshColumns();
+				colorMatrixPanel.setSelectedColumns(tableModel.getSelectedColumns());
+				colorMatrixPanel.setSelectedRows(tableModel.getSelectedRows());
+				colorMatrixPanel.refresh();
+				blockSelectionUpdate = false;
+			}
+		}
 	}
 
 	private void createComponents() {
@@ -184,32 +195,50 @@ public class TableView extends AbstractView {
 	}
 	
 	@Override
-	public void enableActions() {
-		Actions.selectAllAction.setEnabled(true);
-		Actions.invertSelectionAction.setEnabled(true);
-		Actions.unselectAllAction.setEnabled(true);
-		Actions.columnSelectionModeAction.setEnabled(true);
-		Actions.rowSelectionModeAction.setEnabled(true);
-		Actions.cellSelectionModeAction.setEnabled(true);
-		//Actions.hideSelectedColumnsAction.setEnabled(true);
-		Actions.sortSelectedColumnsAction.setEnabled(true);
-		Actions.hideSelectedRowsAction.setEnabled(true);
+	public void refreshActions() {
+		SelectionMode selMode = tableModel.getSelectionMode();
+		
+		Actions.selectAllAction.setEnabled(
+				selMode != SelectionMode.cells);
+		
+		Actions.invertSelectionAction.setEnabled(
+				selMode != SelectionMode.cells);
+		
+		Actions.unselectAllAction.setEnabled(
+				selMode != SelectionMode.cells);
+		
+		Actions.columnSelectionModeAction.setEnabled(
+				selMode != SelectionMode.columns);
+		
+		Actions.rowSelectionModeAction.setEnabled(
+				selMode != SelectionMode.rows);
+		
+		Actions.cellSelectionModeAction.setEnabled(
+				selMode != SelectionMode.cells);
+		
+		Actions.hideSelectedColumnsAction.setEnabled(
+				selMode == SelectionMode.columns);
+		
+		Actions.sortSelectedColumnsAction.setEnabled(
+				selMode == SelectionMode.columns);
+		
+		Actions.hideSelectedRowsAction.setEnabled(
+				selMode == SelectionMode.rows);
+		
+		Actions.moveRowsUpAction.setEnabled(
+				selMode == SelectionMode.rows);
+		
+		Actions.moveRowsDownAction.setEnabled(
+				selMode == SelectionMode.rows);
+		
+		Actions.moveColsLeftAction.setEnabled(
+				selMode == SelectionMode.columns);
+		
+		Actions.moveColsRightAction.setEnabled(
+				selMode == SelectionMode.columns);
+		
+		Actions.closeAction.setEnabled(true);
+		
+		Actions.mtcBonferroniAction.setEnabled(true);
 	}
-	
-	@Override
-	public void disableActions() {
-		Actions.selectAllAction.setEnabled(false);
-		Actions.invertSelectionAction.setEnabled(false);
-		Actions.unselectAllAction.setEnabled(false);
-		Actions.columnSelectionModeAction.setEnabled(false);
-		Actions.rowSelectionModeAction.setEnabled(false);
-		Actions.cellSelectionModeAction.setEnabled(false);
-		//Actions.hideSelectedColumnsAction.setEnabled(false);
-		Actions.sortSelectedColumnsAction.setEnabled(false);
-		Actions.hideSelectedRowsAction.setEnabled(false);
-	}
-
-	/*public int getSelectedParamIndex() {
-		return configPanel.getSelectedParamIndex();
-	}*/
 }

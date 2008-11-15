@@ -4,11 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class UnselectAllAction extends BaseAction {
 
@@ -26,25 +24,21 @@ public class UnselectAllAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
-		
-		ITableModel tableModel = null;
-		//ColorMatrixPanel colorMatrixPanel = null;
-		if (view instanceof AnalysisView) {
-			/*colorMatrixPanel = ((AnalysisView) view)
-				.getResultsPanel()
-				.getColorMatrixPanel();*/
-		}
-		else if (view instanceof TableView) {
-			/*colorMatrixPanel = ((TableView) view)
-				.getColorMatrixPanel();*/
-		}
-		
-		if (tableModel == null)
+		if (view == null)
 			return;
 		
-		tableModel.resetSelection();
+		ITableModel tableModel = null;
 		
-		//colorMatrixPanel.refresh();
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
+		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
+		
+		if (tableModel != null)		
+			tableModel.resetSelection();
 	}
 
 }

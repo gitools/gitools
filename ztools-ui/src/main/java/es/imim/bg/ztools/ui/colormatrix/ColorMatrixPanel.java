@@ -203,6 +203,8 @@ public class ColorMatrixPanel extends JPanel {
 	private int selectedLeadColumn;
 	private int selectedLeadRow;
 	
+	private ColorMatrixModel model;
+	
 	private List<ColorMatrixListener> listeners;
 	
 	public ColorMatrixPanel() {
@@ -306,7 +308,12 @@ public class ColorMatrixPanel extends JPanel {
 		table.getTableHeader().repaint();
 	}
 	
+	public void refreshColumns() {
+		setModel(model);
+	}
+
 	public void setModel(ColorMatrixModel model) {
+		this.model = model;
 		table.setModel(new ColorMatrixModelAddapter(model));
 
 		refreshTableColumnsRenderer();

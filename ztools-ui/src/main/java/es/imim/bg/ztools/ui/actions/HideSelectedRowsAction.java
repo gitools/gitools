@@ -3,12 +3,11 @@ package es.imim.bg.ztools.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class HideSelectedRowsAction extends BaseAction {
 
@@ -26,44 +25,29 @@ public class HideSelectedRowsAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
+		if (view == null)
+			return;
+
+		ITableModel tableModel = null;
 		
-		ColorMatrixPanel colorMatrixPanel = null;
-		ITableModel resultsModel = null;
-		int[] indices = null;
-		
-		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view; 
-			resultsModel = aview
-				.getAnalysisModel()
-				.getResultsModel();
-			
-			/*colorMatrixPanel = aview
-				.getResultsPanel()
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedRows();*/
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
 		}
-		else if (view instanceof TableView) {
-			resultsModel = ((TableView) view)
-				.getTableModel();
-			
-			/*colorMatrixPanel = ((TableView) view)
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedRows();*/
-		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
 		
-		if (resultsModel == null)
+		if (tableModel == null)
 			return;
 		
-		indices = resultsModel.getSelectedRows();;
+		tableModel.removeRows(
+				tableModel.getSelectedRows());
 		
-		resultsModel.removeRows(indices);
+		tableModel.resetSelection();
 		
-		/*colorMatrixPanel.clearSelection();
-		colorMatrixPanel.refresh();*/
+		AppFrame.instance()
+			.setStatusText("Selected rows hided.");
 	}
 
 }

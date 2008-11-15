@@ -4,12 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class SelectAllAction extends BaseAction {
 
@@ -27,6 +24,8 @@ public class SelectAllAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
+		if (view == null)
+			return;
 		
 		ITableModel tableModel = null;
 		

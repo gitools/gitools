@@ -145,21 +145,103 @@ public class ResultsModel
 
 	@Override
 	public double getValue(int column, int row) {
-		return getDataValue(column, row, selectedParam);
+		return getDataValue(columns[column], rows[row], selectedParam);
 	}
 	
 	@Override
 	public void removeColumns(int[] indices) {
-		//System.out.println(Arrays.toString(columns));
 		arrayRemove(columns, columnCount, indices);
-		//System.out.println(Arrays.toString(columns));
 		columnCount -= indices.length;
+		
+		firePropertyChange(COLS_CHANGED_PROPERTY, null, null);
 	}
 	
 	@Override
 	public void removeRows(int[] indices) {
 		arrayRemove(rows, rowCount, indices);
 		rowCount -= indices.length;
+		
+		firePropertyChange(ROWS_CHANGED_PROPERTY, null, null);
+	}
+	
+	@Override
+	public void moveColsLeft(int[] indices) {
+		if (indices.length == 0 || indices[0] == 0)
+			return;
+		
+		Arrays.sort(indices);
+		
+		for (int idx : indices) {
+			int tmp = columns[idx - 1];
+			columns[idx - 1] = columns[idx];
+			columns[idx] = tmp;
+		}
+		
+		for (int i = 0; i < selectedColumns.length; i++)
+			selectedColumns[i]--;
+		
+		firePropertyChange(COLS_CHANGED_PROPERTY, null, null);
+	}
+
+	@Override
+	public void moveColsRight(int[] indices) {
+		if (indices.length == 0 
+			|| indices[indices.length - 1] == columnCount - 1)
+			return;
+		
+		Arrays.sort(indices);
+		
+		for (int i = indices.length - 1; i >= 0; i--) {
+			int idx = indices[i];
+			int tmp = columns[idx + 1];
+			columns[idx + 1] = columns[idx];
+			columns[idx] = tmp;
+		}
+		
+		for (int i = 0; i < selectedColumns.length; i++)
+			selectedColumns[i]++;
+		
+		firePropertyChange(COLS_CHANGED_PROPERTY, null, null);
+	}
+
+	@Override
+	public void moveRowsUp(int[] indices) {
+		if (indices.length == 0 || indices[0] == 0)
+			return;
+		
+		Arrays.sort(indices);
+		
+		for (int idx : indices) {
+			int tmp = rows[idx - 1];
+			rows[idx - 1] = rows[idx];
+			rows[idx] = tmp;
+		}
+		
+		for (int i = 0; i < selectedRows.length; i++)
+			selectedRows[i]--;
+		
+		firePropertyChange(ROWS_CHANGED_PROPERTY, null, null);
+	}
+	
+	@Override
+	public void moveRowsDown(int[] indices) {
+		if (indices.length == 0 
+			|| indices[indices.length - 1] == rowCount - 1)
+			return;
+		
+		Arrays.sort(indices);
+		
+		for (int i = indices.length - 1; i >= 0; i--) {
+			int idx = indices[i];
+			int tmp = rows[idx + 1];
+			rows[idx + 1] = rows[idx];
+			rows[idx] = tmp;
+		}
+		
+		for (int i = 0; i < selectedRows.length; i++)
+			selectedRows[i]++;
+		
+		firePropertyChange(ROWS_CHANGED_PROPERTY, null, null);
 	}
 
 	@Override
@@ -350,12 +432,12 @@ public class ResultsModel
 	}
 	
 	@Override
-	public void sortByFunc(final int[] selCols, final int paramIndex) {
+	public void sortByFunc(final int[] selCols) {
 			
 		Integer[] indices = new Integer[rowCount];
 		for (int i = 0; i < rowCount; i++)
 			indices[i] = rows[i];
-		
+
 		Arrays.sort(indices, new Comparator<Integer>() {
 			@Override
 			public int compare(Integer idx1, Integer idx2) {
@@ -366,14 +448,16 @@ public class ResultsModel
 				int N = selCols.length;
 				
 				for (int i = 0; i < N; i++) {
-					double v1 = getDataValue(selCols[i], idx1, paramIndex);
+					int colIdx = columns[selCols[i]];
+					
+					double v1 = getDataValue(colIdx, idx1, selectedParam);
 				
 					m1 *= v1;
 					s1 += v1;
 					ss1 += v1 * v1;
 					se1 += Math.exp(s1);
 					
-					double v2 = getDataValue(selCols[i], idx2, paramIndex);
+					double v2 = getDataValue(colIdx, idx2, selectedParam);
 					
 					m2 *= v2;
 					s2 += v2;

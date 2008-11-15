@@ -16,7 +16,5 @@ public interface View {
 	
 	void refresh();
 	
-	void enableActions();
-	void disableActions();
-	
+	void refreshActions();	
 }

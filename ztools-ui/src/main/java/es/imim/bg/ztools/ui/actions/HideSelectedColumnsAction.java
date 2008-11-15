@@ -3,12 +3,11 @@ package es.imim.bg.ztools.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class HideSelectedColumnsAction extends BaseAction {
 
@@ -26,44 +25,29 @@ public class HideSelectedColumnsAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractView view = getSelectedView();
-		
-		//ColorMatrixPanel colorMatrixPanel = null;
-		ITableModel resultsModel = null;
-		int[] indices = null;
-		
-		if (view instanceof AnalysisView) {
-			AnalysisView aview = (AnalysisView) view; 
-			resultsModel = aview
-				.getAnalysisModel()
-				.getResultsModel();
-			
-			/*colorMatrixPanel = aview
-				.getResultsPanel()
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedColumns();*/
-		}
-		else if (view instanceof TableView) {
-			resultsModel = ((TableView) view)
-				.getTableModel();
-			
-			/*colorMatrixPanel = ((TableView) view)
-				.getColorMatrixPanel();
-			
-			indices = colorMatrixPanel
-				.getSelectedColumns();*/
-		}
-		
-		if (resultsModel == null)
+		if (view == null)
 			return;
 		
-		indices = resultsModel.getSelectedColumns();
+		ITableModel tableModel = null;
 		
-		resultsModel.removeColumns(indices);
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
+		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
 		
-		/*colorMatrixPanel.clearSelection();
-		colorMatrixPanel.refresh();*/
+		if (tableModel == null)
+			return;
+		
+		tableModel.removeColumns(
+				tableModel.getSelectedColumns());
+		
+		tableModel.resetSelection();
+		
+		AppFrame.instance()
+			.setStatusText("Selected columns hided.");
 	}
 
 }

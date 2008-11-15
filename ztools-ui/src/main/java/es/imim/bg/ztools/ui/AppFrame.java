@@ -68,6 +68,14 @@ public class AppFrame extends JFrame {
 		pack();
 	}
 
+	public String getAppName() {
+		return appName;
+	}
+	
+	public String getAppVersion() {
+		return appVersion;
+	}
+	
 	private void createActions() {
 		Actions.openAnalysisAction.setEnabled(true);
 	}
@@ -88,6 +96,8 @@ public class AppFrame extends JFrame {
 
 	private JMenuBar createMenu() {
 		
+		// File
+		
 		final JMenu exportMenu = new JMenu("Export");
 		exportMenu.add(Actions.exportParameterDataAction);
 		exportMenu.add(Actions.exportColumnDataAction);
@@ -96,9 +106,13 @@ public class AppFrame extends JFrame {
 		final JMenu menuFile = new JMenu("File");
 		menuFile.add(Actions.openAnalysisAction);
 		menuFile.addSeparator();
+		menuFile.add(Actions.closeAction);
+		menuFile.addSeparator();
 		menuFile.add(exportMenu);
 		menuFile.addSeparator();
-		menuFile.add(Actions.exit);
+		menuFile.add(Actions.exitAction);
+		
+		// Edit
 		
 		final JMenu selectionModeMenu = new JMenu("Selection mode");
 		selectionModeMenu.add(Actions.columnSelectionModeAction);
@@ -111,14 +125,35 @@ public class AppFrame extends JFrame {
 		editMenu.add(Actions.unselectAllAction);
 		editMenu.add(selectionModeMenu);
 		editMenu.addSeparator();
-		//editMenu.add(Actions.hideSelectedColumnsAction);
+		editMenu.add(Actions.hideSelectedColumnsAction);
 		editMenu.add(Actions.hideSelectedRowsAction);
 		editMenu.addSeparator();
+		editMenu.add(Actions.moveRowsUpAction);
+		editMenu.add(Actions.moveRowsDownAction);
+		editMenu.add(Actions.moveColsLeftAction);
+		editMenu.add(Actions.moveColsRightAction);
+		editMenu.addSeparator();
 		editMenu.add(Actions.sortSelectedColumnsAction);
+		
+		// Analysis
+		
+		final JMenu mtcMenu = new JMenu("MTC");
+		mtcMenu.add(Actions.mtcBonferroniAction);
+		
+		final JMenu analysisMenu = new JMenu("Analysis");
+		analysisMenu.add(Actions.zcalcAnalysisAction);
+		analysisMenu.add(mtcMenu);
+		
+		// Help
+		
+		final JMenu helpMenu = new JMenu("Help");
+		helpMenu.add(Actions.aboutAction);
 		
 		final JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
 		menuBar.add(editMenu);
+		menuBar.add(analysisMenu);
+		menuBar.add(helpMenu);
 		
 		return menuBar;
 	}
@@ -127,6 +162,7 @@ public class AppFrame extends JFrame {
 		final JToolBar toolBar = new JToolBar();
 		
 		toolBar.add(Actions.openAnalysisAction).setText("");
+		toolBar.add(Actions.closeAction).setText("");
 		toolBar.addSeparator();
 		toolBar.add(Actions.columnSelectionModeAction).setText("");
 		toolBar.add(Actions.rowSelectionModeAction).setText("");
@@ -135,7 +171,14 @@ public class AppFrame extends JFrame {
 		toolBar.add(Actions.selectAllAction).setText("");
 		toolBar.add(Actions.unselectAllAction).setText("");
 		toolBar.addSeparator();
+		toolBar.add(Actions.hideSelectedColumnsAction).setText("");
 		toolBar.add(Actions.hideSelectedRowsAction).setText("");
+		toolBar.addSeparator();
+		toolBar.add(Actions.moveColsLeftAction).setText("");
+		toolBar.add(Actions.moveColsRightAction).setText("");
+		toolBar.add(Actions.moveRowsUpAction).setText("");
+		toolBar.add(Actions.moveRowsDownAction).setText("");
+		toolBar.addSeparator();
 		toolBar.add(Actions.sortSelectedColumnsAction).setText("");
 		
 		return toolBar;

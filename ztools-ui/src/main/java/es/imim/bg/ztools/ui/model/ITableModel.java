@@ -8,6 +8,9 @@ public interface ITableModel extends IModel {
 	
 	String HTML_INFO_PROPERTY = "htmlInfo";
 	
+	String COLS_CHANGED_PROPERTY = "colsChanged";
+	String ROWS_CHANGED_PROPERTY = "rowsChanged";
+	
 	String SELECTION_MODE_PROPERTY = "selectionMode";
 	String SELECTION_LEAD_PROPERTY = "selectionLead";
 	String SELECTION_COLUMNS_PROPERTY = "selectionColumns";
@@ -57,10 +60,15 @@ public interface ITableModel extends IModel {
 
 	void sort(final List<SortCriteria> criteriaList);
 
-	void sortByFunc(final int[] selCols, final int paramIndex);
+	void sortByFunc(final int[] selCols);
 
 	void selectAll();
 
 	CellDecorationConfig getCellDecoration();
 	void setCellDecoration(CellDecorationConfig cellDecoration);
+
+	void moveRowsUp(int[] selectedRows);
+	void moveRowsDown(int[] selectedRows);
+	void moveColsLeft(int[] selectedColumns);
+	void moveColsRight(int[] selectedColumns);
 }

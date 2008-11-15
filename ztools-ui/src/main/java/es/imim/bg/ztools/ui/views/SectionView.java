@@ -198,12 +198,7 @@ public abstract class SectionView extends AbstractView {
 	}
 	
 	@Override
-	public void enableActions() {
-		tableView.enableActions();
-	}
-	
-	@Override
-	public void disableActions() {
-		tableView.disableActions();
+	public void refreshActions() {
+		tableView.refreshActions();
 	}
 }
