@@ -4,7 +4,7 @@
 	<groupId>es.imim.bg.ztools</groupId>
 	<artifactId>ztools</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<name>ztools</name>
 	<description>Statistical analysis tools</description>
 	<url>https://bg.imim.es/trac/bg/ztools</url>
@@ -40,9 +40,9 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://bg.imim.es/svn/ztools/trunk</connection>
-		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/trunk</developerConnection>
-		<url>https://bg.imim.es/svn/ztools/trunk</url>
+		<connection>scm:svn:https://bg.imim.es/svn/ztools/tags/ztools-1.2</connection>
+		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/tags/ztools-1.2</developerConnection>
+		<url>https://bg.imim.es/svn/ztools/tags/ztools-1.2</url>
 	</scm>
 		
 	<build>
