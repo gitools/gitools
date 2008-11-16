@@ -9,6 +9,7 @@ import es.imim.bg.ztools.ui.actions.CloseAction;
 import es.imim.bg.ztools.ui.actions.ExitAction;
 import es.imim.bg.ztools.ui.actions.ExportColumnDataAction;
 import es.imim.bg.ztools.ui.actions.ExportParameterDataAction;
+import es.imim.bg.ztools.ui.actions.ExportNames;
 import es.imim.bg.ztools.ui.actions.HideSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.HideSelectedRowsAction;
 import es.imim.bg.ztools.ui.actions.InvertSelectionAction;
@@ -37,6 +38,9 @@ public class Actions {
 	
 	public static final BaseAction exportColumnDataAction = 
 		new ExportColumnDataAction();
+	
+	public static final BaseAction exportNamesAction = 
+		new ExportNames();
 	
 	public static final BaseAction exitAction =
 		new ExitAction();

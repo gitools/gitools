@@ -101,7 +101,7 @@ public class AppFrame extends JFrame {
 		final JMenu exportMenu = new JMenu("Export");
 		exportMenu.add(Actions.exportParameterDataAction);
 		exportMenu.add(Actions.exportColumnDataAction);
-		exportMenu.add("{row names}");
+		exportMenu.add(Actions.exportNamesAction);
 		
 		final JMenu menuFile = new JMenu("File");
 		menuFile.add(Actions.openAnalysisAction);

@@ -1,15 +1,19 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.utils.IconUtils;
 
 public class AboutDialog extends JDialog {
 
@@ -33,11 +37,27 @@ public class AboutDialog extends JDialog {
 	}
 
 	private void createComponents() {
-		JPanel contPanel = new JPanel();
-		contPanel.setLayout(new BorderLayout());
-		contPanel.add(new JLabel(appName + " " + appVersion));
+		JLabel imageLabel = new JLabel(
+				IconUtils.getIconResource("/img/AboutLogo.png"));
+		imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		
+		JTextPane infoPane = new JTextPane();
+		infoPane.setFocusable(false);
+		//infoPane.setBackground(Color.WHITE);
+		infoPane.setContentType("text/html");
+		//final JScrollPane scrollPane = new JScrollPane(infoPane);
+		//scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		//scrollPane.setBorder(
+		//		BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		
+		//FIXME: It should load this text from a resource
+		infoPane.setText("<h1>" + appName + "</h1>"
+						+ "<p>Version " + appVersion + "</p>"
+						+ "<p>Written by Christian Pérez-Llamas</p>"
+						+ "<p>Biomedical Genomics Laboratory<br>Parc de Recerca Biomèdica de Barcelona (PRBB)</p>");
 		
 		JButton acceptBtn = new JButton("OK");
+		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -46,12 +66,19 @@ public class AboutDialog extends JDialog {
 		});
 		
 		JPanel btnPanel = new JPanel();
+		btnPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		btnPanel.setLayout(new BorderLayout());
 		btnPanel.add(acceptBtn, BorderLayout.EAST);
+
+		JPanel contPanel = new JPanel();
+		contPanel.setLayout(new BorderLayout());
+		contPanel.add(infoPane, BorderLayout.CENTER);
+		contPanel.add(btnPanel, BorderLayout.SOUTH);
+		contPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
 		setLayout(new BorderLayout());
+		add(imageLabel, BorderLayout.WEST);
 		add(contPanel, BorderLayout.CENTER);
-		add(btnPanel, BorderLayout.SOUTH);
 	}
 
 	protected void closeDialog() {
