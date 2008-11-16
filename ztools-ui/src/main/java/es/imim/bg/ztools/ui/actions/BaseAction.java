@@ -10,6 +10,8 @@ import javax.swing.KeyStroke;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
+import es.imim.bg.ztools.ui.model.ISectionModel;
+import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public abstract class BaseAction extends AbstractAction {
@@ -84,6 +86,38 @@ public abstract class BaseAction extends AbstractAction {
 		return AppFrame.instance()
 			.getWorkspace()
 			.getSelectedView();
+	}
+	
+	protected ITableModel getTableModel() {
+		AbstractView view = getSelectedView();
+		if (view == null)
+			return null;
+		
+		ITableModel tableModel = null;
+		
+		Object model = view.getModel();
+		if (model instanceof ISectionModel) {
+			ISectionModel sectionModel = (ISectionModel) model;
+			tableModel = sectionModel.getTableModel();
+		}
+		else if (model instanceof ITableModel)
+			tableModel = (ITableModel) model;
+		
+		return tableModel;
+	}
+
+	protected ISectionModel getSectionModel() {
+		AbstractView view = getSelectedView();
+		if (view == null)
+			return null;
+		
+		ISectionModel sectionModel = null;
+		
+		Object model = view.getModel();
+		if (model instanceof ISectionModel)
+			sectionModel = (ISectionModel) model;
+		
+		return sectionModel;
 	}
 	
 	protected ProgressMonitor createProgressMonitor() {

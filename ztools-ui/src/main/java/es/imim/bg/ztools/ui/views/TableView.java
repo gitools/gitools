@@ -80,6 +80,9 @@ public class TableView extends AbstractView {
 				blockSelectionUpdate = false;
 			}
 		}
+		else if (ITableModel.MATRIX_CHANGED_PROPERTY.equals(propertyName)) {
+			colorMatrixPanel.refresh();
+		}
 	}
 
 	private void createComponents() {
@@ -240,5 +243,6 @@ public class TableView extends AbstractView {
 		Actions.closeAction.setEnabled(true);
 		
 		Actions.mtcBonferroniAction.setEnabled(true);
+		Actions.mtcBenjaminiHochbergFdrAction.setEnabled(true);
 	}
 }

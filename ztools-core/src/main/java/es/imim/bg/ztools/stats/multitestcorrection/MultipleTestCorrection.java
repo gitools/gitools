@@ -4,5 +4,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 
 public interface MultipleTestCorrection {
 
-	void correct(DoubleMatrix1D pvalues, DoubleMatrix1D correctedPvalues);
+	String getName();
+	
+	void correct(DoubleMatrix1D values);
 }

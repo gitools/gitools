@@ -20,6 +20,10 @@ public class AbstractModel implements IModel {
 		listeners.remove(listener);
 	}
 	
+	protected void firePropertyChange(String propName) {
+		firePropertyChange(propName, null, null);
+	}
+	
 	protected void firePropertyChange(
 			String propName, Object oldValue, Object newValue) {
 		

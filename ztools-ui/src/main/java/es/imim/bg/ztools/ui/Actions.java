@@ -2,6 +2,8 @@ package es.imim.bg.ztools.ui;
 
 import java.lang.reflect.Field;
 
+import es.imim.bg.ztools.stats.multitestcorrection.BenjaminiHochbergFdr;
+import es.imim.bg.ztools.stats.multitestcorrection.Bonferroni;
 import es.imim.bg.ztools.ui.actions.AboutAction;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.actions.ChangeSelectionModeAction;
@@ -14,7 +16,7 @@ import es.imim.bg.ztools.ui.actions.HideSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.HideSelectedRowsAction;
 import es.imim.bg.ztools.ui.actions.InvertSelectionAction;
 import es.imim.bg.ztools.ui.actions.MoveColRowAction;
-import es.imim.bg.ztools.ui.actions.MtcBonferroniAction;
+import es.imim.bg.ztools.ui.actions.MtcAction;
 import es.imim.bg.ztools.ui.actions.OpenAnalysisAction;
 import es.imim.bg.ztools.ui.actions.SelectAllAction;
 import es.imim.bg.ztools.ui.actions.SortSelectedColumnsAction;
@@ -91,8 +93,13 @@ public class Actions {
 	public static final BaseAction zcalcAnalysisAction =
 		new ZcalcAnalysisAction();
 	
+	// MTC
+	
 	public static final BaseAction mtcBonferroniAction =
-		new MtcBonferroniAction();
+		new MtcAction(new Bonferroni());
+	
+	public static final BaseAction mtcBenjaminiHochbergFdrAction =
+		new MtcAction(new BenjaminiHochbergFdr());
 	
 	// Help
 	

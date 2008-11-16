@@ -2,6 +2,8 @@ package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
+
 public class InvertSelectionAction extends BaseAction {
 
 	private static final long serialVersionUID = 3124483059501436713L;
@@ -14,8 +16,8 @@ public class InvertSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		AppFrame.instance()
+			.setStatusText("Unimplemented action.");
 	}
 
 }

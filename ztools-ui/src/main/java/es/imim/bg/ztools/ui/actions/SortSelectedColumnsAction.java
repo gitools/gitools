@@ -5,9 +5,7 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
-import es.imim.bg.ztools.ui.views.AbstractView;
 
 public class SortSelectedColumnsAction extends BaseAction {
 
@@ -24,10 +22,6 @@ public class SortSelectedColumnsAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AbstractView view = getSelectedView();
-		if (view == null)
-			return;
-		
 		/*List<SortCriteria> criteriaList = 
 			new ArrayList<SortCriteria>(indices.length);
 		
@@ -35,15 +29,7 @@ public class SortSelectedColumnsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		ITableModel tableModel = null;
-		
-		Object model = view.getModel();
-		if (model instanceof ISectionModel) {
-			ISectionModel sectionModel = (ISectionModel) model;
-			tableModel = sectionModel.getTableModel();
-		}
-		else if (model instanceof ITableModel)
-			tableModel = (ITableModel) model;
+		ITableModel tableModel = getTableModel();
 		
 		if (tableModel == null)
 			return;

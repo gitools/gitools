@@ -3,6 +3,8 @@ package es.imim.bg.ztools.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
+
 public class ZcalcAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8592231961109105958L;
@@ -16,8 +18,8 @@ public class ZcalcAnalysisAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		AppFrame.instance()
+			.setStatusText("Unimplemented action.");
 	}
 
 }

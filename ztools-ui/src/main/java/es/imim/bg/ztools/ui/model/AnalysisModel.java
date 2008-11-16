@@ -28,12 +28,12 @@ public class AnalysisModel extends AbstractModel {
 		return resultsModel;
 	}
 
-	public void setSelectionMode(SelectionMode mode) {
+	/*public void setSelectionMode(SelectionMode mode) {
 		SelectionMode old = this.selectionMode;
 		this.selectionMode = mode;
 		resultsModel.setSelectionMode(mode);
 		firePropertyChange(SELECTION_MODE_PROPERTY, old, mode);
-	}
+	}*/
 
 	public SelectionMode getSelectionMode() {
 		return selectionMode;

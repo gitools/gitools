@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,7 +20,7 @@ import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 import es.imim.bg.ztools.ui.model.ISectionModel.SectionLayout;
 
-public abstract class SectionView extends AbstractView {
+public abstract class SectionsView extends AbstractView {
 
 	private static final long serialVersionUID = -6795423700290037713L;
 	
@@ -30,11 +31,27 @@ public abstract class SectionView extends AbstractView {
 	private JComboBox sectionCb;
 	private JComboBox paramCb;
 	private JTextPane infoPane;
+	private JScrollPane infoScrollPane;
 
-	private PropertyChangeListener propertyChangeListener;
+	private PropertyChangeListener sectionPropertyChangeListener;
+	private PropertyChangeListener tablePropertyChangeListener;
 	
-	public SectionView() {
-		propertyChangeListener = new PropertyChangeListener() {
+	public SectionsView() {
+		sectionPropertyChangeListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				ISectionModel sectionModel = getCurrentSectionModel();
+				if (ISectionModel.PARAM_COUNT_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+					paramCb.setModel(new DefaultComboBoxModel(
+							sectionModel.getTableNames()));
+				}
+				else if (ISectionModel.SELECTION_PARAM_PROPERTY.equals(evt.getPropertyName())) {
+					paramCb.setSelectedIndex(sectionModel.getCurrentTable());
+				}
+			}
+		};
+		
+		tablePropertyChangeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				ISectionModel sectionModel = getCurrentSectionModel();
@@ -76,8 +93,8 @@ public abstract class SectionView extends AbstractView {
 			}
 		});
 		
-		paramCb = new JComboBox(sectionModel.getParamNames());
-		paramCb.setSelectedIndex(sectionModel.getSelectedParam());
+		paramCb = new JComboBox(sectionModel.getTableNames());
+		paramCb.setSelectedIndex(sectionModel.getCurrentTable());
 		paramCb.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -90,8 +107,8 @@ public abstract class SectionView extends AbstractView {
 		infoPane = new JTextPane();
 		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
-		final JScrollPane scrollPane = new JScrollPane(infoPane);
-		scrollPane.setBorder(
+		infoScrollPane = new JScrollPane(infoPane);
+		infoScrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
 		tableView = new TableView(currentModel);
@@ -106,16 +123,21 @@ public abstract class SectionView extends AbstractView {
 			ISectionModel oldSectionModel,
 			ISectionModel sectionModel) {
 		
-		if (oldSectionModel != null)
+		if (oldSectionModel != null) {
+			oldSectionModel
+				.removePropertyChangeListener(sectionPropertyChangeListener);
 			oldSectionModel.getTableModel()
-				.removePropertyChangeListener(propertyChangeListener);
+				.removePropertyChangeListener(tablePropertyChangeListener);
+		}
 		
+		sectionModel
+			.addPropertyChangeListener(sectionPropertyChangeListener);
 		sectionModel.getTableModel()
-			.addPropertyChangeListener(propertyChangeListener);
+			.addPropertyChangeListener(tablePropertyChangeListener);
 	}
 	
 	protected void changeParam(String paramName) {
-		getCurrentSectionModel().setSelectedParam(paramName);
+		getCurrentSectionModel().setCurrentTable(paramName);
 		tableView.refresh();
 	}
 
@@ -151,7 +173,7 @@ public abstract class SectionView extends AbstractView {
 		final JPanel iPanel = new JPanel();
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(cbPanel, BorderLayout.NORTH);
-		iPanel.add(infoPane, BorderLayout.CENTER);
+		iPanel.add(infoScrollPane, BorderLayout.CENTER);
 		
 		final JSplitPane splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
@@ -172,7 +194,7 @@ public abstract class SectionView extends AbstractView {
 	private void configureCbVisibility() {
 		ISectionModel sectionModel = getCurrentSectionModel();
 		sectionCb.setVisible(sectionModels.length > 1);
-		paramCb.setVisible(sectionModel.getParamCount() > 1);
+		paramCb.setVisible(sectionModel.getTableCount() > 1);
 	}
 	
 	private ISectionModel getCurrentSectionModel() {

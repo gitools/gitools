@@ -2,6 +2,8 @@ package es.imim.bg.ztools.ui.model;
 
 import java.util.List;
 
+import cern.colt.matrix.DoubleMatrix2D;
+
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
 public interface ITableModel extends IModel {
@@ -20,29 +22,32 @@ public interface ITableModel extends IModel {
 	String SELECTION_ALL_PROPERTY = "selectionAll";
 		
 	String CELL_DECORATION_PROPERTY = "cellDecoration";
+	
+	String MATRIX_CHANGED_PROPERTY = "matrixChanged";
 
 	int getColumnCount();
-
 	String getColumnName(int column);
 
 	int getRowCount();
-
 	String getRowName(int row);
 
 	double getValue(int column, int row);
+	DoubleMatrix2D getVisibleMatrix();
+	DoubleMatrix2D getMatrix();
 
-	void removeColumns(int[] indices);
-
-	void removeRows(int[] indices);
+	int[] getVisibleColumns();
+	void setVisibleColumns(int[] indices);
+	void hideColumns(int[] indices);
+	
+	int[] getVisibleRows();
+	void setVisibleRows(int[] indices);
+	void hideRows(int[] indices);
 
 	void setSelectionMode(SelectionMode mode);
 	SelectionMode getSelectionMode();
 
 	int[] getSelectedColumns();
-	//void setSelectedColumns(int[] selectedColumns);
-
 	int[] getSelectedRows();
-	//void setSelectedRows(int[] selectedRows);
 
 	void setSelection(
 			int[] selectedColumns,
@@ -52,17 +57,15 @@ public interface ITableModel extends IModel {
 	int getSelectedLeadColumn();
 	int getSelectedLeadRow();
 	
+	void selectAll();
 	void resetSelection();
 	
 	String getHtmlInfo();
-
 	void setHtmlInfo(String htmlInfo);
 
 	void sort(final List<SortCriteria> criteriaList);
 
 	void sortByFunc(final int[] selCols);
-
-	void selectAll();
 
 	CellDecorationConfig getCellDecoration();
 	void setCellDecoration(CellDecorationConfig cellDecoration);
@@ -71,4 +74,6 @@ public interface ITableModel extends IModel {
 	void moveRowsDown(int[] selectedRows);
 	void moveColsLeft(int[] selectedColumns);
 	void moveColsRight(int[] selectedColumns);
+	
+	void fireMatrixChanged();
 }

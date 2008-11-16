@@ -1,31 +1,37 @@
 package es.imim.bg.ztools.ui.model;
 
+import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
 public interface ISectionModel extends ITableModel {
 
 	String SELECTION_PARAM_PROPERTY = "selectionParam";
 	
+	String PARAM_COUNT_CHANGED_PROPERTY = "paramCount";
+	
 	public enum SectionLayout {
 		left, right, top, bottom
 	}
 	
 	String getName();
-	ITableModel getTableModel();
+	
 	SectionLayout getLayout();
 	
-	int getParamCount();
+	ITableModel getTableModel();
 	
-	String getParamName(int param);
+	int getTableCount();
 	
-	String[] getParamNames();
+	String getTableName(int param);
+	
+	String[] getTableNames();
 	
 	double getValue(int column, int row, int param);
 	
-	void setSelectedParam(int param);
-	void setSelectedParam(String paramName);
+	int getCurrentTable();
+	void setCurrentTable(int param);
+	void setCurrentTable(String paramName);
 	
-	int getSelectedParam();
+	int addTable(String paramName, DoubleMatrix2D correctedMatrix);
 	
-	CellDecorationConfig getParamDecoration(int param);
+	CellDecorationConfig getTableDecoration(int param);
 }

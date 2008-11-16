@@ -19,7 +19,9 @@ import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.model.ResultsModel;
 import es.imim.bg.ztools.ui.utils.Options;
+import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.TableView;
+import es.imim.bg.ztools.ui.views.WelcomeView;
 
 public class AppFrame extends JFrame {
 
@@ -51,7 +53,9 @@ public class AppFrame extends JFrame {
 		
 		createActions();
 		createComponents();
+		createWelcomeView();
 		createDemoView();
+		workspace.setSelectedIndex(0);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -112,37 +116,39 @@ public class AppFrame extends JFrame {
 		menuFile.addSeparator();
 		menuFile.add(Actions.exitAction);
 		
-		// Edit
+		// Selection
 		
 		final JMenu selectionModeMenu = new JMenu("Selection mode");
 		selectionModeMenu.add(Actions.columnSelectionModeAction);
 		selectionModeMenu.add(Actions.rowSelectionModeAction);
 		selectionModeMenu.add(Actions.cellSelectionModeAction);
 		
-		final JMenu editMenu = new JMenu("Edit");
-		editMenu.add(Actions.selectAllAction);
+		final JMenu selMenu = new JMenu("Selection");
+		selMenu.add(Actions.selectAllAction);
 		//editMenu.add(Actions.invertSelectionAction);
-		editMenu.add(Actions.unselectAllAction);
-		editMenu.add(selectionModeMenu);
-		editMenu.addSeparator();
-		editMenu.add(Actions.hideSelectedColumnsAction);
-		editMenu.add(Actions.hideSelectedRowsAction);
-		editMenu.addSeparator();
-		editMenu.add(Actions.moveRowsUpAction);
-		editMenu.add(Actions.moveRowsDownAction);
-		editMenu.add(Actions.moveColsLeftAction);
-		editMenu.add(Actions.moveColsRightAction);
-		editMenu.addSeparator();
-		editMenu.add(Actions.sortSelectedColumnsAction);
+		selMenu.add(Actions.unselectAllAction);
+		selMenu.add(selectionModeMenu);
+		selMenu.addSeparator();
+		selMenu.add(Actions.hideSelectedColumnsAction);
+		selMenu.add(Actions.hideSelectedRowsAction);
+		selMenu.addSeparator();
+		selMenu.add(Actions.moveRowsUpAction);
+		selMenu.add(Actions.moveRowsDownAction);
+		selMenu.add(Actions.moveColsLeftAction);
+		selMenu.add(Actions.moveColsRightAction);
+		selMenu.addSeparator();
+		selMenu.add(Actions.sortSelectedColumnsAction);
 		
 		// Analysis
 		
-		final JMenu mtcMenu = new JMenu("MTC");
-		mtcMenu.add(Actions.mtcBonferroniAction);
-		
 		final JMenu analysisMenu = new JMenu("Analysis");
 		analysisMenu.add(Actions.zcalcAnalysisAction);
-		analysisMenu.add(mtcMenu);
+		
+		// MTC
+		 
+		final JMenu mtcMenu = new JMenu("MTC");
+		mtcMenu.add(Actions.mtcBonferroniAction);
+		mtcMenu.add(Actions.mtcBenjaminiHochbergFdrAction);
 		
 		// Help
 		
@@ -151,7 +157,8 @@ public class AppFrame extends JFrame {
 		
 		final JMenuBar menuBar = new JMenuBar();
 		menuBar.add(menuFile);
-		menuBar.add(editMenu);
+		menuBar.add(selMenu);
+		menuBar.add(mtcMenu);
 		menuBar.add(analysisMenu);
 		menuBar.add(helpMenu);
 		
@@ -184,6 +191,11 @@ public class AppFrame extends JFrame {
 		return toolBar;
 	}
 	
+	private void createWelcomeView() {
+		AbstractView view = new WelcomeView();
+		workspace.addView(view);
+	}
+	
 	private void createDemoView() {
 		int rows = 40;
 		int cols = 12;
@@ -209,7 +221,7 @@ public class AppFrame extends JFrame {
 		TableView view = 
 			new TableView(
 				new ResultsModel(results));
-		view.setName("demo");
+		view.setName("Demo");
 		
 		workspace.addView(view);
 	}

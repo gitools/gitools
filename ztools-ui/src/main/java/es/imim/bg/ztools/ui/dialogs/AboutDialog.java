@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
@@ -22,7 +23,7 @@ public class AboutDialog extends JDialog {
 	private String appName;
 	private String appVersion;
 	
-	public AboutDialog(AppFrame owner) {
+	public AboutDialog(JFrame owner) {
 		super(owner);
 		
 		appName = AppFrame.instance().getAppName();

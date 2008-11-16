@@ -5,10 +5,8 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 import es.imim.bg.ztools.ui.model.ITableModel;
-import es.imim.bg.ztools.ui.views.AbstractView;
 
 public class ChangeSelectionModeAction extends BaseAction {
 
@@ -45,23 +43,13 @@ public class ChangeSelectionModeAction extends BaseAction {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		AbstractView view = getSelectedView();
-		if (view == null)
+	public void actionPerformed(ActionEvent e) {		
+		ITableModel tableModel = getTableModel();
+		
+		if (tableModel == null)
 			return;
 		
-		ITableModel tableModel = null;
-		
-		Object model = view.getModel();
-		if (model instanceof ISectionModel) {
-			ISectionModel sectionModel = (ISectionModel) model;
-			tableModel = sectionModel.getTableModel();
-		}
-		else if (model instanceof ITableModel)
-			tableModel = (ITableModel) model;
-		
-		if (tableModel != null)
-			tableModel.setSelectionMode(mode);
+		tableModel.setSelectionMode(mode);
 		
 		AppFrame.instance()
 			.setStatusText("Selection mode changed to " + mode.toString() + ".");

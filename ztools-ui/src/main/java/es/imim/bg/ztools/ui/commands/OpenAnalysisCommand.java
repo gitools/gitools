@@ -22,7 +22,7 @@ public class OpenAnalysisCommand implements Command {
 	}
 	
 	@Override
-	public void execute(ProgressMonitor monitor) throws Exception {
+	public void execute(ProgressMonitor monitor) throws CommandException {
 		
 		File selectedPath = getSelectedPath();
 		
@@ -31,7 +31,11 @@ public class OpenAnalysisCommand implements Command {
 				new TabAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
-			analysis = analysisRes.load();
+			try {
+				analysis = analysisRes.load();
+			} catch (Exception e) {
+				throw new CommandException(e);
+			}
 			monitor.end();
 		}
 	}

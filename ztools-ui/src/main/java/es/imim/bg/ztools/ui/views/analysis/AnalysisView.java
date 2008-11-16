@@ -2,9 +2,9 @@ package es.imim.bg.ztools.ui.views.analysis;
 
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.model.ISectionModel;
-import es.imim.bg.ztools.ui.views.SectionView;
+import es.imim.bg.ztools.ui.views.SectionsView;
 
-public class AnalysisView extends SectionView {
+public class AnalysisView extends SectionsView {
 
 	private static final long serialVersionUID = 9073825159199447872L;
 	

@@ -2,6 +2,8 @@ package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
 
+import es.imim.bg.ztools.ui.AppFrame;
+
 public class ExportColumnDataAction extends BaseAction {
 
 	private static final long serialVersionUID = -4006822468234729098L;
@@ -12,8 +14,8 @@ public class ExportColumnDataAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		AppFrame.instance()
+			.setStatusText("Unimplemented action.");
 	}
 
 }
