@@ -3,7 +3,7 @@ package es.imim.bg.ztools.ui.model;
 import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
-public interface ISectionModel extends ITableModel {
+public interface ISectionModel extends IModel {
 
 	String SELECTION_PARAM_PROPERTY = "selectionParam";
 	

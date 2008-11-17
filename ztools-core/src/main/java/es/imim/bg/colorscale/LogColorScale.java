@@ -10,21 +10,42 @@ public class LogColorScale implements ColorScale {
 	private static final Color posInfinityColor = Color.GREEN;
 	private static final Color negInfinityColor = Color.CYAN;
 	
-	private static final Color nonSignificantColor = new Color(187, 187, 187);
-	
-	private static final Color minColor = new Color(255, 255, 0);
-	private static final Color maxColor = new Color(255, 0, 0);
-	
 	public static final double defaultLogFactor = 0.25;
 	
+	private Color nonSignificantColor = new Color(187, 187, 187);
+	private Color minColor = new Color(255, 255, 0);
+	private Color maxColor = new Color(255, 0, 0);
+	
+	private double minPoint;
+	private double midPoint;
+	private double maxPoint;
 	private double logFactor;
 
-	public LogColorScale(double logFactor) {
+	public LogColorScale(double midPoint, double logFactor) {
+		this.minPoint = 0.0;
+		this.midPoint = midPoint;
+		this.maxPoint = 1.0;
 		this.logFactor = logFactor;
 	}
 	
+	public double getMidPoint() {
+		return midPoint;
+	}
+	
+	public void setMidPoint(double midPoint) {
+		this.midPoint = midPoint;
+	}
+	
 	public LogColorScale() {
-		this(defaultLogFactor);
+		this(0.05, defaultLogFactor);
+	}
+	
+	public double getLogFactor() {
+		return logFactor;
+	}
+	
+	public void setLogFactor(double logFactor) {
+		this.logFactor = logFactor;
 	}
 	
 	public Color getColor(double value) {
@@ -35,10 +56,10 @@ public class LogColorScale implements ColorScale {
 		else if (value == Double.NEGATIVE_INFINITY)
 			return negInfinityColor;
 		
-		if (value > 0.05)
+		if (value > midPoint)
 			return nonSignificantColor;
 
-		double f = value / 0.05;
+		double f = value / midPoint;
 		
 		f = f > 0.0 ? 1.0 + logFactor * Math.log10(f) : 0.0;
 

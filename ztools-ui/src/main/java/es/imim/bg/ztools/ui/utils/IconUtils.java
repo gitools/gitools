@@ -16,4 +16,12 @@ public class IconUtils {
 		
 		return new ImageIcon(url);
 	}
+	
+	public static ImageIcon getImageIconResource(String name) {
+		URL url = IconUtils.class.getResource(name);
+		if (url == null)
+			url = IconUtils.class.getResource(IconNames.nullResource);
+		
+		return new ImageIcon(url);
+	}
 }

@@ -11,7 +11,8 @@ import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
 public abstract class CubeSectionModel 
-		extends AbstractModel implements ISectionModel {
+		extends AbstractModel 
+		implements ISectionModel, ITableModel {
 
 	protected static final SectionLayout layout = SectionLayout.left;
 	

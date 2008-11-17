@@ -18,9 +18,10 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.ui.model.ResultsModel;
+import es.imim.bg.ztools.ui.utils.IconUtils;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.AbstractView;
-import es.imim.bg.ztools.ui.views.TableView;
+import es.imim.bg.ztools.ui.views.DemoView;
 import es.imim.bg.ztools.ui.views.WelcomeView;
 
 public class AppFrame extends JFrame {
@@ -66,6 +67,8 @@ public class AppFrame extends JFrame {
 
 		setTitle(appName + " " + appVersion);
 		setStatusText("Ok");
+		
+		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 600));
@@ -150,6 +153,12 @@ public class AppFrame extends JFrame {
 		mtcMenu.add(Actions.mtcBonferroniAction);
 		mtcMenu.add(Actions.mtcBenjaminiHochbergFdrAction);
 		
+		// Reports
+		
+		final JMenu repMenu = new JMenu("Reports");
+		repMenu.add("Analysis report");
+		repMenu.add("Table report");
+		
 		// Help
 		
 		final JMenu helpMenu = new JMenu("Help");
@@ -218,14 +227,18 @@ public class AppFrame extends JFrame {
 		Analysis analysis = new Analysis();
 		analysis.setResults(results);
 		
-		TableView view = 
+		/*TableView view = 
 			new TableView(
-				new ResultsModel(results));
-		view.setName("Demo");
+				new ResultsModel(results));*/
 		
-		workspace.addView(view);
+		AbstractView demoView = 
+			new DemoView(new ResultsModel(results));
+		
+		demoView.setName("Demo");
+		
+		workspace.addView(demoView);
 	}
-	
+
 	public void start() {
 		setLocationByPlatform(true);
 		setVisible(true);

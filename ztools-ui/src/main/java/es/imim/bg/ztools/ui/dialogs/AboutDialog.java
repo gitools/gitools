@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.utils.IconUtils;
 
 public class AboutDialog extends JDialog {
@@ -39,7 +40,7 @@ public class AboutDialog extends JDialog {
 
 	private void createComponents() {
 		JLabel imageLabel = new JLabel(
-				IconUtils.getIconResource("/img/AboutLogo.png"));
+				IconUtils.getIconResource(IconNames.aboutLogo));
 		imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
 		JTextPane infoPane = new JTextPane();

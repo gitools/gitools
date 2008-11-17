@@ -4,6 +4,9 @@ public class IconNames {
 
 	public static final String nullResource = "/img/null.gif";
 	
+	public static final String logoMini = "/img/LogoMini.png";
+	public static final String aboutLogo = "/img/AboutLogo.png";
+	
 	public static final String open16 = "/img/Open16.gif";
 	public static final String open24 = "/img/Open24.gif";
 

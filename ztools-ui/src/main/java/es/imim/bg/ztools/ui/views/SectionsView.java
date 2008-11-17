@@ -82,6 +82,8 @@ public abstract class SectionsView extends AbstractView {
 	
 		sectionCb = new JComboBox(sectionModels);
 		sectionCb.setSelectedIndex(currentSection);
+		sectionCb.setBorder(
+				BorderFactory.createEmptyBorder(8, 8, 0, 8));
 		sectionCb.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -94,6 +96,8 @@ public abstract class SectionsView extends AbstractView {
 		});
 		
 		paramCb = new JComboBox(sectionModel.getTableNames());
+		paramCb.setBorder(
+				BorderFactory.createEmptyBorder(8, 8, 0, 8));
 		paramCb.setSelectedIndex(sectionModel.getCurrentTable());
 		paramCb.addItemListener(new ItemListener() {
 			@Override
