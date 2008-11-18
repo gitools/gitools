@@ -307,7 +307,7 @@ public abstract class CubeSectionModel
 		selectedLeadColumn = column;
 		selectedLeadRow = row;
 		
-		if (column < 0 || row < 0)
+		if (column < 0 || row < 0 || column >= columnCount)
 			setHtmlInfo("");
 		else {
 			final String colName = 
