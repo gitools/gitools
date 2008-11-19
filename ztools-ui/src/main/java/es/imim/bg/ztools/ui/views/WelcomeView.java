@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 
@@ -33,11 +32,13 @@ public class WelcomeView extends AbstractView {
 	
 	private void createComponents() {
 		htmlPane = new JTextPane();
+		htmlPane.setEditable(false);
 		//htmlPane.setBackground(Color.WHITE);
 		htmlPane.setContentType("text/html");
+		
 		final JScrollPane scrollPane = new JScrollPane(htmlPane);
 		scrollPane.setBorder(
-				BorderFactory.createEmptyBorder(4, 4, 4, 4));
+				BorderFactory.createEmptyBorder());
 		
 		setLayout(new BorderLayout());
 		add(scrollPane, BorderLayout.CENTER);

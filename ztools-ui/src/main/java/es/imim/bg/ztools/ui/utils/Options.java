@@ -10,12 +10,19 @@ import java.util.Properties;
 
 public class Options {
 
-	private static final String appPath = System.getProperty("user.dir", ".");
-	private static final String userPath = System.getProperty("user.home", ".");
+	/*private static final String appPath = 
+		System.getProperty("user.dir", ".");*/
+	
+	private static final String userPath = 
+		System.getProperty("user.home", ".");
+	
+	private static final String configPath =
+		userPath + File.separator + ".ztools";
 	
 	private static final String configFileName = "ztools-ui.xml";
 	
-	private static final String appFile = appPath + File.separatorChar + configFileName;
+	private static final String configFile = 
+		configPath + File.separator + configFileName;
 	
 	private static final Options instance = new Options();
 	
@@ -26,7 +33,7 @@ public class Options {
 	}
 	
 	private Options() {
-		props = load(appFile, getDefaults());
+		props = load(configFile, getDefaults());
 	}
 	
 	private Properties getDefaults() {
@@ -41,7 +48,7 @@ public class Options {
 					new BufferedInputStream(
 							new FileInputStream(file)));
 		} catch (FileNotFoundException e) {
-			System.err.println("Configuration file doesn't exist: " + appFile);
+			System.err.println("Configuration file doesn't exist: " + configFile);
 			System.err.println("Created one with defaults.");
 			save(defaults);
 		} catch (IOException e) {
@@ -59,8 +66,12 @@ public class Options {
 	
 	public void save(Properties properties) {
 		try {
+			File path = new File(configPath);
+			if (!path.exists())
+				path.mkdirs();
+			
 			properties.storeToXML(
-					new FileOutputStream(appFile), "Options");
+					new FileOutputStream(configFile), "Options");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
