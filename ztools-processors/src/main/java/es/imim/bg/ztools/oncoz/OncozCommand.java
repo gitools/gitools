@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc;
+package es.imim.bg.ztools.oncoz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,23 +16,20 @@ import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
 import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
 import es.imim.bg.ztools.test.factory.TestFactory;
 
-public class ZCalcCommand extends AnalysisCommand {
+public class OncozCommand extends AnalysisCommand {
 	
-	public ZCalcCommand(String analysisName, String testName,
+	public OncozCommand(String analysisName, String testName,
 			int samplingNumSamples, String dataFile, String groupsFile,
-			int minGroupSize, int maxModuleSize, String workdir,
+			int minModuleSize, int maxModuleSize, String workdir,
 			String outputFormat, boolean resultsByCond) {
 		
 		super(analysisName, testName, samplingNumSamples, dataFile, groupsFile,
-				minGroupSize, maxModuleSize, workdir, outputFormat, resultsByCond);
+				minModuleSize, maxModuleSize, workdir, outputFormat, resultsByCond);
 	}
-	
+
+	@Override
 	public void run(ProgressMonitor monitor) 
 			throws IOException, DataFormatException, InterruptedException {
-		
-		// Prepare output
-		
-		//AnalysisResource output = createOutput(outputFormat);
 		
 		// Prepare test factory
 		
@@ -42,7 +39,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		monitor.begin("Loading ...", 1);
 		monitor.info("Data: " + dataFile);
-		monitor.info("Modules: " + modulesFile);
+		monitor.info("Sets: " + modulesFile);
 		
 		Data data = new Data();
 		Modules modules = new Modules();
@@ -62,8 +59,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		analysis.setData(data);
 		analysis.setModules(modules);
 		
-		ZCalcProcessor processor = 
-			new ZCalcProcessor(analysis);
+		OncozProcessor processor = 
+			new OncozProcessor(analysis);
 		
 		processor.run(monitor);
 		
@@ -81,7 +78,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		monitor.end();
 	}
-
+	
 	private void loadDataAndModules(
 			Data data, Modules modules,
 			String dataFileName, String modulesFileName, 
@@ -107,22 +104,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		dataFile.loadData(
 				data,
-				null, 
-				modules.getItemsOrder(), 
-				monitor);
-		
+				modules.getItemsOrder(),
+				null,
+				monitor);		
 	}
-
-	/*private AnalysisResource createOutput(String outputFormat) {
-		AnalysisResource output = null;
-		
-		if (outputFormat.equalsIgnoreCase("csv"))
-			output = new TabAnalysisResource(workdir, resultsByCond, defaultSep, defaultQuote);
-		else if (outputFormat.equalsIgnoreCase("rexml"))
-			output = new REXmlAnalysisResource(workdir, minModuleSize, maxModuleSize);
-		else
-			throw new IllegalArgumentException("Unknown output format '" + outputFormat + "'");
-		
-		return output;
-	}*/
 }

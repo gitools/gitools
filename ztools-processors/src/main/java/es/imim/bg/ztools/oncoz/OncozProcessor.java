@@ -15,7 +15,7 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.threads.ThreadManager;
 
-public class OncozAnalysis {
+public class OncozProcessor {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -35,7 +35,7 @@ public class OncozAnalysis {
 	
 	private Analysis analysis;
 	
-	public OncozAnalysis(Analysis analysis) {
+	public OncozProcessor(Analysis analysis) {
 		
 		this.analysis = analysis;
 	}

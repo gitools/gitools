@@ -11,6 +11,10 @@
 	<name>ztools-cli</name>
 	<description>ztools command line interface</description>
 
+	<properties>
+		<mainClass>es.imim.bg.ztools.cli.Main</mainClass>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>args4j</groupId>
@@ -42,9 +46,28 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>es.imim.bg.ztools.cli.Main</mainClass>
+							<mainClass>${mainClass}</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix />
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase></phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>${mainClass}</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
