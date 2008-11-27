@@ -70,7 +70,7 @@ public class ZCalcProcessor {
 		Date startTime = new Date();
 		
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getTestConfig());
+			TestFactory.createFactory(analysis.getToolConfig());
 		
 		String[] paramNames = testFactory.create().getResultNames();
 		final int numParams = paramNames.length;

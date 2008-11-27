@@ -2,7 +2,7 @@ package es.imim.bg.ztools.test.factory;
 
 import java.util.Map;
 
-import es.imim.bg.ztools.model.TestConfig;
+import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.stats.calc.MeanStatistic;
 import es.imim.bg.ztools.stats.calc.MedianStatistic;
 import es.imim.bg.ztools.stats.calc.Statistic;
@@ -20,7 +20,7 @@ public final class ZscoreTestFactory extends TestFactory {
 	private int numSamples;
 	private Statistic statCalc;
 	
-	public ZscoreTestFactory(TestConfig config) {
+	public ZscoreTestFactory(ToolConfig config) {
 		super(config);
 		
 		Map<String, String> props = config.getProperties();

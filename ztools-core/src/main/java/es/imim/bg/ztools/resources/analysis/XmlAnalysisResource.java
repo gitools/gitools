@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 
 public class XmlAnalysisResource extends AnalysisResource {
@@ -20,14 +21,14 @@ public class XmlAnalysisResource extends AnalysisResource {
 	}
 
 	@Override
-	public Analysis load() throws FileNotFoundException, IOException,
+	public Analysis load(ProgressMonitor monitor) throws FileNotFoundException, IOException,
 			DataFormatException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void save(Analysis analysis) throws IOException, DataFormatException {
+	public void save(Analysis analysis, ProgressMonitor monitor) throws IOException, DataFormatException {
 		// TODO Auto-generated method stub
 
 	}

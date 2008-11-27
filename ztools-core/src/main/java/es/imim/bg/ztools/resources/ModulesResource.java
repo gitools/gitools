@@ -1,7 +1,9 @@
 package es.imim.bg.ztools.resources;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,14 +29,19 @@ public class ModulesResource extends Resource {
 	public static final int defaultMinModuleSize = 20;
 	public static final int defaultMaxModuleSize = Integer.MAX_VALUE;
 	
-	// Output
-	/*protected String[] moduleNames;
-	protected int[][] moduleItemIndices;
-	
-	protected int[] itemsOrder;*/
-	
 	public ModulesResource(String fileName) {
 		super(fileName);
+	}
+	
+	public ModulesResource(File file) {
+		super(file);
+	}
+	
+	public Modules load(
+			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
+
+		//TODO: new modules format
+		return null;
 	}
 	
 	public Modules load(
@@ -206,5 +213,45 @@ public class ModulesResource extends Resource {
 			}
 		}
 	}
+	
+	public void save(Modules modules, ProgressMonitor monitor) 
+			throws FileNotFoundException, IOException {
+		
+		final PrintWriter pw = new PrintWriter(openWriter());
+		
+		final String[] itemNames = modules.getItemNames();
+		
+		if (itemNames.length > 0) {
+			pw.print(itemNames[0]);
 
+			for (int i = 1; i < itemNames.length; i++) {
+				pw.print("\t\"");
+				pw.print(itemNames[i]);
+				pw.print('"');
+			}
+			
+			pw.print('\n');
+		}
+		
+		final String[] moduleNames = modules.getModuleNames();
+		
+		final int[][] indices = modules.getItemIndices();
+		
+		int numModules = moduleNames.length;
+		
+		for (int i = 0; i < numModules; i++) {
+			pw.print('"');
+			pw.print(moduleNames[i]);
+			pw.print('"');
+			
+			for (int index : indices[i]) {
+				pw.print('\t');
+				pw.print(index);
+			}
+			
+			pw.print('\n');
+		}
+		
+		pw.close();
+	}
 }

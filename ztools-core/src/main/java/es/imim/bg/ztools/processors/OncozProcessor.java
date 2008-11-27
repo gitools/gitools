@@ -45,7 +45,7 @@ public class OncozProcessor {
 		Date startTime = new Date();
 	
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getTestConfig());
+			TestFactory.createFactory(analysis.getToolConfig());
 		
 		String[] paramNames = testFactory.create().getResultNames();
 		final int numParams = paramNames.length;
@@ -95,10 +95,21 @@ public class OncozProcessor {
 			
 			condMonitor.begin("Module " + moduleName + "...", numItems);
 			
-			final DoubleMatrix1D population = data 
-				.viewSelection(null, itemIndices)
-				.like1D(numColumns * numItems) //FIXME numColumns ?
-				.viewSelection(notNaNProc);
+			final DoubleMatrix2D pop2d = data 
+				.viewSelection(null, itemIndices);
+			
+			DoubleMatrix1D population = pop2d 
+				.like1D(numColumns * numItems);
+				//FIXME !!!!
+				//.viewSelection(notNaNProc);
+			
+			int k = 0;
+			for (int i = 0; i < pop2d.rows(); i++)
+				for (int j = 0; j < pop2d.columns(); j++)
+					population.setQuick(k++,
+							pop2d.getQuick(i, j));
+			
+			population = population.viewSelection(notNaNProc); //FIXME
 			
 			for (int itemIndex = 0; itemIndex < numItems; itemIndex++) {
 

@@ -34,6 +34,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Prepare test factory
 		
 		TestFactory testFactory = createTestFactory(testName);
+		testFactory.getTestConfig().setName("zetcalc");
 		
 		// Load data and modules
 		
@@ -55,7 +56,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		Analysis analysis = new Analysis();
 		analysis.setName(analysisName);
-		analysis.setTestConfig(testFactory.getTestConfig());
+		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setData(data);
 		analysis.setModules(modules);
 		

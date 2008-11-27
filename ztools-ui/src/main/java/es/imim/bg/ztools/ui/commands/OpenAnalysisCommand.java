@@ -32,7 +32,7 @@ public class OpenAnalysisCommand implements Command {
 			
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
 			try {
-				analysis = analysisRes.load();
+				analysis = analysisRes.load(monitor);
 			} catch (Exception e) {
 				throw new CommandException(e);
 			}

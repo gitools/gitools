@@ -3,17 +3,17 @@ package es.imim.bg.ztools.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestConfig {
-
+public class ToolConfig {
+	
 	protected String name;
 	protected Map<String, String> properties = 
 		new HashMap<String, String>();
 	
-	public TestConfig(String name) {
+	public ToolConfig(String name) {
 		this.name = name;
 	}
 	
-	public TestConfig() {
+	public ToolConfig() {
 	}
 
 	public String getName() {

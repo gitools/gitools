@@ -12,8 +12,7 @@ public class Analysis {
 	protected Modules modules;
 	protected Results results;
 	
-	//protected TestFactory testFactory;
-	protected TestConfig testConfig;
+	protected ToolConfig toolConfig;
 	
 	public String getName() {
 		return name;
@@ -63,19 +62,11 @@ public class Analysis {
 		this.results = results;
 	}
 	
-	public TestConfig getTestConfig() {
-		return testConfig;
+	public ToolConfig getToolConfig() {
+		return toolConfig;
 	}
 	
-	public void setTestConfig(TestConfig testConfig) {
-		this.testConfig = testConfig;
+	public void setToolConfig(ToolConfig toolConfig) {
+		this.toolConfig = toolConfig;
 	}
-	
-	/*public TestFactory getTestFactory() {
-		return testFactory;
-	}
-	
-	public void setTestFactory(TestFactory testFactory) {
-		this.testFactory = testFactory;
-	}*/
 }

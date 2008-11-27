@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Results;
 import es.imim.bg.ztools.test.BinomialTest;
@@ -29,7 +30,9 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		this.maxModuleSize = maxGroupSize;
 	}
 	
-	public void save(Analysis analysis) throws IOException, DataFormatException {
+	public void save(Analysis analysis, ProgressMonitor monitor) throws IOException, DataFormatException {
+		
+		monitor.begin("Saving analysis in rexml format...", 1);
 		
 		String dirName = basePath /*+ File.separator + analysis.getName()*/;
 		File workDirFile = new File(dirName);
@@ -46,7 +49,7 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		String[] moduleNames = analysis.getResults().getRowNames();
 		
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getTestConfig());
+			TestFactory.createFactory(analysis.getToolConfig());
 		
 		Test test = testFactory.create(); //FIXME?
 		String statName = test.getName();
@@ -197,6 +200,8 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		out.print("</analysis>");
 		
 		out.close();
+		
+		monitor.end();
 	}
 
 	private int indexOfParam(Map<String, Integer> paramIndexMap, String name) throws DataFormatException {
@@ -211,7 +216,7 @@ public class REXmlAnalysisResource extends AnalysisResource {
 	}
 
 	@Override
-	public Analysis load() {
+	public Analysis load(ProgressMonitor monitor) {
 		throw new UnsupportedOperationException("RE xml loading unsupported.");
 	}
 }

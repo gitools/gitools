@@ -30,8 +30,8 @@ public class OncozTool extends AnalysisTool implements Tool {
 		
 		processArgs(args);
 		
-		if (groupsFile == null)
-        	throw new RequiredArgumentException("Groups file has to be specified.");
+		/*if (groupsFile == null)
+        	throw new RequiredArgumentException("Groups file has to be specified.");*/
         
         if (minSetSize < 1)
         	minSetSize = 1;

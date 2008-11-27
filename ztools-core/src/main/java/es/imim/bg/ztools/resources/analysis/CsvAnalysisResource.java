@@ -15,9 +15,14 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.csv.RawCsvWriter;
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Data;
+import es.imim.bg.ztools.model.Modules;
 import es.imim.bg.ztools.model.Results;
-import es.imim.bg.ztools.model.TestConfig;
+import es.imim.bg.ztools.model.ToolConfig;
+import es.imim.bg.ztools.resources.DataResource;
+import es.imim.bg.ztools.resources.ModulesResource;
 import es.imim.bg.ztools.resources.Resource;
 import es.imim.bg.ztools.resources.ResultsResource;
 import es.imim.bg.ztools.test.Test;
@@ -26,18 +31,21 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 public class CsvAnalysisResource extends AnalysisResource {
 
 	private static final String tagAnalysisName = "name";
-	private static final String tagTestName = "test-name";
-	private static final String tagTestProperty = "test-property";
-	//private static final String tagResultNames = "result-names";
+	private static final String tagToolName = "tool";
+	private static final String tagToolProperty = "tool-property";
 	private static final String tagStartTime = "start-time";
 	private static final String tagElapsedTime = "elapsed-time";
 	private static final String tagUserName = "user-name";
+	private static final String tagData = "data";
+	private static final String tagModules = "modules";
 	private static final String tagResults = "results";
 	
 	private static final String dateFormat = "yyyy/MM/dd HH:mm:ss";
 	
 	public static final String descFileName = "analysis.csv";
-	public static final String resultsFileName = "results.csv";
+	public static final String dataFileName = "data.csv.gz";
+	public static final String modulesFileName = "modules.csv.gz";
+	public static final String resultsFileName = "results.csv.gz";
 
 	final CSVStrategy csvStrategy = new CSVStrategy(
 			'\t', '"', '#', true, true, true);
@@ -58,51 +66,62 @@ public class CsvAnalysisResource extends AnalysisResource {
 	}
 	
 	@Override
-	public Analysis load() throws FileNotFoundException, IOException, DataFormatException {
+	public Analysis load(ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		Analysis analysis = new Analysis();
-		load(analysis);
+		load(analysis, monitor);
 		return analysis;
 	}
 	
-	public void load(Analysis analysis) throws FileNotFoundException, IOException, DataFormatException {
+	public void load(Analysis analysis, ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		File path = new File(basePath, descFileName);
 		Reader reader = Resource.openReader(path);
 		CSVParser parser = new CSVParser(reader, csvStrategy);
 		
-		analysis.setTestConfig(new TestConfig());
+		analysis.setToolConfig(new ToolConfig());
 		
 		String[] fields;
 		while ((fields = parser.getLine()) != null) {
 			final String tag = fields[0];
 			if (tag.equals(tagAnalysisName) && fields.length >= 2)
 				analysis.setName(fields[1]);
-			else if (tag.equals(tagTestName) && fields.length >= 2)
-				analysis.getTestConfig().setName(fields[1]);
-			else if (tag.equals(tagTestProperty) && fields.length >= 3)
-				analysis.getTestConfig().put(fields[1], fields[2]);
+			else if (tag.equals(tagToolName) && fields.length >= 2)
+				analysis.getToolConfig().setName(fields[1]);
+			else if (tag.equals(tagToolProperty) && fields.length >= 3)
+				analysis.getToolConfig().put(fields[1], fields[2]);
 			else if (tag.equals(tagElapsedTime) && fields.length >= 2)
 				try {
 					analysis.setStartTime(new SimpleDateFormat(dateFormat).parse(fields[1]));
 				} catch (ParseException e) { }
 			else if (tag.equals(tagElapsedTime) && fields.length >= 2)
 				analysis.setElapsedTime(Long.parseLong(fields[1]));
+			else if (tag.equals(tagData) && fields.length >= 2) {
+				path = new File(basePath, fields[1]);
+				DataResource res = new DataResource(path);
+				Data data = res.load(monitor.subtask());
+				analysis.setData(data);
+			}
+			else if (tag.equals(tagModules) && fields.length >= 2) {
+				path = new File(basePath, fields[1]);
+				ModulesResource res = new ModulesResource(path);
+				Modules modules = res.load(monitor.subtask());
+				analysis.setModules(modules);
+			}
 			else if (tag.equals(tagResults) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				ResultsResource resFile = new ResultsResource(path);
-				Results results = resFile.read();
+				Results results = resFile.read(monitor.subtask());
 				analysis.setResults(results);
 			}
-			/*else if (tag.equals(tagResultNames) && line.length >= 2) {
-				resultNames = new String[line.length - 1];
-				System.arraycopy(line, 1, resultNames, 0, resultNames.length);
-			}
-			else if (tag.equals(tagUserName) && line.length >= 2)
+			
+			/*else if (tag.equals(tagUserName) && line.length >= 2)
 				userName = line[1];*/
 		}
 	}
 	
 	@Override
-	public void save(Analysis analysis) throws IOException {
+	public void save(Analysis analysis, ProgressMonitor monitor) throws IOException {
+	
+		monitor.begin("Saving analysis in csv format...", 1);
 		
 		String dirName = basePath /*+ File.separator + analysis.getName()*/;
 		File workDirFile = new File(dirName);
@@ -110,13 +129,22 @@ public class CsvAnalysisResource extends AnalysisResource {
 			workDirFile.mkdirs();
 		
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getTestConfig());
+			TestFactory.createFactory(analysis.getToolConfig());
 		
 		Test test = testFactory.create(); //FIXME?
 		
 		saveDescription(workDirFile, analysis, test);
 		
-		saveResults(workDirFile, analysis);
+		new DataResource(new File(workDirFile, dataFileName))
+			.save(analysis.getData(), monitor);
+		
+		new ModulesResource(new File(workDirFile, modulesFileName))
+			.save(analysis.getModules(), monitor);
+		
+		new ResultsResource(new File(workDirFile, resultsFileName))
+			.write(analysis.getResults(), resultsOrderByCond, monitor);
+		
+		monitor.end();
 	}
 
 	protected void saveDescription(
@@ -135,14 +163,13 @@ public class CsvAnalysisResource extends AnalysisResource {
 		
 		out.writeProperty(tagAnalysisName, analysis.getName());
 		
-		TestConfig testConfig = analysis.getTestConfig();
+		ToolConfig toolConfig = analysis.getToolConfig();
 		
-		out.writeProperty(tagTestName, 
-				testConfig.getName());
+		out.writeProperty(tagToolName, toolConfig.getName());
 		
-		for (String name : testConfig.getProperties().keySet())
-			out.writePropertyList(tagTestProperty,new String[] {
-					name, testConfig.get(name) });
+		for (String name : toolConfig.getProperties().keySet())
+			out.writePropertyList(tagToolProperty, new String[] {
+					name, toolConfig.get(name) });
 		
 		//out.writePropertyList(tagResultNames, resultNames);
 		
@@ -156,44 +183,10 @@ public class CsvAnalysisResource extends AnalysisResource {
 		out.writeProperty(tagUserName, 
 				System.getProperty("user.name"));
 		
+		out.writeProperty(tagData, dataFileName);
+		out.writeProperty(tagModules, modulesFileName);
 		out.writeProperty(tagResults, resultsFileName);
 		
-		/*out.writePropertyList("conditions", analysis.getPropNames());
-		out.writePropertyList("items", analysis.getItemNames());
-		
-		int[][] groupItemIndices = analysis.getGroupItemIndices();
-		String[] groupNames = analysis.getGroupNames();
-		for (int groupIndex = 0; groupIndex < groupNames.length; groupIndex++) {
-			final String groupName = groupNames[groupIndex];
-			final int[] groupItems = groupItemIndices[groupIndex];
-			out.writeValue("group");
-			out.writeSeparator();
-			out.writeQuotedValue(groupName);
-			out.writeSeparator();
-			//out.print(groupItems.length);
-			for (int index : groupItems) {
-				out.writeSeparator();
-				out.writeValue(String.valueOf(index));
-			}
-			out.writeNewLine();
-		}*/
-		
 		out.close();
-	}
-	
-	protected void saveResults(
-			File workDirFile, 
-			Analysis analysis) throws IOException {
-		
-		/*Writer writer = new FileWriter(new File(
-						workDirFile, 
-						resultsFileName(analysis.getName())));*/
-		
-		File dest = new File(
-				workDirFile, 
-				resultsFileName);
-		
-		ResultsResource resFile = new ResultsResource(dest);
-		resFile.write(analysis.getResults(), resultsOrderByCond);
 	}
 }

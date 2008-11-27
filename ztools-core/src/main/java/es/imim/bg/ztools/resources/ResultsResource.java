@@ -16,6 +16,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.csv.RawCsvWriter;
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Results;
 
 public class ResultsResource extends Resource {
@@ -34,21 +35,24 @@ public class ResultsResource extends Resource {
 		super(file);
 	}
 
-	public Results read() 
+	public Results read(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		Results results = new Results();
-		read(results);
+		read(results, monitor);
 		return results;
 	}
 	
-	public void read(Results results) 
+	public void read(Results results, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
-		read(openReader(), results);
+		read(openReader(), results, monitor);
 	}
 	
-	protected void read(Reader reader, Results results) throws IOException, DataFormatException {
+	protected void read(Reader reader, Results results, ProgressMonitor monitor) 
+			throws IOException, DataFormatException {
+		
+		monitor.begin("Reading results ...", 1);
 		
 		CSVParser parser = new CSVParser(reader, csvStrategy);
 		
@@ -129,15 +133,17 @@ public class ResultsResource extends Resource {
 			for (int pi = 0; pi < numParams; pi++)
 				results.setDataValue(columnIndex, rowIndex, pi, paramValues[pi]);
 		}
+		
+		monitor.end();
 	}
 	
-	public void write(Results results, boolean orderByColumn) 
+	public void write(Results results, boolean orderByColumn, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
-		write(openWriter(), results, orderByColumn);
+		write(openWriter(), results, orderByColumn, monitor);
 	}
 	
-	public void write(Writer writer, Results results, boolean orderByColumn) {
+	public void write(Writer writer, Results results, boolean orderByColumn, ProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
 				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
@@ -191,5 +197,4 @@ public class ResultsResource extends Resource {
 		
 		out.writeNewLine();
 	}
-
 }

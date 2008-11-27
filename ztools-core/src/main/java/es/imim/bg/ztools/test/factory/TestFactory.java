@@ -3,11 +3,13 @@ package es.imim.bg.ztools.test.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import es.imim.bg.ztools.model.TestConfig;
+import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.test.Test;
 
 public abstract class TestFactory {
 
+	public static final String TEST_NAME_PROPERTY = "test-name";
+	
 	public static final String ZSCORE_TEST = "zscore";
 	public static final String BINOMIAL_TEST = "binomial";
 	public static final String FISHER_EXACT_TEST = "fisher-exact";
@@ -29,9 +31,9 @@ public abstract class TestFactory {
 		testNameMap.put(CHI_SQUARE_TEST, TestEnum.chiSquare);
 	}
 	
-	public static TestFactory createFactory(TestConfig config) {
+	public static TestFactory createFactory(ToolConfig config) {
 		
-		final String testName = config.getName();
+		final String testName = config.get(TEST_NAME_PROPERTY);
 		TestEnum selectedTest = testNameMap.get(testName);
 		if (selectedTest == null)
 			throw new IllegalArgumentException("Unknown test " + testName);
@@ -59,14 +61,14 @@ public abstract class TestFactory {
 		return testFactory;
 	}
 	
-	protected TestConfig testConfig;
+	protected ToolConfig toolConfig;
 	
-	public TestFactory(TestConfig config) {
-		this.testConfig = config;
+	public TestFactory(ToolConfig config) {
+		this.toolConfig = config;
 	}
 	
-	public TestConfig getTestConfig() {
-		return testConfig;
+	public ToolConfig getTestConfig() {
+		return toolConfig;
 	}
 	
 	public abstract Test create();

@@ -10,7 +10,7 @@ import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.TestConfig;
+import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
@@ -87,11 +87,11 @@ public abstract class AnalysisCommand implements Command {
 		if (selectedTest == null)
 			throw new IllegalArgumentException("Unknown test " + testName);
 		
-		TestConfig config = null;
+		ToolConfig config = new ToolConfig();
 		
 		switch (selectedTest) {
 		case zscoreMean:
-			config = new TestConfig(TestFactory.ZSCORE_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
 			config.put(
 					ZscoreTestFactory.NUM_SAMPLES_PROPERTY, 
 					String.valueOf(samplingNumSamples));
@@ -100,7 +100,7 @@ public abstract class AnalysisCommand implements Command {
 					ZscoreTestFactory.MEAN_ESTIMATOR);
 			break;
 		case zscoreMedian:
-			config = new TestConfig(TestFactory.ZSCORE_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
 			config.put(
 					ZscoreTestFactory.NUM_SAMPLES_PROPERTY, 
 					String.valueOf(samplingNumSamples));
@@ -109,37 +109,37 @@ public abstract class AnalysisCommand implements Command {
 					ZscoreTestFactory.MEDIAN_ESTIMATOR);
 			break;
 		case binomial:
-			config = new TestConfig(TestFactory.BINOMIAL_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
 			config.put(
 					BinomialTestFactory.APROXIMATION_PROPERTY, 
 					BinomialTestFactory.AUTOMATIC_APROX);
 			break;
 		case binomialExact:
-			config = new TestConfig(TestFactory.BINOMIAL_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
 			config.put(
 					BinomialTestFactory.APROXIMATION_PROPERTY, 
 					BinomialTestFactory.EXACT_APROX);
 			break;
 		case binomialNormal:
-			config = new TestConfig(TestFactory.BINOMIAL_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
 			config.put(
 					BinomialTestFactory.APROXIMATION_PROPERTY, 
 					BinomialTestFactory.NORMAL_APROX);
 			break;
 		case binomialPoisson:
-			config = new TestConfig(TestFactory.BINOMIAL_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
 			config.put(
 					BinomialTestFactory.APROXIMATION_PROPERTY, 
 					BinomialTestFactory.POISSON_APROX);
 			break;
 		case hypergeometric:
-			config = new TestConfig(TestFactory.HYPERGEOMETRIC_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.HYPERGEOMETRIC_TEST);
 			break;
 		case fisherExact:
-			config = new TestConfig(TestFactory.FISHER_EXACT_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.FISHER_EXACT_TEST);
 			break;
 		case chiSquare:
-			config = new TestConfig(TestFactory.CHI_SQUARE_TEST);
+			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.CHI_SQUARE_TEST);
 			break;
 		}
 		
@@ -171,7 +171,7 @@ public abstract class AnalysisCommand implements Command {
 			else if ("rexml".equalsIgnoreCase(format))
 				ar = new REXmlAnalysisResource(basePath, minModuleSize, maxModuleSize);
 			
-			ar.save(analysis);
+			ar.save(analysis, monitor.subtask());
 		}
 		
 		monitor.end();

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.resources.Resource;
 
@@ -17,10 +18,10 @@ public abstract class AnalysisResource extends Resource {
 		//new File(basePath, name + File.separator + "analysis.xml")
 	}
 	
-	public abstract Analysis load() 
+	public abstract Analysis load(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException;
 	
-	public abstract void save(Analysis analysis) 
+	public abstract void save(Analysis analysis, ProgressMonitor monitor) 
 			throws IOException, DataFormatException;
 
 }

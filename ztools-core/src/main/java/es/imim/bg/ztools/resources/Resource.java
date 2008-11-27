@@ -60,9 +60,10 @@ public abstract class Resource {
 		
 		if (path.getName().endsWith(".gz"))
 			return
-				new InputStreamReader(
-					new GZIPInputStream(
-							new FileInputStream(path)));
+				new BufferedReader(
+						new InputStreamReader(
+								new GZIPInputStream(
+										new FileInputStream(path))));
 		else
 			return 
 				new BufferedReader(
@@ -75,9 +76,10 @@ public abstract class Resource {
 		
 		if (path.getName().endsWith(".gz"))
 			return
-				new OutputStreamWriter(
-					new GZIPOutputStream(
-							new FileOutputStream(path)));
+				new BufferedWriter(
+						new OutputStreamWriter(
+								new GZIPOutputStream(
+										new FileOutputStream(path))));
 		else
 			return 
 				new BufferedWriter(

@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.factory;
 
-import es.imim.bg.ztools.model.TestConfig;
+import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.test.BinomialTest;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.BinomialTest.AproximationMode;
@@ -16,7 +16,7 @@ public class BinomialTestFactory extends TestFactory {
 	
 	private AproximationMode aproxMode;
 	
-	public BinomialTestFactory(TestConfig config) {
+	public BinomialTestFactory(ToolConfig config) {
 		super(config);
 		
 		final String aproxModeName = config.getProperties().get(APROXIMATION_PROPERTY);

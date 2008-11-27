@@ -3,7 +3,9 @@ package es.imim.bg.ztools.resources;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -115,10 +117,10 @@ public class DataResource extends Resource {
 		
 		parser.getLine(); // discard header
 		
-		DoubleMatrix2D dataMatrix = 
+		DoubleMatrix2D matrix = 
 			DoubleFactory2D.dense.make(numItems, numColumns);
 		
-		data.setData(dataMatrix);
+		data.setData(matrix);
 		
 		String[] fields;
 		int row = 0;
@@ -142,14 +144,14 @@ public class DataResource extends Resource {
 					}
 					catch (NumberFormatException e) {}
 					
-					dataMatrix.setQuick(rowidx, colidx, value);
+					matrix.setQuick(rowidx, colidx, value);
 					col++;
 				}
 				
 				// fill the rest of the columns with NaNs
 				while (col < numColumns) {
 					int colidx = columnsOrder != null ? columnsOrder[col] : col;
-					dataMatrix.setQuick(rowidx, colidx, Double.NaN);
+					matrix.setQuick(rowidx, colidx, Double.NaN);
 					col++;
 				}
 			}
@@ -161,4 +163,50 @@ public class DataResource extends Resource {
 		monitor.end();
 	}
 	
+	public void save(Data data, ProgressMonitor monitor) 
+			throws FileNotFoundException, IOException {
+		
+		Writer writer = openWriter();
+		
+		PrintWriter pw = new PrintWriter(writer);
+		
+		DoubleMatrix2D matrix = data.getData();
+		
+		int numCols = matrix.columns();
+		
+		final String[] colNames = data.getColNames();
+		
+		pw.print(data.getName() != null ? data.getName() : "");
+		
+		for (int i = 0; i < numCols; i++) {
+			final String name = i < colNames.length ? colNames[i] : "";
+			pw.print('\t');
+			pw.print(name);
+		}
+		
+		pw.print('\n');
+		
+		int numRows = matrix.rows();
+		
+		final String[] rowNames = data.getRowNames();
+		
+		for (int i = 0; i < numRows; i++) {
+			final String name = i < rowNames.length ? rowNames[i] : "";
+			
+			pw.print(name);
+			
+			for (int j = 0; j < numCols; j++) {
+				double value = matrix.getQuick(i, j);
+				pw.print('\t');
+				if (Double.isNaN(value))
+					pw.print('-');
+				else
+					pw.print(value);
+			}
+			
+			pw.print('\n');
+		}
+		
+		writer.close();
+	}
 }

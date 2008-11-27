@@ -31,12 +31,13 @@ public class OncozCommand extends AnalysisCommand {
 		// Prepare test factory
 		
 		TestFactory testFactory = createTestFactory(testName);
+		testFactory.getTestConfig().setName("oncozet");
 		
 		// Load data and modules
 		
 		monitor.begin("Loading ...", 1);
 		monitor.info("Data: " + dataFile);
-		monitor.info("Sets: " + modulesFile);
+		monitor.info("Modules: " + modulesFile);
 		
 		Data data = new Data();
 		Modules modules = new Modules();
@@ -52,7 +53,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		Analysis analysis = new Analysis();
 		analysis.setName(analysisName);
-		analysis.setTestConfig(testFactory.getTestConfig());
+		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setData(data);
 		analysis.setModules(modules);
 		
@@ -79,13 +80,24 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Load modules
 		
-		ModulesResource modulesResource = new ModulesResource(modulesFileName);
-		modulesResource.load(
-			modules,
-			minModuleSize,
-			maxModuleSize,
-			data.getRowNames(),
-			monitor);
+		if (modulesFileName != null) {
+			ModulesResource modulesResource = new ModulesResource(modulesFileName);
+			modulesResource.load(
+				modules,
+				minModuleSize,
+				maxModuleSize,
+				data.getColNames(),
+				monitor);
+		}
+		else {
+			modules.setItemNames(data.getColNames());
+			modules.setModuleNames(new String[] {"all"});
+			int num = data.getColNames().length;
+			int[][] indices = new int[1][num];
+			for (int i = 0; i < num; i++)
+				indices[0][i] = i;
+			modules.setItemIndices(indices);
+		}
 		
 		// Load data
 		
