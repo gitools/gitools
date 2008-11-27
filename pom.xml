@@ -118,7 +118,6 @@
 	
 	<modules>
 		<module>ztools-core</module>
-		<module>ztools-processors</module>
 		<module>ztools-cli</module>
 		<module>ztools-ui</module>
 		<!-- <module>ztools-report</module> -->

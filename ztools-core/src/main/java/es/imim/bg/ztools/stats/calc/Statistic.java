@@ -2,7 +2,7 @@ package es.imim.bg.ztools.stats.calc;
 
 import cern.colt.matrix.DoubleMatrix1D;
 
-public interface StatisticCalc {
+public interface Statistic {
 
 	String getName();
 	

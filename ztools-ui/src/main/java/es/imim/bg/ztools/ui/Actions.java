@@ -2,8 +2,8 @@ package es.imim.bg.ztools.ui;
 
 import java.lang.reflect.Field;
 
-import es.imim.bg.ztools.stats.multitestcorrection.BenjaminiHochbergFdr;
-import es.imim.bg.ztools.stats.multitestcorrection.Bonferroni;
+import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
+import es.imim.bg.ztools.stats.mtc.Bonferroni;
 import es.imim.bg.ztools.ui.actions.AboutAction;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.actions.ChangeSelectionModeAction;

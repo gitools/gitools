@@ -2,8 +2,6 @@ package es.imim.bg.ztools.model;
 
 import java.util.Date;
 
-import es.imim.bg.ztools.test.factory.TestFactory;
-
 public class Analysis {
 
 	protected String name;
@@ -14,7 +12,8 @@ public class Analysis {
 	protected Modules modules;
 	protected Results results;
 	
-	protected TestFactory testFactory;
+	//protected TestFactory testFactory;
+	protected TestConfig testConfig;
 	
 	public String getName() {
 		return name;
@@ -64,12 +63,19 @@ public class Analysis {
 		this.results = results;
 	}
 	
-	public TestFactory getTestFactory() {
+	public TestConfig getTestConfig() {
+		return testConfig;
+	}
+	
+	public void setTestConfig(TestConfig testConfig) {
+		this.testConfig = testConfig;
+	}
+	
+	/*public TestFactory getTestFactory() {
 		return testFactory;
 	}
 	
 	public void setTestFactory(TestFactory testFactory) {
 		this.testFactory = testFactory;
-	}
-	
+	}*/
 }

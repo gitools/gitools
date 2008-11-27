@@ -20,7 +20,7 @@ import org.apache.commons.csv.CSVStrategy;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Modules;
 
-public class ModulesFile extends ResourceFile {
+public class ModulesResource extends Resource {
 
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
@@ -33,7 +33,7 @@ public class ModulesFile extends ResourceFile {
 	
 	protected int[] itemsOrder;*/
 	
-	public ModulesFile(String fileName) {
+	public ModulesResource(String fileName) {
 		super(fileName);
 	}
 	

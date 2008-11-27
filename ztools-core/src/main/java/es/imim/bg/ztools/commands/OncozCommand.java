@@ -1,19 +1,16 @@
-package es.imim.bg.ztools.oncoz;
+package es.imim.bg.ztools.commands;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.command.AnalysisCommand;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.Data;
 import es.imim.bg.ztools.model.Modules;
-import es.imim.bg.ztools.resources.DataFile;
-import es.imim.bg.ztools.resources.ModulesFile;
-import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
-import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
+import es.imim.bg.ztools.processors.OncozProcessor;
+import es.imim.bg.ztools.resources.DataResource;
+import es.imim.bg.ztools.resources.ModulesResource;
 import es.imim.bg.ztools.test.factory.TestFactory;
 
 public class OncozCommand extends AnalysisCommand {
@@ -55,7 +52,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		Analysis analysis = new Analysis();
 		analysis.setName(analysisName);
-		analysis.setTestFactory(testFactory);
+		analysis.setTestConfig(testFactory.getTestConfig());
 		analysis.setData(data);
 		analysis.setModules(modules);
 		
@@ -66,19 +63,9 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Save analysis
 		
-		monitor.begin("Saving analysis ...", 1);
-		monitor.info("Location: " + workdir + File.separator + analysisName);
-	
-		new TabAnalysisResource(workdir, resultsByCond, defaultSep, defaultQuote)
-			.save(analysis);
-		
-		if (outputFormat.equalsIgnoreCase("rexml"))
-			new REXmlAnalysisResource(workdir, minModuleSize, maxModuleSize)
-				.save(analysis);
-		
-		monitor.end();
+		save(analysis, monitor);
 	}
-	
+
 	private void loadDataAndModules(
 			Data data, Modules modules,
 			String dataFileName, String modulesFileName, 
@@ -87,13 +74,13 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Load metadata
 		
-		DataFile dataFile = new DataFile(dataFileName);
-		dataFile.loadMetadata(data, monitor);
+		DataResource dataResource = new DataResource(dataFileName);
+		dataResource.loadMetadata(data, monitor);
 		
 		// Load modules
 		
-		ModulesFile modulesFile = new ModulesFile(modulesFileName);
-		modulesFile.load(
+		ModulesResource modulesResource = new ModulesResource(modulesFileName);
+		modulesResource.load(
 			modules,
 			minModuleSize,
 			maxModuleSize,
@@ -102,7 +89,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Load data
 		
-		dataFile.loadData(
+		dataResource.loadData(
 				data,
 				modules.getItemsOrder(),
 				null,

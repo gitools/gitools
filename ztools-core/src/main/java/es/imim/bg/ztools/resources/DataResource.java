@@ -17,15 +17,15 @@ import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Data;
 
-public class DataFile extends ResourceFile {
+public class DataResource extends Resource {
 
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
-	public DataFile(String fileName) {
+	public DataResource(String fileName) {
 		super(fileName);
 	}
 	
-	public DataFile(File file) {
+	public DataResource(File file) {
 		super(file);
 	}
 	

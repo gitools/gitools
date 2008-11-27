@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.command;
+package es.imim.bg.ztools.commands;
 
 import java.io.IOException;
 import java.util.zip.DataFormatException;

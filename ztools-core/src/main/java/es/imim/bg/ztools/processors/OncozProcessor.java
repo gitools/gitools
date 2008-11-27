@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.oncoz;
+package es.imim.bg.ztools.processors;
 
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -44,7 +44,9 @@ public class OncozProcessor {
 		
 		Date startTime = new Date();
 	
-		TestFactory testFactory = analysis.getTestFactory();
+		TestFactory testFactory = 
+			TestFactory.createFactory(analysis.getTestConfig());
+		
 		String[] paramNames = testFactory.create().getResultNames();
 		final int numParams = paramNames.length;
 		

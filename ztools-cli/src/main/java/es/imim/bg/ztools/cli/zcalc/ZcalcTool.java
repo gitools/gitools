@@ -9,8 +9,7 @@ import es.imim.bg.ztools.cli.AnalysisTool;
 import es.imim.bg.ztools.cli.RequiredArgumentException;
 import es.imim.bg.ztools.cli.Tool;
 import es.imim.bg.ztools.cli.ToolException;
-import es.imim.bg.ztools.cli.oncoz.OncozTool;
-import es.imim.bg.ztools.zcalc.ZCalcCommand;
+import es.imim.bg.ztools.commands.ZCalcCommand;
 
 public class ZcalcTool extends AnalysisTool implements Tool {
 

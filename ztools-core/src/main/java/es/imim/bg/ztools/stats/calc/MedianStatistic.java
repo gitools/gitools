@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import cern.colt.matrix.DoubleMatrix1D;
 
-public class MedianStatisticCalc implements StatisticCalc {
+public class MedianStatistic implements Statistic {
 
 	@Override
 	public String getName() {

@@ -9,7 +9,7 @@ import es.imim.bg.ztools.cli.AnalysisTool;
 import es.imim.bg.ztools.cli.RequiredArgumentException;
 import es.imim.bg.ztools.cli.Tool;
 import es.imim.bg.ztools.cli.ToolException;
-import es.imim.bg.ztools.oncoz.OncozCommand;
+import es.imim.bg.ztools.commands.OncozCommand;
 
 public class OncozTool extends AnalysisTool implements Tool {
 

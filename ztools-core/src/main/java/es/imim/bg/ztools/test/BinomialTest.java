@@ -2,8 +2,8 @@ package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import es.imim.bg.ztools.stats.calc.CountOnesStatisticCalc;
-import es.imim.bg.ztools.stats.calc.StatisticCalc;
+import es.imim.bg.ztools.stats.calc.OnesCountStatistic;
+import es.imim.bg.ztools.stats.calc.Statistic;
 import es.imim.bg.ztools.test.results.BinomialResult;
 import es.imim.bg.ztools.test.results.Result;
 
@@ -20,7 +20,7 @@ public class BinomialTest extends AbstractTest {
 				int observed, int n, double expectedMean, double expectedStdev, double expectedVar);
 	}
 	
-	protected StatisticCalc statCalc;
+	protected Statistic statCalc;
 	
 	protected AproximationMode aproxMode;
 	
@@ -31,7 +31,7 @@ public class BinomialTest extends AbstractTest {
 	private BinomialAproximation aprox;
 	
 	public BinomialTest(AproximationMode aproxMode) {
-		this.statCalc = new CountOnesStatisticCalc();
+		this.statCalc = new OnesCountStatistic();
 		this.aproxMode = aproxMode;
 		
 		switch (aproxMode) {

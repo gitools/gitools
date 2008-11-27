@@ -18,19 +18,19 @@ import org.apache.commons.csv.CSVStrategy;
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.ztools.model.Results;
 
-public class ResultsFile extends ResourceFile {
+public class ResultsResource extends Resource {
 	
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 
-	public ResultsFile() {
+	public ResultsResource() {
 		super((String)null); //FIXME
 	}
 	
-	public ResultsFile(String fileName) {
+	public ResultsResource(String fileName) {
 		super(fileName);
 	}
 	
-	public ResultsFile(File file) {
+	public ResultsResource(File file) {
 		super(file);
 	}
 

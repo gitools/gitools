@@ -1,16 +1,12 @@
-package es.imim.bg.ztools.zcalc;
+package es.imim.bg.ztools.processors;
 
 import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
 import cern.colt.function.DoubleProcedure;
-import cern.colt.matrix.DoubleFactory3D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.DoubleMatrix3D;
-import cern.colt.matrix.ObjectFactory2D;
-import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
@@ -73,7 +69,9 @@ public class ZCalcProcessor {
 		
 		Date startTime = new Date();
 		
-		TestFactory testFactory = analysis.getTestFactory();
+		TestFactory testFactory = 
+			TestFactory.createFactory(analysis.getTestConfig());
+		
 		String[] paramNames = testFactory.create().getResultNames();
 		final int numParams = paramNames.length;
 		

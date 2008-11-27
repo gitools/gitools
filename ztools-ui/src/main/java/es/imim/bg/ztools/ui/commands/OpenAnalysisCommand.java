@@ -5,7 +5,7 @@ import java.io.File;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
-import es.imim.bg.ztools.resources.analysis.TabAnalysisResource;
+import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 
 public class OpenAnalysisCommand implements Command {
 	
@@ -28,7 +28,7 @@ public class OpenAnalysisCommand implements Command {
 		
 		if (selectedPath != null) {
 			AnalysisResource analysisRes =
-				new TabAnalysisResource(selectedPath.getAbsolutePath());
+				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
 			try {

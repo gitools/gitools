@@ -3,7 +3,7 @@ package es.imim.bg.ztools.ui.commands;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.stats.multitestcorrection.MultipleTestCorrection;
+import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
 public class MtcCommand implements Command {

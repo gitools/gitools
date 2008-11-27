@@ -2,22 +2,24 @@ package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import es.imim.bg.ztools.stats.calc.StatisticCalc;
+import es.imim.bg.ztools.stats.calc.Statistic;
 import es.imim.bg.ztools.test.results.Result;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public abstract class ZscoreTest extends AbstractTest {
 
+	public static final int DEFAULT_NUM_SAMPLES = 10000;
+	
 	protected class PopulationStatistics {
 		public double mean;
 		public double stdev;
 	}
 	
-	protected StatisticCalc statCalc;
+	protected Statistic statCalc;
 	
 	protected DoubleMatrix1D population;
 	
-	public ZscoreTest(StatisticCalc statCalc) {
+	public ZscoreTest(Statistic statCalc) {
 		this.statCalc = statCalc;
 	}
 	

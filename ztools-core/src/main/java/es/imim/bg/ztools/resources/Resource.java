@@ -18,7 +18,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.csv.CSVStrategy;
 
-public class ResourceFile {
+public abstract class Resource {
 
 	public static final CSVStrategy defaultCsvStrategy = 
 		new CSVStrategy('\t', '"', '#', true, true, true);
@@ -26,11 +26,14 @@ public class ResourceFile {
 	private String resourcePath;
 	private File resourceFile;
 	
-	public ResourceFile(String resourceName) {
+	public Resource() {
+	}
+	
+	public Resource(String resourceName) {
 		this(new File(resourceName));
 	}
 	
-	public ResourceFile(File resourceFile) {
+	public Resource(File resourceFile) {
 		this.resourcePath = resourceFile.getAbsolutePath();
 		this.resourceFile = resourceFile;
 	}

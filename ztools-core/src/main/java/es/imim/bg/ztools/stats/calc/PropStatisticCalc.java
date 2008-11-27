@@ -2,7 +2,7 @@ package es.imim.bg.ztools.stats.calc;
 
 import cern.colt.matrix.DoubleMatrix1D;
 
-public class PropStatisticCalc implements StatisticCalc {
+public class PropStatisticCalc implements Statistic {
 
 	@Override
 	public String getName() {

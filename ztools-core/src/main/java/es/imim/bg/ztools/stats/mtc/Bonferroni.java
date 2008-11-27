@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.stats.multitestcorrection;
+package es.imim.bg.ztools.stats.mtc;
 
 import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;

@@ -2,7 +2,7 @@ package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import es.imim.bg.ztools.stats.multitestcorrection.MultipleTestCorrection;
+import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.commands.MtcCommand;
 import es.imim.bg.ztools.ui.commands.Command.CommandException;
 import es.imim.bg.ztools.ui.model.ITableModel;

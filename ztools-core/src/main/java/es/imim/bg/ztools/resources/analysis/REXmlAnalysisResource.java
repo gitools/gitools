@@ -18,21 +18,20 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.BinomialResult;
 import es.imim.bg.ztools.utils.Util;
 
-public class REXmlAnalysisResource implements AnalysisResource {
+public class REXmlAnalysisResource extends AnalysisResource {
 
-	protected String workdir;
 	protected int minModuleSize;
 	protected int maxModuleSize;
 	
-	public REXmlAnalysisResource(String workdir, int minGroupSize, int maxGroupSize) {
-		this.workdir = workdir;
+	public REXmlAnalysisResource(String basePath, int minGroupSize, int maxGroupSize) {
+		super(basePath);
 		this.minModuleSize = minGroupSize;
 		this.maxModuleSize = maxGroupSize;
 	}
 	
 	public void save(Analysis analysis) throws IOException, DataFormatException {
 		
-		String dirName = workdir + File.separator + analysis.getName();
+		String dirName = basePath /*+ File.separator + analysis.getName()*/;
 		File workDirFile = new File(dirName);
 		if (!workDirFile.exists())
 			workDirFile.mkdirs();
@@ -46,9 +45,11 @@ public class REXmlAnalysisResource implements AnalysisResource {
 		String[] condNames = analysis.getResults().getColNames();
 		String[] moduleNames = analysis.getResults().getRowNames();
 		
-		TestFactory testFactory = analysis.getTestFactory();
-		Test method = testFactory.create(); //FIXME
-		String statName = method.getName();
+		TestFactory testFactory = 
+			TestFactory.createFactory(analysis.getTestConfig());
+		
+		Test test = testFactory.create(); //FIXME?
+		String statName = test.getName();
 		
 		Results results = analysis.getResults();
 		
@@ -101,7 +102,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 						String miSt = null;
 						String sigmaSt = null;
 						
-						if (method instanceof FisherTest) {
+						if (test instanceof FisherTest) {
 							
 							int a = (int) results.getDataValue(
 									propIndex, moduleIndex, indexOfParam(paramIndexMap, "a"));
@@ -121,7 +122,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 							miSt = Double.toString(expected);
 							sigmaSt = "[" + a + ", " + b + ", " + c + ", " + d + "]";
 						}
-						else if (method instanceof ZscoreTest) {
+						else if (test instanceof ZscoreTest) {
 							
 							double observed = results.getDataValue(
 									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
@@ -135,7 +136,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 							valueSt = Double.toString(observed);
 							zscoreSt = Double.toString(zscore);
 							
-							if (method instanceof ZscoreWithSamplingTest)
+							if (test instanceof ZscoreWithSamplingTest)
 								pvalueSt = Double.toString(twoTailPvalue);
 							else
 								pvalueSt = Double.toString(rightPvalue);
@@ -143,7 +144,7 @@ public class REXmlAnalysisResource implements AnalysisResource {
 							miSt = Double.toString(expectedMean);
 							sigmaSt = Double.toString(expectedStdev);
 						}
-						else if (method instanceof BinomialTest) {
+						else if (test instanceof BinomialTest) {
 							double observed = results.getDataValue(
 									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
 							double expectedMean = results.getDataValue(
