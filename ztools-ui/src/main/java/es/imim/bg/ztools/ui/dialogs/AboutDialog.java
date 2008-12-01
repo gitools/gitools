@@ -58,7 +58,7 @@ public class AboutDialog extends JDialog {
 		infoPane.setText("<h1>" + appName + "</h1>"
 						+ "<p>Version " + appVersion + "</p>"
 						+ "<p>Written by Christian Pérez-Llamas</p>"
-						+ "<p>Biomedical Genomics Laboratory<br>Parc de Recerca Biomédica de Barcelona (PRBB)</p>");
+						+ "<p>Biomedical Genomics Laboratory<br>Parc de Recerca Biomèdica de Barcelona (PRBB)</p>");
 		
 		JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
