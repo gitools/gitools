@@ -60,7 +60,7 @@ public class StatusBar extends JPanel {
 	
 	public void setText(final String text) {
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					statusLabel.setText(text);

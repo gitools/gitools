@@ -133,9 +133,16 @@ public class TableView extends AbstractView {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
 					blockSelectionUpdate = true;
+					
 					tableModel.setSelection(
 							colorMatrixPanel.getSelectedColumns(),
 							colorMatrixPanel.getSelectedRows());
+					
+					int colIndex = colorMatrixPanel.getSelectedLeadColumn();
+					int rowIndex = colorMatrixPanel.getSelectedLeadRow();
+					
+					tableModel.setLeadSelection(colIndex, rowIndex);
+					
 					blockSelectionUpdate = false;
 				}
 			}
@@ -144,15 +151,19 @@ public class TableView extends AbstractView {
 		colorMatrixPanel.getTableSelectionModel().addListSelectionListener(selListener);
 		colorMatrixPanel.getColumnSelectionModel().addListSelectionListener(selListener);
 		
-		colorMatrixPanel.addListener(new ColorMatrixListener() {
+		/*colorMatrixPanel.addListener(new ColorMatrixListener() {
 			@Override
 			public void selectionChanged() {
-				int colIndex = colorMatrixPanel.getSelectedLeadColumn();
-				int rowIndex = colorMatrixPanel.getSelectedLeadRow();
-				
-				tableModel.setLeadSelection(colIndex, rowIndex);
+				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
+					blockSelectionUpdate = true;
+					int colIndex = colorMatrixPanel.getSelectedLeadColumn();
+					int rowIndex = colorMatrixPanel.getSelectedLeadRow();
+					
+					tableModel.setLeadSelection(colIndex, rowIndex);
+					blockSelectionUpdate = false;
+				}
 			}
-		});
+		});*/
 
 		configPanel.refresh();
 		refreshColorMatrixWidth();

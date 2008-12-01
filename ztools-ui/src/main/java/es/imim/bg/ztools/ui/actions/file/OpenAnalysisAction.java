@@ -98,17 +98,13 @@ public class OpenAnalysisAction extends BaseAction {
 		} 
 		catch (Exception ex) {
 			ex.printStackTrace();
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						AppFrame.instance()
-							.setStatusText("Error loading analysis.");
-					}
-				});
-			} catch (Exception e) {
-				e.printStackTrace(); //FIXME
-			}
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					AppFrame.instance()
+						.setStatusText("Error loading analysis.");
+				}
+			});
 		}
 	}
 }

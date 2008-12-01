@@ -39,7 +39,7 @@ public class SortSelectedColumnsAction extends BaseAction {
 				tableModel.getSelectedColumns());
 		
 		AppFrame.instance()
-			.setStatusText("Selected rows hided.");
+			.setStatusText("Sort done.");
 	}
 
 }

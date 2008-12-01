@@ -240,13 +240,15 @@ public class ColorMatrixPanel extends JPanel {
 		final ListSelectionListener listener = new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
-				selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-				
-				for (ColorMatrixListener listener : listeners)
-					listener.selectionChanged();
-				
-				refresh();
+				if (!e.getValueIsAdjusting()) {
+					selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
+					selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
+					
+					for (ColorMatrixListener listener : listeners)
+						listener.selectionChanged();
+					
+					refresh();
+				}
 			}
 		};
 		

@@ -30,6 +30,7 @@ public class CloseAction extends BaseAction {
 			workspace.removeView(currentView);
 		
 		AppFrame.instance().refresh();
+		AppFrame.instance().setStatusText("View closed.");
 	}
 
 }
