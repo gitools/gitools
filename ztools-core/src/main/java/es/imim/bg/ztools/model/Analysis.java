@@ -2,15 +2,28 @@ package es.imim.bg.ztools.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(
+		propOrder = {
+				"name", 
+				"startTime", 
+				"elapsedTime",
+				"toolConfig"
+				/*"dataMatrix", 
+				"moduleSet"*/,
+				"results"})
+				
 public class Analysis {
 
 	protected String name;
 	protected Date startTime;
 	protected long elapsedTime;
 	
-	protected Data data;
-	protected Modules modules;
-	protected Results results;
+	protected DataMatrix dataMatrix;
+	protected ModuleSet moduleSet;
+	protected ResultsMatrix resultsMatrix;
 	
 	protected ToolConfig toolConfig;
 	
@@ -38,28 +51,30 @@ public class Analysis {
 		this.elapsedTime = elapsedTime;
 	}
 	
-	public Data getData() {
-		return data;
+	@XmlTransient
+	public DataMatrix getDataMatrix() {
+		return dataMatrix;
 	}
 	
-	public void setData(Data data) {
-		this.data = data;
+	public void setDataMatrix(DataMatrix dataMatrix) {
+		this.dataMatrix = dataMatrix;
 	}
 	
-	public Modules getModules() {
-		return modules;
+	@XmlTransient
+	public ModuleSet getModuleSet() {
+		return moduleSet;
 	}
 	
-	public void setModules(Modules modules) {
-		this.modules = modules;
+	public void setModuleSet(ModuleSet moduleSet) {
+		this.moduleSet = moduleSet;
 	}
 	
-	public Results getResults() {
-		return results;
+	public ResultsMatrix getResults() {
+		return resultsMatrix;
 	}
 	
-	public void setResults(Results results) {
-		this.results = results;
+	public void setResults(ResultsMatrix resultsMatrix) {
+		this.resultsMatrix = resultsMatrix;
 	}
 	
 	public ToolConfig getToolConfig() {

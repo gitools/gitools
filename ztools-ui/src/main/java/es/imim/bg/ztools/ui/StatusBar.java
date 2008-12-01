@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import es.imim.bg.progressmonitor.DefaultProgressMonitor;
 import es.imim.bg.progressmonitor.ProgressMonitor;
@@ -57,9 +58,18 @@ public class StatusBar extends JPanel {
 		add(statusLabel, BorderLayout.CENTER);
 	}
 	
-	public void setText(String text) {
-		statusLabel.setText(text);
-		statusLabel.repaint();
+	public void setText(final String text) {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					statusLabel.setText(text);
+					statusLabel.repaint();
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace(); //FIXME
+		}
 	}
 
 	public ProgressMonitor createMonitor() {

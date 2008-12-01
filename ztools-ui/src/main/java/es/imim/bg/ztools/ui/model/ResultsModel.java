@@ -5,35 +5,35 @@ import java.util.HashMap;
 
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.DoubleMatrix3D;
-import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.model.ResultsMatrix;
 
 public class ResultsModel 
 		extends CubeSectionModel {
 
-	private Results results;
+	private ResultsMatrix resultsMatrix;
 	
-	public ResultsModel(Results results) {
+	public ResultsModel(ResultsMatrix resultsMatrix) {
 		super();
 		
-		this.results = results;
+		this.resultsMatrix = resultsMatrix;
 
 		initialize();
 	}
 	
 	public void initialize() {
-		columnCount = results.getData().columns();
+		columnCount = resultsMatrix.getData().columns();
 		visibleCols = new int[columnCount];
 		for (int i = 0; i < columnCount; i++)
 			visibleCols[i] = i;
-		columnNames = results.getColNames();
+		columnNames = resultsMatrix.getColNames();
 		
-		rowCount = results.getData().rows();
+		rowCount = resultsMatrix.getData().rows();
 		visibleRows = new int[rowCount];
 		for (int i = 0; i < rowCount; i++)
 			visibleRows[i] = i;
-		rowNames = results.getRowNames();
+		rowNames = resultsMatrix.getRowNames();
 		
-		DoubleMatrix3D cube = results.getData();
+		DoubleMatrix3D cube = resultsMatrix.getData();
 		data = new ArrayList<DoubleMatrix2D>(cube.slices());
 		for (int i = 0; i < cube.slices(); i++)
 			data.add(cube.viewSlice(i));
@@ -41,7 +41,7 @@ public class ResultsModel
 		paramCount = cube.slices();
 		visibleParams = new int[paramCount];
 		paramIndexMap = new HashMap<String, Integer>();
-		paramNames = results.getParamNames();
+		paramNames = resultsMatrix.getParamNames();
 		for (int i = 0; i < paramCount; i++) {
 			visibleParams[i] = i;
 			paramIndexMap.put(paramNames[i], i);

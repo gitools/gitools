@@ -96,6 +96,11 @@ public class BinomialTest extends AbstractTest {
 	}
 
 	@Override
+	public Class<? extends Result> getResultClass() {
+		return BinomialResult.class;
+	}
+	
+	@Override
 	public void processPopulation(String name, DoubleMatrix1D population) {
 		p = statCalc.calc(population) / population.size();
 	}

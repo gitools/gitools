@@ -8,6 +8,8 @@ public interface Test {
 	String getName();
 	
 	String[] getResultNames();
+	
+	Class<? extends Result> getResultClass();
 
 	void processPopulation(String name, DoubleMatrix1D population);
 	

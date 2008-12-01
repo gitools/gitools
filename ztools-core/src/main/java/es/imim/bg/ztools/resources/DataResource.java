@@ -17,7 +17,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Data;
+import es.imim.bg.ztools.model.DataMatrix;
 
 public class DataResource extends Resource {
 
@@ -31,19 +31,19 @@ public class DataResource extends Resource {
 		super(file);
 	}
 	
-	public Data load(ProgressMonitor monitor) 
+	public DataMatrix load(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 
-		Data data = new Data();
+		DataMatrix dataMatrix = new DataMatrix();
 		
-		loadMetadata(data, monitor);
+		loadMetadata(dataMatrix, monitor);
 		
-		loadData(data, null, null, monitor);
+		loadData(dataMatrix, null, null, monitor);
 		
-		return data;
+		return dataMatrix;
 	}
 
-	public void loadMetadata(Data data, ProgressMonitor monitor)
+	public void loadMetadata(DataMatrix dataMatrix, ProgressMonitor monitor)
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		monitor.begin("Reading names ...", 1);
@@ -60,13 +60,13 @@ public class DataResource extends Resource {
 		
 		// Read datafile name and column names
 		
-		data.setName(header[0]);
+		dataMatrix.setName(header[0]);
 		
 		int numColumns = header.length - 1;
 		
 		String[] columnNames = new String[numColumns];
 		System.arraycopy(header, 1, columnNames, 0, numColumns);
-		data.setColNames(columnNames);
+		dataMatrix.setColNames(columnNames);
 		
 		// Read row names
 		
@@ -77,7 +77,7 @@ public class DataResource extends Resource {
 			names.add(fields[0]);
 		
 		String[] rowNames = names.toArray(new String[names.size()]);
-		data.setRowNames(rowNames);
+		dataMatrix.setRowNames(rowNames);
 		
 		reader.close();
 		
@@ -88,18 +88,18 @@ public class DataResource extends Resource {
 	}
 	
 	public void loadData( 
-		Data data, 
+		DataMatrix dataMatrix, 
 		int[] columnsOrder,
 		int[] rowsOrder, 
 		ProgressMonitor monitor) throws FileNotFoundException, IOException {
 		
 		monitor.begin("Reading data ...", 1);
 		
-		int numColumns = data.getColNames().length;
-		int numItems = data.getRowNames().length;
+		int numColumns = dataMatrix.getColNames().length;
+		int numItems = dataMatrix.getRowNames().length;
 		
-		String[] columnNames = data.getColNames();
-		String[] rowNames = data.getRowNames();
+		String[] columnNames = dataMatrix.getColNames();
+		String[] rowNames = dataMatrix.getRowNames();
 		
 		// Sort column names ordered by columnsOrder
 		
@@ -120,7 +120,7 @@ public class DataResource extends Resource {
 		DoubleMatrix2D matrix = 
 			DoubleFactory2D.dense.make(numItems, numColumns);
 		
-		data.setData(matrix);
+		dataMatrix.setData(matrix);
 		
 		String[] fields;
 		int row = 0;
@@ -163,20 +163,20 @@ public class DataResource extends Resource {
 		monitor.end();
 	}
 	
-	public void save(Data data, ProgressMonitor monitor) 
+	public void save(DataMatrix dataMatrix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		Writer writer = openWriter();
 		
 		PrintWriter pw = new PrintWriter(writer);
 		
-		DoubleMatrix2D matrix = data.getData();
+		DoubleMatrix2D matrix = dataMatrix.getData();
 		
 		int numCols = matrix.columns();
 		
-		final String[] colNames = data.getColNames();
+		final String[] colNames = dataMatrix.getColNames();
 		
-		pw.print(data.getName() != null ? data.getName() : "");
+		pw.print(dataMatrix.getName() != null ? dataMatrix.getName() : "");
 		
 		for (int i = 0; i < numCols; i++) {
 			final String name = i < colNames.length ? colNames[i] : "";
@@ -188,7 +188,7 @@ public class DataResource extends Resource {
 		
 		int numRows = matrix.rows();
 		
-		final String[] rowNames = data.getRowNames();
+		final String[] rowNames = dataMatrix.getRowNames();
 		
 		for (int i = 0; i < numRows; i++) {
 			final String name = i < rowNames.length ? rowNames[i] : "";

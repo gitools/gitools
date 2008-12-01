@@ -5,6 +5,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import es.imim.bg.ztools.ui.actions.Actions;
+import es.imim.bg.ztools.ui.actions.FileActionSet;
+import es.imim.bg.ztools.ui.actions.HelpActionSet;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public class WorkspacePanel extends JTabbedPane {
@@ -13,8 +16,12 @@ public class WorkspacePanel extends JTabbedPane {
 
 	private AbstractView selectedView;
 	
+	private JTabbedPane tabbedPane;
+	
 	public WorkspacePanel() {
 		this.selectedView = null;
+	
+		createComponents();
 		
 		addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
@@ -27,6 +34,10 @@ public class WorkspacePanel extends JTabbedPane {
 					selectedView.refreshActions();
 			}
 		});
+	}
+	
+	private void createComponents() {
+		tabbedPane = new JTabbedPane();
 	}
 	
 	public void addView(AbstractView view) {
@@ -73,11 +84,12 @@ public class WorkspacePanel extends JTabbedPane {
 	}
 	
 	private void refreshActions() {
-		Actions.disableAll();
-		Actions.openAnalysisAction.setEnabled(true);
-		Actions.closeAction.setEnabled(getTabCount() > 0);
-		Actions.exitAction.setEnabled(true);
+		//Actions.menuActionSet.setEnabled(false);
+		
+		FileActionSet.openAnalysisAction.setEnabled(true);
+		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
+		FileActionSet.exitAction.setEnabled(true);
 		Actions.zcalcAnalysisAction.setEnabled(true);
-		Actions.aboutAction.setEnabled(true);
+		HelpActionSet.aboutAction.setEnabled(true);
 	}
 }

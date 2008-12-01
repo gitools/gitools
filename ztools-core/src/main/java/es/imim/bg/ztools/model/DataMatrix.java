@@ -1,8 +1,18 @@
 package es.imim.bg.ztools.model;
 
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import cern.colt.matrix.DoubleMatrix2D;
 
-public final class Data {
+@XmlType(
+		propOrder = {
+				"name"/*, 
+				"colNames", 
+				"rowNames"*/, 
+				"data"})
+				
+public final class DataMatrix {
 
 	protected String name;
 	
@@ -11,11 +21,11 @@ public final class Data {
 	
 	protected DoubleMatrix2D data;
 	
-	public Data() {
+	public DataMatrix() {
 		this.name = "";
 	}
 
-	public Data(
+	public DataMatrix(
 			String name, String[] colNames, 
 			String[] rowNames, DoubleMatrix2D data) {
 		
@@ -33,6 +43,7 @@ public final class Data {
 		this.name = name;
 	}
 
+	@XmlTransient
 	public final String[] getColNames() {
 		return colNames;
 	}
@@ -41,6 +52,7 @@ public final class Data {
 		this.colNames = colNames;
 	}
 
+	@XmlTransient
 	public final String[] getRowNames() {
 		return rowNames;
 	}
@@ -49,6 +61,7 @@ public final class Data {
 		this.rowNames = rowNames;
 	}
 
+	//@XmlTransient
 	public final DoubleMatrix2D getData() {
 		return data;
 	}

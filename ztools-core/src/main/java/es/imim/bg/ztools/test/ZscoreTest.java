@@ -34,6 +34,11 @@ public abstract class ZscoreTest extends AbstractTest {
 	}
 	
 	@Override
+	public Class<? extends Result> getResultClass() {
+		return ZScoreResult.class;
+	}
+	
+	@Override
 	public void processPopulation(String name, DoubleMatrix1D population) {
 		this.population = population;
 	}

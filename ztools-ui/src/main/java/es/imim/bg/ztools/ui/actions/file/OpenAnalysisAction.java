@@ -1,16 +1,20 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.resources.analysis.AnalysisResource;
+import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.commands.OpenAnalysisCommand;
+import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.jobs.Job;
 import es.imim.bg.ztools.ui.model.AnalysisModel;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
@@ -29,36 +33,20 @@ public class OpenAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		File selectedPath = getSelectedPath();
+		final File selectedPath = getSelectedPath();
 		
 		if (selectedPath != null) {
 			Options.instance().setLastPath(selectedPath.getParent());
 			Options.instance().save();
 
-			ProgressMonitor monitor = createProgressMonitor();
+			final ProgressMonitor monitor = createProgressMonitor();
 			
-			try {
-				OpenAnalysisCommand cmd = 
-					OpenAnalysisCommand.create(selectedPath);
-				
-				cmd.execute(monitor);
-
-				Analysis analysis = cmd.getAnalysis();
-				
-				AnalysisView view = 
-					new AnalysisView(
-						new AnalysisModel(analysis));
-
-				view.setName(analysis.getName());
-
-				AppFrame.instance().getWorkspace().addView(view);
-				AppFrame.instance().refresh();
-
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				AppFrame.instance()
-					.setStatusText("Error loading analysis.");
-			}
+			AppFrame.instance().getJobProcessor().addJob(new Job() {
+					@Override
+					public void run() {
+						openAnalysisJob(selectedPath, monitor);
+					}
+				});
 		}
 	}
 	
@@ -77,5 +65,50 @@ public class OpenAnalysisAction extends BaseAction {
 			return fileChooser.getSelectedFile();
 		
 		return null;
+	}
+	
+	private void openAnalysisJob(
+			File selectedPath, ProgressMonitor monitor) {
+		
+		if (selectedPath == null)
+			return;
+		
+		try {
+			AnalysisResource analysisRes =
+				new CsvAnalysisResource(selectedPath.getAbsolutePath());
+			
+			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
+			Analysis analysis = analysisRes.load(monitor);
+				
+			final AnalysisView view = 
+				new AnalysisView(
+					new AnalysisModel(analysis));
+
+			view.setName(analysis.getName());
+
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					AppFrame.instance().getWorkspace().addView(view);
+					AppFrame.instance().refresh();
+				}
+			});
+			
+			monitor.end();
+		} 
+		catch (Exception ex) {
+			ex.printStackTrace();
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						AppFrame.instance()
+							.setStatusText("Error loading analysis.");
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace(); //FIXME
+			}
+		}
 	}
 }

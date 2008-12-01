@@ -21,6 +21,11 @@ public class FisherTest extends AbstractTest {
 	}
 	
 	@Override
+	public Class<? extends Result> getResultClass() {
+		return FisherResult.class;
+	}
+	
+	@Override
 	public void processPopulation(String name, DoubleMatrix1D population) {
 	}
 	

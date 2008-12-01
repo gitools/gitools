@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.ui.Actions;
+import es.imim.bg.ztools.ui.actions.EditActionSet;
+import es.imim.bg.ztools.ui.actions.FileActionSet;
+import es.imim.bg.ztools.ui.actions.TableActionSet;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixModel;
@@ -201,48 +203,48 @@ public class TableView extends AbstractView {
 	public void refreshActions() {
 		SelectionMode selMode = tableModel.getSelectionMode();
 		
-		Actions.selectAllAction.setEnabled(
+		EditActionSet.selectAllAction.setEnabled(
 				selMode != SelectionMode.cells);
 		
-		Actions.invertSelectionAction.setEnabled(
+		EditActionSet.invertSelectionAction.setEnabled(
 				selMode != SelectionMode.cells);
 		
-		Actions.unselectAllAction.setEnabled(
+		EditActionSet.unselectAllAction.setEnabled(
 				selMode != SelectionMode.cells);
 		
-		Actions.columnSelectionModeAction.setEnabled(
+		EditActionSet.columnSelectionModeAction.setEnabled(
 				selMode != SelectionMode.columns);
 		
-		Actions.rowSelectionModeAction.setEnabled(
+		EditActionSet.rowSelectionModeAction.setEnabled(
 				selMode != SelectionMode.rows);
 		
-		Actions.cellSelectionModeAction.setEnabled(
+		EditActionSet.cellSelectionModeAction.setEnabled(
 				selMode != SelectionMode.cells);
 		
-		Actions.hideSelectedColumnsAction.setEnabled(
+		TableActionSet.hideSelectedColumnsAction.setEnabled(
 				selMode == SelectionMode.columns);
 		
-		Actions.sortSelectedColumnsAction.setEnabled(
+		TableActionSet.sortSelectedColumnsAction.setEnabled(
 				selMode == SelectionMode.columns);
 		
-		Actions.hideSelectedRowsAction.setEnabled(
+		TableActionSet.hideSelectedRowsAction.setEnabled(
 				selMode == SelectionMode.rows);
 		
-		Actions.moveRowsUpAction.setEnabled(
+		TableActionSet.moveRowsUpAction.setEnabled(
 				selMode == SelectionMode.rows);
 		
-		Actions.moveRowsDownAction.setEnabled(
+		TableActionSet.moveRowsDownAction.setEnabled(
 				selMode == SelectionMode.rows);
 		
-		Actions.moveColsLeftAction.setEnabled(
+		TableActionSet.moveColsLeftAction.setEnabled(
 				selMode == SelectionMode.columns);
 		
-		Actions.moveColsRightAction.setEnabled(
+		TableActionSet.moveColsRightAction.setEnabled(
 				selMode == SelectionMode.columns);
 		
-		Actions.closeAction.setEnabled(true);
+		FileActionSet.closeAction.setEnabled(true);
 		
-		Actions.mtcBonferroniAction.setEnabled(true);
-		Actions.mtcBenjaminiHochbergFdrAction.setEnabled(true);
+		TableActionSet.mtcBonferroniAction.setEnabled(true);
+		TableActionSet.mtcBenjaminiHochbergFdrAction.setEnabled(true);
 	}
 }

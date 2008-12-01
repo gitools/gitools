@@ -17,7 +17,7 @@ import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.model.ResultsMatrix;
 
 public class ResultsResource extends Resource {
 	
@@ -35,21 +35,21 @@ public class ResultsResource extends Resource {
 		super(file);
 	}
 
-	public Results read(ProgressMonitor monitor) 
+	public ResultsMatrix read(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
-		Results results = new Results();
-		read(results, monitor);
-		return results;
+		ResultsMatrix resultsMatrix = new ResultsMatrix();
+		read(resultsMatrix, monitor);
+		return resultsMatrix;
 	}
 	
-	public void read(Results results, ProgressMonitor monitor) 
+	public void read(ResultsMatrix resultsMatrix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
-		read(openReader(), results, monitor);
+		read(openReader(), resultsMatrix, monitor);
 	}
 	
-	protected void read(Reader reader, Results results, ProgressMonitor monitor) 
+	protected void read(Reader reader, ResultsMatrix resultsMatrix, ProgressMonitor monitor) 
 			throws IOException, DataFormatException {
 		
 		monitor.begin("Reading results ...", 1);
@@ -117,10 +117,10 @@ public class ResultsResource extends Resource {
 		for (Entry<String, Integer> entry : rowMap.entrySet())
 			rowNames[entry.getValue()] = entry.getKey();
 		
-		results.setColNames(columnNames);
-		results.setRowNames(rowNames);
-		results.setParamNames(paramNames);
-		results.createData();
+		resultsMatrix.setColNames(columnNames);
+		resultsMatrix.setRowNames(rowNames);
+		resultsMatrix.setParamNames(paramNames);
+		resultsMatrix.createData();
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];
@@ -131,19 +131,19 @@ public class ResultsResource extends Resource {
 			//DoubleMatrix1D params = (DoubleMatrix1D) result[1];
 			
 			for (int pi = 0; pi < numParams; pi++)
-				results.setDataValue(columnIndex, rowIndex, pi, paramValues[pi]);
+				resultsMatrix.setDataValue(columnIndex, rowIndex, pi, paramValues[pi]);
 		}
 		
 		monitor.end();
 	}
 	
-	public void write(Results results, boolean orderByColumn, ProgressMonitor monitor) 
+	public void write(ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
-		write(openWriter(), results, orderByColumn, monitor);
+		write(openWriter(), resultsMatrix, orderByColumn, monitor);
 	}
 	
-	public void write(Writer writer, Results results, boolean orderByColumn, ProgressMonitor monitor) {
+	public void write(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
 				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
@@ -152,37 +152,37 @@ public class ResultsResource extends Resource {
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (String resultName : results.getParamNames()) {
+		for (String resultName : resultsMatrix.getParamNames()) {
 			out.writeSeparator();
 			out.writeQuotedValue(resultName);
 		}
 		
 		out.writeNewLine();
 		
-		final String[] columnNames = results.getColNames();
-		final String[] rowNames = results.getRowNames();
-		final String[] paramNames = results.getParamNames();
+		final String[] columnNames = resultsMatrix.getColNames();
+		final String[] rowNames = resultsMatrix.getRowNames();
+		final String[] paramNames = resultsMatrix.getParamNames();
 		
-		int numColumns = results.getData().columns();
-		int numRows = results.getData().rows();
+		int numColumns = resultsMatrix.getData().columns();
+		int numRows = resultsMatrix.getData().rows();
 		
 		if (orderByColumn) {
 			for (int colIndex = 0; colIndex < numColumns; colIndex++)
 				for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
-					writeLine(out, results, columnNames[colIndex], rowNames[rowIndex], 
+					writeLine(out, resultsMatrix, columnNames[colIndex], rowNames[rowIndex], 
 							paramNames, colIndex, rowIndex);
 		}
 		else {
 			for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
 				for (int colIndex = 0; colIndex < numColumns; colIndex++)
-					writeLine(out, results, columnNames[colIndex], rowNames[rowIndex], 
+					writeLine(out, resultsMatrix, columnNames[colIndex], rowNames[rowIndex], 
 							paramNames, colIndex, rowIndex);
 		}
 		
 		out.close();
 	}
 
-	private void writeLine(RawCsvWriter out, Results results, 
+	private void writeLine(RawCsvWriter out, ResultsMatrix resultsMatrix, 
 			String colName, String rowName, String[] paramNames, int colIndex, int rowIndex) {
 		
 		out.writeQuotedValue(colName);
@@ -192,7 +192,7 @@ public class ResultsResource extends Resource {
 		for (int paramIndex = 0; paramIndex < paramNames.length; paramIndex++) {
 			out.writeSeparator();
 			out.writeValue(String.valueOf(
-					results.getDataValue(colIndex, rowIndex, paramIndex)));
+					resultsMatrix.getDataValue(colIndex, rowIndex, paramIndex)));
 		}
 		
 		out.writeNewLine();

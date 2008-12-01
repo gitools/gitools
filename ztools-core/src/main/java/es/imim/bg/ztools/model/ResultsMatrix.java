@@ -1,20 +1,36 @@
 package es.imim.bg.ztools.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import cern.colt.matrix.DoubleFactory3D;
 import cern.colt.matrix.DoubleMatrix3D;
+import es.imim.bg.ztools.test.results.Result;
 
-public class Results {
+@XmlType(
+		propOrder = {
+				"resultClass",
+				/*"colNames", 
+				"rowNames",*/ 
+				"paramNames"/*,
+				"data"*/})
+				
+public class ResultsMatrix {
 
+	protected Class<? extends Result> resultClass;
+	
 	protected String[] colNames;
 	protected String[] rowNames;
 	protected String[] paramNames;
 	
 	protected DoubleMatrix3D data;
 
-	public Results() {
+	public ResultsMatrix() {
 	}
 	
-	public Results(
+	public ResultsMatrix(
 			String[] colNames, 
 			String[] rowNames, 
 			String[] paramNames,
@@ -26,6 +42,15 @@ public class Results {
 		this.data = data;
 	}
 
+	public Class<? extends Result> getResultClass() {
+		return resultClass;
+	}
+	
+	public void setResultClass(Class<? extends Result> resultClass) {
+		this.resultClass = resultClass;
+	}
+	
+	@XmlTransient
 	public final String[] getColNames() {
 		return colNames;
 	}
@@ -34,6 +59,7 @@ public class Results {
 		this.colNames = colNames;
 	}
 
+	@XmlTransient
 	public final String[] getRowNames() {
 		return rowNames;
 	}
@@ -42,6 +68,9 @@ public class Results {
 		this.rowNames = rowNames;
 	}
 
+	@XmlElementWrapper(name = "statistics")
+	@XmlElement(name = "statistic")
+	//@XmlAttribute(name = "name")
 	public final String[] getParamNames() {
 		return paramNames;
 	}
@@ -50,6 +79,7 @@ public class Results {
 		this.paramNames = paramNames;
 	}
 
+	@XmlTransient
 	public final DoubleMatrix3D getData() {
 		return data;
 	}

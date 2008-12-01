@@ -1,9 +1,10 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.actions.BaseAction;
 
 public class ExportNames extends BaseAction {
 

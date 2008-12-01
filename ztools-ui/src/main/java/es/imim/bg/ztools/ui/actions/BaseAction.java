@@ -3,7 +3,6 @@ package es.imim.bg.ztools.ui.actions;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
@@ -17,6 +16,8 @@ import es.imim.bg.ztools.ui.views.AbstractView;
 public abstract class BaseAction extends AbstractAction {
 
 	private static final long serialVersionUID = 8312774908067146251L;
+	
+	public static final BaseAction separator = new SeparatorAction();
 	
 	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
 		super(name, icon);
@@ -42,6 +43,10 @@ public abstract class BaseAction extends AbstractAction {
 		this(name, null, null, null);
 	}
 	
+	public String getName() {
+		return getValue(NAME).toString();
+	}
+	
 	protected void setName(String name) {
 		putValue(NAME, name);
 	}
@@ -58,15 +63,23 @@ public abstract class BaseAction extends AbstractAction {
 		putValue(MNEMONIC_KEY, vk);
 	}
 
-	protected void setSmallIcon(Icon icon) {
+	protected ImageIcon getSmallIcon() {
+		return (ImageIcon) getValue(SMALL_ICON);
+	}
+	
+	protected void setSmallIcon(ImageIcon icon) {
 		putValue(SMALL_ICON, icon);
 	}
 	
 	protected void setSmallIconFromResource(String name) {
 		setLargeIcon(getIconResource(name));
 	}
-
-	protected void setLargeIcon(Icon icon) {
+	
+	protected ImageIcon getLargeIcon() {
+		return (ImageIcon) getValue(LARGE_ICON_KEY);
+	}
+	
+	protected void setLargeIcon(ImageIcon icon) {
 		putValue(LARGE_ICON_KEY, icon);
 	}
 	
@@ -74,12 +87,16 @@ public abstract class BaseAction extends AbstractAction {
 		setLargeIcon(getIconResource(name));
 	}
 	
-	private Icon getIconResource(String name) {
+	private ImageIcon getIconResource(String name) {
 		URL url = getClass().getResource(name);
 		if (url == null)
 			url = getClass().getResource(IconNames.nullResource);
 		
 		return new ImageIcon(url);
+	}
+	
+	public boolean isSeparator() {
+		return false;
 	}
 	
 	protected AbstractView getSelectedView() {

@@ -1,10 +1,12 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
 
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
+
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
-import es.imim.bg.ztools.ui.commands.MtcCommand;
-import es.imim.bg.ztools.ui.commands.Command.CommandException;
+import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
 public class MtcAction extends BaseAction {
@@ -25,14 +27,16 @@ public class MtcAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {		
 		ITableModel tableModel = getTableModel();
 		
-		MtcCommand cmd = 
-			new MtcCommand(mtc, tableModel);
+		if (tableModel == null)
+			return;
 		
-		try {
-			cmd.execute(createProgressMonitor());
-		} catch (CommandException ex) {
-			ex.printStackTrace();
+		final DoubleMatrix2D matrix = tableModel.getMatrix();
+		
+		for (int i = 0; i < matrix.columns(); i++) {
+			DoubleMatrix1D values = matrix.viewColumn(i);
+			mtc.correct(values);
 		}
+		
+		tableModel.fireMatrixChanged();
 	}
-
 }

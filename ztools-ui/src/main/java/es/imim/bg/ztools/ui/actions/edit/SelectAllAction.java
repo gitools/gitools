@@ -1,9 +1,10 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.edit;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
+import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
 public class SelectAllAction extends BaseAction {

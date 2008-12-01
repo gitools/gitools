@@ -10,7 +10,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.Result;
@@ -75,24 +75,27 @@ public class ZCalcProcessor {
 		String[] paramNames = testFactory.create().getResultNames();
 		final int numParams = paramNames.length;
 		
-		String[] condNames = analysis.getData().getColNames();
+		String[] condNames = analysis.getDataMatrix().getColNames();
 		
 		monitor.debug("Transposing data...");
-		DoubleMatrix2D data = analysis.getData().getData().viewDice().copy();
+		DoubleMatrix2D data = analysis.getDataMatrix().getData().viewDice().copy();
 		
-		String[] moduleNames = analysis.getModules().getModuleNames();
-		int[][] moduleItemIndices = analysis.getModules().getItemIndices();
+		String[] moduleNames = analysis.getModuleSet().getModuleNames();
+		int[][] moduleItemIndices = analysis.getModuleSet().getItemIndices();
 		
 		final int numConditions = data.rows();
 		final int numModules = moduleNames.length;
 		
 		monitor.begin("ZCalc analysis...", numConditions * numModules);
 		
-		final Results results = new Results();
-		results.setColNames(condNames);
-		results.setRowNames(moduleNames);
-		results.setParamNames(paramNames);
-		results.createData();
+		Test test = testFactory.create();
+		
+		final ResultsMatrix resultsMatrix = new ResultsMatrix();
+		resultsMatrix.setResultClass(test.getResultClass());
+		resultsMatrix.setColNames(condNames);
+		resultsMatrix.setRowNames(moduleNames);
+		resultsMatrix.setParamNames(paramNames);
+		resultsMatrix.createData();
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();
@@ -146,7 +149,7 @@ public class ZCalcProcessor {
 						double[] values = result.getValues();
 						
 						for (int paramIdx = 0; paramIdx < numParams; paramIdx++)
-							results.setDataValue(condIdx, moduleIdx, paramIdx, values[paramIdx]);
+							resultsMatrix.setDataValue(condIdx, moduleIdx, paramIdx, values[paramIdx]);
 						
 						queue.offer(slot);
 					}
@@ -168,7 +171,7 @@ public class ZCalcProcessor {
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 		
-		analysis.setResults(results);
+		analysis.setResults(resultsMatrix);
 		
 		monitor.end();
 	}

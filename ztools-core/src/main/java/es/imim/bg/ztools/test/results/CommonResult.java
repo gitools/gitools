@@ -6,7 +6,9 @@ public class CommonResult extends AbstractResult {
 	public double leftPvalue;
 	public double rightPvalue;
 	public double twoTailPvalue;
-	
+	public double corrLeftPvalue;
+	public double corrRightPvalue;
+	public double corrTwoTailPvalue;
 	
 	public CommonResult(
 			int numItems,
@@ -20,7 +22,7 @@ public class CommonResult extends AbstractResult {
 	}
 
 	protected int getNumParams() {
-		return 4;
+		return 7;
 	}
 	
 	protected int fillParamNames(String[] array) {
@@ -28,7 +30,10 @@ public class CommonResult extends AbstractResult {
 		array[1] = "left-p-value";
 		array[2] = "right-p-value";
 		array[3] = "two-tail-p-value";
-		return 4;
+		array[4] = "corrected-left-p-value";
+		array[5] = "corrected-right-p-value";
+		array[6] = "corrected-two-tail-p-value";
+		return 7;
 	}
 	
 	protected int fillParamValues(double[] array) {
@@ -36,7 +41,10 @@ public class CommonResult extends AbstractResult {
 		array[1] = leftPvalue;
 		array[2] = rightPvalue;
 		array[3] = twoTailPvalue;
-		return 4;
+		array[4] = corrLeftPvalue;
+		array[5] = corrRightPvalue;
+		array[6] = corrTwoTailPvalue;
+		return 7;
 	}
 
 	public int getN() {

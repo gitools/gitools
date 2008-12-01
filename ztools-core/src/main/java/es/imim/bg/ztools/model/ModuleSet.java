@@ -1,7 +1,22 @@
 package es.imim.bg.ztools.model;
 
-public class Modules {
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType(
+		propOrder = {
+				"name",
+				"description"/*,
+				"moduleNames", 
+				"itemNames", 
+				"itemIndices",
+				"itemsOrder"*/})
+				
+public class ModuleSet {
+
+	protected String name;
+	protected String description;
+	
 	protected String[] moduleNames;
 	protected String[] itemNames;
 	
@@ -9,10 +24,10 @@ public class Modules {
 	
 	protected int[] itemsOrder;
 
-	public Modules() {
+	public ModuleSet() {
 	}
 	
-	public Modules(
+	public ModuleSet(
 			String[] moduleNames, String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
 		
 		this.moduleNames = moduleNames;
@@ -21,6 +36,23 @@ public class Modules {
 		this.itemsOrder = itemsOrder;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	@XmlTransient
 	public final String[] getModuleNames() {
 		return moduleNames;
 	}
@@ -29,6 +61,7 @@ public class Modules {
 		this.moduleNames = moduleNames;
 	}
 
+	@XmlTransient
 	public final String[] getItemNames() {
 		return itemNames;
 	}
@@ -37,6 +70,7 @@ public class Modules {
 		this.itemNames = itemNames;
 	}
 
+	@XmlTransient
 	public final int[][] getItemIndices() {
 		return itemIndices;
 	}
@@ -45,6 +79,7 @@ public class Modules {
 		this.itemIndices = itemIndices;
 	}
 	
+	@XmlTransient
 	public int[] getItemsOrder() {
 		return itemsOrder;
 	}

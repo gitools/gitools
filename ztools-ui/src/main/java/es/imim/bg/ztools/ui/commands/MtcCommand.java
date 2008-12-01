@@ -6,6 +6,7 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
+@Deprecated
 public class MtcCommand implements Command {
 
 	protected MultipleTestCorrection mtc;

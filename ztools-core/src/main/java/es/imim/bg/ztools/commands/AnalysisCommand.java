@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.DataFormatException;
 
+import javax.xml.bind.JAXBException;
+
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Investigation;
 import es.imim.bg.ztools.model.ToolConfig;
+import es.imim.bg.ztools.resources.InvestigationResource;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
@@ -175,5 +179,21 @@ public abstract class AnalysisCommand implements Command {
 		}
 		
 		monitor.end();
+		
+		/*monitor.begin("Testing JAXB...", 1);
+		Investigation inv = new Investigation();
+		inv.setSummary("inv summary");
+		inv.setNotes("inv notes");
+		inv.getAnalysis().add(analysis);
+		inv.getDataMatrices().add(analysis.getDataMatrix());
+		inv.getModuleSets().add(analysis.getModuleSet());
+		InvestigationResource res = new InvestigationResource(
+				new File(basePath + "/" + "investigation.xml"));
+		try {
+			res.save(inv);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}	
+		monitor.end();*/
 	}
 }

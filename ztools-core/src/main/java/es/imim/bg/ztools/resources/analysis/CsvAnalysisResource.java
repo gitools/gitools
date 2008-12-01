@@ -17,9 +17,9 @@ import org.apache.commons.csv.CSVStrategy;
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Data;
-import es.imim.bg.ztools.model.Modules;
-import es.imim.bg.ztools.model.Results;
+import es.imim.bg.ztools.model.DataMatrix;
+import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.resources.DataResource;
 import es.imim.bg.ztools.resources.ModulesResource;
@@ -97,20 +97,20 @@ public class CsvAnalysisResource extends AnalysisResource {
 			else if (tag.equals(tagData) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				DataResource res = new DataResource(path);
-				Data data = res.load(monitor.subtask());
-				analysis.setData(data);
+				DataMatrix dataMatrix = res.load(monitor.subtask());
+				analysis.setDataMatrix(dataMatrix);
 			}
 			else if (tag.equals(tagModules) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				ModulesResource res = new ModulesResource(path);
-				Modules modules = res.load(monitor.subtask());
-				analysis.setModules(modules);
+				ModuleSet moduleSet = res.load(monitor.subtask());
+				analysis.setModuleSet(moduleSet);
 			}
 			else if (tag.equals(tagResults) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				ResultsResource resFile = new ResultsResource(path);
-				Results results = resFile.read(monitor.subtask());
-				analysis.setResults(results);
+				ResultsMatrix resultsMatrix = resFile.read(monitor.subtask());
+				analysis.setResults(resultsMatrix);
 			}
 			
 			/*else if (tag.equals(tagUserName) && line.length >= 2)
@@ -136,10 +136,10 @@ public class CsvAnalysisResource extends AnalysisResource {
 		saveDescription(workDirFile, analysis, test);
 		
 		new DataResource(new File(workDirFile, dataFileName))
-			.save(analysis.getData(), monitor);
+			.save(analysis.getDataMatrix(), monitor);
 		
 		new ModulesResource(new File(workDirFile, modulesFileName))
-			.save(analysis.getModules(), monitor);
+			.save(analysis.getModuleSet(), monitor);
 		
 		new ResultsResource(new File(workDirFile, resultsFileName))
 			.write(analysis.getResults(), resultsOrderByCond, monitor);

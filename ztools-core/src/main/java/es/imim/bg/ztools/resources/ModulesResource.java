@@ -20,7 +20,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Modules;
+import es.imim.bg.ztools.model.ModuleSet;
 
 public class ModulesResource extends Resource {
 
@@ -37,27 +37,27 @@ public class ModulesResource extends Resource {
 		super(file);
 	}
 	
-	public Modules load(
+	public ModuleSet load(
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 
 		//TODO: new modules format
 		return null;
 	}
 	
-	public Modules load(
+	public ModuleSet load(
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
-		Modules modules = new Modules();
-		load(modules, minModuleSize, maxModuleSize, itemNames, monitor);
+		ModuleSet moduleSet = new ModuleSet();
+		load(moduleSet, minModuleSize, maxModuleSize, itemNames, monitor);
 		
-		return modules;
+		return moduleSet;
 	}
 	
 	public void load(
-			Modules modules,
+			ModuleSet moduleSet,
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
@@ -179,10 +179,10 @@ public class ModulesResource extends Resource {
 		
 		monitor.end();
 		
-		modules.setModuleNames(moduleNames);
-		modules.setItemNames(itemNames);
-		modules.setItemIndices(moduleItemIndices);
-		modules.setItemsOrder(itemsOrder);
+		moduleSet.setModuleNames(moduleNames);
+		moduleSet.setItemNames(itemNames);
+		moduleSet.setItemIndices(moduleItemIndices);
+		moduleSet.setItemsOrder(itemsOrder);
 	}
 	
 	protected void readModuleMappings(
@@ -214,12 +214,12 @@ public class ModulesResource extends Resource {
 		}
 	}
 	
-	public void save(Modules modules, ProgressMonitor monitor) 
+	public void save(ModuleSet moduleSet, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		final PrintWriter pw = new PrintWriter(openWriter());
 		
-		final String[] itemNames = modules.getItemNames();
+		final String[] itemNames = moduleSet.getItemNames();
 		
 		if (itemNames.length > 0) {
 			pw.print(itemNames[0]);
@@ -233,9 +233,9 @@ public class ModulesResource extends Resource {
 			pw.print('\n');
 		}
 		
-		final String[] moduleNames = modules.getModuleNames();
+		final String[] moduleNames = moduleSet.getModuleNames();
 		
-		final int[][] indices = modules.getItemIndices();
+		final int[][] indices = moduleSet.getItemIndices();
 		
 		int numModules = moduleNames.length;
 		

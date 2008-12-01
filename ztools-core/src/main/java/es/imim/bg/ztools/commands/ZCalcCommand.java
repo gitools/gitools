@@ -1,13 +1,14 @@
 package es.imim.bg.ztools.commands;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Data;
-import es.imim.bg.ztools.model.Modules;
+import es.imim.bg.ztools.model.DataMatrix;
+import es.imim.bg.ztools.model.ModuleSet;
 import es.imim.bg.ztools.processors.ZCalcProcessor;
 import es.imim.bg.ztools.resources.DataResource;
 import es.imim.bg.ztools.resources.ModulesResource;
@@ -42,10 +43,10 @@ public class ZCalcCommand extends AnalysisCommand {
 		monitor.info("Data: " + dataFile);
 		monitor.info("Modules: " + modulesFile);
 		
-		Data data = new Data();
-		Modules modules = new Modules();
+		DataMatrix dataMatrix = new DataMatrix();
+		ModuleSet moduleSet = new ModuleSet();
 		loadDataAndModules(
-				data, modules, 
+				dataMatrix, moduleSet, 
 				dataFile, modulesFile, 
 				minModuleSize, maxModuleSize,
 				monitor.subtask());
@@ -57,8 +58,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		Analysis analysis = new Analysis();
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
-		analysis.setData(data);
-		analysis.setModules(modules);
+		analysis.setDataMatrix(dataMatrix);
+		analysis.setModuleSet(moduleSet);
 		
 		ZCalcProcessor processor = 
 			new ZCalcProcessor(analysis);
@@ -71,7 +72,7 @@ public class ZCalcCommand extends AnalysisCommand {
 	}
 
 	private void loadDataAndModules(
-			Data data, Modules modules,
+			DataMatrix dataMatrix, ModuleSet moduleSet,
 			String dataFileName, String modulesFileName, 
 			int minModuleSize, int maxModuleSize, 
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
@@ -79,24 +80,27 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Load metadata
 		
 		DataResource dataResource = new DataResource(dataFileName);
-		dataResource.loadMetadata(data, monitor);
+		dataResource.loadMetadata(dataMatrix, monitor);
 		
 		// Load modules
 		
-		ModulesResource modulesResource = new ModulesResource(modulesFileName);
+		File file = new File(modulesFileName);
+		moduleSet.setName(file.getName());
+		
+		ModulesResource modulesResource = new ModulesResource(file);
 		modulesResource.load(
-			modules,
+			moduleSet,
 			minModuleSize,
 			maxModuleSize,
-			data.getRowNames(),
+			dataMatrix.getRowNames(),
 			monitor);
 		
 		// Load data
 		
 		dataResource.loadData(
-				data,
+				dataMatrix,
 				null, 
-				modules.getItemsOrder(), 
+				moduleSet.getItemsOrder(), 
 				monitor);
 		
 	}

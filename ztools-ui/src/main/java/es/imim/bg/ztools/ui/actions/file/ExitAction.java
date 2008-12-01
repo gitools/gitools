@@ -1,8 +1,9 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.utils.Options;
 
 public class ExitAction extends BaseAction {
