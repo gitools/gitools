@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -204,34 +205,47 @@ public class ColorMatrixPanel extends JPanel {
 		protected int colfrom;
 		protected int colto;
 	
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int col = table.columnAtPoint(e.getPoint());
-				int[] selectedColumns = new int[1];
-				selectedColumns[0] = col;
-				setSelectedColumns(selectedColumns);
 				
-				int rows = table.getRowCount();
-				int[] selectedRows = new int[rows];
-				int start = 0;
-				int stop = rows-1;
-				int counter = 0;
-				for (int i = start; i <= stop ; i++){
-					selectedRows[counter] = i;
-					counter++;
+				
+				
+				int lastcol = table.getColumnCount()-1;
+				if (lastcol == table.columnAtPoint(e.getPoint())){
+					
+					setSelectionMode(SelectionMode.cells);
+					selectAll();
+					
+				}else{
+				
+					setSelectionMode(SelectionMode.columns);
+		
+					int col = colfrom = table.columnAtPoint(e.getPoint());
+					int[] selectedColumns = new int[1];
+					selectedColumns[0] = col;
+					setSelectedColumns(selectedColumns);
+					
+					int rows = table.getRowCount();
+					int[] selectedRows = new int[rows];
+					int start = 0;
+					int stop = rows-1;
+					int counter = 0;
+					for (int i = start; i <= stop ; i++){
+						selectedRows[counter] = i;
+						counter++;
+					}
+					setSelectedRows(selectedRows);
 				}
-				setSelectedRows(selectedRows);
-				
 			}
+			
+			//KeyEvent ke = new KeyEvent(table, KeyEvent.KEY_PRESSED);
 			
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				colto = table.columnAtPoint(e.getPoint());
-			
-				System.out.println("test:" + e.getPoint().toString());
-				
+							
 				int cols = Math.abs(colto-colfrom) + 1;
 				int[] selectedColumns = new int[cols];
 				
@@ -244,12 +258,72 @@ public class ColorMatrixPanel extends JPanel {
 				}
 				
 				setSelectedColumns(selectedColumns);
+				
+		/*		System.out.print("cols: ");
+				for (int i: selectedColumns){
+					System.out.print(i + ", ");
+				}
+				System.out.print("\n");*/
 	
 			}
-			
-
-
 		
+	}
+	
+	private class CellMouseListener extends MouseInputAdapter{
+			
+		protected int rowfrom;
+		protected int rowto;
+		protected int colfrom;
+		protected int colto;
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			
+			int lastcol = table.getColumnCount()-1;
+			if (lastcol == table.columnAtPoint(e.getPoint())){
+				setSelectionMode(SelectionMode.rows);
+			}else{
+				setSelectionMode(SelectionMode.cells);			
+			}
+			rowfrom = table.rowAtPoint(e.getPoint());
+			colfrom = table.columnAtPoint(e.getPoint());
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e){
+				
+			rowto = table.rowAtPoint(e.getPoint());
+			colto = table.columnAtPoint(e.getPoint());
+			
+			System.out.println(e.getComponent().getClass().toString());
+	
+	
+			int rows = Math.abs(rowto-rowfrom) + 1;
+			int[] selectedRows = new int[rows];
+			int cols = Math.abs(colto-colfrom) + 1;
+			int[] selectedColumns = new int[cols];
+	
+			int start = (rowto < rowfrom) ? rowto : rowfrom;
+			int stop = (rowto > rowfrom) ? rowto : rowfrom;
+			int counter = 0;
+			for (int i = start; i <= stop ; i++){
+				selectedRows[counter] = i;
+				counter++;
+			}
+			
+			start = (colto < colfrom) ? colto : colfrom;
+			stop = (colto > colfrom) ? colto : colfrom;
+			counter = 0;
+			for (int i = start; i <= stop ; i++){
+				selectedColumns[counter] = i;
+				counter++;
+			}
+			
+			setSelectedColumns(selectedColumns);
+			setSelectedRows(selectedRows);
+		}
+			
 	}
 	
 	
@@ -291,10 +365,10 @@ public class ColorMatrixPanel extends JPanel {
 		table.setFillsViewportHeight(true);
 		
 		
-		HeaderMouseListener mml = new HeaderMouseListener();
+		HeaderMouseListener hml = new HeaderMouseListener();
 		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
-		table.getTableHeader().addMouseMotionListener(mml);
-		table.getTableHeader().addMouseListener(mml);
+		table.getTableHeader().addMouseMotionListener(hml);
+		table.getTableHeader().addMouseListener(hml);
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		//table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -312,7 +386,7 @@ public class ColorMatrixPanel extends JPanel {
 					
 					for (ColorMatrixListener listener : listeners)
 						listener.selectionChanged();
-					
+	
 					refresh();
 				}
 			}
@@ -320,84 +394,9 @@ public class ColorMatrixPanel extends JPanel {
 		
 		table.getSelectionModel().addListSelectionListener(listener);
 		table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
-		table.addMouseListener(new MouseListener(){
-			protected int rowfrom;
-			protected int rowto;
-			protected int colfrom;
-			protected int colto;
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				rowfrom = table.rowAtPoint(e.getPoint());
-				colfrom = table.columnAtPoint(e.getPoint());
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e){
-				rowto = table.rowAtPoint(e.getPoint());
-				colto = table.columnAtPoint(e.getPoint());
-				
-				System.out.println(e.getComponent().getClass().toString());
-
-
-				int rows = Math.abs(rowto-rowfrom) + 1;
-				int[] selectedRows = new int[rows];
-				int cols = Math.abs(colto-colfrom) + 1;
-				int[] selectedColumns = new int[cols];
-
-				int start = (rowto < rowfrom) ? rowto : rowfrom;
-				int stop = (rowto > rowfrom) ? rowto : rowfrom;
-				int counter = 0;
-				for (int i = start; i <= stop ; i++){
-					selectedRows[counter] = i;
-					counter++;
-				}
-				
-				start = (colto < colfrom) ? colto : colfrom;
-				stop = (colto > colfrom) ? colto : colfrom;
-				counter = 0;
-				for (int i = start; i <= stop ; i++){
-					selectedColumns[counter] = i;
-					counter++;
-				}
-				
-				/* verification
-				System.out.print("cols: ");
-				for (int i: selectedColumns){
-					System.out.print(i + ", ");
-				}
-				System.out.print("\n");
-
-				System.out.print("rows: ");
-				for (int i: selectedRows){
-					System.out.print(i + ", ");
-				}
-				System.out.print("\n");
-				
-				*/
-				setSelectedColumns(selectedColumns);
-				setSelectedRows(selectedRows);
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		
+		CellMouseListener cml = new CellMouseListener();
+		table.addMouseListener(cml);
 		
 		refreshSelectionMode();
 		
