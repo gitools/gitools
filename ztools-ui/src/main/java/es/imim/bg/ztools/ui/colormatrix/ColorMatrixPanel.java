@@ -205,7 +205,6 @@ public class ColorMatrixPanel extends JPanel {
 		}
 	}
 	
-	
 	private class HeaderMouseListener extends MouseInputAdapter{
 		
 		protected int colfrom;
@@ -214,28 +213,24 @@ public class ColorMatrixPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				
-				
-				
-				int lastcol = table.getColumnCount()-1;
-				if (lastcol == table.columnAtPoint(e.getPoint())){
-					
-					setSelectionMode(SelectionMode.cells);
+				int lastcol = table.getColumnCount() - 1;
+				if (lastcol == table.columnAtPoint(e.getPoint())) {
+					setSelectionMode(SelectionMode.columns);
 					selectAll();
-					
-				}else{
-				
-										
+				}
+				else {					
 					setSelectionMode(SelectionMode.columns);
 		
 					int col = colfrom = table.columnAtPoint(e.getPoint());
 					int[] selectedColumns;
 					
-					if (getCtrlDown()){
+					if (getCtrlDown()) {
 						int nb = getSelectedColumns().length + 1;
 						selectedColumns = new int[nb];
 						System.arraycopy(getSelectedColumns(), 0, selectedColumns, 0, nb-1);
 						selectedColumns[nb-1] = col;
-					}else{
+					}
+					else {
 						selectedColumns = new int[1];
 						selectedColumns[0] = col;
 					}
