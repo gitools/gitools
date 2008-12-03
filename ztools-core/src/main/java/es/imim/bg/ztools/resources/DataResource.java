@@ -17,6 +17,8 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.datafilters.DoubleFilter;
+import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.DataMatrix;
 
 public class DataResource extends Resource {
@@ -33,17 +35,27 @@ public class DataResource extends Resource {
 	
 	public DataMatrix load(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
+		return load(monitor, new DoubleFilter());
+	}
+	
+	public DataMatrix load(ProgressMonitor monitor, ValueFilter filt) 
+			throws FileNotFoundException, IOException, DataFormatException {
 
 		DataMatrix dataMatrix = new DataMatrix();
 		
-		loadMetadata(dataMatrix, monitor);
+		loadMetadata(dataMatrix, filt, monitor);
 		
-		loadData(dataMatrix, null, null, monitor);
+		loadData(dataMatrix, filt, null, null, monitor);
 		
 		return dataMatrix;
 	}
 
 	public void loadMetadata(DataMatrix dataMatrix, ProgressMonitor monitor)
+			throws FileNotFoundException, IOException, DataFormatException {
+		loadMetadata(dataMatrix, new DoubleFilter(), monitor);
+	}
+	
+	public void loadMetadata(DataMatrix dataMatrix, ValueFilter filt, ProgressMonitor monitor)
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		monitor.begin("Reading names ...", 1);
@@ -88,8 +100,17 @@ public class DataResource extends Resource {
 	}
 	
 	public void loadData( 
+			DataMatrix dataMatrix, int[] columnsOrder,
+			int[] rowsOrder, ProgressMonitor monitor) 
+			throws FileNotFoundException, IOException {
+
+		loadData(dataMatrix, new DoubleFilter(), columnsOrder, rowsOrder, monitor);
+	}
+	
+	public void loadData( 
 		DataMatrix dataMatrix, 
-		int[] columnsOrder,
+		ValueFilter filt,
+		int[] columnsOrder, 
 		int[] rowsOrder, 
 		ProgressMonitor monitor) throws FileNotFoundException, IOException {
 		
@@ -138,11 +159,7 @@ public class DataResource extends Resource {
 				
 					int colidx = columnsOrder != null ? columnsOrder[col] : col;
 					
-					double value = Double.NaN;
-					try {
-						value = Double.parseDouble(fields[col + 1]);
-					}
-					catch (NumberFormatException e) {}
+					double value = filt.parseValue(fields[col + 1]);
 					
 					matrix.setQuick(rowidx, colidx, value);
 					col++;

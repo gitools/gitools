@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Investigation;
 
 public class InvestigationResource extends Resource {
@@ -21,10 +22,11 @@ public class InvestigationResource extends Resource {
 		super(file);
 	}
 	
-	public void save(Investigation inv) 
+	public void save(Investigation inv, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, JAXBException {
 		
 		Writer writer = openWriter();
+		
 		JAXBContext context = JAXBContext.newInstance(Investigation.class);
 		Marshaller m = context.createMarshaller();
 		m.marshal(inv, writer);

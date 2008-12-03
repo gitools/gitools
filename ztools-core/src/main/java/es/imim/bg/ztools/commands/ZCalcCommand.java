@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
 import es.imim.bg.ztools.model.ModuleSet;
@@ -17,12 +18,12 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 public class ZCalcCommand extends AnalysisCommand {
 	
 	public ZCalcCommand(String analysisName, String testName,
-			int samplingNumSamples, String dataFile, String groupsFile,
-			int minGroupSize, int maxModuleSize, String workdir,
+			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
+			String groupsFile, int minGroupSize, int maxModuleSize, String workdir,
 			String outputFormat, boolean resultsByCond) {
 		
-		super(analysisName, testName, samplingNumSamples, dataFile, groupsFile,
-				minGroupSize, maxModuleSize, workdir, outputFormat, resultsByCond);
+		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
+				groupsFile, minGroupSize, maxModuleSize, workdir, outputFormat, resultsByCond);
 	}
 	
 	public void run(ProgressMonitor monitor) 
@@ -47,8 +48,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		ModuleSet moduleSet = new ModuleSet();
 		loadDataAndModules(
 				dataMatrix, moduleSet, 
-				dataFile, modulesFile, 
-				minModuleSize, maxModuleSize,
+				dataFile, valueFilter, 
+				modulesFile, minModuleSize, maxModuleSize,
 				monitor.subtask());
 		
 		monitor.end();
@@ -73,14 +74,14 @@ public class ZCalcCommand extends AnalysisCommand {
 
 	private void loadDataAndModules(
 			DataMatrix dataMatrix, ModuleSet moduleSet,
-			String dataFileName, String modulesFileName, 
+			String dataFileName, ValueFilter valueFilter, String modulesFileName, 
 			int minModuleSize, int maxModuleSize, 
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		// Load metadata
 		
 		DataResource dataResource = new DataResource(dataFileName);
-		dataResource.loadMetadata(dataMatrix, monitor);
+		dataResource.loadMetadata(dataMatrix, valueFilter, monitor);
 		
 		// Load modules
 		
@@ -99,6 +100,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		dataResource.loadData(
 				dataMatrix,
+				valueFilter,
 				null, 
 				moduleSet.getItemsOrder(), 
 				monitor);

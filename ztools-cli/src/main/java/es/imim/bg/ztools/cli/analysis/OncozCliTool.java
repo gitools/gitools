@@ -1,17 +1,17 @@
-package es.imim.bg.ztools.cli.oncoz;
+package es.imim.bg.ztools.cli.analysis;
 
 import org.kohsuke.args4j.Option;
 
 import es.imim.bg.progressmonitor.NullProgressMonitor;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.progressmonitor.StreamProgressMonitor;
-import es.imim.bg.ztools.cli.AnalysisTool;
+import es.imim.bg.ztools.cli.InvalidArgumentException;
 import es.imim.bg.ztools.cli.RequiredArgumentException;
-import es.imim.bg.ztools.cli.Tool;
-import es.imim.bg.ztools.cli.ToolException;
+import es.imim.bg.ztools.cli.CliTool;
+import es.imim.bg.ztools.cli.CliToolException;
 import es.imim.bg.ztools.commands.OncozCommand;
 
-public class OncozTool extends AnalysisTool implements Tool {
+public class OncozCliTool extends AnalysisCliTool implements CliTool {
 
 	@Option(name = "-c", aliases = "-class", usage = "File with mappings between columns and sets.", metaVar = "<file>")
 	public String groupsFile;
@@ -23,25 +23,32 @@ public class OncozTool extends AnalysisTool implements Tool {
 	private int maxSetSize = Integer.MAX_VALUE;
 
 	@Override
-	public int run(Object argsObject) 
-			throws RequiredArgumentException, ToolException {
+	public void validateArguments(Object argsObject) 
+			throws RequiredArgumentException, InvalidArgumentException {
 		
-		OncozTool args = (OncozTool) argsObject;
+		super.validateArguments(argsObject);
 		
-		processArgs(args);
+		//OncozTool args = (OncozTool) argsObject;
 		
 		/*if (groupsFile == null)
         	throw new RequiredArgumentException("Groups file has to be specified.");*/
         
-        if (minSetSize < 1)
+		if (minSetSize < 1)
         	minSetSize = 1;
         if (maxSetSize < minSetSize)
         	maxSetSize = minSetSize;
+	}
+	
+	@Override
+	public int run(Object argsObject) 
+			throws CliToolException {
+		
+		OncozCliTool args = (OncozCliTool) argsObject;
         
         OncozCommand cmd = new OncozCommand(
         		analysisName, testName, samplingNumSamples, 
-        		dataFile, groupsFile, 
-        		minSetSize, maxSetSize,
+        		dataFile, binCutoffFilter, 
+        		groupsFile, minSetSize, maxSetSize,
         		workdir, outputFormat, true);
         
         ProgressMonitor monitor = !args.quiet ? 
@@ -51,7 +58,7 @@ public class OncozTool extends AnalysisTool implements Tool {
         try {
 			cmd.run(monitor);
 		} catch (Exception e) {
-			throw new ToolException(e);
+			throw new CliToolException(e);
 		}
         
         return 0;

@@ -2,10 +2,13 @@ package es.imim.bg.ztools.cli;
 
 import java.io.PrintStream;
 
-import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 import es.imim.bg.progressmonitor.NullProgressMonitor;
+import es.imim.bg.ztools.cli.analysis.OncozCliTool;
+import es.imim.bg.ztools.cli.analysis.ZcalcCliTool;
+import es.imim.bg.ztools.cli.convert.DataFilterCliTool;
+import es.imim.bg.ztools.cli.convert.ModuleSetConvertCliTool;
 import es.imim.bg.ztools.threads.ThreadManager;
 
 public class Main {
@@ -28,28 +31,30 @@ public class Main {
 		
 		String toolName = sargs[0];
 		
-		Class<? extends Tool> toolClass = null;
+		Class<? extends CliTool> toolClass = null;
 		
 		if (toolName.equals("zcalc"))
-			//es.imim.bg.ztools.cli.zcalc.Main.main(delegatedArgs);
-			toolClass = es.imim.bg.ztools.cli.zcalc.ZcalcTool.class;
+			toolClass = ZcalcCliTool.class;
 		else if (toolName.equals("oncoz"))
-			//es.imim.bg.ztools.cli.oncoz.Main.main(delegatedArgs);
-			toolClass = es.imim.bg.ztools.cli.oncoz.OncozTool.class;
+			toolClass = OncozCliTool.class;
+		else if (toolName.equals("mset-conv"))
+			toolClass = ModuleSetConvertCliTool.class;
+		else if (toolName.equals("data-filt"))
+			toolClass = DataFilterCliTool.class;
 		else {
 			System.err.println("The tool you want to run doesn't exit: " + toolName);
 			System.exit(-1);
 		}
 		
-		Tool tool = null;
+		CliTool cliTool = null;
 		try {
-			tool = toolClass.newInstance();
+			cliTool = toolClass.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		
-		BasicArguments args = (BasicArguments) tool;
+		BasicArguments args = (BasicArguments) cliTool;
 		
 		CmdLineParser parser = new CmdLineParser(args);
 
@@ -57,8 +62,9 @@ public class Main {
 
         try {
             parser.parseArgument(delegatedArgs);
+            cliTool.validateArguments(args);
         } 
-        catch(CmdLineException e ) {
+        catch(Exception e ) {
         	System.err.println(e.getMessage());
             printUsage(System.err, parser, toolName);
             System.exit(-1);
@@ -76,14 +82,9 @@ public class Main {
 		
 		int code = 0;
 		try {
-			code = tool.run(args);
-		} 
-		catch (RequiredArgumentException e) {
-			System.err.println(e.getMessage());
-			printUsage(System.err, parser, toolName);
-			System.exit(-1);
-		} 
-		catch (ToolException e) {
+			code = cliTool.run(args);
+		}
+		catch (CliToolException e) {
 			if (args != null && args.debug)
 				e.printStackTrace();
 			else

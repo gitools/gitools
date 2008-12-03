@@ -1,17 +1,17 @@
-package es.imim.bg.ztools.cli.zcalc;
+package es.imim.bg.ztools.cli.analysis;
 
 import org.kohsuke.args4j.Option;
 
 import es.imim.bg.progressmonitor.NullProgressMonitor;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.progressmonitor.StreamProgressMonitor;
-import es.imim.bg.ztools.cli.AnalysisTool;
+import es.imim.bg.ztools.cli.InvalidArgumentException;
 import es.imim.bg.ztools.cli.RequiredArgumentException;
-import es.imim.bg.ztools.cli.Tool;
-import es.imim.bg.ztools.cli.ToolException;
+import es.imim.bg.ztools.cli.CliTool;
+import es.imim.bg.ztools.cli.CliToolException;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 
-public class ZcalcTool extends AnalysisTool implements Tool {
+public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
 
 	@Option(name = "-c", aliases = "-class", usage = "File with mappings between items and modules.", metaVar = "<file>")
 	public String groupsFile;
@@ -23,12 +23,12 @@ public class ZcalcTool extends AnalysisTool implements Tool {
 	private int maxModuleSize = Integer.MAX_VALUE;
 
 	@Override
-	public int run(Object argsObject) 
-			throws RequiredArgumentException, ToolException {
+	public void validateArguments(Object argsObject) 
+			throws RequiredArgumentException, InvalidArgumentException {
 		
-		ZcalcTool args = (ZcalcTool) argsObject;
+		super.validateArguments(argsObject);
 		
-		processArgs(args);
+		//ZcalcTool args = (ZcalcTool) argsObject;
 		
 		if (groupsFile == null)
         	throw new RequiredArgumentException("Groups file has to be specified.");
@@ -37,11 +37,18 @@ public class ZcalcTool extends AnalysisTool implements Tool {
         	minModuleSize = 1;
         if (maxModuleSize < minModuleSize)
         	maxModuleSize = minModuleSize;
+	}
+	
+	@Override
+	public int run(Object argsObject) 
+			throws CliToolException {
+		
+		ZcalcCliTool args = (ZcalcCliTool) argsObject;
         
         ZCalcCommand cmd = new ZCalcCommand(
         		analysisName, testName, samplingNumSamples, 
-        		dataFile, groupsFile, 
-        		minModuleSize, maxModuleSize,
+        		dataFile, binCutoffFilter,
+        		groupsFile, minModuleSize, maxModuleSize,
         		workdir, outputFormat, true);
         
         ProgressMonitor monitor = !args.quiet ? 
@@ -51,7 +58,7 @@ public class ZcalcTool extends AnalysisTool implements Tool {
         try {
 			cmd.run(monitor);
 		} catch (Exception e) {
-			throw new ToolException(e);
+			throw new CliToolException(e);
 		}
         
         return 0;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
 import es.imim.bg.ztools.model.ModuleSet;
@@ -17,12 +18,12 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 public class OncozCommand extends AnalysisCommand {
 	
 	public OncozCommand(String analysisName, String testName,
-			int samplingNumSamples, String dataFile, String groupsFile,
-			int minModuleSize, int maxModuleSize, String workdir,
+			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
+			String groupsFile, int minModuleSize, int maxModuleSize, String workdir,
 			String outputFormat, boolean resultsByCond) {
 		
-		super(analysisName, testName, samplingNumSamples, dataFile, groupsFile,
-				minModuleSize, maxModuleSize, workdir, outputFormat, resultsByCond);
+		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
+				groupsFile, minModuleSize, maxModuleSize, workdir, outputFormat, resultsByCond);
 	}
 
 	@Override
