@@ -9,16 +9,19 @@ public class MenuActionSet extends ActionSet {
 
 	private static final long serialVersionUID = -7702905459240675073L;
 
-	public static final BaseAction fileActionSet = new FileActionSet();
-	public static final BaseAction editActionSet = new EditActionSet();
-	public static final BaseAction tableActionSet = new TableActionSet();
-	public static final BaseAction helpActionSet = new HelpActionSet();
+	public static final ActionSet fileActionSet = new FileActionSet();
+	public static final ActionSet editActionSet = new EditActionSet();
+	public static final ActionSet tableActionSet = new TableActionSet();
+	public static final ActionSet mtcActionSet = new MtcActionSet();
+	public static final ActionSet helpActionSet = new HelpActionSet();
 	
 	public MenuActionSet() {
 		super(new BaseAction[] {
 			fileActionSet,
 			editActionSet,
 			tableActionSet,
+			mtcActionSet,
+			helpActionSet
 		});
 	}
 	

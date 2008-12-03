@@ -6,27 +6,19 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -39,7 +31,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import es.imim.bg.ztools.ui.actions.edit.ChangeSelectionModeAction;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class ColorMatrixPanel extends JPanel {
@@ -139,7 +130,6 @@ public class ColorMatrixPanel extends JPanel {
 			case right: label.setHorizontalAlignment(SwingConstants.RIGHT); break;
 			case center: label.setHorizontalAlignment(SwingConstants.CENTER); break;
 			}
-			
 		}
 	}
 
@@ -205,7 +195,7 @@ public class ColorMatrixPanel extends JPanel {
 		}
 	}
 	
-	private class HeaderMouseListener extends MouseInputAdapter{
+	private class HeaderMouseListener extends MouseInputAdapter {
 		
 		protected int colfrom;
 		protected int colto;
@@ -250,7 +240,6 @@ public class ColorMatrixPanel extends JPanel {
 				}
 			}
 			
-			
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				colto = table.columnAtPoint(e.getPoint());
@@ -267,15 +256,12 @@ public class ColorMatrixPanel extends JPanel {
 					counter++;
 				}
 					
-			
-				if (getCtrlDown()){		
-					selectedColumns = mergeArrays(getSelectedColumns(), newSelectedColumns);					
-				}else{
+				if (getCtrlDown())		
+					selectedColumns = mergeArrays(
+							getSelectedColumns(), newSelectedColumns);					
+				else
 					selectedColumns = newSelectedColumns;
-				}
-				
-
-				
+								
 				setSelectedColumns(selectedColumns);
 				
 			/*	System.out.print("cols: ");
@@ -283,9 +269,7 @@ public class ColorMatrixPanel extends JPanel {
 					System.out.print(i + ", ");
 				}
 				System.out.print("\n");*/
-	
 			}
-		
 	}
 	
 	private class CellMouseListener extends MouseInputAdapter{
@@ -297,13 +281,12 @@ public class ColorMatrixPanel extends JPanel {
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-
 			int lastcol = table.getColumnCount() - 1;
-			if (lastcol == table.columnAtPoint(e.getPoint())) {
+			if (lastcol == table.columnAtPoint(e.getPoint()))
 				setSelectionMode(SelectionMode.rows);
-			} else {
-					setLead(e);
-			}
+			else
+				setLead(e);
+			
 			rowfrom = table.rowAtPoint(e.getPoint());
 			colfrom = table.columnAtPoint(e.getPoint());
 		}
@@ -311,19 +294,17 @@ public class ColorMatrixPanel extends JPanel {
 		private void setLead(MouseEvent e){
 			setSelectionMode(SelectionMode.cells);
 			
-			int[] selectedRow = new int[1];
-			selectedRow[0] = table.rowAtPoint(e.getPoint());
-			setSelectedRows(selectedRow);
+			int row = table.rowAtPoint(e.getPoint());
+			int col = table.columnAtPoint(e.getPoint());
 			
-			int[] selectedCol = new int[1];
-			selectedCol[0] = table.columnAtPoint(e.getPoint());
-			setSelectedColumns(selectedCol);
+			setSelectedRows(new int[] { row });
+			setSelectedColumns(new int[] { col });
+			
+			setLeadSelection(row, col);
 		}
 		
-		
 		@Override
-		public void mouseDragged(MouseEvent e){				
-	
+		public void mouseDragged(MouseEvent e) {
 			int lastcol = table.getColumnCount() - 1;
 			if (lastcol == table.columnAtPoint(e.getPoint())) {
 				
@@ -353,9 +334,9 @@ public class ColorMatrixPanel extends JPanel {
 				
 				setSelectedColumns(selectedColumns);
 				setSelectedRows(selectedRows);
-			}else{
-				setLead(e);
 			}
+			else
+				setLead(e);
 		}
 		
 		@Override
@@ -382,9 +363,7 @@ public class ColorMatrixPanel extends JPanel {
 	private ColorMatrixModel model;
 	
 	private List<ColorMatrixListener> listeners;
-	
 
-	
 	public ColorMatrixPanel() {
 	
 		this.selMode = SelectionMode.cells;
@@ -399,18 +378,26 @@ public class ColorMatrixPanel extends JPanel {
 		
 		createComponents();
 	}
-	
+
+	/*FIXME: Esto no deberia existir, en el mouse listener
+	 * puedes saber si esta pulsado control a partir del MouseEvent
+	 * see e.getModifiersEx()
+	 */
 	private boolean ctrlDown;
 	
-	public boolean getCtrlDown(){
+	public boolean getCtrlDown() {
 		return ctrlDown;
 	}
 	
-	private void setCtrlDown(boolean b){
+	private void setCtrlDown(boolean b) {
 		//System.out.println("Set control to " + b);
 		ctrlDown = b;
 	}
 	
+	/* FIXME: Este codigo fuente puede mejorarse:
+	 * no sigue los standards de Java en cuanto a nombres (camel case),
+	 * y es poco entendible, ademas usa mas de lo necesario a1.length y a2.length.
+	 * En realidad existe una solucion mas adecuada. */
 	private int[] mergeArrays(int[] a1, int[] a2){
 		//merges two int-arrays and doesn't allow duplicate values	
 		
@@ -465,12 +452,6 @@ public class ColorMatrixPanel extends JPanel {
 		
 		table.setFillsViewportHeight(true);
 		
-		
-		HeaderMouseListener hml = new HeaderMouseListener();
-		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
-		table.getTableHeader().addMouseMotionListener(hml);
-		table.getTableHeader().addMouseListener(hml);
-		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		//table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -496,8 +477,16 @@ public class ColorMatrixPanel extends JPanel {
 		table.getSelectionModel().addListSelectionListener(listener);
 		table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 		
+		HeaderMouseListener hml = new HeaderMouseListener();
+		table.getTableHeader().addMouseMotionListener(hml);
+		table.getTableHeader().addMouseListener(hml);
+		
 		CellMouseListener cml = new CellMouseListener();
 		table.addMouseListener(cml);
+		table.addMouseMotionListener(cml);
+		
+		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
+		refreshTableColumnsWidth();
 		
 		refreshSelectionMode();
 			
@@ -522,8 +511,6 @@ public class ColorMatrixPanel extends JPanel {
 					setCtrlDown(false);
 				}				
 			}
-			
-			
 		});
 		
 		final JScrollPane scroll = new JScrollPane(table);
@@ -554,13 +541,15 @@ public class ColorMatrixPanel extends JPanel {
 	private void refreshTableColumnsWidth() {
 		TableColumnModel colModel = table.getColumnModel();
 		final int lastColumn = colModel.getColumnCount() - 1;
-		for (int i = 0; i < lastColumn; i++) {
-			TableColumn col = colModel.getColumn(i);
-			col.setPreferredWidth(columnsWidth);
+		if (lastColumn >= 0) {
+			for (int i = 0; i < lastColumn; i++) {
+				TableColumn col = colModel.getColumn(i);
+				col.setPreferredWidth(columnsWidth);
+			}
+			TableColumn col = colModel.getColumn(lastColumn);
+			col.setResizable(false);
+			col.setMinWidth(400);
 		}
-		TableColumn col = colModel.getColumn(lastColumn);
-		col.setResizable(true);
-		col.setMinWidth(400);
 	}
 	
 	private void refreshTableColumnsRenderer() {
@@ -640,6 +629,16 @@ public class ColorMatrixPanel extends JPanel {
 	
 	public int getSelectedLeadRow() {
 		return selectedLeadRow;
+	}
+
+	public void setLeadSelection(int row, int col) {
+		if (row >= 0)
+			table.getSelectionModel().setLeadSelectionIndex(row);
+		
+		if (col >= 0)
+			table.getColumnModel().getSelectionModel().setLeadSelectionIndex(col);
+		
+		//System.out.println(col + ", " + row);
 	}
 	
 	public void addListener(ColorMatrixListener listener) {

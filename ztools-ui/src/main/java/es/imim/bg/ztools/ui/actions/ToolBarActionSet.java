@@ -11,10 +11,10 @@ public final class ToolBarActionSet extends ActionSet {
 				FileActionSet.openAnalysisAction,
 				FileActionSet.closeAction,
 				BaseAction.separator,
-				EditActionSet.columnSelectionModeAction,
+				/*EditActionSet.columnSelectionModeAction,
 				EditActionSet.rowSelectionModeAction,
 				EditActionSet.cellSelectionModeAction,
-				BaseAction.separator,
+				BaseAction.separator,*/
 				EditActionSet.selectAllAction,
 				EditActionSet.unselectAllAction,
 				BaseAction.separator,

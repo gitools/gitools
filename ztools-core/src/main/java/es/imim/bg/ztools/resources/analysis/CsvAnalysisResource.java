@@ -30,6 +30,7 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 
 public class CsvAnalysisResource extends AnalysisResource {
 
+	private static final String tagVersion = "version";
 	private static final String tagAnalysisName = "name";
 	private static final String tagToolName = "tool";
 	private static final String tagToolProperty = "tool-property";
@@ -79,10 +80,14 @@ public class CsvAnalysisResource extends AnalysisResource {
 		
 		analysis.setToolConfig(new ToolConfig());
 		
+		String version = null;
+		
 		String[] fields;
 		while ((fields = parser.getLine()) != null) {
 			final String tag = fields[0];
-			if (tag.equals(tagAnalysisName) && fields.length >= 2)
+			if (tag.equals(tagVersion) && fields.length >= 2)
+				version = fields[1];
+			else if (tag.equals(tagAnalysisName) && fields.length >= 2)
 				analysis.setName(fields[1]);
 			else if (tag.equals(tagToolName) && fields.length >= 2)
 				analysis.getToolConfig().setName(fields[1]);
@@ -115,6 +120,13 @@ public class CsvAnalysisResource extends AnalysisResource {
 			
 			/*else if (tag.equals(tagUserName) && line.length >= 2)
 				userName = line[1];*/
+		}
+
+		if (version == null && analysis.getResults() == null) { // old version
+			path = new File(basePath, "results.csv");
+			ResultsResource resFile = new ResultsResource(path);
+			ResultsMatrix resultsMatrix = resFile.read(monitor.subtask());
+			analysis.setResults(resultsMatrix);
 		}
 	}
 	
@@ -160,6 +172,9 @@ public class CsvAnalysisResource extends AnalysisResource {
 				writer, 
 				csvStrategy.getDelimiter(), 
 				csvStrategy.getEncapsulator());
+		
+		out.writeProperty(tagVersion, 
+				getClass().getPackage().getImplementationVersion());
 		
 		out.writeProperty(tagAnalysisName, analysis.getName());
 		

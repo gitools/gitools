@@ -33,8 +33,8 @@ public final class EditActionSet extends ActionSet {
 		super("Edit", new BaseAction[] {
 				selectAllAction,
 				unselectAllAction,
-				invertSelectionAction,
-				selectionModeActionSet
+				invertSelectionAction/*,
+				selectionModeActionSet*/
 		});
 	}
 }

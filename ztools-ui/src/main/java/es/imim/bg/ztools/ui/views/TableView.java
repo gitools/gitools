@@ -9,8 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import es.imim.bg.ztools.ui.actions.Actions;
 import es.imim.bg.ztools.ui.actions.EditActionSet;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
+import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.actions.TableActionSet;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixPanel;
@@ -212,9 +214,13 @@ public class TableView extends AbstractView {
 	
 	@Override
 	public void refreshActions() {
-		SelectionMode selMode = tableModel.getSelectionMode();
+		//SelectionMode selMode = tableModel.getSelectionMode();
+
+		MenuActionSet.editActionSet.setTreeEnabled(true);
+		MenuActionSet.tableActionSet.setTreeEnabled(true);
+		MenuActionSet.mtcActionSet.setTreeEnabled(true);
 		
-		EditActionSet.selectAllAction.setEnabled(
+		/*EditActionSet.selectAllAction.setEnabled(
 				selMode != SelectionMode.cells);
 		
 		EditActionSet.invertSelectionAction.setEnabled(
@@ -251,11 +257,11 @@ public class TableView extends AbstractView {
 				selMode == SelectionMode.columns);
 		
 		TableActionSet.moveColsRightAction.setEnabled(
-				selMode == SelectionMode.columns);
+				selMode == SelectionMode.columns);*/
 		
 		FileActionSet.closeAction.setEnabled(true);
+		FileActionSet.exportActionSet.setTreeEnabled(true);
 		
-		TableActionSet.mtcBonferroniAction.setEnabled(true);
-		TableActionSet.mtcBenjaminiHochbergFdrAction.setEnabled(true);
+		MenuActionSet.mtcActionSet.setTreeEnabled(true);
 	}
 }

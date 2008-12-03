@@ -23,7 +23,7 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportNamesAction = new ExportNames();
 
-	public static final ActionSet exportActionSet = new ActionSet("export", new BaseAction[] {
+	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
 			exportParameterDataAction,
 			exportColumnDataAction,
 			exportNamesAction

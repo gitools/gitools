@@ -1,11 +1,8 @@
 package es.imim.bg.ztools.ui.actions;
 
-import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
-import es.imim.bg.ztools.stats.mtc.Bonferroni;
 import es.imim.bg.ztools.ui.actions.table.HideSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectedRowsAction;
 import es.imim.bg.ztools.ui.actions.table.MoveColRowAction;
-import es.imim.bg.ztools.ui.actions.table.MtcAction;
 import es.imim.bg.ztools.ui.actions.table.SortSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.table.MoveColRowAction.MoveDirection;
 
@@ -28,12 +25,6 @@ public final class TableActionSet extends ActionSet {
 	
 	public static final BaseAction moveColsRightAction = 
 		new MoveColRowAction(MoveDirection.COL_RIGHT);
-	
-	public static final BaseAction mtcBonferroniAction = 
-		new MtcAction(new Bonferroni());
-	
-	public static final BaseAction mtcBenjaminiHochbergFdrAction = 
-		new MtcAction(new BenjaminiHochbergFdr());
 
 	public TableActionSet() {
 		super("Table", new BaseAction[] {

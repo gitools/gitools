@@ -80,11 +80,18 @@ public class Options {
 	}
 	
 	public String getLastPath() {
-		return props.getProperty("lastpath", userPath);
+		return props.getProperty("last-path", userPath);
 	}
 
 	public void setLastPath(String lastPath) {
-		props.setProperty("lastpath", lastPath);
+		props.setProperty("last-path", lastPath);
 	}
 
+	public String getLastExportPath() {
+		return props.getProperty("last-export-path", userPath);
+	}
+
+	public void setLastExportPath(String lastPath) {
+		props.setProperty("last-export-path", lastPath);
+	}
 }

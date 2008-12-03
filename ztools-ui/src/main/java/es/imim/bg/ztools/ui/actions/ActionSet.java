@@ -37,11 +37,10 @@ public class ActionSet extends BaseAction {
 				action.actionPerformed(e);
 	}
 
-	@Override
-	public void setEnabled(boolean newValue) {
-		super.setEnabled(newValue);
+	public void setTreeEnabled(boolean enabled) {
+		setEnabled(enabled);
 		if (actions != null)
 			for (BaseAction action : actions)
-				action.setEnabled(newValue);
+				action.setTreeEnabled(enabled);
 	}
 }

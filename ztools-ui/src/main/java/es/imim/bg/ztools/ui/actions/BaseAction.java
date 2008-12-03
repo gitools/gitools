@@ -141,4 +141,8 @@ public abstract class BaseAction extends AbstractAction {
 		return AppFrame.instance()
 			.createMonitor();
 	}
+	
+	public void setTreeEnabled(boolean enabled) {
+		setEnabled(enabled);
+	}
 }

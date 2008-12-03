@@ -1,17 +1,21 @@
 package es.imim.bg.ztools.ui.actions;
 
-public class Actions {
+import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
+import es.imim.bg.ztools.stats.mtc.Bonferroni;
+import es.imim.bg.ztools.ui.actions.table.MtcAction;
 
-	// File
-	
-	public static final BaseAction zcalcAnalysisAction =
-		new ZcalcAnalysisAction();
+public class Actions {
 	
 	public static final MenuActionSet menuActionSet = 
 		new MenuActionSet();
 	
 	public static final ToolBarActionSet toolBarActionSet = 
 		new ToolBarActionSet();
+	
+	// Unclassified
+	
+	public static final BaseAction zcalcAnalysisAction =
+		new ZcalcAnalysisAction();
 	
 	private Actions() {
 	}

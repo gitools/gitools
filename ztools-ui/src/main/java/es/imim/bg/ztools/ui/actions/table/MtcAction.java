@@ -8,6 +8,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.model.ISectionModel;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
 public class MtcAction extends BaseAction {
@@ -25,8 +26,12 @@ public class MtcAction extends BaseAction {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {		
-		ITableModel tableModel = getTableModel();
+	public void actionPerformed(ActionEvent e) {
+		AppFrame.instance()
+			.setStatusText(mtc.getName() + " not implemented yet.");
+		
+		/*ISectionModel sectionModel = getSectionModel();
+		ITableModel tableModel = sectionModel.getTableModel();
 		
 		if (tableModel == null)
 			return;
@@ -41,6 +46,6 @@ public class MtcAction extends BaseAction {
 		tableModel.fireMatrixChanged();
 		
 		AppFrame.instance()
-			.setStatusText(mtc.getName() + " done.");
+			.setStatusText(mtc.getName() + " done.");*/
 	}
 }

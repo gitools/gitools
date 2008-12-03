@@ -169,6 +169,7 @@ public abstract class AnalysisCommand implements Command {
 		Set<String> formats = new HashSet<String>();
 		for (String format : outputFormat.split(","))
 			formats.add(format);
+		formats.add("csv"); // to mantain compatibility
 		
 		saveInvestigation(basePath, analysis, monitor);
 		

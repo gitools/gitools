@@ -8,6 +8,7 @@ import javax.swing.event.ChangeListener;
 import es.imim.bg.ztools.ui.actions.Actions;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.HelpActionSet;
+import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public class WorkspacePanel extends JTabbedPane {
@@ -84,7 +85,10 @@ public class WorkspacePanel extends JTabbedPane {
 	}
 	
 	private void refreshActions() {
-		//Actions.menuActionSet.setEnabled(false);
+		Actions.menuActionSet.setTreeEnabled(false);
+		
+		MenuActionSet.fileActionSet.setEnabled(true);
+		MenuActionSet.helpActionSet.setEnabled(true);
 		
 		FileActionSet.openAnalysisAction.setEnabled(true);
 		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
