@@ -261,7 +261,12 @@ public abstract class CubeSectionModel
 	
 	@Override
 	public SelectionMode getSelectionMode() {
-		return selectionMode;
+		if (selectedColumns.length > 0 && selectedRows.length == 0)
+			return SelectionMode.columns;
+		else if (selectedColumns.length == 0 && selectedRows.length > 0)
+			return SelectionMode.rows;
+		else
+			return SelectionMode.cells;
 	}
 	
 	@Override
