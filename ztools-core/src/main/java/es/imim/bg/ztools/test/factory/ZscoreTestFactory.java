@@ -17,6 +17,8 @@ public final class ZscoreTestFactory extends TestFactory {
 	public static final String MEAN_ESTIMATOR = "mean";
 	public static final String MEDIAN_ESTIMATOR = "median";
 	
+	public static final int DEFAULT_NUM_SAMPLES = 10000;
+	
 	private int numSamples;
 	private Statistic statCalc;
 	
@@ -37,7 +39,7 @@ public final class ZscoreTestFactory extends TestFactory {
 			this.numSamples = Integer.parseInt(props.get(NUM_SAMPLES_PROPERTY));
 		}
 		catch (NumberFormatException e) {
-			this.numSamples = ZscoreWithSamplingTest.DEFAULT_NUM_SAMPLES;
+			this.numSamples = DEFAULT_NUM_SAMPLES;
 		}
 	}
 	

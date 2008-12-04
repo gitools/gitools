@@ -3,9 +3,7 @@ package es.imim.bg.ztools.commands;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.zip.DataFormatException;
 
@@ -21,20 +19,12 @@ import es.imim.bg.ztools.resources.InvestigationResource;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
-import es.imim.bg.ztools.test.factory.BinomialTestFactory;
 import es.imim.bg.ztools.test.factory.TestFactory;
-import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
 
 public abstract class AnalysisCommand implements Command {
 
 	protected static final char defaultSep = '\t';
 	protected static final char defaultQuote = '"';
-	
-	protected static enum TestEnum {
-		zscoreMean, zscoreMedian, 
-		binomial, binomialExact, binomialNormal, binomialPoisson,
-		hypergeometric, fisherExact, chiSquare
-	}
 	
 	protected String analysisName;
 	
@@ -75,85 +65,12 @@ public abstract class AnalysisCommand implements Command {
 		this.resultsByCond = resultsByCond;
 	}
 	
-	protected TestFactory createTestFactory(String testName) {		
-		Map<String, TestEnum> testAliases = 
-			new HashMap<String, TestEnum>();
-		
-		testAliases.put("zscore", TestEnum.zscoreMean);
-		testAliases.put("zscore-mean", TestEnum.zscoreMean);
-		testAliases.put("zscore-median", TestEnum.zscoreMedian);
-		testAliases.put("binomial", TestEnum.binomial);
-		testAliases.put("binomial-exact", TestEnum.binomialExact);
-		testAliases.put("binomial-normal", TestEnum.binomialNormal);
-		testAliases.put("binomial-poisson", TestEnum.binomialPoisson);
-		testAliases.put("fisher", TestEnum.fisherExact);
-		testAliases.put("hyper-geom", TestEnum.hypergeometric);
-		testAliases.put("hyper-geometric", TestEnum.hypergeometric);
-		testAliases.put("hypergeometric", TestEnum.hypergeometric);
-		testAliases.put("chi-square", TestEnum.chiSquare);
-		
-		TestEnum selectedTest = testAliases.get(testName);
-		if (selectedTest == null)
-			throw new IllegalArgumentException("Unknown test " + testName);
-		
-		ToolConfig config = new ToolConfig();
-		
-		switch (selectedTest) {
-		case zscoreMean:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
-			config.put(
-					ZscoreTestFactory.NUM_SAMPLES_PROPERTY, 
-					String.valueOf(samplingNumSamples));
-			config.put(
-					ZscoreTestFactory.ESTIMATOR_PROPERTY, 
-					ZscoreTestFactory.MEAN_ESTIMATOR);
-			break;
-		case zscoreMedian:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
-			config.put(
-					ZscoreTestFactory.NUM_SAMPLES_PROPERTY, 
-					String.valueOf(samplingNumSamples));
-			config.put(
-					ZscoreTestFactory.ESTIMATOR_PROPERTY, 
-					ZscoreTestFactory.MEDIAN_ESTIMATOR);
-			break;
-		case binomial:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-			config.put(
-					BinomialTestFactory.APROXIMATION_PROPERTY, 
-					BinomialTestFactory.AUTOMATIC_APROX);
-			break;
-		case binomialExact:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-			config.put(
-					BinomialTestFactory.APROXIMATION_PROPERTY, 
-					BinomialTestFactory.EXACT_APROX);
-			break;
-		case binomialNormal:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-			config.put(
-					BinomialTestFactory.APROXIMATION_PROPERTY, 
-					BinomialTestFactory.NORMAL_APROX);
-			break;
-		case binomialPoisson:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-			config.put(
-					BinomialTestFactory.APROXIMATION_PROPERTY, 
-					BinomialTestFactory.POISSON_APROX);
-			break;
-		case hypergeometric:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.HYPERGEOMETRIC_TEST);
-			break;
-		case fisherExact:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.FISHER_EXACT_TEST);
-			break;
-		case chiSquare:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.CHI_SQUARE_TEST);
-			break;
-		}
+	protected TestFactory createTestFactory(String toolName, String configName) {		
+		ToolConfig toolConfig =
+			TestFactory.createToolConfig(toolName, configName);
 		
 		TestFactory testFactory = 
-			TestFactory.createFactory(config);
+			TestFactory.createFactory(toolConfig);
 		
 		return testFactory;
 	}

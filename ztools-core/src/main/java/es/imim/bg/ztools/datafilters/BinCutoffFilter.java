@@ -1,40 +1,43 @@
 package es.imim.bg.ztools.datafilters;
 
-public class BinCutoffFilter implements ValueFilter {
+import cern.colt.function.DoubleFunction;
 
-	protected interface BinCmp {
-		boolean apply(double value, double cutoff);
+public class BinCutoffFilter 
+		implements ValueFilter, DoubleFunction {
+
+	public interface BinCutoffCmp {
+		boolean compare(double value, double cutoff);
 	}
 	
-	public static final BinCmp LT = new BinCmp() {
-		@Override public boolean apply(double value, double cutoff) {
+	public static final BinCutoffCmp LT = new BinCutoffCmp() {
+		@Override public boolean compare(double value, double cutoff) {
 			return value < cutoff; }
 	};
 	
-	public static final BinCmp LE = new BinCmp() {
-		@Override public boolean apply(double value, double cutoff) {
+	public static final BinCutoffCmp LE = new BinCutoffCmp() {
+		@Override public boolean compare(double value, double cutoff) {
 			return value <= cutoff; }
 	};
 	
-	public static final BinCmp EQ = new BinCmp() {
-		@Override public boolean apply(double value, double cutoff) {
+	public static final BinCutoffCmp EQ = new BinCutoffCmp() {
+		@Override public boolean compare(double value, double cutoff) {
 			return value == cutoff; }
 	};
 	
-	public static final BinCmp GT = new BinCmp() {
-		@Override public boolean apply(double value, double cutoff) {
+	public static final BinCutoffCmp GT = new BinCutoffCmp() {
+		@Override public boolean compare(double value, double cutoff) {
 			return value > cutoff; }
 	};
 	
-	public static final BinCmp GE = new BinCmp() {
-		@Override public boolean apply(double value, double cutoff) {
+	public static final BinCutoffCmp GE = new BinCutoffCmp() {
+		@Override public boolean compare(double value, double cutoff) {
 			return value >= cutoff; }
 	};
 	
 	protected double cutoff;
-	protected BinCmp cmp;
+	protected BinCutoffCmp cmp;
 	
-	public BinCutoffFilter(double cutoff, BinCmp cmp) {
+	public BinCutoffFilter(double cutoff, BinCutoffCmp cmp) {
 		this.cutoff = cutoff;
 		this.cmp = cmp;
 	}
@@ -44,10 +47,16 @@ public class BinCutoffFilter implements ValueFilter {
 		double value = Double.NaN;
 		try {
 			value = Double.parseDouble(str);
-			value = cmp.apply(value, cutoff) ? 1 : 0;
+			value = cmp.compare(value, cutoff) ? 1 : 0;
 		}
 		catch (NumberFormatException e) {}
 		return value;
+	}
+
+	@Override
+	public double apply(double value) {
+		return Double.isNaN(value) ? Double.NaN :
+			cmp.compare(value, cutoff) ? 1 : 0;
 	}
 
 }

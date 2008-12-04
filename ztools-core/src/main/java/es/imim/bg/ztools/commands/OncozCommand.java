@@ -10,6 +10,7 @@ import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
 import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.processors.OncozProcessor;
 import es.imim.bg.ztools.resources.DataResource;
 import es.imim.bg.ztools.resources.ModulesResource;
@@ -32,8 +33,8 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Prepare test factory
 		
-		TestFactory testFactory = createTestFactory(testName);
-		testFactory.getTestConfig().setName("oncozet");
+		TestFactory testFactory = 
+			createTestFactory(ToolConfig.ONCOZET, testName);
 		
 		// Load data and modules
 		

@@ -8,7 +8,7 @@ import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public abstract class ZscoreTest extends AbstractTest {
 
-	public static final int DEFAULT_NUM_SAMPLES = 10000;
+	//public static final int DEFAULT_NUM_SAMPLES = 10000;
 	
 	protected class PopulationStatistics {
 		public double mean;

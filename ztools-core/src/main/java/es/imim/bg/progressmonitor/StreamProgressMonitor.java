@@ -39,18 +39,14 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 		super.begin(title, totalWork);
 		flag = false;
 		tabs = tabbulate(level);
-		out.println();
-		out.print(tabs);
-		out.print(title);
+		print("\n" + tabs + title);
 		timer.start();
 	}
 	
 	@Override
 	public void title(String title) {
 		super.title(title);
-		out.println();
-		out.print(tabs);
-		out.print(title);
+		print("\n" + tabs + title);
 	}
 	
 	@Override
@@ -89,12 +85,10 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 			time = Double.toString(mins) + " mins";
 		
 		if (flag) {
-			out.println();
-			out.print(tabs);
-			out.print(title + " " + time);
+			print("\n" + tabs + title + " " + time);
 		}
 		else
-			out.print(" " + time);
+			print(" " + time);
 	}
 	
 	public void info(String msg) {
@@ -108,11 +102,12 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 	}
 	
 	private void log(String msg) {
-		out.println();
-		out.print(tabs);
-		out.print(indentString);
-		out.print(msg);
+		print("\n" + tabs + indentString + msg);
 		flag = true;
+	}
+	
+	protected void print(String text) {
+		out.print(text);
 	}
 	
 	private String tabbulate(int level) {

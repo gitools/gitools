@@ -9,11 +9,9 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 
 public class ThreadManager {
 
-	protected static ExecutorService executor = 
-		Executors.newCachedThreadPool();
-		//new BlockingThreadPoolExecutor(getAvailableProcessors());
+	protected static ExecutorService executor = createExecutor();
 	
-	protected static int nThreads;
+	protected static int nThreads = getAvailableProcessors();
 	
 	public static void shutdown(ProgressMonitor monitor) {
 		executor.shutdown();
@@ -23,8 +21,15 @@ public class ThreadManager {
 		} catch (InterruptedException e) {
 			monitor.debug("ThreadManager.shutdown() interrupted by exception: " + e.getMessage());
 		}
+		
+		executor = createExecutor();
 	}
 	
+	private static ExecutorService createExecutor() {
+		return Executors.newCachedThreadPool();
+		//new BlockingThreadPoolExecutor(nThreads);
+	}
+
 	public static ExecutorService getExecutor() {
 		return executor;
 	}
@@ -34,8 +39,7 @@ public class ThreadManager {
 			shutdown(new NullProgressMonitor());
 		
 			ThreadManager.nThreads = nThreads;
-			ThreadManager.executor = 
-				new BlockingThreadPoolExecutor(nThreads);
+			ThreadManager.executor = createExecutor();
 		}
 	}
 	
