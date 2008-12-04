@@ -367,6 +367,7 @@ public abstract class CubeSectionModel
 			selCols[i] = i;
 		
 		setSelection(selCols, selRows);
+		firePropertyChange(SELECTION_ALL_PROPERTY);
 	}
 	
 	@Override

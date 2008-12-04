@@ -6,14 +6,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,7 +40,7 @@ public class ColorMatrixPanel extends JPanel {
 	private static final long serialVersionUID = 1122420366217373359L;
 
 	public interface ColorMatrixListener {
-		void selectionChanged();
+		void selectionAll();
 	}
 	
 	private class ColorMatrixModelAddapter implements TableModel {
@@ -205,8 +207,10 @@ public class ColorMatrixPanel extends JPanel {
 				
 				int lastcol = table.getColumnCount() - 1;
 				if (lastcol == table.columnAtPoint(e.getPoint())) {
-					setSelectionMode(SelectionMode.columns);
-					selectAll();
+
+					selectAll();				
+					//for (ColorMatrixListener listener : listeners)
+						//listener.selectionAll();
 				}
 				else {					
 					setSelectionMode(SelectionMode.columns);
@@ -214,7 +218,8 @@ public class ColorMatrixPanel extends JPanel {
 					int col = colfrom = table.columnAtPoint(e.getPoint());
 					int[] selectedColumns;
 					
-					if (getCtrlDown()) {
+				    int onmask = InputEvent.CTRL_DOWN_MASK;
+					if ((e.getModifiersEx() & onmask) == onmask){
 						int nb = getSelectedColumns().length + 1;
 						selectedColumns = new int[nb];
 						System.arraycopy(getSelectedColumns(), 0, selectedColumns, 0, nb-1);
@@ -227,16 +232,6 @@ public class ColorMatrixPanel extends JPanel {
 					
 					setSelectedColumns(selectedColumns);
 					
-/*					int rows = table.getRowCount();
-					int[] selectedRows = new int[rows];
-					int start = 0;
-					int stop = rows-1;
-					int counter = 0;
-					for (int i = start; i <= stop ; i++){
-						selectedRows[counter] = i;
-						counter++;
-					}
-					setSelectedRows(selectedRows);*/
 				}
 			}
 			
@@ -256,7 +251,8 @@ public class ColorMatrixPanel extends JPanel {
 					counter++;
 				}
 					
-				if (getCtrlDown())		
+			    int onmask = InputEvent.CTRL_DOWN_MASK;
+				if ((e.getModifiersEx() & onmask) == onmask)
 					selectedColumns = mergeArrays(
 							getSelectedColumns(), newSelectedColumns);					
 				else
@@ -264,11 +260,6 @@ public class ColorMatrixPanel extends JPanel {
 								
 				setSelectedColumns(selectedColumns);
 				
-			/*	System.out.print("cols: ");
-				for (int i: selectedColumns){
-					System.out.print(i + ", ");
-				}
-				System.out.print("\n");*/
 			}
 	}
 	
@@ -379,69 +370,28 @@ public class ColorMatrixPanel extends JPanel {
 		createComponents();
 	}
 
-	/*FIXME: Esto no deberia existir, en el mouse listener
-	 * puedes saber si esta pulsado control a partir del MouseEvent
-	 * see e.getModifiersEx()
-	 */
-	private boolean ctrlDown;
-	
-	public boolean getCtrlDown() {
-		return ctrlDown;
-	}
-	
-	private void setCtrlDown(boolean b) {
-		//System.out.println("Set control to " + b);
-		ctrlDown = b;
-	}
-	
-	/* FIXME: Este codigo fuente puede mejorarse:
-	 * no sigue los standards de Java en cuanto a nombres (camel case),
-	 * y es poco entendible, ademas usa mas de lo necesario a1.length y a2.length.
-	 * En realidad existe una solucion mas adecuada. */
+
 	private int[] mergeArrays(int[] a1, int[] a2){
-		//merges two int-arrays and doesn't allow duplicate values	
+		//FIXME: Improve efficency (don't use maps and sets!!)
 		
-		Arrays.sort(a1);
-		Arrays.sort(a2);
-		int[] merged = new int[a1.length + a2.length];
-		//System.out.println(merged.length);
-		int a1_c = 0;
-		int a2_c = 0;
-		int merged_c = 0;
-		int value = -1;
+		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 		
-		/*for (int i : a1){
-			System.out.println("a1 " + i);
+		for (Integer i: a1)
+			hm.put(i.toString(), i);
+		for (Integer i: a2)
+			hm.put(i.toString(), i);
+		
+	    Set<Map.Entry<String, Integer>> set = hm.entrySet();
+	    
+	    int[] merged = new int[set.size()];
+	    int counter = 0;
+		for (Map.Entry<String, Integer> me : set){
+			merged[counter] = me.getValue();
+			counter++;
 		}
 		
-		for (int i : a2){
-			System.out.println("a2 " + i);
-		}*/
+		Arrays.sort(merged);
 		
-		while (merged_c < merged.length-1){
-			int oldvalue = value;
-						
-			
-			if(a1_c < a1.length && a1[a1_c] < a2[a2_c]){
-				value =	a1[a1_c];
-				a1_c++;
-			}else if(a2_c < a2.length && a1[a1_c] > a2[a2_c]){
-				value =	a1[a2_c];
-				a2_c++;
-			}else if(a1_c < a1.length && a2_c < a2.length && a1[a1_c] == a2[a2_c]){
-				value =	a1[a1_c];
-				if(a1_c < a1.length-1) a1_c++;
-				if(a2_c < a2.length-1) a2_c++;
-			}else{
-				value = (a1[a1_c] < a2[a2_c]) ? a2[a2_c] : a1[a1_c];
-			}
-			if (value > oldvalue){
-				//System.out.println("added" + value);
-				merged[merged_c] = value;
-			}
-			merged_c++;
-			//System.out.println("a1_c:" + a1_c + ", a2_c:" + a2_c + ", merged_c:" + merged_c);
-		}
 		return merged;
 	}
 	
@@ -465,9 +415,6 @@ public class ColorMatrixPanel extends JPanel {
 				if (!e.getValueIsAdjusting()) {
 					selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
 					selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-					
-					for (ColorMatrixListener listener : listeners)
-						listener.selectionChanged();
 	
 					refresh();
 				}
@@ -489,29 +436,6 @@ public class ColorMatrixPanel extends JPanel {
 		refreshTableColumnsWidth();
 		
 		refreshSelectionMode();
-			
-		table.addKeyListener(new KeyListener(){
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.isControlDown()){
-					setCtrlDown(true);
-				}
-			}
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!e.isControlDown()){
-					setCtrlDown(false);
-				}				
-			}
-		});
 		
 		final JScrollPane scroll = new JScrollPane(table);
 		
@@ -715,14 +639,17 @@ public class ColorMatrixPanel extends JPanel {
 		table.clearSelection();
 	}
 
-	public void selectAll() {
+	public void selectAll() {	
+		clearSelection();
+		setSelectionMode(SelectionMode.columns);
+
 		int lastRowIndex = table.getRowCount() - 1;
 		table.getSelectionModel()
 			.addSelectionInterval(0, lastRowIndex);
-		
+
 		int lastColIndex = table.getColumnCount() - 2;
 		table.getColumnModel()
 			.getSelectionModel()
-			.addSelectionInterval(0, lastColIndex);
+			.addSelectionInterval(0, lastColIndex);		
 	}
 }
