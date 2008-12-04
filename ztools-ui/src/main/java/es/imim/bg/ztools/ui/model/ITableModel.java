@@ -60,6 +60,8 @@ public interface ITableModel extends IModel {
 	void selectAll();
 	void resetSelection();
 	
+	void invertSelection();
+	
 	String getHtmlInfo();
 	void setHtmlInfo(String htmlInfo);
 

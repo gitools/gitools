@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class InvertSelectionAction extends BaseAction {
 
@@ -17,8 +19,15 @@ public class InvertSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AppFrame.instance()
-			.setStatusText("Unimplemented action.");
+		ITableModel tableModel = getTableModel();
+		
+		
+		if (tableModel != null){	
+			tableModel.invertSelection();
+		}
+		
+	//	AppFrame.instance()
+		//	.setStatusText("Unimplemented action.");
 	}
 
 }

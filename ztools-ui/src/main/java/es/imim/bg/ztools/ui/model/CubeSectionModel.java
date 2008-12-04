@@ -8,6 +8,7 @@ import java.util.Map;
 
 import cern.colt.matrix.DoubleMatrix2D;
 
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 
 public abstract class CubeSectionModel 
@@ -379,6 +380,52 @@ public abstract class CubeSectionModel
 	public void resetSelection() {		
 		setSelection(new int[0], new int[0]);
 		setLeadSelection(-1, -1);		
+	}
+	
+	@Override
+	public void invertSelection() {
+		SelectionMode selMode = getSelectionMode();
+			
+		int counter = 0;
+		switch(selMode) {
+		case rows:
+				int lastRow = getRowCount()-1;
+				int[] selectedRows = getSelectedRows();
+				int[] newlySelectedRows = new int[getRowCount()-selectedRows.length];
+				
+				for (int i = 0; i <= lastRow; i++) {
+					newlySelectedRows[counter] = i;
+					counter++;
+					for (int j = 0; j < selectedRows.length; j++) 
+						if(i == this.selectedRows[j])
+							counter--;
+				}
+				setSelection(getSelectedColumns(), newlySelectedRows);
+				AppFrame.instance()
+				.setStatusText("Selection inverted");
+				break;
+		case columns:
+				int lastColumn = getColumnCount()-1;
+				int[] selectedColumns = getSelectedColumns();
+				int[] newlySelectedColumns = new int[getColumnCount()-selectedColumns.length];
+				
+				for (int i = 0; i <= lastColumn; i++){
+					newlySelectedColumns[counter] = i;
+					counter++;
+					for (int j = 0; j < selectedColumns.length; j++)
+						if(i == this.selectedColumns[j])
+							counter --;
+				}
+				setSelection(newlySelectedColumns, getSelectedRows());
+				AppFrame.instance()
+				.setStatusText("Selection inverted");
+				break;
+		case cells:
+				selectAll();		
+				AppFrame.instance()
+					.setStatusText("Selected all.");
+				break;
+		}
 	}
 	
 	@Override
