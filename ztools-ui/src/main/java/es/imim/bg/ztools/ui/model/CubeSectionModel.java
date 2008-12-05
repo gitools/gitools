@@ -266,9 +266,7 @@ public abstract class CubeSectionModel
 		
 		if (selectedColumns.length > 0 && selectedRows.length == 0)
 			return SelectionMode.columns;
-		else if (selectedColumns.length == 1 && 
-				selectedColumns[0] == getColumnCount() && 
-				selectedRows.length > 0)
+		else if (selectedColumns.length == 0 &&	selectedRows.length > 0)
 			return SelectionMode.rows;
 		else
 			return SelectionMode.cells;
@@ -407,8 +405,6 @@ public abstract class CubeSectionModel
 							counter--;
 				}
 				setSelection(getSelectedColumns(), newlySelectedRows);
-				AppFrame.instance()
-				.setStatusText("Selection inverted");
 				break;
 		case columns:
 				int lastColumn = getColumnCount()-1;
@@ -422,16 +418,13 @@ public abstract class CubeSectionModel
 					counter++;
 					for (int j = 0; j < selectedColumns.length; j++)
 						if(i == this.selectedColumns[j])
-							counter --;
+							counter--;
 				}
 				setSelection(newlySelectedColumns, getSelectedRows());
-				AppFrame.instance()
-				.setStatusText("Selection inverted");
+
 				break;
 		case cells:
 				selectAll();		
-				AppFrame.instance()
-					.setStatusText("Selected all.");
 				break;
 		}
 	}

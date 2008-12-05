@@ -40,7 +40,7 @@ public class ColorMatrixPanel extends JPanel {
 	private static final long serialVersionUID = 1122420366217373359L;
 
 	public interface ColorMatrixListener {
-		void selectionAll();
+		void setSelection(int[] selectedColumns, int[] selectedRows);
 	}
 	
 	private class ColorMatrixModelAddapter implements TableModel {
@@ -231,6 +231,11 @@ public class ColorMatrixPanel extends JPanel {
 					}
 					
 					setSelectedColumns(selectedColumns);
+					//int[] selectedRows = new int[0];
+					//for (ColorMatrixListener l : listeners){
+					//	l.setSelection(selectedColumns, selectedRows);
+					//}
+					
 					
 				}
 			}
@@ -273,25 +278,15 @@ public class ColorMatrixPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			int lastcol = table.getColumnCount() - 1;
-			if (lastcol == table.columnAtPoint(e.getPoint()))
+			if (lastcol == table.columnAtPoint(e.getPoint())){
 				setSelectionMode(SelectionMode.rows);
+				setSelectedColumns(new int[0]);
+			}
 			else
 				setLead(e);
 			
 			rowfrom = table.rowAtPoint(e.getPoint());
 			colfrom = table.columnAtPoint(e.getPoint());
-		}
-		
-		private void setLead(MouseEvent e){
-			setSelectionMode(SelectionMode.cells);
-			
-			int row = table.rowAtPoint(e.getPoint());
-			int col = table.columnAtPoint(e.getPoint());
-			
-			setSelectedRows(new int[] { row });
-			setSelectedColumns(new int[] { col });
-			
-			setLeadSelection(row, col);
 		}
 		
 		@Override
@@ -304,8 +299,7 @@ public class ColorMatrixPanel extends JPanel {
 
 				int rows = Math.abs(rowto-rowfrom) + 1;
 				int[] selectedRows = new int[rows];
-				int cols = Math.abs(colto-colfrom) + 1;
-				int[] selectedColumns = new int[cols];
+
 		
 				int start = (rowto < rowfrom) ? rowto : rowfrom;
 				int stop = (rowto > rowfrom) ? rowto : rowfrom;
@@ -314,28 +308,32 @@ public class ColorMatrixPanel extends JPanel {
 					selectedRows[counter] = i;
 					counter++;
 				}
-				
-				start = (colto < colfrom) ? colto : colfrom;
-				stop = (colto > colfrom) ? colto : colfrom;
-				counter = 0;
-				for (int i = start; i <= stop ; i++){
-					selectedColumns[counter] = i;
-					counter++;
-				}
-				
-				setSelectedColumns(selectedColumns);
-				setSelectedRows(selectedRows);
+							
+				setSelectedCells(new int[0], selectedRows);
+
 			}
 			else
 				setLead(e);
 		}
-		
+				
 		@Override
 		public void mouseReleased(MouseEvent e){	
 			int lastcol = table.getColumnCount() - 1;
 			if (lastcol != table.columnAtPoint(e.getPoint())) {
 				setLead(e);
 			}
+		}
+		
+		private void setLead(MouseEvent e){
+			setSelectionMode(SelectionMode.cells);
+			
+			int row = table.rowAtPoint(e.getPoint());
+			int col = table.columnAtPoint(e.getPoint());
+			
+			setSelectedRows(new int[] { row });
+			setSelectedColumns(new int[] { col });
+			
+			setLeadSelection(row, col);
 		}
 	}
 	
@@ -569,10 +567,15 @@ public class ColorMatrixPanel extends JPanel {
 		listeners.add(listener);
 	}
 
+	public void setSelectedCells(int[] selectedColumns, int[] selectedRows){
+		setSelectedColumns(selectedColumns);
+		setSelectedRows(selectedRows);
+	}
+	
 	public int[] getSelectedColumns() {
 		return table.getSelectedColumns();
 	}
-	
+		
 	public void setSelectedColumns(int[] selectedColumns) {
 		updateSelection(
 				table.getColumnModel().getSelectionModel(), 

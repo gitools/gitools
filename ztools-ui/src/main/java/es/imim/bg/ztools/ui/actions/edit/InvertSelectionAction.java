@@ -26,8 +26,8 @@ public class InvertSelectionAction extends BaseAction {
 			tableModel.invertSelection();
 		}
 		
-	//	AppFrame.instance()
-		//	.setStatusText("Unimplemented action.");
+		AppFrame.instance()
+		.setStatusText("Selection inverted");
 	}
 
 }
