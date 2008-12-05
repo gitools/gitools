@@ -2,21 +2,22 @@
 	<id>bin</id>
 	<formats>
 		<!--
-		<format>tar.bz2</format>-->
+		<format>tar.bz2</format>
+		<format>tar.gz</format>-->
 		<format>zip</format>
-		<format>tar.gz</format>
 		<format>dir</format>
 	</formats>
 	<includeSiteDirectory>false</includeSiteDirectory>
 	<fileSets>
-		<fileSet>
+		<!-- <fileSet>
 			<directory>src/main/command</directory>
 			<includes>
 				<include>*</include>
 			</includes>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0770</fileMode>
-		</fileSet>
+			<filtered>true</filtered>
+		</fileSet>-->
 		<fileSet>
 			<directory>ztools-cli/src/main/command</directory>
 			<includes>
@@ -24,6 +25,7 @@
 			</includes>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0770</fileMode>
+			<filtered>true</filtered>
 		</fileSet>
 		<fileSet>
 			<directory>templates</directory>

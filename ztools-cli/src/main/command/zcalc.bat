@@ -1,0 +1,1 @@
+java -jar ..\lib\ztools-cli-${project.version}.jar zcalc %*

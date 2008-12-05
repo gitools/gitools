@@ -4,4 +4,6 @@ javacmd=$JAVACMD
 [ -z "$javacmd" ] && [ -n "$JAVA_HOME" ] && javacmd="$JAVA_HOME/bin/java"
 [ -z "$javacmd" ] && javacmd="java"
 
-$javacmd $*
+APPDIR="$BINDIR/.."
+LIBDIR=$APPDIR/lib
+
