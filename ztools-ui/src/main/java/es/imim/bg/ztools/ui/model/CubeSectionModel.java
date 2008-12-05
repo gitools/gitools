@@ -262,9 +262,13 @@ public abstract class CubeSectionModel
 	
 	@Override
 	public SelectionMode getSelectionMode() {
+		//keep in mind that the rows are in a column
+		
 		if (selectedColumns.length > 0 && selectedRows.length == 0)
 			return SelectionMode.columns;
-		else if (selectedColumns.length == 0 && selectedRows.length > 0)
+		else if (selectedColumns.length == 1 && 
+				selectedColumns[0] == getColumnCount() && 
+				selectedRows.length > 0)
 			return SelectionMode.rows;
 		else
 			return SelectionMode.cells;
@@ -394,6 +398,8 @@ public abstract class CubeSectionModel
 				int[] newlySelectedRows = new int[getRowCount()-selectedRows.length];
 				
 				for (int i = 0; i <= lastRow; i++) {
+					if (counter == newlySelectedRows.length)
+						break;
 					newlySelectedRows[counter] = i;
 					counter++;
 					for (int j = 0; j < selectedRows.length; j++) 
@@ -410,6 +416,8 @@ public abstract class CubeSectionModel
 				int[] newlySelectedColumns = new int[getColumnCount()-selectedColumns.length];
 				
 				for (int i = 0; i <= lastColumn; i++){
+					if (counter == newlySelectedColumns.length)
+						break;
 					newlySelectedColumns[counter] = i;
 					counter++;
 					for (int j = 0; j < selectedColumns.length; j++)
