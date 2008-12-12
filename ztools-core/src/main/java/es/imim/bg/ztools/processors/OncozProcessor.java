@@ -69,7 +69,7 @@ public class OncozProcessor {
 		resultsMatrix.setColNames(moduleNames);
 		resultsMatrix.setRowNames(itemNames);
 		resultsMatrix.setParamNames(paramNames);
-		resultsMatrix.createData();
+		resultsMatrix.makeData();
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();

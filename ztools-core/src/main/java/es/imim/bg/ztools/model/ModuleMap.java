@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 				"itemIndices",
 				"itemsOrder"*/})
 				
-public class ModuleSet {
+public class ModuleMap {
 
 	protected String name;
 	protected String description;
@@ -24,10 +24,10 @@ public class ModuleSet {
 	
 	protected int[] itemsOrder;
 
-	public ModuleSet() {
+	public ModuleMap() {
 	}
 	
-	public ModuleSet(
+	public ModuleMap(
 			String[] moduleNames, String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
 		
 		this.moduleNames = moduleNames;

@@ -10,24 +10,24 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Investigation;
+import es.imim.bg.ztools.model.Project;
 
-public class InvestigationResource extends Resource {
+public class ProjectResource extends Resource {
 
-	public InvestigationResource(String resource) {
+	public ProjectResource(String resource) {
 		super(resource);
 	}
 	
-	public InvestigationResource(File file) {
+	public ProjectResource(File file) {
 		super(file);
 	}
 	
-	public void save(Investigation inv, ProgressMonitor monitor) 
+	public void save(Project inv, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, JAXBException {
 		
 		Writer writer = openWriter();
 		
-		JAXBContext context = JAXBContext.newInstance(Investigation.class);
+		JAXBContext context = JAXBContext.newInstance(Project.class);
 		Marshaller m = context.createMarshaller();
 		m.marshal(inv, writer);
 		

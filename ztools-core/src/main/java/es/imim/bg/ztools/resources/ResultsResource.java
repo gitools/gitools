@@ -120,7 +120,7 @@ public class ResultsResource extends Resource {
 		resultsMatrix.setColNames(columnNames);
 		resultsMatrix.setRowNames(rowNames);
 		resultsMatrix.setParamNames(paramNames);
-		resultsMatrix.createData();
+		resultsMatrix.makeData();
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];

@@ -18,11 +18,11 @@ import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
-import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ModuleMap;
 import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.resources.DataResource;
-import es.imim.bg.ztools.resources.ModulesResource;
+import es.imim.bg.ztools.resources.ModuleMapResource;
 import es.imim.bg.ztools.resources.Resource;
 import es.imim.bg.ztools.resources.ResultsResource;
 import es.imim.bg.ztools.test.Test;
@@ -107,9 +107,9 @@ public class CsvAnalysisResource extends AnalysisResource {
 			}
 			else if (tag.equals(tagModules) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
-				ModulesResource res = new ModulesResource(path);
-				ModuleSet moduleSet = res.load(monitor.subtask());
-				analysis.setModuleSet(moduleSet);
+				ModuleMapResource res = new ModuleMapResource(path);
+				ModuleMap moduleMap = res.load(monitor.subtask());
+				analysis.setModuleSet(moduleMap);
 			}
 			else if (tag.equals(tagResults) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
@@ -150,7 +150,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 		new DataResource(new File(workDirFile, dataFileName))
 			.save(analysis.getDataMatrix(), monitor);
 		
-		new ModulesResource(new File(workDirFile, modulesFileName))
+		new ModuleMapResource(new File(workDirFile, modulesFileName))
 			.save(analysis.getModuleSet(), monitor);
 		
 		new ResultsResource(new File(workDirFile, resultsFileName))

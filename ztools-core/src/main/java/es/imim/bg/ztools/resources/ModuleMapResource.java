@@ -20,44 +20,44 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ModuleMap;
 
-public class ModulesResource extends Resource {
+public class ModuleMapResource extends Resource {
 
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public static final int defaultMinModuleSize = 20;
 	public static final int defaultMaxModuleSize = Integer.MAX_VALUE;
 	
-	public ModulesResource(String fileName) {
+	public ModuleMapResource(String fileName) {
 		super(fileName);
 	}
 	
-	public ModulesResource(File file) {
+	public ModuleMapResource(File file) {
 		super(file);
 	}
 	
-	public ModuleSet load(
+	public ModuleMap load(
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 
 		//TODO: new modules format
 		return null;
 	}
 	
-	public ModuleSet load(
+	public ModuleMap load(
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
-		ModuleSet moduleSet = new ModuleSet();
-		load(moduleSet, minModuleSize, maxModuleSize, itemNames, monitor);
+		ModuleMap moduleMap = new ModuleMap();
+		load(moduleMap, minModuleSize, maxModuleSize, itemNames, monitor);
 		
-		return moduleSet;
+		return moduleMap;
 	}
 	
 	public void load(
-			ModuleSet moduleSet,
+			ModuleMap moduleMap,
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
@@ -179,10 +179,10 @@ public class ModulesResource extends Resource {
 		
 		monitor.end();
 		
-		moduleSet.setModuleNames(moduleNames);
-		moduleSet.setItemNames(itemNames);
-		moduleSet.setItemIndices(moduleItemIndices);
-		moduleSet.setItemsOrder(itemsOrder);
+		moduleMap.setModuleNames(moduleNames);
+		moduleMap.setItemNames(itemNames);
+		moduleMap.setItemIndices(moduleItemIndices);
+		moduleMap.setItemsOrder(itemsOrder);
 	}
 	
 	protected void readModuleMappings(
@@ -214,12 +214,12 @@ public class ModulesResource extends Resource {
 		}
 	}
 	
-	public void save(ModuleSet moduleSet, ProgressMonitor monitor) 
+	public void save(ModuleMap moduleMap, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		final PrintWriter pw = new PrintWriter(openWriter());
 		
-		final String[] itemNames = moduleSet.getItemNames();
+		final String[] itemNames = moduleMap.getItemNames();
 		
 		if (itemNames.length > 0) {
 			pw.print(itemNames[0]);
@@ -233,9 +233,9 @@ public class ModulesResource extends Resource {
 			pw.print('\n');
 		}
 		
-		final String[] moduleNames = moduleSet.getModuleNames();
+		final String[] moduleNames = moduleMap.getModuleNames();
 		
-		final int[][] indices = moduleSet.getItemIndices();
+		final int[][] indices = moduleMap.getItemIndices();
 		
 		int numModules = moduleNames.length;
 		

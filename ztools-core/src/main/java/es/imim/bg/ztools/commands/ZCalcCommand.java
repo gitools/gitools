@@ -9,11 +9,11 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
-import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ModuleMap;
 import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.processors.ZCalcProcessor;
 import es.imim.bg.ztools.resources.DataResource;
-import es.imim.bg.ztools.resources.ModulesResource;
+import es.imim.bg.ztools.resources.ModuleMapResource;
 import es.imim.bg.ztools.test.factory.TestFactory;
 
 public class ZCalcCommand extends AnalysisCommand {
@@ -46,9 +46,9 @@ public class ZCalcCommand extends AnalysisCommand {
 		monitor.info("Modules: " + modulesFile);
 		
 		DataMatrix dataMatrix = new DataMatrix();
-		ModuleSet moduleSet = new ModuleSet();
+		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
-				dataMatrix, moduleSet, 
+				dataMatrix, moduleMap, 
 				dataFile, valueFilter, 
 				modulesFile, minModuleSize, maxModuleSize,
 				monitor.subtask());
@@ -61,7 +61,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataMatrix(dataMatrix);
-		analysis.setModuleSet(moduleSet);
+		analysis.setModuleSet(moduleMap);
 		
 		ZCalcProcessor processor = 
 			new ZCalcProcessor(analysis);
@@ -74,7 +74,7 @@ public class ZCalcCommand extends AnalysisCommand {
 	}
 
 	private void loadDataAndModules(
-			DataMatrix dataMatrix, ModuleSet moduleSet,
+			DataMatrix dataMatrix, ModuleMap moduleMap,
 			String dataFileName, ValueFilter valueFilter, String modulesFileName, 
 			int minModuleSize, int maxModuleSize, 
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
@@ -87,11 +87,11 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Load modules
 		
 		File file = new File(modulesFileName);
-		moduleSet.setName(file.getName());
+		moduleMap.setName(file.getName());
 		
-		ModulesResource modulesResource = new ModulesResource(file);
-		modulesResource.load(
-			moduleSet,
+		ModuleMapResource moduleMapResource = new ModuleMapResource(file);
+		moduleMapResource.load(
+			moduleMap,
 			minModuleSize,
 			maxModuleSize,
 			dataMatrix.getRowNames(),
@@ -103,7 +103,7 @@ public class ZCalcCommand extends AnalysisCommand {
 				dataMatrix,
 				valueFilter,
 				null, 
-				moduleSet.getItemsOrder(), 
+				moduleMap.getItemsOrder(), 
 				monitor);
 		
 	}

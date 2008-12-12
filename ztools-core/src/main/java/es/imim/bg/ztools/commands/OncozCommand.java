@@ -9,11 +9,11 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.DataMatrix;
-import es.imim.bg.ztools.model.ModuleSet;
+import es.imim.bg.ztools.model.ModuleMap;
 import es.imim.bg.ztools.model.ToolConfig;
 import es.imim.bg.ztools.processors.OncozProcessor;
 import es.imim.bg.ztools.resources.DataResource;
-import es.imim.bg.ztools.resources.ModulesResource;
+import es.imim.bg.ztools.resources.ModuleMapResource;
 import es.imim.bg.ztools.test.factory.TestFactory;
 
 public class OncozCommand extends AnalysisCommand {
@@ -43,9 +43,9 @@ public class OncozCommand extends AnalysisCommand {
 		monitor.info("Modules: " + modulesFile);
 		
 		DataMatrix dataMatrix = new DataMatrix();
-		ModuleSet moduleSet = new ModuleSet();
+		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
-				dataMatrix, moduleSet, 
+				dataMatrix, moduleMap, 
 				dataFile, modulesFile, 
 				minModuleSize, maxModuleSize,
 				monitor.subtask());
@@ -58,7 +58,7 @@ public class OncozCommand extends AnalysisCommand {
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataMatrix(dataMatrix);
-		analysis.setModuleSet(moduleSet);
+		analysis.setModuleSet(moduleMap);
 		
 		OncozProcessor processor = 
 			new OncozProcessor(analysis);
@@ -71,7 +71,7 @@ public class OncozCommand extends AnalysisCommand {
 	}
 
 	private void loadDataAndModules(
-			DataMatrix dataMatrix, ModuleSet moduleSet,
+			DataMatrix dataMatrix, ModuleMap moduleMap,
 			String dataFileName, String modulesFileName, 
 			int minModuleSize, int maxModuleSize, 
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
@@ -85,31 +85,31 @@ public class OncozCommand extends AnalysisCommand {
 		
 		if (modulesFileName != null) {
 			File file = new File(modulesFileName);
-			moduleSet.setName(file.getName());
+			moduleMap.setName(file.getName());
 			
-			ModulesResource modulesResource = new ModulesResource(file);
-			modulesResource.load(
-				moduleSet,
+			ModuleMapResource moduleMapResource = new ModuleMapResource(file);
+			moduleMapResource.load(
+				moduleMap,
 				minModuleSize,
 				maxModuleSize,
 				dataMatrix.getColNames(),
 				monitor);
 		}
 		else {
-			moduleSet.setItemNames(dataMatrix.getColNames());
-			moduleSet.setModuleNames(new String[] {"all"});
+			moduleMap.setItemNames(dataMatrix.getColNames());
+			moduleMap.setModuleNames(new String[] {"all"});
 			int num = dataMatrix.getColNames().length;
 			int[][] indices = new int[1][num];
 			for (int i = 0; i < num; i++)
 				indices[0][i] = i;
-			moduleSet.setItemIndices(indices);
+			moduleMap.setItemIndices(indices);
 		}
 		
 		// Load data
 		
 		dataResource.loadData(
 				dataMatrix,
-				moduleSet.getItemsOrder(),
+				moduleMap.getItemsOrder(),
 				null,
 				monitor);		
 	}

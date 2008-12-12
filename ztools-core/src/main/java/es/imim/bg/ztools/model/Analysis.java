@@ -22,7 +22,7 @@ public class Analysis {
 	protected long elapsedTime;
 	
 	protected DataMatrix dataMatrix;
-	protected ModuleSet moduleSet;
+	protected ModuleMap moduleMap;
 	protected ResultsMatrix resultsMatrix;
 	
 	protected ToolConfig toolConfig;
@@ -61,12 +61,12 @@ public class Analysis {
 	}
 	
 	@XmlTransient
-	public ModuleSet getModuleSet() {
-		return moduleSet;
+	public ModuleMap getModuleSet() {
+		return moduleMap;
 	}
 	
-	public void setModuleSet(ModuleSet moduleSet) {
-		this.moduleSet = moduleSet;
+	public void setModuleSet(ModuleMap moduleMap) {
+		this.moduleMap = moduleMap;
 	}
 	
 	public ResultsMatrix getResults() {

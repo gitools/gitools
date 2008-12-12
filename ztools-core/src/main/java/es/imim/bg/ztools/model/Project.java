@@ -16,17 +16,17 @@ import javax.xml.bind.annotation.XmlType;
 				"analysis"})
 
 @XmlRootElement
-public class Investigation {
+public class Project {
 	
 	protected String summary;
 	protected String notes;
 	
 	protected List<DataMatrix> dataMatrices = new ArrayList<DataMatrix>();
-	protected List<ModuleSet> moduleSets = new ArrayList<ModuleSet>();
+	protected List<ModuleMap> moduleMaps = new ArrayList<ModuleMap>();
 	protected List<Analysis> analysis = new ArrayList<Analysis>();
 	//protected List<Figure> figures;
 
-	public Investigation() {
+	public Project() {
 	}
 	
 	public String getSummary() {
@@ -55,12 +55,12 @@ public class Investigation {
 	}
 	
 	@XmlElement(name = "modules")
-	public List<ModuleSet> getModuleSets() {
-		return moduleSets;
+	public List<ModuleMap> getModuleSets() {
+		return moduleMaps;
 	}
 	
-	public void setModuleSets(List<ModuleSet> moduleSets) {
-		this.moduleSets = moduleSets;
+	public void setModuleSets(List<ModuleMap> moduleMaps) {
+		this.moduleMaps = moduleMaps;
 	}
 	
 	public List<Analysis> getAnalysis() {

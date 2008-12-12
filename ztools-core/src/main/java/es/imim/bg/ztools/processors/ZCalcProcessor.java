@@ -95,7 +95,7 @@ public class ZCalcProcessor {
 		resultsMatrix.setColNames(condNames);
 		resultsMatrix.setRowNames(moduleNames);
 		resultsMatrix.setParamNames(paramNames);
-		resultsMatrix.createData();
+		resultsMatrix.makeData();
 		
 		int numProcs = ThreadManager.getNumThreads();
 		final ExecutorService executor = ThreadManager.getExecutor();

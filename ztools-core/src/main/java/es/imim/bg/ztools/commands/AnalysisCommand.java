@@ -13,9 +13,9 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.datafilters.DoubleFilter;
 import es.imim.bg.ztools.datafilters.ValueFilter;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Investigation;
+import es.imim.bg.ztools.model.Project;
 import es.imim.bg.ztools.model.ToolConfig;
-import es.imim.bg.ztools.resources.InvestigationResource;
+import es.imim.bg.ztools.resources.ProjectResource;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.REXmlAnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
@@ -88,7 +88,7 @@ public abstract class AnalysisCommand implements Command {
 			formats.add(format);
 		formats.add("csv"); // to mantain compatibility
 		
-		saveInvestigation(basePath, analysis, monitor);
+		saveProject(basePath, analysis, monitor);
 		
 		for (String format : formats) {
 			AnalysisResource ar = null;
@@ -104,7 +104,7 @@ public abstract class AnalysisCommand implements Command {
 		monitor.end();
 	}
 
-	private void saveInvestigation(
+	private void saveProject(
 			String basePath, Analysis analysis, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
@@ -112,16 +112,16 @@ public abstract class AnalysisCommand implements Command {
 		if (!path.exists())
 			path.mkdirs();
 		
-		Investigation inv = new Investigation();
+		Project proj = new Project();
 		//inv.setSummary("inv summary");
 		//inv.setNotes("inv notes");
-		inv.getAnalysis().add(analysis);
-		inv.getDataMatrices().add(analysis.getDataMatrix());
-		inv.getModuleSets().add(analysis.getModuleSet());
-		InvestigationResource res = new InvestigationResource(
-				new File(path, "investigation.xml"));
+		proj.getAnalysis().add(analysis);
+		proj.getDataMatrices().add(analysis.getDataMatrix());
+		proj.getModuleSets().add(analysis.getModuleSet());
+		ProjectResource res = new ProjectResource(
+				new File(path, "project.xml"));
 		try {
-			res.save(inv, monitor.subtask());
+			res.save(proj, monitor.subtask());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
