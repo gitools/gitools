@@ -230,13 +230,9 @@ public class ColorMatrixPanel extends JPanel {
 						selectedColumns[0] = col;
 					}
 					
-					setSelectedColumns(selectedColumns);
-					//int[] selectedRows = new int[0];
-					//for (ColorMatrixListener l : listeners){
-					//	l.setSelection(selectedColumns, selectedRows);
-					//}
+					int[] selectedRows = new int[0];
 					
-					
+					setSelectedCells(selectedColumns, selectedRows);
 				}
 			}
 			
@@ -298,19 +294,25 @@ public class ColorMatrixPanel extends JPanel {
 				colto = table.columnAtPoint(e.getPoint());
 
 				int rows = Math.abs(rowto-rowfrom) + 1;
-				int[] selectedRows = new int[rows];
-
-		
+				int[] selectedRows;
+				int[] newSelectedRows = new int[rows];
+				
 				int start = (rowto < rowfrom) ? rowto : rowfrom;
 				int stop = (rowto > rowfrom) ? rowto : rowfrom;
 				int counter = 0;
 				for (int i = start; i <= stop ; i++){
-					selectedRows[counter] = i;
+					newSelectedRows[counter] = i;
 					counter++;
 				}
+				
+			    int onmask = InputEvent.CTRL_DOWN_MASK;
+				if ((e.getModifiersEx() & onmask) == onmask)
+					selectedRows = mergeArrays(
+							getSelectedRows(), newSelectedRows);					
+				else
+					selectedRows = newSelectedRows;
 							
 				setSelectedCells(new int[0], selectedRows);
-
 			}
 			else
 				setLead(e);
