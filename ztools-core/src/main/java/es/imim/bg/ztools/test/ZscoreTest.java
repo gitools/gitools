@@ -3,7 +3,7 @@ package es.imim.bg.ztools.test;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
 import es.imim.bg.ztools.stats.calc.Statistic;
-import es.imim.bg.ztools.test.results.Result;
+import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public abstract class ZscoreTest extends AbstractTest {
@@ -28,13 +28,13 @@ public abstract class ZscoreTest extends AbstractTest {
 		return "zscore-" + statCalc.getName();
 	}
 
-	@Override
+	/*@Override
 	public String[] getResultNames() {
 		return new ZScoreResult().getNames();
-	}
+	}*/
 	
 	@Override
-	public Class<? extends Result> getResultClass() {
+	public Class<? extends CommonResult> getResultClass() {
 		return ZScoreResult.class;
 	}
 	
@@ -44,7 +44,7 @@ public abstract class ZscoreTest extends AbstractTest {
 	}
 	
 	@Override
-	public Result processTest(
+	public CommonResult processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		
@@ -76,6 +76,7 @@ public abstract class ZscoreTest extends AbstractTest {
 		leftPvalue = Probability.normal(zscore);
 		rightPvalue = 1.0 - leftPvalue;
 		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
+		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		
 		return new ZScoreResult(
 				sampleSize,

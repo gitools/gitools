@@ -1,8 +1,10 @@
 package es.imim.bg.ztools.test.results;
 
-public class CommonResult extends AbstractResult {
+import es.imim.bg.ztools.model.elements.Property;
 
-	public int numItems;
+public class CommonResult {
+
+	public int N;
 	public double leftPvalue;
 	public double rightPvalue;
 	public double twoTailPvalue;
@@ -11,43 +13,48 @@ public class CommonResult extends AbstractResult {
 	public double corrTwoTailPvalue;
 	
 	public CommonResult(
-			int numItems,
+			int N,
 			double leftPvalue, double rightPvalue,
 			double twoTailPvalue) {
 	
 		this.leftPvalue = leftPvalue;
-		this.numItems = numItems;
+		this.N = N;
 		this.rightPvalue = rightPvalue;
 		this.twoTailPvalue = twoTailPvalue;
 	}
-
-	protected int getNumParams() {
-		return 7;
-	}
 	
-	protected int fillParamNames(String[] array) {
-		array[0] = "N";
-		array[1] = "left-p-value";
-		array[2] = "right-p-value";
-		array[3] = "two-tail-p-value";
-		array[4] = "corrected-left-p-value";
-		array[5] = "corrected-right-p-value";
-		array[6] = "corrected-two-tail-p-value";
-		return 7;
-	}
-	
-	protected int fillParamValues(double[] array) {
-		array[0] = numItems;
-		array[1] = leftPvalue;
-		array[2] = rightPvalue;
-		array[3] = twoTailPvalue;
-		array[4] = corrLeftPvalue;
-		array[5] = corrRightPvalue;
-		array[6] = corrTwoTailPvalue;
-		return 7;
-	}
-
+	@Property(id = "N", name = "N", description = "Number of elements")
 	public int getN() {
-		return numItems;
+		return N;
+	}
+	
+	@Property(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
+	public double getLeftPvalue() {
+		return leftPvalue;
+	}
+	
+	@Property(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
+	public double getRightPvalue() {
+		return rightPvalue;
+	}
+	
+	@Property(id = "two-tail-p-value", name = "Two tail P-Value", description = "P-Value for alternative hipothesis different than")
+	public double getTwoTailPvalue() {
+		return twoTailPvalue;
+	}
+	
+	@Property(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
+	public double getCorrLeftPvalue() {
+		return corrLeftPvalue;
+	}
+	
+	@Property(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
+	public double getCorrRightPvalue() {
+		return corrRightPvalue;
+	}
+
+	@Property(id = "corrected-two-tail-p-value", name = "Corrected two tail P-Value", description = "Corrected P-Value for alternative hipothesis different than")
+	public double getCorrTwoTailPvalue() {
+		return corrTwoTailPvalue;
 	}
 }

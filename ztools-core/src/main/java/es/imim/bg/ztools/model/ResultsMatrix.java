@@ -1,165 +1,150 @@
 package es.imim.bg.ztools.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import cern.colt.matrix.DoubleFactory3D;
-import cern.colt.matrix.DoubleMatrix3D;
-import es.imim.bg.ztools.test.results.Result;
+import cern.colt.matrix.ObjectFactory2D;
+import cern.colt.matrix.ObjectMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
+import es.imim.bg.ztools.model.elements.ElementFacade;
 
 @XmlType(
 		propOrder = {
-				"resultClass",
-				/*"colNames", 
-				"rowNames",*/ 
-				"paramNames"/*,
-				"data"*/})
+				"rowsFacade",
+				"columnsFacade",
+				"cellsFacade"})
 				
 public class ResultsMatrix {
-
-	protected Class<? extends Result> resultClass;
 	
-	protected String[] colNames;
-	protected String[] rowNames;
-	protected String[] paramNames;
-	protected Map<String, Integer> paramNameToIndex;
-	
-	protected DoubleMatrix3D data;
+	protected ObjectMatrix1D rows;
+	protected ObjectMatrix1D columns;
+	protected ObjectMatrix2D cells;
 
+	protected ElementFacade rowsFacade;
+	protected ElementFacade columnsFacade;
+	protected ElementFacade cellsFacade;
+	
 	public ResultsMatrix() {
 	}
 	
 	public ResultsMatrix(
-			String[] colNames, 
-			String[] rowNames, 
-			String[] paramNames,
-			DoubleMatrix3D data) {
+			ObjectMatrix1D rows,
+			ObjectMatrix1D columns,
+			ObjectMatrix2D cells,
+			ElementFacade rowsFacade,
+			ElementFacade columnsFacade,
+			ElementFacade cellsFacade) {
 		
-		this.colNames = colNames;
-		this.rowNames = rowNames;
-		this.paramNames = paramNames;
-		this.data = data;
-
-		initParamNamesToIndexMap();
-	}
-
-	private void initParamNamesToIndexMap() {
-		if (paramNameToIndex == null)
-			paramNameToIndex = new HashMap<String, Integer>();
-		else
-			paramNameToIndex.clear();
+		this.rows = rows;
+		this.columns = columns;
+		this.cells = cells;
 		
-		for (int index = 0; index < paramNames.length; index++)
-			paramNameToIndex.put(paramNames[index], index);
+		this.rowsFacade = rowsFacade;
+		this.columnsFacade = columnsFacade;
+		this.cellsFacade = cellsFacade;
 	}
 
 	public void makeData() {
-		data = DoubleFactory3D.dense.make(
-				paramNames.length,
-				rowNames.length,
-				colNames.length
-				);
-	}
-	
-	public Class<? extends Result> getResultClass() {
-		return resultClass;
-	}
-	
-	public void setResultClass(Class<? extends Result> resultClass) {
-		this.resultClass = resultClass;
+		cells = ObjectFactory2D.dense.make(
+				rows.size(),
+				columns.size());
 	}
 	
 	@XmlTransient
-	public final String[] getColNames() {
-		return colNames;
+	public ObjectMatrix1D getRows() {
+		return rows;
 	}
-
-	public final void setColNames(String[] colNames) {
-		this.colNames = colNames;
-	}
-
-	@XmlTransient
-	public final String[] getRowNames() {
-		return rowNames;
-	}
-
-	public final void setRowNames(String[] rowNames) {
-		this.rowNames = rowNames;
-	}
-
-	@XmlElementWrapper(name = "statistics")
-	@XmlElement(name = "statistic")
-	//@XmlAttribute(name = "name")
-	public final String[] getParamNames() {
-		return paramNames;
-	}
-
-	public final void setParamNames(String[] paramNames) {
-		this.paramNames = paramNames;
-		initParamNamesToIndexMap();
-	}
-
-	@XmlTransient
-	public final DoubleMatrix3D getData() {
-		return data;
-	}
-
-	public final void setData(DoubleMatrix3D data) {
-		this.data = data;
+	
+	public void setRows(ObjectMatrix1D rows) {
+		this.rows = rows;
 	}
 	
 	@XmlTransient
-	public final int getParamCount() {
-		return data.slices();
+	public ObjectMatrix1D getColumns() {
+		return columns;
+	}
+	
+	public void setColumns(ObjectMatrix1D columns) {
+		this.columns = columns;
+	}
+	
+	@XmlTransient
+	public final ObjectMatrix2D getCells() {
+		return cells;
 	}
 
+	public void setCells(ObjectMatrix2D cells) {
+		this.cells = cells;
+	}
+	
 	@XmlTransient
 	public final int getRowCount() {
-		return data.rows();
+		return cells.rows();
+	}
+
+	public Object getRow(int index) {
+		return rows.get(index);
+	}
+	
+	public void setRow(int index, Object row) {
+		rows.set(index, row);
 	}
 	
 	@XmlTransient
 	public final int getColumnCount() {
-		return data.columns();
+		return cells.columns();
 	}
 	
-	@XmlTransient //FIXME: Really needed ?
-	public final String getRowName(int index) {
-		return rowNames[index];
+	public Object getColumn(int index) {
+		return columns.get(index);
 	}
 	
-	@XmlTransient //FIXME: Really needed ?
-	public final String getColumnName(int index) {
-		return colNames[index];
+	public void setColumn(int index, Object column) {
+		columns.set(index, column);
 	}
 	
-	public double getDataValue(int colIndex, int rowIndex, String paramName) {
-		final int paramIndex = paramNameToIndex.get(paramName);
-		return data.getQuick(paramIndex, rowIndex, colIndex);
+	public final Object getCell(int row, int column) {
+		return cells.get(row, column);
 	}
 	
-	public double getDataValue(int colIndex, int rowIndex, int paramIndex) {
-		return data.getQuick(paramIndex, rowIndex, colIndex);
-	}
-
-	public void setDataValue(int colIndex, int rowIndex, int paramIndex, double value) {
-		data.setQuick(paramIndex, rowIndex, colIndex, value);
+	public void setCell(int row, int column, Object cell) {
+		cells.set(row, column, cell);
 	}
 	
-	public int getParamIndex(String name) {
-		int index = 0;
-		while (index < paramNames.length 
-				&& !paramNames[index].equals(name))
-			index++;
-		
-		if (index >= paramNames.length)
-			throw new RuntimeException("Parameter called '" + name + "' doesn't exists.");
-		
-		return index;
+	public Object getCellValue(int row, int column, int property) {
+		return cellsFacade.getValue(
+				cells.get(row, column), property);
+	}
+	
+	public Object getCellValue(int row, int column, String id) {
+		return cellsFacade.getValue(
+				cells.get(row, column), id);
+	}
+	
+	//@XmlAnyElement
+	public ElementFacade getRowsFacade() {
+		return rowsFacade;
+	}
+	
+	public void setRowsFacade(ElementFacade rowsFacade) {
+		this.rowsFacade = rowsFacade;
+	}
+	
+	//@XmlAnyElement
+	public ElementFacade getColumnsFacade() {
+		return columnsFacade;
+	}
+	
+	public void setColumnsFacade(ElementFacade columnsFacade) {
+		this.columnsFacade = columnsFacade;
+	}
+	
+	//@XmlAnyElement
+	public ElementFacade getCellsFacade() {
+		return cellsFacade;
+	}
+	
+	public void setCellsFacade(ElementFacade cellsFacade) {
+		this.cellsFacade = cellsFacade;
 	}
 }

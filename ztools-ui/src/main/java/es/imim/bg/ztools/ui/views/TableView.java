@@ -127,8 +127,8 @@ public class TableView extends AbstractView {
 			}
 			@Override
 			public Double getValue(int row, int column) {
-				return tableModel.getValue(column, row/*, 
-						configPanel.getSelectedParamIndex()*/);
+				return tableModel.getValue(row/*, 
+						configPanel.getSelectedParamIndex()*/, column);
 			}
 		});
 		
@@ -149,7 +149,7 @@ public class TableView extends AbstractView {
 					int colIndex = colorMatrixPanel.getSelectedLeadColumn();
 					int rowIndex = colorMatrixPanel.getSelectedLeadRow();
 					
-					tableModel.setLeadSelection(colIndex, rowIndex);
+					tableModel.setLeadSelection(rowIndex, colIndex);
 					
 					blockSelectionUpdate = false;
 				}

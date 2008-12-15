@@ -15,9 +15,16 @@ import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 
+import cern.colt.matrix.ObjectFactory1D;
+import cern.colt.matrix.ObjectMatrix1D;
+
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.ResultsMatrix;
+import es.imim.bg.ztools.model.elements.ArrayElementFacade;
+import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.model.elements.StringElementFacade;
 
 public class ResultsResource extends Resource {
 	
@@ -109,18 +116,21 @@ public class ResultsResource extends Resource {
 		int numColumns = columnMap.size();
 		int numRows = rowMap.size();
 		
-		String[] columnNames = new String[numColumns];
+		ObjectMatrix1D columns = ObjectFactory1D.dense.make(numColumns);
 		for (Entry<String, Integer> entry : columnMap.entrySet())
-			columnNames[entry.getValue()] = entry.getKey();
+			columns.setQuick(entry.getValue(), entry.getKey());
 		
-		String[] rowNames = new String[numRows];
+		ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
 		for (Entry<String, Integer> entry : rowMap.entrySet())
-			rowNames[entry.getValue()] = entry.getKey();
+			rows.setQuick(entry.getValue(), entry.getKey());
 		
-		resultsMatrix.setColNames(columnNames);
-		resultsMatrix.setRowNames(rowNames);
-		resultsMatrix.setParamNames(paramNames);
+		resultsMatrix.setColumns(columns);
+		resultsMatrix.setRows(rows);
 		resultsMatrix.makeData();
+		
+		resultsMatrix.setColumnsFacade(new StringElementFacade());
+		resultsMatrix.setRowsFacade(new StringElementFacade());
+		resultsMatrix.setCellsFacade(new ArrayElementFacade(paramNames));
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];
@@ -130,8 +140,7 @@ public class ResultsResource extends Resource {
 			double[] paramValues = (double[]) result[1];
 			//DoubleMatrix1D params = (DoubleMatrix1D) result[1];
 			
-			for (int pi = 0; pi < numParams; pi++)
-				resultsMatrix.setDataValue(columnIndex, rowIndex, pi, paramValues[pi]);
+			resultsMatrix.setCell(rowIndex, columnIndex, paramValues);
 		}
 		
 		monitor.end();
@@ -152,47 +161,53 @@ public class ResultsResource extends Resource {
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (String resultName : resultsMatrix.getParamNames()) {
+		for (ElementProperty prop : resultsMatrix.getCellsFacade().getProperties()) {
 			out.writeSeparator();
-			out.writeQuotedValue(resultName);
+			out.writeQuotedValue(prop.getId());
 		}
 		
 		out.writeNewLine();
-		
-		final String[] columnNames = resultsMatrix.getColNames();
-		final String[] rowNames = resultsMatrix.getRowNames();
-		final String[] paramNames = resultsMatrix.getParamNames();
-		
-		int numColumns = resultsMatrix.getData().columns();
-		int numRows = resultsMatrix.getData().rows();
+
+		int numColumns = resultsMatrix.getColumnCount();
+		int numRows = resultsMatrix.getRowCount();
 		
 		if (orderByColumn) {
 			for (int colIndex = 0; colIndex < numColumns; colIndex++)
 				for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
-					writeLine(out, resultsMatrix, columnNames[colIndex], rowNames[rowIndex], 
-							paramNames, colIndex, rowIndex);
+					writeLine(out, resultsMatrix, colIndex, rowIndex);
 		}
 		else {
 			for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
 				for (int colIndex = 0; colIndex < numColumns; colIndex++)
-					writeLine(out, resultsMatrix, columnNames[colIndex], rowNames[rowIndex], 
-							paramNames, colIndex, rowIndex);
+					writeLine(out, resultsMatrix, colIndex, rowIndex);
 		}
 		
 		out.close();
 	}
 
-	private void writeLine(RawCsvWriter out, ResultsMatrix resultsMatrix, 
-			String colName, String rowName, String[] paramNames, int colIndex, int rowIndex) {
+	private void writeLine(
+			RawCsvWriter out, 
+			ResultsMatrix resultsMatrix,
+			int colIndex, int rowIndex) {
+		
+		final String colName = resultsMatrix.getColumn(colIndex).toString();
+		final String rowName = resultsMatrix.getRow(rowIndex).toString();
 		
 		out.writeQuotedValue(colName);
 		out.writeSeparator();
 		out.writeQuotedValue(rowName);
 		
-		for (int paramIndex = 0; paramIndex < paramNames.length; paramIndex++) {
+		Object element = resultsMatrix.getCell(rowIndex, colIndex);
+		
+		ElementFacade cellsFacade = resultsMatrix.getCellsFacade();
+		
+		int numProperties = cellsFacade.getPropertyCount();
+		
+		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
 			out.writeSeparator();
-			out.writeValue(String.valueOf(
-					resultsMatrix.getDataValue(colIndex, rowIndex, paramIndex)));
+			
+			Object value = cellsFacade.getValue(element, propIndex);
+			out.writeQuotedValue(value.toString());
 		}
 		
 		out.writeNewLine();

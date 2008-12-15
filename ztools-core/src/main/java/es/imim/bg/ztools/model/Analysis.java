@@ -61,7 +61,7 @@ public class Analysis {
 	}
 	
 	@XmlTransient
-	public ModuleMap getModuleSet() {
+	public ModuleMap getModuleMap() {
 		return moduleMap;
 	}
 	

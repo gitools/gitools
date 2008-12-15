@@ -9,12 +9,18 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import cern.colt.matrix.DoubleFactory3D;
-import cern.colt.matrix.DoubleMatrix3D;
+import cern.colt.matrix.DoubleFactory1D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectFactory1D;
+import cern.colt.matrix.ObjectFactory2D;
+import cern.colt.matrix.ObjectMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
+import es.imim.bg.ztools.model.elements.ArrayElementFacade;
+import es.imim.bg.ztools.model.elements.StringElementFacade;
 import es.imim.bg.ztools.ui.actions.Actions;
 import es.imim.bg.ztools.ui.jobs.JobProcessor;
 import es.imim.bg.ztools.ui.model.ResultsModel;
@@ -115,21 +121,36 @@ public class AppFrame extends JFrame {
 	private void createDemoView() {
 		int rows = 40;
 		int cols = 12;
-		DoubleMatrix3D data = DoubleFactory3D.dense.random(2, rows, cols);
 		
-		final String[] rowNames = new String[data.rows()];
-		for (int i = 0; i < rowNames.length; i++)
-			rowNames[i] = "row " + (i + 1);
+		int k = 0;
+		DoubleMatrix1D values = DoubleFactory1D.dense.random(2 * rows * cols);
 		
-		final String[] colNames = new String[data.columns()];
-		for (int i = 0; i < colNames.length; i++)
-			colNames[i] = "col " + (i + 1);
+		ObjectMatrix2D data = ObjectFactory2D.dense.make(rows, cols);
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
+				double[] v = new double[] {
+					values.getQuick(k++),
+					values.getQuick(k++)
+				};
+				data.setQuick(row, col, v);
+			}
+		}
+		
+		final ObjectMatrix1D rowNames = ObjectFactory1D.dense.make(data.rows());
+		for (int i = 0; i < rowNames.size(); i++)
+			rowNames.setQuick(i, "row " + (i + 1));
+		
+		final ObjectMatrix1D colNames = ObjectFactory1D.dense.make(data.columns());
+		for (int i = 0; i < colNames.size(); i++)
+			colNames.setQuick(i, "col " + (i + 1));
 		
 		ResultsMatrix resultsMatrix = new ResultsMatrix(
-				colNames, 
-				rowNames, 
-				new String[] {"right-p-value", "param2"}, 
-				data);
+				rowNames,
+				colNames,   
+				data,
+				new StringElementFacade(), 
+				new StringElementFacade(),
+				new ArrayElementFacade(new String[] {"param1", "param2"}));
 		
 		Analysis analysis = new Analysis();
 		analysis.setResults(resultsMatrix);

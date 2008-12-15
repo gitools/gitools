@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
+import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.test.BinomialTest;
 import es.imim.bg.ztools.test.FisherTest;
 import es.imim.bg.ztools.test.Test;
@@ -17,6 +19,7 @@ import es.imim.bg.ztools.test.ZscoreTest;
 import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.BinomialResult.AproximationUsed;
 import es.imim.bg.ztools.utils.Util;
 
 public class REXmlAnalysisResource extends AnalysisResource {
@@ -45,8 +48,15 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println("<analysis name=\"" + analysis.getName() + "\" binomial=\"false\">");
 		
-		String[] condNames = analysis.getResults().getColNames();
-		String[] moduleNames = analysis.getResults().getRowNames();
+		ResultsMatrix resultsMatrix = analysis.getResults();
+		
+		String[] condNames = new String[resultsMatrix.getColumnCount()];
+		for (int i = 0; i < condNames.length; i++)
+			condNames[i] = resultsMatrix.getColumn(i).toString();
+		
+		String[] moduleNames = new String[resultsMatrix.getRowCount()];
+		for (int i = 0; i < moduleNames.length; i++)
+			moduleNames[i] = resultsMatrix.getRow(i).toString();
 		
 		TestFactory testFactory = 
 			TestFactory.createFactory(analysis.getToolConfig());
@@ -54,12 +64,15 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		Test test = testFactory.create(); //FIXME?
 		String statName = test.getName();
 		
-		ResultsMatrix resultsMatrix = analysis.getResults();
-		
-		final String[] paramNames = resultsMatrix.getParamNames();
+		List<ElementProperty> properties = resultsMatrix.getCellsFacade().getProperties();
+
+		final String[] paramNames = new String[properties.size()];
 		final Map<String, Integer> paramIndexMap = new HashMap<String, Integer>();
-		for (int i = 0; i < paramNames.length; i++)
-			paramIndexMap.put(paramNames[i], new Integer(i));
+		for (int i = 0; i < properties.size(); i++) {
+			final ElementProperty prop = properties.get(i);
+			paramNames[i] = prop.getId();
+			paramIndexMap.put(paramNames[i], i);
+		}
 		
 		int indexOfN = indexOfParam(paramIndexMap, "N");
 		int indexOfRightPvalue = indexOfParam(paramIndexMap, "right-p-value");
@@ -74,7 +87,7 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		}
 		out.println("\t</property-list>");
 		
-		final int[][] moduleItemIndices = analysis.getModuleSet().getItemIndices();
+		final int[][] moduleItemIndices = analysis.getModuleMap().getItemIndices();
 		
 		for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 			final String moduleName = moduleNames[moduleIndex];
@@ -82,23 +95,31 @@ public class REXmlAnalysisResource extends AnalysisResource {
 			int greaterN = 0;
 			for (int condIndex = 0; condIndex < numConditions; condIndex++)
 				greaterN = Math.max(greaterN, 
-						(int)resultsMatrix.getDataValue(condIndex, moduleIndex, indexOfN));
+						(Integer) resultsMatrix.getCellValue(moduleIndex, condIndex, indexOfN));
 		
 			int moduleSize = moduleItemIndices[moduleIndex].length;
 			
 			if (greaterN >= minModuleSize && greaterN <= maxModuleSize) {
 				out.println("\t<class name=\"" + moduleName + "\" size=\"" + moduleSize + "\">");
+
+				String sumLabel = "mean";
+				double sum = 0;
 				
 				for (int propIndex = 0; propIndex < numConditions; propIndex++) {
 					
-					final int N = (int)resultsMatrix.getDataValue(propIndex, moduleIndex, indexOfN);
-					final double rightPvalue = resultsMatrix.getDataValue(propIndex, moduleIndex, indexOfRightPvalue);
-					final double twoTailPvalue = resultsMatrix.getDataValue(
-							propIndex, moduleIndex, indexOfParam(paramIndexMap, "two-tail-p-value"));
+					final int N = (Integer) resultsMatrix.getCellValue(
+							moduleIndex, propIndex, indexOfN);
+					final double rightPvalue = (Double) resultsMatrix.getCellValue(
+							moduleIndex, propIndex, indexOfRightPvalue);
+					final double twoTailPvalue = (Double) resultsMatrix.getCellValue(
+							moduleIndex, propIndex, "two-tail-p-value");
 					
 					final String propName = condNames[propIndex];
 					
 					if (N >= minModuleSize && N <= maxModuleSize) {
+						
+						sum += rightPvalue;
+						
 						String valueSt = null;
 						String zscoreSt = null;
 						String pvalueSt = null;
@@ -107,14 +128,14 @@ public class REXmlAnalysisResource extends AnalysisResource {
 						
 						if (test instanceof FisherTest) {
 							
-							int a = (int) resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "a"));
-							int b = (int) resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "b"));
-							int c = (int) resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "c"));
-							int d = (int) resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "d"));
+							int a = ((Double)resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "a")).intValue();
+							int b = ((Double)resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "b")).intValue();
+							int c = ((Double)resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "c")).intValue();
+							int d = ((Double)resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "d")).intValue();
 							
 							final double expected = ((double)((a + b) * (a + c)) 
 									/ (double)(a + b + c + d));
@@ -127,14 +148,14 @@ public class REXmlAnalysisResource extends AnalysisResource {
 						}
 						else if (test instanceof ZscoreTest) {
 							
-							double observed = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
-							double expectedMean = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-mean"));
-							double expectedStdev = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-stdev"));
-							double zscore = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "z-score"));
+							double observed = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "observed");
+							double expectedMean = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "expected-mean");
+							double expectedStdev = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "expected-stdev");
+							double zscore = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "z-score");
 							
 							valueSt = Double.toString(observed);
 							zscoreSt = Double.toString(zscore);
@@ -148,17 +169,16 @@ public class REXmlAnalysisResource extends AnalysisResource {
 							sigmaSt = Double.toString(expectedStdev);
 						}
 						else if (test instanceof BinomialTest) {
-							double observed = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "observed"));
-							double expectedMean = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-mean"));
-							double expectedStdev = resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "expected-stdev"));
-							int aprox = (int) resultsMatrix.getDataValue(
-									propIndex, moduleIndex, indexOfParam(paramIndexMap, "aproximation"));
-							BinomialResult.AproximationUsed apr = 
-								BinomialResult.AproximationUsed.values()[aprox];
-							
+							double observed = (Integer) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "observed");
+							double expectedMean = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "expected-mean");
+							double expectedStdev = (Double) resultsMatrix.getCellValue(
+									moduleIndex, propIndex, "expected-stdev");
+							BinomialResult.AproximationUsed apr =
+								(AproximationUsed) resultsMatrix.getCellValue(
+								moduleIndex, propIndex, "aproximation");
+
 							valueSt = Double.toString(observed);
 							zscoreSt = Double.toString(Util.pvalue2rightzscore(rightPvalue));
 							pvalueSt = Double.toString(rightPvalue);
@@ -189,7 +209,9 @@ public class REXmlAnalysisResource extends AnalysisResource {
 							System.out.println("cell n = " + cell.getN());*/
 				}
 				
-				//TODO order by sum tag
+				out.println("\t\t<order>");
+				out.println("\t\t\t<statistics name=\"" + sumLabel + "\" value=\"" + sum + "\"/>");
+				out.println("\t\t</order>");
 				
 				out.println("\t</class>");
 			}

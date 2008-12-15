@@ -5,7 +5,7 @@ import cern.jet.stat.Probability;
 import es.imim.bg.ztools.stats.calc.OnesCountStatistic;
 import es.imim.bg.ztools.stats.calc.Statistic;
 import es.imim.bg.ztools.test.results.BinomialResult;
-import es.imim.bg.ztools.test.results.Result;
+import es.imim.bg.ztools.test.results.CommonResult;
 
 public class BinomialTest extends AbstractTest {
 
@@ -16,8 +16,9 @@ public class BinomialTest extends AbstractTest {
 	};
 	
 	private abstract class BinomialAproximation {
-		public abstract Result getResult(
-				int observed, int n, double expectedMean, double expectedStdev, double expectedVar);
+		public abstract CommonResult getResult(
+				int observed, int n, double p,
+				double expectedMean, double expectedStdev, double expectedVar);
 	}
 	
 	protected Statistic statCalc;
@@ -38,39 +39,51 @@ public class BinomialTest extends AbstractTest {
 		case onlyExact: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
-					return resultWithExact(observed, n, expectedMean, expectedStdev);
+				public CommonResult getResult(
+						int observed, int n, double p,
+						double expectedMean, double expectedStdev, double expectedVar) {
+					
+					return resultWithExact(observed, n, p, expectedMean, expectedStdev);
 				}
 			};
 			break;
 		case onlyNormal: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
-					return resultWithNormal(observed, n, expectedMean, expectedStdev);
+				public CommonResult getResult(
+						int observed, int n, double p,
+						double expectedMean, double expectedStdev, double expectedVar) {
+					
+					return resultWithNormal(observed, n, p, expectedMean, expectedStdev);
 				}
 			};
 			break;
 		case onlyPoisson: 
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
-					return resultWithPoisson(observed, n, expectedMean, expectedStdev);
+				public CommonResult getResult(
+						int observed, int n, double p,
+						double expectedMean, double expectedStdev, double expectedVar) {
+					
+					return resultWithPoisson(observed, n, p, expectedMean, expectedStdev);
 				}
 			};
 			break;
 		case automatic:
 			this.aprox = new BinomialAproximation() {
 				@Override
-				public Result getResult(int observed, int n, double expectedMean, double expectedStdev, double expectedVar) {
+				public CommonResult getResult(
+						int observed, int n,  double p, 
+						double expectedMean, double expectedStdev, double expectedVar) {
+					
 					if (n <= exactSizeLimit)
-						return resultWithExact(observed, n, expectedMean, expectedStdev);
+						return resultWithExact(observed, n, p, expectedMean, expectedStdev);
 					else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
-						return resultWithPoisson(observed, n, expectedMean, expectedStdev);
+						return resultWithPoisson(observed, n, p, expectedMean, expectedStdev);
 					else if ((n * p >= 5) && (n * (1 - p) >= 5))
-						return resultWithNormal(observed, n, expectedMean, expectedStdev);
+						return resultWithNormal(observed, n, p, expectedMean, expectedStdev);
 					else 
-						return resultWithExact(observed, n, expectedMean, expectedStdev);
+						return resultWithExact(observed, n, p, expectedMean, expectedStdev);
 				}
 			};
 			break;
@@ -90,13 +103,13 @@ public class BinomialTest extends AbstractTest {
 		return sb.toString();
 	}
 
-	@Override
+	/*@Override
 	public String[] getResultNames() {
 		return new BinomialResult().getNames();
-	}
+	}*/
 
 	@Override
-	public Class<? extends Result> getResultClass() {
+	public Class<? extends CommonResult> getResultClass() {
 		return BinomialResult.class;
 	}
 	
@@ -106,7 +119,7 @@ public class BinomialTest extends AbstractTest {
 	}
 	
 	@Override
-	public Result processTest(
+	public CommonResult processTest(
 			String condName, DoubleMatrix1D condItems,
 			String groupName, int[] groupItemIndices) {
 		
@@ -127,11 +140,12 @@ public class BinomialTest extends AbstractTest {
 		double expectedVar = n * p * (1.0 - p);
 		double expectedStdev = Math.sqrt(expectedVar);
 		
-		return aprox.getResult(observed, n, expectedMean, expectedStdev, expectedVar);
+		return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
 	}
 	
-	public final Result resultWithExact(
-			int observed, int n, double expectedMean, double expectedStdev) {
+	public final CommonResult resultWithExact(
+			int observed, int n, double p,
+			double expectedMean, double expectedStdev) {
 		
 		double leftPvalue;
 		double rightPvalue;
@@ -140,14 +154,16 @@ public class BinomialTest extends AbstractTest {
 		leftPvalue = /*filterPvalue(*/Probability.binomial(observed, n, p)/*)*/;
 		rightPvalue = /*filterPvalue(*/Probability.binomialComplemented(observed, n, p)/*)*/;
 		twoTailPvalue = leftPvalue + rightPvalue;
+		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.exact,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
-				observed, expectedMean, expectedStdev);
+				observed, expectedMean, expectedStdev, p);
 	}
 
-	public final Result resultWithNormal(
-			int observed, int n, double expectedMean, double expectedStdev) {
+	public final CommonResult resultWithNormal(
+			int observed, int n, double p,
+			double expectedMean, double expectedStdev) {
 		
 		double zscore;
 		double leftPvalue;
@@ -161,14 +177,16 @@ public class BinomialTest extends AbstractTest {
 		leftPvalue = Probability.normal(zscore);
 		rightPvalue = 1.0 - leftPvalue;
 		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
+		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.normal,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
-				observed, expectedMean, expectedStdev);
+				observed, expectedMean, expectedStdev, p);
 	}
 	
-	public final Result resultWithPoisson(
-			int observed, int n, double expectedMean, double expectedStdev) {
+	public final CommonResult resultWithPoisson(
+			int observed, int n, double p,
+			double expectedMean, double expectedStdev) {
 		
 		double leftPvalue;
 		double rightPvalue;
@@ -179,7 +197,8 @@ public class BinomialTest extends AbstractTest {
 		try {
 			leftPvalue = Probability.poisson(observed, expectedMean);
 			rightPvalue = 1.0 - leftPvalue;
-			twoTailPvalue = (observed <= expectedMean  ? leftPvalue : rightPvalue) * 2; //FIXME: Review 
+			twoTailPvalue = (observed <= expectedMean  ? leftPvalue : rightPvalue) * 2; //FIXME: Review
+			twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		}
 		catch (ArithmeticException e) {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
@@ -187,7 +206,7 @@ public class BinomialTest extends AbstractTest {
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.poisson,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
-				observed, expectedMean, expectedStdev);
+				observed, expectedMean, expectedStdev, p);
 	}
 
 	/*private double filterPvalue(double pvalue) {

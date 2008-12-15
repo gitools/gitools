@@ -151,7 +151,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 			.save(analysis.getDataMatrix(), monitor);
 		
 		new ModuleMapResource(new File(workDirFile, modulesFileName))
-			.save(analysis.getModuleSet(), monitor);
+			.save(analysis.getModuleMap(), monitor);
 		
 		new ResultsResource(new File(workDirFile, resultsFileName))
 			.write(analysis.getResults(), resultsOrderByCond, monitor);

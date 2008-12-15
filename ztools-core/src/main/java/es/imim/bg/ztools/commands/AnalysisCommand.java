@@ -80,7 +80,7 @@ public abstract class AnalysisCommand implements Command {
 
 		final String basePath = workdir + File.separator + analysisName;
 		
-		monitor.begin("Saving investigation ...", 1);
+		monitor.begin("Saving project ...", 1);
 		monitor.info("Location: " + basePath);
 		
 		Set<String> formats = new HashSet<String>();
@@ -117,7 +117,7 @@ public abstract class AnalysisCommand implements Command {
 		//inv.setNotes("inv notes");
 		proj.getAnalysis().add(analysis);
 		proj.getDataMatrices().add(analysis.getDataMatrix());
-		proj.getModuleSets().add(analysis.getModuleSet());
+		proj.getModuleSets().add(analysis.getModuleMap());
 		ProjectResource res = new ProjectResource(
 				new File(path, "project.xml"));
 		try {

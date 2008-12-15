@@ -86,8 +86,8 @@ public abstract class CubeSectionModel
 	}
 	
 	@Override
-	public double getValue(int column, int row, int param) {
-		return getDataValue(visibleCols[column], visibleRows[row], param);
+	public double getValue(int row, int column, int param) {
+		return getDataValue(visibleRows[row], visibleCols[column], param);
 	}
 
 	@Override
@@ -163,10 +163,10 @@ public abstract class CubeSectionModel
 	}
 
 	@Override
-	public double getValue(int column, int row) {
+	public double getValue(int row, int column) {
 		return getDataValue(
+				visibleRows[row],
 				visibleCols[column], 
-				visibleRows[row], 
 				currentParam);
 	}
 	
@@ -309,7 +309,7 @@ public abstract class CubeSectionModel
 	}
 	
 	@Override
-	public void setLeadSelection(int column, int row) {
+	public void setLeadSelection(int row, int column) {
 		int[] oldLead = new int[] {selectedLeadColumn, selectedLeadRow};
 		
 		selectedLeadColumn = column;
@@ -336,7 +336,7 @@ public abstract class CubeSectionModel
 			for (int i = 0; i < paramNames.length; i++) {
 				final String paramName = paramNames[i];
 				final String value = Double.toString(
-						getValue(column, row, i));
+						getValue(row, column, i));
 				
 				sb.append("<p><b>");
 				sb.append(paramName);
@@ -470,10 +470,10 @@ public abstract class CubeSectionModel
 					final SortCriteria c = criteriaList.get(i);
 				
 					double v1 = getDataValue(
-							c.getColumnIndex(), idx1, c.getParamIndex());
+							idx1, c.getColumnIndex(), c.getParamIndex());
 					
 					double v2 = getDataValue(
-							c.getColumnIndex(), idx2, c.getParamIndex());
+							idx2, c.getColumnIndex(), c.getParamIndex());
 					
 					res = (int) Math.signum(
 							c.isAscending() ? (v1 - v2) : (v2 - v1));
@@ -505,14 +505,14 @@ public abstract class CubeSectionModel
 				for (int i = 0; i < N; i++) {
 					int colIdx = visibleCols[selCols[i]];
 					
-					double v1 = getDataValue(colIdx, idx1, currentParam);
+					double v1 = getDataValue(idx1, colIdx, currentParam);
 				
 					m1 *= v1;
 					s1 += v1;
 					ss1 += v1 * v1;
 					se1 += Math.exp(s1);
 					
-					double v2 = getDataValue(colIdx, idx2, currentParam);
+					double v2 = getDataValue(idx2, colIdx, currentParam);
 					
 					m2 *= v2;
 					s2 += v2;
@@ -541,7 +541,7 @@ public abstract class CubeSectionModel
 	
 	// internal
 	
-	private double getDataValue(int column, int row, int param) {
+	private double getDataValue(int row, int column, int param) {
 		return data.get(param).get(row, column);
 	}
 	

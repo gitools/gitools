@@ -2,8 +2,8 @@ package es.imim.bg.ztools.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import es.imim.bg.ztools.stats.FisherExactTest;
+import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
-import es.imim.bg.ztools.test.results.Result;
 
 public class FisherTest extends AbstractTest {
 	
@@ -15,13 +15,13 @@ public class FisherTest extends AbstractTest {
 		return "fisher";
 	}
 
-	@Override
+	/*@Override
 	public String[] getResultNames() {
 		return new FisherResult().getNames();
-	}
+	}*/
 	
 	@Override
-	public Class<? extends Result> getResultClass() {
+	public Class<? extends CommonResult> getResultClass() {
 		return FisherResult.class;
 	}
 	
@@ -30,7 +30,7 @@ public class FisherTest extends AbstractTest {
 	}
 	
 	@Override
-	public Result processTest(
+	public CommonResult processTest(
 			String condName, DoubleMatrix1D condItems, 
 			String groupName, int[] groupItemIndices) {
 		
@@ -55,12 +55,12 @@ public class FisherTest extends AbstractTest {
 	 * 
 	 * Contingency table format:
 	 * 
-	 *                               | has a 1.0  | hasn't a 1.0 |
-	 * ------------------------------+------------+--------------+
-	 *  belongs to the group         |      a     |       b      |
-	 * ------------------------------+------------+--------------+
-	 *  doesn't belongs to the group |      c     |       d      |
-	 * ------------------------------+------------+--------------+
+	 *                             | has a 1.0  | hasn't a 1.0 |
+	 * ----------------------------+------------+--------------+
+	 *  belongs to the group       |      a     |       b      |
+	 * ----------------------------+------------+--------------+
+	 *  don't belong to the group  |      c     |       d      |
+	 * ----------------------------+------------+--------------+
 	 * 
 	 * @param condItems all the data for the items of the property
 	 * @param groupItems item indices to propItems for the items that belongs to the group

@@ -1,20 +1,24 @@
 package es.imim.bg.ztools.processors;
 
 import java.util.Date;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
 
 import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.ObjectFactory1D;
+import cern.colt.matrix.ObjectMatrix1D;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
+import es.imim.bg.ztools.model.elements.BeanElementFacade;
+import es.imim.bg.ztools.model.elements.StringElementFacade;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
-import es.imim.bg.ztools.test.results.Result;
+import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.threads.ThreadManager;
+import es.imim.bg.ztools.threads.ThreadQueue;
+import es.imim.bg.ztools.threads.ThreadSlot;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.
@@ -28,11 +32,13 @@ public class ZCalcProcessor {
 				return !Double.isNaN(element);
 			}
 		};
-		
-	private class RunSlot {
+
+	private class RunSlot extends ThreadSlot {
 		public DoubleMatrix1D population;
 		public Test test;
-		public RunSlot() {
+		
+		public RunSlot(ThreadQueue threadQueue) {
+			super(threadQueue);
 			population = null;
 			test = null;
 		}
@@ -41,26 +47,7 @@ public class ZCalcProcessor {
 	private Analysis analysis;
 	
 	public ZCalcProcessor(
-			/*String analysisName, 
-			String[] condNames,
-			String[] itemNames,			
-			DoubleMatrix2D data,
-			String[] groupNames,			
-			int[][] groupItemIndices,
-			TestFactory testFactory*/
-			Analysis analysis
-			) {
-		
-		/*this.name = analysisName;
-		this.condNames = condNames;
-		this.itemNames = itemNames;
-		
-		this.data = data;
-		
-		this.groupNames = groupNames;
-		this.groupItemIndices = groupItemIndices;
-		
-		this.testFactory = testFactory;*/
+			Analysis analysis) {
 		
 		this.analysis = analysis;
 	}
@@ -72,40 +59,45 @@ public class ZCalcProcessor {
 		TestFactory testFactory = 
 			TestFactory.createFactory(analysis.getToolConfig());
 		
-		String[] paramNames = testFactory.create().getResultNames();
-		final int numParams = paramNames.length;
+		//String[] paramNames = testFactory.create().getResultNames();
+		//final int numParams = paramNames.length;
 		
-		String[] condNames = analysis.getDataMatrix().getColNames();
+		ObjectMatrix1D conditions = ObjectFactory1D.dense.make(
+				analysis.getDataMatrix().getColNames());
 		
 		monitor.debug("Transposing data...");
 		DoubleMatrix2D data = analysis.getDataMatrix().getData().viewDice().copy();
 		
-		String[] moduleNames = analysis.getModuleSet().getModuleNames();
-		int[][] moduleItemIndices = analysis.getModuleSet().getItemIndices();
+		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
+				analysis.getModuleMap().getModuleNames());
+		
+		int[][] moduleItemIndices = analysis.getModuleMap().getItemIndices();
 		
 		final int numConditions = data.rows();
-		final int numModules = moduleNames.length;
+		final int numModules = modules.size();
 		
-		monitor.begin("ZCalc analysis...", numConditions * numModules);
+		monitor.begin("zetcalc analysis...", numConditions * numModules);
 		
 		Test test = testFactory.create();
 		
 		final ResultsMatrix resultsMatrix = new ResultsMatrix();
-		resultsMatrix.setResultClass(test.getResultClass());
-		resultsMatrix.setColNames(condNames);
-		resultsMatrix.setRowNames(moduleNames);
-		resultsMatrix.setParamNames(paramNames);
+		
+		resultsMatrix.setColumns(conditions);
+		resultsMatrix.setRows(modules);
 		resultsMatrix.makeData();
 		
-		int numProcs = ThreadManager.getNumThreads();
-		final ExecutorService executor = ThreadManager.getExecutor();
+		resultsMatrix.setRowsFacade(new StringElementFacade());
+		resultsMatrix.setColumnsFacade(new StringElementFacade());
+		resultsMatrix.setCellsFacade(
+				new BeanElementFacade(test.getResultClass()));
 		
-		final ArrayBlockingQueue<RunSlot> queue = 
-			new ArrayBlockingQueue<RunSlot>(numProcs);
+		int numProcs = ThreadManager.getNumThreads();
+		
+		ThreadQueue threadQueue = new ThreadQueue(numProcs);
 		
 		for (int i = 0; i < numProcs; i++)
 			try {
-				queue.put(new RunSlot());
+				threadQueue.put(new RunSlot(threadQueue));
 			} catch (InterruptedException e) {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
@@ -114,7 +106,7 @@ public class ZCalcProcessor {
 		
 		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
 			
-			final String condName = condNames[condIndex];
+			final String condName = conditions.getQuick(condIndex).toString();
 			
 			final DoubleMatrix1D condItems = data.viewRow(condIndex);
 			
@@ -126,32 +118,27 @@ public class ZCalcProcessor {
 			
 			for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 
-				final int condIdx = condIndex;
-				final int moduleIdx = moduleIndex;
+				final String moduleName = modules.getQuick(moduleIndex).toString();
+				final int[] itemIndices = moduleItemIndices[moduleIndex];
 				
-				final String moduleName = moduleNames[moduleIdx];
-				final int[] itemIndices = moduleItemIndices[moduleIdx];
-					
-				final RunSlot slot = takeSlot(monitor, queue);
+				final RunSlot slot = (RunSlot) threadQueue.take();
 				
 				if (slot.population != population) {
 					slot.population = population;
 					slot.test = testFactory.create();
 					slot.test.processPopulation(condName, population);
 				}
-
-				executor.execute(new Runnable() {
+				
+				final int condIdx = condIndex;
+				final int moduleIdx = moduleIndex;
+				
+				slot.execute(new Runnable() {
 					public void run() { 
-						Result result = slot.test.processTest(
+						CommonResult result = slot.test.processTest(
 								condName, condItems,
 								moduleName, itemIndices);
 						
-						double[] values = result.getValues();
-						
-						for (int paramIdx = 0; paramIdx < numParams; paramIdx++)
-							resultsMatrix.setDataValue(condIdx, moduleIdx, paramIdx, values[paramIdx]);
-						
-						queue.offer(slot);
+						resultsMatrix.setCell(moduleIdx, condIdx, result);
 					}
 				});
 				
@@ -175,19 +162,4 @@ public class ZCalcProcessor {
 		
 		monitor.end();
 	}
-
-	private RunSlot takeSlot(
-			ProgressMonitor monitor,
-			final ArrayBlockingQueue<RunSlot> queue) throws InterruptedException {
-		
-		RunSlot slot = null;
-		try {
-			slot = queue.take();
-		} catch (InterruptedException e) {
-			monitor.debug("InterruptedException while retrieving a free slot from the run queue: " + e.getLocalizedMessage());
-			throw e;
-		}
-		return slot;
-	}
-
 }

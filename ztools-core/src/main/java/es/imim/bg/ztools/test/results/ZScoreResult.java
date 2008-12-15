@@ -1,5 +1,7 @@
 package es.imim.bg.ztools.test.results;
 
+import es.imim.bg.ztools.model.elements.Property;
+
 public class ZScoreResult extends CommonResult {
 
 	public double observed;
@@ -27,32 +29,23 @@ public class ZScoreResult extends CommonResult {
 		this.zscore = zscore;
 	}
 
-	@Override
-	protected int getNumParams() {
-		return super.getNumParams() + 4;
+	@Property(id = "observed", name = "Observed value", description = "Value observed")
+	public double getObserved() {
+		return observed;
 	}
 	
-	@Override
-	protected int fillParamNames(String[] array) {
-		int i = super.fillParamNames(array);
-		
-		array[i + 0] = "observed";
-		array[i + 1] = "expected-mean";
-		array[i + 2] = "expected-stdev";
-		array[i + 3] = "z-score";
-		
-		return i + 4;
+	@Property(id = "expected-mean", name = "Expected mean", description = "Value mean expected by chance")
+	public double getExpectedMean() {
+		return expectedMean;
 	}
 	
-	@Override
-	protected int fillParamValues(double[] array) {
-		int i = super.fillParamValues(array);
-		
-		array[i + 0] = observed;
-		array[i + 1] = expectedMean;
-		array[i + 2] = expectedStdev;
-		array[i + 3] = zscore;
-		
-		return i + 4;
+	@Property(id = "expected-stdev", name = "Expected stddev", description = "Value standard deviation expected by chance")
+	public double getExpectedStdev() {
+		return expectedStdev;
+	}
+	
+	@Property(id = "z-score", name = "Z Score", description = "Normal distribution Z Score")
+	public double getZscore() {
+		return zscore;
 	}
 }
