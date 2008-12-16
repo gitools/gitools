@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.ui.actions;
 
+import es.imim.bg.ztools.ui.actions.table.FilterRowsByNameAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectedColumnsAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectedRowsAction;
 import es.imim.bg.ztools.ui.actions.table.MoveColRowAction;
@@ -9,6 +10,8 @@ import es.imim.bg.ztools.ui.actions.table.MoveColRowAction.MoveDirection;
 public final class TableActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 4844715504798938035L;
+	
+	public static final BaseAction filterRowsByNames = new FilterRowsByNameAction();
 	
 	public static final BaseAction hideSelectedColumnsAction = new HideSelectedColumnsAction();
 	public static final BaseAction sortSelectedColumnsAction = new SortSelectedColumnsAction();
@@ -28,6 +31,8 @@ public final class TableActionSet extends ActionSet {
 
 	public TableActionSet() {
 		super("Table", new BaseAction[] {
+			filterRowsByNames,
+			BaseAction.separator,
 			hideSelectedColumnsAction,
 			hideSelectedRowsAction,
 			BaseAction.separator,
