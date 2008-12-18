@@ -7,11 +7,11 @@ import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.NameListDialog;
 
-public class ShowRowsByNameAction extends BaseAction {
+public class ShowRowsByNamesAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public ShowRowsByNameAction() {
+	public ShowRowsByNamesAction() {
 		super("Show rows by name");	
 		setDesc("Show rows by name");
 	}

@@ -35,87 +35,56 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.dialogs.DefineCriteriaDialog.Criteria;
 import es.imim.bg.ztools.ui.utils.Options;
 
-public class NameListDialog extends JDialog {
+public class ValueListDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	private Boolean regExChecked = false;
-	
-	private List<String> filterList;
-	
-	private void setRegExChecked(Boolean regEx) {
-		this.regExChecked = regEx;
+	private Object[] params;
+	private List<Criteria> valueList;
+
+	private void setValueList(List<Criteria> newValueList) {
+		this.valueList = newValueList;
 	}
 
-	public Boolean getRegExChecked() {
-		return regExChecked;
-	}
-
-	private void setFilterList(List<String> newFilterList) {
-		this.filterList = newFilterList;
-	}
-
-	public List<String> getFilterList() {
+	public List<Criteria> getValueList() {
 		setVisible(true);
-		return filterList;
+		return valueList;
 	}
 	
-	public NameListDialog(JFrame owner) {
+	public ValueListDialog(JFrame owner, Object[] params) {
 		super(owner);
 		
 		setModal(true);
-		setTitle("Name List");
+		setTitle("Value List");
 		
-		setLocationByPlatform(true);		
+		this.params = params;
+		
+		setLocationByPlatform(true);				
 		createComponents();
 		getContentPane().setBackground(Color.WHITE);
 		pack();
 	}
 
 	private void createComponents() {
-		
-		final Checkbox checkbox = new Checkbox("use regular Expression");
-		JPanel checkboxPanel = new JPanel();
-		checkboxPanel.setLayout(new BorderLayout());
-		checkboxPanel.add(checkbox, BorderLayout.WEST);
 				
 		final DefaultListModel tempListModel = new DefaultListModel();    
 			// Create the temporary model object.
-		final JList tempFilterList = new JList(tempListModel);     
+		final JList tempValueList = new JList(tempListModel);   
 			// Create the temporary list component.
 		
-
-		
-		final JScrollPane scrollPane = new JScrollPane(tempFilterList);
+		final JScrollPane scrollPane = new JScrollPane(tempValueList);
 		scrollPane.setBorder(
 				BorderFactory.createEmptyBorder());
-		
 
-		JButton loadBtn = new JButton("Load...");
-		loadBtn.setMargin(new Insets(0, 30, 0, 30));
-		loadBtn.addActionListener(new ActionListener() {
-			//@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					loadFromFile(tempListModel, tempFilterList);
-				} catch (IOException e1) {
-					JOptionPane.showInputDialog(
-			                scrollPane,
-			                "File could not be read\n",
-			                "Customized Dialog",
-			                JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		
-		JButton addBtn = new JButton("Add...");
+		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(tempListModel, scrollPane);
+				addElmenent(tempListModel);
 			}
 		});
 		
@@ -125,7 +94,7 @@ public class NameListDialog extends JDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(tempListModel, tempFilterList);
+				removeElement(tempListModel, tempValueList);
 			}
 		});
 		
@@ -135,7 +104,7 @@ public class NameListDialog extends JDialog {
 		upBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(tempListModel, tempFilterList);
+				moveUp(tempListModel, tempValueList);
 			}
 		});
 		
@@ -145,14 +114,14 @@ public class NameListDialog extends JDialog {
 		downBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(tempListModel, tempFilterList);
+				moveDown(tempListModel, tempValueList);
 			}
 		});
 		
-		tempFilterList.addListSelectionListener(new ListSelectionListener() {
+		tempValueList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(tempFilterList.getSelectedValue() == null){
+				if(tempValueList.getSelectedValue() == null){
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
@@ -164,16 +133,16 @@ public class NameListDialog extends JDialog {
 			}
 		});
 		
-		JButton acceptBtn = new JButton("OK");
+		final JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(tempListModel, checkbox.getState());
+				acceptChanges(tempListModel);
 			}
 		});
 		
-		JButton cancelBtn = new JButton("Cancel");
+		final JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setMargin(new Insets(0, 30, 0, 30));
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
@@ -183,27 +152,25 @@ public class NameListDialog extends JDialog {
 			}
 		});
 		
-		JPanel btnPanel = new JPanel();
+		final JPanel btnPanel = new JPanel();
 		btnPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		btnPanel.setLayout(new GridLayout(7,1));
-		btnPanel.add(loadBtn);
 		btnPanel.add(addBtn);
 		btnPanel.add(removeBtn);
 		btnPanel.add(upBtn);
 		btnPanel.add(downBtn);
 		
-		JPanel contPanel = new JPanel();
+		final JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
 		contPanel.add(btnPanel, BorderLayout.EAST);
-		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		
-		JPanel mainButtonEastPanel = new JPanel();
+		final JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
-		JPanel mainButtonPanel = new JPanel();
+		final JPanel mainButtonPanel = new JPanel();
 		mainButtonPanel.setLayout(new BorderLayout());
 		mainButtonPanel.add(mainButtonEastPanel, BorderLayout.EAST);
 		
@@ -212,67 +179,21 @@ public class NameListDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void loadFromFile(DefaultListModel listModel, JList filterList) throws IOException {
-		
-		listModel.removeAllElements(); //start from scratch
-		
-		File filterFile = getSelectedFile();
-		List<String> filters = new ArrayList<String>();
-		filters = readInFilters(filterFile);
-		for (String s : filters)
-			listModel.addElement(s);
+	protected void addElmenent(DefaultListModel tempListModel) {
+		DefineCriteriaDialog d = new DefineCriteriaDialog(AppFrame.instance(), params);
+		Criteria c = d.getCriteria();
+		tempListModel.addElement(c);
 	}
 	
-	protected File getSelectedFile() {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
-		
-		fileChooser.setDialogTitle("Select the file containing the filter names");
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-		
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION)
-			return fileChooser.getSelectedFile();
-		
-		return null;
-	}
-	
-	protected List<String> readInFilters(File filterFile) throws IOException {
-	    BufferedReader br = new BufferedReader(new FileReader(filterFile));
-	    String line;
-	    List<String> filterList = new ArrayList<String>();
-	    Set<String> filterSet = new HashSet<String>();
-
-	    while ((line = br.readLine()) != null) {
-	    	if(!line.isEmpty()){
-	    		if(filterSet.add(line.trim()))
-	    			filterList.add(line.trim());
-	    	}
-	    }	
-		return filterList;
-	}
-
-	protected void addElmenent(DefaultListModel listModel, JScrollPane scrollPane) {
-		String s = (String)JOptionPane.showInputDialog(
-                scrollPane,
-                "Specify a new filter\n",
-                "Customized Dialog",
-                JOptionPane.PLAIN_MESSAGE);
-
-		if ((s != null) && (s.length() > 0)) 
-			listModel.addElement(s);		
-	}
-
-	protected void removeElement(DefaultListModel listModel, JList filterList) {
-		int[] selectedIndices = filterList.getSelectedIndices();
+	protected void removeElement(DefaultListModel listModel, JList valueList) {
+		int[] selectedIndices = valueList.getSelectedIndices();
 		for (int i = selectedIndices.length; i > 0; i--)
 			listModel.remove(selectedIndices[i-1]);		
 	}
 
 	protected void moveUp(final DefaultListModel listModel,
-			final JList filterList) {
-		int[] selectedIndices = filterList.getSelectedIndices();
+			final JList valueList) {
+		int[] selectedIndices = valueList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = -1;
 		int lag = 0;
@@ -294,12 +215,12 @@ public class NameListDialog extends JDialog {
 				selectedIndices[i] = newIndex;
 			}
 		}
-		filterList.setSelectedIndices(selectedIndices);
+		valueList.setSelectedIndices(selectedIndices);
 	}
 
 	protected void moveDown(final DefaultListModel listModel,
-			final JList filterList) {
-		int[] selectedIndices = filterList.getSelectedIndices();
+			final JList valueList) {
+		int[] selectedIndices = valueList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = listModel.getSize();
 		int lag = 0;
@@ -320,20 +241,21 @@ public class NameListDialog extends JDialog {
 				selectedIndices[i-1] = newIndex;
 			}
 		}
-		filterList.setSelectedIndices(selectedIndices);
+		valueList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel tempListModel, boolean tempRegEx) {
-		List<String> newFilterList = new ArrayList<String>();
-		for (int i = 0; i < tempListModel.getSize(); i++)
-			newFilterList.add(tempListModel.getElementAt(i).toString());
-		setFilterList(newFilterList);
-		setRegExChecked(tempRegEx);
+	protected void acceptChanges(DefaultListModel tempListModel) {
+		List<Criteria> newValueList = new ArrayList<Criteria>();
+		for (int i = 0; i < tempListModel.getSize(); i++){
+			Criteria c = (Criteria) tempListModel.getElementAt(i);
+			newValueList.add(c);
+		}
+		setValueList(newValueList);
 		closeDialog();
 	}
 	
 	protected void discardChanges(DefaultListModel tempListModel) {
-		setFilterList(null);
+		setValueList(null);
 		closeDialog();
 	}
 	
