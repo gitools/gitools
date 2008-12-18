@@ -6,17 +6,19 @@ import java.util.List;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.dialogs.SortListDialog;
 import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
+import es.imim.bg.ztools.ui.dialogs.DefineSortCriteriaDialog.SortCriteria;
 import es.imim.bg.ztools.ui.dialogs.DefineValueCriteriaDialog.ValueCriteria;
 import es.imim.bg.ztools.ui.model.ITableModel;
 
-public class ShowRowsByValuesAction extends BaseAction {
+public class SortRowsAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public ShowRowsByValuesAction() {
-		super("Show rows by values");	
-		setDesc("Show rows by values");
+	public SortRowsAction() {
+		super("Sort rows by ...");	
+		setDesc("Sort rows by ...");
 	}
 	
 	@Override
@@ -28,8 +30,9 @@ public class ShowRowsByValuesAction extends BaseAction {
 
 		Object[] params = {"p1", "p2", "p3", "p4"};
 		
-		ValueListDialog d = new ValueListDialog(AppFrame.instance(), params);
-		List<ValueCriteria> valueList = d.getValueList();
+		SortListDialog d = new SortListDialog(AppFrame.instance(), params);
+		List<SortCriteria> valueList = d.getValueList();
+		boolean onlySelectedColumns = d.getOnlySelectedColumnsChecked();
 		if(valueList != null) {
 			//TODO: Filter!!
 		}

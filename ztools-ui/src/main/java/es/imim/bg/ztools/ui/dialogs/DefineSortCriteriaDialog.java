@@ -42,24 +42,24 @@ import javax.swing.event.ListSelectionListener;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.utils.Options;
 
-public class DefineCriteriaDialog extends JDialog {
+public class DefineSortCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 		
 	private Object[] params;
-	private Criteria criteria;
+	private SortCriteria criteria;
 
 	
-	private void setCriteria(Criteria criteria) {
+	private void setCriteria(SortCriteria criteria) {
 		this.criteria = criteria;
 	}
 
-	public Criteria getCriteria() {
+	public SortCriteria getCriteria() {
 		setVisible(true);
 		return criteria;
 	}
 
-	public DefineCriteriaDialog(JFrame owner, Object[] params) {
+	public DefineSortCriteriaDialog(JFrame owner, Object[] params) {
 		super(owner);
 		
 		setModal(true);
@@ -75,18 +75,13 @@ public class DefineCriteriaDialog extends JDialog {
 		pack();
 	}
 	
-	public enum ConditionEnum { 
-		EQ("Equal"), 
-		NE("Not equal"), 
-		GE("Greater or equal"),
-		LE("Lower or equal"),
-		GT("Greater than"),
-		LT("Lower than");
-	
+	public enum DirectionEnum { 
+		ASC("ascending"),
+		DESC("descending");
 		
 		private String title;
 		
-		private ConditionEnum(String title) {
+		private DirectionEnum(String title) {
 			this.title = title;
 		}
 		
@@ -102,44 +97,19 @@ public class DefineCriteriaDialog extends JDialog {
 		for (Object o : params)
 			paramBox.addItem(o);
 		
-		final JComboBox conditionBox = new JComboBox();
-		for (ConditionEnum ce : ConditionEnum.values())
-			conditionBox.addItem(ce);
-		
-		final JTextField valueField = new JTextField();
-	
+		final JComboBox directionBox = new JComboBox();
+		for (DirectionEnum de : DirectionEnum.values())
+			directionBox.addItem(de);
+			
 		final JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
-		acceptBtn.setEnabled(false);
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(paramBox, conditionBox, valueField);
+				acceptChanges(paramBox, directionBox);
 			}
 		});
 		
-		valueField.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				checkField();
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-			
-			private void checkField(){
-				if(valueField.getText().isEmpty())
-					acceptBtn.setEnabled(false);
-				else
-					acceptBtn.setEnabled(true);
-			}
-		});
 
 		final JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setMargin(new Insets(0, 30, 0, 30));
@@ -154,8 +124,7 @@ public class DefineCriteriaDialog extends JDialog {
 		optionPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		optionPanel.setLayout(new GridLayout(1,3));
 		optionPanel.add(paramBox);
-		optionPanel.add(conditionBox);
-		optionPanel.add(valueField);
+		optionPanel.add(directionBox);
 
 		
 		JPanel contPanel = new JPanel();
@@ -177,15 +146,12 @@ public class DefineCriteriaDialog extends JDialog {
 	}
 
 
-	protected void acceptChanges(JComboBox paramBox, JComboBox conditionBox, JTextField valueField) {
+	protected void acceptChanges(JComboBox paramBox, JComboBox directionBox) {
 		Object param = params[paramBox.getSelectedIndex()];
-		ConditionEnum conditionEnum = (ConditionEnum) conditionBox.getSelectedObjects()[0];
-		String text = valueField.getText();
-		if(!text.isEmpty()){
-			Criteria c = new Criteria(param, conditionEnum, text);
-			setCriteria(c);
-			closeDialog();
-		}
+		DirectionEnum directionEnum = (DirectionEnum) directionBox.getSelectedObjects()[0];
+		SortCriteria c = new SortCriteria(param, directionEnum);
+		setCriteria(c);
+		closeDialog();
 	}
 	
 	protected void discardChanges() {
@@ -197,32 +163,22 @@ public class DefineCriteriaDialog extends JDialog {
 		setVisible(false);
 	}
 	
-	public class Criteria {
+	public class SortCriteria {
 		
 		protected Object param;
-		protected ConditionEnum condition;
-		protected String value;
+		protected DirectionEnum direction;
 		
-		public Criteria(Object param, ConditionEnum condition, String value){
+		public SortCriteria(Object param, DirectionEnum direction){
 			setParam(param);
-			setCondition(condition);
-			setValue(value);
+			setCondition(direction);
 		}
 
-		private void setValue(String value) {
-			this.value = value;
+		private void setCondition(DirectionEnum direction) {
+			this.direction = direction;
 		}
 		
-		public String getValue() {
-			return this.value;
-		}
-
-		private void setCondition(ConditionEnum condition) {
-			this.condition = condition;
-		}
-		
-		public ConditionEnum getCondition() {
-			return this.condition;
+		public DirectionEnum getCondition() {
+			return this.direction;
 		}
 
 		private void setParam(Object param) {
@@ -235,7 +191,7 @@ public class DefineCriteriaDialog extends JDialog {
 		
 		@Override
 		public String toString() {
-			return param.toString() + " " + condition.toString() + " " + value;
+			return param.toString() + " " + direction.toString();
 		}
 	}
 }
