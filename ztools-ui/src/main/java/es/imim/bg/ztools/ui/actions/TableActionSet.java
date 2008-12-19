@@ -1,13 +1,13 @@
 package es.imim.bg.ztools.ui.actions;
 
+import es.imim.bg.ztools.ui.actions.table.HideSelectionAction;
+import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction;
 import es.imim.bg.ztools.ui.actions.table.ShowRowsByNamesAction;
-import es.imim.bg.ztools.ui.actions.table.HideSelectedColumnsAction;
-import es.imim.bg.ztools.ui.actions.table.HideSelectedRowsAction;
-import es.imim.bg.ztools.ui.actions.table.MoveColRowAction;
 import es.imim.bg.ztools.ui.actions.table.ShowRowsByValuesAction;
 import es.imim.bg.ztools.ui.actions.table.SortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.SortSelectedColumnsAction;
-import es.imim.bg.ztools.ui.actions.table.MoveColRowAction.MoveDirection;
+import es.imim.bg.ztools.ui.actions.table.HideSelectionAction.ElementType;
+import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction.MoveDirection;
 
 public final class TableActionSet extends ActionSet {
 
@@ -15,22 +15,23 @@ public final class TableActionSet extends ActionSet {
 	
 	public static final BaseAction showRowsByNames = new ShowRowsByNamesAction();
 	public static final BaseAction showRowsByValues = new ShowRowsByValuesAction();
-	public static final BaseAction hideSelectedColumnsAction = new HideSelectedColumnsAction();
+	public static final BaseAction hideSelectedColumnsAction = new HideSelectionAction(ElementType.COLUMNS);
 	public static final BaseAction sortSelectedColumnsAction = new SortSelectedColumnsAction();
+
 	public static final BaseAction sortRowsAction = new SortRowsAction();
-	public static final BaseAction hideSelectedRowsAction = new HideSelectedRowsAction();
+	public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
 	
 	public static final BaseAction moveRowsUpAction = 
-		new MoveColRowAction(MoveDirection.ROW_UP);
+		new MoveSelectionAction(MoveDirection.ROW_UP);
 	
 	public static final BaseAction moveRowsDownAction = 
-		new MoveColRowAction(MoveDirection.ROW_DOWN);
+		new MoveSelectionAction(MoveDirection.ROW_DOWN);
 	
 	public static final BaseAction moveColsLeftAction = 
-		new MoveColRowAction(MoveDirection.COL_LEFT);
+		new MoveSelectionAction(MoveDirection.COL_LEFT);
 	
 	public static final BaseAction moveColsRightAction = 
-		new MoveColRowAction(MoveDirection.COL_RIGHT);
+		new MoveSelectionAction(MoveDirection.COL_RIGHT);
 
 	public TableActionSet() {
 		super("Table", new BaseAction[] {

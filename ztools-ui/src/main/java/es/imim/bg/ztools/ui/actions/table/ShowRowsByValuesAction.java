@@ -8,7 +8,7 @@ import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
 import es.imim.bg.ztools.ui.dialogs.DefineValueCriteriaDialog.ValueCriteria;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class ShowRowsByValuesAction extends BaseAction {
 
@@ -22,8 +22,8 @@ public class ShowRowsByValuesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		ITableModel tableModel = getTableModel();
-		if (tableModel == null)
+		ITable table = getTable();
+		if (table == null)
 			return;
 
 		Object[] params = {"p1", "p2", "p3", "p4"};

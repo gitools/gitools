@@ -4,7 +4,7 @@ import es.imim.bg.ztools.ui.actions.edit.ChangeSelectionModeAction;
 import es.imim.bg.ztools.ui.actions.edit.InvertSelectionAction;
 import es.imim.bg.ztools.ui.actions.edit.SelectAllAction;
 import es.imim.bg.ztools.ui.actions.edit.UnselectAllAction;
-import es.imim.bg.ztools.ui.model.SelectionMode;
+import es.imim.bg.ztools.ui.model.deprecated.SelectionMode;
 
 public final class EditActionSet extends ActionSet {
 

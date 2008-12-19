@@ -1,7 +1,9 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.ui.model.deprecated;
 
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.ui.model.AbstractModel;
 
+@Deprecated
 public class AnalysisModel extends AbstractModel {
 
 	public static final String SELECTION_MODE_PROPERTY = "selectionMode";

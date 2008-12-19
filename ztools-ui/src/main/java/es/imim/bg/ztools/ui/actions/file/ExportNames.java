@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.utils.Options;
 
 public class ExportNames extends BaseAction {
@@ -35,8 +35,8 @@ public class ExportNames extends BaseAction {
 		final String hiddenRows = "Hidden row names";
 		final String hiddenCols = "Hidden column names";
 
-		ITableModel tableModel = getTableModel();
-		if (tableModel == null)
+		ITable table = getTable();
+		if (table == null)
 			return;
 		
 		String[] possibilities = { 
@@ -58,12 +58,12 @@ public class ExportNames extends BaseAction {
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
 			if (visibleRows.equals(selected)) {
-				for (int i = 0; i < tableModel.getRowCount(); i++)
-					pw.println(tableModel.getRowName(i));
+				for (int i = 0; i < table.getRowCount(); i++)
+					pw.println(table.getRow(i).toString());
 			}
 			else if (visibleCols.equals(selected)) {
-				for (int i = 0; i < tableModel.getColumnCount(); i++)
-					pw.println(tableModel.getColumnName(i));
+				for (int i = 0; i < table.getColumnCount(); i++)
+					pw.println(table.getColumn(i).toString());
 			} 
 			else {
 				AppFrame.instance().setStatusText("Unimplemented option.");

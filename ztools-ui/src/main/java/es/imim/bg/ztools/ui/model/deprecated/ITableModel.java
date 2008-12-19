@@ -1,11 +1,14 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.ui.model.deprecated;
 
 import java.util.List;
 
 import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
+import es.imim.bg.ztools.ui.model.IModel;
+import es.imim.bg.ztools.ui.model.SortCriteria;
 
+@Deprecated
 public interface ITableModel extends IModel {
 	
 	String HTML_INFO_PROPERTY = "htmlInfo";

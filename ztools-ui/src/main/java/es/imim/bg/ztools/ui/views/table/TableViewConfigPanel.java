@@ -1,21 +1,17 @@
-package es.imim.bg.ztools.ui.views;
+package es.imim.bg.ztools.ui.views.table;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.DecimalFormat;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
-import es.imim.bg.ztools.ui.colormatrix.CellDecoration.TextAlignment;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class TableViewConfigPanel extends JPanel {
 
@@ -27,7 +23,8 @@ public class TableViewConfigPanel extends JPanel {
 		void formatChanged();
 	}
 	
-	private ITableModel tableModel;
+	private ITable table;
+	private ITableDecorator[] decorators;
 	
 	private JComboBox showCombo;
 	private JPanel valuesConfigPanel;
@@ -35,30 +32,29 @@ public class TableViewConfigPanel extends JPanel {
 	private JTextField fmtTxtField;
 	private JPanel colorsConfigPanel;
 	
-	public TableViewConfigPanel(ITableModel tableModel) {
-		this.tableModel = tableModel;
+	public TableViewConfigPanel(ITable tableModel, ITableDecorator[] decorators) {
+		this.table = tableModel;
+		this.decorators = decorators;
 		
 		createComponents();
 	}
 	
 	private void createComponents() {
-		showCombo = new JComboBox(new String[] { "colors", "values" });
+		showCombo = new JComboBox();
+		showCombo.setModel(
+				new DefaultComboBoxModel(decorators));
 		showCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					final CellDecorationConfig cellDeco = 
-						tableModel.getCellDecoration();
-					
-					cellDeco.showColors =
-						e.getItem().toString().equals("colors");
-					
-					tableModel.setCellDecoration(cellDeco);
+					table.setCellDecoratorContext(
+							((ITableDecorator) e.getItem()).getContext());
 					
 					refresh();
 				}
 			}
 		});
+		showCombo.setSelectedIndex(0);
 		
 		valuesConfigPanel = createValuesConfigPanel();
 		colorsConfigPanel = createColorsConfigPanel();
@@ -74,12 +70,13 @@ public class TableViewConfigPanel extends JPanel {
 		
 		justifCombo = new JComboBox(new String[] { "left", "right", "center" });
 		
-		justifCombo.addItemListener(new ItemListener() {
+		/*justifCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					final CellDecorationConfig cellDeco = 
-						tableModel.getCellDecoration();
+						table.getCellDecoration(
+								table.getCurrentProperty());
 					
 					if (e.getItem().toString().equals("left"))
 						cellDeco.textAlign = TextAlignment.left;
@@ -88,27 +85,30 @@ public class TableViewConfigPanel extends JPanel {
 					else if (e.getItem().toString().equals("center"))
 						cellDeco.textAlign = TextAlignment.center;
 					
-					tableModel.setCellDecoration(cellDeco);
+					table.setCellDecoration(
+							table.getCurrentProperty(), cellDeco);
 					
 					refresh();
 				}
 			}
-		});
+		});*/
 		
 		fmtTxtField = new JTextField();
 		fmtTxtField.setMinimumSize(new Dimension(90, 0));
 		fmtTxtField.setMaximumSize(new Dimension(100, 100));
 		//fmtTxtField.setPreferredSize(new Dimension(100, 40));
-		fmtTxtField.getDocument().addDocumentListener(new DocumentListener() {
+		/*fmtTxtField.getDocument().addDocumentListener(new DocumentListener() {
 			private void update(DocumentEvent e) {
 				try {					
 					final CellDecorationConfig cellDeco = 
-						tableModel.getCellDecoration();
+						table.getCellDecoration(
+								table.getCurrentProperty());
 					
 					cellDeco.textFormat = 
 						new DecimalFormat(fmtTxtField.getText());
 					
-					tableModel.setCellDecoration(cellDeco);
+					table.setCellDecoration(
+							table.getCurrentProperty(), cellDeco);
 				}
 				catch (IllegalArgumentException ex) {
 					//System.err.println(ex.toString());
@@ -118,7 +118,7 @@ public class TableViewConfigPanel extends JPanel {
 			@Override public void insertUpdate(DocumentEvent e) { update(e); }
 			@Override public void removeUpdate(DocumentEvent e) { update(e); }
 			
-		});
+		});*/
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -138,12 +138,8 @@ public class TableViewConfigPanel extends JPanel {
 		return panel;
 	}
 	
-	public void refresh() {
-		CellDecorationConfig config = tableModel.getCellDecoration();
-		
-		showCombo.setSelectedIndex(config.showColors ? 0 : 1);
-		
-		fmtTxtField.setText(config.textFormat.toPattern());
+	public void refresh() {	
+		/*fmtTxtField.setText(config.textFormat.toPattern());
 		
 		switch (config.textAlign) {
 		case left: justifCombo.setSelectedIndex(0); break;
@@ -152,6 +148,12 @@ public class TableViewConfigPanel extends JPanel {
 		}
 		
 		valuesConfigPanel.setVisible(!config.showColors);
-		colorsConfigPanel.setVisible(config.showColors);
+		colorsConfigPanel.setVisible(config.showColors);*/
+		valuesConfigPanel.setVisible(false);
+		colorsConfigPanel.setVisible(false);
+	}
+	
+	public ITableDecorator getCellDecorator() {
+		return (ITableDecorator) showCombo.getSelectedItem();
 	}
 }

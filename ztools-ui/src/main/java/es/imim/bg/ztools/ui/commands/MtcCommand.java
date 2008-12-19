@@ -4,7 +4,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.deprecated.ITableModel;
 
 @Deprecated
 public class MtcCommand implements Command {

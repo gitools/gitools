@@ -9,13 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class BeanElementFacade extends ElementFacade {
 	
-	protected Class<?> elementClass;
-	
 	protected BeanElementFacade() {
 	}
 	
 	public BeanElementFacade(Class<?> elementClass) {
-		this.elementClass = elementClass;
+		super(elementClass);
 		
 		readProperties();
 	}
@@ -63,10 +61,6 @@ public class BeanElementFacade extends ElementFacade {
 		}
 		
 		setProperties(properties);
-	}
-	
-	public Class<?> getElementClass() {
-		return elementClass;
 	}
 	
 	@Override

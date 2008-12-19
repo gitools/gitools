@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.ui.model.deprecated;
 
 import java.util.ArrayList;
 import java.util.HashMap;

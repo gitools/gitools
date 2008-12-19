@@ -15,7 +15,7 @@ import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.jobs.Job;
-import es.imim.bg.ztools.ui.model.AnalysisModel;
+import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 

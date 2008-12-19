@@ -16,10 +16,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
-import es.imim.bg.ztools.ui.model.ISectionModel;
-import es.imim.bg.ztools.ui.model.ITableModel;
-import es.imim.bg.ztools.ui.model.ISectionModel.SectionLayout;
+import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
+import es.imim.bg.ztools.ui.model.deprecated.ITableModel;
+import es.imim.bg.ztools.ui.model.deprecated.ISectionModel.SectionLayout;
+import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.views.table.TableView;
 
+@Deprecated
 public abstract class SectionsView extends AbstractView {
 
 	private static final long serialVersionUID = -6795423700290037713L;
@@ -56,7 +59,7 @@ public abstract class SectionsView extends AbstractView {
 			public void propertyChange(PropertyChangeEvent evt) {
 				ISectionModel sectionModel = getCurrentSectionModel();
 				if (ITableModel.HTML_INFO_PROPERTY.equals(evt.getPropertyName())) {
-					infoPane.setText(sectionModel.getTableModel().getHtmlInfo());
+					//FIXME: infoPane.setText(sectionModel.getTable().getHtmlInfo());
 				}
 			}
 		};
@@ -115,7 +118,7 @@ public abstract class SectionsView extends AbstractView {
 		infoScrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
-		tableView = new TableView(currentModel);
+		//tableView = new TableView(currentModel);
 		
 		setLayout(new BorderLayout());
 		
@@ -130,13 +133,13 @@ public abstract class SectionsView extends AbstractView {
 		if (oldSectionModel != null) {
 			oldSectionModel
 				.removePropertyChangeListener(sectionPropertyChangeListener);
-			oldSectionModel.getTableModel()
+			oldSectionModel.getTable()
 				.removePropertyChangeListener(tablePropertyChangeListener);
 		}
 		
 		sectionModel
 			.addPropertyChangeListener(sectionPropertyChangeListener);
-		sectionModel.getTableModel()
+		sectionModel.getTable()
 			.addPropertyChangeListener(tablePropertyChangeListener);
 	}
 	
@@ -206,7 +209,7 @@ public abstract class SectionsView extends AbstractView {
 	}
 	
 	private ITableModel getCurrentModel() {
-		return sectionModels[currentSection].getTableModel();
+		return sectionModels[currentSection].getTable();
 	}
 	
 	private SectionLayout getCurrentLayout() {

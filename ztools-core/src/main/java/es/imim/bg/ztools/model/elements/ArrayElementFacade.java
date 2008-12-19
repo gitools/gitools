@@ -14,6 +14,8 @@ public class ArrayElementFacade extends ElementFacade {
 	}
 	
 	public ArrayElementFacade(String[] ids) {
+		super(double[].class);
+		
 		this.ids = ids;
 		
 		List<ElementProperty> properties = new ArrayList<ElementProperty>();

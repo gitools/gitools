@@ -5,9 +5,9 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
-public class MoveColRowAction extends BaseAction {
+public class MoveSelectionAction extends BaseAction {
 
 	private static final long serialVersionUID = 2499014276737037571L;
 
@@ -17,7 +17,7 @@ public class MoveColRowAction extends BaseAction {
 	
 	protected MoveDirection dir;
 	
-	public MoveColRowAction(MoveDirection dir) {
+	public MoveSelectionAction(MoveDirection dir) {
 		super(null);
 	
 		this.dir = dir;
@@ -56,27 +56,27 @@ public class MoveColRowAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITableModel tableModel = getTableModel();
+		ITable table = getTable();
 		
-		if (tableModel == null)
+		if (table == null)
 			return;
 		
 		switch (dir) {
 		case ROW_UP:
-			tableModel.moveRowsUp(
-					tableModel.getSelectedRows());
+			table.moveRowsUp(
+					table.getSelectedRows());
 			break;
 		case ROW_DOWN:
-			tableModel.moveRowsDown(
-					tableModel.getSelectedRows());
+			table.moveRowsDown(
+					table.getSelectedRows());
 			break;
 		case COL_LEFT:
-			tableModel.moveColsLeft(
-					tableModel.getSelectedColumns());
+			table.moveColumnsLeft(
+					table.getSelectedColumns());
 			break;
 		case COL_RIGHT:
-			tableModel.moveColsRight(
-					tableModel.getSelectedColumns());
+			table.moveColumnsRight(
+					table.getSelectedColumns());
 			break;
 		}
 	}

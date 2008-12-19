@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.ui.model.deprecated;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -8,9 +8,11 @@ import java.util.Map;
 
 import cern.colt.matrix.DoubleMatrix2D;
 
-import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
+import es.imim.bg.ztools.ui.model.AbstractModel;
+import es.imim.bg.ztools.ui.model.SortCriteria;
 
+@Deprecated
 public abstract class CubeSectionModel 
 		extends AbstractModel 
 		implements ISectionModel, ITableModel {
@@ -127,7 +129,7 @@ public abstract class CubeSectionModel
 	}
 	
 	@Override
-	public ITableModel getTableModel() {
+	public ITableModel getTable() {
 		return this;
 	}
 

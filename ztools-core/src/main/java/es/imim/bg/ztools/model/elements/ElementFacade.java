@@ -17,11 +17,21 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 		
 public abstract class ElementFacade {
 	
+	protected Class<?> elementClass;
+	
 	private List<ElementProperty> properties = new ArrayList<ElementProperty>(0);
 	
-	protected Map<String, Integer> propIdToIndexMap;
+	private Map<String, Integer> propIdToIndexMap;
 	
 	public ElementFacade() {
+	}
+	
+	public ElementFacade(Class<?> elementClass) {
+		this.elementClass = elementClass;
+	}
+	
+	public Class<?> getElementClass() {
+		return elementClass;
 	}
 	
 	public final int getPropertyCount() {
@@ -49,10 +59,15 @@ public abstract class ElementFacade {
 
 	public abstract Object getValue(Object element, int index);
 	
-	public abstract void setValue(Object element, int index, Object value);
-	
 	public Object getValue(Object element, String id) {
 		Integer index = propIdToIndexMap.get(id);
 		return getValue(element, index.intValue());
+	}
+	
+	public abstract void setValue(Object element, int index, Object value);
+	
+	public void setValue(Object element, String id, Object value) {
+		Integer index = propIdToIndexMap.get(id);
+		setValue(element, index.intValue(), value);
 	}
 }

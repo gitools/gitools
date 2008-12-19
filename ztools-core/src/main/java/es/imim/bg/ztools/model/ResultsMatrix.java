@@ -121,6 +121,16 @@ public class ResultsMatrix {
 				cells.get(row, column), id);
 	}
 	
+	public void setCellValue(int row, int column, int property, Object value) {
+		cellsFacade.setValue(
+				cells.get(row, column), property, value);
+	}
+	
+	public void setCellValue(int row, int column, String id, Object value) {
+		cellsFacade.setValue(
+				cells.get(row, column), id, value);
+	}
+	
 	//@XmlAnyElement
 	public ElementFacade getRowsFacade() {
 		return rowsFacade;

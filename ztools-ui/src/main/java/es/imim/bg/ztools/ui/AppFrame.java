@@ -23,7 +23,8 @@ import es.imim.bg.ztools.model.elements.ArrayElementFacade;
 import es.imim.bg.ztools.model.elements.StringElementFacade;
 import es.imim.bg.ztools.ui.actions.Actions;
 import es.imim.bg.ztools.ui.jobs.JobProcessor;
-import es.imim.bg.ztools.ui.model.ResultsModel;
+import es.imim.bg.ztools.ui.model.table.ResultsMatrixTableContentsAdapter;
+import es.imim.bg.ztools.ui.model.table.Table;
 import es.imim.bg.ztools.ui.utils.IconUtils;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -155,12 +156,10 @@ public class AppFrame extends JFrame {
 		Analysis analysis = new Analysis();
 		analysis.setResults(resultsMatrix);
 		
-		/*TableView view = 
-			new TableView(
-				new ResultsModel(results));*/
-		
 		AbstractView demoView = 
-			new DemoView(new ResultsModel(resultsMatrix));
+			new DemoView(new Table(
+					new ResultsMatrixTableContentsAdapter(
+								resultsMatrix)));
 		
 		demoView.setName("Demo");
 		

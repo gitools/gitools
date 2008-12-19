@@ -1,8 +1,11 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.ui.model.deprecated;
 
 import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
+import es.imim.bg.ztools.ui.model.IModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
+@Deprecated
 public interface ISectionModel extends IModel {
 
 	String SELECTION_PARAM_PROPERTY = "selectionParam";
@@ -17,7 +20,7 @@ public interface ISectionModel extends IModel {
 	
 	SectionLayout getLayout();
 	
-	ITableModel getTableModel();
+	ITableModel getTable();
 	
 	int getTableCount();
 	

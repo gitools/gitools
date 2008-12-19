@@ -3,10 +3,9 @@ package es.imim.bg.ztools.ui.actions.table;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class SortSelectedColumnsAction extends BaseAction {
 
@@ -30,16 +29,16 @@ public class SortSelectedColumnsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		ITableModel tableModel = getTableModel();
+		ITable table = getTable();
 		
-		if (tableModel == null)
+		if (table == null)
 			return;
 
-		tableModel.sortByFunc(
+		/*tableModel.sortByFunc(
 				tableModel.getSelectedColumns());
 		
 		AppFrame.instance()
-			.setStatusText("Sort done.");
+			.setStatusText("Sort done.");*/
 	}
 
 }

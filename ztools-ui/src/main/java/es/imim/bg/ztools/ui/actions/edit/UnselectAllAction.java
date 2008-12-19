@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class UnselectAllAction extends BaseAction {
 
@@ -23,10 +23,10 @@ public class UnselectAllAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITableModel tableModel = getTableModel();
+		ITable table = getTable();
 		
-		if (tableModel != null)		
-			tableModel.resetSelection();
+		if (table != null)
+			table.clearSelection();
 		
 		AppFrame.instance()
 			.setStatusText("Unselected all.");

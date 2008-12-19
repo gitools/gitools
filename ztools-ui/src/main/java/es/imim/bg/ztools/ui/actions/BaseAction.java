@@ -9,8 +9,8 @@ import javax.swing.KeyStroke;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.model.ISectionModel;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public abstract class BaseAction extends AbstractAction {
@@ -105,22 +105,22 @@ public abstract class BaseAction extends AbstractAction {
 			.getSelectedView();
 	}
 	
-	protected ITableModel getTableModel() {
+	protected ITable getTable() {
 		AbstractView view = getSelectedView();
 		if (view == null)
 			return null;
 		
-		ITableModel tableModel = null;
+		ITable table = null;
 		
 		Object model = view.getModel();
 		if (model instanceof ISectionModel) {
 			ISectionModel sectionModel = (ISectionModel) model;
-			tableModel = sectionModel.getTableModel();
+			//FIXME: tableModel = sectionModel.getTable();
 		}
-		else if (model instanceof ITableModel)
-			tableModel = (ITableModel) model;
+		else if (model instanceof ITable)
+			table = (ITable) model;
 		
-		return tableModel;
+		return table;
 	}
 
 	protected ISectionModel getSectionModel() {

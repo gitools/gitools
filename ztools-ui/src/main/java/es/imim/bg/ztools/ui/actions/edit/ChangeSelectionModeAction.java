@@ -3,11 +3,10 @@ package es.imim.bg.ztools.ui.actions.edit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.SelectionMode;
-import es.imim.bg.ztools.ui.model.ITableModel;
+import es.imim.bg.ztools.ui.model.deprecated.SelectionMode;
+import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class ChangeSelectionModeAction extends BaseAction {
 
@@ -45,15 +44,15 @@ public class ChangeSelectionModeAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		ITableModel tableModel = getTableModel();
+		ITable table = getTable();
 		
-		if (tableModel == null)
+		if (table == null)
 			return;
 		
-		tableModel.setSelectionMode(mode);
+		//tableModel.setSelectionMode(mode);
 		
-		AppFrame.instance()
-			.setStatusText("Selection mode changed to " + mode.toString() + ".");
+		/*AppFrame.instance()
+			.setStatusText("Selection mode changed to " + mode.toString() + ".");*/
 	}
 
 }

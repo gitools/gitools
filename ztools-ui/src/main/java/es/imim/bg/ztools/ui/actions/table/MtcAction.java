@@ -2,14 +2,9 @@ package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
 
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.DoubleMatrix2D;
-
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.ISectionModel;
-import es.imim.bg.ztools.ui.model.ITableModel;
 
 public class MtcAction extends BaseAction {
 
