@@ -24,34 +24,62 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.DefineSortCriteriaDialog.SortCriteria;
-import es.imim.bg.ztools.ui.dialogs.DefineValueCriteriaDialog.ValueCriteria;
 
 public class SortListDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
+	public enum SortDirection { 
+		ASC("ascending"),
+		DESC("descending");
+		
+		private String title;
+		
+		private SortDirection(String title) {
+			this.title = title;
+		}
+		
+		@Override
+		public String toString() {
+			return title;
+		}
+	}
+	
+	public static class SortCriteria {
+		
+		protected Object param;
+		protected SortDirection direction;
+		
+		public SortCriteria(Object param, SortDirection direction){
+			setParam(param);
+			setCondition(direction);
+		}
+
+		private void setCondition(SortDirection direction) {
+			this.direction = direction;
+		}
+		
+		public SortDirection getCondition() {
+			return this.direction;
+		}
+
+		private void setParam(Object param) {
+			this.param = param;
+		}
+		
+		public Object getParam() {
+			return this.param;
+		}
+		
+		@Override
+		public String toString() {
+			return param.toString() + " " + direction.toString();
+		}
+	}
+
 	private Object[] params;
 	private List<SortCriteria> criteriaList;
 	private Boolean onlySelectedColumnsChecked = false;
-	
-	
-	private void setOnlySelectedColumnsChecked(Boolean checked) {
-		this.onlySelectedColumnsChecked = checked;
-	}
-
-	public Boolean getOnlySelectedColumnsChecked() {
-		return onlySelectedColumnsChecked;
-	}
-
-	private void setValueList(List<SortCriteria> newValueList) {
-		this.criteriaList = newValueList;
-	}
-
-	public List<SortCriteria> getValueList() {
-		setVisible(true);
-		return criteriaList;
-	}
 	
 	public SortListDialog(JFrame owner, Object[] params) {
 		super(owner);
@@ -70,12 +98,9 @@ public class SortListDialog extends JDialog {
 	private void createComponents() {
 				
 		final DefaultListModel listModel = new DefaultListModel();    
-			// Create the temporary model object.
 		final JList criteriaList = new JList(listModel);   
-			// Create the temporary list component.
 		
-		
-		final Checkbox checkbox = new Checkbox("apply only for selected columns");
+		final Checkbox checkbox = new Checkbox("Apply only for selected columns");
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BorderLayout());
 		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
@@ -88,7 +113,7 @@ public class SortListDialog extends JDialog {
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addElmenent(listModel);
 			}
@@ -98,7 +123,7 @@ public class SortListDialog extends JDialog {
 		removeBtn.setMargin(new Insets(0, 30, 0, 30));
 		removeBtn.setEnabled(false);
 		removeBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				removeElement(listModel, criteriaList);
 			}
@@ -108,7 +133,7 @@ public class SortListDialog extends JDialog {
 		upBtn.setMargin(new Insets(0, 30, 0, 30));
 		upBtn.setEnabled(false);
 		upBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveUp(listModel, criteriaList);
 			}
@@ -118,7 +143,7 @@ public class SortListDialog extends JDialog {
 		downBtn.setMargin(new Insets(0, 30, 0, 30));
 		downBtn.setEnabled(false);
 		downBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveDown(listModel, criteriaList);
 			}
@@ -154,7 +179,6 @@ public class SortListDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				discardChanges(listModel);
-				closeDialog();
 			}
 		});
 		
@@ -173,11 +197,11 @@ public class SortListDialog extends JDialog {
 		contPanel.add(btnPanel, BorderLayout.EAST);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
-		mainButtonEastPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
 		final JPanel mainButtonPanel = new JPanel();
+		mainButtonPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonPanel.setLayout(new BorderLayout());
 		mainButtonPanel.add(mainButtonEastPanel, BorderLayout.EAST);
 		
@@ -187,7 +211,7 @@ public class SortListDialog extends JDialog {
 	}
 
 	protected void addElmenent(DefaultListModel listModel) {
-		DefineSortCriteriaDialog d = new DefineSortCriteriaDialog(AppFrame.instance(), params);
+		SortCriteriaDialog d = new SortCriteriaDialog(AppFrame.instance(), params);
 		SortCriteria c = d.getCriteria();
 		listModel.addElement(c);
 	}
@@ -252,22 +276,24 @@ public class SortListDialog extends JDialog {
 	}
 
 	protected void acceptChanges(DefaultListModel listModel, boolean onlySelectedColumnsChecked) {
-		List<SortCriteria> newCriteriaList = new ArrayList<SortCriteria>();
-		for (int i = 0; i < listModel.getSize(); i++){
-			SortCriteria c = (SortCriteria) listModel.getElementAt(i);
-			newCriteriaList.add(c);
-		}
-		setValueList(newCriteriaList);
-		setOnlySelectedColumnsChecked(onlySelectedColumnsChecked);
-		closeDialog();
+		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
+		for (int i = 0; i < listModel.getSize(); i++)
+			criteriaList.add((SortCriteria) listModel.getElementAt(i));
+		
+		setVisible(false);
 	}
 	
 	protected void discardChanges(DefaultListModel listModel) {
-		setValueList(null);
-		closeDialog();
-	}
-	
-	protected void closeDialog() {
+		criteriaList = null;
 		setVisible(false);
+	}
+
+	public Boolean isOnlySelectedColumnsChecked() {
+		return onlySelectedColumnsChecked;
+	}
+
+	public List<SortCriteria> getValueList() {
+		setVisible(true);
+		return criteriaList;
 	}
 }

@@ -2,18 +2,14 @@ package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +26,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -41,25 +36,17 @@ public class NameListDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	private Boolean regExChecked = false;
+	private Boolean regexChecked = false;
 	
-	private List<String> filterList;
+	private List<String> nameList;
 	
-	private void setRegExChecked(Boolean regEx) {
-		this.regExChecked = regEx;
+	public Boolean isRegexChecked() {
+		return regexChecked;
 	}
 
-	public Boolean getRegExChecked() {
-		return regExChecked;
-	}
-
-	private void setFilterList(List<String> newFilterList) {
-		this.filterList = newFilterList;
-	}
-
-	public List<String> getFilterList() {
+	public List<String> getNameList() {
 		setVisible(true);
-		return filterList;
+		return nameList;
 	}
 	
 	public NameListDialog(JFrame owner) {
@@ -70,41 +57,34 @@ public class NameListDialog extends JDialog {
 		
 		setLocationByPlatform(true);		
 		createComponents();
-		getContentPane().setBackground(Color.WHITE);
 		pack();
 	}
 
 	private void createComponents() {
 		
-		final Checkbox checkbox = new Checkbox("use regular Expression");
+		final Checkbox checkbox = new Checkbox("Use regular expression matching");
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BorderLayout());
 		checkboxPanel.add(checkbox, BorderLayout.WEST);
-				
-		final DefaultListModel tempListModel = new DefaultListModel();    
-			// Create the temporary model object.
-		final JList tempFilterList = new JList(tempListModel);     
-			// Create the temporary list component.
 		
-
-		
-		final JScrollPane scrollPane = new JScrollPane(tempFilterList);
+		final DefaultListModel listModel = new DefaultListModel();
+		final JList nameList = new JList(listModel);		
+		final JScrollPane scrollPane = new JScrollPane(nameList);
 		scrollPane.setBorder(
-				BorderFactory.createEmptyBorder());
-		
+				BorderFactory.createEmptyBorder(8, 8, 0, 0));
 
 		JButton loadBtn = new JButton("Load...");
 		loadBtn.setMargin(new Insets(0, 30, 0, 30));
 		loadBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					loadFromFile(tempListModel, tempFilterList);
+					loadFromFile(listModel);
 				} catch (IOException e1) {
 					JOptionPane.showInputDialog(
 			                scrollPane,
-			                "File could not be read\n",
-			                "Customized Dialog",
+			                "File could not be read: " + e1.getMessage() + "\n",
+			                "Error",
 			                JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -115,7 +95,7 @@ public class NameListDialog extends JDialog {
 		addBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(tempListModel, scrollPane);
+				addElmenent(listModel);
 			}
 		});
 		
@@ -125,7 +105,8 @@ public class NameListDialog extends JDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(tempListModel, tempFilterList);
+				removeElement(listModel, 
+						nameList.getSelectedIndices());
 			}
 		});
 		
@@ -135,7 +116,7 @@ public class NameListDialog extends JDialog {
 		upBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(tempListModel, tempFilterList);
+				moveUp(listModel, nameList);
 			}
 		});
 		
@@ -145,14 +126,14 @@ public class NameListDialog extends JDialog {
 		downBtn.addActionListener(new ActionListener() {
 			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(tempListModel, tempFilterList);
+				moveDown(listModel, nameList);
 			}
 		});
 		
-		tempFilterList.addListSelectionListener(new ListSelectionListener() {
+		nameList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(tempFilterList.getSelectedValue() == null){
+				if(nameList.getSelectedValue() == null){
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
@@ -169,7 +150,7 @@ public class NameListDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(tempListModel, checkbox.getState());
+				acceptChanges(listModel, checkbox.getState());
 			}
 		});
 		
@@ -178,7 +159,7 @@ public class NameListDialog extends JDialog {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				discardChanges(tempListModel);
+				discardChanges(listModel);
 				closeDialog();
 			}
 		});
@@ -199,11 +180,11 @@ public class NameListDialog extends JDialog {
 		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		
 		JPanel mainButtonEastPanel = new JPanel();
-		mainButtonEastPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
 		JPanel mainButtonPanel = new JPanel();
+		mainButtonPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonPanel.setLayout(new BorderLayout());
 		mainButtonPanel.add(mainButtonEastPanel, BorderLayout.EAST);
 		
@@ -212,25 +193,26 @@ public class NameListDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void loadFromFile(DefaultListModel listModel, JList filterList) throws IOException {
+	protected void loadFromFile(DefaultListModel listModel) throws IOException {
 		
 		listModel.removeAllElements(); //start from scratch
 		
-		File filterFile = getSelectedFile();
-		List<String> filters = new ArrayList<String>();
-		filters = readInFilters(filterFile);
+		File file = getSelectedFile();
+		if (file == null)
+			return;
+		
+		List<String> filters = readNamesFromFile(file);
 		for (String s : filters)
 			listModel.addElement(s);
 	}
 	
 	protected File getSelectedFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				Options.instance().getLastExportPath());
 		
-		fileChooser.setDialogTitle("Select the file containing the filter names");
+		fileChooser.setDialogTitle("Select the file containing names");
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION)
 			return fileChooser.getSelectedFile();
@@ -238,47 +220,50 @@ public class NameListDialog extends JDialog {
 		return null;
 	}
 	
-	protected List<String> readInFilters(File filterFile) throws IOException {
-	    BufferedReader br = new BufferedReader(new FileReader(filterFile));
+	protected List<String> readNamesFromFile(File file) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(file));
 	    String line;
-	    List<String> filterList = new ArrayList<String>();
-	    Set<String> filterSet = new HashSet<String>();
+	    
+	    Set<String> names = new HashSet<String>();
 
 	    while ((line = br.readLine()) != null) {
-	    	if(!line.isEmpty()){
-	    		if(filterSet.add(line.trim()))
-	    			filterList.add(line.trim());
-	    	}
-	    }	
-		return filterList;
+	    	line = line.trim();
+	    	if(!line.isEmpty())
+	    		names.add(line);
+	    }
+	    
+	    List<String> list = new ArrayList<String>(names.size());
+	    list.addAll(names);
+    
+		return list;
 	}
 
-	protected void addElmenent(DefaultListModel listModel, JScrollPane scrollPane) {
-		String s = (String)JOptionPane.showInputDialog(
-                scrollPane,
-                "Specify a new filter\n",
-                "Customized Dialog",
+	protected void addElmenent(DefaultListModel listModel) {
+		String name = (String)JOptionPane.showInputDialog(
+                this,
+                "Specify a new name\n",
+                "Add...",
                 JOptionPane.PLAIN_MESSAGE);
 
-		if ((s != null) && (s.length() > 0)) 
-			listModel.addElement(s);		
+		if (name != null && !name.isEmpty()) 
+			listModel.addElement(name);		
 	}
 
-	protected void removeElement(DefaultListModel listModel, JList filterList) {
-		int[] selectedIndices = filterList.getSelectedIndices();
+	protected void removeElement(DefaultListModel listModel, int[] selectedIndices) {
 		for (int i = selectedIndices.length; i > 0; i--)
 			listModel.remove(selectedIndices[i-1]);		
 	}
 
 	protected void moveUp(final DefaultListModel listModel,
 			final JList filterList) {
+		
 		int[] selectedIndices = filterList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = -1;
 		int lag = 0;
 		Object el;
+		
 		for (int i = 0; i < selectedIndices.length ; i++) {
-
 			actualIndex = selectedIndices[i];
 			if(actualIndex == 0)
 				lag++;
@@ -299,11 +284,13 @@ public class NameListDialog extends JDialog {
 
 	protected void moveDown(final DefaultListModel listModel,
 			final JList filterList) {
+		
 		int[] selectedIndices = filterList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = listModel.getSize();
 		int lag = 0;
 		Object el;
+		
 		for (int i = selectedIndices.length; i > 0; i--) {
 			actualIndex = selectedIndices[i-1];
 			if(actualIndex == listModel.getSize() - 1)
@@ -327,13 +314,14 @@ public class NameListDialog extends JDialog {
 		List<String> newFilterList = new ArrayList<String>();
 		for (int i = 0; i < tempListModel.getSize(); i++)
 			newFilterList.add(tempListModel.getElementAt(i).toString());
-		setFilterList(newFilterList);
-		setRegExChecked(tempRegEx);
+		
+		nameList = newFilterList;
+		regexChecked = tempRegEx;
 		closeDialog();
 	}
 	
 	protected void discardChanges(DefaultListModel tempListModel) {
-		setFilterList(null);
+		nameList = null;
 		closeDialog();
 	}
 	

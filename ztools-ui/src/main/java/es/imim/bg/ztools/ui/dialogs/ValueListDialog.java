@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -22,45 +21,79 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.DefineValueCriteriaDialog.ValueCriteria;
-
 public class ValueListDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	private Object[] params;
-	private List<ValueCriteria> valueList;
-
-	private void setValueList(List<ValueCriteria> newValueList) {
-		this.valueList = newValueList;
-	}
-
-	public List<ValueCriteria> getValueList() {
-		setVisible(true);
-		return valueList;
+	public enum ValueCondition { 
+		EQ("equal"), 
+		NE("not equal"), 
+		GE("greater or equal"),
+		LE("lower or equal"),
+		GT("greater than"),
+		LT("lower than");
+	
+		private String title;
+		
+		private ValueCondition(String title) {
+			this.title = title;
+		}
+		
+		@Override
+		public String toString() {
+			return title;
+		}
 	}
 	
+	public static class ValueCriteria {
+		
+		protected Object param;
+		protected ValueCondition condition;
+		protected String value;
+		
+		public ValueCriteria(Object param, ValueCondition condition, String value) {
+			this.param = param;
+			this.condition = condition;
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+
+		public ValueCondition getCondition() {
+			return this.condition;
+		}
+
+		public Object getParam() {
+			return this.param;
+		}
+		
+		@Override
+		public String toString() {
+			return param.toString() + " " + condition.toString() + " " + value;
+		}
+	}
+
+	private Object[] params;
+	private List<ValueCriteria> values;
+
 	public ValueListDialog(JFrame owner, Object[] params) {
 		super(owner);
 		
-		setModal(true);
-		setTitle("Criteria list for values");
-		
 		this.params = params;
 		
+		setModal(true);
+		setTitle("Criteria list for values");
 		setLocationByPlatform(true);				
 		createComponents();
-		getContentPane().setBackground(Color.WHITE);
 		pack();
 	}
 
 	private void createComponents() {
 				
-		final DefaultListModel tempListModel = new DefaultListModel();    
-			// Create the temporary model object.
-		final JList valueList = new JList(tempListModel);   
-			// Create the temporary list component.
+		final DefaultListModel listModel = new DefaultListModel();    
+		final JList valueList = new JList(listModel);   
 		
 		final JScrollPane scrollPane = new JScrollPane(valueList);
 		scrollPane.setBorder(
@@ -69,9 +102,9 @@ public class ValueListDialog extends JDialog {
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(tempListModel);
+				addElmenent(listModel);
 			}
 		});
 		
@@ -79,9 +112,9 @@ public class ValueListDialog extends JDialog {
 		removeBtn.setMargin(new Insets(0, 30, 0, 30));
 		removeBtn.setEnabled(false);
 		removeBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(tempListModel, valueList);
+				removeElement(listModel, valueList);
 			}
 		});
 		
@@ -89,9 +122,9 @@ public class ValueListDialog extends JDialog {
 		upBtn.setMargin(new Insets(0, 30, 0, 30));
 		upBtn.setEnabled(false);
 		upBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(tempListModel, valueList);
+				moveUp(listModel, valueList);
 			}
 		});
 		
@@ -99,20 +132,20 @@ public class ValueListDialog extends JDialog {
 		downBtn.setMargin(new Insets(0, 30, 0, 30));
 		downBtn.setEnabled(false);
 		downBtn.addActionListener(new ActionListener() {
-			//@Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(tempListModel, valueList);
+				moveDown(listModel, valueList);
 			}
 		});
 		
 		valueList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(valueList.getSelectedValue() == null){
+				if (valueList.getSelectedValue() == null) {
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
-				}else{
+				} else {
 					upBtn.setEnabled(true);
 					downBtn.setEnabled(true);
 					removeBtn.setEnabled(true);
@@ -125,7 +158,7 @@ public class ValueListDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(tempListModel);
+				acceptChanges(listModel);
 			}
 		});
 		
@@ -134,8 +167,7 @@ public class ValueListDialog extends JDialog {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				discardChanges(tempListModel);
-				closeDialog();
+				discardChanges(listModel);
 			}
 		});
 		
@@ -153,11 +185,11 @@ public class ValueListDialog extends JDialog {
 		contPanel.add(btnPanel, BorderLayout.EAST);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
-		mainButtonEastPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
 		final JPanel mainButtonPanel = new JPanel();
+		mainButtonPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonPanel.setLayout(new BorderLayout());
 		mainButtonPanel.add(mainButtonEastPanel, BorderLayout.EAST);
 		
@@ -166,10 +198,11 @@ public class ValueListDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void addElmenent(DefaultListModel tempListModel) {
-		DefineValueCriteriaDialog d = new DefineValueCriteriaDialog(AppFrame.instance(), params);
+	protected void addElmenent(DefaultListModel listModel) {
+		ValueCriteriaDialog d = new ValueCriteriaDialog(this, params);
 		ValueCriteria c = d.getCriteria();
-		tempListModel.addElement(c);
+		if (c != null)
+			listModel.addElement(c);
 	}
 	
 	protected void removeElement(DefaultListModel listModel, JList criteriaList) {
@@ -231,22 +264,24 @@ public class ValueListDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel tempListModel) {
-		List<ValueCriteria> newCriteriaList = new ArrayList<ValueCriteria>();
-		for (int i = 0; i < tempListModel.getSize(); i++){
-			ValueCriteria c = (ValueCriteria) tempListModel.getElementAt(i);
-			newCriteriaList.add(c);
-		}
-		setValueList(newCriteriaList);
-		closeDialog();
+	protected void acceptChanges(DefaultListModel listModel) {
+		List<ValueCriteria> list = 
+			new ArrayList<ValueCriteria>(listModel.getSize());
+		
+		for (int i = 0; i < listModel.getSize(); i++)
+			list.add((ValueCriteria) listModel.getElementAt(i));
+		
+		values = list;
+		setVisible(false);
 	}
 	
 	protected void discardChanges(DefaultListModel tempListModel) {
-		setValueList(null);
-		closeDialog();
+		values = null;
+		setVisible(false);
 	}
 	
-	protected void closeDialog() {
-		setVisible(false);
+	public List<ValueCriteria> getValues() {
+		setVisible(true);
+		return values;
 	}
 }

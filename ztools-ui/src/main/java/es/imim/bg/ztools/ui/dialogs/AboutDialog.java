@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +35,7 @@ public class AboutDialog extends JDialog {
 		
 		createComponents();
 		
-		getContentPane().setBackground(Color.WHITE);
+		//getContentPane().setBackground(Color.WHITE);
 		pack();
 	}
 

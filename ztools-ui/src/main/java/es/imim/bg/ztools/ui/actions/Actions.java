@@ -1,9 +1,5 @@
 package es.imim.bg.ztools.ui.actions;
 
-import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
-import es.imim.bg.ztools.stats.mtc.Bonferroni;
-import es.imim.bg.ztools.ui.actions.table.MtcAction;
-
 public class Actions {
 	
 	public static final MenuActionSet menuActionSet = 

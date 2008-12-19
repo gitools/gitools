@@ -13,13 +13,23 @@ public final class TableActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 4844715504798938035L;
 	
-	public static final BaseAction showRowsByNames = new ShowRowsByNamesAction();
-	public static final BaseAction showRowsByValues = new ShowRowsByValuesAction();
-	public static final BaseAction hideSelectedColumnsAction = new HideSelectionAction(ElementType.COLUMNS);
-	public static final BaseAction sortSelectedColumnsAction = new SortSelectedColumnsAction();
+	public static final BaseAction showRowsByNames = 
+		new ShowRowsByNamesAction();
+	
+	public static final BaseAction showRowsByValues = 
+		new ShowRowsByValuesAction();
+	
+	public static final BaseAction hideSelectedColumnsAction = 
+		new HideSelectionAction(ElementType.COLUMNS);
+	
+	public static final BaseAction sortSelectedColumnsAction = 
+		new SortSelectedColumnsAction();
 
-	public static final BaseAction sortRowsAction = new SortRowsAction();
-	public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
+	public static final BaseAction sortRowsAction = 
+		new SortRowsAction();
+	
+	public static final BaseAction hideSelectedRowsAction = 
+		new HideSelectionAction(ElementType.ROWS);
 	
 	public static final BaseAction moveRowsUpAction = 
 		new MoveSelectionAction(MoveDirection.ROW_UP);
@@ -37,14 +47,13 @@ public final class TableActionSet extends ActionSet {
 		super("Table", new BaseAction[] {
 			showRowsByNames,
 			showRowsByValues,
-			BaseAction.separator,
-			hideSelectedColumnsAction,
 			hideSelectedRowsAction,
+			hideSelectedColumnsAction,
 			BaseAction.separator,
-			moveColsLeftAction,
-			moveColsRightAction,
 			moveRowsUpAction,
 			moveRowsDownAction,
+			moveColsLeftAction,
+			moveColsRightAction,
 			BaseAction.separator,
 			sortSelectedColumnsAction,
 			sortRowsAction

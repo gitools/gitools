@@ -1,65 +1,32 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.utils.Options;
+import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCondition;
+import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCriteria;
 
-public class DefineValueCriteriaDialog extends JDialog {
+public class ValueCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
-		
+	
 	private Object[] params;
 	private ValueCriteria criteria;
 
-	
-	private void setCriteria(ValueCriteria criteria) {
-		this.criteria = criteria;
-	}
-
-	public ValueCriteria getCriteria() {
-		setVisible(true);
-		return criteria;
-	}
-
-	public DefineValueCriteriaDialog(JFrame owner, Object[] params) {
+	public ValueCriteriaDialog(JDialog owner, Object[] params) {
 		super(owner);
 		
 		setModal(true);
@@ -71,29 +38,7 @@ public class DefineValueCriteriaDialog extends JDialog {
 		
 		setLocationByPlatform(true);		
 		createComponents();
-		getContentPane().setBackground(Color.WHITE);
 		pack();
-	}
-	
-	public enum ConditionEnum { 
-		EQ("Equal"), 
-		NE("Not equal"), 
-		GE("Greater or equal"),
-		LE("Lower or equal"),
-		GT("Greater than"),
-		LT("Lower than");
-	
-		
-		private String title;
-		
-		private ConditionEnum(String title) {
-			this.title = title;
-		}
-		
-		@Override
-		public String toString() {
-			return title;
-		}
 	}
 
 	private void createComponents() {
@@ -103,7 +48,7 @@ public class DefineValueCriteriaDialog extends JDialog {
 			paramBox.addItem(o);
 		
 		final JComboBox conditionBox = new JComboBox();
-		for (ConditionEnum ce : ConditionEnum.values())
+		for (ValueCondition ce : ValueCondition.values())
 			conditionBox.addItem(ce);
 		
 		final JTextField valueField = new JTextField();
@@ -119,7 +64,6 @@ public class DefineValueCriteriaDialog extends JDialog {
 		});
 		
 		valueField.addKeyListener(new KeyListener() {
-
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
@@ -156,7 +100,6 @@ public class DefineValueCriteriaDialog extends JDialog {
 		optionPanel.add(paramBox);
 		optionPanel.add(conditionBox);
 		optionPanel.add(valueField);
-
 		
 		JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
@@ -176,66 +119,23 @@ public class DefineValueCriteriaDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-
 	protected void acceptChanges(JComboBox paramBox, JComboBox conditionBox, JTextField valueField) {
 		Object param = params[paramBox.getSelectedIndex()];
-		ConditionEnum conditionEnum = (ConditionEnum) conditionBox.getSelectedObjects()[0];
+		ValueCondition valueCondition = (ValueCondition) conditionBox.getSelectedObjects()[0];
 		String text = valueField.getText();
 		if(!text.isEmpty()){
-			ValueCriteria c = new ValueCriteria(param, conditionEnum, text);
-			setCriteria(c);
-			closeDialog();
+			criteria = new ValueCriteria(param, valueCondition, text);
+			setVisible(false);
 		}
 	}
 	
 	protected void discardChanges() {
-		setCriteria(null);
-		closeDialog();
-	}
-	
-	protected void closeDialog() {
+		criteria = null;
 		setVisible(false);
 	}
 	
-	public class ValueCriteria {
-		
-		protected Object param;
-		protected ConditionEnum condition;
-		protected String value;
-		
-		public ValueCriteria(Object param, ConditionEnum condition, String value){
-			setParam(param);
-			setCondition(condition);
-			setValue(value);
-		}
-
-		private void setValue(String value) {
-			this.value = value;
-		}
-		
-		public String getValue() {
-			return this.value;
-		}
-
-		private void setCondition(ConditionEnum condition) {
-			this.condition = condition;
-		}
-		
-		public ConditionEnum getCondition() {
-			return this.condition;
-		}
-
-		private void setParam(Object param) {
-			this.param = param;
-		}
-		
-		public Object getParam() {
-			return this.param;
-		}
-		
-		@Override
-		public String toString() {
-			return param.toString() + " " + condition.toString() + " " + value;
-		}
+	public ValueCriteria getCriteria() {
+		setVisible(true);
+		return criteria;
 	}
 }

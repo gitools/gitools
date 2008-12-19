@@ -12,16 +12,16 @@ public class ShowRowsByNamesAction extends BaseAction {
 	private static final long serialVersionUID = -1582437709508438222L;
 
 	public ShowRowsByNamesAction() {
-		super("Show rows by name");	
+		super("Show rows by name...");	
 		setDesc("Show rows by name");
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		NameListDialog d = new NameListDialog(AppFrame.instance());
-		boolean regEx = d.getRegExChecked();
-		List<String> filterList = d.getFilterList();
-		if(filterList != null) {
+		boolean regEx = d.isRegexChecked();
+		List<String> names = d.getNameList();
+		if(names != null) {
 			//TODO: Filter!!
 		}
 	}
