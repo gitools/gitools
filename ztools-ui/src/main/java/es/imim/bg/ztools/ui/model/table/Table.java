@@ -219,7 +219,9 @@ public class Table
 	
 	@Override
 	public void setCellDecoratorContext(ITableDecoratorContext decoratorContext) {
+		ITableDecoratorContext oldValue = this.cellDecorationContext;
 		this.cellDecorationContext = decoratorContext;
+		firePropertyChange(CELL_DECORATION_CONTEXT_CHANGED, oldValue, cellDecorationContext);
 	}
 
 	/* ITableContents */

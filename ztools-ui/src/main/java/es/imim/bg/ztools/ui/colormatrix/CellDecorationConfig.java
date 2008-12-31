@@ -3,7 +3,7 @@ package es.imim.bg.ztools.ui.colormatrix;
 import java.text.DecimalFormat;
 
 import es.imim.bg.colorscale.ColorScale;
-import es.imim.bg.colorscale.LogColorScale;
+import es.imim.bg.colorscale.PValueLogColorScale;
 
 public class CellDecorationConfig {
 	public boolean showColors = true;
@@ -13,7 +13,7 @@ public class CellDecorationConfig {
 	public CellDecoration.TextAlignment textAlign = 
 		CellDecoration.TextAlignment.left;
 	
-	public ColorScale scale = new LogColorScale();
+	public ColorScale scale = new PValueLogColorScale();
 	
 	public CellDecorationConfig() {
 		this.showColors = true;
@@ -22,6 +22,6 @@ public class CellDecorationConfig {
 		
 		this.textAlign = CellDecoration.TextAlignment.left;
 		
-		this.scale = new LogColorScale();
+		this.scale = new PValueLogColorScale();
 	}
 }

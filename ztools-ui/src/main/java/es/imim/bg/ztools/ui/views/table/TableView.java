@@ -6,7 +6,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -14,9 +13,12 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.colormatrix.TablePanel;
+import es.imim.bg.ztools.ui.model.IModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
@@ -27,6 +29,7 @@ public class TableView extends AbstractView {
 	public enum TableViewLayout {
 		LEFT, RIGHT, TOP, BOTTOM
 	}
+	
 	private ITable table;
 	
 	private TableViewConfigPanel configPanel;
@@ -34,10 +37,13 @@ public class TableView extends AbstractView {
 	private JTextPane infoPane;
 	private JScrollPane infoScrollPane;
 	private TablePanel tablePanel;
+	private JPanel mainPanel;
 
 	private TableViewLayout layout;
 	
 	protected boolean blockSelectionUpdate;
+
+	private PropertyChangeListener decorationContextListener;
 
 	public TableView(final ITable table) {
 		
@@ -48,6 +54,15 @@ public class TableView extends AbstractView {
 		this.blockSelectionUpdate = false;
 		
 		createComponents();
+
+		decorationContextListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				tablePanel.refresh();
+			}
+		};
+		
+		table.getCellDecoratorContext().addPropertyChangeListener(decorationContextListener);
 		
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -88,28 +103,82 @@ public class TableView extends AbstractView {
 				blockSelectionUpdate = false;
 			}
 		}
+		else if (ITable.SELECTED_LEAD_CHANGED.equals(propertyName)) {
+			refreshCellDetails();
+		}
 		else if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
 		}
 		else if (ITable.CELL_VALUE_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
 		}
+		else if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
+			if (oldValue != null)
+				((IModel) oldValue).removePropertyChangeListener(decorationContextListener);
+			
+			((IModel) newValue).addPropertyChangeListener(decorationContextListener);
+		}
 	}
 
+	private void refreshCellDetails() {
+		String html = "";
+		
+		int row = table.getSelectionLeadRow();
+		int column = table.getSelectionLeadColumn();
+		int columnCount = table.getColumnCount();
+		
+		if (column >= 0 && column < columnCount && row >= 0) {
+			final String colName = table.getColumn(column).toString();
+			final String rowName = table.getRow(row).toString();
+			ElementFacade cellsFacade = table.getCellsFacade();
+			Object element = table.getCell(row, column);
+			
+			StringBuilder sb = new StringBuilder();
+			
+			// Render parameters & values
+			sb.append("<p><b>Column</b><br>");
+			sb.append(colName).append("</p>");
+			sb.append("<p><b>Row</b><br>");
+			sb.append(rowName).append("</p>");
+			
+			for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
+				ElementProperty prop = cellsFacade.getProperty(i);
+				
+				final String paramName = prop.getName();
+				
+				final String value = 
+					cellsFacade.getValue(element, i).toString(); 
+				
+				sb.append("<p><b>");
+				sb.append(paramName);
+				sb.append("</b><br>");
+				sb.append(value);
+				sb.append("</p>");
+			}
+			
+			html = sb.toString();
+		}
+		
+		infoPane.setText(html);
+	}
+	
 	private void createComponents() {
+		
+		ElementFacade cellsFacade = table.getCellsFacade();
 		
 		ITableDecorator[] availableDecorators = 
 			new ITableDecorator[] {
-				new ScaleCellDecorator(table.getCellsFacade())
+				new ScaleCellDecorator(cellsFacade),
+				new TextCellDecorator(cellsFacade)
 		};
 		
 		/* Configuration panel */
 
 		configPanel = new TableViewConfigPanel(table, availableDecorators);
 		
-		final JPanel northPanel = new JPanel();
+		/*final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-		northPanel.add(configPanel);
+		northPanel.add(configPanel);*/
 		
 		configPanel.refresh();
 		
@@ -152,15 +221,15 @@ public class TableView extends AbstractView {
 		infoPane = new JTextPane();
 		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
+		//infoPane.setAutoscrolls(false);
 		infoScrollPane = new JScrollPane(infoPane);
 		infoScrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 8, 8));		
 		
-		final JPanel centerPanel = new JPanel();
-		centerPanel.setLayout(new BorderLayout());
-		centerPanel.add(northPanel, BorderLayout.NORTH);
-		centerPanel.add(tablePanel, BorderLayout.CENTER);
-		centerPanel.add(infoScrollPane, BorderLayout.WEST);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(configPanel, BorderLayout.NORTH);
+		mainPanel.add(tablePanel, BorderLayout.CENTER);
 		
 		configureLayout();
 	}
@@ -188,10 +257,10 @@ public class TableView extends AbstractView {
 		final JSplitPane splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
 			splitPane.add(infoScrollPane);
-			splitPane.add(tablePanel);
+			splitPane.add(mainPanel);
 		}
 		else {
-			splitPane.add(tablePanel);
+			splitPane.add(mainPanel);
 			splitPane.add(infoScrollPane);
 		}
 		splitPane.setDividerLocation(220);

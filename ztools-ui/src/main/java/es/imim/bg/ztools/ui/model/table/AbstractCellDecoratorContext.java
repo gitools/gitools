@@ -1,6 +1,10 @@
 package es.imim.bg.ztools.ui.model.table;
 
-public class AbstractCellDecoratorContext implements ITableDecoratorContext {
+import es.imim.bg.ztools.ui.model.AbstractModel;
+
+public class AbstractCellDecoratorContext
+		extends AbstractModel
+		implements ITableDecoratorContext {
 
 	private double zoom;
 	private int valueIndex;
@@ -18,6 +22,7 @@ public class AbstractCellDecoratorContext implements ITableDecoratorContext {
 	@Override
 	public void setZoom(double zoom) {
 		this.zoom = zoom;
+		firePropertyChange(ITableDecoratorContext.VALUE_CHANGED);
 	}
 
 	public int getValueIndex() {
@@ -26,5 +31,6 @@ public class AbstractCellDecoratorContext implements ITableDecoratorContext {
 	
 	public void setValueIndex(int valueIndex) {
 		this.valueIndex = valueIndex;
+		firePropertyChange(ITableDecoratorContext.VALUE_CHANGED);
 	}
 }

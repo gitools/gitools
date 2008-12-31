@@ -1,9 +1,15 @@
 package es.imim.bg.ztools.ui.views.table;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+import es.imim.bg.colorscale.LogColorScale;
 import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.ui.colormatrix.CellDecoration;
 import es.imim.bg.ztools.ui.model.table.ITableDecoratorContext;
@@ -30,21 +36,42 @@ public class ScaleCellDecorator
 	
 	@Override
 	public void decorate(CellDecoration decoration, Object element) {
-		double v = Double.NaN;
 		Object value = cellFacade.getValue(
 				element, context.getValueIndex());
 		
+		double v = getDoubleValue(value);
+		
+		double cutoff = context.getCutoff();
+		
+		LogColorScale scale = context.getScale();
+		
+		if (context.isUseCorrectedScale()) {
+			int corrIndex = context.getCorrectedValueIndex();
+			
+			Object corrValue = corrIndex >= 0 ?
+					cellFacade.getValue(element, corrIndex) : 0.0;
+					
+			cutoff = getDoubleValue(corrValue);
+		}
+		
+		scale.setSigLevel(cutoff);
+		Color c = scale.getColor(v);
+		
+		decoration.setBgColor(c);
+		
+		decoration.setToolTip(value.toString());
+	}
+
+	private double getDoubleValue(Object value) {
+		double v = Double.NaN;
 		try { v = ((Double) value).doubleValue(); }
 		catch (Exception e1) {
 			try { v = ((Integer) value).doubleValue(); }
 			catch (Exception e2) { }
 		}
-		
-		Color c = context.getScale().getColor(v);
-		decoration.setBgColor(c);
-		decoration.setToolTip(value.toString());
+		return v;
 	}
-
+	
 	@Override
 	public int getMinimumHeight() {
 		return 0;
@@ -75,8 +102,8 @@ public class ScaleCellDecorator
 	}
 
 	@Override
-	public JPanel createConfigurationPanel() {
-		return null;
+	public Component createConfigurationComponent() {
+		return createConfigurationPanel();
 	}
 
 	@Override
@@ -87,5 +114,30 @@ public class ScaleCellDecorator
 	@Override
 	public void setContext(ITableDecoratorContext context) {
 		this.context = (ScaleCellDecoratorContext) context;
+	}
+	
+	private JPanel createConfigurationPanel() {
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		final JCheckBox useCorrValueChkBox = new JCheckBox();
+		useCorrValueChkBox.setText("Show correction");
+		useCorrValueChkBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				context.setUseCorrectedScale(
+						useCorrValueChkBox.isSelected());
+			}
+		});
+		
+		panel.add(useCorrValueChkBox);
+		
+		return panel;
+	}
+	
+	@Override
+	public String toString() {
+		return "Color scale";
 	}
 }

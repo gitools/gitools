@@ -5,7 +5,7 @@ import java.awt.Color;
 import es.imim.bg.colorscale.util.ColorUtils;
 
 public class LogColorScale implements ColorScale {
-	
+
 	private static final Color notANumberColor = Color.WHITE;
 	private static final Color posInfinityColor = Color.GREEN;
 	private static final Color negInfinityColor = Color.CYAN;
@@ -19,13 +19,58 @@ public class LogColorScale implements ColorScale {
 	private double minPoint;
 	private double midPoint;
 	private double maxPoint;
+	
+	private double sigLevel;
 	private double logFactor;
 
-	public LogColorScale(double midPoint, double logFactor) {
-		this.minPoint = 0.0;
+	public LogColorScale(
+			double minPoint,
+			double midPoint, 
+			double maxPoint,
+			double sigLevel,
+			double logFactor) {
+		
+		this.minPoint = minPoint;
 		this.midPoint = midPoint;
-		this.maxPoint = 1.0;
+		this.maxPoint = maxPoint;
+		this.sigLevel = sigLevel;
 		this.logFactor = logFactor;
+	}
+	
+	public LogColorScale(
+			double minPoint,
+			double midPoint, 
+			double maxPoint) {
+		
+		this(minPoint, midPoint, maxPoint, midPoint, defaultLogFactor);
+	}
+	
+	public LogColorScale() {
+		this(0.0, 0.05, 1.0, 0.05, defaultLogFactor);
+	}
+	
+	public Color getMinColor() {
+		return minColor;
+	}
+	
+	public void setMinColor(Color minColor) {
+		this.minColor = minColor;
+	}
+	
+	public Color getMaxColor() {
+		return maxColor;
+	}
+	
+	public void setMaxColor(Color maxColor) {
+		this.maxColor = maxColor;
+	}
+	
+	public double getMinPoint() {
+		return minPoint;
+	}
+	
+	public void setMinPoint(double minPoint) {
+		this.minPoint = minPoint;
 	}
 	
 	public double getMidPoint() {
@@ -36,8 +81,20 @@ public class LogColorScale implements ColorScale {
 		this.midPoint = midPoint;
 	}
 	
-	public LogColorScale() {
-		this(0.05, defaultLogFactor);
+	public double getMaxPoint() {
+		return maxPoint;
+	}
+	
+	public void setMaxPoint(double maxPoint) {
+		this.maxPoint = maxPoint;
+	}
+	
+	public double getSigLevel() {
+		return sigLevel;
+	}
+	
+	public void setSigLevel(double sigLevel) {
+		this.sigLevel = sigLevel;
 	}
 	
 	public double getLogFactor() {
@@ -51,19 +108,20 @@ public class LogColorScale implements ColorScale {
 	public Color getColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;
-		else if (value == Double.POSITIVE_INFINITY)
+		else if (value > maxPoint || value == Double.POSITIVE_INFINITY)
 			return posInfinityColor;
-		else if (value == Double.NEGATIVE_INFINITY)
+		else if (value < minPoint || value == Double.NEGATIVE_INFINITY)
 			return negInfinityColor;
 		
-		if (value > midPoint)
+		if (value > sigLevel)
 			return nonSignificantColor;
 
-		double f = value / midPoint;
+		double range = midPoint - minPoint;
+		
+		double f = value / range;
 		
 		f = f > 0.0 ? 1.0 + logFactor * Math.log10(f) : 0.0;
 
 		return ColorUtils.mix(minColor, maxColor, f);
 	}
-
 }

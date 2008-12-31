@@ -10,7 +10,7 @@ import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
+import es.imim.bg.ztools.ui.views.deprecated.AnalysisView;
 
 @Deprecated
 public class OpenAnalysisCommand implements Command {

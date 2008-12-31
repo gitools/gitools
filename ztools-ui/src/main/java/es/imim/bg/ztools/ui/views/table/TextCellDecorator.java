@@ -1,6 +1,13 @@
 package es.imim.bg.ztools.ui.views.table;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.ui.colormatrix.CellDecoration;
@@ -64,9 +71,8 @@ public class TextCellDecorator
 	}
 
 	@Override
-	public JPanel createConfigurationPanel() {
-		// TODO Auto-generated method stub
-		return null;
+	public Component createConfigurationComponent() {
+		return createConfigurationPanel();
 	}
 
 	@Override
@@ -78,4 +84,86 @@ public class TextCellDecorator
 	public void setContext(ITableDecoratorContext context) {
 		this.context = (TextCellDecoratorContext) context;
 	}
+	
+	private JPanel createConfigurationPanel() {
+		final JComboBox justifCombo;
+		final JTextField fmtTxtField;
+		
+		justifCombo = new JComboBox(new String[] { "left", "right", "center" });
+		
+		/*justifCombo.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					final CellDecorationConfig cellDeco = 
+						table.getCellDecoration(
+								table.getCurrentProperty());
+					
+					if (e.getItem().toString().equals("left"))
+						cellDeco.textAlign = TextAlignment.left;
+					else if (e.getItem().toString().equals("right"))
+						cellDeco.textAlign = TextAlignment.right;
+					else if (e.getItem().toString().equals("center"))
+						cellDeco.textAlign = TextAlignment.center;
+					
+					table.setCellDecoration(
+							table.getCurrentProperty(), cellDeco);
+					
+					refresh();
+				}
+			}
+		});*/
+		
+		fmtTxtField = new JTextField();
+		fmtTxtField.setMinimumSize(new Dimension(90, 0));
+		fmtTxtField.setMaximumSize(new Dimension(100, 100));
+		//fmtTxtField.setPreferredSize(new Dimension(100, 40));
+		/*fmtTxtField.getDocument().addDocumentListener(new DocumentListener() {
+			private void update(DocumentEvent e) {
+				try {					
+					final CellDecorationConfig cellDeco = 
+						table.getCellDecoration(
+								table.getCurrentProperty());
+					
+					cellDeco.textFormat = 
+						new DecimalFormat(fmtTxtField.getText());
+					
+					table.setCellDecoration(
+							table.getCurrentProperty(), cellDeco);
+				}
+				catch (IllegalArgumentException ex) {
+					//System.err.println(ex.toString());
+				}
+			}
+			@Override public void changedUpdate(DocumentEvent e) { update(e); }
+			@Override public void insertUpdate(DocumentEvent e) { update(e); }
+			@Override public void removeUpdate(DocumentEvent e) { update(e); }
+			
+		});*/
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		panel.add(new JLabel("Format"));
+		panel.add(fmtTxtField);
+		panel.add(new JLabel("Align"));
+		panel.add(justifCombo);
+		
+		return panel;
+	}
+
+	@Override
+	public String toString() {
+		return "Values";
+	}
 }
+
+/*fmtTxtField.setText(config.textFormat.toPattern());
+
+switch (config.textAlign) {
+case left: justifCombo.setSelectedIndex(0); break;
+case right: justifCombo.setSelectedIndex(1); break;
+case center: justifCombo.setSelectedIndex(2); break;
+}
+
+valuesConfigPanel.setVisible(!config.showColors);
+colorsConfigPanel.setVisible(config.showColors);*/

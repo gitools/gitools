@@ -13,10 +13,10 @@ public interface ITable extends IModel, ITableContents {
 	String SELECTION_CHANGED = "selectionChanged";
 	//String SELECTED_COLUMNS_CHANGED = "selectionColumns";
 	//String SELECTED_ROWS_CHANGED = "selectionRows";
-		
-	String CELL_DECORATOR_CHANGED = "cellDecoratorChanged";
 	
 	String CELL_VALUE_CHANGED = "cellValueChanged";
+	
+	String CELL_DECORATION_CONTEXT_CHANGED = "cellDecorationContextChanged";
 
 	// contents
 	

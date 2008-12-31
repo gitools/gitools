@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.ui.views.table;
 
-import javax.swing.JPanel;
+import java.awt.Component;
 
 import es.imim.bg.ztools.ui.colormatrix.ColorMatrixCellDecorator;
 import es.imim.bg.ztools.ui.model.table.ITableDecoratorContext;
@@ -24,5 +24,5 @@ public interface ITableDecorator extends ColorMatrixCellDecorator {
 	
 	// config panel
 	
-	JPanel createConfigurationPanel();
+	Component createConfigurationComponent();
 }

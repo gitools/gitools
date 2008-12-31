@@ -4,13 +4,13 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
-import es.imim.bg.colorscale.LogColorScale;
+import es.imim.bg.colorscale.PValueLogColorScale;
 
 public class LogScale extends AbstractScale {
 
 	public LogScale() {
 		super(
-			new LogColorScale(),
+			new PValueLogColorScale(),
 			createConfigPanel());
 	}
 

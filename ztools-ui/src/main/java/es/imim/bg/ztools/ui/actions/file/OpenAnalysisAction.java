@@ -17,7 +17,7 @@ import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.jobs.Job;
 import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
+import es.imim.bg.ztools.ui.views.deprecated.AnalysisView;
 
 public class OpenAnalysisAction extends BaseAction {
 
@@ -79,7 +79,7 @@ public class OpenAnalysisAction extends BaseAction {
 			
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
 			Analysis analysis = analysisRes.load(monitor);
-				
+			
 			final AnalysisView view = 
 				new AnalysisView(
 					new AnalysisModel(analysis));

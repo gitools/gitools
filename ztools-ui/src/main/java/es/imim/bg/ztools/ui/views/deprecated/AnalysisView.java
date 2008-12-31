@@ -1,8 +1,7 @@
-package es.imim.bg.ztools.ui.views.analysis;
+package es.imim.bg.ztools.ui.views.deprecated;
 
 import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
 import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
-import es.imim.bg.ztools.ui.views.SectionsView;
 
 public class AnalysisView extends SectionsView {
 

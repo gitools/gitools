@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.views;
+package es.imim.bg.ztools.ui.views.deprecated;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +20,7 @@ import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
 import es.imim.bg.ztools.ui.model.deprecated.ITableModel;
 import es.imim.bg.ztools.ui.model.deprecated.ISectionModel.SectionLayout;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.table.TableView;
 
 @Deprecated

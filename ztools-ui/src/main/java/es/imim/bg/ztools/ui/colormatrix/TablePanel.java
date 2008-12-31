@@ -291,6 +291,7 @@ public class TablePanel extends JPanel {
 	}
 	
 	public void refresh() {
+		table.invalidate();
 		table.repaint();
 		table.getTableHeader().repaint();
 	}
