@@ -1,9 +1,9 @@
 package es.imim.bg.ztools.ui.model.deprecated;
 
 import cern.colt.matrix.DoubleMatrix2D;
-import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.model.IModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.table.CellDecorationConfig;
 
 @Deprecated
 public interface ISectionModel extends IModel {

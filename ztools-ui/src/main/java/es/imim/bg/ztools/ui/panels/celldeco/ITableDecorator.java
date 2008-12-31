@@ -1,9 +1,9 @@
-package es.imim.bg.ztools.ui.views.table;
+package es.imim.bg.ztools.ui.panels.celldeco;
 
 import java.awt.Component;
 
-import es.imim.bg.ztools.ui.colormatrix.ColorMatrixCellDecorator;
-import es.imim.bg.ztools.ui.model.table.ITableDecoratorContext;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
+import es.imim.bg.ztools.ui.panels.table.ColorMatrixCellDecorator;
 
 public interface ITableDecorator extends ColorMatrixCellDecorator {
 

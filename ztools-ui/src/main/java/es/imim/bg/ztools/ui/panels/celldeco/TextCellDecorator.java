@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.views.table;
+package es.imim.bg.ztools.ui.panels.celldeco;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -9,10 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import es.imim.bg.ztools.model.elements.ElementFacade;
-import es.imim.bg.ztools.ui.colormatrix.CellDecoration;
-import es.imim.bg.ztools.ui.model.table.ITableDecoratorContext;
-import es.imim.bg.ztools.ui.model.table.TextCellDecoratorContext;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
+import es.imim.bg.ztools.ui.model.celldeco.TextCellDecoratorContext;
+import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.table.CellDecoration;
 
 public class TextCellDecorator 
 		implements ITableDecorator {
@@ -20,16 +20,16 @@ public class TextCellDecorator
 	private static final int defaultWidth = 90;
 	private static final int defaultHeight = 30;
 	
-	protected ElementFacade cellFacade;
+	private ITable table;
 	
 	protected TextCellDecoratorContext context;
 	
-	public TextCellDecorator(ElementFacade cellFacade) {
-		this(cellFacade, new TextCellDecoratorContext());
+	public TextCellDecorator(ITable table) {
+		this(table, new TextCellDecoratorContext());
 	}
 	
-	public TextCellDecorator(ElementFacade cellFacade, TextCellDecoratorContext context) {
-		this.cellFacade = cellFacade;
+	public TextCellDecorator(ITable table, TextCellDecoratorContext context) {
+		this.table = table;
 		this.context = context;
 	}
 	

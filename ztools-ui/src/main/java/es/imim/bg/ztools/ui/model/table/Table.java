@@ -5,6 +5,7 @@ import java.util.Arrays;
 import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.model.AbstractModel;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 
 public class Table
 		extends AbstractModel

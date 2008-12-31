@@ -1,6 +1,7 @@
 package es.imim.bg.ztools.ui.model.table;
 
 import es.imim.bg.ztools.ui.model.IModel;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 
 public interface ITable extends IModel, ITableContents {
 	

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.model.table;
+package es.imim.bg.ztools.ui.model.celldeco;
 
 import es.imim.bg.ztools.ui.model.IModel;
 

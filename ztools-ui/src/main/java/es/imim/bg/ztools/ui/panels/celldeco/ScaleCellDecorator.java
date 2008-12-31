@@ -1,19 +1,14 @@
-package es.imim.bg.ztools.ui.views.table;
+package es.imim.bg.ztools.ui.panels.celldeco;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 
 import es.imim.bg.colorscale.LogColorScale;
 import es.imim.bg.ztools.model.elements.ElementFacade;
-import es.imim.bg.ztools.ui.colormatrix.CellDecoration;
-import es.imim.bg.ztools.ui.model.table.ITableDecoratorContext;
-import es.imim.bg.ztools.ui.model.table.ScaleCellDecoratorContext;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
+import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
+import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.table.CellDecoration;
 
 public class ScaleCellDecorator 
 		implements ITableDecorator {
@@ -21,21 +16,23 @@ public class ScaleCellDecorator
 	private static final int defaultWidth = 30;
 	private static final int defaultHeight = 30;
 	
-	private ElementFacade cellFacade;
+	private ITable table;
 	
 	private ScaleCellDecoratorContext context;
 	
-	public ScaleCellDecorator(ElementFacade cellFacade) {
-		this(cellFacade, new ScaleCellDecoratorContext());
+	public ScaleCellDecorator(ITable table) {
+		this(table, new ScaleCellDecoratorContext());
 	}
 	
-	public ScaleCellDecorator(ElementFacade cellFacade, ScaleCellDecoratorContext context) {
-		this.cellFacade = cellFacade;
+	public ScaleCellDecorator(ITable table, ScaleCellDecoratorContext context) {
+		this.table = table;
 		this.context = context;
 	}
 	
 	@Override
 	public void decorate(CellDecoration decoration, Object element) {
+		ElementFacade cellFacade = table.getCellsFacade();
+		
 		Object value = cellFacade.getValue(
 				element, context.getValueIndex());
 		
@@ -103,7 +100,7 @@ public class ScaleCellDecorator
 
 	@Override
 	public Component createConfigurationComponent() {
-		return createConfigurationPanel();
+		return new ScaleCellDecoratorConfigPanel(table);
 	}
 
 	@Override
@@ -114,26 +111,6 @@ public class ScaleCellDecorator
 	@Override
 	public void setContext(ITableDecoratorContext context) {
 		this.context = (ScaleCellDecoratorContext) context;
-	}
-	
-	private JPanel createConfigurationPanel() {
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		final JCheckBox useCorrValueChkBox = new JCheckBox();
-		useCorrValueChkBox.setText("Show correction");
-		useCorrValueChkBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				context.setUseCorrectedScale(
-						useCorrValueChkBox.isSelected());
-			}
-		});
-		
-		panel.add(useCorrValueChkBox);
-		
-		return panel;
 	}
 	
 	@Override

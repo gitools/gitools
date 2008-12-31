@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.colormatrix;
+package es.imim.bg.ztools.ui.panels.table;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -291,7 +291,6 @@ public class TablePanel extends JPanel {
 	}
 	
 	public void refresh() {
-		table.invalidate();
 		table.repaint();
 		table.getTableHeader().repaint();
 	}

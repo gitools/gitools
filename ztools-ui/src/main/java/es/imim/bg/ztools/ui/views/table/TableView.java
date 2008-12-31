@@ -17,9 +17,12 @@ import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
-import es.imim.bg.ztools.ui.colormatrix.TablePanel;
 import es.imim.bg.ztools.ui.model.IModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.celldeco.ITableDecorator;
+import es.imim.bg.ztools.ui.panels.celldeco.ScaleCellDecorator;
+import es.imim.bg.ztools.ui.panels.celldeco.TextCellDecorator;
+import es.imim.bg.ztools.ui.panels.table.TablePanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public class TableView extends AbstractView {
@@ -164,12 +167,10 @@ public class TableView extends AbstractView {
 	
 	private void createComponents() {
 		
-		ElementFacade cellsFacade = table.getCellsFacade();
-		
 		ITableDecorator[] availableDecorators = 
 			new ITableDecorator[] {
-				new ScaleCellDecorator(cellsFacade),
-				new TextCellDecorator(cellsFacade)
+				new ScaleCellDecorator(table),
+				new TextCellDecorator(table)
 		};
 		
 		/* Configuration panel */

@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.ui.model.table;
+package es.imim.bg.ztools.ui.model.celldeco;
 
 import java.text.DecimalFormat;
 
-import es.imim.bg.ztools.ui.colormatrix.CellDecoration;
+import es.imim.bg.ztools.ui.panels.table.CellDecoration;
 
 public class TextCellDecoratorContext
 		extends AbstractCellDecoratorContext {

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.colormatrix;
+package es.imim.bg.ztools.ui.panels.table;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;

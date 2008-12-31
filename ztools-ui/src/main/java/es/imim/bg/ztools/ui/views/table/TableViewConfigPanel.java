@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.celldeco.ITableDecorator;
 
 public class TableViewConfigPanel extends JPanel {
 

@@ -8,9 +8,9 @@ import java.util.Map;
 
 import cern.colt.matrix.DoubleMatrix2D;
 
-import es.imim.bg.ztools.ui.colormatrix.CellDecorationConfig;
 import es.imim.bg.ztools.ui.model.AbstractModel;
 import es.imim.bg.ztools.ui.model.SortCriteria;
+import es.imim.bg.ztools.ui.panels.table.CellDecorationConfig;
 
 @Deprecated
 public abstract class CubeSectionModel 
