@@ -2,10 +2,14 @@ package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Comparator;
 
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class SortSelectedColumnsAction extends BaseAction {
 
@@ -29,16 +33,75 @@ public class SortSelectedColumnsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		ITable table = getTable();
+		final ITable table = getTable();
 		
 		if (table == null)
 			return;
 
-		/*tableModel.sortByFunc(
-				tableModel.getSelectedColumns());
+		final int propIndex = table.getSelectedPropertyIndex();
+		
+		final int rowCount = table.getRowCount();
+		int[] selColumns = table.getSelectedColumns();
+		if (selColumns.length == 0) {
+			selColumns = new int[table.getColumnCount()];
+			for (int i = 0; i < selColumns.length; i++)
+				selColumns[i] = i;
+		}
+		
+		final Integer[] indices = new Integer[rowCount];
+		for (int i = 0; i < rowCount; i++)
+			indices[i] = i;
+
+		final int[] selectedColumns = selColumns;
+		Arrays.sort(indices, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer idx1, Integer idx2) {
+				double se1 = 0, s1 = 0, ss1 = 0;
+				double se2 = 0, s2 = 0, ss2 = 0;
+				double m1 = 1.0, m2 = 1.0;
+				
+				int N = selectedColumns.length;
+				
+				for (int i = 0; i < N; i++) {
+					int col = selectedColumns[i];
+					
+					Object value1 = table.getCellValue(idx1, col, propIndex);
+					double v1 = TableUtils.doubleValue(value1);
+
+					m1 *= v1;
+					s1 += v1;
+					ss1 += v1 * v1;
+					se1 += Math.exp(s1);
+					
+					Object value2 = table.getCellValue(idx2, col, propIndex);
+					double v2 = TableUtils.doubleValue(value2);
+					
+					m2 *= v2;
+					s2 += v2;
+					ss2 += v2 * v2;
+					se2 += Math.exp(s2);
+				}
+				
+				double var1 = (N * ss1) - (s1 * s1) / (N * N);
+				
+				double var2 = (N * ss2) - (s2 * s2) / (N * N);
+				
+				int res = (int) Math.signum(se1 - se2);
+				//int res = (int) Math.signum(se1 - se2);
+				//int res = (int) Math.signum(m1 - m2);
+				return res != 0 ? res : (int) Math.signum(var1 - var2);
+			}
+		});
+		
+		final int[] visibleRows = table.getVisibleRows();
+		final int[] sortedVisibleRows = new int[rowCount];
+		
+		for (int i = 0; i < rowCount; i++)
+			sortedVisibleRows[i] = visibleRows[indices[i]];
+		
+		table.setVisibleRows(sortedVisibleRows);
 		
 		AppFrame.instance()
-			.setStatusText("Sort done.");*/
+			.setStatusText("Selected columns sorted.");
 	}
-
 }

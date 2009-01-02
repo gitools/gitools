@@ -54,8 +54,8 @@ public interface ITable extends IModel, ITableContents {
 	
 	// properties
 	
-	/*int getCurrentProperty();
-	void setCurrentProperty(int index);*/
+	int getSelectedPropertyIndex();
+	void setSelectedPropertyIndex(int index);
 	
 	// cell decoration
 

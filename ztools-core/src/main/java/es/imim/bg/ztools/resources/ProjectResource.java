@@ -21,7 +21,7 @@ public class ProjectResource extends Resource {
 	public ProjectResource(File file) {
 		super(file);
 	}
-	
+
 	public void save(Project inv, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, JAXBException {
 		

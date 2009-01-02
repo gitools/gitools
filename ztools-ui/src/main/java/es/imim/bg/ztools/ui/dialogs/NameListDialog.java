@@ -11,9 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -224,7 +222,7 @@ public class NameListDialog extends JDialog {
 	    BufferedReader br = new BufferedReader(new FileReader(file));
 	    String line;
 	    
-	    Set<String> names = new HashSet<String>();
+	    List<String> names = new ArrayList<String>();
 
 	    while ((line = br.readLine()) != null) {
 	    	line = line.trim();
@@ -232,10 +230,7 @@ public class NameListDialog extends JDialog {
 	    		names.add(line);
 	    }
 	    
-	    List<String> list = new ArrayList<String>(names.size());
-	    list.addAll(names);
-    
-		return list;
+	    return names;
 	}
 
 	protected void addElmenent(DefaultListModel listModel) {

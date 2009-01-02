@@ -22,8 +22,14 @@ public class IconNames {
 	public static final String cellSelection16 = "/img/CellSelection16.gif";
 	public static final String cellSelection24 = "/img/CellSelection24.gif";
 	
+	public static final String columnShowAll16 = "/img/ColumnShowAll16.gif";
+	public static final String columnShowAll24 = "/img/ColumnShowAll24.gif";
+	
 	public static final String columnHide16 = "/img/ColumnHide16.gif";
 	public static final String columnHide24 = "/img/ColumnHide24.gif";
+	
+	public static final String rowShowAll16 = "/img/RowShowAll16.gif";
+	public static final String rowShowAll24 = "/img/RowShowAll24.gif";
 	
 	public static final String rowHide16 = "/img/RowHide16.gif";
 	public static final String rowHide24 = "/img/RowHide24.gif";

@@ -5,10 +5,12 @@ import java.awt.Component;
 
 import es.imim.bg.colorscale.LogColorScale;
 import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.panels.table.CellDecoration;
+import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class ScaleCellDecorator 
 		implements ITableDecorator {
@@ -22,6 +24,7 @@ public class ScaleCellDecorator
 	
 	public ScaleCellDecorator(ITable table) {
 		this(table, new ScaleCellDecoratorContext());
+		context.setValueIndex(table.getSelectedPropertyIndex());
 	}
 	
 	public ScaleCellDecorator(ITable table, ScaleCellDecoratorContext context) {
@@ -36,9 +39,11 @@ public class ScaleCellDecorator
 		Object value = cellFacade.getValue(
 				element, context.getValueIndex());
 		
-		double v = getDoubleValue(value);
+		double v = TableUtils.doubleValue(value);
 		
 		double cutoff = context.getCutoff();
+		
+		boolean isSig = v <= cutoff;
 		
 		LogColorScale scale = context.getScale();
 		
@@ -48,25 +53,16 @@ public class ScaleCellDecorator
 			Object corrValue = corrIndex >= 0 ?
 					cellFacade.getValue(element, corrIndex) : 0.0;
 					
-			cutoff = getDoubleValue(corrValue);
+			double cv = TableUtils.doubleValue(corrValue);
+			
+			isSig = cv <= cutoff;
 		}
 		
-		scale.setSigLevel(cutoff);
-		Color c = scale.getColor(v);
+		Color c = isSig ? scale.getColor(v) : scale.getNonSignificantColor();
 		
 		decoration.setBgColor(c);
 		
 		decoration.setToolTip(value.toString());
-	}
-
-	private double getDoubleValue(Object value) {
-		double v = Double.NaN;
-		try { v = ((Double) value).doubleValue(); }
-		catch (Exception e1) {
-			try { v = ((Integer) value).doubleValue(); }
-			catch (Exception e2) { }
-		}
-		return v;
 	}
 	
 	@Override

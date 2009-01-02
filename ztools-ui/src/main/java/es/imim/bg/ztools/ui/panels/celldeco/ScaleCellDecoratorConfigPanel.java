@@ -3,6 +3,10 @@ package es.imim.bg.ztools.ui.panels.celldeco;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -14,15 +18,21 @@ import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class ScaleCellDecoratorConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = -7443053984962647946L;
 
 	private static class ElementPropertyAdapter {
+		private int index;
 		private ElementProperty property;
-		public ElementPropertyAdapter(ElementProperty property) {
+		public ElementPropertyAdapter(int index, ElementProperty property) {
+			this.index = index;
 			this.property = property;
+		}
+		public int getIndex() {
+			return index;
 		}
 		public ElementProperty getProperty() {
 			return property;
@@ -34,11 +44,27 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 	}
 	
 	private ITable table;
+	private JComboBox valueCb;
+	private JCheckBox showCorrChkBox;
 	
 	public ScaleCellDecoratorConfigPanel(ITable table) {
 		this.table = table;
 		
 		createComponents();
+		
+		table.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(evt.getPropertyName())) {
+					/*if (oldValue != null)
+						((IModel) oldValue).removePropertyChangeListener(decorationContextListener);
+					
+					((IModel) newValue).addPropertyChangeListener(decorationContextListener);*/
+					
+					refresh();
+				}
+			}
+		});
 	}
 
 	private void createComponents() {
@@ -54,45 +80,86 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 		
 		for (int i = 0; i < numProps; i++)
 			props[i] = new ElementPropertyAdapter(
-					cellFacade.getProperty(i));
+					i, cellFacade.getProperty(i));
 		
-		final JComboBox valueCb = 
-			new JComboBox(new DefaultComboBoxModel(props));
+		valueCb = new JComboBox(new DefaultComboBoxModel(props));
+		
+		valueCb.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					valueChanged();
+				}
+			}
+		});
 		
 		// show correction check box
 		
-		final JCheckBox showCorrChkBox = new JCheckBox();
+		showCorrChkBox = new JCheckBox();
 		showCorrChkBox.setText("Show correction");
 		showCorrChkBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ScaleCellDecoratorContext context = 
-					(ScaleCellDecoratorContext) table.getCellDecoratorContext();
-				
-				ElementPropertyAdapter propAdapter = 
-					(ElementPropertyAdapter) valueCb.getSelectedItem();
-				
-				ElementFacade cellFacade = table.getCellsFacade();
-				int numProps = cellFacade.getPropertyCount();
-				
-				if (propAdapter != null) {
-					String id = "corrected-" 
-						+ propAdapter.getProperty().getId();
-					
-					for (int i = 0; i < numProps; i++) {
-						if (id.equals(cellFacade.getProperty(i).getId()))
-							context.setCorrectedValueIndex(i);
-					}
-				}
-				
-				context.setUseCorrectedScale(
-						showCorrChkBox.isSelected());
+			@Override public void actionPerformed(ActionEvent e) {
+				showCorrectionChecked();
 			}
 		});
+		
+		refresh();
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
 		add(showCorrChkBox);
+	}
+	
+	private void refresh() {
+		ScaleCellDecoratorContext context = 
+			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
+		
+		if (context != null) {
+			valueCb.setSelectedIndex(context.getValueIndex());
+			table.setSelectedPropertyIndex(context.getValueIndex());
+			showCorrChkBox.setSelected(context.isUseCorrectedScale());
+		}
+	}
+
+	private void valueChanged() {
+		
+		ElementPropertyAdapter propAdapter = 
+			(ElementPropertyAdapter) valueCb.getSelectedItem();
+		
+		ScaleCellDecoratorContext context = 
+			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
+		
+		context.setValueIndex(propAdapter.getIndex());
+		
+		table.setSelectedPropertyIndex(propAdapter.getIndex());
+		
+		// search for corresponding corrected value
+		
+		int corrIndex = TableUtils.correctedValueIndex(
+				table, propAdapter.getProperty());
+		
+		if (corrIndex >= 0)
+			context.setCorrectedValueIndex(corrIndex);
+		
+		showCorrChkBox.setEnabled(corrIndex >= 0);
+	}
+	
+	private void showCorrectionChecked() {
+		ScaleCellDecoratorContext context = 
+			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
+		
+		ElementPropertyAdapter propAdapter = 
+			(ElementPropertyAdapter) valueCb.getSelectedItem();
+		
+		if (propAdapter != null) {
+			int corrIndex = TableUtils.correctedValueIndex(
+					table, propAdapter.getProperty());
+			
+			if (corrIndex >= 0)
+				context.setCorrectedValueIndex(corrIndex);
+		}
+		
+		context.setUseCorrectedScale(
+				showCorrChkBox.isSelected());
 	}
 }

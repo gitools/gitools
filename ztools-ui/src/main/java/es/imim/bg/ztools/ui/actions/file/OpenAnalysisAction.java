@@ -16,8 +16,12 @@ import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.jobs.Job;
 import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
+import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.model.table.ResultsMatrixTableContentsAdapter;
+import es.imim.bg.ztools.ui.model.table.Table;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.deprecated.AnalysisView;
+import es.imim.bg.ztools.ui.views.table.TableView;
 
 public class OpenAnalysisAction extends BaseAction {
 
@@ -80,10 +84,11 @@ public class OpenAnalysisAction extends BaseAction {
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
 			Analysis analysis = analysisRes.load(monitor);
 			
-			final AnalysisView view = 
-				new AnalysisView(
-					new AnalysisModel(analysis));
-
+			ITable table = new Table(
+					new ResultsMatrixTableContentsAdapter(analysis.getResults()));
+			
+			final TableView view = new TableView(table);
+			
 			view.setName(analysis.getName());
 
 			SwingUtilities.invokeAndWait(new Runnable() {

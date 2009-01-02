@@ -1,11 +1,10 @@
-package es.imim.bg.ztools.ui.panels.celldeco;
+package es.imim.bg.ztools.ui.model.celldeco;
 
 import java.awt.Component;
 
-import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
-import es.imim.bg.ztools.ui.panels.table.ColorMatrixCellDecorator;
+import es.imim.bg.ztools.ui.panels.table.TablePanelCellDecorator;
 
-public interface ITableDecorator extends ColorMatrixCellDecorator {
+public interface ITableDecorator extends TablePanelCellDecorator {
 
 	// context
 	

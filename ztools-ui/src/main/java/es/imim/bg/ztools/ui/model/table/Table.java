@@ -22,7 +22,7 @@ public class Table
 	protected int selectionLeadRow;
 	protected int selectionLeadColumn;
 	
-	protected int currentProperty;
+	protected int selectedPropertyIndex;
 	
 	protected ITableDecoratorContext cellDecorationContext;
 	
@@ -46,13 +46,13 @@ public class Table
 		
 		selectionLeadRow = selectionLeadColumn = -1;
 		
-		// current property
+		// selected property
 		
 		ElementFacade cellsFacade = contents.getCellsFacade();
 		for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
 			ElementProperty prop = cellsFacade.getProperty(i);
 			if ("right-p-value".equals(prop.getId()))
-					currentProperty = i;
+					selectedPropertyIndex = i;
 		}
 		
 		// cells decoration context
@@ -178,7 +178,7 @@ public class Table
 		for (int i = 0; i < array.length; i++) {
 			while (lastIndex < array[i])
 				invArray[j++] = lastIndex++;
-			lastIndex = array[i];
+			lastIndex = array[i] + 1;
 		}
 		while (lastIndex < count)
 			invArray[j++] = lastIndex++;
@@ -203,15 +203,15 @@ public class Table
 		firePropertyChange(SELECTED_LEAD_CHANGED);
 	}
 
-	/*@Override
-	public int getCurrentProperty() {
-		return currentProperty;
+	@Override
+	public int getSelectedPropertyIndex() {
+		return selectedPropertyIndex;
 	}
 
 	@Override
-	public void setCurrentProperty(int index) {
-		this.currentProperty = index;
-	}*/
+	public void setSelectedPropertyIndex(int index) {
+		this.selectedPropertyIndex = index;		
+	}
 	
 	@Override
 	public ITableDecoratorContext getCellDecoratorContext() {
@@ -282,12 +282,18 @@ public class Table
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		contents.setCellValue(row, column, index, value);
+		contents.setCellValue(
+				visibleRows[row], 
+				visibleColumns[column], 
+				index, value);
 	}
 
 	@Override
 	public void setCellValue(int row, int column, String id, Object value) {
-		contents.setCellValue(row, column, id, value);
+		contents.setCellValue(
+				visibleRows[row], 
+				visibleColumns[column], 
+				id, value);
 	}
 	
 	@Override

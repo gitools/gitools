@@ -11,12 +11,12 @@ import javax.swing.table.TableCellRenderer;
 public class LabelTableCellRenderer 
 		implements TableCellRenderer {
 	
-	private ColorMatrixCellDecorator decorator;
+	private TablePanelCellDecorator decorator;
 	
 	private DefaultTableCellRenderer tableRenderer = 
 		new DefaultTableCellRenderer();
 	
-	public LabelTableCellRenderer(ColorMatrixCellDecorator decorator) {
+	public LabelTableCellRenderer(TablePanelCellDecorator decorator) {
 		this.decorator = decorator;
 	}
 	

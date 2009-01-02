@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 import es.imim.bg.ztools.ui.model.celldeco.TextCellDecoratorContext;
 import es.imim.bg.ztools.ui.model.table.ITable;

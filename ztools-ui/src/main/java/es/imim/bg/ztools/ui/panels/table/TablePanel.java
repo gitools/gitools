@@ -247,6 +247,16 @@ public class TablePanel extends JPanel {
 	}
 	
 	private void refreshSelectionMode() {
+		int[] selCols = getSelectedColumns();
+		int[] selRows = getSelectedRows();
+		
+		if (selCols.length > 0 && selRows.length == 0)
+			selMode = SelectionMode.columns;
+		else if (selCols.length == 0 &&	selRows.length > 0)
+			selMode = SelectionMode.rows;
+		else
+			selMode = SelectionMode.cells;
+		
 		switch(selMode) {
 		case columns:
 			table.setRowSelectionAllowed(false);
@@ -310,7 +320,7 @@ public class TablePanel extends JPanel {
 		table.repaint();
 	}
 
-	public void setCellDecorator(ColorMatrixCellDecorator decorator) {
+	public void setCellDecorator(TablePanelCellDecorator decorator) {
 		table.setDefaultRenderer(
 				model.getCellsFacade().getElementClass(), 
 				new LabelTableCellRenderer(decorator));
@@ -387,8 +397,10 @@ public class TablePanel extends JPanel {
 	public void setSelectedColumns(int[] selectedColumns) {
 		updateSelection(
 				table.getColumnModel().getSelectionModel(), 
-				getSelectedRows(), 
+				getSelectedColumns(), 
 				selectedColumns);
+		
+		refreshSelectionMode();
 	}
 	
 	public int[] getSelectedRows() {
@@ -400,6 +412,8 @@ public class TablePanel extends JPanel {
 				table.getSelectionModel(), 
 				getSelectedRows(), 
 				selectedRows);
+		
+		refreshSelectionMode();
 	}
 	
 	private void updateSelection(
@@ -418,7 +432,7 @@ public class TablePanel extends JPanel {
 
 	public void selectAll() {	
 		clearSelection();
-		setSelectionMode(SelectionMode.columns);
+		setSelectionMode(SelectionMode.rows);
 
 		int lastRowIndex = table.getRowCount() - 1;
 		table.getSelectionModel()

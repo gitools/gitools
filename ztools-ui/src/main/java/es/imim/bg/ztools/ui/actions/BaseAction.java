@@ -9,7 +9,6 @@ import javax.swing.KeyStroke;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
@@ -113,28 +112,10 @@ public abstract class BaseAction extends AbstractAction {
 		ITable table = null;
 		
 		Object model = view.getModel();
-		if (model instanceof ISectionModel) {
-			ISectionModel sectionModel = (ISectionModel) model;
-			//FIXME: tableModel = sectionModel.getTable();
-		}
-		else if (model instanceof ITable)
+		if (model instanceof ITable)
 			table = (ITable) model;
 		
 		return table;
-	}
-
-	protected ISectionModel getSectionModel() {
-		AbstractView view = getSelectedView();
-		if (view == null)
-			return null;
-		
-		ISectionModel sectionModel = null;
-		
-		Object model = view.getModel();
-		if (model instanceof ISectionModel)
-			sectionModel = (ISectionModel) model;
-		
-		return sectionModel;
 	}
 	
 	protected ProgressMonitor createProgressMonitor() {

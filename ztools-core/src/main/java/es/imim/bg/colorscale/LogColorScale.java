@@ -105,6 +105,14 @@ public class LogColorScale implements ColorScale {
 		this.logFactor = logFactor;
 	}
 	
+	public Color getNonSignificantColor() {
+		return nonSignificantColor;
+	}
+	
+	public void setNonSignificantColor(Color nonSignificantColor) {
+		this.nonSignificantColor = nonSignificantColor;
+	}
+	
 	public Color getColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;

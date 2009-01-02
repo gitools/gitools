@@ -2,9 +2,19 @@ package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
+
+import es.imim.bg.ztools.model.elements.ElementFacade;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
+import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.model.table.ITableContents;
+import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class MtcAction extends BaseAction {
 
@@ -22,25 +32,51 @@ public class MtcAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AppFrame.instance()
-			.setStatusText(mtc.getName() + " not implemented yet.");
 		
-		/*ISectionModel sectionModel = getSectionModel();
-		ITableModel tableModel = sectionModel.getTableModel();
+		final ITable table = getTable();
 		
-		if (tableModel == null)
+		if (table == null)
 			return;
+
+		ElementFacade cellFacade = table.getCellsFacade();
 		
-		final DoubleMatrix2D matrix = tableModel.getMatrix();
+		final int propIndex = table.getSelectedPropertyIndex();
+		final int corrPropIndex = 
+			TableUtils.correctedValueIndex(
+				table, cellFacade.getProperty(propIndex));
 		
-		for (int i = 0; i < matrix.columns(); i++) {
-			DoubleMatrix1D values = matrix.viewColumn(i);
-			mtc.correct(values);
+		if (corrPropIndex < 0) {
+			JOptionPane.showMessageDialog(AppFrame.instance(),
+				    "The property selected doesn't allow multiple test correction.",
+				    "Error",
+				    JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		
-		tableModel.fireMatrixChanged();
+		ITableContents contents = table.getContents();
+		
+		int rowCount = contents.getRowCount();
+		int columnCount = contents.getColumnCount();
+		
+		DoubleMatrix2D values = DoubleFactory2D.dense.make(rowCount, columnCount);
+		
+		for (int col = 0; col < columnCount; col++)
+			for (int row = 0; row < rowCount; row++)
+				values.setQuick(row, col, 
+						TableUtils.doubleValue(
+								contents.getCellValue(row, col, propIndex)));
+		
+		for (int col = 0; col < columnCount; col++) {
+			DoubleMatrix1D columnValues = values.viewColumn(col);
+			mtc.correct(columnValues);
+		}
+		
+		for (int col = 0; col < columnCount; col++)
+			for (int row = 0; row < rowCount; row++)
+				contents.setCellValue(row, col, corrPropIndex, 
+						values.getQuick(row, col));
 		
 		AppFrame.instance()
-			.setStatusText(mtc.getName() + " done.");*/
+			.setStatusText(mtc.getName() + " done.");
 	}
 }

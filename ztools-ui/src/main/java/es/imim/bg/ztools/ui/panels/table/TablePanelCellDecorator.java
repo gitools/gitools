@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.ui.panels.table;
 
-public interface ColorMatrixCellDecorator {
+public interface TablePanelCellDecorator {
 
 	void decorate(CellDecoration decoration, Object value);
 }
