@@ -28,12 +28,13 @@ public class ArrayElementFacade extends ElementFacade {
 	
 	@Override
 	public Object getValue(Object element, int index) {
-		return ((double[])element)[index];
+		return element != null ? ((double[])element)[index] : null;
 	}
 
 	@Override
 	public void setValue(Object element, int index, Object value) {
-		((double[])element)[index] = (Double) value;
+		if (element != null)
+			((double[])element)[index] = (Double) value;
 	}
 
 }

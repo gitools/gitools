@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -67,7 +68,12 @@ public class MtcAction extends BaseAction {
 								contents.getCellValue(row, col, propIndex)));
 		
 		for (int col = 0; col < columnCount; col++) {
-			DoubleMatrix1D columnValues = values.viewColumn(col);
+			DoubleMatrix1D columnValues = values.viewColumn(col).viewSelection(new DoubleProcedure() {
+				@Override
+				public boolean apply(double v) {
+					return !Double.isNaN(v);
+				}
+			});
 			mtc.correct(columnValues);
 		}
 		

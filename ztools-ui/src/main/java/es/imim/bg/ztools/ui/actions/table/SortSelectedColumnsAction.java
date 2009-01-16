@@ -62,33 +62,45 @@ public class SortSelectedColumnsAction extends BaseAction {
 				
 				int N = selectedColumns.length;
 				
+				int n1 = 0;
+				int n2 = 0;
+				
 				for (int i = 0; i < N; i++) {
 					int col = selectedColumns[i];
 					
 					Object value1 = table.getCellValue(idx1, col, propIndex);
 					double v1 = TableUtils.doubleValue(value1);
 
-					m1 *= v1;
-					s1 += v1;
-					ss1 += v1 * v1;
-					se1 += Math.exp(s1);
+					if (!Double.isNaN(v1)) {
+						m1 *= v1;
+						s1 += v1;
+						ss1 += v1 * v1;
+						se1 += Math.exp(s1);
+						n1++;
+					}
 					
 					Object value2 = table.getCellValue(idx2, col, propIndex);
 					double v2 = TableUtils.doubleValue(value2);
 					
-					m2 *= v2;
-					s2 += v2;
-					ss2 += v2 * v2;
-					se2 += Math.exp(s2);
+					if (!Double.isNaN(v2)) {
+						m2 *= v2;
+						s2 += v2;
+						ss2 += v2 * v2;
+						se2 += Math.exp(s2);
+						n2++;
+					}
 				}
 				
-				double var1 = (N * ss1) - (s1 * s1) / (N * N);
+				if (n1 == 0 || n2 == 0)
+					return n1 == 0 ? 1 : -1;
 				
-				double var2 = (N * ss2) - (s2 * s2) / (N * N);
+				double var1 = (n1 * ss1) - (s1 * s1) / (n1 * n1);
 				
-				int res = (int) Math.signum(se1 - se2);
+				double var2 = (n2 * ss2) - (s2 * s2) / (n2 * n2);
+				
+				//int res = (int) Math.signum(se1/n1 - se2/n2);
 				//int res = (int) Math.signum(se1 - se2);
-				//int res = (int) Math.signum(m1 - m2);
+				int res = (int) Math.signum(m1 - m2);
 				return res != 0 ? res : (int) Math.signum(var1 - var2);
 			}
 		});

@@ -143,20 +143,24 @@ public class TableView extends AbstractView {
 			sb.append("<p><b>Row</b><br>");
 			sb.append(rowName).append("</p>");
 			
-			for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-				ElementProperty prop = cellsFacade.getProperty(i);
-				
-				final String paramName = prop.getName();
-				
-				final String value = 
-					cellsFacade.getValue(element, i).toString(); 
-				
-				sb.append("<p><b>");
-				sb.append(paramName);
-				sb.append("</b><br>");
-				sb.append(value);
-				sb.append("</p>");
+			if (element != null) {
+				for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
+					ElementProperty prop = cellsFacade.getProperty(i);
+					
+					final String paramName = prop.getName();
+					
+					final String value = 
+						cellsFacade.getValue(element, i).toString(); 
+					
+					sb.append("<p><b>");
+					sb.append(paramName);
+					sb.append("</b><br>");
+					sb.append(value);
+					sb.append("</p>");
+				}
 			}
+			else
+				sb.append("<p>Void cell</p>");
 			
 			html = sb.toString();
 		}

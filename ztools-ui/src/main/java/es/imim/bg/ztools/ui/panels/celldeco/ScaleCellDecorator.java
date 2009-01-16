@@ -34,6 +34,12 @@ public class ScaleCellDecorator
 	
 	@Override
 	public void decorate(CellDecoration decoration, Object element) {
+		if (element == null) {
+			decoration.setBgColor(Color.WHITE);
+			decoration.setToolTip("Void cell");
+			return;
+		}
+		
 		ElementFacade cellFacade = table.getCellsFacade();
 		
 		Object value = cellFacade.getValue(
