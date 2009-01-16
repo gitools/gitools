@@ -153,8 +153,13 @@ public class BinomialTest extends AbstractTest {
 		
 		leftPvalue = /*filterPvalue(*/Probability.binomial(observed, n, p)/*)*/;
 		rightPvalue = /*filterPvalue(*/Probability.binomialComplemented(observed, n, p)/*)*/;
+		
 		twoTailPvalue = leftPvalue + rightPvalue;
 		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
+		
+		//FIXME: May be it's better return null ???
+		if (n == 0)
+			leftPvalue = rightPvalue = twoTailPvalue = 1.0;
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.exact,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 

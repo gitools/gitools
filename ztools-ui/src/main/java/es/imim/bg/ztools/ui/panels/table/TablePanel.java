@@ -188,9 +188,9 @@ public class TablePanel extends JPanel {
 	
 		this.selMode = SelectionMode.cells;
 		
-		this.columnsHeight = 160;
-		this.columnsWidth = 30;
-		this.rowsHeight = 30;
+		this.columnsHeight = 300;
+		this.columnsWidth = 25;
+		this.rowsHeight = 25;
 	
 		this.selectedLeadColumn = this.selectedLeadRow = -1;
 	

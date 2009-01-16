@@ -207,7 +207,10 @@ public class ResultsResource extends Resource {
 			out.writeSeparator();
 			
 			Object value = cellsFacade.getValue(element, propIndex);
-			out.writeQuotedValue(value.toString());
+			if (value instanceof Double && Double.isNaN((Double) value))
+				out.writeValue("-");
+			else
+				out.writeQuotedValue(value.toString());
 		}
 		
 		out.writeNewLine();
