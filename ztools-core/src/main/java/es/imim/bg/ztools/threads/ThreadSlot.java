@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.threads;
 
-public class ThreadSlot {
+public class ThreadSlot implements Runnable {
 
 	private ThreadQueue threadQueue;
 	
@@ -11,5 +11,9 @@ public class ThreadSlot {
 	
 	public void execute(Runnable runnable) {
 		threadQueue.execute(this, runnable);
+	}
+
+	@Override
+	public void run() {
 	}
 }

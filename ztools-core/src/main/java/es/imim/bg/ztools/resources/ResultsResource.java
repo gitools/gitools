@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,8 +208,13 @@ public class ResultsResource extends Resource {
 			out.writeSeparator();
 			
 			Object value = cellsFacade.getValue(element, propIndex);
-			if (value instanceof Double && Double.isNaN((Double) value))
-				out.writeValue("-");
+			if (value instanceof Double) {
+				Double v = (Double) value;
+				if (Double.isNaN(v))
+					out.writeValue("-");
+				else
+					out.writeValue(v.toString());
+			}
 			else
 				out.writeQuotedValue(value.toString());
 		}
