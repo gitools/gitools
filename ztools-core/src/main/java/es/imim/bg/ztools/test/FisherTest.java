@@ -1,5 +1,7 @@
 package es.imim.bg.ztools.test;
 
+import java.util.Arrays;
+
 import cern.colt.matrix.DoubleMatrix1D;
 import es.imim.bg.ztools.stats.FisherExactTest;
 import es.imim.bg.ztools.test.results.CommonResult;
@@ -74,6 +76,10 @@ public class FisherTest extends AbstractTest {
 		// Initialize the contingency table with zeros
 		for (int i = 0; i < 4; i++)
 			ctable[i] = 0;
+		
+
+		//sort group item indices
+		Arrays.sort(groupItems); //FIXME this is redundant for diferent conditions
 		
 		// count
 		int k = 0;
