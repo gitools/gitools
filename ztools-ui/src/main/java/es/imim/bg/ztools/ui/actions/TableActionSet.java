@@ -3,6 +3,7 @@ package es.imim.bg.ztools.ui.actions;
 import es.imim.bg.ztools.ui.actions.table.HideSelectionAction;
 import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction;
 import es.imim.bg.ztools.ui.actions.table.ShowAllAction;
+import es.imim.bg.ztools.ui.actions.table.ShowColumnsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.ShowRowsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.ShowRowsByValuesAction;
 import es.imim.bg.ztools.ui.actions.table.SortRowsAction;
@@ -22,6 +23,9 @@ public final class TableActionSet extends ActionSet {
 	
 	public static final BaseAction showAllRows =
 		new ShowAllAction(ShowAllAction.ElementType.ROWS);
+	
+	public static final BaseAction showColumnsByNames = 
+		new ShowColumnsByNamesAction();
 	
 	public static final BaseAction showAllColumns =
 		new ShowAllAction(ShowAllAction.ElementType.COLUMNS);
@@ -57,6 +61,7 @@ public final class TableActionSet extends ActionSet {
 			showAllRows,
 			hideSelectedRowsAction,
 			BaseAction.separator,
+			showColumnsByNames,
 			showAllColumns,
 			hideSelectedColumnsAction,
 			BaseAction.separator,
