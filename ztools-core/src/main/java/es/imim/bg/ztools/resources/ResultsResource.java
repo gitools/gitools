@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +21,10 @@ import cern.colt.matrix.ObjectMatrix1D;
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ArrayElementFacade;
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ArrayElementAdapter;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
-import es.imim.bg.ztools.model.elements.StringElementFacade;
+import es.imim.bg.ztools.model.elements.StringElementAdapter;
 
 public class ResultsResource extends Resource {
 	
@@ -129,9 +128,9 @@ public class ResultsResource extends Resource {
 		resultsMatrix.setRows(rows);
 		resultsMatrix.makeData();
 		
-		resultsMatrix.setColumnsFacade(new StringElementFacade());
-		resultsMatrix.setRowsFacade(new StringElementFacade());
-		resultsMatrix.setCellsFacade(new ArrayElementFacade(paramNames));
+		resultsMatrix.setColumnAdapter(new StringElementAdapter());
+		resultsMatrix.setRowAdapter(new StringElementAdapter());
+		resultsMatrix.setCellAdapter(new ArrayElementAdapter(paramNames));
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];
@@ -147,13 +146,36 @@ public class ResultsResource extends Resource {
 		monitor.end();
 	}
 	
-	public void write(ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) 
+	public void write(ResultsMatrix results, String prefix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
-		write(openWriter(), resultsMatrix, orderByColumn, monitor);
+		write(results, prefix, true, monitor);
 	}
 	
-	public void write(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void write(ResultsMatrix results, String prefix, boolean orderByColumn, ProgressMonitor monitor) 
+			throws FileNotFoundException, IOException {
+		
+		final File basePath = getResourceFile();
+		
+		String colsPath = new File(basePath, prefix + ".columns.tsv.gz").getAbsolutePath();
+		writeColumns(openWriter(colsPath), results, orderByColumn, monitor);
+		
+		String rowsPath = new File(basePath, prefix + ".rows.tsv.gz").getAbsolutePath();
+		writeRows(openWriter(rowsPath), results, orderByColumn, monitor);
+		
+		String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
+		writeCells(openWriter(cellsPath), results, orderByColumn, monitor);
+	}
+	
+	public void writeRows(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+		
+	}
+	
+	public void writeColumns(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+		
+	}
+
+	public void writeCells(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
 				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
@@ -162,7 +184,7 @@ public class ResultsResource extends Resource {
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (ElementProperty prop : resultsMatrix.getCellsFacade().getProperties()) {
+		for (ElementProperty prop : resultsMatrix.getCellAdapter().getProperties()) {
 			out.writeSeparator();
 			out.writeQuotedValue(prop.getId());
 		}
@@ -200,7 +222,7 @@ public class ResultsResource extends Resource {
 		
 		Object element = resultsMatrix.getCell(rowIndex, colIndex);
 		
-		ElementFacade cellsFacade = resultsMatrix.getCellsFacade();
+		ElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
 		
 		int numProperties = cellsFacade.getPropertyCount();
 		

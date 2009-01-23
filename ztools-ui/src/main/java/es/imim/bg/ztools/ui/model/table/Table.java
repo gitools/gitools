@@ -2,7 +2,7 @@ package es.imim.bg.ztools.ui.model.table;
 
 import java.util.Arrays;
 
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.model.AbstractModel;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
@@ -48,7 +48,7 @@ public class Table
 		
 		// selected property
 		
-		ElementFacade cellsFacade = contents.getCellsFacade();
+		ElementAdapter cellsFacade = contents.getCellsFacade();
 		for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
 			ElementProperty prop = cellsFacade.getProperty(i);
 			if ("right-p-value".equals(prop.getId()))
@@ -238,7 +238,7 @@ public class Table
 	}
 
 	@Override
-	public ElementFacade getRowsFacade() {
+	public ElementAdapter getRowsFacade() {
 		return contents.getRowsFacade();
 	}
 	
@@ -253,7 +253,7 @@ public class Table
 	}
 
 	@Override
-	public ElementFacade getColumnsFacade() {
+	public ElementAdapter getColumnsFacade() {
 		return contents.getColumnsFacade();
 	}
 	
@@ -297,7 +297,7 @@ public class Table
 	}
 	
 	@Override
-	public ElementFacade getCellsFacade() {
+	public ElementAdapter getCellsFacade() {
 		return contents.getCellsFacade();
 	}
 	

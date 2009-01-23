@@ -1,28 +1,38 @@
 package es.imim.bg.ztools.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ArrayElementAdapter;
+import es.imim.bg.ztools.model.elements.BeanElementAdapter;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
+import es.imim.bg.ztools.model.elements.StringElementAdapter;
 
 @XmlType(
 		propOrder = {
-				"rowsFacade",
-				"columnsFacade",
-				"cellsFacade"})
-				
+				"rowAdapter",
+				"columnAdapter",
+				"cellAdapter"})
+
+@XmlSeeAlso(value = {
+		BeanElementAdapter.class, 
+		StringElementAdapter.class,
+		ArrayElementAdapter.class})
+		
 public class ResultsMatrix {
 	
 	protected ObjectMatrix1D rows;
 	protected ObjectMatrix1D columns;
 	protected ObjectMatrix2D cells;
 
-	protected ElementFacade rowsFacade;
-	protected ElementFacade columnsFacade;
-	protected ElementFacade cellsFacade;
+	protected ElementAdapter rowAdapter;
+	protected ElementAdapter columnAdapter;
+	protected ElementAdapter cellAdapter;
 	
 	public ResultsMatrix() {
 	}
@@ -31,17 +41,17 @@ public class ResultsMatrix {
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
 			ObjectMatrix2D cells,
-			ElementFacade rowsFacade,
-			ElementFacade columnsFacade,
-			ElementFacade cellsFacade) {
+			ElementAdapter rowAdapter,
+			ElementAdapter columnAdapter,
+			ElementAdapter cellAdapter) {
 		
 		this.rows = rows;
 		this.columns = columns;
 		this.cells = cells;
 		
-		this.rowsFacade = rowsFacade;
-		this.columnsFacade = columnsFacade;
-		this.cellsFacade = cellsFacade;
+		this.rowAdapter = rowAdapter;
+		this.columnAdapter = columnAdapter;
+		this.cellAdapter = cellAdapter;
 	}
 
 	public void makeData() {
@@ -112,49 +122,52 @@ public class ResultsMatrix {
 	}
 	
 	public Object getCellValue(int row, int column, int property) {
-		return cellsFacade.getValue(
+		return cellAdapter.getValue(
 				cells.get(row, column), property);
 	}
 	
 	public Object getCellValue(int row, int column, String id) {
-		return cellsFacade.getValue(
+		return cellAdapter.getValue(
 				cells.get(row, column), id);
 	}
 	
 	public void setCellValue(int row, int column, int property, Object value) {
-		cellsFacade.setValue(
+		cellAdapter.setValue(
 				cells.get(row, column), property, value);
 	}
 	
 	public void setCellValue(int row, int column, String id, Object value) {
-		cellsFacade.setValue(
+		cellAdapter.setValue(
 				cells.get(row, column), id, value);
 	}
 	
 	//@XmlAnyElement
-	public ElementFacade getRowsFacade() {
-		return rowsFacade;
+	@XmlElement
+	public ElementAdapter getRowAdapter() {
+		return rowAdapter;
 	}
 	
-	public void setRowsFacade(ElementFacade rowsFacade) {
-		this.rowsFacade = rowsFacade;
-	}
-	
-	//@XmlAnyElement
-	public ElementFacade getColumnsFacade() {
-		return columnsFacade;
-	}
-	
-	public void setColumnsFacade(ElementFacade columnsFacade) {
-		this.columnsFacade = columnsFacade;
+	public void setRowAdapter(ElementAdapter rowAdapter) {
+		this.rowAdapter = rowAdapter;
 	}
 	
 	//@XmlAnyElement
-	public ElementFacade getCellsFacade() {
-		return cellsFacade;
+	@XmlElement
+	public ElementAdapter getColumnAdapter() {
+		return columnAdapter;
 	}
 	
-	public void setCellsFacade(ElementFacade cellsFacade) {
-		this.cellsFacade = cellsFacade;
+	public void setColumnAdapter(ElementAdapter columnAdapter) {
+		this.columnAdapter = columnAdapter;
+	}
+	
+	//@XmlAnyElement
+	@XmlElement
+	public ElementAdapter getCellAdapter() {
+		return cellAdapter;
+	}
+	
+	public void setCellAdapter(ElementAdapter cellAdapter) {
+		this.cellAdapter = cellAdapter;
 	}
 }

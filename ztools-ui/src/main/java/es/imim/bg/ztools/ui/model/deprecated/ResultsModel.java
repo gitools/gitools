@@ -6,7 +6,7 @@ import java.util.HashMap;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 
 public class ResultsModel 
 		extends CubeSectionModel {
@@ -39,7 +39,7 @@ public class ResultsModel
 		for (int i = 0; i < rowCount; i++)
 			rowNames[i] = resultsMatrix.getRow(i).toString();
 		
-		paramCount = resultsMatrix.getCellsFacade().getPropertyCount();
+		paramCount = resultsMatrix.getCellAdapter().getPropertyCount();
 		data = new ArrayList<DoubleMatrix2D>(paramCount);
 		for (int i = 0; i < paramCount; i++) {
 			DoubleMatrix2D matrix = DoubleFactory2D.dense.make(rowCount, columnCount);
@@ -51,7 +51,7 @@ public class ResultsModel
 			data.add(matrix);
 		}
 		
-		ElementFacade cellsFacade = resultsMatrix.getCellsFacade();
+		ElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
 		visibleParams = new int[paramCount];
 		paramIndexMap = new HashMap<String, Integer>();
 		paramNames = new String[paramCount];

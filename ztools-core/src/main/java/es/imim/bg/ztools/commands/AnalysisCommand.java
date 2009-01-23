@@ -116,10 +116,9 @@ public abstract class AnalysisCommand implements Command {
 		//inv.setSummary("inv summary");
 		//inv.setNotes("inv notes");
 		proj.getAnalysis().add(analysis);
-		proj.getDataMatrices().add(analysis.getDataMatrix());
-		proj.getModuleSets().add(analysis.getModuleMap());
-		ProjectResource res = new ProjectResource(
-				new File(path, "project.xml"));
+		proj.getDataTables().add(analysis.getDataTable());
+		proj.getModuleMaps().add(analysis.getModuleMap());
+		ProjectResource res = new ProjectResource(path, "project.xml");
 		try {
 			res.save(proj, monitor.subtask());
 		} catch (JAXBException e) {

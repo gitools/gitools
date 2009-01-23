@@ -11,8 +11,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.BeanElementFacade;
-import es.imim.bg.ztools.model.elements.StringElementFacade;
+import es.imim.bg.ztools.model.elements.BeanElementAdapter;
+import es.imim.bg.ztools.model.elements.StringElementAdapter;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.CommonResult;
@@ -63,10 +63,10 @@ public class ZCalcProcessor {
 		//final int numParams = paramNames.length;
 		
 		ObjectMatrix1D conditions = ObjectFactory1D.dense.make(
-				analysis.getDataMatrix().getColNames());
+				analysis.getDataTable().getColNames());
 		
 		monitor.debug("Transposing data...");
-		DoubleMatrix2D data = analysis.getDataMatrix().getData().viewDice().copy();
+		DoubleMatrix2D data = analysis.getDataTable().getData().viewDice().copy();
 		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
 				analysis.getModuleMap().getModuleNames());
@@ -86,10 +86,10 @@ public class ZCalcProcessor {
 		resultsMatrix.setRows(modules);
 		resultsMatrix.makeData();
 		
-		resultsMatrix.setRowsFacade(new StringElementFacade());
-		resultsMatrix.setColumnsFacade(new StringElementFacade());
-		resultsMatrix.setCellsFacade(
-				new BeanElementFacade(test.getResultClass()));
+		resultsMatrix.setRowAdapter(new StringElementAdapter());
+		resultsMatrix.setColumnAdapter(new StringElementAdapter());
+		resultsMatrix.setCellAdapter(
+				new BeanElementAdapter(test.getResultClass()));
 		
 		int numProcs = ThreadManager.getNumThreads();
 		

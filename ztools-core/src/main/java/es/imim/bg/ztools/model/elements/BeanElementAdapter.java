@@ -7,17 +7,24 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BeanElementFacade extends ElementFacade {
+public class BeanElementAdapter extends ElementAdapter {
 	
-	protected BeanElementFacade() {
+	protected BeanElementAdapter() {
 	}
 	
-	public BeanElementFacade(Class<?> elementClass) {
+	public BeanElementAdapter(Class<?> elementClass) {
 		super(elementClass);
 		
 		readProperties();
 	}
 
+	@Override
+	protected void setElementClass(Class<?> elementClass) {
+		super.setElementClass(elementClass);
+		
+		readProperties();
+	}
+	
 	protected void readProperties() {
 		List<ElementProperty> properties = new ArrayList<ElementProperty>();
 		

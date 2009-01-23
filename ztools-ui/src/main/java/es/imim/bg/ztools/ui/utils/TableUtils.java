@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.ui.utils;
 
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.model.table.ITable;
 
@@ -17,7 +17,7 @@ public class TableUtils {
 	}
 	
 	public static int correctedValueIndex(ITable table, ElementProperty prop) {
-		ElementFacade cellFacade = table.getCellsFacade();
+		ElementAdapter cellFacade = table.getCellsFacade();
 		int numProps = cellFacade.getPropertyCount();
 		
 		String id = "corrected-" + prop.getId();

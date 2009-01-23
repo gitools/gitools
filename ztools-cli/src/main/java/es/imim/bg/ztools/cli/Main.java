@@ -62,20 +62,23 @@ public class Main {
 
         try {
             parser.parseArgument(delegatedArgs);
+            
+            if (args.version) {
+            	printVersion();
+            	System.exit(0);
+            }
+            
+            if (args.help) {
+            	printUsage(System.out, parser, toolName);
+            	System.exit(0);
+            }
+            
             cliTool.validateArguments(args);
         } 
         catch(Exception e ) {
         	System.err.println(e.getMessage());
             printUsage(System.err, parser, toolName);
             System.exit(-1);
-        }
-        
-        if (args.version)
-        	printVersion();
-        
-        if (args.help) {
-        	printUsage(System.out, parser, toolName);
-        	System.exit(0);
         }
         
 		ThreadManager.setNumThreads(args.maxProcs);

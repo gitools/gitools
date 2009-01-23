@@ -14,7 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
 import es.imim.bg.ztools.ui.model.table.ITable;
@@ -71,7 +71,7 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 		
 		// value combo box
 		
-		ElementFacade cellFacade = table.getCellsFacade();
+		ElementAdapter cellFacade = table.getCellsFacade();
 		
 		int numProps = cellFacade.getPropertyCount();
 		

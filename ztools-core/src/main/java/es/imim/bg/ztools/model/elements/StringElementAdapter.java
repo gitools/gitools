@@ -3,9 +3,9 @@ package es.imim.bg.ztools.model.elements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class StringElementFacade extends ElementFacade {
+public class StringElementAdapter extends ElementAdapter {
 
-	public StringElementFacade() {
+	public StringElementAdapter() {
 	}
 	
 	@Override

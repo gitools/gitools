@@ -64,7 +64,7 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		Test test = testFactory.create(); //FIXME?
 		String statName = test.getName();
 		
-		List<ElementProperty> properties = resultsMatrix.getCellsFacade().getProperties();
+		List<ElementProperty> properties = resultsMatrix.getCellAdapter().getProperties();
 
 		final String[] paramNames = new String[properties.size()];
 		final Map<String, Integer> paramIndexMap = new HashMap<String, Integer>();

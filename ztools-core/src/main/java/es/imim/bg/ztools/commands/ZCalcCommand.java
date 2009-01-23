@@ -60,7 +60,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		Analysis analysis = new Analysis();
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
-		analysis.setDataMatrix(dataMatrix);
+		analysis.setDataTable(dataMatrix);
 		analysis.setModuleSet(moduleMap);
 		
 		ZCalcProcessor processor = 

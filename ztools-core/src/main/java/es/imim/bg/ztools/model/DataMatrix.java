@@ -9,8 +9,8 @@ import cern.colt.matrix.DoubleMatrix2D;
 		propOrder = {
 				"name"/*, 
 				"colNames", 
-				"rowNames"*/, 
-				"data"})
+				"rowNames", 
+				"data"*/})
 				
 public final class DataMatrix {
 
@@ -61,7 +61,7 @@ public final class DataMatrix {
 		this.rowNames = rowNames;
 	}
 
-	//@XmlTransient
+	@XmlTransient
 	public final DoubleMatrix2D getData() {
 		return data;
 	}

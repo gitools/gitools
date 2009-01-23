@@ -1,7 +1,7 @@
 package es.imim.bg.ztools.ui.model.table;
 
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 
 public class ResultsMatrixTableContentsAdapter 
 		implements ITableContents {
@@ -23,8 +23,8 @@ public class ResultsMatrixTableContentsAdapter
 	}
 
 	@Override
-	public ElementFacade getRowsFacade() {
-		return results.getRowsFacade();
+	public ElementAdapter getRowsFacade() {
+		return results.getRowAdapter();
 	}
 	
 	/* columns */
@@ -40,8 +40,8 @@ public class ResultsMatrixTableContentsAdapter
 	}
 
 	@Override
-	public ElementFacade getColumnsFacade() {
-		return results.getColumnsFacade();
+	public ElementAdapter getColumnsFacade() {
+		return results.getColumnAdapter();
 	}
 
 	/* cells */
@@ -72,7 +72,7 @@ public class ResultsMatrixTableContentsAdapter
 	}
 	
 	@Override
-	public ElementFacade getCellsFacade() {
-		return results.getCellsFacade();
+	public ElementAdapter getCellsFacade() {
+		return results.getCellAdapter();
 	}
 }

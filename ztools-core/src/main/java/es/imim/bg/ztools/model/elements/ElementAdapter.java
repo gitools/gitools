@@ -6,16 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement
 @XmlSeeAlso(value = {
-		BeanElementFacade.class, 
-		StringElementFacade.class,
-		ArrayElementFacade.class})
+		BeanElementProperty.class})
 		
-public abstract class ElementFacade {
+public abstract class ElementAdapter {
 	
 	protected Class<?> elementClass;
 	
@@ -23,15 +22,20 @@ public abstract class ElementFacade {
 	
 	private Map<String, Integer> propIdToIndexMap;
 	
-	public ElementFacade() {
+	public ElementAdapter() {
 	}
 	
-	public ElementFacade(Class<?> elementClass) {
+	public ElementAdapter(Class<?> elementClass) {
 		this.elementClass = elementClass;
 	}
 	
+	@XmlElement
 	public Class<?> getElementClass() {
 		return elementClass;
+	}
+	
+	protected void setElementClass(Class<?> elementClass) {
+		this.elementClass = elementClass;
 	}
 	
 	public final int getPropertyCount() {
@@ -42,8 +46,7 @@ public abstract class ElementFacade {
 		return properties.get(index);
 	}
 	
-	/*@XmlElementWrapper(name = "properties")
-	@XmlAnyElement*/
+	//@XmlElement(name = "Property", type=ElementProperty.class)
 	public final List<ElementProperty> getProperties() {
 		return Collections.unmodifiableList(properties);
 	}

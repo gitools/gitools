@@ -46,6 +46,8 @@ public class CsvAnalysisResource extends AnalysisResource {
 	public static final String descFileName = "analysis.csv";
 	public static final String dataFileName = "data.csv.gz";
 	public static final String modulesFileName = "modules.csv.gz";
+	
+	@Deprecated
 	public static final String resultsFileName = "results.csv.gz";
 
 	final CSVStrategy csvStrategy = new CSVStrategy(
@@ -103,7 +105,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 				path = new File(basePath, fields[1]);
 				DataResource res = new DataResource(path);
 				DataMatrix dataMatrix = res.load(monitor.subtask());
-				analysis.setDataMatrix(dataMatrix);
+				analysis.setDataTable(dataMatrix);
 			}
 			else if (tag.equals(tagModules) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
@@ -148,13 +150,13 @@ public class CsvAnalysisResource extends AnalysisResource {
 		saveDescription(workDirFile, analysis, test);
 		
 		new DataResource(new File(workDirFile, dataFileName))
-			.save(analysis.getDataMatrix(), monitor);
+			.save(analysis.getDataTable(), monitor);
 		
 		new ModuleMapResource(new File(workDirFile, modulesFileName))
 			.save(analysis.getModuleMap(), monitor);
 		
-		new ResultsResource(new File(workDirFile, resultsFileName))
-			.write(analysis.getResults(), resultsOrderByCond, monitor);
+		/*new ResultsResource(workDirFile)
+			.write(analysis.getResults(), "results", resultsOrderByCond, monitor);*/
 		
 		monitor.end();
 	}
@@ -200,7 +202,8 @@ public class CsvAnalysisResource extends AnalysisResource {
 		
 		out.writeProperty(tagData, dataFileName);
 		out.writeProperty(tagModules, modulesFileName);
-		out.writeProperty(tagResults, resultsFileName);
+		
+		out.writeProperty(tagResults, analysis.getName() + ".cells.tsv.gz");
 		
 		out.close();
 	}

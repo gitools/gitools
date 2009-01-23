@@ -9,6 +9,8 @@ import javax.swing.SwingUtilities;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
+import es.imim.bg.ztools.model.Project;
+import es.imim.bg.ztools.resources.ProjectResource;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
@@ -78,6 +80,9 @@ public class OpenAnalysisAction extends BaseAction {
 			return;
 		
 		try {
+			ProjectResource projRes = new ProjectResource(selectedPath);
+			Project proj = projRes.load(monitor);
+			
 			AnalysisResource analysisRes =
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			

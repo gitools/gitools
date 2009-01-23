@@ -13,7 +13,7 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.model.elements.ElementFacade;
+import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
@@ -132,7 +132,7 @@ public class TableView extends AbstractView {
 		if (column >= 0 && column < columnCount && row >= 0) {
 			final String colName = table.getColumn(column).toString();
 			final String rowName = table.getRow(row).toString();
-			ElementFacade cellsFacade = table.getCellsFacade();
+			ElementAdapter cellsFacade = table.getCellsFacade();
 			Object element = table.getCell(row, column);
 			
 			StringBuilder sb = new StringBuilder();

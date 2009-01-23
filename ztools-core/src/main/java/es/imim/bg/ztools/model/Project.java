@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 		propOrder = {
 				"summary", 
 				"notes", 
-				"dataMatrices", 
-				"moduleSets", 
+				"dataTables", 
+				"moduleMaps", 
 				"analysis"})
 
 @XmlRootElement
@@ -21,7 +21,7 @@ public class Project {
 	protected String summary;
 	protected String notes;
 	
-	protected List<DataMatrix> dataMatrices = new ArrayList<DataMatrix>();
+	protected List<DataMatrix> dataTables = new ArrayList<DataMatrix>();
 	protected List<ModuleMap> moduleMaps = new ArrayList<ModuleMap>();
 	protected List<Analysis> analysis = new ArrayList<Analysis>();
 	//protected List<Figure> figures;
@@ -45,24 +45,25 @@ public class Project {
 		this.notes = notes;
 	}
 	
-	@XmlElement(name = "data")
-	public List<DataMatrix> getDataMatrices() {
-		return dataMatrices;
+	@XmlElement(name = "DataTable")
+	public List<DataMatrix> getDataTables() {
+		return dataTables;
 	}
 	
-	public void setDataMatrices(List<DataMatrix> dataMatrices) {
-		this.dataMatrices = dataMatrices;
+	public void setDataTables(List<DataMatrix> dataMatrices) {
+		this.dataTables = dataMatrices;
 	}
 	
-	@XmlElement(name = "modules")
-	public List<ModuleMap> getModuleSets() {
+	@XmlElement(name = "ModuleMap")
+	public List<ModuleMap> getModuleMaps() {
 		return moduleMaps;
 	}
 	
-	public void setModuleSets(List<ModuleMap> moduleMaps) {
+	public void setModuleMaps(List<ModuleMap> moduleMaps) {
 		this.moduleMaps = moduleMaps;
 	}
 	
+	@XmlElement(name = "Analysis")
 	public List<Analysis> getAnalysis() {
 		return analysis;
 	}

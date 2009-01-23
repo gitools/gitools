@@ -6,14 +6,14 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ArrayElementFacade extends ElementFacade {
+public class ArrayElementAdapter extends ElementAdapter {
 
 	protected String[] ids;
 	
-	protected ArrayElementFacade() {
+	protected ArrayElementAdapter() {
 	}
 	
-	public ArrayElementFacade(String[] ids) {
+	public ArrayElementAdapter(String[] ids) {
 		super(double[].class);
 		
 		this.ids = ids;

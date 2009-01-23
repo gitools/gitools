@@ -2,6 +2,7 @@ package es.imim.bg.ztools.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -10,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 				"name", 
 				"startTime", 
 				"elapsedTime",
-				"toolConfig"
-				/*"dataMatrix", 
-				"moduleSet"*/,
+				"toolConfig",
+				"dataTableRef", 
+				"moduleMapRef",
 				"results"})
 				
 public class Analysis {
@@ -21,7 +22,7 @@ public class Analysis {
 	protected Date startTime;
 	protected long elapsedTime;
 	
-	protected DataMatrix dataMatrix;
+	protected DataMatrix dataTable;
 	protected ModuleMap moduleMap;
 	protected ResultsMatrix resultsMatrix;
 	
@@ -51,13 +52,26 @@ public class Analysis {
 		this.elapsedTime = elapsedTime;
 	}
 	
-	@XmlTransient
-	public DataMatrix getDataMatrix() {
-		return dataMatrix;
+	public ToolConfig getToolConfig() {
+		return toolConfig;
 	}
 	
-	public void setDataMatrix(DataMatrix dataMatrix) {
-		this.dataMatrix = dataMatrix;
+	public void setToolConfig(ToolConfig toolConfig) {
+		this.toolConfig = toolConfig;
+	}
+	
+	@XmlTransient
+	public DataMatrix getDataTable() {
+		return dataTable;
+	}
+	
+	public void setDataTable(DataMatrix dataTable) {
+		this.dataTable = dataTable;
+	}
+	
+	@XmlElement(name = "dataTableRef")
+	public String getDataTableRef() {
+		return dataTable.getName();
 	}
 	
 	@XmlTransient
@@ -69,19 +83,17 @@ public class Analysis {
 		this.moduleMap = moduleMap;
 	}
 	
+	@XmlElement(name = "moduleMapRef")
+	public String getModuleMapRef() {
+		return moduleMap.getName();
+	}
+	
+	@XmlElement(name = "Results")
 	public ResultsMatrix getResults() {
 		return resultsMatrix;
 	}
 	
 	public void setResults(ResultsMatrix resultsMatrix) {
 		this.resultsMatrix = resultsMatrix;
-	}
-	
-	public ToolConfig getToolConfig() {
-		return toolConfig;
-	}
-	
-	public void setToolConfig(ToolConfig toolConfig) {
-		this.toolConfig = toolConfig;
 	}
 }

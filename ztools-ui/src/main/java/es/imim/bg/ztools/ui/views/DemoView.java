@@ -8,8 +8,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ArrayElementFacade;
-import es.imim.bg.ztools.model.elements.StringElementFacade;
+import es.imim.bg.ztools.model.elements.ArrayElementAdapter;
+import es.imim.bg.ztools.model.elements.StringElementAdapter;
 import es.imim.bg.ztools.ui.model.table.ResultsMatrixTableContentsAdapter;
 import es.imim.bg.ztools.ui.model.table.Table;
 import es.imim.bg.ztools.ui.views.table.TableView;
@@ -51,9 +51,9 @@ public class DemoView extends TableView {
 				rowNames,
 				colNames,   
 				data,
-				new StringElementFacade(), 
-				new StringElementFacade(),
-				new ArrayElementFacade(new String[] {"p-value", "corrected-p-value"}));
+				new StringElementAdapter(), 
+				new StringElementAdapter(),
+				new ArrayElementAdapter(new String[] {"p-value", "corrected-p-value"}));
 		
 		Analysis analysis = new Analysis();
 		analysis.setResults(resultsMatrix);

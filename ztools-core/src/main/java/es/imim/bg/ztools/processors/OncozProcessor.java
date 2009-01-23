@@ -10,8 +10,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.BeanElementFacade;
-import es.imim.bg.ztools.model.elements.StringElementFacade;
+import es.imim.bg.ztools.model.elements.BeanElementAdapter;
+import es.imim.bg.ztools.model.elements.StringElementAdapter;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.CommonResult;
@@ -56,9 +56,9 @@ public class OncozProcessor {
 		//final int numParams = paramNames.length;
 		
 		ObjectMatrix1D items = ObjectFactory1D.dense.make(
-				analysis.getDataMatrix().getRowNames());
+				analysis.getDataTable().getRowNames());
 		
-		DoubleMatrix2D data = analysis.getDataMatrix().getData();
+		DoubleMatrix2D data = analysis.getDataTable().getData();
 		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
 				analysis.getModuleMap().getModuleNames());
@@ -79,10 +79,10 @@ public class OncozProcessor {
 		resultsMatrix.setRows(items);
 		resultsMatrix.makeData();
 		
-		resultsMatrix.setRowsFacade(new StringElementFacade());
-		resultsMatrix.setColumnsFacade(new StringElementFacade());
-		resultsMatrix.setCellsFacade(
-				new BeanElementFacade(test.getResultClass()));
+		resultsMatrix.setRowAdapter(new StringElementAdapter());
+		resultsMatrix.setColumnAdapter(new StringElementAdapter());
+		resultsMatrix.setCellAdapter(
+				new BeanElementAdapter(test.getResultClass()));
 		
 		int numProcs = ThreadManager.getNumThreads();
 		
