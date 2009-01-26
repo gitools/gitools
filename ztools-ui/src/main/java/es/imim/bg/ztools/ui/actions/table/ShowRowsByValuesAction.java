@@ -31,7 +31,18 @@ public class ShowRowsByValuesAction extends BaseAction {
 		ValueListDialog d = new ValueListDialog(AppFrame.instance(), params);
 		List<ValueCriteria> valueList = d.getValues();
 		if(valueList != null) {
-			//TODO: Filter!!
+			
+		/*	int[] rows = table.getVisibleRows();
+			int[] cols = table.getVisibleColumns();
+			for(int i = 0; i < rows.length; i++) {
+				for (int j = 0; i < cols.length; j++) {
+					Object cell = table.getCell(i, j);
+					
+				}
+			}
+			*///TODO: Filter!!
+			
+			
 		}
 	}
 }

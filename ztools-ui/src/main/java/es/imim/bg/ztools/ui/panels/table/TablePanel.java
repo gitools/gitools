@@ -40,7 +40,6 @@ public class TablePanel extends JPanel {
 			int lastColumn = table.getColumnCount() - 1;
 
 			if (lastColumn == pressedColumn) {
-
 				selectAll();
 				// for (ColorMatrixListener listener : listeners)
 				// listener.selectionAll();
@@ -430,14 +429,16 @@ public class TablePanel extends JPanel {
 		table.clearSelection();
 	}
 
-	public void selectAll() {	
+	public void selectAll() {
 		clearSelection();
-		setSelectionMode(SelectionMode.rows);
+		//setSelectionMode(SelectionMode.rows);
 
 		int lastRowIndex = table.getRowCount() - 1;
 		table.getSelectionModel()
 			.addSelectionInterval(0, lastRowIndex);
 
+		System.out.println(table.getSelectedRows().toString());
+		
 		int lastColIndex = table.getColumnCount() - 2;
 		table.getColumnModel()
 			.getSelectionModel()
