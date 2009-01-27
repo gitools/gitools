@@ -1,6 +1,7 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,12 @@ import javax.swing.event.ListSelectionListener;
 public class ValueListDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
+	
+	private Boolean includeHidden = false;
+		
+	public Boolean hiddenIncluded() {
+		return includeHidden;
+	}
 	
 	public enum ValueCondition { 
 		EQ("equal"), 
@@ -98,6 +105,13 @@ public class ValueListDialog extends JDialog {
 		final JScrollPane scrollPane = new JScrollPane(valueList);
 		scrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 0, 0));
+		
+		
+		final Checkbox checkbox = new Checkbox("Include hidden rows");
+		JPanel checkboxPanel = new JPanel();
+		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+		checkboxPanel.setLayout(new BorderLayout());
+		checkboxPanel.add(checkbox, BorderLayout.WEST);
 
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
@@ -158,7 +172,7 @@ public class ValueListDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel);
+				acceptChanges(listModel, checkbox.getState());
 			}
 		});
 		
@@ -178,11 +192,13 @@ public class ValueListDialog extends JDialog {
 		btnPanel.add(removeBtn);
 		btnPanel.add(upBtn);
 		btnPanel.add(downBtn);
+
 		
 		final JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
 		contPanel.add(btnPanel, BorderLayout.EAST);
+		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
@@ -264,13 +280,14 @@ public class ValueListDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel) {
+	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden) {
 		List<ValueCriteria> list = 
 			new ArrayList<ValueCriteria>(listModel.getSize());
 		
 		for (int i = 0; i < listModel.getSize(); i++)
 			list.add((ValueCriteria) listModel.getElementAt(i));
 		
+		includeHidden = newIncludeHidden;
 		values = list;
 		setVisible(false);
 	}
