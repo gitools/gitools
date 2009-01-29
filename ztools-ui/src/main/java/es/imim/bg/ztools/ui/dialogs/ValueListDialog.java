@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.SampleModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,19 @@ public class ValueListDialog extends JDialog {
 	private static final long serialVersionUID = 4201760423693544699L;
 	
 	private Boolean includeHidden = false;
+	private Boolean allCells = false;
+	private Boolean sameCell = false;
 		
 	public Boolean hiddenIncluded() {
 		return includeHidden;
+	}
+	
+	public Boolean allCells() {
+		return allCells;
+	}
+	
+	public Boolean sameCell() {
+		return sameCell;
 	}
 	
 	public enum ValueCondition { 
@@ -85,7 +96,7 @@ public class ValueListDialog extends JDialog {
 	private Object[] params;
 	private List<ValueCriteria> values;
 
-	public ValueListDialog(JFrame owner, Object[] params) {
+	public ValueListDialog(JFrame owner, Object[] params, String target) {
 		super(owner);
 		
 		this.params = params;
@@ -93,11 +104,11 @@ public class ValueListDialog extends JDialog {
 		setModal(true);
 		setTitle("Criteria list for values");
 		setLocationByPlatform(true);				
-		createComponents();
+		createComponents(target);
 		pack();
 	}
 
-	private void createComponents() {
+	private void createComponents(String target) {
 				
 		final DefaultListModel listModel = new DefaultListModel();    
 		final JList valueList = new JList(listModel);   
@@ -107,18 +118,29 @@ public class ValueListDialog extends JDialog {
 				BorderFactory.createEmptyBorder(8, 8, 0, 0));
 		
 		
-		final Checkbox checkbox = new Checkbox("Include hidden rows");
+		final Checkbox includeHiddenCheckbox = new Checkbox("Include hidden " + target + "s");
+		final Checkbox allCellsCheckbox = new Checkbox("All cells in a " + target + " must match a criteria/the criterias");
+		final Checkbox sameCellCheckbox = new Checkbox("All criterias must match within a cell (AND)");
+		sameCellCheckbox.setEnabled(false);
+		
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		checkboxPanel.setLayout(new BorderLayout());
-		checkboxPanel.add(checkbox, BorderLayout.WEST);
+		checkboxPanel.add(includeHiddenCheckbox, BorderLayout.NORTH);
+		checkboxPanel.add(allCellsCheckbox, BorderLayout.CENTER);
+		checkboxPanel.add(sameCellCheckbox, BorderLayout.SOUTH);
+
+		
+		final JPanel outerCheckboxPanel = new JPanel();
+		outerCheckboxPanel.setLayout(new BorderLayout());
+		outerCheckboxPanel.add(checkboxPanel, BorderLayout.WEST);
 
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(listModel);
+				addElmenent(listModel, sameCellCheckbox);
 			}
 		});
 		
@@ -128,7 +150,7 @@ public class ValueListDialog extends JDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(listModel, valueList);
+				removeElement(listModel, valueList, sameCellCheckbox);
 			}
 		});
 		
@@ -172,7 +194,10 @@ public class ValueListDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel, checkbox.getState());
+				acceptChanges(listModel, 
+						includeHiddenCheckbox.getState(),
+						allCellsCheckbox.getState(),
+						sameCellCheckbox.getState());
 			}
 		});
 		
@@ -198,7 +223,7 @@ public class ValueListDialog extends JDialog {
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
 		contPanel.add(btnPanel, BorderLayout.EAST);
-		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
+		contPanel.add(outerCheckboxPanel, BorderLayout.SOUTH);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
@@ -214,17 +239,26 @@ public class ValueListDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void addElmenent(DefaultListModel listModel) {
+	protected void addElmenent(DefaultListModel listModel, Checkbox sameCellCheckbox) {
 		ValueCriteriaDialog d = new ValueCriteriaDialog(this, params);
 		ValueCriteria c = d.getCriteria();
 		if (c != null)
 			listModel.addElement(c);
+		if (listModel.getSize() > 1)
+			sameCellCheckbox.setEnabled(true);
+		else
+			sameCellCheckbox.setEnabled(false);
+		
 	}
 	
-	protected void removeElement(DefaultListModel listModel, JList criteriaList) {
+	protected void removeElement(DefaultListModel listModel, JList criteriaList, Checkbox sameCellCheckbox) {
 		int[] selectedIndices = criteriaList.getSelectedIndices();
 		for (int i = selectedIndices.length; i > 0; i--)
-			listModel.remove(selectedIndices[i-1]);		
+			listModel.remove(selectedIndices[i-1]);	
+		if (listModel.getSize() > 1)
+			sameCellCheckbox.setEnabled(true);
+		else
+			sameCellCheckbox.setEnabled(false);
 	}
 
 	protected void moveUp(final DefaultListModel listModel,
@@ -280,7 +314,7 @@ public class ValueListDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden) {
+	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden, boolean newAllCells, boolean newSameCell) {
 		List<ValueCriteria> list = 
 			new ArrayList<ValueCriteria>(listModel.getSize());
 		
@@ -288,6 +322,11 @@ public class ValueListDialog extends JDialog {
 			list.add((ValueCriteria) listModel.getElementAt(i));
 		
 		includeHidden = newIncludeHidden;
+		allCells = newAllCells;
+		if (listModel.getSize() > 1)
+			sameCell = newSameCell;
+		else
+			sameCell = false;
 		values = list;
 		setVisible(false);
 	}

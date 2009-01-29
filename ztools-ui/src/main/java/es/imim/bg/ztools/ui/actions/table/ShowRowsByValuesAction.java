@@ -39,15 +39,16 @@ public class ShowRowsByValuesAction extends BaseAction {
 			params[i] = cellPropsList.get(i).getName();
 
 		
-		ValueListDialog d = new ValueListDialog(AppFrame.instance(), params);
+		ValueListDialog d = new ValueListDialog(AppFrame.instance(), params, "row");
 		List<ValueCriteria> valueList = d.getValues();
 		boolean includeHidden = d.hiddenIncluded();
+		boolean allCells = d.allCells();
+		boolean sameCell = d.sameCell();
 		if(valueList != null) {
 			
 			List<Integer> rowsToShow = new ArrayList<Integer>();
 			int rows;
 			int cols;
-			
 			final ITableContents contents = table.getContents();
 			if(includeHidden) {
 				rows = contents.getRowCount();
@@ -56,44 +57,55 @@ public class ShowRowsByValuesAction extends BaseAction {
 			else {
 				rows = table.getVisibleRows().length;
 				cols = table.getVisibleColumns().length;
-				System.out.println("without hidden " + rows + " " + cols);
-				System.out.println(table.getRowCount());
 			}
 			int cellProps = cellPropsList.size();
 			for(int i = 0; i < rows; i++) {
-				for (int j = 0; j < cols; j++) {
-					boolean eval = true;
-					cell: for (int k = 0; k < cellProps; k++){
-						Object valueObject;
-						if(includeHidden) 
-							valueObject = contents.getCellValue(i, j, k);
-						else
-							valueObject = table.getCellValue(i, j, k);
-						
-			/*			System.out.println("row " + i + "; col" + j);
-						System.out.println("contents\ttable");						
-						System.out.print(contents.getCellValue(i, j, k).toString() + "\t");						
-						System.out.print(contents.getCellValue(i, j, k).toString() + "\n");*/						
+				List<ValueCriteria> tempValueList = valueList;
+				int[][] eval = new int[tempValueList.size()][cols];
 
+				
+				for (int j = 0; j < cols; j++) {
+					
+
+					//System.out.println("row " + i + "; col" + j + ":: ");
+					//System.out.println("contents\ttable");						
+					//System.out.print(contents.getCellValue(i, j, k).toString() + "\t");						
+					//System.out.print(table.getCellValue(i, j, k).toString() + "\n");
+					
+					int vcCounter = 0;
+					Iterator<ValueCriteria> valueListIt = tempValueList.iterator();
+					while (tempValueList.size() > 0 && valueListIt.hasNext()) {
+						ValueCriteria vc = valueListIt.next();
+						String vcParam = vc.getParam().toString();
+						for (int k = 0; k < cellProps; k++) {
 							
-						float value =  Float.parseFloat(valueObject.toString());
-						String property = cellPropsList.get(k).getName();
-						Iterator<ValueCriteria> valueListIt = valueList.iterator();
-						while (valueListIt.hasNext()){
-							ValueCriteria vc = valueListIt.next();
-							String vcParam = vc.getParam().toString();
-							if (!eval)
-								break cell;
-							else if(!vcParam.equals(property))
+							String property = cellPropsList.get(k).getName();
+							if(!vcParam.equals(property))
 								continue;
-							else
-								eval = evaluateCriteria(vc, value);
+		
+							Object valueObject;
+							if(includeHidden) 
+								valueObject = contents.getCellValue(i, j, k);
+							else 
+								valueObject = table.getCellValue(i, j, k);
+							
+							double value =  Double.parseDouble(valueObject.toString());
+							
+							eval[vcCounter][j] = evaluateCriteria(vc, value);
+							
 						}
+						vcCounter++;
 					}
-					if (eval){
+
+				}
+				boolean addRow = evaluateRow(eval, allCells, sameCell, tempValueList.size());
+				if (addRow) {
+					if (!includeHidden) {
+						int[] visRows = table.getVisibleRows();
+						rowsToShow.add(visRows[i]);
+					}
+					else
 						rowsToShow.add(i);
-						break;
-					}
 				}
 			}
 			// Change visibility of rows in the table
@@ -107,30 +119,62 @@ public class ShowRowsByValuesAction extends BaseAction {
 		}
 	}
 
-	private boolean evaluateCriteria(ValueCriteria vc, float cellValue) {
+	private boolean evaluateRow(int[][] eval, boolean allCells, boolean sameCell, int criteriaNb) {
+		int colNb = eval[0].length;
+		int[] newEval = new int[colNb];
+
+		for (int i = 0; i < colNb; i++){
+			int trues = 0;
+			for (int j = 0; j < criteriaNb; j++) {
+				trues += eval[j][i];
+			}
+			if (sameCell && trues == criteriaNb)
+				newEval[i] = 1;
+			else if (sameCell && trues != criteriaNb)
+				newEval[i] = 0;
+			else if (!sameCell && trues > 0)
+				newEval[i] = 1;
+			else
+				newEval[i] = 0;
+		}
+		
+		int trueCells = 0;
+		for (int i = 0; i < colNb; i++)
+			trueCells += newEval[i];
+		
+		boolean addRow = false;
+		if (allCells && trueCells == colNb)
+			addRow = true;
+		else if (!allCells && trueCells > 0)
+			addRow = true;
+		
+		return addRow;
+	}
+
+	private int evaluateCriteria(ValueCriteria vc, double value) {
 		ValueCondition vcond = vc.getCondition();
-		float conditionValue = Float.parseFloat(vc.getValue());
+		double conditionValue = Double.parseDouble(vc.getValue());
 		boolean evaluation = false;
 		switch (vcond) {
 			case EQ:
-				evaluation = (cellValue == conditionValue);
+				evaluation = (value == conditionValue);
 				break;
 			case GE:
-				evaluation = (cellValue >= conditionValue);
+				evaluation = (value >= conditionValue);
 				break;
 			case GT:
-				evaluation = (cellValue > conditionValue);
+				evaluation = (value > conditionValue);
 				break;
 			case LE:
-				evaluation = (cellValue <= conditionValue);
+				evaluation = (value <= conditionValue);
 				break;
 			case LT:
-				evaluation = (cellValue < conditionValue);
+				evaluation = (value < conditionValue);
 				break;
 			case NE:
-				evaluation = (cellValue != conditionValue);
+				evaluation = (value != conditionValue);
 				break;
 		}
-		return evaluation;
+		return (evaluation) ? 1 : 0;
 	}
 }
