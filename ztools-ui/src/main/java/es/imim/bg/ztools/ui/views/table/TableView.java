@@ -124,18 +124,19 @@ public class TableView extends AbstractView {
 
 	private void refreshCellDetails() {
 		String html = "";
+		StringBuilder sb = new StringBuilder();
+
 		
 		int row = table.getSelectionLeadRow();
+		int rowCount = table.getRowCount();
 		int column = table.getSelectionLeadColumn();
 		int columnCount = table.getColumnCount();
 		
-		if (column >= 0 && column < columnCount && row >= 0) {
+		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 			final String colName = table.getColumn(column).toString();
 			final String rowName = table.getRow(row).toString();
 			ElementAdapter cellsFacade = table.getCellsFacade();
 			Object element = table.getCell(row, column);
-			
-			StringBuilder sb = new StringBuilder();
 			
 			// Render parameters & values
 			sb.append("<p><b>Column</b><br>");
@@ -163,9 +164,13 @@ public class TableView extends AbstractView {
 				sb.append("<p>Void cell</p>");
 			
 			html = sb.toString();
+			infoPane.setText(html);
 		}
-		
-		infoPane.setText(html);
+		else if (rowCount == 0) {
+			html = "<p>No cells displayed</p>";
+			infoPane.setText(html);
+		}
+
 	}
 	
 	private void createComponents() {

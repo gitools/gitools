@@ -436,8 +436,6 @@ public class TablePanel extends JPanel {
 		int lastRowIndex = table.getRowCount() - 1;
 		table.getSelectionModel()
 			.addSelectionInterval(0, lastRowIndex);
-
-		System.out.println(table.getSelectedRows().toString());
 		
 		int lastColIndex = table.getColumnCount() - 2;
 		table.getColumnModel()

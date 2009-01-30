@@ -128,6 +128,7 @@ public class ShowRowsByValuesAction extends BaseAction {
 			for (int j = 0; j < criteriaNb; j++) {
 				trues += eval[j][i];
 			}
+			
 			if (sameCell && trues == criteriaNb)
 				newEval[i] = 1;
 			else if (sameCell && trues != criteriaNb)
