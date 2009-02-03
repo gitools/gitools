@@ -26,6 +26,38 @@ import es.imim.bg.ztools.ui.model.table.ITable;
 public class TablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
+	protected int[] oldRowSelection = new int[0];//to detect selection changes
+
+
+	private JTable table;
+	
+	private SelectionMode selMode;
+	
+	private int columnsHeight;
+	private int columnsWidth;
+	private int rowsHeight;
+	
+	private int selectedLeadColumn;
+	private int selectedLeadRow;
+	
+	private ITable model;
+	
+	public TablePanel() {
+		
+		this.selMode = SelectionMode.cells;
+		
+		this.columnsHeight = 300;
+		this.columnsWidth = 25;
+		this.rowsHeight = 25;
+	
+		this.selectedLeadColumn = this.selectedLeadRow = -1;
+	
+		//this.listeners = new ArrayList<ColorMatrixListener>(1);
+		
+		createComponents();
+	}
+	
+	//private List<ColorMatrixListener> listeners;
 	
 	private class HeaderMouseListener extends MouseInputAdapter {
 
@@ -90,7 +122,7 @@ public class TablePanel extends JPanel {
 		}
 	}
 	
-	private class CellMouseListener extends MouseInputAdapter{
+	private class CellMouseListener extends MouseInputAdapter {
 			
 		protected int startRow;
 		protected int endRow;
@@ -104,15 +136,24 @@ public class TablePanel extends JPanel {
 			int lastcol = table.getColumnCount() - 1;
 			if (lastcol == pressedColumn){
 				setSelectionMode(SelectionMode.rows);
-				setSelectedColumns(new int[0]);
+				startRow = table.rowAtPoint(e.getPoint());
+				startColumn = pressedColumn;
 			}
 			else
 				setLead(e);
-			
-			startRow = table.rowAtPoint(e.getPoint());
-			startColumn = pressedColumn;
 		}
 		
+		@Override
+		public void mouseReleased(MouseEvent e){
+			int lastColumn = table.getColumnCount() - 1;
+			if (lastColumn == table.columnAtPoint(e.getPoint())) {
+				setSelectedColumns(new int[0]);
+				oldRowSelection = getSelectedRows();
+			}
+			else
+				setLead(e);
+		}
+
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			int pressedColumn = table.columnAtPoint(e.getPoint());
@@ -143,17 +184,12 @@ public class TablePanel extends JPanel {
 					selectedRows = newSelectedRows;
 							
 				setSelectedCells(new int[0], selectedRows);
+				oldRowSelection = getSelectedRows();
 			}
 			else
 				setLead(e);
 		}
 				
-		@Override
-		public void mouseReleased(MouseEvent e){	
-			int lastColumn = table.getColumnCount() - 1;
-			if (lastColumn != table.columnAtPoint(e.getPoint()))
-				setLead(e);
-		}
 		
 		private void setLead(MouseEvent e){
 			setSelectionMode(SelectionMode.cells);
@@ -168,35 +204,7 @@ public class TablePanel extends JPanel {
 		}
 	}
 
-	private JTable table;
-	
-	private SelectionMode selMode;
-	
-	private int columnsHeight;
-	private int columnsWidth;
-	private int rowsHeight;
-	
-	private int selectedLeadColumn;
-	private int selectedLeadRow;
-	
-	private ITable model;
-	
-	//private List<ColorMatrixListener> listeners;
 
-	public TablePanel() {
-	
-		this.selMode = SelectionMode.cells;
-		
-		this.columnsHeight = 300;
-		this.columnsWidth = 25;
-		this.rowsHeight = 25;
-	
-		this.selectedLeadColumn = this.selectedLeadRow = -1;
-	
-		//this.listeners = new ArrayList<ColorMatrixListener>(1);
-		
-		createComponents();
-	}
 
 	private void createComponents() {
 		
@@ -215,9 +223,10 @@ public class TablePanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
+					
 					selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
 					selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-	
+									
 					refresh();
 				}
 			}
@@ -230,12 +239,15 @@ public class TablePanel extends JPanel {
 		table.getTableHeader().addMouseMotionListener(hml);
 		table.getTableHeader().addMouseListener(hml);
 		
+		//table.getTableHeader().setResizingAllowed(false);
+		
 		CellMouseListener cml = new CellMouseListener();
 		table.addMouseListener(cml);
 		table.addMouseMotionListener(cml);
 		
 		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
 		refreshTableColumnsWidth();
+		
 		
 		refreshSelectionMode();
 		
@@ -440,7 +452,9 @@ public class TablePanel extends JPanel {
 		int lastColIndex = table.getColumnCount() - 2;
 		table.getColumnModel()
 			.getSelectionModel()
-			.addSelectionInterval(0, lastColIndex);		
+			.addSelectionInterval(0, lastColIndex);	
+		
+		oldRowSelection = table.getSelectedRows();
 	}
 	
 	private int[] mergeArrays(int[] a1, int[] a2){
@@ -465,6 +479,19 @@ public class TablePanel extends JPanel {
 		Arrays.sort(merged);
 		
 		return merged;
+	}
+	
+	public boolean inArray(int[] array, int needle) {
+		for (int i = 0; i < array.length; i++)
+			if (array[i] == needle) 
+				return true;
+		return false;
+	}
+	
+	private void printArray(int[] selectedRows) {
+		System.out.println("-------------");
+		for (int idx : selectedRows)
+			System.out.println(idx);
 	}
 	
 }

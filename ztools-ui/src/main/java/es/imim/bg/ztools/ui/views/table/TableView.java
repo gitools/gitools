@@ -76,7 +76,7 @@ public class TableView extends AbstractView {
 
 	protected void tableModelPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
-		
+
 		/*if (ITable.CELL_DECORATION_PROPERTY.equals(propertyName)) {
 			cellDecorator.setConfig(
 					table.getCellDecoration(
@@ -110,6 +110,10 @@ public class TableView extends AbstractView {
 		}
 		else if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
+		}
+		else if (ITable.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
+			tablePanel.refresh();
+			tablePanel.refreshColumns();
 		}
 		else if (ITable.CELL_VALUE_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
