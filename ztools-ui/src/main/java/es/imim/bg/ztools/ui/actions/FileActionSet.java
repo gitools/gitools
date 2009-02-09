@@ -22,6 +22,7 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportNamesAction = new ExportNames();
+	public static final BaseAction ZCalcAnalasysAction = new ZcalcAnalysisAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
 			exportParameterDataAction,
@@ -32,6 +33,7 @@ public class FileActionSet extends ActionSet {
 	public FileActionSet() {
 		super("File", new BaseAction[] {
 			openAnalysisAction,
+			ZCalcAnalasysAction,
 			closeAction,
 			BaseAction.separator,
 			exportActionSet,
