@@ -21,7 +21,8 @@ public class ZcalcAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		ZCalcAnalysisDialog d = new ZCalcAnalysisDialog(AppFrame.instance(), "test", "test");
+		ZCalcAnalysisDialog d = new ZCalcAnalysisDialog(AppFrame.instance(), "WindowTitle", "DialogTitle", "DialogSubtitle to give a better explanation");
+		d.setDialogSubtitle("Optional Subtitle for a short expanation");
 		d.setVisible(true);
 		
 		AppFrame.instance()

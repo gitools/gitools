@@ -11,10 +11,9 @@ public abstract class AnalysisDialog extends BaseDialog {
 	JTabbedPane cntTabbedPane;
 	
 	
-	public AnalysisDialog(JFrame owner, String windowTitle, String dialogTitle) {
+	public AnalysisDialog(JFrame owner, String windowTitle, String dialogTitle, String dialogSubtitle) {
 		
-		super(owner, windowTitle, dialogTitle);
+		super(owner, windowTitle, dialogTitle, dialogSubtitle);
 		cntTabbedPane = new JTabbedPane();
 	}
-	
 }
