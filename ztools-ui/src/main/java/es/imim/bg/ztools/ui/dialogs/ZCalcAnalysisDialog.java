@@ -6,6 +6,7 @@ import javax.swing.JTextArea;
 
 import es.imim.bg.ztools.ui.views.WelcomeView;
 
+@Deprecated
 public class ZCalcAnalysisDialog extends AnalysisDialog {
 
 	private static final long serialVersionUID = -5440110772686552307L;

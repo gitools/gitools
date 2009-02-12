@@ -3,7 +3,7 @@ package es.imim.bg.ztools.ui.dialogs;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-
+@Deprecated
 public abstract class AnalysisDialog extends BaseDialog {
 		
 	private static final long serialVersionUID = -3270597264001925514L;

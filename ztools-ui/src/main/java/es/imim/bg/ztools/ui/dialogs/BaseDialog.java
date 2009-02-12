@@ -15,7 +15,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-
+@Deprecated
 public abstract class BaseDialog extends JDialog{
 	
 
