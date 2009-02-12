@@ -54,10 +54,17 @@ public class AboutDialog extends JDialog {
 		//		BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
 		//FIXME: It should load this text from a resource
-		infoPane.setText("<h1>" + appName + "</h1>"
-						+ "<p>Version " + appVersion + "</p>"
-						+ "<p>Written by Christian Perez-Llamas</p>"
-						+ "<p>Biomedical Genomics Laboratory<br>Parc de Recerca Biomedica de Barcelona (PRBB)</p>");
+		infoPane.setText("<h1>" + appName + "</h1>" +
+						"<p>Version " + appVersion + "</p>" +
+						"<p>Biomedical Genomics Laboratory at GRIB<br>" +
+						"Parc de Recerca Biomedica de Barcelona (PRBB)</p>" +
+						"<p>Authors:<ul>" +
+						"<li>Nuria Lopez-Bigas</li>" + 
+						"<li>Christian Perez-Llamas</li>" +
+						"<li>Michael Schroeder</li></ul></p>" +
+						"<p>Thanks to:<ul>" +
+						"<li>Sonja Haenzelmann</li>" + 
+						"<li>Gunnes Gundem</li></ul></p>");
 		
 		JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));

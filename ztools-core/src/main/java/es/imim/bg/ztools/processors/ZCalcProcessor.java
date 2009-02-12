@@ -13,6 +13,7 @@ import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.model.elements.BeanElementAdapter;
 import es.imim.bg.ztools.model.elements.StringElementAdapter;
+import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.CommonResult;
@@ -24,7 +25,7 @@ import es.imim.bg.ztools.threads.ThreadSlot;
  * 'cond' is an abbreviation for condition.
  */
 
-public class ZCalcProcessor {
+public class ZCalcProcessor extends AbstractProcessor {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -149,11 +150,14 @@ public class ZCalcProcessor {
 			condMonitor.end();
 		}
 		
+		ThreadManager.shutdown(monitor);
+		
 		/* Multiple test correction */
 		
-		// TODO
-		
-		ThreadManager.shutdown(monitor);
+		multipleTestCorrection(
+				resultsMatrix, 
+				new BenjaminiHochbergFdr(), //TODO It should be configurable 
+				monitor.subtask());
 
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

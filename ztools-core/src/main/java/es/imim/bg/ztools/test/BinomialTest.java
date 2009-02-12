@@ -151,15 +151,17 @@ public class BinomialTest extends AbstractTest {
 		double rightPvalue;
 		double twoTailPvalue;
 		
-		leftPvalue = /*filterPvalue(*/Probability.binomial(observed, n, p)/*)*/;
-		rightPvalue = /*filterPvalue(*/Probability.binomialComplemented(observed, n, p)/*)*/;
-		
-		twoTailPvalue = leftPvalue + rightPvalue;
-		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
-		
 		//FIXME: May be it's better return null ???
 		if (n == 0)
 			leftPvalue = rightPvalue = twoTailPvalue = 1.0;
+		else {
+			leftPvalue = Probability.binomial(observed, n, p);
+			rightPvalue = observed > 0 ? 
+					Probability.binomialComplemented(observed - 1, n, p) : 1.0;
+			
+			twoTailPvalue = leftPvalue + rightPvalue;
+			twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
+		}
 		
 		return new BinomialResult(BinomialResult.AproximationUsed.exact,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
@@ -201,7 +203,9 @@ public class BinomialTest extends AbstractTest {
 		
 		try {
 			leftPvalue = Probability.poisson(observed, expectedMean);
-			rightPvalue = 1.0 - leftPvalue;
+			rightPvalue = observed > 0 ? 
+					Probability.poissonComplemented(observed - 1, expectedMean) : 1.0;
+					
 			twoTailPvalue = (observed <= expectedMean  ? leftPvalue : rightPvalue) * 2; //FIXME: Review
 			twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		}

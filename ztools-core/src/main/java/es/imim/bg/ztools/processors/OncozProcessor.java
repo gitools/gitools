@@ -12,6 +12,7 @@ import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.model.elements.BeanElementAdapter;
 import es.imim.bg.ztools.model.elements.StringElementAdapter;
+import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
 import es.imim.bg.ztools.test.Test;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.CommonResult;
@@ -19,7 +20,7 @@ import es.imim.bg.ztools.threads.ThreadManager;
 import es.imim.bg.ztools.threads.ThreadQueue;
 import es.imim.bg.ztools.threads.ThreadSlot;
 
-public class OncozProcessor {
+public class OncozProcessor extends AbstractProcessor {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -161,11 +162,14 @@ public class OncozProcessor {
 			condMonitor.end();
 		}
 		
+		ThreadManager.shutdown(monitor);
+		
 		/* Multiple test correction */
 		
-		// TODO
-		
-		ThreadManager.shutdown(monitor);
+		multipleTestCorrection(
+				resultsMatrix, 
+				new BenjaminiHochbergFdr(), //TODO It should be configurable 
+				monitor.subtask());
 		
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

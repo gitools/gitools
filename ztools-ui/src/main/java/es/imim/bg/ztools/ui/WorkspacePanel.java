@@ -17,7 +17,7 @@ public class WorkspacePanel extends JTabbedPane {
 
 	private AbstractView selectedView;
 	
-	private JTabbedPane tabbedPane;
+	//private JTabbedPane tabbedPane;
 	
 	public WorkspacePanel() {
 		this.selectedView = null;
@@ -38,7 +38,7 @@ public class WorkspacePanel extends JTabbedPane {
 	}
 	
 	private void createComponents() {
-		tabbedPane = new JTabbedPane();
+		//tabbedPane = new JTabbedPane();
 	}
 	
 	public void addView(AbstractView view) {
