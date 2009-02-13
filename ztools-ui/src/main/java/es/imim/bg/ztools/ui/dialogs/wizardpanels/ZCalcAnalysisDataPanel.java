@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-public class ZCalcAnalysisMainPanel extends JPanel {
+public class ZCalcAnalysisDataPanel extends JPanel {
 	
 	private static final long serialVersionUID = 4868634835041548193L;
 	
@@ -41,7 +41,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
     private JLabel iconLabel;
     private ImageIcon icon;
 
-	public ZCalcAnalysisMainPanel(){
+	public ZCalcAnalysisDataPanel(Map<String, String> dataModel){
 		
         iconLabel = new JLabel();
         contentPanel = getContentPanel();
@@ -130,10 +130,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 
         return contentPanel1;
         
-    }
-    
-    public boolean textFieldNotEmpty(){
-    	return !jtextField1.getText().isEmpty();
     }
 
    /* private ImageIcon getImageIcon() {
