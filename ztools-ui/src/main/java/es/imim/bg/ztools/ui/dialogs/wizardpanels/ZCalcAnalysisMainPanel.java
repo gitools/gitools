@@ -4,12 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -134,6 +141,14 @@ public class ZCalcAnalysisMainPanel extends JPanel {
     
     public boolean textFieldNotEmpty(){
     	return !jtextField1.getText().isEmpty();
+    }
+    
+    public JTextField getNameTextField(){
+    	return jtextField1;
+    }
+    
+    public JComboBox getProcessorComboBox(){
+    	return jComboBox1;
     }
 
    /* private ImageIcon getImageIcon() {

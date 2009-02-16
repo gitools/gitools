@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
-import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisDialog;
 import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisWizardDialog;
 
 public class ZcalcAnalysisAction extends BaseAction {
