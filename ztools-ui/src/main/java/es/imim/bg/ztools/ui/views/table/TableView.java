@@ -113,7 +113,6 @@ public class TableView extends AbstractView {
 		}
 		else if (ITable.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
 			tablePanel.refresh();
-			tablePanel.refreshColumns();
 		}
 		else if (ITable.CELL_VALUE_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
