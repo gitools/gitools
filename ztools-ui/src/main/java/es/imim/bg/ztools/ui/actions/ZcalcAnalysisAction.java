@@ -25,7 +25,8 @@ public class ZcalcAnalysisAction extends BaseAction {
 		d.setDialogSubtitle("Optional Subtitle for a short expanation");
 		d.setVisible(true);*/
 		
-		ZCalcAnalysisWizardDialog d = new ZCalcAnalysisWizardDialog(AppFrame.instance());
+		new ZCalcAnalysisWizardDialog(AppFrame.instance());
+		
 		
 		AppFrame.instance()
 			.setStatusText("Action in development.");

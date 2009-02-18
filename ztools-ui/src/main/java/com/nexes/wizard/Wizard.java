@@ -165,7 +165,7 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
     public int showModalDialog() {
         
         wizardDialog.setModal(true);
-        wizardDialog.pack();
+        //wizardDialog.pack();
         wizardDialog.show();
         
         return returnCode;
@@ -326,6 +326,9 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
      * @param code The return code.
      */    
     void close(int code) {
+        WizardPanelDescriptor PanelDescriptor = wizardModel.getCurrentPanelDescriptor();
+        if (PanelDescriptor != null)
+            PanelDescriptor.aboutToHidePanel();
         returnCode = code;
         wizardDialog.dispose();
     }

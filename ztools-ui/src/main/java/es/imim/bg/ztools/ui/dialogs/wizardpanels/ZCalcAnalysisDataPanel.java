@@ -31,16 +31,15 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 	
 	private static final long serialVersionUID = 4868634835041548193L;
 	
+	public String BIN_CUTOFF_DISABLED = "disabled";
+	
 	private JLabel blankSpace;
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel3;
     private JLabel jLabel4;
     private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
-    private JLabel jLabel9;
+
     
     private JComboBox jComboBox1;
     
@@ -92,10 +91,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
         jLabel5 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel8 = new JLabel();
-        jLabel9 = new JLabel();
+
         
         jComboBox1 = new JComboBox();
         
@@ -124,7 +120,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
         
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
-        jLabel4.setText("Data File: ");
+        jLabel4.setText("Data Table File: ");
         jTextField1.setToolTipText("Choose the data file");
         jTextField1.setEditable(false);
         jPanel3.add(jLabel4);
@@ -134,7 +130,8 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         
         jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
         Condition[] conditions =  Condition.values();
-        for (int i = 1; i < conditions.length; i++)
+        jComboBox1.addItem(BIN_CUTOFF_DISABLED);
+        for (int i = 0; i < conditions.length; i++)
             jComboBox1.addItem(conditions[i].toString());
         jLabel5.setText("Binary cut-off : ");
         jTextField2.setToolTipText("Enter a numerical cut-off value");
@@ -151,14 +148,21 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         
     }
 	
-	public JButton getChoserButton(){
+	public JButton getChooserButton(){
 		return jButton1;
 	}
 	
 	public JTextField getFileNameField(){
 		return jTextField1;
 	}
-		
+	
+	public JComboBox getBinCutoffConditionBox(){
+		return jComboBox1;
+	}
+	
+	public JTextField getBinCutoffValueField() {
+		return jTextField2;
+	}		
 }
 
 
