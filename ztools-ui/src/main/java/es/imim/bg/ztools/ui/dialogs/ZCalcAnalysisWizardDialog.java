@@ -12,6 +12,7 @@ import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisMainDescriptor;
 import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisModuleDescriptor;
 import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisModulePanel;
 import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisStatsDescriptor;
+import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisStatsHelpDescriptor;
 
 import javax.swing.*;
 
@@ -24,16 +25,15 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	    wizard.getDialog().setTitle("ZCalc Analysis Dialog");
 	    Dimension d = new Dimension(600,400);
 	    wizard.getDialog().setSize(d);
-	    wizard.getDialog().setMaximumSize(d);
 	    wizard.getDialog().setMinimumSize(d);
-	    wizard.getDialog().setResizable(false);
+	    /*wizard.getDialog().setMaximumSize(d);
+	    wizard.getDialog().setResizable(false);*/
 	    	    
 	    WizardPanelDescriptor mainDescriptor = new ZCalcAnalysisMainDescriptor(
 										    		this, 
 										    		null, 
 										    		ZCalcAnalysisDataDescriptor.IDENTIFIER);
 	    wizard.registerWizardPanel(ZCalcAnalysisMainDescriptor.IDENTIFIER, mainDescriptor);
-	    wizard.setCurrentPanel(ZCalcAnalysisMainDescriptor.IDENTIFIER);
 	    
 	    WizardPanelDescriptor dataDescriptor = new ZCalcAnalysisDataDescriptor(
 	    											this,
@@ -53,6 +53,14 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	    											null);
 	    wizard.registerWizardPanel(ZCalcAnalysisStatsDescriptor.IDENTIFIER, statsDescriptor);
 	    
+	    WizardPanelDescriptor statsHelpDescriptor = new ZCalcAnalysisStatsHelpDescriptor(
+													this,
+													ZCalcAnalysisStatsDescriptor.IDENTIFIER,
+													ZCalcAnalysisStatsDescriptor.IDENTIFIER);
+	    wizard.registerWizardPanel(ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER, statsHelpDescriptor);
+	    
+	    
+	    wizard.setCurrentPanel(ZCalcAnalysisStatsDescriptor.IDENTIFIER);
 	    int ret = wizard.showModalDialog();
 	    
 	    System.out.println("Dialog return code is (0=Finish,1=Cancel,2=Error): " + ret);

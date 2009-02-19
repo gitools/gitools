@@ -8,6 +8,20 @@ public abstract class AnalysisWizard {
 		
 	private static final long serialVersionUID = -3270597264001925514L;
 	
+	
+	static Map<String, String> dataModel;
+	public final String ANALYSIS_NAME = "analysis_name";
+	public final String WORKING_DIR = "working_dir";
+	public final String PROCESSORS = "processors";
+	public final String DATA_FILE = "data_file";
+	public final String BIN_CUTOFF_CONDITION = "bin_cutoff_condition";
+	public final String BIN_CUTOFF_VALUE = "bin_cutoff_value";
+	public final String MODULE_FILE = "module_file";
+	public final String MIN = "min";
+	public final String MAX = "max";
+	public final String SAMPLE_SIZE = "sample_size";
+	public final String STAT_TEST = "stat_test";
+	
 	public enum Condition { 
 		EQ("eq","equal"), 
 		NE("ne","not equal"), 
@@ -65,17 +79,6 @@ public abstract class AnalysisWizard {
 		}
 		
 	}
-	
-	static Map<String, String> dataModel;
-	public final String ANALYSIS_NAME = "analysis_name";
-	public final String WORKING_DIR = "working_dir";
-	public final String PROCESSORS = "processors";
-	public final String DATA_FILE = "data_file";
-	public final String BIN_CUTOFF_CONDITION = "bin_cutoff_condition";
-	public final String BIN_CUTOFF_VALUE = "bin_cutoff_value";
-	public final String MODULE_FILE = "module_file";
-	public final String MIN = "min";
-	public final String MAX = "max";
 	
 	
 	public AnalysisWizard() {
