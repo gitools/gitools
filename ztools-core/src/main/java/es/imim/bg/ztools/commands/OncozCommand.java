@@ -46,8 +46,8 @@ public class OncozCommand extends AnalysisCommand {
 		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				dataMatrix, moduleMap, 
-				dataFile, modulesFile, 
-				minModuleSize, maxModuleSize,
+				dataFile, valueFilter, 
+				modulesFile, minModuleSize, maxModuleSize,
 				monitor.subtask());
 		
 		monitor.end();
@@ -72,14 +72,14 @@ public class OncozCommand extends AnalysisCommand {
 
 	private void loadDataAndModules(
 			DataMatrix dataMatrix, ModuleMap moduleMap,
-			String dataFileName, String modulesFileName, 
-			int minModuleSize, int maxModuleSize, 
+			String dataFileName, ValueFilter valueFilter, 
+			String modulesFileName,	int minModuleSize, int maxModuleSize, 
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		// Load metadata
 		
 		DataResource dataResource = new DataResource(dataFileName);
-		dataResource.loadMetadata(dataMatrix, monitor);
+		dataResource.loadMetadata(dataMatrix, valueFilter, monitor);
 		
 		// Load modules
 		
@@ -109,6 +109,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		dataResource.loadData(
 				dataMatrix,
+				valueFilter,
 				moduleMap.getItemsOrder(),
 				null,
 				monitor);		
