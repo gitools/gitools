@@ -40,9 +40,9 @@
 	</issueManagement>
 	
 	<scm>
-		<connection>scm:svn:https://bg.imim.es/svn/ztools/trunk</connection>
-		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/trunk</developerConnection>
-		<url>https://bg.imim.es/svn/ztools/trunk</url>
+		<connection>scm:svn:https://bg.imim.es/svn/ztools/branches/1.4</connection>
+		<developerConnection>scm:svn:https://bg.imim.es/svn/ztools/branches/1.4</developerConnection>
+		<url>https://bg.imim.es/svn/ztools/branches/1.4</url>
 	</scm>
 		
 	<build>
