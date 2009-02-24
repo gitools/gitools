@@ -2,7 +2,13 @@ package es.imim.bg.ztools.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.zip.DataFormatException;
 
+import es.imim.bg.progressmonitor.NullProgressMonitor;
+import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.progressmonitor.StreamProgressMonitor;
+import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
 import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisWizardDialog;
@@ -25,7 +31,27 @@ public class ZcalcAnalysisAction extends BaseAction {
 		d.setDialogSubtitle("Optional Subtitle for a short expanation");
 		d.setVisible(true);*/
 		
-		new ZCalcAnalysisWizardDialog(AppFrame.instance());
+		ZCalcAnalysisWizardDialog d = new ZCalcAnalysisWizardDialog(AppFrame.instance());
+		ZCalcCommand command = d.getCommand();
+		
+		
+		if (command != null) {
+	        ProgressMonitor monitor = new StreamProgressMonitor(System.out, false, false);
+	    		//	: new NullProgressMonitor();
+	            
+	        try {
+				command.run(monitor);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (DataFormatException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		
 		
 		AppFrame.instance()

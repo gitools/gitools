@@ -47,25 +47,13 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 	private JLabel welcomeTitle;
 	private JPanel contentPanel;
 
-	private JLabel iconLabel;
-	private ImageIcon icon;
-
 	public ZCalcAnalysisMainPanel() {
 
-		iconLabel = new JLabel();
 		contentPanel = getContentPanel();
 		contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
-		// icon = getImageIcon();
-
+		
 		setLayout(new java.awt.BorderLayout());
 
-		if (icon != null)
-			iconLabel.setIcon(icon);
-
-		iconLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-
-		add(iconLabel, BorderLayout.WEST);
 
 		JPanel secondaryPanel = new JPanel();
 		secondaryPanel.add(contentPanel, BorderLayout.NORTH);
@@ -90,35 +78,35 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jLabel5 = new JLabel();
 		jLabel6 = new JLabel();
 		jLabel7 = new JLabel();
+		
+		Dimension maxWidth = new Dimension(500,300);
 
 		jComboBox1 = new JComboBox();
-		jComboBox1.setMaximumSize(new Dimension(250, 30));
-
+		
 		jTextField1 = new JTextField();
-		jTextField1.setMaximumSize(new Dimension(340, 30));
 		jTextField2 = new JTextField();
-		jTextField2.setMaximumSize(new Dimension(230, 30));
 
 		jButton1 = new JButton("choose Dir..");
 
 		contentPanel1.setLayout(new java.awt.BorderLayout());
+		
 
 		welcomeTitle.setText("Welcome to the ZCalc Analysis Wizard!");
 		welcomeTitle.setFont(new java.awt.Font(
 				welcomeTitle.getFont().getName(), Font.BOLD, 18));
 		contentPanel1.add(welcomeTitle, java.awt.BorderLayout.NORTH);
 
-		jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+		jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.PAGE_AXIS));
+		//jPanel1.setMaximumSize(maxWidth);
+
+
 
 		jPanel1.add(blankSpace);
-		jLabel1
-				.setText("You're about to employ a ZCalc Statistical Analysis for your data.");
+		jLabel1.setText("You're about to employ a ZCalc Statistical Analysis for your data.");
 		jPanel1.add(jLabel1);
-		jLabel2
-				.setText("But first of all, please indicate a name for your analysis and how  ");
+		jLabel2.setText("But first of all, please indicate a name for your analysis and how  ");
 		jPanel1.add(jLabel2);
-		jLabel3
-				.setText("many processors you want to make use of, in case you're working ");
+		jLabel3.setText("many processors you want to make use of, in case you're working ");
 		jPanel1.add(jLabel3);
 		jLabel4.setText("with a multiprocessor machine");
 		jPanel1.add(jLabel4);
@@ -128,6 +116,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.getLayout();
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
+		//jPanel3.setMaximumSize(maxWidth);
 		jLabel5.setText("Analysis Name: ");
 		jPanel3.add(jLabel5);
 		jTextField1.setToolTipText("Choose a Name for your Analysis");
@@ -135,6 +124,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.add(jPanel3);
 
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
+		//jPanel4.setMaximumSize(maxWidth);
 		jLabel6.setText("Working Directory:");
 		jPanel4.add(jLabel6);
 		jTextField2.setToolTipText("Choose the data file");
@@ -144,6 +134,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.add(jPanel4);
 
 		jPanel5.setLayout(new BoxLayout(jPanel5, BoxLayout.LINE_AXIS));
+		//jPanel5.setMaximumSize(maxWidth);
 		int processors = java.lang.Runtime.getRuntime().availableProcessors();
 		for (int i = 1; i <= processors; i++)
 			jComboBox1.addItem(i);
@@ -153,8 +144,9 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel5.add(jComboBox1);
 		jPanel2.add(jPanel5);
 
-		contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
+		contentPanel1.add(jPanel1, BorderLayout.CENTER);
 		contentPanel1.add(jPanel2, BorderLayout.SOUTH);
+
 
 		return contentPanel1;
 
@@ -180,23 +172,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		return jTextField2;
 	}
 
-	/*
-	 * private ImageIcon getImageIcon() { return new
-	 * ImageIcon((URL)getResource("clouds.jpg")); }
-	 * 
-	 * private Object getResource(String key) {
-	 * 
-	 * URL url = null; String name = key;
-	 * 
-	 * if (name != null) {
-	 * 
-	 * try { Class c = Class.forName("com.nexes.test.Main"); url =
-	 * c.getResource(name); } catch (ClassNotFoundException cnfe) {
-	 * System.err.println("Unable to find Main class"); } return url; } else
-	 * return null;
-	 * 
-	 * }
-	 */
+
 
 	@Override
 	protected void finalize() throws Throwable {

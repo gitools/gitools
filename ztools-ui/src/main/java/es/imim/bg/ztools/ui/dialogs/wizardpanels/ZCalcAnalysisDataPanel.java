@@ -24,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
+import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisWizardDialog;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
 import es.imim.bg.ztools.ui.utils.Options;
 
@@ -31,7 +33,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 	
 	private static final long serialVersionUID = 4868634835041548193L;
 	
-	public String BIN_CUTOFF_DISABLED = "disabled";
+	public String BIN_CUTOFF_DISABLED;
 	
 	private JLabel blankSpace;
     private JLabel jLabel1;
@@ -56,6 +58,8 @@ public class ZCalcAnalysisDataPanel extends JPanel {
     private ImageIcon icon;
 
 	public ZCalcAnalysisDataPanel(){
+		
+		BIN_CUTOFF_DISABLED = AnalysisWizard.DISABLED;
 		
         iconLabel = new JLabel();
         contentPanel = getContentPanel();

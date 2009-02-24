@@ -45,6 +45,8 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 				if (selectedFile != null)
 					fileNameField.setText(selectedFile.toString());
 				setNextButtonAccordingToInputs();
+				setWizardWorkingDir(selectedFile.getAbsolutePath());
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) { }
@@ -84,21 +86,26 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
         });
     }
     
+    
+    protected void setWizardWorkingDir(String path) {
+		aw.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
+	}
+    
     public void aboutToDisplayPanel() {
     	setNextButtonAccordingToInputs();
     	setBinCutOffFieldAccordingToInputs();
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(aw.DATA_FILE, fileNameField.getText());
+    	aw.setValue(AnalysisWizard.DATA_FILE, fileNameField.getText());
     	String conditionItemString = binCutoffConditionBox.getSelectedItem().toString();
     	if (conditionItemString.equals(dataPanel.BIN_CUTOFF_DISABLED))
-        	aw.setValue(aw.BIN_CUTOFF_CONDITION, binCutoffConditionBox.getSelectedItem().toString());
+        	aw.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, binCutoffConditionBox.getSelectedItem().toString());
     	else {
     		Condition[] conditions = Condition.values();
 	    	Condition c = conditions[binCutoffConditionBox.getSelectedIndex()-1];
-	    	aw.setValue(aw.BIN_CUTOFF_CONDITION, c.toCommandLineArgument());
-    		aw.setValue(aw.BIN_CUTOFF_VALUE, binCutoffField.getText());
+	    	aw.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, c.toCommandLineArgument());
+    		aw.setValue(AnalysisWizard.BIN_CUTOFF_VALUE, binCutoffField.getText());
     	}
     }    
     
@@ -138,7 +145,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				aw.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
 		
 		fileChooser.setDialogTitle("Select the data file");
 		
