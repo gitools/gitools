@@ -1,23 +1,18 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.utils.Options;
-
-
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import com.nexes.wizard.Wizard;
-import com.nexes.wizard.WizardModel;
-import com.nexes.wizard.WizardPanelDescriptor;
+
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
 
 
 public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor {
@@ -38,8 +33,7 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
         sampleSizeField = statsPanel.getSampleSizeField();
         statTestBox = statsPanel.getStatTestBox();
         helpLabel = statsPanel.getHelpLabel();
-        final String helpLabelText = helpLabel.getText();
-
+        final String helpLabelText = helpLabel.getText().replaceAll("\\<.*?\\>", "");
         
         helpLabel.addMouseListener(new MouseListener(){
 			@Override
@@ -67,7 +61,6 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
             
     
     protected void changeToHelpPanel() {
-		System.out.println("help clicked");
 		Wizard wizard = getWizard();
         Object descriptor = ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER;
         wizard.setCurrentPanel(descriptor);
@@ -79,7 +72,13 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(aw.MODULE_FILE, sampleSizeField.getText());
+    	if (!sampleSizeField.getText().isEmpty()) {
+    		aw.setValue(AnalysisWizard.SAMPLE_SIZE, sampleSizeField.getText());
+    	}
+    	
+    	StatTest[] statTests = StatTest.values();
+    	StatTest st = statTests[statTestBox.getSelectedIndex()];
+    	aw.setValue(AnalysisWizard.STAT_TEST, st.toCommandLineArgument());
     }    
     
     private void setNextButtonAccordingToInputs() {

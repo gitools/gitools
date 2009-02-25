@@ -1,37 +1,25 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
-import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
-import es.imim.bg.ztools.ui.utils.Options;
 
 public class ZCalcAnalysisDataPanel extends JPanel {
 	
 	private static final long serialVersionUID = 4868634835041548193L;
 	
-	public String BIN_CUTOFF_DISABLED = "disabled";
+	public String BIN_CUTOFF_DISABLED;
 	
 	private JLabel blankSpace;
     private JLabel jLabel1;
@@ -52,23 +40,15 @@ public class ZCalcAnalysisDataPanel extends JPanel {
     private JLabel panelTitle;
     private JPanel contentPanel;
     
-    private JLabel iconLabel;
-    private ImageIcon icon;
 
 	public ZCalcAnalysisDataPanel(){
 		
-        iconLabel = new JLabel();
+		BIN_CUTOFF_DISABLED = AnalysisWizard.DISABLED;
+		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         setLayout(new java.awt.BorderLayout());
-
-        if (icon != null)
-            iconLabel.setIcon(icon);
-        
-        iconLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-        
-        add(iconLabel, BorderLayout.WEST);
         
         JPanel secondaryPanel = new JPanel();
         secondaryPanel.add(contentPanel, BorderLayout.NORTH);
@@ -109,11 +89,11 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
         jPanel1.add(blankSpace);
-        jLabel1.setText("Please choose the file with the data to analyise.");
+        jLabel1.setText("Please choose the file with the data to analyise. In case");
         jPanel1.add(jLabel1);
-        jLabel2.setText("In case it contains continous data, indicate by what ");
+        jLabel2.setText("it contains continous data, indicate by what criteria you");
         jPanel1.add(jLabel2);
-        jLabel3.setText("criteria you want to convert it into binary data. ");
+        jLabel3.setText("want to convert it into binary data. ");
         jPanel1.add(jLabel3);
         jPanel1.add(blankSpace); 
         

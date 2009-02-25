@@ -2,32 +2,17 @@ package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
-import es.imim.bg.ztools.ui.utils.Options;
 
 public class ZCalcAnalysisStatsPanel extends JPanel {
 	
@@ -49,24 +34,13 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
     
     private JLabel panelTitle;
     private JPanel contentPanel;
-    
-    private JLabel iconLabel;
-    private ImageIcon icon;
 
 	public ZCalcAnalysisStatsPanel(){
 		
-        iconLabel = new JLabel();
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         setLayout(new java.awt.BorderLayout());
-
-        if (icon != null)
-            iconLabel.setIcon(icon);
-        
-        iconLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-        
-        add(iconLabel, BorderLayout.WEST);
         
         JPanel secondaryPanel = new JPanel();
         secondaryPanel.add(contentPanel, BorderLayout.NORTH);
@@ -119,15 +93,15 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
         jLabel4.setText("Satistical test ");
         jPanel3.add(jLabel4);
-        jLabel5.setText("(Help)");
-        jLabel5.setForeground(Color.BLUE);
-        jPanel3.add(jLabel5);
         jLabel6.setText(": ");
         jPanel3.add(jLabel6);
         StatTest[] stattests =  StatTest.values();
         for (int i = 0; i < stattests.length; i++)
             jComboBox1.addItem(stattests[i].toString());
         jPanel3.add(jComboBox1);
+        jLabel5.setText("<html>(Help)</html>");
+        jLabel5.setForeground(Color.BLUE);
+        jPanel3.add(jLabel5);
         jPanel2.add(jPanel3);
         jPanel2.add(blankSpace);
 

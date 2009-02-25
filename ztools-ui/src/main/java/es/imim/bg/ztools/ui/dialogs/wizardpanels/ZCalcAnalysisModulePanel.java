@@ -1,31 +1,16 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
-
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
-import es.imim.bg.ztools.ui.utils.Options;
 
 public class ZCalcAnalysisModulePanel extends JPanel {
 	
@@ -41,8 +26,6 @@ public class ZCalcAnalysisModulePanel extends JPanel {
     private JLabel jLabel5;
     private JLabel jLabel6;
     private JLabel jLabel7;
-    private JLabel jLabel8;
-    private JLabel jLabel9;
     
     private JComboBox jComboBox1;
     
@@ -55,24 +38,13 @@ public class ZCalcAnalysisModulePanel extends JPanel {
     
     private JLabel panelTitle;
     private JPanel contentPanel;
-    
-    private JLabel iconLabel;
-    private ImageIcon icon;
 
 	public ZCalcAnalysisModulePanel(){
 		
-        iconLabel = new JLabel();
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
 
         setLayout(new java.awt.BorderLayout());
-
-        if (icon != null)
-            iconLabel.setIcon(icon);
-        
-        iconLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-        
-        add(iconLabel, BorderLayout.WEST);
         
         JPanel secondaryPanel = new JPanel();
         secondaryPanel.add(contentPanel, BorderLayout.NORTH);
@@ -99,8 +71,6 @@ public class ZCalcAnalysisModulePanel extends JPanel {
         jLabel6 = new JLabel();
         jLabel7 = new JLabel();
         jLabel6 = new JLabel();
-        jLabel8 = new JLabel();
-        jLabel9 = new JLabel();
         
         jComboBox1 = new JComboBox();
         

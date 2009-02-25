@@ -1,29 +1,19 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
-import com.nexes.wizard.*;
-
-import es.imim.bg.ztools.model.DataMatrix;
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisWizardDialog;
-import es.imim.bg.ztools.ui.utils.Options;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.EventListener;
-import java.util.Map;
 
-import javax.swing.*;
-import javax.swing.event.EventListenerList;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+
+import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
+import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.utils.Options;
 
 
 public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
@@ -67,7 +57,9 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 				if (selectedFile != null)
 					workDirField.setText(selectedFile.toString());
 				setNextButtonAccordingToInputs();
+				setWizardWorkingDir(selectedFile.getAbsolutePath());
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) { }
 			
@@ -84,14 +76,19 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     }
 
     
-    public void aboutToDisplayPanel() {
+    protected void setWizardWorkingDir(String path) {
+		aw.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
+	}
+
+
+	public void aboutToDisplayPanel() {
         setNextButtonAccordingToInputs();
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(aw.ANALYSIS_NAME, analysisNameField.getText());
-    	aw.setValue(aw.WORKING_DIR, workDirField.getText());
-    	aw.setValue(aw.PROCESSORS, mainPanel.getProcessorComboBox().getSelectedItem().toString());
+    	aw.setValue(AnalysisWizard.ANALYSIS_NAME, analysisNameField.getText());
+    	aw.setValue(AnalysisWizard.ANALYSIS_WORKING_DIR, workDirField.getText());
+    	aw.setValue(AnalysisWizard.PROCESSORS, mainPanel.getProcessorComboBox().getSelectedItem().toString());
     }    
     
     private void setNextButtonAccordingToInputs() {

@@ -82,11 +82,11 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(aw.MODULE_FILE, fileNameField.getText());
+    	aw.setValue(AnalysisWizard.MODULE_FILE, fileNameField.getText());
     	if (!minField.getText().isEmpty())
-    		aw.setValue(aw.MIN, minField.getText());
+    		aw.setValue(AnalysisWizard.MIN, minField.getText());
     	if (!maxField.getText().isEmpty())
-    		aw.setValue(aw.MAX, maxField.getText());
+    		aw.setValue(AnalysisWizard.MAX, maxField.getText());
     }    
     
     private void setNextButtonAccordingToInputs() {
@@ -94,7 +94,6 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
             getWizard().setNextFinishButtonEnabled(true);
          else
             getWizard().setNextFinishButtonEnabled(false);        
-    
     }
     
     private boolean checkMinMaxInput() {
@@ -158,7 +157,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				aw.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
 		
 		fileChooser.setDialogTitle("Select the data file");
 		

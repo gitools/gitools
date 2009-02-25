@@ -10,21 +10,22 @@ public abstract class AnalysisWizard {
 	
 	
 	static Map<String, String> dataModel;
-	public final String ANALYSIS_NAME = "analysis_name";
-	public final String WORKING_DIR = "working_dir";
-	public final String PROCESSORS = "processors";
-	public final String DATA_FILE = "data_file";
-	public final String BIN_CUTOFF_CONDITION = "bin_cutoff_condition";
-	public final String BIN_CUTOFF_VALUE = "bin_cutoff_value";
-	public final String MODULE_FILE = "module_file";
-	public final String MIN = "min";
-	public final String MAX = "max";
-	public final String SAMPLE_SIZE = "sample_size";
-	public final String STAT_TEST = "stat_test";
+	public static final String ANALYSIS_NAME = "analysis_name";
+	public static final String ANALYSIS_WORKING_DIR = "analysis_working_dir";
+	public static final String PROCESSORS = "processors";
+	public static final String DATA_FILE = "data_file";
+	public static final String BIN_CUTOFF_CONDITION = "bin_cutoff_condition";
+	public static final String BIN_CUTOFF_VALUE = "bin_cutoff_value";
+	public static final String MODULE_FILE = "module_file";
+	public static final String MIN = "min";
+	public static final String MAX = "max";
+	public static final String SAMPLE_SIZE = "sample_size";
+	public static final String STAT_TEST = "stat_test";
+	public static final String DISABLED = "disabled";
+	public static final String WIZARD_WORKING_DIR = "wizard_working_dir";
 	
 	public enum Condition { 
 		EQ("eq","equal"), 
-		NE("ne","not equal"), 
 		GE("ge","greater or equal"),
 		LE("le","lower or equal"),
 		GT("gt","greater than"),
@@ -77,9 +78,7 @@ public abstract class AnalysisWizard {
 		public String toCommandLineArgument() {
 			return arg;
 		}
-		
 	}
-	
 	
 	public AnalysisWizard() {
 		dataModel = new HashMap<String, String>();
@@ -90,7 +89,10 @@ public abstract class AnalysisWizard {
 	}
 	
 	public String getValue(String key) {
-		return dataModel.get(key);
+		if(dataModel.containsKey(key))
+			return dataModel.get(key);
+		else
+			return null;
 	}
 	
 	public void removeValue(String key) {
