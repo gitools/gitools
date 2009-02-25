@@ -36,8 +36,7 @@ public class ZCalcAnalysisStatsHelpDescriptor extends AnalysisWizardPanelDescrip
        
     private void setNextButtonAccordingToInputs() {
     	//TODO: for some reason, setWizard returns null
-        //getWizard().setNextFinishButtonEnabled(true);
-        
+        //getWizard().setNextFinishButtonEnabled(true);       
    }
 
     

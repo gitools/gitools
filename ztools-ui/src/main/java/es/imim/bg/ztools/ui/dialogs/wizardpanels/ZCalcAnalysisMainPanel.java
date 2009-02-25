@@ -1,28 +1,16 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.net.URL;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
 public class ZCalcAnalysisMainPanel extends JPanel {
 
@@ -79,8 +67,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jLabel6 = new JLabel();
 		jLabel7 = new JLabel();
 		
-		Dimension maxWidth = new Dimension(500,300);
-
 		jComboBox1 = new JComboBox();
 		
 		jTextField1 = new JTextField();
@@ -97,7 +83,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		contentPanel1.add(welcomeTitle, java.awt.BorderLayout.NORTH);
 
 		jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.PAGE_AXIS));
-		//jPanel1.setMaximumSize(maxWidth);
 
 
 
@@ -116,7 +101,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.getLayout();
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
-		//jPanel3.setMaximumSize(maxWidth);
 		jLabel5.setText("Analysis Name: ");
 		jPanel3.add(jLabel5);
 		jTextField1.setToolTipText("Choose a Name for your Analysis");
@@ -124,7 +108,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.add(jPanel3);
 
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
-		//jPanel4.setMaximumSize(maxWidth);
 		jLabel6.setText("Working Directory:");
 		jPanel4.add(jLabel6);
 		jTextField2.setToolTipText("Choose the data file");
@@ -134,7 +117,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel2.add(jPanel4);
 
 		jPanel5.setLayout(new BoxLayout(jPanel5, BoxLayout.LINE_AXIS));
-		//jPanel5.setMaximumSize(maxWidth);
 		int processors = java.lang.Runtime.getRuntime().availableProcessors();
 		for (int i = 1; i <= processors; i++)
 			jComboBox1.addItem(i);
@@ -171,13 +153,4 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 	public JTextField getWorkDirField() {
 		return jTextField2;
 	}
-
-
-
-	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
-	}
-
 }

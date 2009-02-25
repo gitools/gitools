@@ -28,7 +28,7 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 		super();
 	    Wizard wizard = new Wizard(owner);
 	    wizard.getDialog().setTitle("ZCalc Analysis Dialog");
-	    Dimension d = new Dimension(600,400);
+	    Dimension d = new Dimension(700,400);
 	    wizard.getDialog().setSize(d);
 	    wizard.getDialog().setMinimumSize(d);
 
@@ -62,7 +62,6 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 													ZCalcAnalysisStatsDescriptor.IDENTIFIER,
 													ZCalcAnalysisStatsDescriptor.IDENTIFIER);
 	    wizard.registerWizardPanel(ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER, statsHelpDescriptor);
-	    
 	    
 	    wizard.setCurrentPanel(ZCalcAnalysisMainDescriptor.IDENTIFIER);
 	    int ret = wizard.showModalDialog();
@@ -142,6 +141,12 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	
 	public ZCalcCommand getCommand(){
 		return command;
+	}
+	
+	@Override
+	public void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
 	}
 
 }

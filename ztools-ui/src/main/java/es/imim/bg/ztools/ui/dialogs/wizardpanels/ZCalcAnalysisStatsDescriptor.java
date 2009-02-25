@@ -33,8 +33,7 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
         sampleSizeField = statsPanel.getSampleSizeField();
         statTestBox = statsPanel.getStatTestBox();
         helpLabel = statsPanel.getHelpLabel();
-        final String helpLabelText = helpLabel.getText();
-
+        final String helpLabelText = helpLabel.getText().replaceAll("\\<.*?\\>", "");
         
         helpLabel.addMouseListener(new MouseListener(){
 			@Override
@@ -62,7 +61,6 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
             
     
     protected void changeToHelpPanel() {
-		System.out.println("help clicked");
 		Wizard wizard = getWizard();
         Object descriptor = ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER;
         wizard.setCurrentPanel(descriptor);
