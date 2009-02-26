@@ -1,15 +1,16 @@
 package es.imim.bg.ztools.ui.dialogs;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.nexes.wizard.Wizard;
+
+import es.imim.bg.ztools.ui.model.WizardDataModel;
 
 
-public abstract class AnalysisWizard {
+public abstract class AnalysisWizard extends Wizard{
 		
 	private static final long serialVersionUID = -3270597264001925514L;
 	
 	
-	static Map<String, String> dataModel;
+	static WizardDataModel dataModel;
 	public static final String ANALYSIS_NAME = "analysis_name";
 	public static final String ANALYSIS_WORKING_DIR = "analysis_working_dir";
 	public static final String PROCESSORS = "processors";
@@ -81,25 +82,10 @@ public abstract class AnalysisWizard {
 	}
 	
 	public AnalysisWizard() {
-		dataModel = new HashMap<String, String>();
+		dataModel = new WizardDataModel();
 	}
 	
-	public void setValue(String key, String value){
-		dataModel.put(key, value);
-	}
-	
-	public String getValue(String key) {
-		if(dataModel.containsKey(key))
-			return dataModel.get(key);
-		else
-			return null;
-	}
-	
-	public void removeValue(String key) {
-		dataModel.remove(key);
-	}
-	
-	public void clear(){
-		dataModel.clear();
+	public WizardDataModel getWizardDataModel() {
+		return dataModel;
 	}
 }

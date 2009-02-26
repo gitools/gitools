@@ -4,8 +4,7 @@ import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
-import es.imim.bg.ztools.ui.utils.Options;
-
+import es.imim.bg.ztools.ui.model.WizardDataModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,7 +20,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "DATA_PANEL";
     private static final ZCalcAnalysisDataPanel dataPanel = new ZCalcAnalysisDataPanel();
-    AnalysisWizard aw;
+    WizardDataModel dataModel;
     final JButton chooserButton;
     final JTextField fileNameField;
     final JComboBox binCutoffConditionBox;
@@ -30,7 +29,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     public ZCalcAnalysisDataDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, dataPanel, BackPanelDescriptor, NextPanelDescriptor);
         
-        this.aw = aw;
+        this.dataModel = aw.getWizardDataModel();
                 
         chooserButton = dataPanel.getChooserButton();
         fileNameField = dataPanel.getFileNameField();
@@ -88,7 +87,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     
     
     protected void setWizardWorkingDir(String path) {
-		aw.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
+		dataModel.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
 	}
     
     public void aboutToDisplayPanel() {
@@ -97,15 +96,15 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(AnalysisWizard.DATA_FILE, fileNameField.getText());
+    	dataModel.setValue(AnalysisWizard.DATA_FILE, fileNameField.getText());
     	String conditionItemString = binCutoffConditionBox.getSelectedItem().toString();
     	if (conditionItemString.equals(dataPanel.BIN_CUTOFF_DISABLED))
-        	aw.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, binCutoffConditionBox.getSelectedItem().toString());
+        	dataModel.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, binCutoffConditionBox.getSelectedItem().toString());
     	else {
     		Condition[] conditions = Condition.values();
 	    	Condition c = conditions[binCutoffConditionBox.getSelectedIndex()-1];
-	    	aw.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, c.toCommandLineArgument());
-    		aw.setValue(AnalysisWizard.BIN_CUTOFF_VALUE, binCutoffField.getText());
+	    	dataModel.setValue(AnalysisWizard.BIN_CUTOFF_CONDITION, c.toCommandLineArgument());
+    		dataModel.setValue(AnalysisWizard.BIN_CUTOFF_VALUE, binCutoffField.getText());
     	}
     }    
     
@@ -145,7 +144,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				aw.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
+				(String) dataModel.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
 		
 		fileChooser.setDialogTitle("Select the data file");
 		

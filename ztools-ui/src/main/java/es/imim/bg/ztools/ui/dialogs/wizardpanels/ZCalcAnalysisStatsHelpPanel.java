@@ -1,39 +1,17 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.TextArea;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.URL;
-import java.util.Map;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
-import es.imim.bg.ztools.ui.utils.Options;
 
 public class ZCalcAnalysisStatsHelpPanel extends JPanel {
 	
@@ -94,7 +72,7 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         GridBagLayout helpContentLayout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         int gridCols = 4;
-        int gridRows = 9;
+        //int gridRows = 9;
         jPanel1.setLayout(helpContentLayout);
         
         

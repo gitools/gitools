@@ -3,9 +3,7 @@ package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.utils.Options;
-
-
+import es.imim.bg.ztools.ui.model.WizardDataModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,7 +17,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     
     public static final String IDENTIFIER = "MODULE_PANEL";
     static ZCalcAnalysisModulePanel modulePanel = new ZCalcAnalysisModulePanel();
-    AnalysisWizard aw;
+    WizardDataModel dataModel;
     final JButton choserButton;
     final JTextField fileNameField;
     final JTextField minField;
@@ -29,7 +27,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     public ZCalcAnalysisModuleDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, modulePanel, BackPanelDescriptor, NextPanelDescriptor);
         
-        this.aw = aw;
+        this.dataModel = aw.getWizardDataModel();
         
         choserButton = modulePanel.getChoserButton();
         fileNameField = modulePanel.getFileNameField();
@@ -82,11 +80,11 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(AnalysisWizard.MODULE_FILE, fileNameField.getText());
+    	dataModel.setValue(AnalysisWizard.MODULE_FILE, fileNameField.getText());
     	if (!minField.getText().isEmpty())
-    		aw.setValue(AnalysisWizard.MIN, minField.getText());
+    		dataModel.setValue(AnalysisWizard.MIN, minField.getText());
     	if (!maxField.getText().isEmpty())
-    		aw.setValue(AnalysisWizard.MAX, maxField.getText());
+    		dataModel.setValue(AnalysisWizard.MAX, maxField.getText());
     }    
     
     private void setNextButtonAccordingToInputs() {
@@ -157,7 +155,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				aw.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
+				(String) dataModel.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
 		
 		fileChooser.setDialogTitle("Select the data file");
 		

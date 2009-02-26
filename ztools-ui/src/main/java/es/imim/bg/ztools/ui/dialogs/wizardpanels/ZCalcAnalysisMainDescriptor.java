@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.model.WizardDataModel;
 import es.imim.bg.ztools.ui.utils.Options;
 
 
@@ -24,11 +25,11 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     final JTextField workDirField;
     final JTextField analysisNameField;
 
-    AnalysisWizard aw;
+    WizardDataModel dataModel;
     
     public ZCalcAnalysisMainDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, mainPanel, BackPanelDescriptor, NextPanelDescriptor);
-        this.aw = aw;
+        this.dataModel = aw.getWizardDataModel();
         
     	analysisNameField = mainPanel.getAnalysisNameField();
     	analysisNameField.addKeyListener(new KeyListener(){
@@ -77,7 +78,7 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 
     
     protected void setWizardWorkingDir(String path) {
-		aw.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
+		dataModel.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
 	}
 
 
@@ -86,9 +87,9 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     }
     
     public void aboutToHidePanel() {
-    	aw.setValue(AnalysisWizard.ANALYSIS_NAME, analysisNameField.getText());
-    	aw.setValue(AnalysisWizard.ANALYSIS_WORKING_DIR, workDirField.getText());
-    	aw.setValue(AnalysisWizard.PROCESSORS, mainPanel.getProcessorComboBox().getSelectedItem().toString());
+    	dataModel.setValue(AnalysisWizard.ANALYSIS_NAME, analysisNameField.getText());
+    	dataModel.setValue(AnalysisWizard.ANALYSIS_WORKING_DIR, workDirField.getText());
+    	dataModel.setValue(AnalysisWizard.PROCESSORS, mainPanel.getProcessorComboBox().getSelectedItem().toString());
     }    
     
     private void setNextButtonAccordingToInputs() {

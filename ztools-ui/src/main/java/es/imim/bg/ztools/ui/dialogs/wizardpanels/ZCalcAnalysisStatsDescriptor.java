@@ -7,19 +7,17 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.nexes.wizard.Wizard;
-
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.Condition;
 import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
+import es.imim.bg.ztools.ui.model.WizardDataModel;
 
 
 public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "STATS_PANEL";
     static ZCalcAnalysisStatsPanel statsPanel = new ZCalcAnalysisStatsPanel();
-    AnalysisWizard aw;
+    WizardDataModel dataModel;
     final JTextField sampleSizeField;
     final JComboBox statTestBox;
     final JLabel helpLabel;
@@ -28,7 +26,7 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     public ZCalcAnalysisStatsDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, statsPanel, BackPanelDescriptor, NextPanelDescriptor);
         
-        this.aw = aw;
+        this.dataModel = aw.getWizardDataModel();
         
         sampleSizeField = statsPanel.getSampleSizeField();
         statTestBox = statsPanel.getStatTestBox();
@@ -61,9 +59,9 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
             
     
     protected void changeToHelpPanel() {
-		Wizard wizard = getWizard();
         Object descriptor = ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER;
-        wizard.setCurrentPanel(descriptor);
+        getWizard().setCurrentPanel(descriptor);
+        //aw.setCurrentPanel(descriptor);
 	}
 
 
@@ -73,12 +71,12 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     
     public void aboutToHidePanel() {
     	if (!sampleSizeField.getText().isEmpty()) {
-    		aw.setValue(AnalysisWizard.SAMPLE_SIZE, sampleSizeField.getText());
+    		dataModel.setValue(AnalysisWizard.SAMPLE_SIZE, sampleSizeField.getText());
     	}
     	
     	StatTest[] statTests = StatTest.values();
     	StatTest st = statTests[statTestBox.getSelectedIndex()];
-    	aw.setValue(AnalysisWizard.STAT_TEST, st.toCommandLineArgument());
+    	dataModel.setValue(AnalysisWizard.STAT_TEST, st.toCommandLineArgument());
     }    
     
     private void setNextButtonAccordingToInputs() {
