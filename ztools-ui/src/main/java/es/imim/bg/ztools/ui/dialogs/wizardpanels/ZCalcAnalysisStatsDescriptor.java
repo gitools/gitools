@@ -1,5 +1,9 @@
 package es.imim.bg.ztools.ui.dialogs.wizardpanels;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -33,6 +37,29 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
         helpLabel = statsPanel.getHelpLabel();
         final String helpLabelText = helpLabel.getText().replaceAll("\\<.*?\\>", "");
         
+        statTestBox.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setSampleSizeFieldAccordingToStatTest();			
+			}
+        	
+        });
+        
+        sampleSizeField.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent e) { }
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				setNextButtonAccordingToInputs();
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) { }
+        });
+        
         helpLabel.addMouseListener(new MouseListener(){
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -58,7 +85,19 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     }
             
     
-    protected void changeToHelpPanel() {
+    protected void setSampleSizeFieldAccordingToStatTest() {
+		String selected = statTestBox.getSelectedItem().toString();
+		System.out.println(selected);
+		if (selected.equals(StatTest.ZSCORE_MEAN.toString()) ||
+				selected.equals(StatTest.ZSCORE_MEDIAN.toString())) {
+			sampleSizeField.setEnabled(true);
+		}
+		else 
+			sampleSizeField.setEnabled(false);
+	}
+
+
+	protected void changeToHelpPanel() {
         Object descriptor = ZCalcAnalysisStatsHelpDescriptor.IDENTIFIER;
         getWizard().setCurrentPanel(descriptor);
         //aw.setCurrentPanel(descriptor);
@@ -67,6 +106,7 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
 
 	public void aboutToDisplayPanel() {
     	setNextButtonAccordingToInputs();
+    	setSampleSizeFieldAccordingToStatTest();
     }
     
     public void aboutToHidePanel() {

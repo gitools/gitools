@@ -54,13 +54,12 @@ public abstract class AnalysisWizard extends Wizard{
 	public enum StatTest {
 		ZSCORE_MEAN("zscore-mean","Z-Score Mean"),
 		ZSCORE_MEDIAN("zscore-median","Z-Score Median"),
-		BINOMINAL("binominal","Binominal"),
-		BINOMINAL_EXACT("binominal-exact","Binominal Exact"),
-		BINOMINAL_NORMAL("binominal-normal","Binominal Normal"),
-		BINOMINAL_POISSON("binominal-poisson","Binominal Poisson"),
+		BINOMIAL_EXACT("binomial-exact","Binomial Exact"),
+		BINOMIAL_NORMAL("binomial-normal","Binomial Normal"),
+		BINOMIAL_POISSON("binomial-poisson","Binomial Poisson"),
 		FISHER("fisher","Fisher"),
-		HYPEROGEOM("hypergeom","Hypergeometric"),
-		CHI_SQR("chi-sqr","Chi-Square");		
+		/*HYPEROGEOM("hypergeom","Hypergeometric"),
+		CHI_SQR("chi-sqr","Chi-Square")*/;		
 		
 		private String title;
 		private String arg;

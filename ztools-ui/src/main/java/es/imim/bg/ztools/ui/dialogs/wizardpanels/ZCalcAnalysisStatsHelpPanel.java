@@ -100,10 +100,10 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         jTextAreas[3].setText("Requirements");
         jTextAreas[4].setText("Reference");
         
-        jTextAreas[5].setText(StatTest.CHI_SQR.toString());
+      /*  jTextAreas[5].setText(StatTest.CHI_SQR.toString());
         jTextAreas[6].setText("?");
         jTextAreas[7].setText("?");
-        jTextAreas[8].setText("?");
+        jTextAreas[8].setText("?");*/
 
         
         jTextAreas[9].setText(StatTest.ZSCORE_MEAN.toString());
@@ -116,25 +116,20 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         jTextAreas[15].setText("n >= 20, where n is the module size");
         jTextAreas[16].setText("http://en.wikipedia.org/wiki/Bootstrapping_(statistics)");
 
-        jTextAreas[17].setText(StatTest.BINOMINAL_EXACT.toString());
+        jTextAreas[17].setText(StatTest.BINOMIAL_EXACT.toString());
         jTextAreas[18].setText("Binomial distribution B(n, p) test");
         jTextAreas[19].setText("n >= 20, where n is the module size");
         jTextAreas[20].setText("http://en.wikipedia.org/wiki/Binomial_distribution");
 
-        jTextAreas[21].setText(StatTest.BINOMINAL_NORMAL.toString());
+        jTextAreas[21].setText(StatTest.BINOMIAL_NORMAL.toString());
         jTextAreas[22].setText("Z-Score from a Binomial distribution B(n, p) using Normal distribution aproximation N(np, sqrt(np(1-p)))");
         jTextAreas[23].setText("np > 5 and n(1-p) > 5, where n is the module size and p is the probability of 1.0 occurrence");
         jTextAreas[24].setText("http://en.wikipedia.org/wiki/Binomial_distribution");
 
-        jTextAreas[25].setText(StatTest.BINOMINAL_POISSON.toString());
+        jTextAreas[25].setText(StatTest.BINOMIAL_POISSON.toString());
         jTextAreas[26].setText("P-Value from Binomial distribution B(n, p) using Poisson distribution aproximation Pois(obs, np)");
         jTextAreas[27].setText("(n >= 20 and p <= 0.05) or (n >= 100 and np <= 10), where n is the module size, obs is the observed frecuency and p is the probability of 1.0 occurrence");
         jTextAreas[28].setText("http://en.wikipedia.org/wiki/Binomial_distribution");
-
-        jTextAreas[29].setText(StatTest.BINOMINAL.toString());
-        jTextAreas[30].setText("Binomial test using the best approximation possible (exact, poisson or normal)");
-        jTextAreas[31].setText("Those for binomial-exact / binomial-normal / binomial-poisson");
-        jTextAreas[32].setText("http://en.wikipedia.org/wiki/Binomial_distribution");
         
         jTextAreas[33].setText(StatTest.FISHER.toString());
         jTextAreas[34].setText("Fisher's Exact Test");
