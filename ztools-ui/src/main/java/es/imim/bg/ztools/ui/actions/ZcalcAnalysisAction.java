@@ -9,7 +9,7 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.progressmonitor.StreamProgressMonitor;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.ZCalcAnalysisWizardDialog;
+import es.imim.bg.ztools.ui.wizards.ZCalcAnalysisWizardDialog;
 
 public class ZcalcAnalysisAction extends BaseAction {
 

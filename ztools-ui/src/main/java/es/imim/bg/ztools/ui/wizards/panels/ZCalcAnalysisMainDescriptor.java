@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs.wizardpanels;
+package es.imim.bg.ztools.ui.wizards.panels;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,10 +11,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.model.WizardDataModel;
 import es.imim.bg.ztools.ui.utils.Options;
+import es.imim.bg.ztools.ui.wizards.AbstractWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizards.WizardDataModel;
 
 
 public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
@@ -27,7 +28,7 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 
     WizardDataModel dataModel;
     
-    public ZCalcAnalysisMainDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
+    public ZCalcAnalysisMainDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, mainPanel, BackPanelDescriptor, NextPanelDescriptor);
         this.dataModel = aw.getWizardDataModel();
         
@@ -55,10 +56,11 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				File selectedFile = selectDir();
-				if (selectedFile != null)
+				if (selectedFile != null) {
 					workDirField.setText(selectedFile.toString());
+					setWizardWorkingDir(selectedFile.getAbsolutePath());
+				}
 				setNextButtonAccordingToInputs();
-				setWizardWorkingDir(selectedFile.getAbsolutePath());
 			}
 
 			@Override

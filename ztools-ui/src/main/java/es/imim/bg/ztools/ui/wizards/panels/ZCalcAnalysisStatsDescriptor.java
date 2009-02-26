@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs.wizardpanels;
+package es.imim.bg.ztools.ui.wizards.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +11,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
-import es.imim.bg.ztools.ui.model.WizardDataModel;
+import es.imim.bg.ztools.ui.wizards.AbstractWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizards.WizardDataModel;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizard.StatTest;
 
 
 public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor {
@@ -27,7 +28,7 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     final JLabel helpLabel;
 
     
-    public ZCalcAnalysisStatsDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
+    public ZCalcAnalysisStatsDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, statsPanel, BackPanelDescriptor, NextPanelDescriptor);
         
         this.dataModel = aw.getWizardDataModel();
@@ -87,7 +88,6 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
     
     protected void setSampleSizeFieldAccordingToStatTest() {
 		String selected = statTestBox.getSelectedItem().toString();
-		System.out.println(selected);
 		if (selected.equals(StatTest.ZSCORE_MEAN.toString()) ||
 				selected.equals(StatTest.ZSCORE_MEDIAN.toString())) {
 			sampleSizeField.setEnabled(true);

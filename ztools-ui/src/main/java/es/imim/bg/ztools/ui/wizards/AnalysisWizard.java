@@ -1,16 +1,13 @@
-package es.imim.bg.ztools.ui.dialogs;
-
-import com.nexes.wizard.Wizard;
-
-import es.imim.bg.ztools.ui.model.WizardDataModel;
+package es.imim.bg.ztools.ui.wizards;
 
 
-public abstract class AnalysisWizard extends Wizard{
+
+
+public abstract class AnalysisWizard extends AbstractWizard{
 		
 	private static final long serialVersionUID = -3270597264001925514L;
 	
 	
-	static WizardDataModel dataModel;
 	public static final String ANALYSIS_NAME = "analysis_name";
 	public static final String ANALYSIS_WORKING_DIR = "analysis_working_dir";
 	public static final String PROCESSORS = "processors";
@@ -81,10 +78,6 @@ public abstract class AnalysisWizard extends Wizard{
 	}
 	
 	public AnalysisWizard() {
-		dataModel = new WizardDataModel();
-	}
-	
-	public WizardDataModel getWizardDataModel() {
-		return dataModel;
+		super();
 	}
 }

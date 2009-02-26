@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.wizards;
 
 
 
@@ -12,11 +12,11 @@ import com.nexes.wizard.WizardPanelDescriptor;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.datafilters.BinCutoffFilter;
 import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
-import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisDataDescriptor;
-import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisMainDescriptor;
-import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisModuleDescriptor;
-import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisStatsDescriptor;
-import es.imim.bg.ztools.ui.dialogs.wizardpanels.ZCalcAnalysisStatsHelpDescriptor;
+import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisDataDescriptor;
+import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisMainDescriptor;
+import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisModuleDescriptor;
+import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisStatsDescriptor;
+import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisStatsHelpDescriptor;
 
 
 public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
@@ -64,12 +64,12 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	    setCurrentPanel(ZCalcAnalysisMainDescriptor.IDENTIFIER);
 	    int ret = showModalDialog();
 	    
-	    System.out.println("Dialog return code is (0=Finish,1=Cancel,2=Error): " + ret);
+	    /*System.out.println("Dialog return code is (0=Finish,1=Cancel,2=Error): " + ret);
 	    Set<String> keyset = dataModel.getKeys();
 	    Object[] keys = keyset.toArray();
 	    for (int i = 0; i < keyset.size(); i++){
 	    	System.out.println(keys[i].toString() + ":\t" + dataModel.getValue(keys[i].toString()) );
-	    }
+	    }*/
 	    
 	    if (ret == 0) {
 		    //Preparing the Analysis command

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs.wizardpanels;
+package es.imim.bg.ztools.ui.wizards.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Font;

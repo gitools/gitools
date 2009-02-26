@@ -1,9 +1,11 @@
-package es.imim.bg.ztools.ui.dialogs.wizardpanels;
+package es.imim.bg.ztools.ui.wizards.panels;
 
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard;
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.model.WizardDataModel;
+import es.imim.bg.ztools.ui.wizards.AbstractWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizards.WizardDataModel;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -24,7 +26,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     final JTextField maxField;
 
     
-    public ZCalcAnalysisModuleDescriptor(AnalysisWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
+    public ZCalcAnalysisModuleDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
         super(IDENTIFIER, modulePanel, BackPanelDescriptor, NextPanelDescriptor);
         
         this.dataModel = aw.getWizardDataModel();

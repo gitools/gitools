@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs.wizardpanels;
+package es.imim.bg.ztools.ui.wizards.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import es.imim.bg.ztools.ui.dialogs.AnalysisWizard.StatTest;
+import es.imim.bg.ztools.ui.wizards.AnalysisWizard.StatTest;
 
 public class ZCalcAnalysisStatsHelpPanel extends JPanel {
 	
