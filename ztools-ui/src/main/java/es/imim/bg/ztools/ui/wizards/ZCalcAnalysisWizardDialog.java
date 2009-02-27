@@ -29,6 +29,7 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 		Dimension d = new Dimension(700,400);
 		getDialog().setSize(d);
 		getDialog().setMinimumSize(d);
+		getDialog().setResizable(true); //FIXME no effect?!
 
 	    	    
 	    WizardPanelDescriptor mainDescriptor = new ZCalcAnalysisMainDescriptor(

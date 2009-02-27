@@ -17,6 +17,7 @@ import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.jobs.Job;
+import es.imim.bg.ztools.ui.jobs.OpenAnalysisJob;
 import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.model.table.ResultsMatrixTableContentsAdapter;
@@ -47,11 +48,8 @@ public class OpenAnalysisAction extends BaseAction {
 
 			final ProgressMonitor monitor = createProgressMonitor();
 			
-			AppFrame.instance().getJobProcessor().addJob(new Job() {
-					@Override
-					public void run() {
-						openAnalysisJob(selectedPath, monitor);
-					}
+			AppFrame.instance().getJobProcessor().addJob(
+									new OpenAnalysisJob(selectedPath, monitor) {
 				});
 		}
 	}
@@ -71,50 +69,5 @@ public class OpenAnalysisAction extends BaseAction {
 			return fileChooser.getSelectedFile();
 		
 		return null;
-	}
-	
-	private void openAnalysisJob(
-			File selectedPath, ProgressMonitor monitor) {
-		
-		if (selectedPath == null)
-			return;
-		
-		try {
-			ProjectResource projRes = new ProjectResource(selectedPath);
-			Project proj = projRes.load(monitor);
-			
-			AnalysisResource analysisRes =
-				new CsvAnalysisResource(selectedPath.getAbsolutePath());
-			
-			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
-			Analysis analysis = analysisRes.load(monitor);
-			
-			ITable table = new Table(
-					new ResultsMatrixTableContentsAdapter(analysis.getResults()));
-			
-			final TableView view = new TableView(table);
-			
-			view.setName(analysis.getName());
-
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					AppFrame.instance().getWorkspace().addView(view);
-					AppFrame.instance().refresh();
-				}
-			});
-			
-			monitor.end();
-		} 
-		catch (Exception ex) {
-			ex.printStackTrace();
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					AppFrame.instance()
-						.setStatusText("Error loading analysis.");
-				}
-			});
-		}
 	}
 }

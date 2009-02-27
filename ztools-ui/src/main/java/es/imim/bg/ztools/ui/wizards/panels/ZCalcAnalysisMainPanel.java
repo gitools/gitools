@@ -9,8 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+
+import EDU.oswego.cs.dl.util.concurrent.FJTask.Wrap;
 
 public class ZCalcAnalysisMainPanel extends JPanel {
 
@@ -20,10 +24,8 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 	private JLabel jLabel1;
 	private JLabel jLabel2;
 	private JLabel jLabel3;
-	private JLabel jLabel4;
-	private JLabel jLabel5;
-	private JLabel jLabel6;
-	private JLabel jLabel7;
+	
+	private JTextArea jTextArea1;
 
 	private JComboBox jComboBox1;
 
@@ -56,16 +58,14 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		JPanel jPanel3 = new JPanel();
 		JPanel jPanel4 = new JPanel();
 		JPanel jPanel5 = new JPanel();
-
+		
 		welcomeTitle = new JLabel();
 		blankSpace = new JLabel();
 		jLabel1 = new JLabel();
 		jLabel2 = new JLabel();
 		jLabel3 = new JLabel();
-		jLabel4 = new JLabel();
-		jLabel5 = new JLabel();
-		jLabel6 = new JLabel();
-		jLabel7 = new JLabel();
+		
+		jTextArea1 = new JTextArea();
 		
 		jComboBox1 = new JComboBox();
 		
@@ -76,7 +76,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 
 		contentPanel1.setLayout(new java.awt.BorderLayout());
 		
-
 		welcomeTitle.setText("Welcome to the ZCalc Analysis Wizard!");
 		welcomeTitle.setFont(new java.awt.Font(
 				welcomeTitle.getFont().getName(), Font.BOLD, 18));
@@ -84,32 +83,31 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 
 		jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.PAGE_AXIS));
 
-
-
+		jTextArea1.setText("You're about to employ a ZCalc Statistical Analysis for your data. " +
+				"But first of all, please indicate a name for your analysis and how  " +
+				"many processors you want to make use of, in case you're working " +
+				"with a multiprocessor machine");
+		jTextArea1.setOpaque(false);
+		jTextArea1.setLineWrap(true);
+		jTextArea1.setWrapStyleWord(true);
+		jTextArea1.setEditable(false);
+		jPanel1.add(jTextArea1);
+		blankSpace.setText(" ");
 		jPanel1.add(blankSpace);
-		jLabel1.setText("You're about to employ a ZCalc Statistical Analysis for your data.");
-		jPanel1.add(jLabel1);
-		jLabel2.setText("But first of all, please indicate a name for your analysis and how  ");
-		jPanel1.add(jLabel2);
-		jLabel3.setText("many processors you want to make use of, in case you're working ");
-		jPanel1.add(jLabel3);
-		jLabel4.setText("with a multiprocessor machine");
-		jPanel1.add(jLabel4);
-		jPanel1.add(blankSpace);
-
+		
 		jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
 		jPanel2.getLayout();
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
-		jLabel5.setText("Analysis Name: ");
-		jPanel3.add(jLabel5);
+		jLabel1.setText("Analysis Name: ");
+		jPanel3.add(jLabel1);
 		jTextField1.setToolTipText("Choose a Name for your Analysis");
 		jPanel3.add(jTextField1);
 		jPanel2.add(jPanel3);
 
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
-		jLabel6.setText("Working Directory:");
-		jPanel4.add(jLabel6);
+		jLabel2.setText("Working Directory:");
+		jPanel4.add(jLabel2);
 		jTextField2.setToolTipText("Choose the data file");
 		jTextField2.setEditable(false);
 		jPanel4.add(jTextField2);
@@ -121,8 +119,8 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		for (int i = 1; i <= processors; i++)
 			jComboBox1.addItem(i);
 		jComboBox1.setSelectedIndex(jComboBox1.getItemCount() - 1);
-		jLabel7.setText("Number of processors to use: ");
-		jPanel5.add(jLabel7);
+		jLabel3.setText("Number of processors to use: ");
+		jPanel5.add(jLabel3);
 		jPanel5.add(jComboBox1);
 		jPanel2.add(jPanel5);
 
