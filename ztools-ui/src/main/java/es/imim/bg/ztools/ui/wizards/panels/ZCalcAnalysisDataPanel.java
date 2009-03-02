@@ -26,9 +26,6 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 	private JLabel blankSpace;
     private JLabel jLabel1;
     private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
 
 	private JTextArea jTextArea1;
     
@@ -49,12 +46,8 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
         setLayout(new java.awt.BorderLayout());
-        
-        JPanel secondaryPanel = new JPanel();
-        secondaryPanel.add(contentPanel, BorderLayout.NORTH);
-        add(secondaryPanel, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
     }
     
     
@@ -70,9 +63,6 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         blankSpace = new JLabel();
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
 
 		jTextArea1 = new JTextArea();
         
@@ -89,7 +79,9 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         panelTitle.setFont(new java.awt.Font(panelTitle.getFont().getName(), Font.BOLD, 18));
         contentPanel1.add(panelTitle, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.PAGE_AXIS));
+        jPanel1.setLayout(new BorderLayout());
+        jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
+
         
         jTextArea1.setText("Please choose the file with the data to analyise. In case" +
         		"it contains continous data, indicate by what criteria you" +
@@ -98,25 +90,15 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setWrapStyleWord(true);
 		jTextArea1.setEditable(false);
-		jPanel1.add(jTextArea1);
+		jPanel2.add(jTextArea1);
 		blankSpace.setText(" ");
-        jPanel1.add(blankSpace); 
-
-        /*jPanel1.add(blankSpace);
-        jLabel1.setText("Please choose the file with the data to analyse. In case");
-        jPanel1.add(jLabel1);
-        jLabel2.setText("it contains continous data, indicate by what criteria you");
-        jPanel1.add(jLabel2);
-        jLabel3.setText("want to convert it into binary data.");
-        jPanel1.add(jLabel3);*/
-        
-        jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
-        
+        jPanel2.add(blankSpace); 
+                
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
-        jLabel4.setText("Data Table File: ");
+        jLabel1.setText("Data Table File: ");
         jTextField1.setToolTipText("Choose the data file");
         jTextField1.setEditable(false);
-        jPanel3.add(jLabel4);
+        jPanel3.add(jLabel1);
         jPanel3.add(jTextField1);
         jPanel3.add(jButton1);
         jPanel2.add(jPanel3);
@@ -126,15 +108,15 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jComboBox1.addItem(BIN_CUTOFF_DISABLED);
         for (int i = 0; i < conditions.length; i++)
             jComboBox1.addItem(conditions[i].toString());
-        jLabel5.setText("Binary cut-off : ");
+        jLabel2.setText("Binary cut-off : ");
         jTextField2.setToolTipText("Enter a numerical cut-off value");
-        jPanel4.add(jLabel5);
+        jPanel4.add(jLabel2);
         jPanel4.add(jComboBox1);
         jPanel4.add(jTextField2);
         jPanel2.add(jPanel4);
 
-        contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
-        contentPanel1.add(jPanel2, BorderLayout.SOUTH);
+        jPanel1.add(jPanel2, BorderLayout.NORTH); //prevent expanding in north
+        contentPanel1.add(jPanel1, BorderLayout.CENTER);
 
         return contentPanel1;
         

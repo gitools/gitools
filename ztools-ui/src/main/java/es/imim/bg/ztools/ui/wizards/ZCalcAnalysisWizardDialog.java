@@ -26,7 +26,7 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	public ZCalcAnalysisWizardDialog(JFrame owner){
 		super();
 		getDialog().setTitle("ZCalc Analysis Dialog");
-		Dimension d = new Dimension(700,400);
+		Dimension d = new Dimension(500,400);
 		getDialog().setSize(d);
 		getDialog().setMinimumSize(d);
 		getDialog().setResizable(true); //FIXME no effect?!
@@ -64,14 +64,7 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	    
 	    setCurrentPanel(ZCalcAnalysisMainDescriptor.IDENTIFIER);
 	    int ret = showModalDialog();
-	    
-	    /*System.out.println("Dialog return code is (0=Finish,1=Cancel,2=Error): " + ret);
-	    Set<String> keyset = dataModel.getKeys();
-	    Object[] keys = keyset.toArray();
-	    for (int i = 0; i < keyset.size(); i++){
-	    	System.out.println(keys[i].toString() + ":\t" + dataModel.getValue(keys[i].toString()) );
-	    }*/
-	    
+
 	    if (ret == 0) {
 		    //Preparing the Analysis command
 		    BinCutoffFilter binCutoffFilter = null;

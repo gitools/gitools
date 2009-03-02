@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -22,10 +23,8 @@ public class ZCalcAnalysisModulePanel extends JPanel {
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel3;
-    private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
+    
+	private JTextArea jTextArea1;
     
     private JComboBox jComboBox1;
     
@@ -43,12 +42,8 @@ public class ZCalcAnalysisModulePanel extends JPanel {
 		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
         setLayout(new java.awt.BorderLayout());
-        
-        JPanel secondaryPanel = new JPanel();
-        secondaryPanel.add(contentPanel, BorderLayout.NORTH);
-        add(secondaryPanel, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
     }
     
     
@@ -66,11 +61,9 @@ public class ZCalcAnalysisModulePanel extends JPanel {
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel7 = new JLabel();
-        jLabel6 = new JLabel();
+        jLabel2 = new JLabel();
+        
+		jTextArea1 = new JTextArea();
         
         jComboBox1 = new JComboBox();
         
@@ -86,51 +79,48 @@ public class ZCalcAnalysisModulePanel extends JPanel {
         panelTitle.setFont(new java.awt.Font(panelTitle.getFont().getName(), Font.BOLD, 18));
         contentPanel1.add(panelTitle, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
-
-        jPanel1.add(blankSpace);
-        jLabel1.setText("Please choose the file containing a module map.");
-        jPanel1.add(jLabel1);
-        jLabel2.setText("By using the min and/or max fields, you can discard ");
-        jPanel1.add(jLabel2);
-        jLabel3.setText("modules with an item number out of the defined range. ");
-        jPanel1.add(jLabel3);
-        jLabel4.setText("Default values are " + MIN_DEFAULT + " (min) & " + MAX_DEFAULT + " (max).");
-        jPanel1.add(jLabel4);
-        jPanel1.add(blankSpace); 
-        
+        jPanel1.setLayout(new BorderLayout());
         jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
         
+        jTextArea1.setText("Please choose the file containing a module map." +
+        		"By using the min and/or max fields, you can discard " +
+        		"modules with an item number out of the defined range. " +
+        		"Default values are " + MIN_DEFAULT + " (min) & " + MAX_DEFAULT + " (max).");
+		jTextArea1.setOpaque(false);
+		jTextArea1.setLineWrap(true);
+		jTextArea1.setWrapStyleWord(true);
+		jTextArea1.setEditable(false);
+		jPanel2.add(jTextArea1);
+		blankSpace.setText(" ");
+        jPanel2.add(blankSpace); 
+                
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
-        jLabel5.setText("Module Map File: ");
+        jLabel1.setText("Module Map File: ");
         jTextField1.setToolTipText("Choose the data file");
         jTextField1.setEditable(false);
-        jPanel3.add(jLabel5);
+        jPanel3.add(jLabel1);
         jPanel3.add(jTextField1);
         jPanel3.add(jButton1);
         jPanel2.add(jPanel3);
         
         jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
 
-        jLabel6.setText("Minimum of items : ");
-        jPanel4.add(jLabel6);
+        jLabel2.setText("Minimum of items : ");
+        jPanel4.add(jLabel2);
         jTextField2.setToolTipText("Default: " + MIN_DEFAULT);
         jPanel4.add(jTextField2);
-        jPanel2.add(blankSpace);
         jPanel2.add(jPanel4);
         
         jPanel5.setLayout(new BoxLayout(jPanel5, BoxLayout.LINE_AXIS));
 
-        jLabel7.setText("Maximum of items : ");
-        jPanel5.add(jLabel7);
+        jLabel3.setText("Maximum of items : ");
+        jPanel5.add(jLabel3);
         jTextField3.setToolTipText("Default: " + MAX_DEFAULT);
         jPanel5.add(jTextField3);
-        jPanel2.add(blankSpace);
         jPanel2.add(jPanel5);
         
-
+        jPanel1.add(jPanel2, BorderLayout.NORTH);
         contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
-        contentPanel1.add(jPanel2, BorderLayout.SOUTH);
 
         return contentPanel1;
         

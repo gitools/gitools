@@ -28,12 +28,8 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
 		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
         setLayout(new java.awt.BorderLayout());
-        
-        JPanel secondaryPanel = new JPanel();
-        secondaryPanel.add(contentPanel, BorderLayout.NORTH);
-        add(secondaryPanel, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
     }
     
     
@@ -63,11 +59,11 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
 
         panelTitle = new JLabel();
        
-        contentPanel1.setLayout(new java.awt.BorderLayout());
+        contentPanel1.setLayout(new BorderLayout());
 
         panelTitle.setText("Statistics Help");
         panelTitle.setFont(new java.awt.Font(panelTitle.getFont().getName(), Font.BOLD, 18));
-        contentPanel1.add(panelTitle, java.awt.BorderLayout.NORTH);
+        contentPanel1.add(panelTitle, BorderLayout.NORTH);
 
         GridBagLayout helpContentLayout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -87,7 +83,7 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         }
         
         
-        contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
+        contentPanel1.add(jPanel1, BorderLayout.CENTER);
 
         return contentPanel1;
         
@@ -99,13 +95,7 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         jTextAreas[2].setText("Description");
         jTextAreas[3].setText("Requirements");
         jTextAreas[4].setText("Reference");
-        
-      /*  jTextAreas[5].setText(StatTest.CHI_SQR.toString());
-        jTextAreas[6].setText("?");
-        jTextAreas[7].setText("?");
-        jTextAreas[8].setText("?");*/
 
-        
         jTextAreas[9].setText(StatTest.ZSCORE_MEAN.toString());
         jTextAreas[10].setText("Z-Score using bootstrapping of means");
         jTextAreas[11].setText("n >= 20, where n is the module size");

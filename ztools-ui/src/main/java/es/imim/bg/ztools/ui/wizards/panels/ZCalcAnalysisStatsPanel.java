@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -24,9 +25,8 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
     private JLabel jLabel2;
     private JLabel jLabel3;
     private JLabel jLabel4;
-    private JLabel jLabel5;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
+    
+	private JTextArea jTextArea1;
     
     private JComboBox jComboBox1;
     
@@ -39,12 +39,8 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
 		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
-
         setLayout(new java.awt.BorderLayout());
-        
-        JPanel secondaryPanel = new JPanel();
-        secondaryPanel.add(contentPanel, BorderLayout.NORTH);
-        add(secondaryPanel, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
     }
     
     
@@ -62,9 +58,8 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
-        jLabel5 = new JLabel();
-        jLabel6 = new JLabel();
-        jLabel7 = new JLabel();
+        
+		jTextArea1 = new JTextArea();
         
         jComboBox1 = new JComboBox();
         
@@ -76,54 +71,51 @@ public class ZCalcAnalysisStatsPanel extends JPanel {
         panelTitle.setFont(new java.awt.Font(panelTitle.getFont().getName(), Font.BOLD, 18));
         contentPanel1.add(panelTitle, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
-
-        jPanel1.add(blankSpace);
-        jLabel1.setText("Choose the statistical test you want to apply and the number");
-        jPanel1.add(jLabel1);
-        jLabel2.setText("of samples to use when randomizing. The default value for the");
-        jPanel1.add(jLabel2);
-        jLabel3.setText("sample set size is " + DEFAULT_SAMPLE_SIZE);
-        jPanel1.add(jLabel3);
-
-        jPanel1.add(blankSpace); 
-        
+        jPanel1.setLayout(new BorderLayout());
         jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
         
+        jTextArea1.setText("Choose the statistical test you want to apply and the number" +
+        		"of samples to use when randomizing. The default value for the" +
+        		"sample set size is " + DEFAULT_SAMPLE_SIZE);
+		jTextArea1.setOpaque(false);
+		jTextArea1.setLineWrap(true);
+		jTextArea1.setWrapStyleWord(true);
+		jTextArea1.setEditable(false);
+		jPanel2.add(jTextArea1);
+		blankSpace.setText(" ");
+        jPanel2.add(blankSpace); 
+                
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
-        jLabel4.setText("Satistical test ");
-        jPanel3.add(jLabel4);
-        jLabel6.setText(": ");
-        jPanel3.add(jLabel6);
+        jLabel1.setText("Satistical test ");
+        jPanel3.add(jLabel1);
+        jLabel3.setText(": ");
+        jPanel3.add(jLabel3);
         StatTest[] stattests =  StatTest.values();
         for (int i = 0; i < stattests.length; i++)
             jComboBox1.addItem(stattests[i].toString());
         jPanel3.add(jComboBox1);
-        jLabel5.setText("<html>(Help)</html>");
-        jLabel5.setForeground(Color.BLUE);
-        jPanel3.add(jLabel5);
+        jLabel2.setText("<html>(Help)</html>");
+        jLabel2.setForeground(Color.BLUE);
+        jPanel3.add(jLabel2);
         jPanel2.add(jPanel3);
-        jPanel2.add(blankSpace);
 
-        
         jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
         
-        jPanel2.add(blankSpace);
-        jLabel7.setText("Sample size : ");
-        jPanel4.add(jLabel7);
+        jLabel4.setText("Sample size : ");
+        jPanel4.add(jLabel4);
         jTextField1.setToolTipText("Default: " + DEFAULT_SAMPLE_SIZE);
         jPanel4.add(jTextField1);
         jPanel2.add(jPanel4);      
 
+        jPanel1.add(jPanel2, BorderLayout.NORTH);
         contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
-        contentPanel1.add(jPanel2, BorderLayout.SOUTH);
 
         return contentPanel1;
         
     }
 	
 	public JLabel getHelpLabel(){
-		return jLabel5;
+		return jLabel2;
 	}
 	
 	public JTextField getSampleSizeField(){

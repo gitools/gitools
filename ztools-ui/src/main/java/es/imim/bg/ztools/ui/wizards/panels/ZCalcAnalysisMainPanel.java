@@ -44,10 +44,7 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		
 		setLayout(new java.awt.BorderLayout());
 
-
-		JPanel secondaryPanel = new JPanel();
-		secondaryPanel.add(contentPanel, BorderLayout.NORTH);
-		add(secondaryPanel, BorderLayout.CENTER);
+		add(contentPanel, BorderLayout.CENTER);
 	}
 
 	private JPanel getContentPanel() {
@@ -81,7 +78,8 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 				welcomeTitle.getFont().getName(), Font.BOLD, 18));
 		contentPanel1.add(welcomeTitle, java.awt.BorderLayout.NORTH);
 
-		jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.PAGE_AXIS));
+		jPanel1.setLayout(new BorderLayout());
+		jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
 
 		jTextArea1.setText("You're about to employ a ZCalc Statistical Analysis for your data. " +
 				"But first of all, please indicate a name for your analysis and how  " +
@@ -91,12 +89,9 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setWrapStyleWord(true);
 		jTextArea1.setEditable(false);
-		jPanel1.add(jTextArea1);
+		jPanel2.add(jTextArea1);
 		blankSpace.setText(" ");
-		jPanel1.add(blankSpace);
-		
-		jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
-		jPanel2.getLayout();
+		jPanel2.add(blankSpace);
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
 		jLabel1.setText("Analysis Name: ");
@@ -124,8 +119,9 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel5.add(jComboBox1);
 		jPanel2.add(jPanel5);
 
+		jPanel1.add(jPanel2, BorderLayout.NORTH);
 		contentPanel1.add(jPanel1, BorderLayout.CENTER);
-		contentPanel1.add(jPanel2, BorderLayout.SOUTH);
+		//contentPanel1.add(jPanel2, BorderLayout.SOUTH);
 
 
 		return contentPanel1;
