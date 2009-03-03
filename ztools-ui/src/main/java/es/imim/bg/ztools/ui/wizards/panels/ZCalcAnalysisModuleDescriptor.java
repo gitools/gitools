@@ -18,7 +18,7 @@ import javax.swing.*;
 public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "MODULE_PANEL";
-    static ZCalcAnalysisModulePanel modulePanel = new ZCalcAnalysisModulePanel();
+    final ZCalcAnalysisModulePanel modulePanel;
     WizardDataModel dataModel;
     final JButton choserButton;
     final JTextField fileNameField;
@@ -27,8 +27,8 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
 
     
     public ZCalcAnalysisModuleDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
-        super(IDENTIFIER, modulePanel, BackPanelDescriptor, NextPanelDescriptor);
-        
+        super(IDENTIFIER, new ZCalcAnalysisModulePanel(), BackPanelDescriptor, NextPanelDescriptor);
+        this.modulePanel = (ZCalcAnalysisModulePanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
         
         choserButton = modulePanel.getChoserButton();

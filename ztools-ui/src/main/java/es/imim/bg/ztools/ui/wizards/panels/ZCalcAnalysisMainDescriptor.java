@@ -21,7 +21,7 @@ import es.imim.bg.ztools.ui.wizards.WizardDataModel;
 public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "MAIN_PANEL";
-    static ZCalcAnalysisMainPanel mainPanel = new ZCalcAnalysisMainPanel();
+    final ZCalcAnalysisMainPanel mainPanel;
     final JButton chooserButton;
     final JTextField workDirField;
     final JTextField analysisNameField;
@@ -29,9 +29,9 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     WizardDataModel dataModel;
     
     public ZCalcAnalysisMainDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
-        super(IDENTIFIER, mainPanel, BackPanelDescriptor, NextPanelDescriptor);
+        super(IDENTIFIER, new ZCalcAnalysisMainPanel(), BackPanelDescriptor, NextPanelDescriptor);
         this.dataModel = aw.getWizardDataModel();
-        
+        this.mainPanel = (ZCalcAnalysisMainPanel) getPanelComponent();
     	analysisNameField = mainPanel.getAnalysisNameField();
     	analysisNameField.addKeyListener(new KeyListener(){
 
@@ -95,11 +95,15 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     }    
     
     private void setNextButtonAccordingToInputs() {
-         if (!analysisNameField.getText().isEmpty() && !workDirField.getText().isEmpty())
+         if (analysisNameFieldOK() && !workDirField.getText().isEmpty())
             getWizard().setNextFinishButtonEnabled(true);
          else
             getWizard().setNextFinishButtonEnabled(false);        
     
+    }
+    
+    private boolean analysisNameFieldOK() {
+    	return analysisNameField.getText().matches("[\\d\\w_-]+");
     }
     
 	private File selectDir() {

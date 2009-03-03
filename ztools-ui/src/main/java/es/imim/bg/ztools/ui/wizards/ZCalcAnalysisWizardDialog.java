@@ -3,7 +3,6 @@ package es.imim.bg.ztools.ui.wizards;
 
 
 import java.awt.Dimension;
-import java.util.Set;
 
 import javax.swing.JFrame;
 
@@ -26,10 +25,10 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 	public ZCalcAnalysisWizardDialog(JFrame owner){
 		super();
 		getDialog().setTitle("ZCalc Analysis Dialog");
-		Dimension d = new Dimension(500,400);
+		Dimension d = new Dimension(600,400);
 		getDialog().setSize(d);
 		getDialog().setMinimumSize(d);
-		getDialog().setResizable(true); //FIXME no effect?!
+		getDialog().setResizable(true);
 
 	    	    
 	    WizardPanelDescriptor mainDescriptor = new ZCalcAnalysisMainDescriptor(
@@ -140,7 +139,6 @@ public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
 		// TODO Auto-generated method stub
 		super.finalize();
 	}
-
 }
 
 

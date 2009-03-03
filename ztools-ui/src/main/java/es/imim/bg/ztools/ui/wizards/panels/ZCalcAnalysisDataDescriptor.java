@@ -21,7 +21,7 @@ import javax.swing.*;
 public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "DATA_PANEL";
-    private static final ZCalcAnalysisDataPanel dataPanel = new ZCalcAnalysisDataPanel();
+    final ZCalcAnalysisDataPanel dataPanel;
     WizardDataModel dataModel;
     final JButton chooserButton;
     final JTextField fileNameField;
@@ -29,8 +29,8 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     final JTextField binCutoffField;
     
     public ZCalcAnalysisDataDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
-        super(IDENTIFIER, dataPanel, BackPanelDescriptor, NextPanelDescriptor);
-        
+        super(IDENTIFIER, new ZCalcAnalysisDataPanel(), BackPanelDescriptor, NextPanelDescriptor);
+        this.dataPanel = (ZCalcAnalysisDataPanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
                 
         chooserButton = dataPanel.getChooserButton();

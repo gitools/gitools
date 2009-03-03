@@ -21,7 +21,7 @@ import es.imim.bg.ztools.ui.wizards.AnalysisWizard.StatTest;
 public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "STATS_PANEL";
-    static ZCalcAnalysisStatsPanel statsPanel = new ZCalcAnalysisStatsPanel();
+    final ZCalcAnalysisStatsPanel statsPanel;
     WizardDataModel dataModel;
     final JTextField sampleSizeField;
     final JComboBox statTestBox;
@@ -29,8 +29,8 @@ public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor 
 
     
     public ZCalcAnalysisStatsDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
-        super(IDENTIFIER, statsPanel, BackPanelDescriptor, NextPanelDescriptor);
-        
+        super(IDENTIFIER, new ZCalcAnalysisStatsPanel(), BackPanelDescriptor, NextPanelDescriptor);
+        this.statsPanel = (ZCalcAnalysisStatsPanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
         
         sampleSizeField = statsPanel.getSampleSizeField();

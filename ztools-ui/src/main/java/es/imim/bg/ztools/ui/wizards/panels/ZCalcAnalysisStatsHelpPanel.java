@@ -5,10 +5,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.ScrollPane;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import es.imim.bg.ztools.ui.wizards.AnalysisWizard.StatTest;
@@ -50,6 +53,7 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         	jTextAreas[i] = new JTextArea();
         	jTextAreas[i].setOpaque(false);
         	jTextAreas[i].setLineWrap(true);
+        	jTextAreas[i].setWrapStyleWord(true);
         	//set titles bold
         	if (i < 5 || i % 4 == 1)
         		jTextAreas[i].setFont(boldFont);
@@ -76,14 +80,18 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         
        
         for (int i = 1; i < 37; i++) {
-        	c.fill = GridBagConstraints.HORIZONTAL;
+        	c.fill = GridBagConstraints.NONE;
         	c.gridx = (i-1) % gridCols;
         	c.gridy = (int) (i-1)/gridCols;
+        	c.weighty = 1;
+        	c.weightx = 1;
+        	c.insets = new Insets(10,10,10,10);
         	jPanel1.add(jTextAreas[i], c);
         }
         
-        
-        contentPanel1.add(jPanel1, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(jPanel1);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        contentPanel1.add(scrollPane, BorderLayout.CENTER);
 
         return contentPanel1;
         

@@ -8,12 +8,12 @@ import es.imim.bg.ztools.ui.wizards.WizardDataModel;
 public class ZCalcAnalysisStatsHelpDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "STATSHELP_PANEL";
-    static ZCalcAnalysisStatsHelpPanel statsHelpPanel = new ZCalcAnalysisStatsHelpPanel();
+    final ZCalcAnalysisStatsHelpPanel statsHelpPanel;
     WizardDataModel dataModel;
     
     public ZCalcAnalysisStatsHelpDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
-        super(IDENTIFIER, statsHelpPanel, BackPanelDescriptor, NextPanelDescriptor);
-        
+        super(IDENTIFIER, new ZCalcAnalysisStatsHelpPanel(), BackPanelDescriptor, NextPanelDescriptor);
+        this.statsHelpPanel = (ZCalcAnalysisStatsHelpPanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
         setNextButtonAccordingToInputs();
     }
