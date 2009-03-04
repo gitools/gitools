@@ -33,7 +33,6 @@ public class ShowRowsByValuesAction extends BaseAction {
 
 		List<ElementProperty> cellPropsList = table.getContents().getCellsFacade().getProperties();
 		
-		//Object[] params = {"p1", "p2", "p3", "p4"};
 		Object[] params = new Object[cellPropsList.size()];
 		for (int i = 0; i < cellPropsList.size(); i++)
 			params[i] = cellPropsList.get(i).getName();
@@ -65,12 +64,6 @@ public class ShowRowsByValuesAction extends BaseAction {
 
 				
 				for (int j = 0; j < cols; j++) {
-					
-
-					//System.out.println("row " + i + "; col" + j + ":: ");
-					//System.out.println("contents\ttable");						
-					//System.out.print(contents.getCellValue(i, j, k).toString() + "\t");						
-					//System.out.print(table.getCellValue(i, j, k).toString() + "\n");
 					
 					int vcCounter = 0;
 					Iterator<ValueCriteria> valueListIt = tempValueList.iterator();

@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import es.imim.bg.ztools.ui.dialogs.SortListDialog.AggregationType;
 import es.imim.bg.ztools.ui.dialogs.SortListDialog.SortDirection;
 import es.imim.bg.ztools.ui.dialogs.SortListDialog.SortCriteria;
 
@@ -47,13 +48,17 @@ public class SortCriteriaDialog extends JDialog {
 		final JComboBox directionBox = new JComboBox();
 		for (SortDirection de : SortDirection.values())
 			directionBox.addItem(de);
+		
+		final JComboBox aggregationBox = new JComboBox();
+		for (AggregationType at : AggregationType.values())
+			aggregationBox.addItem(at);
 			
 		final JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(paramBox, directionBox);
+				acceptChanges(paramBox, aggregationBox, directionBox);
 			}
 		});
 
@@ -70,6 +75,7 @@ public class SortCriteriaDialog extends JDialog {
 		optionPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		optionPanel.setLayout(new GridLayout(1,3));
 		optionPanel.add(paramBox);
+		optionPanel.add(aggregationBox);
 		optionPanel.add(directionBox);
 
 		
@@ -91,10 +97,11 @@ public class SortCriteriaDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void acceptChanges(JComboBox paramBox, JComboBox directionBox) {
+	protected void acceptChanges(JComboBox paramBox, JComboBox aggregationBox, JComboBox directionBox) {
 		Object param = params[paramBox.getSelectedIndex()];
+		AggregationType aggregationType = (AggregationType) aggregationBox.getSelectedObjects()[0];
 		SortDirection sortDirection = (SortDirection) directionBox.getSelectedObjects()[0];
-		criteria = new SortCriteria(param, sortDirection);
+		criteria = new SortCriteria(param, aggregationType, sortDirection);
 		setVisible(false);
 	}
 	

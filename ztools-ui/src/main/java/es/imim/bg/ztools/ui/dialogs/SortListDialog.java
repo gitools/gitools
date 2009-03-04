@@ -45,13 +45,31 @@ public class SortListDialog extends JDialog {
 		}
 	}
 	
+	public enum AggregationType {
+		MULTIPLICATION("multiplicated"),
+		LOGSUM("summed logarithm"),
+		MEDIAN("mean value");
+		
+		private String title;
+		
+		private AggregationType(String title) {
+			this.title = title;
+		}
+		@Override
+		public String toString() {
+			return title;
+		}
+	}
+	
 	public static class SortCriteria {
 		
 		protected Object param;
 		protected SortDirection direction;
+		protected AggregationType aggregation;
 		
-		public SortCriteria(Object param, SortDirection direction){
+		public SortCriteria(Object param, AggregationType aggregationType, SortDirection direction){
 			setParam(param);
+			setAggregation(aggregationType);
 			setCondition(direction);
 		}
 
@@ -71,12 +89,20 @@ public class SortListDialog extends JDialog {
 			return this.param;
 		}
 		
+		public void setAggregation (AggregationType aggregation) {
+			this.aggregation = aggregation;
+		}
+		
+		public AggregationType getAggregation () {
+			return this.aggregation;
+		}
+		
 		@Override
 		public String toString() {
-			return param.toString() + " " + direction.toString();
+			return param.toString() + ", " + aggregation.toString() + ", " + direction.toString();
 		}
 	}
-
+	
 	private Object[] params;
 	private List<SortCriteria> criteriaList;
 	private Boolean onlySelectedColumnsChecked = false;
