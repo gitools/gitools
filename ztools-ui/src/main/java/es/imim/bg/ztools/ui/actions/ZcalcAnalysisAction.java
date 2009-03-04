@@ -4,7 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.acl.Owner;
 import java.util.zip.DataFormatException;
+
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.progressmonitor.StreamProgressMonitor;
@@ -12,6 +19,7 @@ import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.file.OpenAnalysisAction;
+import es.imim.bg.ztools.ui.dialogs.ProgressMonitorDialog;
 import es.imim.bg.ztools.ui.jobs.OpenAnalysisJob;
 import es.imim.bg.ztools.ui.jobs.ZCalcCommandJob;
 import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
@@ -42,13 +50,48 @@ public class ZcalcAnalysisAction extends BaseAction {
 		String path = (String) dialogData.getValue(AnalysisWizard.ANALYSIS_WORKING_DIR) + "/" +
 		(String) dialogData.getValue(AnalysisWizard.ANALYSIS_NAME);
 		File newAnalysis = new File(path);
+        
+        final ProgressMonitorDialog pmd = new ProgressMonitorDialog(AppFrame.instance(), "Calculating");
+        pmd.setVisible(true);
+        final JTextArea textArea = pmd.getTextArea();
 		
 		if (command != null) {
-	        ProgressMonitor monitor = new StreamProgressMonitor(System.out, false, false);
+	        ProgressMonitor monitor = new StreamProgressMonitor(System.out, false, false) {
+	        		        	
+	        	/*@Override
+	        	protected void print(final String text) {
+	        		try {
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+				        		System.err.println(text);
+
+								String newText = textArea.getText() + "\n" + text;
+								textArea.setText(newText);
+								Document doc = textArea.getDocument();
+								try {
+									doc.insertString(doc.getLength(), text, null);
+								} catch (BadLocationException e) {
+									e.printStackTrace();
+								}
+				        		pmd.addText(text);
+							}
+						});
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+	        	}*/
+	        };
 	        
 	        //execute command
 			AppFrame.instance().getJobProcessor().addJob(
-					new ZCalcCommandJob(command,monitor,newAnalysis));
+					new ZCalcCommandJob(command, monitor, newAnalysis));
+			System.out.println(textArea.getText());
 		}
 
 	}
