@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.StringWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -13,8 +15,20 @@ import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+
 import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CommonResult;
+import es.imim.bg.ztools.test.results.FisherResult;
+import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.model.IModel;
@@ -45,6 +59,10 @@ public class TableView extends AbstractView {
 	
 	protected boolean blockSelectionUpdate;
 
+	protected VelocityEngine velocityEngine;
+	protected Class<?> templateClass;
+	protected Template velocityTemplate;
+	
 	private PropertyChangeListener decorationContextListener;
 
 	public TableView(final ITable table) {
@@ -72,6 +90,18 @@ public class TableView extends AbstractView {
 				tableModelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		});
+		
+		velocityEngine = new VelocityEngine();
+		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
+		velocityEngine.setProperty(
+				"class." + VelocityEngine.RESOURCE_LOADER + ".class", 
+				ClasspathResourceLoader.class.getName());
+
+		try {
+			velocityEngine.init();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	protected void tableModelPropertyChange(
@@ -129,7 +159,6 @@ public class TableView extends AbstractView {
 		String html = "";
 		StringBuilder sb = new StringBuilder();
 
-		
 		int row = table.getSelectionLeadRow();
 		int rowCount = table.getRowCount();
 		int column = table.getSelectionLeadColumn();
@@ -141,33 +170,57 @@ public class TableView extends AbstractView {
 			ElementAdapter cellsFacade = table.getCellsFacade();
 			Object element = table.getCell(row, column);
 			
-			// Render parameters & values
-			sb.append("<p><b>Column</b><br>");
-			sb.append(colName).append("</p>");
-			sb.append("<p><b>Row</b><br>");
-			sb.append(rowName).append("</p>");
-			
-			if (element != null) {
-				for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-					ElementProperty prop = cellsFacade.getProperty(i);
-					
-					final String paramName = prop.getName();
-					
-					final String value = 
-						cellsFacade.getValue(element, i).toString(); 
-					
-					sb.append("<p><b>");
-					sb.append(paramName);
-					sb.append("</b><br>");
-					sb.append(value);
-					sb.append("</p>");
+			//TODO: de-activated for now
+			/*if (!element.getClass().equals(templateClass)) {
+				templateClass = null;
+				try {
+					velocityTemplate = getTemplateFromObject(element);
+					templateClass = element.getClass();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			}
-			else
-				sb.append("<p>Void cell</p>");
+			}*/
 			
-			html = sb.toString();
-			infoPane.setText(html);
+			if (templateClass != null) {
+				StringWriter sw = new StringWriter();
+				VelocityContext context = new VelocityContext();
+				try {
+					velocityTemplate.merge(context, sw);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				infoPane.setText(sw.toString());
+			}
+			else {
+				// Render parameters & values
+				sb.append("<p><b>Column</b><br>");
+				sb.append(colName).append("</p>");
+				sb.append("<p><b>Row</b><br>");
+				sb.append(rowName).append("</p>");
+				
+				if (element != null) {
+					for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
+						ElementProperty prop = cellsFacade.getProperty(i);
+						
+						final String paramName = prop.getName();
+						
+						final String value = 
+							cellsFacade.getValue(element, i).toString(); 
+						
+						sb.append("<p><b>");
+						sb.append(paramName);
+						sb.append("</b><br>");
+						sb.append(value);
+						sb.append("</p>");
+					}
+				}
+				else
+					sb.append("<p>Void cell</p>");
+				
+				html = sb.toString();
+				infoPane.setText(html);
+			}
 		}
 		else if (rowCount == 0) {
 			html = "<p>No cells displayed</p>";
@@ -176,6 +229,22 @@ public class TableView extends AbstractView {
 
 	}
 	
+	private Template getTemplateFromObject(Object object) 
+			throws ResourceNotFoundException, ParseErrorException, Exception {
+		
+		String templateName = "default.vm";
+		if (object instanceof BinomialResult)
+			templateName = "binomialResult.vm";
+		else if (object instanceof FisherResult)
+			templateName = "fisherResult.vm";
+		else if (object instanceof ZScoreResult)
+			templateName = "zscoreResult.vm";
+		else if (object instanceof CommonResult)
+			templateName = "commonResult.vm";
+		
+		return velocityEngine.getTemplate("/vm/" + templateName);
+	}
+
 	private void createComponents() {
 		
 		ITableDecorator[] availableDecorators = 

@@ -426,21 +426,31 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
 
         try { 
             
-            PropertyResourceBundle resources = (PropertyResourceBundle)
-                ResourceBundle.getBundle("com.nexes.wizard.wizard");
+            /*PropertyResourceBundle resources = (PropertyResourceBundle)
+                ResourceBundle.getBundle("com.nexes.wizard.wizard");*/
             
-            BACK_TEXT = (String)(resources.getObject("backButtonText"));
+            /*BACK_TEXT = (String)(resources.getObject("backButtonText"));
             NEXT_TEXT = (String)(resources.getObject("nextButtonText"));
             CANCEL_TEXT = (String)(resources.getObject("cancelButtonText"));
-            FINISH_TEXT = (String)(resources.getObject("finishButtonText"));
+            FINISH_TEXT = (String)(resources.getObject("finishButtonText"));*/
             
-            BACK_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("backButtonIcon"))));
+            BACK_TEXT = "Back";
+            NEXT_TEXT = "Next";
+            CANCEL_TEXT = "Cancel";
+            FINISH_TEXT = "Finish";
+            
+            /*BACK_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("backButtonIcon"))));
             NEXT_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("nextButtonIcon"))));
             CANCEL_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("cancelButtonIcon"))));
-            FINISH_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("finishButtonIcon"))));
+            FINISH_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("finishButtonIcon"))));*/
+            
+            BACK_ICON = new ImageIcon((URL)getImage("backIcon.gif"));
+            NEXT_ICON = new ImageIcon((URL)getImage("nextIcon.gif"));
+            CANCEL_ICON = new ImageIcon((URL)getImage("cancelIcon.gif"));
+            FINISH_ICON = new ImageIcon((URL)getImage("finishIcon.gif"));
         
         } catch (MissingResourceException mre) {
-            System.out.println(mre);
+        	mre.printStackTrace();
             System.exit(1);
         }
     }
