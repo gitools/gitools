@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.security.acl.Owner;
 import java.util.zip.DataFormatException;
@@ -50,31 +51,22 @@ public class ZcalcAnalysisAction extends BaseAction {
 		String path = (String) dialogData.getValue(AnalysisWizard.ANALYSIS_WORKING_DIR) + "/" +
 		(String) dialogData.getValue(AnalysisWizard.ANALYSIS_NAME);
 		File newAnalysis = new File(path);
-        
-        final ProgressMonitorDialog pmd = new ProgressMonitorDialog(AppFrame.instance(), "Calculating");
-        pmd.setVisible(true);
-        final JTextArea textArea = pmd.getTextArea();
 		
 		if (command != null) {
+	        
+	        final ProgressMonitorDialog pmd = new ProgressMonitorDialog(AppFrame.instance(), "Calculating");
+	        pmd.setVisible(true);
+	        final JTextArea textArea = pmd.getTextArea();
 	        ProgressMonitor monitor = new StreamProgressMonitor(System.out, false, false) {
 	        		        	
-	        	/*@Override
+	        	@Override
 	        	protected void print(final String text) {
 	        		try {
 						SwingUtilities.invokeAndWait(new Runnable() {
 							@Override
 							public void run() {
 				        		System.err.println(text);
-
-								String newText = textArea.getText() + "\n" + text;
-								textArea.setText(newText);
-								Document doc = textArea.getDocument();
-								try {
-									doc.insertString(doc.getLength(), text, null);
-								} catch (BadLocationException e) {
-									e.printStackTrace();
-								}
-				        		pmd.addText(text);
+					        	pmd.addText(text);
 							}
 						});
 					} catch (InterruptedException e) {
@@ -84,8 +76,7 @@ public class ZcalcAnalysisAction extends BaseAction {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
-	        	}*/
+	        	}
 	        };
 	        
 	        //execute command

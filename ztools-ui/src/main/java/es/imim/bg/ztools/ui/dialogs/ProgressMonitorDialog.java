@@ -2,6 +2,7 @@ package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,7 @@ public class ProgressMonitorDialog extends JDialog {
 	
 
 	private static final long serialVersionUID = 2488949387143866229L;
-	JTextArea textArea;
+	private JTextArea textArea;
 	
 	public ProgressMonitorDialog(JFrame owner, String title) {
 		super(owner);
@@ -45,14 +46,15 @@ public class ProgressMonitorDialog extends JDialog {
 		
 		
 		textArea = new JTextArea();
+		textArea.setFont(new Font(textArea.getFont().getName(), textArea.getFont().getStyle(), 12));
 		textArea.setEditable(false);
 		textArea.setOpaque(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 
+
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.add(textArea);
+		JScrollPane scrollPane = new JScrollPane(textArea);
 
 		
 		JPanel contPanel = new JPanel();
@@ -60,8 +62,27 @@ public class ProgressMonitorDialog extends JDialog {
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
 
+		final JButton cancelBtn = new JButton("Close");
+		cancelBtn.setMargin(new Insets(0, 30, 0, 30));
+		cancelBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
+		buttonPanel.setLayout(new BorderLayout());
+		buttonPanel.setAlignmentX(RIGHT_ALIGNMENT);
+		buttonPanel.add(cancelBtn, BorderLayout.EAST);
+		
+		
+		
+		
 		setLayout(new BorderLayout());
 		add(contPanel, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
 	public JTextArea getTextArea() {
@@ -69,6 +90,15 @@ public class ProgressMonitorDialog extends JDialog {
 	}
 	
 	public void addText(String text) {
+		try {
+			textArea.getDocument().insertString(textArea.getDocument().getLength(), text, null);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void print(String text) {
 		try {
 			textArea.getDocument().insertString(textArea.getDocument().getLength(), text, null);
 		} catch (BadLocationException e) {

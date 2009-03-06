@@ -104,7 +104,6 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jLabel2.setText("Working Directory:");
 		jPanel4.add(jLabel2);
 		jTextField2.setToolTipText("Choose the data file");
-		jTextField2.setEditable(false);
 		jPanel4.add(jTextField2);
 		jPanel4.add(jButton1);
 		jPanel2.add(jPanel4);

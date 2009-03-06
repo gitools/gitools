@@ -57,7 +57,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
 			public void mouseReleased(MouseEvent e) { }
         });
         
-        KeyListener minMaxKeyListener = new KeyListener(){
+        KeyListener keyListener = new KeyListener(){
 
 			@Override
 			public void keyPressed(KeyEvent e) { }
@@ -71,8 +71,9 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
 			public void keyTyped(KeyEvent e) { }
         };
         
-        minField.addKeyListener(minMaxKeyListener);
-        maxField.addKeyListener(minMaxKeyListener);
+        minField.addKeyListener(keyListener);
+        maxField.addKeyListener(keyListener);
+        fileNameField.addKeyListener(keyListener);
         
     }
             
@@ -90,7 +91,7 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     }    
     
     private void setNextButtonAccordingToInputs() {
-         if (!fileNameField.getText().isEmpty() && checkMinMaxInput())
+         if (verifyFileName() && checkMinMaxInput())
             getWizard().setNextFinishButtonEnabled(true);
          else
             getWizard().setNextFinishButtonEnabled(false);        
@@ -132,6 +133,15 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     	
     	return everythingOK;
     }
+    
+    protected boolean verifyFileName() {
+		File file = new File(fileNameField.getText());
+		if (file.exists() && file.isFile()) {
+			return true;
+		}
+		else 
+			return false;
+	}
     
     private boolean isInteger(String text) {
 		try {

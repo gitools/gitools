@@ -97,7 +97,6 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS)); 
         jLabel1.setText("Data Table File: ");
         jTextField1.setToolTipText("Choose the data file");
-        jTextField1.setEditable(false);
         jPanel3.add(jLabel1);
         jPanel3.add(jTextField1);
         jPanel3.add(jButton1);

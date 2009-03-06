@@ -73,10 +73,10 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
         	
         });
         
-        binCutoffField.addKeyListener(new KeyListener(){
-
+    	KeyListener keyListener = new KeyListener(){
 			@Override
-			public void keyPressed(KeyEvent e) { }
+			public void keyPressed(KeyEvent e) {
+			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -84,8 +84,12 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 			}
 
 			@Override
-			public void keyTyped(KeyEvent e) { }
-        });
+			public void keyTyped(KeyEvent e) {
+			}
+    	};
+        
+        fileNameField.addKeyListener(keyListener);
+        binCutoffField.addKeyListener(keyListener);
     }
     
     
@@ -112,9 +116,9 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
     }    
     
     private void setNextButtonAccordingToInputs() {
-    	if (!fileNameField.getText().isEmpty() && binCutoffDisabled())
+    	if (verifyFileName() && binCutoffDisabled())
            getWizard().setNextFinishButtonEnabled(true);
-    	else if(!fileNameField.getText().isEmpty() 
+    	else if(verifyFileName() 
     			&& !binCutoffDisabled()
     			&& isNumeric(binCutoffField.getText()))
             getWizard().setNextFinishButtonEnabled(true);
@@ -140,6 +144,15 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
             binCutoffField.setEnabled(true);
         }
     }
+	
+    protected boolean verifyFileName() {
+		File file = new File(fileNameField.getText());
+		if (file.exists() && file.isFile()) {
+			return true;
+		}
+		else 
+			return false;
+	}
     
     private boolean binCutoffDisabled() {
     	return binCutoffConditionBox.getSelectedItem().toString().equals(dataPanel.BIN_CUTOFF_DISABLED);

@@ -33,8 +33,8 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
         this.dataModel = aw.getWizardDataModel();
         this.mainPanel = (ZCalcAnalysisMainPanel) getPanelComponent();
     	analysisNameField = mainPanel.getAnalysisNameField();
-    	analysisNameField.addKeyListener(new KeyListener(){
-
+    	
+    	KeyListener keyListener = new KeyListener(){
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
@@ -47,10 +47,14 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 			@Override
 			public void keyTyped(KeyEvent e) {
 			}
-        });
+    	};
+    	
+    	analysisNameField.addKeyListener(keyListener);
     	
     	workDirField = mainPanel.getWorkDirField();
     	chooserButton = mainPanel.getChooserButton();
+    	
+    	workDirField.addKeyListener(keyListener);
     	
         chooserButton.addMouseListener(new MouseListener(){
 			@Override
@@ -79,7 +83,17 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     }
 
     
-    protected void setWizardWorkingDir(String path) {
+    protected boolean verifyFileName() {
+		File dir = new File(workDirField.getText());
+		if (dir.exists() && dir.isDirectory()) {
+			return true;
+		}
+		else 
+			return false;
+	}
+
+
+	protected void setWizardWorkingDir(String path) {
 		dataModel.setValue(AnalysisWizard.WIZARD_WORKING_DIR, path);		
 	}
 
@@ -92,10 +106,11 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     	dataModel.setValue(AnalysisWizard.ANALYSIS_NAME, analysisNameField.getText());
     	dataModel.setValue(AnalysisWizard.ANALYSIS_WORKING_DIR, workDirField.getText());
     	dataModel.setValue(AnalysisWizard.PROCESSORS, mainPanel.getProcessorComboBox().getSelectedItem().toString());
+    	setWizardWorkingDir(workDirField.getText());
     }    
     
     private void setNextButtonAccordingToInputs() {
-         if (analysisNameFieldOK() && !workDirField.getText().isEmpty())
+         if (analysisNameFieldOK() && verifyFileName())
             getWizard().setNextFinishButtonEnabled(true);
          else
             getWizard().setNextFinishButtonEnabled(false);        
