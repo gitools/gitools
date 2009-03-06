@@ -6,6 +6,7 @@ import es.imim.bg.ztools.ui.actions.file.ExportColumnDataAction;
 import es.imim.bg.ztools.ui.actions.file.ExportNames;
 import es.imim.bg.ztools.ui.actions.file.ExportParameterDataAction;
 import es.imim.bg.ztools.ui.actions.file.OpenAnalysisAction;
+import es.imim.bg.ztools.ui.actions.file.NewZCalcAnalysisAction;
 
 public class FileActionSet extends ActionSet {
 
@@ -15,6 +16,8 @@ public class FileActionSet extends ActionSet {
 
 	public static final BaseAction openAnalysisAction = new OpenAnalysisAction();
 
+	public static final BaseAction newZCalcAnalysisAction = new NewZCalcAnalysisAction();
+	
 	public static final BaseAction closeAction = new CloseAction();
 
 	// export
@@ -22,7 +25,6 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportNamesAction = new ExportNames();
-	public static final BaseAction ZCalcAnalasysAction = new ZcalcAnalysisAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
 			exportParameterDataAction,
@@ -33,7 +35,7 @@ public class FileActionSet extends ActionSet {
 	public FileActionSet() {
 		super("File", new BaseAction[] {
 			openAnalysisAction,
-			ZCalcAnalasysAction,
+			newZCalcAnalysisAction,
 			closeAction,
 			BaseAction.separator,
 			exportActionSet,

@@ -26,8 +26,8 @@ import es.imim.bg.ztools.ui.model.table.ITable;
 public class TablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
-	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
+	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
 	private JTable table;
 	
@@ -189,7 +189,6 @@ public class TablePanel extends JPanel {
 			else
 				setLead(e);
 		}
-				
 		
 		private void setLead(MouseEvent e){
 			setSelectionMode(SelectionMode.cells);
@@ -203,8 +202,6 @@ public class TablePanel extends JPanel {
 			setLeadSelection(row, col);
 		}
 	}
-
-
 
 	private void createComponents() {
 		

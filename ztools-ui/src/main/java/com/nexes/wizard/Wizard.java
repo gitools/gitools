@@ -9,6 +9,8 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import es.imim.bg.ztools.ui.IconNames;
+
 /**
  * This class implements a basic wizard dialog, where the programmer can
  * insert one or more Components to act as panels. These panels can be navigated
@@ -444,15 +446,23 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
             CANCEL_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("cancelButtonIcon"))));
             FINISH_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("finishButtonIcon"))));*/
             
-            BACK_ICON = new ImageIcon((URL)getImage("backIcon.gif"));
-            NEXT_ICON = new ImageIcon((URL)getImage("nextIcon.gif"));
-            CANCEL_ICON = new ImageIcon((URL)getImage("cancelIcon.gif"));
-            FINISH_ICON = new ImageIcon((URL)getImage("finishIcon.gif"));
+            BACK_ICON = getIconResource("/img/wizard/backIcon.gif");
+            NEXT_ICON = getIconResource("/img/wizard/nextIcon.gif");
+            CANCEL_ICON = getIconResource("/img/wizard/cancelIcon.gif");
+            FINISH_ICON = getIconResource("/img/wizard/finishIcon.gif");
         
         } catch (MissingResourceException mre) {
         	mre.printStackTrace();
             System.exit(1);
         }
     }
+    
+    private static ImageIcon getIconResource(String name) {
+		URL url = Wizard.class.getResource(name);
+		if (url == null)
+			url = Wizard.class.getResource(IconNames.nullResource);
+		
+		return new ImageIcon(url);
+	}
 
 }

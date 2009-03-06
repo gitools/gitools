@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.wizards;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 
 
@@ -11,20 +11,16 @@ import com.nexes.wizard.WizardPanelDescriptor;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.datafilters.BinCutoffFilter;
 import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
-import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisDataDescriptor;
-import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisMainDescriptor;
-import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisModuleDescriptor;
-import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisStatsDescriptor;
-import es.imim.bg.ztools.ui.wizards.panels.ZCalcAnalysisStatsHelpDescriptor;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
 
 
-public class ZCalcAnalysisWizardDialog extends AnalysisWizard {
+public class ZCalcAnalysisWizard extends AnalysisWizard {
 	
 	ZCalcCommand command; 
 	
-	public ZCalcAnalysisWizardDialog(JFrame owner){
+	public ZCalcAnalysisWizard(JFrame owner){
 		super();
-		getDialog().setTitle("ZCalc Analysis Dialog");
+		getDialog().setTitle("ZetCalc Analysis...");
 		Dimension d = new Dimension(600,400);
 		getDialog().setSize(d);
 		getDialog().setMinimumSize(d);

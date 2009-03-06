@@ -94,4 +94,12 @@ public class Options {
 	public void setLastExportPath(String lastPath) {
 		props.setProperty("last-export-path", lastPath);
 	}
+	
+	public String getLastWorkPath() {
+		return props.getProperty("last-work-path", userPath);
+	}
+
+	public void setLastWorkPath(String lastPath) {
+		props.setProperty("last-work-path", lastPath);
+	}
 }

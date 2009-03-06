@@ -1,8 +1,8 @@
-package es.imim.bg.ztools.ui.wizards.panels;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
-import es.imim.bg.ztools.ui.wizards.AbstractWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.wizards.WizardDataModel;
+import es.imim.bg.ztools.ui.wizard.AbstractWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizard.WizardDataModel;
 
 
 public class ZCalcAnalysisStatsHelpDescriptor extends AnalysisWizardPanelDescriptor {

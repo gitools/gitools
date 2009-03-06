@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.actions;
+package es.imim.bg.ztools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -19,19 +19,19 @@ import es.imim.bg.progressmonitor.StreamProgressMonitor;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.actions.file.OpenAnalysisAction;
+import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.ProgressMonitorDialog;
 import es.imim.bg.ztools.ui.jobs.OpenAnalysisJob;
 import es.imim.bg.ztools.ui.jobs.ZCalcCommandJob;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
-import es.imim.bg.ztools.ui.wizards.WizardDataModel;
-import es.imim.bg.ztools.ui.wizards.ZCalcAnalysisWizardDialog;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizard.WizardDataModel;
+import es.imim.bg.ztools.ui.wizard.zetcalc.ZCalcAnalysisWizard;
 
-public class ZcalcAnalysisAction extends BaseAction {
+public class NewZCalcAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8592231961109105958L;
 
-	public ZcalcAnalysisAction() {
+	public NewZCalcAnalysisAction() {
 		super("ZCalc analysis...");
 		
 		setDesc("Make a zcalc analysis");
@@ -44,7 +44,7 @@ public class ZcalcAnalysisAction extends BaseAction {
 		AppFrame.instance()
 			.setStatusText("Opening Zcalc Analysis Wizard");
 		
-		ZCalcAnalysisWizardDialog d = new ZCalcAnalysisWizardDialog(AppFrame.instance());
+		ZCalcAnalysisWizard d = new ZCalcAnalysisWizard(AppFrame.instance());
 		ZCalcCommand command = d.getCommand();
 		WizardDataModel dialogData =  d.getWizardDataModel();
 		

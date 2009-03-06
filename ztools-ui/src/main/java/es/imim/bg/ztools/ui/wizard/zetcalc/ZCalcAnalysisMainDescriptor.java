@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.wizards.panels;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,10 +12,10 @@ import javax.swing.JTextField;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.wizards.AbstractWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.wizards.WizardDataModel;
+import es.imim.bg.ztools.ui.wizard.AbstractWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizard.WizardDataModel;
 
 
 public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
@@ -28,7 +28,9 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 
     WizardDataModel dataModel;
     
-    public ZCalcAnalysisMainDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
+    public ZCalcAnalysisMainDescriptor(
+    		AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {
+    	
         super(IDENTIFIER, new ZCalcAnalysisMainPanel(), BackPanelDescriptor, NextPanelDescriptor);
         this.dataModel = aw.getWizardDataModel();
         this.mainPanel = (ZCalcAnalysisMainPanel) getPanelComponent();
@@ -52,6 +54,8 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     	analysisNameField.addKeyListener(keyListener);
     	
     	workDirField = mainPanel.getWorkDirField();
+    	workDirField.setText(Options.instance().getLastWorkPath());
+    	
     	chooserButton = mainPanel.getChooserButton();
     	
     	workDirField.addKeyListener(keyListener);
@@ -123,14 +127,15 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     
 	private File selectDir() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				Options.instance().getLastWorkPath());
 		
-		fileChooser.setDialogTitle("Select the data file");
+		fileChooser.setDialogTitle("Select working path");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
+			Options.instance().setLastWorkPath(selectedFile.getAbsolutePath());
 			return selectedFile;
 		}
 		

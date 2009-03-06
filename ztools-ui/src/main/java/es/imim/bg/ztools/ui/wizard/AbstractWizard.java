@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.wizards;
+package es.imim.bg.ztools.ui.wizard;
 
 import java.awt.Dialog;
 import java.awt.Frame;

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.wizards.panels;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +11,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import es.imim.bg.ztools.ui.wizards.AbstractWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizardPanelDescriptor;
-import es.imim.bg.ztools.ui.wizards.WizardDataModel;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard.StatTest;
+import es.imim.bg.ztools.ui.wizard.AbstractWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizardPanelDescriptor;
+import es.imim.bg.ztools.ui.wizard.WizardDataModel;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard.StatTest;
 
 
 public class ZCalcAnalysisStatsDescriptor extends AnalysisWizardPanelDescriptor {

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.wizards.panels;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -11,10 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
-
-import EDU.oswego.cs.dl.util.concurrent.FJTask.Wrap;
 
 public class ZCalcAnalysisMainPanel extends JPanel {
 
@@ -81,10 +78,10 @@ public class ZCalcAnalysisMainPanel extends JPanel {
 		jPanel1.setLayout(new BorderLayout());
 		jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
 
-		jTextArea1.setText("You're about to employ a ZCalc Statistical Analysis for your data. " +
+		jTextArea1.setText("You're about to run a ZetCalc Analysis for your data. " +
 				"But first of all, please indicate a name for your analysis and how  " +
 				"many processors you want to make use of, in case you're working " +
-				"with a multiprocessor machine");
+				"with a multiprocessor machine.");
 		jTextArea1.setOpaque(false);
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setWrapStyleWord(true);

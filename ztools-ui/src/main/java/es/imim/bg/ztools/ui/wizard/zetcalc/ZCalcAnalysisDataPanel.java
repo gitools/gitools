@@ -1,7 +1,6 @@
-package es.imim.bg.ztools.ui.wizards.panels;
+package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 
@@ -14,8 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard;
-import es.imim.bg.ztools.ui.wizards.AnalysisWizard.Condition;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
+import es.imim.bg.ztools.ui.wizard.AnalysisWizard.Condition;
 
 public class ZCalcAnalysisDataPanel extends JPanel {
 	
@@ -83,8 +82,9 @@ public class ZCalcAnalysisDataPanel extends JPanel {
         jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.PAGE_AXIS));
 
         
-        jTextArea1.setText("Please choose the file with the data to analyise. In case" +
-        		"it contains continous data, indicate by what criteria you" +
+        jTextArea1.setText(
+        		"Please choose the file with the data to analyise. In case " +
+        		"it contains continous data, indicate by what criteria you " +
         		"want to convert it into binary data.");
 		jTextArea1.setOpaque(false);
 		jTextArea1.setLineWrap(true);

@@ -39,10 +39,9 @@ public class HtmlView extends AbstractView {
 			@Override
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == EventType.ACTIVATED) {
-					if (e.getDescription().startsWith("action:")) {
-						System.out.println("action: " 
-								+ e.getDescription().substring("action:".length()));
-					}
+					final String desc = e.getDescription();
+					if (desc.startsWith("action:"))
+						performUrlAction(desc.substring("action:".length()));
 					else {
 						try {
 							htmlPane.setPage(e.getURL());
@@ -60,6 +59,9 @@ public class HtmlView extends AbstractView {
 		
 		setLayout(new BorderLayout());
 		add(scrollPane, BorderLayout.CENTER);
+	}
+
+	protected void performUrlAction(String name) {
 	}
 
 	/*protected JTextPane getHtmlPane() {

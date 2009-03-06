@@ -63,7 +63,8 @@ public class AboutDialog extends JDialog {
 						"<li>Christian Perez-Llamas</li>" +
 						"<li>Michael Schroeder</li></ul></p>" +
 						"<p>Thanks to:<ul>" +
-						"<li>Sonja Haenzelmann</li>" + 
+						"<li>Sonja Haenzelmann</li>" +
+						"<li>Khademul Islam</li>" +
 						"<li>Gunnes Gundem</li></ul></p>");
 		
 		JButton acceptBtn = new JButton("OK");
