@@ -27,6 +27,8 @@ public class TablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
 
+	private static final int rowLabelsWidth = 400;
+
 	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
 	private JTable table;
@@ -46,9 +48,9 @@ public class TablePanel extends JPanel {
 		
 		this.selMode = SelectionMode.cells;
 		
-		this.columnsHeight = 300;
-		this.columnsWidth = 25;
-		this.rowsHeight = 25;
+		this.columnsHeight = 200;
+		this.columnsWidth = 20;
+		this.rowsHeight = 20;
 	
 		this.selectedLeadColumn = this.selectedLeadRow = -1;
 	
@@ -293,7 +295,7 @@ public class TablePanel extends JPanel {
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
 			col.setResizable(false);
-			col.setMinWidth(400);
+			col.setMinWidth(rowLabelsWidth);
 		}
 	}
 	
@@ -485,10 +487,9 @@ public class TablePanel extends JPanel {
 		return false;
 	}
 	
-	private void printArray(int[] selectedRows) {
+	/*private void printArray(int[] selectedRows) {
 		System.out.println("-------------");
 		for (int idx : selectedRows)
 			System.out.println(idx);
-	}
-	
+	}*/	
 }

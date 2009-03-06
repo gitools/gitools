@@ -5,26 +5,13 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Project;
-import es.imim.bg.ztools.resources.ProjectResource;
-import es.imim.bg.ztools.resources.analysis.AnalysisResource;
-import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.jobs.Job;
 import es.imim.bg.ztools.ui.jobs.OpenAnalysisJob;
-import es.imim.bg.ztools.ui.model.deprecated.AnalysisModel;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ResultsMatrixTableContentsAdapter;
-import es.imim.bg.ztools.ui.model.table.Table;
 import es.imim.bg.ztools.ui.utils.Options;
-import es.imim.bg.ztools.ui.views.deprecated.AnalysisView;
-import es.imim.bg.ztools.ui.views.table.TableView;
 
 public class OpenAnalysisAction extends BaseAction {
 
@@ -49,8 +36,7 @@ public class OpenAnalysisAction extends BaseAction {
 			final ProgressMonitor monitor = createProgressMonitor();
 			
 			AppFrame.instance().getJobProcessor().addJob(
-									new OpenAnalysisJob(selectedPath, monitor) {
-				});
+					new OpenAnalysisJob(selectedPath, monitor));
 		}
 	}
 	

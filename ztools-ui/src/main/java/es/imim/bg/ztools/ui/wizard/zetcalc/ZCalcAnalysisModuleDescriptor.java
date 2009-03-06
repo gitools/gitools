@@ -1,23 +1,24 @@
 package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.wizard.AbstractWizard;
 import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
 import es.imim.bg.ztools.ui.wizard.AnalysisWizardPanelDescriptor;
 import es.imim.bg.ztools.ui.wizard.WizardDataModel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.*;
 
-
 public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor {
     
     public static final String IDENTIFIER = "MODULE_PANEL";
+    
     final ZCalcAnalysisModulePanel modulePanel;
     WizardDataModel dataModel;
     final JButton choserButton;
@@ -25,8 +26,9 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     final JTextField minField;
     final JTextField maxField;
 
-    
-    public ZCalcAnalysisModuleDescriptor(AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {    	
+    public ZCalcAnalysisModuleDescriptor(
+    		AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {
+    	
         super(IDENTIFIER, new ZCalcAnalysisModulePanel(), BackPanelDescriptor, NextPanelDescriptor);
         this.modulePanel = (ZCalcAnalysisModulePanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
@@ -36,28 +38,17 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
         maxField = modulePanel.getMaximumField();
         minField = modulePanel.getMinimumField();
         
-        choserButton.addMouseListener(new MouseListener(){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				File selectedFile = selectFile();
+        choserButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		File selectedFile = selectFile();
 				if (selectedFile != null)
 					fileNameField.setText(selectedFile.toString());
 				setNextButtonAccordingToInputs();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) { }
-			
-			@Override
-			public void mouseExited(MouseEvent e) { }
-			
-			@Override
-			public void mousePressed(MouseEvent e) { }
-			
-			@Override
-			public void mouseReleased(MouseEvent e) { }
+        	}
         });
         
-        KeyListener keyListener = new KeyListener(){
+        KeyListener keyListener = new KeyListener() {
 
 			@Override
 			public void keyPressed(KeyEvent e) { }
@@ -76,7 +67,6 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
         fileNameField.addKeyListener(keyListener);
         
     }
-            
     
     public void aboutToDisplayPanel() {
     	setNextButtonAccordingToInputs();
@@ -167,13 +157,14 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				(String) dataModel.getValue(AnalysisWizard.WIZARD_WORKING_DIR));
+				Options.instance().getLastPath());
 		
-		fileChooser.setDialogTitle("Select the data file");
+		fileChooser.setDialogTitle("Select file");
 		
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
+			Options.instance().setLastPath(selectedFile.getParent());
 			return selectedFile;
 		}		
 		return null;

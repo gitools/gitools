@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -11,20 +10,16 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 @Deprecated
-public abstract class BaseDialog extends JDialog{
-	
+public abstract class BaseDialog extends JDialog {
 
 	private static final long serialVersionUID = 183914906195441688L;
 	
 	String dialogTitle;
 	String dialogSubtitle;
 
-	
 	public BaseDialog(JFrame owner, String windowTitle, String dialogTitle, String dialogSubtitle) {
 		setModal(true);
 		setLocationByPlatform(true);				
@@ -73,8 +68,7 @@ public abstract class BaseDialog extends JDialog{
 			subtitleField.setOpaque(false);
 			titlePanel.add(subtitleField, BorderLayout.SOUTH);
 		}
-			
-		
+
 		this.setMinimumSize(new Dimension(500,500));
 		setLayout(new BorderLayout());
 		add(titlePanel, BorderLayout.NORTH);

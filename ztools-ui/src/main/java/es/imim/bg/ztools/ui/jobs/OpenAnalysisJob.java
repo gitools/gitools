@@ -6,8 +6,6 @@ import javax.swing.SwingUtilities;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.Project;
-import es.imim.bg.ztools.resources.ProjectResource;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
 import es.imim.bg.ztools.ui.AppFrame;
@@ -18,19 +16,21 @@ import es.imim.bg.ztools.ui.views.table.TableView;
 
 public class OpenAnalysisJob implements Job {
 
-	File selectedPath;
-	ProgressMonitor monitor;
+	private File selectedPath;
+	private ProgressMonitor monitor;
 	
-	public OpenAnalysisJob(File selectedPath, ProgressMonitor monitor) {
+	public OpenAnalysisJob(
+			File selectedPath, ProgressMonitor monitor) {
+		
 		this.selectedPath = selectedPath;
 		this.monitor = monitor;
 	}
 	
-	
 	@Override
 	public void run() {
         AppFrame.instance()
-        	.setStatusText("Opening analysis");
+        	.setStatusText("Opening analysis...");
+        
 		openAnalysisJob(selectedPath, monitor);
 	}
 	
@@ -41,13 +41,13 @@ public class OpenAnalysisJob implements Job {
 			return;
 		
 		try {
-			ProjectResource projRes = new ProjectResource(selectedPath);
-			Project proj = projRes.load(monitor);
+			//ProjectResource projRes = new ProjectResource(selectedPath);
+			//Project proj = projRes.load(monitor);
 			
 			AnalysisResource analysisRes =
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
-			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);
+			monitor.begin("Loading analysis ...", 1);
 			Analysis analysis = analysisRes.load(monitor);
 			
 			ITable table = new Table(
@@ -66,6 +66,9 @@ public class OpenAnalysisJob implements Job {
 			});
 			
 			monitor.end();
+			
+			AppFrame.instance()
+        		.setStatusText("Done.");
 		} 
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -78,5 +81,4 @@ public class OpenAnalysisJob implements Job {
 			});
 		}
 	}
-
 }

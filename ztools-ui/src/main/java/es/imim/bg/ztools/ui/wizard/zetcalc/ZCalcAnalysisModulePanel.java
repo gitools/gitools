@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 public class ZCalcAnalysisModulePanel extends JPanel {
 	
 	private static final long serialVersionUID = 4868634835041548193L;
+	
     public final String MAX_DEFAULT = "no limit";
     public final String MIN_DEFAULT = "20";
 		
@@ -34,11 +35,10 @@ public class ZCalcAnalysisModulePanel extends JPanel {
 
     private JButton jButton1;
 
-    
     private JLabel panelTitle;
     private JPanel contentPanel;
 
-	public ZCalcAnalysisModulePanel(){
+	public ZCalcAnalysisModulePanel() {
 		
         contentPanel = getContentPanel();
         contentPanel.setBorder(new EmptyBorder(new Insets(10, 10, 10, 10)));
@@ -123,18 +123,17 @@ public class ZCalcAnalysisModulePanel extends JPanel {
         contentPanel1.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         return contentPanel1;
-        
     }
 	
-	public JButton getChoserButton(){
+	public JButton getChoserButton() {
 		return jButton1;
 	}
 	
-	public JTextField getFileNameField(){
+	public JTextField getFileNameField() {
 		return jTextField1;
 	}
 	
-	public JComboBox getBinCutoffConditionBox(){
+	public JComboBox getBinCutoffConditionBox() {
 		return jComboBox1;
 	}
 	
