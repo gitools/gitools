@@ -35,8 +35,12 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>${mainClass}</mainClass>
+							<mainClass>${mainClass}</mainClass>				
 						</manifest>
+						<manifestEntries>
+							<Implementation-Title>GiTools</Implementation-Title>
+							<Specification-Title>GiTools</Specification-Title>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

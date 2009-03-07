@@ -48,13 +48,13 @@ public class NewZCalcAnalysisAction extends BaseAction {
 			final ProgressMonitorDialog monitorDialog = new ProgressMonitorDialog(
 					AppFrame.instance(), "Log");
 
-			monitorDialog.setVisible(true);
-
 			final ProgressMonitor monitor = 
 				monitorDialog.getProgressMonitor();
 
 			AppFrame.instance().getJobProcessor().addJob(
 					new ZCalcCommandJob(command, monitor, analysisPath));
+			
+			monitorDialog.setVisible(true);
 		}
 	}
 }

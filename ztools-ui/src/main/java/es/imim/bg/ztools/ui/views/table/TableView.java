@@ -342,7 +342,7 @@ public class TableView extends AbstractView {
 			splitPane.add(mainPanel);
 			splitPane.add(infoScrollPane);
 		}
-		splitPane.setDividerLocation(220);
+		splitPane.setDividerLocation(240);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
 		

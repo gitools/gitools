@@ -62,12 +62,22 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 	@Override
 	public ProgressMonitor subtask() {
 		ProgressMonitor subtask = 
-			new StreamProgressMonitor(this, out, verbose, debug);
+			createSubtaskMonitor(this, out, verbose, debug);
 		subtask.setLevel(level + 1);
 		flag = true;
 		return subtask;
 	}
 	
+	protected ProgressMonitor createSubtaskMonitor(
+			ProgressMonitor parentMonitor, 
+			PrintStream out,
+			boolean verbose, 
+			boolean debug) {
+		
+		return new StreamProgressMonitor(
+				parentMonitor, out, verbose, debug);
+	}
+
 	@Override
 	public void end() {
 		super.end();

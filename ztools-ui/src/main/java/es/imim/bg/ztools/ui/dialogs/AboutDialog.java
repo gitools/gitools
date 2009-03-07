@@ -27,8 +27,8 @@ public class AboutDialog extends JDialog {
 	public AboutDialog(JFrame owner) {
 		super(owner);
 		
-		appName = AppFrame.instance().getAppName();
-		appVersion = AppFrame.instance().getAppVersion();
+		appName = AppFrame.getAppName();
+		appVersion = AppFrame.getAppVersion();
 		
 		setModal(true);
 		setTitle("About " + appName);

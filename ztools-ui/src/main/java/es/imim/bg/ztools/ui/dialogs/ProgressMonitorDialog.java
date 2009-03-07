@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,9 +23,52 @@ public class ProgressMonitorDialog extends JDialog {
 
 	private static final long serialVersionUID = 2488949387143866229L;
 	
+	private static class TextAreaProgressMonitor 
+			extends StreamProgressMonitor {
+	
+		private JTextArea textArea;
+		
+		public TextAreaProgressMonitor(
+				JTextArea textArea,
+				boolean verbose, boolean debug) {
+			
+			super(System.out, verbose, debug);
+			
+			this.textArea = textArea;
+		}
+		
+		public TextAreaProgressMonitor(
+				ProgressMonitor parent,
+				JTextArea textArea,
+				boolean verbose, boolean debug) {
+			
+			super(parent, System.out, verbose, debug);
+			
+			this.textArea = textArea;
+		}
+		
+		@Override
+		protected ProgressMonitor createSubtaskMonitor(
+				ProgressMonitor parent, 
+				PrintStream out,
+				boolean verbose, 
+				boolean debug) {
+
+			return new TextAreaProgressMonitor(
+					parent, textArea, verbose, debug);
+		}
+		
+		@Override
+		protected void print(String text) {
+			textArea.append(text);
+			textArea.setCaretPosition(
+					textArea.getDocument().getLength());
+		}
+	};
+	
 	private JTextArea textArea;
 	
-	private StreamProgressMonitor progressMonitor;
+	private TextAreaProgressMonitor progressMonitor;
 	
 	public ProgressMonitorDialog(JFrame owner, String title) {
 		super(owner);
@@ -35,24 +79,24 @@ public class ProgressMonitorDialog extends JDialog {
 		createComponents();
 		pack();
 		
-		progressMonitor = new StreamProgressMonitor(System.out, false, false) {
-			@Override
-			protected void print(String text) {
-				textArea.append(text);
-			}
-		};
+		progressMonitor = 
+			new TextAreaProgressMonitor(textArea, false, false);
 	}
 
 	private void createComponents() {
 
 		textArea = new JTextArea();
-		textArea.setFont(new Font(textArea.getFont().getName(), textArea.getFont().getStyle(), 12));
+		textArea.setFont(new Font(
+				textArea.getFont().getName(), 
+				textArea.getFont().getStyle(), 12));
 		textArea.setEditable(false);
-		textArea.setOpaque(false);
+		//textArea.setOpaque(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		//textArea.setAutoscrolls(true);
 		
 		final JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setAutoscrolls(true);
 
 		final JPanel contPanel = new JPanel();
 		contPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -86,8 +130,4 @@ public class ProgressMonitorDialog extends JDialog {
 	public ProgressMonitor getProgressMonitor() {
 		return progressMonitor;
 	}
-	
-	/*public void addText(String text) {
-		textArea.append(text);
-	}*/
 }

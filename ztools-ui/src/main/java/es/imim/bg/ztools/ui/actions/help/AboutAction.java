@@ -12,8 +12,7 @@ public class AboutAction extends BaseAction {
 	private static final long serialVersionUID = 8302818623988394433L;
 
 	public AboutAction() {
-		super("About ztools...");
-		
+		super("About " + AppFrame.getAppName() + "...");
 		setDesc("Know more about this application");
 		setMnemonic(KeyEvent.VK_A);
 	}
