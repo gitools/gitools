@@ -11,7 +11,7 @@ import java.util.zip.DataFormatException;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.BinomialTest;
 import es.imim.bg.ztools.test.FisherTest;
 import es.imim.bg.ztools.test.Test;
@@ -19,7 +19,7 @@ import es.imim.bg.ztools.test.ZscoreTest;
 import es.imim.bg.ztools.test.ZscoreWithSamplingTest;
 import es.imim.bg.ztools.test.factory.TestFactory;
 import es.imim.bg.ztools.test.results.BinomialResult;
-import es.imim.bg.ztools.test.results.BinomialResult.AproximationUsed;
+import es.imim.bg.ztools.test.results.BinomialResult.Distribution;
 import es.imim.bg.ztools.utils.Util;
 
 public class REXmlAnalysisResource extends AnalysisResource {
@@ -64,12 +64,12 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		Test test = testFactory.create(); //FIXME?
 		String statName = test.getName();
 		
-		List<ElementProperty> properties = resultsMatrix.getCellAdapter().getProperties();
+		List<IElementProperty> properties = resultsMatrix.getCellAdapter().getProperties();
 
 		final String[] paramNames = new String[properties.size()];
 		final Map<String, Integer> paramIndexMap = new HashMap<String, Integer>();
 		for (int i = 0; i < properties.size(); i++) {
-			final ElementProperty prop = properties.get(i);
+			final IElementProperty prop = properties.get(i);
 			paramNames[i] = prop.getId();
 			paramIndexMap.put(paramNames[i], i);
 		}
@@ -175,8 +175,8 @@ public class REXmlAnalysisResource extends AnalysisResource {
 									moduleIndex, propIndex, "expected-mean");
 							double expectedStdev = (Double) resultsMatrix.getCellValue(
 									moduleIndex, propIndex, "expected-stdev");
-							BinomialResult.AproximationUsed apr =
-								(AproximationUsed) resultsMatrix.getCellValue(
+							BinomialResult.Distribution apr =
+								(Distribution) resultsMatrix.getCellValue(
 								moduleIndex, propIndex, "aproximation");
 
 							valueSt = Double.toString(observed);

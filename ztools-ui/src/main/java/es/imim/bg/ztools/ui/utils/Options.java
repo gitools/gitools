@@ -88,7 +88,7 @@ public class Options {
 	}
 
 	public String getLastExportPath() {
-		return props.getProperty("last-export-path", userPath);
+		return props.getProperty("last-export-path", getLastPath());
 	}
 
 	public void setLastExportPath(String lastPath) {
@@ -96,10 +96,26 @@ public class Options {
 	}
 	
 	public String getLastWorkPath() {
-		return props.getProperty("last-work-path", userPath);
+		return props.getProperty("last-work-path", getLastPath());
 	}
 
 	public void setLastWorkPath(String lastPath) {
 		props.setProperty("last-work-path", lastPath);
+	}
+	
+	public String getLastDataPath() {
+		return props.getProperty("last-data-path", getLastPath());
+	}
+
+	public void setLastDataPath(String lastPath) {
+		props.setProperty("last-data-path", lastPath);
+	}
+	
+	public String getLastMapPath() {
+		return props.getProperty("last-map-path", getLastPath());
+	}
+
+	public void setLastMapPath(String lastPath) {
+		props.setProperty("last-map-path", lastPath);
 	}
 }

@@ -14,8 +14,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.utils.TableUtils;
@@ -26,15 +26,15 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 
 	private static class ElementPropertyAdapter {
 		private int index;
-		private ElementProperty property;
-		public ElementPropertyAdapter(int index, ElementProperty property) {
+		private IElementProperty property;
+		public ElementPropertyAdapter(int index, IElementProperty property) {
 			this.index = index;
 			this.property = property;
 		}
 		public int getIndex() {
 			return index;
 		}
-		public ElementProperty getProperty() {
+		public IElementProperty getProperty() {
 			return property;
 		}
 		@Override
@@ -71,7 +71,7 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 		
 		// value combo box
 		
-		ElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellsFacade();
 		
 		int numProps = cellFacade.getPropertyCount();
 		

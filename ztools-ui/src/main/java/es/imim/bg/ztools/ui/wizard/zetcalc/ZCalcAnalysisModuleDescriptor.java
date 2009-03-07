@@ -157,14 +157,14 @@ public class ZCalcAnalysisModuleDescriptor extends AnalysisWizardPanelDescriptor
     
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				Options.instance().getLastMapPath());
 		
 		fileChooser.setDialogTitle("Select file");
 		
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			Options.instance().setLastPath(selectedFile.getParent());
+			Options.instance().setLastMapPath(selectedFile.getParent());
 			return selectedFile;
 		}		
 		return null;

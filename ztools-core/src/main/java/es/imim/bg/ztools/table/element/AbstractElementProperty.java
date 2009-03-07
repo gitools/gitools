@@ -1,27 +1,33 @@
-package es.imim.bg.ztools.model.elements;
+package es.imim.bg.ztools.table.element;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
+import es.imim.bg.ztools.table.element.bean.BeanElementProperty;
 
 @XmlRootElement
 @XmlSeeAlso(value = {
 		BeanElementProperty.class})
 		
-public class ElementProperty {
+public abstract class AbstractElementProperty 
+		implements IElementProperty {
 
 	protected String id;
 	protected String name;
 	protected String description;
+	protected Class<?> valueClass;
 	
-	public ElementProperty() {
+	public AbstractElementProperty() {
 	}
 	
-	public ElementProperty(
-			String id, String name, String description) {
+	public AbstractElementProperty(
+			String id, String name, String description, 
+			Class<?> valueClass) {
 		
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.valueClass = valueClass;
 	}
 
 	public String getId() {
@@ -37,11 +43,18 @@ public class ElementProperty {
 	}
 	
 	@Override
+	public Class<?> getValueClass() {
+		return valueClass;
+	}
+	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id);
 		if (name != null)
 			sb.append(" : ").append(name);
+		if (valueClass != null)
+			sb.append(" : ").append(valueClass.getSimpleName());
 		if (description != null)
 			sb.append(" : ").append(description);
 		return sb.toString();

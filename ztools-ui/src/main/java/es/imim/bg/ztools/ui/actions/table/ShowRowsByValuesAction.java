@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
@@ -31,7 +31,7 @@ public class ShowRowsByValuesAction extends BaseAction {
 		if (table == null)
 			return;
 
-		List<ElementProperty> cellPropsList = table.getContents().getCellsFacade().getProperties();
+		List<IElementProperty> cellPropsList = table.getContents().getCellsFacade().getProperties();
 		
 		Object[] params = new Object[cellPropsList.size()];
 		for (int i = 0; i < cellPropsList.size(); i++)

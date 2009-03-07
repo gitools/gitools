@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 import es.imim.bg.colorscale.LogColorScale;
-import es.imim.bg.ztools.model.elements.ElementAdapter;
+import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
@@ -40,7 +40,7 @@ public class ScaleCellDecorator
 			return;
 		}
 		
-		ElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellsFacade();
 		
 		Object value = cellFacade.getValue(
 				element, context.getValueIndex());

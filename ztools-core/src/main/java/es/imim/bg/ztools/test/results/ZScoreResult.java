@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.results;
 
-import es.imim.bg.ztools.model.elements.Property;
+import es.imim.bg.ztools.table.element.Property;
 
 public class ZScoreResult extends CommonResult {
 
@@ -34,9 +34,17 @@ public class ZScoreResult extends CommonResult {
 		return observed;
 	}
 	
+	public void setObserved(double observed) {
+		this.observed = observed;
+	}
+	
 	@Property(id = "expected-mean", name = "Expected mean", description = "Value mean expected by chance")
 	public double getExpectedMean() {
 		return expectedMean;
+	}
+	
+	public void setExpectedMean(double expectedMean) {
+		this.expectedMean = expectedMean;
 	}
 	
 	@Property(id = "expected-stdev", name = "Expected stddev", description = "Value standard deviation expected by chance")
@@ -44,8 +52,16 @@ public class ZScoreResult extends CommonResult {
 		return expectedStdev;
 	}
 	
+	public void setExpectedStdev(double expectedStdev) {
+		this.expectedStdev = expectedStdev;
+	}
+	
 	@Property(id = "z-score", name = "Z Score", description = "Normal distribution Z Score")
 	public double getZscore() {
 		return zscore;
+	}
+	
+	public void setZscore(double zscore) {
+		this.zscore = zscore;
 	}
 }

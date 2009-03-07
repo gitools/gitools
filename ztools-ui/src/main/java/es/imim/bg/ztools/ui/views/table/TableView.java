@@ -21,8 +21,8 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
@@ -165,7 +165,7 @@ public class TableView extends AbstractView {
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 			final String colName = table.getColumn(column).toString();
 			final String rowName = table.getRow(row).toString();
-			ElementAdapter cellsFacade = table.getCellsFacade();
+			IElementAdapter cellsFacade = table.getCellsFacade();
 			Object element = table.getCell(row, column);
 			
 			//TODO: de-activated for now
@@ -199,7 +199,7 @@ public class TableView extends AbstractView {
 				
 				if (element != null) {
 					for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-						ElementProperty prop = cellsFacade.getProperty(i);
+						IElementProperty prop = cellsFacade.getProperty(i);
 						
 						final String paramName = prop.getName();
 						

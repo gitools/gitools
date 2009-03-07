@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.ui.model.table;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
+import es.imim.bg.ztools.table.element.IElementAdapter;
 
 public interface ITableContents {
 
@@ -8,13 +8,13 @@ public interface ITableContents {
 	
 	int getRowCount();
 	Object getRow(int index);
-	ElementAdapter getRowsFacade();
+	IElementAdapter getRowsFacade();
 	
 	// columns
 	
 	int getColumnCount();
 	Object getColumn(int index);
-	ElementAdapter getColumnsFacade();
+	IElementAdapter getColumnsFacade();
 	
 	// cells
 	
@@ -24,5 +24,5 @@ public interface ITableContents {
 	void setCellValue(int row, int column, int index, Object value);
 	void setCellValue(int row, int column, String id, Object value);
 	
-	ElementAdapter getCellsFacade();
+	IElementAdapter getCellsFacade();
 }

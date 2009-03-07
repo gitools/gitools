@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.model.elements;
+package es.imim.bg.ztools.table.element.bean;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,8 +6,13 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import es.imim.bg.ztools.table.element.AbstractElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.table.element.Property;
+
 @XmlRootElement
-public class BeanElementAdapter extends ElementAdapter {
+public class BeanElementAdapter 
+		extends AbstractElementAdapter {
 	
 	protected BeanElementAdapter() {
 	}
@@ -26,7 +31,7 @@ public class BeanElementAdapter extends ElementAdapter {
 	}
 	
 	protected void readProperties() {
-		List<ElementProperty> properties = new ArrayList<ElementProperty>();
+		List<IElementProperty> properties = new ArrayList<IElementProperty>();
 		
 		for (Method m : elementClass.getMethods()) {
 			boolean isGet = m.getName().startsWith("get");
@@ -34,11 +39,12 @@ public class BeanElementAdapter extends ElementAdapter {
 					&& !m.getName().equals("getClass")
 					&& (isGet || m.getName().startsWith("is"))) {
 				
-				String id = isGet ?
+				final String getterName = isGet ?
 						m.getName().substring(3) : m.getName().substring(2);
 						
 				final Class<?> propertyClass = m.getReturnType();
 				
+				String id = getterName;
 				String name = id;
 				String description = "";
 				
@@ -53,13 +59,12 @@ public class BeanElementAdapter extends ElementAdapter {
 				}
 				
 				Method setterMethod = null;
-				for (Method sm : elementClass.getMethods()) {
-					if (m.getParameterTypes().length == 0
-							&& m.getName().equals("set" + id))
-						setterMethod = sm;
-				}
+				try {
+					setterMethod = elementClass.getMethod(
+							"set" + getterName,	new Class<?>[] { propertyClass });
+				} catch (Exception e) {	}
 				
-				ElementProperty prop = new BeanElementProperty(
+				IElementProperty prop = new BeanElementProperty(
 						id, name, description, propertyClass, 
 						m, setterMethod);
 				
@@ -87,6 +92,8 @@ public class BeanElementAdapter extends ElementAdapter {
 		Method m = prop.getSetterMethod();
 		try {
 			value = m.invoke(element, value);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.model.elements;
+package es.imim.bg.ztools.table.element;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

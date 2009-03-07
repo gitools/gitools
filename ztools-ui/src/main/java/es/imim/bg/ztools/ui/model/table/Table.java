@@ -2,8 +2,8 @@ package es.imim.bg.ztools.ui.model.table;
 
 import java.util.Arrays;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.AbstractModel;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 
@@ -48,9 +48,9 @@ public class Table
 		
 		// selected property
 		
-		ElementAdapter cellsFacade = contents.getCellsFacade();
+		IElementAdapter cellsFacade = contents.getCellsFacade();
 		for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-			ElementProperty prop = cellsFacade.getProperty(i);
+			IElementProperty prop = cellsFacade.getProperty(i);
 			if ("right-p-value".equals(prop.getId()))
 					selectedPropertyIndex = i;
 		}
@@ -238,7 +238,7 @@ public class Table
 	}
 
 	@Override
-	public ElementAdapter getRowsFacade() {
+	public IElementAdapter getRowsFacade() {
 		return contents.getRowsFacade();
 	}
 	
@@ -253,7 +253,7 @@ public class Table
 	}
 
 	@Override
-	public ElementAdapter getColumnsFacade() {
+	public IElementAdapter getColumnsFacade() {
 		return contents.getColumnsFacade();
 	}
 	
@@ -297,7 +297,7 @@ public class Table
 	}
 	
 	@Override
-	public ElementAdapter getCellsFacade() {
+	public IElementAdapter getCellsFacade() {
 		return contents.getCellsFacade();
 	}
 	

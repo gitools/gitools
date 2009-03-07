@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.results;
 
-import es.imim.bg.ztools.model.elements.Property;
+import es.imim.bg.ztools.table.element.Property;
 
 public class CommonResult {
 
@@ -28,9 +28,17 @@ public class CommonResult {
 		return N;
 	}
 	
+	public void setN(int n) {
+		N = n;
+	}
+	
 	@Property(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
 	public double getLeftPvalue() {
 		return leftPvalue;
+	}
+	
+	public void setLeftPvalue(double leftPvalue) {
+		this.leftPvalue = leftPvalue;
 	}
 	
 	@Property(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
@@ -38,9 +46,17 @@ public class CommonResult {
 		return rightPvalue;
 	}
 	
+	public void setRightPvalue(double rightPvalue) {
+		this.rightPvalue = rightPvalue;
+	}
+	
 	@Property(id = "two-tail-p-value", name = "Two tail P-Value", description = "P-Value for alternative hipothesis different than")
 	public double getTwoTailPvalue() {
 		return twoTailPvalue;
+	}
+	
+	public void setTwoTailPvalue(double twoTailPvalue) {
+		this.twoTailPvalue = twoTailPvalue;
 	}
 	
 	@Property(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
@@ -48,13 +64,25 @@ public class CommonResult {
 		return corrLeftPvalue;
 	}
 	
+	public void setCorrLeftPvalue(double corrLeftPvalue) {
+		this.corrLeftPvalue = corrLeftPvalue;
+	}
+	
 	@Property(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
 	public double getCorrRightPvalue() {
 		return corrRightPvalue;
 	}
 
+	public void setCorrRightPvalue(double corrRightPvalue) {
+		this.corrRightPvalue = corrRightPvalue;
+	}
+	
 	@Property(id = "corrected-two-tail-p-value", name = "Corrected two tail P-Value", description = "Corrected P-Value for alternative hipothesis different than")
 	public double getCorrTwoTailPvalue() {
 		return corrTwoTailPvalue;
+	}
+	
+	public void setCorrTwoTailPvalue(double corrTwoTailPvalue) {
+		this.corrTwoTailPvalue = corrTwoTailPvalue;
 	}
 }

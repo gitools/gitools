@@ -9,8 +9,8 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
+import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.model.table.ITable;
@@ -39,7 +39,7 @@ public class MtcAction extends BaseAction {
 		if (table == null)
 			return;
 
-		ElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellsFacade();
 		
 		final int propIndex = table.getSelectedPropertyIndex();
 		final int corrPropIndex = 

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.model.elements;
+package es.imim.bg.ztools.table.element.bean;
 
 import java.lang.reflect.Method;
 
@@ -7,10 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlRootElement
-public class BeanElementProperty extends ElementProperty {
+import es.imim.bg.ztools.table.element.AbstractElementProperty;
 
-	protected Class<?> propertyClass;
+@XmlRootElement
+public class BeanElementProperty 
+		extends AbstractElementProperty {
+
 	protected Method getterMethod;
 	protected Method setterMethod;
 	
@@ -19,18 +21,18 @@ public class BeanElementProperty extends ElementProperty {
 	
 	public BeanElementProperty(
 			String id, String name, String description,
-			Class<?> propertyClass, Method getterMethod, Method setterMethod) {
+			Class<?> valueClass, Method getterMethod, Method setterMethod) {
 		
-		super(id, name, description);
+		super(id, name, description, valueClass);
 		
-		this.propertyClass = propertyClass;
 		this.getterMethod = getterMethod;
 		this.setterMethod = setterMethod;
 	}
 
 	@XmlElement(name = "Class")
-	public Class<?> getPropertyClass() {
-		return propertyClass;
+	@Override
+	public Class<?> getValueClass() {
+		return valueClass;
 	}
 	
 	static class MethodAdapter extends XmlAdapter<String, Method>{

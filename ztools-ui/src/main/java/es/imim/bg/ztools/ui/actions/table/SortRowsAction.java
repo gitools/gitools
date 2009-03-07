@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.SortListDialog;
@@ -32,12 +32,12 @@ public class SortRowsAction extends BaseAction {
 
 		
 		//select parameters
-		List<ElementProperty> cellProps = table.getCellsFacade().getProperties();
-		ListIterator<ElementProperty> i = cellProps.listIterator();
+		List<IElementProperty> cellProps = table.getCellsFacade().getProperties();
+		ListIterator<IElementProperty> i = cellProps.listIterator();
 		Object[] params = new Object[cellProps.size()];
 		int counter = 0;
 		while (i.hasNext()) {
-			ElementProperty ep = i.next();
+			IElementProperty ep = i.next();
 			params[counter] = ep.getId();
 			counter++;
 		}

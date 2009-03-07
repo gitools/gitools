@@ -88,7 +88,7 @@ public abstract class AnalysisCommand implements Command {
 			formats.add(format);
 		formats.add("csv"); // to mantain compatibility
 		
-		saveProject(basePath, analysis, monitor);
+		//saveProject(basePath, analysis, monitor);
 		
 		for (String format : formats) {
 			AnalysisResource ar = null;

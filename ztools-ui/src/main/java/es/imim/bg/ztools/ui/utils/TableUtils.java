@@ -1,7 +1,7 @@
 package es.imim.bg.ztools.ui.utils;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class TableUtils {
@@ -16,8 +16,8 @@ public class TableUtils {
 		return v;
 	}
 	
-	public static int correctedValueIndex(ITable table, ElementProperty prop) {
-		ElementAdapter cellFacade = table.getCellsFacade();
+	public static int correctedValueIndex(ITable table, IElementProperty prop) {
+		IElementAdapter cellFacade = table.getCellsFacade();
 		int numProps = cellFacade.getPropertyCount();
 		
 		String id = "corrected-" + prop.getId();
