@@ -34,8 +34,8 @@ public class FileActionSet extends ActionSet {
 
 	public FileActionSet() {
 		super("File", new BaseAction[] {
-			openAnalysisAction,
 			newZCalcAnalysisAction,
+			openAnalysisAction,
 			closeAction,
 			BaseAction.separator,
 			exportActionSet,

@@ -364,9 +364,9 @@ public class TableView extends AbstractView {
 						defaultColorColumnsWidth 
 						: defaultValueColumnsWidth);*/
 		
-		tablePanel.setColumnsWidth(
+		/*tablePanel.setColumnsWidth(
 				configPanel.getCellDecorator()
-					.getPreferredWidth());
+					.getPreferredWidth());*/
 	}
 	
 	public TablePanel getColorMatrixPanel() {

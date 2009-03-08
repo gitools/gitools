@@ -49,8 +49,8 @@ public class TablePanel extends JPanel {
 		this.selMode = SelectionMode.cells;
 		
 		this.columnsHeight = 200;
-		this.columnsWidth = 20;
-		this.rowsHeight = 20;
+		this.columnsWidth = 18;
+		this.rowsHeight = 18;
 	
 		this.selectedLeadColumn = this.selectedLeadRow = -1;
 	
@@ -291,10 +291,11 @@ public class TablePanel extends JPanel {
 		if (lastColumn >= 0) {
 			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
+				col.setResizable(false);
 				col.setPreferredWidth(columnsWidth);
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
-			col.setResizable(false);
+			//col.setResizable(false);
 			col.setMinWidth(rowLabelsWidth);
 		}
 	}
