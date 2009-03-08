@@ -90,11 +90,12 @@ public class WorkspacePanel extends JTabbedPane {
 		MenuActionSet.fileActionSet.setEnabled(true);
 		MenuActionSet.helpActionSet.setEnabled(true);
 		
+		FileActionSet.newZCalcAnalysisAction.setEnabled(true);
 		FileActionSet.openAnalysisAction.setEnabled(true);
 		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
 		FileActionSet.exitAction.setEnabled(true);
-		FileActionSet.newZCalcAnalysisAction.setEnabled(true);
-		Actions.zcalcAnalysisAction.setEnabled(true);
+		
+		HelpActionSet.welcomeAction.setEnabled(true);
 		HelpActionSet.aboutAction.setEnabled(true);
 	}
 }

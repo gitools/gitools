@@ -1,7 +1,5 @@
 package es.imim.bg.ztools.ui.actions;
 
-import es.imim.bg.ztools.ui.actions.file.NewZCalcAnalysisAction;
-
 public class Actions {
 	
 	public static final MenuActionSet menuActionSet = 
@@ -11,9 +9,6 @@ public class Actions {
 		new ToolBarActionSet();
 	
 	// Unclassified
-	
-	public static final BaseAction zcalcAnalysisAction =
-		new NewZCalcAnalysisAction();
 	
 	private Actions() {
 	}
