@@ -48,9 +48,9 @@ public class Table
 		
 		// selected property
 		
-		IElementAdapter cellsFacade = contents.getCellsFacade();
-		for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-			IElementProperty prop = cellsFacade.getProperty(i);
+		IElementAdapter cellAdapter = contents.getCellAdapter();
+		for (int i = 0; i < cellAdapter.getPropertyCount(); i++) {
+			IElementProperty prop = cellAdapter.getProperty(i);
 			if ("right-p-value".equals(prop.getId()))
 					selectedPropertyIndex = i;
 		}
@@ -238,8 +238,8 @@ public class Table
 	}
 
 	@Override
-	public IElementAdapter getRowsFacade() {
-		return contents.getRowsFacade();
+	public IElementAdapter getRowAdapter() {
+		return contents.getRowAdapter();
 	}
 	
 	@Override
@@ -253,8 +253,8 @@ public class Table
 	}
 
 	@Override
-	public IElementAdapter getColumnsFacade() {
-		return contents.getColumnsFacade();
+	public IElementAdapter getColumnAdapter() {
+		return contents.getColumnAdapter();
 	}
 	
 	@Override
@@ -297,8 +297,8 @@ public class Table
 	}
 	
 	@Override
-	public IElementAdapter getCellsFacade() {
-		return contents.getCellsFacade();
+	public IElementAdapter getCellAdapter() {
+		return contents.getCellAdapter();
 	}
 	
 	// internal operations

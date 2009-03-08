@@ -9,19 +9,19 @@ import java.util.List;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.ValueListDialog;
-import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCondition;
-import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCriteria;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCondition;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCriteria;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.model.table.ITableContents;
 
-public class ShowRowsByValuesAction extends BaseAction {
+public class FilterRowsByValuesAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public ShowRowsByValuesAction() {
-		super("Show rows by values...");	
-		setDesc("Show rows by values");
+	public FilterRowsByValuesAction() {
+		super("Filter rows by values...");	
+		setDesc("Filter rows by values");
 	}
 	
 	@Override
@@ -31,14 +31,14 @@ public class ShowRowsByValuesAction extends BaseAction {
 		if (table == null)
 			return;
 
-		List<IElementProperty> cellPropsList = table.getContents().getCellsFacade().getProperties();
+		List<IElementProperty> cellPropsList = table.getContents().getCellAdapter().getProperties();
 		
 		Object[] params = new Object[cellPropsList.size()];
 		for (int i = 0; i < cellPropsList.size(); i++)
 			params[i] = cellPropsList.get(i).getName();
 
 		
-		ValueListDialog d = new ValueListDialog(AppFrame.instance(), params, "row");
+		FilterRowsByValueDialog d = new FilterRowsByValueDialog(AppFrame.instance(), params, "row");
 		List<ValueCriteria> valueList = d.getValues();
 		boolean includeHidden = d.hiddenIncluded();
 		boolean allCells = d.allCells();

@@ -332,7 +332,7 @@ public class TablePanel extends JPanel {
 
 	public void setCellDecorator(TablePanelCellDecorator decorator) {
 		table.setDefaultRenderer(
-				model.getCellsFacade().getElementClass(), 
+				model.getCellAdapter().getElementClass(), 
 				new LabelTableCellRenderer(decorator));
 		
 		table.repaint();

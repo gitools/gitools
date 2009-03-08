@@ -28,7 +28,7 @@ public final class ToolBarActionSet extends ActionSet {
 				TableActionSet.moveRowsUpAction,
 				TableActionSet.moveRowsDownAction,
 				BaseAction.separator,
-				TableActionSet.sortSelectedColumnsAction	
+				TableActionSet.fastSortRowsAction	
 		});
 	}
 	

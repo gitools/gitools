@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -39,6 +42,8 @@ import es.imim.bg.ztools.ui.views.AbstractView;
 public class TableView extends AbstractView {
 
 	private static final long serialVersionUID = -540561086703759209L;
+
+	private static final int defaultDividerLocation = 280;
 
 	public enum TableViewLayout {
 		LEFT, RIGHT, TOP, BOTTOM
@@ -90,10 +95,14 @@ public class TableView extends AbstractView {
 		});
 		
 		velocityEngine = new VelocityEngine();
+		
 		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
 		velocityEngine.setProperty(
 				"class." + VelocityEngine.RESOURCE_LOADER + ".class", 
 				ClasspathResourceLoader.class.getName());
+		
+		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
+		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 
 		try {
 			velocityEngine.init();
@@ -154,76 +163,71 @@ public class TableView extends AbstractView {
 	}
 
 	private void refreshCellDetails() {
-		String html = "";
-		StringBuilder sb = new StringBuilder();
-
+		
 		int row = table.getSelectionLeadRow();
 		int rowCount = table.getRowCount();
 		int column = table.getSelectionLeadColumn();
 		int columnCount = table.getColumnCount();
 		
+		StringWriter sw = new StringWriter();
+		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			final String colName = table.getColumn(column).toString();
-			final String rowName = table.getRow(row).toString();
-			IElementAdapter cellsFacade = table.getCellsFacade();
-			Object element = table.getCell(row, column);
+			final IElementAdapter columnAdapter = table.getColumnAdapter();
+			final Object columnElement = table.getColumn(column);
 			
-			//TODO: de-activated for now
-			/*if (!element.getClass().equals(templateClass)) {
+			final IElementAdapter rowAdapter = table.getRowAdapter();
+			final Object rowElement = table.getRow(row);
+			
+			final IElementAdapter cellAdapter = table.getCellAdapter();
+			final Object cellElement = table.getCell(row, column);
+			
+			if (!cellElement.getClass().equals(templateClass)) {
 				templateClass = null;
 				try {
-					velocityTemplate = getTemplateFromObject(element);
-					templateClass = element.getClass();
+					velocityTemplate = getTemplateFromObject(cellElement);
+					templateClass = cellElement.getClass();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}*/
+			}
 			
-			if (templateClass != null) {
-				StringWriter sw = new StringWriter();
+			if (velocityTemplate != null) {
 				VelocityContext context = new VelocityContext();
+				
+				context.put("columnAdapter", columnAdapter);
+				context.put("columnElement", columnElement);
+				
+				context.put("rowAdapter", rowAdapter);
+				context.put("rowElement", rowElement);
+				
+				context.put("cellAdapter", cellAdapter);
+				context.put("cellElement", cellElement);
+				
+				final List<IElementProperty> properties = 
+					cellAdapter.getProperties();
+				
+				final Map<String, Object> cellMap = 
+					new HashMap<String, Object>();
+				
+				for (int index = 0; index < properties.size(); index++) {
+					final IElementProperty prop = properties.get(index);
+					cellMap.put(prop.getId(), 
+							cellAdapter.getValue(cellElement, index));
+				}
+				
+				context.put("cell", cellMap);
+				
 				try {
 					velocityTemplate.merge(context, sw);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				infoPane.setText(sw.toString());
-			}
-			else {
-				// Render parameters & values
-				sb.append("<p><b>Column</b><br>");
-				sb.append(colName).append("</p>");
-				sb.append("<p><b>Row</b><br>");
-				sb.append(rowName).append("</p>");
-				
-				if (element != null) {
-					for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-						IElementProperty prop = cellsFacade.getProperty(i);
-						
-						final String paramName = prop.getName();
-						
-						final String value = 
-							cellsFacade.getValue(element, i).toString(); 
-						
-						sb.append("<p><b>");
-						sb.append(paramName);
-						sb.append("</b><br>");
-						sb.append(value);
-						sb.append("</p>");
-					}
-				}
-				else
-					sb.append("<p>Void cell</p>");
-				
-				html = sb.toString();
-				infoPane.setText(html);
 			}
 		}
-		else if (rowCount == 0) {
-			html = "<p>No cells displayed</p>";
-			infoPane.setText(html);
-		}
+		else if (rowCount == 0)
+			sw.append("<p>No cells displayed</p>");
+		
+		infoPane.setText(sw.toString());
 
 	}
 	
@@ -232,15 +236,15 @@ public class TableView extends AbstractView {
 		
 		String templateName = "default.vm";
 		if (object instanceof BinomialResult)
-			templateName = "binomialResult.vm";
+			templateName = "binomial.vm";
 		else if (object instanceof FisherResult)
-			templateName = "fisherResult.vm";
+			templateName = "fisher.vm";
 		else if (object instanceof ZScoreResult)
-			templateName = "zscoreResult.vm";
+			templateName = "zscore.vm";
 		else if (object instanceof CommonResult)
-			templateName = "commonResult.vm";
+			templateName = "common.vm";
 		
-		return velocityEngine.getTemplate("/vm/" + templateName);
+		return velocityEngine.getTemplate("/vm/details/" + templateName);
 	}
 
 	private void createComponents() {
@@ -342,7 +346,7 @@ public class TableView extends AbstractView {
 			splitPane.add(mainPanel);
 			splitPane.add(infoScrollPane);
 		}
-		splitPane.setDividerLocation(240);
+		splitPane.setDividerLocation(defaultDividerLocation);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
 		

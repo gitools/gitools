@@ -47,7 +47,7 @@ public class TableModelAdapter implements TableModel {
 	
 	public Class<?> getColumnClass(int col) {
 		return col < model.getColumnCount() ? 
-				model.getCellsFacade().getElementClass()
+				model.getCellAdapter().getElementClass()
 					: String.class;
 	}
 }

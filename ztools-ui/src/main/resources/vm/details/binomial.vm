@@ -1,0 +1,80 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body >
+    <table>
+		<tr>
+    		<td class="section" colspan="2">Condition</td>
+    	</tr>
+		<tr>
+    		<td colspan="2">$columnElement</td>
+    	</tr>
+		
+    	<tr>
+    		<td class="section" colspan="2">Module</td>
+    	</tr>
+		<tr>
+    		<td colspan="2">$rowElement</td>
+    	</tr>
+    	<tr>
+    		<td class="label">N:</td>
+    		<td class="value">$cell.N</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Observed:</td>
+    		<td class="value">$cell.observed</td>
+    	</tr>
+
+		<tr>
+    		<td class="section" colspan="2">Population</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Probability:</td>
+    		<td class="value">$cell.probability</td>
+    	</tr>
+		<tr>
+    		<td class="label">Exp Mean:</td>
+    		<td class="value">$cell.expected-mean</td>
+    	</tr>
+		<tr>
+    		<td class="label">Exp StDev:</td>
+    		<td class="value">$cell.expected-stdev</td>
+    	</tr>
+
+		<tr>
+    		<td class="section" colspan="2">P-Values</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Left:</td>
+    		<td class="value">$cell.left-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Right:</td>
+    		<td class="value">$cell.right-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Two-tail:</td>
+    		<td class="value">$cell.two-tail-p-value</td>
+    	</tr>
+
+		<tr>
+    		<td class="section" colspan="2">Correction</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Left:</td>
+    		<td class="value">$cell.corrected-left-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Right:</td>
+    		<td class="value">$cell.corrected-right-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Two-tail:</td>
+    		<td class="value">$cell.corrected-two-tail-p-value</td>
+    	</tr>
+    </table>
+</body>
+</html>

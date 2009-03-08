@@ -71,7 +71,7 @@ public class ProgressMonitorDialog extends JDialog {
 	private TextAreaProgressMonitor progressMonitor;
 	
 	public ProgressMonitorDialog(JFrame owner, String title) {
-		super(owner);
+		super(owner, true);
 
 		setTitle(title);
 		setLocationRelativeTo(owner);

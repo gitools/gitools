@@ -40,7 +40,7 @@ public class ScaleCellDecorator
 			return;
 		}
 		
-		IElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellAdapter();
 		
 		Object value = cellFacade.getValue(
 				element, context.getValueIndex());

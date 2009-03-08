@@ -1,0 +1,96 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		
+		.ctHeader {
+			background-color: rgb(192, 192, 192);
+			margin: 1px;
+		}
+		
+		.ctValue {
+			background-color: rgb(252, 252, 252);
+			margin: 1px;
+			text-align: right;
+		}
+    </style>
+</head>
+<body >
+    <table>
+		<tr>
+    		<td class="section" colspan="2">Condition</td>
+    	</tr>
+		<tr>
+    		<td colspan="2">$columnElement</td>
+    	</tr>
+		
+    	<tr>
+    		<td class="section" colspan="2">Module</td>
+    	</tr>
+		<tr>
+    		<td colspan="2">$rowElement</td>
+    	</tr>
+    	<tr>
+    		<td class="label">N:</td>
+    		<td class="value">$cell.N</td>
+    	</tr>
+    	
+		<tr>
+    		<td class="section" colspan="2">Contingency Table</td>
+    	</tr>
+    	<tr>
+			<td colspan="2">
+        		<table>
+    				<tr>
+    					<td></td>
+    					<td class="ctHeader">1</td>
+    					<td class="ctHeader">0</td>
+    				</tr>
+    				<tr>
+    					<td class="ctHeader">belong</td>
+    					<td class="ctValue">$cell.a</td>
+    					<td class="ctValue">$cell.b</td>
+    				</tr>
+    				<tr>
+    					<td class="ctHeader">don&acute;t belong</td>
+    					<td class="ctValue">$cell.c</td>
+    					<td class="ctValue">$cell.d</td>
+    				</tr>
+                </table>
+            </td>
+    	</tr>
+		
+		<tr>
+    		<td class="section" colspan="2">P-Values</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Left:</td>
+    		<td class="value">$cell.left-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Right:</td>
+    		<td class="value">$cell.right-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Two-tail:</td>
+    		<td class="value">$cell.two-tail-p-value</td>
+    	</tr>
+
+		<tr>
+    		<td class="section" colspan="2">Correction</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Left:</td>
+    		<td class="value">$cell.corrected-left-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Right:</td>
+    		<td class="value">$cell.corrected-right-p-value</td>
+    	</tr>
+    	<tr>
+    		<td class="label">Two-tail:</td>
+    		<td class="value">$cell.corrected-two-tail-p-value</td>
+    	</tr>
+    </table>
+</body>
+</html>

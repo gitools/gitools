@@ -11,14 +11,14 @@ import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.utils.TableUtils;
 
-public class SortSelectedColumnsAction extends BaseAction {
+public class FastSortRowsAction extends BaseAction {
 
 	private static final long serialVersionUID = -582380114189586206L;
 
-	public SortSelectedColumnsAction() {
-		super("Sort selected columns");
+	public FastSortRowsAction() {
+		super("Sort rows");
 		
-		setDesc("Sort selected columns");
+		setDesc("Sort rows");
 		setSmallIconFromResource(IconNames.sortSelectedColumns16);
 		setLargeIconFromResource(IconNames.sortSelectedColumns24);
 		setMnemonic(KeyEvent.VK_S);
@@ -114,6 +114,6 @@ public class SortSelectedColumnsAction extends BaseAction {
 		table.setVisibleRows(sortedVisibleRows);
 		
 		AppFrame.instance()
-			.setStatusText("Selected columns sorted.");
+			.setStatusText("Rows sorted.");
 	}
 }

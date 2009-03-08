@@ -3,11 +3,11 @@ package es.imim.bg.ztools.ui.actions;
 import es.imim.bg.ztools.ui.actions.table.HideSelectionAction;
 import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction;
 import es.imim.bg.ztools.ui.actions.table.ShowAllAction;
-import es.imim.bg.ztools.ui.actions.table.ShowColumnsByNamesAction;
-import es.imim.bg.ztools.ui.actions.table.ShowRowsByNamesAction;
-import es.imim.bg.ztools.ui.actions.table.ShowRowsByValuesAction;
+import es.imim.bg.ztools.ui.actions.table.FilterColumnsByNamesAction;
+import es.imim.bg.ztools.ui.actions.table.FilterRowsByNamesAction;
+import es.imim.bg.ztools.ui.actions.table.FilterRowsByValuesAction;
 import es.imim.bg.ztools.ui.actions.table.SortRowsAction;
-import es.imim.bg.ztools.ui.actions.table.SortSelectedColumnsAction;
+import es.imim.bg.ztools.ui.actions.table.FastSortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectionAction.ElementType;
 import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction.MoveDirection;
 
@@ -15,17 +15,17 @@ public final class TableActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 4844715504798938035L;
 	
-	public static final BaseAction showRowsByNames = 
-		new ShowRowsByNamesAction();
+	public static final BaseAction filterRowsByNames = 
+		new FilterRowsByNamesAction();
 	
-	public static final BaseAction showRowsByValues = 
-		new ShowRowsByValuesAction();
+	public static final BaseAction filterRowsByValues = 
+		new FilterRowsByValuesAction();
 	
 	public static final BaseAction showAllRows =
 		new ShowAllAction(ShowAllAction.ElementType.ROWS);
 	
-	public static final BaseAction showColumnsByNames = 
-		new ShowColumnsByNamesAction();
+	public static final BaseAction filterColumnsByNames = 
+		new FilterColumnsByNamesAction();
 	
 	public static final BaseAction showAllColumns =
 		new ShowAllAction(ShowAllAction.ElementType.COLUMNS);
@@ -33,8 +33,8 @@ public final class TableActionSet extends ActionSet {
 	public static final BaseAction hideSelectedColumnsAction = 
 		new HideSelectionAction(ElementType.COLUMNS);
 	
-	public static final BaseAction sortSelectedColumnsAction = 
-		new SortSelectedColumnsAction();
+	public static final BaseAction fastSortRowsAction = 
+		new FastSortRowsAction();
 
 	public static final BaseAction sortRowsAction = 
 		new SortRowsAction();
@@ -54,24 +54,37 @@ public final class TableActionSet extends ActionSet {
 	public static final BaseAction moveColsRightAction = 
 		new MoveSelectionAction(MoveDirection.COL_RIGHT);
 
-	public TableActionSet() {
-		super("Table", new BaseAction[] {
-			showRowsByNames,
-			showRowsByValues,
-			showAllRows,
-			hideSelectedRowsAction,
-			BaseAction.separator,
-			showColumnsByNames,
-			showAllColumns,
-			hideSelectedColumnsAction,
-			BaseAction.separator,
+	public static final ActionSet moveActionSet = new ActionSet("Move", new BaseAction[] {
 			moveRowsUpAction,
 			moveRowsDownAction,
 			moveColsLeftAction,
-			moveColsRightAction,
+			moveColsRightAction
+	});
+	
+	public static final ActionSet rowsActionSet = new ActionSet("Rows", new BaseAction[] {
+			filterRowsByNames,
+			filterRowsByValues,
+			fastSortRowsAction,
+			showAllRows,
+			hideSelectedRowsAction
+	});
+	
+	public static final ActionSet columnsActionSet = new ActionSet("Columns", new BaseAction[] {
+			filterColumnsByNames,
+			showAllColumns,
+			hideSelectedColumnsAction
+	});
+	
+	public TableActionSet() {
+		super("Table", new BaseAction[] {
+			rowsActionSet,
 			BaseAction.separator,
-			sortSelectedColumnsAction,
-			sortRowsAction
+			columnsActionSet,
+			BaseAction.separator,
+			moveActionSet//,
+			//BaseAction.separator,
+			//fastSortRowsAction,
+			//sortRowsAction
 		});
 	}
 }

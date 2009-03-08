@@ -1,0 +1,36 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body >
+    <table>
+		<tr>
+    		<td class="section">Column</td>
+    	</tr>
+		<tr>
+    		<td>$columnElement</td>
+    	</tr>
+		
+    	<tr>
+    		<td class="section">Row</td>
+    	</tr>
+		<tr>
+    		<td>$rowElement</td>
+    	</tr>
+		
+		<tr>
+    		<td class="section">Parameters</td>
+    	</tr>
+		#foreach($key in $cell.keySet())
+    	<tr>
+    		<td class="label">$key:</td>
+        </tr>
+		<tr>
+    		<td class="value">$cell.get($key)</td>
+    	</tr>
+		#end
+    </table>
+</body>
+</html>

@@ -16,17 +16,17 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCondition;
-import es.imim.bg.ztools.ui.dialogs.ValueListDialog.ValueCriteria;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCondition;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCriteria;
 
-public class ValueCriteriaDialog extends JDialog {
+public class FilterRowsByValueCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
 	private Object[] params;
 	private ValueCriteria criteria;
 
-	public ValueCriteriaDialog(JDialog owner, Object[] params) {
+	public FilterRowsByValueCriteriaDialog(JDialog owner, Object[] params) {
 		super(owner);
 		
 		setModal(true);

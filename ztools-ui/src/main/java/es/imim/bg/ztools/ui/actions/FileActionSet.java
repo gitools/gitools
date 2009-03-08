@@ -27,8 +27,8 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportNamesAction = new ExportNames();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
-			exportParameterDataAction,
-			exportColumnDataAction,
+			/*exportParameterDataAction,
+			exportColumnDataAction,*/
 			exportNamesAction
 	});
 

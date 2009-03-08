@@ -17,7 +17,7 @@ public class TableUtils {
 	}
 	
 	public static int correctedValueIndex(ITable table, IElementProperty prop) {
-		IElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellAdapter();
 		int numProps = cellFacade.getPropertyCount();
 		
 		String id = "corrected-" + prop.getId();

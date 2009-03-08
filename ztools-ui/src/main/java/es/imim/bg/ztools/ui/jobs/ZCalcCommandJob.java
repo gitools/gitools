@@ -30,7 +30,7 @@ public class ZCalcCommandJob implements Job {
 	        
 			command.run(monitor);
 
-			new OpenAnalysisJob(analysisPath, monitor).run(); 			
+			new OpenAnalysisJob(analysisPath, monitor).run();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

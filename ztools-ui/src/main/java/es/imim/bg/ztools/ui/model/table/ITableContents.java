@@ -8,13 +8,13 @@ public interface ITableContents {
 	
 	int getRowCount();
 	Object getRow(int index);
-	IElementAdapter getRowsFacade();
+	IElementAdapter getRowAdapter();
 	
 	// columns
 	
 	int getColumnCount();
 	Object getColumn(int index);
-	IElementAdapter getColumnsFacade();
+	IElementAdapter getColumnAdapter();
 	
 	// cells
 	
@@ -24,5 +24,5 @@ public interface ITableContents {
 	void setCellValue(int row, int column, int index, Object value);
 	void setCellValue(int row, int column, String id, Object value);
 	
-	IElementAdapter getCellsFacade();
+	IElementAdapter getCellAdapter();
 }

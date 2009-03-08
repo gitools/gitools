@@ -23,7 +23,7 @@ public class ResultsMatrixTableContentsAdapter
 	}
 
 	@Override
-	public IElementAdapter getRowsFacade() {
+	public IElementAdapter getRowAdapter() {
 		return results.getRowAdapter();
 	}
 	
@@ -40,7 +40,7 @@ public class ResultsMatrixTableContentsAdapter
 	}
 
 	@Override
-	public IElementAdapter getColumnsFacade() {
+	public IElementAdapter getColumnAdapter() {
 		return results.getColumnAdapter();
 	}
 
@@ -72,7 +72,7 @@ public class ResultsMatrixTableContentsAdapter
 	}
 	
 	@Override
-	public IElementAdapter getCellsFacade() {
+	public IElementAdapter getCellAdapter() {
 		return results.getCellAdapter();
 	}
 }

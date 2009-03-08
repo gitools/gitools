@@ -39,7 +39,7 @@ public class MtcAction extends BaseAction {
 		if (table == null)
 			return;
 
-		IElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellAdapter();
 		
 		final int propIndex = table.getSelectedPropertyIndex();
 		final int corrPropIndex = 

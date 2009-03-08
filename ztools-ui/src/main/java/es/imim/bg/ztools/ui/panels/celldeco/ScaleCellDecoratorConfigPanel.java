@@ -71,7 +71,7 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 		
 		// value combo box
 		
-		IElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellFacade = table.getCellAdapter();
 		
 		int numProps = cellFacade.getPropertyCount();
 		

@@ -14,18 +14,18 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.ui.dialogs.SortListDialog.AggregationType;
-import es.imim.bg.ztools.ui.dialogs.SortListDialog.SortDirection;
-import es.imim.bg.ztools.ui.dialogs.SortListDialog.SortCriteria;
+import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.AggregationType;
+import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortDirection;
+import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortCriteria;
 
-public class SortCriteriaDialog extends JDialog {
+public class SortRowsCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 
 	private Object[] params;
 	private SortCriteria criteria;
 
-	public SortCriteriaDialog(JFrame owner, Object[] params) {
+	public SortRowsCriteriaDialog(JFrame owner, Object[] params) {
 		super(owner);
 		
 		this.params = params;

@@ -9,17 +9,17 @@ import java.util.regex.Pattern;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.NameListDialog;
+import es.imim.bg.ztools.ui.dialogs.FilterRowsByNameDialog;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.model.table.ITableContents;
 
-public class ShowRowsByNamesAction extends BaseAction {
+public class FilterRowsByNamesAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public ShowRowsByNamesAction() {
-		super("Show rows by name...");	
-		setDesc("Show rows by name");
+	public FilterRowsByNamesAction() {
+		super("Filter rows by name...");	
+		setDesc("Filter rows by name");
 	}
 	
 	@Override
@@ -30,8 +30,8 @@ public class ShowRowsByNamesAction extends BaseAction {
 			return;
 		
 		// Show dialog
-		NameListDialog d = 
-			new NameListDialog(AppFrame.instance());
+		FilterRowsByNameDialog d = 
+			new FilterRowsByNameDialog(AppFrame.instance());
 		
 		List<String> names = d.getNameList();
 		boolean regexChecked = d.isRegexChecked();
@@ -40,7 +40,7 @@ public class ShowRowsByNamesAction extends BaseAction {
 			return;
 		
 		final ITableContents contents = table.getContents();
-		
+
 		// List of rows that will be shown
 		List<Integer> rows = new ArrayList<Integer>();
 		if (regexChecked)

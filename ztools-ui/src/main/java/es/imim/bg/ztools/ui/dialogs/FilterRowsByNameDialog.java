@@ -1,13 +1,14 @@
 package es.imim.bg.ztools.ui.dialogs;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,131 +16,82 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.utils.Options;
 
-public class SortListDialog extends JDialog {
+public class FilterRowsByNameDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	public enum SortDirection { 
-		ASC("ascending"),
-		DESC("descending");
-		
-		private String title;
-		
-		private SortDirection(String title) {
-			this.title = title;
-		}
-		
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
+	private Boolean regexChecked = false;
 	
-	public enum AggregationType {
-		MULTIPLICATION("multiplicated"),
-		LOGSUM("summed logarithm"),
-		MEDIAN("mean value");
-		
-		private String title;
-		
-		private AggregationType(String title) {
-			this.title = title;
-		}
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
+	private List<String> nameList;
 	
-	public static class SortCriteria {
-		
-		protected Object param;
-		protected SortDirection direction;
-		protected AggregationType aggregation;
-		
-		public SortCriteria(Object param, AggregationType aggregationType, SortDirection direction){
-			setParam(param);
-			setAggregation(aggregationType);
-			setCondition(direction);
-		}
+	public Boolean isRegexChecked() {
+		return regexChecked;
+	}
 
-		private void setCondition(SortDirection direction) {
-			this.direction = direction;
-		}
-		
-		public SortDirection getCondition() {
-			return this.direction;
-		}
-
-		private void setParam(Object param) {
-			this.param = param;
-		}
-		
-		public Object getParam() {
-			return this.param;
-		}
-		
-		public void setAggregation (AggregationType aggregation) {
-			this.aggregation = aggregation;
-		}
-		
-		public AggregationType getAggregation () {
-			return this.aggregation;
-		}
-		
-		@Override
-		public String toString() {
-			return param.toString() + ", " + aggregation.toString() + ", " + direction.toString();
-		}
+	public List<String> getNameList() {
+		setVisible(true);
+		return nameList;
 	}
 	
-	private Object[] params;
-	private List<SortCriteria> criteriaList;
-	private Boolean onlySelectedColumnsChecked = false;
-	
-	public SortListDialog(JFrame owner, Object[] params) {
+	public FilterRowsByNameDialog(JFrame owner) {
 		super(owner);
 		
 		setModal(true);
-		setTitle("Criteria list for sorting");
+		setTitle("Names...");
 		
-		this.params = params;
-		
-		setLocationByPlatform(true);				
+		setLocationByPlatform(true);		
 		createComponents();
-		getContentPane().setBackground(Color.WHITE);
 		pack();
 	}
 
 	private void createComponents() {
-				
-		final DefaultListModel listModel = new DefaultListModel();    
-		final JList criteriaList = new JList(listModel);   
 		
-		final Checkbox checkbox = new Checkbox("Apply only for selected columns");
+		final JCheckBox checkbox = new JCheckBox("Use regular expression matching");
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BorderLayout());
-		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		checkboxPanel.add(checkbox, BorderLayout.WEST);
 		
-		final JScrollPane scrollPane = new JScrollPane(criteriaList);
+		final DefaultListModel listModel = new DefaultListModel();
+		final JList nameList = new JList(listModel);		
+		final JScrollPane scrollPane = new JScrollPane(nameList);
 		scrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 0, 0));
 
-		final JButton addBtn = new JButton("Add...");
+		JButton loadBtn = new JButton("Load...");
+		loadBtn.setMargin(new Insets(0, 30, 0, 30));
+		loadBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					loadFromFile(listModel);
+				} catch (IOException e1) {
+					JOptionPane.showInputDialog(
+			                scrollPane,
+			                "File could not be read: " + e1.getMessage() + "\n",
+			                "Error",
+			                JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
 				addElmenent(listModel);
 			}
@@ -149,9 +101,10 @@ public class SortListDialog extends JDialog {
 		removeBtn.setMargin(new Insets(0, 30, 0, 30));
 		removeBtn.setEnabled(false);
 		removeBtn.addActionListener(new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(listModel, criteriaList);
+				removeElement(listModel, 
+						nameList.getSelectedIndices());
 			}
 		});
 		
@@ -159,9 +112,9 @@ public class SortListDialog extends JDialog {
 		upBtn.setMargin(new Insets(0, 30, 0, 30));
 		upBtn.setEnabled(false);
 		upBtn.addActionListener(new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(listModel, criteriaList);
+				moveUp(listModel, nameList);
 			}
 		});
 		
@@ -169,16 +122,16 @@ public class SortListDialog extends JDialog {
 		downBtn.setMargin(new Insets(0, 30, 0, 30));
 		downBtn.setEnabled(false);
 		downBtn.addActionListener(new ActionListener() {
-			@Override
+			//@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(listModel, criteriaList);
+				moveDown(listModel, nameList);
 			}
 		});
 		
-		criteriaList.addListSelectionListener(new ListSelectionListener() {
+		nameList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(criteriaList.getSelectedValue() == null){
+				if(nameList.getSelectedValue() == null){
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
@@ -190,43 +143,45 @@ public class SortListDialog extends JDialog {
 			}
 		});
 		
-		final JButton acceptBtn = new JButton("OK");
+		JButton acceptBtn = new JButton("OK");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel, checkbox.getState());
+				acceptChanges(listModel, checkbox.isSelected());
 			}
 		});
 		
-		final JButton cancelBtn = new JButton("Cancel");
+		JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setMargin(new Insets(0, 30, 0, 30));
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				discardChanges(listModel);
+				closeDialog();
 			}
 		});
 		
-		final JPanel btnPanel = new JPanel();
+		JPanel btnPanel = new JPanel();
 		btnPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		btnPanel.setLayout(new GridLayout(7,1));
+		btnPanel.add(loadBtn);
 		btnPanel.add(addBtn);
 		btnPanel.add(removeBtn);
 		btnPanel.add(upBtn);
 		btnPanel.add(downBtn);
 		
-		final JPanel contPanel = new JPanel();
+		JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
-		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		contPanel.add(btnPanel, BorderLayout.EAST);
+		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		
-		final JPanel mainButtonEastPanel = new JPanel();
+		JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
-		final JPanel mainButtonPanel = new JPanel();
+		JPanel mainButtonPanel = new JPanel();
 		mainButtonPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonPanel.setLayout(new BorderLayout());
 		mainButtonPanel.add(mainButtonEastPanel, BorderLayout.EAST);
@@ -236,27 +191,74 @@ public class SortListDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void addElmenent(DefaultListModel listModel) {
-		SortCriteriaDialog d = new SortCriteriaDialog(AppFrame.instance(), params);
-		SortCriteria c = d.getCriteria();
-		listModel.addElement(c);
+	protected void loadFromFile(DefaultListModel listModel) throws IOException {
+		
+		listModel.removeAllElements(); //start from scratch
+		
+		File file = getSelectedFile();
+		if (file == null)
+			return;
+		
+		List<String> filters = readNamesFromFile(file);
+		for (String s : filters)
+			listModel.addElement(s);
 	}
 	
-	protected void removeElement(DefaultListModel listModel, JList criteriaList) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
+	protected File getSelectedFile() {
+		JFileChooser fileChooser = new JFileChooser(
+				Options.instance().getLastExportPath());
+		
+		fileChooser.setDialogTitle("Select the file containing names");
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		int retval = fileChooser.showOpenDialog(AppFrame.instance());
+		if (retval == JFileChooser.APPROVE_OPTION)
+			return fileChooser.getSelectedFile();
+		
+		return null;
+	}
+	
+	protected List<String> readNamesFromFile(File file) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line;
+	    
+	    List<String> names = new ArrayList<String>();
+
+	    while ((line = br.readLine()) != null) {
+	    	line = line.trim();
+	    	if(!line.isEmpty())
+	    		names.add(line);
+	    }
+	    
+	    return names;
+	}
+
+	protected void addElmenent(DefaultListModel listModel) {
+		String name = (String)JOptionPane.showInputDialog(
+                this,
+                "Specify a new name\n",
+                "Add...",
+                JOptionPane.PLAIN_MESSAGE);
+
+		if (name != null && !name.isEmpty()) 
+			listModel.addElement(name);		
+	}
+
+	protected void removeElement(DefaultListModel listModel, int[] selectedIndices) {
 		for (int i = selectedIndices.length; i > 0; i--)
 			listModel.remove(selectedIndices[i-1]);		
 	}
 
 	protected void moveUp(final DefaultListModel listModel,
-			final JList criteriaList) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
+			final JList filterList) {
+		
+		int[] selectedIndices = filterList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = -1;
 		int lag = 0;
 		Object el;
+		
 		for (int i = 0; i < selectedIndices.length ; i++) {
-
 			actualIndex = selectedIndices[i];
 			if(actualIndex == 0)
 				lag++;
@@ -272,16 +274,18 @@ public class SortListDialog extends JDialog {
 				selectedIndices[i] = newIndex;
 			}
 		}
-		criteriaList.setSelectedIndices(selectedIndices);
+		filterList.setSelectedIndices(selectedIndices);
 	}
 
 	protected void moveDown(final DefaultListModel listModel,
-			final JList criteriaList) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
+			final JList filterList) {
+		
+		int[] selectedIndices = filterList.getSelectedIndices();
 		int actualIndex;
 		int prevIndex = listModel.getSize();
 		int lag = 0;
 		Object el;
+		
 		for (int i = selectedIndices.length; i > 0; i--) {
 			actualIndex = selectedIndices[i-1];
 			if(actualIndex == listModel.getSize() - 1)
@@ -298,28 +302,25 @@ public class SortListDialog extends JDialog {
 				selectedIndices[i-1] = newIndex;
 			}
 		}
-		criteriaList.setSelectedIndices(selectedIndices);
+		filterList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel, boolean onlySelectedColumnsChecked) {
-		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
-		for (int i = 0; i < listModel.getSize(); i++)
-			criteriaList.add((SortCriteria) listModel.getElementAt(i));
+	protected void acceptChanges(DefaultListModel tempListModel, boolean tempRegEx) {
+		List<String> newFilterList = new ArrayList<String>();
+		for (int i = 0; i < tempListModel.getSize(); i++)
+			newFilterList.add(tempListModel.getElementAt(i).toString());
 		
-		setVisible(false);
+		nameList = newFilterList;
+		regexChecked = tempRegEx;
+		closeDialog();
 	}
 	
-	protected void discardChanges(DefaultListModel listModel) {
-		criteriaList = null;
+	protected void discardChanges(DefaultListModel tempListModel) {
+		nameList = null;
+		closeDialog();
+	}
+	
+	protected void closeDialog() {
 		setVisible(false);
-	}
-
-	public Boolean isOnlySelectedColumnsChecked() {
-		return onlySelectedColumnsChecked;
-	}
-
-	public List<SortCriteria> getValueList() {
-		setVisible(true);
-		return criteriaList;
 	}
 }

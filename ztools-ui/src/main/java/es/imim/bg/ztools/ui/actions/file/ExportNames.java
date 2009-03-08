@@ -43,7 +43,7 @@ public class ExportNames extends BaseAction {
 				visibleRows, visibleCols, hiddenRows, hiddenCols };
 
 		final String selected = (String) JOptionPane.showInputDialog(AppFrame.instance(),
-				"What do tou want to export ?", "Export names",
+				"What do you want to export ?", "Export names",
 				JOptionPane.QUESTION_MESSAGE, null, possibilities,
 				"Visible row names");
 
