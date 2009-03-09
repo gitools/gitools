@@ -1,3 +1,63 @@
+#macro( htmlColor $color )
+	rgb($color.Red, $color.Green, $color.Blue)
+#end
+
+#macro( pvalueColor $value )
+	#set( $color = $pvalueScale.getColor($value) )
+    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+#end
+
+#macro( nameRow $value )
+	<tr>
+		<td colspan="2">$value</td>
+	</tr>
+#end
+
+#macro( valueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$value</td>
+	</tr>
+#end
+
+#macro( fmtValueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.format($value)</td>
+	</tr>
+#end
+
+
+#macro( pvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($value)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( cpvalueRow $label $value )
+	#set( $cval = $value )
+	#if( $cval > 1.0 )
+		#set( $cval = 1.0 )
+	#end
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($cval)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( section $title )
+	<tr>
+		<td class="section" colspan="2">$title</td>
+	</tr>
+#end
+
 <html>
 <head>
 	<style type="text/css">
@@ -6,75 +66,28 @@
 </head>
 <body >
     <table>
-		<tr>
-    		<td class="section" colspan="2">Condition</td>
-    	</tr>
-		<tr>
-    		<td colspan="2">$columnElement</td>
-    	</tr>
+		#section( "Condition" )
+		#nameRow( $columnElement )
 		
-    	<tr>
-    		<td class="section" colspan="2">Module</td>
-    	</tr>
-		<tr>
-    		<td colspan="2">$rowElement</td>
-    	</tr>
-    	<tr>
-    		<td class="label">N:</td>
-    		<td class="value">$cell.N</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Observed:</td>
-    		<td class="value">$cell.observed</td>
-    	</tr>
-
-		<tr>
-    		<td class="section" colspan="2">Population</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Probability:</td>
-    		<td class="value">$cell.probability</td>
-    	</tr>
-		<tr>
-    		<td class="label">Exp Mean:</td>
-    		<td class="value">$cell.expected-mean</td>
-    	</tr>
-		<tr>
-    		<td class="label">Exp StDev:</td>
-    		<td class="value">$cell.expected-stdev</td>
-    	</tr>
-
-		<tr>
-    		<td class="section" colspan="2">P-Values</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Left:</td>
-    		<td class="value">$cell.left-p-value</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Right:</td>
-    		<td class="value">$cell.right-p-value</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Two-tail:</td>
-    		<td class="value">$cell.two-tail-p-value</td>
-    	</tr>
-
-		<tr>
-    		<td class="section" colspan="2">Correction</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Left:</td>
-    		<td class="value">$cell.corrected-left-p-value</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Right:</td>
-    		<td class="value">$cell.corrected-right-p-value</td>
-    	</tr>
-    	<tr>
-    		<td class="label">Two-tail:</td>
-    		<td class="value">$cell.corrected-two-tail-p-value</td>
-    	</tr>
+		#section( "Module" )
+		#nameRow( $rowElement )
+		#valueRow( "N" $cell.N )
+		#valueRow( "Observed" $cell.observed )
+		
+		#section( "Population" )
+		#valueRow( "Probability" $fmt.format("%.3g", $cell.probability) )
+		#valueRow( "Exp-Mean" $fmt.format("%.3g", $cell.expected-mean) )
+		#valueRow( "Exp-StDev" $fmt.format("%.3g", $cell.expected-stdev) )
+		
+		#section( "P-Values" )
+		#pvalueRow( "Left" $cell.left-p-value )
+		#pvalueRow( "Right" $cell.right-p-value )
+		#pvalueRow( "Two-Tail" $cell.two-tail-p-value )
+		
+		#section( "Correction" )
+		#cpvalueRow( "Left" $cell.corrected-left-p-value )
+		#cpvalueRow( "Right" $cell.corrected-right-p-value )
+		#cpvalueRow( "Two-Tail" $cell.corrected-two-tail-p-value )
     </table>
 </body>
 </html>

@@ -40,9 +40,9 @@ public class ScaleCellDecorator
 			return;
 		}
 		
-		IElementAdapter cellFacade = table.getCellAdapter();
+		IElementAdapter cellAdapter = table.getCellAdapter();
 		
-		Object value = cellFacade.getValue(
+		Object value = cellAdapter.getValue(
 				element, context.getValueIndex());
 		
 		double v = TableUtils.doubleValue(value);
@@ -57,7 +57,7 @@ public class ScaleCellDecorator
 			int corrIndex = context.getCorrectedValueIndex();
 			
 			Object corrValue = corrIndex >= 0 ?
-					cellFacade.getValue(element, corrIndex) : 0.0;
+					cellAdapter.getValue(element, corrIndex) : 0.0;
 					
 			double cv = TableUtils.doubleValue(corrValue);
 			

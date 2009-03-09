@@ -1,34 +1,84 @@
+#macro( htmlColor $color )
+	rgb($color.Red, $color.Green, $color.Blue)
+#end
+
+#macro( pvalueColor $value )
+	#set( $color = $pvalueScale.getColor($value) )
+    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+#end
+
+#macro( nameRow $value )
+	<tr>
+		<td colspan="2">$value</td>
+	</tr>
+#end
+
+#macro( valueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$value</td>
+	</tr>
+#end
+
+#macro( fmtValueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.format($value)</td>
+	</tr>
+#end
+
+
+#macro( pvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($value)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( cpvalueRow $label $value )
+	#set( $cval = $value )
+	#if( $cval > 1.0 )
+		#set( $cval = 1.0 )
+	#end
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($cval)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( section $title )
+	<tr>
+		<td class="section" colspan="2">$title</td>
+	</tr>
+#end
+
 <html>
 <head>
 	<style type="text/css">
 		#include("/vm/style/default.css")
     </style>
 </head>
-<body >
+<body>
     <table>
-		<tr>
-    		<td class="section">Column</td>
-    	</tr>
-		<tr>
-    		<td>$columnElement</td>
-    	</tr>
+		#section( "Condition" )
+		#nameRow( $columnElement )
 		
-    	<tr>
-    		<td class="section">Row</td>
-    	</tr>
-		<tr>
-    		<td>$rowElement</td>
-    	</tr>
+		#section( "Module" )
+		#nameRow( $rowElement )
 		
-		<tr>
-    		<td class="section">Parameters</td>
-    	</tr>
+		#section( "Parameters" )
 		#foreach($key in $cell.keySet())
     	<tr>
     		<td class="label">$key:</td>
         </tr>
 		<tr>
-    		<td class="value">$cell.get($key)</td>
+    		<td class="value">$fmt.format($cell.get($key))</td>
     	</tr>
 		#end
     </table>

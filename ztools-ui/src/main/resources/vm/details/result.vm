@@ -2,15 +2,19 @@
 	rgb($color.Red, $color.Green, $color.Blue)
 #end
 
+#macro( pvalueColor_ $value )
+	#set( $color = $pvalueScale.getColor($value) )
+	<table style="width: 24px; height: 24px;">
+		<tr>
+			<td 
+				style="background-color: #htmlColor($color);">*</td>
+        </tr>
+    </table>
+#end
+
 #macro( pvalueColor $value )
 	#set( $color = $pvalueScale.getColor($value) )
     <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-#end
-
-#macro( nameRow $value )
-	<tr>
-		<td colspan="2">$value</td>
-	</tr>
 #end
 
 #macro( valueRow $label $value )
@@ -62,17 +66,6 @@
 <head>
 	<style type="text/css">
 		#include("/vm/style/default.css")
-		
-		.ctHeader {
-			background-color: rgb(192, 192, 192);
-			margin: 1px;
-		}
-		
-		.ctValue {
-			background-color: rgb(252, 252, 252);
-			margin: 1px;
-			text-align: right;
-		}
     </style>
 </head>
 <body>
@@ -83,30 +76,7 @@
 		#section( "Module" )
 		#nameRow( $rowElement )
 		#valueRow( "N" $cell.N )
-		
-		#section( "Contingency Table" )
-		<tr>
-			<td colspan="2">
-        		<table>
-    				<tr>
-    					<td></td>
-    					<td class="ctHeader">1</td>
-    					<td class="ctHeader">0</td>
-    				</tr>
-    				<tr>
-    					<td class="ctHeader">belong</td>
-    					<td class="ctValue">$cell.a</td>
-    					<td class="ctValue">$cell.b</td>
-    				</tr>
-    				<tr>
-    					<td class="ctHeader">don&acute;t belong</td>
-    					<td class="ctValue">$cell.c</td>
-    					<td class="ctValue">$cell.d</td>
-    				</tr>
-                </table>
-            </td>
-    	</tr>
-		
+	
 		#section( "P-Values" )
 		#pvalueRow( "Left" $cell.left-p-value )
 		#pvalueRow( "Right" $cell.right-p-value )

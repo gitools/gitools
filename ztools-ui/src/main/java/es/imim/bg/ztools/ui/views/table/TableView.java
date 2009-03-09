@@ -24,6 +24,8 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
+import es.imim.bg.GenericFormatter;
+import es.imim.bg.colorscale.LogColorScale;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
@@ -103,6 +105,8 @@ public class TableView extends AbstractView {
 		
 		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
 		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
+		
+		velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
 
 		try {
 			velocityEngine.init();
@@ -193,6 +197,9 @@ public class TableView extends AbstractView {
 			
 			if (velocityTemplate != null) {
 				VelocityContext context = new VelocityContext();
+				
+				context.put("fmt", new GenericFormatter());
+				context.put("pvalueScale", new LogColorScale(0.0, 0.05, 1.0));
 				
 				context.put("columnAdapter", columnAdapter);
 				context.put("columnElement", columnElement);
