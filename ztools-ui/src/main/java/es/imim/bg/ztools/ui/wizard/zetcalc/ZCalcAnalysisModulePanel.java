@@ -75,7 +75,7 @@ public class ZCalcAnalysisModulePanel extends JPanel {
         
         contentPanel1.setLayout(new java.awt.BorderLayout());
 
-        panelTitle.setText("Module");
+        panelTitle.setText("Modules");
         panelTitle.setFont(new java.awt.Font(panelTitle.getFont().getName(), Font.BOLD, 18));
         contentPanel1.add(panelTitle, java.awt.BorderLayout.NORTH);
 
