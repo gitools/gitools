@@ -82,5 +82,7 @@
     	</tr>
 		#end
     </table>
+	
+	#parse( "/vm/details/scale.vm" )
 </body>
 </html>

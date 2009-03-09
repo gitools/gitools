@@ -117,5 +117,7 @@
 		#cpvalueRow( "Right" $cell.corrected-right-p-value )
 		#cpvalueRow( "Two-Tail" $cell.corrected-two-tail-p-value )
     </table>
+	
+	#parse( "/vm/details/scale.vm" )
 </body>
 </html>
