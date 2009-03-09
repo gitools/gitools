@@ -212,8 +212,11 @@ public class FilterRowsByNameDialog extends JDialog {
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION)
-			return fileChooser.getSelectedFile();
+		if (retval == JFileChooser.APPROVE_OPTION) {
+			final File file = fileChooser.getSelectedFile();
+			Options.instance().setLastExportPath(file.getParent());
+			return file;
+		}
 		
 		return null;
 	}
