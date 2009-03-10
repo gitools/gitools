@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -63,12 +64,12 @@ public class SortRowsDialog extends JDialog {
 	
 	public static class SortCriteria {
 		
-		protected Object param;
+		protected Object prop;
 		protected SortDirection direction;
 		protected AggregationType aggregation;
 		
-		public SortCriteria(Object param, AggregationType aggregationType, SortDirection direction){
-			setParam(param);
+		public SortCriteria(Object prop, AggregationType aggregationType, SortDirection direction){
+			setProperty(prop);
 			setAggregation(aggregationType);
 			setCondition(direction);
 		}
@@ -81,12 +82,12 @@ public class SortRowsDialog extends JDialog {
 			return this.direction;
 		}
 
-		private void setParam(Object param) {
-			this.param = param;
+		private void setProperty(Object prop) {
+			this.prop = prop;
 		}
 		
-		public Object getParam() {
-			return this.param;
+		public Object getProperties() {
+			return this.prop;
 		}
 		
 		public void setAggregation (AggregationType aggregation) {
@@ -99,21 +100,23 @@ public class SortRowsDialog extends JDialog {
 		
 		@Override
 		public String toString() {
-			return param.toString() + ", " + aggregation.toString() + ", " + direction.toString();
+			return prop.toString() + ", " + aggregation.toString() + ", " + direction.toString();
 		}
 	}
 	
-	private Object[] params;
+	private Object[] properties;
 	private List<SortCriteria> criteriaList;
-	private Boolean onlySelectedColumnsChecked = false;
+	private Boolean allColumns = false;
+	private Boolean allRows = false;
+
 	
-	public SortRowsDialog(JFrame owner, Object[] params) {
+	public SortRowsDialog(JFrame owner, Object[] properties) {
 		super(owner);
 		
 		setModal(true);
 		setTitle("Criteria list for sorting");
 		
-		this.params = params;
+		this.properties = properties;
 		
 		setLocationByPlatform(true);				
 		createComponents();
@@ -126,11 +129,14 @@ public class SortRowsDialog extends JDialog {
 		final DefaultListModel listModel = new DefaultListModel();    
 		final JList criteriaList = new JList(listModel);   
 		
-		final Checkbox checkbox = new Checkbox("Apply only for selected columns");
+		final JCheckBox checkbox1 = new JCheckBox("Consider all columns");
+		final JCheckBox checkbox2 = new JCheckBox("Consider also hidden rows");
 		JPanel checkboxPanel = new JPanel();
-		checkboxPanel.setLayout(new BorderLayout());
+		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.PAGE_AXIS));
 		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-		checkboxPanel.add(checkbox, BorderLayout.WEST);
+		checkboxPanel.add(checkbox1);
+		checkboxPanel.add(checkbox2);
+
 		
 		final JScrollPane scrollPane = new JScrollPane(criteriaList);
 		scrollPane.setBorder(
@@ -195,7 +201,7 @@ public class SortRowsDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel, checkbox.getState());
+				acceptChanges(listModel, checkbox1.isSelected(), checkbox2.isSelected());
 			}
 		});
 		
@@ -237,7 +243,7 @@ public class SortRowsDialog extends JDialog {
 	}
 
 	protected void addElmenent(DefaultListModel listModel) {
-		SortRowsCriteriaDialog d = new SortRowsCriteriaDialog(AppFrame.instance(), params);
+		SortRowsCriteriaDialog d = new SortRowsCriteriaDialog(AppFrame.instance(), properties);
 		SortCriteria c = d.getCriteria();
 		listModel.addElement(c);
 	}
@@ -301,11 +307,14 @@ public class SortRowsDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel, boolean onlySelectedColumnsChecked) {
+	protected void acceptChanges(DefaultListModel listModel, boolean allColumns, boolean allRows) {
 		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
 		for (int i = 0; i < listModel.getSize(); i++)
 			criteriaList.add((SortCriteria) listModel.getElementAt(i));
-		
+			this.allColumns = allColumns;
+			this.allRows = allRows;
+
+			
 		setVisible(false);
 	}
 	
@@ -314,8 +323,12 @@ public class SortRowsDialog extends JDialog {
 		setVisible(false);
 	}
 
-	public Boolean isOnlySelectedColumnsChecked() {
-		return onlySelectedColumnsChecked;
+	public Boolean considerAllColumns() {
+		return allColumns;
+	}
+	
+	public Boolean considerAllRows() {
+		return allRows;
 	}
 
 	public List<SortCriteria> getValueList() {

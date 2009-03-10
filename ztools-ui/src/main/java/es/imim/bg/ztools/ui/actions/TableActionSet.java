@@ -65,6 +65,7 @@ public final class TableActionSet extends ActionSet {
 			filterRowsByNames,
 			filterRowsByValues,
 			fastSortRowsAction,
+			//sortRowsAction,
 			showAllRows,
 			hideSelectedRowsAction
 	});
@@ -84,7 +85,6 @@ public final class TableActionSet extends ActionSet {
 			moveActionSet//,
 			//BaseAction.separator,
 			//fastSortRowsAction,
-			//sortRowsAction
 		});
 	}
 }
