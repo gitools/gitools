@@ -43,16 +43,9 @@
 #end
 
 #macro( cpvalueRow $label $value )
-	#set( $cval = $value )
-	#if( $cval > 1.0 )
-		#set( $cval = 1.0 )
-	#end
 	<tr>
 		<td class="label">$label</td>
-		<td class="value">
-			#pvalueColor($cval)
-			$fmt.pvalue($value)
-		</td>
+		<td class="value">$fmt.pvalue($value)</td>
 	</tr>
 #end
 

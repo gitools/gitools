@@ -39,22 +39,23 @@
 #end
 
 #macro( cpvalueRow $label $value )
-	#set( $cval = $value )
-	#if( $cval > 1.0 )
-		#set( $cval = 1.0 )
-	#end
 	<tr>
 		<td class="label">$label</td>
-		<td class="value">
-			#pvalueColor($cval)
-			$fmt.pvalue($value)
-		</td>
+		<td class="value">$fmt.pvalue($value)</td>
 	</tr>
 #end
 
 #macro( section $title )
 	<tr>
 		<td class="section" colspan="2">$title</td>
+	</tr>
+#end
+
+#macro( pvalueScale )
+	<tr>
+		<td colspan="2">
+			#parse( "/vm/details/scale.vm" )
+		</td>
 	</tr>
 #end
 
@@ -84,12 +85,12 @@
 		#pvalueRow( "Right" $cell.right-p-value )
 		#pvalueRow( "Two-Tail" $cell.two-tail-p-value )
 		
+		#pvalueScale()
+		
 		#section( "Correction" )
 		#cpvalueRow( "Left" $cell.corrected-left-p-value )
 		#cpvalueRow( "Right" $cell.corrected-right-p-value )
 		#cpvalueRow( "Two-Tail" $cell.corrected-two-tail-p-value )
     </table>
-	
-	#parse( "/vm/details/scale.vm" )
 </body>
 </html>

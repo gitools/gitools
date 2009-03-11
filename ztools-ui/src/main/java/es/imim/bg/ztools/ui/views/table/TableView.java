@@ -1,28 +1,18 @@
 package es.imim.bg.ztools.ui.views.table;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.LogColorScale;
@@ -37,6 +27,7 @@ import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.model.IModel;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
 import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.ui.panels.TemplatePane;
 import es.imim.bg.ztools.ui.panels.celldeco.ScaleCellDecorator;
 import es.imim.bg.ztools.ui.panels.table.TablePanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -47,6 +38,8 @@ public class TableView extends AbstractView {
 
 	private static final int defaultDividerLocation = 280;
 
+	private static final String defaultTemplateName = "/vm/details/noselection.vm";
+
 	public enum TableViewLayout {
 		LEFT, RIGHT, TOP, BOTTOM
 	}
@@ -55,8 +48,7 @@ public class TableView extends AbstractView {
 	
 	private TableViewConfigPanel configPanel;
 	
-	private JTextPane infoPane;
-	private JScrollPane infoScrollPane;
+	private TemplatePane templatePane;
 	private TablePanel tablePanel;
 	private JPanel mainPanel;
 
@@ -64,10 +56,6 @@ public class TableView extends AbstractView {
 	
 	protected boolean blockSelectionUpdate;
 
-	protected VelocityEngine velocityEngine;
-	protected Class<?> templateClass;
-	protected Template velocityTemplate;
-	
 	private PropertyChangeListener decorationContextListener;
 
 	public TableView(final ITable table) {
@@ -95,24 +83,6 @@ public class TableView extends AbstractView {
 				tableModelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		});
-		
-		velocityEngine = new VelocityEngine();
-		
-		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
-		velocityEngine.setProperty(
-				"class." + VelocityEngine.RESOURCE_LOADER + ".class", 
-				ClasspathResourceLoader.class.getName());
-		
-		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
-		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
-		
-		velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-
-		try {
-			velocityEngine.init();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	protected void tableModelPropertyChange(
@@ -173,7 +143,8 @@ public class TableView extends AbstractView {
 		int column = table.getSelectionLeadColumn();
 		int columnCount = table.getColumnCount();
 		
-		StringWriter sw = new StringWriter();
+		VelocityContext context = new VelocityContext();
+		String templateName = defaultTemplateName;
 		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 			final IElementAdapter columnAdapter = table.getColumnAdapter();
@@ -185,19 +156,9 @@ public class TableView extends AbstractView {
 			final IElementAdapter cellAdapter = table.getCellAdapter();
 			final Object cellElement = table.getCell(row, column);
 			
-			if (!cellElement.getClass().equals(templateClass)) {
-				templateClass = null;
-				try {
-					velocityTemplate = getTemplateFromObject(cellElement);
-					templateClass = cellElement.getClass();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-			if (velocityTemplate != null) {
-				VelocityContext context = new VelocityContext();
-				
+			templateName = getTemplateNameFromObject(cellElement);
+
+			if (templateName != null) {				
 				context.put("fmt", new GenericFormatter());
 				context.put("pvalueScale", new LogColorScale(0.0, 0.05, 1.0));
 				
@@ -223,22 +184,40 @@ public class TableView extends AbstractView {
 				}
 				
 				context.put("cell", cellMap);
-				
-				try {
-					velocityTemplate.merge(context, sw);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		}
-		else if (rowCount == 0)
-			sw.append("<p>No cells displayed</p>");
+		else if (column < 0) {
+			System.out.println("row:" + row);
+		}
+		else if (row < 0) {
+			System.out.println("col:" + column);
+		}
 		
-		infoPane.setText(sw.toString());
-
+		try {
+			templatePane.setTemplate(templateName);
+			templatePane.setContext(context);
+			templatePane.render();
+		}
+		catch (Exception e) {
+			e.printStackTrace(); //FIXME
+		}
 	}
 	
-	private Template getTemplateFromObject(Object object) 
+	private String getTemplateNameFromObject(Object object) {
+		String templateName = "default.vm";
+		if (object instanceof BinomialResult)
+			templateName = "binomial.vm";
+		else if (object instanceof FisherResult)
+			templateName = "fisher.vm";
+		else if (object instanceof ZScoreResult)
+			templateName = "zscore.vm";
+		else if (object instanceof CommonResult)
+			templateName = "common.vm";
+		
+		return "/vm/details/" + templateName;
+	}
+
+	/*private Template getTemplateFromObject(Object object) 
 			throws ResourceNotFoundException, ParseErrorException, Exception {
 		
 		String templateName = "default.vm";
@@ -252,7 +231,7 @@ public class TableView extends AbstractView {
 			templateName = "common.vm";
 		
 		return velocityEngine.getTemplate("/vm/details/" + templateName);
-	}
+	}*/
 
 	private void createComponents() {
 		
@@ -308,13 +287,21 @@ public class TableView extends AbstractView {
 		
 		/* Details panel */
 		
-		infoPane = new JTextPane();
+		templatePane = new TemplatePane();
+		try {
+			templatePane.setTemplate(defaultTemplateName);
+			templatePane.render();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		/*infoPane = new JTextPane();
 		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
 		//infoPane.setAutoscrolls(false);
 		infoScrollPane = new JScrollPane(infoPane);
 		infoScrollPane.setBorder(
-				BorderFactory.createEmptyBorder(8, 8, 8, 8));		
+				BorderFactory.createEmptyBorder(8, 8, 8, 8));*/		
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -346,12 +333,14 @@ public class TableView extends AbstractView {
 		
 		final JSplitPane splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
-			splitPane.add(infoScrollPane);
+			//splitPane.add(infoScrollPane);
+			splitPane.add(templatePane);
 			splitPane.add(mainPanel);
 		}
 		else {
 			splitPane.add(mainPanel);
-			splitPane.add(infoScrollPane);
+			//splitPane.add(infoScrollPane);
+			splitPane.add(templatePane);
 		}
 		splitPane.setDividerLocation(defaultDividerLocation);
 		splitPane.setOneTouchExpandable(true);
