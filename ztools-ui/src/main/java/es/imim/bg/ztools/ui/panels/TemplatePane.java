@@ -84,8 +84,10 @@ public class TemplatePane extends JPanel {
 	public void setTemplate(String name) 
 			throws ResourceNotFoundException, ParseErrorException, Exception {
 		
-		if (template == null || !this.templateName.equals(name))
+		if (template == null || !this.templateName.equals(name)) {
 			template = velocityEngine.getTemplate(name);
+			this.templateName = name;
+		}
 	}
 	
 	public VelocityContext getContext() {
