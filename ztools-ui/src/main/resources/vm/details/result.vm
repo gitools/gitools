@@ -1,60 +1,3 @@
-#macro( htmlColor $color )
-	rgb($color.Red, $color.Green, $color.Blue)
-#end
-
-#macro( pvalueColor_ $value )
-	#set( $color = $pvalueScale.getColor($value) )
-	<table style="width: 24px; height: 24px;">
-		<tr>
-			<td 
-				style="background-color: #htmlColor($color);">*</td>
-        </tr>
-    </table>
-#end
-
-#macro( pvalueColor $value )
-	#set( $color = $pvalueScale.getColor($value) )
-    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-#end
-
-#macro( valueRow $label $value )
-	<tr>
-		<td class="label">$label</td>
-		<td class="value">$value</td>
-	</tr>
-#end
-
-#macro( fmtValueRow $label $value )
-	<tr>
-		<td class="label">$label</td>
-		<td class="value">$fmt.format($value)</td>
-	</tr>
-#end
-
-
-#macro( pvalueRow $label $value )
-	<tr>
-		<td class="label">$label</td>
-		<td class="value">
-			#pvalueColor($value)
-			$fmt.pvalue($value)
-		</td>
-	</tr>
-#end
-
-#macro( cpvalueRow $label $value )
-	<tr>
-		<td class="label">$label</td>
-		<td class="value">$fmt.pvalue($value)</td>
-	</tr>
-#end
-
-#macro( section $title )
-	<tr>
-		<td class="section" colspan="2">$title</td>
-	</tr>
-#end
-
 <html>
 <head>
 	<style type="text/css">
@@ -75,12 +18,12 @@
 		#pvalueRow( "Right" $cell.right-p-value )
 		#pvalueRow( "Two-Tail" $cell.two-tail-p-value )
 		
+		#pvalueScale()
+		
 		#section( "Correction" )
 		#cpvalueRow( "Left" $cell.corrected-left-p-value )
 		#cpvalueRow( "Right" $cell.corrected-right-p-value )
 		#cpvalueRow( "Two-Tail" $cell.corrected-two-tail-p-value )
     </table>
-	
-	#parse( "/vm/details/scale.vm" )
 </body>
 </html>

@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -13,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.LogColorScale;
@@ -186,12 +188,12 @@ public class TableView extends AbstractView {
 				context.put("cell", cellMap);
 			}
 		}
-		else if (column < 0) {
+		/*else if (column < 0) {
 			System.out.println("row:" + row);
 		}
 		else if (row < 0) {
 			System.out.println("col:" + column);
-		}
+		}*/
 		
 		try {
 			templatePane.setTemplate(templateName);
@@ -287,7 +289,9 @@ public class TableView extends AbstractView {
 		
 		/* Details panel */
 		
-		templatePane = new TemplatePane();
+		Properties props = new Properties();
+		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		templatePane = new TemplatePane(props);
 		try {
 			templatePane.setTemplate(defaultTemplateName);
 			templatePane.render();

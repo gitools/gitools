@@ -1,0 +1,60 @@
+#macro( htmlColor $color )
+	rgb($color.Red, $color.Green, $color.Blue)
+#end
+
+#macro( pvalueColor $value )
+	#set( $color = $pvalueScale.getColor($value) )
+    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+#end
+
+#macro( nameRow $value )
+	<tr>
+		<td colspan="2">$value</td>
+	</tr>
+#end
+
+#macro( valueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$value</td>
+	</tr>
+#end
+
+#macro( fmtValueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.format($value)</td>
+	</tr>
+#end
+
+
+#macro( pvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($value)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( cpvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.pvalue($value)</td>
+	</tr>
+#end
+
+#macro( section $title )
+	<tr>
+		<td class="section" colspan="2">$title</td>
+	</tr>
+#end
+
+#macro( pvalueScale )
+	<tr>
+		<td colspan="2">
+			#parse( "/vm/details/scale.vm" )
+		</td>
+	</tr>
+#end

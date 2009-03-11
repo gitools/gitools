@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -31,14 +32,8 @@ public class TemplatePane extends JPanel {
 	private JTextPane infoPane;
 
 	public TemplatePane(Properties props) {
-		try {
-			if (props == null)
-				velocityEngine = new VelocityEngine();
-			else
-				velocityEngine = new VelocityEngine(props);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		
+		velocityEngine = new VelocityEngine();
 		
 		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
 		velocityEngine.setProperty(
@@ -48,8 +43,13 @@ public class TemplatePane extends JPanel {
 		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
 		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 		
-		velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		//FIXME: external parameter
+//		velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
 
+		for (Entry<Object, Object> prop : props.entrySet())
+			velocityEngine.setProperty(
+					(String) prop.getKey(), prop.getValue());
+		
 		try {
 			velocityEngine.init();
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class TemplatePane extends JPanel {
 	}
 	
 	public TemplatePane() {
-		this(null);
+		this(new Properties());
 	}
 
 	private void createComponents() {
