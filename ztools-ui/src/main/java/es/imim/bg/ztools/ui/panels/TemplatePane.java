@@ -25,6 +25,7 @@ public class TemplatePane extends JPanel {
 	private static final long serialVersionUID = 1939265225161205798L;
 	
 	private VelocityEngine velocityEngine;
+	private String templateName;
 	private Template template;
 	private VelocityContext context;
 
@@ -44,7 +45,7 @@ public class TemplatePane extends JPanel {
 		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 		
 		//FIXME: external parameter
-//		velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		// velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
 
 		for (Entry<Object, Object> prop : props.entrySet())
 			velocityEngine.setProperty(
@@ -82,7 +83,9 @@ public class TemplatePane extends JPanel {
 	
 	public void setTemplate(String name) 
 			throws ResourceNotFoundException, ParseErrorException, Exception {
-		template = velocityEngine.getTemplate(name);
+		
+		if (template == null || !this.templateName.equals(templateName))
+			template = velocityEngine.getTemplate(name);
 	}
 	
 	public VelocityContext getContext() {
