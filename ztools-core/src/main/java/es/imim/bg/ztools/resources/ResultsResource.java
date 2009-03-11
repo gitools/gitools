@@ -31,6 +31,7 @@ import es.imim.bg.ztools.table.element.bean.BeanElementAdapter;
 import es.imim.bg.ztools.table.element.bean.BeanElementFactory;
 import es.imim.bg.ztools.table.element.string.StringElementAdapter;
 import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CombinationResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
@@ -48,6 +49,7 @@ public class ResultsResource extends Resource {
 			ZScoreResult.class,
 			BinomialResult.class,
 			FisherResult.class,
+			CombinationResult.class,
 			CommonResult.class
 		};
 		

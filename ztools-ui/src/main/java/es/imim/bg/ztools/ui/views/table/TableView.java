@@ -21,6 +21,7 @@ import es.imim.bg.colorscale.LogColorScale;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CombinationResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
@@ -213,27 +214,13 @@ public class TableView extends AbstractView {
 			templateName = "fisher.vm";
 		else if (object instanceof ZScoreResult)
 			templateName = "zscore.vm";
+		else if (object instanceof CombinationResult)
+			templateName = "combination.vm";
 		else if (object instanceof CommonResult)
 			templateName = "common.vm";
 		
 		return "/vm/details/" + templateName;
 	}
-
-	/*private Template getTemplateFromObject(Object object) 
-			throws ResourceNotFoundException, ParseErrorException, Exception {
-		
-		String templateName = "default.vm";
-		if (object instanceof BinomialResult)
-			templateName = "binomial.vm";
-		else if (object instanceof FisherResult)
-			templateName = "fisher.vm";
-		else if (object instanceof ZScoreResult)
-			templateName = "zscore.vm";
-		else if (object instanceof CommonResult)
-			templateName = "common.vm";
-		
-		return velocityEngine.getTemplate("/vm/details/" + templateName);
-	}*/
 
 	private void createComponents() {
 		
