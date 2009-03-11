@@ -65,20 +65,22 @@ public class SortRowsDialog extends JDialog {
 	public static class SortCriteria {
 		
 		protected Object prop;
+		protected int propIndex;
 		protected SortDirection direction;
 		protected AggregationType aggregation;
 		
-		public SortCriteria(Object prop, AggregationType aggregationType, SortDirection direction){
+		public SortCriteria(Object prop, int propIndex, AggregationType aggregationType, SortDirection direction){
 			setProperty(prop);
+			setPropertyIndex(propIndex);
 			setAggregation(aggregationType);
-			setCondition(direction);
+			setDirection(direction);
 		}
 
-		private void setCondition(SortDirection direction) {
+		private void setDirection(SortDirection direction) {
 			this.direction = direction;
 		}
 		
-		public SortDirection getCondition() {
+		public SortDirection getDirection() {
 			return this.direction;
 		}
 
@@ -86,8 +88,16 @@ public class SortRowsDialog extends JDialog {
 			this.prop = prop;
 		}
 		
-		public Object getProperties() {
+		public Object getProperty() {
 			return this.prop;
+		}
+		
+		private void setPropertyIndex(int propIndex) {
+			this.propIndex = propIndex;
+		}
+		
+		public int getPropertyIndex() {
+			return this.propIndex;
 		}
 		
 		public void setAggregation (AggregationType aggregation) {

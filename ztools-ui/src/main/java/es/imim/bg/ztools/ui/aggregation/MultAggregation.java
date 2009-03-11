@@ -8,11 +8,9 @@ public class MultAggregation implements IAggregation {
 
 	
 	@Override
-	public double aggregate(double[] row) {
-		// TODO Auto-generated method stub
-		DoubleMatrix1D dm1d = new DenseDoubleMatrix1D(row);
+	public double aggregate(DoubleMatrix1D row) {
 		//multiplicate
-		double a = dm1d.aggregate(Functions.mult, Functions.identity);
+		double a = row.aggregate(Functions.mult, Functions.identity);
 		return a;
 	}
 

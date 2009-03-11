@@ -8,12 +8,11 @@ public class MedianAggregation implements IAggregation {
 
 	
 	@Override
-	public double aggregate(double[] row) {
-		// TODO Auto-generated method stub
-		DoubleMatrix1D dm1d = new DenseDoubleMatrix1D(row);
-		//multiplicate
-		double a = dm1d.aggregate(Functions.plus, Functions.identity);
-		int els = row.length;
+	public double aggregate(DoubleMatrix1D row) {
+		//sum
+		double a = row.aggregate(Functions.plus, Functions.identity);
+		//divide by elements
+		int els = row.size();
 		return a/els;
 	}
 

@@ -8,11 +8,9 @@ public class LogSumAggregation implements IAggregation {
 
 	
 	@Override
-	public double aggregate(double[] row) {
-		// TODO Auto-generated method stub
-		DoubleMatrix1D dm1d = new DenseDoubleMatrix1D(row);
-		//multiplicate
-		double a = dm1d.aggregate(Functions.plus, Functions.log);
+	public double aggregate(DoubleMatrix1D row) {
+		//sum the logs
+		double a = row.aggregate(Functions.plus, Functions.log);
 		return a;
 	}
 

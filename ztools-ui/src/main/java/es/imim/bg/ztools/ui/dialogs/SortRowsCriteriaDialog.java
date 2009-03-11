@@ -22,13 +22,13 @@ public class SortRowsCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 
-	private Object[] params;
+	private Object[] props;
 	private SortCriteria criteria;
 
-	public SortRowsCriteriaDialog(JFrame owner, Object[] params) {
+	public SortRowsCriteriaDialog(JFrame owner, Object[] props) {
 		super(owner);
 		
-		this.params = params;
+		this.props = props;
 		
 		setModal(true);
 		setTitle("Create Criteria");
@@ -41,9 +41,9 @@ public class SortRowsCriteriaDialog extends JDialog {
 
 	private void createComponents() {
 		
-		final JComboBox paramBox = new JComboBox();
-		for (Object o : params)
-			paramBox.addItem(o);
+		final JComboBox propBox = new JComboBox();
+		for (Object o : props)
+			propBox.addItem(o);
 		
 		final JComboBox directionBox = new JComboBox();
 		for (SortDirection de : SortDirection.values())
@@ -58,7 +58,7 @@ public class SortRowsCriteriaDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(paramBox, aggregationBox, directionBox);
+				acceptChanges(propBox, aggregationBox, directionBox);
 			}
 		});
 
@@ -74,7 +74,7 @@ public class SortRowsCriteriaDialog extends JDialog {
 		final JPanel optionPanel = new JPanel();
 		optionPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		optionPanel.setLayout(new GridLayout(1,3));
-		optionPanel.add(paramBox);
+		optionPanel.add(propBox);
 		optionPanel.add(aggregationBox);
 		optionPanel.add(directionBox);
 
@@ -97,11 +97,12 @@ public class SortRowsCriteriaDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void acceptChanges(JComboBox paramBox, JComboBox aggregationBox, JComboBox directionBox) {
-		Object param = params[paramBox.getSelectedIndex()];
+	protected void acceptChanges(JComboBox propBox, JComboBox aggregationBox, JComboBox directionBox) {
+		Object prop = props[propBox.getSelectedIndex()];
+		int propIndex = propBox.getSelectedIndex();
 		AggregationType aggregationType = (AggregationType) aggregationBox.getSelectedObjects()[0];
 		SortDirection sortDirection = (SortDirection) directionBox.getSelectedObjects()[0];
-		criteria = new SortCriteria(param, aggregationType, sortDirection);
+		criteria = new SortCriteria(prop, propIndex, aggregationType, sortDirection);
 		setVisible(false);
 	}
 	
