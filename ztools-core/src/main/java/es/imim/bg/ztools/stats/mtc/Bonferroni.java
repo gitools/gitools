@@ -17,7 +17,7 @@ public class Bonferroni implements MultipleTestCorrection {
 		values.assign(new DoubleFunction() {
 			@Override
 			public double apply(double v) {
-				return v * n;
+				return Math.min(1.0, v * n);
 			}
 		});
 	}
