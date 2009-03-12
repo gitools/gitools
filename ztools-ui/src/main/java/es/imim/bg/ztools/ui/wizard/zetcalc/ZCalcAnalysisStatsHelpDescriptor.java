@@ -1,5 +1,13 @@
 package es.imim.bg.ztools.ui.wizard.zetcalc;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JTextArea;
+
 import es.imim.bg.ztools.ui.wizard.AbstractWizard;
 import es.imim.bg.ztools.ui.wizard.AnalysisWizardPanelDescriptor;
 import es.imim.bg.ztools.ui.wizard.WizardDataModel;
@@ -16,6 +24,47 @@ public class ZCalcAnalysisStatsHelpDescriptor extends AnalysisWizardPanelDescrip
         this.statsHelpPanel = (ZCalcAnalysisStatsHelpPanel) getPanelComponent();
         this.dataModel = aw.getWizardDataModel();
         setNextButtonAccordingToInputs();
+        
+        
+        MouseListener urlClickListener = new MouseListener(){
+        	
+			@Override
+			public void mouseClicked(MouseEvent e) { }
+
+			@Override
+			public void mouseEntered(MouseEvent e) { }
+
+			@Override
+			public void mouseExited(MouseEvent e) {	}
+
+			@Override
+			public void mousePressed(MouseEvent e) { }
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				JTextArea jta = (JTextArea) e.getComponent();
+				String url = jta.getText();
+				try {
+					java.awt.Desktop.getDesktop().browse(new URI(url));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+        	
+        };
+        
+        JTextArea[] jTextAreas = statsHelpPanel.getTextAreas();
+        for (int i = 0; i < jTextAreas.length; i++) {
+        	if (i%4 == 0) {
+        		jTextAreas[i].addMouseListener(urlClickListener);
+        	}
+        }
+        
     }
        
     private void setNextButtonAccordingToInputs() {

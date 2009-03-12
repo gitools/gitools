@@ -106,12 +106,12 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         jTextAreas[9].setText(StatTest.ZSCORE_MEAN.toString());
         jTextAreas[10].setText("Z-Score using bootstrapping of means");
         jTextAreas[11].setText("n >= 20, where n is the module size");
-        jTextAreas[12].setText("http://en.wikipedia.org/wiki/Bootstrapping_(statistics)");
+        jTextAreas[12].setText("http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29");
         
         jTextAreas[13].setText(StatTest.ZSCORE_MEDIAN.toString());
         jTextAreas[14].setText("Z-Score using bootstrapping of medians");
         jTextAreas[15].setText("n >= 20, where n is the module size");
-        jTextAreas[16].setText("http://en.wikipedia.org/wiki/Bootstrapping_(statistics)");
+        jTextAreas[16].setText("http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29");
 
         jTextAreas[17].setText(StatTest.BINOMIAL_EXACT.toString());
         jTextAreas[18].setText("Binomial distribution B(n, p) test");
@@ -133,6 +133,10 @@ public class ZCalcAnalysisStatsHelpPanel extends JPanel {
         jTextAreas[35].setText("When the expected value < 10");
         jTextAreas[36].setText("http://en.wikipedia.org/wiki/Fisher's_exact_test");
 		return jTextAreas;
+	}
+	
+	public JTextArea[] getTextAreas() {
+		return this.jTextAreas;
 	}
 
 
