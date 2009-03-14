@@ -12,8 +12,11 @@
 		#section( "Module" )
 		#nameRow( $rowElement )
 		#valueRow( "N" $cell.N )
-		#pvalueRow( "P-Value" $cell.p-value )
 		
+		#zscoreRow( "Z-Score" $cell.z-score )
+		#zscoreScale()
+		
+		#pvalueRow( "P-Value" $cell.p-value )
 		#pvalueScale()
     </table>
 </body>

@@ -5,7 +5,8 @@ import es.imim.bg.ztools.table.element.Property;
 public class CombinationResult {
 
 	private int N;
-	private double pValue;
+	private double zscore;
+	private double pvalue;
 	
 	public CombinationResult() {
 	}
@@ -19,12 +20,21 @@ public class CombinationResult {
 		N = n;
 	}
 	
-	@Property(id = "p-value", name = "P-Value", description = "Combined P-Value")
-	public double getPValue() {
-		return pValue;
+	@Property(id = "z-score", name = "Z Score", description = "Combined Z Score")
+	public double getZscore() {
+		return zscore;
 	}
 	
-	public void setPValue(double value) {
-		pValue = value;
+	public void setZscore(double zscore) {
+		this.zscore = zscore;
+	}
+	
+	@Property(id = "p-value", name = "P-Value", description = "Combined P-Value")
+	public double getPvalue() {
+		return pvalue;
+	}
+	
+	public void setPvalue(double value) {
+		pvalue = value;
 	}
 }
