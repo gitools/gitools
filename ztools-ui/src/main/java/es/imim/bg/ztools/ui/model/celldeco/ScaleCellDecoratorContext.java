@@ -1,6 +1,7 @@
 package es.imim.bg.ztools.ui.model.celldeco;
 
-import es.imim.bg.colorscale.LogColorScale;
+import es.imim.bg.colorscale.ColorScale;
+import es.imim.bg.colorscale.PValueColorScale;
 
 public class ScaleCellDecoratorContext 
 		extends AbstractCellDecoratorContext {
@@ -8,7 +9,7 @@ public class ScaleCellDecoratorContext
 	private int correctedValueIndex;
 	private boolean useCorrectedScale;
 	private double cutoff;
-	private LogColorScale scale;
+	private ColorScale scale;
 	
 	public ScaleCellDecoratorContext() {
 		super();
@@ -16,7 +17,7 @@ public class ScaleCellDecoratorContext
 		correctedValueIndex = -1;
 		useCorrectedScale = false;
 		cutoff = 0.05;
-		scale = new LogColorScale(0.0, 0.05, 1.0);
+		scale = new PValueColorScale();
 	}
 	
 	public int getCorrectedValueIndex() {
@@ -46,11 +47,11 @@ public class ScaleCellDecoratorContext
 		firePropertyChange(ITableDecoratorContext.VALUE_CHANGED);
 	}
 	
-	public LogColorScale getScale() {
+	public ColorScale getScale() {
 		return scale;
 	}
 	
-	public void setScale(LogColorScale scale) {
+	public void setScale(ColorScale scale) {
 		this.scale = scale;
 		firePropertyChange(ITableDecoratorContext.VALUE_CHANGED);
 	}

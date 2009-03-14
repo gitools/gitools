@@ -3,7 +3,8 @@ package es.imim.bg.ztools.ui.panels.celldeco;
 import java.awt.Color;
 import java.awt.Component;
 
-import es.imim.bg.colorscale.LogColorScale;
+import es.imim.bg.colorscale.ColorScale;
+import es.imim.bg.colorscale.util.ColorConstants;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
 import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
@@ -51,7 +52,7 @@ public class ScaleCellDecorator
 		
 		boolean isSig = v <= cutoff;
 		
-		LogColorScale scale = context.getScale();
+		ColorScale scale = context.getScale();
 		
 		if (context.isUseCorrectedScale()) {
 			int corrIndex = context.getCorrectedValueIndex();
@@ -64,7 +65,7 @@ public class ScaleCellDecorator
 			isSig = cv <= cutoff;
 		}
 		
-		Color c = isSig ? scale.getColor(v) : scale.getNonSignificantColor();
+		Color c = isSig ? scale.getColor(v) : ColorConstants.nonSignificantColor;
 		
 		decoration.setBgColor(c);
 		

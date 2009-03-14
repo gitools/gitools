@@ -13,7 +13,9 @@
 		#nameRow( $rowElement )
 		#valueRow( "N" $cell.N )
 		#valueRow( "Observed" $fmt.format("%.3g", $cell.observed) )
-		#valueRow( "Z-Score" $fmt.format("%.3g", $cell.z-score) )
+		#zscoreRow( "Z-Score" $cell.z-score )
+		
+		#zscoreScale()
 		
 		#section( "Population" )
 		#valueRow( "Exp-Mean" $fmt.format("%.3g", $cell.expected-mean) )

@@ -4,58 +4,44 @@ import java.awt.Color;
 
 import es.imim.bg.colorscale.util.ColorUtils;
 
-public class LogColorScale extends AbstractColorScale {
+public class LogColorScale2 extends AbstractColorScale {
 
 	public static final double defaultLogFactor = 0.25;
 
-	protected Color nonSignificantColor = new Color(187, 187, 187);
+	protected Color nonSignificantColor;
 	
-	private double midPoint;
-	
-	private double sigLevel;
 	private double logFactor;
 
-	public LogColorScale(
-			double minPoint,
-			double midPoint, 
+	public LogColorScale2(
+			double minPoint, 
 			double maxPoint,
-			double sigLevel,
 			double logFactor) {
 	
 		super(minPoint, maxPoint);
-		this.midPoint = midPoint;
-		this.sigLevel = sigLevel;
 		this.logFactor = logFactor;
 	}
 	
-	public LogColorScale(
-			double minPoint,
-			double midPoint, 
+	public LogColorScale2(
+			double minPoint, 
 			double maxPoint) {
 		
-		this(minPoint, midPoint, maxPoint, midPoint, defaultLogFactor);
+		this(minPoint, maxPoint, defaultLogFactor);
 	}
 	
-	public LogColorScale() {
-		this(0.0, 0.05, 1.0, 0.05, defaultLogFactor);
+	public LogColorScale2() {
+		this(0.0, 1.0, defaultLogFactor);
 	}
 	
-	public final double getMidPoint() {
-		return midPoint;
+	public LogColorScale2(
+			double minPoint, 
+			double maxPoint, 
+			Color minColor, 
+			Color maxColor) {
+		this(minPoint, maxPoint);
+		setMinColor(minColor);
+		setMaxColor(maxColor);
 	}
-	
-	public final void setMidPoint(double midPoint) {
-		this.midPoint = midPoint;
-	}
-	
-	public double getSigLevel() {
-		return sigLevel;
-	}
-	
-	public void setSigLevel(double sigLevel) {
-		this.sigLevel = sigLevel;
-	}
-	
+
 	public double getLogFactor() {
 		return logFactor;
 	}
@@ -72,10 +58,7 @@ public class LogColorScale extends AbstractColorScale {
 		else if (value < minPoint || value == Double.NEGATIVE_INFINITY)
 			return negInfinityColor;
 		
-		if (value > sigLevel)
-			return nonSignificantColor;
-
-		double range = midPoint - minPoint;
+		double range = maxPoint - minPoint;
 		
 		double f = value / range;
 		

@@ -17,7 +17,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import es.imim.bg.GenericFormatter;
-import es.imim.bg.colorscale.LogColorScale;
+import es.imim.bg.colorscale.PValueColorScale;
+import es.imim.bg.colorscale.ZScoreColorScale;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
@@ -163,7 +164,9 @@ public class TableView extends AbstractView {
 
 			if (templateName != null) {				
 				context.put("fmt", new GenericFormatter());
-				context.put("pvalueScale", new LogColorScale(0.0, 0.05, 1.0));
+				
+				context.put("zscoreScale", new ZScoreColorScale()); //FIXME
+				context.put("pvalueScale", new PValueColorScale()); //FIXME
 				
 				context.put("columnAdapter", columnAdapter);
 				context.put("columnElement", columnElement);
