@@ -31,7 +31,7 @@ public class SortRowsAction extends BaseAction {
 	private static final long serialVersionUID = -1582437709508438222L;
 	private ITable table;
 	private ITableContents contents;
-	private List<SortCriteria> valueList;
+	private List<SortCriteria> criteriaList;
 
 	public SortRowsAction() {
 		super("Sort rows by ...");	
@@ -59,11 +59,11 @@ public class SortRowsAction extends BaseAction {
 		}
 				
 		SortRowsDialog d = new SortRowsDialog(AppFrame.instance(), props);
-		this.valueList = d.getValueList();
+		this.criteriaList = d.getValueList();
 		boolean allCols = d.considerAllColumns();
 		boolean allRows = d.considerAllRows();
 		
-		if(valueList != null) {
+		if(criteriaList != null) {
 			//cols
 			int colCount;
 			int[] columns = null;
@@ -109,8 +109,10 @@ public class SortRowsAction extends BaseAction {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final List<Integer> directions = new ArrayList<Integer>();
 		
-		for (int i = 0; i < valueList.size(); i++) {
-			SortCriteria sortCriteria = valueList.get(i);
+		final int criterias = criteriaList.size();
+		
+		for (int i = 0; i < criteriaList.size(); i++) {
+			SortCriteria sortCriteria = criteriaList.get(i);
 			
 			properties.add(sortCriteria.getPropertyIndex());
 			
@@ -146,10 +148,8 @@ public class SortRowsAction extends BaseAction {
 				double aggr1 = 0, aggr2 = 0;
 
 				
-				while (aggr1 == aggr2) {
-					if (level>0)
-						System.out.println("level "+ level);
-					
+				while (aggr1 == aggr2 && level < criterias) {
+						
 					for (int i = 0; i < N; i++) {
 						int col = selectedColumns[i];
 						
