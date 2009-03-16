@@ -19,6 +19,7 @@ import es.imim.bg.ztools.ui.aggregation.IAggregation;
 import es.imim.bg.ztools.ui.aggregation.LogSumAggregation;
 import es.imim.bg.ztools.ui.aggregation.MedianAggregation;
 import es.imim.bg.ztools.ui.aggregation.MultAggregation;
+import es.imim.bg.ztools.ui.aggregation.SumAggregation;
 import es.imim.bg.ztools.ui.dialogs.SortRowsDialog;
 import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.AggregationType;
 import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortCriteria;
@@ -130,6 +131,9 @@ public class SortRowsAction extends BaseAction {
 				break;
 			case MEDIAN:
 				aggregations.add(new MedianAggregation());
+				break;
+			case SUM:
+				aggregations.add(new SumAggregation());
 				break;
 			}
 		}

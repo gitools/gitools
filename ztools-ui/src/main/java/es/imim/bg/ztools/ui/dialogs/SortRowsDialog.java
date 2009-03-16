@@ -47,9 +47,10 @@ public class SortRowsDialog extends JDialog {
 	}
 	
 	public enum AggregationType {
+		MEDIAN("mean value"),
 		MULTIPLICATION("multiplicated"),
-		LOGSUM("summed logarithm"),
-		MEDIAN("mean value");
+		SUM("summed"),
+		LOGSUM("summed logarithm");
 		
 		private String title;
 		

@@ -24,7 +24,7 @@ public class ExportTableDataAction extends BaseAction {
 	private static final long serialVersionUID = -7288045475037410310L;
 
 	public ExportTableDataAction() {
-		super("Export Table Data");
+		super("Export table data");
 		
 		setDesc("Export data from the table");
 		setMnemonic(KeyEvent.VK_N);
