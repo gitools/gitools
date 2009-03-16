@@ -68,7 +68,7 @@ public final class TableActionSet extends ActionSet {
 	public static final ActionSet rowsActionSet = new ActionSet("Rows", new BaseAction[] {
 			filterRowsByNames,
 			filterRowsByValues,
-			fastSortRowsAction,
+			//fastSortRowsAction,
 			sortRowsAction,
 			showAllRows,
 			hideSelectedRowsAction
