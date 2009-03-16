@@ -6,6 +6,7 @@ import es.imim.bg.ztools.ui.actions.table.ShowAllAction;
 import es.imim.bg.ztools.ui.actions.table.FilterColumnsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.FilterRowsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.FilterRowsByValuesAction;
+import es.imim.bg.ztools.ui.actions.table.SortColumnsAction;
 import es.imim.bg.ztools.ui.actions.table.SortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.FastSortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectionAction.ElementType;
@@ -38,6 +39,9 @@ public final class TableActionSet extends ActionSet {
 
 	public static final BaseAction sortRowsAction = 
 		new SortRowsAction();
+	
+	public static final BaseAction sortColumnsAction = 
+		new SortColumnsAction();
 	
 	public static final BaseAction hideSelectedRowsAction = 
 		new HideSelectionAction(ElementType.ROWS);
@@ -73,6 +77,7 @@ public final class TableActionSet extends ActionSet {
 	public static final ActionSet columnsActionSet = new ActionSet("Columns", new BaseAction[] {
 			filterColumnsByNames,
 			showAllColumns,
+			sortColumnsAction,
 			hideSelectedColumnsAction
 	});
 	

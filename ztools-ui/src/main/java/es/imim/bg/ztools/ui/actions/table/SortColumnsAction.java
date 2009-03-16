@@ -20,22 +20,22 @@ import es.imim.bg.ztools.ui.aggregation.LogSumAggregation;
 import es.imim.bg.ztools.ui.aggregation.MedianAggregation;
 import es.imim.bg.ztools.ui.aggregation.MultAggregation;
 import es.imim.bg.ztools.ui.aggregation.SumAggregation;
+import es.imim.bg.ztools.ui.dialogs.SortColumnsDialog;
 import es.imim.bg.ztools.ui.dialogs.SortDialog;
-import es.imim.bg.ztools.ui.dialogs.SortRowsDialog;
 import es.imim.bg.ztools.ui.dialogs.SortDialog.AggregationType;
 import es.imim.bg.ztools.ui.dialogs.SortDialog.SortCriteria;
 import es.imim.bg.ztools.ui.dialogs.SortDialog.SortDirection;
 
-public class SortRowsAction extends BaseAction {
+public class SortColumnsAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 	private ITable table;
 	private ITableContents contents;
 	private List<SortCriteria> criteriaList;
 
-	public SortRowsAction() {
-		super("Sort rows by ...");	
-		setDesc("Sort rows by ...");
+	public SortColumnsAction() {
+		super("Sort columns by ...");	
+		setDesc("Sort columns by ...");
 	}
 	
 	@Override
@@ -58,51 +58,52 @@ public class SortRowsAction extends BaseAction {
 			counter++;
 		}
 				
-		SortDialog d = new SortRowsDialog(AppFrame.instance(), props);
+		SortDialog d = new SortColumnsDialog(AppFrame.instance(), props);
 		this.criteriaList = d.getValueList();
 		boolean allCols = d.considerAllColumns();
 		boolean allRows = d.considerAllRows();
 		
 		if(criteriaList != null) {
-			//cols
-			int colCount;
-			int[] columns = null;
-			if(table.getSelectedColumns().length == 0 || allCols) {
-				colCount = table.getVisibleColumns().length;
-				columns = new int[colCount];
-				for (int c = 0; c < colCount; c++)
-					columns[c] = c;
-			} else
-				columns = table.getSelectedColumns();
-
 			//rows
-			Integer[] rows = null;
-			final int rowCount;
-			if(allRows) {
-				rowCount = contents.getRowCount();
-				rows = new Integer[rowCount];
-				for (int j = 0; j < rowCount; j++)
-					rows[j] = j;
+			int rowCount;
+			int[] rows = null;
+			if(table.getSelectedRows().length == 0 || allRows) {
+				rowCount = table.getVisibleRows().length;
+				rows = new int[rowCount];
+				for (int r = 0; r < rowCount; r++)
+					rows[r] = r;
+			} else
+				rows = table.getSelectedRows();
+
+			
+			//cols
+			Integer[] cols = null;
+			final int colCount;
+			if(allCols) {
+				colCount = contents.getColumnCount();
+				cols = new Integer[colCount];
+				for (int j = 0; j < colCount; j++)
+					cols[j] = j;
 			}
 			else {
-				rowCount = table.getRowCount();
-				rows = new Integer[rowCount];
-				int[] visibleRows = table.getVisibleRows();
-				for (int j = 0; j < rowCount; j++)
-					rows[j] = visibleRows[j];
+				colCount = table.getColumnCount();
+				cols = new Integer[colCount];
+				int[] visibleCols = table.getVisibleColumns();
+				for (int j = 0; j < colCount; j++)
+					cols[j] = visibleCols[j];
 			}
 
-			Integer[] sortedRowIndices = sortRows(columns, rows);
-			int[] visibleSortedRows = new int[rowCount];
-			for (int k = 0; k < rowCount; k++)
-				visibleSortedRows[k] = sortedRowIndices[k];
-			table.setVisibleRows(visibleSortedRows);
+			Integer[] sortedColIndices = sortCols(rows, cols);
+			int[] visibleSortedCols = new int[colCount];
+			for (int k = 0; k < colCount; k++)
+				visibleSortedCols[k] = sortedColIndices[k];
+			table.setVisibleColumns(visibleSortedCols);
 			AppFrame.instance()
-				.setStatusText("Rows sorted.");
+				.setStatusText("Columns sorted.");
 		}
 	}
 
-	private Integer[] sortRows(final int[] selectedColumns,
+	private Integer[] sortCols(final int[] selectedRows,
 								final Integer[] indices) {
 		
 		final List<IAggregation> aggregations = new ArrayList<IAggregation>();
@@ -137,10 +138,10 @@ public class SortRowsAction extends BaseAction {
 			}
 		}
 		
-		final int N = selectedColumns.length;
+		final int N = selectedRows.length;
 		DoubleFactory1D df = DoubleFactory1D.dense;
-		final DoubleMatrix1D row1 = df.make(N);
-		final DoubleMatrix1D row2 = df.make(N);
+		final DoubleMatrix1D col1 = df.make(N);
+		final DoubleMatrix1D col2 = df.make(N);
 
 		
 		Arrays.sort(indices, new Comparator<Integer>() {		
@@ -154,24 +155,24 @@ public class SortRowsAction extends BaseAction {
 				while (aggr1 == aggr2 && level < criterias) {
 						
 					for (int i = 0; i < N; i++) {
-						int col = selectedColumns[i];
+						int row = selectedRows[i];
 						
-						Object value1 = contents.getCellValue(idx1, col, properties.get(level));
+						Object value1 = contents.getCellValue(row , idx1, properties.get(level));
 						double v1 = TableUtils.doubleValue(value1);
 	
 						if (!Double.isNaN(v1)) {
-							row1.set(i, v1);
+							col1.set(i, v1);
 						}
 						
-						Object value2 = contents.getCellValue(idx2, col, properties.get(level));
+						Object value2 = contents.getCellValue(row, idx2, properties.get(level));
 						double v2 = TableUtils.doubleValue(value2);
 	
 						if (!Double.isNaN(v2)) {
-							row2.set(i, v2);
+							col2.set(i, v2);
 						}
 					}
-					aggr1 = aggregations.get(level).aggregate(row1);
-					aggr2 = aggregations.get(level).aggregate(row2);
+					aggr1 = aggregations.get(level).aggregate(col1);
+					aggr2 = aggregations.get(level).aggregate(col2);
 					level++;
 				}
 

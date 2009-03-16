@@ -14,9 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.AggregationType;
-import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortDirection;
-import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortCriteria;
+import es.imim.bg.ztools.ui.dialogs.SortDialog.AggregationType;
+import es.imim.bg.ztools.ui.dialogs.SortDialog.SortDirection;
+import es.imim.bg.ztools.ui.dialogs.SortDialog.SortCriteria;
 
 public class SortRowsCriteriaDialog extends JDialog {
 	

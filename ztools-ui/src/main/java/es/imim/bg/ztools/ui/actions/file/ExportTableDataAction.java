@@ -7,16 +7,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ITableContents;
 import es.imim.bg.ztools.ui.utils.Options;
 
 public class ExportTableDataAction extends BaseAction {
