@@ -1,5 +1,5 @@
 #macro( htmlColor $color )
-	rgb($color.Red, $color.Green, $color.Blue)
+	$fmt.format("#%02x%02x%02x", $color.Red, $color.Green, $color.Blue)
 #end
 
 #macro( zscoreColor $value )
@@ -37,7 +37,7 @@
 		<td class="label">$label</td>
 		<td class="value">
 			#zscoreColor($value)
-			$fmt.pvalue($value)
+			$fmt.format($value)
 		</td>
 	</tr>
 #end

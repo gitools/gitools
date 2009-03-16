@@ -1,12 +1,15 @@
 package es.imim.bg.ztools.ui.panels.decorator;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +50,7 @@ public class ZScoreDecoratorPanel extends JPanel {
 	private ITable table;
 	
 	private JComboBox valueCb;
+	private JCheckBox showCorrChkBox;
 	private JComboBox corrValueCb;
 	
 	public ZScoreDecoratorPanel(TableViewModel model) {
@@ -88,12 +92,19 @@ public class ZScoreDecoratorPanel extends JPanel {
 			}
 		});
 		
+		// show correction check box
+		
+		showCorrChkBox = new JCheckBox();
+		showCorrChkBox.setText("Filter significance by");
+		showCorrChkBox.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				showCorrectionChecked();
+			}
+		});
+		
 		// corrected value combo box
 		
-		final DefaultComboBoxModel cvModel = 
-			new DefaultComboBoxModel(corrValueProperties.toArray());
-		cvModel.insertElementAt("Don't filter", 0);
-		corrValueCb = new JComboBox(cvModel);
+		corrValueCb = new JComboBox(new DefaultComboBoxModel(corrValueProperties.toArray()));
 		
 		corrValueCb.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
@@ -108,7 +119,7 @@ public class ZScoreDecoratorPanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
-		add(new JLabel("Filter significance by"));
+		add(showCorrChkBox);
 		add(corrValueCb);
 	}
 
@@ -118,6 +129,9 @@ public class ZScoreDecoratorPanel extends JPanel {
 				valueCb.setSelectedIndex(i);
 		
 		table.setSelectedPropertyIndex(decorator.getValueIndex());
+		
+		showCorrChkBox.setSelected(decorator.getUseCorrection());
+		corrValueCb.setEnabled(decorator.getUseCorrection());
 		
 		for (int i = 0; i < corrValueProperties.size(); i++)
 			if (corrValueProperties.get(i).getIndex() == decorator.getCorrectedValueIndex())
@@ -134,8 +148,18 @@ public class ZScoreDecoratorPanel extends JPanel {
 		table.setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 	
-	protected void corrValueChanged() {
-		// TODO Auto-generated method stub
+	private void showCorrectionChecked() {		
+		decorator.setUseCorrection(
+				showCorrChkBox.isSelected());
 		
+		corrValueCb.setEnabled(
+				showCorrChkBox.isSelected());
+	}
+	
+	protected void corrValueChanged() {
+		ElementPropertyAdapter propAdapter = 
+			(ElementPropertyAdapter) corrValueCb.getSelectedItem();
+		
+		decorator.setCorrectedValueIndex(propAdapter.getIndex());
 	}
 }

@@ -34,12 +34,14 @@ public class TableViewModel extends AbstractModel {
 	public void setDecoratorDescriptor(
 			ElementDecoratorDescriptor decoratorDescriptor) {
 		
+		final ElementDecoratorDescriptor old = this.decoratorDescriptor;
+		
 		this.decoratorDescriptor = decoratorDescriptor;
 		
 		setDecorator(ElementDecoratorFactory.create(
 				decoratorDescriptor, table.getCellAdapter()));
 		
-		firePropertyChange(DECORATOR_DESCRIPTOR);
+		firePropertyChange(DECORATOR_DESCRIPTOR, old, decoratorDescriptor);
 	}
 	
 	public final ElementDecorator getDecorator() {
@@ -47,8 +49,11 @@ public class TableViewModel extends AbstractModel {
 	}
 	
 	public final void setDecorator(ElementDecorator decorator) {
+		final ElementDecorator old = this.decorator;
+		
 		this.decorator = decorator;
-		firePropertyChange(DECORATOR);
+		
+		firePropertyChange(DECORATOR, old, decorator);
 	}
 	
 	public final ITable getTable() {

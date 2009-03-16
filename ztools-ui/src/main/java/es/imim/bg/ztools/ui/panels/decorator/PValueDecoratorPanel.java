@@ -44,7 +44,7 @@ public class PValueDecoratorPanel extends JPanel {
 		}
 	}
 
-	private List<ElementPropertyAdapter> props;
+	private List<ElementPropertyAdapter> valueProperties;
 	
 	private PValueElementDecorator decorator;
 	private ITable table;
@@ -60,13 +60,13 @@ public class PValueDecoratorPanel extends JPanel {
 		
 		int numProps = adapter.getPropertyCount();
 		
-		props =	new ArrayList<ElementPropertyAdapter>();
+		valueProperties =	new ArrayList<ElementPropertyAdapter>();
 		
 		for (int i = 0; i < numProps; i++) {
 			final IElementProperty property = adapter.getProperty(i);
 			if (property.getId().endsWith("p-value")
 					/*&& !property.getId().startsWith("corrected")*/)
-				props.add(new ElementPropertyAdapter(i, property));
+				valueProperties.add(new ElementPropertyAdapter(i, property));
 		}
 		
 		createComponents();
@@ -76,7 +76,7 @@ public class PValueDecoratorPanel extends JPanel {
 		
 		// value combo box
 		
-		valueCb = new JComboBox(new DefaultComboBoxModel(props.toArray()));
+		valueCb = new JComboBox(new DefaultComboBoxModel(valueProperties.toArray()));
 		
 		valueCb.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
@@ -105,12 +105,12 @@ public class PValueDecoratorPanel extends JPanel {
 	}
 	
 	private void refresh() {
-		for (int i = 0; i < props.size(); i++)
-			if (props.get(i).getIndex() == decorator.getValueIndex())
+		for (int i = 0; i < valueProperties.size(); i++)
+			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
 				valueCb.setSelectedIndex(i);
 		
 		table.setSelectedPropertyIndex(decorator.getValueIndex());
-		showCorrChkBox.setSelected(decorator.isUseCorrectedScale());
+		showCorrChkBox.setSelected(decorator.getUseCorrection());
 	}
 
 	private void valueChanged() {
@@ -145,7 +145,7 @@ public class PValueDecoratorPanel extends JPanel {
 				decorator.setCorrectedValueIndex(corrIndex);
 		}
 		
-		decorator.setUseCorrectedScale(
+		decorator.setUseCorrection(
 				showCorrChkBox.isSelected());
 	}
 }

@@ -3,6 +3,8 @@ package es.imim.bg.ztools.ui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -11,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -99,7 +102,7 @@ public class TemplatePane extends JPanel {
 	}
 	
 	public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
-		StringWriter sw = new StringWriter();
+		final StringWriter sw = new StringWriter();
 		template.merge(context, sw);
 		infoPane.setText(sw.toString());
 	}

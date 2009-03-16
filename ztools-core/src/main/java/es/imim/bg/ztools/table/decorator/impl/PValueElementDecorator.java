@@ -14,7 +14,7 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	private int valueIndex;
 	private int correctedValueIndex;
-	private boolean useCorrectedScale;
+	private boolean useCorrection;
 	private double cutoff;
 	private PValueColorScale scale;
 
@@ -29,7 +29,8 @@ public class PValueElementDecorator extends ElementDecorator {
 		correctedValueIndex = getPropertyIndex(new String[] {
 				"corrected-right-p-value", "corrected-p-value" });
 		
-		useCorrectedScale = false;
+		useCorrection = false;
+		
 		cutoff = 0.05;
 		scale = new PValueColorScale();
 	}
@@ -52,12 +53,12 @@ public class PValueElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	public final boolean isUseCorrectedScale() {
-		return useCorrectedScale;
+	public final boolean getUseCorrection() {
+		return useCorrection;
 	}
 
-	public final void setUseCorrectedScale(boolean useCorrectedScale) {
-		this.useCorrectedScale = useCorrectedScale;
+	public final void setUseCorrection(boolean useCorrectedScale) {
+		this.useCorrection = useCorrectedScale;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
@@ -99,7 +100,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		boolean isSig = v <= cutoff;
 		
-		if (useCorrectedScale) {
+		if (useCorrection) {
 			Object corrValue = correctedValueIndex >= 0 ?
 					adapter.getValue(element, correctedValueIndex) : 0.0;
 					

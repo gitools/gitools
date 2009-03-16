@@ -21,6 +21,7 @@ import es.imim.bg.colorscale.PValueColorScale;
 import es.imim.bg.colorscale.ZScoreColorScale;
 import es.imim.bg.ztools.model.IModel;
 import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
@@ -60,6 +61,7 @@ public class TableView extends AbstractView {
 	protected boolean blockSelectionUpdate;
 
 	private PropertyChangeListener modelListener;
+	private PropertyChangeListener decoratorListener;
 
 	public TableView(final ITable table) {
 		
@@ -71,19 +73,23 @@ public class TableView extends AbstractView {
 		
 		createComponents();
 		
-		model.addPropertyChangeListener(new PropertyChangeListener() {
+		modelListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
-		});
+		};
 		
-		model.getDecorator().addPropertyChangeListener(new PropertyChangeListener() {
+		decoratorListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				decoratorPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
-		});
+		};
+		
+		model.addPropertyChangeListener(modelListener);
+		
+		model.getDecorator().addPropertyChangeListener(decoratorListener);
 		
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -96,8 +102,19 @@ public class TableView extends AbstractView {
 	protected void modelPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 		
-		if (TableViewModel.DECORATOR.equals(propertyName))
+		if (TableViewModel.DECORATOR.equals(propertyName)) {
+			final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
+			prevDecorator.removePropertyChangeListener(decoratorListener);
+			final ElementDecorator nextDecorator = (ElementDecorator) newValue;
+			nextDecorator.addPropertyChangeListener(decoratorListener);
 			tablePanel.setCellDecorator(model.getDecorator());
+		}
+		
+		tablePanel.refresh();
+	}
+	
+	protected void decoratorPropertyChange(
+			String propertyName, Object oldValue, Object newValue) {
 		
 		tablePanel.refresh();
 	}
