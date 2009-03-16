@@ -22,7 +22,7 @@ import javax.swing.table.TableColumnModel;
 
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.ui.model.deprecated.SelectionMode;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class TablePanel extends JPanel {
 

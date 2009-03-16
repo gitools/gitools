@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import es.imim.bg.colorscale.util.ColorConstants;
 
-public abstract class AbstractColorScale implements ColorScale {
+public abstract class AbstractColorScale implements IColorScale {
 
 	protected Color notANumberColor = ColorConstants.notANumberColor;
 	protected Color posInfinityColor = ColorConstants.posInfinityColor;

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.model.deprecated;
+package es.imim.bg.ztools.ui.model;
 
 public enum SelectionMode {
 

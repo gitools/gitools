@@ -9,11 +9,11 @@ public class CompositeColorScale extends AbstractColorScale {
 	public static class ScaleRange {
 		public double minPoint;
 		public double maxPoint;
-		public ColorScale scale;
+		public IColorScale scale;
 		public ScaleRange(
 				double minPoint, 
 				double maxPoint,
-				ColorScale scale) {
+				IColorScale scale) {
 			this.minPoint = minPoint;
 			this.maxPoint = maxPoint;
 			this.scale = scale;
