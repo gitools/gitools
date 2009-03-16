@@ -1,20 +1,20 @@
-package es.imim.bg.ztools.ui.panels.table;
+package es.imim.bg.ztools.table.decorator;
 
 import java.awt.Color;
 
-public class CellDecoration {
+public class ElementDecoration {
 
 	public enum TextAlignment {
 		left, right, center
 	}
 	
 	protected String text;
-	protected TextAlignment textAlign;
+	public TextAlignment textAlign;
 	protected String toolTip;
 	protected Color fgColor;
 	protected Color bgColor;
 	
-	public CellDecoration() {
+	public ElementDecoration() {
 		this.text = "";
 		this.textAlign = TextAlignment.left;
 		this.toolTip = "";

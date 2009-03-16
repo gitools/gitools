@@ -1,12 +1,12 @@
-package es.imim.bg.ztools.ui.panels.celldeco;
+package es.imim.bg.ztools.ui.panels.decorator;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -14,13 +14,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import es.imim.bg.ztools.table.TableUtils;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import es.imim.bg.ztools.table.decorator.pvalue.PValueElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
-import es.imim.bg.ztools.ui.model.celldeco.ScaleCellDecoratorContext;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.utils.TableUtils;
 
-public class ScaleCellDecoratorConfigPanel extends JPanel {
+public class PValueDecoratorPanel extends JPanel {
 
 	private static final long serialVersionUID = -7443053984962647946L;
 
@@ -42,47 +42,38 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 			return property.getName();
 		}
 	}
+
+	private List<ElementPropertyAdapter> props;
 	
-	private ITable table;
+	private PValueElementDecorator decorator;
+	
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	
-	public ScaleCellDecoratorConfigPanel(ITable table) {
-		this.table = table;
+	public PValueDecoratorPanel(ElementDecorator decorator) {
+		this.decorator = (PValueElementDecorator) decorator;
+		
+		IElementAdapter adapter = decorator.getAdapter();
+		
+		int numProps = adapter.getPropertyCount();
+		
+		props =	new ArrayList<ElementPropertyAdapter>();
+		
+		for (int i = 0; i < numProps; i++) {
+			final IElementProperty property = adapter.getProperty(i);
+			if (property.getId().endsWith("p-value")
+					&& !property.getId().startsWith("corrected"))
+				props.add(new ElementPropertyAdapter(i, property));
+		}
 		
 		createComponents();
-		
-		table.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(evt.getPropertyName())) {
-					/*if (oldValue != null)
-						((IModel) oldValue).removePropertyChangeListener(decorationContextListener);
-					
-					((IModel) newValue).addPropertyChangeListener(decorationContextListener);*/
-					
-					refresh();
-				}
-			}
-		});
 	}
 
 	private void createComponents() {
 		
 		// value combo box
 		
-		IElementAdapter cellFacade = table.getCellAdapter();
-		
-		int numProps = cellFacade.getPropertyCount();
-		
-		ElementPropertyAdapter[] props = 
-			new ElementPropertyAdapter[numProps];
-		
-		for (int i = 0; i < numProps; i++)
-			props[i] = new ElementPropertyAdapter(
-					i, cellFacade.getProperty(i));
-		
-		valueCb = new JComboBox(new DefaultComboBoxModel(props));
+		valueCb = new JComboBox(new DefaultComboBoxModel(props.toArray()));
 		
 		valueCb.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
@@ -111,14 +102,12 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 	}
 	
 	private void refresh() {
-		ScaleCellDecoratorContext context = 
-			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
+		for (int i = 0; i < props.size(); i++)
+			if (props.get(i).getIndex() == decorator.getValueIndex())
+				valueCb.setSelectedIndex(i);
 		
-		if (context != null) {
-			valueCb.setSelectedIndex(context.getValueIndex());
-			table.setSelectedPropertyIndex(context.getValueIndex());
-			showCorrChkBox.setSelected(context.isUseCorrectedScale());
-		}
+		//TODO table.setSelectedPropertyIndex(decorator.getValueIndex());
+		showCorrChkBox.setSelected(decorator.isUseCorrectedScale());
 	}
 
 	private void valueChanged() {
@@ -126,40 +115,34 @@ public class ScaleCellDecoratorConfigPanel extends JPanel {
 		ElementPropertyAdapter propAdapter = 
 			(ElementPropertyAdapter) valueCb.getSelectedItem();
 		
-		ScaleCellDecoratorContext context = 
-			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
+		decorator.setValueIndex(propAdapter.getIndex());
 		
-		context.setValueIndex(propAdapter.getIndex());
-		
-		table.setSelectedPropertyIndex(propAdapter.getIndex());
+		//TODO table.setSelectedPropertyIndex(propAdapter.getIndex());
 		
 		// search for corresponding corrected value
 		
 		int corrIndex = TableUtils.correctedValueIndex(
-				table, propAdapter.getProperty());
+				decorator.getAdapter(), propAdapter.getProperty());
 		
 		if (corrIndex >= 0)
-			context.setCorrectedValueIndex(corrIndex);
+			decorator.setCorrectedValueIndex(corrIndex);
 		
 		showCorrChkBox.setEnabled(corrIndex >= 0);
 	}
 	
 	private void showCorrectionChecked() {
-		ScaleCellDecoratorContext context = 
-			(ScaleCellDecoratorContext) table.getCellDecoratorContext();
-		
 		ElementPropertyAdapter propAdapter = 
 			(ElementPropertyAdapter) valueCb.getSelectedItem();
 		
 		if (propAdapter != null) {
 			int corrIndex = TableUtils.correctedValueIndex(
-					table, propAdapter.getProperty());
+					decorator.getAdapter(), propAdapter.getProperty());
 			
 			if (corrIndex >= 0)
-				context.setCorrectedValueIndex(corrIndex);
+				decorator.setCorrectedValueIndex(corrIndex);
 		}
 		
-		context.setUseCorrectedScale(
+		decorator.setUseCorrectedScale(
 				showCorrChkBox.isSelected());
 	}
 }

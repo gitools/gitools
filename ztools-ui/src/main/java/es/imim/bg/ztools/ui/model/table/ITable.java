@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.model.table;
 
 import es.imim.bg.ztools.ui.model.IModel;
-import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 
 public interface ITable extends IModel, ITableContents {
 	
@@ -56,9 +55,4 @@ public interface ITable extends IModel, ITableContents {
 	
 	int getSelectedPropertyIndex();
 	void setSelectedPropertyIndex(int index);
-	
-	// cell decoration
-
-	ITableDecoratorContext getCellDecoratorContext();
-	void setCellDecoratorContext(ITableDecoratorContext decoratorContext);
 }

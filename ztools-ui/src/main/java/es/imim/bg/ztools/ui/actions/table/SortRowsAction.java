@@ -11,6 +11,7 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 
+import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
@@ -24,7 +25,6 @@ import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortCriteria;
 import es.imim.bg.ztools.ui.dialogs.SortRowsDialog.SortDirection;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.model.table.ITableContents;
-import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class SortRowsAction extends BaseAction {
 

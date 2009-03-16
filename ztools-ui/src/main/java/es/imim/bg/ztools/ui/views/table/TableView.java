@@ -29,10 +29,9 @@ import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.model.IModel;
-import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
+import es.imim.bg.ztools.ui.model.TableViewModel;
 import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.panels.TemplatePane;
-import es.imim.bg.ztools.ui.panels.celldeco.ScaleCellDecorator;
 import es.imim.bg.ztools.ui.panels.table.TablePanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
@@ -48,7 +47,7 @@ public class TableView extends AbstractView {
 		LEFT, RIGHT, TOP, BOTTOM
 	}
 	
-	private ITable table;
+	private TableViewModel model;
 	
 	private TableViewConfigPanel configPanel;
 	
@@ -60,36 +59,40 @@ public class TableView extends AbstractView {
 	
 	protected boolean blockSelectionUpdate;
 
-	private PropertyChangeListener decorationContextListener;
+	private PropertyChangeListener modelListener;
 
 	public TableView(final ITable table) {
 		
-		this.table = table;
+		this.model = new TableViewModel(table);
 	
 		this.layout = TableViewLayout.LEFT;
 		
 		this.blockSelectionUpdate = false;
 		
 		createComponents();
-
-		decorationContextListener = new PropertyChangeListener() {
+		
+		model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				tablePanel.refresh();
+				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
-		};
-		
-		table.getCellDecoratorContext().addPropertyChangeListener(decorationContextListener);
+		});
 		
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				tableModelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				tablePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		});
 	}
 
-	protected void tableModelPropertyChange(
+	protected void modelPropertyChange(
+			String propertyName, Object oldValue, Object newValue) {
+		
+		tablePanel.refresh();
+	}
+	
+	protected void tablePropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 
 		/*if (ITable.CELL_DECORATION_PROPERTY.equals(propertyName)) {
@@ -114,8 +117,8 @@ public class TableView extends AbstractView {
 				if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
 					tablePanel.refreshColumns();
 				
-				tablePanel.setSelectedColumns(table.getSelectedColumns());
-				tablePanel.setSelectedRows(table.getSelectedRows());
+				tablePanel.setSelectedColumns(getTable().getSelectedColumns());
+				tablePanel.setSelectedRows(getTable().getSelectedRows());
 				tablePanel.refresh();
 				blockSelectionUpdate = false;
 			}
@@ -134,31 +137,31 @@ public class TableView extends AbstractView {
 		}
 		else if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
 			if (oldValue != null)
-				((IModel) oldValue).removePropertyChangeListener(decorationContextListener);
+				((IModel) oldValue).removePropertyChangeListener(modelListener);
 			
-			((IModel) newValue).addPropertyChangeListener(decorationContextListener);
+			((IModel) newValue).addPropertyChangeListener(modelListener);
 		}
 	}
 
 	private void refreshCellDetails() {
 		
-		int row = table.getSelectionLeadRow();
-		int rowCount = table.getRowCount();
-		int column = table.getSelectionLeadColumn();
-		int columnCount = table.getColumnCount();
+		int row = getTable().getSelectionLeadRow();
+		int rowCount = getTable().getRowCount();
+		int column = getTable().getSelectionLeadColumn();
+		int columnCount = getTable().getColumnCount();
 		
 		VelocityContext context = new VelocityContext();
 		String templateName = defaultTemplateName;
 		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			final IElementAdapter columnAdapter = table.getColumnAdapter();
-			final Object columnElement = table.getColumn(column);
+			final IElementAdapter columnAdapter = getTable().getColumnAdapter();
+			final Object columnElement = getTable().getColumn(column);
 			
-			final IElementAdapter rowAdapter = table.getRowAdapter();
-			final Object rowElement = table.getRow(row);
+			final IElementAdapter rowAdapter = getTable().getRowAdapter();
+			final Object rowElement = getTable().getRow(row);
 			
-			final IElementAdapter cellAdapter = table.getCellAdapter();
-			final Object cellElement = table.getCell(row, column);
+			final IElementAdapter cellAdapter = getTable().getCellAdapter();
+			final Object cellElement = getTable().getCell(row, column);
 			
 			templateName = getTemplateNameFromObject(cellElement);
 
@@ -227,15 +230,15 @@ public class TableView extends AbstractView {
 
 	private void createComponents() {
 		
-		ITableDecorator[] availableDecorators = 
+		/*ITableDecorator[] availableDecorators = 
 			new ITableDecorator[] {
-				new ScaleCellDecorator(table)/*,
-				new TextCellDecorator(table)*/
-		};
+				new ScaleCellDecorator(getTable())*//*,
+				new TextCellDecorator(getTable())*/
+		//};
 		
 		/* Configuration panel */
 
-		configPanel = new TableViewConfigPanel(table, availableDecorators);
+		configPanel = new TableViewConfigPanel(model);
 		
 		/*final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
@@ -246,10 +249,9 @@ public class TableView extends AbstractView {
 		/* Color matrix */
 		
 		tablePanel = new TablePanel();
-		tablePanel.setModel(table);
+		tablePanel.setModel(getTable());
 		
-		tablePanel.setCellDecorator(
-				configPanel.getCellDecorator());
+		tablePanel.setCellDecorator(model.getDecorator());
 		
 		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
@@ -257,15 +259,15 @@ public class TableView extends AbstractView {
 				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
 					blockSelectionUpdate = true;
 					
-					table.setSelectedRows(
+					getTable().setSelectedRows(
 							tablePanel.getSelectedRows());
-					table.setSelectedColumns(
+					getTable().setSelectedColumns(
 							tablePanel.getSelectedColumns());
 					
 					int colIndex = tablePanel.getSelectedLeadColumn();
 					int rowIndex = tablePanel.getSelectedLeadRow();
 					
-					table.setLeadSelection(rowIndex, colIndex);
+					getTable().setLeadSelection(rowIndex, colIndex);
 					
 					blockSelectionUpdate = false;
 				}
@@ -346,8 +348,8 @@ public class TableView extends AbstractView {
 
 	private void refreshColorMatrixWidth() {
 		/*CellDecorationConfig config = 
-			table.getCellDecoration(
-					table.getCurrentProperty());
+			getTable().getCellDecoration(
+					getTable().getCurrentProperty());
 		
 		colorMatrixPanel.setColumnsWidth(
 				config.showColors ? 
@@ -358,23 +360,20 @@ public class TableView extends AbstractView {
 				configPanel.getCellDecorator()
 					.getPreferredWidth());*/
 	}
-	
-	public TablePanel getColorMatrixPanel() {
-		return tablePanel;
+
+	protected ITable getTable() {
+		return model.getTable();
 	}
 	
-	public ITable getTable() {
-		return table;
-	}
-	
+	@Deprecated //When getModel return TableViewModel
 	public void setTable(ITable tableModel) {
-		this.table = tableModel;
+		this.model.setTable(tableModel);
 		refresh();
 	}
 
 	@Override
 	public Object getModel() {
-		return table;
+		return model.getTable(); //TODO: return TableViewModel
 	}
 
 	@Override

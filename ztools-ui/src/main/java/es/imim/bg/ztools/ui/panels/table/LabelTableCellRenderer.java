@@ -8,15 +8,19 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import es.imim.bg.ztools.table.decorator.ElementDecoration;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
+
 public class LabelTableCellRenderer 
 		implements TableCellRenderer {
 	
-	private TablePanelCellDecorator decorator;
+	private ElementDecorator decorator;
 	
 	private DefaultTableCellRenderer tableRenderer = 
 		new DefaultTableCellRenderer();
 	
-	public LabelTableCellRenderer(TablePanelCellDecorator decorator) {
+	public LabelTableCellRenderer(
+			ElementDecorator decorator) {
 		this.decorator = decorator;
 	}
 	
@@ -40,7 +44,7 @@ public class LabelTableCellRenderer
 			JLabel label,
 			Object value) {
 
-		CellDecoration decoration = new CellDecoration();
+		ElementDecoration decoration = new ElementDecoration();
 		decorator.decorate(decoration, value);
 		label.setText(decoration.getText());
 		label.setToolTipText(decoration.getToolTip());

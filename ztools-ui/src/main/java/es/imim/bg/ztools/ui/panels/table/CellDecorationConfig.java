@@ -4,14 +4,16 @@ import java.text.DecimalFormat;
 
 import es.imim.bg.colorscale.ColorScale;
 import es.imim.bg.colorscale.PValueColorScale;
+import es.imim.bg.ztools.table.decorator.ElementDecoration;
 
+@Deprecated
 public class CellDecorationConfig {
 	public boolean showColors = true;
 	
 	public DecimalFormat textFormat = new DecimalFormat("#.######");
 	
-	public CellDecoration.TextAlignment textAlign = 
-		CellDecoration.TextAlignment.left;
+	public ElementDecoration.TextAlignment textAlign = 
+		ElementDecoration.TextAlignment.left;
 	
 	public ColorScale scale = new PValueColorScale();
 	
@@ -20,7 +22,7 @@ public class CellDecorationConfig {
 
 		this.textFormat = new DecimalFormat("#.######");
 		
-		this.textAlign = CellDecoration.TextAlignment.left;
+		this.textAlign = ElementDecoration.TextAlignment.left;
 		
 		this.scale = new PValueColorScale();
 	}

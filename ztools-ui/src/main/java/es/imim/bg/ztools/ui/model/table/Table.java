@@ -5,7 +5,6 @@ import java.util.Arrays;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.AbstractModel;
-import es.imim.bg.ztools.ui.model.celldeco.ITableDecoratorContext;
 
 public class Table
 		extends AbstractModel
@@ -23,8 +22,6 @@ public class Table
 	protected int selectionLeadColumn;
 	
 	protected int selectedPropertyIndex;
-	
-	protected ITableDecoratorContext cellDecorationContext;
 	
 	public Table(ITableContents contents) {
 		this.contents = contents;
@@ -51,13 +48,10 @@ public class Table
 		IElementAdapter cellAdapter = contents.getCellAdapter();
 		for (int i = 0; i < cellAdapter.getPropertyCount(); i++) {
 			IElementProperty prop = cellAdapter.getProperty(i);
-			if ("right-p-value".equals(prop.getId()))
+			if ("right-p-value".equals(prop.getId())
+					|| "p-value".equals(prop.getId()))
 					selectedPropertyIndex = i;
 		}
-		
-		// cells decoration context
-		
-		cellDecorationContext = null;
 	}
 	
 	/* visibility */
@@ -211,18 +205,6 @@ public class Table
 	@Override
 	public void setSelectedPropertyIndex(int index) {
 		this.selectedPropertyIndex = index;		
-	}
-	
-	@Override
-	public ITableDecoratorContext getCellDecoratorContext() {
-		return cellDecorationContext;
-	}
-	
-	@Override
-	public void setCellDecoratorContext(ITableDecoratorContext decoratorContext) {
-		ITableDecoratorContext oldValue = this.cellDecorationContext;
-		this.cellDecorationContext = decoratorContext;
-		firePropertyChange(CELL_DECORATION_CONTEXT_CHANGED, oldValue, cellDecorationContext);
 	}
 
 	/* ITableContents */

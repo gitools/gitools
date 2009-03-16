@@ -20,6 +20,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.ui.model.deprecated.SelectionMode;
 import es.imim.bg.ztools.ui.model.table.ITable;
 
@@ -331,7 +332,7 @@ public class TablePanel extends JPanel {
 		table.repaint();
 	}
 
-	public void setCellDecorator(TablePanelCellDecorator decorator) {
+	public void setCellDecorator(ElementDecorator decorator) {
 		table.setDefaultRenderer(
 				model.getCellAdapter().getElementClass(), 
 				new LabelTableCellRenderer(decorator));
