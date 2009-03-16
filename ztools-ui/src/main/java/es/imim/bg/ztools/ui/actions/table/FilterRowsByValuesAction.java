@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog;
 import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCondition;
 import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCriteria;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ITableContents;
 
 public class FilterRowsByValuesAction extends BaseAction {
 

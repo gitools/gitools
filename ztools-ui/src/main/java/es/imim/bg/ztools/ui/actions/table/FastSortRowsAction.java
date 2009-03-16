@@ -5,11 +5,11 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class FastSortRowsAction extends BaseAction {
 

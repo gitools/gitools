@@ -31,6 +31,22 @@ public class ElementDecoratorDescriptor {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		else if (!(obj instanceof ElementDecoratorDescriptor))
+			return false;
+		ElementDecoratorDescriptor other = (ElementDecoratorDescriptor) obj;
+		return name.equals(other.name) 
+			&& decoratorClass.equals(other.decoratorClass);
+	}
+	
+	@Override
+	public int hashCode() {
+		return 17 * name.hashCode() + decoratorClass.hashCode();
+	}
+	
+	@Override
 	public String toString() {
 		return name;
 	}

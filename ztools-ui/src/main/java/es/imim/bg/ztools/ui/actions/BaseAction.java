@@ -7,9 +7,9 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
-import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
 public abstract class BaseAction extends AbstractAction {

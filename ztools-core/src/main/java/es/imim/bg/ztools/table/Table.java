@@ -1,10 +1,10 @@
-package es.imim.bg.ztools.ui.model.table;
+package es.imim.bg.ztools.table;
 
 import java.util.Arrays;
 
+import es.imim.bg.ztools.model.AbstractModel;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
-import es.imim.bg.ztools.ui.model.AbstractModel;
 
 public class Table
 		extends AbstractModel

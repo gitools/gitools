@@ -2,11 +2,11 @@ package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
 
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.IconNames;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ITableContents;
 
 public class ShowAllAction extends BaseAction {
 

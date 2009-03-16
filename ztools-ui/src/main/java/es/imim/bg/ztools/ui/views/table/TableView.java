@@ -19,6 +19,8 @@ import org.apache.velocity.app.VelocityEngine;
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.PValueColorScale;
 import es.imim.bg.colorscale.ZScoreColorScale;
+import es.imim.bg.ztools.model.IModel;
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.test.results.BinomialResult;
@@ -28,9 +30,7 @@ import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
-import es.imim.bg.ztools.ui.model.IModel;
 import es.imim.bg.ztools.ui.model.TableViewModel;
-import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.panels.TemplatePane;
 import es.imim.bg.ztools.ui.panels.table.TablePanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -78,6 +78,13 @@ public class TableView extends AbstractView {
 			}
 		});
 		
+		model.getDecorator().addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+			}
+		});
+		
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -88,6 +95,9 @@ public class TableView extends AbstractView {
 
 	protected void modelPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
+		
+		if (TableViewModel.DECORATOR.equals(propertyName))
+			tablePanel.setCellDecorator(model.getDecorator());
 		
 		tablePanel.refresh();
 	}

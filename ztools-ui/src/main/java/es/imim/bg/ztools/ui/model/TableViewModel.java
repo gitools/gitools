@@ -1,15 +1,16 @@
 package es.imim.bg.ztools.ui.model;
 
+import es.imim.bg.ztools.model.AbstractModel;
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorDescriptor;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
-import es.imim.bg.ztools.ui.model.table.ITable;
 
 public class TableViewModel extends AbstractModel {
 
-	private static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
-	private static final String DECORATOR = "decorator";
-	private static final String TABLE = "table";
+	public static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
+	public static final String DECORATOR = "decorator";
+	public static final String TABLE = "table";
 	
 	private ElementDecoratorDescriptor decoratorDescriptor;
 	private ElementDecorator decorator;

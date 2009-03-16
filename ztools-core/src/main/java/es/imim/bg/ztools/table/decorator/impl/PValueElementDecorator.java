@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.table.decorator.pvalue;
+package es.imim.bg.ztools.table.decorator.impl;
 
 import java.awt.Color;
 
@@ -18,6 +18,8 @@ public class PValueElementDecorator extends ElementDecorator {
 	private double cutoff;
 	private PValueColorScale scale;
 
+	private GenericFormatter fmt = new GenericFormatter("<");
+	
 	public PValueElementDecorator(IElementAdapter adapter) {
 		super(adapter);
 		
@@ -38,6 +40,7 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	public final void setValueIndex(int valueIndex) {
 		this.valueIndex = valueIndex;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final int getCorrectedValueIndex() {
@@ -46,6 +49,7 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	public final void setCorrectedValueIndex(int correctedValueIndex) {
 		this.correctedValueIndex = correctedValueIndex;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final boolean isUseCorrectedScale() {
@@ -54,6 +58,7 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	public final void setUseCorrectedScale(boolean useCorrectedScale) {
 		this.useCorrectedScale = useCorrectedScale;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final double getCutoff() {
@@ -62,6 +67,7 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	public final void setCutoff(double cutoff) {
 		this.cutoff = cutoff;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final PValueColorScale getScale() {
@@ -70,12 +76,15 @@ public class PValueElementDecorator extends ElementDecorator {
 
 	public final void setScale(PValueColorScale scale) {
 		this.scale = scale;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	@Override
 	public void decorate(
 			ElementDecoration decoration,
 			Object element) {
+		
+		decoration.reset();
 		
 		if (element == null) {
 			decoration.setBgColor(Color.WHITE);
@@ -101,8 +110,6 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		final Color color = isSig ? scale.getColor(v) 
 				: ColorConstants.nonSignificantColor;
-		
-		final GenericFormatter fmt = new GenericFormatter("<");
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));

@@ -6,6 +6,10 @@ import es.imim.bg.colorscale.util.ColorConstants;
 
 public class ZScoreColorScale extends CompositeColorScale {
 
+	protected double center;
+	protected double halfAmplitude;
+	protected double sigHalfAmplitude;
+	
 	public ZScoreColorScale(
 			double center,
 			double halfAmplitude, 
@@ -18,6 +22,10 @@ public class ZScoreColorScale extends CompositeColorScale {
 		
 		super(0.0, 0.0, 
 				leftMinColor, rightMaxColor);
+	
+		this.center = center;
+		this.halfAmplitude = halfAmplitude;
+		this.sigHalfAmplitude = sigHalfAmplitude;
 		
 		double min = -halfAmplitude + center;
 		double max = halfAmplitude + center;
@@ -51,5 +59,29 @@ public class ZScoreColorScale extends CompositeColorScale {
 				Color.BLUE, Color.CYAN,
 				Color.YELLOW, Color.RED,
 				ColorConstants.nonSignificantColor);
+	}
+
+	public double getCenter() {
+		return center;
+	}
+
+	public void setCenter(double center) {
+		this.center = center;
+	}
+
+	public double getHalfAmplitude() {
+		return halfAmplitude;
+	}
+
+	public void setHalfAmplitude(double halfAmplitude) {
+		this.halfAmplitude = halfAmplitude;
+	}
+
+	public double getSigHalfAmplitude() {
+		return sigHalfAmplitude;
+	}
+
+	public void setSigHalfAmplitude(double halfSigAmplitude) {
+		this.sigHalfAmplitude = halfSigAmplitude;
 	}
 }

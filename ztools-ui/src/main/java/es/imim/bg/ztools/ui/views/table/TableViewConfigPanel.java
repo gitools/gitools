@@ -5,17 +5,21 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorDescriptor;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
-import es.imim.bg.ztools.table.decorator.pvalue.PValueElementDecorator;
+import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.ui.model.TableViewModel;
+import es.imim.bg.ztools.ui.panels.decorator.ElementDecoratorPanelFactory;
 import es.imim.bg.ztools.ui.panels.decorator.PValueDecoratorPanel;
 
 public class TableViewConfigPanel extends JPanel {
@@ -26,10 +30,14 @@ public class TableViewConfigPanel extends JPanel {
 	
 	private JComboBox showCombo;
 	
+	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
+	
 	public TableViewConfigPanel(
 			TableViewModel model) {
 		
 		this.model = model;
+		
+		this.decoratorCache = new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
 		
 		createComponents();
 	}
@@ -42,54 +50,59 @@ public class TableViewConfigPanel extends JPanel {
 		descList.toArray(descriptors);
 		
 		showCombo = new JComboBox();
-		showCombo.setModel(
-				new DefaultComboBoxModel(descriptors));
+		showCombo.setModel(new DefaultComboBoxModel(descriptors));
+		showCombo.setSelectedItem(model.getDecoratorDescriptor());
 		showCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					model.setDecoratorDescriptor(
-							(ElementDecoratorDescriptor) e.getItem());
+					ElementDecoratorDescriptor descriptor = model.getDecoratorDescriptor();
+					ElementDecorator decorator = model.getDecorator();
+					decoratorCache.put(descriptor, decorator);
+					
+					descriptor = (ElementDecoratorDescriptor) e.getItem();
+					model.setDecoratorDescriptor(descriptor);
+					decorator = decoratorCache.get(descriptor);
+					if (decorator != null)
+						model.setDecorator(decorator);
+
+					changeDecoratorPanel(descriptor);
+					
 					refresh();
 				}
 			}
 		});
-		showCombo.setSelectedItem(model.getDecoratorDescriptor());
 		
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		mainPanel.add(new JLabel("Show"));
 		mainPanel.add(showCombo);
 		
-		final JPanel confPanel = new JPanel();
-		confPanel.setLayout(new BorderLayout());
-		final ElementDecoratorDescriptor decoratorDescriptor = 
-			getSelectedDecoratorDescriptor();
-		if (decoratorDescriptor != null)
-			confPanel.add(
-					createConfigurationComponent(decoratorDescriptor), 
-					BorderLayout.CENTER);
-		
 		setLayout(new BorderLayout());
 		add(mainPanel, BorderLayout.NORTH);
+		add(new JPanel(), BorderLayout.CENTER);
+		
+		ElementDecoratorDescriptor descriptor = 
+			model.getDecoratorDescriptor();
+		
+		changeDecoratorPanel(descriptor);
+	}
+	
+	protected void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
+		final JPanel confPanel = new JPanel();
+		confPanel.setLayout(new BorderLayout());
+		
+		confPanel.add(
+				ElementDecoratorPanelFactory
+					.create(descriptor.getDecoratorClass(), model), 
+				BorderLayout.CENTER);
+		
+		if (getComponents().length >= 2)
+			remove(getComponent(1));
+		
 		add(confPanel, BorderLayout.CENTER);
 	}
-	
-	//TODO Use some factory
-	private Component createConfigurationComponent(
-			ElementDecoratorDescriptor descriptor) {
-		
-		if (PValueElementDecorator.class.equals(
-				descriptor.getDecoratorClass()))
-			return new PValueDecoratorPanel(model.getDecorator());
-		
-		return new JPanel();
-	}
 
-	private ElementDecoratorDescriptor getSelectedDecoratorDescriptor() {
-		return (ElementDecoratorDescriptor) showCombo.getSelectedItem();
-	}
-	
 	public void refresh() {	
 		//TODO
 	}

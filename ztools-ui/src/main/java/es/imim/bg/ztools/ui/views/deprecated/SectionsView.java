@@ -16,10 +16,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
+import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.ui.model.deprecated.ISectionModel;
 import es.imim.bg.ztools.ui.model.deprecated.ITableModel;
 import es.imim.bg.ztools.ui.model.deprecated.ISectionModel.SectionLayout;
-import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.views.AbstractView;
 import es.imim.bg.ztools.ui.views.table.TableView;
 

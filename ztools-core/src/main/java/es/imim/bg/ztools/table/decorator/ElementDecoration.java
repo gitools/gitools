@@ -15,13 +15,17 @@ public class ElementDecoration {
 	protected Color bgColor;
 	
 	public ElementDecoration() {
+		reset();
+	}
+
+	public void reset() {
 		this.text = "";
 		this.textAlign = TextAlignment.left;
 		this.toolTip = "";
 		this.fgColor = Color.BLACK;
 		this.bgColor = Color.WHITE;
 	}
-
+	
 	public String getText() {
 		return text;
 	}

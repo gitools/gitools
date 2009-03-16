@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.model;
+package es.imim.bg.ztools.model;
 
 import java.beans.PropertyChangeListener;
 

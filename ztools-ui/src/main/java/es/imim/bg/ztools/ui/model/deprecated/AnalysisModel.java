@@ -1,7 +1,7 @@
 package es.imim.bg.ztools.ui.model.deprecated;
 
+import es.imim.bg.ztools.model.AbstractModel;
 import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.ui.model.AbstractModel;
 
 @Deprecated
 public class AnalysisModel extends AbstractModel {

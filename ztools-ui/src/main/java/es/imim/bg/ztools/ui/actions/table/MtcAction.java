@@ -10,12 +10,12 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ITableContents;
 
 public class MtcAction extends BaseAction {
 
