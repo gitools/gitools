@@ -143,7 +143,7 @@ public class FilterRowsByNameDialog extends JDialog {
 			}
 		});
 		
-		JButton acceptBtn = new JButton("OK");
+		JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override

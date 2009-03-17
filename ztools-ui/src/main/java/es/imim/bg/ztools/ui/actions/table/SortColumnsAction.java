@@ -9,22 +9,16 @@ import java.util.ListIterator;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
+import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.aggregation.IAggregation;
-import es.imim.bg.ztools.ui.aggregation.LogSumAggregation;
-import es.imim.bg.ztools.ui.aggregation.MedianAggregation;
-import es.imim.bg.ztools.ui.aggregation.MultAggregation;
-import es.imim.bg.ztools.ui.aggregation.SumAggregation;
 import es.imim.bg.ztools.ui.dialogs.SortColumnsDialog;
 import es.imim.bg.ztools.ui.dialogs.SortDialog;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.AggregationType;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortCriteria;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortDirection;
 
 public class SortColumnsAction extends BaseAction {
 
@@ -34,8 +28,8 @@ public class SortColumnsAction extends BaseAction {
 	private List<SortCriteria> criteriaList;
 
 	public SortColumnsAction() {
-		super("Sort columns by ...");	
-		setDesc("Sort columns by ...");
+		super("Sort columns ...");	
+		setDesc("Sort columns ...");
 	}
 	
 	@Override
@@ -106,7 +100,7 @@ public class SortColumnsAction extends BaseAction {
 	private Integer[] sortCols(final int[] selectedRows,
 								final Integer[] indices) {
 		
-		final List<IAggregation> aggregations = new ArrayList<IAggregation>();
+		final List<IAggregator> aggregators = new ArrayList<IAggregator>();
 		final List<Integer> properties = new ArrayList<Integer>();
 		final List<Integer> directions = new ArrayList<Integer>();
 		
@@ -116,26 +110,8 @@ public class SortColumnsAction extends BaseAction {
 			SortCriteria sortCriteria = criteriaList.get(i);
 			
 			properties.add(sortCriteria.getPropertyIndex());
-			
-			SortDirection sd = sortCriteria.getDirection();
-			Integer direction = (sd.equals(SortDirection.ASC)) ? 1 : -1;
-			directions.add(direction);
-						
-			AggregationType at = sortCriteria.getAggregation();
-			switch (at) {
-			case MULTIPLICATION:
-				aggregations.add(new MultAggregation());
-				break;
-			case LOGSUM:
-				aggregations.add(new LogSumAggregation());
-				break;
-			case MEDIAN:
-				aggregations.add(new MedianAggregation());
-				break;
-			case SUM:
-				aggregations.add(new SumAggregation());
-				break;
-			}
+			directions.add(sortCriteria.getDirection().getFactor());
+			aggregators.add(sortCriteria.getAggregator());
 		}
 		
 		final int N = selectedRows.length;
@@ -171,8 +147,8 @@ public class SortColumnsAction extends BaseAction {
 							col2.set(i, v2);
 						}
 					}
-					aggr1 = aggregations.get(level).aggregate(col1);
-					aggr2 = aggregations.get(level).aggregate(col2);
+					aggr1 = aggregators.get(level).aggregate(col1);
+					aggr2 = aggregators.get(level).aggregate(col2);
 					level++;
 				}
 

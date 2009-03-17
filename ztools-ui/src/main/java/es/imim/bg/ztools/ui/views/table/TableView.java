@@ -31,6 +31,7 @@ import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
+import es.imim.bg.ztools.ui.actions.TableActionSet;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 import es.imim.bg.ztools.ui.panels.TemplatePane;
 import es.imim.bg.ztools.ui.panels.table.TablePanel;
@@ -413,6 +414,7 @@ public class TableView extends AbstractView {
 		MenuActionSet.editActionSet.setTreeEnabled(true);
 		MenuActionSet.tableActionSet.setTreeEnabled(true);
 		MenuActionSet.mtcActionSet.setTreeEnabled(true);
+		TableActionSet.fastSortRowsAction.setEnabled(true);
 		
 		FileActionSet.closeAction.setEnabled(true);
 		FileActionSet.exportActionSet.setTreeEnabled(true);

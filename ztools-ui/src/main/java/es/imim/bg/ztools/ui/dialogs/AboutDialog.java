@@ -67,7 +67,7 @@ public class AboutDialog extends JDialog {
 						"<li>Khademul Islam</li>" +
 						"<li>Gunnes Gundem</li></ul></p>");
 		
-		JButton acceptBtn = new JButton("OK");
+		JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override

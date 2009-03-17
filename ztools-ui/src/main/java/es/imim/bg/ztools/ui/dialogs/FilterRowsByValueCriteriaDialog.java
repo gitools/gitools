@@ -53,7 +53,7 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 		
 		final JTextField valueField = new JTextField();
 	
-		final JButton acceptBtn = new JButton("OK");
+		final JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.setEnabled(false);
 		acceptBtn.addActionListener(new ActionListener() {

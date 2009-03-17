@@ -22,96 +22,12 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
 
 public class SortDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
-	
-	public enum SortDirection { 
-		ASC("ascending"),
-		DESC("descending");
-		
-		private String title;
-		
-		private SortDirection(String title) {
-			this.title = title;
-		}
-		
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
-	
-	public enum AggregationType {
-		MEDIAN("mean value"),
-		MULTIPLICATION("multiplicated"),
-		SUM("summed"),
-		LOGSUM("summed logarithm");
-		
-		private String title;
-		
-		private AggregationType(String title) {
-			this.title = title;
-		}
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
-	
-	public static class SortCriteria {
-		
-		protected Object prop;
-		protected int propIndex;
-		protected SortDirection direction;
-		protected AggregationType aggregation;
-		
-		public SortCriteria(Object prop, int propIndex, AggregationType aggregationType, SortDirection direction){
-			setProperty(prop);
-			setPropertyIndex(propIndex);
-			setAggregation(aggregationType);
-			setDirection(direction);
-		}
-
-		private void setDirection(SortDirection direction) {
-			this.direction = direction;
-		}
-		
-		public SortDirection getDirection() {
-			return this.direction;
-		}
-
-		private void setProperty(Object prop) {
-			this.prop = prop;
-		}
-		
-		public Object getProperty() {
-			return this.prop;
-		}
-		
-		private void setPropertyIndex(int propIndex) {
-			this.propIndex = propIndex;
-		}
-		
-		public int getPropertyIndex() {
-			return this.propIndex;
-		}
-		
-		public void setAggregation (AggregationType aggregation) {
-			this.aggregation = aggregation;
-		}
-		
-		public AggregationType getAggregation () {
-			return this.aggregation;
-		}
-		
-		@Override
-		public String toString() {
-			return prop.toString() + ", " + aggregation.toString() + ", " + direction.toString();
-		}
-	}
 	
 	private Object[] properties;
 	private List<SortCriteria> criteriaList;
@@ -126,7 +42,7 @@ public class SortDialog extends JDialog {
 		super(owner);
 		
 		setModal(true);
-		setTitle("Criteria list for sorting");
+		setTitle("Sort");
 		
 		this.properties = properties;
 		this.checkboxText1 = checkboxText1;
@@ -210,7 +126,7 @@ public class SortDialog extends JDialog {
 			}
 		});
 		
-		final JButton acceptBtn = new JButton("OK");
+		final JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override

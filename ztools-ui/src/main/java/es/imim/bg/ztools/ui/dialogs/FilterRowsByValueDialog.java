@@ -187,7 +187,7 @@ public class FilterRowsByValueDialog extends JDialog {
 			}
 		});
 		
-		final JButton acceptBtn = new JButton("OK");
+		final JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override

@@ -9,22 +9,16 @@ import java.util.ListIterator;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
+import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.aggregation.IAggregation;
-import es.imim.bg.ztools.ui.aggregation.LogSumAggregation;
-import es.imim.bg.ztools.ui.aggregation.MedianAggregation;
-import es.imim.bg.ztools.ui.aggregation.MultAggregation;
-import es.imim.bg.ztools.ui.aggregation.SumAggregation;
 import es.imim.bg.ztools.ui.dialogs.SortDialog;
 import es.imim.bg.ztools.ui.dialogs.SortRowsDialog;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.AggregationType;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortCriteria;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortDirection;
 
 public class SortRowsAction extends BaseAction {
 
@@ -34,8 +28,8 @@ public class SortRowsAction extends BaseAction {
 	private List<SortCriteria> criteriaList;
 
 	public SortRowsAction() {
-		super("Sort rows by ...");	
-		setDesc("Sort rows by ...");
+		super("Sort rows ...");	
+		setDesc("Sort rows ...");
 	}
 	
 	@Override
@@ -102,10 +96,10 @@ public class SortRowsAction extends BaseAction {
 		}
 	}
 
-	private Integer[] sortRows(final int[] selectedColumns,
+	private Integer[] sortRows(final int[] selection,
 								final Integer[] indices) {
 		
-		final List<IAggregation> aggregations = new ArrayList<IAggregation>();
+		final List<IAggregator> aggregators = new ArrayList<IAggregator>();
 		final List<Integer> properties = new ArrayList<Integer>();
 		final List<Integer> directions = new ArrayList<Integer>();
 		
@@ -115,33 +109,14 @@ public class SortRowsAction extends BaseAction {
 			SortCriteria sortCriteria = criteriaList.get(i);
 			
 			properties.add(sortCriteria.getPropertyIndex());
-			
-			SortDirection sd = sortCriteria.getDirection();
-			Integer direction = (sd.equals(SortDirection.ASC)) ? 1 : -1;
-			directions.add(direction);
-						
-			AggregationType at = sortCriteria.getAggregation();
-			switch (at) {
-			case MULTIPLICATION:
-				aggregations.add(new MultAggregation());
-				break;
-			case LOGSUM:
-				aggregations.add(new LogSumAggregation());
-				break;
-			case MEDIAN:
-				aggregations.add(new MedianAggregation());
-				break;
-			case SUM:
-				aggregations.add(new SumAggregation());
-				break;
-			}
+			directions.add(sortCriteria.getDirection().getFactor());
+			aggregators.add(sortCriteria.getAggregator());
 		}
 		
-		final int N = selectedColumns.length;
+		final int N = selection.length;
 		DoubleFactory1D df = DoubleFactory1D.dense;
 		final DoubleMatrix1D row1 = df.make(N);
 		final DoubleMatrix1D row2 = df.make(N);
-
 		
 		Arrays.sort(indices, new Comparator<Integer>() {		
 			@Override
@@ -154,7 +129,7 @@ public class SortRowsAction extends BaseAction {
 				while (aggr1 == aggr2 && level < criterias) {
 						
 					for (int i = 0; i < N; i++) {
-						int col = selectedColumns[i];
+						int col = selection[i];
 						
 						Object value1 = contents.getCellValue(idx1, col, properties.get(level));
 						double v1 = TableUtils.doubleValue(value1);
@@ -170,8 +145,8 @@ public class SortRowsAction extends BaseAction {
 							row2.set(i, v2);
 						}
 					}
-					aggr1 = aggregations.get(level).aggregate(row1);
-					aggr2 = aggregations.get(level).aggregate(row2);
+					aggr1 = aggregators.get(level).aggregate(row1);
+					aggr2 = aggregators.get(level).aggregate(row2);
 					level++;
 				}
 

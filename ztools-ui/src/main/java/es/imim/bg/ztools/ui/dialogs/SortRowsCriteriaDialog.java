@@ -14,24 +14,25 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.ui.dialogs.SortDialog.AggregationType;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortDirection;
-import es.imim.bg.ztools.ui.dialogs.SortDialog.SortCriteria;
+import es.imim.bg.ztools.aggregation.AggregatorFactory;
+import es.imim.bg.ztools.aggregation.IAggregator;
+import es.imim.bg.ztools.table.sort.SortCriteria;
+import es.imim.bg.ztools.table.sort.SortCriteria.SortDirection;
 
 public class SortRowsCriteriaDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 
-	private Object[] props;
+	private Object[] properties;
 	private SortCriteria criteria;
 
-	public SortRowsCriteriaDialog(JFrame owner, Object[] props) {
+	public SortRowsCriteriaDialog(JFrame owner, Object[] properties) {
 		super(owner);
 		
-		this.props = props;
+		this.properties = properties;
 		
 		setModal(true);
-		setTitle("Create Criteria");
+		setTitle("Sort criteria");
 		setLocationRelativeTo(owner);
 		
 		setLocationByPlatform(true);		
@@ -41,19 +42,15 @@ public class SortRowsCriteriaDialog extends JDialog {
 
 	private void createComponents() {
 		
-		final JComboBox propBox = new JComboBox();
-		for (Object o : props)
-			propBox.addItem(o);
+		final JComboBox propBox = new JComboBox(properties);
 		
-		final JComboBox directionBox = new JComboBox();
-		for (SortDirection de : SortDirection.values())
-			directionBox.addItem(de);
+		final JComboBox directionBox = new JComboBox(
+				SortDirection.values());
 		
-		final JComboBox aggregationBox = new JComboBox();
-		for (AggregationType at : AggregationType.values())
-			aggregationBox.addItem(at);
+		final JComboBox aggregationBox = new JComboBox(
+				AggregatorFactory.getAggregatorsMap().toArray());
 			
-		final JButton acceptBtn = new JButton("OK");
+		final JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
@@ -78,7 +75,6 @@ public class SortRowsCriteriaDialog extends JDialog {
 		optionPanel.add(aggregationBox);
 		optionPanel.add(directionBox);
 
-		
 		JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(optionPanel, BorderLayout.CENTER);
@@ -98,11 +94,11 @@ public class SortRowsCriteriaDialog extends JDialog {
 	}
 
 	protected void acceptChanges(JComboBox propBox, JComboBox aggregationBox, JComboBox directionBox) {
-		Object prop = props[propBox.getSelectedIndex()];
+		Object prop = properties[propBox.getSelectedIndex()];
 		int propIndex = propBox.getSelectedIndex();
-		AggregationType aggregationType = (AggregationType) aggregationBox.getSelectedObjects()[0];
+		IAggregator aggregator = (IAggregator) aggregationBox.getSelectedItem();
 		SortDirection sortDirection = (SortDirection) directionBox.getSelectedObjects()[0];
-		criteria = new SortCriteria(prop, propIndex, aggregationType, sortDirection);
+		criteria = new SortCriteria(prop, propIndex, aggregator, sortDirection);
 		setVisible(false);
 	}
 	
