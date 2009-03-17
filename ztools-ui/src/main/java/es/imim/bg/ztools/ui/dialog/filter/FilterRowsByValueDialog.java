@@ -1,11 +1,11 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.dialog.filter;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,53 +22,123 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.table.sort.SortCriteria;
-import es.imim.bg.ztools.ui.AppFrame;
-
-public class SortDialogAdvanced extends SortDialog {
+public class FilterRowsByValueDialog extends JDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	private Boolean checkBox1State = false;	
-	private String checkboxText1 = "consider also hidden Elements";
-
+	private Boolean includeHidden = false;
+	private Boolean allCells = false;
+	private Boolean sameCell = false;
+		
+	public Boolean hiddenIncluded() {
+		return includeHidden;
+	}
 	
-	public SortDialogAdvanced(JFrame owner, String dialogTitle) {
+	public Boolean allCells() {
+		return allCells;
+	}
+	
+	public Boolean sameCell() {
+		return sameCell;
+	}
+	
+	public enum ValueCondition {  
+		GE("greater or equal"),
+		LE("lower or equal"),
+		GT("greater than"),
+		LT("lower than"),
+		EQ("equal"), 
+		NE("not equal");
+	
+		private String title;
+		
+		private ValueCondition(String title) {
+			this.title = title;
+		}
+		
+		@Override
+		public String toString() {
+			return title;
+		}
+	}
+	
+	public static class ValueCriteria {
+		
+		protected Object param;
+		protected ValueCondition condition;
+		protected String value;
+		
+		public ValueCriteria(Object param, ValueCondition condition, String value) {
+			this.param = param;
+			this.condition = condition;
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+
+		public ValueCondition getCondition() {
+			return this.condition;
+		}
+
+		public Object getParam() {
+			return this.param;
+		}
+		
+		@Override
+		public String toString() {
+			return param.toString() + " " + condition.toString() + " " + value;
+		}
+	}
+
+	private Object[] params;
+	private List<ValueCriteria> values;
+
+	public FilterRowsByValueDialog(JFrame owner, Object[] params, String target) {
 		super(owner);
-								
-		setTitle(dialogTitle);
+		
+		this.params = params;
+		
+		setModal(true);
+		setTitle("Filter rows...");
 		setLocationByPlatform(true);				
-		createComponents();
-		getContentPane().setBackground(Color.WHITE);
+		createComponents(target);
 		pack();
 	}
 
-	private void createComponents() {
+	private void createComponents(String target) {
 				
-		final DefaultListModel listModel = new DefaultListModel();
-		final JList JCriteriaList = new JList(listModel);   
+		final DefaultListModel listModel = new DefaultListModel();    
+		final JList valueList = new JList(listModel);   
 		
-		listModel.addElement(criteria);
-
-		JPanel checkboxPanel = new JPanel();
-		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.PAGE_AXIS));
-		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-		
-		
-		final JCheckBox checkbox1 = new JCheckBox(this.checkboxText1);
-		checkboxPanel.add(checkbox1);
-
-		
-		final JScrollPane scrollPane = new JScrollPane(JCriteriaList);
+		final JScrollPane scrollPane = new JScrollPane(valueList);
 		scrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 0, 0));
+		
+		
+		final JCheckBox includeHiddenCheckbox = new JCheckBox("Apply filter to hidden " + target + "s also");
+		final JCheckBox allCellsCheckbox = new JCheckBox("All cells in a " + target + " must match");
+		final JCheckBox sameCellCheckbox = new JCheckBox("All criteria must match within a cell");
+		sameCellCheckbox.setEnabled(false);
+		
+		JPanel checkboxPanel = new JPanel();
+		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
+		checkboxPanel.add(includeHiddenCheckbox);
+		checkboxPanel.add(allCellsCheckbox);
+		checkboxPanel.add(sameCellCheckbox);
+
+		final JPanel outerCheckboxPanel = new JPanel();
+		outerCheckboxPanel.setLayout(new BorderLayout());
+		outerCheckboxPanel.add(checkboxPanel, BorderLayout.WEST);
 
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(listModel);
+				addElmenent(listModel, sameCellCheckbox);
 			}
 		});
 		
@@ -78,7 +148,7 @@ public class SortDialogAdvanced extends SortDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(listModel, JCriteriaList);
+				removeElement(listModel, valueList, sameCellCheckbox);
 			}
 		});
 		
@@ -88,7 +158,7 @@ public class SortDialogAdvanced extends SortDialog {
 		upBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(listModel, JCriteriaList);
+				moveUp(listModel, valueList);
 			}
 		});
 		
@@ -98,18 +168,18 @@ public class SortDialogAdvanced extends SortDialog {
 		downBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(listModel, JCriteriaList);
+				moveDown(listModel, valueList);
 			}
 		});
 		
-		JCriteriaList.addListSelectionListener(new ListSelectionListener() {
+		valueList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(JCriteriaList.getSelectedValue() == null){
+				if (valueList.getSelectedValue() == null) {
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
-				}else{
+				} else {
 					upBtn.setEnabled(true);
 					downBtn.setEnabled(true);
 					removeBtn.setEnabled(true);
@@ -122,7 +192,10 @@ public class SortDialogAdvanced extends SortDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel, checkbox1.isSelected());
+				acceptChanges(listModel, 
+						includeHiddenCheckbox.isSelected(),
+						allCellsCheckbox.isSelected(),
+						sameCellCheckbox.isSelected());
 			}
 		});
 		
@@ -131,7 +204,7 @@ public class SortDialogAdvanced extends SortDialog {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				discardChanges();
+				discardChanges(listModel);
 			}
 		});
 		
@@ -142,12 +215,13 @@ public class SortDialogAdvanced extends SortDialog {
 		btnPanel.add(removeBtn);
 		btnPanel.add(upBtn);
 		btnPanel.add(downBtn);
+
 		
 		final JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
-		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		contPanel.add(btnPanel, BorderLayout.EAST);
+		contPanel.add(outerCheckboxPanel, BorderLayout.SOUTH);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
@@ -163,16 +237,26 @@ public class SortDialogAdvanced extends SortDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void addElmenent(DefaultListModel listModel) {
-		newCriteria();
-		listModel.addElement(criteria);
+	protected void addElmenent(DefaultListModel listModel, JCheckBox sameCellCheckbox) {
+		FilterRowsByValueCriteriaDialog d = new FilterRowsByValueCriteriaDialog(this, params);
+		ValueCriteria c = d.getCriteria();
+		if (c != null)
+			listModel.addElement(c);
+		if (listModel.getSize() > 1)
+			sameCellCheckbox.setEnabled(true);
+		else
+			sameCellCheckbox.setEnabled(false);
+		
 	}
 	
-	protected void removeElement(DefaultListModel listModel, JList JCriteriaList) {
-		int[] selectedIndices = JCriteriaList.getSelectedIndices();
-		for (int i = selectedIndices.length; i > 0; i--) {
-			listModel.remove(selectedIndices[i-1]);
-		}
+	protected void removeElement(DefaultListModel listModel, JList criteriaList, JCheckBox sameCellCheckbox) {
+		int[] selectedIndices = criteriaList.getSelectedIndices();
+		for (int i = selectedIndices.length; i > 0; i--)
+			listModel.remove(selectedIndices[i-1]);	
+		if (listModel.getSize() > 1)
+			sameCellCheckbox.setEnabled(true);
+		else
+			sameCellCheckbox.setEnabled(false);
 	}
 
 	protected void moveUp(final DefaultListModel listModel,
@@ -228,15 +312,30 @@ public class SortDialogAdvanced extends SortDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel, boolean checkBox1State) {
-		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
+	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden, boolean newAllCells, boolean newSameCell) {
+		List<ValueCriteria> list = 
+			new ArrayList<ValueCriteria>(listModel.getSize());
+		
 		for (int i = 0; i < listModel.getSize(); i++)
-			criteriaList.add((SortCriteria) listModel.getElementAt(i));
-			this.checkBox1State = checkBox1State;
+			list.add((ValueCriteria) listModel.getElementAt(i));
+		
+		includeHidden = newIncludeHidden;
+		allCells = newAllCells;
+		if (listModel.getSize() > 1)
+			sameCell = newSameCell;
+		else
+			sameCell = false;
+		values = list;
 		setVisible(false);
 	}
-
-	public Boolean checkbox1IsChecked() {
-		return checkBox1State;
+	
+	protected void discardChanges(DefaultListModel tempListModel) {
+		values = null;
+		setVisible(false);
+	}
+	
+	public List<ValueCriteria> getValues() {
+		setVisible(true);
+		return values;
 	}
 }

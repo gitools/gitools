@@ -8,7 +8,7 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.commands.ZCalcCommand;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.ProgressMonitorDialog;
+import es.imim.bg.ztools.ui.dialog.ProgressMonitorDialog;
 import es.imim.bg.ztools.ui.jobs.ZCalcCommandJob;
 import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
 import es.imim.bg.ztools.ui.wizard.WizardDataModel;

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.dialog.filter;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -16,8 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCondition;
-import es.imim.bg.ztools.ui.dialogs.FilterRowsByValueDialog.ValueCriteria;
+import es.imim.bg.ztools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
+import es.imim.bg.ztools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
 
 public class FilterRowsByValueCriteriaDialog extends JDialog {
 	

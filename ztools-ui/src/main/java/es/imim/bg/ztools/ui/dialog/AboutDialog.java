@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Insets;

@@ -1,144 +1,117 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.dialog.sort;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class FilterRowsByValueDialog extends JDialog {
+import es.imim.bg.ztools.aggregation.IAggregator;
+import es.imim.bg.ztools.table.sort.SortCriteria;
+
+public class SortDialogAdvanced extends SortDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
 	
-	private Boolean includeHidden = false;
-	private Boolean allCells = false;
-	private Boolean sameCell = false;
+	private static class CriteriaListModel extends AbstractListModel {
+
+		private static final long serialVersionUID = -8576133854983074851L;
+
+		private List<SortCriteria> list;
 		
-	public Boolean hiddenIncluded() {
-		return includeHidden;
-	}
+		public CriteriaListModel(List<SortCriteria> list) {
+			this.list = list;
+		}
 	
-	public Boolean allCells() {
-		return allCells;
-	}
-	
-	public Boolean sameCell() {
-		return sameCell;
-	}
-	
-	public enum ValueCondition {  
-		GE("greater or equal"),
-		LE("lower or equal"),
-		GT("greater than"),
-		LT("lower than"),
-		EQ("equal"), 
-		NE("not equal");
-	
-		private String title;
+		public List<SortCriteria> getList() {
+			return list;
+		}
 		
-		private ValueCondition(String title) {
-			this.title = title;
+		public void add(SortCriteria criteria) {
+			int index = list.size() - 1;
+			
+			list.add(criteria);
+			
+			fireIntervalAdded(this, index, index);
+		}
+
+		public void clear() {
+			int index = list.size() - 1;
+			
+			list.clear();
+			
+			fireIntervalRemoved(this, 0, index);
 		}
 		
 		@Override
-		public String toString() {
-			return title;
+		public Object getElementAt(int index) {
+			return list.get(index);
+		}
+
+		@Override
+		public int getSize() {
+			return list.size();
 		}
 	}
 	
-	public static class ValueCriteria {
+	private CriteriaListModel listModel;
+	
+	public SortDialogAdvanced(
+			Window owner,
+			String title,
+			Object[] properties,
+			IAggregator[] aggregators,
+			List<SortCriteria> criteriaList) {
 		
-		protected Object param;
-		protected ValueCondition condition;
-		protected String value;
+		super(owner, title, true);
+								
+		this.properties = properties;
+		this.aggregators = aggregators;
+		this.listModel = new CriteriaListModel(criteriaList);
 		
-		public ValueCriteria(Object param, ValueCondition condition, String value) {
-			this.param = param;
-			this.condition = condition;
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
-		public ValueCondition getCondition() {
-			return this.condition;
-		}
-
-		public Object getParam() {
-			return this.param;
-		}
-		
-		@Override
-		public String toString() {
-			return param.toString() + " " + condition.toString() + " " + value;
-		}
-	}
-
-	private Object[] params;
-	private List<ValueCriteria> values;
-
-	public FilterRowsByValueDialog(JFrame owner, Object[] params, String target) {
-		super(owner);
-		
-		this.params = params;
-		
-		setModal(true);
-		setTitle("Filter rows...");
 		setLocationByPlatform(true);				
-		createComponents(target);
+		createComponents();
 		pack();
 	}
 
-	private void createComponents(String target) {
-				
-		final DefaultListModel listModel = new DefaultListModel();    
-		final JList valueList = new JList(listModel);   
+	private void createComponents() {		
+		final JList criteriaJList = new JList(listModel);
+
+		JPanel checkboxPanel = new JPanel();
+		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.PAGE_AXIS));
+		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		
-		final JScrollPane scrollPane = new JScrollPane(valueList);
+		/*final JCheckBox checkbox1 = new JCheckBox(this.checkboxText1);
+		checkboxPanel.add(checkbox1);*/
+	
+		final JScrollPane scrollPane = new JScrollPane(criteriaJList);
 		scrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 0, 0));
-		
-		
-		final JCheckBox includeHiddenCheckbox = new JCheckBox("Apply filter to hidden " + target + "s also");
-		final JCheckBox allCellsCheckbox = new JCheckBox("All cells in a " + target + " must match");
-		final JCheckBox sameCellCheckbox = new JCheckBox("All criteria must match within a cell");
-		sameCellCheckbox.setEnabled(false);
-		
-		JPanel checkboxPanel = new JPanel();
-		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-		checkboxPanel.add(includeHiddenCheckbox);
-		checkboxPanel.add(allCellsCheckbox);
-		checkboxPanel.add(sameCellCheckbox);
-
-		final JPanel outerCheckboxPanel = new JPanel();
-		outerCheckboxPanel.setLayout(new BorderLayout());
-		outerCheckboxPanel.add(checkboxPanel, BorderLayout.WEST);
 
 		final JButton addBtn = new JButton("Add...");
 		addBtn.setMargin(new Insets(0, 30, 0, 30));
 		addBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addElmenent(listModel, sameCellCheckbox);
+				//FIXME implement getCriteria() in simple dialog
+				List<SortCriteria> c = 
+					new SortDialogSimple(
+						getOwner(), getTitle(), 
+						false, properties, aggregators).getCriteriaList();
+				
+				listModel.add(c.get(0));
 			}
 		});
 		
@@ -148,7 +121,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeElement(listModel, valueList, sameCellCheckbox);
+				//FIXME removeElement(listModel, criteriaJList);
 			}
 		});
 		
@@ -158,7 +131,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		upBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveUp(listModel, valueList);
+				//FIXME moveUp(listModel, criteriaJList);
 			}
 		});
 		
@@ -168,14 +141,14 @@ public class FilterRowsByValueDialog extends JDialog {
 		downBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveDown(listModel, valueList);
+				//FIXME moveDown(listModel, criteriaJList);
 			}
 		});
 		
-		valueList.addListSelectionListener(new ListSelectionListener() {
+		criteriaJList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if (valueList.getSelectedValue() == null) {
+				if (criteriaJList.getSelectedValue() == null) {
 					upBtn.setEnabled(false);
 					downBtn.setEnabled(false);
 					removeBtn.setEnabled(false);
@@ -192,10 +165,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				acceptChanges(listModel, 
-						includeHiddenCheckbox.isSelected(),
-						allCellsCheckbox.isSelected(),
-						sameCellCheckbox.isSelected());
+				performAccept();
 			}
 		});
 		
@@ -204,7 +174,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				discardChanges(listModel);
+				performCancel();
 			}
 		});
 		
@@ -215,13 +185,12 @@ public class FilterRowsByValueDialog extends JDialog {
 		btnPanel.add(removeBtn);
 		btnPanel.add(upBtn);
 		btnPanel.add(downBtn);
-
 		
 		final JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
+		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		contPanel.add(btnPanel, BorderLayout.EAST);
-		contPanel.add(outerCheckboxPanel, BorderLayout.SOUTH);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
@@ -237,29 +206,19 @@ public class FilterRowsByValueDialog extends JDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void addElmenent(DefaultListModel listModel, JCheckBox sameCellCheckbox) {
-		FilterRowsByValueCriteriaDialog d = new FilterRowsByValueCriteriaDialog(this, params);
-		ValueCriteria c = d.getCriteria();
-		if (c != null)
-			listModel.addElement(c);
-		if (listModel.getSize() > 1)
-			sameCellCheckbox.setEnabled(true);
-		else
-			sameCellCheckbox.setEnabled(false);
-		
+	/*protected void addElmenent(ListModel listModel) {
+		newCriteria();
+		listModel.addElement(criteria);
 	}
 	
-	protected void removeElement(DefaultListModel listModel, JList criteriaList, JCheckBox sameCellCheckbox) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
-		for (int i = selectedIndices.length; i > 0; i--)
-			listModel.remove(selectedIndices[i-1]);	
-		if (listModel.getSize() > 1)
-			sameCellCheckbox.setEnabled(true);
-		else
-			sameCellCheckbox.setEnabled(false);
+	protected void removeElement(ListModel listModel, JList JCriteriaList) {
+		int[] selectedIndices = JCriteriaList.getSelectedIndices();
+		for (int i = selectedIndices.length; i > 0; i--) {
+			listModel.remove(selectedIndices[i-1]);
+		}
 	}
 
-	protected void moveUp(final DefaultListModel listModel,
+	protected void moveUp(final ListModel listModel,
 			final JList criteriaList) {
 		int[] selectedIndices = criteriaList.getSelectedIndices();
 		int actualIndex;
@@ -286,7 +245,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void moveDown(final DefaultListModel listModel,
+	protected void moveDown(final ListModel listModel,
 			final JList criteriaList) {
 		int[] selectedIndices = criteriaList.getSelectedIndices();
 		int actualIndex;
@@ -312,30 +271,29 @@ public class FilterRowsByValueDialog extends JDialog {
 		criteriaList.setSelectedIndices(selectedIndices);
 	}
 
-	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden, boolean newAllCells, boolean newSameCell) {
-		List<ValueCriteria> list = 
-			new ArrayList<ValueCriteria>(listModel.getSize());
-		
+	protected void acceptChanges(DefaultListModel listModel, boolean checkBox1State) {
+		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
 		for (int i = 0; i < listModel.getSize(); i++)
-			list.add((ValueCriteria) listModel.getElementAt(i));
-		
-		includeHidden = newIncludeHidden;
-		allCells = newAllCells;
-		if (listModel.getSize() > 1)
-			sameCell = newSameCell;
-		else
-			sameCell = false;
-		values = list;
+			criteriaList.add((SortCriteria) listModel.getElementAt(i));
+			this.checkBox1State = checkBox1State;
+		setVisible(false);
+	}
+
+	public Boolean checkbox1IsChecked() {
+		return checkBox1State;
+	} */
+	
+	private void performAccept() {
 		setVisible(false);
 	}
 	
-	protected void discardChanges(DefaultListModel tempListModel) {
-		values = null;
+	private void performCancel() {
+		listModel.clear();
 		setVisible(false);
 	}
-	
-	public List<ValueCriteria> getValues() {
+
+	public List<SortCriteria> getCriteriaList() {
 		setVisible(true);
-		return values;
+		return listModel.getList();
 	}
 }

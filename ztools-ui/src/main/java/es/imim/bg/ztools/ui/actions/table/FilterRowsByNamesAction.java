@@ -11,7 +11,7 @@ import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.FilterRowsByNameDialog;
+import es.imim.bg.ztools.ui.dialog.filter.FilterRowsByNameDialog;
 
 public class FilterRowsByNamesAction extends BaseAction {
 

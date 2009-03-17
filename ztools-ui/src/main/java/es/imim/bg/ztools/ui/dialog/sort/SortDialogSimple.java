@@ -1,11 +1,15 @@
-package es.imim.bg.ztools.ui.dialogs;
+package es.imim.bg.ztools.ui.dialog.sort;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,58 +21,98 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.aggregation.AggregatorFactory;
 import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.table.sort.SortCriteria.SortDirection;
-import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.actions.table.SortAction.SortSubject;
 
 public class SortDialogSimple extends SortDialog {
 	
 	private static final long serialVersionUID = 4201760423693544699L;
-	private boolean enableSwitch;
 	
-	public SortDialogSimple(JFrame owner, Object[] properties, String dialogTitle) { 
-		this(owner, properties, dialogTitle, false);
-	}
-
-	public SortDialogSimple(JFrame owner, Object[] properties, String dialogTitle, boolean enableSwitch) {
-		super(owner);
+	private boolean advancedEnabled;
+	private boolean advancedModeSwitch;
+	
+	private SortCriteria criteria;
+	
+	public SortDialogSimple(
+			Window owner,
+			String title,
+			boolean advancedEnabled,
+			Object[] properties,
+			IAggregator[] aggregators,
+			SortCriteria criteria) {
 		
-		SortDialog.owner = owner;
-		SortDialog.properties = properties;
-		this.enableSwitch = enableSwitch;
+		super(owner, title, true);
 		
-		setTitle(dialogTitle);
-				
+		this.advancedEnabled = advancedEnabled;
+		this.advancedModeSwitch = false;
+		
+		this.properties = properties;
+		this.aggregators = aggregators;
+		this.criteria = criteria;
+		
 		setLocationByPlatform(true);		
 		createComponents();
 		pack();
 	}
 
+	public SortDialogSimple(
+			Window owner,
+			String title,
+			boolean advancedEnabled,
+			Object[] properties,
+			IAggregator[] aggregators) {
+		
+		this(owner, title, advancedEnabled, properties, aggregators,
+				new SortCriteria(properties[0], 0, aggregators[0], SortDirection.ASCENDING));
+	}
+	
 	private void createComponents() {
 		
-		final JComboBox propBox = new JComboBox(properties);
 		final JLabel propLabel = new JLabel("Property: ");
 		
-		final JComboBox directionBox = new JComboBox(
-				SortDirection.values());
-		final JLabel directionLabel = new JLabel("Direction: ");
-
+		final JComboBox propBox = new JComboBox(properties);
+		propBox.setSelectedItem(criteria.getProperty());
+		propBox.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					//FIXME use only one, property or index, but not both
+					criteria.setProperty(e.getItem());
+					criteria.setPropertyIndex(propBox.getSelectedIndex());
+				}
+			}
+		});
 		
-		final JComboBox aggregationBox = new JComboBox(
-				AggregatorFactory.getAggregators().toArray());
-		final JLabel aggregationLabel = new JLabel("Aggregation: ");
+		final JLabel directionLabel = new JLabel("Direction: ");
+		
+		final JComboBox directionBox = new JComboBox(SortDirection.values());
+		directionBox.setSelectedItem(criteria.getDirection());
+		directionBox.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					criteria.setDirection((SortDirection) e.getItem());
+				}
+			}
+		});
 
-			
+		final JLabel aggregationLabel = new JLabel("Aggregation: ");
+		
+		final JComboBox aggregationBox = new JComboBox(aggregators);
+		aggregationBox.setSelectedItem(criteria.getAggregator());
+		aggregationBox.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					criteria.setAggregator((IAggregator) e.getItem());
+				}
+			}
+		});
+
 		final JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addCriteria(propBox, aggregationBox, directionBox);
-				hideDialog();
+				performAccept();
 			}
 		});
 
@@ -77,7 +121,7 @@ public class SortDialogSimple extends SortDialog {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				discardChanges();
+				performCancel();
 			}
 		});
 		
@@ -86,8 +130,7 @@ public class SortDialogSimple extends SortDialog {
 		advancedBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addCriteria(propBox, aggregationBox, directionBox);
-				switchToAdvancedMode();
+				performAdvancedMode();
 			}
 		});
 		
@@ -108,7 +151,7 @@ public class SortDialogSimple extends SortDialog {
 		JPanel mainButtonEastPanel = new JPanel();
 		mainButtonEastPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		mainButtonEastPanel.setLayout(new BoxLayout(mainButtonEastPanel, BoxLayout.X_AXIS));
-		if (enableSwitch)
+		if (advancedEnabled)
 			mainButtonEastPanel.add(advancedBtn);
 		mainButtonEastPanel.add(cancelBtn);
 		mainButtonEastPanel.add(acceptBtn);
@@ -121,32 +164,35 @@ public class SortDialogSimple extends SortDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	protected void switchToAdvancedMode() {
-		List<SortCriteria> criteriaList = new ArrayList<SortCriteria>();
-		criteriaList.add(SortDialog.criteria);
-		SortDialogAdvanced d = new SortDialogAdvanced(owner, getTitle());
-		hideDialog();
-		SortDialog.switched = true;
-		SortDialog.criteriaList = d.getCriteriaList();
-	}
-	
-	protected void addCriteria(JComboBox propBox, JComboBox aggregationBox, JComboBox directionBox) {
-		Object prop = properties[propBox.getSelectedIndex()];
-		int propIndex = propBox.getSelectedIndex();
-		IAggregator aggregator = (IAggregator) aggregationBox.getSelectedItem();
-		SortDirection sortDirection = (SortDirection) directionBox.getSelectedObjects()[0];
-		criteria = new SortCriteria(prop, propIndex, aggregator, sortDirection);
-		if (!switched)
-			criteriaList.add(criteria);
-	}
-
-	protected void hideDialog() {
+	protected void performAccept() {
 		setVisible(false);
 	}
 	
-	@Override
-	public void newCriteria() {
-		setVisible(true);
+	protected void performCancel() {
+		criteria = null;
+		setVisible(false);
 	}
-	
+
+	protected void performAdvancedMode() {
+		advancedModeSwitch = true;
+		setVisible(false);
+	}
+
+	public List<SortCriteria> getCriteriaList() {
+		setVisible(true);
+		
+		List<SortCriteria> list = null;
+		
+		if (criteria == null)
+			list = new ArrayList<SortCriteria>(0);
+		else	 
+			list = new ArrayList<SortCriteria>(Arrays.asList(criteria));
+		
+		if (advancedModeSwitch)
+			return new SortDialogAdvanced(
+					getOwner(), getTitle(), 
+					properties, aggregators, list).getCriteriaList();
+		
+		return list;
+	}
 }

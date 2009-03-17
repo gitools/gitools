@@ -1,16 +1,19 @@
 package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
+import es.imim.bg.ztools.aggregation.AggregatorFactory;
+import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.SortDialog;
-import es.imim.bg.ztools.ui.dialogs.SortDialogSimple;
+import es.imim.bg.ztools.ui.dialog.sort.SortDialog;
+import es.imim.bg.ztools.ui.dialog.sort.SortDialogSimple;
 
 public class SortAction extends BaseAction {
 
@@ -58,9 +61,15 @@ public class SortAction extends BaseAction {
 			counter++;
 		}
 		
-		SortDialog d = new SortDialogSimple(AppFrame.instance(), props, getName(), true);
+		SortDialogSimple d = new SortDialogSimple(
+				AppFrame.instance(),
+				getName(),
+				true,
+				props,
+				AggregatorFactory.getAggregatorsArray());
+		
 		List<SortCriteria> criteriaList = d.getCriteriaList();
-		if (criteriaList == null)
+		if (criteriaList.size() == 0)
 			return;
 		
 		//SortDialog d;		

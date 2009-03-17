@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.AboutDialog;
+import es.imim.bg.ztools.ui.dialog.AboutDialog;
 
 public class AboutAction extends BaseAction {
 

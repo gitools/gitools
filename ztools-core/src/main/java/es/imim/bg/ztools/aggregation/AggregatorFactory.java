@@ -34,4 +34,11 @@ public class AggregatorFactory {
 	public static Collection<IAggregator> getAggregators() {
 		return Collections.unmodifiableCollection(aggregators);
 	}
+	
+	public static IAggregator[] getAggregatorsArray() {
+		final IAggregator[] aggregatorsArray = 
+			new IAggregator[aggregators.size()];
+		aggregators.toArray(aggregatorsArray);
+		return aggregatorsArray;
+	}
 }
