@@ -13,6 +13,7 @@ public final class SortCriteria {
 
 		private SortDirection(String title, int factor) {
 			this.title = title;
+			this.factor = factor;
 		}
 
 		public int getFactor() {

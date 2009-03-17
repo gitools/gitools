@@ -1,11 +1,9 @@
 package es.imim.bg.ztools.ui.actions.table;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -13,89 +11,57 @@ import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
-import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.SortColumnsDialog;
-import es.imim.bg.ztools.ui.dialogs.SortDialog;
 
-public class SortColumnsAction extends BaseAction {
-
-	private static final long serialVersionUID = -1582437709508438222L;
-	private ITable table;
-	private ITableContents contents;
-	private List<SortCriteria> criteriaList;
-
-	public SortColumnsAction() {
-		super("Sort columns ...");	
-		setDesc("Sort columns ...");
-	}
+public class SortColumnsAction {
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		this.table = getTable();
-		if (table == null)
-			return;
+	ITableContents contents;
+	List<SortCriteria> criteriaList;
+	
+	
+	public SortColumnsAction(ITable table, List<SortCriteria> criteriaList,
+			boolean allCols) {
 		
 		this.contents = table.getContents();
+		this.criteriaList = criteriaList;
 		
-		//select properties
-		List<IElementProperty> cellProps = table.getCellAdapter().getProperties();
-		ListIterator<IElementProperty> i = cellProps.listIterator();
-		Object[] props = new Object[cellProps.size()];
-		int counter = 0;
-		while (i.hasNext()) {
-			IElementProperty ep = i.next();
-			props[counter] = ep.getName();
-			counter++;
-		}
-				
-		SortDialog d = new SortColumnsDialog(AppFrame.instance(), props);
-		this.criteriaList = d.getValueList();
-		boolean allCols = d.considerAllColumns();
-		boolean allRows = d.considerAllRows();
+		//rows
+		int rowCount;
+		int[] rows = null;
+		if(table.getSelectedRows().length == 0) {
+			rowCount = table.getVisibleRows().length;
+			rows = new int[rowCount];
+			for (int r = 0; r < rowCount; r++)
+				rows[r] = r;
+		} else
+			rows = table.getSelectedRows();
+
 		
-		if(criteriaList != null) {
-			//rows
-			int rowCount;
-			int[] rows = null;
-			if(table.getSelectedRows().length == 0 || allRows) {
-				rowCount = table.getVisibleRows().length;
-				rows = new int[rowCount];
-				for (int r = 0; r < rowCount; r++)
-					rows[r] = r;
-			} else
-				rows = table.getSelectedRows();
-
-			
-			//cols
-			Integer[] cols = null;
-			final int colCount;
-			if(allCols) {
-				colCount = contents.getColumnCount();
-				cols = new Integer[colCount];
-				for (int j = 0; j < colCount; j++)
-					cols[j] = j;
-			}
-			else {
-				colCount = table.getColumnCount();
-				cols = new Integer[colCount];
-				int[] visibleCols = table.getVisibleColumns();
-				for (int j = 0; j < colCount; j++)
-					cols[j] = visibleCols[j];
-			}
-
-			Integer[] sortedColIndices = sortCols(rows, cols);
-			int[] visibleSortedCols = new int[colCount];
-			for (int k = 0; k < colCount; k++)
-				visibleSortedCols[k] = sortedColIndices[k];
-			table.setVisibleColumns(visibleSortedCols);
-			AppFrame.instance()
-				.setStatusText("Columns sorted.");
+		//cols
+		Integer[] cols = null;
+		final int colCount;
+		if(allCols) {
+			colCount = contents.getColumnCount();
+			cols = new Integer[colCount];
+			for (int j = 0; j < colCount; j++)
+				cols[j] = j;
 		}
+		else {
+			colCount = table.getColumnCount();
+			cols = new Integer[colCount];
+			int[] visibleCols = table.getVisibleColumns();
+			for (int j = 0; j < colCount; j++)
+				cols[j] = visibleCols[j];
+		}
+
+		Integer[] sortedColIndices = sortCols(rows, cols);
+		int[] visibleSortedCols = new int[colCount];
+		for (int k = 0; k < colCount; k++)
+			visibleSortedCols[k] = sortedColIndices[k];
+		table.setVisibleColumns(visibleSortedCols);
 	}
+	
 
 	private Integer[] sortCols(final int[] selectedRows,
 								final Integer[] indices) {
@@ -118,7 +84,7 @@ public class SortColumnsAction extends BaseAction {
 		DoubleFactory1D df = DoubleFactory1D.dense;
 		final DoubleMatrix1D col1 = df.make(N);
 		final DoubleMatrix1D col2 = df.make(N);
-
+	
 		
 		Arrays.sort(indices, new Comparator<Integer>() {		
 			@Override
@@ -126,7 +92,7 @@ public class SortColumnsAction extends BaseAction {
 				
 				int level = 0;
 				double aggr1 = 0, aggr2 = 0;
-
+	
 				
 				while (aggr1 == aggr2 && level < criterias) {
 						
@@ -151,7 +117,7 @@ public class SortColumnsAction extends BaseAction {
 					aggr2 = aggregators.get(level).aggregate(col2);
 					level++;
 				}
-
+	
 				int res = (int) Math.signum(aggr1 - aggr2);
 				level--;
 				return res*directions.get(level);

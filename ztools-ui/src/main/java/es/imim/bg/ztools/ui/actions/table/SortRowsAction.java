@@ -1,11 +1,9 @@
 package es.imim.bg.ztools.ui.actions.table;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -13,88 +11,55 @@ import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
-import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialogs.SortDialog;
-import es.imim.bg.ztools.ui.dialogs.SortRowsDialog;
 
-public class SortRowsAction extends BaseAction {
+public class SortRowsAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
-	private ITable table;
 	private ITableContents contents;
 	private List<SortCriteria> criteriaList;
 
-	public SortRowsAction() {
-		super("Sort rows ...");	
-		setDesc("Sort rows ...");
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		this.table = getTable();
-		if (table == null)
-			return;
+	public SortRowsAction(ITable table, List<SortCriteria> criteriaList, boolean allRows) {
 		
 		this.contents = table.getContents();
+		this.criteriaList = criteriaList;
 		
-		//select properties
-		List<IElementProperty> cellProps = table.getCellAdapter().getProperties();
-		ListIterator<IElementProperty> i = cellProps.listIterator();
-		Object[] props = new Object[cellProps.size()];
-		int counter = 0;
-		while (i.hasNext()) {
-			IElementProperty ep = i.next();
-			props[counter] = ep.getName();
-			counter++;
-		}
-				
-		SortDialog d = new SortRowsDialog(AppFrame.instance(), props);
-		this.criteriaList = d.getValueList();
-		boolean allCols = d.considerAllColumns();
-		boolean allRows = d.considerAllRows();
-		
-		if(criteriaList != null) {
-			//cols
-			int colCount;
-			int[] columns = null;
-			if(table.getSelectedColumns().length == 0 || allCols) {
-				colCount = table.getVisibleColumns().length;
-				columns = new int[colCount];
-				for (int c = 0; c < colCount; c++)
-					columns[c] = c;
-			} else
-				columns = table.getSelectedColumns();
+		//cols
+		int colCount;
+		int[] columns = null;
+		if(table.getSelectedColumns().length == 0) {
+			colCount = table.getVisibleColumns().length;
+			columns = new int[colCount];
+			for (int c = 0; c < colCount; c++)
+				columns[c] = c;
+		} else
+			columns = table.getSelectedColumns();
 
-			//rows
-			Integer[] rows = null;
-			final int rowCount;
-			if(allRows) {
-				rowCount = contents.getRowCount();
-				rows = new Integer[rowCount];
-				for (int j = 0; j < rowCount; j++)
-					rows[j] = j;
-			}
-			else {
-				rowCount = table.getRowCount();
-				rows = new Integer[rowCount];
-				int[] visibleRows = table.getVisibleRows();
-				for (int j = 0; j < rowCount; j++)
-					rows[j] = visibleRows[j];
-			}
-
-			Integer[] sortedRowIndices = sortRows(columns, rows);
-			int[] visibleSortedRows = new int[rowCount];
-			for (int k = 0; k < rowCount; k++)
-				visibleSortedRows[k] = sortedRowIndices[k];
-			table.setVisibleRows(visibleSortedRows);
-			AppFrame.instance()
-				.setStatusText("Rows sorted.");
+		//rows
+		Integer[] rows = null;
+		final int rowCount;
+		if(allRows) {
+			rowCount = contents.getRowCount();
+			rows = new Integer[rowCount];
+			for (int j = 0; j < rowCount; j++)
+				rows[j] = j;
 		}
+		else {
+			rowCount = table.getRowCount();
+			rows = new Integer[rowCount];
+			int[] visibleRows = table.getVisibleRows();
+			for (int j = 0; j < rowCount; j++)
+				rows[j] = visibleRows[j];
+		}
+
+		Integer[] sortedRowIndices = sortRows(columns, rows);
+		int[] visibleSortedRows = new int[rowCount];
+		for (int k = 0; k < rowCount; k++)
+			visibleSortedRows[k] = sortedRowIndices[k];
+		table.setVisibleRows(visibleSortedRows);
 	}
+		
 
 	private Integer[] sortRows(final int[] selection,
 								final Integer[] indices) {

@@ -31,7 +31,7 @@ public class AggregatorFactory {
 		return aggregatorsMap.get(name);
 	}
 	
-	public static Collection<IAggregator> getAggregatorsMap() {
+	public static Collection<IAggregator> getAggregators() {
 		return Collections.unmodifiableCollection(aggregators);
 	}
 }
