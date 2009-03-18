@@ -223,6 +223,8 @@ public class TableView extends AbstractView {
 				context.put("cell", cellMap);
 			}
 		}
+		
+		System.out.println("row: " + row + ", col: " + column);
 		/*else if (column < 0) {
 			System.out.println("row:" + row);
 		}

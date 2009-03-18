@@ -96,13 +96,16 @@ public class TablePanel extends JPanel {
 				int[] selectedRows = new int[0];
 
 				setSelectedCells(selectedColumns, selectedRows);
+				setLeadSelection(-1, pressedColumn);
 			}
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			endColumn = table.columnAtPoint(e.getPoint());
+			setLeadSelection(-1, endColumn);
 
+			
 			int numCols = Math.abs(endColumn - startColumn) + 1;
 			
 			int[] newSelectedColumns = new int[numCols];
@@ -121,7 +124,7 @@ public class TablePanel extends JPanel {
 			else
 				selectedColumns = newSelectedColumns;
 
-			setSelectedColumns(selectedColumns);
+			setSelectedCells(selectedColumns, new int[0]);
 		}
 	}
 	
@@ -137,17 +140,16 @@ public class TablePanel extends JPanel {
 			int pressedColumn = table.columnAtPoint(e.getPoint());
 			
 			int lastcol = table.getColumnCount() - 1;
-			if (lastcol == pressedColumn){
+			if (lastcol == pressedColumn) {
 				setSelectionMode(SelectionMode.rows);
 				startRow = table.rowAtPoint(e.getPoint());
 				startColumn = pressedColumn;
+				setLeadSelection(startRow, -1);
 			}
-			else
-				setLead(e);
 		}
 		
 		@Override
-		public void mouseReleased(MouseEvent e){
+		public void mouseReleased(MouseEvent e) {
 			int lastColumn = table.getColumnCount() - 1;
 			if (lastColumn == table.columnAtPoint(e.getPoint())) {
 				setSelectedColumns(new int[0]);
@@ -166,6 +168,8 @@ public class TablePanel extends JPanel {
 				
 				endRow = table.rowAtPoint(e.getPoint());
 				endColumn = pressedColumn;
+				setLeadSelection(endRow, -1);
+
 
 				int rows = Math.abs(endRow-startRow) + 1;
 				
@@ -189,8 +193,6 @@ public class TablePanel extends JPanel {
 				setSelectedCells(new int[0], selectedRows);
 				oldRowSelection = getSelectedRows();
 			}
-			else
-				setLead(e);
 		}
 		
 		private void setLead(MouseEvent e){
@@ -384,13 +386,22 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setLeadSelection(int row, int col) {
-		if (row >= 0)
+		if (row >= -1) {
+			if (row == -1)
+				table.getSelectionModel().setAnchorSelectionIndex(row);
 			table.getSelectionModel().setLeadSelectionIndex(row);
-		
-		if (col >= 0)
+		}
+
+		if (col >= -1) {
+			if (col == -1)
+				table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(col);
 			table.getColumnModel().getSelectionModel().setLeadSelectionIndex(col);
+		}
+		else 
+			table.getColumnModel().getSelectionModel().clearSelection();
+
 		
-		//System.out.println(col + ", " + row);
+		System.out.println(row + ", " + col);
 	}
 	
 	/*public void addListener(ColorMatrixListener listener) {
