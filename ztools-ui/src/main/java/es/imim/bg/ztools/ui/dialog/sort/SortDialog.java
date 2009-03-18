@@ -6,7 +6,7 @@ import javax.swing.JDialog;
 
 import es.imim.bg.ztools.aggregation.IAggregator;
 
-public class SortDialog extends JDialog {
+public abstract class SortDialog extends JDialog {
 	
 	private static final long serialVersionUID = -4832384734759927405L;
 	

@@ -1,18 +1,15 @@
 package es.imim.bg.ztools.ui.actions.table;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
 import es.imim.bg.ztools.aggregation.AggregatorFactory;
-import es.imim.bg.ztools.aggregation.IAggregator;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.table.sort.SortCriteria;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.dialog.sort.SortDialog;
 import es.imim.bg.ztools.ui.dialog.sort.SortDialogSimple;
 
 public class SortAction extends BaseAction {

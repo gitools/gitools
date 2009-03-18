@@ -40,11 +40,89 @@ public class SortDialogAdvanced extends SortDialog {
 		}
 		
 		public void add(SortCriteria criteria) {
-			int index = list.size() - 1;
+			int index = list.size();
 			
 			list.add(criteria);
 			
 			fireIntervalAdded(this, index, index);
+		}
+		
+		public void remove(SortCriteria criteria) {
+			int index = list.indexOf(criteria);
+			
+			list.remove(criteria);
+			
+			fireIntervalRemoved(this, index, index);
+		}
+		
+		public int[] moveUp(Object[] selected) {
+			int[] selectedIndices = new int[selected.length];
+			int index1 = 0;
+			int index2 = list.size() - 1;
+			int lag = 0;
+			int prevIndex = -1;
+			
+			for (int i = 0; i < selected.length; i++) {				
+				int actualIndex = list.indexOf(selected[i]);
+				if (actualIndex == 0)
+					lag++;
+				if (lag > 0 && prevIndex != actualIndex -1)
+					lag--;
+				int newIndex = actualIndex -1;
+				prevIndex = actualIndex;
+				
+				if (lag == 0) {
+					list.remove(actualIndex);
+					list.add(newIndex , (SortCriteria) selected[i]);
+					selectedIndices[i] = newIndex;
+				} 
+				else {
+					selectedIndices[i] = actualIndex;
+				}
+				
+				if (i == 0)
+					index1 = (lag == 0) ? newIndex : actualIndex;
+				if (i == selected.length - 1)
+					index2 = actualIndex;
+				
+			}
+			fireContentsChanged(this, index1, index2);
+			return selectedIndices;
+		}
+		
+		public int[] moveDown(Object[] selected) {
+			int[] selectedIndices = new int[selected.length];
+			int index1 = 0;
+			int index2 = list.size() - 1;
+			int lag = 0;
+			int prevIndex = list.size();
+			
+			for (int i = selected.length - 1; i >= 0; i--) {	
+				int actualIndex = list.indexOf(selected[i]);
+				if(actualIndex == list.size() - 1)
+					lag++;
+				if (lag > 0 && prevIndex != actualIndex + 1)
+					lag--;
+				int newIndex = actualIndex + 1;
+				prevIndex = actualIndex;
+				
+				if (lag == 0) {
+					list.remove(actualIndex);
+					list.add(newIndex, (SortCriteria) selected[i]);
+					selectedIndices[i] = newIndex;
+				} 
+				else {
+					selectedIndices[i] = actualIndex;
+				}
+				
+				if (i == 0)
+					index1 = actualIndex;
+				if (i == selected.length -1)
+					index2 = (lag == 0) ? newIndex : actualIndex;
+			}
+			
+			fireContentsChanged(this, index1, index2);
+			return selectedIndices;
 		}
 
 		public void clear() {
@@ -88,13 +166,6 @@ public class SortDialogAdvanced extends SortDialog {
 
 	private void createComponents() {		
 		final JList criteriaJList = new JList(listModel);
-
-		JPanel checkboxPanel = new JPanel();
-		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.PAGE_AXIS));
-		checkboxPanel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-		
-		/*final JCheckBox checkbox1 = new JCheckBox(this.checkboxText1);
-		checkboxPanel.add(checkbox1);*/
 	
 		final JScrollPane scrollPane = new JScrollPane(criteriaJList);
 		scrollPane.setBorder(
@@ -110,8 +181,8 @@ public class SortDialogAdvanced extends SortDialog {
 					new SortDialogSimple(
 						getOwner(), getTitle(), 
 						false, properties, aggregators).getCriteriaList();
-				
-				listModel.add(c.get(0));
+				if (c.size() > 0)
+					listModel.add(c.get(0));
 			}
 		});
 		
@@ -121,7 +192,9 @@ public class SortDialogAdvanced extends SortDialog {
 		removeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//FIXME removeElement(listModel, criteriaJList);
+				Object[] selected = criteriaJList.getSelectedValues();
+				for (int i = 0; i < selected.length; i++)
+					listModel.remove((SortCriteria) selected[i]);
 			}
 		});
 		
@@ -131,7 +204,8 @@ public class SortDialogAdvanced extends SortDialog {
 		upBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//FIXME moveUp(listModel, criteriaJList);
+				Object[] selected = criteriaJList.getSelectedValues();
+				criteriaJList.setSelectedIndices(listModel.moveUp(selected));
 			}
 		});
 		
@@ -141,8 +215,8 @@ public class SortDialogAdvanced extends SortDialog {
 		downBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//FIXME moveDown(listModel, criteriaJList);
-			}
+				Object[] selected = criteriaJList.getSelectedValues();
+				criteriaJList.setSelectedIndices(listModel.moveDown(selected));			}
 		});
 		
 		criteriaJList.addListSelectionListener(new ListSelectionListener() {
@@ -189,7 +263,6 @@ public class SortDialogAdvanced extends SortDialog {
 		final JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
 		contPanel.add(scrollPane, BorderLayout.CENTER);
-		contPanel.add(checkboxPanel, BorderLayout.SOUTH);
 		contPanel.add(btnPanel, BorderLayout.EAST);
 		
 		final JPanel mainButtonEastPanel = new JPanel();
@@ -206,82 +279,7 @@ public class SortDialogAdvanced extends SortDialog {
 		add(mainButtonPanel, BorderLayout.SOUTH);
 	}
 
-	/*protected void addElmenent(ListModel listModel) {
-		newCriteria();
-		listModel.addElement(criteria);
-	}
 	
-	protected void removeElement(ListModel listModel, JList JCriteriaList) {
-		int[] selectedIndices = JCriteriaList.getSelectedIndices();
-		for (int i = selectedIndices.length; i > 0; i--) {
-			listModel.remove(selectedIndices[i-1]);
-		}
-	}
-
-	protected void moveUp(final ListModel listModel,
-			final JList criteriaList) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
-		int actualIndex;
-		int prevIndex = -1;
-		int lag = 0;
-		Object el;
-		for (int i = 0; i < selectedIndices.length ; i++) {
-
-			actualIndex = selectedIndices[i];
-			if(actualIndex == 0)
-				lag++;
-			if (prevIndex != actualIndex -1 && lag > 0)
-				lag--;
-			prevIndex = actualIndex;
-
-			if(lag == 0) {
-				int newIndex = actualIndex - 1 + lag;
-				el = listModel.getElementAt(actualIndex);
-				listModel.remove(actualIndex);
-				listModel.add(newIndex, el);
-				selectedIndices[i] = newIndex;
-			}
-		}
-		criteriaList.setSelectedIndices(selectedIndices);
-	}
-
-	protected void moveDown(final ListModel listModel,
-			final JList criteriaList) {
-		int[] selectedIndices = criteriaList.getSelectedIndices();
-		int actualIndex;
-		int prevIndex = listModel.getSize();
-		int lag = 0;
-		Object el;
-		for (int i = selectedIndices.length; i > 0; i--) {
-			actualIndex = selectedIndices[i-1];
-			if(actualIndex == listModel.getSize() - 1)
-				lag++;
-			if (prevIndex != actualIndex +1 && lag > 0)
-				lag--;
-			prevIndex = actualIndex;
-
-			if (lag==0) {
-				int newIndex = actualIndex + 1 - lag;
-				el = listModel.getElementAt(actualIndex);
-				listModel.remove(actualIndex);
-				listModel.add(newIndex, el);
-				selectedIndices[i-1] = newIndex;
-			}
-		}
-		criteriaList.setSelectedIndices(selectedIndices);
-	}
-
-	protected void acceptChanges(DefaultListModel listModel, boolean checkBox1State) {
-		criteriaList = new ArrayList<SortCriteria>(listModel.getSize());
-		for (int i = 0; i < listModel.getSize(); i++)
-			criteriaList.add((SortCriteria) listModel.getElementAt(i));
-			this.checkBox1State = checkBox1State;
-		setVisible(false);
-	}
-
-	public Boolean checkbox1IsChecked() {
-		return checkBox1State;
-	} */
 	
 	private void performAccept() {
 		setVisible(false);

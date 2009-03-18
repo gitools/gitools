@@ -1,14 +1,13 @@
 package es.imim.bg.ztools.ui.actions;
 
-import es.imim.bg.ztools.ui.actions.table.HideSelectionAction;
-import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction;
-import es.imim.bg.ztools.ui.actions.table.ShowAllAction;
+import es.imim.bg.ztools.ui.actions.table.FastSortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.FilterColumnsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.FilterRowsByNamesAction;
 import es.imim.bg.ztools.ui.actions.table.FilterRowsByValuesAction;
+import es.imim.bg.ztools.ui.actions.table.HideSelectionAction;
+import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction;
+import es.imim.bg.ztools.ui.actions.table.ShowAllAction;
 import es.imim.bg.ztools.ui.actions.table.SortAction;
-import es.imim.bg.ztools.ui.actions.table.SortRowsAction;
-import es.imim.bg.ztools.ui.actions.table.FastSortRowsAction;
 import es.imim.bg.ztools.ui.actions.table.HideSelectionAction.ElementType;
 import es.imim.bg.ztools.ui.actions.table.MoveSelectionAction.MoveDirection;
 import es.imim.bg.ztools.ui.actions.table.SortAction.SortSubject;

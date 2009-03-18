@@ -12,7 +12,6 @@ import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.sort.SortCriteria;
-import es.imim.bg.ztools.ui.AppFrame;
 
 public class SortColumnsAction {
 	
