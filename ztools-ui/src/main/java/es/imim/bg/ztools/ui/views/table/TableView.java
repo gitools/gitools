@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -145,9 +146,13 @@ public class TableView extends AbstractView {
 				if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
 					tablePanel.refreshColumns();
 				
-				tablePanel.setSelectedColumns(getTable().getSelectedColumns());
-				tablePanel.setSelectedRows(getTable().getSelectedRows());
+				System.out.println("Start selection change:");
+				tablePanel.setSelectedCells(
+						getTable().getSelectedColumns(),
+						getTable().getSelectedRows());
 				tablePanel.refresh();
+				System.out.println("End selection change.");
+				
 				blockSelectionUpdate = false;
 			}
 		}
@@ -223,14 +228,14 @@ public class TableView extends AbstractView {
 				context.put("cell", cellMap);
 			}
 		}
-		
-		System.out.println("row: " + row + ", col: " + column);
 		/*else if (column < 0) {
 			System.out.println("row:" + row);
 		}
 		else if (row < 0) {
 			System.out.println("col:" + column);
 		}*/
+		
+		System.out.println("refreshCellDetails(" + row + ", " + column + ")");
 		
 		try {
 			templatePane.setTemplate(templateName);
@@ -286,8 +291,13 @@ public class TableView extends AbstractView {
 		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel src = (ListSelectionModel) e.getSource();
+				src.hashCode();
+				
 				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
 					blockSelectionUpdate = true;
+					
+					System.out.println("Selection listener.");
 					
 					getTable().setSelectedRows(
 							tablePanel.getSelectedRows());

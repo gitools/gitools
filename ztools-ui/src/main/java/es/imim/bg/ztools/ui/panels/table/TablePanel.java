@@ -93,9 +93,7 @@ public class TablePanel extends JPanel {
 				} else
 					selectedColumns = new int[] { pressedColumn };
 
-				int[] selectedRows = new int[0];
-
-				setSelectedCells(selectedColumns, selectedRows);
+				setSelectedCells(selectedColumns, new int[0]);
 				setLeadSelection(-1, pressedColumn);
 			}
 		}
@@ -105,7 +103,6 @@ public class TablePanel extends JPanel {
 			endColumn = table.columnAtPoint(e.getPoint());
 			setLeadSelection(-1, endColumn);
 
-			
 			int numCols = Math.abs(endColumn - startColumn) + 1;
 			
 			int[] newSelectedColumns = new int[numCols];
@@ -170,7 +167,6 @@ public class TablePanel extends JPanel {
 				endColumn = pressedColumn;
 				setLeadSelection(endRow, -1);
 
-
 				int rows = Math.abs(endRow-startRow) + 1;
 				
 				int[] newSelectedRows = new int[rows];
@@ -201,9 +197,7 @@ public class TablePanel extends JPanel {
 			int row = table.rowAtPoint(e.getPoint());
 			int col = table.columnAtPoint(e.getPoint());
 			
-			setSelectedRows(new int[] { row });
-			setSelectedColumns(new int[] { col });
-			
+			setSelectedCells(new int[] { col }, new int[] { row });
 			setLeadSelection(row, col);
 		}
 	}
@@ -386,22 +380,34 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setLeadSelection(int row, int col) {
-		if (row >= -1) {
-			if (row == -1)
-				table.getSelectionModel().setAnchorSelectionIndex(row);
-			table.getSelectionModel().setLeadSelectionIndex(row);
-		}
+		final ListSelectionModel colSelModel = 
+			table.getColumnModel().getSelectionModel();
+		
+		final ListSelectionModel rowSelModel = 
+			table.getSelectionModel();
+		
+		System.out.println("setLeadSelection");
+		
+		colSelModel.setValueIsAdjusting(true);
+		rowSelModel.setValueIsAdjusting(true);
+		
+		if (row == -1)
+			rowSelModel.setAnchorSelectionIndex(row);
+		table.getSelectionModel().setLeadSelectionIndex(row);
 
 		if (col >= -1) {
 			if (col == -1)
-				table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(col);
-			table.getColumnModel().getSelectionModel().setLeadSelectionIndex(col);
+				colSelModel.setAnchorSelectionIndex(col);
+			colSelModel.setLeadSelectionIndex(col);
 		}
 		else 
-			table.getColumnModel().getSelectionModel().clearSelection();
+			colSelModel.clearSelection();
 
 		
-		System.out.println(row + ", " + col);
+		System.out.println("setLeadSelection(" + row + ", " + col + ")");
+		
+		colSelModel.setValueIsAdjusting(false);
+		rowSelModel.setValueIsAdjusting(false);
 	}
 	
 	/*public void addListener(ColorMatrixListener listener) {
@@ -409,8 +415,31 @@ public class TablePanel extends JPanel {
 	}*/
 
 	public void setSelectedCells(int[] selectedColumns, int[] selectedRows){
-		setSelectedColumns(selectedColumns);
-		setSelectedRows(selectedRows);
+		final ListSelectionModel colSelModel = 
+			table.getColumnModel().getSelectionModel();
+		
+		final ListSelectionModel rowSelModel = 
+			table.getSelectionModel();
+		
+		System.out.println("setSelectedCells");
+		
+		colSelModel.setValueIsAdjusting(true);
+		rowSelModel.setValueIsAdjusting(true);
+		
+		updateSelection(
+				false,
+				colSelModel,
+				selectedColumns);
+		
+		updateSelection(
+				false,
+				rowSelModel, 
+				selectedRows);
+		
+		colSelModel.setValueIsAdjusting(false);
+		rowSelModel.setValueIsAdjusting(false);
+		
+		refreshSelectionMode();
 	}
 	
 	public int[] getSelectedColumns() {
@@ -418,9 +447,11 @@ public class TablePanel extends JPanel {
 	}
 		
 	public void setSelectedColumns(int[] selectedColumns) {
+		System.out.println("setSelectedColumns");
+		
 		updateSelection(
-				table.getColumnModel().getSelectionModel(), 
-				getSelectedColumns(), 
+				true,
+				table.getColumnModel().getSelectionModel(),
 				selectedColumns);
 		
 		refreshSelectionMode();
@@ -431,22 +462,30 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setSelectedRows(int[] selectedRows) {
+		System.out.println("setSelectedRows");
+		
 		updateSelection(
+				true,
 				table.getSelectionModel(), 
-				getSelectedRows(), 
 				selectedRows);
 		
 		refreshSelectionMode();
 	}
 	
 	private void updateSelection(
-			ListSelectionModel selModel, int[] oldList, int[] newList) {
+			boolean useValueAdjusting, 
+			ListSelectionModel selModel, 
+			int[] newList) {
 		
-		selModel.setValueIsAdjusting(true);
+		if (useValueAdjusting)
+			selModel.setValueIsAdjusting(true);
+		
 		selModel.clearSelection();
 		for (int idx : newList)
 			selModel.addSelectionInterval(idx, idx);
-		selModel.setValueIsAdjusting(false);
+		
+		if (useValueAdjusting)
+			selModel.setValueIsAdjusting(false);
 	}
 
 	public void clearSelection() {
