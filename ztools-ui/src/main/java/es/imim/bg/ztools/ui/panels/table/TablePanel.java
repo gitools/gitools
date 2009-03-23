@@ -386,7 +386,7 @@ public class TablePanel extends JPanel {
 		final ListSelectionModel rowSelModel = 
 			table.getSelectionModel();
 		
-		System.out.println("setLeadSelection");
+		//System.out.println("setLeadSelection");
 		
 		colSelModel.setValueIsAdjusting(true);
 		rowSelModel.setValueIsAdjusting(true);
@@ -404,7 +404,7 @@ public class TablePanel extends JPanel {
 			colSelModel.clearSelection();
 
 		
-		System.out.println("setLeadSelection(" + row + ", " + col + ")");
+		//System.out.println("setLeadSelection(" + row + ", " + col + ")");
 		
 		colSelModel.setValueIsAdjusting(false);
 		rowSelModel.setValueIsAdjusting(false);
@@ -421,7 +421,7 @@ public class TablePanel extends JPanel {
 		final ListSelectionModel rowSelModel = 
 			table.getSelectionModel();
 		
-		System.out.println("setSelectedCells");
+		//System.out.println("setSelectedCells");
 		
 		colSelModel.setValueIsAdjusting(true);
 		rowSelModel.setValueIsAdjusting(true);
@@ -447,7 +447,7 @@ public class TablePanel extends JPanel {
 	}
 		
 	public void setSelectedColumns(int[] selectedColumns) {
-		System.out.println("setSelectedColumns");
+		//System.out.println("setSelectedColumns");
 		
 		updateSelection(
 				true,
@@ -462,7 +462,7 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setSelectedRows(int[] selectedRows) {
-		System.out.println("setSelectedRows");
+		//System.out.println("setSelectedRows");
 		
 		updateSelection(
 				true,

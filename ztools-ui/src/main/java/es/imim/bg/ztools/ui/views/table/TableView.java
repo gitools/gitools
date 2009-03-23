@@ -146,12 +146,12 @@ public class TableView extends AbstractView {
 				if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
 					tablePanel.refreshColumns();
 				
-				System.out.println("Start selection change:");
+				//System.out.println("Start selection change:");
 				tablePanel.setSelectedCells(
 						getTable().getSelectedColumns(),
 						getTable().getSelectedRows());
 				tablePanel.refresh();
-				System.out.println("End selection change.");
+				//System.out.println("End selection change.");
 				
 				blockSelectionUpdate = false;
 			}
@@ -235,7 +235,7 @@ public class TableView extends AbstractView {
 			System.out.println("col:" + column);
 		}*/
 		
-		System.out.println("refreshCellDetails(" + row + ", " + column + ")");
+		//System.out.println("refreshCellDetails(" + row + ", " + column + ")");
 		
 		try {
 			templatePane.setTemplate(templateName);
@@ -297,7 +297,7 @@ public class TableView extends AbstractView {
 				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
 					blockSelectionUpdate = true;
 					
-					System.out.println("Selection listener.");
+					//System.out.println("Selection listener.");
 					
 					getTable().setSelectedRows(
 							tablePanel.getSelectedRows());
