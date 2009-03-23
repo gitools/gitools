@@ -11,7 +11,7 @@ import es.imim.bg.ztools.model.ResultsMatrix;
 import es.imim.bg.ztools.table.ResultsMatrixTableContentsAdapter;
 import es.imim.bg.ztools.table.Table;
 import es.imim.bg.ztools.table.element.array.ArrayElementAdapter;
-import es.imim.bg.ztools.table.element.string.StringElementAdapter;
+import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
 import es.imim.bg.ztools.ui.views.table.TableView;
 
 public class DemoView extends TableView {
