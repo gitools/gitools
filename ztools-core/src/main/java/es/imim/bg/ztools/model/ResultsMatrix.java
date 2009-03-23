@@ -10,8 +10,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.array.ArrayElementAdapter;
+import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
 import es.imim.bg.ztools.table.element.bean.BeanElementAdapter;
-import es.imim.bg.ztools.table.element.string.StringElementAdapter;
 
 @XmlType(
 		propOrder = {

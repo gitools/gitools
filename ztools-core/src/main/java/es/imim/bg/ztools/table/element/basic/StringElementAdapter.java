@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.table.element.string;
+package es.imim.bg.ztools.table.element.basic;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
