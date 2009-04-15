@@ -20,6 +20,11 @@
 			<artifactId>ztools-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -32,6 +37,10 @@
 						<manifest>
 							<mainClass>${mainClass}</mainClass>
 						</manifest>
+						<manifestEntries>
+							<Implementation-Title>GiTools</Implementation-Title>
+							<Specification-Title>GiTools</Specification-Title>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

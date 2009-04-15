@@ -1,26 +1,40 @@
 package es.imim.bg.ztools.ui.views.table;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+
+import es.imim.bg.GenericFormatter;
+import es.imim.bg.colorscale.PValueColorScale;
+import es.imim.bg.colorscale.ZScoreColorScale;
+import es.imim.bg.ztools.model.IModel;
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CombinationResult;
+import es.imim.bg.ztools.test.results.CommonResult;
+import es.imim.bg.ztools.test.results.FisherResult;
+import es.imim.bg.ztools.test.results.ZScoreResult;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
-import es.imim.bg.ztools.ui.model.IModel;
-import es.imim.bg.ztools.ui.model.celldeco.ITableDecorator;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.panels.celldeco.ScaleCellDecorator;
+import es.imim.bg.ztools.ui.actions.TableActionSet;
+import es.imim.bg.ztools.ui.model.TableViewModel;
+import es.imim.bg.ztools.ui.panels.TemplatePane;
 import es.imim.bg.ztools.ui.panels.table.TablePanel;
 import es.imim.bg.ztools.ui.views.AbstractView;
 
@@ -28,16 +42,19 @@ public class TableView extends AbstractView {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
+	private static final int defaultDividerLocation = 280;
+
+	private static final String defaultTemplateName = "/vm/details/noselection.vm";
+
 	public enum TableViewLayout {
 		LEFT, RIGHT, TOP, BOTTOM
 	}
 	
-	private ITable table;
+	private TableViewModel model;
 	
 	private TableViewConfigPanel configPanel;
 	
-	private JTextPane infoPane;
-	private JScrollPane infoScrollPane;
+	private TemplatePane templatePane;
 	private TablePanel tablePanel;
 	private JPanel mainPanel;
 
@@ -45,36 +62,66 @@ public class TableView extends AbstractView {
 	
 	protected boolean blockSelectionUpdate;
 
-	private PropertyChangeListener decorationContextListener;
+	private PropertyChangeListener modelListener;
+	private PropertyChangeListener decoratorListener;
 
 	public TableView(final ITable table) {
 		
-		this.table = table;
+		this.model = new TableViewModel(table);
 	
 		this.layout = TableViewLayout.LEFT;
 		
 		this.blockSelectionUpdate = false;
 		
 		createComponents();
-
-		decorationContextListener = new PropertyChangeListener() {
+		
+		modelListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				tablePanel.refresh();
+				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		};
 		
-		table.getCellDecoratorContext().addPropertyChangeListener(decorationContextListener);
+		decoratorListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				decoratorPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+			}
+		};
+		
+		model.addPropertyChangeListener(modelListener);
+		
+		model.getDecorator().addPropertyChangeListener(decoratorListener);
 		
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				tableModelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				tablePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		});
 	}
 
-	protected void tableModelPropertyChange(
+	protected void modelPropertyChange(
+			String propertyName, Object oldValue, Object newValue) {
+		
+		if (TableViewModel.DECORATOR.equals(propertyName)) {
+			final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
+			prevDecorator.removePropertyChangeListener(decoratorListener);
+			final ElementDecorator nextDecorator = (ElementDecorator) newValue;
+			nextDecorator.addPropertyChangeListener(decoratorListener);
+			tablePanel.setCellDecorator(model.getDecorator());
+		}
+		
+		tablePanel.refresh();
+	}
+	
+	protected void decoratorPropertyChange(
+			String propertyName, Object oldValue, Object newValue) {
+		
+		tablePanel.refresh();
+	}
+	
+	protected void tablePropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 
 		/*if (ITable.CELL_DECORATION_PROPERTY.equals(propertyName)) {
@@ -99,9 +146,13 @@ public class TableView extends AbstractView {
 				if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
 					tablePanel.refreshColumns();
 				
-				tablePanel.setSelectedColumns(table.getSelectedColumns());
-				tablePanel.setSelectedRows(table.getSelectedRows());
+				//System.out.println("Start selection change:");
+				tablePanel.setSelectedCells(
+						getTable().getSelectedColumns(),
+						getTable().getSelectedRows());
 				tablePanel.refresh();
+				//System.out.println("End selection change.");
+				
 				blockSelectionUpdate = false;
 			}
 		}
@@ -119,74 +170,110 @@ public class TableView extends AbstractView {
 		}
 		else if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
 			if (oldValue != null)
-				((IModel) oldValue).removePropertyChangeListener(decorationContextListener);
+				((IModel) oldValue).removePropertyChangeListener(modelListener);
 			
-			((IModel) newValue).addPropertyChangeListener(decorationContextListener);
+			((IModel) newValue).addPropertyChangeListener(modelListener);
 		}
 	}
 
 	private void refreshCellDetails() {
-		String html = "";
-		StringBuilder sb = new StringBuilder();
-
 		
-		int row = table.getSelectionLeadRow();
-		int rowCount = table.getRowCount();
-		int column = table.getSelectionLeadColumn();
-		int columnCount = table.getColumnCount();
+		int row = getTable().getSelectionLeadRow();
+		int rowCount = getTable().getRowCount();
+		int column = getTable().getSelectionLeadColumn();
+		int columnCount = getTable().getColumnCount();
+		
+		VelocityContext context = new VelocityContext();
+		String templateName = defaultTemplateName;
 		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			final String colName = table.getColumn(column).toString();
-			final String rowName = table.getRow(row).toString();
-			ElementAdapter cellsFacade = table.getCellsFacade();
-			Object element = table.getCell(row, column);
+			final IElementAdapter columnAdapter = getTable().getColumnAdapter();
+			final Object columnElement = getTable().getColumn(column);
 			
-			// Render parameters & values
-			sb.append("<p><b>Column</b><br>");
-			sb.append(colName).append("</p>");
-			sb.append("<p><b>Row</b><br>");
-			sb.append(rowName).append("</p>");
+			final IElementAdapter rowAdapter = getTable().getRowAdapter();
+			final Object rowElement = getTable().getRow(row);
 			
-			if (element != null) {
-				for (int i = 0; i < cellsFacade.getPropertyCount(); i++) {
-					ElementProperty prop = cellsFacade.getProperty(i);
-					
-					final String paramName = prop.getName();
-					
-					final String value = 
-						cellsFacade.getValue(element, i).toString(); 
-					
-					sb.append("<p><b>");
-					sb.append(paramName);
-					sb.append("</b><br>");
-					sb.append(value);
-					sb.append("</p>");
-				}
-			}
-			else
-				sb.append("<p>Void cell</p>");
+			final IElementAdapter cellAdapter = getTable().getCellAdapter();
+			final Object cellElement = getTable().getCell(row, column);
 			
-			html = sb.toString();
-			infoPane.setText(html);
-		}
-		else if (rowCount == 0) {
-			html = "<p>No cells displayed</p>";
-			infoPane.setText(html);
-		}
+			templateName = getTemplateNameFromObject(cellElement);
 
+			if (templateName != null) {				
+				context.put("fmt", new GenericFormatter());
+				
+				context.put("zscoreScale", new ZScoreColorScale()); //FIXME
+				context.put("pvalueScale", new PValueColorScale()); //FIXME
+				
+				context.put("columnAdapter", columnAdapter);
+				context.put("columnElement", columnElement);
+				
+				context.put("rowAdapter", rowAdapter);
+				context.put("rowElement", rowElement);
+				
+				context.put("cellAdapter", cellAdapter);
+				context.put("cellElement", cellElement);
+				
+				final List<IElementProperty> properties = 
+					cellAdapter.getProperties();
+				
+				final Map<String, Object> cellMap = 
+					new HashMap<String, Object>();
+				
+				for (int index = 0; index < properties.size(); index++) {
+					final IElementProperty prop = properties.get(index);
+					cellMap.put(prop.getId(), 
+							cellAdapter.getValue(cellElement, index));
+				}
+				
+				context.put("cell", cellMap);
+			}
+		}
+		/*else if (column < 0) {
+			System.out.println("row:" + row);
+		}
+		else if (row < 0) {
+			System.out.println("col:" + column);
+		}*/
+		
+		//System.out.println("refreshCellDetails(" + row + ", " + column + ")");
+		
+		try {
+			templatePane.setTemplate(templateName);
+			templatePane.setContext(context);
+			templatePane.render();
+		}
+		catch (Exception e) {
+			e.printStackTrace(); //FIXME
+		}
 	}
 	
+	private String getTemplateNameFromObject(Object object) {
+		String templateName = "default.vm";
+		if (object instanceof BinomialResult)
+			templateName = "binomial.vm";
+		else if (object instanceof FisherResult)
+			templateName = "fisher.vm";
+		else if (object instanceof ZScoreResult)
+			templateName = "zscore.vm";
+		else if (object instanceof CombinationResult)
+			templateName = "combination.vm";
+		else if (object instanceof CommonResult)
+			templateName = "common.vm";
+		
+		return "/vm/details/" + templateName;
+	}
+
 	private void createComponents() {
 		
-		ITableDecorator[] availableDecorators = 
+		/*ITableDecorator[] availableDecorators = 
 			new ITableDecorator[] {
-				new ScaleCellDecorator(table)/*,
-				new TextCellDecorator(table)*/
-		};
+				new ScaleCellDecorator(getTable())*//*,
+				new TextCellDecorator(getTable())*/
+		//};
 		
 		/* Configuration panel */
 
-		configPanel = new TableViewConfigPanel(table, availableDecorators);
+		configPanel = new TableViewConfigPanel(model);
 		
 		/*final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
@@ -197,26 +284,30 @@ public class TableView extends AbstractView {
 		/* Color matrix */
 		
 		tablePanel = new TablePanel();
-		tablePanel.setModel(table);
+		tablePanel.setModel(getTable());
 		
-		tablePanel.setCellDecorator(
-				configPanel.getCellDecorator());
+		tablePanel.setCellDecorator(model.getDecorator());
 		
 		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel src = (ListSelectionModel) e.getSource();
+				src.hashCode();
+				
 				if (!e.getValueIsAdjusting() && !blockSelectionUpdate) {
 					blockSelectionUpdate = true;
 					
-					table.setSelectedRows(
+					//System.out.println("Selection listener.");
+					
+					getTable().setSelectedRows(
 							tablePanel.getSelectedRows());
-					table.setSelectedColumns(
+					getTable().setSelectedColumns(
 							tablePanel.getSelectedColumns());
 					
 					int colIndex = tablePanel.getSelectedLeadColumn();
 					int rowIndex = tablePanel.getSelectedLeadRow();
 					
-					table.setLeadSelection(rowIndex, colIndex);
+					getTable().setLeadSelection(rowIndex, colIndex);
 					
 					blockSelectionUpdate = false;
 				}
@@ -230,13 +321,23 @@ public class TableView extends AbstractView {
 		
 		/* Details panel */
 		
-		infoPane = new JTextPane();
+		Properties props = new Properties();
+		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		templatePane = new TemplatePane(props);
+		try {
+			templatePane.setTemplate(defaultTemplateName);
+			templatePane.render();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		/*infoPane = new JTextPane();
 		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
 		//infoPane.setAutoscrolls(false);
 		infoScrollPane = new JScrollPane(infoPane);
 		infoScrollPane.setBorder(
-				BorderFactory.createEmptyBorder(8, 8, 8, 8));		
+				BorderFactory.createEmptyBorder(8, 8, 8, 8));*/		
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -268,14 +369,16 @@ public class TableView extends AbstractView {
 		
 		final JSplitPane splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
-			splitPane.add(infoScrollPane);
+			//splitPane.add(infoScrollPane);
+			splitPane.add(templatePane);
 			splitPane.add(mainPanel);
 		}
 		else {
 			splitPane.add(mainPanel);
-			splitPane.add(infoScrollPane);
+			//splitPane.add(infoScrollPane);
+			splitPane.add(templatePane);
 		}
-		splitPane.setDividerLocation(220);
+		splitPane.setDividerLocation(defaultDividerLocation);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
 		
@@ -285,35 +388,32 @@ public class TableView extends AbstractView {
 
 	private void refreshColorMatrixWidth() {
 		/*CellDecorationConfig config = 
-			table.getCellDecoration(
-					table.getCurrentProperty());
+			getTable().getCellDecoration(
+					getTable().getCurrentProperty());
 		
 		colorMatrixPanel.setColumnsWidth(
 				config.showColors ? 
 						defaultColorColumnsWidth 
 						: defaultValueColumnsWidth);*/
 		
-		tablePanel.setColumnsWidth(
+		/*tablePanel.setColumnsWidth(
 				configPanel.getCellDecorator()
-					.getPreferredWidth());
+					.getPreferredWidth());*/
+	}
+
+	protected ITable getTable() {
+		return model.getTable();
 	}
 	
-	public TablePanel getColorMatrixPanel() {
-		return tablePanel;
-	}
-	
-	public ITable getTable() {
-		return table;
-	}
-	
+	@Deprecated //When getModel return TableViewModel
 	public void setTable(ITable tableModel) {
-		this.table = tableModel;
+		this.model.setTable(tableModel);
 		refresh();
 	}
 
 	@Override
 	public Object getModel() {
-		return table;
+		return model.getTable(); //TODO: return TableViewModel
 	}
 
 	@Override
@@ -326,6 +426,7 @@ public class TableView extends AbstractView {
 		MenuActionSet.editActionSet.setTreeEnabled(true);
 		MenuActionSet.tableActionSet.setTreeEnabled(true);
 		MenuActionSet.mtcActionSet.setTreeEnabled(true);
+		TableActionSet.fastSortRowsAction.setEnabled(true);
 		
 		FileActionSet.closeAction.setEnabled(true);
 		FileActionSet.exportActionSet.setTreeEnabled(true);

@@ -1,0 +1,20 @@
+<table>
+	#set( $total = 30 )
+	#set( $span0 = $total + 2 )
+	#set( $span1 = $total / 2 )
+	#set( $span2 = $span1 + 1 )
+	<tr>
+        <td colspan="$span1" style="border-left: 1px solid black">0.0</td>
+		<td colspan="$span2" style="text-align: right; border-right: 1px solid black">0.05</td>
+        <td style="border-right: 1px solid black">1.0</td>
+    </tr>
+	<tr>
+		#foreach($index in [0..$total])
+			#set( $value = 0.05 * ($index * 1.0) / $total )
+			#set( $color = $pvalueScale.getColor($value) )
+			<td style="background-color: #htmlColor($color)">&nbsp;</td>
+		#end
+		#set( $color = $pvalueScale.getColor(1.0) )
+		<td style="background-color: #htmlColor($color)">&nbsp;</td>
+    </tr>
+</table>

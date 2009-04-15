@@ -18,9 +18,9 @@ public final class ToolBarActionSet extends ActionSet {
 				EditActionSet.selectAllAction,
 				EditActionSet.unselectAllAction,
 				BaseAction.separator,
-				TableActionSet.hideSelectedColumnsAction,
+				TableActionSet.hideSelectedColumns,
 				TableActionSet.showAllColumns,
-				TableActionSet.hideSelectedRowsAction,
+				TableActionSet.hideSelectedRows,
 				TableActionSet.showAllRows,
 				BaseAction.separator,
 				TableActionSet.moveColsLeftAction,
@@ -28,7 +28,7 @@ public final class ToolBarActionSet extends ActionSet {
 				TableActionSet.moveRowsUpAction,
 				TableActionSet.moveRowsDownAction,
 				BaseAction.separator,
-				TableActionSet.sortSelectedColumnsAction	
+				TableActionSet.fastSortRowsAction	
 		});
 	}
 	

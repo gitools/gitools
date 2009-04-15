@@ -15,10 +15,11 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.io.Serializable;
 
 import org.apache.commons.csv.CSVStrategy;
 
-public abstract class Resource {
+public abstract class Resource implements Serializable {
 
 	public static final CSVStrategy defaultCsvStrategy = 
 		new CSVStrategy('\t', '"', '#', true, true, true);

@@ -22,8 +22,18 @@ public class AppFrame extends JFrame {
 
 	private static final long serialVersionUID = -6899584212813749990L;
 
-	private String appName;
-	private String appVersion;
+	private static String appName;
+	private static String appVersion;
+	
+	static {
+		appName = AppFrame.class.getPackage().getImplementationTitle();
+		if (appName == null)
+			appName = "GiTools";
+		
+		appVersion = AppFrame.class.getPackage().getImplementationVersion();
+		if (appVersion == null)
+			appVersion = "SNAPSHOT";
+	}
 	
 	private WorkspacePanel workspace;
 	
@@ -39,15 +49,7 @@ public class AppFrame extends JFrame {
 		return instance;
 	}
 	
-	private AppFrame() {
-		appName = getClass().getPackage().getImplementationTitle();
-		if (appName == null)
-			appName = "ztools";
-		
-		appVersion = getClass().getPackage().getImplementationVersion();
-		if (appVersion == null)
-			appVersion = "SNAPSHOT";
-		
+	private AppFrame() {		
 		createActions();
 		createComponents();
 		createWelcomeView();
@@ -67,17 +69,17 @@ public class AppFrame extends JFrame {
 		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(800, 650));
 		pack();
 		
 		jobProcessor = new JobProcessor();
 	}
 
-	public String getAppName() {
+	public static String getAppName() {
 		return appName;
 	}
 	
-	public String getAppVersion() {
+	public static String getAppVersion() {
 		return appVersion;
 	}
 	

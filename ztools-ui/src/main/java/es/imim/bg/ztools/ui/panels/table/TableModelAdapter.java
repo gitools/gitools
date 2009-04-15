@@ -3,7 +3,7 @@ package es.imim.bg.ztools.ui.panels.table;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.table.ITable;
 
 public class TableModelAdapter implements TableModel {
 
@@ -47,7 +47,7 @@ public class TableModelAdapter implements TableModel {
 	
 	public Class<?> getColumnClass(int col) {
 		return col < model.getColumnCount() ? 
-				model.getCellsFacade().getElementClass()
+				model.getCellAdapter().getElementClass()
 					: String.class;
 	}
 }

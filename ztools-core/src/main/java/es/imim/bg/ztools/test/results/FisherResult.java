@@ -1,6 +1,6 @@
 package es.imim.bg.ztools.test.results;
 
-import es.imim.bg.ztools.model.elements.Property;
+import es.imim.bg.ztools.table.element.Property;
 
 public class FisherResult extends CommonResult {
 
@@ -32,9 +32,17 @@ public class FisherResult extends CommonResult {
 		return a;
 	}
 	
+	public void setA(int a) {
+		this.a = a;
+	}
+	
 	@Property(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
 	public int getB() {
 		return b;
+	}
+	
+	public void setB(int b) {
+		this.b = b;
 	}
 	
 	@Property(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
@@ -42,8 +50,16 @@ public class FisherResult extends CommonResult {
 		return c;
 	}
 	
+	public void setC(int c) {
+		this.c = c;
+	}
+	
 	@Property(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
 	public int getD() {
 		return d;
+	}
+	
+	public void setD(int d) {
+		this.d = d;
 	}
 }

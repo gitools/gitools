@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlType;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import es.imim.bg.ztools.model.elements.ArrayElementAdapter;
-import es.imim.bg.ztools.model.elements.BeanElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.StringElementAdapter;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.array.ArrayElementAdapter;
+import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
+import es.imim.bg.ztools.table.element.bean.BeanElementAdapter;
 
 @XmlType(
 		propOrder = {
@@ -30,9 +30,9 @@ public class ResultsMatrix {
 	protected ObjectMatrix1D columns;
 	protected ObjectMatrix2D cells;
 
-	protected ElementAdapter rowAdapter;
-	protected ElementAdapter columnAdapter;
-	protected ElementAdapter cellAdapter;
+	protected IElementAdapter rowAdapter;
+	protected IElementAdapter columnAdapter;
+	protected IElementAdapter cellAdapter;
 	
 	public ResultsMatrix() {
 	}
@@ -41,9 +41,9 @@ public class ResultsMatrix {
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
 			ObjectMatrix2D cells,
-			ElementAdapter rowAdapter,
-			ElementAdapter columnAdapter,
-			ElementAdapter cellAdapter) {
+			IElementAdapter rowAdapter,
+			IElementAdapter columnAdapter,
+			IElementAdapter cellAdapter) {
 		
 		this.rows = rows;
 		this.columns = columns;
@@ -143,31 +143,31 @@ public class ResultsMatrix {
 	
 	//@XmlAnyElement
 	@XmlElement
-	public ElementAdapter getRowAdapter() {
+	public IElementAdapter getRowAdapter() {
 		return rowAdapter;
 	}
 	
-	public void setRowAdapter(ElementAdapter rowAdapter) {
+	public void setRowAdapter(IElementAdapter rowAdapter) {
 		this.rowAdapter = rowAdapter;
 	}
 	
 	//@XmlAnyElement
 	@XmlElement
-	public ElementAdapter getColumnAdapter() {
+	public IElementAdapter getColumnAdapter() {
 		return columnAdapter;
 	}
 	
-	public void setColumnAdapter(ElementAdapter columnAdapter) {
+	public void setColumnAdapter(IElementAdapter columnAdapter) {
 		this.columnAdapter = columnAdapter;
 	}
 	
 	//@XmlAnyElement
 	@XmlElement
-	public ElementAdapter getCellAdapter() {
+	public IElementAdapter getCellAdapter() {
 		return cellAdapter;
 	}
 	
-	public void setCellAdapter(ElementAdapter cellAdapter) {
+	public void setCellAdapter(IElementAdapter cellAdapter) {
 		this.cellAdapter = cellAdapter;
 	}
 }

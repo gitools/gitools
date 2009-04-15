@@ -4,21 +4,13 @@ import java.awt.Color;
 
 import es.imim.bg.colorscale.util.ColorUtils;
 
-public class LogColorScale implements ColorScale {
+public class LogColorScale extends AbstractColorScale {
 
-	private static final Color notANumberColor = Color.WHITE;
-	private static final Color posInfinityColor = Color.GREEN;
-	private static final Color negInfinityColor = Color.CYAN;
-	
 	public static final double defaultLogFactor = 0.25;
+
+	protected Color nonSignificantColor = new Color(187, 187, 187);
 	
-	private Color nonSignificantColor = new Color(187, 187, 187);
-	private Color minColor = new Color(255, 255, 0);
-	private Color maxColor = new Color(255, 0, 0);
-	
-	private double minPoint;
 	private double midPoint;
-	private double maxPoint;
 	
 	private double sigLevel;
 	private double logFactor;
@@ -29,10 +21,9 @@ public class LogColorScale implements ColorScale {
 			double maxPoint,
 			double sigLevel,
 			double logFactor) {
-		
-		this.minPoint = minPoint;
+	
+		super(minPoint, maxPoint);
 		this.midPoint = midPoint;
-		this.maxPoint = maxPoint;
 		this.sigLevel = sigLevel;
 		this.logFactor = logFactor;
 	}
@@ -49,44 +40,12 @@ public class LogColorScale implements ColorScale {
 		this(0.0, 0.05, 1.0, 0.05, defaultLogFactor);
 	}
 	
-	public Color getMinColor() {
-		return minColor;
-	}
-	
-	public void setMinColor(Color minColor) {
-		this.minColor = minColor;
-	}
-	
-	public Color getMaxColor() {
-		return maxColor;
-	}
-	
-	public void setMaxColor(Color maxColor) {
-		this.maxColor = maxColor;
-	}
-	
-	public double getMinPoint() {
-		return minPoint;
-	}
-	
-	public void setMinPoint(double minPoint) {
-		this.minPoint = minPoint;
-	}
-	
-	public double getMidPoint() {
+	public final double getMidPoint() {
 		return midPoint;
 	}
 	
-	public void setMidPoint(double midPoint) {
+	public final void setMidPoint(double midPoint) {
 		this.midPoint = midPoint;
-	}
-	
-	public double getMaxPoint() {
-		return maxPoint;
-	}
-	
-	public void setMaxPoint(double maxPoint) {
-		this.maxPoint = maxPoint;
 	}
 	
 	public double getSigLevel() {
@@ -103,14 +62,6 @@ public class LogColorScale implements ColorScale {
 	
 	public void setLogFactor(double logFactor) {
 		this.logFactor = logFactor;
-	}
-	
-	public Color getNonSignificantColor() {
-		return nonSignificantColor;
-	}
-	
-	public void setNonSignificantColor(Color nonSignificantColor) {
-		this.nonSignificantColor = nonSignificantColor;
 	}
 	
 	public Color getColor(double value) {

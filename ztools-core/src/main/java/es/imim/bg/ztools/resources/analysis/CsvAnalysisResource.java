@@ -49,6 +49,9 @@ public class CsvAnalysisResource extends AnalysisResource {
 	
 	@Deprecated
 	public static final String resultsFileName = "results.csv.gz";
+	
+	public static final String resultsFileNamePrefix = "results";
+	
 
 	final CSVStrategy csvStrategy = new CSVStrategy(
 			'\t', '"', '#', true, true, true);
@@ -155,8 +158,8 @@ public class CsvAnalysisResource extends AnalysisResource {
 		new ModuleMapResource(new File(workDirFile, modulesFileName))
 			.save(analysis.getModuleMap(), monitor);
 		
-		/*new ResultsResource(workDirFile)
-			.write(analysis.getResults(), "results", resultsOrderByCond, monitor);*/
+		new ResultsResource(workDirFile)
+			.write(analysis.getResults(), resultsFileNamePrefix, resultsOrderByCond, monitor);
 		
 		monitor.end();
 	}
@@ -203,7 +206,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 		out.writeProperty(tagData, dataFileName);
 		out.writeProperty(tagModules, modulesFileName);
 		
-		out.writeProperty(tagResults, analysis.getName() + ".cells.tsv.gz");
+		out.writeProperty(tagResults, resultsFileNamePrefix + ".cells.tsv.gz");
 		
 		out.close();
 	}

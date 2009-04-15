@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +22,68 @@ import cern.colt.matrix.ObjectMatrix1D;
 import es.imim.bg.csv.RawCsvWriter;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.model.elements.ArrayElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementAdapter;
-import es.imim.bg.ztools.model.elements.ElementProperty;
-import es.imim.bg.ztools.model.elements.StringElementAdapter;
+import es.imim.bg.ztools.table.element.IElementAdapter;
+import es.imim.bg.ztools.table.element.IElementFactory;
+import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.table.element.array.ArrayElementAdapter;
+import es.imim.bg.ztools.table.element.array.ArrayElementFactory;
+import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
+import es.imim.bg.ztools.table.element.bean.BeanElementAdapter;
+import es.imim.bg.ztools.table.element.bean.BeanElementFactory;
+import es.imim.bg.ztools.test.results.BinomialResult;
+import es.imim.bg.ztools.test.results.CombinationResult;
+import es.imim.bg.ztools.test.results.CommonResult;
+import es.imim.bg.ztools.test.results.FisherResult;
+import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public class ResultsResource extends Resource {
 	
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 
+	/* This information will be used to infer the element class
+	 * to use when loading an old tabulated file 
+	 * using only its headers */
+	private static Map<String, Class<?>> elementClasses = new HashMap<String, Class<?>>();
+	static {
+		Class<?>[] classes = new Class<?>[] {
+			ZScoreResult.class,
+			BinomialResult.class,
+			FisherResult.class,
+			CombinationResult.class,
+			CommonResult.class
+		};
+		
+		for (Class<?> elementClass : classes) {
+			IElementAdapter adapter = 
+				new BeanElementAdapter(elementClass);
+
+			elementClasses.put(
+					getElementClassId(adapter.getProperties()), 
+					elementClass);
+		}
+	}
+	
+	private static String getElementClassId(List<IElementProperty> properties) {
+		String[] ids = new String[properties.size()];
+		for (int i = 0; i < properties.size(); i++)
+			ids[i] = properties.get(i).getId();
+		
+		return getElementClassId(ids);
+	}
+	
+	private static String getElementClassId(String[] ids) {
+		Arrays.sort(ids);
+		
+		StringBuilder sb = new StringBuilder();
+		for (String id : ids)
+			sb.append(':').append(id);
+		return sb.toString();
+	}
+	
 	public ResultsResource() {
 		super((String)null); //FIXME
 	}
-	
+
 	public ResultsResource(String fileName) {
 		super(fileName);
 	}
@@ -73,6 +123,24 @@ public class ResultsResource extends Resource {
 		String[] paramNames = new String[numParams];
 		System.arraycopy(line, 2, paramNames, 0, line.length - 2);
 		
+		String[] ids = new String[numParams];
+		System.arraycopy(line, 2, ids, 0, line.length - 2);
+		
+		// infer element class and create corresponding adapter and factory
+		Class<?> elementClass = elementClasses.get(
+				getElementClassId(ids));
+		
+		IElementAdapter elementAdapter = null;
+		IElementFactory elementFactory = null;
+		if (elementClass == null) {
+			elementAdapter = new ArrayElementAdapter(paramNames);
+			elementFactory = new ArrayElementFactory(paramNames.length);
+		}
+		else {
+			elementAdapter = new BeanElementAdapter(elementClass);
+			elementFactory = new BeanElementFactory(elementClass);
+		}
+		
 		// read body
 		Map<String, Integer> columnMap = new HashMap<String, Integer>();
 		Map<String, Integer> rowMap = new HashMap<String, Integer>();
@@ -94,23 +162,20 @@ public class ResultsResource extends Resource {
 				rowMap.put(rowName, rowIndex);
 			}
 			
-			double[] data = new double[line.length - 2];
-			//DoubleMatrix1D data = DoubleFactory1D.dense.make(line.length - 2);
-			
+			Object element = elementFactory.create();
+
 			for (int i = 2; i < line.length; i++) {
-				final int dix = i - 2;
-				try {
-					data[dix] = Double.parseDouble(line[i]);
-					//data.setQuick(dix, Double.parseDouble(line[i]));
-				}
-				catch (NumberFormatException e) {
-					data[dix] = Double.NaN;
-					//data.setQuick(dix, Double.NaN);
-				}
+				final int pix = elementAdapter
+					.getPropertyIndex(paramNames[i - 2]);
+				
+				Object value = parsePropertyValue(
+						elementAdapter.getProperty(pix), line[i]);
+
+				elementAdapter.setValue(element, pix, value);
 			}
 			
 			list.add(new Object[] {
-					new int[] { columnIndex, rowIndex }, data });
+					new int[] { columnIndex, rowIndex }, element });
 		}
 		
 		int numColumns = columnMap.size();
@@ -130,22 +195,67 @@ public class ResultsResource extends Resource {
 		
 		resultsMatrix.setColumnAdapter(new StringElementAdapter());
 		resultsMatrix.setRowAdapter(new StringElementAdapter());
-		resultsMatrix.setCellAdapter(new ArrayElementAdapter(paramNames));
+		resultsMatrix.setCellAdapter(elementAdapter);
 		
 		for (Object[] result : list) {
 			int[] coord = (int[]) result[0];
 			final int columnIndex = coord[0];
 			final int rowIndex = coord[1];
 			
-			double[] paramValues = (double[]) result[1];
-			//DoubleMatrix1D params = (DoubleMatrix1D) result[1];
-			
-			resultsMatrix.setCell(rowIndex, columnIndex, paramValues);
+			Object element = result[1];			
+			resultsMatrix.setCell(rowIndex, columnIndex, element);
 		}
 		
 		monitor.end();
 	}
 	
+	//FIXME: We need a ValueParserFactory
+	private Object parsePropertyValue(IElementProperty property, String string) {
+		
+		final Class<?> propertyClass = property.getValueClass();
+		
+		Object value = null;
+		try {
+			if (propertyClass.equals(double.class)
+					|| propertyClass.equals(Double.class))
+				value = Double.parseDouble(string);
+			else if (propertyClass.equals(float.class)
+					|| propertyClass.equals(Float.class))
+				value = Double.parseDouble(string);
+			else if (propertyClass.equals(int.class)
+					|| propertyClass.equals(Integer.class))
+				value = Integer.parseInt(string);
+			else if (propertyClass.equals(long.class)
+					|| propertyClass.equals(Long.class))
+				value = Long.parseLong(string);
+			else if (propertyClass.isEnum()) {
+				Object[] cts = propertyClass.getEnumConstants();
+				for (Object o : cts)
+					if (o.toString().equals(string))
+						value = o;
+			}
+			else
+				value = string;
+		}
+		catch (Exception e) {
+			if (propertyClass.equals(double.class)
+					|| propertyClass.equals(Double.class))
+				value = Double.NaN;
+			else if (propertyClass.equals(float.class)
+					|| propertyClass.equals(Float.class))
+				value = Float.NaN;
+			else if (propertyClass.equals(int.class)
+					|| propertyClass.equals(Integer.class))
+				value = new Integer(0);
+			else if (propertyClass.equals(long.class)
+					|| propertyClass.equals(Long.class))
+				value = new Long(0);
+			else if (propertyClass.isEnum())
+				value = string;
+		}
+		return value;
+	}
+
 	public void write(ResultsMatrix results, String prefix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
@@ -157,11 +267,11 @@ public class ResultsResource extends Resource {
 		
 		final File basePath = getResourceFile();
 		
-		String colsPath = new File(basePath, prefix + ".columns.tsv.gz").getAbsolutePath();
-		writeColumns(openWriter(colsPath), results, orderByColumn, monitor);
+		/*String colsPath = new File(basePath, prefix + ".columns.tsv.gz").getAbsolutePath();
+		writeColumns(openWriter(colsPath), results, orderByColumn, monitor);*/
 		
-		String rowsPath = new File(basePath, prefix + ".rows.tsv.gz").getAbsolutePath();
-		writeRows(openWriter(rowsPath), results, orderByColumn, monitor);
+		/*String rowsPath = new File(basePath, prefix + ".rows.tsv.gz").getAbsolutePath();
+		writeRows(openWriter(rowsPath), results, orderByColumn, monitor);*/
 		
 		String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
 		writeCells(openWriter(cellsPath), results, orderByColumn, monitor);
@@ -184,7 +294,7 @@ public class ResultsResource extends Resource {
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (ElementProperty prop : resultsMatrix.getCellAdapter().getProperties()) {
+		for (IElementProperty prop : resultsMatrix.getCellAdapter().getProperties()) {
 			out.writeSeparator();
 			out.writeQuotedValue(prop.getId());
 		}
@@ -222,7 +332,7 @@ public class ResultsResource extends Resource {
 		
 		Object element = resultsMatrix.getCell(rowIndex, colIndex);
 		
-		ElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
+		IElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
 		
 		int numProperties = cellsFacade.getPropertyCount();
 		

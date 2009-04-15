@@ -1,0 +1,30 @@
+body {
+	background-color: #ffffff;
+	font-family: sans-serif;
+	margin: 0px;
+}
+
+.section {
+	background-color: #a4a4be;
+	margin-top: 6px;
+}
+
+.label {
+	font-weight: bold;
+}
+
+.value {
+	width: 100%;
+}
+	
+table {
+	width: 100%;
+}
+	
+A:link, A:visited { 
+	text-decoration: none; 
+}
+
+A:hover { 
+	color: #f43a01; 
+}

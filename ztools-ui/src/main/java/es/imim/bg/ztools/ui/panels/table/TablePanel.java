@@ -20,14 +20,17 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import es.imim.bg.ztools.ui.model.deprecated.SelectionMode;
-import es.imim.bg.ztools.ui.model.table.ITable;
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class TablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
-	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
+	private static final int rowLabelsWidth = 400;
+
+	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
 	private JTable table;
 	
@@ -46,9 +49,9 @@ public class TablePanel extends JPanel {
 		
 		this.selMode = SelectionMode.cells;
 		
-		this.columnsHeight = 300;
-		this.columnsWidth = 25;
-		this.rowsHeight = 25;
+		this.columnsHeight = 200;
+		this.columnsWidth = 18;
+		this.rowsHeight = 18;
 	
 		this.selectedLeadColumn = this.selectedLeadRow = -1;
 	
@@ -90,15 +93,15 @@ public class TablePanel extends JPanel {
 				} else
 					selectedColumns = new int[] { pressedColumn };
 
-				int[] selectedRows = new int[0];
-
-				setSelectedCells(selectedColumns, selectedRows);
+				setSelectedCells(selectedColumns, new int[0]);
+				setLeadSelection(-1, pressedColumn);
 			}
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			endColumn = table.columnAtPoint(e.getPoint());
+			setLeadSelection(-1, endColumn);
 
 			int numCols = Math.abs(endColumn - startColumn) + 1;
 			
@@ -118,7 +121,7 @@ public class TablePanel extends JPanel {
 			else
 				selectedColumns = newSelectedColumns;
 
-			setSelectedColumns(selectedColumns);
+			setSelectedCells(selectedColumns, new int[0]);
 		}
 	}
 	
@@ -134,17 +137,16 @@ public class TablePanel extends JPanel {
 			int pressedColumn = table.columnAtPoint(e.getPoint());
 			
 			int lastcol = table.getColumnCount() - 1;
-			if (lastcol == pressedColumn){
+			if (lastcol == pressedColumn) {
 				setSelectionMode(SelectionMode.rows);
 				startRow = table.rowAtPoint(e.getPoint());
 				startColumn = pressedColumn;
+				setLeadSelection(startRow, -1);
 			}
-			else
-				setLead(e);
 		}
 		
 		@Override
-		public void mouseReleased(MouseEvent e){
+		public void mouseReleased(MouseEvent e) {
 			int lastColumn = table.getColumnCount() - 1;
 			if (lastColumn == table.columnAtPoint(e.getPoint())) {
 				setSelectedColumns(new int[0]);
@@ -163,6 +165,7 @@ public class TablePanel extends JPanel {
 				
 				endRow = table.rowAtPoint(e.getPoint());
 				endColumn = pressedColumn;
+				setLeadSelection(endRow, -1);
 
 				int rows = Math.abs(endRow-startRow) + 1;
 				
@@ -186,10 +189,7 @@ public class TablePanel extends JPanel {
 				setSelectedCells(new int[0], selectedRows);
 				oldRowSelection = getSelectedRows();
 			}
-			else
-				setLead(e);
 		}
-				
 		
 		private void setLead(MouseEvent e){
 			setSelectionMode(SelectionMode.cells);
@@ -197,14 +197,10 @@ public class TablePanel extends JPanel {
 			int row = table.rowAtPoint(e.getPoint());
 			int col = table.columnAtPoint(e.getPoint());
 			
-			setSelectedRows(new int[] { row });
-			setSelectedColumns(new int[] { col });
-			
+			setSelectedCells(new int[] { col }, new int[] { row });
 			setLeadSelection(row, col);
 		}
 	}
-
-
 
 	private void createComponents() {
 		
@@ -292,11 +288,12 @@ public class TablePanel extends JPanel {
 		if (lastColumn >= 0) {
 			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
+				col.setResizable(false);
 				col.setPreferredWidth(columnsWidth);
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
-			col.setResizable(false);
-			col.setMinWidth(400);
+			//col.setResizable(false);
+			col.setMinWidth(rowLabelsWidth);
 		}
 	}
 	
@@ -331,9 +328,9 @@ public class TablePanel extends JPanel {
 		table.repaint();
 	}
 
-	public void setCellDecorator(TablePanelCellDecorator decorator) {
+	public void setCellDecorator(ElementDecorator decorator) {
 		table.setDefaultRenderer(
-				model.getCellsFacade().getElementClass(), 
+				model.getCellAdapter().getElementClass(), 
 				new LabelTableCellRenderer(decorator));
 		
 		table.repaint();
@@ -383,13 +380,34 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setLeadSelection(int row, int col) {
-		if (row >= 0)
-			table.getSelectionModel().setLeadSelectionIndex(row);
+		final ListSelectionModel colSelModel = 
+			table.getColumnModel().getSelectionModel();
 		
-		if (col >= 0)
-			table.getColumnModel().getSelectionModel().setLeadSelectionIndex(col);
+		final ListSelectionModel rowSelModel = 
+			table.getSelectionModel();
 		
-		//System.out.println(col + ", " + row);
+		//System.out.println("setLeadSelection");
+		
+		colSelModel.setValueIsAdjusting(true);
+		rowSelModel.setValueIsAdjusting(true);
+		
+		if (row == -1)
+			rowSelModel.setAnchorSelectionIndex(row);
+		table.getSelectionModel().setLeadSelectionIndex(row);
+
+		if (col >= -1) {
+			if (col == -1)
+				colSelModel.setAnchorSelectionIndex(col);
+			colSelModel.setLeadSelectionIndex(col);
+		}
+		else 
+			colSelModel.clearSelection();
+
+		
+		//System.out.println("setLeadSelection(" + row + ", " + col + ")");
+		
+		colSelModel.setValueIsAdjusting(false);
+		rowSelModel.setValueIsAdjusting(false);
 	}
 	
 	/*public void addListener(ColorMatrixListener listener) {
@@ -397,8 +415,31 @@ public class TablePanel extends JPanel {
 	}*/
 
 	public void setSelectedCells(int[] selectedColumns, int[] selectedRows){
-		setSelectedColumns(selectedColumns);
-		setSelectedRows(selectedRows);
+		final ListSelectionModel colSelModel = 
+			table.getColumnModel().getSelectionModel();
+		
+		final ListSelectionModel rowSelModel = 
+			table.getSelectionModel();
+		
+		//System.out.println("setSelectedCells");
+		
+		colSelModel.setValueIsAdjusting(true);
+		rowSelModel.setValueIsAdjusting(true);
+		
+		updateSelection(
+				false,
+				colSelModel,
+				selectedColumns);
+		
+		updateSelection(
+				false,
+				rowSelModel, 
+				selectedRows);
+		
+		colSelModel.setValueIsAdjusting(false);
+		rowSelModel.setValueIsAdjusting(false);
+		
+		refreshSelectionMode();
 	}
 	
 	public int[] getSelectedColumns() {
@@ -406,9 +447,11 @@ public class TablePanel extends JPanel {
 	}
 		
 	public void setSelectedColumns(int[] selectedColumns) {
+		//System.out.println("setSelectedColumns");
+		
 		updateSelection(
-				table.getColumnModel().getSelectionModel(), 
-				getSelectedColumns(), 
+				true,
+				table.getColumnModel().getSelectionModel(),
 				selectedColumns);
 		
 		refreshSelectionMode();
@@ -419,22 +462,30 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setSelectedRows(int[] selectedRows) {
+		//System.out.println("setSelectedRows");
+		
 		updateSelection(
+				true,
 				table.getSelectionModel(), 
-				getSelectedRows(), 
 				selectedRows);
 		
 		refreshSelectionMode();
 	}
 	
 	private void updateSelection(
-			ListSelectionModel selModel, int[] oldList, int[] newList) {
+			boolean useValueAdjusting, 
+			ListSelectionModel selModel, 
+			int[] newList) {
 		
-		selModel.setValueIsAdjusting(true);
+		if (useValueAdjusting)
+			selModel.setValueIsAdjusting(true);
+		
 		selModel.clearSelection();
 		for (int idx : newList)
 			selModel.addSelectionInterval(idx, idx);
-		selModel.setValueIsAdjusting(false);
+		
+		if (useValueAdjusting)
+			selModel.setValueIsAdjusting(false);
 	}
 
 	public void clearSelection() {
@@ -488,10 +539,9 @@ public class TablePanel extends JPanel {
 		return false;
 	}
 	
-	private void printArray(int[] selectedRows) {
+	/*private void printArray(int[] selectedRows) {
 		System.out.println("-------------");
 		for (int idx : selectedRows)
 			System.out.println(idx);
-	}
-	
+	}*/	
 }

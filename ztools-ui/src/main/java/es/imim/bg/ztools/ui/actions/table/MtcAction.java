@@ -9,13 +9,13 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
-import es.imim.bg.ztools.model.elements.ElementAdapter;
 import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.ITableContents;
+import es.imim.bg.ztools.table.TableUtils;
+import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
-import es.imim.bg.ztools.ui.model.table.ITableContents;
-import es.imim.bg.ztools.ui.utils.TableUtils;
 
 public class MtcAction extends BaseAction {
 
@@ -39,12 +39,12 @@ public class MtcAction extends BaseAction {
 		if (table == null)
 			return;
 
-		ElementAdapter cellFacade = table.getCellsFacade();
+		IElementAdapter cellAdapter = table.getCellAdapter();
 		
 		final int propIndex = table.getSelectedPropertyIndex();
 		final int corrPropIndex = 
 			TableUtils.correctedValueIndex(
-				table, cellFacade.getProperty(propIndex));
+				cellAdapter, cellAdapter.getProperty(propIndex));
 		
 		if (corrPropIndex < 0) {
 			JOptionPane.showMessageDialog(AppFrame.instance(),

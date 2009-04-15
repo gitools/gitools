@@ -18,7 +18,7 @@ public class BenjaminiHochbergFdr implements MultipleTestCorrection {
 		for (int idx = 0; idx < m; idx++) {
 			int rank = idx + 1;
 			double p = sortedValues.get(idx);
-			sortedValues.set(idx, p * m / rank);
+			sortedValues.set(idx, Math.min(1.0, p * m / rank));
 		}
 	}
 }

@@ -1,0 +1,26 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body>
+    <table>
+		#section( "Condition" )
+		#nameRow( $columnElement )
+		
+		#section( "Module" )
+		#nameRow( $rowElement )
+		
+		#section( "Parameters" )
+		#foreach($key in $cell.keySet())
+    	<tr>
+    		<td class="label">$key:</td>
+        </tr>
+		<tr>
+    		<td class="value">$fmt.format($cell.get($key))</td>
+    	</tr>
+		#end
+    </table>
+</body>
+</html>

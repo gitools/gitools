@@ -15,6 +15,7 @@ import es.imim.bg.ztools.processors.ZCalcProcessor;
 import es.imim.bg.ztools.resources.DataResource;
 import es.imim.bg.ztools.resources.ModuleMapResource;
 import es.imim.bg.ztools.test.factory.TestFactory;
+import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
 
 public class ZCalcCommand extends AnalysisCommand {
 	
@@ -62,6 +63,9 @@ public class ZCalcCommand extends AnalysisCommand {
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(dataMatrix);
 		analysis.setModuleSet(moduleMap);
+		analysis.getToolConfig().put(
+				ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
+				String.valueOf(samplingNumSamples));
 		
 		ZCalcProcessor processor = 
 			new ZCalcProcessor(analysis);

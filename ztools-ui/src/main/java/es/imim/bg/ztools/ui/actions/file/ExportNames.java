@@ -11,9 +11,10 @@ import java.io.PrintWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import es.imim.bg.ztools.table.ITable;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
-import es.imim.bg.ztools.ui.model.table.ITable;
 import es.imim.bg.ztools.ui.utils.Options;
 
 public class ExportNames extends BaseAction {
@@ -36,6 +37,7 @@ public class ExportNames extends BaseAction {
 		final String hiddenCols = "Hidden column names";
 
 		ITable table = getTable();
+		ITableContents contents = table.getContents();
 		if (table == null)
 			return;
 		
@@ -43,7 +45,7 @@ public class ExportNames extends BaseAction {
 				visibleRows, visibleCols, hiddenRows, hiddenCols };
 
 		final String selected = (String) JOptionPane.showInputDialog(AppFrame.instance(),
-				"What do tou want to export ?", "Export names",
+				"What do you want to export ?", "Export names",
 				JOptionPane.QUESTION_MESSAGE, null, possibilities,
 				"Visible row names");
 
@@ -65,9 +67,17 @@ public class ExportNames extends BaseAction {
 				for (int i = 0; i < table.getColumnCount(); i++)
 					pw.println(table.getColumn(i).toString());
 			} 
-			else {
-				AppFrame.instance().setStatusText("Unimplemented option.");
-				return;
+			else if (hiddenRows.equals(selected)) {
+				for (int i = 0; i < contents.getRowCount(); i++) {
+					if (!inArray(i, table.getVisibleRows()))
+							pw.println(contents.getRow(i).toString());
+				}
+			}
+			else if (hiddenCols.equals(selected)) {
+				for (int i = 0; i < contents.getColumnCount(); i++) {
+					if (!inArray(i, table.getVisibleColumns()))
+							pw.println(contents.getColumn(i).toString());
+				}
 			}
 			
 			pw.close();
@@ -79,6 +89,15 @@ public class ExportNames extends BaseAction {
 		AppFrame.instance().setStatusText(selected + " exported.");
 	}
 	
+
+
+	private boolean inArray(int needle, int[] ary) {
+		for (int i = 0; i < ary.length; i++)
+			if (needle == ary[i])
+				return true;
+		return false;
+	}
+
 	private File getSelectedFile() {
 		JFileChooser fileChooser = new JFileChooser(
 				Options.instance().getLastExportPath());

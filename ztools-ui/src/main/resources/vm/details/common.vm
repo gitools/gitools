@@ -1,0 +1,117 @@
+#macro( htmlColor $color )
+	$fmt.format("#%02x%02x%02x", $color.Red, $color.Green, $color.Blue)
+#end
+
+#macro( zscoreColor $value )
+	#set( $color = $zscoreScale.getColor($value) )
+    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+#end
+
+#macro( pvalueColor $value )
+	#set( $color = $pvalueScale.getColor($value) )
+    <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+#end
+
+#macro( nameRow $value )
+	<tr>
+		<td colspan="2">$value</td>
+	</tr>
+#end
+
+#macro( valueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$value</td>
+	</tr>
+#end
+
+#macro( fmtValueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.format($value)</td>
+	</tr>
+#end
+
+#macro( zscoreRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#zscoreColor($value)
+			$fmt.format($value)
+		</td>
+	</tr>
+#end
+
+#macro( pvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">
+			#pvalueColor($value)
+			$fmt.pvalue($value)
+		</td>
+	</tr>
+#end
+
+#macro( cpvalueRow $label $value )
+	<tr>
+		<td class="label">$label</td>
+		<td class="value">$fmt.pvalue($value)</td>
+	</tr>
+#end
+
+#macro( section $title )
+	<tr>
+		<td class="section" colspan="2">$title</td>
+	</tr>
+#end
+
+#macro( zscoreScale )
+	<tr>
+		<td colspan="2">
+			<table>
+            	#set( $total = 30 )
+            	#set( $span0 = $total + 2 )
+            	#set( $span1 = $total / 2 )
+            	#set( $span2 = $span1 + 1 )
+            	<tr>
+                    <td colspan="$span1" style="border-left: 1px solid black">-10</td>
+            		<td colspan="$span2" style="text-align: right; border-right: 1px solid black">10</td>
+                </tr>
+            	<tr>
+            		#foreach($index in [0..$total])
+            			#set( $value = (20.0 * ($index * 1.0) / $total) - 10.0 )
+            			#set( $color = $zscoreScale.getColor($value) )
+            			<td style="background-color: #htmlColor($color)">&nbsp;</td>
+            		#end
+                </tr>
+            </table>
+		</td>
+	</tr>
+#end
+
+#macro( pvalueScale )
+	<tr>
+		<td colspan="2">
+			<table>
+            	#set( $total = 30 )
+            	#set( $span0 = $total + 2 )
+            	#set( $span1 = $total / 2 )
+            	#set( $span2 = $span1 + 1 )
+            	<tr>
+                    <td colspan="$span1" style="border-left: 1px solid black">0.0</td>
+            		<td colspan="$span2" style="text-align: right; border-right: 1px solid black">0.05</td>
+                    <td style="border-right: 1px solid black">1.0</td>
+                </tr>
+            	<tr>
+            		#foreach($index in [0..$total])
+            			#set( $value = 0.05 * ($index * 1.0) / $total )
+            			#set( $color = $pvalueScale.getColor($value) )
+            			<td style="background-color: #htmlColor($color)">&nbsp;</td>
+            		#end
+            		#set( $color = $pvalueScale.getColor(1.0) )
+            		<td style="background-color: #htmlColor($color)">&nbsp;</td>
+                </tr>
+            </table>
+		</td>
+	</tr>
+#end

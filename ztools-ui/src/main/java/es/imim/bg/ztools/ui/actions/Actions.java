@@ -10,9 +10,6 @@ public class Actions {
 	
 	// Unclassified
 	
-	public static final BaseAction zcalcAnalysisAction =
-		new ZcalcAnalysisAction();
-	
 	private Actions() {
 	}
 

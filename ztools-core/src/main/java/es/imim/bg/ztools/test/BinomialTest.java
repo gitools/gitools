@@ -163,7 +163,7 @@ public class BinomialTest extends AbstractTest {
 			twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		}
 		
-		return new BinomialResult(BinomialResult.AproximationUsed.exact,
+		return new BinomialResult(BinomialResult.Distribution.BINOMIAL,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev, p);
 	}
@@ -186,7 +186,7 @@ public class BinomialTest extends AbstractTest {
 		twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
 		twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 		
-		return new BinomialResult(BinomialResult.AproximationUsed.normal,
+		return new BinomialResult(BinomialResult.Distribution.NORMAL,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev, p);
 	}
@@ -213,7 +213,7 @@ public class BinomialTest extends AbstractTest {
 			leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
 		}
 		
-		return new BinomialResult(BinomialResult.AproximationUsed.poisson,
+		return new BinomialResult(BinomialResult.Distribution.POISSON,
 				n, leftPvalue, rightPvalue, twoTailPvalue, 
 				observed, expectedMean, expectedStdev, p);
 	}

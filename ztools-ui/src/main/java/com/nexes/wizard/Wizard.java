@@ -9,6 +9,8 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import es.imim.bg.ztools.ui.IconNames;
+
 /**
  * This class implements a basic wizard dialog, where the programmer can
  * insert one or more Components to act as panels. These panels can be navigated
@@ -426,23 +428,41 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
 
         try { 
             
-            PropertyResourceBundle resources = (PropertyResourceBundle)
-                ResourceBundle.getBundle("com.nexes.wizard.wizard");
+            /*PropertyResourceBundle resources = (PropertyResourceBundle)
+                ResourceBundle.getBundle("com.nexes.wizard.wizard");*/
             
-            BACK_TEXT = (String)(resources.getObject("backButtonText"));
+            /*BACK_TEXT = (String)(resources.getObject("backButtonText"));
             NEXT_TEXT = (String)(resources.getObject("nextButtonText"));
             CANCEL_TEXT = (String)(resources.getObject("cancelButtonText"));
-            FINISH_TEXT = (String)(resources.getObject("finishButtonText"));
+            FINISH_TEXT = (String)(resources.getObject("finishButtonText"));*/
             
-            BACK_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("backButtonIcon"))));
+            BACK_TEXT = "Back";
+            NEXT_TEXT = "Next";
+            CANCEL_TEXT = "Cancel";
+            FINISH_TEXT = "Finish";
+            
+            /*BACK_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("backButtonIcon"))));
             NEXT_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("nextButtonIcon"))));
             CANCEL_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("cancelButtonIcon"))));
-            FINISH_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("finishButtonIcon"))));
+            FINISH_ICON = new ImageIcon((URL)getImage((String)(resources.getObject("finishButtonIcon"))));*/
+            
+            BACK_ICON = getIconResource("/img/wizard/backIcon.gif");
+            NEXT_ICON = getIconResource("/img/wizard/nextIcon.gif");
+            CANCEL_ICON = getIconResource("/img/wizard/cancelIcon.gif");
+            FINISH_ICON = getIconResource("/img/wizard/finishIcon.gif");
         
         } catch (MissingResourceException mre) {
-            System.out.println(mre);
+        	mre.printStackTrace();
             System.exit(1);
         }
     }
+    
+    private static ImageIcon getIconResource(String name) {
+		URL url = Wizard.class.getResource(name);
+		if (url == null)
+			url = Wizard.class.getResource(IconNames.nullResource);
+		
+		return new ImageIcon(url);
+	}
 
 }

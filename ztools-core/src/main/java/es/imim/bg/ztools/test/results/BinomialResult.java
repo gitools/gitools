@@ -1,38 +1,38 @@
 package es.imim.bg.ztools.test.results;
 
-import es.imim.bg.ztools.model.elements.Property;
+import es.imim.bg.ztools.table.element.Property;
 
 public class BinomialResult extends CommonResult {
 
-	public enum AproximationUsed {
-		exact, normal, poisson 
+	public enum Distribution {
+		BINOMIAL, NORMAL, POISSON 
 	};
 	
-	public AproximationUsed aprox;
+	public Distribution distribution;
 	public int observed;
 	public double expectedMean;
 	public double expectedStdev;
-	public double p;
+	public double probability;
 	
 	public BinomialResult() {
 		super(0, 0.0, 0.0, 0.0);
 		observed = 0;
 		expectedMean = expectedStdev = 0;
-		p = 0;
+		probability = 0;
 	}
 	
 	public BinomialResult(
-			AproximationUsed aprox, int n,
+			Distribution aprox, int n,
 			double leftPvalue, double rightPvalue, double twoTailPvalue, 
 			int observed, double expectedMean, double expectedStdev, double p) {
 		
 		super(n, leftPvalue, rightPvalue, twoTailPvalue);
 		
-		this.aprox = aprox;
+		this.distribution = aprox;
 		this.observed = observed;
 		this.expectedMean = expectedMean;
 		this.expectedStdev = expectedStdev;
-		this.p = p;
+		this.probability = p;
 	}
 	
 	@Property(id = "observed", name = "Observed events", description = "Number of positive events observed")
@@ -40,9 +40,17 @@ public class BinomialResult extends CommonResult {
 		return observed;
 	}
 	
+	public void setObserved(int observed) {
+		this.observed = observed;
+	}
+	
 	@Property(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
 	public double getExpectedMean() {
 		return expectedMean;
+	}
+	
+	public void setExpectedMean(double expectedMean) {
+		this.expectedMean = expectedMean;
 	}
 	
 	@Property(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
@@ -50,13 +58,25 @@ public class BinomialResult extends CommonResult {
 		return expectedStdev;
 	}
 
-	@Property(id = "aproximation", name = "Aproximation distribution", description = "Wich distribution has been used to aproximate Binomial distribution (Normal, Poisson or No aproximation)")
-	public AproximationUsed getAproximation() {
-		return aprox;
+	public void setExpectedStdev(double expectedStdev) {
+		this.expectedStdev = expectedStdev;
+	}
+	
+	@Property(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
+	public Distribution getDistribution() {
+		return distribution;
 	}
 
+	public void setDistribution(Distribution distribution) {
+		this.distribution = distribution;
+	}
+	
 	@Property(id = "probability", name = "Probability", description = "Population probability of a positive event")
-	public double getP() {
-		return p;
+	public double getProbability() {
+		return probability;
+	}
+	
+	public void setProbability(double probability) {
+		this.probability = probability;
 	}
 }
