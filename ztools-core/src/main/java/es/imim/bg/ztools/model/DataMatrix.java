@@ -12,7 +12,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"rowNames", 
 				"data"*/})
 				
-public final class DataMatrix {
+public final class DataMatrix extends SimpleArtifact{
 
 	protected String name;
 	
@@ -22,13 +22,30 @@ public final class DataMatrix {
 	protected DoubleMatrix2D data;
 	
 	public DataMatrix() {
-		this.name = "";
+	
+	    //FIXME:
+	    
+	    super(null, null);
+	    
+	    String id [] = IdFactory.getUniqueIdentifier(this);
+	    this.setId(id[0]);
+	    this.setArtifactType(id[1]);
+	    
+	    	this.name = "";
+		
 	}
 
 	public DataMatrix(
 			String name, String[] colNames, 
 			String[] rowNames, DoubleMatrix2D data) {
-		
+	   //FIXME:
+	    
+	    super(null, null);
+	    
+	    String id [] = IdFactory.getUniqueIdentifier(this);
+	    this.setId(id[0]);
+	    this.setArtifactType(id[1]);
+	    
 		this.name = name;
 		this.colNames = colNames;
 		this.rowNames = rowNames;

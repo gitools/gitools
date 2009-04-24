@@ -7,59 +7,58 @@ import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
 
 public class DataMatrixTableContentsAdapter implements ITableContents {
 
-	private DataMatrix data;
-	
-	public DataMatrixTableContentsAdapter(DataMatrix data) {
-		this.data = data;
-	}
-	
-	public Object getCell(int row, int column) {
-		return data.getData().get(row, column);
-	}
+    private DataMatrix data;
 
-	public Object getCellValue(int row, int column, int index) {
-		return data.getData().get(row, column);
-	}
+    public DataMatrixTableContentsAdapter(DataMatrix data) {
+	this.data = data; 
+    }
 
-	public Object getCellValue(int row, int column, String id) {
-		return data.getData().get(row, column);
-	}
+    public Object getCell(int row, int column) {
+	return data.getData().get(row, column);
+    }
 
-	public Object getColumn(int index) {
-		return data.getColNames()[index];
-	}
+    public Object getCellValue(int row, int column, int index) {
+	return data.getData().get(row, column);
+    }
 
-	public int getColumnCount() {
-		return data.getColNames().length;
-	}
+    public Object getCellValue(int row, int column, String id) {
+	return data.getData().get(row, column);
+    }
 
-	public Object getRow(int index) {
-		return data.getRowNames()[index];
-	}
+    public Object getColumn(int index) {
+	return data.getColNames()[index];
+    }
 
-	public int getRowCount() {
-		return data.getRowNames().length; 
-	}
+    public int getColumnCount() {
+	return data.getColNames().length;
+    }
 
-	public void setCellValue(int row, int column, int index, Object value) {
-		data.getData().set(row, column, (Double) value);
-	}
+    public Object getRow(int index) {
+	return data.getRowNames()[index];
+    }
 
-	public void setCellValue(int row, int column, String id, Object value) {
-		data.getData().set(row, column, (Double) value);
-	}
+    public int getRowCount() {
+	return data.getRowNames().length;
+    }
 
-	public IElementAdapter getCellAdapter() {
-		//FIXME: the adapter must come with the resource 
-		return new DoubleElementAdapter();
-	}
+    public void setCellValue(int row, int column, int index, Object value) {
+	data.getData().set(row, column, (Double) value);
+    }
 
-	public IElementAdapter getColumnAdapter() {
-		return new StringElementAdapter();
-	}
+    public void setCellValue(int row, int column, String id, Object value) {
+	data.getData().set(row, column, (Double) value);
+    }
 
-	public IElementAdapter getRowAdapter() {
-		return new StringElementAdapter();
-	}
+    public IElementAdapter getCellAdapter() {
+	// FIXME: the adapter must come with the resource
+	return new DoubleElementAdapter();
+    }
 
+    public IElementAdapter getColumnAdapter() {
+	return new StringElementAdapter();
+    }
+
+    public IElementAdapter getRowAdapter() {
+	return new StringElementAdapter();
+    }
 }

@@ -24,7 +24,7 @@ import es.imim.bg.ztools.table.element.bean.BeanElementAdapter;
 		StringElementAdapter.class,
 		ArrayElementAdapter.class})
 		
-public class ResultsMatrix {
+public class ResultsMatrix extends SimpleArtifact {
 	
 	protected ObjectMatrix1D rows;
 	protected ObjectMatrix1D columns;
@@ -35,6 +35,14 @@ public class ResultsMatrix {
 	protected IElementAdapter cellAdapter;
 	
 	public ResultsMatrix() {
+	    //FIXME:
+	    
+	    super(null, null);
+	    
+	    String id [] = IdFactory.getUniqueIdentifier(this);
+	    this.setId(id[0]);
+	    this.setArtifactType(id[1]); 
+	
 	}
 	
 	public ResultsMatrix(
@@ -44,7 +52,16 @@ public class ResultsMatrix {
 			IElementAdapter rowAdapter,
 			IElementAdapter columnAdapter,
 			IElementAdapter cellAdapter) {
-		
+	 
+	    //FIXME:
+	    
+	    super(null, null);
+	    
+	    String id [] = IdFactory.getUniqueIdentifier(this);
+	    this.setId(id[0]);
+	    this.setArtifactType(id[1]);
+	    
+	    
 		this.rows = rows;
 		this.columns = columns;
 		this.cells = cells;
