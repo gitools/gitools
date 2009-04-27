@@ -16,7 +16,9 @@ import javax.xml.bind.annotation.XmlType;
 				"moduleMapRef",
 				"results"})
 				
-public class Analysis {
+public class Analysis extends ComposedArtifact{
+
+	
 
 	protected String name;
 	protected Date startTime;
@@ -27,6 +29,11 @@ public class Analysis {
 	protected ResultsMatrix resultsMatrix;
 	
 	protected ToolConfig toolConfig;
+	
+	
+	public Analysis(String id, String artifactType) {
+		super(id, artifactType);
+	}
 	
 	public String getName() {
 		return name;

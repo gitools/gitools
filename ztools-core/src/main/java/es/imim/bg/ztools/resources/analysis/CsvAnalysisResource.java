@@ -73,7 +73,8 @@ public class CsvAnalysisResource extends AnalysisResource {
 	
 	@Override
 	public Analysis load(ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
-		Analysis analysis = new Analysis();
+		//FIXME: we need to define the assigment of id's
+	    	Analysis analysis = new Analysis(null,null);
 		load(analysis, monitor);
 		return analysis;
 	}

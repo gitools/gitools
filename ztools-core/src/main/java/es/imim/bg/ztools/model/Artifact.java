@@ -1,22 +1,39 @@
 package es.imim.bg.ztools.model;
 
-public class Artifact implements IArtifact {
+import java.io.Serializable;
 
-    private String id;
+public class Artifact implements Serializable, IArtifact{
+
+    /** id unique **/
+    private String artifactId;
+    
+    /** type of the artifact **/
     private String artifactType;
+    
+    /** short description **/
+    private String title;
 
+    /** long description **/
+    private String description;
+    
+    
     public Artifact(String id, String artifactType) {
-	this.id = id;
+	this(id, artifactType, null, null);
+    }
+
+    public Artifact(String id, String artifactType, String title, String description) {
+	this.artifactId = id;
 	this.artifactType = artifactType;
-
+	this.setTitle(title);
+	this.setDescription(description);
     }
 
-    public String getId() {
-	return id;
+    public String getArtifactId() {
+	return artifactId;
     }
 
-    public void setId(String id) {
-	this.id = id;
+    public void setArtifactId(String artifactId) {
+	this.artifactId = artifactId;
     }
 
     public String getArtifactType() {
@@ -25,6 +42,22 @@ public class Artifact implements IArtifact {
 
     public void setArtifactType(String artifactType) {
 	this.artifactType = artifactType;
+    }
+
+    public void setDescription(String description) {
+	this.description = description;
+    }
+
+    public String getDescription() {
+	return description;
+    }
+
+    public void setTitle(String title) {
+	this.title = title;
+    }
+
+    public String getTitle() {
+	return title;
     }
 
 }

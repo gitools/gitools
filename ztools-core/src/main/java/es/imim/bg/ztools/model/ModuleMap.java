@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 				"itemIndices",
 				"itemsOrder"*/})
 				
-public class ModuleMap {
+public class ModuleMap extends Artifact{
 
 	protected String name;
 	protected String description;
@@ -24,12 +24,14 @@ public class ModuleMap {
 	
 	protected int[] itemsOrder;
 
-	public ModuleMap() {
+	public ModuleMap(String id, String artifactType) {
+	    this(id, artifactType, null, null, null, null);
 	}
 	
-	public ModuleMap(
+	public ModuleMap(String id, String artifactType,
 			String[] moduleNames, String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
 		
+	    super(id,artifactType);
 		this.moduleNames = moduleNames;
 		this.itemNames = itemNames;
 		this.itemIndices = itemIndices;

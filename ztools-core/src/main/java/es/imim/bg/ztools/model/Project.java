@@ -24,7 +24,7 @@ public class Project {
 	protected List<DataMatrix> dataTables = new ArrayList<DataMatrix>();
 	protected List<ModuleMap> moduleMaps = new ArrayList<ModuleMap>();
 	protected List<Analysis> analysis = new ArrayList<Analysis>();
-	//protected List<Figure> figures;
+	
 
 	public Project() {
 	}

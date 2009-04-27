@@ -43,7 +43,8 @@ public class OncozCommand extends AnalysisCommand {
 		monitor.info("Modules: " + modulesFile);
 		
 		DataMatrix dataMatrix = new DataMatrix();
-		ModuleMap moduleMap = new ModuleMap();
+		//FIXME: id
+		ModuleMap moduleMap = new ModuleMap(null, null);
 		loadDataAndModules(
 				dataMatrix, moduleMap, 
 				dataFile, valueFilter, 
@@ -54,7 +55,8 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Create and process analysis
 		
-		Analysis analysis = new Analysis();
+		//FIXME id
+		Analysis analysis = new Analysis(null, null);
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(dataMatrix);

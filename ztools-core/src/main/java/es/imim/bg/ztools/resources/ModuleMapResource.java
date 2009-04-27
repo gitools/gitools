@@ -50,7 +50,8 @@ public class ModuleMapResource extends Resource {
 			String[] itemNames,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
-		ModuleMap moduleMap = new ModuleMap();
+		//FIXME: id 
+	    	ModuleMap moduleMap = new ModuleMap(null,null);
 		load(moduleMap, minModuleSize, maxModuleSize, itemNames, monitor);
 		
 		return moduleMap;
