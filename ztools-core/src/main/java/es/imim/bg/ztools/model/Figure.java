@@ -6,11 +6,11 @@ public class Figure extends Artifact {
     private String FigureText;
     
     public Figure(String id, String artifactType) {
-	this(id, artifactType, null);
+	this(id, artifactType, null, null, null);
     }
     
-    public Figure(String id, String artifactType, String figureText) {
-	super(id, artifactType);
+    public Figure(String id, String artifactType, String title, String description, String figureText) {
+	super(id, artifactType, title, description);
 	this.FigureText = figureText; 
     }
 

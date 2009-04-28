@@ -9,6 +9,14 @@ public class ComposedArtifact extends Artifact {
       
     private List <IArtifact>  artifactList;
     
+    public List<IArtifact> getArtifactList() {
+        return artifactList;
+    }
+
+    public void setArtifactList(List<IArtifact> artifactList) {
+        this.artifactList = artifactList;
+    }
+
     public ComposedArtifact(String id, String artifactType) {
 	this(id, artifactType, null, null, new ArrayList<IArtifact>());
     }

@@ -6,7 +6,7 @@ package es.imim.bg.ztools.model;
      protected TableArtifact artifactTable;
      
     public TableFigure(String id, String artifactType, String figureText, TableArtifact artifactTable) {
-	super(id, artifactType, figureText);
+	super(id, artifactType);
 	this.artifactTable = artifactTable;
     }
 
