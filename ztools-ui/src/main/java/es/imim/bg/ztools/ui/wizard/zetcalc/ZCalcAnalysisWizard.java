@@ -117,6 +117,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 		    							(String) dataModel.getValue(MODULE_FILE),
 		    							minModuleSize,
 		    							maxModuleSize,
+		    							true, //FIXME include this option in wizard: includeNonMappedItems in background
 		    							(String) dataModel.getValue(ANALYSIS_WORKING_DIR),
 		    							outputFormat,
 		    							true);

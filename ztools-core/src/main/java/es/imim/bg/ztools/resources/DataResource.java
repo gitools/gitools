@@ -23,6 +23,8 @@ import es.imim.bg.ztools.model.DataMatrix;
 
 public class DataResource extends Resource {
 
+	private static final long serialVersionUID = 1995227069362928225L;
+
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public DataResource(String fileName) {

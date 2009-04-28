@@ -24,6 +24,8 @@ import es.imim.bg.ztools.model.ModuleMap;
 
 public class ModuleMapResource extends Resource {
 
+	private static final long serialVersionUID = -6679172401494740813L;
+
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public static final int defaultMinModuleSize = 20;
@@ -48,10 +50,11 @@ public class ModuleMapResource extends Resource {
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
+			boolean discardNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		ModuleMap moduleMap = new ModuleMap();
-		load(moduleMap, minModuleSize, maxModuleSize, itemNames, monitor);
+		load(moduleMap, minModuleSize, maxModuleSize, itemNames, discardNonMappedItems, monitor);
 		
 		return moduleMap;
 	}
@@ -61,6 +64,7 @@ public class ModuleMapResource extends Resource {
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
+			boolean includeNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 
 		monitor.begin("Reading modules ...", 1);
@@ -167,12 +171,20 @@ public class ModuleMapResource extends Resource {
 				indices[j] = itemsOrder[idx];
 			}
 		}
+
+		if (includeNonMappedItems) {
+			// Put not used items at the end
+			for (int i = 0; i < itemsOrder.length; i++)
+				if (itemsOrder[i] < 0)
+					itemsOrder[i] = numItems++;
+		}
 		
-		// Put not used items at the end
+		// Create ordered list of item names
 		
+		final String[] orderedItemNames = new String[numItems];
 		for (int i = 0; i < itemsOrder.length; i++)
-			if (itemsOrder[i] < 0)
-				itemsOrder[i] = numItems++;
+			if (itemsOrder[i] >= 0)
+				orderedItemNames[itemsOrder[i]] = itemNames[i];
 		
 		monitor.info(numModules + " modules loaded");
 		monitor.info((fileNumModules - numModules) + " modules discarded");
@@ -180,7 +192,8 @@ public class ModuleMapResource extends Resource {
 		monitor.end();
 		
 		moduleMap.setModuleNames(moduleNames);
-		moduleMap.setItemNames(itemNames);
+		moduleMap.setItemNames(orderedItemNames);
+		//moduleMap.setNumMappedItems(numItems);
 		moduleMap.setItemIndices(moduleItemIndices);
 		moduleMap.setItemsOrder(itemsOrder);
 	}

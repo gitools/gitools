@@ -37,7 +37,9 @@ import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
 
 public class ResultsResource extends Resource {
-	
+
+	private static final long serialVersionUID = 3487889255829878181L;
+
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 
 	/* This information will be used to infer the element class

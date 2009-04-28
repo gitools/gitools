@@ -17,6 +17,8 @@ import es.imim.bg.ztools.model.Project;
 
 public class ProjectResource extends Resource {
 
+	private static final long serialVersionUID = -3625243178449832555L;
+	
 	/*public ProjectResource(String resource) {
 		super(resource);
 	}*/

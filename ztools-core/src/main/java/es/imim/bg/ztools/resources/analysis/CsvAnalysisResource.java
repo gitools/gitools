@@ -30,6 +30,8 @@ import es.imim.bg.ztools.test.factory.TestFactory;
 
 public class CsvAnalysisResource extends AnalysisResource {
 
+	private static final long serialVersionUID = 5332483819895529191L;
+
 	private static final String tagVersion = "version";
 	private static final String tagAnalysisName = "name";
 	private static final String tagToolName = "tool";

@@ -22,6 +22,11 @@ public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
 	@Option(name = "-max", aliases = "-max-mod-size", usage = "Discard all modules that have\nmore items than <max> (default: no limit)", metaVar = "<max>")
 	private int maxModuleSize = Integer.MAX_VALUE;
 
+	@Option(name = "-omi", aliases = "-only-mapped-items", 
+			usage = "Consider only items having a mapping for the background.\n" +
+					"(default: all items in data file will be considered)")
+	private boolean discardNonMappedItems = false;
+	
 	@Override
 	public void validateArguments(Object argsObject) 
 			throws RequiredArgumentException, InvalidArgumentException {
@@ -49,6 +54,7 @@ public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
         		analysisName, testName, samplingNumSamples, 
         		dataFile, binCutoffFilter,
         		groupsFile, minModuleSize, maxModuleSize,
+        		!discardNonMappedItems,
         		workdir, outputFormat, true);
         
         ProgressMonitor monitor = !args.quiet ? 

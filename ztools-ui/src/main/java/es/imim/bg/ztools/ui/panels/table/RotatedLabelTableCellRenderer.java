@@ -58,7 +58,7 @@ public class RotatedLabelTableCellRenderer
 
 		g2.clearRect(0, 0, w, h);
 
-		g2.setColor(Color.GRAY);
+		g2.setColor(Color.WHITE);
 		g2.drawRect(0, 0, w, h);
 
 		AffineTransform at = new AffineTransform();

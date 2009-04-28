@@ -24,6 +24,8 @@ import es.imim.bg.ztools.utils.Util;
 
 public class REXmlAnalysisResource extends AnalysisResource {
 
+	private static final long serialVersionUID = 6487157855012145649L;
+
 	protected int minModuleSize;
 	protected int maxModuleSize;
 	

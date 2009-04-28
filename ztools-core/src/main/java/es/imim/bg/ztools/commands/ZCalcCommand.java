@@ -21,11 +21,12 @@ public class ZCalcCommand extends AnalysisCommand {
 	
 	public ZCalcCommand(String analysisName, String testName,
 			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
-			String groupsFile, int minGroupSize, int maxModuleSize, String workdir,
-			String outputFormat, boolean resultsByCond) {
+			String groupsFile, int minGroupSize, int maxModuleSize, boolean includeNonMappedItems, 
+			String workdir, String outputFormat, boolean resultsByCond) {
 		
 		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
-				groupsFile, minGroupSize, maxModuleSize, workdir, outputFormat, resultsByCond);
+				groupsFile, minGroupSize, maxModuleSize, includeNonMappedItems,
+				workdir, outputFormat, resultsByCond);
 	}
 	
 	public void run(ProgressMonitor monitor) 
@@ -52,6 +53,7 @@ public class ZCalcCommand extends AnalysisCommand {
 				dataMatrix, moduleMap, 
 				dataFile, valueFilter, 
 				modulesFile, minModuleSize, maxModuleSize,
+				includeNonMappedItems,
 				monitor.subtask());
 		
 		monitor.end();
@@ -80,7 +82,7 @@ public class ZCalcCommand extends AnalysisCommand {
 	private void loadDataAndModules(
 			DataMatrix dataMatrix, ModuleMap moduleMap,
 			String dataFileName, ValueFilter valueFilter, String modulesFileName, 
-			int minModuleSize, int maxModuleSize, 
+			int minModuleSize, int maxModuleSize, boolean includeNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		// Load metadata
@@ -99,7 +101,10 @@ public class ZCalcCommand extends AnalysisCommand {
 			minModuleSize,
 			maxModuleSize,
 			dataMatrix.getRowNames(),
+			includeNonMappedItems,
 			monitor);
+		
+		dataMatrix.setRowNames(moduleMap.getItemNames());
 		
 		// Load data
 		
