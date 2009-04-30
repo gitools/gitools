@@ -87,6 +87,9 @@ public class ModuleMapResource extends Resource {
 		
 		readModuleMappings(parser, itemNameToRowMapping, moduleItemsMap);
 		
+		// itemHasMapping[idx] = true means that itemNames[idx] has references from at least one module
+		final boolean[] itemHasMappings = new boolean[itemNames.length];
+		
 		parser = null;
 		
 		// copy module names and module item indices to arrays
@@ -101,8 +104,10 @@ public class ModuleMapResource extends Resource {
 			tmpModuleNames[index] = entry.getKey();
 			int[] ia = tmpModuleItemIndices[index] = new int[indices.size()];
 			int i = 0;
-			for (Integer idx : indices )
+			for (Integer idx : indices ) {
 				ia[i++] = idx;
+				itemHasMappings[idx] = true;
+			}
 			index++;
 		}
 		
@@ -172,12 +177,11 @@ public class ModuleMapResource extends Resource {
 			}
 		}
 
-		if (includeNonMappedItems) {
-			// Put not used items at the end
-			for (int i = 0; i < itemsOrder.length; i++)
-				if (itemsOrder[i] < 0)
-					itemsOrder[i] = numItems++;
-		}
+		// Put the rest of the items at the end
+		for (int i = 0; i < itemsOrder.length; i++)
+			if (itemsOrder[i] < 0 
+					&& (includeNonMappedItems || itemHasMappings[i]))
+				itemsOrder[i] = numItems++;
 		
 		// Create ordered list of item names
 		
