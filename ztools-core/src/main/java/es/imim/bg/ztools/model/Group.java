@@ -2,32 +2,22 @@ package es.imim.bg.ztools.model;
 
 import java.io.Serializable;
 
-public class Group implements Serializable {
+public class Group extends Artifact implements Serializable{
 
-    private String name;
+    protected final static String artifactType = "group";
+   
     private String source;
     private String organism;
     private String version;
     private String descr;
 
-    public Group() {
+    
+    public Group(String id, String name) {
+	super(id,artifactType);
     }
 
-    public Group(String name) {
-	this.name = name;
-    }
-
-    public Group(String name, String descr) {
-	this.name = name;
-	this.descr = descr;
-    }
-
-    protected String getName() {
-	return name;
-    }
-
-    protected void setName(String name) {
-	this.name = name;
+    public Group(String id, String name, String descr) {
+	super(name,artifactType,name, descr);
     }
 
     protected String getSource() {

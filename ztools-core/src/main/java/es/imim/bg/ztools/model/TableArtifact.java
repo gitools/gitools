@@ -9,7 +9,8 @@ public class TableArtifact extends Artifact {
 
     /** The group row ids belongs to. */
     protected Group group;
-
+    protected Analysis analysis;
+    
     public TableArtifact(String id, String artifactType) {
 	this(id, artifactType, null, null, null, null);
     }
@@ -20,15 +21,15 @@ public class TableArtifact extends Artifact {
 	this.group = group;
     }
 
-    protected ITableContents getTableContents() {
+    public ITableContents getTableContents() {
 	return tableContents;
     }
 
-    protected void setTableContents(ITableContents tableContents) {
+    public void setTableContents(ITableContents tableContents) {
 	this.tableContents = tableContents;
     }
 
-    protected Group getGroup() {
+    public Group getGroup() {
         return group;
     }
 
@@ -36,4 +37,11 @@ public class TableArtifact extends Artifact {
         this.group = group;
     }
     
+    public Analysis getAnalysis(){
+	return this.analysis;
+    }
+    
+    public void setAnalysis( Analysis analysis){
+	this.analysis = analysis;
+    }
 }
