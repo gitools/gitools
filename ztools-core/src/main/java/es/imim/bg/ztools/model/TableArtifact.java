@@ -7,18 +7,24 @@ public class TableArtifact extends Artifact {
     /** The table associated to this artifact. */
     protected ITableContents tableContents;
 
-    /** The group row ids belongs to. */
-    protected Group group;
-    protected Analysis analysis;
-    
+    /** The group rows and columns ids belongs to. */
+    protected Group rowsGroup;
+    protected Group columnsGroup;
+     
     public TableArtifact(String id, String artifactType) {
 	this(id, artifactType, null, null, null, null);
     }
 
+    public TableArtifact(String id, String artifactType, String title, String description, Group group) {
+	super(id, artifactType, title, description);
+	tableContents = null;
+	this.rowsGroup = group;
+    }
+    
     public TableArtifact(String id, String artifactType, String title, String description, ITableContents table, Group group) {
 	super(id, artifactType, title, description);
 	tableContents = table;
-	this.group = group;
+	this.rowsGroup = group;
     }
 
     public ITableContents getTableContents() {
@@ -29,19 +35,20 @@ public class TableArtifact extends Artifact {
 	this.tableContents = tableContents;
     }
 
-    public Group getGroup() {
-        return group;
+    public Group getRowsGroup() {
+        return rowsGroup;
     }
 
-    protected void setGroup(Group group) {
-        this.group = group;
+    public void setRowsGroup(Group rowsGroup) {
+        this.rowsGroup = rowsGroup;
     }
-    
-    public Analysis getAnalysis(){
-	return this.analysis;
+
+    public Group getColumnsGroup() {
+        return columnsGroup;
     }
-    
-    public void setAnalysis( Analysis analysis){
-	this.analysis = analysis;
+
+    public void setColumnsGroup(Group columnsGroup) {
+        this.columnsGroup = columnsGroup;
     }
+
 }

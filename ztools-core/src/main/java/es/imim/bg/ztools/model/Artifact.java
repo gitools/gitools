@@ -16,6 +16,9 @@ public class Artifact implements Serializable, IArtifact{
     /** long description **/
     private String description;
     
+    public Artifact(){
+
+    }
     
     public Artifact(String id, String artifactType) {
 	this(id, artifactType, null, null);

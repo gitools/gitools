@@ -9,6 +9,10 @@ public class ComposedArtifact extends Artifact {
       
     private List <IArtifact>  artifactList;
     
+    public ComposedArtifact(){
+	super();		
+    }
+    
     public List<IArtifact> getArtifactList() {
         return artifactList;
     }
