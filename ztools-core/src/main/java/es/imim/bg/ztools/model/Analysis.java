@@ -30,9 +30,20 @@ public class Analysis extends ComposedArtifact{
 	
 	protected ToolConfig toolConfig;
 	
+	public Analysis(){
+		
+	}
 	
 	public Analysis(String id, String artifactType) {
 		super(id, artifactType);
+	}
+	
+	public Analysis(String id, String artifactType, String title) {
+		super(id, artifactType, title);
+	}
+	
+	public Analysis(String id, String artifactType, String title, String description) {
+		super(id, artifactType, title, description);
 	}
 	
 	public String getName() {

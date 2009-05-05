@@ -2,65 +2,75 @@ package es.imim.bg.ztools.model;
 
 import java.io.Serializable;
 
-public class Artifact implements Serializable, IArtifact{
+public class Artifact implements Serializable, IArtifact {
 
-    /** id unique **/
-    private String artifactId;
-    
-    /** type of the artifact **/
-    private String artifactType;
-    
-    /** short description **/
-    private String title;
+	/** id unique **/
+	private String artifactId;
 
-    /** long description **/
-    private String description;
-    
-    public Artifact(){
+	/** type of the artifact **/
+	private String artifactType;
 
-    }
-    
-    public Artifact(String id, String artifactType) {
-	this(id, artifactType, null, null);
-    }
+	/** short description **/
+	private String title;
 
-    public Artifact(String id, String artifactType, String title, String description) {
-	this.artifactId = id;
-	this.artifactType = artifactType;
-	this.setTitle(title);
-	this.setDescription(description);
-    }
+	/** long description **/
+	private String description;
 
-    public String getArtifactId() {
-	return artifactId;
-    }
+	/* constructors */
 
-    public void setArtifactId(String artifactId) {
-	this.artifactId = artifactId;
-    }
+	public Artifact() {
 
-    public String getArtifactType() {
-	return artifactType;
-    }
+	}
 
-    public void setArtifactType(String artifactType) {
-	this.artifactType = artifactType;
-    }
+	public Artifact(String id, String artifactType) {
+		this(id, artifactType, null, null);
+	}
 
-    public void setDescription(String description) {
-	this.description = description;
-    }
+	public Artifact(String id, String artifactType, String title) {
+		this(id, artifactType, title, null);
+	}
 
-    public String getDescription() {
-	return description;
-    }
+	public Artifact(String artifactId, String artifactType, String title,
+			String description) {
+		super();
+		this.artifactId = artifactId;
+		this.artifactType = artifactType;
+		this.title = title;
+		this.description = description;
+	}
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
+	/* getters and setters */
 
-    public String getTitle() {
-	return title;
-    }
+	public String getArtifactId() {
+		return artifactId;
+	}
+
+	public void setArtifactId(String artifactId) {
+		this.artifactId = artifactId;
+	}
+
+	public String getArtifactType() {
+		return artifactType;
+	}
+
+	public void setArtifactType(String artifactType) {
+		this.artifactType = artifactType;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
+	}
 
 }

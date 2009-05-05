@@ -2,57 +2,51 @@ package es.imim.bg.ztools.model;
 
 import java.io.Serializable;
 
-public class Group extends Artifact implements Serializable{
+public class Group extends Artifact implements Serializable {
 
-    protected final static String artifactType = "group";
-   
-    private String source;
-    private String organism;
-    private String version;
-    private String descr;
+	private String source;
+	private String organism;
+	private String version;
 
-    public Group(){
-	super();
-    }
-    
-    public Group(String id, String name) {
-	super(id,artifactType);
-    }
+	public Group() {
+		super();
+	}
 
-    public Group(String id, String name, String descr) {
-	super(name,artifactType,name, descr);
-    }
+	public Group(String id, String artifactType) {
+		super(id, artifactType);
+	}
 
-    protected String getSource() {
-	return source;
-    }
+	public Group(String id, String artifactType, String title) {
+		super(id, artifactType, title);
+	}
 
-    protected void setSource(String source) {
-	this.source = source;
-    }
+	public Group(String id, String artifactType, String title,
+			String description) {
+		super(id, artifactType, title, description);
+	}
 
-    protected String getOrganism() {
-	return organism;
-    }
+	public String getSource() {
+		return source;
+	}
 
-    protected void setOrganism(String organism) {
-	this.organism = organism;
-    }
+	public void setSource(String source) {
+		this.source = source;
+	}
 
-    protected String getVersion() {
-	return version;
-    }
+	public String getOrganism() {
+		return organism;
+	}
 
-    protected void setVersion(String version) {
-	this.version = version;
-    }
+	public void setOrganism(String organism) {
+		this.organism = organism;
+	}
 
-    protected String getDescr() {
-	return descr;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    protected void setDescr(String descr) {
-	this.descr = descr;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 }

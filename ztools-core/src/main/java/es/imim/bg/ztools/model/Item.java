@@ -1,44 +1,95 @@
 package es.imim.bg.ztools.model;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class Item {
 
-    /** The group this item belogs to. */
+	/** The id of the item **/
+	private long Id;
 
-    protected Group group;
+	/** The name of the item. */
+	private String name;
 
-    /** The name of the item. */
+	/** The description of the item. **/
+	private String descr;
 
-    protected String name;
+	/** The group this item belongs to. */
+	private Group group;
 
-    /** The description of the item. **/
+	/** Extra attributes **/
+	private HashSet<NameValueElement> annotations = new HashSet<NameValueElement>(
+			0);
 
-    protected String descr;
+	/** An item can contain more items */
+	private HashMap<Long, Item> items = new HashMap<Long, Item>();
 
-    public Item() {
-    }
+	public Item() {
 
-    public Item(String name) {
-	this.name = name;
-    }
+	}
 
-    public Item(String name, String descr) {
-	this.name = name;
-	this.descr = descr;
-    }
+	public Item(long id, String name) {
+		this(id, name, null, null);
+	}
 
-    public Item(Group group) {
-	this.group = group;
-    }
+	public Item(long id, String name, String descr) {
+		this(id, name, descr, null);
+	}
 
-    public Item(Group group, String name) {
-	this.group = group;
-	this.name = name;
-    }
+	public Item(long id, String name, String descr, Group group) {
+		this.Id = id; 
+		this.name = name;
+		this.descr = descr;
+		this.group = group;
 
-    public Item(Group group, String name, String sym, String descr) {
-	this.group = group;
-	this.name = name;
-	this.descr = descr;
-    }
+	}
+
+	public void setId(long id) {
+		Id = id;
+	}
+
+	public long getId() {
+		return Id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescr() {
+		return descr;
+	}
+
+	public void setDescr(String descr) {
+		this.descr = descr;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public HashSet<NameValueElement> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(HashSet<NameValueElement> annotations) {
+		this.annotations = annotations;
+	}
+
+	public void setItems(HashMap<Long, Item> items) {
+		this.items = items;
+	}
+
+	public HashMap<Long, Item> getItems() {
+		return items;
+	}
 
 }

@@ -1,20 +1,24 @@
 package es.imim.bg.ztools.model;
 
 public interface IArtifact {
-    // artifactId
-    public String getArtifactId();
-    public void setArtifactId(String artifactId);
+	// artifactId
+	public String getArtifactId();
 
-    // artifactType
-    public void setArtifactType(String arctType);
-    public String getArtifactType();
+	public void setArtifactId(String artifactId);
 
-    // title
-    public void setTitle(String title);
-    public String getTitle();
-    
-    // description
-    public void setDescription(String title);
-    public String getDescription();
+	// artifactType
+	public void setArtifactType(String arctType);
+
+	public String getArtifactType();
+
+	// title
+	public void setTitle(String title);
+
+	public String getTitle();
+
+	// description
+	public void setDescription(String title);
+
+	public String getDescription();
 
 }
