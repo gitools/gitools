@@ -21,9 +21,6 @@ public class Item {
 	private HashSet<NameValueElement> annotations = new HashSet<NameValueElement>(
 			0);
 
-	/** An item can contain more items */
-	private HashMap<Long, Item> items = new HashMap<Long, Item>();
-
 	public Item() {
 
 	}
@@ -37,7 +34,7 @@ public class Item {
 	}
 
 	public Item(long id, String name, String descr, Group group) {
-		this.Id = id; 
+		this.Id = id;
 		this.name = name;
 		this.descr = descr;
 		this.group = group;
@@ -82,14 +79,6 @@ public class Item {
 
 	public void setAnnotations(HashSet<NameValueElement> annotations) {
 		this.annotations = annotations;
-	}
-
-	public void setItems(HashMap<Long, Item> items) {
-		this.items = items;
-	}
-
-	public HashMap<Long, Item> getItems() {
-		return items;
 	}
 
 }

@@ -1,12 +1,16 @@
 package es.imim.bg.ztools.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Group extends Artifact implements Serializable {
 
 	private String source;
 	private String organism;
 	private String version;
+
+	/** Group items */
+	private HashMap<Long, Item> items = new HashMap<Long, Item>();
 
 	public Group() {
 		super();
@@ -49,4 +53,11 @@ public class Group extends Artifact implements Serializable {
 		this.version = version;
 	}
 
+	public HashMap<Long, Item> getItems() {
+		return items;
+	}
+
+	public void setItems(HashMap<Long, Item> items) {
+		this.items = items;
+	}
 }
