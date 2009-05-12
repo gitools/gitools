@@ -25,5 +25,4 @@ public class AbstractWizard extends Wizard {
 	public WizardDataModel getWizardDataModel() {
 		return dataModel;
 	}
-
 }

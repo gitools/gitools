@@ -26,6 +26,8 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 	final JTextField fileNameField;
 	final JComboBox binCutoffConditionBox;
 	final JTextField binCutoffField;
+    final JCheckBox includeNonMappedItemsBox;
+
 
 	public ZCalcAnalysisDataDescriptor(
 			AbstractWizard aw, Object BackPanelDescriptor, Object NextPanelDescriptor) {
@@ -40,6 +42,7 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 		fileNameField = dataPanel.getFileNameField();
 		binCutoffConditionBox = dataPanel.getBinCutoffConditionBox();
 		binCutoffField = dataPanel.getBinCutoffValueField();
+		includeNonMappedItemsBox = dataPanel.getIncludeNonMappedItemsBox();
 
 		chooserButton.addActionListener(new ActionListener() {
 			@Override
@@ -92,6 +95,8 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 
 	public void aboutToHidePanel() {
 		dataModel.setValue(AnalysisWizard.DATA_FILE, fileNameField.getText());
+		dataModel.setValue(AnalysisWizard.INCLUDE_NON_MAPPED_ITMEMS, 
+								includeNonMappedItemsBox.isSelected());
 		String conditionItemString = binCutoffConditionBox.getSelectedItem().toString();
 		if (conditionItemString.equals(dataPanel.BIN_CUTOFF_DISABLED))
 			dataModel.setValue(

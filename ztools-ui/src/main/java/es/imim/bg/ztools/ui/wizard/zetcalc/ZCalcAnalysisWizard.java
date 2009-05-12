@@ -108,6 +108,9 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 				maxModuleSize = Integer.parseInt((String) dataModel.getValue(MAX));
 			}
 			
+			boolean includeNonMappedItems = Boolean.parseBoolean(
+					dataModel.getValue(INCLUDE_NON_MAPPED_ITMEMS).toString());
+			
 		    command = new ZCalcCommand(
 		    							(String) dataModel.getValue(ANALYSIS_NAME),
 		    							(String) dataModel.getValue(STAT_TEST),
@@ -117,7 +120,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 		    							(String) dataModel.getValue(MODULE_FILE),
 		    							minModuleSize,
 		    							maxModuleSize,
-		    							true, //FIXME include this option in wizard: includeNonMappedItems in background
+		    							includeNonMappedItems, 
 		    							(String) dataModel.getValue(ANALYSIS_WORKING_DIR),
 		    							outputFormat,
 		    							true);
