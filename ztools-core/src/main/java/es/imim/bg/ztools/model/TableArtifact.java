@@ -20,6 +20,9 @@ public class TableArtifact extends Artifact {
 	/** The item list of the table */
 	protected HashMap<Long, Item> items;
 
+	/** Analysis to which the table belongs to **/
+	protected AnalysisArt analysis;
+
 	/**
 	 * Properties of each cell of the table. As we describe cells as POJO
 	 * elements, we need some information about the contents of the POJO
@@ -90,4 +93,13 @@ public class TableArtifact extends Artifact {
 	public void setCellProperties(List<IElementProperty> cellProperties) {
 		this.cellProperties = cellProperties;
 	}
+
+	public AnalysisArt getAnalysis() {
+		return analysis;
+	}
+
+	public void setAnalysis(AnalysisArt analysis) {
+		this.analysis = analysis;
+	}
+
 }
