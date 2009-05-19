@@ -1,16 +1,56 @@
 package es.imim.bg.ztools.model;
 
+import es.imim.bg.ztools.table.element.Property;
+
 public class TableFigure extends Figure {
-	// TODO: pendent.
+
 	protected TableArtifact artifactTable;
-	//protected Property proptoShow;
-	// Items to show?
-	// should i use items???
-	
+
+	/** Property to show **/
+	protected Property propToShow;
+
+	/** Rows to show **/
+	protected int[] rowsToShow;
+
+	/** Columns to show **/
+	protected int[] columnsToShow;
+
 	public TableFigure(String id, String artifactType, String figureText,
 			TableArtifact artifactTable) {
 		super(id, artifactType);
 		this.artifactTable = artifactTable;
+	}
+
+	public TableArtifact getArtifactTable() {
+		return artifactTable;
+	}
+
+	public void setArtifactTable(TableArtifact artifactTable) {
+		this.artifactTable = artifactTable;
+	}
+
+	public Property getPropToShow() {
+		return propToShow;
+	}
+
+	public void setPropToShow(Property propToShow) {
+		this.propToShow = propToShow;
+	}
+
+	public int[] getRowsToShow() {
+		return rowsToShow;
+	}
+
+	public void setRowsToShow(int[] rowsToShow) {
+		this.rowsToShow = rowsToShow;
+	}
+
+	public int[] getColumnsToShow() {
+		return columnsToShow;
+	}
+
+	public void setColumnsToShow(int[] columnsToShow) {
+		this.columnsToShow = columnsToShow;
 	}
 
 }

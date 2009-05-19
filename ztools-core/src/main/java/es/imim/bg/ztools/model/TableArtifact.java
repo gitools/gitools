@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import es.imim.bg.ztools.table.ITableContents;
+import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.table.element.IElementProperty;
 
 public class TableArtifact extends Artifact {
@@ -20,6 +21,10 @@ public class TableArtifact extends Artifact {
 	/** The item list of the table */
 	protected HashMap<Long, Item> items;
 
+	//FIXME: ask Christian about it, maybe it should go to the figure.
+	/** Decoration for every cell **/
+	protected ElementDecorator decoration;
+	
 	/** Analysis to which the table belongs to **/
 	protected AnalysisArt analysis;
 
@@ -36,7 +41,6 @@ public class TableArtifact extends Artifact {
 
 	public TableArtifact(String id, String artifactType, String title) {
 		super(id, artifactType, title);
-
 	}
 
 	public TableArtifact(String id, String artifactType, String title,
