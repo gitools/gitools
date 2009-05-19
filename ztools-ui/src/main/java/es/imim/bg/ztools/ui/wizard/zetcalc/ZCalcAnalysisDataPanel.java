@@ -96,18 +96,19 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 				.setText("Please choose the file with the data to analyise. In case "
 						+ "it contains continous data, indicate by what criteria you "
 						+ "want to convert it into binary data. Lastly you should "
-						+ "choose if you want the include the items that are not mapped "
-						+ "in the your module map file, which you will chose in the next "
-						+ "step. ");
+						+ "choose if you want to omit the items that are not mapped "
+						+ "in the your module map file (to be choses in the next step).");
 		jTextArea1.setOpaque(false);
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setWrapStyleWord(true);
 		jTextArea1.setEditable(false);
+		jTextArea1.setAlignmentX(Component.LEFT_ALIGNMENT);
 		jPanel2.add(jTextArea1);
 		blankSpace.setText(" ");
 		jPanel2.add(blankSpace);
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
+		jPanel3.setAlignmentX(Component.LEFT_ALIGNMENT);
 		jLabel1.setText("Data Table File: ");
 		jTextField1.setToolTipText("Choose the data file");
 		jTextField1.grabFocus();
@@ -117,6 +118,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jPanel2.add(jPanel3);
 
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
+		jPanel4.setAlignmentX(Component.LEFT_ALIGNMENT);
 		Condition[] conditions = Condition.values();
 		jComboBox1.addItem(BIN_CUTOFF_DISABLED);
 		for (int i = 0; i < conditions.length; i++)
@@ -129,11 +131,11 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jPanel2.add(jPanel4);
 
 		jPanel5.setLayout(new BoxLayout(jPanel5, BoxLayout.LINE_AXIS));
-		jPanel5.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		jLabel3.setText("Include unmapped items : ");
-		jCheckBox1.setToolTipText("If checked, allow unmapped items");
-		jPanel5.add(jLabel3);
+		jPanel5.setAlignmentX(Component.LEFT_ALIGNMENT);
+		jCheckBox1.setToolTipText("If checked, unmapped items are omitted");
 		jPanel5.add(jCheckBox1);
+		jLabel3.setText(" Omit unmapped items ");
+		jPanel5.add(jLabel3);
 		jPanel2.add(jPanel5);
 
 
@@ -161,7 +163,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		return jTextField2;
 	}
 	
-	public JCheckBox getIncludeNonMappedItemsBox() {
+	public JCheckBox getOmitNonMappedItemsBox() {
 		return jCheckBox1;
 	}
 }
