@@ -9,10 +9,10 @@ public class TableFigure extends Figure {
 	/** Property to show **/
 	protected Property propToShow;
 
-	/** Rows to show **/
+	/** Positions of the rows to show **/
 	protected int[] rowsToShow;
 
-	/** Columns to show **/
+	/** Positions of the columns to show **/
 	protected int[] columnsToShow;
 
 	public TableFigure(String id, String artifactType, String figureText,

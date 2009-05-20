@@ -22,6 +22,9 @@ public class TableArtifact extends Artifact {
 	protected HashMap<Long, Item> items;
 
 	//FIXME: ask Christian about it, maybe it should go to the figure.
+	//FIXME: a lo mejor con conservar un decorador especifico para la data 
+	// matrix ya es suficiente, este nos puede proporcionar el tipo de dato.
+	
 	/** Decoration for every cell **/
 	protected ElementDecorator decoration;
 	
