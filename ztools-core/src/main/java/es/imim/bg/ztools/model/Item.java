@@ -1,12 +1,9 @@
 package es.imim.bg.ztools.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
-
-	/** The id of the item **/
-	private long Id;
 
 	/** The name of the item. */
 	private String name;
@@ -18,35 +15,9 @@ public class Item {
 	private Group group;
 
 	/** Extra attributes **/
-	private HashSet<NameValueElement> annotations = new HashSet<NameValueElement>(
-			0);
+	private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	public Item() {
-
-	}
-
-	public Item(long id, String name) {
-		this(id, name, null, null);
-	}
-
-	public Item(long id, String name, String descr) {
-		this(id, name, descr, null);
-	}
-
-	public Item(long id, String name, String descr, Group group) {
-		this.Id = id;
-		this.name = name;
-		this.descr = descr;
-		this.group = group;
-
-	}
-
-	public void setId(long id) {
-		Id = id;
-	}
-
-	public long getId() {
-		return Id;
 	}
 
 	public String getName() {
@@ -73,12 +44,12 @@ public class Item {
 		this.group = group;
 	}
 
-	public HashSet<NameValueElement> getAnnotations() {
-		return annotations;
+	public List<Attribute> getAnnotations() {
+		return attributes;
 	}
 
-	public void setAnnotations(HashSet<NameValueElement> annotations) {
-		this.annotations = annotations;
+	public void setAnnotations(List<Attribute> annotations) {
+		this.attributes = annotations;
 	}
 
 }

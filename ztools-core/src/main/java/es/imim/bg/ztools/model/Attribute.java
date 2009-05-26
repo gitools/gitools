@@ -1,20 +1,19 @@
 package es.imim.bg.ztools.model;
 
-public class NameValueElement {
-	
-	/** Annotation for items, adds a dynamic attribute to the desired item  **/
-	
+public class Attribute {
+
+	/** Annotation for items, adds a dynamic attribute to the desired item **/
+
 	/** Name **/
 	private String name;
+
 	/** Value **/
 	private String value;
 
-	public NameValueElement(){
-		
+	public Attribute() {
 	}
-	
-	public NameValueElement(String name, String value) {
-		super();
+
+	public Attribute(String name, String value) {
 		this.name = name;
 		this.value = value;
 	}
