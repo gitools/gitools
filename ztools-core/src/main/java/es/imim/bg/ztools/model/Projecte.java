@@ -9,30 +9,34 @@ import es.imim.bg.ztools.model.Publication;
 
 public class Projecte {
 
-	/** Title of the project*/
-	protected String title;
+	/** Internal id of the project */
+	private String id;
 
-	protected String laboratory;
-	protected URL url;
+	/** Title of the project */
+	private String title;
 
-	protected List<Publication> publications = new ArrayList<Publication>();
-	protected List<IArtifact> artifacts = new ArrayList<IArtifact>();
+	/** Lab that publishes the project **/
+	private String laboratory;
+
+	/** URL of the laboratory **/
+	private URL url;
+
+	/** List of publications associated with the project, if any **/
+	private List<Publication> publications = new ArrayList<Publication>();
+
+	/** Main artifacts, they would be showed in the breadcrumb **/
+	private List<IArtifact> artifacts = new ArrayList<IArtifact>();
 
 	public Projecte() {
 
 	}
 
-	public Projecte(String title) {
-		this.title = title;
+	public String getId() {
+		return id;
 	}
 
-	public Projecte(String title, String laboratory, URL url,
-			List<Publication> publications, List<IArtifact> artifacts) {
-		this.title = title;
-		this.laboratory = laboratory;
-		this.url = url;
-		this.publications = publications;
-		this.artifacts = artifacts;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTitle() {

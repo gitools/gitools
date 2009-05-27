@@ -4,91 +4,78 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
 
-
-@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig", "dataTableRef",
-	"moduleMapRef", "results" })
+@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
+		"dataTableRef", "moduleMapRef", "results" })
 public class AnalysisArt extends ComposedArtifact {
 
-    protected String name;
-    protected Date startTime;
-    protected long elapsedTime;
+	protected String name;
+	protected Date startTime;
+	protected long elapsedTime;
 
-    protected TableArtifact dataTable;
-    protected ModuleMap moduleMap;
-    protected TableArtifact resultsMatrix;
+	protected TableArtifact dataTable;
+	protected ModuleMap moduleMap;
+	protected TableArtifact resultsMatrix;
 
-    protected ToolConfig toolConfig;
+	protected ToolConfig toolConfig;
 
-    public AnalysisArt() {
+	public AnalysisArt() {
 
-    }
+	}
 
-    public AnalysisArt(String id, String artifactType) {
-	super(id, artifactType);
-    }
+	public String getName() {
+		return name;
+	}
 
-    public AnalysisArt(String id, String artifactType, String title) {
-	super(id, artifactType, title);
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public AnalysisArt(String id, String artifactType, String title, String description) {
-	super(id, artifactType, title, description);
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public String getName() {
-	return name;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public long getElapsedTime() {
+		return elapsedTime;
+	}
 
-    public Date getStartTime() {
-	return startTime;
-    }
+	public void setElapsedTime(long elapsedTime) {
+		this.elapsedTime = elapsedTime;
+	}
 
-    public void setStartTime(Date startTime) {
-	this.startTime = startTime;
-    }
+	public ToolConfig getToolConfig() {
+		return toolConfig;
+	}
 
-    public long getElapsedTime() {
-	return elapsedTime;
-    }
+	public void setToolConfig(ToolConfig toolConfig) {
+		this.toolConfig = toolConfig;
+	}
 
-    public void setElapsedTime(long elapsedTime) {
-	this.elapsedTime = elapsedTime;
-    }
+	public TableArtifact getDataTable() {
+		return dataTable;
+	}
 
-    public ToolConfig getToolConfig() {
-	return toolConfig;
-    }
+	public void setDataTable(TableArtifact dataTable) {
+		this.dataTable = dataTable;
+	}
 
-    public void setToolConfig(ToolConfig toolConfig) {
-	this.toolConfig = toolConfig;
-    }
+	public TableArtifact getResultsMatrix() {
+		return resultsMatrix;
+	}
 
-    public TableArtifact getDataTable() {
-	return dataTable;
-    }
+	public void setResultsMatrix(TableArtifact resultsMatrix) {
+		this.resultsMatrix = resultsMatrix;
+	}
 
-    public void setDataTable(TableArtifact dataTable) {
-	this.dataTable = dataTable;
-    }
+	public ModuleMap getModuleMap() {
+		return moduleMap;
+	}
 
-    public TableArtifact getResultsMatrix() {
-	return resultsMatrix;
-    }
+	public void setModuleMap(ModuleMap moduleMap) {
+		this.moduleMap = moduleMap;
 
-    public void setResultsMatrix(TableArtifact resultsMatrix) {
-	this.resultsMatrix = resultsMatrix;
-    }
-
-    public ModuleMap getModuleMap() {
-	return moduleMap;
-    }
-
-    public void setModuleMap(ModuleMap moduleMap) {
-	this.moduleMap = moduleMap;
-
-    }
+	}
 }
