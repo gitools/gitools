@@ -206,6 +206,8 @@ public class TablePanel extends JPanel {
 		
 		table = new JTable();
 		
+		table.setGridColor(Color.WHITE);
+		
 		table.setFillsViewportHeight(true);
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

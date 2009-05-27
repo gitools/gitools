@@ -15,6 +15,7 @@ public abstract class AnalysisWizard extends AbstractWizard{
 	public static final String BIN_CUTOFF_CONDITION = "bin_cutoff_condition";
 	public static final String BIN_CUTOFF_VALUE = "bin_cutoff_value";
 	public static final String MODULE_FILE = "module_file";
+	public static final String OMIT_NON_MAPPED_ITMEMS = "omit_non_mapped_items";
 	public static final String MIN = "min";
 	public static final String MAX = "max";
 	public static final String SAMPLE_SIZE = "sample_size";

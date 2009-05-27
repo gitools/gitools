@@ -21,6 +21,8 @@ import org.apache.commons.csv.CSVStrategy;
 
 public abstract class Resource implements Serializable {
 
+	private static final long serialVersionUID = 1165427781549776789L;
+
 	public static final CSVStrategy defaultCsvStrategy = 
 		new CSVStrategy('\t', '"', '#', true, true, true);
 	

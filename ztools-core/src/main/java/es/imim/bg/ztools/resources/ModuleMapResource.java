@@ -24,6 +24,8 @@ import es.imim.bg.ztools.model.ModuleMap;
 
 public class ModuleMapResource extends Resource {
 
+	private static final long serialVersionUID = -6679172401494740813L;
+
 	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 	
 	public static final int defaultMinModuleSize = 20;
@@ -48,11 +50,12 @@ public class ModuleMapResource extends Resource {
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
+			boolean discardNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		//FIXME: id 
 	    	ModuleMap moduleMap = new ModuleMap(null,null);
-		load(moduleMap, minModuleSize, maxModuleSize, itemNames, monitor);
+		load(moduleMap, minModuleSize, maxModuleSize, itemNames, discardNonMappedItems, monitor);
 		
 		return moduleMap;
 	}
@@ -62,6 +65,7 @@ public class ModuleMapResource extends Resource {
 			int minModuleSize, 
 			int maxModuleSize,
 			String[] itemNames,
+			boolean includeNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 
 		monitor.begin("Reading modules ...", 1);
@@ -84,6 +88,9 @@ public class ModuleMapResource extends Resource {
 		
 		readModuleMappings(parser, itemNameToRowMapping, moduleItemsMap);
 		
+		// itemHasMapping[idx] = true means that itemNames[idx] has references from at least one module
+		final boolean[] itemHasMappings = new boolean[itemNames.length];
+		
 		parser = null;
 		
 		// copy module names and module item indices to arrays
@@ -98,8 +105,10 @@ public class ModuleMapResource extends Resource {
 			tmpModuleNames[index] = entry.getKey();
 			int[] ia = tmpModuleItemIndices[index] = new int[indices.size()];
 			int i = 0;
-			for (Integer idx : indices )
+			for (Integer idx : indices ) {
 				ia[i++] = idx;
+				itemHasMappings[idx] = true;
+			}
 			index++;
 		}
 		
@@ -168,12 +177,19 @@ public class ModuleMapResource extends Resource {
 				indices[j] = itemsOrder[idx];
 			}
 		}
-		
-		// Put not used items at the end
-		
+
+		// Put the rest of the items at the end
 		for (int i = 0; i < itemsOrder.length; i++)
-			if (itemsOrder[i] < 0)
+			if (itemsOrder[i] < 0 
+					&& (includeNonMappedItems || itemHasMappings[i]))
 				itemsOrder[i] = numItems++;
+		
+		// Create ordered list of item names
+		
+		final String[] orderedItemNames = new String[numItems];
+		for (int i = 0; i < itemsOrder.length; i++)
+			if (itemsOrder[i] >= 0)
+				orderedItemNames[itemsOrder[i]] = itemNames[i];
 		
 		monitor.info(numModules + " modules loaded");
 		monitor.info((fileNumModules - numModules) + " modules discarded");
@@ -181,7 +197,8 @@ public class ModuleMapResource extends Resource {
 		monitor.end();
 		
 		moduleMap.setModuleNames(moduleNames);
-		moduleMap.setItemNames(itemNames);
+		moduleMap.setItemNames(orderedItemNames);
+		//moduleMap.setNumMappedItems(numItems);
 		moduleMap.setItemIndices(moduleItemIndices);
 		moduleMap.setItemsOrder(itemsOrder);
 	}

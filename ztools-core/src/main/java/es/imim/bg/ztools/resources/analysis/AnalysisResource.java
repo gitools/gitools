@@ -9,6 +9,8 @@ import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.resources.Resource;
 
 public abstract class AnalysisResource extends Resource {
+
+	private static final long serialVersionUID = -5243387650958406472L;
 	
 	protected String basePath;
 	

@@ -1,11 +1,13 @@
 package es.imim.bg.ztools.ui.wizard.zetcalc;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,13 +27,18 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 	private JLabel blankSpace;
 	private JLabel jLabel1;
 	private JLabel jLabel2;
+	private JLabel jLabel3;
+
 
 	private JTextArea jTextArea1;
 
 	private JComboBox jComboBox1;
+	
+	private JCheckBox jCheckBox1;
 
 	private JTextField jTextField1;
 	private JTextField jTextField2;
+
 
 	private JButton jButton1;
 
@@ -55,15 +62,20 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		JPanel jPanel2 = new JPanel();
 		JPanel jPanel3 = new JPanel();
 		JPanel jPanel4 = new JPanel();
+		JPanel jPanel5 = new JPanel();
 
+		
 		panelTitle = new JLabel();
 		blankSpace = new JLabel();
 		jLabel1 = new JLabel();
 		jLabel2 = new JLabel();
+		jLabel3 = new JLabel();
 
 		jTextArea1 = new JTextArea();
 
 		jComboBox1 = new JComboBox();
+		
+		jCheckBox1 = new JCheckBox();
 
 		jTextField1 = new JTextField();
 		jTextField2 = new JTextField();
@@ -83,16 +95,20 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jTextArea1
 				.setText("Please choose the file with the data to analyise. In case "
 						+ "it contains continous data, indicate by what criteria you "
-						+ "want to convert it into binary data.");
+						+ "want to convert it into binary data. Lastly you should "
+						+ "choose if you want to omit the items that are not mapped "
+						+ "in the your module map file (to be choses in the next step).");
 		jTextArea1.setOpaque(false);
 		jTextArea1.setLineWrap(true);
 		jTextArea1.setWrapStyleWord(true);
 		jTextArea1.setEditable(false);
+		jTextArea1.setAlignmentX(Component.LEFT_ALIGNMENT);
 		jPanel2.add(jTextArea1);
 		blankSpace.setText(" ");
 		jPanel2.add(blankSpace);
 
 		jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.LINE_AXIS));
+		jPanel3.setAlignmentX(Component.LEFT_ALIGNMENT);
 		jLabel1.setText("Data Table File: ");
 		jTextField1.setToolTipText("Choose the data file");
 		jTextField1.grabFocus();
@@ -102,6 +118,7 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jPanel2.add(jPanel3);
 
 		jPanel4.setLayout(new BoxLayout(jPanel4, BoxLayout.LINE_AXIS));
+		jPanel4.setAlignmentX(Component.LEFT_ALIGNMENT);
 		Condition[] conditions = Condition.values();
 		jComboBox1.addItem(BIN_CUTOFF_DISABLED);
 		for (int i = 0; i < conditions.length; i++)
@@ -113,8 +130,18 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 		jPanel4.add(jTextField2);
 		jPanel2.add(jPanel4);
 
+		jPanel5.setLayout(new BoxLayout(jPanel5, BoxLayout.LINE_AXIS));
+		jPanel5.setAlignmentX(Component.LEFT_ALIGNMENT);
+		jCheckBox1.setToolTipText("If checked, unmapped items are omitted");
+		jPanel5.add(jCheckBox1);
+		jLabel3.setText(" Omit unmapped items ");
+		jPanel5.add(jLabel3);
+		jPanel2.add(jPanel5);
+
+
 		jPanel1.add(jPanel2, BorderLayout.NORTH); // prevent expanding in north
 		contentPanel1.add(jPanel1, BorderLayout.CENTER);
+
 
 		return contentPanel1;
 
@@ -134,5 +161,9 @@ public class ZCalcAnalysisDataPanel extends JPanel {
 
 	public JTextField getBinCutoffValueField() {
 		return jTextField2;
+	}
+	
+	public JCheckBox getOmitNonMappedItemsBox() {
+		return jCheckBox1;
 	}
 }

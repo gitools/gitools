@@ -20,11 +20,12 @@ public class OncozCommand extends AnalysisCommand {
 	
 	public OncozCommand(String analysisName, String testName,
 			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
-			String groupsFile, int minModuleSize, int maxModuleSize, String workdir,
-			String outputFormat, boolean resultsByCond) {
+			String groupsFile, int minModuleSize, int maxModuleSize, 
+			String workdir, String outputFormat, boolean resultsByCond) {
 		
 		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
-				groupsFile, minModuleSize, maxModuleSize, workdir, outputFormat, resultsByCond);
+				groupsFile, minModuleSize, maxModuleSize, true,
+				workdir, outputFormat, resultsByCond);
 	}
 
 	@Override
@@ -49,6 +50,7 @@ public class OncozCommand extends AnalysisCommand {
 				dataMatrix, moduleMap, 
 				dataFile, valueFilter, 
 				modulesFile, minModuleSize, maxModuleSize,
+				includeNonMappedItems,
 				monitor.subtask());
 		
 		monitor.end();
@@ -75,7 +77,8 @@ public class OncozCommand extends AnalysisCommand {
 	private void loadDataAndModules(
 			DataMatrix dataMatrix, ModuleMap moduleMap,
 			String dataFileName, ValueFilter valueFilter, 
-			String modulesFileName,	int minModuleSize, int maxModuleSize, 
+			String modulesFileName,	int minModuleSize, int maxModuleSize,
+			boolean includeNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
 		
 		// Load metadata
@@ -95,6 +98,7 @@ public class OncozCommand extends AnalysisCommand {
 				minModuleSize,
 				maxModuleSize,
 				dataMatrix.getColNames(),
+				includeNonMappedItems,
 				monitor);
 		}
 		else {

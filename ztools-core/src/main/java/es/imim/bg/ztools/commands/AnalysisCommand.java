@@ -41,6 +41,8 @@ public abstract class AnalysisCommand implements Command {
 	protected int minModuleSize;
 	protected int maxModuleSize;
 	
+	protected boolean includeNonMappedItems;
+	
 	protected String workdir;
 	
 	protected String outputFormat;
@@ -49,7 +51,8 @@ public abstract class AnalysisCommand implements Command {
 	public AnalysisCommand(
 			String analysisName, String testName, int samplingNumSamples, 
 			String dataFile, ValueFilter valueFilter, 
-			String groupsFile, int minGroupSize, int maxGroupSize,
+			String groupsFile, int minGroupSize, int maxGroupSize, 
+			boolean includeNonMappedItems, 
 			String workdir, String outputFormat, boolean resultsByCond) {
 		
 		this.analysisName = analysisName;
@@ -60,6 +63,7 @@ public abstract class AnalysisCommand implements Command {
 		this.modulesFile = groupsFile;
 		this.minModuleSize = minGroupSize;
 		this.maxModuleSize = maxGroupSize;
+		this.includeNonMappedItems = includeNonMappedItems;
 		this.workdir = workdir;
 		this.outputFormat = outputFormat;
 		this.resultsByCond = resultsByCond;
