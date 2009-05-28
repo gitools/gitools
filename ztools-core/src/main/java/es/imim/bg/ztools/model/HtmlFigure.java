@@ -6,20 +6,8 @@ public class HtmlFigure extends Figure implements Serializable {
 
 	private String htmlCode;
 
-	public HtmlFigure(String id, String artifactType) {
-		super(id, artifactType);
-
-	}
-
-	public HtmlFigure(String id, String artifactType, String title) {
-		super(id, artifactType, title);
-
-	}
-
-	public HtmlFigure(String id, String artifactType, String title,
-			String description) {
-		super(id, artifactType, title, description);
-
+	public HtmlFigure() {
+		super();
 	}
 
 	public String getHtmlCode() {

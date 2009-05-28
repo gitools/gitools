@@ -15,10 +15,8 @@ public class TableFigure extends Figure {
 	/** Positions of the columns to show **/
 	protected int[] columnsToShow;
 
-	public TableFigure(String id, String artifactType, String figureText,
-			TableArtifact artifactTable) {
-		super(id, artifactType);
-		this.artifactTable = artifactTable;
+	public TableFigure() {
+		super();
 	}
 
 	public TableArtifact getArtifactTable() {
