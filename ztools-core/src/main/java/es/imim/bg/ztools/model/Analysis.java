@@ -14,6 +14,10 @@ public class Analysis extends ComposedArtifact {
 	protected Date startTime;
 	protected long elapsedTime;
 
+	
+	/** Ask Christian how to manage **/
+	protected DataMatrix originalData;
+	
 	protected DataMatrix dataTable;
 	protected ModuleMap moduleMap;
 	protected ResultsMatrix resultsMatrix;
