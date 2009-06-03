@@ -1,7 +1,6 @@
 package es.imim.bg.ztools.ui.views.table;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -17,10 +16,8 @@ import javax.swing.JPanel;
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorDescriptor;
 import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
-import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 import es.imim.bg.ztools.ui.panels.decorator.ElementDecoratorPanelFactory;
-import es.imim.bg.ztools.ui.panels.decorator.PValueDecoratorPanel;
 
 public class TableViewConfigPanel extends JPanel {
 
@@ -51,25 +48,13 @@ public class TableViewConfigPanel extends JPanel {
 		
 		showCombo = new JComboBox();
 		showCombo.setModel(new DefaultComboBoxModel(descriptors));
-		showCombo.setSelectedItem(model.getDecoratorDescriptor());
+		showCombo.setSelectedItem(
+				ElementDecoratorFactory.getDescriptor(
+						model.getDecorator().getClass()));
 		showCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					ElementDecoratorDescriptor descriptor = model.getDecoratorDescriptor();
-					ElementDecorator decorator = model.getDecorator();
-					decoratorCache.put(descriptor, decorator);
-					
-					descriptor = (ElementDecoratorDescriptor) e.getItem();
-					model.setDecoratorDescriptor(descriptor);
-					decorator = decoratorCache.get(descriptor);
-					if (decorator != null)
-						model.setDecorator(decorator);
-
-					changeDecoratorPanel(descriptor);
-					
-					refresh();
-				}
+				decoratorChanged(e);
 			}
 		});
 		
@@ -83,18 +68,42 @@ public class TableViewConfigPanel extends JPanel {
 		add(new JPanel(), BorderLayout.CENTER);
 		
 		ElementDecoratorDescriptor descriptor = 
-			model.getDecoratorDescriptor();
+			ElementDecoratorFactory.getDescriptor(
+					model.getDecorator().getClass());
 		
 		changeDecoratorPanel(descriptor);
 	}
 	
+	protected void decoratorChanged(ItemEvent e) {
+		final ElementDecoratorDescriptor descriptor = 
+			(ElementDecoratorDescriptor) e.getItem();
+		
+		if (e.getStateChange() == ItemEvent.DESELECTED) {
+			final ElementDecorator decorator = model.getDecorator();
+			decoratorCache.put(descriptor, decorator);
+		}
+		else if (e.getStateChange() == ItemEvent.SELECTED) {
+			ElementDecorator decorator = decoratorCache.get(descriptor);
+			if (decorator == null)
+				decorator = ElementDecoratorFactory.create(
+						descriptor, model.getTable().getCellAdapter());
+			
+			model.setDecorator(decorator);
+
+			changeDecoratorPanel(descriptor);
+			
+			refresh();
+		}
+	}
+
 	protected void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
 		final JPanel confPanel = new JPanel();
 		confPanel.setLayout(new BorderLayout());
 		
+		Class<? extends ElementDecorator> decoratorClass = descriptor.getDecoratorClass();
+
 		confPanel.add(
-				ElementDecoratorPanelFactory
-					.create(descriptor.getDecoratorClass(), model), 
+				ElementDecoratorPanelFactory.create(decoratorClass, model), 
 				BorderLayout.CENTER);
 		
 		if (getComponents().length >= 2)

@@ -89,7 +89,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		if (element == null) {
 			decoration.setBgColor(Color.WHITE);
-			decoration.setToolTip("Void cell");
+			decoration.setToolTip("Empty cell");
 			return;
 		}
 		

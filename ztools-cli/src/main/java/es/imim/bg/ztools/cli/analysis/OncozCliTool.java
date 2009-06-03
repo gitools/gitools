@@ -47,7 +47,7 @@ public class OncozCliTool extends AnalysisCliTool implements CliTool {
         
         OncozCommand cmd = new OncozCommand(
         		analysisName, testName, samplingNumSamples, 
-        		dataFile, binCutoffFilter, 
+        		dataFile, binaryCutoffFilter, 
         		groupsFile, minSetSize, maxSetSize,
         		workdir, outputFormat, true);
         

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import com.nexes.wizard.WizardPanelDescriptor;
 
 import es.imim.bg.ztools.commands.ZCalcCommand;
-import es.imim.bg.ztools.datafilters.BinCutoffFilter;
+import es.imim.bg.ztools.datafilters.BinaryCutoffFilter;
 import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
 import es.imim.bg.ztools.ui.wizard.AnalysisWizard;
 
@@ -62,21 +62,21 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 
 	    if (ret == 0) {
 		    //Preparing the Analysis command
-		    BinCutoffFilter binCutoffFilter = null;
+		    BinaryCutoffFilter binaryCutoffFilter = null;
 		    if (!dataModel.getValue(BIN_CUTOFF_CONDITION).equals(DISABLED)) {
 				String cond = (String) dataModel.getValue(BIN_CUTOFF_CONDITION);
 				double cutoff = Double.parseDouble(dataModel.getValue(BIN_CUTOFF_VALUE).toString());
 				
 				if ("lt".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.LT);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LT);
 				else if ("le".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.LE);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LE);
 				else if ("eq".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.EQ);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.EQ);
 				else if ("gt".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.GT);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GT);
 				else if ("ge".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.GE);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GE);
 		    }
 	
 			String outputFormat = "csv";
@@ -116,7 +116,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 		    							(String) dataModel.getValue(STAT_TEST),
 		    							sampleSize,
 		    							(String) dataModel.getValue(DATA_FILE),
-		    							binCutoffFilter,
+		    							binaryCutoffFilter,
 		    							(String) dataModel.getValue(MODULE_FILE),
 		    							minModuleSize,
 		    							maxModuleSize,

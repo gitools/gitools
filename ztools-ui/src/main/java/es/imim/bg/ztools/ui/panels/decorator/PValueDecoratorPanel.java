@@ -12,62 +12,43 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
-public class PValueDecoratorPanel extends JPanel {
+public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 
 	private static final long serialVersionUID = -7443053984962647946L;
 
-	private static class ElementPropertyAdapter {
-		private int index;
-		private IElementProperty property;
-		public ElementPropertyAdapter(int index, IElementProperty property) {
-			this.index = index;
-			this.property = property;
-		}
-		public int getIndex() {
-			return index;
-		}
-		public IElementProperty getProperty() {
-			return property;
-		}
-		@Override
-		public String toString() {
-			return property.getName();
-		}
-	}
-
-	private List<ElementPropertyAdapter> valueProperties;
+	private List<IndexedProperty> valueProperties;
 	
 	private PValueElementDecorator decorator;
-	private ITable table;
 	
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	
 	public PValueDecoratorPanel(TableViewModel model) {
-		this.decorator = (PValueElementDecorator) model.getDecorator();
-		this.table = model.getTable();
+		super(model);
+		
+		this.decorator = (PValueElementDecorator) getDecorator();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
 		int numProps = adapter.getPropertyCount();
 		
-		valueProperties =	new ArrayList<ElementPropertyAdapter>();
-		
+		valueProperties = new ArrayList<IndexedProperty>();
 		for (int i = 0; i < numProps; i++) {
 			final IElementProperty property = adapter.getProperty(i);
 			if (property.getId().endsWith("p-value")
 					/*&& !property.getId().startsWith("corrected")*/)
-				valueProperties.add(new ElementPropertyAdapter(i, property));
+				valueProperties.add(new IndexedProperty(i, property));
 		}
+		
+		if (valueProperties.size() == 0)
+			loadAllProperties(valueProperties, adapter);
 		
 		createComponents();
 	}
@@ -109,18 +90,18 @@ public class PValueDecoratorPanel extends JPanel {
 			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
 				valueCb.setSelectedIndex(i);
 		
-		table.setSelectedPropertyIndex(decorator.getValueIndex());
+		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
 		showCorrChkBox.setSelected(decorator.getUseCorrection());
 	}
 
 	private void valueChanged() {
 		
-		ElementPropertyAdapter propAdapter = 
-			(ElementPropertyAdapter) valueCb.getSelectedItem();
+		IndexedProperty propAdapter = 
+			(IndexedProperty) valueCb.getSelectedItem();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
 		
-		table.setSelectedPropertyIndex(propAdapter.getIndex());
+		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 		
 		// search for corresponding corrected value
 		
@@ -134,8 +115,8 @@ public class PValueDecoratorPanel extends JPanel {
 	}
 	
 	private void showCorrectionChecked() {
-		ElementPropertyAdapter propAdapter = 
-			(ElementPropertyAdapter) valueCb.getSelectedItem();
+		IndexedProperty propAdapter = 
+			(IndexedProperty) valueCb.getSelectedItem();
 		
 		if (propAdapter != null) {
 			int corrIndex = TableUtils.correctedValueIndex(

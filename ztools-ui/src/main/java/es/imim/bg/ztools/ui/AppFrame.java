@@ -4,14 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Properties;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+
+import org.apache.velocity.app.VelocityEngine;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.ui.actions.Actions;
 import es.imim.bg.ztools.ui.jobs.JobProcessor;
+import es.imim.bg.ztools.ui.panels.TemplatePane;
 import es.imim.bg.ztools.ui.utils.IconUtils;
 import es.imim.bg.ztools.ui.utils.Options;
 import es.imim.bg.ztools.ui.views.AbstractView;
@@ -22,6 +28,10 @@ public class AppFrame extends JFrame {
 
 	private static final long serialVersionUID = -6899584212813749990L;
 
+	public enum WorkbenchLayout {
+		LEFT, RIGHT, TOP, BOTTOM
+	}
+	
 	private static String appName;
 	private static String appVersion;
 	
@@ -34,6 +44,16 @@ public class AppFrame extends JFrame {
 		if (appVersion == null)
 			appVersion = "SNAPSHOT";
 	}
+	
+	private static final int defaultDividerLocation = 280;
+	
+	private WorkbenchLayout layout;
+	
+	private JToolBar toolBar;
+	
+	private JTabbedPane leftPanel;
+	
+	private TemplatePane detailsPanel;
 	
 	private WorkspacePanel workspace;
 	
@@ -49,9 +69,12 @@ public class AppFrame extends JFrame {
 		return instance;
 	}
 	
-	private AppFrame() {		
+	private AppFrame() {
 		createActions();
+		
+		this.layout = WorkbenchLayout.LEFT;
 		createComponents();
+		
 		createWelcomeView();
 		createDemoView();
 		workspace.setSelectedIndex(0);
@@ -88,18 +111,61 @@ public class AppFrame extends JFrame {
 	}
 	
 	private void createComponents() {
-		setJMenuBar(
-				Actions.menuActionSet.createMenuBar());
+		setJMenuBar(Actions.menuActionSet.createMenuBar());
 		
-		final JToolBar toolBar = 
-			Actions.toolBarActionSet.createToolBar();
+		toolBar = Actions.toolBarActionSet.createToolBar();
+		
+		Properties props = new Properties();
+		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		detailsPanel = new TemplatePane(props);
+		
+		leftPanel = new JTabbedPane();
+		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
+		leftPanel.add(detailsPanel, "Details");
 		
 		workspace = new WorkspacePanel();
 		
 		statusBar = new StatusBar();
 		
+		configureLayout(layout);
+	}
+	
+	private void configureLayout(WorkbenchLayout layout) {
+		int splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
+		boolean leftOrTop = true;
+		switch(layout) {
+		case LEFT:
+		case RIGHT:
+			splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
+			break;
+		case TOP:
+		case BOTTOM:
+			splitOrientation = JSplitPane.VERTICAL_SPLIT;
+			break;
+		}
+		switch(layout) {
+		case LEFT:
+		case TOP: leftOrTop = true; break;
+		case RIGHT:
+		case BOTTOM: leftOrTop = false; break;
+		}
+		
+		final JSplitPane splitPane = new JSplitPane(splitOrientation);
+		if (leftOrTop) {
+			splitPane.add(leftPanel);
+			splitPane.add(workspace);
+		}
+		else {
+			splitPane.add(workspace);
+			splitPane.add(leftPanel);
+		}
+		splitPane.setDividerLocation(defaultDividerLocation);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setContinuousLayout(true);
+		
+		setLayout(new BorderLayout());
 		add(toolBar, BorderLayout.NORTH);
-		add(workspace, BorderLayout.CENTER);
+		add(splitPane, BorderLayout.CENTER);
 		add(statusBar, BorderLayout.SOUTH);
 	}
 	
@@ -118,6 +184,10 @@ public class AppFrame extends JFrame {
 	public void start() {
 		setLocationByPlatform(true);
 		setVisible(true);
+	}
+	
+	public TemplatePane getDetailsPane() {
+		return detailsPanel;
 	}
 	
 	public WorkspacePanel getWorkspace() {

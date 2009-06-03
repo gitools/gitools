@@ -1,6 +1,7 @@
-package es.imim.bg.ztools.table;
+package es.imim.bg.ztools.table.adapter;
 
 import es.imim.bg.ztools.model.DataMatrix;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.basic.DoubleElementAdapter;
 import es.imim.bg.ztools.table.element.basic.StringElementAdapter;

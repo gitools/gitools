@@ -7,10 +7,15 @@ public class TableUtils {
 
 	public static double doubleValue(Object value) {
 		double v = Double.NaN;
-		try { v = ((Double) value).doubleValue(); }
-		catch (Exception e1) {
-			try { v = ((Integer) value).doubleValue(); }
-			catch (Exception e2) { }
+		if (value != null) {
+			try { v = ((Double) value).doubleValue(); }
+			catch (Exception e1) {
+				try { v = ((Integer) value).doubleValue(); }
+				catch (Exception e2) {
+					/*try { v = Double.parseDouble((String) value); }
+					catch (Exception e3) { }*/
+				}
+			}
 		}
 		return v;
 	}

@@ -3,7 +3,7 @@ package es.imim.bg.ztools.table.decorator;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.imim.bg.ztools.table.decorator.impl.BinaryDataElementDecorator;
+import es.imim.bg.ztools.table.decorator.impl.BinaryElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
@@ -14,9 +14,14 @@ public class ElementDecoratorFactory {
 			= new ArrayList<ElementDecoratorDescriptor>();
 	
 	static {
-		descriptors.add(new ElementDecoratorDescriptor("P-Value scale", PValueElementDecorator.class));
-		descriptors.add(new ElementDecoratorDescriptor("Z-Score scale", ZScoreElementDecorator.class));
-		descriptors.add(new ElementDecoratorDescriptor("Binary scale", BinaryDataElementDecorator.class));
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.PVALUE, PValueElementDecorator.class));
+		
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
+		
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
 	}
 	
 	public static ElementDecorator create(
@@ -48,6 +53,16 @@ public class ElementDecoratorFactory {
 		return decorator;
 	}
 
+	public static ElementDecoratorDescriptor getDescriptor(
+			Class<? extends ElementDecorator> decoratorClass) {
+		
+		for (ElementDecoratorDescriptor desc : descriptors)
+			if (desc.getDecoratorClass().equals(decoratorClass))
+				return desc;
+		
+		return null;
+	}
+	
 	public static List<ElementDecoratorDescriptor> getDescriptors() {
 		return descriptors;
 	}

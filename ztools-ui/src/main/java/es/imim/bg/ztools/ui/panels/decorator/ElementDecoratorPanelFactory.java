@@ -4,6 +4,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import es.imim.bg.ztools.table.decorator.impl.BinaryElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.ui.model.TableViewModel;
@@ -16,6 +17,8 @@ public class ElementDecoratorPanelFactory {
 			return new PValueDecoratorPanel(model);
 		else if (ZScoreElementDecorator.class.equals(decoratorClass))
 			return new ZScoreDecoratorPanel(model);
+		else if (BinaryElementDecorator.class.equals(decoratorClass))
+			return new BinaryDecoratorPanel(model);
 		
 		return new JPanel();
 	}

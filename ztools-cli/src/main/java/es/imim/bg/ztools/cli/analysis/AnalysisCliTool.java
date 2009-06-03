@@ -8,7 +8,7 @@ import org.kohsuke.args4j.Option;
 import es.imim.bg.ztools.cli.AbstractCliTool;
 import es.imim.bg.ztools.cli.InvalidArgumentException;
 import es.imim.bg.ztools.cli.RequiredArgumentException;
-import es.imim.bg.ztools.datafilters.BinCutoffFilter;
+import es.imim.bg.ztools.datafilters.BinaryCutoffFilter;
 
 public abstract class AnalysisCliTool extends AbstractCliTool {
 
@@ -35,7 +35,7 @@ public abstract class AnalysisCliTool extends AbstractCliTool {
 					"\neq (equal), gt (greatar than), ge (greater equal than).", metaVar = "<condition,cutoff>")
 	public String binCutoff;
 	
-	protected BinCutoffFilter binCutoffFilter;
+	protected BinaryCutoffFilter binaryCutoffFilter;
 	
 	@Override
 	public void validateArguments(Object argsObject) 
@@ -58,15 +58,15 @@ public abstract class AnalysisCliTool extends AbstractCliTool {
 				final double cutoff = Double.parseDouble(mat.group(2));
 				
 				if ("lt".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.LT);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LT);
 				else if ("le".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.LE);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LE);
 				else if ("eq".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.EQ);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.EQ);
 				else if ("gt".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.GT);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GT);
 				else if ("ge".equals(cond))
-					binCutoffFilter = new BinCutoffFilter(cutoff, BinCutoffFilter.GE);
+					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GE);
 			}
 			catch (NumberFormatException e) {
 				throw new InvalidArgumentException("Invalid cutoff: " + mat.group(2), e);

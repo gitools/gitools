@@ -12,68 +12,51 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
-public class ZScoreDecoratorPanel extends JPanel {
+public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 
 	private static final long serialVersionUID = -7443053984962647946L;
 
-	private static class ElementPropertyAdapter {
-		private int index;
-		private IElementProperty property;
-		public ElementPropertyAdapter(int index, IElementProperty property) {
-			this.index = index;
-			this.property = property;
-		}
-		public int getIndex() {
-			return index;
-		}
-		public IElementProperty getProperty() {
-			return property;
-		}
-		@Override
-		public String toString() {
-			return property.getName();
-		}
-	}
-
-	private List<ElementPropertyAdapter> valueProperties;
-	private List<ElementPropertyAdapter> corrValueProperties;
+	private List<IndexedProperty> valueProperties;
+	private List<IndexedProperty> corrValueProperties;
 	
 	private ZScoreElementDecorator decorator;
-	private ITable table;
 	
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	private JComboBox corrValueCb;
 	
 	public ZScoreDecoratorPanel(TableViewModel model) {
+		super(model);
+		
 		this.decorator = (ZScoreElementDecorator) model.getDecorator();
-		this.table = model.getTable();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
 		int numProps = adapter.getPropertyCount();
 		
-		valueProperties = new ArrayList<ElementPropertyAdapter>();
-		corrValueProperties = new ArrayList<ElementPropertyAdapter>();
+		valueProperties = new ArrayList<IndexedProperty>();
+		corrValueProperties = new ArrayList<IndexedProperty>();
 		for (int i = 0; i < numProps; i++) {
 			final IElementProperty property = adapter.getProperty(i);
 			
 			if (property.getId().endsWith("z-score"))
-				valueProperties.add(new ElementPropertyAdapter(i, property));
+				valueProperties.add(new IndexedProperty(i, property));
 			if (property.getId().startsWith("corrected"))
-				corrValueProperties.add(new ElementPropertyAdapter(i, property));
+				corrValueProperties.add(new IndexedProperty(i, property));
 		}
 		
-		if (valueProperties.size() == 0)
-			valueProperties.add(new ElementPropertyAdapter(0, adapter.getProperty(0)));
+		if (valueProperties.size() == 0) {
+			loadAllProperties(valueProperties, adapter);
+			loadAllProperties(corrValueProperties, adapter);
+		}
+		else if (corrValueProperties.size() == 0)
+			loadAllProperties(corrValueProperties, adapter);
 		
 		createComponents();
 	}
@@ -128,7 +111,7 @@ public class ZScoreDecoratorPanel extends JPanel {
 			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
 				valueCb.setSelectedIndex(i);
 		
-		table.setSelectedPropertyIndex(decorator.getValueIndex());
+		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
 		
 		showCorrChkBox.setSelected(decorator.getUseCorrection());
 		corrValueCb.setEnabled(decorator.getUseCorrection());
@@ -140,12 +123,12 @@ public class ZScoreDecoratorPanel extends JPanel {
 
 	private void valueChanged() {
 		
-		ElementPropertyAdapter propAdapter = 
-			(ElementPropertyAdapter) valueCb.getSelectedItem();
+		IndexedProperty propAdapter = 
+			(IndexedProperty) valueCb.getSelectedItem();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
 		
-		table.setSelectedPropertyIndex(propAdapter.getIndex());
+		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 	
 	private void showCorrectionChecked() {		
@@ -157,8 +140,8 @@ public class ZScoreDecoratorPanel extends JPanel {
 	}
 	
 	protected void corrValueChanged() {
-		ElementPropertyAdapter propAdapter = 
-			(ElementPropertyAdapter) corrValueCb.getSelectedItem();
+		IndexedProperty propAdapter = 
+			(IndexedProperty) corrValueCb.getSelectedItem();
 		
 		decorator.setCorrectedValueIndex(propAdapter.getIndex());
 	}

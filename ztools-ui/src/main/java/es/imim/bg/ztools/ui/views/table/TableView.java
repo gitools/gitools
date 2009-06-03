@@ -6,16 +6,12 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.PValueColorScale;
@@ -30,6 +26,7 @@ import es.imim.bg.ztools.test.results.CombinationResult;
 import es.imim.bg.ztools.test.results.CommonResult;
 import es.imim.bg.ztools.test.results.FisherResult;
 import es.imim.bg.ztools.test.results.ZScoreResult;
+import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.FileActionSet;
 import es.imim.bg.ztools.ui.actions.MenuActionSet;
 import es.imim.bg.ztools.ui.actions.TableActionSet;
@@ -42,35 +39,25 @@ public class TableView extends AbstractView {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
-	private static final int defaultDividerLocation = 280;
-
 	private static final String defaultTemplateName = "/vm/details/noselection.vm";
-
-	public enum TableViewLayout {
-		LEFT, RIGHT, TOP, BOTTOM
-	}
 	
 	private TableViewModel model;
 	
 	private TableViewConfigPanel configPanel;
 	
-	private TemplatePane templatePane;
 	private TablePanel tablePanel;
-	private JPanel mainPanel;
-
-	private TableViewLayout layout;
 	
 	protected boolean blockSelectionUpdate;
 
 	private PropertyChangeListener modelListener;
 	private PropertyChangeListener decoratorListener;
 
-	public TableView(final ITable table) {
+	public TableView(TableViewModel model) {
 		
-		this.model = new TableViewModel(table);
+		this.model = model;
+		
+		final ITable table = model.getTable();
 	
-		this.layout = TableViewLayout.LEFT;
-		
 		this.blockSelectionUpdate = false;
 		
 		createComponents();
@@ -238,6 +225,8 @@ public class TableView extends AbstractView {
 		//System.out.println("refreshCellDetails(" + row + ", " + column + ")");
 		
 		try {
+			final TemplatePane templatePane = AppFrame.instance().getDetailsPane();
+			
 			templatePane.setTemplate(templateName);
 			templatePane.setContext(context);
 			templatePane.render();
@@ -321,7 +310,7 @@ public class TableView extends AbstractView {
 		
 		/* Details panel */
 		
-		Properties props = new Properties();
+		/*Properties props = new Properties();
 		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
 		templatePane = new TemplatePane(props);
 		try {
@@ -329,61 +318,11 @@ public class TableView extends AbstractView {
 			templatePane.render();
 		} catch (Exception e1) {
 			e1.printStackTrace();
-		}
-		
-		/*infoPane = new JTextPane();
-		infoPane.setBackground(Color.WHITE);
-		infoPane.setContentType("text/html");
-		//infoPane.setAutoscrolls(false);
-		infoScrollPane = new JScrollPane(infoPane);
-		infoScrollPane.setBorder(
-				BorderFactory.createEmptyBorder(8, 8, 8, 8));*/		
-		
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(configPanel, BorderLayout.NORTH);
-		mainPanel.add(tablePanel, BorderLayout.CENTER);
-		
-		configureLayout();
-	}
-	
-	private void configureLayout() {
-		int splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
-		boolean leftOrTop = true;
-		switch(layout) {
-		case LEFT:
-		case RIGHT:
-			splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
-			break;
-		case TOP:
-		case BOTTOM:
-			splitOrientation = JSplitPane.VERTICAL_SPLIT;
-			break;
-		}
-		switch(layout) {
-		case LEFT:
-		case TOP: leftOrTop =true; break;
-		case RIGHT:
-		case BOTTOM: leftOrTop = false; break;
-		}
-		
-		final JSplitPane splitPane = new JSplitPane(splitOrientation);
-		if (leftOrTop) {
-			//splitPane.add(infoScrollPane);
-			splitPane.add(templatePane);
-			splitPane.add(mainPanel);
-		}
-		else {
-			splitPane.add(mainPanel);
-			//splitPane.add(infoScrollPane);
-			splitPane.add(templatePane);
-		}
-		splitPane.setDividerLocation(defaultDividerLocation);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setContinuousLayout(true);
+		}*/
 		
 		setLayout(new BorderLayout());
-		add(splitPane, BorderLayout.CENTER);
+		add(configPanel, BorderLayout.NORTH);
+		add(tablePanel, BorderLayout.CENTER);
 	}
 
 	private void refreshColorMatrixWidth() {

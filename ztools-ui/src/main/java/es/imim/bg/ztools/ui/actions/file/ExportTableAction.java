@@ -7,53 +7,56 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.table.export.TableTsvExport;
 import es.imim.bg.ztools.ui.AppFrame;
 import es.imim.bg.ztools.ui.actions.BaseAction;
 import es.imim.bg.ztools.ui.utils.Options;
 
-public class ExportTableDataAction extends BaseAction {
+public class ExportTableAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportTableDataAction() {
-		super("Export table data");
+	public ExportTableAction() {
+		super("Export table");
 		
-		setDesc("Export data from the table");
+		setDesc("Export a data table of a parameter");
 		setMnemonic(KeyEvent.VK_N);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-
 		ITable table = getTable();
 		if (table == null)
 			return;
 		
-		Object[] props = table.getCellAdapter().getProperties().toArray();
-		String[] possibilities = new String[props.length];
-		for (int i = 0; i < props.length; i++) {
-			IElementProperty prop = (IElementProperty) props[i];
-			possibilities[i] = prop.getName();
-		}
+		final List<IElementProperty> properties = table.getCellAdapter().getProperties();
+		final String[] propNames = new String[properties.size()];
+		for (int i = 0; i < properties.size(); i++)
+			propNames[i] = properties.get(i).getName();
 
+		int selectedPropIndex = table.getSelectedPropertyIndex();
+		selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
+		selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
+		
 		final String selected = (String) JOptionPane.showInputDialog(AppFrame.instance(),
 				"What do you want to export ?", "Export table data",
-				JOptionPane.QUESTION_MESSAGE, null, possibilities,
-				possibilities[0]);
+				JOptionPane.QUESTION_MESSAGE, null, propNames,
+				propNames[selectedPropIndex]);
 
 		if (selected == null || selected.isEmpty())
 			return;
 		
 		int propIndex = 0;
-		for (int j = 0; j < possibilities.length; j++)
-			if (possibilities[j].equals(selected))
+		for (int j = 0; j < propNames.length; j++)
+			if (propNames[j].equals(selected))
 				propIndex = j;
 
 		try {
@@ -61,32 +64,7 @@ public class ExportTableDataAction extends BaseAction {
 			if (file == null)
 				return;
 			
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-			
-			int rowCount = table.getRowCount();
-			int colCount = table.getColumnCount();
-			
-			//header row
-			String line = "\t";
-			for (int c = 0; c < colCount; c++) {
-				line += table.getColumn(c).toString();
-				if (c != colCount-1)
-					line += "\t";
-			}
-			pw.println(line);
-			
-			for (int r = 0; r < rowCount; r++) {
-				for (int c = 0; c < colCount; c++) {
-					if (c == 0)
-						line = table.getRow(r).toString() + "\t";
-					line += table.getCellValue(r, c, propIndex).toString();
-					if (c != colCount-1)
-						line += "\t";
-				}
-				pw.println(line);
-			}
-			
-			pw.close();
+			TableTsvExport.exportProperty(table, propIndex, file);
 		}
 		catch (IOException ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());

@@ -3,31 +3,40 @@ package es.imim.bg.ztools.ui.model;
 import es.imim.bg.ztools.model.AbstractModel;
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorDescriptor;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
 
 public class TableViewModel extends AbstractModel {
 
-	public static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
+	//public static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
 	public static final String DECORATOR = "decorator";
 	public static final String TABLE = "table";
 	
-	private ElementDecoratorDescriptor decoratorDescriptor;
+	//private ElementDecoratorDescriptor decoratorDescriptor;
 	private ElementDecorator decorator;
 	
 	private ITable table;
 	
 	public TableViewModel(
-			ITable table) {
-		
-		this.decoratorDescriptor = ElementDecoratorFactory.getDescriptors().get(0);
-		this.decorator = ElementDecoratorFactory.create(
-				decoratorDescriptor, table.getCellAdapter());
+			ITable table,
+			ElementDecorator decorator) {
 		
 		this.table = table;
+		this.decorator = decorator;
 	}
 	
-	public ElementDecoratorDescriptor getDecoratorDescriptor() {
+	/*public TableViewModel(
+			ITable table) {
+		
+		decoratorDescriptor = ElementDecoratorFactory.getDescriptors().get(0);
+		decorator = ElementDecoratorFactory.create(
+				decoratorDescriptor, table.getCellAdapter());
+		
+		this(
+				table, 
+				decorator);
+	}
+	*/
+	
+	/*public ElementDecoratorDescriptor getDecoratorDescriptor() {
 		return decoratorDescriptor;
 	}
 	
@@ -42,7 +51,7 @@ public class TableViewModel extends AbstractModel {
 				decoratorDescriptor, table.getCellAdapter()));
 		
 		firePropertyChange(DECORATOR_DESCRIPTOR, old, decoratorDescriptor);
-	}
+	}*/
 	
 	public final ElementDecorator getDecorator() {
 		return decorator;

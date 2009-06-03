@@ -8,11 +8,8 @@ import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.ztools.model.Analysis;
 import es.imim.bg.ztools.resources.analysis.AnalysisResource;
 import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.ResultsMatrixTableContentsAdapter;
-import es.imim.bg.ztools.table.Table;
 import es.imim.bg.ztools.ui.AppFrame;
-import es.imim.bg.ztools.ui.views.table.TableView;
+import es.imim.bg.ztools.ui.views.analysis.AnalysisView;
 
 public class OpenAnalysisJob implements Job {
 
@@ -49,14 +46,11 @@ public class OpenAnalysisJob implements Job {
 			
 			monitor.begin("Loading analysis ...", 1);
 			Analysis analysis = analysisRes.load(monitor);
-			
-			ITable table = new Table(
-					new ResultsMatrixTableContentsAdapter(analysis.getResults()));
-			
-			final TableView view = new TableView(table);
+
+			final AnalysisView view = new AnalysisView(analysis);
 			
 			view.setName(analysis.getName());
-
+			
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {

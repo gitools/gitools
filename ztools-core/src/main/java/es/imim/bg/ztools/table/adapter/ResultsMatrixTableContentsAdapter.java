@@ -1,6 +1,7 @@
-package es.imim.bg.ztools.table;
+package es.imim.bg.ztools.table.adapter;
 
 import es.imim.bg.ztools.model.ResultsMatrix;
+import es.imim.bg.ztools.table.ITableContents;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 
 public class ResultsMatrixTableContentsAdapter implements ITableContents {

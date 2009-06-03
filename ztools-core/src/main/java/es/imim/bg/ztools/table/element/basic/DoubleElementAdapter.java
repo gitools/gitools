@@ -17,6 +17,8 @@ public class DoubleElementAdapter extends AbstractElementAdapter {
 	}
 
 	public DoubleElementAdapter() {
+		super(double.class);
+		
 		this.setProperties(getPropertyList());
 	}
 

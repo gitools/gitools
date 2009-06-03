@@ -22,6 +22,7 @@ import javax.swing.table.TableColumnModel;
 
 import es.imim.bg.ztools.table.ITable;
 import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.model.SelectionMode;
 
 public class TablePanel extends JPanel {
@@ -331,8 +332,11 @@ public class TablePanel extends JPanel {
 	}
 
 	public void setCellDecorator(ElementDecorator decorator) {
+		
+		final IElementAdapter cellAdapter = model.getCellAdapter();
+		
 		table.setDefaultRenderer(
-				model.getCellAdapter().getElementClass(), 
+				cellAdapter.getElementClass(), 
 				new LabelTableCellRenderer(decorator));
 		
 		table.repaint();

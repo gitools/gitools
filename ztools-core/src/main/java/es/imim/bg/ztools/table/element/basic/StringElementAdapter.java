@@ -9,6 +9,7 @@ public class StringElementAdapter
 		extends AbstractElementAdapter {
 
 	public StringElementAdapter() {
+		super(String.class);
 	}
 	
 	@Override

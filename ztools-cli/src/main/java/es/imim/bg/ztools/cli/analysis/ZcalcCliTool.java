@@ -52,7 +52,7 @@ public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
         
         ZCalcCommand cmd = new ZCalcCommand(
         		analysisName, testName, samplingNumSamples, 
-        		dataFile, binCutoffFilter,
+        		dataFile, binaryCutoffFilter,
         		groupsFile, minModuleSize, maxModuleSize,
         		!discardNonMappedItems,
         		workdir, outputFormat, true);
