@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.imim.bg.ztools.table.decorator.impl.BinaryElementDecorator;
+import es.imim.bg.ztools.table.decorator.impl.Log2RatioElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
@@ -22,6 +23,9 @@ public class ElementDecoratorFactory {
 		
 		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
+		
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.LOG2RATIO, Log2RatioElementDecorator.class));
 	}
 	
 	public static ElementDecorator create(

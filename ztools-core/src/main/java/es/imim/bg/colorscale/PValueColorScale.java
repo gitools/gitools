@@ -22,7 +22,7 @@ public class PValueColorScale extends CompositeColorScale {
 			new ScaleRange(sigPoint + epsilon, 1.0, 
 					new UniformColorScale(nonSigColor)),
 			new ScaleRange(0.0, sigPoint + epsilon,
-					new LogColorScale2(
+					new LogColorScale(
 							0.0, sigPoint + epsilon, 
 							minColor, maxColor))
 		};

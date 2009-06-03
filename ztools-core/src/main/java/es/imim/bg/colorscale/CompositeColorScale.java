@@ -103,7 +103,7 @@ public class CompositeColorScale extends AbstractColorScale {
 		for (ScaleRange range : scaleRanges)
 			if (range.minPoint <= value && value <= range.maxPoint)
 				return range.scale.getColor(value);
-
+		
 		return undefinedColor;
 	}
 

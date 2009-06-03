@@ -174,7 +174,6 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 	protected void cutoffChanged() {
 		try {
 			double cutoff = Double.parseDouble(cutoffTf.getText());
-			
 			decorator.setCutoff(cutoff);
 			
 			AppFrame.instance().setStatusText("Cutoff changed to " + cutoff);
