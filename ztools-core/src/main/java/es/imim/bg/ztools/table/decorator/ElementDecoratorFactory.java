@@ -3,6 +3,7 @@ package es.imim.bg.ztools.table.decorator;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.imim.bg.ztools.table.decorator.impl.BinaryDataElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
@@ -15,6 +16,7 @@ public class ElementDecoratorFactory {
 	static {
 		descriptors.add(new ElementDecoratorDescriptor("P-Value scale", PValueElementDecorator.class));
 		descriptors.add(new ElementDecoratorDescriptor("Z-Score scale", ZScoreElementDecorator.class));
+		descriptors.add(new ElementDecoratorDescriptor("Binary scale", BinaryDataElementDecorator.class));
 	}
 	
 	public static ElementDecorator create(
