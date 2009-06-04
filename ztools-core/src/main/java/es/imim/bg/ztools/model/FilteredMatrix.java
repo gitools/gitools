@@ -10,9 +10,9 @@ public class FilteredMatrix extends TableFigure {
 	protected TableArtifact artifactTable;
 
 	/** Id of the Decorator to use **/
-	protected String decorator;
+	protected String decoratorName;
 
-	/** Specific set up for the Decorator  **/
+	/** Specific set up for the Decorator **/
 	protected Map<String, String> decProperties;
 
 	/** Positions of the columns to show **/
@@ -28,6 +28,14 @@ public class FilteredMatrix extends TableFigure {
 
 	public void setColumnsToShow(int[] columnsToShow) {
 		this.columnsToShow = columnsToShow;
+	}
+
+	public String getDecoratorName() {
+		return decoratorName;
+	}
+
+	public void setDecoratorName(String decoratorName) {
+		this.decoratorName = decoratorName;
 	}
 
 }
