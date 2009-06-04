@@ -26,6 +26,7 @@ public class RotatedLabelTableCellRenderer
 
 	public RotatedLabelTableCellRenderer(boolean highlightSelected) {
 		this.highlightSelected = highlightSelected;
+		setOpaque(true);
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value,
@@ -45,7 +46,7 @@ public class RotatedLabelTableCellRenderer
 		return this;
 	}
 
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		final int w = this.getWidth();
 		final int h = this.getHeight();

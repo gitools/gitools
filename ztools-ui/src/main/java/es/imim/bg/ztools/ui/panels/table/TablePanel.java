@@ -17,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -247,10 +248,10 @@ public class TablePanel extends JPanel {
 		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
 		refreshTableColumnsWidth();
 		
-		
 		refreshSelectionMode();
 		
 		final JScrollPane scroll = new JScrollPane(table);
+		table.getTableHeader().setOpaque(true);
 		
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
@@ -302,12 +303,17 @@ public class TablePanel extends JPanel {
 	
 	private void refreshTableColumnsRenderer() {
 		TableColumnModel colModel = table.getColumnModel();
-		final int lastColumn = colModel.getColumnCount();
-		for (int i = 0; i < lastColumn; i++) {
-			TableColumn col = colModel.getColumn(i);
-			col.setHeaderRenderer(
-					new RotatedLabelTableCellRenderer(
-							selMode == SelectionMode.columns));
+		final int lastColumn = colModel.getColumnCount() - 1;
+		if (lastColumn >= 0) {
+			for (int i = 0; i < lastColumn; i++) {
+				TableColumn col = colModel.getColumn(i);
+				col.setHeaderRenderer(
+						new RotatedLabelTableCellRenderer(
+								selMode == SelectionMode.columns));
+			}
+			TableColumn col = colModel.getColumn(lastColumn);
+			col.setHeaderRenderer(new DefaultTableCellRenderer());
+			col.setHeaderValue("xxx");
 		}
 	}
 	
