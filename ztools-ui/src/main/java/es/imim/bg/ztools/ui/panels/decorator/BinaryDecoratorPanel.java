@@ -24,6 +24,8 @@ import es.imim.bg.ztools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
 import es.imim.bg.ztools.table.decorator.impl.BinaryElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel.ColorChangeListener;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
 public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
@@ -50,7 +52,7 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 
 	private JTextField cutoffTf;
 
-	private JButton colorBtn;
+	private ColorChooserLabel colorCc;
 	
 	public BinaryDecoratorPanel(TableViewModel model) {
 		super(model);
@@ -119,14 +121,10 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 		JLabel colorLbl = new JLabel("Color");
 		colorLbl.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		
-		colorBtn = new JButton("...");
-		colorBtn.setMinimumSize(new Dimension(30, 30));
-		colorBtn.setBackground(decorator.getColor());
-		colorBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				colorPressed();
-			}
+		colorCc = new ColorChooserLabel(decorator.getColor());
+		colorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setColor(color); }
 		});
 		
 		refresh();
@@ -134,11 +132,9 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
-		add(new JLabel("is"));
 		add(cmpCb);
 		add(cutoffTf);
-		add(colorLbl);
-		add(colorBtn);
+		add(colorCc);
 	}
 
 	private void refresh() {
@@ -180,18 +176,6 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 		}
 		catch (Exception e) { 
 			AppFrame.instance().setStatusText("Invalid cutoff.");
-		}
-	}
-
-	protected void colorPressed() {
-		Color color = JColorChooser.showDialog(
-				AppFrame.instance(),
-				"Choose a color...",
-				decorator.getColor());
-		
-		if (color != null) {
-			colorBtn.setBackground(decorator.getColor());
-			decorator.setColor(color);
 		}
 	}
 }

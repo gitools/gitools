@@ -9,6 +9,7 @@ public abstract class AbstractColorScale implements IColorScale {
 	protected Color notANumberColor = ColorConstants.notANumberColor;
 	protected Color posInfinityColor = ColorConstants.posInfinityColor;
 	protected Color negInfinityColor = ColorConstants.negInfinityColor;
+	protected Color emptyColor = ColorConstants.emptyColor;
 	
 	protected Color minColor;
 	protected Color maxColor;
@@ -33,60 +34,68 @@ public abstract class AbstractColorScale implements IColorScale {
 		this.maxColor = maxColor;
 	}
 
-	public final Color getNotANumberColor() {
+	public Color getNotANumberColor() {
 		return notANumberColor;
 	}
 	
-	public final void setNotANumberColor(Color notANumberColor) {
+	public void setNotANumberColor(Color notANumberColor) {
 		this.notANumberColor = notANumberColor;
 	}
 	
 	
-	public final Color getPosInfinityColor() {
+	public Color getPosInfinityColor() {
 		return posInfinityColor;
 	}
 
-	public final void setPosInfinityColor(Color posInfinityColor) {
+	public void setPosInfinityColor(Color posInfinityColor) {
 		this.posInfinityColor = posInfinityColor;
 	}
 
-	public final Color getNegInfinityColor() {
+	public Color getNegInfinityColor() {
 		return negInfinityColor;
 	}
 
-	public final void setNegInfinityColor(Color negInfinityColor) {
+	public void setNegInfinityColor(Color negInfinityColor) {
 		this.negInfinityColor = negInfinityColor;
 	}
 	
-	public final Color getMinColor() {
+	public Color getEmptyColor() {
+		return emptyColor;
+	}
+	
+	public void setEmptyColor(Color emptyColor) {
+		this.emptyColor = emptyColor;
+	}
+	
+	public Color getMinColor() {
 		return minColor;
 	}
 
-	public final void setMinColor(Color minColor) {
+	public void setMinColor(Color minColor) {
 		this.minColor = minColor;
 	}
 
-	public final Color getMaxColor() {
+	public Color getMaxColor() {
 		return maxColor;
 	}
 
-	public final void setMaxColor(Color maxColor) {
+	public void setMaxColor(Color maxColor) {
 		this.maxColor = maxColor;
 	}
 
-	public final double getMinPoint() {
+	public double getMinPoint() {
 		return minPoint;
 	}
 
-	public final void setMinPoint(double minPoint) {
+	public void setMinPoint(double minPoint) {
 		this.minPoint = minPoint;
 	}
 
-	public final double getMaxPoint() {
+	public double getMaxPoint() {
 		return maxPoint;
 	}
 
-	public final void setMaxPoint(double maxPoint) {
+	public void setMaxPoint(double maxPoint) {
 		this.maxPoint = maxPoint;
 	}
 }

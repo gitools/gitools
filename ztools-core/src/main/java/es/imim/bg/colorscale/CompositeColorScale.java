@@ -18,6 +18,24 @@ public class CompositeColorScale extends AbstractColorScale {
 			this.maxPoint = maxPoint;
 			this.scale = scale;
 		}
+		public double getMinPoint() {
+			return minPoint;
+		}
+		public void setMinPoint(double minPoint) {
+			this.minPoint = minPoint;
+		}
+		public double getMaxPoint() {
+			return maxPoint;
+		}
+		public void setMaxPoint(double maxPoint) {
+			this.maxPoint = maxPoint;
+		}
+		public IColorScale getScale() {
+			return scale;
+		}
+		public void setScale(IColorScale scale) {
+			this.scale = scale;
+		}
 	}
 	
 	protected Color undefinedColor;

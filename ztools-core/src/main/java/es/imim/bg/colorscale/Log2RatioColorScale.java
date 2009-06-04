@@ -7,6 +7,15 @@ public class Log2RatioColorScale extends CompositeColorScale {
 	protected double midPoint;
 	protected Color midColor;
 	
+	private ScaleRange leftScaleRange;
+	private ScaleRange rightScaleRange;
+	
+	//private LogColorScale leftScale;
+	//private LogColorScale rightScale;
+	
+	private LinearColorScale leftScale;
+	private LinearColorScale rightScale;
+	
 	public Log2RatioColorScale(
 			double minPoint,
 			double midPoint,
@@ -20,25 +29,35 @@ public class Log2RatioColorScale extends CompositeColorScale {
 		this.midPoint = midPoint;
 		this.midColor = midColor;
 		
-		ScaleRange[] scaleRanges = new ScaleRange[] {
-				new ScaleRange(minPoint, midPoint, 
-						new LogColorScale(
-								minPoint, midPoint, 
-								minColor, midColor)),
-				new ScaleRange(midPoint, maxPoint, 
-						new LogColorScale(
-								midPoint, maxPoint, 
-								maxColor, midColor))
-		};
+		leftScale = new LinearColorScale(//new LogColorScale(
+				minPoint, midPoint, 
+				minColor, midColor);
 		
-		setScaleRanges(scaleRanges);
+		leftScaleRange = new ScaleRange(minPoint, midPoint, leftScale);
+		
+		rightScale = new LinearColorScale( //new LogColorScale(
+				midPoint, maxPoint, 
+				midColor, maxColor);
+		
+		rightScaleRange = new ScaleRange(midPoint, maxPoint, rightScale);
+				
+		setScaleRanges(new ScaleRange[] {
+				leftScaleRange,
+				rightScaleRange });
 	}
 	
 	public Log2RatioColorScale() {
-		this(-4, 0, 4, 
+		this(-6, 0, 6, 
 				Color.BLUE, 
 				Color.LIGHT_GRAY,
 				Color.RED);
+	}
+	
+	@Override
+	public void setMinPoint(double minPoint) {
+		super.setMinPoint(minPoint);
+		leftScale.setMinPoint(minPoint);
+		leftScaleRange.setMinPoint(minPoint);
 	}
 	
 	public double getMidPoint() {
@@ -47,6 +66,23 @@ public class Log2RatioColorScale extends CompositeColorScale {
 	
 	public void setMidPoint(double midPoint) {
 		this.midPoint = midPoint;
+		leftScale.setMaxPoint(midPoint);
+		leftScaleRange.setMaxPoint(midPoint);
+		rightScale.setMinPoint(midPoint);
+		rightScaleRange.setMinPoint(midPoint);
+	}
+	
+	@Override
+	public void setMaxPoint(double maxPoint) {
+		super.setMaxPoint(maxPoint);
+		rightScale.setMaxPoint(maxPoint);
+		rightScaleRange.setMaxPoint(maxPoint);
+	}
+	
+	@Override
+	public void setMinColor(Color minColor) {
+		super.setMinColor(minColor);
+		leftScale.setMinColor(minColor);
 	}
 	
 	public Color getMidColor() {
@@ -55,5 +91,13 @@ public class Log2RatioColorScale extends CompositeColorScale {
 	
 	public void setMidColor(Color midColor) {
 		this.midColor = midColor;
+		leftScale.setMaxColor(midColor);
+		rightScale.setMinColor(midColor);
+	}
+	
+	@Override
+	public void setMaxColor(Color maxColor) {
+		super.setMaxColor(maxColor);
+		rightScale.setMaxColor(maxColor);
 	}
 }

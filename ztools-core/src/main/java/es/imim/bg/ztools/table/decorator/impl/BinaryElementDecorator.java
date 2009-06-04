@@ -79,7 +79,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		decoration.reset();
 		
 		if (element == null) {
-			decoration.setBgColor(Color.WHITE);
+			decoration.setBgColor(ColorConstants.emptyColor);
 			decoration.setToolTip("Empty cell");
 			return;
 		}

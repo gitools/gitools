@@ -8,6 +8,8 @@ public class ColorConstants {
 	public static final Color posInfinityColor = Color.GREEN;
 	public static final Color negInfinityColor = Color.CYAN;
 	public static final Color undefinedColor = Color.BLACK;
+	public static final Color emptyColor = Color.WHITE;
+	
 	public static final Color nonSignificantColor = new Color(187, 187, 187);
 	
 	public static final Color pvalueMinColor = new Color(255, 255, 0);

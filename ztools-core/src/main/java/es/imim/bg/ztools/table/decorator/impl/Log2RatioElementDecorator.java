@@ -14,14 +14,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 
 	private int valueIndex;
 	
-	/*private double minValue;
-	private double midValue;
-	private double maxValue;
-	
-	private Color minColor;
-	private Color midColor;
-	private Color maxColor;*/
-	
 	private Log2RatioColorScale scale;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
@@ -32,17 +24,7 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 		valueIndex = getPropertyIndex(new String[] {
 				"value", "log2ratio" });
 		
-		/*minValue = -2;
-		midValue = 0;
-		maxValue = 2;
-		
-		minColor = Color.RED;
-		midColor = Color.WHITE;
-		maxColor = Color.BLUE;*/
-		
-		scale = new Log2RatioColorScale(/*
-				minValue, midValue, maxValue, 
-				minColor, midColor, maxColor*/);
+		scale = new Log2RatioColorScale();
 	}
 
 	public final int getValueIndex() {
@@ -59,7 +41,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMinValue(double minValue) {
-		//this.minValue = minValue;
 		scale.setMinPoint(minValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -69,7 +50,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMidValue(double midValue) {
-		//this.midValue = midValue;
 		scale.setMidPoint(midValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -79,7 +59,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMaxValue(double maxValue) {
-		//this.maxValue = maxValue;
 		scale.setMaxPoint(maxValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -89,7 +68,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMinColor(Color minColor) {
-		//this.minColor = minColor;
 		scale.setMinColor(minColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -99,7 +77,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMidColor(Color midColor) {
-		//this.midColor = midColor;
 		scale.setMidColor(midColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -109,7 +86,6 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMaxColor(Color maxColor) {
-		//this.maxColor = maxColor;
 		scale.setMaxColor(maxColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
@@ -119,7 +95,7 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 		decoration.reset();
 		
 		if (element == null) {
-			decoration.setBgColor(Color.WHITE);
+			decoration.setBgColor(ColorConstants.emptyColor);
 			decoration.setToolTip("Empty cell");
 			return;
 		}

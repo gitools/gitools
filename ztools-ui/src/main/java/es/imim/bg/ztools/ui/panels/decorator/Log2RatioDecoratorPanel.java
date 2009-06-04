@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.ui.panels.decorator;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -15,6 +16,8 @@ import javax.swing.event.DocumentListener;
 import es.imim.bg.ztools.table.decorator.impl.Log2RatioElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel.ColorChangeListener;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
 public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
@@ -26,10 +29,12 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 	private JComboBox valueCb;
 
 	private JTextField minValTxt;
-
 	private JTextField maxValTxt;
-
 	private JTextField midValTxt;
+
+	private ColorChooserLabel minColorCc;
+	private ColorChooserLabel midColorCc;
+	private ColorChooserLabel maxColorCc;
 	
 	public Log2RatioDecoratorPanel(TableViewModel model) {
 		super(model);
@@ -65,6 +70,12 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 				minValueChanged(); }
 		});
 		
+		minColorCc = new ColorChooserLabel(decorator.getMinColor());
+		minColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setMinColor(color); }
+		});
+		
 		midValTxt = new JTextField(Double.toString(decorator.getMidValue()));
 		midValTxt.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void changedUpdate(DocumentEvent e) {
@@ -73,6 +84,12 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 				midValueChanged(); }
 			@Override public void removeUpdate(DocumentEvent e) { 
 				midValueChanged(); }
+		});
+		
+		midColorCc = new ColorChooserLabel(decorator.getMidColor());
+		midColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setMidColor(color); }
 		});
 		
 		maxValTxt = new JTextField(Double.toString(decorator.getMaxValue()));
@@ -85,6 +102,12 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 				maxValueChanged(); }
 		});
 		
+		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
+		maxColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setMaxColor(color); }
+		});
+		
 		refresh();
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -92,10 +115,13 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 		add(valueCb);
 		add(new JLabel("Min"));
 		add(minValTxt);
+		add(minColorCc);
 		add(new JLabel("Mid"));
 		add(midValTxt);
+		add(midColorCc);
 		add(new JLabel("Max"));
 		add(maxValTxt);
+		add(maxColorCc);
 	}
 
 	private void refresh() {
