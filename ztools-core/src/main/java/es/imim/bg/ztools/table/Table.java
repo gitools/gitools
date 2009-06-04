@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.table;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import es.imim.bg.ztools.model.AbstractModel;
@@ -8,7 +9,9 @@ import es.imim.bg.ztools.table.element.IElementProperty;
 
 public class Table
 		extends AbstractModel
-		implements ITable {
+		implements Serializable, ITable {
+
+	private static final long serialVersionUID = -8602409555044803568L;
 
 	protected ITableContents contents;
 	
