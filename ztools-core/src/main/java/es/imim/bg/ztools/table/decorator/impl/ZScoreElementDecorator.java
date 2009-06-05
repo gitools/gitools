@@ -2,6 +2,8 @@ package es.imim.bg.ztools.table.decorator.impl;
 
 import java.awt.Color;
 
+import cern.jet.stat.Probability;
+
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.ZScoreColorScale;
 import es.imim.bg.colorscale.util.ColorConstants;
@@ -15,9 +17,8 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	private int valueIndex;
 	private int correctedValueIndex;
 	private boolean useCorrection;
-	private double correctedValueCutoff;
+	private double significanceLevel;
 	
-	private double sigHalfAmplitude;
 	private ZScoreColorScale scale;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
@@ -30,10 +31,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 				"corrected-two-tail-p-value", "corrected-p-value" });
 		
 		useCorrection = false;
-		correctedValueCutoff = 0.05;
+		significanceLevel = 0.05;
 		
 		scale = new ZScoreColorScale();
-		sigHalfAmplitude = scale.getSigHalfAmplitude();
 	}
 
 	public final int getValueIndex() {
@@ -63,21 +63,27 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	public double getCorrectedValueCutoff() {
-		return correctedValueCutoff;
+	public double getSignificanceLevel() {
+		return significanceLevel;
 	}
 	
-	public void setCorrectedValueCutoff(double correctedValueCutoff) {
-		this.correctedValueCutoff = correctedValueCutoff;
+	public void setSignificanceLevel(double sigLevel) {
+		this.significanceLevel = sigLevel;
+		setSigHalfAmplitude(calculateSigHalfAmplitudeFromSigLevel(sigLevel));
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
+	private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel) {
+		double v = Probability.normalInverse(sigLevel);
+		return Math.abs(v);
+	}
+
 	public final double getSigHalfAmplitude() {
-		return sigHalfAmplitude;
+		return scale.getSigHalfAmplitude();
 	}
 
 	public final void setSigHalfAmplitude(double sigHalfAmplitude) {
-		this.sigHalfAmplitude = sigHalfAmplitude;
+		scale.setSigHalfAmplitude(sigHalfAmplitude);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
@@ -112,7 +118,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 					
 			double cv = TableUtils.doubleValue(corrValue);
 			
-			useScale = cv <= correctedValueCutoff;
+			useScale = cv <= significanceLevel;
 		}
 		
 		final Color color = useScale ? scale.getColor(v) 

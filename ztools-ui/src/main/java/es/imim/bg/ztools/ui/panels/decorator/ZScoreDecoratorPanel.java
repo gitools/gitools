@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.ui.panels.decorator;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +13,16 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel.ColorChangeListener;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
 public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
@@ -30,6 +37,8 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	private JComboBox corrValueCb;
+
+	private JTextField sigLevelTb;
 	
 	public ZScoreDecoratorPanel(TableViewModel model) {
 		super(model);
@@ -78,7 +87,7 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 		// show correction check box
 		
 		showCorrChkBox = new JCheckBox();
-		showCorrChkBox.setText("Filter significance by");
+		showCorrChkBox.setText("Filter sig. by");
 		showCorrChkBox.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				showCorrectionChecked();
@@ -96,6 +105,23 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 				}
 			}
 		});
+
+		// significance level
+		sigLevelTb = new JTextField(Double.toString(decorator.getSignificanceLevel()));
+		sigLevelTb.getDocument().addDocumentListener(new DocumentListener() {
+			@Override public void changedUpdate(DocumentEvent e) {
+				sigLevelChanged(); }
+			@Override public void insertUpdate(DocumentEvent e) {
+				sigLevelChanged(); }
+			@Override public void removeUpdate(DocumentEvent e) {
+				sigLevelChanged(); }			
+		});
+		
+		/*sigLevelColorCc = new ColorChooserLabel(decorator.getColor());
+		sigLevelColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setNonSigColor(color); }
+		});*/
 		
 		refresh();
 		
@@ -104,6 +130,8 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 		add(valueCb);
 		add(showCorrChkBox);
 		add(corrValueCb);
+		add(new JLabel("Sig. level"));
+		add(sigLevelTb);
 	}
 
 	private void refresh() {
@@ -144,5 +172,17 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 			(IndexedProperty) corrValueCb.getSelectedItem();
 		
 		decorator.setCorrectedValueIndex(propAdapter.getIndex());
+	}
+	
+	protected void sigLevelChanged() {
+		try {
+			double value = Double.parseDouble(sigLevelTb.getText());
+			decorator.setSignificanceLevel(value);
+			
+			AppFrame.instance().setStatusText("Significance level changed to " + value);
+		}
+		catch (Exception e) { 
+			AppFrame.instance().setStatusText("Invalid value.");
+		}
 	}
 }
