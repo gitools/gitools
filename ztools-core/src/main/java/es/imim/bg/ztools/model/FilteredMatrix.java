@@ -1,41 +1,27 @@
 package es.imim.bg.ztools.model;
 
-import java.util.Map;
-
 public class FilteredMatrix extends TableFigure {
 	/**
 	 * Represents a matrix filtered, original data or final resuts of an
 	 * analysis
 	 */
-	protected TableArtifact artifactTable;
 
-	/** Id of the Decorator to use **/
-	protected String decoratorName;
+	/** Descriptor of the Decorator to use in cells **/
+	protected String decDescriptor;
 
-	/** Specific set up for the Decorator **/
-	protected Map<String, String> decProperties;
-
-	/** Positions of the columns to show **/
-	protected int[] columnsToShow;
+	/** Descriptor of the details panel **/
+	protected String detailsDescriptor;
 
 	public FilteredMatrix() {
 		super();
 	}
 
-	public int[] getColumnsToShow() {
-		return columnsToShow;
+	public String getDecDescriptor() {
+		return decDescriptor;
 	}
 
-	public void setColumnsToShow(int[] columnsToShow) {
-		this.columnsToShow = columnsToShow;
-	}
-
-	public String getDecoratorName() {
-		return decoratorName;
-	}
-
-	public void setDecoratorName(String decoratorName) {
-		this.decoratorName = decoratorName;
+	public void setDecDescriptor(String decDescriptor) {
+		this.decDescriptor = decDescriptor;
 	}
 
 }

@@ -1,33 +1,23 @@
 package es.imim.bg.ztools.model;
 
+import es.imim.bg.ztools.table.ITable;
 
 public abstract class TableFigure extends Figure {
 	/**
 	 * Its a Figure associated to a table.
 	 */
-	protected TableArtifact artifactTable;
-
-	/** Positions of the rows to show **/
-	protected int[] rowsToShow;
+	protected ITable table;
 
 	public TableFigure() {
 		super();
 	}
 
-	public TableArtifact getArtifactTable() {
-		return artifactTable;
+	public ITable getTable() {
+		return table;
 	}
 
-	public void setArtifactTable(TableArtifact artifactTable) {
-		this.artifactTable = artifactTable;
-	}
-
-	public int[] getRowsToShow() {
-		return rowsToShow;
-	}
-
-	public void setRowsToShow(int[] rowsToShow) {
-		this.rowsToShow = rowsToShow;
+	public void setTable(ITable table) {
+		this.table = table;
 	}
 
 }
