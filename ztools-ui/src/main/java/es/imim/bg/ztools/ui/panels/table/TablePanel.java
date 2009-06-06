@@ -313,7 +313,6 @@ public class TablePanel extends JPanel {
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
 			col.setHeaderRenderer(new DefaultTableCellRenderer());
-			col.setHeaderValue("xxx");
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package es.imim.bg.ztools.ui.panels.decorator;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +13,17 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import es.imim.bg.ztools.table.TableUtils;
 import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
 import es.imim.bg.ztools.table.element.IElementAdapter;
 import es.imim.bg.ztools.table.element.IElementProperty;
+import es.imim.bg.ztools.ui.AppFrame;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel;
+import es.imim.bg.ztools.ui.component.ColorChooserLabel.ColorChangeListener;
 import es.imim.bg.ztools.ui.model.TableViewModel;
 
 public class PValueDecoratorPanel extends AbstractDecoratorPanel {
@@ -24,11 +31,18 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 	private static final long serialVersionUID = -7443053984962647946L;
 
 	private List<IndexedProperty> valueProperties;
+	private List<IndexedProperty> corrValueProperties;
 	
 	private PValueElementDecorator decorator;
 	
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
+	private JComboBox corrValueCb;
+	private JTextField sigLevelTb;
+
+	private ColorChooserLabel minColorCc;
+
+	private ColorChooserLabel maxColorCc;
 	
 	public PValueDecoratorPanel(TableViewModel model) {
 		super(model);
@@ -38,17 +52,26 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		final IElementAdapter adapter = decorator.getAdapter();
 		
 		int numProps = adapter.getPropertyCount();
-		
+
 		valueProperties = new ArrayList<IndexedProperty>();
+		corrValueProperties = new ArrayList<IndexedProperty>();
 		for (int i = 0; i < numProps; i++) {
 			final IElementProperty property = adapter.getProperty(i);
+			
 			if (property.getId().endsWith("p-value")
 					/*&& !property.getId().startsWith("corrected")*/)
 				valueProperties.add(new IndexedProperty(i, property));
+			
+			if (property.getId().startsWith("corrected"))
+				corrValueProperties.add(new IndexedProperty(i, property));
 		}
 		
-		if (valueProperties.size() == 0)
+		if (valueProperties.size() == 0) {
 			loadAllProperties(valueProperties, adapter);
+			loadAllProperties(corrValueProperties, adapter);
+		}
+		else if (corrValueProperties.size() == 0)
+			loadAllProperties(corrValueProperties, adapter);
 		
 		createComponents();
 	}
@@ -70,11 +93,46 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		// show correction check box
 		
 		showCorrChkBox = new JCheckBox();
-		showCorrChkBox.setText("Filter by correction");
+		showCorrChkBox.setText("Filter sig. by");
 		showCorrChkBox.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				showCorrectionChecked();
 			}
+		});
+		
+		// corrected value combo box
+		
+		corrValueCb = new JComboBox(new DefaultComboBoxModel(corrValueProperties.toArray()));
+		
+		corrValueCb.addItemListener(new ItemListener() {
+			@Override public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					corrValueChanged();
+				}
+			}
+		});
+
+		// significance level
+		sigLevelTb = new JTextField(Double.toString(decorator.getSignificanceLevel()));
+		sigLevelTb.getDocument().addDocumentListener(new DocumentListener() {
+			@Override public void changedUpdate(DocumentEvent e) {
+				sigLevelChanged(); }
+			@Override public void insertUpdate(DocumentEvent e) {
+				sigLevelChanged(); }
+			@Override public void removeUpdate(DocumentEvent e) {
+				sigLevelChanged(); }			
+		});
+		
+		minColorCc = new ColorChooserLabel(decorator.getMinColor());
+		minColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setMinColor(color); }
+		});
+		
+		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
+		maxColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setMaxColor(color); }
 		});
 		
 		refresh();
@@ -83,6 +141,11 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		add(new JLabel("Value"));
 		add(valueCb);
 		add(showCorrChkBox);
+		add(corrValueCb);
+		add(new JLabel("Sig. level"));
+		add(sigLevelTb);
+		add(minColorCc);
+		add(maxColorCc);
 	}
 	
 	private void refresh() {
@@ -92,6 +155,12 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		
 		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
 		showCorrChkBox.setSelected(decorator.getUseCorrection());
+		
+		corrValueCb.setEnabled(decorator.getUseCorrection());
+		
+		for (int i = 0; i < corrValueProperties.size(); i++)
+			if (corrValueProperties.get(i).getIndex() == decorator.getCorrectedValueIndex())
+				corrValueCb.setSelectedIndex(i);
 	}
 
 	private void valueChanged() {
@@ -111,11 +180,13 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		if (corrIndex >= 0)
 			decorator.setCorrectedValueIndex(corrIndex);
 		
-		showCorrChkBox.setEnabled(corrIndex >= 0);
+		//showCorrChkBox.setEnabled(corrIndex >= 0);
+		
+		refresh();
 	}
 	
 	private void showCorrectionChecked() {
-		IndexedProperty propAdapter = 
+		/*IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 		
 		if (propAdapter != null) {
@@ -124,9 +195,31 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 			
 			if (corrIndex >= 0)
 				decorator.setCorrectedValueIndex(corrIndex);
-		}
+		}*/
 		
 		decorator.setUseCorrection(
 				showCorrChkBox.isSelected());
+		
+		corrValueCb.setEnabled(
+				showCorrChkBox.isSelected());
+	}
+	
+	protected void corrValueChanged() {
+		IndexedProperty propAdapter = 
+			(IndexedProperty) corrValueCb.getSelectedItem();
+		
+		decorator.setCorrectedValueIndex(propAdapter.getIndex());
+	}
+	
+	protected void sigLevelChanged() {
+		try {
+			double value = Double.parseDouble(sigLevelTb.getText());
+			decorator.setSignificanceLevel(value);
+			
+			AppFrame.instance().setStatusText("Significance level changed to " + value);
+		}
+		catch (Exception e) { 
+			AppFrame.instance().setStatusText("Invalid value.");
+		}
 	}
 }

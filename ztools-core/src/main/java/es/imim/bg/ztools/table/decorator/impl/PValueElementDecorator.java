@@ -15,7 +15,7 @@ public class PValueElementDecorator extends ElementDecorator {
 	private int valueIndex;
 	private int correctedValueIndex;
 	private boolean useCorrection;
-	private double cutoff;
+	private double significanceLevel;
 	private PValueColorScale scale;
 
 	private GenericFormatter fmt = new GenericFormatter("<");
@@ -31,7 +31,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		useCorrection = false;
 		
-		cutoff = 0.05;
+		significanceLevel = 0.05;
 		scale = new PValueColorScale();
 	}
 
@@ -62,12 +62,13 @@ public class PValueElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	public final double getCutoff() {
-		return cutoff;
+	public final double getSignificanceLevel() {
+		return significanceLevel;
 	}
 
-	public final void setCutoff(double cutoff) {
-		this.cutoff = cutoff;
+	public final void setSignificanceLevel(double significanceLevel) {
+		this.significanceLevel = significanceLevel;
+		scale.setSignificanceLevel(significanceLevel);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
@@ -80,6 +81,24 @@ public class PValueElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
+	public Color getMinColor() {
+		return scale.getMinColor();
+	}
+
+	public void setMinColor(Color color) {
+		scale.setMinColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+
+	public Color getMaxColor() {
+		return scale.getMaxColor();
+	}
+
+	public void setMaxColor(Color color) {
+		scale.setMaxColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
 	@Override
 	public void decorate(
 			ElementDecoration decoration,
@@ -98,7 +117,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		double v = TableUtils.doubleValue(value);
 		
-		boolean isSig = v <= cutoff;
+		boolean isSig = v <= significanceLevel;
 		
 		if (useCorrection) {
 			Object corrValue = correctedValueIndex >= 0 ?
@@ -106,7 +125,7 @@ public class PValueElementDecorator extends ElementDecorator {
 					
 			double cv = TableUtils.doubleValue(corrValue);
 			
-			isSig = cv <= cutoff;
+			isSig = cv <= significanceLevel;
 		}
 		
 		final Color color = isSig ? scale.getColor(v) 

@@ -31,7 +31,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener {
 		
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		final Dimension dim = new Dimension(30, 30);
+		final Dimension dim = new Dimension(24, 24);
 		setMinimumSize(dim);
 		setPreferredSize(dim);
 		setOpaque(true);

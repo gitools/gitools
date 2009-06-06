@@ -37,8 +37,12 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	private JComboBox corrValueCb;
-
 	private JTextField sigLevelTb;
+	
+	private ColorChooserLabel lminColorCc;
+	private ColorChooserLabel lmaxColorCc;
+	private ColorChooserLabel rminColorCc;
+	private ColorChooserLabel rmaxColorCc;
 	
 	public ZScoreDecoratorPanel(TableViewModel model) {
 		super(model);
@@ -107,6 +111,7 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 		});
 
 		// significance level
+		
 		sigLevelTb = new JTextField(Double.toString(decorator.getSignificanceLevel()));
 		sigLevelTb.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void changedUpdate(DocumentEvent e) {
@@ -123,6 +128,30 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 				decorator.setNonSigColor(color); }
 		});*/
 		
+		lminColorCc = new ColorChooserLabel(decorator.getLeftMinColor());
+		lminColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setLeftMinColor(color); }
+		});
+		
+		lmaxColorCc = new ColorChooserLabel(decorator.getLeftMaxColor());
+		lmaxColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setLeftMaxColor(color); }
+		});
+		
+		rminColorCc = new ColorChooserLabel(decorator.getRightMinColor());
+		rminColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setRightMinColor(color); }
+		});
+		
+		rmaxColorCc = new ColorChooserLabel(decorator.getRightMaxColor());
+		rmaxColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setRightMaxColor(color); }
+		});
+		
 		refresh();
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -132,6 +161,10 @@ public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 		add(corrValueCb);
 		add(new JLabel("Sig. level"));
 		add(sigLevelTb);
+		add(lminColorCc);
+		add(lmaxColorCc);
+		add(rminColorCc);
+		add(rmaxColorCc);
 	}
 
 	private void refresh() {

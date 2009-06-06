@@ -96,6 +96,42 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
+	public Color getLeftMinColor() {
+		return scale.getLeftMinColor();
+	}
+	
+	public void setLeftMinColor(Color color) {
+		scale.setLeftMinColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public Color getLeftMaxColor() {
+		return scale.getLeftMaxColor();
+	}
+	
+	public void setLeftMaxColor(Color color) {
+		scale.setLeftMaxColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public Color getRightMinColor() {
+		return scale.getRightMinColor();
+	}
+	
+	public void setRightMinColor(Color color) {
+		scale.setRightMinColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public Color getRightMaxColor() {
+		return scale.getRightMaxColor();
+	}
+	
+	public void setRightMaxColor(Color color) {
+		scale.setRightMaxColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
 		decoration.reset();

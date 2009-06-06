@@ -101,17 +101,33 @@ public class ZScoreColorScale extends CompositeColorScale {
 		this.sigHalfAmplitude = sigHalfAmplitude;
 		recalculate();
 	}
+
+	public Color getLeftMinColor() {
+		return leftScale.getMinColor();
+	}
 	
 	public void setLeftMinColor(Color color) {
 		leftScale.setMinColor(color);
+	}
+	
+	public Color getLeftMaxColor() {
+		return leftScale.getMaxColor();
 	}
 	
 	public void setLeftMaxColor(Color color) {
 		leftScale.setMaxColor(color);
 	}
 	
+	public Color getRightMinColor() {
+		return rightScale.getMinColor();
+	}
+	
 	public void setRightMinColor(Color color) {
 		rightScale.setMinColor(color);
+	}
+	
+	public Color getRightMaxColor() {
+		return rightScale.getMaxColor();
 	}
 	
 	public void setRightMaxColor(Color color) {
