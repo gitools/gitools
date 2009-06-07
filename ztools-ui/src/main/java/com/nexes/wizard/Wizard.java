@@ -9,7 +9,8 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import es.imim.bg.ztools.ui.IconNames;
+import org.gitools.ui.IconNames;
+
 
 /**
  * This class implements a basic wizard dialog, where the programmer can

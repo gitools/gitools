@@ -12,7 +12,7 @@
 	<description>ztools command line interface</description>
 
 	<properties>
-		<mainClass>es.imim.bg.ztools.cli.Main</mainClass>
+		<mainClass>org.gitools.cli.Main</mainClass>
 	</properties>
 	
 	<dependencies>

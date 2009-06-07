@@ -11,7 +11,7 @@
 	<description>ztools graphical user interface</description>
 
 	<properties>
-		<mainClass>es.imim.bg.ztools.ui.Main</mainClass>
+		<mainClass>org.gitools.ui.Main</mainClass>
 	</properties>
 		
 	<dependencies>
