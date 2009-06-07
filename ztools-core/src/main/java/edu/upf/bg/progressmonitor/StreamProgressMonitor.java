@@ -1,8 +1,11 @@
-package es.imim.bg.progressmonitor;
+package edu.upf.bg.progressmonitor;
 
 import java.io.PrintStream;
 
 import cern.colt.Timer;
+import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 public class StreamProgressMonitor extends DefaultProgressMonitor {
 

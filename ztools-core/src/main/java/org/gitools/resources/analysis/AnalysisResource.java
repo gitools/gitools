@@ -7,7 +7,7 @@ import java.util.zip.DataFormatException;
 import org.gitools.model.Analysis;
 import org.gitools.resources.Resource;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public abstract class AnalysisResource extends Resource {
 

@@ -1,4 +1,4 @@
-package es.imim.bg.csv;
+package edu.upf.bg.csv;
 
 import java.io.PrintWriter;
 import java.io.Writer;

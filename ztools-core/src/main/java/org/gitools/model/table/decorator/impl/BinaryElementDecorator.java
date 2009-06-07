@@ -9,8 +9,8 @@ import org.gitools.model.table.decorator.ElementDecoration;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 
-import es.imim.bg.GenericFormatter;
-import es.imim.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class BinaryElementDecorator extends ElementDecorator {
 

@@ -1,9 +1,9 @@
-package es.imim.bg.colorscale;
+package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-import es.imim.bg.colorscale.CompositeColorScale.ScaleRange;
-import es.imim.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.colorscale.CompositeColorScale.ScaleRange;
+import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class ZScoreColorScale extends CompositeColorScale {
 

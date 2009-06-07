@@ -1,4 +1,4 @@
-package es.imim.bg.csv;
+package edu.upf.bg.csv;
 
 @Deprecated
 public interface CSVProcessor {

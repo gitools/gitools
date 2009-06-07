@@ -1,4 +1,6 @@
-package es.imim.bg.progressmonitor;
+package edu.upf.bg.progressmonitor;
+
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public interface ProgressMonitor {
 	

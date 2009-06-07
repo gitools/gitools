@@ -20,7 +20,7 @@ import org.gitools.resources.analysis.CsvAnalysisResource;
 import org.gitools.resources.analysis.REXmlAnalysisResource;
 import org.gitools.stats.test.factory.TestFactory;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public abstract class AnalysisCommand implements Command {
 

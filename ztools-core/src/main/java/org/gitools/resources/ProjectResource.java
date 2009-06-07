@@ -14,7 +14,7 @@ import javax.xml.bind.Unmarshaller;
 import org.gitools.model.Analysis;
 import org.gitools.model.Project;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class ProjectResource extends Resource {
 

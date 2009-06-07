@@ -21,7 +21,7 @@ import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.BinomialResult.Distribution;
 import org.gitools.utils.Util;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class REXmlAnalysisResource extends AnalysisResource {
 

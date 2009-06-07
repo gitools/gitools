@@ -33,8 +33,8 @@ import org.gitools.stats.test.results.ZScoreResult;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 
-import es.imim.bg.csv.RawCsvWriter;
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.csv.RawCsvWriter;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class ResultsResource extends Resource {
 

@@ -1,4 +1,4 @@
-package es.imim.bg;
+package edu.upf.bg;
 
 import java.util.Formatter;
 import java.util.HashMap;

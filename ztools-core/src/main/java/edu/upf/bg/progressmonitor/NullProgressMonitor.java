@@ -1,4 +1,7 @@
-package es.imim.bg.progressmonitor;
+package edu.upf.bg.progressmonitor;
+
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class NullProgressMonitor implements ProgressMonitor {
 

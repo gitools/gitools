@@ -5,8 +5,8 @@ import java.io.Serializable;
 import org.gitools.model.table.ITableContents;
 import org.gitools.resources.IResource;
 
-import es.imim.bg.progressmonitor.DefaultProgressMonitor;
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public abstract class TableContentsAdapter<T> implements ITableContents,
 		Serializable {

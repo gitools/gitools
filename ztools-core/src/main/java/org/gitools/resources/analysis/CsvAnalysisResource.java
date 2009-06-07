@@ -25,8 +25,8 @@ import org.gitools.resources.ResultsResource;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 
-import es.imim.bg.csv.RawCsvWriter;
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.csv.RawCsvWriter;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class CsvAnalysisResource extends AnalysisResource {
 

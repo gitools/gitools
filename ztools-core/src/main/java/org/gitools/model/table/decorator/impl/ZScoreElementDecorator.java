@@ -9,9 +9,9 @@ import org.gitools.model.table.element.IElementAdapter;
 
 import cern.jet.stat.Probability;
 
-import es.imim.bg.GenericFormatter;
-import es.imim.bg.colorscale.ZScoreColorScale;
-import es.imim.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.ZScoreColorScale;
+import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class ZScoreElementDecorator extends ElementDecorator {
 

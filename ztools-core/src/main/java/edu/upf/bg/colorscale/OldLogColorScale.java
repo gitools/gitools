@@ -1,8 +1,8 @@
-package es.imim.bg.colorscale;
+package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-import es.imim.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.colorscale.util.ColorUtils;
 
 @Deprecated
 public class OldLogColorScale extends AbstractColorScale {

@@ -1,4 +1,4 @@
-package es.imim.bg.colorscale;
+package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 

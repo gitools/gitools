@@ -16,7 +16,7 @@ import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
 import org.gitools.tool.processors.ZCalcProcessor;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class ZCalcCommand extends AnalysisCommand {
 	

@@ -7,9 +7,9 @@ import org.gitools.model.table.decorator.ElementDecoration;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 
-import es.imim.bg.GenericFormatter;
-import es.imim.bg.colorscale.Log2RatioColorScale;
-import es.imim.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.Log2RatioColorScale;
+import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class Log2RatioElementDecorator extends ElementDecorator {
 
