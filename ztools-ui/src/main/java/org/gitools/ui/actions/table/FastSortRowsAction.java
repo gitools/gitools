@@ -9,8 +9,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.TableUtils;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.TableUtils;
 
 public class FastSortRowsAction extends BaseAction {
 

@@ -16,9 +16,9 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.utils.Options;
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.element.IElementProperty;
-import es.imim.bg.ztools.table.export.TableTsvExport;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.element.IElementProperty;
+import org.gitools.model.table.export.TableTsvExport;
 
 public class ExportTableAction extends BaseAction {
 

@@ -6,8 +6,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.ITableContents;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableContents;
 
 public class ShowAllAction extends BaseAction {
 

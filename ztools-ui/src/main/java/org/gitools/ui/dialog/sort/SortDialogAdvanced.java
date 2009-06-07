@@ -18,8 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import es.imim.bg.ztools.aggregation.IAggregator;
-import es.imim.bg.ztools.table.sort.SortCriteria;
+import org.gitools.aggregation.IAggregator;
+import org.gitools.model.table.sort.SortCriteria;
 
 public class SortDialogAdvanced extends SortDialog {
 	

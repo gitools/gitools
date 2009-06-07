@@ -9,15 +9,15 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.model.ResultsMatrix;
-import es.imim.bg.ztools.table.Table;
-import es.imim.bg.ztools.table.adapter.ResultsMatrixTableContentsAdapter;
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorNames;
-import es.imim.bg.ztools.table.element.array.ArrayElementAdapter;
-import es.imim.bg.ztools.table.element.basic.StringElementAdapter;
+import org.gitools.model.Analysis;
+import org.gitools.model.ResultsMatrix;
+import org.gitools.model.table.Table;
+import org.gitools.model.table.adapter.ResultsMatrixTableContentsAdapter;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.decorator.ElementDecoratorFactory;
+import org.gitools.model.table.decorator.ElementDecoratorNames;
+import org.gitools.model.table.element.array.ArrayElementAdapter;
+import org.gitools.model.table.element.basic.StringElementAdapter;
 
 public class DemoView extends TableView {
 

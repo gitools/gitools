@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import org.gitools.ui.model.TableViewModel;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorDescriptor;
-import es.imim.bg.ztools.table.decorator.ElementDecoratorFactory;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.decorator.ElementDecoratorDescriptor;
+import org.gitools.model.table.decorator.ElementDecoratorFactory;
 
 public class TableViewConfigPanel extends JPanel {
 

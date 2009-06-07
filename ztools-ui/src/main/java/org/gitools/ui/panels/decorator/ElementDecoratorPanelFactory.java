@@ -5,11 +5,11 @@ import javax.swing.JPanel;
 
 import org.gitools.ui.model.TableViewModel;
 
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.decorator.impl.BinaryElementDecorator;
-import es.imim.bg.ztools.table.decorator.impl.Log2RatioElementDecorator;
-import es.imim.bg.ztools.table.decorator.impl.PValueElementDecorator;
-import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.decorator.impl.BinaryElementDecorator;
+import org.gitools.model.table.decorator.impl.Log2RatioElementDecorator;
+import org.gitools.model.table.decorator.impl.PValueElementDecorator;
+import org.gitools.model.table.decorator.impl.ZScoreElementDecorator;
 
 public class ElementDecoratorPanelFactory {
 

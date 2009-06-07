@@ -2,7 +2,7 @@ package org.gitools.cli;
 
 import org.kohsuke.args4j.Option;
 
-import es.imim.bg.ztools.threads.ThreadManager;
+import org.gitools.threads.ThreadManager;
 
 public class BasicArguments {
 

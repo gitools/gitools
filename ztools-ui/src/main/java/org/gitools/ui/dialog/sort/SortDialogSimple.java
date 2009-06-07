@@ -19,9 +19,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import es.imim.bg.ztools.aggregation.IAggregator;
-import es.imim.bg.ztools.table.sort.SortCriteria;
-import es.imim.bg.ztools.table.sort.SortCriteria.SortDirection;
+import org.gitools.aggregation.IAggregator;
+import org.gitools.model.table.sort.SortCriteria;
+import org.gitools.model.table.sort.SortCriteria.SortDirection;
 
 public class SortDialogSimple extends SortDialog {
 	

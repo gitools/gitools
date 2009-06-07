@@ -24,16 +24,16 @@ import org.gitools.ui.views.AbstractView;
 import es.imim.bg.GenericFormatter;
 import es.imim.bg.colorscale.PValueColorScale;
 import es.imim.bg.colorscale.ZScoreColorScale;
-import es.imim.bg.ztools.model.IModel;
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.element.IElementAdapter;
-import es.imim.bg.ztools.table.element.IElementProperty;
-import es.imim.bg.ztools.test.results.BinomialResult;
-import es.imim.bg.ztools.test.results.CombinationResult;
-import es.imim.bg.ztools.test.results.CommonResult;
-import es.imim.bg.ztools.test.results.FisherResult;
-import es.imim.bg.ztools.test.results.ZScoreResult;
+import org.gitools.model.IModel;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
+import org.gitools.model.table.element.IElementProperty;
+import org.gitools.stats.test.results.BinomialResult;
+import org.gitools.stats.test.results.CombinationResult;
+import org.gitools.stats.test.results.CommonResult;
+import org.gitools.stats.test.results.FisherResult;
+import org.gitools.stats.test.results.ZScoreResult;
 
 public class TableView extends AbstractView {
 

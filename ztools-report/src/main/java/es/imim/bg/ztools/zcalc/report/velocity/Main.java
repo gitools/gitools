@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.report.velocity;
+package org.gitools.zcalc.report.velocity;
 
 import static org.kohsuke.args4j.ExampleMode.ALL;
 

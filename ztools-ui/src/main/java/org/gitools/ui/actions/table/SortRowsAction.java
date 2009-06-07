@@ -7,11 +7,11 @@ import java.util.List;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
-import es.imim.bg.ztools.aggregation.IAggregator;
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.ITableContents;
-import es.imim.bg.ztools.table.TableUtils;
-import es.imim.bg.ztools.table.sort.SortCriteria;
+import org.gitools.aggregation.IAggregator;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.sort.SortCriteria;
 
 public class SortRowsAction {
 

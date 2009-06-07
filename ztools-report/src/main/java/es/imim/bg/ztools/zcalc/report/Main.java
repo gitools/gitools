@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.report;
+package org.gitools.zcalc.report;
 
 import static org.kohsuke.args4j.ExampleMode.ALL;
 

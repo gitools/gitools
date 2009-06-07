@@ -4,7 +4,7 @@ import java.awt.Window;
 
 import javax.swing.JDialog;
 
-import es.imim.bg.ztools.aggregation.IAggregator;
+import org.gitools.aggregation.IAggregator;
 
 public abstract class SortDialog extends JDialog {
 	

@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 
 import org.gitools.ui.model.TableViewModel;
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.element.IElementAdapter;
-import es.imim.bg.ztools.table.element.IElementProperty;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
+import org.gitools.model.table.element.IElementProperty;
 
 public abstract class AbstractDecoratorPanel extends JPanel {
 

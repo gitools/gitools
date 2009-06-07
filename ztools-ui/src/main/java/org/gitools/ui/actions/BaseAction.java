@@ -11,7 +11,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.views.AbstractView;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.table.ITable;
+import org.gitools.model.table.ITable;
 
 public abstract class BaseAction extends AbstractAction {
 

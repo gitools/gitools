@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.report.velocity;
+package org.gitools.zcalc.report.velocity;
 
 import java.io.File;
 import java.io.IOException;

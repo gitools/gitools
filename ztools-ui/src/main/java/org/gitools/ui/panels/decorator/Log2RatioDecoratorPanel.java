@@ -18,8 +18,8 @@ import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.model.TableViewModel;
 
-import es.imim.bg.ztools.table.decorator.impl.Log2RatioElementDecorator;
-import es.imim.bg.ztools.table.element.IElementAdapter;
+import org.gitools.model.table.decorator.impl.Log2RatioElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
 
 public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 

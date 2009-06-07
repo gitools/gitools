@@ -2,8 +2,8 @@ package org.gitools.ui.actions;
 
 import org.gitools.ui.actions.table.MtcAction;
 
-import es.imim.bg.ztools.stats.mtc.BenjaminiHochbergFdr;
-import es.imim.bg.ztools.stats.mtc.Bonferroni;
+import org.gitools.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.stats.mtc.Bonferroni;
 
 public class MtcActionSet extends ActionSet {
 

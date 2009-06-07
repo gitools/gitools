@@ -8,7 +8,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import es.imim.bg.ztools.table.ITable;
+import org.gitools.model.table.ITable;
 
 public class HideSelectionAction extends BaseAction {
 

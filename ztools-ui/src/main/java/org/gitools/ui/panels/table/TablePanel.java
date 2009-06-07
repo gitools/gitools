@@ -23,9 +23,9 @@ import javax.swing.table.TableColumnModel;
 
 import org.gitools.ui.model.SelectionMode;
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
-import es.imim.bg.ztools.table.element.IElementAdapter;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
 
 public class TablePanel extends JPanel {
 

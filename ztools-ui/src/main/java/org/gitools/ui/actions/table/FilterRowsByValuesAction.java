@@ -12,9 +12,9 @@ import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
 
 
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.ITableContents;
-import es.imim.bg.ztools.table.element.IElementProperty;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.element.IElementProperty;
 
 public class FilterRowsByValuesAction extends BaseAction {
 

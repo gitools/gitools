@@ -1,6 +1,6 @@
 package org.gitools.ui.panels.decorator;
 
-import es.imim.bg.ztools.table.element.IElementProperty;
+import org.gitools.model.table.element.IElementProperty;
 
 public class IndexedProperty {
 	private int index;

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.report;
+package org.gitools.zcalc.report;
 
 import java.awt.Color;
 import java.io.File;
@@ -15,8 +15,8 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import es.imim.bg.colorscale.QValueColorScale;
 import es.imim.bg.colorscale.util.ColorUtils;
-import es.imim.bg.ztools.resources.DescriptionFile;
-import es.imim.bg.ztools.resources.ResultsFile;
+import org.gitools.resources.DescriptionFile;
+import org.gitools.resources.ResultsFile;
 import freemarker.template.SimpleHash;
 import freemarker.template.SimpleNumber;
 import freemarker.template.SimpleScalar;

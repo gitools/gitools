@@ -12,11 +12,11 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
-import es.imim.bg.ztools.stats.mtc.MultipleTestCorrection;
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.ITableContents;
-import es.imim.bg.ztools.table.TableUtils;
-import es.imim.bg.ztools.table.element.IElementAdapter;
+import org.gitools.stats.mtc.MultipleTestCorrection;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.element.IElementAdapter;
 
 public class MtcAction extends BaseAction {
 

@@ -1,4 +1,4 @@
-package es.imim.bg.ztools.zcalc.report;
+package org.gitools.zcalc.report;
 
 import java.io.File;
 import java.io.IOException;

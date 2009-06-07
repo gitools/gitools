@@ -9,7 +9,7 @@ import org.kohsuke.args4j.Option;
 import es.imim.bg.progressmonitor.NullProgressMonitor;
 import es.imim.bg.progressmonitor.ProgressMonitor;
 import es.imim.bg.progressmonitor.StreamProgressMonitor;
-import es.imim.bg.ztools.commands.OncozCommand;
+import org.gitools.commands.OncozCommand;
 
 public class OncozCliTool extends AnalysisCliTool implements CliTool {
 

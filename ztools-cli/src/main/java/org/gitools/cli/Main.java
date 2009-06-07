@@ -9,7 +9,7 @@ import org.gitools.cli.convert.ModuleSetConvertCliTool;
 import org.kohsuke.args4j.CmdLineParser;
 
 import es.imim.bg.progressmonitor.NullProgressMonitor;
-import es.imim.bg.ztools.threads.ThreadManager;
+import org.gitools.threads.ThreadManager;
 
 public class Main {
 

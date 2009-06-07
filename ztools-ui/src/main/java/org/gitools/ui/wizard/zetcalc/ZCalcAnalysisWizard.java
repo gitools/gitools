@@ -10,9 +10,9 @@ import org.gitools.ui.wizard.AnalysisWizard;
 
 import com.nexes.wizard.WizardPanelDescriptor;
 
-import es.imim.bg.ztools.commands.ZCalcCommand;
-import es.imim.bg.ztools.datafilters.BinaryCutoffFilter;
-import es.imim.bg.ztools.test.factory.ZscoreTestFactory;
+import org.gitools.commands.ZCalcCommand;
+import org.gitools.datafilters.BinaryCutoffFilter;
+import org.gitools.stats.test.factory.ZscoreTestFactory;
 
 
 public class ZCalcAnalysisWizard extends AnalysisWizard {

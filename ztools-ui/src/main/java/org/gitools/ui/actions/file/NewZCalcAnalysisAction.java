@@ -13,7 +13,7 @@ import org.gitools.ui.wizard.WizardDataModel;
 import org.gitools.ui.wizard.zetcalc.ZCalcAnalysisWizard;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.commands.ZCalcCommand;
+import org.gitools.commands.ZCalcCommand;
 
 public class NewZCalcAnalysisAction extends BaseAction {
 

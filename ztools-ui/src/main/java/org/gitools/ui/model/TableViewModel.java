@@ -1,8 +1,8 @@
 package org.gitools.ui.model;
 
-import es.imim.bg.ztools.model.AbstractModel;
-import es.imim.bg.ztools.table.ITable;
-import es.imim.bg.ztools.table.decorator.ElementDecorator;
+import org.gitools.model.AbstractModel;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.decorator.ElementDecorator;
 
 public class TableViewModel extends AbstractModel {
 

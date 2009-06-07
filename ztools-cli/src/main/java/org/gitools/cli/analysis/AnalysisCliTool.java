@@ -8,7 +8,7 @@ import org.gitools.cli.InvalidArgumentException;
 import org.gitools.cli.RequiredArgumentException;
 import org.kohsuke.args4j.Option;
 
-import es.imim.bg.ztools.datafilters.BinaryCutoffFilter;
+import org.gitools.datafilters.BinaryCutoffFilter;
 
 public abstract class AnalysisCliTool extends AbstractCliTool {
 

@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.views.AbstractView;
 
-import es.imim.bg.ztools.model.Analysis;
+import org.gitools.model.Analysis;
 
 public class AnalysisDetailsView extends AbstractView {
 

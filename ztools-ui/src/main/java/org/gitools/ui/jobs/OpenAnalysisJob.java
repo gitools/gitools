@@ -8,9 +8,9 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.views.analysis.AnalysisView;
 
 import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.ztools.model.Analysis;
-import es.imim.bg.ztools.resources.analysis.AnalysisResource;
-import es.imim.bg.ztools.resources.analysis.CsvAnalysisResource;
+import org.gitools.model.Analysis;
+import org.gitools.resources.analysis.AnalysisResource;
+import org.gitools.resources.analysis.CsvAnalysisResource;
 
 public class OpenAnalysisJob implements Job {
 

@@ -22,9 +22,9 @@ import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.model.TableViewModel;
 
-import es.imim.bg.ztools.table.decorator.impl.ZScoreElementDecorator;
-import es.imim.bg.ztools.table.element.IElementAdapter;
-import es.imim.bg.ztools.table.element.IElementProperty;
+import org.gitools.model.table.decorator.impl.ZScoreElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
+import org.gitools.model.table.element.IElementProperty;
 
 public class ZScoreDecoratorPanel extends AbstractDecoratorPanel {
 
