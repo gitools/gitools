@@ -2,10 +2,16 @@ package org.gitools.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class AbstractModel implements IModel {
+public abstract class AbstractModel 
+		implements IModel, Serializable {
 
+	private static final long serialVersionUID = -8918954049958104274L;
+
+	public static final String PROPERTY_CHANGED = "propertyChanged";
+	
 	protected ArrayList<PropertyChangeListener> listeners =
 		new ArrayList<PropertyChangeListener>(0);
 	

@@ -8,10 +8,10 @@ import java.util.List;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.aggregation.IAggregator;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.IMatrix;
-import org.gitools.model.table.MatrixUtils;
-import org.gitools.model.table.sort.SortCriteria;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.model.matrix.IMatrix;
+import org.gitools.model.matrix.IMatrixView;
 
 public class SortColumnsAction {
 	

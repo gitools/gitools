@@ -13,10 +13,10 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import org.gitools.stats.mtc.MultipleTestCorrection;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.IMatrix;
-import org.gitools.model.table.MatrixUtils;
-import org.gitools.model.table.element.IElementAdapter;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.model.matrix.IMatrix;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementAdapter;
 
 public class MtcAction extends BaseAction {
 

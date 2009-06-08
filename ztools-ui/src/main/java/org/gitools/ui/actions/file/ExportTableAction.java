@@ -16,9 +16,9 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.utils.Options;
 
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.element.IElementProperty;
-import org.gitools.model.table.export.TableTsvExport;
+import org.gitools.matrix.export.MatrixTsvExporter;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public class ExportTableAction extends BaseAction {
 
@@ -65,7 +65,7 @@ public class ExportTableAction extends BaseAction {
 			if (file == null)
 				return;
 			
-			TableTsvExport.exportProperty(matrixView, propIndex, file);
+			MatrixTsvExporter.exportProperty(matrixView, propIndex, file);
 		}
 		catch (IOException ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());

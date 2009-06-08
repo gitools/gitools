@@ -1,6 +1,6 @@
 package org.gitools.stats.test.results;
 
-import org.gitools.model.table.element.Property;
+import org.gitools.model.matrix.element.Property;
 
 public class BinomialResult extends CommonResult {
 

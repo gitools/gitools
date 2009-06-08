@@ -9,7 +9,7 @@ import org.gitools.datafilters.ValueFilter;
 import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.resources.DataResource;
 import org.gitools.resources.ModuleMapResource;
 import org.gitools.stats.test.factory.TestFactory;

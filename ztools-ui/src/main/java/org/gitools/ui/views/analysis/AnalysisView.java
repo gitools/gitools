@@ -4,14 +4,14 @@ import org.gitools.ui.views.TabbedView;
 import org.gitools.ui.views.table.TableView;
 
 import org.gitools.model.Analysis;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.MatrixView;
-import org.gitools.model.table.adapter.DataMatrixTableContentsAdapter;
-import org.gitools.model.table.adapter.ResultsMatrixTableContentsAdapter;
-import org.gitools.model.table.decorator.ElementDecorator;
-import org.gitools.model.table.decorator.ElementDecoratorFactory;
-import org.gitools.model.table.decorator.ElementDecoratorNames;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.MatrixView;
+import org.gitools.model.matrix.adapter.DataMatrixTableContentsAdapter;
+import org.gitools.model.matrix.adapter.ResultsMatrixTableContentsAdapter;
 
 public class AnalysisView extends TabbedView {
 

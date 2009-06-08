@@ -2,12 +2,15 @@ package org.gitools.model.figure;
 
 import java.io.Serializable;
 
-public class HtmlFigure extends Figure implements Serializable {
+public class HtmlFigure 
+		extends Figure 
+		implements Serializable {
+
+	private static final long serialVersionUID = 2985803897669366351L;
 
 	private String htmlCode;
 
 	public HtmlFigure() {
-		super();
 	}
 
 	public String getHtmlCode() {

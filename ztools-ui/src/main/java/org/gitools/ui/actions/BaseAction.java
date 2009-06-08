@@ -11,7 +11,8 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.views.AbstractView;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
-import org.gitools.model.table.IMatrixView;
+
+import org.gitools.model.matrix.IMatrixView;
 
 public abstract class BaseAction extends AbstractAction {
 

@@ -1,6 +1,6 @@
 package org.gitools.tool.processors;
 
-import org.gitools.model.table.ObjectMatrix;
+import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.stats.mtc.MultipleTestCorrection;
 import org.gitools.stats.test.results.CommonResult;
 

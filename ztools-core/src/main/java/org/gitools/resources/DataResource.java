@@ -14,7 +14,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 import org.gitools.datafilters.DoubleFilter;
 import org.gitools.datafilters.ValueFilter;
-import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.matrix.DoubleMatrix;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;

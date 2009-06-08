@@ -21,11 +21,11 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.MatrixUtils;
-import org.gitools.model.table.decorator.impl.PValueElementDecorator;
-import org.gitools.model.table.element.IElementAdapter;
-import org.gitools.model.table.element.IElementProperty;
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 

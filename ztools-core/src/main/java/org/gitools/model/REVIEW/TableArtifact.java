@@ -1,7 +1,7 @@
 package org.gitools.model.REVIEW;
 
 import org.gitools.model.Artifact;
-import org.gitools.model.table.IMatrix;
+import org.gitools.model.matrix.IMatrix;
 
 public class TableArtifact extends Artifact {
 

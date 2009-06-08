@@ -8,8 +8,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import org.gitools.model.table.decorator.ElementDecoration;
-import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoration;
+import org.gitools.model.decorator.ElementDecorator;
 
 public class LabelTableCellRenderer 
 		implements TableCellRenderer {

@@ -2,8 +2,8 @@ package org.gitools.model.figure;
 
 import java.io.Serializable;
 
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.matrix.IMatrixView;
 
 public class MatrixFigure 
 		extends Figure
@@ -11,14 +11,14 @@ public class MatrixFigure
 
 	private static final long serialVersionUID = 325437934312047512L;
 
-	//public static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
 	public static final String DECORATOR = "decorator";
 	public static final String TABLE = "table";
 	
-	//private ElementDecoratorDescriptor decoratorDescriptor;
 	private ElementDecorator decorator;
 	
 	private IMatrixView matrixView;
+	
+	private int cellSize;
 	
 	public MatrixFigure(
 			IMatrixView matrixView,
@@ -26,37 +26,8 @@ public class MatrixFigure
 		
 		this.matrixView = matrixView;
 		this.decorator = decorator;
+		this.cellSize = 20;
 	}
-	
-	/*public TableViewModel(
-			ITable table) {
-		
-		decoratorDescriptor = ElementDecoratorFactory.getDescriptors().get(0);
-		decorator = ElementDecoratorFactory.create(
-				decoratorDescriptor, table.getCellAdapter());
-		
-		this(
-				table, 
-				decorator);
-	}
-	*/
-	
-	/*public ElementDecoratorDescriptor getDecoratorDescriptor() {
-		return decoratorDescriptor;
-	}
-	
-	public void setDecoratorDescriptor(
-			ElementDecoratorDescriptor decoratorDescriptor) {
-		
-		final ElementDecoratorDescriptor old = this.decoratorDescriptor;
-		
-		this.decoratorDescriptor = decoratorDescriptor;
-		
-		setDecorator(ElementDecoratorFactory.create(
-				decoratorDescriptor, table.getCellAdapter()));
-		
-		firePropertyChange(DECORATOR_DESCRIPTOR, old, decoratorDescriptor);
-	}*/
 	
 	public final ElementDecorator getDecorator() {
 		return decorator;
@@ -70,12 +41,21 @@ public class MatrixFigure
 		firePropertyChange(DECORATOR, old, decorator);
 	}
 	
-	public final IMatrixView getTable() {
+	public final IMatrixView getMatrixView() {
 		return matrixView;
 	}
 	
-	public final void setTable(IMatrixView matrixView) {
+	public final void setMatrixView(IMatrixView matrixView) {
 		this.matrixView = matrixView;
 		firePropertyChange(TABLE);
+	}
+	
+	public int getCellSize() {
+		return cellSize;
+	}
+	
+	public void setCellSize(int cellSize) {
+		this.cellSize = cellSize;
+		firePropertyChange(PROPERTY_CHANGED);
 	}
 }

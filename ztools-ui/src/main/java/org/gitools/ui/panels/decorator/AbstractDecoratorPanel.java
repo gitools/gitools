@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.decorator.ElementDecorator;
-import org.gitools.model.table.element.IElementAdapter;
-import org.gitools.model.table.element.IElementProperty;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public abstract class AbstractDecoratorPanel extends JPanel {
 
@@ -24,7 +24,7 @@ public abstract class AbstractDecoratorPanel extends JPanel {
 	}
 	
 	protected IMatrixView getTable() {
-		return model.getTable();
+		return model.getMatrixView();
 	}
 	
 	protected ElementDecorator getDecorator() {

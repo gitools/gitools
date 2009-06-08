@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.IMatrixView;
+import org.gitools.model.matrix.IMatrixView;
 
 public class InvertSelectionAction extends BaseAction {
 

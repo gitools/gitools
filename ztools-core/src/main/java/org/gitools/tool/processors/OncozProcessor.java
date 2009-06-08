@@ -3,9 +3,9 @@ package org.gitools.tool.processors;
 import java.util.Date;
 
 import org.gitools.model.Analysis;
-import org.gitools.model.table.ObjectMatrix;
-import org.gitools.model.table.element.basic.StringElementAdapter;
-import org.gitools.model.table.element.bean.BeanElementAdapter;
+import org.gitools.model.matrix.ObjectMatrix;
+import org.gitools.model.matrix.element.basic.StringElementAdapter;
+import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;

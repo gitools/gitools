@@ -7,7 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.matrix.DoubleMatrix;
 
 /*@XmlType(
 		propOrder = {

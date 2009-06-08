@@ -6,8 +6,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.IMatrix;
+import org.gitools.model.matrix.IMatrix;
+import org.gitools.model.matrix.IMatrixView;
 
 public class ShowAllAction extends BaseAction {
 

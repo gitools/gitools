@@ -16,9 +16,9 @@ import javax.swing.event.DocumentListener;
 
 import org.gitools.datafilters.BinaryCutoffFilter;
 import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
+import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.table.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;

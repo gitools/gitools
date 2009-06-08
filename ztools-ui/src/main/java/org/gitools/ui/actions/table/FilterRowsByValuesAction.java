@@ -12,9 +12,9 @@ import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
 
 
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.IMatrix;
-import org.gitools.model.table.element.IElementProperty;
+import org.gitools.model.matrix.IMatrix;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public class FilterRowsByValuesAction extends BaseAction {
 

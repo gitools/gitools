@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.IMatrixView;
+import org.gitools.model.matrix.IMatrixView;
 
 public class MoveSelectionAction extends BaseAction {
 

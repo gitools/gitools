@@ -20,8 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.gitools.aggregation.IAggregator;
-import org.gitools.model.table.sort.SortCriteria;
-import org.gitools.model.table.sort.SortCriteria.SortDirection;
+import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.matrix.sort.SortCriteria.SortDirection;
 
 public class SortDialogSimple extends SortDialog {
 	

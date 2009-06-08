@@ -15,10 +15,10 @@ import javax.swing.JPanel;
 
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorDescriptor;
+import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.decorator.ElementDecorator;
-import org.gitools.model.table.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.table.decorator.ElementDecoratorFactory;
 
 public class TableViewConfigPanel extends JPanel {
 
@@ -87,7 +87,7 @@ public class TableViewConfigPanel extends JPanel {
 			ElementDecorator decorator = decoratorCache.get(descriptor);
 			if (decorator == null)
 				decorator = ElementDecoratorFactory.create(
-						descriptor, model.getTable().getCellAdapter());
+						descriptor, model.getMatrixView().getCellAdapter());
 			
 			model.setDecorator(decorator);
 

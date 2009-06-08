@@ -3,7 +3,7 @@ package org.gitools.ui.panels.table;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import org.gitools.model.table.IMatrixView;
+import org.gitools.model.matrix.IMatrixView;
 
 public class TableModelAdapter implements TableModel {
 

@@ -9,9 +9,9 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.sort.SortDialogSimple;
 
 import org.gitools.aggregation.AggregatorFactory;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.element.IElementProperty;
-import org.gitools.model.table.sort.SortCriteria;
+import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public class SortAction extends BaseAction {
 

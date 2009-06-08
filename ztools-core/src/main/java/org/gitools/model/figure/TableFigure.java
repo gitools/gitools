@@ -1,6 +1,6 @@
 package org.gitools.model.figure;
 
-import org.gitools.model.table.ITableView;
+import org.gitools.model.matrix.ITableView;
 
 public class TableFigure extends Figure {
 	

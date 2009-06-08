@@ -19,7 +19,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.gitools.aggregation.IAggregator;
-import org.gitools.model.table.sort.SortCriteria;
+import org.gitools.matrix.sort.SortCriteria;
 
 public class SortDialogAdvanced extends SortDialog {
 	

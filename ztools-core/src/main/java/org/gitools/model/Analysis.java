@@ -5,8 +5,8 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.gitools.model.table.DoubleMatrix;
-import org.gitools.model.table.ObjectMatrix;
+import org.gitools.model.matrix.DoubleMatrix;
+import org.gitools.model.matrix.ObjectMatrix;
 
 /*@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
 		"dataTableRef", "moduleMapRef", "results" })*/

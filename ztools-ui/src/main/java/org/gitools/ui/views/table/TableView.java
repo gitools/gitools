@@ -24,11 +24,11 @@ import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.PValueColorScale;
 import edu.upf.bg.colorscale.ZScoreColorScale;
 import org.gitools.model.IModel;
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.IMatrixView;
-import org.gitools.model.table.decorator.ElementDecorator;
-import org.gitools.model.table.element.IElementAdapter;
-import org.gitools.model.table.element.IElementProperty;
+import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
@@ -56,7 +56,7 @@ public class TableView extends AbstractView {
 		
 		this.model = model;
 		
-		final IMatrixView matrixView = model.getTable();
+		final IMatrixView matrixView = model.getMatrixView();
 	
 		this.blockSelectionUpdate = false;
 		
@@ -341,18 +341,18 @@ public class TableView extends AbstractView {
 	}
 
 	protected IMatrixView getTable() {
-		return model.getTable();
+		return model.getMatrixView();
 	}
 	
 	@Deprecated //When getModel return TableViewModel
 	public void setTable(IMatrixView tableModel) {
-		this.model.setTable(tableModel);
+		this.model.setMatrixView(tableModel);
 		refresh();
 	}
 
 	@Override
 	public Object getModel() {
-		return model.getTable(); //TODO: return TableViewModel
+		return model.getMatrixView(); //TODO: return TableViewModel
 	}
 
 	@Override
