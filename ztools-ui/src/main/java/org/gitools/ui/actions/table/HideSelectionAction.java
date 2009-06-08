@@ -8,7 +8,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class HideSelectionAction extends BaseAction {
 
@@ -44,9 +44,9 @@ public class HideSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITable table = getTable();
+		IMatrixView matrixView = getTable();
 		
-		if (table == null)
+		if (matrixView == null)
 			return;		
 		
 		String msg = "";
@@ -54,19 +54,19 @@ public class HideSelectionAction extends BaseAction {
 		switch (type) {
 		case ROWS:
 			msg = "Selected rows hided.";
-			table.setVisibleRows(arrayRemove(
-					table.getVisibleRows(), 
-					table.getSelectedRows()));
+			matrixView.setVisibleRows(arrayRemove(
+					matrixView.getVisibleRows(), 
+					matrixView.getSelectedRows()));
 			break;
 		case COLUMNS:
 			msg = "Selected columns hided.";
-			table.setVisibleColumns(arrayRemove(
-					table.getVisibleColumns(), 
-					table.getSelectedColumns()));
+			matrixView.setVisibleColumns(arrayRemove(
+					matrixView.getVisibleColumns(), 
+					matrixView.getSelectedColumns()));
 			break;
 		}
 		
-		table.clearSelection();
+		matrixView.clearSelection();
 		
 		AppFrame.instance()
 			.setStatusText(msg);

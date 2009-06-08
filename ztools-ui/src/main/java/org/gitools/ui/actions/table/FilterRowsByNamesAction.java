@@ -11,8 +11,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByNameDialog;
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
 
 public class FilterRowsByNamesAction extends BaseAction {
 
@@ -26,8 +26,8 @@ public class FilterRowsByNamesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final ITable table = getTable();
-		if (table == null)
+		final IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 		
 		// Show dialog
@@ -40,7 +40,7 @@ public class FilterRowsByNamesAction extends BaseAction {
 		if(names == null)
 			return;
 		
-		final ITableContents contents = table.getContents();
+		final IMatrix contents = matrixView.getContents();
 
 		// List of rows that will be shown
 		List<Integer> rows = new ArrayList<Integer>();
@@ -53,13 +53,13 @@ public class FilterRowsByNamesAction extends BaseAction {
 		int[] visibleRows = new int[rows.size()];
 		for (int i = 0; i < rows.size(); i++)
 			visibleRows[i] = rows.get(i);
-		table.setVisibleRows(visibleRows);
+		matrixView.setVisibleRows(visibleRows);
 		
 		AppFrame.instance()
 			.setStatusText("Total visible rows = " + rows.size());
 	}
 
-	private void filterByNames(List<String> names, ITableContents contents, List<Integer> rows) {
+	private void filterByNames(List<String> names, IMatrix contents, List<Integer> rows) {
 		
 		int rowCount = contents.getRowCount();
 		
@@ -78,7 +78,7 @@ public class FilterRowsByNamesAction extends BaseAction {
 		}
 	}
 
-	private void filterByRegex(List<String> names, ITableContents contents, List<Integer> rows) {
+	private void filterByRegex(List<String> names, IMatrix contents, List<Integer> rows) {
 
 		// Compile patterns
 		List<Pattern> patterns = new ArrayList<Pattern>(names.size());

@@ -1,6 +1,6 @@
 package org.gitools.tool.processors;
 
-import org.gitools.model.ResultsMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.stats.mtc.MultipleTestCorrection;
 import org.gitools.stats.test.results.CommonResult;
 
@@ -11,7 +11,7 @@ import edu.upf.bg.progressmonitor.ProgressMonitor;
 public class AbstractProcessor {
 
 	protected void multipleTestCorrection(
-			ResultsMatrix res,
+			ObjectMatrix res,
 			MultipleTestCorrection mtc, 
 			ProgressMonitor monitor) {
 		

@@ -7,7 +7,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class UnselectAllAction extends BaseAction {
 
@@ -24,10 +24,10 @@ public class UnselectAllAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITable table = getTable();
+		IMatrixView matrixView = getTable();
 		
-		if (table != null)
-			table.clearSelection();
+		if (matrixView != null)
+			matrixView.clearSelection();
 		
 		AppFrame.instance()
 			.setStatusText("Unselected all.");

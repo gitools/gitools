@@ -1,23 +1,23 @@
 package org.gitools.model.figure;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public abstract class TableFigure extends Figure {
 	/**
 	 * Its a Figure associated to a table.
 	 */
-	protected ITable table;
+	protected IMatrixView matrixView;
 
 	public TableFigure() {
 		super();
 	}
 
-	public ITable getTable() {
-		return table;
+	public IMatrixView getTable() {
+		return matrixView;
 	}
 
-	public void setTable(ITable table) {
-		this.table = table;
+	public void setTable(IMatrixView matrixView) {
+		this.matrixView = matrixView;
 	}
 
 }

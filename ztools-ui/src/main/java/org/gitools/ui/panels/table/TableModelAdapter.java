@@ -3,13 +3,13 @@ package org.gitools.ui.panels.table;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class TableModelAdapter implements TableModel {
 
-	private ITable model;
+	private IMatrixView model;
 	
-	public TableModelAdapter(ITable model) {
+	public TableModelAdapter(IMatrixView model) {
 		this.model = model;
 	}
 	

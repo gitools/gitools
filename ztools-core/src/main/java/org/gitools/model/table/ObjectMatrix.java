@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.table;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -25,7 +25,7 @@ import cern.colt.matrix.ObjectMatrix2D;
 		StringElementAdapter.class,
 		ArrayElementAdapter.class})
 		
-public class ResultsMatrix  {
+public class ObjectMatrix  {
 	
 	protected ObjectMatrix1D rows;
 	protected ObjectMatrix1D columns;
@@ -35,10 +35,10 @@ public class ResultsMatrix  {
 	protected IElementAdapter columnAdapter;
 	protected IElementAdapter cellAdapter;
 	
-	public ResultsMatrix() {
+	public ObjectMatrix() {
 	}
 	
-	public ResultsMatrix(
+	public ObjectMatrix(
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
 			ObjectMatrix2D cells,

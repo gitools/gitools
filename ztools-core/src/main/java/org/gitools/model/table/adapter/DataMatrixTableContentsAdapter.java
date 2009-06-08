@@ -1,21 +1,22 @@
 package org.gitools.model.table.adapter;
 
-import org.gitools.model.DataMatrix;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.table.IMatrix;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.basic.DoubleElementAdapter;
 import org.gitools.model.table.element.basic.StringElementAdapter;
 import org.gitools.resources.IResource;
 
-public class DataMatrixTableContentsAdapter extends TableContentsAdapter<DataMatrix>
-		implements ITableContents {
+@Deprecated // Now DataMatrix is named DoubleMatrix and implements IMatrix
+public class DataMatrixTableContentsAdapter extends TableContentsAdapter<DoubleMatrix>
+		implements IMatrix {
 
-	public DataMatrixTableContentsAdapter(DataMatrix data, IResource<DataMatrix> resource) {
+	public DataMatrixTableContentsAdapter(DoubleMatrix data, IResource<DoubleMatrix> resource) {
 		super(data, resource);
 	}
 
 	public DataMatrixTableContentsAdapter(Object data) {
-		super((DataMatrix) data);
+		super((DoubleMatrix) data);
 	}
 
 	public Object getCell(int row, int column) {

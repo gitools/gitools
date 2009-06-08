@@ -1,27 +1,33 @@
 package org.gitools.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlType(
+import org.gitools.model.table.DoubleMatrix;
+
+/*@XmlType(
 		propOrder = {
 				"summary", 
 				"notes", 
 				"dataTables", 
 				"moduleMaps", 
-				"analysis"})
+				"analysis"})*/
 
 @XmlRootElement
-public class Project {
-	
+public class Project
+		extends Artifact
+		implements Serializable {
+
+	private static final long serialVersionUID = 4101220499729323315L;
+
 	protected String summary;
 	protected String notes;
 	
-	protected List<DataMatrix> dataTables = new ArrayList<DataMatrix>();
+	protected List<DoubleMatrix> dataTables = new ArrayList<DoubleMatrix>();
 	protected List<ModuleMap> moduleMaps = new ArrayList<ModuleMap>();
 	protected List<Analysis> analysis = new ArrayList<Analysis>();
 	
@@ -46,11 +52,11 @@ public class Project {
 	}
 	
 	@XmlElement(name = "DataTable")
-	public List<DataMatrix> getDataTables() {
+	public List<DoubleMatrix> getDataTables() {
 		return dataTables;
 	}
 	
-	public void setDataTables(List<DataMatrix> dataMatrices) {
+	public void setDataTables(List<DoubleMatrix> dataMatrices) {
 		this.dataTables = dataMatrices;
 	}
 	

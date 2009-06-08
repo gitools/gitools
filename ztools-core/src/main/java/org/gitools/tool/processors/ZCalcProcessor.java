@@ -3,7 +3,7 @@ package org.gitools.tool.processors;
 import java.util.Date;
 
 import org.gitools.model.Analysis;
-import org.gitools.model.ResultsMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.model.table.element.basic.StringElementAdapter;
 import org.gitools.model.table.element.bean.BeanElementAdapter;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
@@ -82,7 +82,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		
 		Test test = testFactory.create();
 		
-		final ResultsMatrix resultsMatrix = new ResultsMatrix();
+		final ObjectMatrix resultsMatrix = new ObjectMatrix();
 		
 		resultsMatrix.setColumns(conditions);
 		resultsMatrix.setRows(modules);

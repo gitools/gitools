@@ -1,19 +1,20 @@
 package org.gitools.model.table.adapter;
 
-import org.gitools.model.ResultsMatrix;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.resources.IResource;
 
+@Deprecated // Now ResultsMatrix is named ObjectMatrix and implements IMatrix
 public class ResultsMatrixTableContentsAdapter extends
-		TableContentsAdapter<ResultsMatrix> implements ITableContents {
+		TableContentsAdapter<ObjectMatrix> implements IMatrix {
 
-	public ResultsMatrixTableContentsAdapter(ResultsMatrix data,
-			IResource<ResultsMatrix> resource) {
+	public ResultsMatrixTableContentsAdapter(ObjectMatrix data,
+			IResource<ObjectMatrix> resource) {
 		super(data, resource);
 	}
 
-	public ResultsMatrixTableContentsAdapter(ResultsMatrix data) {
+	public ResultsMatrixTableContentsAdapter(ObjectMatrix data) {
 		super(data);
 	}
 

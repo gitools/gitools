@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementProperty;
@@ -23,7 +23,7 @@ public abstract class AbstractDecoratorPanel extends JPanel {
 		this.model = model;
 	}
 	
-	protected ITable getTable() {
+	protected IMatrixView getTable() {
 		return model.getTable();
 	}
 	

@@ -11,8 +11,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByNameDialog;
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
 
 public class FilterColumnsByNamesAction extends BaseAction {
 
@@ -26,8 +26,8 @@ public class FilterColumnsByNamesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final ITable table = getTable();
-		if (table == null)
+		final IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 		
 		// Show dialog
@@ -40,7 +40,7 @@ public class FilterColumnsByNamesAction extends BaseAction {
 		if(names == null)
 			return;
 		
-		final ITableContents contents = table.getContents();
+		final IMatrix contents = matrixView.getContents();
 		
 		// List of columns that will be shown
 		List<Integer> columns = new ArrayList<Integer>();
@@ -53,13 +53,13 @@ public class FilterColumnsByNamesAction extends BaseAction {
 		int[] visibleColumns = new int[columns.size()];
 		for (int i = 0; i < columns.size(); i++)
 			visibleColumns[i] = columns.get(i);
-		table.setVisibleColumns(visibleColumns);
+		matrixView.setVisibleColumns(visibleColumns);
 		
 		AppFrame.instance()
 			.setStatusText("Total visible columns = " + columns.size());
 	}
 
-	private void filterByNames(List<String> names, ITableContents contents, List<Integer> columns) {
+	private void filterByNames(List<String> names, IMatrix contents, List<Integer> columns) {
 		
 		int columnCount = contents.getColumnCount();
 		
@@ -78,7 +78,7 @@ public class FilterColumnsByNamesAction extends BaseAction {
 		}
 	}
 
-	private void filterByRegex(List<String> names, ITableContents contents, List<Integer> columns) {
+	private void filterByRegex(List<String> names, IMatrix contents, List<Integer> columns) {
 
 		// Compile patterns
 		List<Pattern> patterns = new ArrayList<Pattern>(names.size());

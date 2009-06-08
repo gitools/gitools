@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class InvertSelectionAction extends BaseAction {
 
@@ -19,11 +19,11 @@ public class InvertSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITable table = getTable();
+		IMatrixView matrixView = getTable();
 		
 		
-		if (table != null){	
-			table.invertSelection();
+		if (matrixView != null){	
+			matrixView.invertSelection();
 		}
 		
 		AppFrame.instance()

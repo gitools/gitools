@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.gitools.datafilters.BinaryCutoffFilter;
 import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.MatrixUtils;
 import org.gitools.model.table.decorator.ElementDecoration;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
@@ -88,7 +88,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		Object value = adapter.getValue(
 				element, valueIndex);
 		
-		double v = TableUtils.doubleValue(value);
+		double v = MatrixUtils.doubleValue(value);
 		
 		boolean isSig = cutoffCmp.compare(v, cutoff);
 		

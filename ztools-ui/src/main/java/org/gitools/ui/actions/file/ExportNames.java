@@ -15,8 +15,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.utils.Options;
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
 
 public class ExportNames extends BaseAction {
 
@@ -37,9 +37,9 @@ public class ExportNames extends BaseAction {
 		final String hiddenRows = "Hidden row names";
 		final String hiddenCols = "Hidden column names";
 
-		ITable table = getTable();
-		ITableContents contents = table.getContents();
-		if (table == null)
+		IMatrixView matrixView = getTable();
+		IMatrix contents = matrixView.getContents();
+		if (matrixView == null)
 			return;
 		
 		String[] possibilities = { 
@@ -61,22 +61,22 @@ public class ExportNames extends BaseAction {
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
 			if (visibleRows.equals(selected)) {
-				for (int i = 0; i < table.getRowCount(); i++)
-					pw.println(table.getRow(i).toString());
+				for (int i = 0; i < matrixView.getRowCount(); i++)
+					pw.println(matrixView.getRow(i).toString());
 			}
 			else if (visibleCols.equals(selected)) {
-				for (int i = 0; i < table.getColumnCount(); i++)
-					pw.println(table.getColumn(i).toString());
+				for (int i = 0; i < matrixView.getColumnCount(); i++)
+					pw.println(matrixView.getColumn(i).toString());
 			} 
 			else if (hiddenRows.equals(selected)) {
 				for (int i = 0; i < contents.getRowCount(); i++) {
-					if (!inArray(i, table.getVisibleRows()))
+					if (!inArray(i, matrixView.getVisibleRows()))
 							pw.println(contents.getRow(i).toString());
 				}
 			}
 			else if (hiddenCols.equals(selected)) {
 				for (int i = 0; i < contents.getColumnCount(); i++) {
-					if (!inArray(i, table.getVisibleColumns()))
+					if (!inArray(i, matrixView.getVisibleColumns()))
 							pw.println(contents.getColumn(i).toString());
 				}
 			}

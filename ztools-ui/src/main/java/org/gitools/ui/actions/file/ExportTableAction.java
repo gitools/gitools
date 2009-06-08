@@ -16,7 +16,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.utils.Options;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.element.IElementProperty;
 import org.gitools.model.table.export.TableTsvExport;
 
@@ -34,16 +34,16 @@ public class ExportTableAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		ITable table = getTable();
-		if (table == null)
+		IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 		
-		final List<IElementProperty> properties = table.getCellAdapter().getProperties();
+		final List<IElementProperty> properties = matrixView.getCellAdapter().getProperties();
 		final String[] propNames = new String[properties.size()];
 		for (int i = 0; i < properties.size(); i++)
 			propNames[i] = properties.get(i).getName();
 
-		int selectedPropIndex = table.getSelectedPropertyIndex();
+		int selectedPropIndex = matrixView.getSelectedPropertyIndex();
 		selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
 		selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
 		
@@ -65,7 +65,7 @@ public class ExportTableAction extends BaseAction {
 			if (file == null)
 				return;
 			
-			TableTsvExport.exportProperty(table, propIndex, file);
+			TableTsvExport.exportProperty(matrixView, propIndex, file);
 		}
 		catch (IOException ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());

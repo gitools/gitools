@@ -25,7 +25,7 @@ import edu.upf.bg.colorscale.PValueColorScale;
 import edu.upf.bg.colorscale.ZScoreColorScale;
 import org.gitools.model.IModel;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementProperty;
@@ -56,7 +56,7 @@ public class TableView extends AbstractView {
 		
 		this.model = model;
 		
-		final ITable table = model.getTable();
+		final IMatrixView matrixView = model.getTable();
 	
 		this.blockSelectionUpdate = false;
 		
@@ -80,7 +80,7 @@ public class TableView extends AbstractView {
 		
 		model.getDecorator().addPropertyChangeListener(decoratorListener);
 		
-		table.addPropertyChangeListener(new PropertyChangeListener() {
+		matrixView.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				tablePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
@@ -125,12 +125,12 @@ public class TableView extends AbstractView {
 			colorMatrixPanel.refresh();
 			refreshActions();
 		}*/
-		if (ITable.SELECTION_CHANGED.equals(propertyName)
-			|| ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
+		if (IMatrixView.SELECTION_CHANGED.equals(propertyName)
+			|| IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
 			
 			if (!blockSelectionUpdate) {
 				blockSelectionUpdate = true;
-				if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
+				if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
 					tablePanel.refreshColumns();
 				
 				//System.out.println("Start selection change:");
@@ -143,19 +143,19 @@ public class TableView extends AbstractView {
 				blockSelectionUpdate = false;
 			}
 		}
-		else if (ITable.SELECTED_LEAD_CHANGED.equals(propertyName)) {
+		else if (IMatrixView.SELECTED_LEAD_CHANGED.equals(propertyName)) {
 			refreshCellDetails();
 		}
-		else if (ITable.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
+		else if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
 		}
-		else if (ITable.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
+		else if (IMatrixView.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
 			tablePanel.refresh();
 		}
-		else if (ITable.CELL_VALUE_CHANGED.equals(propertyName)) {
+		else if (IMatrixView.CELL_VALUE_CHANGED.equals(propertyName)) {
 			tablePanel.refresh();
 		}
-		else if (ITable.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
+		else if (IMatrixView.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
 			if (oldValue != null)
 				((IModel) oldValue).removePropertyChangeListener(modelListener);
 			
@@ -340,12 +340,12 @@ public class TableView extends AbstractView {
 					.getPreferredWidth());*/
 	}
 
-	protected ITable getTable() {
+	protected IMatrixView getTable() {
 		return model.getTable();
 	}
 	
 	@Deprecated //When getModel return TableViewModel
-	public void setTable(ITable tableModel) {
+	public void setTable(IMatrixView tableModel) {
 		this.model.setTable(tableModel);
 		refresh();
 	}

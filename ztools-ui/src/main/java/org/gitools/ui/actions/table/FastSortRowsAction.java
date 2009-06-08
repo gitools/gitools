@@ -9,8 +9,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.MatrixUtils;
 
 public class FastSortRowsAction extends BaseAction {
 
@@ -34,17 +34,17 @@ public class FastSortRowsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		final ITable table = getTable();
+		final IMatrixView matrixView = getTable();
 		
-		if (table == null)
+		if (matrixView == null)
 			return;
 
-		final int propIndex = table.getSelectedPropertyIndex();
+		final int propIndex = matrixView.getSelectedPropertyIndex();
 		
-		final int rowCount = table.getRowCount();
-		int[] selColumns = table.getSelectedColumns();
+		final int rowCount = matrixView.getRowCount();
+		int[] selColumns = matrixView.getSelectedColumns();
 		if (selColumns.length == 0) {
-			selColumns = new int[table.getColumnCount()];
+			selColumns = new int[matrixView.getColumnCount()];
 			for (int i = 0; i < selColumns.length; i++)
 				selColumns[i] = i;
 		}
@@ -69,8 +69,8 @@ public class FastSortRowsAction extends BaseAction {
 				for (int i = 0; i < N; i++) {
 					int col = selectedColumns[i];
 					
-					Object value1 = table.getCellValue(idx1, col, propIndex);
-					double v1 = TableUtils.doubleValue(value1);
+					Object value1 = matrixView.getCellValue(idx1, col, propIndex);
+					double v1 = MatrixUtils.doubleValue(value1);
 
 					if (!Double.isNaN(v1)) {
 						m1 *= v1;
@@ -80,8 +80,8 @@ public class FastSortRowsAction extends BaseAction {
 						n1++;
 					}
 					
-					Object value2 = table.getCellValue(idx2, col, propIndex);
-					double v2 = TableUtils.doubleValue(value2);
+					Object value2 = matrixView.getCellValue(idx2, col, propIndex);
+					double v2 = MatrixUtils.doubleValue(value2);
 					
 					if (!Double.isNaN(v2)) {
 						m2 *= v2;
@@ -106,13 +106,13 @@ public class FastSortRowsAction extends BaseAction {
 			}
 		});
 		
-		final int[] visibleRows = table.getVisibleRows();
+		final int[] visibleRows = matrixView.getVisibleRows();
 		final int[] sortedVisibleRows = new int[rowCount];
 		
 		for (int i = 0; i < rowCount; i++)
 			sortedVisibleRows[i] = visibleRows[indices[i]];
 		
-		table.setVisibleRows(sortedVisibleRows);
+		matrixView.setVisibleRows(sortedVisibleRows);
 		
 		AppFrame.instance()
 			.setStatusText("Rows sorted.");

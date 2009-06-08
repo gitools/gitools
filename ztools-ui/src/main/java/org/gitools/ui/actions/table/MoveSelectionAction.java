@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class MoveSelectionAction extends BaseAction {
 
@@ -57,27 +57,27 @@ public class MoveSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITable table = getTable();
+		IMatrixView matrixView = getTable();
 		
-		if (table == null)
+		if (matrixView == null)
 			return;
 		
 		switch (dir) {
 		case ROW_UP:
-			table.moveRowsUp(
-					table.getSelectedRows());
+			matrixView.moveRowsUp(
+					matrixView.getSelectedRows());
 			break;
 		case ROW_DOWN:
-			table.moveRowsDown(
-					table.getSelectedRows());
+			matrixView.moveRowsDown(
+					matrixView.getSelectedRows());
 			break;
 		case COL_LEFT:
-			table.moveColumnsLeft(
-					table.getSelectedColumns());
+			matrixView.moveColumnsLeft(
+					matrixView.getSelectedColumns());
 			break;
 		case COL_RIGHT:
-			table.moveColumnsRight(
-					table.getSelectedColumns());
+			matrixView.moveColumnsRight(
+					matrixView.getSelectedColumns());
 			break;
 		}
 	}

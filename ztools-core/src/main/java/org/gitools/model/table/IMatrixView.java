@@ -2,7 +2,7 @@ package org.gitools.model.table;
 
 import org.gitools.model.IModel;
 
-public interface ITable extends IModel, ITableContents {
+public interface IMatrixView extends IModel, IMatrix {
 	
 	// events
 	
@@ -20,7 +20,7 @@ public interface ITable extends IModel, ITableContents {
 
 	// contents
 	
-	ITableContents getContents();
+	IMatrix getContents();
 	
 	// visibility
 	

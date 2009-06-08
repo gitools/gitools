@@ -14,7 +14,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 import org.gitools.datafilters.DoubleFilter;
 import org.gitools.datafilters.ValueFilter;
-import org.gitools.model.DataMatrix;
+import org.gitools.model.table.DoubleMatrix;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -35,29 +35,29 @@ public class DataResource extends Resource {
 		super(file);
 	}
 	
-	public DataMatrix load(ProgressMonitor monitor) 
+	public DoubleMatrix load(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		return load(monitor, new DoubleFilter());
 	}
 	
-	public DataMatrix load(ProgressMonitor monitor, ValueFilter filt) 
+	public DoubleMatrix load(ProgressMonitor monitor, ValueFilter filt) 
 			throws FileNotFoundException, IOException, DataFormatException {
 
-		DataMatrix dataMatrix = new DataMatrix();
+		DoubleMatrix doubleMatrix = new DoubleMatrix();
 		
-		loadMetadata(dataMatrix, filt, monitor);
+		loadMetadata(doubleMatrix, filt, monitor);
 		
-		loadData(dataMatrix, filt, null, null, monitor);
+		loadData(doubleMatrix, filt, null, null, monitor);
 		
-		return dataMatrix;
+		return doubleMatrix;
 	}
 
-	public void loadMetadata(DataMatrix dataMatrix, ProgressMonitor monitor)
+	public void loadMetadata(DoubleMatrix doubleMatrix, ProgressMonitor monitor)
 			throws FileNotFoundException, IOException, DataFormatException {
-		loadMetadata(dataMatrix, new DoubleFilter(), monitor);
+		loadMetadata(doubleMatrix, new DoubleFilter(), monitor);
 	}
 	
-	public void loadMetadata(DataMatrix dataMatrix, ValueFilter filt, ProgressMonitor monitor)
+	public void loadMetadata(DoubleMatrix doubleMatrix, ValueFilter filt, ProgressMonitor monitor)
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		monitor.begin("Reading names ...", 1);
@@ -74,13 +74,13 @@ public class DataResource extends Resource {
 		
 		// Read datafile name and column names
 		
-		dataMatrix.setName(header[0]);
+		doubleMatrix.setName(header[0]);
 		
 		int numColumns = header.length - 1;
 		
 		String[] columnNames = new String[numColumns];
 		System.arraycopy(header, 1, columnNames, 0, numColumns);
-		dataMatrix.setColNames(columnNames);
+		doubleMatrix.setColNames(columnNames);
 		
 		// Read row names
 		
@@ -91,7 +91,7 @@ public class DataResource extends Resource {
 			names.add(fields[0]);
 		
 		String[] rowNames = names.toArray(new String[names.size()]);
-		dataMatrix.setRowNames(rowNames);
+		doubleMatrix.setRowNames(rowNames);
 		
 		reader.close();
 		
@@ -102,15 +102,15 @@ public class DataResource extends Resource {
 	}
 	
 	public void loadData( 
-			DataMatrix dataMatrix, int[] columnsOrder,
+			DoubleMatrix doubleMatrix, int[] columnsOrder,
 			int[] rowsOrder, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 
-		loadData(dataMatrix, new DoubleFilter(), columnsOrder, rowsOrder, monitor);
+		loadData(doubleMatrix, new DoubleFilter(), columnsOrder, rowsOrder, monitor);
 	}
 	
 	public void loadData( 
-		DataMatrix dataMatrix, 
+		DoubleMatrix doubleMatrix, 
 		ValueFilter filt,
 		int[] columnsOrder, 
 		int[] rowsOrder, 
@@ -118,11 +118,11 @@ public class DataResource extends Resource {
 		
 		monitor.begin("Reading data ...", 1);
 		
-		int numColumns = dataMatrix.getColNames().length;
-		int numItems = dataMatrix.getRowNames().length;
+		int numColumns = doubleMatrix.getColNames().length;
+		int numItems = doubleMatrix.getRowNames().length;
 		
-		String[] columnNames = dataMatrix.getColNames();
-		String[] rowNames = dataMatrix.getRowNames();
+		String[] columnNames = doubleMatrix.getColNames();
+		String[] rowNames = doubleMatrix.getRowNames();
 		
 		// Sort column names ordered by columnsOrder
 		
@@ -143,7 +143,7 @@ public class DataResource extends Resource {
 		DoubleMatrix2D matrix = 
 			DoubleFactory2D.dense.make(numItems, numColumns);
 		
-		dataMatrix.setData(matrix);
+		doubleMatrix.setData(matrix);
 		
 		String[] fields;
 		int row = 0;
@@ -182,20 +182,20 @@ public class DataResource extends Resource {
 		monitor.end();
 	}
 	
-	public void save(DataMatrix dataMatrix, ProgressMonitor monitor) 
+	public void save(DoubleMatrix doubleMatrix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		Writer writer = openWriter();
 		
 		PrintWriter pw = new PrintWriter(writer);
 		
-		DoubleMatrix2D matrix = dataMatrix.getData();
+		DoubleMatrix2D matrix = doubleMatrix.getData();
 		
 		int numCols = matrix.columns();
 		
-		final String[] colNames = dataMatrix.getColNames();
+		final String[] colNames = doubleMatrix.getColNames();
 		
-		pw.print(dataMatrix.getName() != null ? dataMatrix.getName() : "");
+		pw.print(doubleMatrix.getName() != null ? doubleMatrix.getName() : "");
 		
 		for (int i = 0; i < numCols; i++) {
 			final String name = i < colNames.length ? colNames[i] : "";
@@ -207,7 +207,7 @@ public class DataResource extends Resource {
 		
 		int numRows = matrix.rows();
 		
-		final String[] rowNames = dataMatrix.getRowNames();
+		final String[] rowNames = doubleMatrix.getRowNames();
 		
 		for (int i = 0; i < numRows; i++) {
 			final String name = i < rowNames.length ? rowNames[i] : "";

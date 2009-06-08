@@ -7,7 +7,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class SelectAllAction extends BaseAction {
 
@@ -24,10 +24,10 @@ public class SelectAllAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ITable table = getTable();
+		IMatrixView matrixView = getTable();
 		
-		if (table != null)
-			table.selectAll();
+		if (matrixView != null)
+			matrixView.selectAll();
 		
 		AppFrame.instance()
 			.setStatusText("Selected all.");

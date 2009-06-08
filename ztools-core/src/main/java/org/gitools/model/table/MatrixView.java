@@ -8,13 +8,13 @@ import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementProperty;
 
 
-public class Table
+public class MatrixView
 		extends AbstractModel
-		implements Serializable, ITable {
+		implements Serializable, IMatrixView {
 
 	private static final long serialVersionUID = -8602409555044803568L;
 
-	protected ITableContents contents;
+	protected IMatrix contents;
 	
 	protected int[] visibleRows;
 	protected int[] visibleColumns;
@@ -27,7 +27,7 @@ public class Table
 	
 	protected int selectedPropertyIndex;
 	
-	public Table(ITableContents contents) {
+	public MatrixView(IMatrix contents) {
 		this.contents = contents;
 		
 		// initialize visible rows and columns
@@ -61,7 +61,7 @@ public class Table
 	/* visibility */
 	
 	@Override
-	public ITableContents getContents() {
+	public IMatrix getContents() {
 		return contents;
 	}
 

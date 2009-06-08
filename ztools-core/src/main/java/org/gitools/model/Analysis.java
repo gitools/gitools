@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.table.ObjectMatrix;
+
 /*@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
 		"dataTableRef", "moduleMapRef", "results" })*/
 
@@ -18,11 +21,11 @@ public class Analysis extends Artifact {
 
 	
 	/** Ask Christian how to manage **/
-	protected DataMatrix originalData;
+	protected DoubleMatrix originalData;
 	
-	protected DataMatrix dataTable;
+	protected DoubleMatrix dataTable;
 	protected ModuleMap moduleMap;
-	protected ResultsMatrix resultsMatrix;
+	protected ObjectMatrix resultsMatrix;
 
 	protected ToolConfig toolConfig;
 
@@ -67,11 +70,11 @@ public class Analysis extends Artifact {
 	}
 
 	@XmlTransient
-	public DataMatrix getDataTable() {
+	public DoubleMatrix getDataTable() {
 		return dataTable;
 	}
 
-	public void setDataTable(DataMatrix dataTable) {
+	public void setDataTable(DoubleMatrix dataTable) {
 		this.dataTable = dataTable;
 	}
 
@@ -95,11 +98,11 @@ public class Analysis extends Artifact {
 	}
 
 	@XmlElement(name = "Results")
-	public ResultsMatrix getResults() {
+	public ObjectMatrix getResults() {
 		return resultsMatrix;
 	}
 
-	public void setResults(ResultsMatrix resultsMatrix) {
+	public void setResults(ObjectMatrix resultsMatrix) {
 		this.resultsMatrix = resultsMatrix;
 	}
 }

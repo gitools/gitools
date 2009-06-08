@@ -14,10 +14,10 @@ import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 import org.gitools.model.Analysis;
-import org.gitools.model.DataMatrix;
 import org.gitools.model.ModuleMap;
-import org.gitools.model.ResultsMatrix;
 import org.gitools.model.ToolConfig;
+import org.gitools.model.table.DoubleMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.resources.DataResource;
 import org.gitools.resources.ModuleMapResource;
 import org.gitools.resources.Resource;
@@ -110,8 +110,8 @@ public class CsvAnalysisResource extends AnalysisResource {
 			else if (tag.equals(tagData) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				DataResource res = new DataResource(path);
-				DataMatrix dataMatrix = res.load(monitor.subtask());
-				analysis.setDataTable(dataMatrix);
+				DoubleMatrix doubleMatrix = res.load(monitor.subtask());
+				analysis.setDataTable(doubleMatrix);
 			}
 			else if (tag.equals(tagModules) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
@@ -122,7 +122,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 			else if (tag.equals(tagResults) && fields.length >= 2) {
 				path = new File(basePath, fields[1]);
 				ResultsResource resFile = new ResultsResource(path);
-				ResultsMatrix resultsMatrix = resFile.read(monitor.subtask());
+				ObjectMatrix resultsMatrix = resFile.read(monitor.subtask());
 				analysis.setResults(resultsMatrix);
 			}
 			
@@ -133,7 +133,7 @@ public class CsvAnalysisResource extends AnalysisResource {
 		if (version == null && analysis.getResults() == null) { // old version
 			path = new File(basePath, "results.csv");
 			ResultsResource resFile = new ResultsResource(path);
-			ResultsMatrix resultsMatrix = resFile.read(monitor.subtask());
+			ObjectMatrix resultsMatrix = resFile.read(monitor.subtask());
 			analysis.setResults(resultsMatrix);
 		}
 	}

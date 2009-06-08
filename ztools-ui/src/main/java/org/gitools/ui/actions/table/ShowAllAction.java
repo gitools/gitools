@@ -6,8 +6,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
 
 public class ShowAllAction extends BaseAction {
 
@@ -42,11 +42,11 @@ public class ShowAllAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		final ITable table = getTable();
-		if (table == null)
+		final IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 		
-		final ITableContents contents = table.getContents();
+		final IMatrix contents = matrixView.getContents();
 		
 		if (type == ElementType.ROWS) {
 			int rowCount = contents.getRowCount();
@@ -56,7 +56,7 @@ public class ShowAllAction extends BaseAction {
 			for (int i = 0; i < rowCount; i++)
 				visibleRows[i] = i;
 			
-			table.setVisibleRows(visibleRows);
+			matrixView.setVisibleRows(visibleRows);
 			
 			AppFrame.instance()
 				.setStatusText(visibleRows.length + " rows showed.");
@@ -69,7 +69,7 @@ public class ShowAllAction extends BaseAction {
 			for (int i = 0; i < columnCount; i++)
 				visibleColumns[i] = i;
 			
-			table.setVisibleColumns(visibleColumns);
+			matrixView.setVisibleColumns(visibleColumns);
 			
 			AppFrame.instance()
 				.setStatusText(visibleColumns.length + " columns showed.");

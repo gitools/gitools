@@ -3,7 +3,7 @@ package org.gitools.model.table;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementProperty;
 
-public class TableUtils {
+public class MatrixUtils {
 
 	public static double doubleValue(Object value) {
 		double v = Double.NaN;

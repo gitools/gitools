@@ -15,7 +15,7 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
-import org.gitools.model.ResultsMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementFactory;
 import org.gitools.model.table.element.IElementProperty;
@@ -94,21 +94,21 @@ public class ResultsResource extends Resource {
 		super(file);
 	}
 
-	public ResultsMatrix read(ProgressMonitor monitor) 
+	public ObjectMatrix read(ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
-		ResultsMatrix resultsMatrix = new ResultsMatrix();
+		ObjectMatrix resultsMatrix = new ObjectMatrix();
 		read(resultsMatrix, monitor);
 		return resultsMatrix;
 	}
 	
-	public void read(ResultsMatrix resultsMatrix, ProgressMonitor monitor) 
+	public void read(ObjectMatrix resultsMatrix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		read(openReader(), resultsMatrix, monitor);
 	}
 	
-	protected void read(Reader reader, ResultsMatrix resultsMatrix, ProgressMonitor monitor) 
+	protected void read(Reader reader, ObjectMatrix resultsMatrix, ProgressMonitor monitor) 
 			throws IOException, DataFormatException {
 		
 		monitor.begin("Reading results ...", 1);
@@ -258,13 +258,13 @@ public class ResultsResource extends Resource {
 		return value;
 	}
 
-	public void write(ResultsMatrix results, String prefix, ProgressMonitor monitor) 
+	public void write(ObjectMatrix results, String prefix, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		write(results, prefix, true, monitor);
 	}
 	
-	public void write(ResultsMatrix results, String prefix, boolean orderByColumn, ProgressMonitor monitor) 
+	public void write(ObjectMatrix results, String prefix, boolean orderByColumn, ProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		final File basePath = getResourceFile();
@@ -279,15 +279,15 @@ public class ResultsResource extends Resource {
 		writeCells(openWriter(cellsPath), results, orderByColumn, monitor);
 	}
 	
-	public void writeRows(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeRows(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
 		
 	}
 	
-	public void writeColumns(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeColumns(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
 		
 	}
 
-	public void writeCells(Writer writer, ResultsMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
 				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
@@ -322,7 +322,7 @@ public class ResultsResource extends Resource {
 
 	private void writeLine(
 			RawCsvWriter out, 
-			ResultsMatrix resultsMatrix,
+			ObjectMatrix resultsMatrix,
 			int colIndex, int rowIndex) {
 		
 		final String colName = resultsMatrix.getColumn(colIndex).toString();

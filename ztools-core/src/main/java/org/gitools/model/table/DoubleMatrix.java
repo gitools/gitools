@@ -1,18 +1,19 @@
-package org.gitools.model;
+package org.gitools.model.table;
 
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+
 
 import cern.colt.matrix.DoubleMatrix2D;
 
-@XmlType(
+/*@XmlType(
 		propOrder = {
-				"name"/*, 
+				"name"///, 
 				"colNames", 
 				"rowNames", 
-				"data"*/})
+				"data"///})*/
 				
-public final class DataMatrix {
+public final class DoubleMatrix { 
+	//implements IMatrix {
 
 	protected String name;
 	
@@ -21,11 +22,11 @@ public final class DataMatrix {
 	
 	protected DoubleMatrix2D data;
 	
-	public DataMatrix() {
+	public DoubleMatrix() {
 		this.name = "";
 	}
 
-	public DataMatrix(
+	public DoubleMatrix(
 			String name, String[] colNames, 
 			String[] rowNames, DoubleMatrix2D data) {
 		

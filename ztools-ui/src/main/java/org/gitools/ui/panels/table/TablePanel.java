@@ -23,7 +23,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.gitools.ui.model.SelectionMode;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 
@@ -46,7 +46,7 @@ public class TablePanel extends JPanel {
 	private int selectedLeadColumn;
 	private int selectedLeadRow;
 	
-	private ITable model;
+	private IMatrixView model;
 	
 	public TablePanel() {
 		
@@ -326,7 +326,7 @@ public class TablePanel extends JPanel {
 		setModel(model);
 	}
 
-	public void setModel(ITable model) {
+	public void setModel(IMatrixView model) {
 		this.model = model;
 		table.setModel(new TableModelAdapter(model));
 

@@ -2,7 +2,7 @@ package org.gitools.model.table.decorator.impl;
 
 import java.awt.Color;
 
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.MatrixUtils;
 import org.gitools.model.table.decorator.ElementDecoration;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
@@ -116,7 +116,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		Object value = adapter.getValue(
 				element, valueIndex);
 		
-		double v = TableUtils.doubleValue(value);
+		double v = MatrixUtils.doubleValue(value);
 		
 		boolean isSig = v <= significanceLevel;
 		
@@ -124,7 +124,7 @@ public class PValueElementDecorator extends ElementDecorator {
 			Object corrValue = correctedValueIndex >= 0 ?
 					adapter.getValue(element, correctedValueIndex) : 0.0;
 					
-			double cv = TableUtils.doubleValue(corrValue);
+			double cv = MatrixUtils.doubleValue(corrValue);
 			
 			isSig = cv <= significanceLevel;
 		}

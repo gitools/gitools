@@ -2,7 +2,7 @@ package org.gitools.model.figure;
 
 import java.io.Serializable;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.decorator.ElementDecorator;
 
 public class MatrixFigure 
@@ -18,13 +18,13 @@ public class MatrixFigure
 	//private ElementDecoratorDescriptor decoratorDescriptor;
 	private ElementDecorator decorator;
 	
-	private ITable table;
+	private IMatrixView matrixView;
 	
 	public MatrixFigure(
-			ITable table,
+			IMatrixView matrixView,
 			ElementDecorator decorator) {
 		
-		this.table = table;
+		this.matrixView = matrixView;
 		this.decorator = decorator;
 	}
 	
@@ -70,12 +70,12 @@ public class MatrixFigure
 		firePropertyChange(DECORATOR, old, decorator);
 	}
 	
-	public final ITable getTable() {
-		return table;
+	public final IMatrixView getTable() {
+		return matrixView;
 	}
 	
-	public final void setTable(ITable table) {
-		this.table = table;
+	public final void setTable(IMatrixView matrixView) {
+		this.matrixView = matrixView;
 		firePropertyChange(TABLE);
 	}
 }

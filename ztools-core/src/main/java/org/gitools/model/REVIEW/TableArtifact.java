@@ -1,12 +1,12 @@
 package org.gitools.model.REVIEW;
 
 import org.gitools.model.Artifact;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrix;
 
 public class TableArtifact extends Artifact {
 
 	/** The table associated to this artifact. */
-	protected ITableContents tableContents;
+	protected IMatrix matrix;
 
 	/** The group of the rows **/
 	protected Group rowsGroup;
@@ -17,12 +17,12 @@ public class TableArtifact extends Artifact {
 	public TableArtifact() {
 	}
 
-	public ITableContents getTableContents() {
-		return tableContents;
+	public IMatrix getTableContents() {
+		return matrix;
 	}
 
-	public void setTableContents(ITableContents tableContents) {
-		this.tableContents = tableContents;
+	public void setTableContents(IMatrix matrix) {
+		this.matrix = matrix;
 	}
 
 	public Group getRowsGroup() {

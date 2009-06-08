@@ -2,7 +2,7 @@ package org.gitools.model.table;
 
 import org.gitools.model.table.element.IElementAdapter;
 
-public interface ITableContents {
+public interface IMatrix {
 
 	// rows
 	

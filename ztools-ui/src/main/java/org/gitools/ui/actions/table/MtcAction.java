@@ -13,9 +13,9 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 import org.gitools.stats.mtc.MultipleTestCorrection;
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
+import org.gitools.model.table.MatrixUtils;
 import org.gitools.model.table.element.IElementAdapter;
 
 public class MtcAction extends BaseAction {
@@ -35,16 +35,16 @@ public class MtcAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		final ITable table = getTable();
+		final IMatrixView matrixView = getTable();
 		
-		if (table == null)
+		if (matrixView == null)
 			return;
 
-		IElementAdapter cellAdapter = table.getCellAdapter();
+		IElementAdapter cellAdapter = matrixView.getCellAdapter();
 		
-		final int propIndex = table.getSelectedPropertyIndex();
+		final int propIndex = matrixView.getSelectedPropertyIndex();
 		final int corrPropIndex = 
-			TableUtils.correctedValueIndex(
+			MatrixUtils.correctedValueIndex(
 				cellAdapter, cellAdapter.getProperty(propIndex));
 		
 		if (corrPropIndex < 0) {
@@ -55,7 +55,7 @@ public class MtcAction extends BaseAction {
 			return;
 		}
 		
-		ITableContents contents = table.getContents();
+		IMatrix contents = matrixView.getContents();
 		
 		int rowCount = contents.getRowCount();
 		int columnCount = contents.getColumnCount();
@@ -65,7 +65,7 @@ public class MtcAction extends BaseAction {
 		for (int col = 0; col < columnCount; col++)
 			for (int row = 0; row < rowCount; row++)
 				values.setQuick(row, col, 
-						TableUtils.doubleValue(
+						MatrixUtils.doubleValue(
 								contents.getCellValue(row, col, propIndex)));
 		
 		for (int col = 0; col < columnCount; col++) {

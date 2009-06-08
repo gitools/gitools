@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 
 import org.gitools.model.Analysis;
-import org.gitools.model.ResultsMatrix;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.model.table.element.IElementProperty;
 import org.gitools.stats.test.BinomialTest;
 import org.gitools.stats.test.FisherTest;
@@ -51,7 +51,7 @@ public class REXmlAnalysisResource extends AnalysisResource {
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println("<analysis name=\"" + analysis.getName() + "\" binomial=\"false\">");
 		
-		ResultsMatrix resultsMatrix = analysis.getResults();
+		ObjectMatrix resultsMatrix = analysis.getResults();
 		
 		String[] condNames = new String[resultsMatrix.getColumnCount()];
 		for (int i = 0; i < condNames.length; i++)

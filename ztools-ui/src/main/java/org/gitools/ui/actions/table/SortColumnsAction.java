@@ -8,33 +8,33 @@ import java.util.List;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.aggregation.IAggregator;
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
+import org.gitools.model.table.MatrixUtils;
 import org.gitools.model.table.sort.SortCriteria;
 
 public class SortColumnsAction {
 	
-	ITableContents contents;
+	IMatrix contents;
 	List<SortCriteria> criteriaList;
 	
 	
-	public SortColumnsAction(ITable table, List<SortCriteria> criteriaList,
+	public SortColumnsAction(IMatrixView matrixView, List<SortCriteria> criteriaList,
 			boolean allCols) {
 		
-		this.contents = table.getContents();
+		this.contents = matrixView.getContents();
 		this.criteriaList = criteriaList;
 		
 		//rows
 		int rowCount;
 		int[] rows = null;
-		if(table.getSelectedRows().length == 0) {
-			rowCount = table.getVisibleRows().length;
+		if(matrixView.getSelectedRows().length == 0) {
+			rowCount = matrixView.getVisibleRows().length;
 			rows = new int[rowCount];
 			for (int r = 0; r < rowCount; r++)
 				rows[r] = r;
 		} else
-			rows = table.getSelectedRows();
+			rows = matrixView.getSelectedRows();
 
 		
 		//cols
@@ -47,9 +47,9 @@ public class SortColumnsAction {
 				cols[j] = j;
 		}
 		else {
-			colCount = table.getColumnCount();
+			colCount = matrixView.getColumnCount();
 			cols = new Integer[colCount];
-			int[] visibleCols = table.getVisibleColumns();
+			int[] visibleCols = matrixView.getVisibleColumns();
 			for (int j = 0; j < colCount; j++)
 				cols[j] = visibleCols[j];
 		}
@@ -58,7 +58,7 @@ public class SortColumnsAction {
 		int[] visibleSortedCols = new int[colCount];
 		for (int k = 0; k < colCount; k++)
 			visibleSortedCols[k] = sortedColIndices[k];
-		table.setVisibleColumns(visibleSortedCols);
+		matrixView.setVisibleColumns(visibleSortedCols);
 	}
 	
 
@@ -99,14 +99,14 @@ public class SortColumnsAction {
 						int row = selectedRows[i];
 						
 						Object value1 = contents.getCellValue(row , idx1, properties.get(level));
-						double v1 = TableUtils.doubleValue(value1);
+						double v1 = MatrixUtils.doubleValue(value1);
 	
 						if (!Double.isNaN(v1)) {
 							col1.set(i, v1);
 						}
 						
 						Object value2 = contents.getCellValue(row, idx2, properties.get(level));
-						double v2 = TableUtils.doubleValue(value2);
+						double v2 = MatrixUtils.doubleValue(value2);
 	
 						if (!Double.isNaN(v2)) {
 							col2.set(i, v2);

@@ -10,8 +10,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.model.Analysis;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.ResultsMatrix;
-import org.gitools.model.table.Table;
+import org.gitools.model.table.MatrixView;
+import org.gitools.model.table.ObjectMatrix;
 import org.gitools.model.table.adapter.ResultsMatrixTableContentsAdapter;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.decorator.ElementDecoratorFactory;
@@ -30,14 +30,14 @@ public class DemoView extends TableView {
 	}
 	
 	private static MatrixFigure createModel(int rows, int cols) {
-		Table table = createTable(rows, cols);
+		MatrixView matrixView = createTable(rows, cols);
 		ElementDecorator decorator = ElementDecoratorFactory.create(
-				ElementDecoratorNames.PVALUE, table.getCellAdapter());
+				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
-		return new MatrixFigure(table, decorator);
+		return new MatrixFigure(matrixView, decorator);
 	}
 
-	private static Table createTable(int rows, int cols) {		
+	private static MatrixView createTable(int rows, int cols) {		
 		int k = 0;
 		DoubleMatrix1D values = DoubleFactory1D.dense.random(2 * rows * cols);
 		
@@ -60,7 +60,7 @@ public class DemoView extends TableView {
 		for (int i = 0; i < colNames.size(); i++)
 			colNames.setQuick(i, "col " + (i + 1));
 		
-		ResultsMatrix resultsMatrix = new ResultsMatrix(
+		ObjectMatrix resultsMatrix = new ObjectMatrix(
 				rowNames,
 				colNames,   
 				data,
@@ -71,7 +71,7 @@ public class DemoView extends TableView {
 		Analysis analysis = new Analysis();
 		analysis.setResults(resultsMatrix);
 		
-		return new Table(
+		return new MatrixView(
 					new ResultsMatrixTableContentsAdapter(
 								resultsMatrix));
 	}

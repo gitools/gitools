@@ -1,18 +1,18 @@
 package org.gitools.model.table.sort;
 
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public class TableSorter {
 
-	public void sortRows(ITable table) {
+	public void sortRows(IMatrixView matrixView) {
 
 	}
 	
-	public void sortColumns(ITable table) {
+	public void sortColumns(IMatrixView matrixView) {
 		
 	}
 
-	public void sort(ITable table) {
+	public void sort(IMatrixView matrixView) {
 		
 	}
 }

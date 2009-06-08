@@ -22,7 +22,7 @@ import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.TableUtils;
+import org.gitools.model.table.MatrixUtils;
 import org.gitools.model.table.decorator.impl.PValueElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.model.table.element.IElementProperty;
@@ -175,7 +175,7 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		
 		// search for corresponding corrected value
 		
-		int corrIndex = TableUtils.correctedValueIndex(
+		int corrIndex = MatrixUtils.correctedValueIndex(
 				decorator.getAdapter(), propAdapter.getProperty());
 		
 		if (corrIndex >= 0)

@@ -12,8 +12,8 @@ import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
 
 
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.IMatrix;
 import org.gitools.model.table.element.IElementProperty;
 
 public class FilterRowsByValuesAction extends BaseAction {
@@ -28,11 +28,11 @@ public class FilterRowsByValuesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		ITable table = getTable();
-		if (table == null)
+		IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 
-		List<IElementProperty> cellPropsList = table.getContents().getCellAdapter().getProperties();
+		List<IElementProperty> cellPropsList = matrixView.getContents().getCellAdapter().getProperties();
 		
 		Object[] params = new Object[cellPropsList.size()];
 		for (int i = 0; i < cellPropsList.size(); i++)
@@ -49,14 +49,14 @@ public class FilterRowsByValuesAction extends BaseAction {
 			List<Integer> rowsToShow = new ArrayList<Integer>();
 			int rows;
 			int cols;
-			final ITableContents contents = table.getContents();
+			final IMatrix contents = matrixView.getContents();
 			if(includeHidden) {
 				rows = contents.getRowCount();
 				cols = contents.getColumnCount();
 			} 
 			else {
-				rows = table.getVisibleRows().length;
-				cols = table.getVisibleColumns().length;
+				rows = matrixView.getVisibleRows().length;
+				cols = matrixView.getVisibleColumns().length;
 			}
 			int cellProps = cellPropsList.size();
 			for(int i = 0; i < rows; i++) {
@@ -81,7 +81,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 							if(includeHidden) 
 								valueObject = contents.getCellValue(i, j, k);
 							else 
-								valueObject = table.getCellValue(i, j, k);
+								valueObject = matrixView.getCellValue(i, j, k);
 							
 							double value =  Double.parseDouble(valueObject.toString());
 							
@@ -95,7 +95,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 				boolean addRow = evaluateRow(eval, allCells, sameCell, tempValueList.size());
 				if (addRow) {
 					if (!includeHidden) {
-						int[] visRows = table.getVisibleRows();
+						int[] visRows = matrixView.getVisibleRows();
 						rowsToShow.add(visRows[i]);
 					}
 					else
@@ -106,7 +106,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 			int[] visibleRows = new int[rowsToShow.size()];
 			for (int i = 0; i < rowsToShow.size(); i++)
 				visibleRows[i] = rowsToShow.get(i);
-			table.setVisibleRows(visibleRows);
+			matrixView.setVisibleRows(visibleRows);
 			
 			AppFrame.instance()
 			.setStatusText("Total visible rows = " + rowsToShow.size());

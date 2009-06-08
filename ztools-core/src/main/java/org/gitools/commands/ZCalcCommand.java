@@ -7,9 +7,9 @@ import java.util.zip.DataFormatException;
 
 import org.gitools.datafilters.ValueFilter;
 import org.gitools.model.Analysis;
-import org.gitools.model.DataMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
+import org.gitools.model.table.DoubleMatrix;
 import org.gitools.resources.DataResource;
 import org.gitools.resources.ModuleMapResource;
 import org.gitools.stats.test.factory.TestFactory;
@@ -48,11 +48,11 @@ public class ZCalcCommand extends AnalysisCommand {
 		monitor.info("Data: " + dataFile);
 		monitor.info("Modules: " + modulesFile);
 		
-		DataMatrix dataMatrix = new DataMatrix();
+		DoubleMatrix doubleMatrix = new DoubleMatrix();
 		//FIXME: id
 		ModuleMap moduleMap = new ModuleMap(null, null);
 		loadDataAndModules(
-				dataMatrix, moduleMap, 
+				doubleMatrix, moduleMap, 
 				dataFile, valueFilter, 
 				modulesFile, minModuleSize, maxModuleSize,
 				includeNonMappedItems,
@@ -66,7 +66,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		Analysis analysis = new Analysis(null, null);
 		analysis.setName(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
-		analysis.setDataTable(dataMatrix);
+		analysis.setDataTable(doubleMatrix);
 		analysis.setModuleSet(moduleMap);
 		analysis.getToolConfig().put(
 				ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
@@ -83,7 +83,7 @@ public class ZCalcCommand extends AnalysisCommand {
 	}
 
 	private void loadDataAndModules(
-			DataMatrix dataMatrix, ModuleMap moduleMap,
+			DoubleMatrix doubleMatrix, ModuleMap moduleMap,
 			String dataFileName, ValueFilter valueFilter, String modulesFileName, 
 			int minModuleSize, int maxModuleSize, boolean includeNonMappedItems,
 			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
@@ -91,7 +91,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Load metadata
 		
 		DataResource dataResource = new DataResource(dataFileName);
-		dataResource.loadMetadata(dataMatrix, valueFilter, monitor);
+		dataResource.loadMetadata(doubleMatrix, valueFilter, monitor);
 		
 		// Load modules
 		
@@ -103,16 +103,16 @@ public class ZCalcCommand extends AnalysisCommand {
 			moduleMap,
 			minModuleSize,
 			maxModuleSize,
-			dataMatrix.getRowNames(),
+			doubleMatrix.getRowNames(),
 			includeNonMappedItems,
 			monitor);
 		
-		dataMatrix.setRowNames(moduleMap.getItemNames());
+		doubleMatrix.setRowNames(moduleMap.getItemNames());
 		
 		// Load data
 		
 		dataResource.loadData(
-				dataMatrix,
+				doubleMatrix,
 				valueFilter,
 				null, 
 				moduleMap.getItemsOrder(), 

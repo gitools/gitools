@@ -2,13 +2,13 @@ package org.gitools.model.table.adapter;
 
 import java.io.Serializable;
 
-import org.gitools.model.table.ITableContents;
+import org.gitools.model.table.IMatrix;
 import org.gitools.resources.IResource;
 
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 
-public abstract class TableContentsAdapter<T> implements ITableContents,
+public abstract class TableContentsAdapter<T> implements IMatrix,
 		Serializable {
 
 	private IResource<T> resource;

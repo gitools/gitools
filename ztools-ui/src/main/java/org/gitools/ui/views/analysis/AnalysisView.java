@@ -5,8 +5,8 @@ import org.gitools.ui.views.table.TableView;
 
 import org.gitools.model.Analysis;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.model.table.ITable;
-import org.gitools.model.table.Table;
+import org.gitools.model.table.IMatrixView;
+import org.gitools.model.table.MatrixView;
 import org.gitools.model.table.adapter.DataMatrixTableContentsAdapter;
 import org.gitools.model.table.adapter.ResultsMatrixTableContentsAdapter;
 import org.gitools.model.table.decorator.ElementDecorator;
@@ -38,7 +38,7 @@ public class AnalysisView extends TabbedView {
 		
 		// create data view
 		
-		ITable dataTable = new Table(
+		IMatrixView dataTable = new MatrixView(
 				new DataMatrixTableContentsAdapter(
 						analysis.getDataTable()));
 		
@@ -51,7 +51,7 @@ public class AnalysisView extends TabbedView {
 		
 		// create results view
 		
-		ITable resultsTable = new Table(
+		IMatrixView resultsTable = new MatrixView(
 				new ResultsMatrixTableContentsAdapter(
 						analysis.getResults()));
 		

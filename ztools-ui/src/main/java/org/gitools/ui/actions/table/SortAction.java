@@ -9,7 +9,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.sort.SortDialogSimple;
 
 import org.gitools.aggregation.AggregatorFactory;
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 import org.gitools.model.table.element.IElementProperty;
 import org.gitools.model.table.sort.SortCriteria;
 
@@ -44,12 +44,12 @@ public class SortAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		ITable table = getTable();
-		if (table == null)
+		IMatrixView matrixView = getTable();
+		if (matrixView == null)
 			return;
 				
 		//select properties
-		List<IElementProperty> cellProps = table.getCellAdapter().getProperties();
+		List<IElementProperty> cellProps = matrixView.getCellAdapter().getProperties();
 		ListIterator<IElementProperty> i = cellProps.listIterator();
 		Object[] props = new Object[cellProps.size()];
 		int counter = 0;
@@ -75,22 +75,22 @@ public class SortAction extends BaseAction {
 			case COLUMN:
 				//d = new SortColumnsDialog(AppFrame.instance(), props);
 				//criteriaList = d.getValueList();
-				new SortColumnsAction(table, criteriaList, false);
+				new SortColumnsAction(matrixView, criteriaList, false);
 				AppFrame.instance()
 					.setStatusText("Columns sorted.");
 				break;
 			case ROW:
 				//d = new SortRowsDialog(AppFrame.instance(), props);
 				//criteriaList = d.getValueList();
-				new SortRowsAction(table, criteriaList, false);
+				new SortRowsAction(matrixView, criteriaList, false);
 				AppFrame.instance()
 					.setStatusText("Rows sorted.");
 				break;
 			case BOTH:
 				//d = new SortRowsDialog(AppFrame.instance(), props);
 				//criteriaList = d.getValueList();
-				new SortRowsAction(table, criteriaList, false);
-				new SortColumnsAction(table, criteriaList, false);
+				new SortRowsAction(matrixView, criteriaList, false);
+				new SortColumnsAction(matrixView, criteriaList, false);
 				AppFrame.instance()
 					.setStatusText("Rows and columns sorted.");
 				break;

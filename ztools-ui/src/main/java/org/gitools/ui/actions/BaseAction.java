@@ -11,7 +11,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.views.AbstractView;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
-import org.gitools.model.table.ITable;
+import org.gitools.model.table.IMatrixView;
 
 public abstract class BaseAction extends AbstractAction {
 
@@ -105,18 +105,18 @@ public abstract class BaseAction extends AbstractAction {
 			.getSelectedView();
 	}
 	
-	protected ITable getTable() {
+	protected IMatrixView getTable() {
 		AbstractView view = getSelectedView();
 		if (view == null)
 			return null;
 		
-		ITable table = null;
+		IMatrixView matrixView = null;
 		
 		Object model = view.getModel();
-		if (model instanceof ITable)
-			table = (ITable) model;
+		if (model instanceof IMatrixView)
+			matrixView = (IMatrixView) model;
 		
-		return table;
+		return matrixView;
 	}
 	
 	protected ProgressMonitor createProgressMonitor() {
