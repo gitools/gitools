@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.net.URL;
 import java.util.ArrayList;

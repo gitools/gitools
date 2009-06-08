@@ -1,6 +1,6 @@
 package org.gitools.ui.commands;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public interface Command {
 

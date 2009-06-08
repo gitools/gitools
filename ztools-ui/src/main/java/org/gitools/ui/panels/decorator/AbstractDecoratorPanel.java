@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.gitools.ui.model.TableViewModel;
-
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
@@ -16,11 +15,11 @@ public abstract class AbstractDecoratorPanel extends JPanel {
 
 	private static final long serialVersionUID = 7349354490870110812L;
 
-	protected TableViewModel model;
+	protected MatrixFigure model;
 	
 	protected List<IndexedProperty> valueProperties;
 
-	public AbstractDecoratorPanel(TableViewModel model) {
+	public AbstractDecoratorPanel(MatrixFigure model) {
 		this.model = model;
 	}
 	

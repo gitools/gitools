@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.figure;
 
 import org.gitools.model.table.ITable;
 

@@ -1,10 +1,15 @@
-package org.gitools.ui.model;
+package org.gitools.model.figure;
 
-import org.gitools.model.AbstractModel;
+import java.io.Serializable;
+
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.decorator.ElementDecorator;
 
-public class TableViewModel extends AbstractModel {
+public class MatrixFigure 
+		extends Figure
+		implements Serializable {
+
+	private static final long serialVersionUID = 325437934312047512L;
 
 	//public static final String DECORATOR_DESCRIPTOR = "decoratorDescriptor";
 	public static final String DECORATOR = "decorator";
@@ -15,7 +20,7 @@ public class TableViewModel extends AbstractModel {
 	
 	private ITable table;
 	
-	public TableViewModel(
+	public MatrixFigure(
 			ITable table,
 			ElementDecorator decorator) {
 		

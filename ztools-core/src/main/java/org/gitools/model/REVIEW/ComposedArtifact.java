@@ -1,7 +1,10 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.gitools.model.Artifact;
+import org.gitools.model.IArtifact;
 
 public class ComposedArtifact extends Artifact {
 

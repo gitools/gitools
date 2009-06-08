@@ -1,10 +1,10 @@
 package org.gitools.ui.views.analysis;
 
-import org.gitools.ui.model.TableViewModel;
 import org.gitools.ui.views.TabbedView;
 import org.gitools.ui.views.table.TableView;
 
 import org.gitools.model.Analysis;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.Table;
 import org.gitools.model.table.adapter.DataMatrixTableContentsAdapter;
@@ -47,7 +47,7 @@ public class AnalysisView extends TabbedView {
 					ElementDecoratorNames.BINARY, 
 					dataTable.getCellAdapter());
 		
-		dataView = new TableView(new TableViewModel(dataTable, dataDecorator));
+		dataView = new TableView(new MatrixFigure(dataTable, dataDecorator));
 		
 		// create results view
 		
@@ -60,7 +60,7 @@ public class AnalysisView extends TabbedView {
 					ElementDecoratorNames.PVALUE, 
 					resultsTable.getCellAdapter());
 		
-		resultsView = new TableView(new TableViewModel(resultsTable, resultsDecorator));
+		resultsView = new TableView(new MatrixFigure(resultsTable, resultsDecorator));
 		
 		addView(detailsView, "Description");
 		addView(dataView, "Data");

@@ -1,7 +1,9 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.io.Serializable;
 import java.util.HashMap;
+
+import org.gitools.model.Artifact;
 
 public class Group extends Artifact implements Serializable {
 

@@ -1,14 +1,14 @@
 package org.gitools.cli.analysis;
 
-import org.gitools.cli.CliTool;
-import org.gitools.cli.CliToolException;
-import org.gitools.cli.InvalidArgumentException;
-import org.gitools.cli.RequiredArgumentException;
 import org.kohsuke.args4j.Option;
 
-import es.imim.bg.progressmonitor.NullProgressMonitor;
-import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.progressmonitor.StreamProgressMonitor;
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+
+import org.gitools.cli.CliTool;
+import org.gitools.cli.InvalidArgumentException;
+import org.gitools.cli.RequiredArgumentException;
 import org.gitools.commands.OncozCommand;
 
 public class OncozCliTool extends AnalysisCliTool implements CliTool {

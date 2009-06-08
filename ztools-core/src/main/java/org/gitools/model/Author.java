@@ -1,6 +1,11 @@
 package org.gitools.model;
 
-public class Author {
+import java.io.Serializable;
+
+public class Author
+		implements Serializable {
+
+	private static final long serialVersionUID = -1132892392275362936L;
 
 	private String name;
 	private String surnames;

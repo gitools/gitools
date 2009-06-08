@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +48,8 @@ public class Item {
 		return attributes;
 	}
 
-	public void setAnnotations(List<Attribute> annotations) {
-		this.attributes = annotations;
+	public void setAnnotations(List<Attribute> attributes) {
+		this.attributes = attributes;
 	}
 
 }

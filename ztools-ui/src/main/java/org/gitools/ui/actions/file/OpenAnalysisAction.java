@@ -12,7 +12,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.jobs.OpenAnalysisJob;
 import org.gitools.ui.utils.Options;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class OpenAnalysisAction extends BaseAction {
 

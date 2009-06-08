@@ -1,4 +1,6 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
+
+import org.gitools.model.figure.TableFigure;
 
 public class FilteredMatrix extends TableFigure {
 	/**

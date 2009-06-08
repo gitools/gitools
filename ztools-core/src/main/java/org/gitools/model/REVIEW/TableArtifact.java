@@ -1,5 +1,6 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
+import org.gitools.model.Artifact;
 import org.gitools.model.table.ITableContents;
 
 public class TableArtifact extends Artifact {

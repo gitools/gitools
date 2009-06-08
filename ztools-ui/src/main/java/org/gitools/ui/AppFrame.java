@@ -22,7 +22,7 @@ import org.gitools.ui.views.AbstractView;
 import org.gitools.ui.views.DemoView;
 import org.gitools.ui.views.WelcomeView;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 
 public class AppFrame extends JFrame {
 

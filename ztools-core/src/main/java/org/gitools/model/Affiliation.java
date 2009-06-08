@@ -1,8 +1,13 @@
 package org.gitools.model;
 
-public class Affiliation {
+import java.io.Serializable;
 
-	private String labName;
+public class Affiliation 
+		implements Serializable {
+
+	private static final long serialVersionUID = -9120118831048874109L;
+	
+	private String laboratory;
 	private String university;
 	private String address;
 
@@ -20,18 +25,17 @@ public class Affiliation {
 	}
 
 	public Affiliation(String labName, String university, String address) {
-		super();
-		this.labName = labName;
+		this.laboratory = labName;
 		this.university = university;
 		this.address = address;
 	}
 
-	public String getLabName() {
-		return labName;
+	public String getLaboratory() {
+		return laboratory;
 	}
 
-	public void setLabName(String labName) {
-		this.labName = labName;
+	public void setLaboratory(String labName) {
+		this.laboratory = labName;
 	}
 
 	public String getUniversity() {

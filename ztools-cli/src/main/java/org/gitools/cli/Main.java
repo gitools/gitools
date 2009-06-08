@@ -8,7 +8,7 @@ import org.gitools.cli.convert.DataFilterCliTool;
 import org.gitools.cli.convert.ModuleSetConvertCliTool;
 import org.kohsuke.args4j.CmdLineParser;
 
-import es.imim.bg.progressmonitor.NullProgressMonitor;
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import org.gitools.threads.ThreadManager;
 
 public class Main {

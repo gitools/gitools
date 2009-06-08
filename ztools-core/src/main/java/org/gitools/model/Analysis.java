@@ -4,11 +4,13 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
-		"dataTableRef", "moduleMapRef", "results" })
-public class Analysis extends ComposedArtifact {
+/*@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
+		"dataTableRef", "moduleMapRef", "results" })*/
+
+public class Analysis extends Artifact {
+
+	private static final long serialVersionUID = 44219853082656184L;
 
 	protected String name;
 	protected Date startTime;

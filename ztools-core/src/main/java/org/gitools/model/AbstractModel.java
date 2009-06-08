@@ -4,7 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-public abstract class AbstractModel /*implements IModel*/ {
+public abstract class AbstractModel implements IModel {
 
 	protected ArrayList<PropertyChangeListener> listeners =
 		new ArrayList<PropertyChangeListener>(0);

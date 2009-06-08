@@ -6,9 +6,9 @@ import org.gitools.cli.InvalidArgumentException;
 import org.gitools.cli.RequiredArgumentException;
 import org.kohsuke.args4j.Option;
 
-import es.imim.bg.progressmonitor.NullProgressMonitor;
-import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.progressmonitor.StreamProgressMonitor;
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import org.gitools.commands.ZCalcCommand;
 
 public class ZcalcCliTool extends AnalysisCliTool implements CliTool {

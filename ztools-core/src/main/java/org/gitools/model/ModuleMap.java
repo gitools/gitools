@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlType;
 											 */})
 public class ModuleMap extends Artifact {
 
+	private static final long serialVersionUID = 6463084331984782264L;
+
 	protected String name;
 	protected String description;
 

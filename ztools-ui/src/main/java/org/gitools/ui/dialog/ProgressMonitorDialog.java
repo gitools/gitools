@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
-import es.imim.bg.progressmonitor.StreamProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 public class ProgressMonitorDialog extends JDialog {
 

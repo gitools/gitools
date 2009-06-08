@@ -1,8 +1,11 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
+
+import org.gitools.model.ModuleMap;
+import org.gitools.model.ToolConfig;
 
 @XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
 		"dataTableRef", "moduleMapRef", "results" })

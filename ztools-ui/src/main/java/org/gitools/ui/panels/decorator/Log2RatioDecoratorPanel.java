@@ -16,8 +16,8 @@ import javax.swing.event.DocumentListener;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.model.TableViewModel;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.decorator.impl.Log2RatioElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
 
@@ -37,7 +37,7 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 	private ColorChooserLabel midColorCc;
 	private ColorChooserLabel maxColorCc;
 	
-	public Log2RatioDecoratorPanel(TableViewModel model) {
+	public Log2RatioDecoratorPanel(MatrixFigure model) {
 		super(model);
 	
 		this.decorator = (Log2RatioElementDecorator) model.getDecorator();

@@ -13,9 +13,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.gitools.ui.model.TableViewModel;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.table.decorator.ElementDecoratorFactory;
@@ -24,14 +24,14 @@ public class TableViewConfigPanel extends JPanel {
 
 	private static final long serialVersionUID = 7931473950086532892L;
 	
-	private TableViewModel model;
+	private MatrixFigure model;
 	
 	private JComboBox showCombo;
 	
 	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
 	
 	public TableViewConfigPanel(
-			TableViewModel model) {
+			MatrixFigure model) {
 		
 		this.model = model;
 		

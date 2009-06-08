@@ -1,10 +1,16 @@
 package org.gitools.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Publication {
+import org.gitools.model.REVIEW.Reference;
+
+public class Publication 
+		implements Serializable {
+
+	private static final long serialVersionUID = 4040601803383233010L;
 
 	private String abstr;
 	private List<Author> authors = new ArrayList<Author>();

@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 public class Attribute {
 

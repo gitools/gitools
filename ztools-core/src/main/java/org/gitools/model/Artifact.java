@@ -2,13 +2,17 @@ package org.gitools.model;
 
 import java.io.Serializable;
 
-public class Artifact implements Serializable, IArtifact {
+public class Artifact
+		extends AbstractModel
+		implements Serializable, IArtifact {
+
+	private static final long serialVersionUID = 5752318457428475330L;
 
 	/** id unique **/
-	private String artifactId;
+	private String id;
 
 	/** type of the artifact **/
-	private String artifactType;
+	private String type;
 
 	/** short description **/
 	private String title;
@@ -33,28 +37,28 @@ public class Artifact implements Serializable, IArtifact {
 	public Artifact(String artifactId, String artifactType, String title,
 			String description) {
 		super();
-		this.artifactId = artifactId;
-		this.artifactType = artifactType;
+		this.id = artifactId;
+		this.type = artifactType;
 		this.title = title;
 		this.description = description;
 	}
 
 	/* getters and setters */
 
-	public String getArtifactId() {
-		return artifactId;
+	public String getId() {
+		return id;
 	}
 
-	public void setArtifactId(String artifactId) {
-		this.artifactId = artifactId;
+	public void setId(String artifactId) {
+		this.id = artifactId;
 	}
 
-	public String getArtifactType() {
-		return artifactType;
+	public String getType() {
+		return type;
 	}
 
-	public void setArtifactType(String artifactType) {
-		this.artifactType = artifactType;
+	public void setType(String artifactType) {
+		this.type = artifactType;
 	}
 
 	public void setDescription(String description) {

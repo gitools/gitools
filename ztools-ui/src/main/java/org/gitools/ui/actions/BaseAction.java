@@ -10,7 +10,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.views.AbstractView;
 
-import es.imim.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.ProgressMonitor;
 import org.gitools.model.table.ITable;
 
 public abstract class BaseAction extends AbstractAction {

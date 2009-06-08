@@ -3,8 +3,7 @@ package org.gitools.ui.panels.decorator;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.gitools.ui.model.TableViewModel;
-
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.table.decorator.impl.Log2RatioElementDecorator;
@@ -13,7 +12,7 @@ import org.gitools.model.table.decorator.impl.ZScoreElementDecorator;
 
 public class ElementDecoratorPanelFactory {
 
-	public static JComponent create(Class<? extends ElementDecorator> decoratorClass, TableViewModel model) {
+	public static JComponent create(Class<? extends ElementDecorator> decoratorClass, MatrixFigure model) {
 		
 		if (PValueElementDecorator.class.equals(decoratorClass))
 			return new PValueDecoratorPanel(model);

@@ -1,8 +1,12 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
 import java.net.URI;
 
+import org.gitools.model.Artifact;
+
 public class Reference extends Artifact {
+
+	private static final long serialVersionUID = 4327574491434582643L;
 
 	private URI extRef;
 

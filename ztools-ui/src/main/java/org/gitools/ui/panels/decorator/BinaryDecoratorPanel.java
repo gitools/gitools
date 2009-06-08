@@ -1,33 +1,27 @@
 package org.gitools.ui.panels.decorator;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.datafilters.BinaryCutoffFilter;
+import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
+import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.table.decorator.impl.BinaryElementDecorator;
+import org.gitools.model.table.element.IElementAdapter;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.model.TableViewModel;
-
-import org.gitools.datafilters.BinaryCutoffFilter;
-import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
-import org.gitools.model.table.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.table.element.IElementAdapter;
 
 public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 
@@ -55,7 +49,7 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 
 	private ColorChooserLabel colorCc;
 	
-	public BinaryDecoratorPanel(TableViewModel model) {
+	public BinaryDecoratorPanel(MatrixFigure model) {
 		super(model);
 		
 		this.decorator = (BinaryElementDecorator) getDecorator();

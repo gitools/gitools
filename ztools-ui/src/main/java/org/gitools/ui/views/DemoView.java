@@ -1,6 +1,5 @@
 package org.gitools.ui.views;
 
-import org.gitools.ui.model.TableViewModel;
 import org.gitools.ui.views.table.TableView;
 
 import cern.colt.matrix.DoubleFactory1D;
@@ -10,6 +9,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.model.Analysis;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.ResultsMatrix;
 import org.gitools.model.table.Table;
 import org.gitools.model.table.adapter.ResultsMatrixTableContentsAdapter;
@@ -29,12 +29,12 @@ public class DemoView extends TableView {
 		setName("Demo");
 	}
 	
-	private static TableViewModel createModel(int rows, int cols) {
+	private static MatrixFigure createModel(int rows, int cols) {
 		Table table = createTable(rows, cols);
 		ElementDecorator decorator = ElementDecoratorFactory.create(
 				ElementDecoratorNames.PVALUE, table.getCellAdapter());
 		
-		return new TableViewModel(table, decorator);
+		return new MatrixFigure(table, decorator);
 	}
 
 	private static Table createTable(int rows, int cols) {		

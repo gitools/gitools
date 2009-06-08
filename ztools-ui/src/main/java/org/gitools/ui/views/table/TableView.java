@@ -16,15 +16,15 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.FileActionSet;
 import org.gitools.ui.actions.MenuActionSet;
 import org.gitools.ui.actions.TableActionSet;
-import org.gitools.ui.model.TableViewModel;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.panels.table.TablePanel;
 import org.gitools.ui.views.AbstractView;
 
-import es.imim.bg.GenericFormatter;
-import es.imim.bg.colorscale.PValueColorScale;
-import es.imim.bg.colorscale.ZScoreColorScale;
+import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.PValueColorScale;
+import edu.upf.bg.colorscale.ZScoreColorScale;
 import org.gitools.model.IModel;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.decorator.ElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
@@ -41,7 +41,7 @@ public class TableView extends AbstractView {
 
 	private static final String defaultTemplateName = "/vm/details/noselection.vm";
 	
-	private TableViewModel model;
+	private MatrixFigure model;
 	
 	private TableViewConfigPanel configPanel;
 	
@@ -52,7 +52,7 @@ public class TableView extends AbstractView {
 	private PropertyChangeListener modelListener;
 	private PropertyChangeListener decoratorListener;
 
-	public TableView(TableViewModel model) {
+	public TableView(MatrixFigure model) {
 		
 		this.model = model;
 		
@@ -91,7 +91,7 @@ public class TableView extends AbstractView {
 	protected void modelPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 		
-		if (TableViewModel.DECORATOR.equals(propertyName)) {
+		if (MatrixFigure.DECORATOR.equals(propertyName)) {
 			final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
 			prevDecorator.removePropertyChangeListener(decoratorListener);
 			final ElementDecorator nextDecorator = (ElementDecorator) newValue;

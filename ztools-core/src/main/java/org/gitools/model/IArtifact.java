@@ -2,14 +2,14 @@ package org.gitools.model;
 
 public interface IArtifact {
 	// artifactId
-	public String getArtifactId();
+	public String getId();
 
-	public void setArtifactId(String artifactId);
+	public void setId(String id);
 
 	// artifactType
-	public void setArtifactType(String arctType);
+	public void setType(String type);
 
-	public String getArtifactType();
+	public String getType();
 
 	// title
 	public void setTitle(String title);

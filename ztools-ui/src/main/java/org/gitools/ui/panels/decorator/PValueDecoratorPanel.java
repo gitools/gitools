@@ -20,8 +20,8 @@ import javax.swing.event.DocumentListener;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.model.TableViewModel;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.table.TableUtils;
 import org.gitools.model.table.decorator.impl.PValueElementDecorator;
 import org.gitools.model.table.element.IElementAdapter;
@@ -45,7 +45,7 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 
 	private ColorChooserLabel maxColorCc;
 	
-	public PValueDecoratorPanel(TableViewModel model) {
+	public PValueDecoratorPanel(MatrixFigure model) {
 		super(model);
 		
 		this.decorator = (PValueElementDecorator) getDecorator();

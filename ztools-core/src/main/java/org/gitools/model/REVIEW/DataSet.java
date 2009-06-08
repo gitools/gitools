@@ -1,5 +1,6 @@
-package org.gitools.model;
+package org.gitools.model.REVIEW;
 
+import org.gitools.model.figure.TableFigure;
 import org.gitools.model.table.element.Property;
 
 public abstract class DataSet extends TableFigure {
