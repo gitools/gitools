@@ -17,7 +17,6 @@ public class ComposedArtifact extends Artifact {
 	}
 
 	public void addArtifact(IArtifact artifact) {
-
 		this.artifactList.add(artifact);
 	}
 

@@ -9,21 +9,22 @@ public class FilteredMatrix extends TableFigure {
 	 */
 
 	/** Descriptor of the Decorator to use in cells **/
-	protected String decDescriptor;
+	protected String decoratorDescriptor;
 
 	/** Descriptor of the details panel **/
 	protected String detailsDescriptor;
 
 	public FilteredMatrix() {
 		super();
+
 	}
 
-	public String getDecDescriptor() {
-		return decDescriptor;
+	public String getDecoratorDescriptor() {
+		return decoratorDescriptor;
 	}
 
-	public void setDecDescriptor(String decDescriptor) {
-		this.decDescriptor = decDescriptor;
+	public void setDecoratorDescriptor(String decoratorDescriptor) {
+		this.decoratorDescriptor = decoratorDescriptor;
 	}
 
 }
