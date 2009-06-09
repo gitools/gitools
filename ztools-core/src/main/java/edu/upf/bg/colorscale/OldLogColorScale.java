@@ -65,7 +65,7 @@ public class OldLogColorScale extends AbstractColorScale {
 		this.logFactor = logFactor;
 	}
 	
-	public Color getColor(double value) {
+	public Color valueColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;
 		else if (value > maxPoint || value == Double.POSITIVE_INFINITY)

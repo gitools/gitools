@@ -13,7 +13,7 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 
-public class SortAction extends BaseAction {
+public class SortByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 	private SortSubject sortSubject;
@@ -22,7 +22,7 @@ public class SortAction extends BaseAction {
 		ROW, COLUMN, BOTH
 	}
 
-	public SortAction(SortSubject sortSubject) {
+	public SortByValueAction(SortSubject sortSubject) {
 		super(null);	
 		this.sortSubject = sortSubject;
 		switch (this.sortSubject) {
@@ -59,40 +59,30 @@ public class SortAction extends BaseAction {
 			counter++;
 		}
 		
-		SortDialogSimple d = new SortDialogSimple(
+		final SortDialogSimple d = new SortDialogSimple(
 				AppFrame.instance(),
 				getName(),
 				true,
 				props,
 				AggregatorFactory.getAggregatorsArray());
 		
-		List<SortCriteria> criteriaList = d.getCriteriaList();
+		final List<SortCriteria> criteriaList = d.getCriteriaList();
 		if (criteriaList.size() == 0)
 			return;
-		
-		//SortDialog d;		
+
 		switch (this.sortSubject) {
 			case COLUMN:
-				//d = new SortColumnsDialog(AppFrame.instance(), props);
-				//criteriaList = d.getValueList();
-				new SortColumnsAction(matrixView, criteriaList, false);
-				AppFrame.instance()
-					.setStatusText("Columns sorted.");
+				new SortByValueActionColumnsDelegate(matrixView, criteriaList, false);
+				AppFrame.instance().setStatusText("Columns sorted.");
 				break;
 			case ROW:
-				//d = new SortRowsDialog(AppFrame.instance(), props);
-				//criteriaList = d.getValueList();
-				new SortRowsAction(matrixView, criteriaList, false);
-				AppFrame.instance()
-					.setStatusText("Rows sorted.");
+				new SortByValueActionRowsDelegate(matrixView, criteriaList, false);
+				AppFrame.instance().setStatusText("Rows sorted.");
 				break;
 			case BOTH:
-				//d = new SortRowsDialog(AppFrame.instance(), props);
-				//criteriaList = d.getValueList();
-				new SortRowsAction(matrixView, criteriaList, false);
-				new SortColumnsAction(matrixView, criteriaList, false);
-				AppFrame.instance()
-					.setStatusText("Rows and columns sorted.");
+				new SortByValueActionRowsDelegate(matrixView, criteriaList, false);
+				new SortByValueActionColumnsDelegate(matrixView, criteriaList, false);
+				AppFrame.instance().setStatusText("Rows and columns sorted.");
 				break;
 		}
 				

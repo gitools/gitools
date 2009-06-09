@@ -42,8 +42,8 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private JTextField sigLevelTb;
 
 	private ColorChooserLabel minColorCc;
-
 	private ColorChooserLabel maxColorCc;
+	private ColorChooserLabel nsigColorCc;
 	
 	public PValueElementDecoratorPanel(MatrixFigure model) {
 		super(model);
@@ -125,15 +125,24 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		});
 		
 		minColorCc = new ColorChooserLabel(decorator.getMinColor());
+		minColorCc.setToolTipText("Lower significant p-value color");
 		minColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setMinColor(color); }
 		});
 		
 		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
+		maxColorCc.setToolTipText("Greater significant p-value color");
 		maxColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setMaxColor(color); }
+		});
+		
+		nsigColorCc = new ColorChooserLabel(decorator.getNonSignificantColor());
+		nsigColorCc.setToolTipText("Non significant p-value color");
+		nsigColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setNonSignificantColor(color); }
 		});
 		
 		refresh();
@@ -147,6 +156,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(sigLevelTb);
 		add(minColorCc);
 		add(maxColorCc);
+		add(nsigColorCc);
 	}
 	
 	private void refresh() {

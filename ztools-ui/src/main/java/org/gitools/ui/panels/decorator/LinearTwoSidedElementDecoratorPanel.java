@@ -17,15 +17,15 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 
-import org.gitools.model.decorator.impl.Log2RatioElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 
-public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPanel {
+public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private static final long serialVersionUID = 8422331422677024364L;
 	
-	private Log2RatioElementDecorator decorator;
+	private LinearTwoSidedElementDecorator decorator;
 
 	private JComboBox valueCb;
 
@@ -37,10 +37,10 @@ public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPane
 	private ColorChooserLabel midColorCc;
 	private ColorChooserLabel maxColorCc;
 	
-	public Log2RatioElementDecoratorPanel(MatrixFigure model) {
+	public LinearTwoSidedElementDecoratorPanel(MatrixFigure model) {
 		super(model);
 	
-		this.decorator = (Log2RatioElementDecorator) model.getDecorator();
+		this.decorator = (LinearTwoSidedElementDecorator) model.getCellDecorator();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
@@ -72,6 +72,7 @@ public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPane
 		});
 		
 		minColorCc = new ColorChooserLabel(decorator.getMinColor());
+		minColorCc.setToolTipText("Minimum value color");
 		minColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setMinColor(color); }
@@ -88,6 +89,7 @@ public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPane
 		});
 		
 		midColorCc = new ColorChooserLabel(decorator.getMidColor());
+		midColorCc.setToolTipText("Middle value color");
 		midColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setMidColor(color); }
@@ -104,6 +106,7 @@ public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPane
 		});
 		
 		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
+		maxColorCc.setToolTipText("Maximum value color");
 		maxColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setMaxColor(color); }

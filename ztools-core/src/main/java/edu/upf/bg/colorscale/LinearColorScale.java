@@ -25,7 +25,7 @@ public class LinearColorScale extends AbstractColorScale {
 	}
 	
 	@Override
-	public Color getColor(double value) {
+	public Color valueColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;
 		else if (value > maxPoint || value == Double.POSITIVE_INFINITY)

@@ -37,6 +37,7 @@ public class LogColorScale extends AbstractColorScale {
 			double maxPoint, 
 			Color minColor, 
 			Color maxColor) {
+		
 		this(minPoint, maxPoint);
 		setMinColor(minColor);
 		setMaxColor(maxColor);
@@ -50,7 +51,7 @@ public class LogColorScale extends AbstractColorScale {
 		this.logFactor = logFactor;
 	}
 	
-	public Color getColor(double value) {
+	public Color valueColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;
 		else if (value > maxPoint || value == Double.POSITIVE_INFINITY)
@@ -65,6 +66,6 @@ public class LogColorScale extends AbstractColorScale {
 		f = f > 0.0 ? 1.0 + logFactor * Math.log10(f) : 
 			f < 0.0 ? 1.0 + logFactor * Math.log10(-f) : 0.0;
 
-		return ColorUtils.mix(minColor, maxColor, f);
+		return ColorUtils.mix(maxColor, minColor, f);
 	}
 }

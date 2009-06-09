@@ -100,14 +100,14 @@ public abstract class BaseAction extends AbstractAction {
 		return false;
 	}
 	
-	protected AbstractEditor getSelectedView() {
+	protected AbstractEditor getSelectedEditor() {
 		return AppFrame.instance()
 			.getWorkspace()
 			.getSelectedView();
 	}
 	
 	protected IMatrixView getTable() {
-		AbstractEditor view = getSelectedView();
+		AbstractEditor view = getSelectedEditor();
 		if (view == null)
 			return null;
 		

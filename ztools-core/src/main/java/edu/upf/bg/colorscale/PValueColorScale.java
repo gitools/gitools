@@ -12,25 +12,28 @@ public class PValueColorScale extends CompositeColorScale {
 	
 	private double significanceLevel;
 	
+	private UniformColorScale nonSigScale;
+	
 	private ScaleRange nonSigScaleRange;
 
-	private ScaleRange scaleRange;
-
 	private LogColorScale scale;
+	
+	private ScaleRange scaleRange;
 
 	public PValueColorScale(
 			double significanceLevel, 
 			Color minColor, 
 			Color maxColor,
-			Color nonSigColor) {
+			Color nonSignificantColor) {
 		
 		super(0.0, 1.0, minColor, maxColor);
 		
 		this.significanceLevel = significanceLevel;
 		
+		nonSigScale = new UniformColorScale(nonSignificantColor);
+		
 		nonSigScaleRange = new ScaleRange(
-				significanceLevel + epsilon, 1.0, 
-				new UniformColorScale(nonSigColor));
+				significanceLevel + epsilon, 1.0, nonSigScale);
 		
 		scale = new LogColorScale(
 				0.0, significanceLevel + epsilon,
@@ -54,6 +57,17 @@ public class PValueColorScale extends CompositeColorScale {
 				ColorConstants.nonSignificantColor);
 	}
 	
+	public double getSignificanceLevel() {
+		return significanceLevel;
+	}
+	
+	public void setSignificanceLevel(double significanceLevel) {
+		this.significanceLevel = significanceLevel;
+		nonSigScaleRange.setMinPoint(significanceLevel + epsilon);
+		scaleRange.setMaxPoint(significanceLevel + epsilon);
+		scale.setMaxPoint(significanceLevel + epsilon);
+	}
+	
 	@Override
 	public void setMinColor(Color color) {
 		super.setMinColor(color);
@@ -66,14 +80,11 @@ public class PValueColorScale extends CompositeColorScale {
 		scale.setMaxColor(color);
 	}
 	
-	public double getSignificanceLevel() {
-		return significanceLevel;
+	public Color getNonSignificantColor() {
+		return nonSigScale.getColor();
 	}
 	
-	public void setSignificanceLevel(double significanceLevel) {
-		this.significanceLevel = significanceLevel;
-		nonSigScaleRange.setMinPoint(significanceLevel + epsilon);
-		scaleRange.setMaxPoint(significanceLevel + epsilon);
-		scale.setMaxPoint(significanceLevel + epsilon);
+	public void setNonSignificantColor(Color color) {
+		nonSigScale.setColor(color);
 	}
 }

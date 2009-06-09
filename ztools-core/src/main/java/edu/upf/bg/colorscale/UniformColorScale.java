@@ -10,8 +10,16 @@ public class UniformColorScale implements IColorScale {
 		this.color = color;
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
 	@Override
-	public Color getColor(double value) {
+	public Color valueColor(double value) {
 		return color;
 	}
 

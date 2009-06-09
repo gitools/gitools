@@ -7,10 +7,10 @@ import org.gitools.ui.actions.table.FilterRowsByValuesAction;
 import org.gitools.ui.actions.table.HideSelectionAction;
 import org.gitools.ui.actions.table.MoveSelectionAction;
 import org.gitools.ui.actions.table.ShowAllAction;
-import org.gitools.ui.actions.table.SortAction;
+import org.gitools.ui.actions.table.SortByValueAction;
 import org.gitools.ui.actions.table.HideSelectionAction.ElementType;
 import org.gitools.ui.actions.table.MoveSelectionAction.MoveDirection;
-import org.gitools.ui.actions.table.SortAction.SortSubject;
+import org.gitools.ui.actions.table.SortByValueAction.SortSubject;
 
 public final class TableActionSet extends ActionSet {
 
@@ -38,13 +38,13 @@ public final class TableActionSet extends ActionSet {
 		new FastSortRowsAction();
 
 	public static final BaseAction sortRows = 
-		new SortAction(SortSubject.ROW);
+		new SortByValueAction(SortSubject.ROW);
 	
 	public static final BaseAction sortColumns = 
-		new SortAction(SortSubject.COLUMN);
+		new SortByValueAction(SortSubject.COLUMN);
 	
 	public static final BaseAction sortRowsAndColumns = 
-		new SortAction(SortSubject.BOTH);
+		new SortByValueAction(SortSubject.BOTH);
 	
 	public static final BaseAction hideSelectedRows = 
 		new HideSelectionAction(ElementType.ROWS);

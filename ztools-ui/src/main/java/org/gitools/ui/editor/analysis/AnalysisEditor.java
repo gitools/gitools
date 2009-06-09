@@ -1,12 +1,13 @@
 package org.gitools.ui.editor.analysis;
 
 import org.gitools.ui.editor.MultiEditor;
-import org.gitools.ui.editor.table.MatrixEditor;
+import org.gitools.ui.editor.matrix.MatrixEditor;
 
 import org.gitools.model.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
@@ -42,25 +43,28 @@ public class AnalysisEditor extends MultiEditor {
 				new DataMatrixTableContentsAdapter(
 						analysis.getDataTable()));
 		
-		ElementDecorator dataDecorator = 
+		ElementDecorator dataRowDecorator = 
 			ElementDecoratorFactory.create(
 					ElementDecoratorNames.BINARY, 
 					dataTable.getCellAdapter());
 		
-		dataView = new MatrixEditor(new MatrixFigure(dataTable, dataDecorator));
+		dataView = new MatrixEditor(
+				new MatrixFigure(dataTable, dataRowDecorator,
+						new SimpleHeaderDecorator(), new SimpleHeaderDecorator()));
 		
 		// create results view
 		
 		IMatrixView resultsTable = new MatrixView(
-				new ResultsMatrixTableContentsAdapter(
-						analysis.getResults()));
+				analysis.getResults());
 		
-		ElementDecorator resultsDecorator = 
+		ElementDecorator resultsRowDecorator = 
 			ElementDecoratorFactory.create(
 					ElementDecoratorNames.PVALUE, 
 					resultsTable.getCellAdapter());
 		
-		resultsView = new MatrixEditor(new MatrixFigure(resultsTable, resultsDecorator));
+		resultsView = new MatrixEditor(
+				new MatrixFigure(resultsTable, resultsRowDecorator,
+						new SimpleHeaderDecorator(), new SimpleHeaderDecorator()));
 		
 		addView(detailsView, "Description");
 		addView(dataView, "Data");

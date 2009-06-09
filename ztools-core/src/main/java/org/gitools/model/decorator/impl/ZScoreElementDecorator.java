@@ -15,6 +15,8 @@ import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class ZScoreElementDecorator extends ElementDecorator {
 
+	private static final long serialVersionUID = -7623938918947195891L;
+
 	private int valueIndex;
 	private int correctedValueIndex;
 	private boolean useCorrection;
@@ -133,6 +135,15 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
+	public Color getNonSignificantColor() {
+		return scale.getNonSignificantColor();
+	}
+	
+	public void setNonSignificantColor(Color color) {
+		scale.setNonSignificantColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
 		decoration.reset();
@@ -158,7 +169,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 			useScale = cv <= significanceLevel;
 		}
 		
-		final Color color = useScale ? scale.getColor(v) 
+		final Color color = useScale ? scale.valueColor(v) 
 				: ColorConstants.nonSignificantColor;
 		
 		decoration.setBgColor(color);

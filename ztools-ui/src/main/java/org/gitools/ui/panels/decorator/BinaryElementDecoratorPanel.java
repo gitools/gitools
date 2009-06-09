@@ -6,7 +6,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -112,14 +111,20 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 				cutoffChanged();
 			}
 		});
-
-		JLabel colorLbl = new JLabel("Color");
-		colorLbl.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		
 		colorCc = new ColorChooserLabel(decorator.getColor());
+		colorCc.setToolTipText("Condition color");
 		colorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setColor(color); }
+		});
+		
+		final ColorChooserLabel nonSigColorCc = 
+			new ColorChooserLabel(decorator.getNonSignificantColor());
+		nonSigColorCc.setToolTipText("Non condition color");
+		nonSigColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setNonSignificantColor(color); }
 		});
 		
 		refresh();
@@ -130,6 +135,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(cmpCb);
 		add(cutoffTf);
 		add(colorCc);
+		add(nonSigColorCc);
 	}
 
 	private void refresh() {

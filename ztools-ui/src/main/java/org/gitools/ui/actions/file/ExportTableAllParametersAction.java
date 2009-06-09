@@ -20,15 +20,15 @@ import org.gitools.matrix.export.MatrixTsvExporter;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 
-public class ExportTableAction extends BaseAction {
+public class ExportTableAllParametersAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportTableAction() {
-		super("Export table");
+	public ExportTableAllParametersAction() {
+		super("Export all table parameters");
 		
-		setDesc("Export a data table of a parameter");
-		setMnemonic(KeyEvent.VK_N);
+		setDesc("Export a data table with all parameters");
+		setMnemonic(KeyEvent.VK_A);
 	}
 	
 	@Override
@@ -39,39 +39,22 @@ public class ExportTableAction extends BaseAction {
 			return;
 		
 		final List<IElementProperty> properties = matrixView.getCellAdapter().getProperties();
-		final String[] propNames = new String[properties.size()];
+		final int[] propIndices = new int[properties.size()];
 		for (int i = 0; i < properties.size(); i++)
-			propNames[i] = properties.get(i).getName();
-
-		int selectedPropIndex = matrixView.getSelectedPropertyIndex();
-		selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
-		selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
+			propIndices[i] = i;
 		
-		final String selected = (String) JOptionPane.showInputDialog(AppFrame.instance(),
-				"What do you want to export ?", "Export table data",
-				JOptionPane.QUESTION_MESSAGE, null, propNames,
-				propNames[selectedPropIndex]);
-
-		if (selected == null || selected.isEmpty())
-			return;
-		
-		int propIndex = 0;
-		for (int j = 0; j < propNames.length; j++)
-			if (propNames[j].equals(selected))
-				propIndex = j;
-
 		try {
 			File file = getSelectedFile();
 			if (file == null)
 				return;
 			
-			MatrixTsvExporter.exportProperty(matrixView, propIndex, file);
+			MatrixTsvExporter.exportProperties(matrixView, propIndices, file);
 		}
 		catch (IOException ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());
 		}
 		
-		AppFrame.instance().setStatusText(selected + " exported.");
+		AppFrame.instance().setStatusText("Table exported.");
 	}
 	
 

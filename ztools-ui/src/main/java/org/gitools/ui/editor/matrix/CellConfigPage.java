@@ -1,7 +1,10 @@
-package org.gitools.ui.editor.table;
+package org.gitools.ui.editor.matrix;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
@@ -9,16 +12,22 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.ui.component.ColorChooserLabel;
+import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
 public class CellConfigPage extends JPanel {
 
@@ -27,11 +36,12 @@ public class CellConfigPage extends JPanel {
 	private MatrixFigure model;
 	
 	private JComboBox showCombo;
+	private JCheckBox showGridCb;
+	private ColorChooserLabel gridColorCc;
 	
 	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
 	
-	public CellConfigPage(
-			MatrixFigure model) {
+	public CellConfigPage(MatrixFigure model) {
 		
 		this.model = model;
 		
@@ -51,7 +61,7 @@ public class CellConfigPage extends JPanel {
 		showCombo.setModel(new DefaultComboBoxModel(descriptors));
 		showCombo.setSelectedItem(
 				ElementDecoratorFactory.getDescriptor(
-						model.getDecorator().getClass()));
+						model.getCellDecorator().getClass()));
 		showCombo.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -59,18 +69,46 @@ public class CellConfigPage extends JPanel {
 			}
 		});
 		
+		showGridCb = new JCheckBox("Grid", model.isShowGrid());
+		showGridCb.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				model.setShowGrid(showGridCb.isSelected());
+			}
+		});
+		
+		gridColorCc = new ColorChooserLabel(model.getGridColor());
+		gridColorCc.setToolTipText("Grid color");
+		gridColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				model.setGridColor(color);
+			}
+		});
+		
+		final JSpinner cellSizeSp = new JSpinner(
+				new SpinnerNumberModel(model.getCellSize(), 1, 64, 1));
+		cellSizeSp.addChangeListener(new ChangeListener() {
+			@Override public void stateChanged(ChangeEvent e) {
+				SpinnerNumberModel m = (SpinnerNumberModel) cellSizeSp.getModel();
+				model.setCellSize(m.getNumber().intValue());
+			}
+		});
+		
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		mainPanel.add(new JLabel("Show"));
 		mainPanel.add(showCombo);
-		
+		mainPanel.add(new JLabel("Size"));
+		mainPanel.add(cellSizeSp);
+		mainPanel.add(showGridCb);
+		mainPanel.add(gridColorCc);
+				
 		setLayout(new BorderLayout());
 		add(mainPanel, BorderLayout.NORTH);
 		add(new JPanel(), BorderLayout.CENTER);
 		
 		ElementDecoratorDescriptor descriptor = 
 			ElementDecoratorFactory.getDescriptor(
-					model.getDecorator().getClass());
+					model.getCellDecorator().getClass());
 		
 		changeDecoratorPanel(descriptor);
 	}
@@ -80,7 +118,7 @@ public class CellConfigPage extends JPanel {
 			(ElementDecoratorDescriptor) e.getItem();
 		
 		if (e.getStateChange() == ItemEvent.DESELECTED) {
-			final ElementDecorator decorator = model.getDecorator();
+			final ElementDecorator decorator = model.getCellDecorator();
 			decoratorCache.put(descriptor, decorator);
 		}
 		else if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -89,7 +127,7 @@ public class CellConfigPage extends JPanel {
 				decorator = ElementDecoratorFactory.create(
 						descriptor, model.getMatrixView().getCellAdapter());
 			
-			model.setDecorator(decorator);
+			model.setCellDecorator(decorator);
 
 			changeDecoratorPanel(descriptor);
 			

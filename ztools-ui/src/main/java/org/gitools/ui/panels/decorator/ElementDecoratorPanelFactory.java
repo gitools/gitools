@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.Log2RatioElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
@@ -20,8 +20,8 @@ public class ElementDecoratorPanelFactory {
 			return new ZScoreElementDecoratorPanel(model);
 		else if (BinaryElementDecorator.class.equals(decoratorClass))
 			return new BinaryElementDecoratorPanel(model);
-		else if (Log2RatioElementDecorator.class.equals(decoratorClass))
-			return new Log2RatioElementDecoratorPanel(model);
+		else if (LinearTwoSidedElementDecorator.class.equals(decoratorClass))
+			return new LinearTwoSidedElementDecoratorPanel(model);
 		
 		return new JPanel();
 	}

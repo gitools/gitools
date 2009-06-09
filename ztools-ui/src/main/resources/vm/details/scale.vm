@@ -11,10 +11,10 @@
 	<tr>
 		#foreach($index in [0..$total])
 			#set( $value = 0.05 * ($index * 1.0) / $total )
-			#set( $color = $pvalueScale.getColor($value) )
+			#set( $color = $pvalueScale.valueColor($value) )
 			<td style="background-color: #htmlColor($color)">&nbsp;</td>
 		#end
-		#set( $color = $pvalueScale.getColor(1.0) )
+		#set( $color = $pvalueScale.valueColor(1.0) )
 		<td style="background-color: #htmlColor($color)">&nbsp;</td>
     </tr>
 </table>

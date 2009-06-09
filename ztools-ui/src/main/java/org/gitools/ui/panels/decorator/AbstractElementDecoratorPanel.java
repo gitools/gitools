@@ -28,7 +28,7 @@ public abstract class AbstractElementDecoratorPanel extends JPanel {
 	}
 	
 	protected ElementDecorator getDecorator() {
-		return model.getDecorator();
+		return model.getCellDecorator();
 	}
 	
 	protected List<IndexedProperty> loadAllProperties(List<IndexedProperty> properties, IElementAdapter adapter) {

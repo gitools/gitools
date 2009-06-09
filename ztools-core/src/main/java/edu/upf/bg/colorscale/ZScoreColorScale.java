@@ -2,7 +2,6 @@ package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-import edu.upf.bg.colorscale.CompositeColorScale.ScaleRange;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class ZScoreColorScale extends CompositeColorScale {
@@ -10,6 +9,7 @@ public class ZScoreColorScale extends CompositeColorScale {
 	protected double center;
 	protected double halfAmplitude;
 	protected double sigHalfAmplitude;
+	private UniformColorScale centerScale;
 	private ScaleRange nonSigScaleRange;
 	private LinearColorScale leftScale;
 	private ScaleRange leftScaleRange;
@@ -24,7 +24,7 @@ public class ZScoreColorScale extends CompositeColorScale {
 			Color leftMaxColor,
 			Color rightMinColor,
 			Color rightMaxColor,
-			Color nonSigColor) {
+			Color nonSignificantColor) {
 		
 		super(0.0, 0.0, 
 				leftMinColor, rightMaxColor);
@@ -42,8 +42,9 @@ public class ZScoreColorScale extends CompositeColorScale {
 		setMinPoint(min);
 		setMaxPoint(max);
 		
-		nonSigScaleRange = new ScaleRange(sigMin, sigMax, 
-				new UniformColorScale(nonSigColor));
+		centerScale = new UniformColorScale(nonSignificantColor);
+		
+		nonSigScaleRange = new ScaleRange(sigMin, sigMax, centerScale);
 		
 		leftScale = new LinearColorScale(
 				min, center, 
@@ -132,6 +133,14 @@ public class ZScoreColorScale extends CompositeColorScale {
 	
 	public void setRightMaxColor(Color color) {
 		rightScale.setMaxColor(color);
+	}
+	
+	public Color getNonSignificantColor() {
+		return centerScale.getColor();
+	}
+	
+	public void setNonSignificantColor(Color color) {
+		centerScale.setColor(color);
 	}
 	
 	private void recalculate() {

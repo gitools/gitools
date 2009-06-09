@@ -8,24 +8,26 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
-import edu.upf.bg.colorscale.Log2RatioColorScale;
+import edu.upf.bg.colorscale.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
-public class Log2RatioElementDecorator extends ElementDecorator {
+public class LinearTwoSidedElementDecorator extends ElementDecorator {
+
+	private static final long serialVersionUID = -181427286948958314L;
 
 	private int valueIndex;
 	
-	private Log2RatioColorScale scale;
+	private LinearTwoSidedColorScale scale;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
 	
-	public Log2RatioElementDecorator(IElementAdapter adapter) {
+	public LinearTwoSidedElementDecorator(IElementAdapter adapter) {
 		super(adapter);
 		
 		valueIndex = getPropertyIndex(new String[] {
 				"value", "log2ratio" });
 		
-		scale = new Log2RatioColorScale();
+		scale = new LinearTwoSidedColorScale();
 	}
 
 	public final int getValueIndex() {
@@ -105,7 +107,7 @@ public class Log2RatioElementDecorator extends ElementDecorator {
 		
 		double v = MatrixUtils.doubleValue(value);
 
-		final Color color = scale.getColor(v);
+		final Color color = scale.valueColor(v);
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));

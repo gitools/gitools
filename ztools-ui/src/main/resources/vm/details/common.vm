@@ -3,12 +3,12 @@
 #end
 
 #macro( zscoreColor $value )
-	#set( $color = $zscoreScale.getColor($value) )
+	#set( $color = $zscoreScale.valueColor($value) )
     <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 #end
 
 #macro( pvalueColor $value )
-	#set( $color = $pvalueScale.getColor($value) )
+	#set( $color = $pvalueScale.valueColor($value) )
     <span style="width: 16px; height: 16px; background-color: #htmlColor($color);">&nbsp;&nbsp;&nbsp;&nbsp;</span>
 #end
 
@@ -80,7 +80,7 @@
             	<tr>
             		#foreach($index in [0..$total])
             			#set( $value = (20.0 * ($index * 1.0) / $total) - 10.0 )
-            			#set( $color = $zscoreScale.getColor($value) )
+            			#set( $color = $zscoreScale.valueColor($value) )
             			<td style="background-color: #htmlColor($color)">&nbsp;</td>
             		#end
                 </tr>
@@ -105,10 +105,10 @@
             	<tr>
             		#foreach($index in [0..$total])
             			#set( $value = 0.05 * ($index * 1.0) / $total )
-            			#set( $color = $pvalueScale.getColor($value) )
+            			#set( $color = $pvalueScale.valueColor($value) )
             			<td style="background-color: #htmlColor($color)">&nbsp;</td>
             		#end
-            		#set( $color = $pvalueScale.getColor(1.0) )
+            		#set( $color = $pvalueScale.valueColor(1.0) )
             		<td style="background-color: #htmlColor($color)">&nbsp;</td>
                 </tr>
             </table>

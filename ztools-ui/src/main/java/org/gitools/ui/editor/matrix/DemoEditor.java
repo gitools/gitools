@@ -1,4 +1,4 @@
-package org.gitools.ui.editor.table;
+package org.gitools.ui.editor.matrix;
 
 
 import cern.colt.matrix.DoubleFactory1D;
@@ -11,10 +11,10 @@ import org.gitools.model.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.ObjectMatrix;
-import org.gitools.model.matrix.adapter.ResultsMatrixTableContentsAdapter;
 import org.gitools.model.matrix.element.array.ArrayElementAdapter;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 
@@ -33,7 +33,8 @@ public class DemoEditor extends MatrixEditor {
 		ElementDecorator decorator = ElementDecoratorFactory.create(
 				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
-		return new MatrixFigure(matrixView, decorator);
+		return new MatrixFigure(matrixView, decorator,
+				new SimpleHeaderDecorator(), new SimpleHeaderDecorator());
 	}
 
 	private static MatrixView createTable(int rows, int cols) {		
@@ -70,8 +71,6 @@ public class DemoEditor extends MatrixEditor {
 		Analysis analysis = new Analysis();
 		analysis.setResults(resultsMatrix);
 		
-		return new MatrixView(
-					new ResultsMatrixTableContentsAdapter(
-								resultsMatrix));
+		return new MatrixView(resultsMatrix);
 	}
 }

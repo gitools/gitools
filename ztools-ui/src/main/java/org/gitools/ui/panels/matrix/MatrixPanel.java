@@ -17,15 +17,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-
-import org.gitools.ui.model.SelectionMode;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.ui.model.SelectionMode;
 
 public class MatrixPanel extends JPanel {
 
@@ -208,9 +206,9 @@ public class MatrixPanel extends JPanel {
 	private void createComponents() {
 		
 		table = new JTable();
+		final JScrollPane scroll = new JScrollPane(table);
 		
 		table.setGridColor(Color.WHITE);
-		
 		table.setFillsViewportHeight(true);
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -224,7 +222,6 @@ public class MatrixPanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
-					
 					selectedLeadRow = table.getSelectionModel().getLeadSelectionIndex();
 					selectedLeadColumn = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
 									
@@ -246,13 +243,15 @@ public class MatrixPanel extends JPanel {
 		table.addMouseListener(cml);
 		table.addMouseMotionListener(cml);
 		
-		table.getTableHeader().setPreferredSize(new Dimension(columnsWidth, columnsHeight));
 		refreshTableColumnsWidth();
 		
-		refreshSelectionMode();
+		// This is a workaround for bug in Swing:
+		// http://bugs.sun.com/view_bug.do?bug_id=4473075
+		int w = columnsWidth * 1000 + rowLabelsWidth;
+		table.getTableHeader().setPreferredSize(
+				new Dimension(w, columnsHeight));
 		
-		final JScrollPane scroll = new JScrollPane(table);
-		table.getTableHeader().setOpaque(true);
+		refreshSelectionMode();
 		
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
@@ -294,11 +293,13 @@ public class MatrixPanel extends JPanel {
 			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
 				col.setResizable(false);
+				col.setMinWidth(columnsWidth);
 				col.setPreferredWidth(columnsWidth);
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
-			//col.setResizable(false);
+			col.setResizable(false);
 			col.setMinWidth(rowLabelsWidth);
+			col.setPreferredWidth(rowLabelsWidth);
 		}
 	}
 	
@@ -306,14 +307,17 @@ public class MatrixPanel extends JPanel {
 		TableColumnModel colModel = table.getColumnModel();
 		final int lastColumn = colModel.getColumnCount() - 1;
 		if (lastColumn >= 0) {
-			for (int i = 0; i < lastColumn; i++) {
+			for (int i = 0; i <= lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
-				col.setHeaderRenderer(
-						new RotatedMatrixTableCellRenderer(
-								selMode == SelectionMode.columns));
+				final RotatedMatrixTableCellRenderer renderer = 
+					new RotatedMatrixTableCellRenderer(
+						selMode == SelectionMode.columns);
+				renderer.setGridColor(table.getGridColor());
+				renderer.setShowGrid(isShowGrid());
+				col.setHeaderRenderer(renderer);
 			}
-			TableColumn col = colModel.getColumn(lastColumn);
-			col.setHeaderRenderer(new DefaultTableCellRenderer());
+			/*TableColumn col = colModel.getColumn(lastColumn);
+			col.setHeaderRenderer(new DefaultTableCellRenderer());*/
 		}
 	}
 	
@@ -550,6 +554,35 @@ public class MatrixPanel extends JPanel {
 				return true;
 		return false;
 	}
+
+	public void setShowGrid(boolean showGrid) {
+		table.setShowGrid(showGrid);
+		
+		int intercellSpacing = showGrid ? 1 : 0;
+		table.setIntercellSpacing(new Dimension(intercellSpacing, intercellSpacing));
+	}
+	
+	public boolean isShowGrid() {
+		return table.getShowHorizontalLines() 
+			|| table.getShowVerticalLines();
+	}
+
+	public void setGridColor(Color gridColor) {
+		table.setGridColor(gridColor);
+		refreshTableColumnsRenderer();
+	}
+	
+	public Color getGridColor() {
+		return table.getGridColor();
+	}
+
+	public void setCellSize(int cellSize) {
+		columnsWidth = cellSize;
+		rowsHeight = cellSize;
+		refreshTableColumnsWidth();
+		table.setRowHeight(rowsHeight);
+	}
+	
 	
 	/*private void printArray(int[] selectedRows) {
 		System.out.println("-------------");

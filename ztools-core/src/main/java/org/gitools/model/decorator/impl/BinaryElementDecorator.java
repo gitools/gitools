@@ -14,12 +14,17 @@ import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class BinaryElementDecorator extends ElementDecorator {
 
-	private static final Color defaultColor = new Color(20, 120, 230);
+	private static final long serialVersionUID = 8832886601133057329L;
+
+	private static final Color defaultColor = new Color(20, 120, 250);
 	
 	private int valueIndex;
+	
 	private double cutoff;
 	private BinaryCutoffCmp cutoffCmp;
+	
 	private Color color;
+	private Color nonSignificantColor;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
 	
@@ -34,6 +39,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		cutoffCmp = BinaryCutoffFilter.EQ;
 		
 		color = defaultColor;
+		nonSignificantColor = ColorConstants.nonSignificantColor;
 	}
 
 	public int getValueIndex() {
@@ -72,6 +78,15 @@ public class BinaryElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
+	public Color getNonSignificantColor() {
+		return nonSignificantColor;
+	}
+	
+	public void setNonSignificantColor(Color color) {
+		this.nonSignificantColor = color;
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
 	@Override
 	public void decorate(
 			ElementDecoration decoration, 
@@ -85,15 +100,13 @@ public class BinaryElementDecorator extends ElementDecorator {
 			return;
 		}
 		
-		Object value = adapter.getValue(
-				element, valueIndex);
+		Object value = adapter.getValue(element, valueIndex);
 		
 		double v = MatrixUtils.doubleValue(value);
 		
 		boolean isSig = cutoffCmp.compare(v, cutoff);
 		
-		final Color c = isSig ? color 
-				: ColorConstants.nonSignificantColor;
+		final Color c = isSig ? color : nonSignificantColor;
 		
 		decoration.setBgColor(c);
 		decoration.setToolTip(fmt.format(v));

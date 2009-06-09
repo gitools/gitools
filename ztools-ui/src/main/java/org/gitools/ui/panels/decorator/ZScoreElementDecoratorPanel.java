@@ -44,11 +44,12 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel lmaxColorCc;
 	private ColorChooserLabel rminColorCc;
 	private ColorChooserLabel rmaxColorCc;
+	private ColorChooserLabel nsigColorCc;
 	
 	public ZScoreElementDecoratorPanel(MatrixFigure model) {
 		super(model);
 		
-		this.decorator = (ZScoreElementDecorator) model.getDecorator();
+		this.decorator = (ZScoreElementDecorator) model.getCellDecorator();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
@@ -130,24 +131,35 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		});*/
 		
 		lminColorCc = new ColorChooserLabel(decorator.getLeftMinColor());
+		lminColorCc.setToolTipText("Left side lowest value color");
 		lminColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setLeftMinColor(color); }
 		});
 		
 		lmaxColorCc = new ColorChooserLabel(decorator.getLeftMaxColor());
+		lmaxColorCc.setToolTipText("Left side greatest value color");
 		lmaxColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setLeftMaxColor(color); }
 		});
 		
+		nsigColorCc = new ColorChooserLabel(decorator.getNonSignificantColor());
+		nsigColorCc.setToolTipText("Non significant value color");
+		nsigColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setNonSignificantColor(color); }
+		});
+		
 		rminColorCc = new ColorChooserLabel(decorator.getRightMinColor());
+		rminColorCc.setToolTipText("Right side lowest value color");
 		rminColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setRightMinColor(color); }
 		});
 		
 		rmaxColorCc = new ColorChooserLabel(decorator.getRightMaxColor());
+		rmaxColorCc.setToolTipText("Right side greatest value color");
 		rmaxColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setRightMaxColor(color); }
@@ -164,6 +176,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(sigLevelTb);
 		add(lminColorCc);
 		add(lmaxColorCc);
+		add(nsigColorCc);
 		add(rminColorCc);
 		add(rmaxColorCc);
 	}

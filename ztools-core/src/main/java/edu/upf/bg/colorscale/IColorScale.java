@@ -4,5 +4,5 @@ import java.awt.Color;
 
 public interface IColorScale {
 	
-	public Color getColor(double value);
+	public Color valueColor(double value);
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.Log2RatioElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -17,16 +17,16 @@ public class ElementDecoratorFactory {
 	
 	static {
 		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
+		
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.LINEAR_TWO_SIDED, LinearTwoSidedElementDecorator.class));
+		
+		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.PVALUE, PValueElementDecorator.class));
 		
 		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
-		
-		descriptors.add(new ElementDecoratorDescriptor(
-				ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
-		
-		descriptors.add(new ElementDecoratorDescriptor(
-				ElementDecoratorNames.LOG2RATIO, Log2RatioElementDecorator.class));
 	}
 	
 	public static ElementDecorator create(

@@ -106,7 +106,7 @@ public class CompositeColorScale extends AbstractColorScale {
 	}
 	
 	@Override
-	public Color getColor(double value) {
+	public Color valueColor(double value) {
 		if (Double.isNaN(value))
 			return notANumberColor;
 		else if (value == Double.POSITIVE_INFINITY)
@@ -120,7 +120,7 @@ public class CompositeColorScale extends AbstractColorScale {
 		
 		for (ScaleRange range : scaleRanges)
 			if (range.minPoint <= value && value <= range.maxPoint)
-				return range.scale.getColor(value);
+				return range.scale.valueColor(value);
 		
 		return undefinedColor;
 	}

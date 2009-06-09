@@ -5,7 +5,9 @@ import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportColumnDataAction;
 import org.gitools.ui.actions.file.ExportNames;
 import org.gitools.ui.actions.file.ExportParameterDataAction;
-import org.gitools.ui.actions.file.ExportTableAction;
+import org.gitools.ui.actions.file.ExportTableToPdfAction;
+import org.gitools.ui.actions.file.ExportTableParameterAction;
+import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 
@@ -26,13 +28,15 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportNamesAction = new ExportNames();
-	public static final BaseAction exportTableData = new ExportTableAction();
+	public static final BaseAction exportTableParameter = new ExportTableParameterAction();
+	public static final BaseAction exportTableAllParameters = new ExportTableToPdfAction();
+	public static final BaseAction exportTableToPdf = new ExportTableAllParametersAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
-			/*exportParameterDataAction,
-			exportColumnDataAction,*/
 			exportNamesAction,
-			exportTableData
+			exportTableParameter,
+			exportTableAllParameters,
+			exportTableToPdf
 	});
 
 	public FileActionSet() {

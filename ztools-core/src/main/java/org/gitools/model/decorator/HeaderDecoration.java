@@ -1,19 +1,10 @@
 package org.gitools.model.decorator;
 
-public class HeaderDecoration {
+public class HeaderDecoration extends ElementDecoration {
 
-	protected String name;
 	protected String url;
 	
 	public HeaderDecoration() {
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public String getUrl() {

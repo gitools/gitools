@@ -13,56 +13,54 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 
-public class SortColumnsAction {
-	
-	IMatrix contents;
-	List<SortCriteria> criteriaList;
-	
-	
-	public SortColumnsAction(IMatrixView matrixView, List<SortCriteria> criteriaList,
-			boolean allCols) {
+public class SortByValueActionRowsDelegate {
+
+	private static final long serialVersionUID = -1582437709508438222L;
+	private IMatrix contents;
+	private List<SortCriteria> criteriaList;
+
+	public SortByValueActionRowsDelegate(IMatrixView matrixView, List<SortCriteria> criteriaList, boolean allRows) {
 		
 		this.contents = matrixView.getContents();
 		this.criteriaList = criteriaList;
 		
-		//rows
-		int rowCount;
-		int[] rows = null;
-		if(matrixView.getSelectedRows().length == 0) {
-			rowCount = matrixView.getVisibleRows().length;
-			rows = new int[rowCount];
-			for (int r = 0; r < rowCount; r++)
-				rows[r] = r;
-		} else
-			rows = matrixView.getSelectedRows();
-
-		
 		//cols
-		Integer[] cols = null;
-		final int colCount;
-		if(allCols) {
-			colCount = contents.getColumnCount();
-			cols = new Integer[colCount];
-			for (int j = 0; j < colCount; j++)
-				cols[j] = j;
+		int colCount;
+		int[] columns = null;
+		if(matrixView.getSelectedColumns().length == 0) {
+			colCount = matrixView.getVisibleColumns().length;
+			columns = new int[colCount];
+			for (int c = 0; c < colCount; c++)
+				columns[c] = c;
+		} else
+			columns = matrixView.getSelectedColumns();
+
+		//rows
+		Integer[] rows = null;
+		final int rowCount;
+		if(allRows) {
+			rowCount = contents.getRowCount();
+			rows = new Integer[rowCount];
+			for (int j = 0; j < rowCount; j++)
+				rows[j] = j;
 		}
 		else {
-			colCount = matrixView.getColumnCount();
-			cols = new Integer[colCount];
-			int[] visibleCols = matrixView.getVisibleColumns();
-			for (int j = 0; j < colCount; j++)
-				cols[j] = visibleCols[j];
+			rowCount = matrixView.getRowCount();
+			rows = new Integer[rowCount];
+			int[] visibleRows = matrixView.getVisibleRows();
+			for (int j = 0; j < rowCount; j++)
+				rows[j] = visibleRows[j];
 		}
 
-		Integer[] sortedColIndices = sortCols(rows, cols);
-		int[] visibleSortedCols = new int[colCount];
-		for (int k = 0; k < colCount; k++)
-			visibleSortedCols[k] = sortedColIndices[k];
-		matrixView.setVisibleColumns(visibleSortedCols);
+		Integer[] sortedRowIndices = sortRows(columns, rows);
+		int[] visibleSortedRows = new int[rowCount];
+		for (int k = 0; k < rowCount; k++)
+			visibleSortedRows[k] = sortedRowIndices[k];
+		matrixView.setVisibleRows(visibleSortedRows);
 	}
-	
+		
 
-	private Integer[] sortCols(final int[] selectedRows,
+	private Integer[] sortRows(final int[] selection,
 								final Integer[] indices) {
 		
 		final List<IAggregator> aggregators = new ArrayList<IAggregator>();
@@ -79,11 +77,10 @@ public class SortColumnsAction {
 			aggregators.add(sortCriteria.getAggregator());
 		}
 		
-		final int N = selectedRows.length;
+		final int N = selection.length;
 		DoubleFactory1D df = DoubleFactory1D.dense;
-		final DoubleMatrix1D col1 = df.make(N);
-		final DoubleMatrix1D col2 = df.make(N);
-	
+		final DoubleMatrix1D row1 = df.make(N);
+		final DoubleMatrix1D row2 = df.make(N);
 		
 		Arrays.sort(indices, new Comparator<Integer>() {		
 			@Override
@@ -91,32 +88,32 @@ public class SortColumnsAction {
 				
 				int level = 0;
 				double aggr1 = 0, aggr2 = 0;
-	
+
 				
 				while (aggr1 == aggr2 && level < criterias) {
 						
 					for (int i = 0; i < N; i++) {
-						int row = selectedRows[i];
+						int col = selection[i];
 						
-						Object value1 = contents.getCellValue(row , idx1, properties.get(level));
+						Object value1 = contents.getCellValue(idx1, col, properties.get(level));
 						double v1 = MatrixUtils.doubleValue(value1);
 	
 						if (!Double.isNaN(v1)) {
-							col1.set(i, v1);
+							row1.set(i, v1);
 						}
 						
-						Object value2 = contents.getCellValue(row, idx2, properties.get(level));
+						Object value2 = contents.getCellValue(idx2, col, properties.get(level));
 						double v2 = MatrixUtils.doubleValue(value2);
 	
 						if (!Double.isNaN(v2)) {
-							col2.set(i, v2);
+							row2.set(i, v2);
 						}
 					}
-					aggr1 = aggregators.get(level).aggregate(col1);
-					aggr2 = aggregators.get(level).aggregate(col2);
+					aggr1 = aggregators.get(level).aggregate(row1);
+					aggr2 = aggregators.get(level).aggregate(row2);
 					level++;
 				}
-	
+
 				int res = (int) Math.signum(aggr1 - aggr2);
 				level--;
 				return res*directions.get(level);

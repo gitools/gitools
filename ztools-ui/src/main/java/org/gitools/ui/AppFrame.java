@@ -16,7 +16,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
-import org.gitools.ui.editor.table.DemoEditor;
+import org.gitools.ui.editor.matrix.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.utils.IconUtils;

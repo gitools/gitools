@@ -13,10 +13,13 @@ import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class PValueElementDecorator extends ElementDecorator {
 
+	private static final long serialVersionUID = -1215192981017862718L;
+
 	private int valueIndex;
 	private int correctedValueIndex;
 	private boolean useCorrection;
 	private double significanceLevel;
+	
 	private PValueColorScale scale;
 
 	private GenericFormatter fmt = new GenericFormatter("<");
@@ -100,6 +103,15 @@ public class PValueElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
+	public Color getNonSignificantColor() {
+		return scale.getNonSignificantColor();
+	}
+
+	public void setNonSignificantColor(Color color) {
+		scale.setNonSignificantColor(color);
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
 	@Override
 	public void decorate(
 			ElementDecoration decoration,
@@ -129,8 +141,8 @@ public class PValueElementDecorator extends ElementDecorator {
 			isSig = cv <= significanceLevel;
 		}
 		
-		final Color color = isSig ? scale.getColor(v) 
-				: ColorConstants.nonSignificantColor;
+		final Color color = isSig ? scale.valueColor(v) 
+				: scale.getNonSignificantColor();
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));

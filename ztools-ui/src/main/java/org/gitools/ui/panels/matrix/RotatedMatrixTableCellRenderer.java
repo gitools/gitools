@@ -20,9 +20,13 @@ public class RotatedMatrixTableCellRenderer
 
 	protected static final double radianAngle = (-90.0 / 180.0) * Math.PI;
 
+	protected Color gridColor = Color.WHITE;
+	
 	protected boolean highlightSelected;
 
 	protected boolean isSelected;
+
+	private boolean showGrid;
 
 	public RotatedMatrixTableCellRenderer(boolean highlightSelected) {
 		this.highlightSelected = highlightSelected;
@@ -46,6 +50,14 @@ public class RotatedMatrixTableCellRenderer
 		return this;
 	}
 
+	public void setGridColor(Color gridColor) {
+		this.gridColor = gridColor;
+	}
+	
+	public void setShowGrid(boolean showGrid) {
+		this.showGrid = showGrid;
+	}
+	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		final int w = this.getWidth();
@@ -57,10 +69,12 @@ public class RotatedMatrixTableCellRenderer
 		if (highlightSelected && isSelected)
 			g2.setBackground(Color.ORANGE);
 
-		g2.clearRect(0, 0, w, h);
+		//g2.clearRect(0, 0, w, h);
 
-		g2.setColor(Color.WHITE);
-		g2.drawRect(0, 0, w, h);
+		if (showGrid) {
+			g2.setColor(gridColor);
+			g2.drawRect(0, 0, w, h);
+		}
 
 		AffineTransform at = new AffineTransform();
 		at.setToTranslation(this.getWidth(), this.getHeight());

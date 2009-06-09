@@ -2,7 +2,7 @@ package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-public class Log2RatioColorScale extends CompositeColorScale {
+public class LinearTwoSidedColorScale extends CompositeColorScale {
 
 	protected double midPoint;
 	protected Color midColor;
@@ -16,7 +16,7 @@ public class Log2RatioColorScale extends CompositeColorScale {
 	private LinearColorScale leftScale;
 	private LinearColorScale rightScale;
 	
-	public Log2RatioColorScale(
+	public LinearTwoSidedColorScale(
 			double minPoint,
 			double midPoint,
 			double maxPoint,
@@ -46,7 +46,7 @@ public class Log2RatioColorScale extends CompositeColorScale {
 				rightScaleRange });
 	}
 	
-	public Log2RatioColorScale() {
+	public LinearTwoSidedColorScale() {
 		this(-6, 0, 6, 
 				Color.BLUE, 
 				Color.LIGHT_GRAY,
