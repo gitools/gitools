@@ -1,6 +1,5 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor.table;
 
-import org.gitools.ui.views.table.TableView;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -19,11 +18,11 @@ import org.gitools.model.matrix.adapter.ResultsMatrixTableContentsAdapter;
 import org.gitools.model.matrix.element.array.ArrayElementAdapter;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 
-public class DemoView extends TableView {
+public class DemoEditor extends MatrixEditor {
 
 	private static final long serialVersionUID = 2467164492764056062L;
 	
-	public DemoView(int rows, int cols) {
+	public DemoEditor(int rows, int cols) {
 		super(createModel(rows, cols));
 		
 		setName("Demo");

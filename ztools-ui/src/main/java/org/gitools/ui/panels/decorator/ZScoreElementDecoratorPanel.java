@@ -21,48 +21,46 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
+import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 
-public class PValueDecoratorPanel extends AbstractDecoratorPanel {
+public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private static final long serialVersionUID = -7443053984962647946L;
 
 	private List<IndexedProperty> valueProperties;
 	private List<IndexedProperty> corrValueProperties;
 	
-	private PValueElementDecorator decorator;
+	private ZScoreElementDecorator decorator;
 	
 	private JComboBox valueCb;
 	private JCheckBox showCorrChkBox;
 	private JComboBox corrValueCb;
 	private JTextField sigLevelTb;
-
-	private ColorChooserLabel minColorCc;
-
-	private ColorChooserLabel maxColorCc;
 	
-	public PValueDecoratorPanel(MatrixFigure model) {
+	private ColorChooserLabel lminColorCc;
+	private ColorChooserLabel lmaxColorCc;
+	private ColorChooserLabel rminColorCc;
+	private ColorChooserLabel rmaxColorCc;
+	
+	public ZScoreElementDecoratorPanel(MatrixFigure model) {
 		super(model);
 		
-		this.decorator = (PValueElementDecorator) getDecorator();
+		this.decorator = (ZScoreElementDecorator) model.getDecorator();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
 		int numProps = adapter.getPropertyCount();
-
+		
 		valueProperties = new ArrayList<IndexedProperty>();
 		corrValueProperties = new ArrayList<IndexedProperty>();
 		for (int i = 0; i < numProps; i++) {
 			final IElementProperty property = adapter.getProperty(i);
 			
-			if (property.getId().endsWith("p-value")
-					/*&& !property.getId().startsWith("corrected")*/)
+			if (property.getId().endsWith("z-score"))
 				valueProperties.add(new IndexedProperty(i, property));
-			
 			if (property.getId().startsWith("corrected"))
 				corrValueProperties.add(new IndexedProperty(i, property));
 		}
@@ -114,6 +112,7 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		});
 
 		// significance level
+		
 		sigLevelTb = new JTextField(Double.toString(decorator.getSignificanceLevel()));
 		sigLevelTb.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void changedUpdate(DocumentEvent e) {
@@ -124,16 +123,34 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 				sigLevelChanged(); }			
 		});
 		
-		minColorCc = new ColorChooserLabel(decorator.getMinColor());
-		minColorCc.addColorChangeListener(new ColorChangeListener() {
+		/*sigLevelColorCc = new ColorChooserLabel(decorator.getColor());
+		sigLevelColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				decorator.setMinColor(color); }
+				decorator.setNonSigColor(color); }
+		});*/
+		
+		lminColorCc = new ColorChooserLabel(decorator.getLeftMinColor());
+		lminColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setLeftMinColor(color); }
 		});
 		
-		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
-		maxColorCc.addColorChangeListener(new ColorChangeListener() {
+		lmaxColorCc = new ColorChooserLabel(decorator.getLeftMaxColor());
+		lmaxColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				decorator.setMaxColor(color); }
+				decorator.setLeftMaxColor(color); }
+		});
+		
+		rminColorCc = new ColorChooserLabel(decorator.getRightMinColor());
+		rminColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setRightMinColor(color); }
+		});
+		
+		rmaxColorCc = new ColorChooserLabel(decorator.getRightMaxColor());
+		rmaxColorCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setRightMaxColor(color); }
 		});
 		
 		refresh();
@@ -145,18 +162,20 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		add(corrValueCb);
 		add(new JLabel("Sig. level"));
 		add(sigLevelTb);
-		add(minColorCc);
-		add(maxColorCc);
+		add(lminColorCc);
+		add(lmaxColorCc);
+		add(rminColorCc);
+		add(rmaxColorCc);
 	}
-	
+
 	private void refresh() {
 		for (int i = 0; i < valueProperties.size(); i++)
 			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
 				valueCb.setSelectedIndex(i);
 		
 		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
-		showCorrChkBox.setSelected(decorator.getUseCorrection());
 		
+		showCorrChkBox.setSelected(decorator.getUseCorrection());
 		corrValueCb.setEnabled(decorator.getUseCorrection());
 		
 		for (int i = 0; i < corrValueProperties.size(); i++)
@@ -172,32 +191,9 @@ public class PValueDecoratorPanel extends AbstractDecoratorPanel {
 		decorator.setValueIndex(propAdapter.getIndex());
 		
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
-		
-		// search for corresponding corrected value
-		
-		int corrIndex = MatrixUtils.correctedValueIndex(
-				decorator.getAdapter(), propAdapter.getProperty());
-		
-		if (corrIndex >= 0)
-			decorator.setCorrectedValueIndex(corrIndex);
-		
-		//showCorrChkBox.setEnabled(corrIndex >= 0);
-		
-		refresh();
 	}
 	
-	private void showCorrectionChecked() {
-		/*IndexedProperty propAdapter = 
-			(IndexedProperty) valueCb.getSelectedItem();
-		
-		if (propAdapter != null) {
-			int corrIndex = TableUtils.correctedValueIndex(
-					decorator.getAdapter(), propAdapter.getProperty());
-			
-			if (corrIndex >= 0)
-				decorator.setCorrectedValueIndex(corrIndex);
-		}*/
-		
+	private void showCorrectionChecked() {		
 		decorator.setUseCorrection(
 				showCorrChkBox.isSelected());
 		

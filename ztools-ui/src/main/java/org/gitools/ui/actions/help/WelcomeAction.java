@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.views.AbstractView;
-import org.gitools.ui.views.WelcomeView;
+import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.editor.html.WelcomeEditor;
 
 
 public class WelcomeAction extends BaseAction {
@@ -21,7 +21,7 @@ public class WelcomeAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		AbstractView view = new WelcomeView();
+		AbstractEditor view = new WelcomeEditor();
 		AppFrame.instance().getWorkspace().addView(view);
 	}
 	

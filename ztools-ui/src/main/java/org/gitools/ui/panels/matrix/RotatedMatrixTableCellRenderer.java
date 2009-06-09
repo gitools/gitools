@@ -1,4 +1,4 @@
-package org.gitools.ui.panels.table;
+package org.gitools.ui.panels.matrix;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-public class RotatedLabelTableCellRenderer 
+public class RotatedMatrixTableCellRenderer 
 		extends JLabel 
 		implements TableCellRenderer {
 
@@ -24,7 +24,7 @@ public class RotatedLabelTableCellRenderer
 
 	protected boolean isSelected;
 
-	public RotatedLabelTableCellRenderer(boolean highlightSelected) {
+	public RotatedMatrixTableCellRenderer(boolean highlightSelected) {
 		this.highlightSelected = highlightSelected;
 		setOpaque(true);
 	}

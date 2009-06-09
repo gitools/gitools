@@ -14,13 +14,13 @@ import javax.swing.WindowConstants;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.gitools.ui.actions.Actions;
+import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.editor.html.WelcomeEditor;
+import org.gitools.ui.editor.table.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.utils.Options;
-import org.gitools.ui.views.AbstractView;
-import org.gitools.ui.views.DemoView;
-import org.gitools.ui.views.WelcomeView;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 
@@ -170,13 +170,13 @@ public class AppFrame extends JFrame {
 	}
 	
 	private void createWelcomeView() {
-		AbstractView view = new WelcomeView();
+		AbstractEditor view = new WelcomeEditor();
 		workspace.addView(view);
 	}
 	
 	private void createDemoView() {
-		AbstractView demoView = 
-			new DemoView(40, 12);
+		AbstractEditor demoView = 
+			new DemoEditor(40, 12);
 		
 		workspace.addView(demoView);
 	}

@@ -1,4 +1,4 @@
-package org.gitools.ui.views.table;
+package org.gitools.ui.editor.table;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -20,7 +20,7 @@ import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.figure.MatrixFigure;
 
-public class TableViewConfigPanel extends JPanel {
+public class CellConfigPage extends JPanel {
 
 	private static final long serialVersionUID = 7931473950086532892L;
 	
@@ -30,7 +30,7 @@ public class TableViewConfigPanel extends JPanel {
 	
 	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
 	
-	public TableViewConfigPanel(
+	public CellConfigPage(
 			MatrixFigure model) {
 		
 		this.model = model;

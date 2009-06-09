@@ -1,13 +1,13 @@
-package org.gitools.ui.views.analysis;
+package org.gitools.ui.editor.analysis;
 
 import java.awt.BorderLayout;
 
+import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.panels.TemplatePane;
-import org.gitools.ui.views.AbstractView;
 
 import org.gitools.model.Analysis;
 
-public class AnalysisDetailsView extends AbstractView {
+public class AnalysisDetailsEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = 8258025724628410016L;
 
@@ -15,7 +15,7 @@ public class AnalysisDetailsView extends AbstractView {
 	
 	private TemplatePane templatePane;
 
-	public AnalysisDetailsView(Analysis analysis) {
+	public AnalysisDetailsEditor(Analysis analysis) {
 		this.analysis = analysis;
 		
 		createComponents();

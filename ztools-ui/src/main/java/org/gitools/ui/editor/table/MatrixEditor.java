@@ -1,4 +1,4 @@
-package org.gitools.ui.views.table;
+package org.gitools.ui.editor.table;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -16,9 +19,9 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.FileActionSet;
 import org.gitools.ui.actions.MenuActionSet;
 import org.gitools.ui.actions.TableActionSet;
+import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.panels.TemplatePane;
-import org.gitools.ui.panels.table.TablePanel;
-import org.gitools.ui.views.AbstractView;
+import org.gitools.ui.panels.matrix.MatrixPanel;
 
 import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.PValueColorScale;
@@ -35,7 +38,7 @@ import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
 
-public class TableView extends AbstractView {
+public class MatrixEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
@@ -43,16 +46,18 @@ public class TableView extends AbstractView {
 	
 	private MatrixFigure model;
 	
-	private TableViewConfigPanel configPanel;
+	private CellConfigPage configPanel;
 	
-	private TablePanel tablePanel;
+	private MatrixPanel matrixPanel;
+	
+	private JTabbedPane tabbedPane;
 	
 	protected boolean blockSelectionUpdate;
 
 	private PropertyChangeListener modelListener;
 	private PropertyChangeListener decoratorListener;
 
-	public TableView(MatrixFigure model) {
+	public MatrixEditor(MatrixFigure model) {
 		
 		this.model = model;
 		
@@ -96,16 +101,16 @@ public class TableView extends AbstractView {
 			prevDecorator.removePropertyChangeListener(decoratorListener);
 			final ElementDecorator nextDecorator = (ElementDecorator) newValue;
 			nextDecorator.addPropertyChangeListener(decoratorListener);
-			tablePanel.setCellDecorator(model.getDecorator());
+			matrixPanel.setCellDecorator(model.getDecorator());
 		}
 		
-		tablePanel.refresh();
+		matrixPanel.refresh();
 	}
 	
 	protected void decoratorPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 		
-		tablePanel.refresh();
+		matrixPanel.refresh();
 	}
 	
 	protected void tablePropertyChange(
@@ -131,13 +136,13 @@ public class TableView extends AbstractView {
 			if (!blockSelectionUpdate) {
 				blockSelectionUpdate = true;
 				if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
-					tablePanel.refreshColumns();
+					matrixPanel.refreshColumns();
 				
 				//System.out.println("Start selection change:");
-				tablePanel.setSelectedCells(
+				matrixPanel.setSelectedCells(
 						getTable().getSelectedColumns(),
 						getTable().getSelectedRows());
-				tablePanel.refresh();
+				matrixPanel.refresh();
 				//System.out.println("End selection change.");
 				
 				blockSelectionUpdate = false;
@@ -147,13 +152,13 @@ public class TableView extends AbstractView {
 			refreshCellDetails();
 		}
 		else if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
-			tablePanel.refresh();
+			matrixPanel.refresh();
 		}
 		else if (IMatrixView.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
-			tablePanel.refresh();
+			matrixPanel.refresh();
 		}
 		else if (IMatrixView.CELL_VALUE_CHANGED.equals(propertyName)) {
-			tablePanel.refresh();
+			matrixPanel.refresh();
 		}
 		else if (IMatrixView.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
 			if (oldValue != null)
@@ -262,7 +267,7 @@ public class TableView extends AbstractView {
 		
 		/* Configuration panel */
 
-		configPanel = new TableViewConfigPanel(model);
+		configPanel = new CellConfigPage(model);
 		
 		/*final JPanel northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
@@ -272,10 +277,10 @@ public class TableView extends AbstractView {
 		
 		/* Color matrix */
 		
-		tablePanel = new TablePanel();
-		tablePanel.setModel(getTable());
+		matrixPanel = new MatrixPanel();
+		matrixPanel.setModel(getTable());
 		
-		tablePanel.setCellDecorator(model.getDecorator());
+		matrixPanel.setCellDecorator(model.getDecorator());
 		
 		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
@@ -289,12 +294,12 @@ public class TableView extends AbstractView {
 					//System.out.println("Selection listener.");
 					
 					getTable().setSelectedRows(
-							tablePanel.getSelectedRows());
+							matrixPanel.getSelectedRows());
 					getTable().setSelectedColumns(
-							tablePanel.getSelectedColumns());
+							matrixPanel.getSelectedColumns());
 					
-					int colIndex = tablePanel.getSelectedLeadColumn();
-					int rowIndex = tablePanel.getSelectedLeadRow();
+					int colIndex = matrixPanel.getSelectedLeadColumn();
+					int rowIndex = matrixPanel.getSelectedLeadRow();
 					
 					getTable().setLeadSelection(rowIndex, colIndex);
 					
@@ -303,26 +308,23 @@ public class TableView extends AbstractView {
 			}
 		};
 		
-		tablePanel.getTableSelectionModel().addListSelectionListener(selListener);
-		tablePanel.getColumnSelectionModel().addListSelectionListener(selListener);
+		matrixPanel.getTableSelectionModel().addListSelectionListener(selListener);
+		matrixPanel.getColumnSelectionModel().addListSelectionListener(selListener);
 
 		refreshColorMatrixWidth();
-		
-		/* Details panel */
-		
-		/*Properties props = new Properties();
-		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-		templatePane = new TemplatePane(props);
-		try {
-			templatePane.setTemplate(defaultTemplateName);
-			templatePane.render();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
+
+		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.addTab("Cells", configPanel);
+				
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setDividerLocation(getHeight() - 200);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setContinuousLayout(true);
+		splitPane.add(matrixPanel);
+		splitPane.add(tabbedPane);
 		
 		setLayout(new BorderLayout());
-		add(configPanel, BorderLayout.NORTH);
-		add(tablePanel, BorderLayout.CENTER);
+		add(splitPane, BorderLayout.CENTER);
 	}
 
 	private void refreshColorMatrixWidth() {
@@ -357,7 +359,7 @@ public class TableView extends AbstractView {
 
 	@Override
 	public void refresh() {
-		tablePanel.refresh();
+		matrixPanel.refresh();
 	}
 	
 	@Override

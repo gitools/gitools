@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 
 import org.gitools.ui.AppFrame;
-import org.gitools.ui.views.analysis.AnalysisView;
+import org.gitools.ui.editor.analysis.AnalysisEditor;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 import org.gitools.model.Analysis;
@@ -48,7 +48,7 @@ public class OpenAnalysisJob implements Job {
 			monitor.begin("Loading analysis ...", 1);
 			Analysis analysis = analysisRes.load(monitor);
 
-			final AnalysisView view = new AnalysisView(analysis);
+			final AnalysisEditor view = new AnalysisEditor(analysis);
 			
 			view.setName(analysis.getName());
 			

@@ -1,4 +1,4 @@
-package org.gitools.ui.panels.table;
+package org.gitools.ui.panels.matrix;
 
 import java.awt.Component;
 
@@ -11,7 +11,7 @@ import javax.swing.table.TableCellRenderer;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 
-public class LabelTableCellRenderer 
+public class LabelMatrixCellRenderer 
 		implements TableCellRenderer {
 	
 	private ElementDecorator decorator;
@@ -19,7 +19,7 @@ public class LabelTableCellRenderer
 	private DefaultTableCellRenderer tableRenderer = 
 		new DefaultTableCellRenderer();
 	
-	public LabelTableCellRenderer(
+	public LabelMatrixCellRenderer(
 			ElementDecorator decorator) {
 		this.decorator = decorator;
 	}

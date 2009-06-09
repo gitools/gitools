@@ -21,7 +21,7 @@ import org.gitools.model.decorator.impl.Log2RatioElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 
-public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
+public class Log2RatioElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private static final long serialVersionUID = 8422331422677024364L;
 	
@@ -37,7 +37,7 @@ public class Log2RatioDecoratorPanel extends AbstractDecoratorPanel {
 	private ColorChooserLabel midColorCc;
 	private ColorChooserLabel maxColorCc;
 	
-	public Log2RatioDecoratorPanel(MatrixFigure model) {
+	public Log2RatioElementDecoratorPanel(MatrixFigure model) {
 		super(model);
 	
 		this.decorator = (Log2RatioElementDecorator) model.getDecorator();

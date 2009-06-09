@@ -1,4 +1,4 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor.html;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -11,7 +11,9 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
-public class HtmlView extends AbstractView {
+import org.gitools.ui.editor.AbstractEditor;
+
+public class HtmlEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = 1693342849779799326L;
 
@@ -23,7 +25,7 @@ public class HtmlView extends AbstractView {
 		return title;
 	}
 	
-	public HtmlView(String title) {
+	public HtmlEditor(String title) {
 		this.title = title;
 		
 		createComponents();

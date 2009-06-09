@@ -23,7 +23,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 
-public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
+public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private static final long serialVersionUID = -930914489603614155L;
 
@@ -49,7 +49,7 @@ public class BinaryDecoratorPanel extends AbstractDecoratorPanel {
 
 	private ColorChooserLabel colorCc;
 	
-	public BinaryDecoratorPanel(MatrixFigure model) {
+	public BinaryElementDecoratorPanel(MatrixFigure model) {
 		super(model);
 		
 		this.decorator = (BinaryElementDecorator) getDecorator();

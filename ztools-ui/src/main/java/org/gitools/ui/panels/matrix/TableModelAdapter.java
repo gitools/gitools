@@ -1,4 +1,4 @@
-package org.gitools.ui.panels.table;
+package org.gitools.ui.panels.matrix;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;

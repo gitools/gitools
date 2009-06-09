@@ -7,7 +7,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.WorkspacePanel;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.views.AbstractView;
+import org.gitools.ui.editor.AbstractEditor;
 
 
 public class CloseAction extends BaseAction {
@@ -26,7 +26,7 @@ public class CloseAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		WorkspacePanel workspace = AppFrame.instance().getWorkspace();
-		AbstractView currentView = workspace.getSelectedView();
+		AbstractEditor currentView = workspace.getSelectedView();
 		if (currentView != null)
 			workspace.removeView(currentView);
 		

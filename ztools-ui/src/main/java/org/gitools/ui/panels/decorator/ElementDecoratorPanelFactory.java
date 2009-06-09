@@ -15,13 +15,13 @@ public class ElementDecoratorPanelFactory {
 	public static JComponent create(Class<? extends ElementDecorator> decoratorClass, MatrixFigure model) {
 		
 		if (PValueElementDecorator.class.equals(decoratorClass))
-			return new PValueDecoratorPanel(model);
+			return new PValueElementDecoratorPanel(model);
 		else if (ZScoreElementDecorator.class.equals(decoratorClass))
-			return new ZScoreDecoratorPanel(model);
+			return new ZScoreElementDecoratorPanel(model);
 		else if (BinaryElementDecorator.class.equals(decoratorClass))
-			return new BinaryDecoratorPanel(model);
+			return new BinaryElementDecoratorPanel(model);
 		else if (Log2RatioElementDecorator.class.equals(decoratorClass))
-			return new Log2RatioDecoratorPanel(model);
+			return new Log2RatioElementDecoratorPanel(model);
 		
 		return new JPanel();
 	}

@@ -1,7 +1,7 @@
-package org.gitools.ui.views.analysis;
+package org.gitools.ui.editor.analysis;
 
-import org.gitools.ui.views.TabbedView;
-import org.gitools.ui.views.table.TableView;
+import org.gitools.ui.editor.MultiEditor;
+import org.gitools.ui.editor.table.MatrixEditor;
 
 import org.gitools.model.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
@@ -13,17 +13,17 @@ import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.adapter.DataMatrixTableContentsAdapter;
 import org.gitools.model.matrix.adapter.ResultsMatrixTableContentsAdapter;
 
-public class AnalysisView extends TabbedView {
+public class AnalysisEditor extends MultiEditor {
 
 	private static final long serialVersionUID = 5866176431409745805L;
 
 	protected Analysis analysis;
 	
-	private AnalysisDetailsView detailsView;
-	private TableView dataView;
-	private TableView resultsView;
+	private AnalysisDetailsEditor detailsView;
+	private MatrixEditor dataView;
+	private MatrixEditor resultsView;
 	
-	public AnalysisView(Analysis analysis) {
+	public AnalysisEditor(Analysis analysis) {
 		super();
 		
 		this.analysis = analysis;
@@ -34,7 +34,7 @@ public class AnalysisView extends TabbedView {
 	private void createViews() {
 		// create details panel
 		
-		detailsView = new AnalysisDetailsView(analysis);
+		detailsView = new AnalysisDetailsEditor(analysis);
 		
 		// create data view
 		
@@ -47,7 +47,7 @@ public class AnalysisView extends TabbedView {
 					ElementDecoratorNames.BINARY, 
 					dataTable.getCellAdapter());
 		
-		dataView = new TableView(new MatrixFigure(dataTable, dataDecorator));
+		dataView = new MatrixEditor(new MatrixFigure(dataTable, dataDecorator));
 		
 		// create results view
 		
@@ -60,7 +60,7 @@ public class AnalysisView extends TabbedView {
 					ElementDecoratorNames.PVALUE, 
 					resultsTable.getCellAdapter());
 		
-		resultsView = new TableView(new MatrixFigure(resultsTable, resultsDecorator));
+		resultsView = new MatrixEditor(new MatrixFigure(resultsTable, resultsDecorator));
 		
 		addView(detailsView, "Description");
 		addView(dataView, "Data");

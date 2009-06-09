@@ -8,7 +8,7 @@ import javax.swing.KeyStroke;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.views.AbstractView;
+import org.gitools.ui.editor.AbstractEditor;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 
@@ -100,14 +100,14 @@ public abstract class BaseAction extends AbstractAction {
 		return false;
 	}
 	
-	protected AbstractView getSelectedView() {
+	protected AbstractEditor getSelectedView() {
 		return AppFrame.instance()
 			.getWorkspace()
 			.getSelectedView();
 	}
 	
 	protected IMatrixView getTable() {
-		AbstractView view = getSelectedView();
+		AbstractEditor view = getSelectedView();
 		if (view == null)
 			return null;
 		

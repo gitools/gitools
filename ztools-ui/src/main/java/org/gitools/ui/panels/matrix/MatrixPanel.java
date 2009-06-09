@@ -1,4 +1,4 @@
-package org.gitools.ui.panels.table;
+package org.gitools.ui.panels.matrix;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,7 +27,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 
-public class TablePanel extends JPanel {
+public class MatrixPanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
 
@@ -48,7 +48,7 @@ public class TablePanel extends JPanel {
 	
 	private IMatrixView model;
 	
-	public TablePanel() {
+	public MatrixPanel() {
 		
 		this.selMode = SelectionMode.cells;
 		
@@ -309,7 +309,7 @@ public class TablePanel extends JPanel {
 			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
 				col.setHeaderRenderer(
-						new RotatedLabelTableCellRenderer(
+						new RotatedMatrixTableCellRenderer(
 								selMode == SelectionMode.columns));
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
@@ -343,7 +343,7 @@ public class TablePanel extends JPanel {
 		
 		table.setDefaultRenderer(
 				cellAdapter.getElementClass(), 
-				new LabelTableCellRenderer(decorator));
+				new LabelMatrixCellRenderer(decorator));
 		
 		table.repaint();
 	}

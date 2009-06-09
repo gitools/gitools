@@ -1,9 +1,9 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-public abstract class AbstractView extends JPanel implements View {
+public abstract class AbstractEditor extends JPanel implements IEditor {
 
 	private static final long serialVersionUID = -2379950551933668781L;
 

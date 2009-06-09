@@ -1,4 +1,4 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor;
 
 import java.awt.BorderLayout;
 
@@ -6,13 +6,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class TabbedView extends AbstractView {
+public class MultiEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = -6013660760909524202L;
 
 	private JTabbedPane tabbedPane;
 	
-	public TabbedView() {
+	public MultiEditor() {
 		createComponents();
 	}
 	
@@ -24,7 +24,7 @@ public class TabbedView extends AbstractView {
 			public void stateChanged(ChangeEvent evt) {
 				refreshActions();
 				
-				AbstractView selectedView = getSelectedView();
+				AbstractEditor selectedView = getSelectedView();
 				if (selectedView != null)
 					selectedView.refreshActions();
 			}
@@ -34,12 +34,12 @@ public class TabbedView extends AbstractView {
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 
-	protected void addView(AbstractView view, String title) {
+	protected void addView(AbstractEditor view, String title) {
 		tabbedPane.add(view, title);
 	}
 	
-	protected AbstractView getSelectedView() {
-		return (AbstractView) tabbedPane.getSelectedComponent();
+	protected AbstractEditor getSelectedView() {
+		return (AbstractEditor) tabbedPane.getSelectedComponent();
 	}
 	
 	@Override

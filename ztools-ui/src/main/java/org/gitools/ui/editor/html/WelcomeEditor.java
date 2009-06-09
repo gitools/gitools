@@ -1,4 +1,4 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor.html;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 
 
-public class WelcomeView extends HtmlView {
+public class WelcomeEditor extends HtmlEditor {
 
 	private static final long serialVersionUID = 6851947500231401412L;
 
-	public WelcomeView() {
+	public WelcomeEditor() {
 		super("Welcome");
 		
 		try {

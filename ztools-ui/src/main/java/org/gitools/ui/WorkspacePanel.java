@@ -9,14 +9,14 @@ import org.gitools.ui.actions.Actions;
 import org.gitools.ui.actions.FileActionSet;
 import org.gitools.ui.actions.HelpActionSet;
 import org.gitools.ui.actions.MenuActionSet;
-import org.gitools.ui.views.AbstractView;
+import org.gitools.ui.editor.AbstractEditor;
 
 
 public class WorkspacePanel extends JTabbedPane {
 
 	private static final long serialVersionUID = 2170150185478413716L;
 
-	private AbstractView selectedView;
+	private AbstractEditor selectedView;
 	
 	//private JTabbedPane tabbedPane;
 	
@@ -31,7 +31,7 @@ public class WorkspacePanel extends JTabbedPane {
 					selectedView.disableActions();*/
 				refreshActions();
 				
-				selectedView = (AbstractView) getSelectedComponent();
+				selectedView = (AbstractEditor) getSelectedComponent();
 				if (selectedView != null)
 					selectedView.refreshActions();
 			}
@@ -42,7 +42,7 @@ public class WorkspacePanel extends JTabbedPane {
 		//tabbedPane = new JTabbedPane();
 	}
 	
-	public void addView(AbstractView view) {
+	public void addView(AbstractEditor view) {
 		if (view == null)
 			return;
 		
@@ -66,7 +66,7 @@ public class WorkspacePanel extends JTabbedPane {
 		selectedView.refreshActions();
 	}
 
-	public void removeView(AbstractView view) {
+	public void removeView(AbstractEditor view) {
 		if (view == null)
 			return;
 		
@@ -76,13 +76,13 @@ public class WorkspacePanel extends JTabbedPane {
 		
 		refreshActions();
 		
-		view = (AbstractView) getSelectedComponent();
+		view = (AbstractEditor) getSelectedComponent();
 		if (view != null)
 			view.refreshActions();
 	}
 	
-	public AbstractView getSelectedView() {
-		return (AbstractView) getSelectedComponent();
+	public AbstractEditor getSelectedView() {
+		return (AbstractEditor) getSelectedComponent();
 	}
 	
 	private void refreshActions() {

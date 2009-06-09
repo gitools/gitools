@@ -11,7 +11,7 @@ import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 
-public abstract class AbstractDecoratorPanel extends JPanel {
+public abstract class AbstractElementDecoratorPanel extends JPanel {
 
 	private static final long serialVersionUID = 7349354490870110812L;
 
@@ -19,7 +19,7 @@ public abstract class AbstractDecoratorPanel extends JPanel {
 	
 	protected List<IndexedProperty> valueProperties;
 
-	public AbstractDecoratorPanel(MatrixFigure model) {
+	public AbstractElementDecoratorPanel(MatrixFigure model) {
 		this.model = model;
 	}
 	

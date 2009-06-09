@@ -1,9 +1,9 @@
-package org.gitools.ui.views;
+package org.gitools.ui.editor;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-public interface View {
+public interface IEditor {
 
 	String getName();
 	void setName(String name);
