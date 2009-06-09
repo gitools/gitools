@@ -20,6 +20,9 @@ public class MatrixFigure
 	
 	private int cellSize;
 	
+	public MatrixFigure() {
+	}
+
 	public MatrixFigure(
 			IMatrixView matrixView,
 			ElementDecorator decorator) {
