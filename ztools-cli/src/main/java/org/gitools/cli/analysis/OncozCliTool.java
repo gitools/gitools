@@ -7,6 +7,7 @@ import edu.upf.bg.progressmonitor.ProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 import org.gitools.cli.CliTool;
+import org.gitools.cli.CliToolException;
 import org.gitools.cli.InvalidArgumentException;
 import org.gitools.cli.RequiredArgumentException;
 import org.gitools.commands.OncozCommand;
