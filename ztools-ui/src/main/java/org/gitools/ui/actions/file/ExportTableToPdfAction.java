@@ -4,26 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
+import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.editor.matrix.MatrixEditor;
-import org.gitools.ui.panels.matrix.MatrixPanel;
 import org.gitools.ui.utils.Options;
-
-import org.gitools.matrix.export.MatrixTsvExporter;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementProperty;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;

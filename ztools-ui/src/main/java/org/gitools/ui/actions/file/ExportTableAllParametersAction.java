@@ -2,23 +2,18 @@ package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import org.gitools.ui.AppFrame;
-import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.utils.Options;
 
 import org.gitools.matrix.export.MatrixTsvExporter;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.ui.AppFrame;
+import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.utils.Options;
 
 public class ExportTableAllParametersAction extends BaseAction {
 
