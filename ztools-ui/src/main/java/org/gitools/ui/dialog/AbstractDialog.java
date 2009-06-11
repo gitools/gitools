@@ -32,11 +32,15 @@ public abstract class AbstractDialog extends JDialog {
 		setMinimumSize(new Dimension(300, 260));
 	}
 	
-	public JComponent getContainer() {
+	public void open() {
+		setVisible(true);
+	}
+	
+	protected JComponent getContainer() {
 		return container;
 	}
 	
-	public void setContainer(JComponent container) {
+	protected void setContainer(JComponent container) {
 		this.container = container;
 	}
 	
@@ -52,7 +56,8 @@ public abstract class AbstractDialog extends JDialog {
 		container = createContainer();
 		
 		final DialogButtonsPanel buttonsPanel = 
-			new DialogButtonsPanel(createButtons());
+			new DialogButtonsPanel(
+					createButtons());
 		
 		setLayout(new BorderLayout());
 		add(hdrPanel, BorderLayout.NORTH);

@@ -13,9 +13,9 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
-import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.resources.DataResource;

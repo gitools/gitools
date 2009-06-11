@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 
 public class MatrixFigure 
@@ -27,7 +26,10 @@ public class MatrixFigure
 	
 	private boolean showGrid;
 	private Color gridColor;
+	
 	private int cellSize;
+	private int rowSize;
+	private int columnSize;
 	
 	public MatrixFigure(
 			IMatrixView matrixView,
@@ -42,6 +44,8 @@ public class MatrixFigure
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
 		this.cellSize = 18;
+		this.rowSize = 200;
+		this.columnSize = 200;
 	}
 	
 	public final ElementDecorator getCellDecorator() {
@@ -107,6 +111,24 @@ public class MatrixFigure
 	
 	public void setCellSize(int cellSize) {
 		this.cellSize = cellSize;
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public int getRowSize() {
+		return rowSize;
+	}
+	
+	public void setRowSize(int rowSize) {
+		this.rowSize = rowSize;
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public int getColumnSize() {
+		return columnSize;
+	}
+	
+	public void setColumnSize(int columnSize) {
+		this.columnSize = columnSize;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 }

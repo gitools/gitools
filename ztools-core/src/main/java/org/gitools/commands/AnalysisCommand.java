@@ -11,9 +11,9 @@ import javax.xml.bind.JAXBException;
 
 import org.gitools.datafilters.DoubleFilter;
 import org.gitools.datafilters.ValueFilter;
-import org.gitools.model.Analysis;
 import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.resources.ProjectResource;
 import org.gitools.resources.analysis.AnalysisResource;
 import org.gitools.resources.analysis.CsvAnalysisResource;

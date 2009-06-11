@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -103,6 +104,7 @@ public class CellConfigPage extends JPanel {
 		mainPanel.add(gridColorCc);
 				
 		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		add(mainPanel, BorderLayout.NORTH);
 		add(new JPanel(), BorderLayout.CENTER);
 		

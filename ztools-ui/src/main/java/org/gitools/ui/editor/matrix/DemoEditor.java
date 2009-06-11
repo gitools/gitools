@@ -7,7 +7,8 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import org.gitools.model.Analysis;
+
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;

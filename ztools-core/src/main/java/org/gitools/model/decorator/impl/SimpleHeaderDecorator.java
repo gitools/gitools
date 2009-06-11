@@ -11,8 +11,7 @@ public class SimpleHeaderDecorator extends HeaderDecorator {
 	}
 
 	public HeaderDecoration decorate(HeaderDecoration decoration, Object header) {
-		decoration.setText(header.toString());
-		decoration.setUrl(null);
+		super.decorate(decoration, header);
 		return decoration;
 	}
 }

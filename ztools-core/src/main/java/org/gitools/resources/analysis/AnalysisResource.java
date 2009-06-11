@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 
-import org.gitools.model.Analysis;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.resources.Resource;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;

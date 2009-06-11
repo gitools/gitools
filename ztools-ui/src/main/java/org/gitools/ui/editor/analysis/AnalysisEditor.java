@@ -3,7 +3,7 @@ package org.gitools.ui.editor.analysis;
 import org.gitools.ui.editor.MultiEditor;
 import org.gitools.ui.editor.matrix.MatrixEditor;
 
-import org.gitools.model.Analysis;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;

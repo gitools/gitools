@@ -8,7 +8,8 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.analysis.AnalysisEditor;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
-import org.gitools.model.Analysis;
+
+import org.gitools.model.analysis.Analysis;
 import org.gitools.resources.analysis.AnalysisResource;
 import org.gitools.resources.analysis.CsvAnalysisResource;
 

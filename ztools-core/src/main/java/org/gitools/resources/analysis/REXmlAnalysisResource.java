@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
-import org.gitools.model.Analysis;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.stats.test.BinomialTest;

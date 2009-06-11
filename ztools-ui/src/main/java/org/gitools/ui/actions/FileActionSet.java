@@ -4,11 +4,11 @@ import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportColumnDataAction;
-import org.gitools.ui.actions.file.ExportNames;
+import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportParameterDataAction;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableParameterAction;
-import org.gitools.ui.actions.file.ExportTableToPdfAction;
+import org.gitools.ui.actions.file.ExportMatrixFigureToPictureAction;
 import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 
@@ -25,20 +25,20 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction closeAction = new CloseAction();
 
 	// export
-	public static final BaseAction export = new ExportAction();
+	public static final BaseAction exportWizardAction = new ExportAction();
 	
 	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
-	public static final BaseAction exportNamesAction = new ExportNames();
+	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
 	public static final BaseAction exportTableParameter = new ExportTableParameterAction();
-	public static final BaseAction exportTableAllParameters = new ExportTableToPdfAction();
-	public static final BaseAction exportTableToPdf = new ExportTableAllParametersAction();
+	public static final BaseAction exportTableAllParameters = new ExportTableAllParametersAction();
+	public static final BaseAction exportMatrixFigureToPicture = new ExportMatrixFigureToPictureAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
-			exportNamesAction,
+			exportRowColumnNamesAction,
 			exportTableParameter,
 			exportTableAllParameters,
-			exportTableToPdf
+			exportMatrixFigureToPicture
 	});
 
 	public FileActionSet() {
@@ -47,8 +47,8 @@ public class FileActionSet extends ActionSet {
 			openAnalysisAction,
 			closeAction,
 			BaseAction.separator,
-			export,
-			//exportActionSet,
+			//exportWizardAction,
+			exportActionSet,
 			BaseAction.separator,
 			exitAction
 		});

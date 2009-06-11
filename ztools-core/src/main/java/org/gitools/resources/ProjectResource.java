@@ -11,8 +11,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.gitools.model.Analysis;
 import org.gitools.model.Project;
+import org.gitools.model.analysis.Analysis;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 

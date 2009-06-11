@@ -1,10 +1,13 @@
-package org.gitools.model;
+package org.gitools.model.analysis;
 
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.gitools.model.Artifact;
+import org.gitools.model.ModuleMap;
+import org.gitools.model.ToolConfig;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 
@@ -18,10 +21,6 @@ public class Analysis extends Artifact {
 	protected String name;
 	protected Date startTime;
 	protected long elapsedTime;
-
-	
-	/** Ask Christian how to manage **/
-	protected DoubleMatrix originalData;
 	
 	protected DoubleMatrix dataTable;
 	protected ModuleMap moduleMap;

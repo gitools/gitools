@@ -17,10 +17,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.ui.model.SelectionMode;
@@ -29,34 +31,37 @@ public class MatrixPanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
 
-	private static final int rowLabelsWidth = 400;
-
 	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
 	private JTable table;
 	
 	private SelectionMode selMode;
 	
-	private int columnsHeight;
 	private int columnsWidth;
 	private int rowsHeight;
+	
+	private int columnsHeaderHeight;
+	private int rowsHeaderWidth;
 	
 	private int selectedLeadColumn;
 	private int selectedLeadRow;
 	
 	private IMatrixView model;
+
+	private HeaderDecorator columnsDecorator;
+	private HeaderDecorator rowsDecorator;
 	
 	public MatrixPanel() {
 		
 		this.selMode = SelectionMode.cells;
 		
-		this.columnsHeight = 200;
 		this.columnsWidth = 18;
 		this.rowsHeight = 18;
 	
+		this.columnsHeaderHeight = 200;
+		this.rowsHeaderWidth = 400;
+		
 		this.selectedLeadColumn = this.selectedLeadRow = -1;
-	
-		//this.listeners = new ArrayList<ColorMatrixListener>(1);
 		
 		createComponents();
 	}
@@ -245,17 +250,16 @@ public class MatrixPanel extends JPanel {
 		
 		refreshTableColumnsWidth();
 		
-		// This is a workaround for bug in Swing:
-		// http://bugs.sun.com/view_bug.do?bug_id=4473075
-		int w = columnsWidth * 1000 + rowLabelsWidth;
-		table.getTableHeader().setPreferredSize(
-				new Dimension(w, columnsHeight));
+		refreshTableColumnsHeight();
 		
 		refreshSelectionMode();
 		
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
 	}
+
+	// ------------------------------------------------------------------------
+	// refresh
 	
 	private void refreshSelectionMode() {
 		int[] selCols = getSelectedColumns();
@@ -298,26 +302,36 @@ public class MatrixPanel extends JPanel {
 			}
 			TableColumn col = colModel.getColumn(lastColumn);
 			col.setResizable(false);
-			col.setMinWidth(rowLabelsWidth);
-			col.setPreferredWidth(rowLabelsWidth);
+			col.setMinWidth(rowsHeaderWidth);
+			col.setPreferredWidth(rowsHeaderWidth);
 		}
+	}
+	
+	private void refreshTableColumnsHeight() {
+		// This is a workaround for bug in Swing:
+		// http://bugs.sun.com/view_bug.do?bug_id=4473075
+		int w = columnsWidth * 1000 + rowsHeaderWidth;
+		table.getTableHeader().setPreferredSize(
+				new Dimension(w, columnsHeaderHeight));
+		table.getTableHeader().revalidate();
 	}
 	
 	private void refreshTableColumnsRenderer() {
 		TableColumnModel colModel = table.getColumnModel();
 		final int lastColumn = colModel.getColumnCount() - 1;
 		if (lastColumn >= 0) {
-			for (int i = 0; i <= lastColumn; i++) {
+			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
-				final RotatedMatrixTableCellRenderer renderer = 
-					new RotatedMatrixTableCellRenderer(
+				final RotatedMatrixHeaderRenderer renderer = 
+					new RotatedMatrixHeaderRenderer(
+						columnsDecorator,
 						selMode == SelectionMode.columns);
 				renderer.setGridColor(table.getGridColor());
 				renderer.setShowGrid(isShowGrid());
 				col.setHeaderRenderer(renderer);
 			}
-			/*TableColumn col = colModel.getColumn(lastColumn);
-			col.setHeaderRenderer(new DefaultTableCellRenderer());*/
+			TableColumn col = colModel.getColumn(lastColumn);
+			col.setHeaderRenderer(new DefaultTableCellRenderer());
 		}
 	}
 	
@@ -340,7 +354,35 @@ public class MatrixPanel extends JPanel {
 		
 		table.repaint();
 	}
-
+	
+	// ---------------------------------------------------------------------------
+	// decorators
+	
+	public HeaderDecorator getRowDecorator() {
+		return rowsDecorator;
+	}
+	
+	public void setRowDecorator(HeaderDecorator decorator) {
+		this.rowsDecorator = decorator;
+		
+		final IElementAdapter adapter = model.getRowAdapter();
+		
+		table.setDefaultRenderer(
+				adapter.getElementClass(), 
+				new LabelMatrixHeaderRenderer(decorator));
+		
+		table.repaint();
+	}
+	
+	public HeaderDecorator getColumnDecorator() {
+		return columnsDecorator;
+	}
+	
+	public void setColumnDecorator(HeaderDecorator decorator) {
+		this.columnsDecorator = decorator;
+		refreshTableColumnsRenderer();
+	}
+	
 	public void setCellDecorator(ElementDecorator decorator) {
 		
 		final IElementAdapter cellAdapter = model.getCellAdapter();
@@ -352,8 +394,15 @@ public class MatrixPanel extends JPanel {
 		table.repaint();
 	}
 	
+	// -----------------------------------------------------------------------
+	// sizes
+	
 	public int getColumnsWidth() {
 		return columnsWidth;
+	}
+	
+	public int getRowsHeight() {
+		return rowsHeight;
 	}
 	
 	public void setColumnsWidth(int columnsWidth) {
@@ -361,14 +410,31 @@ public class MatrixPanel extends JPanel {
 		refreshTableColumnsWidth();
 	}
 	
-	public int getRowsHeight() {
-		return rowsHeight;
+	public int getColumnsHeaderHeight() {
+		return columnsHeaderHeight;
+	}
+	
+	public void setColumnsHeaderHeight(int columnsHeight) {
+		this.columnsHeaderHeight = columnsHeight;
+		refreshTableColumnsHeight();		
+	}
+	
+	public int getRowsHeaderWidth() {
+		return rowsHeaderWidth;
+	}
+	
+	public void setRowsHeaderWidth(int rowsHeaderWidth) {
+		this.rowsHeaderWidth = rowsHeaderWidth;
+		refreshTableColumnsWidth();
 	}
 	
 	public void setRowsHeight(int rowsHeight) {
 		this.rowsHeight = rowsHeight;
 		table.setRowHeight(rowsHeight);
 	}
+	
+	// --------------------------------------------------------------------------
+	// selection
 	
 	public ListSelectionModel getTableSelectionModel() {
 		return table.getSelectionModel();
@@ -555,6 +621,9 @@ public class MatrixPanel extends JPanel {
 		return false;
 	}
 
+	// ------------------------------------------------------------------------------
+	// grid
+	
 	public void setShowGrid(boolean showGrid) {
 		table.setShowGrid(showGrid);
 		

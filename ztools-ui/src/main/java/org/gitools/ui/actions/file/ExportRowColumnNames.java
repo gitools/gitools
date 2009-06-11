@@ -18,12 +18,12 @@ import org.gitools.ui.utils.Options;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 
-public class ExportNames extends BaseAction {
+public class ExportRowColumnNames extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportNames() {
-		super("Export names");
+	public ExportRowColumnNames() {
+		super("Export row/column names");
 		
 		setDesc("Export row or column names");
 		setMnemonic(KeyEvent.VK_N);

@@ -2,12 +2,8 @@ package org.gitools.ui.editor.matrix;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.velocity.VelocityContext;
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -35,13 +32,9 @@ import org.gitools.ui.actions.FileActionSet;
 import org.gitools.ui.actions.MenuActionSet;
 import org.gitools.ui.actions.TableActionSet;
 import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.editor.matrix.HeaderConfigPage.HeaderType;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.panels.matrix.MatrixPanel;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 
 import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.PValueColorScale;
@@ -70,6 +63,12 @@ public class MatrixEditor extends AbstractEditor {
 
 	private HeaderConfigPage columnsConfigPage;
 
+	private GeneralConfigPage generalConfigPage;
+
+	private PropertyChangeListener rowDecoratorListener;
+
+	private PropertyChangeListener colDecoratorListener;
+
 	public MatrixEditor(MatrixFigure model) {
 		
 		this.model = model;
@@ -88,21 +87,29 @@ public class MatrixEditor extends AbstractEditor {
 		};
 		
 		cellDecoratorListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				decoratorPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-			}
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				matrixPanel.refresh(); }
+		};
+		
+		rowDecoratorListener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				matrixPanel.refresh(); }
+		};
+		
+		colDecoratorListener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				matrixPanel.refresh(); }
 		};
 		
 		model.addPropertyChangeListener(modelListener);
 		
 		model.getCellDecorator().addPropertyChangeListener(cellDecoratorListener);
+		model.getRowDecorator().addPropertyChangeListener(rowDecoratorListener);
+		model.getColumnDecorator().addPropertyChangeListener(colDecoratorListener);
 		
 		matrixView.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-			}
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue()); }
 		});
 	}
 
@@ -116,17 +123,27 @@ public class MatrixEditor extends AbstractEditor {
 			nextDecorator.addPropertyChangeListener(cellDecoratorListener);
 			matrixPanel.setCellDecorator(model.getCellDecorator());
 		}
+		else if (MatrixFigure.COLUMN_DECORATOR_CHANGED.equals(propertyName)) {
+			final HeaderDecorator prevDecorator = (HeaderDecorator) oldValue;
+			prevDecorator.removePropertyChangeListener(colDecoratorListener);
+			final HeaderDecorator nextDecorator = (HeaderDecorator) newValue;
+			nextDecorator.addPropertyChangeListener(colDecoratorListener);
+			matrixPanel.setColumnDecorator(model.getColumnDecorator());
+		}
+		else if (MatrixFigure.ROW_DECORATOR_CHANGED.equals(propertyName)) {
+			final HeaderDecorator prevDecorator = (HeaderDecorator) oldValue;
+			prevDecorator.removePropertyChangeListener(rowDecoratorListener);
+			final HeaderDecorator nextDecorator = (HeaderDecorator) newValue;
+			nextDecorator.addPropertyChangeListener(rowDecoratorListener);
+			matrixPanel.setRowDecorator(model.getRowDecorator());
+		}
 		else if (MatrixFigure.PROPERTY_CHANGED.equals(propertyName)) {
 			matrixPanel.setShowGrid(model.isShowGrid());
 			matrixPanel.setGridColor(model.getGridColor());
 			matrixPanel.setCellSize(model.getCellSize());
+			matrixPanel.setRowsHeaderWidth(model.getRowSize());
+			matrixPanel.setColumnsHeaderHeight(model.getColumnSize());
 		}
-		
-		matrixPanel.refresh();
-	}
-	
-	protected void decoratorPropertyChange(
-			String propertyName, Object oldValue, Object newValue) {
 		
 		matrixPanel.refresh();
 	}
@@ -284,8 +301,12 @@ public class MatrixEditor extends AbstractEditor {
 		matrixPanel.setShowGrid(model.isShowGrid());
 		matrixPanel.setGridColor(model.getGridColor());
 		matrixPanel.setCellSize(model.getCellSize());
+		matrixPanel.setRowsHeaderWidth(model.getRowSize());
+		matrixPanel.setColumnsHeaderHeight(model.getColumnSize());
 		
 		matrixPanel.setCellDecorator(model.getCellDecorator());
+		matrixPanel.setRowDecorator(model.getRowDecorator());
+		matrixPanel.setColumnDecorator(model.getColumnDecorator());
 		
 		ListSelectionListener selListener = new ListSelectionListener() {
 			@Override
@@ -320,19 +341,22 @@ public class MatrixEditor extends AbstractEditor {
 
 		/* Configuration panels */
 
+		generalConfigPage = new GeneralConfigPage(model);
+		
+		rowsConfigPage = new HeaderConfigPage(model, HeaderType.rows);
+		
+		columnsConfigPage = new HeaderConfigPage(model, HeaderType.columns);
+		
 		cellsConfigPage = new CellConfigPage(model);		
 		cellsConfigPage.refresh();
-		
-		rowsConfigPage = new HeaderConfigPage(model, model.getRowDecorator());
-		
-		columnsConfigPage = new HeaderConfigPage(model, model.getColumnDecorator());
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setMinimumSize(new Dimension(0, 180));
 		tabbedPane.setPreferredSize(new Dimension(0, 200));
-		tabbedPane.addTab("Cells", cellsConfigPage);
+		tabbedPane.addTab("General", generalConfigPage);
 		tabbedPane.addTab("Rows", rowsConfigPage);
 		tabbedPane.addTab("Columns", columnsConfigPage);
+		tabbedPane.addTab("Cells", cellsConfigPage);
 		
 		/* Split */
 		

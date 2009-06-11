@@ -2,6 +2,7 @@ package org.gitools.ui.panels.matrix;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -10,9 +11,13 @@ import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
-public class RotatedMatrixTableCellRenderer 
+import org.gitools.model.decorator.HeaderDecoration;
+import org.gitools.model.decorator.HeaderDecorator;
+
+public class RotatedMatrixHeaderRenderer 
 		extends JLabel 
 		implements TableCellRenderer {
 
@@ -20,6 +25,8 @@ public class RotatedMatrixTableCellRenderer
 
 	protected static final double radianAngle = (-90.0 / 180.0) * Math.PI;
 
+	protected HeaderDecorator decorator;
+	
 	protected Color gridColor = Color.WHITE;
 	
 	protected boolean highlightSelected;
@@ -28,7 +35,11 @@ public class RotatedMatrixTableCellRenderer
 
 	private boolean showGrid;
 
-	public RotatedMatrixTableCellRenderer(boolean highlightSelected) {
+	public RotatedMatrixHeaderRenderer(
+			HeaderDecorator decorator,
+			boolean highlightSelected) {
+	
+		this.decorator = decorator;
 		this.highlightSelected = highlightSelected;
 		setOpaque(true);
 	}
@@ -36,7 +47,7 @@ public class RotatedMatrixTableCellRenderer
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
 
-		this.setText(value.toString());
+		configureRenderer(this, value);
 
 		int[] selColumns = table.getSelectedColumns();
 		Arrays.sort(selColumns);
@@ -50,6 +61,23 @@ public class RotatedMatrixTableCellRenderer
 		return this;
 	}
 
+	private void configureRenderer(
+			JLabel label, Object value) {
+
+		final HeaderDecoration decoration = new HeaderDecoration();
+		decorator.decorate(decoration, value);
+		label.setText(decoration.getText());
+		label.setToolTipText(decoration.getToolTip());
+		label.setForeground(decoration.getFgColor());
+		label.setBackground(decoration.getBgColor());
+
+		switch (decoration.textAlign) {
+		case left: label.setHorizontalAlignment(SwingConstants.LEFT); break;
+		case right: label.setHorizontalAlignment(SwingConstants.RIGHT); break;
+		case center: label.setHorizontalAlignment(SwingConstants.CENTER); break;
+		}
+	}
+	
 	public void setGridColor(Color gridColor) {
 		this.gridColor = gridColor;
 	}
@@ -64,12 +92,15 @@ public class RotatedMatrixTableCellRenderer
 		final int h = this.getHeight();
 
 		g2.setClip(0, 0, w, h);
-		g2.setFont(this.getFont());
-
+		Font font = this.getFont();
+		g2.setFont(font);
+		
 		if (highlightSelected && isSelected)
 			g2.setBackground(Color.ORANGE);
+		else
+			g2.setBackground(getBackground());
 
-		//g2.clearRect(0, 0, w, h);
+		g2.clearRect(0, 0, w, h);
 
 		if (showGrid) {
 			g2.setColor(gridColor);
@@ -85,7 +116,7 @@ public class RotatedMatrixTableCellRenderer
 		Rectangle2D r = g2.getFontMetrics().getStringBounds(this.getText(), g2);
 		float textHeight = (float) r.getHeight();
 
-		g2.setColor(Color.BLACK);
+		g2.setColor(getForeground());
 		g2.drawString(this.getText(), 4.0f, -(w + 8 - textHeight) / 2);
 	}
 }

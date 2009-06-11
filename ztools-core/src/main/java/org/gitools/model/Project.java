@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.DoubleMatrix;
 
 /*@XmlType(

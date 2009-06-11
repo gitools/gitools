@@ -19,11 +19,11 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class ExportTableToPdfAction extends BaseAction {
+public class ExportMatrixFigureToPictureAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportTableToPdfAction() {
+	public ExportMatrixFigureToPictureAction() {
 		super("Export matrix to pdf");
 		
 		setDesc("Export the matrix to a pdf");

@@ -2,7 +2,7 @@ package org.gitools.tool.processors;
 
 import java.util.Date;
 
-import org.gitools.model.Analysis;
+import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementAdapter;

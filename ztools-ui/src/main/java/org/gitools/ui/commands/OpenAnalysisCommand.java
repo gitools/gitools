@@ -7,7 +7,8 @@ import javax.swing.SwingUtilities;
 import org.gitools.ui.AppFrame;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
-import org.gitools.model.Analysis;
+
+import org.gitools.model.analysis.Analysis;
 import org.gitools.resources.analysis.AnalysisResource;
 import org.gitools.resources.analysis.CsvAnalysisResource;
 
