@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard.zetcalc;
+package org.gitools.ui.wizardmess.zetcalc;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.gitools.ui.wizard.AnalysisWizard.StatTest;
+import org.gitools.ui.wizardmess.AnalysisWizard.StatTest;
 
 
 public class ZCalcAnalysisStatsHelpPanel extends JPanel {

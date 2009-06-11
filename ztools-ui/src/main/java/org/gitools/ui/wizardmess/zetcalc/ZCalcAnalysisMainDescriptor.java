@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard.zetcalc;
+package org.gitools.ui.wizardmess.zetcalc;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,10 +12,10 @@ import javax.swing.JTextField;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.utils.Options;
-import org.gitools.ui.wizard.AbstractWizard;
-import org.gitools.ui.wizard.AnalysisWizard;
-import org.gitools.ui.wizard.AnalysisWizardPanelDescriptor;
-import org.gitools.ui.wizard.WizardDataModel;
+import org.gitools.ui.wizardmess.AbstractWizard;
+import org.gitools.ui.wizardmess.AnalysisWizard;
+import org.gitools.ui.wizardmess.AnalysisWizardPanelDescriptor;
+import org.gitools.ui.wizardmess.WizardDataModel;
 
 
 

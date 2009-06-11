@@ -2,12 +2,13 @@ package org.gitools.ui.actions;
 
 import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
+import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportColumnDataAction;
 import org.gitools.ui.actions.file.ExportNames;
 import org.gitools.ui.actions.file.ExportParameterDataAction;
-import org.gitools.ui.actions.file.ExportTableToPdfAction;
-import org.gitools.ui.actions.file.ExportTableParameterAction;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
+import org.gitools.ui.actions.file.ExportTableParameterAction;
+import org.gitools.ui.actions.file.ExportTableToPdfAction;
 import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 
@@ -24,6 +25,7 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction closeAction = new CloseAction();
 
 	// export
+	public static final BaseAction export = new ExportAction();
 	
 	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
@@ -45,7 +47,8 @@ public class FileActionSet extends ActionSet {
 			openAnalysisAction,
 			closeAction,
 			BaseAction.separator,
-			exportActionSet,
+			export,
+			//exportActionSet,
 			BaseAction.separator,
 			exitAction
 		});

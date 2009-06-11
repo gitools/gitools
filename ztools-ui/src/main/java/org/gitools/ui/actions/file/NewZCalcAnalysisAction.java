@@ -8,9 +8,9 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.ProgressMonitorDialog;
 import org.gitools.ui.jobs.ZCalcCommandJob;
-import org.gitools.ui.wizard.AnalysisWizard;
-import org.gitools.ui.wizard.WizardDataModel;
-import org.gitools.ui.wizard.zetcalc.ZCalcAnalysisWizard;
+import org.gitools.ui.wizardmess.AnalysisWizard;
+import org.gitools.ui.wizardmess.WizardDataModel;
+import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;
 
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 import org.gitools.commands.ZCalcCommand;

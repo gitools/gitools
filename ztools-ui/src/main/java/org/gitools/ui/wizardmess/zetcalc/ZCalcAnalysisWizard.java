@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard.zetcalc;
+package org.gitools.ui.wizardmess.zetcalc;
 
 
 
@@ -6,7 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import org.gitools.ui.wizard.AnalysisWizard;
+import org.gitools.ui.wizardmess.AnalysisWizard;
 
 import com.nexes.wizard.WizardPanelDescriptor;
 

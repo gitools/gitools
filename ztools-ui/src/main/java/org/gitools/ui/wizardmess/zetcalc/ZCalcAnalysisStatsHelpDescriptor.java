@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard.zetcalc;
+package org.gitools.ui.wizardmess.zetcalc;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,9 +8,9 @@ import java.net.URISyntaxException;
 
 import javax.swing.JTextArea;
 
-import org.gitools.ui.wizard.AbstractWizard;
-import org.gitools.ui.wizard.AnalysisWizardPanelDescriptor;
-import org.gitools.ui.wizard.WizardDataModel;
+import org.gitools.ui.wizardmess.AbstractWizard;
+import org.gitools.ui.wizardmess.AnalysisWizardPanelDescriptor;
+import org.gitools.ui.wizardmess.WizardDataModel;
 
 
 
