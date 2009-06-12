@@ -2,7 +2,12 @@ package org.gitools.model.matrix;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.basic.DoubleElementAdapter;
+import org.gitools.model.matrix.element.basic.StringElementAdapter;
 
+
+import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
 /*@XmlType(
@@ -12,8 +17,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"rowNames", 
 				"data"///})*/
 				
-public final class DoubleMatrix { 
-	//implements IMatrix {
+public final class DoubleMatrix implements IMatrix {
 
 	protected String name;
 	
@@ -21,21 +25,31 @@ public final class DoubleMatrix {
 	protected String[] rowNames;
 	
 	protected DoubleMatrix2D data;
-	
-	public DoubleMatrix() {
-		this.name = "";
-	}
 
+	private IElementAdapter cellAdapter;
+	private IElementAdapter columnAdapter;
+	private IElementAdapter rowAdapter;
+	
 	public DoubleMatrix(
-			String name, String[] colNames, 
-			String[] rowNames, DoubleMatrix2D data) {
+			String name, 
+			String[] colNames, 
+			String[] rowNames, 
+			DoubleMatrix2D data) {
 		
 		this.name = name;
 		this.colNames = colNames;
 		this.rowNames = rowNames;
 		this.data = data;
+		
+		this.cellAdapter = new DoubleElementAdapter();
+		this.rowAdapter = new StringElementAdapter();
+		this.columnAdapter = new StringElementAdapter();
 	}
 
+	public DoubleMatrix() {
+		this("", new String[0], new String[0], DoubleFactory2D.dense.make(0, 0));
+	}
+	
 	public final String getName() {
 		return name;
 	}
@@ -81,5 +95,65 @@ public final class DoubleMatrix {
 		sb.append(data).append('\n');
 		
 		return sb.toString();
+	}
+
+	@Override
+	public int getColumnCount() {
+		return data.columns();
+	}
+
+	@Override
+	public int getRowCount() {
+		return data.rows();
+	}
+	
+	@Override
+	public Object getCell(int row, int column) {
+		return data.get(row, column);
+	}
+
+	@Override
+	public Object getCellValue(int row, int column, int index) {
+		return data.get(row, column);
+	}
+
+	@Override
+	public Object getCellValue(int row, int column, String id) {
+		return data.get(row, column);
+	}
+
+	@Override
+	public void setCellValue(int row, int column, int index, Object value) {
+		data.set(row, column, (Double)value);
+	}
+
+	@Override
+	public void setCellValue(int row, int column, String id, Object value) {
+		data.set(row, column, (Double)value);
+	}
+	
+	@Override
+	public Object getColumn(int index) {
+		return colNames[index];
+	}
+
+	@Override
+	public Object getRow(int index) {
+		return rowNames[index];
+	}
+
+	@Override
+	public IElementAdapter getCellAdapter() {
+		return cellAdapter;
+	}
+
+	@Override
+	public IElementAdapter getColumnAdapter() {
+		return columnAdapter;
+	}
+
+	@Override
+	public IElementAdapter getRowAdapter() {
+		return rowAdapter;
 	}
 }

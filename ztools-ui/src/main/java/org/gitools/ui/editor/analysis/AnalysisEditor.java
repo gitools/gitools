@@ -1,8 +1,5 @@
 package org.gitools.ui.editor.analysis;
 
-import org.gitools.ui.editor.MultiEditor;
-import org.gitools.ui.editor.matrix.MatrixEditor;
-
 import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -11,8 +8,8 @@ import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
-import org.gitools.model.matrix.adapter.DataMatrixTableContentsAdapter;
-import org.gitools.model.matrix.adapter.ResultsMatrixTableContentsAdapter;
+import org.gitools.ui.editor.MultiEditor;
+import org.gitools.ui.editor.matrix.MatrixEditor;
 
 public class AnalysisEditor extends MultiEditor {
 
@@ -39,9 +36,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		// create data view
 		
-		IMatrixView dataTable = new MatrixView(
-				new DataMatrixTableContentsAdapter(
-						analysis.getDataTable()));
+		IMatrixView dataTable = new MatrixView(analysis.getDataTable());
 		
 		ElementDecorator dataRowDecorator = 
 			ElementDecoratorFactory.create(
@@ -54,8 +49,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		// create results view
 		
-		IMatrixView resultsTable = new MatrixView(
-				analysis.getResults());
+		IMatrixView resultsTable = new MatrixView(analysis.getResults());
 		
 		ElementDecorator resultsRowDecorator = 
 			ElementDecoratorFactory.create(

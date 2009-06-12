@@ -9,7 +9,6 @@ import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
-import org.gitools.model.matrix.adapter.DataMatrixTableContentsAdapter;
 import org.gitools.resources.DataResource;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.matrix.MatrixEditor;
@@ -46,10 +45,8 @@ public class OpenMatrixJob implements Job {
 			monitor.begin("Loading matrix ...", 1);
 			
 			final DataResource res = new DataResource(selectedPath);
-			final DoubleMatrix dm = res.load(monitor);
-			
-			final IMatrix matrix = new DataMatrixTableContentsAdapter(dm, null);
-			
+			final DoubleMatrix matrix = res.load(monitor);
+					
 			final IMatrixView matrixView = new MatrixView(matrix);
 			
 			final MatrixFigure figure = new MatrixFigure(matrixView);

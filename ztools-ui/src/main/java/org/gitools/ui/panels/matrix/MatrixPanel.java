@@ -4,12 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -145,6 +138,7 @@ public class MatrixPanel extends JPanel {
 		}
 		
 		refreshTableColumnsRenderer();
+		refreshTableRowsRenderer();
 	}
 	
 	private void refreshTableColumnsWidth() {
@@ -192,6 +186,20 @@ public class MatrixPanel extends JPanel {
 		}
 	}
 	
+	private void refreshTableRowsRenderer() {
+		if (model != null) {
+			final IElementAdapter adapter = model.getRowAdapter();
+			
+			table.setDefaultRenderer(
+					adapter.getElementClass(), 
+					new RowsMatrixRenderer(
+							rowsDecorator,
+							selMode == SelectionMode.rows));
+			
+			table.repaint();
+		}
+	}
+	
 	public void refresh() {
 		table.repaint();
 		table.getTableHeader().repaint();
@@ -221,14 +229,7 @@ public class MatrixPanel extends JPanel {
 	
 	public void setRowDecorator(HeaderDecorator decorator) {
 		this.rowsDecorator = decorator;
-		
-		final IElementAdapter adapter = model.getRowAdapter();
-		
-		table.setDefaultRenderer(
-				adapter.getElementClass(), 
-				new RowsMatrixRenderer(decorator));
-		
-		table.repaint();
+		refreshTableRowsRenderer();
 	}
 	
 	public HeaderDecorator getColumnDecorator() {

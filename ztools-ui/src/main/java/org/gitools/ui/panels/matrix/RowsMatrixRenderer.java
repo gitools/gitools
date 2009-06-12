@@ -1,62 +1,52 @@
 package org.gitools.ui.panels.matrix;
 
-import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-
-import org.gitools.model.decorator.HeaderDecoration;
 import org.gitools.model.decorator.HeaderDecorator;
 
-public class RowsMatrixRenderer 
-		implements TableCellRenderer {
-	
-	private HeaderDecorator decorator;
-	
-	private DefaultTableCellRenderer tableRenderer = 
-		new DefaultTableCellRenderer();
-	
+public class RowsMatrixRenderer extends HeaderMatrixRenderer {
+
+	private static final long serialVersionUID = -257470002216448607L;
+
 	public RowsMatrixRenderer(
-			HeaderDecorator decorator) {
-		this.decorator = decorator;
+			HeaderDecorator decorator,
+			boolean highlightSelected) {
+		
+		super(decorator, highlightSelected);
 	}
 	
-	public Component getTableCellRendererComponent(
-			JTable table, Object value, boolean isSelected, 
-			boolean hasFocus, int row, int column) {
-		
-		JLabel label = (JLabel) tableRenderer
-				.getTableCellRendererComponent(
-						table, value, isSelected, hasFocus, row, column);
-		label.setOpaque(true);
-		
-		configureRenderer(label, value);
-		
-		if (isSelected)
-			label.setBackground(label.getBackground().darker());
-		
-		return label;
-	}
+	public void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		final int w = this.getWidth();
+		final int h = this.getHeight();
 
-	private void configureRenderer(
-			JLabel label,
-			Object value) {
+		//g2.setClip(0, 0, w, h);
 		
-		final HeaderDecoration decoration = new HeaderDecoration();
-		decorator.decorate(decoration, value);
-		
-		label.setText(decoration.getText());
-		label.setToolTipText(decoration.getToolTip());
-		label.setForeground(decoration.getFgColor());
-		label.setBackground(decoration.getBgColor());
+		/*if (highlightSelected && isSelected)
+			g2.setBackground(Color.ORANGE);
+		else*/
+			g2.setBackground(getBackground());
 
-		switch (decoration.textAlign) {
-		case left: label.setHorizontalAlignment(SwingConstants.LEFT); break;
-		case right: label.setHorizontalAlignment(SwingConstants.RIGHT); break;
-		case center: label.setHorizontalAlignment(SwingConstants.CENTER); break;
+		g2.clearRect(0, 0, w, h);
+
+		if (showGrid) {
+			g2.setColor(gridColor);
+			g2.drawRect(0, 0, w, h);
 		}
+
+		g2.setColor(getForeground());
+		
+		Rectangle2D r = g2.getFontMetrics().getStringBounds(getText(), g2);
+		float textHeight = (float) r.getHeight();
+		
+		AffineTransform at = new AffineTransform();
+		float scale = h / textHeight;
+		at.setToScale(1.0, scale);
+		g2.transform(at);
+		
+		g2.drawString(getText(), 4.0f, (scale + 8.0f + textHeight) / 2.0f);
 	}
 }
