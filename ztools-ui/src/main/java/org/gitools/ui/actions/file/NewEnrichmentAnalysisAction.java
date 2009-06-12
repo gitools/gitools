@@ -15,15 +15,15 @@ import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;
 import edu.upf.bg.progressmonitor.ProgressMonitor;
 import org.gitools.commands.ZCalcCommand;
 
-public class NewZCalcAnalysisAction extends BaseAction {
+public class NewEnrichmentAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8592231961109105958L;
 
-	public NewZCalcAnalysisAction() {
-		super("New ZetCalc analysis...");
+	public NewEnrichmentAnalysisAction() {
+		super("enrichment analysis...");
 
-		setDesc("Run a new ZetCalc analysis");
-		setMnemonic(KeyEvent.VK_Z);
+		setDesc("Run an enrichment analysis");
+		setMnemonic(KeyEvent.VK_E);
 	}
 
 	@Override

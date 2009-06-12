@@ -22,7 +22,7 @@ public class WelcomeAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		AbstractEditor view = new WelcomeEditor();
-		AppFrame.instance().getWorkspace().addView(view);
+		AppFrame.instance().getWorkspace().addEditor(view);
 	}
 	
 }

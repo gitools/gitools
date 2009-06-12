@@ -24,9 +24,9 @@ public class ExportMatrixFigureToPictureAction extends BaseAction {
 	private static final long serialVersionUID = -7288045475037410310L;
 
 	public ExportMatrixFigureToPictureAction() {
-		super("Export matrix to pdf");
+		super("Export matrix figure ...");
 		
-		setDesc("Export the matrix to a pdf");
+		setDesc("Export a matrix figure");
 		setMnemonic(KeyEvent.VK_A);
 	}
 	

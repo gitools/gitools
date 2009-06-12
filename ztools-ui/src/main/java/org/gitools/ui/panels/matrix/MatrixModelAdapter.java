@@ -5,11 +5,11 @@ import javax.swing.table.TableModel;
 
 import org.gitools.model.matrix.IMatrixView;
 
-public class TableModelAdapter implements TableModel {
+public class MatrixModelAdapter implements TableModel {
 
 	private IMatrixView model;
 	
-	public TableModelAdapter(IMatrixView model) {
+	public MatrixModelAdapter(IMatrixView model) {
 		this.model = model;
 	}
 	

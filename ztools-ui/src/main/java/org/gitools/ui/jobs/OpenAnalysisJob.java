@@ -56,7 +56,7 @@ public class OpenAnalysisJob implements Job {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-					AppFrame.instance().getWorkspace().addView(view);
+					AppFrame.instance().getWorkspace().addEditor(view);
 					AppFrame.instance().refresh();
 				}
 			});

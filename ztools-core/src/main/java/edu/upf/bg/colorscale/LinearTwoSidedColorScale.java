@@ -47,9 +47,9 @@ public class LinearTwoSidedColorScale extends CompositeColorScale {
 	}
 	
 	public LinearTwoSidedColorScale() {
-		this(-6, 0, 6, 
+		this(-2, 0, 2, 
 				Color.BLUE, 
-				Color.LIGHT_GRAY,
+				Color.BLACK,
 				Color.RED);
 	}
 	

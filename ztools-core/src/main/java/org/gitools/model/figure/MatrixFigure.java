@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.io.Serializable;
 
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
+import org.gitools.model.matrix.element.IElementAdapter;
 
 public class MatrixFigure 
 		extends Figure
@@ -44,10 +48,38 @@ public class MatrixFigure
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
 		this.cellSize = 18;
-		this.rowSize = 200;
+		this.rowSize = 400;
 		this.columnSize = 200;
 	}
 	
+	public MatrixFigure(IMatrixView matrixView) {
+		this(matrixView,
+				cellDecoratorFromMatrix(matrixView),
+				new SimpleHeaderDecorator(),
+				new SimpleHeaderDecorator());
+	}
+	
+	private static ElementDecorator cellDecoratorFromMatrix(
+			IMatrixView matrixView) {
+		
+		ElementDecorator decorator = null;
+		
+		IElementAdapter adapter = matrixView.getCellAdapter();
+		Class<?> elementClass = adapter.getElementClass();
+		
+		//FIXME No funciona
+		if (Double.class.isInstance(elementClass)
+				|| double.class.isInstance(elementClass))
+			decorator = ElementDecoratorFactory.create(
+					ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+		
+		if (decorator == null)
+			decorator = ElementDecoratorFactory.create(
+					ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+		
+		return decorator;
+	}
+
 	public final ElementDecorator getCellDecorator() {
 		return cellDecorator;
 	}

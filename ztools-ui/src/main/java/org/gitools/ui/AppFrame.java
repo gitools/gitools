@@ -171,14 +171,14 @@ public class AppFrame extends JFrame {
 	
 	private void createWelcomeView() {
 		AbstractEditor view = new WelcomeEditor();
-		workspace.addView(view);
+		workspace.addEditor(view);
 	}
 	
 	private void createDemoView() {
 		AbstractEditor demoView = 
 			new DemoEditor(40, 12);
 		
-		workspace.addView(demoView);
+		workspace.addEditor(demoView);
 	}
 
 	public void start() {

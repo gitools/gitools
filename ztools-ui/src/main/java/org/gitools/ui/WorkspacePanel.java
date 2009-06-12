@@ -42,7 +42,7 @@ public class WorkspacePanel extends JTabbedPane {
 		//tabbedPane = new JTabbedPane();
 	}
 	
-	public void addView(AbstractEditor view) {
+	public void addEditor(AbstractEditor view) {
 		if (view == null)
 			return;
 		
@@ -91,8 +91,8 @@ public class WorkspacePanel extends JTabbedPane {
 		MenuActionSet.fileActionSet.setEnabled(true);
 		MenuActionSet.helpActionSet.setEnabled(true);
 		
-		FileActionSet.newZCalcAnalysisAction.setEnabled(true);
-		FileActionSet.openAnalysisAction.setEnabled(true);
+		FileActionSet.newActionSet.setTreeEnabled(true);
+		FileActionSet.openActionSet.setTreeEnabled(true);
 		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
 		FileActionSet.exportWizardAction.setEnabled(true);
 		FileActionSet.exitAction.setEnabled(true);

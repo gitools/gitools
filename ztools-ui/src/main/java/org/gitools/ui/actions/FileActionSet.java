@@ -5,12 +5,12 @@ import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportColumnDataAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
-import org.gitools.ui.actions.file.ExportParameterDataAction;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
-import org.gitools.ui.actions.file.ExportTableParameterAction;
+import org.gitools.ui.actions.file.ExportTableOneParameterAction;
 import org.gitools.ui.actions.file.ExportMatrixFigureToPictureAction;
-import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
+import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
+import org.gitools.ui.actions.file.OpenMatrixAction;
 
 public class FileActionSet extends ActionSet {
 
@@ -18,19 +18,28 @@ public class FileActionSet extends ActionSet {
 	
 	public static final BaseAction exitAction = new ExitAction();
 
+	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
+	
+	public static final ActionSet newActionSet = new ActionSet("New", new BaseAction[] {
+			newEnrichmentAnalysisAction
+	});
+	
 	public static final BaseAction openAnalysisAction = new OpenAnalysisAction();
-
-	public static final BaseAction newZCalcAnalysisAction = new NewZCalcAnalysisAction();
+	public static final BaseAction openMatrixAction = new OpenMatrixAction();
+	
+	public static final ActionSet openActionSet = new ActionSet("Open", new BaseAction[] {
+			openAnalysisAction,
+			openMatrixAction
+	});
 	
 	public static final BaseAction closeAction = new CloseAction();
 
 	// export
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
-	public static final BaseAction exportParameterDataAction = new ExportParameterDataAction();
 	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
-	public static final BaseAction exportTableParameter = new ExportTableParameterAction();
+	public static final BaseAction exportTableParameter = new ExportTableOneParameterAction();
 	public static final BaseAction exportTableAllParameters = new ExportTableAllParametersAction();
 	public static final BaseAction exportMatrixFigureToPicture = new ExportMatrixFigureToPictureAction();
 
@@ -43,8 +52,8 @@ public class FileActionSet extends ActionSet {
 
 	public FileActionSet() {
 		super("File", new BaseAction[] {
-			newZCalcAnalysisAction,
-			openAnalysisAction,
+			newActionSet,
+			openActionSet,
 			closeAction,
 			BaseAction.separator,
 			//exportWizardAction,

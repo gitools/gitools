@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 
-import org.gitools.ui.actions.file.NewZCalcAnalysisAction;
+import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 
 
@@ -26,7 +26,7 @@ public class WelcomeEditor extends HtmlEditor {
 	@Override
 	protected void performUrlAction(String name) {
 		if (name.equals("newZetCalcAnalysis")) {
-			new NewZCalcAnalysisAction()
+			new NewEnrichmentAnalysisAction()
 				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("openAnalysis")) {

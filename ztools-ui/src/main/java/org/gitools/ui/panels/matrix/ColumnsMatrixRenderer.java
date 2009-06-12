@@ -17,7 +17,7 @@ import javax.swing.table.TableCellRenderer;
 import org.gitools.model.decorator.HeaderDecoration;
 import org.gitools.model.decorator.HeaderDecorator;
 
-public class RotatedMatrixHeaderRenderer 
+public class ColumnsMatrixRenderer 
 		extends JLabel 
 		implements TableCellRenderer {
 
@@ -35,7 +35,7 @@ public class RotatedMatrixHeaderRenderer
 
 	private boolean showGrid;
 
-	public RotatedMatrixHeaderRenderer(
+	public ColumnsMatrixRenderer(
 			HeaderDecorator decorator,
 			boolean highlightSelected) {
 	

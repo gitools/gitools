@@ -175,8 +175,8 @@ public class MatrixEditor extends AbstractEditor {
 				
 				//System.out.println("Start selection change:");
 				matrixPanel.setSelectedCells(
-						getTable().getSelectedColumns(),
-						getTable().getSelectedRows());
+						getMatrixView().getSelectedColumns(),
+						getMatrixView().getSelectedRows());
 				matrixPanel.refresh();
 				//System.out.println("End selection change.");
 				
@@ -203,24 +203,25 @@ public class MatrixEditor extends AbstractEditor {
 		}
 	}
 
-	private void refreshCellDetails() {		
-		int row = getTable().getSelectionLeadRow();
-		int rowCount = getTable().getRowCount();
-		int column = getTable().getSelectionLeadColumn();
-		int columnCount = getTable().getColumnCount();
+	private void refreshCellDetails() {
+		final IMatrixView matrixView = getMatrixView();
+		int row = matrixView.getSelectionLeadRow();
+		int rowCount = matrixView.getRowCount();
+		int column = matrixView.getSelectionLeadColumn();
+		int columnCount = matrixView.getColumnCount();
 		
 		VelocityContext context = new VelocityContext();
 		String templateName = defaultTemplateName;
 		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			final IElementAdapter columnAdapter = getTable().getColumnAdapter();
-			final Object columnElement = getTable().getColumn(column);
+			final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
+			final Object columnElement = matrixView.getColumn(column);
 			
-			final IElementAdapter rowAdapter = getTable().getRowAdapter();
-			final Object rowElement = getTable().getRow(row);
+			final IElementAdapter rowAdapter = matrixView.getRowAdapter();
+			final Object rowElement = matrixView.getRow(row);
 			
-			final IElementAdapter cellAdapter = getTable().getCellAdapter();
-			final Object cellElement = getTable().getCell(row, column);
+			final IElementAdapter cellAdapter = matrixView.getCellAdapter();
+			final Object cellElement = matrixView.getCell(row, column);
 			
 			templateName = getTemplateNameFromObject(cellElement);
 
@@ -254,6 +255,8 @@ public class MatrixEditor extends AbstractEditor {
 				context.put("cell", cellMap);
 			}
 		}
+		System.out.println("row:" + row + ", col:" + column);
+		
 		/*else if (column < 0) {
 			System.out.println("row:" + row);
 		}
@@ -293,11 +296,13 @@ public class MatrixEditor extends AbstractEditor {
 
 	private void createComponents() {
 		
+		final IMatrixView matrixView = getMatrixView();
+		
 		/* Color matrix */
 		
 		matrixPanel = new MatrixPanel();
 		matrixPanel.setMinimumSize(new Dimension(200, 200));
-		matrixPanel.setModel(getTable());
+		matrixPanel.setModel(matrixView);
 		matrixPanel.setShowGrid(model.isShowGrid());
 		matrixPanel.setGridColor(model.getGridColor());
 		matrixPanel.setCellSize(model.getCellSize());
@@ -319,15 +324,15 @@ public class MatrixEditor extends AbstractEditor {
 					
 					//System.out.println("Selection listener.");
 					
-					getTable().setSelectedRows(
+					matrixView.setSelectedRows(
 							matrixPanel.getSelectedRows());
-					getTable().setSelectedColumns(
+					matrixView.setSelectedColumns(
 							matrixPanel.getSelectedColumns());
 					
 					int colIndex = matrixPanel.getSelectedLeadColumn();
 					int rowIndex = matrixPanel.getSelectedLeadRow();
 					
-					getTable().setLeadSelection(rowIndex, colIndex);
+					matrixView.setLeadSelection(rowIndex, colIndex);
 					
 					blockSelectionUpdate = false;
 				}
@@ -351,8 +356,8 @@ public class MatrixEditor extends AbstractEditor {
 		cellsConfigPage.refresh();
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		tabbedPane.setMinimumSize(new Dimension(0, 180));
-		tabbedPane.setPreferredSize(new Dimension(0, 200));
+		tabbedPane.setMinimumSize(new Dimension(0, 170));
+		tabbedPane.setPreferredSize(new Dimension(0, 180));
 		tabbedPane.addTab("General", generalConfigPage);
 		tabbedPane.addTab("Rows", rowsConfigPage);
 		tabbedPane.addTab("Columns", columnsConfigPage);
@@ -386,7 +391,7 @@ public class MatrixEditor extends AbstractEditor {
 					.getPreferredWidth());*/
 	}
 
-	protected IMatrixView getTable() {
+	protected IMatrixView getMatrixView() {
 		return model.getMatrixView();
 	}
 	

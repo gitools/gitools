@@ -20,7 +20,7 @@ public class ExportTableAllParametersAction extends BaseAction {
 	private static final long serialVersionUID = -7288045475037410310L;
 
 	public ExportTableAllParametersAction() {
-		super("Export all table parameters");
+		super("Export table (all parameters)");
 		
 		setDesc("Export a data table with all parameters");
 		setMnemonic(KeyEvent.VK_A);

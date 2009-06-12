@@ -3,6 +3,7 @@ package org.gitools.ui.panels.matrix;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
@@ -30,8 +31,6 @@ import org.gitools.ui.model.SelectionMode;
 public class MatrixPanel extends JPanel {
 
 	private static final long serialVersionUID = 1122420366217373359L;
-
-	protected int[] oldRowSelection = new int[0];//to detect selection changes
 
 	private JTable table;
 	
@@ -66,148 +65,6 @@ public class MatrixPanel extends JPanel {
 		createComponents();
 	}
 	
-	//private List<ColorMatrixListener> listeners;
-	
-	private class HeaderMouseListener extends MouseInputAdapter {
-
-		protected int startColumn;
-		protected int endColumn;
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-
-			int pressedColumn = table.columnAtPoint(e.getPoint());
-
-			int lastColumn = table.getColumnCount() - 1;
-
-			if (lastColumn == pressedColumn) {
-				selectAll();
-				// for (ColorMatrixListener listener : listeners)
-				// listener.selectionAll();
-			} 
-			else {
-				setSelectionMode(SelectionMode.columns);
-
-				startColumn = pressedColumn;
-				int[] selectedColumns;
-
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
-					int nb = getSelectedColumns().length + 1;
-					selectedColumns = new int[nb];
-					System.arraycopy(getSelectedColumns(), 0, selectedColumns, 0, nb - 1);
-					selectedColumns[nb - 1] = pressedColumn;
-				} else
-					selectedColumns = new int[] { pressedColumn };
-
-				setSelectedCells(selectedColumns, new int[0]);
-				setLeadSelection(-1, pressedColumn);
-			}
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			endColumn = table.columnAtPoint(e.getPoint());
-			setLeadSelection(-1, endColumn);
-
-			int numCols = Math.abs(endColumn - startColumn) + 1;
-			
-			int[] newSelectedColumns = new int[numCols];
-
-			int start = (endColumn < startColumn) ? endColumn : startColumn;
-			int stop = (endColumn > startColumn) ? endColumn : startColumn;
-			int counter = 0;
-			for (int i = start; i <= stop; i++) {
-				newSelectedColumns[counter] = i;
-				counter++;
-			}
-
-			int[] selectedColumns;
-			if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
-				selectedColumns = mergeArrays(getSelectedColumns(),	newSelectedColumns);
-			else
-				selectedColumns = newSelectedColumns;
-
-			setSelectedCells(selectedColumns, new int[0]);
-		}
-	}
-	
-	private class CellMouseListener extends MouseInputAdapter {
-			
-		protected int startRow;
-		protected int endRow;
-		protected int startColumn;
-		protected int endColumn;
-		
-		@Override
-		public void mousePressed(MouseEvent e) {
-			int pressedColumn = table.columnAtPoint(e.getPoint());
-			
-			int lastcol = table.getColumnCount() - 1;
-			if (lastcol == pressedColumn) {
-				setSelectionMode(SelectionMode.rows);
-				startRow = table.rowAtPoint(e.getPoint());
-				startColumn = pressedColumn;
-				setLeadSelection(startRow, -1);
-			}
-		}
-		
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			int lastColumn = table.getColumnCount() - 1;
-			if (lastColumn == table.columnAtPoint(e.getPoint())) {
-				setSelectedColumns(new int[0]);
-				oldRowSelection = getSelectedRows();
-			}
-			else
-				setLead(e);
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			int pressedColumn = table.columnAtPoint(e.getPoint());
-			
-			int lastColumn = table.getColumnCount() - 1;
-			if (lastColumn == pressedColumn) {
-				
-				endRow = table.rowAtPoint(e.getPoint());
-				endColumn = pressedColumn;
-				setLeadSelection(endRow, -1);
-
-				int rows = Math.abs(endRow-startRow) + 1;
-				
-				int[] newSelectedRows = new int[rows];
-				
-				int start = (endRow < startRow) ? endRow : startRow;
-				int stop = (endRow > startRow) ? endRow : startRow;
-				int counter = 0;
-				for (int i = start; i <= stop ; i++){
-					newSelectedRows[counter] = i;
-					counter++;
-				}
-				
-				int[] selectedRows;
-				
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)
-					selectedRows = mergeArrays(getSelectedRows(), newSelectedRows);					
-				else
-					selectedRows = newSelectedRows;
-							
-				setSelectedCells(new int[0], selectedRows);
-				oldRowSelection = getSelectedRows();
-			}
-		}
-		
-		private void setLead(MouseEvent e){
-			setSelectionMode(SelectionMode.cells);
-			
-			int row = table.rowAtPoint(e.getPoint());
-			int col = table.columnAtPoint(e.getPoint());
-			
-			setSelectedCells(new int[] { col }, new int[] { row });
-			setLeadSelection(row, col);
-		}
-	}
-
 	private void createComponents() {
 		
 		table = new JTable();
@@ -238,15 +95,15 @@ public class MatrixPanel extends JPanel {
 		table.getSelectionModel().addListSelectionListener(listener);
 		table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 		
-		HeaderMouseListener hml = new HeaderMouseListener();
+		ColumnsMouseListener hml = new ColumnsMouseListener(this);
 		table.getTableHeader().addMouseMotionListener(hml);
 		table.getTableHeader().addMouseListener(hml);
 		
-		//table.getTableHeader().setResizingAllowed(false);
-		
-		CellMouseListener cml = new CellMouseListener();
-		table.addMouseListener(cml);
+		CellMouseListener cml = new CellMouseListener(this);
 		table.addMouseMotionListener(cml);
+		table.addMouseListener(cml);
+		
+		//table.getTableHeader().setResizingAllowed(false);
 		
 		refreshTableColumnsWidth();
 		
@@ -322,8 +179,8 @@ public class MatrixPanel extends JPanel {
 		if (lastColumn >= 0) {
 			for (int i = 0; i < lastColumn; i++) {
 				TableColumn col = colModel.getColumn(i);
-				final RotatedMatrixHeaderRenderer renderer = 
-					new RotatedMatrixHeaderRenderer(
+				final ColumnsMatrixRenderer renderer = 
+					new ColumnsMatrixRenderer(
 						columnsDecorator,
 						selMode == SelectionMode.columns);
 				renderer.setGridColor(table.getGridColor());
@@ -346,7 +203,7 @@ public class MatrixPanel extends JPanel {
 
 	public void setModel(IMatrixView model) {
 		this.model = model;
-		table.setModel(new TableModelAdapter(model));
+		table.setModel(new MatrixModelAdapter(model));
 
 		refreshTableColumnsRenderer();
 		refreshTableColumnsWidth();
@@ -369,7 +226,7 @@ public class MatrixPanel extends JPanel {
 		
 		table.setDefaultRenderer(
 				adapter.getElementClass(), 
-				new LabelMatrixHeaderRenderer(decorator));
+				new RowsMatrixRenderer(decorator));
 		
 		table.repaint();
 	}
@@ -389,7 +246,7 @@ public class MatrixPanel extends JPanel {
 		
 		table.setDefaultRenderer(
 				cellAdapter.getElementClass(), 
-				new LabelMatrixCellRenderer(decorator));
+				new CellMatrixRenderer(decorator));
 		
 		table.repaint();
 	}
@@ -587,38 +444,7 @@ public class MatrixPanel extends JPanel {
 			.getSelectionModel()
 			.addSelectionInterval(0, lastColIndex);	
 		
-		oldRowSelection = table.getSelectedRows();
-	}
-	
-	private int[] mergeArrays(int[] a1, int[] a2){
-		//FIXME: Improve efficency (don't use maps and sets!!)
-		
-		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		
-		for (Integer i: a1)
-			hm.put(i.toString(), i);
-		for (Integer i: a2)
-			hm.put(i.toString(), i);
-		
-	    Set<Map.Entry<String, Integer>> set = hm.entrySet();
-	    
-	    int[] merged = new int[set.size()];
-	    int counter = 0;
-		for (Map.Entry<String, Integer> me : set) {
-			merged[counter] = me.getValue();
-			counter++;
-		}
-		
-		Arrays.sort(merged);
-		
-		return merged;
-	}
-	
-	public boolean inArray(int[] array, int needle) {
-		for (int i = 0; i < array.length; i++)
-			if (array[i] == needle) 
-				return true;
-		return false;
+		//oldRowSelection = table.getSelectedRows();
 	}
 
 	// ------------------------------------------------------------------------------
@@ -651,7 +477,18 @@ public class MatrixPanel extends JPanel {
 		refreshTableColumnsWidth();
 		table.setRowHeight(rowsHeight);
 	}
+
+	public int columnAtPoint(Point point) {
+		return table.columnAtPoint(point);
+	}
+
+	public int rowAtPoint(Point point) {
+		return table.rowAtPoint(point);
+	}
 	
+	public int getColumnCount() {
+		return table.getColumnCount();
+	}	
 	
 	/*private void printArray(int[] selectedRows) {
 		System.out.println("-------------");

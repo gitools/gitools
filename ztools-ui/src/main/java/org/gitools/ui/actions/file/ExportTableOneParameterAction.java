@@ -16,14 +16,14 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.utils.Options;
 
-public class ExportTableParameterAction extends BaseAction {
+public class ExportTableOneParameterAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportTableParameterAction() {
-		super("Export table parameter");
+	public ExportTableOneParameterAction() {
+		super("Export table (one parameter) ...");
 		
-		setDesc("Export a data table of a parameter");
+		setDesc("Export a data table for a selected parameter");
 		setMnemonic(KeyEvent.VK_P);
 	}
 	
