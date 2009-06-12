@@ -35,6 +35,10 @@ public class MatrixFigure
 	private int rowSize;
 	private int columnSize;
 	
+	public MatrixFigure(){
+		super();
+	}
+	
 	public MatrixFigure(
 			IMatrixView matrixView,
 			ElementDecorator cellDecorator,
