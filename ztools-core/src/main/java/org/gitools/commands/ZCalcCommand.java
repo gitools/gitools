@@ -1,22 +1,22 @@
 package org.gitools.commands;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.zip.DataFormatException;
 
 import org.gitools.datafilters.ValueFilter;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.resources.DataResource;
-import org.gitools.resources.ModuleMapResource;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.SimpleMapPersistence;
+import org.gitools.persistence.TextDoubleMatrixPersistence;
+import org.gitools.resources.FileResource;
+import org.gitools.resources.IResource;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
 import org.gitools.tool.processors.ZCalcProcessor;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class ZCalcCommand extends AnalysisCommand {
 	
@@ -30,8 +30,8 @@ public class ZCalcCommand extends AnalysisCommand {
 				workdir, outputFormat, resultsByCond);
 	}
 	
-	public void run(ProgressMonitor monitor) 
-			throws IOException, DataFormatException, InterruptedException {
+	public void run(IProgressMonitor monitor) 
+			throws PersistenceException, InterruptedException {
 		
 		// Prepare output
 		
@@ -83,23 +83,30 @@ public class ZCalcCommand extends AnalysisCommand {
 	}
 
 	private void loadDataAndModules(
-			DoubleMatrix doubleMatrix, ModuleMap moduleMap,
-			String dataFileName, ValueFilter valueFilter, String modulesFileName, 
-			int minModuleSize, int maxModuleSize, boolean includeNonMappedItems,
-			ProgressMonitor monitor) throws FileNotFoundException, IOException, DataFormatException {
+			DoubleMatrix doubleMatrix,
+			ModuleMap moduleMap,
+			String dataFileName,
+			ValueFilter valueFilter,
+			String modulesFileName, 
+			int minModuleSize,
+			int maxModuleSize,
+			boolean includeNonMappedItems,
+			IProgressMonitor monitor)
+			throws PersistenceException {
 		
 		// Load metadata
 		
-		DataResource dataResource = new DataResource(dataFileName);
-		dataResource.loadMetadata(doubleMatrix, valueFilter, monitor);
+		IResource resource = new FileResource(dataFileName);
+		TextDoubleMatrixPersistence dmPersistence = new TextDoubleMatrixPersistence();
+		dmPersistence.readMetadata(resource, doubleMatrix, valueFilter, monitor);
 		
 		// Load modules
 		
 		File file = new File(modulesFileName);
 		moduleMap.setName(file.getName());
 		
-		ModuleMapResource moduleMapResource = new ModuleMapResource(file);
-		moduleMapResource.load(
+		SimpleMapPersistence simpleMapPersistence = new SimpleMapPersistence(file);
+		simpleMapPersistence.load(
 			moduleMap,
 			minModuleSize,
 			maxModuleSize,
@@ -111,7 +118,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		// Load data
 		
-		dataResource.loadData(
+		dmPersistence.readData(
+				resource,
 				doubleMatrix,
 				valueFilter,
 				null, 

@@ -8,7 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class StatusBar extends JPanel {
 
@@ -20,7 +20,7 @@ public class StatusBar extends JPanel {
 			super();
 		}
 		
-		public StatusBarProgressMonitor(ProgressMonitor parent) {
+		public StatusBarProgressMonitor(IProgressMonitor parent) {
 			super(parent);
 		}
 		
@@ -39,7 +39,7 @@ public class StatusBar extends JPanel {
 		}
 		
 		@Override
-		public ProgressMonitor subtask() {
+		public IProgressMonitor subtask() {
 			return new StatusBarProgressMonitor(this);
 		}
 	}
@@ -72,7 +72,7 @@ public class StatusBar extends JPanel {
 		}
 	}
 
-	public ProgressMonitor createMonitor() {
+	public IProgressMonitor createMonitor() {
 		return new StatusBarProgressMonitor();
 	}
 }

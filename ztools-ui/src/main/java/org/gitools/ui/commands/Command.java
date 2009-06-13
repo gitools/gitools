@@ -1,6 +1,6 @@
 package org.gitools.ui.commands;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public interface Command {
 
@@ -18,5 +18,5 @@ public interface Command {
 		}
 	}
 	
-	void execute(ProgressMonitor monitor) throws CommandException;
+	void execute(IProgressMonitor monitor) throws CommandException;
 }

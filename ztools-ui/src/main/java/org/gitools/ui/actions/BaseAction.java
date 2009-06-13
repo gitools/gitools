@@ -10,7 +10,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.editor.AbstractEditor;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 import org.gitools.model.matrix.IMatrixView;
 
@@ -120,7 +120,7 @@ public abstract class BaseAction extends AbstractAction {
 		return matrixView;
 	}
 	
-	protected ProgressMonitor createProgressMonitor() {
+	protected IProgressMonitor createProgressMonitor() {
 		return AppFrame.instance()
 			.createMonitor();
 	}

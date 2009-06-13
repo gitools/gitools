@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class ThreadManager {
 
@@ -13,7 +13,7 @@ public class ThreadManager {
 	
 	protected static int nThreads = getAvailableProcessors();
 	
-	public static void shutdown(ProgressMonitor monitor) {
+	public static void shutdown(IProgressMonitor monitor) {
 		executor.shutdown();
 		try {
 			while (!executor.isTerminated())

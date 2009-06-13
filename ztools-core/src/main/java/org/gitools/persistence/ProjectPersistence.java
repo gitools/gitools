@@ -1,4 +1,4 @@
-package org.gitools.resources;
+package org.gitools.persistence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +13,11 @@ import javax.xml.bind.Unmarshaller;
 
 import org.gitools.model.Project;
 import org.gitools.model.analysis.Analysis;
+import org.gitools.resources.FileResource;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class ProjectResource extends Resource {
+public class ProjectPersistence extends FileResource {
 
 	private static final long serialVersionUID = -3625243178449832555L;
 	
@@ -26,20 +27,20 @@ public class ProjectResource extends Resource {
 	
 	protected String fileName;
 	
-	public ProjectResource(File basePath, String fileName) {
+	public ProjectPersistence(File basePath, String fileName) {
 		super(basePath);
 		
 		this.fileName = fileName;
 	}
 
-	public ProjectResource(File basePath) {
+	public ProjectPersistence(File basePath) {
 		this(basePath, "project.xml");
 	}
 
-	public void save(Project project, ProgressMonitor monitor) 
+	public void save(Project project, IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, JAXBException {
 		
-		final File basePath = getResourceFile();
+		final File basePath = getFile();
 		
 		Writer writer = openWriter(new File(basePath, fileName));
 		
@@ -51,17 +52,17 @@ public class ProjectResource extends Resource {
 		writer.close();
 		
 		for (Analysis analysis : project.getAnalysis()) {
-			new ResultsResource(basePath)
+			new TextObjectMatrixPersistence(basePath)
 				.write(analysis.getResults(), analysis.getName(), monitor);
 		}
 	}
 	
-	public Project load(ProgressMonitor monitor) 
+	public Project load(IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, JAXBException {
 		
 		Project project = null;
 		
-		final File basePath = getResourceFile();
+		final File basePath = getFile();
 		
 		Reader reader = openReader(new File(basePath, fileName));
 		

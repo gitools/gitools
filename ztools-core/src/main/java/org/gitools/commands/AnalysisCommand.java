@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.zip.DataFormatException;
 
 import javax.xml.bind.JAXBException;
 
@@ -14,13 +13,14 @@ import org.gitools.datafilters.ValueFilter;
 import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
-import org.gitools.resources.ProjectResource;
-import org.gitools.resources.analysis.AnalysisResource;
-import org.gitools.resources.analysis.CsvAnalysisResource;
-import org.gitools.resources.analysis.REXmlAnalysisResource;
+import org.gitools.persistence.AnalysisPersistence;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.ProjectPersistence;
+import org.gitools.persistence.analysis.CsvAnalysisResource;
+import org.gitools.persistence.analysis.REXmlAnalysisResource;
 import org.gitools.stats.test.factory.TestFactory;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public abstract class AnalysisCommand implements Command {
 
@@ -80,8 +80,8 @@ public abstract class AnalysisCommand implements Command {
 		return testFactory;
 	}
 	
-	protected void save(Analysis analysis, ProgressMonitor monitor) 
-			throws IOException, DataFormatException {
+	protected void save(Analysis analysis, IProgressMonitor monitor) 
+			throws PersistenceException {
 
 		final String basePath = workdir + File.separator + analysisName;
 		
@@ -96,7 +96,7 @@ public abstract class AnalysisCommand implements Command {
 		//saveProject(basePath, analysis, monitor);
 		
 		for (String format : formats) {
-			AnalysisResource ar = null;
+			AnalysisPersistence ar = null;
 			
 			if ("csv".equalsIgnoreCase(format))
 				ar = new CsvAnalysisResource(basePath, resultsByCond);
@@ -110,7 +110,7 @@ public abstract class AnalysisCommand implements Command {
 	}
 
 	private void saveProject(
-			String basePath, Analysis analysis, ProgressMonitor monitor) 
+			String basePath, Analysis analysis, IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		File path = new File(basePath);
@@ -123,7 +123,7 @@ public abstract class AnalysisCommand implements Command {
 		proj.getAnalysis().add(analysis);
 		proj.getDataTables().add(analysis.getDataTable());
 		proj.getModuleMaps().add(analysis.getModuleMap());
-		ProjectResource res = new ProjectResource(path, "project.xml");
+		ProjectPersistence res = new ProjectPersistence(path, "project.xml");
 		try {
 			res.save(proj, monitor.subtask());
 		} catch (JAXBException e) {

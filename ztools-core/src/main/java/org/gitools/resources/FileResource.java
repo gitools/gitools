@@ -13,50 +13,57 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URI;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.io.Serializable;
 
-import org.apache.commons.csv.CSVStrategy;
-
-public abstract class Resource implements Serializable {
+public class FileResource implements IResource {
 
 	private static final long serialVersionUID = 1165427781549776789L;
 
-	public static final CSVStrategy defaultCsvStrategy = 
-		new CSVStrategy('\t', '"', '#', true, true, true);
+	private File file;
 	
-	private String resourcePath;
-	private File resourceFile;
-	
-	public Resource() {
+	public FileResource() {
 	}
 	
-	public Resource(String resourceName) {
-		this(new File(resourceName));
+	public FileResource(String path) {
+		this(new File(path));
 	}
 	
-	public Resource(File resourceFile) {
-		this.resourcePath = resourceFile.getAbsolutePath();
-		this.resourceFile = resourceFile;
+	public FileResource(File file) {
+		this.file = file;
 	}
 	
-	protected Reader openReader() throws FileNotFoundException, IOException {
-		return openReader(resourcePath);
+	@Override
+	public Reader openReader() throws FileNotFoundException, IOException {
+		return openReader(file);
 	}
 	
-	protected Writer openWriter() throws FileNotFoundException, IOException {
-		return openWriter(resourcePath);
+	@Override
+	public Writer openWriter() throws FileNotFoundException, IOException {
+		return openWriter(file);
+	}
+	
+	@Override
+	public URI toURI() {
+		return file.toURI();
 	}
 	
 	public String getResourcePath() {
-		return resourcePath;
+		return file.getAbsolutePath();
 	}
 	
-	public File getResourceFile() {
-		return resourceFile;
+	public File getFile() {
+		return file;
 	}
 
+	public static Reader openReader(String path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		return openReader(new File(path));
+	}
+	
 	public static Reader openReader(File path) throws FileNotFoundException, IOException {
 		if (path == null)
 			return null;
@@ -73,7 +80,14 @@ public abstract class Resource implements Serializable {
 					new FileReader(path));
 	}
 	
-	protected Writer openWriter(File path) throws FileNotFoundException, IOException {
+	public static Writer openWriter(String path) throws FileNotFoundException, IOException {
+		if (path == null)
+			return null;
+		
+		return openWriter(new File(path));
+	}
+	
+	public static Writer openWriter(File path) throws FileNotFoundException, IOException {
 		if (path == null)
 			return null;
 		
@@ -87,19 +101,5 @@ public abstract class Resource implements Serializable {
 			return 
 				new BufferedWriter(
 					new FileWriter(path));
-	}
-	
-	public static Reader openReader(String path) throws FileNotFoundException, IOException {
-		if (path == null)
-			return null;
-		
-		return openReader(new File(path));
-	}
-	
-	protected Writer openWriter(String path) throws FileNotFoundException, IOException {
-		if (path == null)
-			return null;
-		
-		return openWriter(new File(path));
 	}
 }

@@ -1,8 +1,6 @@
 package edu.upf.bg.progressmonitor;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
-
-public interface ProgressMonitor {
+public interface IProgressMonitor {
 	
 	public void begin(String title, int totalWork);
 
@@ -18,7 +16,7 @@ public interface ProgressMonitor {
 	
 	public void setLevel(int level);
 	
-	public ProgressMonitor subtask();
+	public IProgressMonitor subtask();
 
 	public void info(String msg);
 	public void debug(String msg);

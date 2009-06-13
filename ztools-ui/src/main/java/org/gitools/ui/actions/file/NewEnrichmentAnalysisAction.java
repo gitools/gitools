@@ -12,7 +12,7 @@ import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.WizardDataModel;
 import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.commands.ZCalcCommand;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
@@ -49,7 +49,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 			final ProgressMonitorDialog monitorDialog = new ProgressMonitorDialog(
 					AppFrame.instance(), "Log");
 
-			final ProgressMonitor monitor = 
+			final IProgressMonitor monitor = 
 				monitorDialog.getProgressMonitor();
 
 			AppFrame.instance().getJobProcessor().addJob(

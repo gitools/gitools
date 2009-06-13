@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 public class ProgressMonitorDialog extends JDialog {
@@ -38,7 +38,7 @@ public class ProgressMonitorDialog extends JDialog {
 		}
 		
 		public TextAreaProgressMonitor(
-				ProgressMonitor parent,
+				IProgressMonitor parent,
 				JTextArea textArea,
 				boolean verbose, boolean debug) {
 			
@@ -48,8 +48,8 @@ public class ProgressMonitorDialog extends JDialog {
 		}
 		
 		@Override
-		protected ProgressMonitor createSubtaskMonitor(
-				ProgressMonitor parent, 
+		protected IProgressMonitor createSubtaskMonitor(
+				IProgressMonitor parent, 
 				PrintStream out,
 				boolean verbose, 
 				boolean debug) {
@@ -127,7 +127,7 @@ public class ProgressMonitorDialog extends JDialog {
 		return textArea;
 	}
 	
-	public ProgressMonitor getProgressMonitor() {
+	public IProgressMonitor getProgressMonitor() {
 		return progressMonitor;
 	}
 }

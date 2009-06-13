@@ -3,7 +3,7 @@ package org.gitools.cli.analysis;
 import org.kohsuke.args4j.Option;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 import org.gitools.cli.CliTool;
@@ -52,7 +52,7 @@ public class OncozCliTool extends AnalysisCliTool implements CliTool {
         		groupsFile, minSetSize, maxSetSize,
         		workdir, outputFormat, true);
         
-        ProgressMonitor monitor = !args.quiet ? 
+        IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, verbose, debug)
 			: new NullProgressMonitor();
         

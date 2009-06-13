@@ -7,19 +7,19 @@ import javax.swing.SwingUtilities;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.analysis.AnalysisEditor;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 import org.gitools.model.analysis.Analysis;
-import org.gitools.resources.analysis.AnalysisResource;
-import org.gitools.resources.analysis.CsvAnalysisResource;
+import org.gitools.persistence.AnalysisPersistence;
+import org.gitools.persistence.analysis.CsvAnalysisResource;
 
 public class OpenAnalysisJob implements Job {
 
 	private File selectedPath;
-	private ProgressMonitor monitor;
+	private IProgressMonitor monitor;
 	
 	public OpenAnalysisJob(
-			File selectedPath, ProgressMonitor monitor) {
+			File selectedPath, IProgressMonitor monitor) {
 		
 		this.selectedPath = selectedPath;
 		this.monitor = monitor;
@@ -34,7 +34,7 @@ public class OpenAnalysisJob implements Job {
 	}
 	
 	private void openAnalysisJob(
-			File selectedPath, ProgressMonitor monitor) {
+			File selectedPath, IProgressMonitor monitor) {
 		
 		if (selectedPath == null)
 			return;
@@ -43,7 +43,7 @@ public class OpenAnalysisJob implements Job {
 			//ProjectResource projRes = new ProjectResource(selectedPath);
 			//Project proj = projRes.load(monitor);
 			
-			AnalysisResource analysisRes =
+			AnalysisPersistence analysisRes =
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis ...", 1);

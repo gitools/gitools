@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import cern.colt.Timer;
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 public class StreamProgressMonitor extends DefaultProgressMonitor {
@@ -22,7 +22,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 	protected boolean verbose;
 	protected boolean debug;
 	
-	public StreamProgressMonitor(ProgressMonitor parent, PrintStream out, boolean verbose, boolean debug) {
+	public StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug) {
 		super(parent);
 		this.out = out;
 		this.timer = new Timer();
@@ -63,16 +63,16 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 	}
 	
 	@Override
-	public ProgressMonitor subtask() {
-		ProgressMonitor subtask = 
+	public IProgressMonitor subtask() {
+		IProgressMonitor subtask = 
 			createSubtaskMonitor(this, out, verbose, debug);
 		subtask.setLevel(level + 1);
 		flag = true;
 		return subtask;
 	}
 	
-	protected ProgressMonitor createSubtaskMonitor(
-			ProgressMonitor parentMonitor, 
+	protected IProgressMonitor createSubtaskMonitor(
+			IProgressMonitor parentMonitor, 
 			PrintStream out,
 			boolean verbose, 
 			boolean debug) {

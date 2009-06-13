@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.ui.utils.DocumentAnyChangeListener;
 
 public class GeneralConfigPage extends JPanel {
 
@@ -31,16 +30,16 @@ public class GeneralConfigPage extends JPanel {
 		final JLabel titleLabel = new JLabel("Title");
 		final JTextField titleField = new JTextField(model.getTitle());
 		titleField.setAlignmentX(Component.LEFT_ALIGNMENT);
-		titleField.getDocument().addDocumentListener(new DocumentAnyChangeListener() {
-			@Override protected void anyChangeUpdate(DocumentEvent e) {
+		titleField.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
 				model.setTitle(titleField.getText()); }
 		});
 		
 		final JLabel notesLabel = new JLabel("Notes");
 		notesLabel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
 		final JTextArea notesArea = new JTextArea(model.getDescription(), 4, 4);
-		notesArea.getDocument().addDocumentListener(new DocumentAnyChangeListener() {
-			@Override protected void anyChangeUpdate(DocumentEvent e) {
+		notesArea.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
 				model.setDescription(notesArea.getText()); }
 		});
 		

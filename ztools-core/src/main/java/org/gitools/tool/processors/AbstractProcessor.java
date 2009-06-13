@@ -6,14 +6,14 @@ import org.gitools.stats.test.results.CommonResult;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class AbstractProcessor {
 
 	protected void multipleTestCorrection(
 			ObjectMatrix res,
 			MultipleTestCorrection mtc, 
-			ProgressMonitor monitor) {
+			IProgressMonitor monitor) {
 		
 		monitor.begin(mtc.getName() + " correction...", 1);
 		

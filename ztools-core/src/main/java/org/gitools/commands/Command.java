@@ -1,9 +1,9 @@
 package org.gitools.commands;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public interface Command {
 
-	public void run(ProgressMonitor monitor) 
+	public void run(IProgressMonitor monitor) 
 		throws Exception;
 }

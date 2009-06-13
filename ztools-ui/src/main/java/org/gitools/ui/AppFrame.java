@@ -22,7 +22,7 @@ import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.utils.Options;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class AppFrame extends JFrame {
 
@@ -203,7 +203,7 @@ public class AppFrame extends JFrame {
 		repaint();
 	}
 
-	public ProgressMonitor createMonitor() {
+	public IProgressMonitor createMonitor() {
 		return statusBar.createMonitor();
 	}
 

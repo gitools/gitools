@@ -4,18 +4,18 @@ import java.io.File;
 
 import org.gitools.ui.AppFrame;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.commands.ZCalcCommand;
 
 public class ZCalcCommandJob implements Job {
 	
 	ZCalcCommand command;
-	ProgressMonitor monitor;
+	IProgressMonitor monitor;
 	File analysisPath;
 	
 	public ZCalcCommandJob(
 			ZCalcCommand command, 
-			ProgressMonitor monitor, 
+			IProgressMonitor monitor, 
 			File analysisPath) {
 		
 		this.command = command;

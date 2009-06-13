@@ -6,11 +6,11 @@ import javax.swing.SwingUtilities;
 
 import org.gitools.ui.AppFrame;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 import org.gitools.model.analysis.Analysis;
-import org.gitools.resources.analysis.AnalysisResource;
-import org.gitools.resources.analysis.CsvAnalysisResource;
+import org.gitools.persistence.AnalysisPersistence;
+import org.gitools.persistence.analysis.CsvAnalysisResource;
 
 @Deprecated
 public class OpenAnalysisCommand implements Command {
@@ -28,12 +28,12 @@ public class OpenAnalysisCommand implements Command {
 	}
 	
 	@Override
-	public void execute(ProgressMonitor monitor) throws CommandException {
+	public void execute(IProgressMonitor monitor) throws CommandException {
 		
 		File selectedPath = getSelectedPath();
 		
 		if (selectedPath != null) {
-			AnalysisResource analysisRes =
+			AnalysisPersistence analysisRes =
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis from " + selectedPath.getAbsolutePath(), 1);

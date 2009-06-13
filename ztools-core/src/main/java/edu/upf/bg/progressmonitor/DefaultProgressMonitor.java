@@ -1,23 +1,23 @@
 package edu.upf.bg.progressmonitor;
 
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class DefaultProgressMonitor implements ProgressMonitor {
+public class DefaultProgressMonitor implements IProgressMonitor {
 
 	protected String title;
 	protected int totalWork;
 	protected int worked;
 	protected int level;
 	
-	protected ProgressMonitor parent;
+	protected IProgressMonitor parent;
 	
 	public DefaultProgressMonitor() {
 		title = "";
 		totalWork = worked = level = 0;
 	}
 	
-	public DefaultProgressMonitor(ProgressMonitor parent) {
+	public DefaultProgressMonitor(IProgressMonitor parent) {
 		this.parent = parent;
 	}
 
@@ -53,7 +53,7 @@ public class DefaultProgressMonitor implements ProgressMonitor {
 		this.level = level;
 	}
 
-	public ProgressMonitor subtask() {
+	public IProgressMonitor subtask() {
 		return new DefaultProgressMonitor(this);
 	}
 

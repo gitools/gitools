@@ -6,22 +6,23 @@ import javax.swing.SwingUtilities;
 
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
-import org.gitools.resources.DataResource;
+import org.gitools.persistence.TextDoubleMatrixPersistence;
+import org.gitools.resources.FileResource;
+import org.gitools.resources.IResource;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.matrix.MatrixEditor;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class OpenMatrixJob implements Job {
 
 	private File selectedPath;
-	private ProgressMonitor monitor;
+	private IProgressMonitor monitor;
 	
 	public OpenMatrixJob(
-			File selectedPath, ProgressMonitor monitor) {
+			File selectedPath, IProgressMonitor monitor) {
 		
 		this.selectedPath = selectedPath;
 		this.monitor = monitor;
@@ -36,7 +37,7 @@ public class OpenMatrixJob implements Job {
 	}
 	
 	private void openAnalysisJob(
-			File selectedPath, ProgressMonitor monitor) {
+			File selectedPath, IProgressMonitor monitor) {
 		
 		if (selectedPath == null)
 			return;
@@ -44,8 +45,10 @@ public class OpenMatrixJob implements Job {
 		try {
 			monitor.begin("Loading matrix ...", 1);
 			
-			final DataResource res = new DataResource(selectedPath);
-			final DoubleMatrix matrix = res.load(monitor);
+			final IResource res = new FileResource(selectedPath);
+			final TextDoubleMatrixPersistence pers = 
+				new TextDoubleMatrixPersistence();
+			final DoubleMatrix matrix = pers.read(res, monitor);
 					
 			final IMatrixView matrixView = new MatrixView(matrix);
 			

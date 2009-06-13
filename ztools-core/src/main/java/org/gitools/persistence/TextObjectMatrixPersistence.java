@@ -1,4 +1,4 @@
-package org.gitools.resources;
+package org.gitools.persistence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVStrategy;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementFactory;
@@ -24,23 +23,22 @@ import org.gitools.model.matrix.element.array.ArrayElementFactory;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementFactory;
+import org.gitools.resources.FileResource;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
+import org.gitools.utils.CSVStrategies;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-
 import edu.upf.bg.csv.RawCsvWriter;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class ResultsResource extends Resource {
+public class TextObjectMatrixPersistence extends FileResource {
 
 	private static final long serialVersionUID = 3487889255829878181L;
-
-	private static final CSVStrategy csvStrategy = defaultCsvStrategy;
 
 	/* This information will be used to infer the element class
 	 * to use when loading an old tabulated file 
@@ -82,19 +80,19 @@ public class ResultsResource extends Resource {
 		return sb.toString();
 	}
 	
-	public ResultsResource() {
+	public TextObjectMatrixPersistence() {
 		super((String)null); //FIXME
 	}
 
-	public ResultsResource(String fileName) {
+	public TextObjectMatrixPersistence(String fileName) {
 		super(fileName);
 	}
 	
-	public ResultsResource(File file) {
+	public TextObjectMatrixPersistence(File file) {
 		super(file);
 	}
 
-	public ObjectMatrix read(ProgressMonitor monitor) 
+	public ObjectMatrix read(IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		ObjectMatrix resultsMatrix = new ObjectMatrix();
@@ -102,18 +100,18 @@ public class ResultsResource extends Resource {
 		return resultsMatrix;
 	}
 	
-	public void read(ObjectMatrix resultsMatrix, ProgressMonitor monitor) 
+	public void read(ObjectMatrix resultsMatrix, IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException, DataFormatException {
 		
 		read(openReader(), resultsMatrix, monitor);
 	}
 	
-	protected void read(Reader reader, ObjectMatrix resultsMatrix, ProgressMonitor monitor) 
+	protected void read(Reader reader, ObjectMatrix resultsMatrix, IProgressMonitor monitor) 
 			throws IOException, DataFormatException {
 		
 		monitor.begin("Reading results ...", 1);
 		
-		CSVParser parser = new CSVParser(reader, csvStrategy);
+		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 		
 		String[] line = parser.getLine();
 		
@@ -258,16 +256,16 @@ public class ResultsResource extends Resource {
 		return value;
 	}
 
-	public void write(ObjectMatrix results, String prefix, ProgressMonitor monitor) 
+	public void write(ObjectMatrix results, String prefix, IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
 		write(results, prefix, true, monitor);
 	}
 	
-	public void write(ObjectMatrix results, String prefix, boolean orderByColumn, ProgressMonitor monitor) 
+	public void write(ObjectMatrix results, String prefix, boolean orderByColumn, IProgressMonitor monitor) 
 			throws FileNotFoundException, IOException {
 		
-		final File basePath = getResourceFile();
+		final File basePath = getFile();
 		
 		/*String colsPath = new File(basePath, prefix + ".columns.tsv.gz").getAbsolutePath();
 		writeColumns(openWriter(colsPath), results, orderByColumn, monitor);*/
@@ -279,18 +277,19 @@ public class ResultsResource extends Resource {
 		writeCells(openWriter(cellsPath), results, orderByColumn, monitor);
 	}
 	
-	public void writeRows(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeRows(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
 		
 	}
 	
-	public void writeColumns(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeColumns(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
 		
 	}
 
-	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, ProgressMonitor monitor) {
+	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
-				csvStrategy.getDelimiter(), csvStrategy.getEncapsulator());
+				CSVStrategies.TSV.getDelimiter(),
+				CSVStrategies.TSV.getEncapsulator());
 		
 		out.writeQuotedValue("column");
 		out.writeSeparator();

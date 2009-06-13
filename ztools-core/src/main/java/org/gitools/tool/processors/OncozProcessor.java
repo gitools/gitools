@@ -19,7 +19,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class OncozProcessor extends AbstractProcessor {
 
@@ -47,7 +47,7 @@ public class OncozProcessor extends AbstractProcessor {
 		this.analysis = analysis;
 	}
 	
-	public void run(ProgressMonitor monitor) throws InterruptedException {
+	public void run(IProgressMonitor monitor) throws InterruptedException {
 		
 		Date startTime = new Date();
 	
@@ -107,7 +107,7 @@ public class OncozProcessor extends AbstractProcessor {
 			
 			final int[] itemIndices = moduleItemIndices[moduleIndex];
 			
-			final ProgressMonitor condMonitor = monitor.subtask();
+			final IProgressMonitor condMonitor = monitor.subtask();
 			
 			condMonitor.begin("Module " + moduleName + "...", numItems);
 			

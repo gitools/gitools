@@ -1,9 +1,9 @@
 package edu.upf.bg.progressmonitor;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class NullProgressMonitor implements ProgressMonitor {
+public class NullProgressMonitor implements IProgressMonitor {
 
 	public void begin(String title, int totalWork) {}
 
@@ -15,7 +15,7 @@ public class NullProgressMonitor implements ProgressMonitor {
 
 	public void setLevel(int level) {}
 
-	public ProgressMonitor subtask() {
+	public IProgressMonitor subtask() {
 		return new NullProgressMonitor();
 	}
 

@@ -7,7 +7,7 @@ import org.gitools.cli.RequiredArgumentException;
 import org.kohsuke.args4j.Option;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import org.gitools.commands.ZCalcCommand;
 
@@ -57,7 +57,7 @@ public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
         		!discardNonMappedItems,
         		workdir, outputFormat, true);
         
-        ProgressMonitor monitor = !args.quiet ? 
+        IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, verbose, debug)
 			: new NullProgressMonitor();
         

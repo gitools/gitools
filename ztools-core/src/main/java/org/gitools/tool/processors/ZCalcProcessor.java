@@ -20,7 +20,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.
@@ -54,7 +54,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		this.analysis = analysis;
 	}
 	
-	public void run(ProgressMonitor monitor) throws InterruptedException {
+	public void run(IProgressMonitor monitor) throws InterruptedException {
 		
 		Date startTime = new Date();
 		
@@ -114,7 +114,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 			
 			DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
 			
-			final ProgressMonitor condMonitor = monitor.subtask();
+			final IProgressMonitor condMonitor = monitor.subtask();
 			
 			condMonitor.begin("Condition " + condName + "...", numModules);
 			

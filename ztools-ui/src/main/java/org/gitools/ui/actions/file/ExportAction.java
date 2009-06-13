@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.dialog.ExportDialog;
 import org.gitools.ui.wizard.export.ExportWizard;
 
 public class ExportAction extends BaseAction {

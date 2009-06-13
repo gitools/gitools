@@ -13,7 +13,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.jobs.OpenMatrixJob;
 import org.gitools.ui.utils.Options;
 
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class OpenMatrixAction extends BaseAction {
 
@@ -35,7 +35,7 @@ public class OpenMatrixAction extends BaseAction {
 			Options.instance().setLastPath(selectedPath.getParent());
 			Options.instance().save();
 
-			final ProgressMonitor monitor = createProgressMonitor();
+			final IProgressMonitor monitor = createProgressMonitor();
 			
 			AppFrame.instance().getJobProcessor().addJob(
 					new OpenMatrixJob(selectedPath, monitor));
