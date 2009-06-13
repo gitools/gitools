@@ -51,22 +51,22 @@ public class BinaryCutoffFilter
 	
 	public static final BinaryCutoffCmp ABS_EQ = new BinaryCutoffCmp() {
 		@Override public boolean compare(double value, double cutoff) {
-			return value == cutoff; }
+			return Math.abs(value) == cutoff; }
 	};
 	
 	public static final BinaryCutoffCmp ABS_NE = new BinaryCutoffCmp() {
 		@Override public boolean compare(double value, double cutoff) {
-			return value != cutoff; }
+			return Math.abs(value) != cutoff; }
 	};
 	
 	public static final BinaryCutoffCmp ABS_GT = new BinaryCutoffCmp() {
 		@Override public boolean compare(double value, double cutoff) {
-			return value > cutoff; }
+			return Math.abs(value) > cutoff; }
 	};
 	
 	public static final BinaryCutoffCmp ABS_GE = new BinaryCutoffCmp() {
 		@Override public boolean compare(double value, double cutoff) {
-			return value >= cutoff; }
+			return Math.abs(value) >= cutoff; }
 	};
 	
 	protected double cutoff;
