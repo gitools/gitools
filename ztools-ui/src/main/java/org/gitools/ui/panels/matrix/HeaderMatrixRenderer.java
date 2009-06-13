@@ -2,6 +2,7 @@ package org.gitools.ui.panels.matrix;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.util.Arrays;
 
 import javax.swing.JLabel;
@@ -26,11 +27,15 @@ public class HeaderMatrixRenderer
 	protected boolean highlightSelected;
 	protected boolean isSelected;
 	
+	protected int minimumRequiredTextSize;
+	
 	public HeaderMatrixRenderer(
 			HeaderDecorator decorator,
 			boolean highlightSelected) {
 		this.decorator = decorator;
 		this.highlightSelected = highlightSelected;
+		this.minimumRequiredTextSize = 8;
+		setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 	}
 	
 	public Component getTableCellRendererComponent(JTable table, Object value,

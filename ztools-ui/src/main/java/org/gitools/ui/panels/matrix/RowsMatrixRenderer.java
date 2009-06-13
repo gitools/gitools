@@ -37,7 +37,8 @@ public class RowsMatrixRenderer extends HeaderMatrixRenderer {
 			g2.drawRect(0, 0, w, h);
 		}
 
-		g2.setColor(getForeground());
+		if (h < minimumRequiredTextSize)
+			return;
 		
 		Rectangle2D r = g2.getFontMetrics().getStringBounds(getText(), g2);
 		float textHeight = (float) r.getHeight();
@@ -47,6 +48,7 @@ public class RowsMatrixRenderer extends HeaderMatrixRenderer {
 		at.setToScale(1.0, scale);
 		g2.transform(at);
 		
+		g2.setColor(getForeground());
 		g2.drawString(getText(), 4.0f, (scale + 8.0f + textHeight) / 2.0f);
 	}
 }

@@ -22,9 +22,9 @@ public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		final int w = this.getWidth();
+		final int w = this.getWidth() - 1;
 		final int h = this.getHeight();
-
+		
 		//g2.setClip(0, 0, w, h);
 		
 		if (highlightSelected && isSelected)
@@ -39,6 +39,9 @@ public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 			g2.drawRect(0, 0, w, h);
 		}
 
+		if (w < minimumRequiredTextSize)
+			return;
+		
 		//int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();
 	    //int fontSize = (int)Math.round(w * screenRes / 72.0);
 	    
