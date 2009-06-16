@@ -22,8 +22,8 @@ public class OpenMatrixAction extends BaseAction {
 	public OpenMatrixAction() {
 		super("matrix ...");
 		setDesc("Open a matrix from the file system");
-		setSmallIconFromResource(IconNames.open16);
-		setLargeIconFromResource(IconNames.open24);
+		setSmallIconFromResource(IconNames.openMatrix16);
+		setLargeIconFromResource(IconNames.openMatrix24);
 		setMnemonic(KeyEvent.VK_M);
 	}
 

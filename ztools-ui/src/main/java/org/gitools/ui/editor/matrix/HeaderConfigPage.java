@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,6 +28,7 @@ import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.model.matrix.IMatrixView;
 import org.gitools.persistence.TextAnnotationMatrixPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
@@ -35,7 +38,6 @@ import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.utils.Options;
 
 import cern.colt.matrix.ObjectMatrix1D;
-
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
 public class HeaderConfigPage extends JPanel {
@@ -103,10 +105,8 @@ public class HeaderConfigPage extends JPanel {
 		
 		final JButton annButton = new JButton("...");
 		annButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				loadAnnotations();
-			}
+			@Override public void actionPerformed(ActionEvent e) {
+				loadAnnotations(); }
 		});
 		
 		final JLabel annNameLabel = new JLabel("Name");
@@ -115,12 +115,26 @@ public class HeaderConfigPage extends JPanel {
 		annNameCombo = new JComboBox();
 		annNameCombo.setEditable(true);
 		annNameCombo.setMinimumSize(new Dimension(120, 10));
+		annNameCombo.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				getHeaderDecorator().setNamePattern(
+						(String) annNameCombo.getSelectedItem());
+			}
+		});
+		
+		final JButton annFilterButton = new JButton("Filter");
+		annFilterButton.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				filterByAnnotations(); }
+		});
 		
 		final JPanel p3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		p3.add(new JLabel("Annotations"));
 		p3.add(annButton);
 		p3.add(annNameLabel);
 		p3.add(annNameCombo);
+		p3.add(Box.createRigidArea(new Dimension(8,0)));
+		p3.add(annFilterButton);
 		
 		final JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
@@ -159,6 +173,7 @@ public class HeaderConfigPage extends JPanel {
 		
 		ObjectMatrix1D columns = annMatrix.getColumns();
 		DefaultComboBoxModel cbmodel = new DefaultComboBoxModel();
+		cbmodel.addElement("${id}");
 		for (int i = 0; i < columns.size(); i++) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("${");
@@ -167,6 +182,7 @@ public class HeaderConfigPage extends JPanel {
 			cbmodel.addElement(sb.toString());
 		}
 		annNameCombo.setModel(cbmodel);
+		annNameCombo.setSelectedIndex(0);
 	}
 	
 	private File getSelectedPath() {
@@ -182,5 +198,36 @@ public class HeaderConfigPage extends JPanel {
 			return fileChooser.getSelectedFile();
 		
 		return null;
+	}
+	
+	private void filterByAnnotations() {
+		IMatrixView matrixView = model.getMatrixView();
+		
+		int count = type == HeaderType.rows ? 
+				matrixView.getRowCount() : matrixView.getColumnCount();
+		
+		AnnotationHeaderDecorator decorator = getHeaderDecorator();
+		
+		AnnotationMatrix annotations = decorator.getAnnotations();
+		
+		List<Integer> indices = new ArrayList<Integer>();
+		
+		for (int i = 0; i < count; i++) {
+			Object element = type == HeaderType.rows ?
+					matrixView.getRow(i) : matrixView.getColumn(i);
+
+			int j = annotations.getRowIndex(element.toString());
+			if (j >= 0)
+				indices.add(i);
+		}
+		
+		int[] view = new int[indices.size()];
+		for (int i = 0; i < indices.size(); i++)
+			view[i] = indices.get(i);
+
+		if (type == HeaderType.rows)
+			matrixView.setVisibleRows(view);
+		else
+			matrixView.setVisibleColumns(view);
 	}
 }

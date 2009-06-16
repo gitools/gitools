@@ -1,5 +1,6 @@
 package org.gitools.ui.panels.matrix;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -22,16 +23,15 @@ public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 	
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		final int w = this.getWidth() - 1;
+		final int w = this.getWidth();
 		final int h = this.getHeight();
 		
 		//g2.setClip(0, 0, w, h);
-		
-		if (highlightSelected && isSelected)
-			g2.setBackground(getBackground().darker());
-		else
-			g2.setBackground(getBackground());
 
+		Color bgColor = (highlightSelected && isSelected) ?
+			getBackground().darker() : getBackground();
+		g2.setBackground(bgColor);
+		
 		g2.clearRect(0, 0, w, h);
 
 		if (showGrid) {
@@ -39,7 +39,7 @@ public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 			g2.drawRect(0, 0, w, h);
 		}
 
-		if (w < minimumRequiredTextSize)
+		if (w - 1 < minimumRequiredTextSize)
 			return;
 		
 		//int screenRes = Toolkit.getDefaultToolkit().getScreenResolution();

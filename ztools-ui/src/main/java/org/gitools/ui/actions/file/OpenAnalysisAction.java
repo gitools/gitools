@@ -22,8 +22,8 @@ public class OpenAnalysisAction extends BaseAction {
 	public OpenAnalysisAction() {
 		super("analysis ...");
 		setDesc("Open an analysis from the file system");
-		setSmallIconFromResource(IconNames.open16);
-		setLargeIconFromResource(IconNames.open24);
+		setSmallIconFromResource(IconNames.openAnalysis16);
+		setLargeIconFromResource(IconNames.openAnalysis24);
 		setMnemonic(KeyEvent.VK_A);
 	}
 

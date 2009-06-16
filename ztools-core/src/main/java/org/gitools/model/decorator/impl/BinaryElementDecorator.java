@@ -106,7 +106,8 @@ public class BinaryElementDecorator extends ElementDecorator {
 		
 		boolean isSig = cutoffCmp.compare(v, cutoff);
 		
-		final Color c = isSig ? color : nonSignificantColor;
+		final Color c = Double.isNaN(v) ? ColorConstants.notANumberColor
+				: isSig ? color : nonSignificantColor;
 		
 		decoration.setBgColor(c);
 		decoration.setToolTip(fmt.format(v));

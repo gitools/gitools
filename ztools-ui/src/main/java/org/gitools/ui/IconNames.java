@@ -7,8 +7,11 @@ public class IconNames {
 	public static final String logoMini = "/img/LogoMini.png";
 	public static final String aboutLogo = "/img/AboutLogo.png";
 	
-	public static final String open16 = "/img/Open16.gif";
-	public static final String open24 = "/img/Open24.gif";
+	public static final String openAnalysis16 = "/img/OpenAnalysis16.gif";
+	public static final String openAnalysis24 = "/img/OpenAnalysis24.gif";
+	
+	public static final String openMatrix16 = "/img/OpenMatrix16.gif";
+	public static final String openMatrix24 = "/img/OpenMatrix24.gif";
 
 	public static final String close16 = "/img/Close16.gif";
 	public static final String close24 = "/img/Close24.gif";
