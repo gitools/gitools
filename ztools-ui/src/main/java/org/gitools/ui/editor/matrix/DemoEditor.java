@@ -12,7 +12,7 @@ import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
+import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.ObjectMatrix;
@@ -35,7 +35,7 @@ public class DemoEditor extends MatrixEditor {
 				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
 		return new MatrixFigure(matrixView, decorator,
-				new SimpleHeaderDecorator(), new SimpleHeaderDecorator());
+				new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator());
 	}
 
 	private static MatrixView createTable(int rows, int cols) {		

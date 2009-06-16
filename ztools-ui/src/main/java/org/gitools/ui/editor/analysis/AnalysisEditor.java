@@ -4,7 +4,7 @@ import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
+import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
@@ -45,7 +45,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		dataView = new MatrixEditor(
 				new MatrixFigure(dataTable, dataRowDecorator,
-						new SimpleHeaderDecorator(), new SimpleHeaderDecorator()));
+						new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
 		
 		// create results view
 		
@@ -58,7 +58,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		resultsView = new MatrixEditor(
 				new MatrixFigure(resultsTable, resultsRowDecorator,
-						new SimpleHeaderDecorator(), new SimpleHeaderDecorator()));
+						new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
 		
 		addView(detailsView, "Description");
 		addView(dataView, "Data");

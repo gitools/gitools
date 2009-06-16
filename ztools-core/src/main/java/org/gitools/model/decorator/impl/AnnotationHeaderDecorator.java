@@ -1,30 +1,26 @@
 package org.gitools.model.decorator.impl;
 
-import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.HeaderDecoration;
-import org.gitools.model.matrix.StringMatrix;
+import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.matrix.AnnotationMatrix;
 
-public class AnnotatedHeaderDecorator extends AbstractModel {
+public class AnnotationHeaderDecorator extends HeaderDecorator {
 
-	private static final long serialVersionUID = -2580139666999968074L;
+	private static final long serialVersionUID = -8529301109846251890L;
 
-	protected StringMatrix annotations;
-	
+	protected AnnotationMatrix annotations;
 	protected String namePattern;
-	
 	protected String urlPattern;
 	
-	public AnnotatedHeaderDecorator() {
+	public AnnotationHeaderDecorator() {
 	}
-	
-	public StringMatrix getAnnotations() {
+
+	public AnnotationMatrix getAnnotations() {
 		return annotations;
 	}
 	
-	public void setAnnotations(StringMatrix annotations) {
+	public void setAnnotations(AnnotationMatrix annotations) {
 		this.annotations = annotations;
-		
-		//TODO: Create maps for items and attributes indices
 	}
 	
 	public String getNamePattern() {
@@ -45,9 +41,9 @@ public class AnnotatedHeaderDecorator extends AbstractModel {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
+	@Override
 	public HeaderDecoration decorate(HeaderDecoration decoration, Object header) {
-		decoration.setText(header.toString());
-		decoration.setUrl(null);
+		super.decorate(decoration, header);
 		return decoration;
 	}
 }

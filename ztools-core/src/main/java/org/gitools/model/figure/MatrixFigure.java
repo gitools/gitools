@@ -7,7 +7,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.decorator.impl.SimpleHeaderDecorator;
+import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 
@@ -59,8 +59,8 @@ public class MatrixFigure
 	public MatrixFigure(IMatrixView matrixView) {
 		this(matrixView,
 				cellDecoratorFromMatrix(matrixView),
-				new SimpleHeaderDecorator(),
-				new SimpleHeaderDecorator());
+				new AnnotationHeaderDecorator(),
+				new AnnotationHeaderDecorator());
 	}
 	
 	private static ElementDecorator cellDecoratorFromMatrix(

@@ -4,9 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -15,9 +23,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.persistence.TextAnnotationMatrixPersistence;
+import org.gitools.resources.FileResource;
+import org.gitools.resources.IResource;
+import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.utils.Options;
+
+import cern.colt.matrix.ObjectMatrix1D;
+
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
 public class HeaderConfigPage extends JPanel {
 
@@ -29,6 +48,7 @@ public class HeaderConfigPage extends JPanel {
 	
 	private MatrixFigure model;
 	private HeaderType type;
+	private JComboBox annNameCombo;
 	
 	public HeaderConfigPage(MatrixFigure model, HeaderType type) {
 		this.model = model;
@@ -81,17 +101,86 @@ public class HeaderConfigPage extends JPanel {
 		p.add(new JLabel("Bg"));
 		p.add(bgColorCc);
 		
+		final JButton annButton = new JButton("...");
+		annButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadAnnotations();
+			}
+		});
+		
+		final JLabel annNameLabel = new JLabel("Name");
+		annNameLabel.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
+		
+		annNameCombo = new JComboBox();
+		annNameCombo.setEditable(true);
+		annNameCombo.setMinimumSize(new Dimension(120, 10));
+		
+		final JPanel p3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p3.add(new JLabel("Annotations"));
+		p3.add(annButton);
+		p3.add(annNameLabel);
+		p3.add(annNameCombo);
+		
+		final JPanel p2 = new JPanel();
+		p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
+		p2.add(p);
+		p2.add(p3);
+		
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		add(p, BorderLayout.CENTER);
+		add(p2, BorderLayout.NORTH);
 	}
 	
-	protected HeaderDecorator getHeaderDecorator() {
+	protected AnnotationHeaderDecorator getHeaderDecorator() {
 		switch (type) {
-		case rows: return model.getRowDecorator();
-		case columns: return model.getColumnDecorator();
+		case rows: return (AnnotationHeaderDecorator) model.getRowDecorator();
+		case columns: return (AnnotationHeaderDecorator) model.getColumnDecorator();
 		}
 		return null;
 	}
 	
+	private void loadAnnotations() {
+		File file = getSelectedPath();
+		IResource res = new FileResource(file);
+		TextAnnotationMatrixPersistence amp = new TextAnnotationMatrixPersistence();
+		
+		AnnotationMatrix annMatrix = null;
+		try {
+			annMatrix = amp.read(res, new NullProgressMonitor());
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		AnnotationHeaderDecorator decorator = getHeaderDecorator();
+		decorator.setAnnotations(annMatrix);
+		
+		ObjectMatrix1D columns = annMatrix.getColumns();
+		DefaultComboBoxModel cbmodel = new DefaultComboBoxModel();
+		for (int i = 0; i < columns.size(); i++) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("${");
+			sb.append(columns.getQuick(i).toString());
+			sb.append("}");
+			cbmodel.addElement(sb.toString());
+		}
+		annNameCombo.setModel(cbmodel);
+	}
+	
+	private File getSelectedPath() {
+		JFileChooser fileChooser = new JFileChooser(
+				Options.instance().getLastPath());
+		
+		fileChooser.setDialogTitle("Select file");
+		fileChooser.setMinimumSize(new Dimension(800,600));
+		fileChooser.setPreferredSize(new Dimension(800,600));
+		
+		int retval = fileChooser.showOpenDialog(AppFrame.instance());
+		if (retval == JFileChooser.APPROVE_OPTION)
+			return fileChooser.getSelectedFile();
+		
+		return null;
+	}
 }
