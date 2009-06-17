@@ -4,12 +4,12 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.gitools.model.ResourceContainer;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 
-@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
-		"dataTableRef", "moduleMapRef", "results" })
-public class AnalysisArt extends ComposedArtifact {
+@Deprecated // use Analysis and its children (EnrichmentAnalysis, ...)
+public class AnalysisArt extends ResourceContainer {
 
 	protected String name;
 	protected Date startTime;

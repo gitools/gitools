@@ -51,10 +51,11 @@ public class ProjectPersistence extends FileResource {
 		
 		writer.close();
 		
-		for (Analysis analysis : project.getAnalysis()) {
+		// TODO
+		/*for (Analysis analysis : project.getAnalysis()) {
 			new TextObjectMatrixPersistence(basePath)
-				.write(analysis.getResults(), analysis.getName(), monitor);
-		}
+				.write(analysis.getResults(), analysis.getTitle(), monitor);
+		}*/
 	}
 	
 	public Project load(IProgressMonitor monitor) 

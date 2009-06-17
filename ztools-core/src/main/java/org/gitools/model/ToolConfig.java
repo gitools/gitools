@@ -9,6 +9,7 @@ public class ToolConfig {
 	public static final String ONCOZET = "oncozet";
 	
 	protected String name;
+	
 	protected Map<String, String> properties = 
 		new HashMap<String, String>();
 	

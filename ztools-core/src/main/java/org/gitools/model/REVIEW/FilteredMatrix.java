@@ -2,6 +2,7 @@ package org.gitools.model.REVIEW;
 
 import org.gitools.model.figure.TableFigure;
 
+@Deprecated
 public class FilteredMatrix extends TableFigure {
 	/**
 	 * Represents a matrix filtered, original data or final resuts of an

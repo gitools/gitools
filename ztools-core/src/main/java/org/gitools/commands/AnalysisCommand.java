@@ -120,9 +120,10 @@ public abstract class AnalysisCommand implements Command {
 		Project proj = new Project();
 		//inv.setSummary("inv summary");
 		//inv.setNotes("inv notes");
-		proj.getAnalysis().add(analysis);
-		proj.getDataTables().add(analysis.getDataTable());
-		proj.getModuleMaps().add(analysis.getModuleMap());
+		// TODO
+		//proj.getAnalysis().add(analysis);
+		//proj.getDataTables().add(analysis.getDataTable());
+		//proj.getModuleMaps().add(analysis.getModuleMap());
 		ProjectPersistence res = new ProjectPersistence(path, "project.xml");
 		try {
 			res.save(proj, monitor.subtask());

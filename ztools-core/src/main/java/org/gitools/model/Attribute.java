@@ -1,8 +1,7 @@
-package org.gitools.model.REVIEW;
+package org.gitools.model;
 
+/** Annotation for items, adds a dynamic attribute to the desired item **/
 public class Attribute {
-
-	/** Annotation for items, adds a dynamic attribute to the desired item **/
 
 	/** Name **/
 	private String name;

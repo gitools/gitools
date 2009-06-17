@@ -1,18 +1,12 @@
 package org.gitools.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlType(propOrder = { "name", "description"/*
-											 * , "moduleNames", "itemNames",
-											 * "itemIndices", "itemsOrder"
-											 */})
+@XmlRootElement
 public class ModuleMap extends Artifact {
 
 	private static final long serialVersionUID = 6463084331984782264L;
-
-	protected String name;
-	protected String description;
 
 	protected String[] moduleNames;
 	protected String[] itemNames;
@@ -40,7 +34,6 @@ public class ModuleMap extends Artifact {
 	public ModuleMap(String[] moduleNames,
 			String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
 
-		super();
 		this.moduleNames = moduleNames;
 		this.itemNames = itemNames;
 		this.itemIndices = itemIndices;
@@ -55,22 +48,6 @@ public class ModuleMap extends Artifact {
 		this.itemNames = itemNames;
 		this.itemIndices = itemIndices;
 		this.itemsOrder = itemsOrder;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	@XmlTransient

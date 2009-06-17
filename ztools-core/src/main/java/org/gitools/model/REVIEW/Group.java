@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.gitools.model.Artifact;
 
+@Deprecated
 public class Group extends Artifact implements Serializable {
 
 	private String source;

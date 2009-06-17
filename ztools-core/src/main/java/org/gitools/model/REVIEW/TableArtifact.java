@@ -3,6 +3,7 @@ package org.gitools.model.REVIEW;
 import org.gitools.model.Artifact;
 import org.gitools.model.matrix.IMatrix;
 
+@Deprecated // for the time being if we need to show a table then will use a figure
 public class TableArtifact extends Artifact {
 
 	/** The table associated to this artifact. */

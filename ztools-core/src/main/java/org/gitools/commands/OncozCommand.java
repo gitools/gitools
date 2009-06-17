@@ -58,9 +58,8 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Create and process analysis
 		
-		//FIXME id
-		Analysis analysis = new Analysis(null, null);
-		analysis.setName(analysisName);
+		Analysis analysis = new Analysis();
+		analysis.setTitle(analysisName);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(doubleMatrix);
 		analysis.setModuleSet(moduleMap);
@@ -93,7 +92,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		if (modulesFileName != null) {
 			File file = new File(modulesFileName);
-			moduleMap.setName(file.getName());
+			moduleMap.setTitle(file.getName());
 			
 			SimpleMapPersistence simpleMapPersistence = new SimpleMapPersistence(file);
 			simpleMapPersistence.load(

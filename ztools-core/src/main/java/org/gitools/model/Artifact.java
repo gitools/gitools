@@ -1,6 +1,10 @@
 package org.gitools.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gitools.resources.IResource;
 
 public class Artifact
 		extends AbstractModel
@@ -11,7 +15,11 @@ public class Artifact
 	/** id unique **/
 	private String id;
 
+	/** The resource containing this artifact. */
+	private IResource resource;
+	
 	/** type of the artifact **/
+	@Deprecated
 	private String type;
 
 	/** short description **/
@@ -19,6 +27,9 @@ public class Artifact
 
 	/** long description **/
 	private String description;
+	
+	/** Extra attributes **/
+	private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
@@ -34,9 +45,10 @@ public class Artifact
 		this(id, artifactType, title, null);
 	}
 
-	public Artifact(String artifactId, String artifactType, String title,
-			String description) {
-		super();
+	public Artifact(
+			String artifactId, String artifactType, 
+			String title, String description) {
+		
 		this.id = artifactId;
 		this.type = artifactType;
 		this.title = title;
@@ -53,28 +65,37 @@ public class Artifact
 		this.id = artifactId;
 	}
 
+	@Deprecated
 	public String getType() {
 		return type;
 	}
 
+	@Deprecated
 	public void setType(String artifactType) {
 		this.type = artifactType;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+	
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
+	}
 }

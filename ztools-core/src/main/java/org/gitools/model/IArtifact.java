@@ -1,5 +1,6 @@
 package org.gitools.model;
 
+@Deprecated // Use Artifact instead
 public interface IArtifact {
 	// artifactId
 	public String getId();

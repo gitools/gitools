@@ -51,11 +51,11 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 			if (!workDirFile.exists())
 				workDirFile.mkdirs();
 			
-			File analysisFile = new File(workDirFile, analysis.getName() + ".xml");
+			File analysisFile = new File(workDirFile, analysis.getTitle() + ".xml");
 			PrintWriter out = new PrintWriter(analysisFile);
 			
 			out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			out.println("<analysis name=\"" + analysis.getName() + "\" binomial=\"false\">");
+			out.println("<analysis name=\"" + analysis.getTitle() + "\" binomial=\"false\">");
 			
 			ObjectMatrix resultsMatrix = analysis.getResults();
 			

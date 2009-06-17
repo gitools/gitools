@@ -3,6 +3,9 @@ package org.gitools.model.REVIEW;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gitools.model.Attribute;
+
+@Deprecated
 public class Item {
 
 	/** The name of the item. */

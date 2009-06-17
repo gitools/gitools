@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.gitools.model.Artifact;
 
+@Deprecated
 public class Reference extends Artifact {
 
 	private static final long serialVersionUID = 4327574491434582643L;

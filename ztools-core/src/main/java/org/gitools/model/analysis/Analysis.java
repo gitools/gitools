@@ -3,6 +3,7 @@ package org.gitools.model.analysis;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.Artifact;
@@ -11,14 +12,11 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 
-/*@XmlType(propOrder = { "name", "startTime", "elapsedTime", "toolConfig",
-		"dataTableRef", "moduleMapRef", "results" })*/
-
+@XmlRootElement
 public class Analysis extends Artifact {
 
 	private static final long serialVersionUID = 44219853082656184L;
 
-	protected String name;
 	protected Date startTime;
 	protected long elapsedTime;
 	
@@ -29,19 +27,6 @@ public class Analysis extends Artifact {
 	protected ToolConfig toolConfig;
 
 	public Analysis() {
-
-	}
-
-	public Analysis(String id, String artifactType) {
-
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Date getStartTime() {
@@ -93,7 +78,7 @@ public class Analysis extends Artifact {
 
 	@XmlElement(name = "moduleMapRef")
 	public String getModuleMapRef() {
-		return moduleMap.getName();
+		return moduleMap.getTitle();
 	}
 
 	@XmlElement(name = "Results")

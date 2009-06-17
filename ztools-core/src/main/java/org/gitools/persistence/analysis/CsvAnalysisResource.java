@@ -78,8 +78,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 	public Analysis load(IProgressMonitor monitor)
 			throws PersistenceException {
 
-		//FIXME: we need to define the assigment of id's
-	    Analysis analysis = new Analysis(null, null);
+	    Analysis analysis = new Analysis();
 		load(analysis, monitor);
 		return analysis;
 	}
@@ -102,7 +101,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 				if (tag.equals(tagVersion) && fields.length >= 2)
 					version = fields[1];
 				else if (tag.equals(tagAnalysisName) && fields.length >= 2)
-					analysis.setName(fields[1]);
+					analysis.setTitle(fields[1]);
 				else if (tag.equals(tagToolName) && fields.length >= 2)
 					analysis.getToolConfig().setName(fields[1]);
 				else if (tag.equals(tagToolProperty) && fields.length >= 3)
@@ -203,7 +202,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 		out.writeProperty(tagVersion, 
 				getClass().getPackage().getImplementationVersion());
 		
-		out.writeProperty(tagAnalysisName, analysis.getName());
+		out.writeProperty(tagAnalysisName, analysis.getTitle());
 		
 		ToolConfig toolConfig = analysis.getToolConfig();
 		
