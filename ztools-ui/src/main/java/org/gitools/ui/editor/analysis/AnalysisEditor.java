@@ -33,19 +33,24 @@ public class AnalysisEditor extends MultiEditor {
 		// create details panel
 		
 		detailsView = new AnalysisDetailsEditor(analysis);
+		addView(detailsView, "Description");
 		
 		// create data view
 		
-		IMatrixView dataTable = new MatrixView(analysis.getDataTable());
-		
-		ElementDecorator dataRowDecorator = 
-			ElementDecoratorFactory.create(
-					ElementDecoratorNames.BINARY, 
-					dataTable.getCellAdapter());
-		
-		dataView = new MatrixEditor(
-				new MatrixFigure(dataTable, dataRowDecorator,
-						new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
+		if (analysis.getDataTable() != null) {
+			IMatrixView dataTable = new MatrixView(analysis.getDataTable());
+			
+			ElementDecorator dataRowDecorator = 
+				ElementDecoratorFactory.create(
+						ElementDecoratorNames.BINARY, 
+						dataTable.getCellAdapter());
+			
+			dataView = new MatrixEditor(
+					new MatrixFigure(dataTable, dataRowDecorator,
+							new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
+			
+			addView(dataView, "Data");
+		}
 		
 		// create results view
 		
@@ -59,9 +64,7 @@ public class AnalysisEditor extends MultiEditor {
 		resultsView = new MatrixEditor(
 				new MatrixFigure(resultsTable, resultsRowDecorator,
 						new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
-		
-		addView(detailsView, "Description");
-		addView(dataView, "Data");
+
 		addView(resultsView, "Results");
 	}
 }

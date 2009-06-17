@@ -1,8 +1,5 @@
 package org.gitools.persistence;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import org.gitools.model.matrix.element.array.ArrayElementFactory;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementFactory;
-import org.gitools.resources.FileResource;
+import org.gitools.resources.IResource;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
@@ -36,7 +33,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class TextObjectMatrixPersistence extends FileResource {
+public class TextObjectMatrixPersistence
+		implements IEntityPersistence<ObjectMatrix> {
 
 	private static final long serialVersionUID = 3487889255829878181L;
 
@@ -81,129 +79,126 @@ public class TextObjectMatrixPersistence extends FileResource {
 	}
 	
 	public TextObjectMatrixPersistence() {
-		super((String)null); //FIXME
 	}
 
-	public TextObjectMatrixPersistence(String fileName) {
-		super(fileName);
-	}
-	
-	public TextObjectMatrixPersistence(File file) {
-		super(file);
-	}
-
-	public ObjectMatrix read(IProgressMonitor monitor) 
-			throws FileNotFoundException, IOException, DataFormatException {
+	public ObjectMatrix read(
+			IResource resource,
+			IProgressMonitor monitor) 
+			throws PersistenceException {
 		
 		ObjectMatrix resultsMatrix = new ObjectMatrix();
-		read(resultsMatrix, monitor);
+		read(resource, resultsMatrix, monitor);
 		return resultsMatrix;
 	}
 	
-	public void read(ObjectMatrix resultsMatrix, IProgressMonitor monitor) 
-			throws FileNotFoundException, IOException, DataFormatException {
-		
-		read(openReader(), resultsMatrix, monitor);
-	}
-	
-	protected void read(Reader reader, ObjectMatrix resultsMatrix, IProgressMonitor monitor) 
-			throws IOException, DataFormatException {
+	public void read(
+			IResource resource,
+			ObjectMatrix resultsMatrix, 
+			IProgressMonitor monitor) 
+			throws PersistenceException {
 		
 		monitor.begin("Reading results ...", 1);
 		
-		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
-		
-		String[] line = parser.getLine();
-		
-		// read header
-		if (line.length < 3)
-			throw new DataFormatException("Almost 3 columns expected.");
-		
-		int numParams = line.length - 2;
-		String[] paramNames = new String[numParams];
-		System.arraycopy(line, 2, paramNames, 0, line.length - 2);
-		
-		String[] ids = new String[numParams];
-		System.arraycopy(line, 2, ids, 0, line.length - 2);
-		
-		// infer element class and create corresponding adapter and factory
-		Class<?> elementClass = elementClasses.get(
-				getElementClassId(ids));
-		
-		IElementAdapter elementAdapter = null;
-		IElementFactory elementFactory = null;
-		if (elementClass == null) {
-			elementAdapter = new ArrayElementAdapter(paramNames);
-			elementFactory = new ArrayElementFactory(paramNames.length);
-		}
-		else {
-			elementAdapter = new BeanElementAdapter(elementClass);
-			elementFactory = new BeanElementFactory(elementClass);
-		}
-		
-		// read body
-		Map<String, Integer> columnMap = new HashMap<String, Integer>();
-		Map<String, Integer> rowMap = new HashMap<String, Integer>();
-		List<Object[]> list = new ArrayList<Object[]>();
-		
-		while ((line = parser.getLine()) != null) {
-			final String columnName = line[0];
-			final String rowName = line[1];
+		try {
+			Reader reader = resource.openReader();
 			
-			Integer columnIndex = columnMap.get(columnName);
-			if (columnIndex == null) {
-				columnIndex = columnMap.size();
-				columnMap.put(columnName, columnIndex);
+			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			
+			String[] line = parser.getLine();
+			
+			// read header
+			if (line.length < 3)
+				throw new DataFormatException("Almost 3 columns expected.");
+			
+			int numParams = line.length - 2;
+			String[] paramNames = new String[numParams];
+			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
+			
+			String[] ids = new String[numParams];
+			System.arraycopy(line, 2, ids, 0, line.length - 2);
+			
+			// infer element class and create corresponding adapter and factory
+			Class<?> elementClass = elementClasses.get(
+					getElementClassId(ids));
+			
+			IElementAdapter elementAdapter = null;
+			IElementFactory elementFactory = null;
+			if (elementClass == null) {
+				elementAdapter = new ArrayElementAdapter(paramNames);
+				elementFactory = new ArrayElementFactory(paramNames.length);
+			}
+			else {
+				elementAdapter = new BeanElementAdapter(elementClass);
+				elementFactory = new BeanElementFactory(elementClass);
 			}
 			
-			Integer rowIndex = rowMap.get(rowName);
-			if (rowIndex == null) {
-				rowIndex = rowMap.size();
-				rowMap.put(rowName, rowIndex);
-			}
+			// read body
+			Map<String, Integer> columnMap = new HashMap<String, Integer>();
+			Map<String, Integer> rowMap = new HashMap<String, Integer>();
+			List<Object[]> list = new ArrayList<Object[]>();
 			
-			Object element = elementFactory.create();
-
-			for (int i = 2; i < line.length; i++) {
-				final int pix = elementAdapter
-					.getPropertyIndex(paramNames[i - 2]);
+			while ((line = parser.getLine()) != null) {
+				final String columnName = line[0];
+				final String rowName = line[1];
 				
-				Object value = parsePropertyValue(
-						elementAdapter.getProperty(pix), line[i]);
-
-				elementAdapter.setValue(element, pix, value);
+				Integer columnIndex = columnMap.get(columnName);
+				if (columnIndex == null) {
+					columnIndex = columnMap.size();
+					columnMap.put(columnName, columnIndex);
+				}
+				
+				Integer rowIndex = rowMap.get(rowName);
+				if (rowIndex == null) {
+					rowIndex = rowMap.size();
+					rowMap.put(rowName, rowIndex);
+				}
+				
+				Object element = elementFactory.create();
+	
+				for (int i = 2; i < line.length; i++) {
+					final int pix = elementAdapter
+						.getPropertyIndex(paramNames[i - 2]);
+					
+					Object value = parsePropertyValue(
+							elementAdapter.getProperty(pix), line[i]);
+	
+					elementAdapter.setValue(element, pix, value);
+				}
+				
+				list.add(new Object[] {
+						new int[] { columnIndex, rowIndex }, element });
 			}
 			
-			list.add(new Object[] {
-					new int[] { columnIndex, rowIndex }, element });
-		}
-		
-		int numColumns = columnMap.size();
-		int numRows = rowMap.size();
-		
-		ObjectMatrix1D columns = ObjectFactory1D.dense.make(numColumns);
-		for (Entry<String, Integer> entry : columnMap.entrySet())
-			columns.setQuick(entry.getValue(), entry.getKey());
-		
-		ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
-		for (Entry<String, Integer> entry : rowMap.entrySet())
-			rows.setQuick(entry.getValue(), entry.getKey());
-		
-		resultsMatrix.setColumns(columns);
-		resultsMatrix.setRows(rows);
-		resultsMatrix.makeData();
-		
-		resultsMatrix.setColumnAdapter(new StringElementAdapter());
-		resultsMatrix.setRowAdapter(new StringElementAdapter());
-		resultsMatrix.setCellAdapter(elementAdapter);
-		
-		for (Object[] result : list) {
-			int[] coord = (int[]) result[0];
-			final int columnIndex = coord[0];
-			final int rowIndex = coord[1];
+			int numColumns = columnMap.size();
+			int numRows = rowMap.size();
 			
-			Object element = result[1];			
-			resultsMatrix.setCell(rowIndex, columnIndex, element);
+			ObjectMatrix1D columns = ObjectFactory1D.dense.make(numColumns);
+			for (Entry<String, Integer> entry : columnMap.entrySet())
+				columns.setQuick(entry.getValue(), entry.getKey());
+			
+			ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
+			for (Entry<String, Integer> entry : rowMap.entrySet())
+				rows.setQuick(entry.getValue(), entry.getKey());
+			
+			resultsMatrix.setColumns(columns);
+			resultsMatrix.setRows(rows);
+			resultsMatrix.makeData();
+			
+			resultsMatrix.setColumnAdapter(new StringElementAdapter());
+			resultsMatrix.setRowAdapter(new StringElementAdapter());
+			resultsMatrix.setCellAdapter(elementAdapter);
+			
+			for (Object[] result : list) {
+				int[] coord = (int[]) result[0];
+				final int columnIndex = coord[0];
+				final int rowIndex = coord[1];
+				
+				Object element = result[1];			
+				resultsMatrix.setCell(rowIndex, columnIndex, element);
+			}
+		}
+		catch (Exception e) {
+			throw new PersistenceException(e);
 		}
 		
 		monitor.end();
@@ -256,35 +251,33 @@ public class TextObjectMatrixPersistence extends FileResource {
 		return value;
 	}
 
-	public void write(ObjectMatrix results, String prefix, IProgressMonitor monitor) 
-			throws FileNotFoundException, IOException {
+	public void write(
+			IResource resource,
+			ObjectMatrix results, 
+			IProgressMonitor monitor) 
+			throws PersistenceException {
 		
-		write(results, prefix, true, monitor);
+		write(resource, results, true, monitor);
 	}
 	
-	public void write(ObjectMatrix results, String prefix, boolean orderByColumn, IProgressMonitor monitor) 
-			throws FileNotFoundException, IOException {
+	public void write(
+			IResource resource,
+			ObjectMatrix results, 
+			boolean orderByColumn,
+			IProgressMonitor monitor) 
+			throws PersistenceException {
 		
-		final File basePath = getFile();
-		
-		/*String colsPath = new File(basePath, prefix + ".columns.tsv.gz").getAbsolutePath();
-		writeColumns(openWriter(colsPath), results, orderByColumn, monitor);*/
-		
-		/*String rowsPath = new File(basePath, prefix + ".rows.tsv.gz").getAbsolutePath();
-		writeRows(openWriter(rowsPath), results, orderByColumn, monitor);*/
-		
-		String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
-		writeCells(openWriter(cellsPath), results, orderByColumn, monitor);
+		try {
+			Writer writer = resource.openWriter();
+			//String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
+			writeCells(writer, results, orderByColumn, monitor);
+			writer.close();
+		}
+		catch (Exception e) {
+			throw new PersistenceException(e);
+		}
 	}
 	
-	public void writeRows(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
-		
-	}
-	
-	public void writeColumns(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
-		
-	}
-
 	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
 		
 		RawCsvWriter out = new RawCsvWriter(writer, 
@@ -315,8 +308,6 @@ public class TextObjectMatrixPersistence extends FileResource {
 				for (int colIndex = 0; colIndex < numColumns; colIndex++)
 					writeLine(out, resultsMatrix, colIndex, rowIndex);
 		}
-		
-		out.close();
 	}
 
 	private void writeLine(
