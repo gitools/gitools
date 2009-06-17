@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.gitools.resources.IResource;
 
 public class Artifact
@@ -13,13 +17,16 @@ public class Artifact
 	private static final long serialVersionUID = 5752318457428475330L;
 
 	/** id unique **/
+	@XmlTransient
 	private String id;
 
 	/** The resource containing this artifact. */
+	@XmlTransient
 	private IResource resource;
 	
 	/** type of the artifact **/
 	@Deprecated
+	@XmlTransient
 	private String type;
 
 	/** short description **/
@@ -29,6 +36,8 @@ public class Artifact
 	private String description;
 	
 	/** Extra attributes **/
+	@XmlElementWrapper(name = "attributes")
+	@XmlElement(name = "attribute")
 	private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */

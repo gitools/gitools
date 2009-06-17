@@ -1,12 +1,15 @@
 package org.gitools.model;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement
+@XmlRootElement(name = "project")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Project extends Artifact {
 
 	private static final long serialVersionUID = 7978328129043692524L;
@@ -15,12 +18,13 @@ public class Project extends Artifact {
 	private String laboratory;
 
 	/** URL of the laboratory **/
-	private URL url;
+	private String url;
 
 	/** List of publications associated with the project, if any **/
 	private List<Publication> publications = new ArrayList<Publication>();
 
 	/** Main artifacts, they would be showed in the breadcrumb **/
+	@XmlTransient
 	private List<IArtifact> artifacts = new ArrayList<IArtifact>();
 
 	public Project() {
@@ -35,11 +39,11 @@ public class Project extends Artifact {
 		this.laboratory = laboratory;
 	}
 
-	public URL getUrl() {
+	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(URL url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
