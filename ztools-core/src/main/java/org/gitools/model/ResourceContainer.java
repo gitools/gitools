@@ -3,7 +3,12 @@ package org.gitools.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.gitools.model.xml.ResourceReferenceXmlAdapter;
 
 @XmlRootElement
 public class ResourceContainer extends Artifact {
@@ -12,6 +17,9 @@ public class ResourceContainer extends Artifact {
 
 	protected boolean limitedExploration;
 
+	@XmlElementWrapper(name = "references")
+	@XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
+	@XmlElement(name = "reference")
 	protected List<ResourceReference> references = new ArrayList<ResourceReference>(0);
 
 	public ResourceContainer() {

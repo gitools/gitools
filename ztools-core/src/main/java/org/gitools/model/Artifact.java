@@ -4,10 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.gitools.resources.IResource;
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType( propOrder={ "title",  "description","attributes" } )
 public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
@@ -22,15 +30,11 @@ public class Artifact extends AbstractModel implements Serializable {
 	/** long description **/
 	private String description;
 
-	/**
-	 * Extra attributes
-	 * 
-	 * @XmlElementWrapper(name = "attributes")
-	 * @XmlElement(name = "attribute")
-	 * **/
-
-	@XmlTransient
-	private List<Attribute> attributes = new ArrayList<Attribute>(0);
+	/** Extra attributes**/
+	
+	@XmlElementWrapper(name = "attributes")
+    @XmlElement(name = "attribute")
+    private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
@@ -62,6 +66,10 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
+	}
+
+	public void addAttribute(Attribute e) {
+		this.attributes.add(e);
 	}
 
 }

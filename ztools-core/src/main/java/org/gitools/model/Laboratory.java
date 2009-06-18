@@ -2,25 +2,33 @@ package org.gitools.model;
 
 import java.io.Serializable;
 
-public class Laboratory 
-	implements Serializable {
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = { "name", "url" })
+public class Laboratory implements Serializable {
 
 	/** Name of the laboratory **/
-	private String laboratoryName;
+	private String name;
 
 	/** URL of the laboratory **/
 	private String url;
 
+	/*
+	 * Maybe we can also store to wich affiliation this lab belongs to and the
+	 * laboratory address 
+	 * private String address; 
+	 * private Affiliation affiliation;
+	 */
 	public Laboratory() {
 
 	}
 
-	public String getLaboratoryName() {
-		return laboratoryName;
+	public String getName() {
+		return name;
 	}
 
-	public void setLaboratoryName(String laboratoryName) {
-		this.laboratoryName = laboratoryName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getUrl() {
@@ -30,4 +38,5 @@ public class Laboratory
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 }

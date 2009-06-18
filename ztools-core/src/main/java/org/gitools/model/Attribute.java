@@ -1,7 +1,11 @@
 package org.gitools.model;
 
+import java.io.Serializable;
+
 /** Annotation for items, adds a dynamic attribute to the desired item **/
-public class Attribute {
+
+public class Attribute 
+	implements Serializable{ 
 
 	/** Name **/
 	private String name;
