@@ -19,19 +19,6 @@ public class Group extends Artifact implements Serializable {
 		super();
 	}
 
-	public Group(String id, String artifactType) {
-		super(id, artifactType);
-	}
-
-	public Group(String id, String artifactType, String title) {
-		super(id, artifactType, title);
-	}
-
-	public Group(String id, String artifactType, String title,
-			String description) {
-		super(id, artifactType, title, description);
-	}
-
 	public String getSource() {
 		return source;
 	}

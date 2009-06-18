@@ -10,6 +10,11 @@ import org.gitools.model.ResourceContainer;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 
+import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+
+
+
 public class PersistenceManager {
 
 	private static final Map<String, Class<?>> extensionsPersistenceMap = 
@@ -57,7 +62,7 @@ public class PersistenceManager {
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")			
 	public static <T> IEntityPersistence<T> createEntityPersistence(
 			Class<T> entityClass) {
 
@@ -76,5 +81,29 @@ public class PersistenceManager {
 	private static String getExtension(File file, String extensionSeparator) {
 		String fileName = file.getName();
 		return fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public static Artifact load(IResource resource) throws PersistenceException {
+		
+		IProgressMonitor monitor= new DefaultProgressMonitor();
+		monitor.begin("Start loading ... "+ resource.toURI(), 1);
+	
+		IEntityPersistence<Artifact> entityPersistence = createEntityPersistence(resource);
+		return entityPersistence.read(resource, monitor);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public static boolean store(IResource resource, Artifact entity) throws PersistenceException{
+	
+		IProgressMonitor monitor= new DefaultProgressMonitor();
+		monitor.begin("Storing ... "+ resource.toURI(), 1);
+	
+		IEntityPersistence<Artifact> entityPersistence = (IEntityPersistence<Artifact>) createEntityPersistence(entity.getClass());
+		entityPersistence.write(resource, entity, monitor);
+		return true;
+
 	}
 }

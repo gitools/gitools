@@ -19,31 +19,18 @@ public class ModuleMap extends Artifact {
 
 	}
 
-	public ModuleMap(String id, String artifactType) {
-		super(id, artifactType);
-	}
-
-	public ModuleMap(String id, String artifactType, String title) {
-		super(id, artifactType, title);
-	}
-	
-	public ModuleMap(String id, String artifactType, String title, String description) {
-		super(id, artifactType, title, description);
-	}
-	
-	public ModuleMap(String[] moduleNames,
-			String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
+	public ModuleMap(String[] moduleNames, String[] itemNames,
+			int[][] itemIndices, int[] itemsOrder) {
 
 		this.moduleNames = moduleNames;
 		this.itemNames = itemNames;
 		this.itemIndices = itemIndices;
 		this.itemsOrder = itemsOrder;
 	}
-	
+
 	public ModuleMap(String id, String artifactType, String[] moduleNames,
 			String[] itemNames, int[][] itemIndices, int[] itemsOrder) {
 
-		super(id, artifactType);
 		this.moduleNames = moduleNames;
 		this.itemNames = itemNames;
 		this.itemIndices = itemIndices;

@@ -50,7 +50,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		DoubleMatrix doubleMatrix = new DoubleMatrix();
 		//FIXME: id
-		ModuleMap moduleMap = new ModuleMap(null, null);
+		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				doubleMatrix, moduleMap, 
 				dataFile, valueFilter, 

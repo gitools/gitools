@@ -15,19 +15,6 @@ public class Reference extends Artifact {
 
 	}
 
-	public Reference(String artifactId, String artifactType) {
-		super(artifactId, artifactType);
-	}
-
-	public Reference(String artifactId, String artifactType, String title) {
-		super(artifactId, artifactType, title);
-	}
-
-	public Reference(String artifactId, String artifactType, String title,
-			String description) {
-		super(artifactId, artifactType, title, description);
-	}
-
 	public URI getExtRef() {
 		return extRef;
 	}
