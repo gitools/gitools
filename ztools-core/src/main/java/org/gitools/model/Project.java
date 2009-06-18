@@ -13,33 +13,14 @@ public class Project extends Artifact {
 
 	private static final long serialVersionUID = 7978328129043692524L;
 
-	/** Lab that publishes the project **/
-	private String laboratory;
-
-	/** URL of the laboratory **/
-	private String url;
-
 	/** List of publications associated with the project, if any **/
 	private List<Publication> publications = new ArrayList<Publication>();
 
+	/** List of the laboratories involved in the project, if any **/
+	private List<Laboratory> laboratories = new ArrayList<Laboratory>();
+
 	public Project() {
 
-	}
-
-	public String getLaboratory() {
-		return laboratory;
-	}
-
-	public void setLaboratory(String laboratory) {
-		this.laboratory = laboratory;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public List<Publication> getPublications() {
@@ -53,4 +34,17 @@ public class Project extends Artifact {
 	public void addPublication(Publication publication) {
 		this.publications.add(publication);
 	}
+
+	public List<Laboratory> getLaboratories() {
+		return laboratories;
+	}
+
+	public void setLaboratories(List<Laboratory> laboratories) {
+		this.laboratories = laboratories;
+	}
+
+	public void addLaboratory(Laboratory laboratory) {
+		this.laboratories.add(laboratory);
+	}
+
 }
