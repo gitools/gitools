@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.JAXBException;
-
 import org.gitools.datafilters.DoubleFilter;
 import org.gitools.datafilters.ValueFilter;
 import org.gitools.model.Project;
@@ -15,7 +13,6 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
 import org.gitools.persistence.AnalysisPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.ProjectPersistence;
 import org.gitools.persistence.analysis.CsvAnalysisResource;
 import org.gitools.persistence.analysis.REXmlAnalysisResource;
 import org.gitools.stats.test.factory.TestFactory;
