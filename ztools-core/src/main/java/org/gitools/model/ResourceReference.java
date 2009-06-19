@@ -2,8 +2,12 @@ package org.gitools.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.gitools.resources.IResource;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ResourceReference implements Serializable {
 
 	private static final long serialVersionUID = -4821090938379782993L;

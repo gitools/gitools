@@ -1,6 +1,7 @@
 package org.gitools.persistence;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
+
 
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -26,14 +28,12 @@ public class PersistenceManager {
 	static {
 
 		//Fill the extensions persistence map
-		extensionsPersistenceMap.put(FileExtensions.PROJECT, ProjectPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.RESOURCE_CONTAINER,
-				ResourceContainerPersistence.class);
+		extensionsPersistenceMap.put(FileExtensions.PROJECT, JAXBPersistence.class);
+		extensionsPersistenceMap.put(FileExtensions.RESOURCE_CONTAINER,JAXBPersistence.class);
 		
 		//Fill the class persistence map
-		classesPersistenceMap.put(Project.class, ProjectPersistence.class);
-		classesPersistenceMap.put(ResourceContainer.class,
-				ResourceContainerPersistence.class);
+		classesPersistenceMap.put(Project.class, JAXBPersistence.class);
+		classesPersistenceMap.put(ResourceContainer.class,JAXBPersistence.class);
 
 	}
 
@@ -50,8 +50,13 @@ public class PersistenceManager {
 				extensionsPersistenceMap.get(extension);
 
 			try {
-				return 
-				(IEntityPersistence) fileResourceClass.newInstance();
+			
+				if (fileResourceClass.equals(JAXBPersistence.class)){
+					Constructor<?> c = 	fileResourceClass.getConstructor(String.class);
+					return (IEntityPersistence) c.newInstance(extension);
+				}
+				
+				return (IEntityPersistence) fileResourceClass.newInstance();
 			} 
 			catch (Exception e) {
 				return null;
@@ -69,11 +74,15 @@ public class PersistenceManager {
 		Class<?> fileResourceClass = 
 			classesPersistenceMap.get(entityClass);
 
-		try {
-			return 
-			(IEntityPersistence<T>) fileResourceClass.newInstance();
+		try {	
+			if (fileResourceClass.equals(JAXBPersistence.class)){
+				Constructor<?> c = 	fileResourceClass.getConstructor(Class.class);
+				return (IEntityPersistence) c.newInstance(entityClass);
+			}
+			return (IEntityPersistence<T>) fileResourceClass.newInstance();
 		} 
 		catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -101,6 +110,7 @@ public class PersistenceManager {
 		IProgressMonitor monitor= new DefaultProgressMonitor();
 		monitor.begin("Storing ... "+ resource.toURI(), 1);
 	
+		System.out.println(entity);
 		IEntityPersistence<Artifact> entityPersistence = (IEntityPersistence<Artifact>) createEntityPersistence(entity.getClass());
 		entityPersistence.write(resource, entity, monitor);
 		return true;

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.gitools.resources.IResource;
+
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -22,7 +22,7 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	/** The resource containing this artifact. */
 	@XmlTransient
-	private IResource resource;
+	private String resource;
 
 	/** short description **/
 	private String title;
