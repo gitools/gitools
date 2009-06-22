@@ -1,20 +1,46 @@
 package org.gitools.model.xml;
+import java.io.File;
+import java.net.URI;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.resources.FileResource;
+import org.gitools.resources.IResource;
 
+public class ResourceXmlAdapter extends XmlAdapter<String, IResource>  {
 
-public class ResourceXmlAdapter extends XmlAdapter<FileResource, String>  {
+	protected IResource baseResource;
+	
+	public ResourceXmlAdapter() {
+	}
+	
+	public ResourceXmlAdapter(IResource baseResource) {
+		this.baseResource = baseResource;
+	}
+	
 	@Override
-	public String unmarshal(FileResource v) throws Exception {
-		return v.toURI().toString();
+	public String marshal(IResource resource) throws Exception {
+		//FIXME: no hacer con replace !!, utilizar uri
+		return resource.toURI().toString().replace(baseResource.toURI().toString(), "");
 	}
 
 	@Override
-	public FileResource marshal(String v) throws Exception {
-		//FIXME: se ha de tener en cuenta el contexto de la aplicacion 
-		// también  no devolver siempre un FileResource
-		return new FileResource(v) ;
+	public IResource unmarshal(String v) throws Exception {
+		
+		URI uri = new URI(v);
+		URI path = baseResource.toURI().resolve(uri);
+		System.out.println( " Hola bon dia a la vila del pinguí"+ path);
+		//FIXME: only for file schema
+		//if (uri.getScheme().equalsIgnoreCase("file")) {
+		
+			System.out.println("la uri es absolute " +uri.isAbsolute());
+			if (uri.isAbsolute()){
+				return new FileResource(new File(path));
+		//	}else
+		//		throw new RuntimeException("relative file URI not supported: " + uri.toString());
+		}
+		throw new RuntimeException("URI Scheme not supported: " + uri.toString());
 	}
+
 
 }

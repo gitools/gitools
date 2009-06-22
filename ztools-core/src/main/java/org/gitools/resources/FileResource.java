@@ -17,11 +17,7 @@ import java.net.URI;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.xml.FileResourceXmlAdapter;
-
-@XmlJavaTypeAdapter(FileResourceXmlAdapter.class)
 public class FileResource implements IResource {
 
 	private static final long serialVersionUID = 1165427781549776789L;

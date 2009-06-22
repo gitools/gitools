@@ -15,8 +15,6 @@ import org.gitools.resources.IResource;
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-
-
 public class PersistenceManager {
 
 	private static final Map<String, Class<?>> extensionsPersistenceMap = 
@@ -25,6 +23,8 @@ public class PersistenceManager {
 	private static final Map<Class<? extends Artifact>, Class<?>> classesPersistenceMap = 
 		new HashMap<Class<? extends Artifact>, Class<?>>();
 
+
+	
 	static {
 
 		//Fill the extensions persistence map
@@ -38,7 +38,7 @@ public class PersistenceManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static IEntityPersistence createEntityPersistence(IResource resource) {
+	public static IEntityPersistence createEntityPersistence(IResource baseResource, IResource resource) {
 
 		if (resource.getClass().equals(FileResource.class)) {
 
@@ -52,8 +52,8 @@ public class PersistenceManager {
 			try {
 			
 				if (fileResourceClass.equals(JAXBPersistence.class)){
-					Constructor<?> c = 	fileResourceClass.getConstructor(String.class);
-					return (IEntityPersistence) c.newInstance(extension);
+					Constructor<?> c = 	fileResourceClass.getConstructor(IResource.class, String.class);
+					return (IEntityPersistence) c.newInstance(baseResource, extension);
 				}
 				
 				return (IEntityPersistence) fileResourceClass.newInstance();
@@ -68,7 +68,7 @@ public class PersistenceManager {
 	}
 
 	@SuppressWarnings("unchecked")			
-	public static <T> IEntityPersistence<T> createEntityPersistence(
+	public static <T> IEntityPersistence<T> createEntityPersistence(IResource baseResource,
 			Class<T> entityClass) {
 
 		Class<?> fileResourceClass = 
@@ -76,8 +76,8 @@ public class PersistenceManager {
 
 		try {	
 			if (fileResourceClass.equals(JAXBPersistence.class)){
-				Constructor<?> c = 	fileResourceClass.getConstructor(Class.class);
-				return (IEntityPersistence) c.newInstance(entityClass);
+				Constructor<?> c = 	fileResourceClass.getConstructor(IResource.class, Class.class);
+				return (IEntityPersistence) c.newInstance(baseResource, entityClass);
 			}
 			return (IEntityPersistence<T>) fileResourceClass.newInstance();
 		} 
@@ -94,24 +94,24 @@ public class PersistenceManager {
 
 
 	@SuppressWarnings("unchecked")
-	public static Artifact load(IResource resource) throws PersistenceException {
+	public static Artifact load(IResource baseResource, IResource resource) throws PersistenceException {
 		
 		IProgressMonitor monitor= new DefaultProgressMonitor();
 		monitor.begin("Start loading ... "+ resource.toURI(), 1);
 	
-		IEntityPersistence<Artifact> entityPersistence = createEntityPersistence(resource);
+		IEntityPersistence<Artifact> entityPersistence = createEntityPersistence(baseResource,resource);
 		return entityPersistence.read(resource, monitor);
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public static boolean store(IResource resource, Artifact entity) throws PersistenceException{
+	public static boolean store(IResource baseResource, IResource resource, Artifact entity) throws PersistenceException{
 	
 		IProgressMonitor monitor= new DefaultProgressMonitor();
 		monitor.begin("Storing ... "+ resource.toURI(), 1);
+		
 	
-		System.out.println(entity);
-		IEntityPersistence<Artifact> entityPersistence = (IEntityPersistence<Artifact>) createEntityPersistence(entity.getClass());
+		IEntityPersistence<Artifact> entityPersistence = (IEntityPersistence<Artifact>) createEntityPersistence(baseResource,entity.getClass());
 		entityPersistence.write(resource, entity, monitor);
 		return true;
 
