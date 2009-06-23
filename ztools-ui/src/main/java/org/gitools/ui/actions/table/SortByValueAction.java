@@ -44,7 +44,7 @@ public class SortByValueAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = getTable();
+		IMatrixView matrixView = getMatrixView();
 		if (matrixView == null)
 			return;
 				

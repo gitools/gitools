@@ -43,20 +43,20 @@ public class OpenAnalysisJob implements Job {
 			//ProjectResource projRes = new ProjectResource(selectedPath);
 			//Project proj = projRes.load(monitor);
 			
-			AnalysisPersistence analysisRes =
+			AnalysisPersistence analysisPer =
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis ...", 1);
-			Analysis analysis = analysisRes.load(monitor);
+			Analysis analysis = analysisPer.load(monitor);
 
-			final AnalysisEditor view = new AnalysisEditor(analysis);
+			final AnalysisEditor editor = new AnalysisEditor(analysis);
 			
-			view.setName(analysis.getName());
+			editor.setName(analysis.getTitle());
 			
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-					AppFrame.instance().getWorkspace().addEditor(view);
+					AppFrame.instance().getWorkspace().addEditor(editor);
 					AppFrame.instance().refresh();
 				}
 			});

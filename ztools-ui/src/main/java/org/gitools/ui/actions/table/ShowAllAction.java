@@ -42,7 +42,7 @@ public class ShowAllAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		final IMatrixView matrixView = getTable();
+		final IMatrixView matrixView = getMatrixView();
 		if (matrixView == null)
 			return;
 		

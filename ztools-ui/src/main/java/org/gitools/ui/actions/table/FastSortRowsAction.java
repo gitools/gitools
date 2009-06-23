@@ -34,7 +34,7 @@ public class FastSortRowsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		final IMatrixView matrixView = getTable();
+		final IMatrixView matrixView = getMatrixView();
 		
 		if (matrixView == null)
 			return;

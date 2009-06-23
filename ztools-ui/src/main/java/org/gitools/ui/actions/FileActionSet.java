@@ -3,11 +3,11 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
-import org.gitools.ui.actions.file.ExportColumnDataAction;
+import org.gitools.ui.actions.file.ExportMatrixFigureHtmlAction;
+import org.gitools.ui.actions.file.ExportMatrixFigurePictureAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableOneParameterAction;
-import org.gitools.ui.actions.file.ExportMatrixFigureToPictureAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.actions.file.OpenMatrixAction;
@@ -37,17 +37,18 @@ public class FileActionSet extends ActionSet {
 	// export
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
-	public static final BaseAction exportColumnDataAction = new ExportColumnDataAction();
 	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
 	public static final BaseAction exportTableParameter = new ExportTableOneParameterAction();
 	public static final BaseAction exportTableAllParameters = new ExportTableAllParametersAction();
-	public static final BaseAction exportMatrixFigureToPicture = new ExportMatrixFigureToPictureAction();
+	public static final BaseAction exportMatrixFigurePicture = new ExportMatrixFigurePictureAction();
+	public static final BaseAction exportMatrixFigureHtml = new ExportMatrixFigureHtmlAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
 			exportRowColumnNamesAction,
 			exportTableParameter,
 			exportTableAllParameters,
-			exportMatrixFigureToPicture
+			exportMatrixFigurePicture,
+			exportMatrixFigureHtml
 	});
 
 	public FileActionSet() {

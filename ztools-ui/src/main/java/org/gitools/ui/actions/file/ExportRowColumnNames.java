@@ -8,15 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import org.gitools.ui.AppFrame;
-import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.utils.Options;
 
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
+import org.gitools.ui.AppFrame;
+import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.utils.Options;
 
 public class ExportRowColumnNames extends BaseAction {
 
@@ -37,7 +35,7 @@ public class ExportRowColumnNames extends BaseAction {
 		final String hiddenRows = "Hidden row names";
 		final String hiddenCols = "Hidden column names";
 
-		IMatrixView matrixView = getTable();
+		IMatrixView matrixView = getMatrixView();
 		IMatrix contents = matrixView.getContents();
 		if (matrixView == null)
 			return;
@@ -54,9 +52,11 @@ public class ExportRowColumnNames extends BaseAction {
 			return;
 
 		try {
-			File file = getSelectedFile();
+			File file = getSelectedFile("Select destination file");
 			if (file == null)
 				return;
+			
+			Options.instance().setLastExportPath(file.getAbsolutePath());
 			
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
@@ -89,31 +89,12 @@ public class ExportRowColumnNames extends BaseAction {
 		
 		AppFrame.instance().setStatusText(selected + " exported.");
 	}
-	
-
 
 	private boolean inArray(int needle, int[] ary) {
 		for (int i = 0; i < ary.length; i++)
 			if (needle == ary[i])
 				return true;
 		return false;
-	}
-
-	private File getSelectedFile() {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastExportPath());
-		
-		fileChooser.setDialogTitle("Select the file where the names will be saved");
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			Options.instance().setLastExportPath(file.getAbsolutePath());
-			return file;
-		}
-	
-		return null;
 	}
 
 }

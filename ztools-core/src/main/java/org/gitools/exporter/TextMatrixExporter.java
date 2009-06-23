@@ -1,4 +1,4 @@
-package org.gitools.matrix.export;
+package org.gitools.exporter;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.utils.CompressedFile;
 
-public class MatrixTsvExporter {
+public class TextMatrixExporter {
 
 	public static void exportProperty(IMatrixView matrixView, int propIndex, File file) throws IOException {
 		PrintWriter pw = new PrintWriter(CompressedFile.openWriter(file));

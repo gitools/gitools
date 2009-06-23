@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JFileChooser;
-
-import org.gitools.matrix.export.MatrixTsvExporter;
+import org.gitools.exporter.TextMatrixExporter;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.AppFrame;
@@ -29,7 +27,7 @@ public class ExportTableAllParametersAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		IMatrixView matrixView = getTable();
+		IMatrixView matrixView = getMatrixView();
 		if (matrixView == null)
 			return;
 		
@@ -39,35 +37,19 @@ public class ExportTableAllParametersAction extends BaseAction {
 			propIndices[i] = i;
 		
 		try {
-			File file = getSelectedFile();
+			File file = getSelectedFile("Select destination file");
 			if (file == null)
 				return;
 			
-			MatrixTsvExporter.exportProperties(matrixView, propIndices, file);
+			Options.instance().setLastExportPath(file.getAbsolutePath());
+			
+			TextMatrixExporter.exportProperties(matrixView, propIndices, file);
 		}
 		catch (IOException ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());
 		}
 		
 		AppFrame.instance().setStatusText("Table exported.");
-	}
-	
-
-	private File getSelectedFile() {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastExportPath());
-		
-		fileChooser.setDialogTitle("Select the file where the names will be saved");
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			Options.instance().setLastExportPath(file.getAbsolutePath());
-			return file;
-		}
-	
-		return null;
 	}
 
 }

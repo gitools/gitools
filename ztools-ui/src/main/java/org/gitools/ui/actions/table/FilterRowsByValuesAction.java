@@ -28,7 +28,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = getTable();
+		IMatrixView matrixView = getMatrixView();
 		if (matrixView == null)
 			return;
 

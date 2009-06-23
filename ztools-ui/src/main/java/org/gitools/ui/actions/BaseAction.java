@@ -1,17 +1,21 @@
 package org.gitools.ui.actions;
 
+import java.io.File;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.utils.Options;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 
 public abstract class BaseAction extends AbstractAction {
@@ -106,18 +110,66 @@ public abstract class BaseAction extends AbstractAction {
 			.getSelectedView();
 	}
 	
-	protected IMatrixView getTable() {
-		AbstractEditor view = getSelectedEditor();
-		if (view == null)
+	protected IMatrixView getMatrixView() {
+		AbstractEditor editor = getSelectedEditor();
+		if (editor == null)
 			return null;
 		
 		IMatrixView matrixView = null;
 		
-		Object model = view.getModel();
+		Object model = editor.getModel();
 		if (model instanceof IMatrixView)
 			matrixView = (IMatrixView) model;
+		else if (model instanceof MatrixFigure)
+			matrixView = ((MatrixFigure)model).getMatrixView();
 		
 		return matrixView;
+	}
+	
+	protected MatrixFigure getMatrixFigure() {
+		AbstractEditor editor = getSelectedEditor();
+		if (editor == null)
+			return null;
+		
+		MatrixFigure figure = null;
+		
+		Object model = editor.getModel();
+		if (model instanceof MatrixFigure)
+			figure = (MatrixFigure)model;
+		
+		return figure;
+	}
+	
+	protected File getSelectedFile(String title) {
+		JFileChooser fileChooser = new JFileChooser(
+				Options.instance().getLastExportPath());
+		
+		fileChooser.setDialogTitle(title);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
+		int retval = fileChooser.showOpenDialog(AppFrame.instance());
+		if (retval == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			return file;
+		}
+	
+		return null;
+	}
+	
+	protected File getSelectedPath(String title) {
+		JFileChooser fileChooser = new JFileChooser(
+				Options.instance().getLastExportPath());
+		
+		fileChooser.setDialogTitle(title);
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		int retval = fileChooser.showOpenDialog(AppFrame.instance());
+		if (retval == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			return file;
+		}
+	
+		return null;
 	}
 	
 	protected IProgressMonitor createProgressMonitor() {

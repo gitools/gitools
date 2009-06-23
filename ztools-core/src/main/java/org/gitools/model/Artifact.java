@@ -11,11 +11,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-
-
-
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType( propOrder={ "title",  "description","attributes" } )
+@XmlType( propOrder={ "title", "description", "attributes" } )
 public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
@@ -44,6 +41,14 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	/* getters and setters */
 
+	public String getResource() {
+		return resource;
+	}
+	
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
