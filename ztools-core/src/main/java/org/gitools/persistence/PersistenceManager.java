@@ -37,6 +37,11 @@ public class PersistenceManager {
 
 	}
 
+	/**
+	 * @param baseResource
+	 * @param resource
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static IEntityPersistence createEntityPersistence(IResource baseResource, IResource resource) {
 
@@ -93,6 +98,18 @@ public class PersistenceManager {
 	}
 
 
+	/**
+	 * Dado un resource absoluto, carga su artifact asociado en memoria.
+	 * El método load necesita el baseResource para el caso de los ResourceContainers.
+	 * Si la dirección de una referencia dentro de un documento .folder es un path relativo a proyecto,
+	 * el resource container tiene que resolver cada una de las referencias contra el path temporal 
+	 * la aplicación.
+	 * 
+	 * @param baseResource representa el resource a nivel de aplicación 
+	 * @param resource 	resource absoluto a leer. 
+	 * @return
+	 * @throws PersistenceException
+	 */
 	@SuppressWarnings("unchecked")
 	public static Artifact load(IResource baseResource, IResource resource) throws PersistenceException {
 		
@@ -104,6 +121,15 @@ public class PersistenceManager {
 	}
 
 
+	/**
+	 * Dado un resource absoluto escribe en el stream de salida el artifact asociado.
+	 * Necesitamos el baseResource para relativizar los resources contenidos dentro de un ResourceContainer
+	 * @param baseResource resource a nivel de aplicación
+	 * @param resource resource absoluto en donde escribir
+	 * @param entity entity a persistir
+	 * @return
+	 * @throws PersistenceException
+	 */
 	@SuppressWarnings("unchecked")
 	public static boolean store(IResource baseResource, IResource resource, Artifact entity) throws PersistenceException{
 	
