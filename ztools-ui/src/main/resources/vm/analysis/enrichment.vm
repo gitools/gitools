@@ -37,7 +37,7 @@
     		<table class="propTable">
     			<tr>
     				<td class="propName">Name</td>
-    				<td class="propValue">$analysis.name</td>
+    				<td class="propValue">$analysis.title</td>
     			</tr>
     			#if ( $analysis.startTime )
     			<tr>

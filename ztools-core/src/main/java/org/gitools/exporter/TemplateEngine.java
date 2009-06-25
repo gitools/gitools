@@ -3,6 +3,7 @@ package org.gitools.exporter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -26,7 +27,7 @@ public class TemplateEngine {
 	public TemplateEngine(Properties props) {
 		velocityEngine = new VelocityEngine();
 		
-		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
+		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "file, class");
 		velocityEngine.setProperty(
 				"class." + VelocityEngine.RESOURCE_LOADER + ".class", 
 				ClasspathResourceLoader.class.getName());
@@ -38,17 +39,26 @@ public class TemplateEngine {
 			velocityEngine.setProperty(
 					(String) prop.getKey(), prop.getValue());
 		
-		try {
-			velocityEngine.init();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
 		context = new VelocityContext();
 	}
 	
 	public TemplateEngine() {
 		this(new Properties());
+	}
+	
+	public void setFileLoaderPath(File file) {
+		velocityEngine.setProperty(
+				VelocityEngine.FILE_RESOURCE_LOADER_PATH, 
+				Arrays.asList(file.getAbsolutePath()));
+	}
+	
+	public void init() {
+		try {
+			velocityEngine.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void loadTemplate(String name)

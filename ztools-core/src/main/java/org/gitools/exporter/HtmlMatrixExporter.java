@@ -1,6 +1,7 @@
 package org.gitools.exporter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,37 +10,30 @@ import org.gitools.model.figure.MatrixFigure;
 
 import edu.upf.bg.GenericFormatter;
 
-public class HtmlMatrixExporter {
-
-	protected File basePath;
-	protected String indexName;
+public class HtmlMatrixExporter extends AbstractHtmlExporter {
 	
 	public HtmlMatrixExporter() {
-		basePath = new File(System.getProperty("user.dir"));
-		indexName = "index.html";
-	}
-	
-	public File getBasePath() {
-		return basePath;
-	}
-	
-	public void setBasePath(File basePath) {
-		this.basePath = basePath;
-	}
-	
-	public String getIndexName() {
-		return indexName;
-	}
-	
-	public void setIndexName(String indexName) {
-		this.indexName = indexName;
+		super();
 	}
 	
 	public void exportMatrixFigure(MatrixFigure figure) {
-		TemplateEngine eng = new TemplateEngine();
+        
+		File templatePath = getTemplatePath();
+		if (templatePath == null)
+			throw new RuntimeException("Unable to locate templates path !");
+		
 		try {
-			eng.loadTemplate("/vm/exporter/html/matrixfigure.vm");
-			
+			copy(new File(templatePath, "media"), basePath);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		TemplateEngine eng = new TemplateEngine();
+		eng.setFileLoaderPath(templatePath);
+		eng.init();
+		
+		try {
 			Map<String, Object> context = new HashMap<String, Object>();
 			context.put("fmt", new GenericFormatter());
 			context.put("figure", figure);
@@ -48,6 +42,8 @@ public class HtmlMatrixExporter {
 			eng.setContext(context);
 			
 			File file = new File(basePath, indexName);
+			//eng.loadTemplate("/vm/exporter/html/matrixfigure.vm");
+			eng.loadTemplate("matrixfigure.vm");
 			eng.render(file);
 			
 		} catch (Exception e) {
