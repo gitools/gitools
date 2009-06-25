@@ -1,0 +1,69 @@
+#macro( htmlColor $color )
+	$fmt.format("#%02x%02x%02x", $color.Red, $color.Green, $color.Blue)
+#end
+
+<html>
+<head>
+	<link href="style/reset.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="style/default.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="style/styling.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="style/print.css" rel="stylesheet" type="text/css" media="print" />
+	
+	<style type="text/css">
+    </style>
+</head>
+<body>
+	#if( $figure.title )
+		<h1>$figure.title</h1>
+	#end
+	#if( $figure.description )
+		<p>$figure.description</p>
+	#end
+	
+	#set( $cellDecorator = $figure.cellDecorator )
+	
+	<table class="matrixTable">
+		#set( $colAdapter = $matrix.columnAdapter )
+		#set( $rowAdapter = $matrix.rowAdapter )
+		#set( $cellAdapter = $matrix.cellAdapter )
+		
+		#set( $lastRow = $matrix.rowCount - 1 )
+		#set( $lastColumn = $matrix.columnCount - 1 )
+		
+		## Header
+		
+		<tr>
+			#foreach( $ci in [0..$lastColumn] )
+				#set( $col = $matrix.getColumn($ci) )
+				#set( $colName = $colAdapter.getValue($col, 0) )
+				<td style="vertical-align: top; text-align: center;">
+					#foreach( $ch in $colName.toCharArray() )
+						$ch<br/>
+					#end
+				</td>
+			#end
+            <td></td>
+        </tr>
+		
+		## Body
+		
+		#foreach( $ri in [0..$lastRow] )
+			<tr>
+				## Cells
+				#foreach( $ci in [0..$lastColumn] )
+					#set( $cell = $matrix.getCell($ri, $ci) )
+					$cellDecorator.decorate($cellDecoration, $cell)
+					#set( $bgColor = $cellDecoration.bgColor )
+					<td style="background-color: #htmlColor($bgColor);"
+						title="$cellDecoration.toolTip"></td>
+				#end
+				
+				## Row
+    			#set( $row = $matrix.getRow($ri) )
+    			#set( $rowName = $rowAdapter.getValue($row, 0) )
+    			<td>$rowName</td>
+            </tr>
+		#end
+    </table>
+</body>
+</html>
