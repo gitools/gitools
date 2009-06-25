@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = { "name", "url" })
 public class Laboratory implements Serializable {
 
+	private static final long serialVersionUID = 6128418993564199357L;
+
 	/** Name of the laboratory **/
 	private String name;
 

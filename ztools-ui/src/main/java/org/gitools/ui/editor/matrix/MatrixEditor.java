@@ -403,8 +403,8 @@ public class MatrixEditor extends AbstractEditor {
 
 	@Override
 	public Object getModel() {
-		return model.getMatrixView(); //TODO: return MatrixFigure
-		//return model;
+		//return model.getMatrixView(); //TODO: return MatrixFigure
+		return model;
 	}
 
 	@Override
