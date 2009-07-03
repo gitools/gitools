@@ -21,20 +21,18 @@ public class ResourceXmlAdapter extends XmlAdapter<String, IResource> {
 
 	@Override
 	public String marshal(IResource resource) throws Exception {
-		// FIXME: no hacer con replace !!, utilizar uri
+		// FIXME: 
 		return resource.toURI().toString().replace(
 				baseResource.toURI().toString(), "");
 	}
 
 	@Override
 	public IResource unmarshal(String v) throws Exception {
-		// TODO: use uris !!!!!!!!
 		URI uri = new URI(v);
 		URI path = baseResource.toURI().resolve(uri);
-
-		// FIXME: only for file schema
+		
+		// FIXME: 
 		// if (uri.getScheme().equalsIgnoreCase("file")) {
-
 		// if (uri.isAbsolute()){
 		return new FileResource(new File(path));
 		// }else

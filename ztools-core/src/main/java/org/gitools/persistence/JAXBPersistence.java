@@ -12,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.xml.ResourceXmlAdapter;
 import org.gitools.resources.IResource;
 
@@ -30,6 +31,7 @@ public class JAXBPersistence implements IEntityPersistence<Artifact> {
 
 		map.put(FileExtensions.PROJECT, Project.class);
 		map.put(FileExtensions.RESOURCE_CONTAINER, ResourceContainer.class);
+		map.put(FileExtensions.MATRIX_FIGURE, MatrixFigure.class);
 	}
 
 	public JAXBPersistence(IResource baseResource, String fileExtension) {

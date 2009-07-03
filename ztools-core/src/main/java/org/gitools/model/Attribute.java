@@ -2,8 +2,12 @@ package org.gitools.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 /** Annotation for items, adds a dynamic attribute to the desired item **/
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Attribute 
 	implements Serializable{ 
 

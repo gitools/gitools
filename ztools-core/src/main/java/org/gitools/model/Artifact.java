@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -16,10 +15,6 @@ import javax.xml.bind.annotation.XmlType;
 public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
-
-	/** The resource containing this artifact. */
-	@XmlTransient
-	private String resource;
 
 	/** short description **/
 	private String title;
@@ -40,14 +35,6 @@ public class Artifact extends AbstractModel implements Serializable {
 	}
 
 	/* getters and setters */
-
-	public String getResource() {
-		return resource;
-	}
-	
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
 	
 	public String getTitle() {
 		return title;

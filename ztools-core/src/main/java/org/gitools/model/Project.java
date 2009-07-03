@@ -25,6 +25,9 @@ public class Project extends Artifact {
 	private List<Publication> publications = new ArrayList<Publication>();
 
 	/** List of the laboratories involved in the project, if any **/
+
+	@XmlElementWrapper(name = "laboratories")
+    @XmlElement(name = "laboratory")
 	private List<Laboratory> laboratories = new ArrayList<Laboratory>();
 
 	public Project() {
@@ -39,20 +42,12 @@ public class Project extends Artifact {
 		this.publications = publications;
 	}
 
-	public void addPublication(Publication e) {
-		this.publications.add(e);
-	}
-
 	public List<Laboratory> getLaboratories() {
 		return laboratories;
 	}
 
 	public void setLaboratories(List<Laboratory> laboratories) {
 		this.laboratories = laboratories;
-	}
-
-	public void addLaboratory(Laboratory e) {
-		this.laboratories.add(e);
 	}
 
 }
