@@ -115,7 +115,7 @@ public class PersistenceManager {
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
+ 		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
 				baseResource, resource);
 		return entityPersistence.read(resource, monitor);
 	}
@@ -152,9 +152,20 @@ public class PersistenceManager {
 		
 		String fileName = file.getName();
 		String extension = fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
-		while (extension== extensionSeparator + "gzip" || extension== extensionSeparator +"csv")
-			extension = extension.substring(fileName.lastIndexOf(extensionSeparator) + 1);
-		System.out.println("la extensio es " + extension);	
+		fileName.replace(extension," ");
+		
+		
+		if (fileName.contains("results")) return "results";
+		
+		
+	/*	//FIXME:
+		System.out.println("la extension es" + extension);
+ 		while (extension.equals("gzip") || extension.equals("csv") || extension.equals("gz") || extension.equals("tsv") ){
+ 			extension = fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+ 			System.out.println("la buvle es la siguiente"+ extension +" " + fileName);	
+ 		}
+	*/	
+		System.out.println("la extension es la siguiente " + fileName + " " +  extension);
 		return extension;
 		
 	}

@@ -66,7 +66,7 @@ public class JAXBPersistence implements IEntityPersistence<Object> {
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
 			u.setAdapter(new ResourceXmlAdapter(this.baseResource));
-			u.setAdapter(new MatrixXmlAdapter((FileResource) resource));
+			u.setAdapter(new MatrixXmlAdapter((FileResource) resource, this.baseResource));
 			entity = (Object) u.unmarshal(reader);
 			reader.close();
 
@@ -96,6 +96,7 @@ public class JAXBPersistence implements IEntityPersistence<Object> {
 			context = JAXBContext.newInstance(entityClass);
 			Marshaller m = context.createMarshaller();
 			m.setAdapter(new ResourceXmlAdapter(this.baseResource));
+			m.setAdapter(new MatrixXmlAdapter((FileResource) resource, this.baseResource));
 			m.marshal(entity, writer);
 			writer.close();
 
