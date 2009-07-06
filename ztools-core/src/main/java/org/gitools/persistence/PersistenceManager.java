@@ -5,7 +5,6 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
@@ -19,7 +18,7 @@ public class PersistenceManager {
 
 	private static final Map<String, Class<?>> extensionsPersistenceMap = new HashMap<String, Class<?>>();
 
-	private static final Map<Class<? extends Artifact>, Class<?>> classesPersistenceMap = new HashMap<Class<? extends Artifact>, Class<?>>();
+	private static final Map<Class<? extends Object>, Class<?>> classesPersistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
 
 	static {
 
@@ -30,7 +29,9 @@ public class PersistenceManager {
 				JAXBPersistence.class);
 		extensionsPersistenceMap.put(FileExtensions.MATRIX_FIGURE,
 				JAXBPersistence.class);
-
+		extensionsPersistenceMap.put(FileExtensions.RESULTS_MATRIX,TextObjectMatrixPersistence.class);
+		
+		
 		
 		// map to store an object
 		classesPersistenceMap.put(Project.class, JAXBPersistence.class);
@@ -108,13 +109,13 @@ public class PersistenceManager {
 	 * @throws PersistenceException
 	 */
 	@SuppressWarnings("unchecked")
-	public static Artifact load(IResource baseResource, IResource resource)
+	public static Object load(IResource baseResource, IResource resource)
 			throws PersistenceException {
 
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Artifact> entityPersistence = createEntityPersistence(
+		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
 				baseResource, resource);
 		return entityPersistence.read(resource, monitor);
 	}
@@ -135,12 +136,12 @@ public class PersistenceManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean store(IResource baseResource, IResource resource,
-			Artifact entity) throws PersistenceException {
+			Object entity) throws PersistenceException {
 
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Storing ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Artifact> entityPersistence = (IEntityPersistence<Artifact>) createEntityPersistence(
+		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) createEntityPersistence(
 				baseResource, entity.getClass());
 		entityPersistence.write(resource, entity, monitor);
 		return true;
@@ -148,8 +149,14 @@ public class PersistenceManager {
 	}
 
 	private static String getExtension(File file, String extensionSeparator) {
+		
 		String fileName = file.getName();
-		return fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+		String extension = fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+		while (extension== extensionSeparator + "gzip" || extension== extensionSeparator +"csv")
+			extension = extension.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+		System.out.println("la extensio es " + extension);	
+		return extension;
+		
 	}
 
 }

@@ -9,16 +9,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.xml.MatrixXmlAdapter;
 import org.gitools.model.xml.ResourceXmlAdapter;
+import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class JAXBPersistence implements IEntityPersistence<Artifact> {
+public class JAXBPersistence implements IEntityPersistence<Object> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
 
@@ -46,10 +47,10 @@ public class JAXBPersistence implements IEntityPersistence<Artifact> {
 	}
 
 	@Override
-	public Artifact read(IResource resource, IProgressMonitor monitor)
+	public Object read(IResource resource, IProgressMonitor monitor)
 			throws PersistenceException {
 
-		Artifact entity;
+		Object entity;
 		Reader reader;
 
 		try {
@@ -65,7 +66,8 @@ public class JAXBPersistence implements IEntityPersistence<Artifact> {
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
 			u.setAdapter(new ResourceXmlAdapter(this.baseResource));
-			entity = (Artifact) u.unmarshal(reader);
+			u.setAdapter(new MatrixXmlAdapter((FileResource) resource));
+			entity = (Object) u.unmarshal(reader);
 			reader.close();
 
 		} catch (Exception e) {
@@ -75,7 +77,7 @@ public class JAXBPersistence implements IEntityPersistence<Artifact> {
 	}
 
 	@Override
-	public void write(IResource resource, Artifact entity,
+	public void write(IResource resource, Object entity,
 			IProgressMonitor monitor) throws PersistenceException {
 
 		Writer writer;

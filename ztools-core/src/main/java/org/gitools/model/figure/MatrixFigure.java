@@ -17,6 +17,7 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.xml.ColorXmlAdapter;
+import org.gitools.model.xml.MatrixXmlAdapter;
 
 
 //@XmlType( propOrder={"cellDercorator", "rowDecorator", "columnDecorator", 
@@ -41,7 +42,10 @@ public class MatrixFigure
 	
 	private HeaderDecorator columnDecorator;
 	
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private IMatrixView matrixView;
+
+	
 	
 	@XmlElement
 	private boolean showGrid;

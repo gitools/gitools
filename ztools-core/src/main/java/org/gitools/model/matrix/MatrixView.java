@@ -3,10 +3,22 @@ package org.gitools.model.matrix;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.model.xml.MatrixXmlAdapter;
 
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType( propOrder={"visibleRows", "visibleColumns","selectedRows", 
+		"selectedColumns", "selectionLeadRow", "selectionLeadColumn",
+		"selectedPropertyIndex"} )
 
 public class MatrixView
 		extends AbstractModel
@@ -14,6 +26,8 @@ public class MatrixView
 
 	private static final long serialVersionUID = -8602409555044803568L;
 
+	@XmlElement
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected IMatrix contents;
 	
 	protected int[] visibleRows;
