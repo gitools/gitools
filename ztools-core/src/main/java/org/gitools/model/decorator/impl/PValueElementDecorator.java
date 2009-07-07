@@ -1,6 +1,8 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
@@ -147,4 +149,29 @@ public class PValueElementDecorator extends ElementDecorator {
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
 	}
+
+	@Override
+	public Map<String, String> getConfiguration() {
+		
+		Map<String, String> decoratorConfiguration = new HashMap <String, String>();
+		
+		decoratorConfiguration.put("valueIndex", Integer.toString(valueIndex));
+		decoratorConfiguration.put("correctedValueIndex", Integer.toString(correctedValueIndex));
+		decoratorConfiguration.put("useCorrection", Boolean.toString(useCorrection));
+		decoratorConfiguration.put("significanceLevel", Double.toString(significanceLevel));
+		
+		return decoratorConfiguration;
+	}
+
+	@Override
+	public void setConfiguration(Map configuration) {
+		
+		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
+		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
+		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
+		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
+	}
+
+
+
 }

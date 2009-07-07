@@ -41,7 +41,15 @@ public class MatrixView
 	protected int selectedPropertyIndex;
 	
 	public MatrixView(){
+		// init
+
+		visibleRows = new int[0];
+		visibleColumns = new int[0];
+		selectedRows = new int[0];
+		selectedColumns = new int[0];
 		
+		selectionLeadRow = selectionLeadColumn = -1;
+	
 	}
 	
 	

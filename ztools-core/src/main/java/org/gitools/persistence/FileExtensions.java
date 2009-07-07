@@ -8,6 +8,7 @@ public class FileExtensions {
 	public static final String PROJECT = "project";
 	public static final String RESOURCE_CONTAINER = "folder";
 	public static final String MATRIX_FIGURE = "figure";
-	public static final String RESULTS_MATRIX = "results";
+	public static final String OBJECT_MATRIX = "results";
+	public static final String ANNOTATION_MATRIX = "annotation";
 
 }

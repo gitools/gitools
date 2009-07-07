@@ -2,13 +2,20 @@ package org.gitools.model.decorator;
 
 import java.awt.Color;
 
-import org.gitools.model.AbstractModel;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.gitools.model.AbstractModel;
+import org.gitools.model.xml.ColorXmlAdapter;
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HeaderDecorator extends AbstractModel {
 
 	private static final long serialVersionUID = -2580139666999968074L;
 	
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color foregroundColor;
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color backgroundColor;
 	
 	public HeaderDecorator() {

@@ -1,7 +1,12 @@
 package org.gitools.model.decorator;
 
-public class ElementDecoratorDescriptor {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ElementDecoratorDescriptor {
+	@XmlElement
 	private String name;
 	private Class<? extends ElementDecorator> decoratorClass;
 	

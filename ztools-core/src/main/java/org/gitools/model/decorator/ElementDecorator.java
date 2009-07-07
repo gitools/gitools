@@ -1,5 +1,8 @@
 package org.gitools.model.decorator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
 
@@ -20,6 +23,15 @@ public abstract class ElementDecorator extends AbstractModel {
 	public abstract void decorate(
 			ElementDecoration decoration, 
 			Object element);
+	
+	
+	public Map getConfiguration(){
+		return new HashMap<String, String>();
+	}
+	
+	public void setConfiguration(Map configuration){
+		
+	}
 	
 	protected int getPropertyIndex(String[] names) {
 		int index = -1;

@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -17,12 +16,14 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.xml.ColorXmlAdapter;
+import org.gitools.model.xml.ElementDecoratorXmlAdapter;
+import org.gitools.model.xml.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.MatrixViewXmlAdapter;
 
 
 //@XmlType( propOrder={"cellDercorator", "rowDecorator", "columnDecorator", 
 //		"matrixView", "showGrid", "gridColor", "cellSize", "rowSize","columnSize"} )
-@XmlAccessorType(XmlAccessType.NONE)
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
 public class MatrixFigure 
 		extends Figure
@@ -36,34 +37,41 @@ public class MatrixFigure
 	public static final String TABLE_CHANGED = "table";
 	
 	
+	@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
 	private ElementDecorator cellDecorator;
 	
+	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
 	private HeaderDecorator rowDecorator;
 	
+	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
 	private HeaderDecorator columnDecorator;
+	
 	
 	@XmlJavaTypeAdapter(MatrixViewXmlAdapter.class)
 	private IMatrixView matrixView;
 
 	
-	
-	@XmlElement
 	private boolean showGrid;
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 	
-	@XmlElement
+	
 	private int cellSize;
 	
-	@XmlElement
+	
 	private int rowSize;
 
-	@XmlElement
+	
 	private int columnSize;
 	
 	public MatrixFigure(){
-		super();
+		
+		this.showGrid = true;
+		this.gridColor = Color.WHITE;
+		this.cellSize = 18;
+		this.rowSize = 400;
+		this.columnSize = 200;
 	}
 	
 	public MatrixFigure(

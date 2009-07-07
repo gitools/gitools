@@ -12,6 +12,9 @@ import javax.xml.bind.Unmarshaller;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.xml.AnnotationMatrixXmlAdapter;
+import org.gitools.model.xml.ElementDecoratorXmlAdapter;
+import org.gitools.model.xml.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.MatrixXmlAdapter;
 import org.gitools.model.xml.ResourceXmlAdapter;
 import org.gitools.resources.FileResource;
@@ -65,8 +68,13 @@ public class JAXBPersistence implements IEntityPersistence<Object> {
 
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
+			
 			u.setAdapter(new ResourceXmlAdapter(this.baseResource));
 			u.setAdapter(new MatrixXmlAdapter((FileResource) resource, this.baseResource));
+			u.setAdapter(new ElementDecoratorXmlAdapter());
+			u.setAdapter(new HeaderDecoratorXmlAdapter());
+			u.setAdapter(new AnnotationMatrixXmlAdapter());	
+			
 			entity = (Object) u.unmarshal(reader);
 			reader.close();
 
@@ -95,8 +103,13 @@ public class JAXBPersistence implements IEntityPersistence<Object> {
 
 			context = JAXBContext.newInstance(entityClass);
 			Marshaller m = context.createMarshaller();
+			
 			m.setAdapter(new ResourceXmlAdapter(this.baseResource));
 			m.setAdapter(new MatrixXmlAdapter((FileResource) resource, this.baseResource));
+			m.setAdapter(new ElementDecoratorXmlAdapter());
+			m.setAdapter(new HeaderDecoratorXmlAdapter());
+			m.setAdapter(new AnnotationMatrixXmlAdapter());	
+			
 			m.marshal(entity, writer);
 			writer.close();
 
