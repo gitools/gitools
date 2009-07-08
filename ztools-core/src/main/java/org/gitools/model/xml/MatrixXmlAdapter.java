@@ -1,45 +1,48 @@
 package org.gitools.model.xml;
 
-import java.io.File;
-import java.net.URI;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.persistence.FileExtensions;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 
-public class MatrixXmlAdapter extends XmlAdapter<String, IMatrix> {
+public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
-	IResource baseResource;
-	FileResource resource;
+	IResource resource;
 
 	public MatrixXmlAdapter() {
 	}
 
-	public MatrixXmlAdapter(FileResource resource, IResource baseResource) {
-		this.baseResource = baseResource;
-		this.resource = resource;
+	public MatrixXmlAdapter(IResource matrixResource) {
+		this.resource = matrixResource;
 	}
 
 	@Override
-	public String marshal(IMatrix v) throws Exception {
-		// FIXME: de donde puedo sacar el resource para guardar la matriz?
-		return resource.toURI().toString().replace(
-				baseResource.toURI().toString(), "");
+	public MatrixXmlElement marshal(IMatrix v) throws Exception {
+		return new MatrixXmlElement(FileExtensions.getEntityExtension(v
+				.getClass()), resource);
 	}
 
-	public IMatrix unmarshal(String v) throws Exception {
-		// FIXME: el baseResource no es necesario siempre no hay porque
-		// arrastralo
-
-		URI uri = new URI(v);
-		URI path = resource.toURI().resolve(uri);
-
-		return (IMatrix) PersistenceManager.load(null, new FileResource(
-				new File(path)), FileExtensions.OBJECT_MATRIX);
+	@Override
+	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
+		return (IMatrix) PersistenceManager.load(null, v.getReference(),
+				FileExtensions.getEntityExtension(v.getClass()));
 	}
 
+	/*
+	 * 
+	 * public String marshal(IMatrix v) throws Exception { // FIXME: de donde
+	 * puedo sacar el resource para guardar la matriz? return
+	 * resource.toURI().toString().replace( baseResource.toURI().toString(),
+	 * ""); }
+	 * 
+	 * public IMatrix unmarshal(String v) throws Exception { // FIXME: el
+	 * baseResource no es necesario siempre no hay porque // arrastralo
+	 * 
+	 * URI uri = new URI(v); URI path = resource.toURI().resolve(uri);
+	 * 
+	 * return (IMatrix) PersistenceManager.load(null, new FileResource( new
+	 * File(path)), FileExtensions.OBJECT_MATRIX);
+	 */
 }
