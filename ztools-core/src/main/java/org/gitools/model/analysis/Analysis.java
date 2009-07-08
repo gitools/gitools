@@ -2,9 +2,11 @@ package org.gitools.model.analysis;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.gitools.model.Artifact;
 import org.gitools.model.ModuleMap;
@@ -12,12 +14,13 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType( propOrder={"startTime", "elapsedTime", "dataTable", "moduleMap", "resultsMatrix" } )
 public class Analysis extends Artifact {
 
 	private static final long serialVersionUID = 44219853082656184L;
 
-	protected Date startTime;
+	protected Date startTime;	
 	protected long elapsedTime;
 	
 	protected DoubleMatrix dataTable;
