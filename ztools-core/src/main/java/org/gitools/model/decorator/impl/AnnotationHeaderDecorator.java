@@ -2,6 +2,7 @@ package org.gitools.model.decorator.impl;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.decorator.HeaderDecoration;
@@ -10,6 +11,7 @@ import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.xml.AnnotationMatrixXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class AnnotationHeaderDecorator extends HeaderDecorator {
 
 	private static final long serialVersionUID = -8529301109846251890L;

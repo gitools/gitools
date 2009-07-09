@@ -1,6 +1,10 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
@@ -13,6 +17,7 @@ import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
+@XmlRootElement
 public class ZScoreElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -7623938918947195891L;
@@ -175,4 +180,27 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
 	}
+
+	@Override
+	public Map<String, String> getConfiguration() {
+		
+		Map<String, String> configuration = new HashMap <String, String>();
+		
+		configuration.put("valueIndex", Integer.toString(valueIndex));
+		configuration.put("correctedValueIndex", Integer.toString(correctedValueIndex));
+		configuration.put("useCorrection", Boolean.toString(useCorrection));
+		configuration.put("significanceLevel", Double.toString(significanceLevel));
+		
+		return configuration;
+	}
+
+	@Override
+	public void setConfiguration(Map<String, String> configuration) {
+	
+		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
+		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
+		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
+		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
+	}
+
 }

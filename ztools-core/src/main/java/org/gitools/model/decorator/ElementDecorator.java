@@ -1,16 +1,21 @@
 package org.gitools.model.decorator;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
-
+@XmlRootElement
 public abstract class ElementDecorator extends AbstractModel {
 
 	private static final long serialVersionUID = -2101303088018509837L;
 
 	protected IElementAdapter adapter;
+	
+	public ElementDecorator(){
+		
+	}
 	
 	public ElementDecorator(IElementAdapter adapter) {
 		this.adapter = adapter;
@@ -25,13 +30,11 @@ public abstract class ElementDecorator extends AbstractModel {
 			Object element);
 	
 	
-	public Map getConfiguration(){
-		return new HashMap<String, String>();
+	public Map<String, String> getConfiguration(){
+		return null;
 	}
 	
-	public void setConfiguration(Map configuration){
-		
-	}
+	public void setConfiguration(Map<String, String> configuration){};
 	
 	protected int getPropertyIndex(String[] names) {
 		int index = -1;

@@ -4,40 +4,29 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.matrix.element.IElementAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ElementDecoratorXmlELement {
 
-	@XmlElement(name = "descriptor")
-	private ElementDecoratorDescriptor descriptor;
-	
-	private Class<IElementAdapter> elementAdapterClass;
-	
+	private String decorator;
 	private Map<String, String> configuration;
 
-	public ElementDecoratorXmlELement(){
-		
-	}
-	
-	
-	public ElementDecoratorXmlELement(ElementDecoratorDescriptor descriptor,
-			Map<String, String> configuration, Class<IElementAdapter> elementAdapterClass) {
+	public ElementDecoratorXmlELement() {
 
-		this.descriptor = descriptor;
+	}
+
+	public ElementDecoratorXmlELement(String descriptor,
+			Map<String, String> configuration) {
+		this.decorator = descriptor;
 		this.configuration = configuration;
-		this.elementAdapterClass = elementAdapterClass;
 	}
 
-	public ElementDecoratorDescriptor getDescriptor() {
-		return descriptor;
+	public String getDecorator() {
+		return decorator;
 	}
 
-	public void setDescriptor(ElementDecoratorDescriptor descriptor) {
-		this.descriptor = descriptor;
+	public void setDecorator(String decorator) {
+		this.decorator = decorator;
 	}
 
 	public Map<String, String> getConfiguration() {
@@ -48,13 +37,4 @@ public class ElementDecoratorXmlELement {
 		this.configuration = configuration;
 	}
 
-	public Class<IElementAdapter> getElementAdapterClass() {
-		return elementAdapterClass;
-	}
-
-	public void setElementAdapterClass(Class<IElementAdapter> elementAdapterClass) {
-		this.elementAdapterClass = elementAdapterClass;
-	}
-
-	
 }

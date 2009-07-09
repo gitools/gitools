@@ -38,7 +38,8 @@ public class PersistenceManager {
 				TextObjectMatrixPersistence.class);
 		extensionsPersistenceMap.put(FileExtensions.ANNOTATION_MATRIX,
 				TextAnnotationMatrixPersistence.class);
-
+		extensionsPersistenceMap.put(FileExtensions.DOUBLE_MATRIX,
+				TextDoubleMatrixPersistence.class);
 
 		
 		// map to store an object

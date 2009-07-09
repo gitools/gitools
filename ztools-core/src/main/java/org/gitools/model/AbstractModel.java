@@ -5,6 +5,10 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+
+@XmlRootElement
 public abstract class AbstractModel 
 		implements IModel, Serializable {
 

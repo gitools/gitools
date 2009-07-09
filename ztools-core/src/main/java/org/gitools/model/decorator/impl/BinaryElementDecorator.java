@@ -1,6 +1,10 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.gitools.datafilters.BinaryCutoffFilter;
 import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
@@ -12,6 +16,7 @@ import org.gitools.model.matrix.element.IElementAdapter;
 import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
+@XmlRootElement
 public class BinaryElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = 8832886601133057329L;
@@ -112,4 +117,29 @@ public class BinaryElementDecorator extends ElementDecorator {
 		decoration.setBgColor(c);
 		decoration.setToolTip(fmt.format(v));
 	}
+
+	@Override
+	public Map<String, String> getConfiguration() {
+		
+		Map<String, String> configuration = new HashMap <String, String>();
+		
+		configuration.put("valueIndex", Integer.toString(valueIndex));
+		configuration.put("color",  "#"+Integer.toHexString(color.getRGB()));
+		configuration.put("nonSignificantColor", "#"+Integer.toHexString(nonSignificantColor.getRGB()));;
+		configuration.put("cutoff", Double.toString(cutoff));
+		
+		return configuration;
+	}
+
+	@Override
+	public void setConfiguration(Map<String, String> configuration) {
+		
+		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
+		this.color = Color.decode(configuration.get("color"));
+		this.nonSignificantColor = Color.decode(configuration.get("nonSignificantColor"));
+		this.cutoff = Double.parseDouble((String) configuration.get("cutoff"));
+	}
+
+	
+
 }

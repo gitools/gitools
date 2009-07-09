@@ -4,30 +4,36 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.matrix.element.IElementAdapter;
 
+/**
+ * <p>
+ * Generate an ElementDecorator with null ElementAdapter.
+ * </p>
+ * 
+ */
 public class ElementDecoratorXmlAdapter extends
 		XmlAdapter<ElementDecoratorXmlELement, ElementDecorator> {
 
-	
-	public ElementDecoratorXmlAdapter(){
+	/**
+	 * Generate an ElementDecorator with null ElementAdapter
+	 */
+	public ElementDecoratorXmlAdapter() {
 	}
+
 	
 	@Override
 	public ElementDecoratorXmlELement marshal(ElementDecorator v)
 			throws Exception {
-
-		return new ElementDecoratorXmlELement(
-				ElementDecoratorFactory.getDescriptor(v.getClass()),
-					v.getConfiguration(),(Class<IElementAdapter>) v.getAdapter().getClass());
+		return new ElementDecoratorXmlELement(ElementDecoratorFactory
+				.getDescriptor(v.getClass()).getName(), v.getConfiguration());
 	}
 
 	@Override
 	public ElementDecorator unmarshal(ElementDecoratorXmlELement v)
 			throws Exception {
+
 		ElementDecorator decorator = (ElementDecorator) ElementDecoratorFactory
-				.create(v.getDescriptor(), v.getElementAdapterClass().newInstance());
-		
+				.create(v.getDecorator(), null);
 		decorator.setConfiguration(v.getConfiguration());
 		return decorator;
 	}

@@ -26,23 +26,7 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	@Override
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
-		return (IMatrix) PersistenceManager.load(null, v.getReference(),
-				FileExtensions.getEntityExtension(v.getClass()));
+		IMatrix matrix = (IMatrix) PersistenceManager.load(null, v.getReference(),(v.getType()));
+		return matrix;
 	}
-
-	/*
-	 * 
-	 * public String marshal(IMatrix v) throws Exception { // FIXME: de donde
-	 * puedo sacar el resource para guardar la matriz? return
-	 * resource.toURI().toString().replace( baseResource.toURI().toString(),
-	 * ""); }
-	 * 
-	 * public IMatrix unmarshal(String v) throws Exception { // FIXME: el
-	 * baseResource no es necesario siempre no hay porque // arrastralo
-	 * 
-	 * URI uri = new URI(v); URI path = resource.toURI().resolve(uri);
-	 * 
-	 * return (IMatrix) PersistenceManager.load(null, new FileResource( new
-	 * File(path)), FileExtensions.OBJECT_MATRIX);
-	 */
 }

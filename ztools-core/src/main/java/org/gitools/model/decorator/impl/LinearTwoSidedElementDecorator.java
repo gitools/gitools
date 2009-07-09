@@ -1,6 +1,10 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
@@ -11,6 +15,7 @@ import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
+@XmlRootElement
 public class LinearTwoSidedElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -181427286948958314L;
@@ -111,5 +116,18 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
+	}
+	
+	@Override
+	public Map<String, String> getConfiguration() {
+		
+		Map<String, String> configuration = new HashMap <String, String>();
+		configuration.put("valueIndex;", Integer.toString(valueIndex));
+		return configuration;
+	}
+
+	@Override
+	public void setConfiguration(Map<String, String> configuration) {
+		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
 	}
 }

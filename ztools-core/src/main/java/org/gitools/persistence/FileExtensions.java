@@ -19,9 +19,9 @@ public class FileExtensions {
 	public static final String RESOURCE_CONTAINER = "folder";
 	public static final String MATRIX_FIGURE = "figure";
 
-	public static final String OBJECT_MATRIX = "resultsMatrix";
+	public static final String OBJECT_MATRIX = "objectMatrix";
 	public static final String ANNOTATION_MATRIX = "annotationMatrix";
-	public static final String DOUBLE_MATRIX = "dataMatrix";
+	public static final String DOUBLE_MATRIX = "doubleMatrix";
 	public static final String STRING_MATRIX = "stringMatrix";
 
 	private static final Map <Class<?>, String> extensionsMap = new HashMap<Class<?>, String>();

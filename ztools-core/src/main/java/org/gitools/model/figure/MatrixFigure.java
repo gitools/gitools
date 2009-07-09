@@ -5,7 +5,9 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.decorator.ElementDecorator;
@@ -16,8 +18,6 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.xml.ColorXmlAdapter;
-import org.gitools.model.xml.ElementDecoratorXmlAdapter;
-import org.gitools.model.xml.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.MatrixViewXmlAdapter;
 
 
@@ -37,13 +37,13 @@ public class MatrixFigure
 	public static final String TABLE_CHANGED = "table";
 	
 	
-	@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
+	@XmlAnyElement
 	private ElementDecorator cellDecorator;
 	
-	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
+	@XmlTransient
 	private HeaderDecorator rowDecorator;
 	
-	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
+	@XmlTransient
 	private HeaderDecorator columnDecorator;
 	
 	
