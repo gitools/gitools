@@ -1,5 +1,7 @@
 package org.gitools.model.matrix;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -17,7 +19,8 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"rowNames", 
 				"data"///})*/
 				
-public final class DoubleMatrix implements IMatrix {
+public final class DoubleMatrix 
+	implements IMatrix, Serializable {
 
 	protected String name;
 	
