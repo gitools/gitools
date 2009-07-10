@@ -1,10 +1,11 @@
 package edu.upf.bg;
 
+import java.io.Serializable;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericFormatter {
+public class GenericFormatter implements Serializable {
 
 	private static final long oneMicrosecond = 1000;
 	private static final long oneMilisecond = 1000 * oneMicrosecond;
@@ -30,7 +31,7 @@ public class GenericFormatter {
 	private Map<Class<?>, String> genericFormatMap;
 	
 	private StringBuilder sb;
-	private Formatter fmt;
+	private transient Formatter fmt;
 	
 	public GenericFormatter(String ltString) {
 		this.ltString = ltString;

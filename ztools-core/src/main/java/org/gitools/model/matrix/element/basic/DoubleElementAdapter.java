@@ -1,5 +1,6 @@
 package org.gitools.model.matrix.element.basic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import org.gitools.model.matrix.element.IElementProperty;
 
 public class DoubleElementAdapter extends AbstractElementAdapter {
 
-	private class Property extends AbstractElementProperty {
+	private class Property extends AbstractElementProperty implements Serializable {
 		public Property(String id, String name, String description, Class<?> valueClass) {
 			super(id,name, description, valueClass);
 		}

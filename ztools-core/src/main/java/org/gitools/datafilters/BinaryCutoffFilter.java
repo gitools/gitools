@@ -1,11 +1,13 @@
 package org.gitools.datafilters;
 
+import java.io.Serializable;
+
 import cern.colt.function.DoubleFunction;
 
 public class BinaryCutoffFilter 
-		implements ValueFilter, DoubleFunction {
+		implements ValueFilter, DoubleFunction, Serializable {
 
-	public interface BinaryCutoffCmp {
+	public interface BinaryCutoffCmp extends Serializable {
 		boolean compare(double value, double cutoff);
 	}
 	

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
@@ -15,16 +17,27 @@ import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -181427286948958314L;
 
 	private int valueIndex;
-	
+	@XmlTransient
 	private LinearTwoSidedColorScale scale;
-	
+	@XmlTransient
 	private GenericFormatter fmt = new GenericFormatter("<");
+	
+	
+	public LinearTwoSidedElementDecorator(){
+		
+		valueIndex = getPropertyIndex(new String[] {
+				"value", "log2ratio" });
+		
+		scale = new LinearTwoSidedColorScale();
+
+	}
+	
 	
 	public LinearTwoSidedElementDecorator(IElementAdapter adapter) {
 		super(adapter);

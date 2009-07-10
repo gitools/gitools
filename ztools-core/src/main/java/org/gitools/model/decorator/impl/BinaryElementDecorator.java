@@ -26,12 +26,28 @@ public class BinaryElementDecorator extends ElementDecorator {
 	private int valueIndex;
 	
 	private double cutoff;
+	//FIXME: could it be transient?
 	private BinaryCutoffCmp cutoffCmp;
 	
 	private Color color;
 	private Color nonSignificantColor;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
+	
+	
+	public BinaryElementDecorator() {
+		
+		valueIndex = getPropertyIndex(new String[] {
+				"value" });
+		
+		cutoff = 1.0;
+		
+		cutoffCmp = BinaryCutoffFilter.EQ;
+		
+		color = defaultColor;
+		nonSignificantColor = ColorConstants.nonSignificantColor;
+	}
+	
 	
 	public BinaryElementDecorator(IElementAdapter adapter) {
 		super(adapter);

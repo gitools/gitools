@@ -1,9 +1,8 @@
 package org.gitools.model.decorator;
 
-import javax.xml.bind.annotation.XmlElement;
 
 public class ElementDecoratorDescriptor {
-	@XmlElement
+
 	private String name;
 	private Class<? extends ElementDecorator> decoratorClass;
 	

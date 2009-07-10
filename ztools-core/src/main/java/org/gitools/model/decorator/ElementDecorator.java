@@ -2,15 +2,19 @@ package org.gitools.model.decorator;
 
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
-@XmlRootElement
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ElementDecorator extends AbstractModel {
 
 	private static final long serialVersionUID = -2101303088018509837L;
 
+	@XmlTransient
 	protected IElementAdapter adapter;
 	
 	public ElementDecorator(){

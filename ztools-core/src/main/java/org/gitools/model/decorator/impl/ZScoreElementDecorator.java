@@ -4,20 +4,17 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.jet.stat.Probability;
-
 import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
-@XmlRootElement
+
 public class ZScoreElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -7623938918947195891L;
@@ -30,6 +27,20 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	private ZScoreColorScale scale;
 	
 	private GenericFormatter fmt = new GenericFormatter("<");
+	
+	
+	public ZScoreElementDecorator(){
+	
+		valueIndex = getPropertyIndex(new String[] { "z-score" });
+		correctedValueIndex = getPropertyIndex(new String[] { 
+				"corrected-two-tail-p-value", "corrected-p-value" });
+		
+		useCorrection = false;
+		significanceLevel = 0.05;
+		
+		scale = new ZScoreColorScale();
+	}
+	
 	
 	public ZScoreElementDecorator(IElementAdapter adapter) {
 		super(adapter);

@@ -1,5 +1,6 @@
 package org.gitools.model.matrix.element;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import org.gitools.model.matrix.element.bean.BeanElementProperty;
 		BeanElementProperty.class})
 		
 public abstract class AbstractElementAdapter
-		implements IElementAdapter {
+		implements IElementAdapter, Serializable {
 
 	protected Class<?> elementClass;
 	

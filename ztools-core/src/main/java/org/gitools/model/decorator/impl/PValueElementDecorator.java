@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.matrix.MatrixUtils;
@@ -19,7 +18,6 @@ import edu.upf.bg.colorscale.PValueColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement
 public class PValueElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -1215192981017862718L;
@@ -28,6 +26,7 @@ public class PValueElementDecorator extends ElementDecorator {
 	private int correctedValueIndex;
 	private boolean useCorrection;
 	private double significanceLevel;
+	
 	@XmlTransient
 	private PValueColorScale scale;
 	@XmlTransient
