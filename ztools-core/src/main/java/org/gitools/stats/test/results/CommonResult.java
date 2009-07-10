@@ -1,8 +1,10 @@
 package org.gitools.stats.test.results;
 
+import java.io.Serializable;
+
 import org.gitools.model.matrix.element.Property;
 
-public class CommonResult {
+public class CommonResult implements Serializable{
 
 	public int N;
 	public double leftPvalue;

@@ -1,5 +1,7 @@
 package org.gitools.model.matrix.element;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -11,7 +13,7 @@ import org.gitools.model.matrix.element.bean.BeanElementProperty;
 		BeanElementProperty.class})
 		
 public abstract class AbstractElementProperty 
-		implements IElementProperty {
+		implements IElementProperty, Serializable {
 
 	protected String id;
 	protected String name;

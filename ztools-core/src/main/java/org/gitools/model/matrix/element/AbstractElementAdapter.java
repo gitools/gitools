@@ -23,9 +23,9 @@ public abstract class AbstractElementAdapter
 
 	protected Class<?> elementClass;
 	
-	private List<IElementProperty> properties = new ArrayList<IElementProperty>(0);
+	private transient List<IElementProperty> properties = new ArrayList<IElementProperty>(0);
 	
-	private Map<String, Integer> propIdToIndexMap;
+	private transient Map<String, Integer> propIdToIndexMap;
 	
 	public AbstractElementAdapter() {
 	}
