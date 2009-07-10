@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.decorator.HeaderDecoration;
 import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.model.xml.AnnotationMatrixXmlAdapter;
+import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AnnotationHeaderDecorator extends HeaderDecorator {

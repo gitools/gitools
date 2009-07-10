@@ -14,5 +14,6 @@ public interface IResource extends Serializable {
 	Writer openWriter() throws FileNotFoundException, IOException;
 	
 	URI toURI();
-	
+
+	IResource resolve(String str);
 }

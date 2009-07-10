@@ -1,7 +1,5 @@
 package org.gitools.model.matrix;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -9,8 +7,8 @@ import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.colt.matrix.ObjectMatrix1D;
 
-public abstract class AbstractMatrix
-		implements IMatrix, Serializable {
+public abstract class AbstractMatrix 
+	extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
 

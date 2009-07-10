@@ -1,9 +1,10 @@
-package org.gitools.model.xml;
+package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.xml.ElementDecoratorXmlELement;
 
 /**
  * <p>

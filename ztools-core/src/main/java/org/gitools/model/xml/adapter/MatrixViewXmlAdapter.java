@@ -1,4 +1,4 @@
-package org.gitools.model.xml;
+package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

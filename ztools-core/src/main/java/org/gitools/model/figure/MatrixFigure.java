@@ -16,13 +16,15 @@ import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.model.xml.ColorXmlAdapter;
-import org.gitools.model.xml.ElementDecoratorXmlAdapter;
-import org.gitools.model.xml.MatrixViewXmlAdapter;
+import org.gitools.model.xml.adapter.ColorXmlAdapter;
+import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
+import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
+import org.gitools.model.xml.adapter.MatrixViewXmlAdapter;
 
 
 //@XmlType( propOrder={"cellDercorator", "rowDecorator", "columnDecorator", 
 //		"matrixView", "showGrid", "gridColor", "cellSize", "rowSize","columnSize"} )
+@XmlJavaTypeAdapter(MatrixFigureXmlAdapter.class)
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
 public class MatrixFigure 

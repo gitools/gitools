@@ -1,4 +1,4 @@
-package org.gitools.model.xml;
+package org.gitools.model.xml.adapter;
 
 import java.awt.Color;
 

@@ -20,7 +20,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"data"///})*/
 				
 public final class DoubleMatrix 
-	implements IMatrix, Serializable {
+	extends Matrix	{			
 
 	protected String name;
 	

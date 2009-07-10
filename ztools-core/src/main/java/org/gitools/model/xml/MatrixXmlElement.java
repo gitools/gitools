@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.IResource;
 
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
-import org.gitools.model.xml.ColorXmlAdapter;
+import org.gitools.model.xml.adapter.ColorXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HeaderDecorator extends AbstractModel {

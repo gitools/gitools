@@ -1,4 +1,4 @@
-package org.gitools.model.xml;
+package org.gitools.model.xml.adapter;
 
 import java.io.File;
 import java.net.URI;
@@ -15,21 +15,20 @@ public class AnnotationMatrixXmlAdapter extends
 		XmlAdapter<String, AnnotationMatrix> {
 
 	IResource baseResource;
-	FileResource resource;
-
+	
 	public AnnotationMatrixXmlAdapter() {
+	
 	}
 
 	public AnnotationMatrixXmlAdapter(FileResource resource,
 			IResource baseResource) {
 		this.baseResource = baseResource;
-		this.resource = resource;
 	}
 
 	@Override
 	public String marshal(AnnotationMatrix v) throws Exception {
 		// FIXME: de donde puedo sacar el resource para guardar la matriz?
-		return resource.toURI().toString().replace(
+		return v.getResource().toURI().toString().replace(
 				baseResource.toURI().toString(), "");
 	}
 
@@ -38,9 +37,9 @@ public class AnnotationMatrixXmlAdapter extends
 		// arrastralo
 
 		URI uri = new URI(v);
-		URI path = resource.toURI().resolve(uri);
+		URI path = baseResource.toURI().resolve(uri);
 
-		return (AnnotationMatrix) PersistenceManager.load(null,
+		return (AnnotationMatrix) PersistenceManager.load(
 				new FileResource(new File(path)),
 				FileExtensions.ANNOTATION_MATRIX);
 

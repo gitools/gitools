@@ -18,40 +18,21 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class PersistenceManager {
 
-	private static final Map<String, Class<?>> 
-		extensionsPersistenceMap = new HashMap<String, Class<?>>();
-	
 	private static final Map<Class<? extends Object>, Class<?>> 
-		classesPersistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
+		persistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
 
 	static {
 
-		// map to used to read an object
-	
-		extensionsPersistenceMap.put(FileExtensions.PROJECT,
-				JAXBPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.RESOURCE_CONTAINER,
-				JAXBPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.MATRIX_FIGURE,
-				JAXBPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.OBJECT_MATRIX,
-				TextObjectMatrixPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.ANNOTATION_MATRIX,
-				TextAnnotationMatrixPersistence.class);
-		extensionsPersistenceMap.put(FileExtensions.DOUBLE_MATRIX,
-				TextDoubleMatrixPersistence.class);
-
-		
-		// map to store an object
-
-		classesPersistenceMap.put(Project.class, JAXBPersistence.class);
-		classesPersistenceMap.put(ResourceContainer.class,
-				JAXBPersistence.class);
-		classesPersistenceMap.put(MatrixFigure.class, JAXBPersistence.class);
-		classesPersistenceMap.put(ObjectMatrix.class,
-				TextObjectMatrixPersistence.class);
-		classesPersistenceMap.put(AnnotationMatrix.class,
-				TextAnnotationMatrixPersistence.class);
+		persistenceMap.put(
+				Project.class, XmlGenericPersistence.class);
+		persistenceMap.put(
+				ResourceContainer.class,XmlResourcePersistence.class);
+		persistenceMap.put(
+				MatrixFigure.class,XmlGenericPersistence.class);
+		persistenceMap.put(
+				ObjectMatrix.class,TextObjectMatrixPersistence.class);
+		persistenceMap.put(
+				AnnotationMatrix.class,TextAnnotationMatrixPersistence.class);
 
 	}
 
@@ -61,8 +42,7 @@ public class PersistenceManager {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static IEntityPersistence createEntityPersistence(
-			IResource baseResource, IResource resource) {
+	public static IEntityPersistence createEntityPersistence(IResource resource) {
 
 		IEntityPersistence entityPersistence = null;
 
@@ -72,8 +52,7 @@ public class PersistenceManager {
 					((FileResource) resource).getFile(),
 					FileExtensions.extensionSeparator);
 
-			entityPersistence = createEntityPersistence(baseResource, resource,
-					extension);
+			entityPersistence = createEntityPersistence(resource,extension);
 
 		}
 		return entityPersistence;
@@ -86,21 +65,19 @@ public class PersistenceManager {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static IEntityPersistence createEntityPersistence(
-			IResource baseResource, IResource resource, String extension) {
+	public static IEntityPersistence createEntityPersistence(IResource resource, String extension) {
 
 		if (resource.getClass().equals(FileResource.class)) {
 
-			Class<?> fileResourceClass = extensionsPersistenceMap
-					.get(extension);
-
+			Class<?> fileResourceClass = persistenceMap
+					.get(FileExtensions.getEntityClass(extension));
+			
 			try {
 
-				if (fileResourceClass.equals(JAXBPersistence.class)) {
+				if (fileResourceClass.equals(XmlResourcePersistence.class)) {
 					Constructor<?> c = fileResourceClass.getConstructor(
 							IResource.class, String.class);
-					return (IEntityPersistence) c.newInstance(baseResource,
-							extension);
+					return (IEntityPersistence) c.newInstance(resource,extension);
 				}
 
 				return (IEntityPersistence) fileResourceClass.newInstance();
@@ -117,10 +94,10 @@ public class PersistenceManager {
 	public static <T> IEntityPersistence<T> createEntityPersistence(
 			IResource baseResource, Class<T> entityClass) {
 
-		Class<?> fileResourceClass = classesPersistenceMap.get(entityClass);
+		Class<?> fileResourceClass = persistenceMap.get(entityClass);
 
 		try {
-			if (fileResourceClass.equals(JAXBPersistence.class)) {
+			if (fileResourceClass.equals(XmlGenericPersistence.class)) {
 				Constructor<?> c = fileResourceClass.getConstructor(
 						IResource.class, Class.class);
 				return (IEntityPersistence) c.newInstance(baseResource,
@@ -147,28 +124,25 @@ public class PersistenceManager {
 	 * @throws PersistenceException
 	 */
 	@SuppressWarnings("unchecked")
-	public static Object load(IResource baseResource, IResource resource)
+	public static Object load(IResource resource)
 			throws PersistenceException {
 
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
-				baseResource, resource);
+		IEntityPersistence<Object> entityPersistence = createEntityPersistence(resource);
 		return entityPersistence.read(resource, monitor);
 	}
 
 	
 	
 	@SuppressWarnings("unchecked")
-	public static Object load(IResource baseResource, IResource resource,
-			String fileExtension) throws PersistenceException {
+	public static Object load(IResource resource, String fileExtension) throws PersistenceException {
 
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
-				baseResource, resource, fileExtension);
+		IEntityPersistence<Object> entityPersistence = createEntityPersistence(resource, fileExtension);
 		return entityPersistence.read(resource, monitor);
 	}
 
@@ -196,33 +170,21 @@ public class PersistenceManager {
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Storing ... " + resource.toURI(), 1);
 
-		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) createEntityPersistence(
-				baseResource, entity.getClass());
+		IEntityPersistence<Object> entityPersistence = 
+			(IEntityPersistence<Object>) createEntityPersistence(baseResource, entity.getClass());
+		
 		entityPersistence.write(resource, entity, monitor);
+		
 		return true;
-
 	}
 
 	private static String getExtension(File file, String extensionSeparator) {
 
 		String fileName = file.getName();
-		String extension = fileName.substring(fileName
-				.lastIndexOf(extensionSeparator) + 1);
-		fileName.replace(extension, " ");
+		String extension = fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
+		fileName.replace(extension," ");
 
-		if (fileName.contains("results"))
-			return "results";
-
-		/*
-		 * //FIXME: System.out.println("la extension es" + extension); while
-		 * (extension.equals("gzip") || extension.equals("csv") ||
-		 * extension.equals("gz") || extension.equals("tsv") ){ extension =
-		 * fileName.substring(fileName.lastIndexOf(extensionSeparator) + 1);
-		 * System.out.println("la buvle es la siguiente"+ extension +" " +
-		 * fileName); }
-		 */
-		System.out.println("la extension es la siguiente " + fileName + " "
-				+ extension);
+		System.out.println("la extension es la siguiente " + fileName + " "+ extension);
 		return extension;
 
 	}

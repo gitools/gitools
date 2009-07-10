@@ -29,6 +29,10 @@ public abstract class ElementDecorator extends AbstractModel {
 		return adapter;
 	}
 	
+	public void setAdapter(IElementAdapter adapter){
+		this.adapter = adapter;
+	}
+	
 	public abstract void decorate(
 			ElementDecoration decoration, 
 			Object element);

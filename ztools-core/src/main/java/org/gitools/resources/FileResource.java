@@ -103,4 +103,16 @@ public class FileResource implements IResource {
 				new BufferedWriter(
 					new FileWriter(path));
 	}
-}
+
+	@Override
+	public FileResource resolve(String str) {
+		return new FileResource (new File (this.file, str));
+		
+	}
+
+/*	public FileResource relativize (FileResource fileResource){
+		URI baseUri =  this.file.toURI(); 
+		URI uriToRelativize = fileResource.toURI();
+		
+	}}
+*/}

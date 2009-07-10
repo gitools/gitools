@@ -26,7 +26,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 	private int valueIndex;
 	
 	private double cutoff;
-	//FIXME: could it be transient?
+	
 	private BinaryCutoffCmp cutoffCmp;
 	
 	private Color color;
