@@ -20,10 +20,11 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 	private Class<?> entityClass;
 	
 	@SuppressWarnings("unchecked")
-	protected XmlAdapter[] adapters;
+	protected XmlAdapter[] adapters ;
 
 	public XmlGenericPersistence(Class<?> entityClass) {
 		this.entityClass = entityClass;
+		adapters = new XmlAdapter[0];
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,10 +44,10 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 		JAXBContext context;
 		try {
-
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
 
+			
 			for (XmlAdapter adapter : adapters) {
 				u.setAdapter(adapter);
 			}

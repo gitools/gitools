@@ -16,4 +16,6 @@ public interface IResource extends Serializable {
 	URI toURI();
 
 	IResource resolve(String str);
+	
+	IResource relativize(IResource resource);
 }

@@ -11,12 +11,14 @@ import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.StringMatrix;
 
-public class FileExtensions {
+public class Extensions {
 
 	public static final String extensionSeparator = ".";
 
+	public static final String Contents = "contents.xml";
+	
 	public static final String PROJECT = "project";
-	public static final String RESOURCE_CONTAINER = "folder";
+
 	public static final String MATRIX_FIGURE = "figure";
 
 	public static final String OBJECT_MATRIX = "objectMatrix";
@@ -31,28 +33,28 @@ public class FileExtensions {
 	static {
 		
 		extensionsMap.put(ObjectMatrix.class,
-				FileExtensions.OBJECT_MATRIX);
+				Extensions.OBJECT_MATRIX);
 		extensionsMap.put(DoubleMatrix.class,
-				FileExtensions.DOUBLE_MATRIX);
+				Extensions.DOUBLE_MATRIX);
 		extensionsMap.put(StringMatrix.class,
-				FileExtensions.STRING_MATRIX);
+				Extensions.STRING_MATRIX);
 		extensionsMap.put(AnnotationMatrix.class,
-				FileExtensions.ANNOTATION_MATRIX);
+				Extensions.ANNOTATION_MATRIX);
 
 		
-		classesMap.put(FileExtensions.PROJECT, Project.class);
-		classesMap.put(FileExtensions.RESOURCE_CONTAINER, ResourceContainer.class);
-		classesMap.put(FileExtensions.MATRIX_FIGURE, MatrixFigure.class);
+		classesMap.put(Extensions.PROJECT, Project.class);
+		classesMap.put(Extensions.Contents, ResourceContainer.class);
+		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
 		
 		
-		classesMap.put(FileExtensions.OBJECT_MATRIX, ObjectMatrix.class);
-		classesMap.put(FileExtensions.DOUBLE_MATRIX, DoubleMatrix.class);
-		classesMap.put(FileExtensions.STRING_MATRIX, StringMatrix.class);
-		classesMap.put(FileExtensions.ANNOTATION_MATRIX,AnnotationMatrix.class);
+		classesMap.put(Extensions.OBJECT_MATRIX, ObjectMatrix.class);
+		classesMap.put(Extensions.DOUBLE_MATRIX, DoubleMatrix.class);
+		classesMap.put(Extensions.STRING_MATRIX, StringMatrix.class);
+		classesMap.put(Extensions.ANNOTATION_MATRIX,AnnotationMatrix.class);
 
 	}
 
-	private FileExtensions() {
+	private Extensions() {
 		
 	}
 

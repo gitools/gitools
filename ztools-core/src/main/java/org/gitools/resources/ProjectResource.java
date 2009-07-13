@@ -12,12 +12,22 @@ public class ProjectResource implements IResource{
 	protected String location;
 	protected IResource resource;
 	
+	
 	public ProjectResource(IResource base, String location){
 		this.base = base;
 		this.location = location;
 		this.resource = base.resolve(location);
 	}
 	
+
+	public IResource getBase() {
+		return base;
+	}
+
+	public void setBase(IResource base) {
+		this.base = base;
+	}
+
 	@Override
 	public Reader openReader() throws FileNotFoundException, IOException {
 		return resource.openReader();
@@ -35,8 +45,9 @@ public class ProjectResource implements IResource{
 
 	@Override
 	public IResource resolve(String str) {
-	//	new ProjectResource(base, );
-		return this.resource.resolve(str);
+		resource.resolve(str);
+		resource.relativize(base);
+		return new ProjectResource(base,resource.toURI().toString());
 	}
 
 	@Override
@@ -44,6 +55,10 @@ public class ProjectResource implements IResource{
 		return location;
 	}
 
-	
-	
+	@Override
+	public IResource relativize(IResource resource) {
+		String location = this.resource.toURI().relativize(resource.toURI()).toString();
+		return new ProjectResource(base, location );
+	}
+
 }

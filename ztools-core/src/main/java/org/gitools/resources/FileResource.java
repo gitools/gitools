@@ -24,6 +24,8 @@ public class FileResource implements IResource {
 
 	private File file;
 	
+	private URI uri;
+	
 	public FileResource() {
 	}
 	
@@ -33,6 +35,13 @@ public class FileResource implements IResource {
 	
 	public FileResource(File file) {
 		this.file = file;
+		this.uri = file.toURI();
+	
+	}
+	
+	public FileResource (URI uri){
+		this.uri = uri;
+		this.file = new File(uri);
 	}
 	
 	@Override
@@ -47,7 +56,7 @@ public class FileResource implements IResource {
 	
 	@Override
 	public URI toURI() {
-		return file.toURI();
+		return uri;
 	}
 	
 	public String getResourcePath() {
@@ -106,13 +115,13 @@ public class FileResource implements IResource {
 
 	@Override
 	public FileResource resolve(String str) {
-		return new FileResource (new File (this.file, str));
+		return new FileResource (uri.resolve(str));
 		
 	}
 
-/*	public FileResource relativize (FileResource fileResource){
-		URI baseUri =  this.file.toURI(); 
-		URI uriToRelativize = fileResource.toURI();
+	@Override
+	public IResource relativize(IResource resource) {
+		 return new FileResource (this.uri.relativize(resource.toURI()));
 		
-	}}
-*/}
+	}
+}

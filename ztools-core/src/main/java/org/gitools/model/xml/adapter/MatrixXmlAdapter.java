@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.Matrix;
 import org.gitools.model.xml.MatrixXmlElement;
-import org.gitools.persistence.FileExtensions;
+import org.gitools.persistence.Extensions;
 import org.gitools.persistence.PersistenceManager;
 
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
@@ -17,7 +17,7 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	@Override
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
 		Matrix matrix = (Matrix) v;
-		return new MatrixXmlElement(FileExtensions.getEntityExtension(v
+		return new MatrixXmlElement(Extensions.getEntityExtension(v
 				.getClass()), matrix.getResource());
 	}
 
