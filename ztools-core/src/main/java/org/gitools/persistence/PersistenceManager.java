@@ -4,13 +4,13 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.resources.IResource;
-import org.gitools.resources.ProjectResource;
 
 import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -21,10 +21,12 @@ public class PersistenceManager {
 
 	static {
 
-		persistenceMap.put(Project.class, XmlGenericPersistence.class);
+		persistenceMap.put(Project.class, 
+				XmlGenericPersistence.class);
 		persistenceMap.put(ResourceContainer.class,
 				XmlResourcePersistence.class);
-		persistenceMap.put(MatrixFigure.class, XmlGenericPersistence.class);
+		persistenceMap.put(MatrixFigure.class, 
+				XmlResourcePersistence.class);
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
 		persistenceMap.put(AnnotationMatrix.class,
@@ -131,7 +133,13 @@ public class PersistenceManager {
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
 		IEntityPersistence<Object> entityPersistence = createEntityPersistence(resource);
-		return entityPersistence.read(resource, monitor);
+		
+		Object entity = entityPersistence.read(resource, monitor);
+		
+		if (entity instanceof Artifact)
+			((Artifact) entity).setResource(resource);		
+	
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -143,7 +151,14 @@ public class PersistenceManager {
 
 		IEntityPersistence<Object> entityPersistence = createEntityPersistence(
 				resource, fileExtension);
-		return entityPersistence.read(resource, monitor);
+		
+
+		Object entity = entityPersistence.read(resource, monitor);
+		
+		if (entity instanceof Artifact)
+			((Artifact) entity).setResource(resource);		
+	
+		return entity;
 	}
 
 	/**
@@ -161,14 +176,13 @@ public class PersistenceManager {
 	 * @throws PersistenceException
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean store(IResource baseResource, IResource resource,
-			Object entity) throws PersistenceException {
+	public static boolean store(IResource resource, Object entity) throws PersistenceException {
 
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Storing ... " + resource.toURI(), 1);
 
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) createEntityPersistence(
-				baseResource, entity.getClass());
+				resource, entity.getClass());
 
 		entityPersistence.write(resource, entity, monitor);
 
@@ -182,7 +196,10 @@ public class PersistenceManager {
 
 		if (uri.contains("contents.xml"))
 			extension = Extensions.Contents;
-
+		
+		else if( uri.contains("results"))
+			extension = Extensions.OBJECT_MATRIX;
+		
 		else {
 			extension = uri.substring(uri.lastIndexOf('.') + 1);
 			extension.replace(extension, " ");

@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -14,7 +17,7 @@ import edu.upf.bg.GenericFormatter;
 import edu.upf.bg.colorscale.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -7623938918947195891L;

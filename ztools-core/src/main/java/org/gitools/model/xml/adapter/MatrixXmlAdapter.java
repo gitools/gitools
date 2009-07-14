@@ -10,10 +10,6 @@ import org.gitools.persistence.PersistenceManager;
 
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
-	public MatrixXmlAdapter() {
-	
-	}
-
 	@Override
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
 		Matrix matrix = (Matrix) v;

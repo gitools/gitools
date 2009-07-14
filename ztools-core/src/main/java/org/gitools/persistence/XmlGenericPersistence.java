@@ -54,9 +54,9 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 			entity = (Object) u.unmarshal(reader);
 		
-			if (entity instanceof Artifact ){
+			/*if (entity instanceof Artifact ){
 				((Artifact) entity).setResource(resource);
-			}
+			}*/
 			
 			reader.close();
 
