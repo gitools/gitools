@@ -199,6 +199,9 @@ public class PersistenceManager {
 		
 		else if( uri.contains("results"))
 			extension = Extensions.OBJECT_MATRIX;
+	
+		else if( uri.contains("data"))
+			extension = Extensions.DOUBLE_MATRIX;
 		
 		else {
 			extension = uri.substring(uri.lastIndexOf('.') + 1);
