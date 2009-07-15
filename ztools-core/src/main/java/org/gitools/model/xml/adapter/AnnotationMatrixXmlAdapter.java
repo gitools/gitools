@@ -5,20 +5,15 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.Extensions;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.resources.IResource;
-import org.gitools.resources.ProjectResource;
+import org.gitools.resources.factory.ResourceFactory;
 
 public class AnnotationMatrixXmlAdapter extends
 		XmlAdapter<String, AnnotationMatrix> {
 
-	IResource base;
-	
-	public AnnotationMatrixXmlAdapter() {
-	
-	}
+	ResourceFactory resourceFactory;
 
-	public AnnotationMatrixXmlAdapter(ProjectResource resource) {
-		this.base= resource.getBase();
+	public AnnotationMatrixXmlAdapter(ResourceFactory resourceFactory) {
+		this.resourceFactory = resourceFactory;
 	}
 
 	@Override
@@ -27,8 +22,8 @@ public class AnnotationMatrixXmlAdapter extends
 	}
 
 	public AnnotationMatrix unmarshal(String v) throws Exception {
-		return (AnnotationMatrix) PersistenceManager.load(
-				new ProjectResource(base,v),Extensions.ANNOTATION_MATRIX);
+		return (AnnotationMatrix) PersistenceManager.load(resourceFactory,
+				resourceFactory.getResource(v), Extensions.ANNOTATION_MATRIX);
 
 	}
 

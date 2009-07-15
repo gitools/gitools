@@ -15,9 +15,9 @@ public class Extensions {
 
 	public static final String extensionSeparator = ".";
 
-	public static final String Contents = "contents.xml";
+	public static final String CONTENTS = "contents.xml";
 	
-	public static final String PROJECT = "project";
+	public static final String PROJECT = "project.xml";
 
 	public static final String MATRIX_FIGURE = "figure";
 
@@ -43,7 +43,7 @@ public class Extensions {
 
 		
 		classesMap.put(Extensions.PROJECT, Project.class);
-		classesMap.put(Extensions.Contents, ResourceContainer.class);
+		classesMap.put(Extensions.CONTENTS, ResourceContainer.class);
 		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
 		
 		

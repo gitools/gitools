@@ -8,7 +8,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.Artifact;
 import org.gitools.resources.IResource;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -47,17 +46,11 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
 
-			
 			for (XmlAdapter adapter : adapters) {
 				u.setAdapter(adapter);
 			}
 
 			entity = (Object) u.unmarshal(reader);
-		
-			/*if (entity instanceof Artifact ){
-				((Artifact) entity).setResource(resource);
-			}*/
-			
 			reader.close();
 
 		} catch (Exception e) {

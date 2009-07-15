@@ -8,9 +8,11 @@ import java.net.URI;
 
 public class ProjectResource implements IResource{
 	
+	public static String scheme = "project:";
+	
 	protected IResource base;
 	protected String location;
-	protected IResource resource;
+	private IResource resource;
 	
 	
 	public ProjectResource(IResource base, String location){
@@ -52,7 +54,7 @@ public class ProjectResource implements IResource{
 
 	@Override
 	public String toString() {
-		return location;
+		return scheme + location;
 	}
 
 	@Override

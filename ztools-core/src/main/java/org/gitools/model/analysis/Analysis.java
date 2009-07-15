@@ -23,6 +23,7 @@ public class Analysis extends Artifact {
 	protected Date startTime;	
 	protected long elapsedTime;
 	
+	/** Original matrix, before ToolConfig applied **/
 	protected DoubleMatrix dataTable;
 	protected ModuleMap moduleMap;
 	protected ObjectMatrix resultsMatrix;

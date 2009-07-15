@@ -11,10 +11,12 @@ public class ElementDecoratorXmlELement {
 	private String decorator;
 	private Map<String, String> configuration;
 
-	public ElementDecoratorXmlELement() {
-
+	
+	public ElementDecoratorXmlELement(){
+		
 	}
-
+	
+	
 	public ElementDecoratorXmlELement(String descriptor,
 			Map<String, String> configuration) {
 		this.decorator = descriptor;

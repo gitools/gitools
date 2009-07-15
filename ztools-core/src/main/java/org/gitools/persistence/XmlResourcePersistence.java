@@ -3,20 +3,15 @@ package org.gitools.persistence;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.xml.adapter.ResourceXmlAdapter;
-import org.gitools.resources.IResource;
-import org.gitools.resources.ProjectResource;
+import org.gitools.resources.factory.ResourceFactory;
 
 public class XmlResourcePersistence extends XmlGenericPersistence {
 
-	public XmlResourcePersistence(IResource resource, Class<?> entityClass) {
+	public XmlResourcePersistence(ResourceFactory resourceFactory,
+			Class<?> entityClass) {
 		super(entityClass);
 
-		IResource base = null;
-
-		if (resource instanceof ProjectResource)
-			base = ((ProjectResource) resource).getBase();
-
-		super.adapters = new XmlAdapter[] { new ResourceXmlAdapter(base) };
+		super.adapters = new XmlAdapter[] { new ResourceXmlAdapter(resourceFactory) };
 	}
 
 }

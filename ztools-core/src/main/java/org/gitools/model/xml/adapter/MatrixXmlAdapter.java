@@ -7,9 +7,21 @@ import org.gitools.model.matrix.Matrix;
 import org.gitools.model.xml.MatrixXmlElement;
 import org.gitools.persistence.Extensions;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.resources.factory.ResourceFactory;
 
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
+	ResourceFactory resourceFactory;
+	public MatrixXmlAdapter(){
+		
+	}
+	
+	
+	public MatrixXmlAdapter(ResourceFactory resourceFactory){
+		this.resourceFactory = resourceFactory;
+	}
+	
+	
 	@Override
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
 		Matrix matrix = (Matrix) v;
@@ -19,7 +31,7 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	@Override
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
-		IMatrix matrix = (IMatrix) PersistenceManager.load( v.getReference(), (v.getType()));
+		IMatrix matrix = (IMatrix) PersistenceManager.load(resourceFactory, v.getReference(), (v.getType()));
 		return matrix;
 	}
 }
