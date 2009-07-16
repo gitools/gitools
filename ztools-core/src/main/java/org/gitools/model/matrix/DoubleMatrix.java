@@ -1,13 +1,10 @@
 package org.gitools.model.matrix;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.basic.DoubleElementAdapter;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
-
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;

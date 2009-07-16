@@ -1,21 +1,130 @@
 package org.gitools.model.figure;
 
-import org.gitools.model.matrix.ITableView;
+import java.awt.Color;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TableFigure extends Figure {
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
+import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
+import org.gitools.model.matrix.TableFormatException;
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableColumn;
+import org.gitools.model.table.TableView;
+
+@SuppressWarnings("unused")
+public class TableFigure extends Figure implements Serializable {
 
 	private static final long serialVersionUID = 9006041133309250290L;
 
-	protected ITableView tableView;
+	// protected ITableView tableView;
+
+	private TableView tableView;
+
+	private List<ElementDecorator> cellDecorators;
+
+	private List<HeaderDecorator> headerDecorators;
+
+	private boolean showGrid;
+
+	private Color gridColor;
+
+	private int rowSize;
 
 	public TableFigure() {
+
+		showGrid = true;
+		gridColor = Color.WHITE;
+		rowSize = 18;
+
+		cellDecorators = new ArrayList<ElementDecorator>();
+		headerDecorators = new ArrayList<HeaderDecorator>();
 	}
 
-	public ITableView getTableView() {
-		return tableView;
+	
+	public TableFigure(TableView tableView){
+		
+		showGrid = true;
+		gridColor = Color.WHITE;
+		rowSize = 18;
+		
+		this.tableView = tableView;
+		cellDecorators = new ArrayList<ElementDecorator>();
+		headerDecorators = new ArrayList<HeaderDecorator>();
+		
+		Object cellElement;
+		ElementDecorator cellDecorator;
+		IElementAdapter elementAdapter;
+		HeaderDecorator headerDecorator;
+		
+		for (int i=0 ; i< tableView.getColumnCount(); i++) {
+			elementAdapter = tableView.getCellColumnAdapter(i);
+			cellDecorator = 
+				new FormattedTextElementDecorator(elementAdapter);
+			
+			headerDecorator = new AnnotationHeaderDecorator();
+			cellDecorators.add(cellDecorator);
+			headerDecorators.add(headerDecorator);
+			
+		}
 	}
 	
-	public void setTableView(ITableView tableView) {
-		this.tableView = tableView;
+	
+	
+	public TableFigure(
+			ITable table, 
+			List<ElementDecorator> cellDecorators,
+			List<HeaderDecorator> headerDecorators) 
+				throws TableFormatException {
+		
+		int columns = table.getColumnCount(); 
+		
+		if ((columns == cellDecorators.size()) 
+				&&  (columns == headerDecorators.size())){
+			
+			this.cellDecorators = cellDecorators;
+			this.headerDecorators = headerDecorators;
+			showGrid = true;
+			gridColor = Color.WHITE;
+			rowSize = 18;
+		}
+		 else 
+			throw new TableFormatException
+				("Wrong number of columns in table decorators");
+		}
+
+	
+	public void setDecorator(ElementDecorator decorator, int column) {
+		cellDecorators.set(column, decorator);
+	}
+
+	public void setHeaderDecorator(ElementDecorator decorator, int column) {
+		cellDecorators.set(column, decorator);
+	}
+
+	public void addColumn(
+			ITableColumn newColumn, 
+			HeaderDecorator headerDecorator, 
+			ElementDecorator cellDecorator) {
+	
+		try {
+			
+			cellDecorators.add(cellDecorator);
+			headerDecorators.add(headerDecorator);
+			tableView.addColumn(newColumn);
+			
+		} catch (TableFormatException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeColumn(int index){
+		cellDecorators.remove(index);
+		headerDecorators.remove(index);
+		tableView.removeColumn(index);
+
 	}
 }

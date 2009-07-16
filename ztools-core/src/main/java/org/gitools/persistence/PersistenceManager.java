@@ -73,7 +73,8 @@ public class PersistenceManager {
 			String entityType)
 				throws PersistenceException {
 
-		IProgressMonitor monitor = new DefaultProgressMonitor();
+		IProgressMonitor monitor = 
+			new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
 		if(entityType==null)
@@ -86,6 +87,7 @@ public class PersistenceManager {
 
 		Object entity = entityPersistence.
 			read(resource, monitor);
+		
 		//FIXME: it must go on every entityPersistence
 		if (entity instanceof Artifact)
 			((Artifact) entity).setResource(resource);		

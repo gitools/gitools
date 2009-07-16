@@ -13,8 +13,8 @@ public class ProjectResourceFactory extends ResourceFactory {
 	}
 
 	public ProjectResource getResource(String location) {
+		
 		if (location.contains(ProjectResource.scheme)) {
-			
 			String newLocation = location.substring(ProjectResource.scheme.length());
 			return new ProjectResource(base, newLocation);
 		}
