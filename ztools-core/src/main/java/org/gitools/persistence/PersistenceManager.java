@@ -77,12 +77,14 @@ public class PersistenceManager {
 			new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
-		if(entityType==null)
-			entityType = getExtension(resource);
+		Class<?> entityClass;
 		
+		if(entityType==null)
+			entityClass = Extensions.getEntityClass(resource);
+		else entityClass = Extensions.getEntityClass(entityType);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence( resourceFactory, Extensions.getEntityClass(entityType));
+			createEntityPersistence( resourceFactory, entityClass);
 		
 
 		Object entity = entityPersistence.
@@ -114,22 +116,4 @@ public class PersistenceManager {
 
 		return true;
 	}
-
-	
-	
-	private static String getExtension(IResource resource) {
-
-		String extension;
-		String uri = resource.toURI().toString();
-
-		 extension = uri.substring(uri.lastIndexOf('.') + 1);
-		 extension.replace(extension, " ");
-		
-
-		System.out.println("la extension es la siguiente " + uri + " "
-				+ extension);
-		return extension;
-
-	}
-
 }
