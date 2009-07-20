@@ -6,7 +6,7 @@ public interface ITableColumn {
 	
 	//header and column values
 	public String getHeader();
-	public Object getValue(int row);
+	public Object getValue(int row, int index);
 	
 	//adapter
 	public IElementAdapter getAdapter();
