@@ -105,26 +105,6 @@ public class TableFigure extends Figure implements Serializable {
 		cellDecorators.set(column, decorator);
 	}
 
-	public void addColumn(
-			ITableColumn newColumn, 
-			HeaderDecorator headerDecorator, 
-			ElementDecorator cellDecorator) {
-	
-		try {
-			
-			cellDecorators.add(cellDecorator);
-			headerDecorators.add(headerDecorator);
-			tableView.addColumn(newColumn);
-			
-		} catch (TableFormatException e) {
-			e.printStackTrace();
-		}
-	}
 
-	public void removeColumn(int index){
-		cellDecorators.remove(index);
-		headerDecorators.remove(index);
-		tableView.removeColumn(index);
 
-	}
 }

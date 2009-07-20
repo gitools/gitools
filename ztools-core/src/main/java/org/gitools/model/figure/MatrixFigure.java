@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.decorator.ElementDecorator;
@@ -21,10 +22,18 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixViewXmlAdapter;
 
+@XmlType( propOrder={"" +
+		"cellDecorator", 
+		"rowDecorator", 
+		"columnDecorator", 
+		"matrixView",
+		"showGrid", 
+		"gridColor",
+		"cellSize", 
+		"rowSize",
+		"columnSize"} )
 
-//@XmlType( propOrder={"cellDercorator", "rowDecorator", "columnDecorator", 
-//		"matrixView", "showGrid", "gridColor", "cellSize", "rowSize","columnSize"} )
-@XmlJavaTypeAdapter(MatrixFigureXmlAdapter.class)
+	@XmlJavaTypeAdapter(MatrixFigureXmlAdapter.class)
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
 public class MatrixFigure 
