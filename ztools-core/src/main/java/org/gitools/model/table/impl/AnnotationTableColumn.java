@@ -13,9 +13,8 @@ import org.gitools.model.table.Table;
 public class AnnotationTableColumn implements ITableColumn {
 
 	private int column;
-	private int[] indexes;
 	private Table table;
-	
+	private int indices[];
 	private AnnotationMatrix annotations;
 	
 	public AnnotationTableColumn() {
@@ -25,6 +24,8 @@ public class AnnotationTableColumn implements ITableColumn {
 	public AnnotationTableColumn(Table table, int  colunm){
 		this.table = table;
 		this.column = colunm;
+		annotations = table.getAnnotations();
+		indices = table.getRowIndices();
 	}
 	
 	public AnnotationTableColumn(Table table, String  id) {
@@ -50,7 +51,7 @@ public class AnnotationTableColumn implements ITableColumn {
 
 	@Override
 	public Object getValue(int row, int index) {
-		return annotations.getCell(row, indexes[index]);
+		return annotations.getCell(indices[row], column);
 	}
 
 }

@@ -2,13 +2,16 @@ package org.gitools.persistence;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.resources.IResource;
 import org.gitools.resources.factory.ResourceFactory;
@@ -18,8 +21,11 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class PersistenceManager {
 
-	private static final Map<Class<? extends Object>, Class<?>> persistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
+	private static final Map<Class<? extends Object>, Class<?>> 
+		persistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
 
+	private static Set<Class<?>> cache = new HashSet<Class<?>>();
+	
 	static {
 
 		persistenceMap.put(Project.class, 
@@ -30,6 +36,8 @@ public class PersistenceManager {
 				XmlResourcePersistence.class);
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
+		persistenceMap.put(DoubleMatrix.class, 
+				TextDoubleMatrixPersistence.class);
 		persistenceMap.put(AnnotationMatrix.class,
 				TextAnnotationMatrixPersistence.class);
 

@@ -11,8 +11,8 @@ import org.gitools.model.table.Table;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixTableColumn implements ITableColumn {
 	
-	int column;
-	Matrix matrix;
+	private int column;
+	private Matrix matrix;
 	
 	public MatrixTableColumn(){
 		

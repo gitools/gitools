@@ -10,8 +10,8 @@ import org.gitools.model.matrix.element.IElementAdapter;
 
 public class Table implements ITable {
 
-	int rowCount = 0;
-	int rowIndices[];
+	private int  rowCount = 0;
+	private int rowIndices[];
 
 	private Matrix matrix;
 	private AnnotationMatrix annotations;
@@ -19,32 +19,35 @@ public class Table implements ITable {
 	private List<ITableColumn> columns;
 
 	public Table() {
-
+		columns = new ArrayList<ITableColumn>();
 	}
 
 	public Table(Matrix matrix, AnnotationMatrix annotations) {
+		columns = new ArrayList<ITableColumn>();
+		rowCount = matrix.getRowCount();
 		this.matrix = matrix;
 		this.annotations = annotations;
 
-		int count = matrix.getRowCount();
-
+		int count = rowCount;
+		System.out.println("entro en el rowCount nene");
 		// rowIndices
 		List<Integer> indices = new ArrayList<Integer>();
 		for (int i = 0; i < count; i++) {
-
+			
 			int j = annotations.getRowIndex(matrix.getRow(i).toString());
 			if (j >= 0)
-				indices.add(i);
+				indices.add(j);
 		}
 
 		rowIndices = new int[indices.size()];
-		for (int i = 0; i < indices.size(); i++)
+		for (int i = 0; i < indices.size(); i++){
 			rowIndices[i] = indices.get(i);
-
+			System.out.println(Integer.toString(rowIndices[i]) +  matrix.getRow(i).toString());
+		
+		}
 	}
 
 	public void addColumn(ITableColumn column){
-		rowCount = column.getRowCount();
 		columns.add(column);
 	}
 
@@ -97,6 +100,18 @@ public class Table implements ITable {
 
 	public Matrix getMatrix() {
 		return matrix;
+	}
+
+	public int[] getRowIndices() {
+		return rowIndices;
+	}
+
+	public void setRowIndices(int[] rowIndices) {
+		this.rowIndices = rowIndices;
+	}
+
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
 	}
 
 }
