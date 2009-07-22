@@ -43,6 +43,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 		JAXBContext context;
 		try {
+			
 			context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
 

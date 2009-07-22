@@ -16,8 +16,12 @@ import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType( propOrder={"contents","visibleRows", "visibleColumns","selectedRows", 
-		"selectedColumns", "selectionLeadRow", "selectionLeadColumn",
+@XmlType( 
+		propOrder={
+		"contents",
+		"visibleRows", "visibleColumns",
+		"selectedRows", "selectedColumns", 
+		"selectionLeadRow", "selectionLeadColumn",
 		"selectedPropertyIndex"} )
 
 public class MatrixView
