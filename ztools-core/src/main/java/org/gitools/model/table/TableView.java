@@ -42,8 +42,8 @@ public class TableView implements ITable {
 	}
 
 	@Override
-	public Object getValue(int row, int column, int index) {
-		return contents.getValue(row, column, index);
+	public Object getValue(int row, int column) {
+		return contents.getValue(row, column);
 	}
 
 }

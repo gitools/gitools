@@ -14,24 +14,20 @@ public class AnnotationTableColumn implements ITableColumn {
 
 	private int column;
 	private Table table;
-	private int indices[];
 	private AnnotationMatrix annotations;
-	
+
 	public AnnotationTableColumn() {
 
 	}
 
-	public AnnotationTableColumn(Table table, int  colunm){
+	public AnnotationTableColumn(Table table, int colunm) {
 		this.table = table;
 		this.column = colunm;
 		annotations = table.getAnnotations();
-		indices = table.getRowIndices();
 	}
-	
-	public AnnotationTableColumn(Table table, String  id) {
-		this(table, 
-				((AnnotationMatrix)table.getAnnotations()).getColumnIndex(id));
-		
+
+	public AnnotationTableColumn(Table table, String id) {
+		this(table, table.getAnnotations().getColumnIndex(id));
 	}
 
 	@Override
@@ -50,8 +46,13 @@ public class AnnotationTableColumn implements ITableColumn {
 	}
 
 	@Override
-	public Object getValue(int row, int index) {
-		return annotations.getCell(indices[row], column);
+	public Object getValue(int row) {
+		Object rowName = table.getMatrix().getRow(row);
+		if (rowName == null)return null;
+		
+		int index = annotations.getRowIndex(rowName.toString());
+		if (index == -1) return null;
+		return annotations.getCell(index, column);
 	}
 
 }

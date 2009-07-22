@@ -12,7 +12,7 @@ public interface ITable {
 
 	// values
 	public String getHeader(int column);
-	public Object getValue(int row, int column, int index);
+	public Object getValue(int row, int column);
 
 	// cell column adapter
 	public IElementAdapter getCellColumnAdapter(int column);

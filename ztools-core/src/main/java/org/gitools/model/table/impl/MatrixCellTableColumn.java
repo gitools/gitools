@@ -9,16 +9,16 @@ import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixTableColumn implements ITableColumn {
+public class MatrixCellTableColumn implements ITableColumn {
 	
-	private int column;
-	private Matrix matrix;
+	protected int column;
+	protected Matrix matrix;
 	
-	public MatrixTableColumn(){
+	public MatrixCellTableColumn(){
 		
 	}
 	
-	public MatrixTableColumn(Table table, int column){
+	public MatrixCellTableColumn(Table table, int column){
 		this.matrix = table.getMatrix();
 		this.column	= column;
 	}
@@ -39,11 +39,8 @@ public class MatrixTableColumn implements ITableColumn {
 	}
 
 	@Override
-	public Object getValue(int row, int index) {
-		if (index==0 )
-			return matrix.getCell(row,column);
-		return matrix.getCellValue(row, column, index);
-	}
-
+	public Object getValue(int row) {
+		return matrix.getCell(row,column);
 	
+	}
 }
