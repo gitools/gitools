@@ -5,7 +5,13 @@ import org.gitools.model.matrix.element.IElementAdapter;
 public class TableView implements ITable {
 	
 	ITable contents;
-
+	
+	protected int[] visibleRows;
+	protected int[] visibleColumns;
+	protected int[] selectedRows;
+	protected int[] selectedColumns;
+	
+	
 	public TableView() {
 
 	}
@@ -44,6 +50,14 @@ public class TableView implements ITable {
 	@Override
 	public Object getValue(int row, int column) {
 		return contents.getValue(row, column);
+	}
+
+	public ITable getContents() {
+		return contents;
+	}
+
+	public void setContents(ITable contents) {
+		this.contents = contents;
 	}
 
 }

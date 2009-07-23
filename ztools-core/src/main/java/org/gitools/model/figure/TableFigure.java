@@ -20,8 +20,6 @@ public class TableFigure extends Figure implements Serializable {
 
 	private static final long serialVersionUID = 9006041133309250290L;
 
-	// protected ITableView tableView;
-
 	private TableView tableView;
 
 	private List<ElementDecorator> cellDecorators;
@@ -105,6 +103,14 @@ public class TableFigure extends Figure implements Serializable {
 		cellDecorators.set(column, decorator);
 	}
 
+	public TableView getTableView() {
+		return tableView;
+	}
+
+
+	public void setTableView(TableView tableView) {
+		this.tableView = tableView;
+	}
 
 
 }
