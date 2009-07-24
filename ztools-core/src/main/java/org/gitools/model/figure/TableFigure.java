@@ -23,7 +23,6 @@ public class TableFigure extends Figure implements Serializable {
 	private TableView tableView;
 
 	private List<ElementDecorator> cellDecorators;
-
 	private List<HeaderDecorator> headerDecorators;
 
 	private boolean showGrid;
@@ -107,10 +106,23 @@ public class TableFigure extends Figure implements Serializable {
 		return tableView;
 	}
 
-
 	public void setTableView(TableView tableView) {
 		this.tableView = tableView;
 	}
 
+	public List<ElementDecorator> getCellDecorators() {
+		return cellDecorators;
+	}
 
+	public void setCellDecorators(List<ElementDecorator> cellDecorators) {
+		this.cellDecorators = cellDecorators;
+	}
+
+	public List<HeaderDecorator> getHeaderDecorators() {
+		return headerDecorators;
+	}
+
+	public void setHeaderDecorators(List<HeaderDecorator> headerDecorators) {
+		this.headerDecorators = headerDecorators;
+	}
 }

@@ -3,15 +3,11 @@ package org.gitools.model.table;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 public class TableView implements ITable {
-	
+
 	ITable contents;
-	
 	protected int[] visibleRows;
 	protected int[] visibleColumns;
-	protected int[] selectedRows;
-	protected int[] selectedColumns;
-	
-	
+
 	public TableView() {
 
 	}
@@ -20,7 +16,6 @@ public class TableView implements ITable {
 		this.contents = table;
 	}
 
-	
 	@Override
 	public IElementAdapter getCellColumnAdapter(int column) {
 		return contents.getCellColumnAdapter(column);
@@ -52,12 +47,30 @@ public class TableView implements ITable {
 		return contents.getValue(row, column);
 	}
 
+	// getters and setters
+	
 	public ITable getContents() {
 		return contents;
 	}
 
 	public void setContents(ITable contents) {
 		this.contents = contents;
+	}
+
+	public int[] getVisibleRows() {
+		return visibleRows;
+	}
+
+	public void setVisibleRows(int[] visibleRows) {
+		this.visibleRows = visibleRows;
+	}
+
+	public int[] getVisibleColumns() {
+		return visibleColumns;
+	}
+
+	public void setVisibleColumns(int[] visibleColumns) {
+		this.visibleColumns = visibleColumns;
 	}
 
 }
