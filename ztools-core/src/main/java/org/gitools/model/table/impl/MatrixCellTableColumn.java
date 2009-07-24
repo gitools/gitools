@@ -1,5 +1,7 @@
 package org.gitools.model.table.impl;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -9,7 +11,8 @@ import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixCellTableColumn implements ITableColumn {
+public class MatrixCellTableColumn 
+	implements ITableColumn, Serializable {
 	
 	protected int column;
 	protected Matrix matrix;

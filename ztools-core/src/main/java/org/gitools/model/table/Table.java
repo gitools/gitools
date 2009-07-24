@@ -1,5 +1,6 @@
 package org.gitools.model.table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.Matrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 
-public class Table implements ITable {
+public class Table implements ITable, Serializable {
 
 	private int  rowCount = 0;
 	private Matrix matrix;

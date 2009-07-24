@@ -1,16 +1,15 @@
 package org.gitools.model.table.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
 import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.model.matrix.Matrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @SuppressWarnings("unused")
-public class AnnotationTableColumn implements ITableColumn {
+public class AnnotationTableColumn 
+	implements ITableColumn, Serializable {
 
 	private int column;
 	private Table table;

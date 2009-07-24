@@ -1,19 +1,24 @@
 package org.gitools.model.table;
 
+import java.io.Serializable;
+
 import org.gitools.model.matrix.element.IElementAdapter;
 
-public class TableView implements ITable {
+public class TableView implements ITable, Serializable {
 
 	ITable contents;
-	protected int[] visibleRows;
-	protected int[] visibleColumns;
+	private int[] visibleRows;
+	private int[] visibleColumns;
 
 	public TableView() {
-
+		visibleRows = new int[0];
+		visibleColumns = new int[0];
 	}
 
 	public TableView(ITable table) {
 		this.contents = table;
+		visibleRows = new int[0];
+		visibleColumns = new int[0];
 	}
 
 	@Override

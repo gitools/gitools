@@ -2,7 +2,8 @@ package org.gitools.model.table.impl;
 
 import org.gitools.model.table.Table;
 
-public class MatrixPropertyTableColumn extends MatrixCellTableColumn{
+public class MatrixPropertyTableColumn 
+	extends MatrixCellTableColumn{
 
 	int property;
 	
