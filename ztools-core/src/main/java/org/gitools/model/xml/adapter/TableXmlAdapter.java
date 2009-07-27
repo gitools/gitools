@@ -2,7 +2,6 @@ package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.Table;
 import org.gitools.model.xml.MatrixXmlElement;

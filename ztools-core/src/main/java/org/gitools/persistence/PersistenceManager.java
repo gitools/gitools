@@ -10,6 +10,7 @@ import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
@@ -34,6 +35,8 @@ public class PersistenceManager {
 				XmlResourcePersistence.class);
 		persistenceMap.put(MatrixFigure.class, 
 				XmlMatrixFigurePersistence.class);
+		persistenceMap.put(TableFigure.class, 
+				XmlResourcePersistence.class);
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
 		persistenceMap.put(DoubleMatrix.class, 

@@ -8,25 +8,22 @@ import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @SuppressWarnings("unused")
-public class AnnotationTableColumn 
+public class AnnotationTableColumn extends AbstractTableColumn
 	implements ITableColumn, Serializable {
 
-	private int column;
-	private Table table;
 	private AnnotationMatrix annotations;
 
 	public AnnotationTableColumn() {
 
 	}
 
-	public AnnotationTableColumn(Table table, int colunm) {
-		this.table = table;
-		this.column = colunm;
+	public AnnotationTableColumn( int column, Table table) {
+		super(column, table);
 		annotations = table.getAnnotations();
 	}
 
 	public AnnotationTableColumn(Table table, String id) {
-		this(table, table.getAnnotations().getColumnIndex(id));
+		this(table.getAnnotations().getColumnIndex(id), table );
 	}
 
 	@Override

@@ -11,23 +11,22 @@ import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixCellTableColumn 
+public class MatrixCellTableColumn extends AbstractTableColumn 
 	implements ITableColumn, Serializable {
-	
+
 	private static final long serialVersionUID = -5968245911627777748L;
-	
-	protected int column;
+
 	protected Matrix matrix;
-	
-	public MatrixCellTableColumn(){
-		
+
+	public MatrixCellTableColumn() {
 	}
-	
-	public MatrixCellTableColumn(Table table, int column){
+
+	public MatrixCellTableColumn(int column, Table table) {
+		super(column, table);
 		this.matrix = (Matrix) table.getMatrix();
-		this.column	= column;
+
 	}
-	
+
 	@Override
 	public IElementAdapter getAdapter() {
 		return matrix.getCellAdapter();
@@ -45,7 +44,7 @@ public class MatrixCellTableColumn
 
 	@Override
 	public Object getValue(int row) {
-		return matrix.getCell(row,column);
-	
+		return matrix.getCell(row, column);
+
 	}
 }

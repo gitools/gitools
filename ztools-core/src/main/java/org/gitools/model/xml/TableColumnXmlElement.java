@@ -12,17 +12,17 @@ import org.gitools.resources.IResource;
 @XmlType(propOrder = { "type", "reference" })
 public class TableColumnXmlElement {
 
+	@SuppressWarnings("unused")
 	@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
 	private IResource reference;
 	private String type;
 
-	
-	TableColumnXmlElement(){
-		
+	TableColumnXmlElement() {
+
 	}
 
 	public TableColumnXmlElement(String type, IResource reference) {
 		this.type = type;
 		this.reference = reference;
-	}	
+	}
 }

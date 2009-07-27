@@ -2,6 +2,7 @@ package org.gitools.model.table;
 
 import java.io.Serializable;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.xml.adapter.IndexArrayAdapter;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.TableXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "contents", "visibleRows", "visibleColumns" })
@@ -17,7 +18,7 @@ public class TableView implements ITable, Serializable {
 
 	private static final long serialVersionUID = -3231844654295236093L;
 
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	@XmlJavaTypeAdapter(TableXmlAdapter.class)
 	ITable contents;
 
 	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
@@ -92,5 +93,30 @@ public class TableView implements ITable, Serializable {
 
 	public void setVisibleColumns(int[] visibleColumns) {
 		this.visibleColumns = visibleColumns;
+	}
+
+	
+	void afterUnmarshal(Unmarshaller u, Object parent) {
+		//if visible rows and colunmsn are empty
+		int count =0;
+		int [] rows;
+		int[] columns;
+		
+		if(visibleRows.length ==0){
+			count = contents.getRowCount();
+			rows = new int[count];
+			
+			for (int i=0; i<count; i++)
+				rows[i] =i;
+			setVisibleRows(rows);
+		}
+		if(visibleColumns.length ==0){
+			count = contents.getColumnCount();
+			columns = new int[count];
+			
+			for (int i=0; i<count; i++)
+				columns[i] =i;
+			setVisibleColumns(columns);
+		}
 	}
 }

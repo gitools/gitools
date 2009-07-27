@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.Artifact;
@@ -13,13 +17,17 @@ import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.Matrix;
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.table.impl.AbstractTableColumn;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.TableColumnXmlAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = { "rowCount", "matrix", "annotations", "columns" })
 public class Table extends Artifact
 	implements ITable, Serializable {
 
-
 	private int  rowCount = 0;
+
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private Matrix matrix;
 	
@@ -27,9 +35,8 @@ public class Table extends Artifact
 	private AnnotationMatrix annotations;
 
 	@XmlElementWrapper(name = "columns")
-    
-	@XmlElement(name = "column")
-//	@XmlJavaTypeAdapter(TableColumnXmlAdapter.class)
+    @XmlElement(name = "column")
+	@XmlJavaTypeAdapter(TableColumnXmlAdapter.class)
     private List<ITableColumn> columns;
 
 	public Table() {
@@ -102,4 +109,11 @@ public class Table extends Artifact
 		this.rowCount = rowCount;
 	}
 
+	void afterUnmarshal(Unmarshaller u, Object parent) {
+		for(int i=0; i<columns.size(); i++){
+			AbstractTableColumn col= (AbstractTableColumn)columns.get(i);
+			col.setTable(this);
+			col.setColumn(i);
+		}
+	}
 }
