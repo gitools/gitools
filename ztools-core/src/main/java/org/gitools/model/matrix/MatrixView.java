@@ -363,7 +363,27 @@ public class MatrixView
 
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		//TODO:	
+		//if visible rows and colunmsn are empty
+		int count =0;
+		int [] rows;
+		int[] columns;
+		
+		if(visibleRows.length ==0){
+			count = contents.getRowCount();
+			rows = new int[count];
+			
+			for (int i=0; i<count; i++)
+				rows[i] =i;
+			setVisibleRows(rows);
+		}
+		if(visibleColumns.length ==0){
+			count = contents.getColumnCount();
+			columns = new int[count];
+			
+			for (int i=0; i<count; i++)
+				columns[i] =i;
+			setVisibleColumns(columns);
+		}
 	}
 
 }

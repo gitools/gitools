@@ -1,5 +1,6 @@
 package org.gitools.persistence;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
@@ -9,12 +10,13 @@ import org.gitools.resources.factory.ResourceFactory;
 public class XmlMatrixFigurePersistence extends XmlGenericPersistence {
 
 	public XmlMatrixFigurePersistence(ResourceFactory resourceFactory,
-			Class<?> entityClass) {
+			Class<?> entityClass) throws JAXBException {
 		super(entityClass);
 
-		super.adapters = new XmlAdapter[] {
-				new ResourceXmlAdapter(resourceFactory),
-				new AnnotationMatrixXmlAdapter(resourceFactory) };
+		XmlAdapter[] adapters = new XmlAdapter[2];
+		adapters[0] = new ResourceXmlAdapter(resourceFactory);
+		adapters[1] = new AnnotationMatrixXmlAdapter(resourceFactory);
+		super.adapters = adapters;
 	}
 
 }

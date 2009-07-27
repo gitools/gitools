@@ -12,10 +12,6 @@ public class AnnotationMatrixXmlAdapter extends
 
 	ResourceFactory resourceFactory;
 	
-	public AnnotationMatrixXmlAdapter(){
-		
-	}
-	
 	public AnnotationMatrixXmlAdapter(ResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
 	}

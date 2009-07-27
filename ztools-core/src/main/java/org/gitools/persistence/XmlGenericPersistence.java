@@ -24,6 +24,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 	public XmlGenericPersistence(Class<?> entityClass) throws JAXBException {
 		adapters = new XmlAdapter[0];
 		context = JAXBContext.newInstance(entityClass);
+		System.out.println("entitiiiiii ! + " + entityClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -33,7 +34,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 		Object entity;
 		Reader reader;
-
+	
 		try {
 			reader = resource.openReader();
 		} catch (Exception e) {
