@@ -14,6 +14,8 @@ import org.gitools.model.table.Table;
 public class MatrixCellTableColumn 
 	implements ITableColumn, Serializable {
 	
+	private static final long serialVersionUID = -5968245911627777748L;
+	
 	protected int column;
 	protected Matrix matrix;
 	
@@ -22,7 +24,7 @@ public class MatrixCellTableColumn
 	}
 	
 	public MatrixCellTableColumn(Table table, int column){
-		this.matrix = table.getMatrix();
+		this.matrix = (Matrix) table.getMatrix();
 		this.column	= column;
 	}
 	

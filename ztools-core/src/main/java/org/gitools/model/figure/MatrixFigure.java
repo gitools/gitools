@@ -103,7 +103,8 @@ public class MatrixFigure
 	}
 	
 	public MatrixFigure(IMatrixView matrixView) {
-		this(matrixView,
+		this(
+				matrixView,
 				cellDecoratorFromMatrix(matrixView),
 				new AnnotationHeaderDecorator(),
 				new AnnotationHeaderDecorator());

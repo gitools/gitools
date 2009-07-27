@@ -4,17 +4,33 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.gitools.model.Artifact;
 import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.Matrix;
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
-public class Table implements ITable, Serializable {
+public class Table extends Artifact
+	implements ITable, Serializable {
+
 
 	private int  rowCount = 0;
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private Matrix matrix;
+	
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private AnnotationMatrix annotations;
 
-	private List<ITableColumn> columns;
+	@XmlElementWrapper(name = "columns")
+    
+	@XmlElement(name = "column")
+//	@XmlJavaTypeAdapter(TableColumnXmlAdapter.class)
+    private List<ITableColumn> columns;
 
 	public Table() {
 		columns = new ArrayList<ITableColumn>();
@@ -78,7 +94,7 @@ public class Table implements ITable, Serializable {
 		this.matrix = matrix;
 	}
 
-	public Matrix getMatrix() {
+	public IMatrix getMatrix() {
 		return matrix;
 	}
 

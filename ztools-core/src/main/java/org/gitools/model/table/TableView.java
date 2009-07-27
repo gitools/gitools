@@ -2,12 +2,28 @@ package org.gitools.model.table;
 
 import java.io.Serializable;
 
-import org.gitools.model.matrix.element.IElementAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.xml.adapter.IndexArrayAdapter;
+import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = { "contents", "visibleRows", "visibleColumns" })
 public class TableView implements ITable, Serializable {
 
+	private static final long serialVersionUID = -3231844654295236093L;
+
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	ITable contents;
+
+	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
 	private int[] visibleRows;
+
+	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
 	private int[] visibleColumns;
 
 	public TableView() {
@@ -53,7 +69,7 @@ public class TableView implements ITable, Serializable {
 	}
 
 	// getters and setters
-	
+
 	public ITable getContents() {
 		return contents;
 	}
@@ -77,5 +93,4 @@ public class TableView implements ITable, Serializable {
 	public void setVisibleColumns(int[] visibleColumns) {
 		this.visibleColumns = visibleColumns;
 	}
-
 }

@@ -1,19 +1,19 @@
 package org.gitools.model.matrix;
-
 import java.io.Serializable;
 import java.util.Arrays;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.model.xml.adapter.IndexArrayAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
-
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType( 
@@ -52,15 +52,12 @@ public class MatrixView
 	protected int selectedPropertyIndex;
 	
 	public MatrixView(){
-		// init
-
+		
 		visibleRows = new int[0];
 		visibleColumns = new int[0];
 		selectedRows = new int[0];
 		selectedColumns = new int[0];
-		
 		selectionLeadRow = selectionLeadColumn = -1;
-	
 	}
 	
 	
@@ -363,4 +360,10 @@ public class MatrixView
 		for (int i = 0; i < selection.length; i++)
 			selection[i]++;
 	}
+
+
+	void afterUnmarshal(Unmarshaller u, Object parent) {
+		//TODO:	
+	}
+
 }

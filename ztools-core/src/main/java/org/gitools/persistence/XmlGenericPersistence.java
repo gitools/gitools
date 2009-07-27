@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -15,15 +16,14 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
-
-	private Class<?> entityClass;
+	private JAXBContext context;
 	
 	@SuppressWarnings("unchecked")
 	protected XmlAdapter[] adapters ;
 
-	public XmlGenericPersistence(Class<?> entityClass) {
-		this.entityClass = entityClass;
+	public XmlGenericPersistence(Class<?> entityClass) throws JAXBException {
 		adapters = new XmlAdapter[0];
+		context = JAXBContext.newInstance(entityClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,10 +41,9 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 					+ resource.toURI(), e);
 		}
 
-		JAXBContext context;
 		try {
 			
-			context = JAXBContext.newInstance(entityClass);
+
 			Unmarshaller u = context.createUnmarshaller();
 
 			for (XmlAdapter adapter : adapters) {
@@ -73,11 +72,8 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 			throw new PersistenceException("Error opening resource: " + resource.toURI(), e);
 		}
 
-		JAXBContext context;
-
+		
 		try {
-
-			context = JAXBContext.newInstance(entityClass);
 			Marshaller m = context.createMarshaller();
 
 			for (XmlAdapter adapter : adapters) {

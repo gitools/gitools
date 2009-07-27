@@ -7,7 +7,9 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 public class FormattedTextElementDecorator extends ElementDecorator {
-
+	
+	private static final long serialVersionUID = -8595819997133940913L;
+	
 	private int valueIndex = -1;
 	private String formatString = null;
 	
@@ -40,9 +42,7 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
-
 		String cellText;
-
 		try {
 			if (this.valueIndex >= 0) {
 				cellText = String.format(formatString, 
@@ -53,11 +53,7 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		} catch (IllegalFormatException e) {
 			cellText = element.toString();
 		}
-
 		decoration.setText(cellText);
 		decoration.setToolTip(cellText);
-
 	}
-
-
 }

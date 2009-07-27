@@ -52,6 +52,7 @@ public class TableFigure extends Figure implements Serializable {
 		headerDecorators = new ArrayList<AbstractModel>();
 
 		Object cellElement;
+		
 		ElementDecorator cellDecorator;
 		IElementAdapter elementAdapter;
 		HeaderDecorator headerDecorator;
