@@ -29,7 +29,7 @@ public class Table extends Artifact
 	private int  rowCount = 0;
 
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
-	private Matrix matrix;
+	private IMatrix matrix;
 	
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private AnnotationMatrix annotations;

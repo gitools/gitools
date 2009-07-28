@@ -17,10 +17,10 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
 	private JAXBContext context;
-	
-	@SuppressWarnings("unchecked")
-	protected XmlAdapter[] adapters ;
 
+	@SuppressWarnings("unchecked")
+	protected XmlAdapter[] adapters;
+	
 	public XmlGenericPersistence(Class<?> entityClass) throws JAXBException {
 		adapters = new XmlAdapter[0];
 		context = JAXBContext.newInstance(entityClass);
@@ -34,7 +34,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 
 		Object entity;
 		Reader reader;
-	
+
 		try {
 			reader = resource.openReader();
 		} catch (Exception e) {
@@ -43,14 +43,13 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 		}
 
 		try {
-			
 
 			Unmarshaller u = context.createUnmarshaller();
-
 			for (XmlAdapter adapter : adapters) {
 				u.setAdapter(adapter);
 			}
 
+	
 			entity = (Object) u.unmarshal(reader);
 			reader.close();
 
@@ -59,21 +58,21 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 		}
 		return entity;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void write(IResource resource, Object entity,
 			IProgressMonitor monitor) throws PersistenceException {
-		
-		Writer writer;	
-		
+
+		Writer writer;
+
 		try {
 			writer = resource.openWriter();
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: "
+					+ resource.toURI(), e);
 		}
 
-		
 		try {
 			Marshaller m = context.createMarshaller();
 
@@ -81,6 +80,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 				m.setAdapter(adapter);
 			}
 
+	
 			m.marshal(entity, writer);
 			writer.close();
 
@@ -89,4 +89,3 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 		}
 	}
 }
-

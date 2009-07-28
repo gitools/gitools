@@ -218,5 +218,4 @@ public class MatrixFigure
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		   rowDecorator.toString();
 	}
-
 }

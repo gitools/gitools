@@ -20,6 +20,9 @@ public class Extensions {
 	public static final String PROJECT = "project.xml";
 
 	public static final String MATRIX_FIGURE = "figure";
+	public static final String TABLE_FIGURE = "table";
+
+	
 	public static final String OBJECT_MATRIX = "objectMatrix";
 	public static final String ANNOTATION_MATRIX = "annotationMatrix";
 	public static final String DOUBLE_MATRIX = "doubleMatrix";
@@ -39,7 +42,10 @@ public class Extensions {
 		classesMap.put(Extensions.PROJECT, Project.class);
 		classesMap.put(Extensions.CONTENTS, ResourceContainer.class);
 		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
-
+		classesMap.put(Extensions.TABLE_FIGURE, MatrixFigure.class);
+		
+		
+		
 		classesMap.put(Extensions.OBJECT_MATRIX, ObjectMatrix.class);
 		classesMap.put(Extensions.DOUBLE_MATRIX, DoubleMatrix.class);
 		classesMap.put(Extensions.STRING_MATRIX, StringMatrix.class);

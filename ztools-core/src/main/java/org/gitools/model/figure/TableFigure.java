@@ -5,6 +5,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.HeaderDecorator;
@@ -13,20 +20,25 @@ import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
 import org.gitools.model.matrix.TableFormatException;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
-import org.gitools.model.table.TableView;
+import org.gitools.model.table.impl.TableView;
+import org.gitools.model.xml.adapter.ColorXmlAdapter;
 
 @SuppressWarnings("unused")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "tableFigure")
 public class TableFigure extends Figure implements Serializable {
 
 	private static final long serialVersionUID = 9006041133309250290L;
 
 	private TableView tableView;
-
+	@XmlTransient
 	private List<AbstractModel> cellDecorators;
+	@XmlTransient
 	private List<AbstractModel> headerDecorators;
 
 	private boolean showGrid;
 
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 
 	private int rowSize;
@@ -112,4 +124,14 @@ public class TableFigure extends Figure implements Serializable {
 
 	}
 
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
 }

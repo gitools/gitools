@@ -36,7 +36,7 @@ public class PersistenceManager {
 		persistenceMap.put(MatrixFigure.class, 
 				XmlMatrixFigurePersistence.class);
 		persistenceMap.put(TableFigure.class, 
-				XmlResourcePersistence.class);
+				TableFigureXmlPersistence.class);
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
 		persistenceMap.put(DoubleMatrix.class, 
@@ -55,23 +55,22 @@ public class PersistenceManager {
 		Class<?> resourceClass = persistenceMap.get(entityClass);
 		
 		try {
-				
 			Constructor<?> c;
-			
-			if (resourceClass.equals(XmlResourcePersistence.class)) {
-				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
-				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
-			}
-			
-			if (resourceClass.equals(XmlMatrixFigurePersistence.class)) {
-				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
-				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
-			}
 			
 			if (resourceClass.equals(XmlGenericPersistence.class)) {
 				c = resourceClass.getConstructor(Class.class);
 					return (IEntityPersistence) c.newInstance(entityClass);
 				}
+			
+			if ((resourceClass.equals(XmlMatrixFigurePersistence.class)) ||
+				(resourceClass.equals(TableFigureXmlPersistence.class))  ||
+				(resourceClass.equals(XmlResourcePersistence.class))) {
+				
+				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
+				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
+			}
+			
+			
 			
 			return (IEntityPersistence<T>) resourceClass.newInstance();
 		

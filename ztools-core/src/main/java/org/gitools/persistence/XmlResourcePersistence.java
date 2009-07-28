@@ -14,6 +14,7 @@ public class XmlResourcePersistence extends XmlGenericPersistence {
 
 		super.adapters = new XmlAdapter[] { 
 				new ResourceXmlAdapter(resourceFactory) };
+	
 	}
 
 }

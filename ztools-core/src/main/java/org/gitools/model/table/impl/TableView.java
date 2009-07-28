@@ -1,7 +1,8 @@
-package org.gitools.model.table;
+package org.gitools.model.table.impl;
 
 import java.io.Serializable;
 
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,6 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.table.ITable;
+import org.gitools.model.table.ITableColumn;
 import org.gitools.model.xml.adapter.IndexArrayAdapter;
 import org.gitools.model.xml.adapter.TableXmlAdapter;
 
@@ -95,27 +98,77 @@ public class TableView implements ITable, Serializable {
 		this.visibleColumns = visibleColumns;
 	}
 
+	// FIXME: 
+	//	this must be common to MatrixView and TableView
 	
+	// Marshal and unMarshall methods
+	// Marshalling
+	public void beforeMarshal(Marshaller u) {
+
+		boolean naturalOrder = true;
+		int rows = visibleRows.length;
+		int columns = visibleColumns.length;
+		int maxSize = rows > columns ? rows : columns;
+
+		int i = 0;
+		while (i < maxSize && naturalOrder) {
+			if (i < columns)
+				naturalOrder = i == visibleColumns[i];
+			if (i < rows)
+				naturalOrder = (i == visibleRows[i] && naturalOrder);
+			i++;
+		}
+
+		if (naturalOrder) {
+			visibleColumns = null;
+			visibleRows = null;
+		}
+		System.out.println("llaman al before marshall" + naturalOrder);
+	}
+
+	public void afterMarshal(Marshaller u) {
+
+		if (visibleColumns == null && visibleRows == null) {
+			System.out.println("llaman al after marshall");
+
+			int count = contents.getRowCount();
+			int[] rows = new int[count];
+
+			for (int i = 0; i < count; i++)
+				rows[i] = i;
+			setVisibleRows(rows);
+
+			count = contents.getColumnCount();
+			int[] columns = new int[count];
+
+			for (int i = 0; i < count; i++)
+				columns[i] = i;
+			setVisibleColumns(columns);
+		}
+
+	}
+
+	// UnMarshalling
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		//if visible rows and colunmsn are empty
-		int count =0;
-		int [] rows;
+	
+		int count = 0;
+		int[] rows;
 		int[] columns;
-		
-		if(visibleRows.length ==0){
+
+		if (visibleRows.length == 0) {
 			count = contents.getRowCount();
 			rows = new int[count];
-			
-			for (int i=0; i<count; i++)
-				rows[i] =i;
+
+			for (int i = 0; i < count; i++)
+				rows[i] = i;
 			setVisibleRows(rows);
 		}
-		if(visibleColumns.length ==0){
+		if (visibleColumns.length == 0) {
 			count = contents.getColumnCount();
 			columns = new int[count];
-			
-			for (int i=0; i<count; i++)
-				columns[i] =i;
+
+			for (int i = 0; i < count; i++)
+				columns[i] = i;
 			setVisibleColumns(columns);
 		}
 	}
