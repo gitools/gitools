@@ -36,7 +36,7 @@ public class PersistenceManager {
 		persistenceMap.put(MatrixFigure.class, 
 				XmlMatrixFigurePersistence.class);
 		persistenceMap.put(TableFigure.class, 
-				TableFigureXmlPersistence.class);
+				XmlTableFigurePersistence.class);
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
 		persistenceMap.put(DoubleMatrix.class, 
@@ -63,7 +63,7 @@ public class PersistenceManager {
 				}
 			
 			if ((resourceClass.equals(XmlMatrixFigurePersistence.class)) ||
-				(resourceClass.equals(TableFigureXmlPersistence.class))  ||
+				(resourceClass.equals(XmlTableFigurePersistence.class))  ||
 				(resourceClass.equals(XmlResourcePersistence.class))) {
 				
 				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);

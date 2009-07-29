@@ -3,7 +3,6 @@ package org.gitools.model.figure;
 import java.awt.Color;
 import java.io.Serializable;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,6 +19,7 @@ import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
+import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixViewXmlAdapter;
 
 @XmlType( propOrder={"" +
@@ -33,7 +33,7 @@ import org.gitools.model.xml.adapter.MatrixViewXmlAdapter;
 		"rowSize",
 		"columnSize"} )
 
-	
+@XmlJavaTypeAdapter(MatrixFigureXmlAdapter.class)	
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
 public class MatrixFigure 
@@ -215,7 +215,5 @@ public class MatrixFigure
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	void afterUnmarshal(Unmarshaller u, Object parent) {
-		   rowDecorator.toString();
-	}
+	
 }

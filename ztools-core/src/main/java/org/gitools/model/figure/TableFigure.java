@@ -8,8 +8,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
@@ -31,9 +29,9 @@ public class TableFigure extends Figure implements Serializable {
 	private static final long serialVersionUID = 9006041133309250290L;
 
 	private TableView tableView;
-	@XmlTransient
+	
 	private List<AbstractModel> cellDecorators;
-	@XmlTransient
+
 	private List<AbstractModel> headerDecorators;
 
 	private boolean showGrid;

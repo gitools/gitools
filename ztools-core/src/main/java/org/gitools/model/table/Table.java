@@ -110,6 +110,7 @@ public class Table extends Artifact
 	}
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
+	
 		for(int i=0; i<columns.size(); i++){
 			AbstractTableColumn col= (AbstractTableColumn)columns.get(i);
 			col.setTable(this);

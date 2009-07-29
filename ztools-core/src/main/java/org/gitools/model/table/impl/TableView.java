@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.ITableColumn;
-import org.gitools.model.xml.adapter.IndexArrayAdapter;
 import org.gitools.model.xml.adapter.TableXmlAdapter;
+import org.gitools.model.xml.adapter.IndexArrayAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "contents", "visibleRows", "visibleColumns" })

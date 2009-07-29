@@ -7,10 +7,8 @@ import org.gitools.model.table.impl.AnnotationTableColumn;
 import org.gitools.model.table.impl.MatrixCellTableColumn;
 import org.gitools.model.table.impl.MatrixPropertyTableColumn;
 
-public class TableColumnXmlAdapter extends XmlAdapter<String, ITableColumn> {
 
-	public TableColumnXmlAdapter(){
-	}
+public class TableColumnXmlAdapter extends XmlAdapter<String, ITableColumn> {
 	@Override
 	public String marshal(ITableColumn v) throws Exception {
 		if (v instanceof AnnotationTableColumn)
@@ -23,7 +21,6 @@ public class TableColumnXmlAdapter extends XmlAdapter<String, ITableColumn> {
 	}
 	@Override
 	public ITableColumn unmarshal(String v) throws Exception {
-
 		if (v.equals("AnnotationTableColumn"))
 			return (ITableColumn) new AnnotationTableColumn();
 		if (v.equals("MatrixCellTableColumn"))

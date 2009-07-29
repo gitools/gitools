@@ -49,8 +49,9 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 				u.setAdapter(adapter);
 			}
 
-	
+			System.out.println("entro en el unmarshall");
 			entity = (Object) u.unmarshal(reader);
+			System.out.println("salgo de el unmarshall");
 			reader.close();
 
 		} catch (Exception e) {

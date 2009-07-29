@@ -12,7 +12,7 @@ import org.gitools.resources.factory.ResourceFactory;
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	ResourceFactory resourceFactory;
-	
+
 	public MatrixXmlAdapter(ResourceFactory resourceFactory){
 		this.resourceFactory = resourceFactory;
 	}

@@ -1,9 +1,8 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.gitools.model.IModel;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
 public interface IMatrixView extends IModel, IMatrix {
 	
@@ -22,7 +21,7 @@ public interface IMatrixView extends IModel, IMatrix {
 	String CELL_DECORATION_CONTEXT_CHANGED = "cellDecorationContextChanged";
 
 	// contents
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	
 	IMatrix getContents();
 	
 	// visibility
