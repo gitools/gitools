@@ -13,7 +13,7 @@ import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.ITableColumn;
 import org.gitools.model.xml.adapter.TableXmlAdapter;
-import org.gitools.model.xml.adapter.IndexArrayAdapter;
+import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "contents", "visibleRows", "visibleColumns" })
@@ -24,10 +24,10 @@ public class TableView implements ITable, Serializable {
 	@XmlJavaTypeAdapter(TableXmlAdapter.class)
 	ITable contents;
 
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	private int[] visibleRows;
 
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	private int[] visibleColumns;
 
 	public TableView() {

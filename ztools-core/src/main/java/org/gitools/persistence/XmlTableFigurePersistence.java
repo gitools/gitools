@@ -14,12 +14,11 @@ public class XmlTableFigurePersistence extends XmlGenericPersistence {
 	public XmlTableFigurePersistence(ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
 		super(entityClass);
-
-
-		XmlAdapter[] adapters = new XmlAdapter[4];
+		
+		XmlAdapter[] adapters = new XmlAdapter[3];
 		adapters[0] = new ResourceXmlAdapter(resourceFactory);
 		adapters[1] = new AnnotationMatrixXmlAdapter(resourceFactory);
-		adapters[3] = new MatrixXmlAdapter(resourceFactory);
+		adapters[2] = new MatrixXmlAdapter(resourceFactory);
 		super.adapters = adapters;
 
 		

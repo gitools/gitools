@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
@@ -19,6 +20,7 @@ import org.gitools.model.matrix.TableFormatException;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.impl.TableView;
+import org.gitools.model.xml.adapter.AbstractModelXmlAdapter;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 
 @SuppressWarnings("unused")
@@ -30,8 +32,11 @@ public class TableFigure extends Figure implements Serializable {
 
 	private TableView tableView;
 	
+	//@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
+	@XmlTransient
 	private List<AbstractModel> cellDecorators;
-
+	
+	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
 	private List<AbstractModel> headerDecorators;
 
 	private boolean showGrid;

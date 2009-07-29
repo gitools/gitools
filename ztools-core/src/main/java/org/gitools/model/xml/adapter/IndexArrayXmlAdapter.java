@@ -2,7 +2,7 @@ package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class IndexArrayAdapter extends XmlAdapter<String, int[]> {
+public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]> {
 
 	static String elemSeparator = ",";
 

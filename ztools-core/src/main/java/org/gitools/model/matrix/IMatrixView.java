@@ -1,7 +1,5 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 import org.gitools.model.IModel;
 
 public interface IMatrixView extends IModel, IMatrix {

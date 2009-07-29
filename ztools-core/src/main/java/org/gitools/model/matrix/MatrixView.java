@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
-import org.gitools.model.xml.adapter.IndexArrayAdapter;
+import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,16 +34,16 @@ public class MatrixView
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected IMatrix contents;
 	
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	protected int[] visibleRows;
 	
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	protected int[] visibleColumns;
 	
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	protected int[] selectedRows;
 	
-	@XmlJavaTypeAdapter(IndexArrayAdapter.class)
+	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	protected int[] selectedColumns;
 	
 	protected int selectionLeadRow;
