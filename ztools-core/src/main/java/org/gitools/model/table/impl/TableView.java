@@ -150,7 +150,7 @@ public class TableView implements ITable, Serializable {
 
 	// UnMarshalling
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-	
+		System.out.println("llaman al after Unmarshall");
 		int count = 0;
 		int[] rows;
 		int[] columns;

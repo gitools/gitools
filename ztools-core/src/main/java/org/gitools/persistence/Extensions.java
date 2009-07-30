@@ -6,6 +6,7 @@ import java.util.Map;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
@@ -42,9 +43,7 @@ public class Extensions {
 		classesMap.put(Extensions.PROJECT, Project.class);
 		classesMap.put(Extensions.CONTENTS, ResourceContainer.class);
 		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
-		classesMap.put(Extensions.TABLE_FIGURE, MatrixFigure.class);
-		
-		
+		classesMap.put(Extensions.TABLE_FIGURE, TableFigure.class);
 		
 		classesMap.put(Extensions.OBJECT_MATRIX, ObjectMatrix.class);
 		classesMap.put(Extensions.DOUBLE_MATRIX, DoubleMatrix.class);

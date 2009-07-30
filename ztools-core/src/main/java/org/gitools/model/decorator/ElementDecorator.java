@@ -5,15 +5,10 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ElementDecorator extends AbstractModel {
@@ -48,7 +43,7 @@ public abstract class ElementDecorator extends AbstractModel {
 		return null;
 	}
 	
-	public void setConfiguration(Map<String, String> configuration){};
+	public abstract void setConfiguration(Map<String, String> configuration);
 	
 	protected int getPropertyIndex(String[] names) {
 		int index = -1;

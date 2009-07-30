@@ -32,8 +32,7 @@ public class TableFigure extends Figure implements Serializable {
 
 	private TableView tableView;
 	
-	//@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
-	@XmlTransient
+	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
 	private List<AbstractModel> cellDecorators;
 	
 	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
@@ -126,15 +125,4 @@ public class TableFigure extends Figure implements Serializable {
 		return cellDecorators.get(column);
 
 	}
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 }

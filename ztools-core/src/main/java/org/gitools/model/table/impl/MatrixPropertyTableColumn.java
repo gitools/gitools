@@ -17,7 +17,7 @@ public class MatrixPropertyTableColumn extends MatrixCellTableColumn {
 
 	@Override
 	public Object getValue(int row) {
-		return matrix.getCellValue(row, column, property);
+		return table.getMatrix().getCellValue(row, column, property);
 	}
 
 }

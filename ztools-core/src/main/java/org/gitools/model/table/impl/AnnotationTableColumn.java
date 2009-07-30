@@ -11,7 +11,7 @@ import org.gitools.model.table.Table;
 public class AnnotationTableColumn extends AbstractTableColumn
 	implements ITableColumn, Serializable {
 
-	private AnnotationMatrix annotations;
+	
 
 	public AnnotationTableColumn() {
 
@@ -19,7 +19,7 @@ public class AnnotationTableColumn extends AbstractTableColumn
 
 	public AnnotationTableColumn( int column, Table table) {
 		super(column, table);
-		annotations = table.getAnnotations();
+		;
 	}
 
 	public AnnotationTableColumn(Table table, String id) {
@@ -28,21 +28,22 @@ public class AnnotationTableColumn extends AbstractTableColumn
 
 	@Override
 	public IElementAdapter getAdapter() {
-		return annotations.getCellAdapter();
+		return table.getAnnotations().getCellAdapter();
 	}
 
 	@Override
 	public String getHeader() {
-		return annotations.getColumnString(column);
+		return table.getAnnotations().getColumnString(column);
 	}
 
 	@Override
 	public int getRowCount() {
-		return table.getRowCount();
+		return table.getAnnotations().getRowCount();
 	}
 
 	@Override
 	public Object getValue(int row) {
+		AnnotationMatrix annotations = table.getAnnotations();
 		Object rowName = table.getMatrix().getRow(row);
 		if (rowName == null)return null;
 		

@@ -1,6 +1,8 @@
 package org.gitools.model.decorator.impl;
 
+import java.util.HashMap;
 import java.util.IllegalFormatException;
+import java.util.Map;
 
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -56,4 +58,22 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		decoration.setText(cellText);
 		decoration.setToolTip(cellText);
 	}
+
+	@Override
+	public Map<String, String> getConfiguration() {
+	
+		Map<String, String> configuration = new HashMap <String, String>();
+		configuration.put("valueIndex", Integer.toString(valueIndex));
+		configuration.put("formatString", formatString);
+		
+		return configuration;
+	}
+
+	@Override
+	public void setConfiguration(Map<String, String> configuration) {
+	
+		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
+		this.formatString = configuration.get("formatString");
+	}
+
 }
