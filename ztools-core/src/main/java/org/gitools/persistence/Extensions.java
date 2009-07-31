@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
+import org.gitools.model.analysis.EnrichmentAnalysis;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
@@ -17,9 +18,10 @@ public class Extensions {
 
 	public static final String extensionSeparator = ".";
 
-	public static final String CONTENTS = "contents.xml";
 	public static final String PROJECT = "project.xml";
-
+	public static final String CONTENTS = "contents.xml";
+	public static final String ENRICHMENT_ANALYSIS = "analysis";
+	
 	public static final String MATRIX_FIGURE = "figure";
 	public static final String TABLE_FIGURE = "table";
 
@@ -33,6 +35,9 @@ public class Extensions {
 
 	private static final Map<String, Class<?>> classesMap = new HashMap<String, Class<?>>();
 
+	
+
+	
 	static {
 
 		extensionsMap.put(ObjectMatrix.class, Extensions.OBJECT_MATRIX);
@@ -42,6 +47,8 @@ public class Extensions {
 
 		classesMap.put(Extensions.PROJECT, Project.class);
 		classesMap.put(Extensions.CONTENTS, ResourceContainer.class);
+		classesMap.put(Extensions.ENRICHMENT_ANALYSIS,  EnrichmentAnalysis.class);
+		
 		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
 		classesMap.put(Extensions.TABLE_FIGURE, TableFigure.class);
 		

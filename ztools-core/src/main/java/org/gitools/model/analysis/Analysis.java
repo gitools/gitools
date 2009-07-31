@@ -4,18 +4,20 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.Artifact;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
+import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
+@XmlSeeAlso({EnrichmentAnalysis.class})
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType( propOrder={"startTime", "elapsedTime", "dataTable", "moduleMap", "resultsMatrix" } )
+//@XmlType( propOrder={"startTime", "elapsedTime", "dataTableRef", "results" } )
 public class Analysis extends Artifact {
 
 	private static final long serialVersionUID = 44219853082656184L;
@@ -24,10 +26,20 @@ public class Analysis extends Artifact {
 	protected long elapsedTime;
 	
 	/** Original matrix, before ToolConfig applied **/
+	
+	
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	//@XmlElement(name = "dataTableRef")
 	protected DoubleMatrix dataTable;
+	
+	@XmlTransient
 	protected ModuleMap moduleMap;
+	
+	
+	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected ObjectMatrix resultsMatrix;
 
+	@XmlTransient
 	protected ToolConfig toolConfig;
 
 	public Analysis() {
@@ -57,7 +69,6 @@ public class Analysis extends Artifact {
 		this.toolConfig = toolConfig;
 	}
 
-	@XmlTransient
 	public DoubleMatrix getDataTable() {
 		return dataTable;
 	}
@@ -66,12 +77,10 @@ public class Analysis extends Artifact {
 		this.dataTable = dataTable;
 	}
 
-	@XmlElement(name = "dataTableRef")
 	public String getDataTableRef() {
 		return dataTable.getName();
 	}
 
-	@XmlTransient
 	public ModuleMap getModuleMap() {
 		return moduleMap;
 	}
@@ -80,12 +89,10 @@ public class Analysis extends Artifact {
 		this.moduleMap = moduleMap;
 	}
 
-	@XmlElement(name = "moduleMapRef")
 	public String getModuleMapRef() {
 		return moduleMap.getTitle();
 	}
 
-	@XmlElement(name = "Results")
 	public ObjectMatrix getResults() {
 		return resultsMatrix;
 	}

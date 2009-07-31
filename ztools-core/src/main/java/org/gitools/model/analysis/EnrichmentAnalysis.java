@@ -4,9 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "analisis")
+@XmlRootElement(name = "enrichmentAnalysis")
 @XmlAccessorType(XmlAccessType.FIELD)
-
 public class EnrichmentAnalysis extends Analysis {
 
 	private static final long serialVersionUID = -7476200948081644842L;

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.gitools.model.Artifact;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
+import org.gitools.model.analysis.EnrichmentAnalysis;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
@@ -31,12 +32,18 @@ public class PersistenceManager {
 
 		persistenceMap.put(Project.class, 
 				XmlGenericPersistence.class);
+		persistenceMap.put(EnrichmentAnalysis.class, 
+				XmlMatrixFigurePersistence.class);
+		
+		
+		
 		persistenceMap.put(ResourceContainer.class,
 				XmlResourcePersistence.class);
 		persistenceMap.put(MatrixFigure.class, 
 				XmlMatrixFigurePersistence.class);
 		persistenceMap.put(TableFigure.class, 
 				XmlTableFigurePersistence.class);
+	
 		persistenceMap.put(ObjectMatrix.class,
 				TextObjectMatrixPersistence.class);
 		persistenceMap.put(DoubleMatrix.class, 

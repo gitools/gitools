@@ -20,6 +20,7 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	
 	@Override
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
+		if (v== null) return null; 
 		Matrix matrix = (Matrix) v;
 		return new MatrixXmlElement(Extensions.getEntityExtension(v
 				.getClass()), matrix.getResource());

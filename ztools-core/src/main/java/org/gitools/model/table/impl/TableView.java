@@ -6,13 +6,14 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.ITableColumn;
-import org.gitools.model.xml.adapter.TableXmlAdapter;
+import org.gitools.model.table.Table;
 import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -21,7 +22,7 @@ public class TableView implements ITable, Serializable {
 
 	private static final long serialVersionUID = -3231844654295236093L;
 
-	@XmlJavaTypeAdapter(TableXmlAdapter.class)
+	@XmlElement(type=Table.class)
 	ITable contents;
 
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
@@ -123,13 +124,13 @@ public class TableView implements ITable, Serializable {
 			visibleColumns = null;
 			visibleRows = null;
 		}
-		System.out.println("llaman al before marshall" + naturalOrder);
+		System.out.println("calling before marshall" + naturalOrder);
 	}
 
 	public void afterMarshal(Marshaller u) {
 
 		if (visibleColumns == null && visibleRows == null) {
-			System.out.println("llaman al after marshall");
+			System.out.println("calling  after marshall");
 
 			int count = contents.getRowCount();
 			int[] rows = new int[count];
@@ -150,7 +151,7 @@ public class TableView implements ITable, Serializable {
 
 	// UnMarshalling
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		System.out.println("llaman al after Unmarshall");
+		System.out.println("calling after Unmarshall");
 		int count = 0;
 		int[] rows;
 		int[] columns;
