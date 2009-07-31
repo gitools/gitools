@@ -3,12 +3,15 @@ package org.gitools.model.matrix;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
-
+@XmlAccessorType(XmlAccessType.NONE)
 public class AnnotationMatrix extends StringMatrix {
 
 	private static final long serialVersionUID = 2941738380629859631L;

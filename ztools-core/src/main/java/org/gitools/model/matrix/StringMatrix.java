@@ -1,5 +1,7 @@
 package org.gitools.model.matrix;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -8,6 +10,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class StringMatrix extends ObjectMatrix {
 
 	private static final long serialVersionUID = 5061265701379494159L;

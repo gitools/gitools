@@ -5,23 +5,24 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.gitools.model.matrix.Matrix;
 import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.IResource;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "type", "reference" })
+@XmlType(propOrder = {"reference", "matrix" })
 public class MatrixXmlElement {
 
 	@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
 	private IResource reference;
-	private String type;
+	private Matrix matrix;
 
 	public MatrixXmlElement() {
 	}
 
-	public MatrixXmlElement(String type, IResource reference) {
-		this.type = type;
+	public MatrixXmlElement(IResource reference, Matrix matrix) {
 		this.reference = reference;
+		this.matrix = matrix;
 	}
 
 	public IResource getReference() {
@@ -32,12 +33,11 @@ public class MatrixXmlElement {
 		this.reference = reference;
 	}
 
-	public String getType() {
-		return type;
+	public Matrix getMatrix() {
+		return matrix;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setMatrix(Matrix matrix) {
+		this.matrix = matrix;
 	}
-
 }

@@ -1,12 +1,13 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.colt.matrix.ObjectMatrix1D;
 
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AbstractMatrix 
 	extends Matrix {
 
@@ -37,7 +38,7 @@ public abstract class AbstractMatrix
 		this.cellAdapter = cellAdapter;
 	}
 	
-	@XmlTransient
+
 	public ObjectMatrix1D getRows() {
 		return rows;
 	}
@@ -58,7 +59,7 @@ public abstract class AbstractMatrix
 		rows.set(index, row);
 	}
 	
-	@XmlTransient
+	
 	public ObjectMatrix1D getColumns() {
 		return columns;
 	}
@@ -100,8 +101,6 @@ public abstract class AbstractMatrix
 				getCell(row, column), id, value);
 	}
 	
-	//@XmlAnyElement
-	@XmlElement
 	public IElementAdapter getRowAdapter() {
 		return rowAdapter;
 	}
@@ -110,8 +109,6 @@ public abstract class AbstractMatrix
 		this.rowAdapter = rowAdapter;
 	}
 	
-	//@XmlAnyElement
-	@XmlElement
 	public IElementAdapter getColumnAdapter() {
 		return columnAdapter;
 	}
@@ -120,8 +117,6 @@ public abstract class AbstractMatrix
 		this.columnAdapter = columnAdapter;
 	}
 	
-	//@XmlAnyElement
-	@XmlElement
 	public IElementAdapter getCellAdapter() {
 		return cellAdapter;
 	}

@@ -1,6 +1,8 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.basic.DoubleElementAdapter;
@@ -16,6 +18,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"rowNames", 
 				"data"///})*/
 				
+@XmlAccessorType(XmlAccessType.NONE)
 public final class DoubleMatrix 
 	extends Matrix	{			
 
@@ -29,6 +32,7 @@ public final class DoubleMatrix
 	private IElementAdapter cellAdapter;
 	private IElementAdapter columnAdapter;
 	private IElementAdapter rowAdapter;
+	
 	
 	public DoubleMatrix(
 			String name, 
@@ -58,7 +62,7 @@ public final class DoubleMatrix
 		this.name = name;
 	}
 
-	@XmlTransient
+	
 	public final String[] getColNames() {
 		return colNames;
 	}
@@ -67,7 +71,7 @@ public final class DoubleMatrix
 		this.colNames = colNames;
 	}
 
-	@XmlTransient
+
 	public final String[] getRowNames() {
 		return rowNames;
 	}
@@ -76,7 +80,7 @@ public final class DoubleMatrix
 		this.rowNames = rowNames;
 	}
 
-	@XmlTransient
+
 	public final DoubleMatrix2D getData() {
 		return data;
 	}
