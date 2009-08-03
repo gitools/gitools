@@ -27,8 +27,11 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	@Override
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
-		String extension = Extensions.getEntityExtension(v.getMatrix().getClass());
-		IMatrix matrix = (IMatrix) PersistenceManager.load(resourceFactory, v.getReference(),extension);
+		Matrix contents = v.getMatrix();
+		String extension = Extensions.getEntityExtension(contents.getClass());
+		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory, v.getReference(),extension);
+		matrix.setTitle(contents.getTitle());
+		matrix.setDescription(contents.getDescription());
 		return matrix;
 	}
 }

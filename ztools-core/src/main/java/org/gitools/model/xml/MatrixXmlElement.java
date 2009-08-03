@@ -15,6 +15,9 @@ public class MatrixXmlElement {
 
 	@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
 	private IResource reference;
+	
+	// We dont use the resource allocated in the matrix because then every artifact would
+	// write its own reference on the html
 	private Matrix matrix;
 
 	public MatrixXmlElement() {

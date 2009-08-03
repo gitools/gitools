@@ -18,4 +18,20 @@ public class EnrichmentAnalysis extends Analysis {
 		
 	}
 	
+	public double getCutoff() {
+		return cutoff;
+	}
+
+	public void setCutoff(double cutoff) {
+		this.cutoff = cutoff;
+	}
+
+	public String getComparator() {
+		return comparator;
+	}
+
+	public void setComparator(String comparator) {
+		this.comparator = comparator;
+	}
+
 }

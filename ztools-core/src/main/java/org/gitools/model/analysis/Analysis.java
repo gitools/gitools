@@ -29,7 +29,6 @@ public class Analysis extends Artifact {
 	
 	
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
-	//@XmlElement(name = "dataTableRef")
 	protected DoubleMatrix dataTable;
 	
 	@XmlTransient
