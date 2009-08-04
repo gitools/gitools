@@ -16,6 +16,7 @@ public class ResourceXmlAdapter extends XmlAdapter<String, IResource> {
 
 	@Override
 	public String marshal(IResource resource) throws Exception {
+		if(resource == null) return null;
 		return resource.toString();
 		
 	}

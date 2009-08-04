@@ -22,14 +22,16 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
 		if (v== null) return null; 
 		Matrix matrix = (Matrix) v;
-		return new MatrixXmlElement(matrix.getResource(), matrix);
+		matrix.setTitle("calculon");
+		matrix.setDescription("description");
+		return new MatrixXmlElement(matrix);
 	}
 
 	@Override
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
 		Matrix contents = v.getMatrix();
 		String extension = Extensions.getEntityExtension(contents.getClass());
-		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory, v.getReference(),extension);
+		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory, contents.getResource(),extension);
 		matrix.setTitle(contents.getTitle());
 		matrix.setDescription(contents.getDescription());
 		return matrix;
