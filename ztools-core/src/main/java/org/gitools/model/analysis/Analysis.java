@@ -14,6 +14,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
 
 @XmlSeeAlso({EnrichmentAnalysis.class})
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -31,7 +32,7 @@ public class Analysis extends Artifact {
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected DoubleMatrix dataTable;
 	
-	@XmlTransient
+	@XmlJavaTypeAdapter(ModuleMapXmlAdapter.class)
 	protected ModuleMap moduleMap;
 	
 	

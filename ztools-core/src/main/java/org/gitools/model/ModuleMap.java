@@ -1,9 +1,9 @@
 package org.gitools.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)	
 public class ModuleMap extends Artifact {
 
 	private static final long serialVersionUID = 6463084331984782264L;
@@ -37,7 +37,6 @@ public class ModuleMap extends Artifact {
 		this.itemsOrder = itemsOrder;
 	}
 
-	@XmlTransient
 	public final String[] getModuleNames() {
 		return moduleNames;
 	}
@@ -46,7 +45,6 @@ public class ModuleMap extends Artifact {
 		this.moduleNames = moduleNames;
 	}
 
-	@XmlTransient
 	public final String[] getItemNames() {
 		return itemNames;
 	}
@@ -55,7 +53,6 @@ public class ModuleMap extends Artifact {
 		this.itemNames = itemNames;
 	}
 
-	@XmlTransient
 	public final int[][] getItemIndices() {
 		return itemIndices;
 	}
@@ -64,7 +61,6 @@ public class ModuleMap extends Artifact {
 		this.itemIndices = itemIndices;
 	}
 
-	@XmlTransient
 	public int[] getItemsOrder() {
 		return itemsOrder;
 	}

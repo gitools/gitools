@@ -18,6 +18,7 @@ public class AnnotationMatrixXmlAdapter extends
 
 	@Override
 	public String marshal(AnnotationMatrix v) throws Exception {
+		if(v == null) return null;
 		return v.getResource().toString();
 	}
 

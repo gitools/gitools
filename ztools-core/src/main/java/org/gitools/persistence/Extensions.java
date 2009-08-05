@@ -3,6 +3,7 @@ package org.gitools.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.analysis.EnrichmentAnalysis;
@@ -31,9 +32,13 @@ public class Extensions {
 	public static final String DOUBLE_MATRIX = "doubleMatrix";
 	public static final String STRING_MATRIX = "stringMatrix";
 
+	
+	
 	private static final Map<Class<?>, String> extensionsMap = new HashMap<Class<?>, String>();
 
 	private static final Map<String, Class<?>> classesMap = new HashMap<String, Class<?>>();
+
+	public static final String MODULE_MAP = "moduleMap";
 
 	
 
@@ -57,6 +62,10 @@ public class Extensions {
 		classesMap.put(Extensions.STRING_MATRIX, StringMatrix.class);
 		classesMap.put(Extensions.ANNOTATION_MATRIX, AnnotationMatrix.class);
 
+		classesMap.put(Extensions.MODULE_MAP, ModuleMap.class);
+		
+		
+		
 	}
 
 	private Extensions() {

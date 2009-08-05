@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gitools.model.Artifact;
+import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
 import org.gitools.model.ResourceContainer;
 import org.gitools.model.analysis.EnrichmentAnalysis;
@@ -30,26 +31,15 @@ public class PersistenceManager {
 	
 	static {
 
-		persistenceMap.put(Project.class, 
-				XmlGenericPersistence.class);
-		persistenceMap.put(EnrichmentAnalysis.class, 
-				XmlMatrixFigurePersistence.class);
-		
-		
-		
-		persistenceMap.put(ResourceContainer.class,
-				XmlResourcePersistence.class);
-		persistenceMap.put(MatrixFigure.class, 
-				XmlMatrixFigurePersistence.class);
-		persistenceMap.put(TableFigure.class, 
-				XmlTableFigurePersistence.class);
-	
-		persistenceMap.put(ObjectMatrix.class,
-				TextObjectMatrixPersistence.class);
-		persistenceMap.put(DoubleMatrix.class, 
-				TextDoubleMatrixPersistence.class);
-		persistenceMap.put(AnnotationMatrix.class,
-				TextAnnotationMatrixPersistence.class);
+		persistenceMap.put(Project.class, XmlGenericPersistence.class);
+		persistenceMap.put(EnrichmentAnalysis.class, XmlEnrichmentAnalysisPersistence.class);
+		persistenceMap.put(ResourceContainer.class, XmlResourcePersistence.class);
+		persistenceMap.put(MatrixFigure.class, XmlMatrixFigurePersistence.class);
+		persistenceMap.put(TableFigure.class,  XmlTableFigurePersistence.class);
+		persistenceMap.put(ObjectMatrix.class, TextObjectMatrixPersistence.class);
+		persistenceMap.put(DoubleMatrix.class, TextDoubleMatrixPersistence.class);
+		persistenceMap.put(AnnotationMatrix.class, TextAnnotationMatrixPersistence.class);
+		persistenceMap.put(ModuleMap.class, ModuleMapPersistence.class);
 
 	}
 
@@ -71,6 +61,7 @@ public class PersistenceManager {
 			
 			if ((resourceClass.equals(XmlMatrixFigurePersistence.class)) ||
 				(resourceClass.equals(XmlTableFigurePersistence.class))  ||
+				(resourceClass.equals(XmlEnrichmentAnalysisPersistence.class))  ||
 				(resourceClass.equals(XmlResourcePersistence.class))) {
 				
 				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
