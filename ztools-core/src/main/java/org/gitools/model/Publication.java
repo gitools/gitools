@@ -19,8 +19,8 @@ public class Publication
 
 	private static final long serialVersionUID = 4040601803383233010L;
 
-
-	private String title;
+	
+	private String title;  
 	private String journal;
 	private String pubmed;
 	
