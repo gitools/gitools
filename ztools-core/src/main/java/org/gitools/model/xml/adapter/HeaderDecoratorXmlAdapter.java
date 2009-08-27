@@ -10,7 +10,6 @@ public class HeaderDecoratorXmlAdapter extends XmlAdapter <AnnotationHeaderDecor
 	@Override
 	public AnnotationHeaderDecorator marshal(HeaderDecorator v)
 			throws Exception {
-	
 		return (AnnotationHeaderDecorator)v;
 	}
 

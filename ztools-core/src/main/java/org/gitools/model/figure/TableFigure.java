@@ -5,10 +5,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
@@ -34,7 +34,7 @@ public class TableFigure extends Figure implements Serializable {
 	
 	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
 	private List<AbstractModel> cellDecorators;
-	
+
 	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
 	private List<AbstractModel> headerDecorators;
 
@@ -72,6 +72,7 @@ public class TableFigure extends Figure implements Serializable {
 		HeaderDecorator headerDecorator;
 
 		for (int i = 0; i < tableView.getColumnCount(); i++) {
+			
 			elementAdapter = tableView.getCellColumnAdapter(i);
 			cellDecorator = new FormattedTextElementDecorator(elementAdapter);
 
@@ -118,11 +119,10 @@ public class TableFigure extends Figure implements Serializable {
 
 	public AbstractModel getHeaderDecorator(int column) {
 		return headerDecorators.get(column);
-
 	}
 
 	public AbstractModel getDecorator(int column) {
 		return cellDecorators.get(column);
-
 	}
 }
+

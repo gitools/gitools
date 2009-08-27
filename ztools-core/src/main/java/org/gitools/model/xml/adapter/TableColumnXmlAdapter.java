@@ -3,32 +3,17 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.table.ITableColumn;
-import org.gitools.model.table.impl.AnnotationTableColumn;
-import org.gitools.model.table.impl.MatrixCellTableColumn;
-import org.gitools.model.table.impl.MatrixPropertyTableColumn;
+import org.gitools.model.table.impl.AbstractTableColumn;
 
+public class TableColumnXmlAdapter extends XmlAdapter<AbstractTableColumn, ITableColumn> {
 
-public class TableColumnXmlAdapter extends XmlAdapter<String, ITableColumn> {
 	@Override
-	public String marshal(ITableColumn v) throws Exception {
-		if (v instanceof AnnotationTableColumn)
-			return "AnnotationTableColumn";
-		if (v instanceof MatrixCellTableColumn)
-			return "MatrixCellTableColumn";	
-		if (v instanceof MatrixPropertyTableColumn)
-			return "MatrixPropertyTableColumn";	
-		return null;
+	public AbstractTableColumn marshal(ITableColumn table) throws Exception {
+		return (AbstractTableColumn) table;
 	}
+
 	@Override
-	public ITableColumn unmarshal(String v) throws Exception {
-		if (v.equals("AnnotationTableColumn"))
-			return (ITableColumn) new AnnotationTableColumn();
-		if (v.equals("MatrixCellTableColumn"))
-			return (ITableColumn) new MatrixCellTableColumn();
-		if (v.equals("MatrixCellTableColumn"))
-			return (ITableColumn) new MatrixCellTableColumn();
-		return null;
-	
-	
+	public ITableColumn unmarshal(AbstractTableColumn table) throws Exception {
+		return (ITableColumn) table;
+	}
 }
-	}

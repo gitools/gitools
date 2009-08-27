@@ -22,7 +22,7 @@ public class AbstractModelXmlAdapter extends
 	@Override
 	public List<AbstractModel> unmarshal(AbstractModelDecoratorElement v)
 			throws Exception {
-		return v.getList();
+		 return v.getList();
 	}
 
 }

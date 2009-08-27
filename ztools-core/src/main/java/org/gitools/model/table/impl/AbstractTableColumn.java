@@ -1,10 +1,23 @@
 package org.gitools.model.table.impl;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.gitools.model.table.Table;
 
-public class AbstractTableColumn {
+@XmlSeeAlso({
+	AnnotationTableColumn.class, 
+	MatrixCellTableColumn.class, 
+	MatrixPropertyTableColumn.class})
 
+	@XmlAccessorType(XmlAccessType.FIELD)
+public class AbstractTableColumn {
+	//internal column, reference of a Table or Matrix column
 	protected int column;
+	
+	@XmlTransient
 	protected Table table;
 
 	public AbstractTableColumn() {

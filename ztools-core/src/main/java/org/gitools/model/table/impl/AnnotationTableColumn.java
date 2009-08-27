@@ -2,28 +2,29 @@ package org.gitools.model.table.impl;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
 @SuppressWarnings("unused")
-public class AnnotationTableColumn extends AbstractTableColumn
-	implements ITableColumn, Serializable {
-
-	
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AnnotationTableColumn extends AbstractTableColumn implements
+		ITableColumn, Serializable {
 
 	public AnnotationTableColumn() {
 
 	}
 
-	public AnnotationTableColumn( int column, Table table) {
+	public AnnotationTableColumn(Table table, int column) {
 		super(column, table);
-		;
 	}
 
 	public AnnotationTableColumn(Table table, String id) {
-		this(table.getAnnotations().getColumnIndex(id), table );
+		this(table, table.getAnnotations().getColumnIndex(id));
 	}
 
 	@Override
@@ -33,6 +34,8 @@ public class AnnotationTableColumn extends AbstractTableColumn
 
 	@Override
 	public String getHeader() {
+		if (column <0)
+			return "";
 		return table.getAnnotations().getColumnString(column);
 	}
 
@@ -43,13 +46,9 @@ public class AnnotationTableColumn extends AbstractTableColumn
 
 	@Override
 	public Object getValue(int row) {
-		AnnotationMatrix annotations = table.getAnnotations();
-		Object rowName = table.getMatrix().getRow(row);
-		if (rowName == null)return null;
-		
-		int index = annotations.getRowIndex(rowName.toString());
-		if (index == -1) return null;
-		return annotations.getCell(index, column);
+		if (column < 0) 
+			return table.getMatrix().getRow(row);
+		return table.getAnnotations().getCell(row, column);
 	}
 
 }

@@ -4,10 +4,6 @@ import org.gitools.model.matrix.element.IElementAdapter;
 
 public interface ITable {
 
-	// columns
-	//public void addColumn(ITableColumn column) throws TableFormatException;
-	//public void removeColumn(int index);
-
 	public ITableColumn getColumn(int index);
 
 	// values

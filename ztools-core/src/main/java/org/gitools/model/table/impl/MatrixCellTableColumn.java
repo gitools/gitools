@@ -30,7 +30,8 @@ public class MatrixCellTableColumn extends AbstractTableColumn implements
 
 	@Override
 	public String getHeader() {
-		return table.getMatrix().getColumn(column).toString();
+	    Object object = table.getMatrix().getColumn(column);
+		return object==null?"null":object.toString();
 	}
 
 	@Override

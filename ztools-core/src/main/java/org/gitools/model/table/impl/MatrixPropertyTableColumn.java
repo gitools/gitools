@@ -1,7 +1,11 @@
 package org.gitools.model.table.impl;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import org.gitools.model.table.Table;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixPropertyTableColumn extends MatrixCellTableColumn {
 
 	int property;
