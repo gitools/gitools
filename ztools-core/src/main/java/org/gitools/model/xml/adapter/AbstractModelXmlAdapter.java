@@ -9,10 +9,6 @@ import org.gitools.model.xml.AbstractModelDecoratorElement;
 
 public class AbstractModelXmlAdapter extends
 		XmlAdapter<AbstractModelDecoratorElement, List<AbstractModel>> {
-	public AbstractModelXmlAdapter() {
-
-	}
-
 	@Override
 	public AbstractModelDecoratorElement marshal(List<AbstractModel> elems)
 			throws Exception {

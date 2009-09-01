@@ -27,7 +27,7 @@ public class PersistenceManager {
 	private static final Map<Class<? extends Object>, Class<?>> 
 		persistenceMap = new HashMap<Class<? extends Object>, Class<?>>();
 
-	private static Set<Class<?>> cache = new HashSet<Class<?>>();
+	private static final Map<Integer, Object > cache = new HashMap<Integer, Object>();
 	
 	static {
 
@@ -68,8 +68,6 @@ public class PersistenceManager {
 				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
 			}
 			
-			
-			
 			return (IEntityPersistence<T>) resourceClass.newInstance();
 		
 		} catch (Exception e) {
@@ -86,6 +84,12 @@ public class PersistenceManager {
 			String entityType)
 				throws PersistenceException {
 
+		int key =resource.hashCode();
+		if (cache.containsKey(key)){
+			System.out.println("using cache for " + resource.toURI());
+			return cache.get(key);
+		}
+		
 		IProgressMonitor monitor = 
 			new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
@@ -107,6 +111,8 @@ public class PersistenceManager {
 		if (entity instanceof Artifact)
 			((Artifact) entity).setResource(resource);		
 	
+		if(!cache.containsKey(key))
+			cache.put(key, entity);
 		return entity;
 	}
 

@@ -9,7 +9,6 @@ public class ResourceXmlAdapter extends XmlAdapter<String, IResource> {
 
 	ResourceFactory resourceFactory;
 	
-	
 	public ResourceXmlAdapter(ResourceFactory factoryResource) {
 		this.resourceFactory = factoryResource;
 	}

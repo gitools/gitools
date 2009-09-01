@@ -155,7 +155,4 @@ public class BinaryElementDecorator extends ElementDecorator {
 		this.nonSignificantColor = Color.decode(configuration.get("nonSignificantColor"));
 		this.cutoff = Double.parseDouble((String) configuration.get("cutoff"));
 	}
-
-	
-
 }

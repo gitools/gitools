@@ -368,7 +368,6 @@ public class MatrixView
 	// Marshal and unMarshall methods
 	// Marshalling
 	public void beforeMarshal(Marshaller u) {
-		System.out.println("enter  - inside beforeUnmarhall");
 		boolean naturalOrder = true;
 		int rows = visibleRows.length;
 		int columns = visibleColumns.length;
@@ -387,11 +386,9 @@ public class MatrixView
 			visibleColumns = null;
 			visibleRows = null;
 		}
-		System.out.println("exit  - inside beforeUnmarhall");
 	}
 
 	public void afterMarshal(Marshaller u) {
-		System.out.println("enter  - inside afterUnmarhall");
 		if (visibleColumns == null && visibleRows == null) {
 			
 			int count = contents.getRowCount();

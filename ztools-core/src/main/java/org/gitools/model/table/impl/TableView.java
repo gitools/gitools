@@ -124,14 +124,12 @@ public class TableView implements ITable, Serializable {
 			visibleColumns = null;
 			visibleRows = null;
 		}
-		System.out.println("calling before marshall" + naturalOrder);
 	}
 
 	public void afterMarshal(Marshaller u) {
 
 		if (visibleColumns == null && visibleRows == null) {
-			System.out.println("calling  after marshall");
-
+			
 			int count = contents.getRowCount();
 			int[] rows = new int[count];
 
@@ -151,7 +149,6 @@ public class TableView implements ITable, Serializable {
 
 	// UnMarshalling
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		System.out.println("calling after Unmarshall");
 		int count = 0;
 		int[] rows;
 		int[] columns;
