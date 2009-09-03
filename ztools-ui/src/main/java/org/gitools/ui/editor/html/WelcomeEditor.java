@@ -25,7 +25,7 @@ public class WelcomeEditor extends HtmlEditor {
 	
 	@Override
 	protected void performUrlAction(String name) {
-		if (name.equals("newZetCalcAnalysis")) {
+		if (name.equals("newEnrichmentAnalysis")) {
 			new NewEnrichmentAnalysisAction()
 				.actionPerformed(new ActionEvent(this, 0, name));
 		}

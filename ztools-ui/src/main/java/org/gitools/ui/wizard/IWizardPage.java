@@ -4,16 +4,17 @@ import javax.swing.JComponent;
 
 public interface IWizardPage {
 
-	Object getId();
+	String getId();
+	
+	void setId(String id);
 
-	WizardDialog getWizard();
+	IWizard getWizard();
+	
+	void setWizard(IWizard wizard);
 
-	void setWizard(WizardDialog wizard);
+	boolean isComplete();
 
-	boolean isPageComplete();
+	JComponent createControls();
 
-	JComponent createPageControls();
-
-	boolean canFlipToNextPage();
-
+	String getTitle();
 }

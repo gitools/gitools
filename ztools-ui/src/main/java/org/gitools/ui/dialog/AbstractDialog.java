@@ -16,6 +16,8 @@ public abstract class AbstractDialog extends JDialog {
 
 	private static final long serialVersionUID = 5886096207448862426L;
 
+	DialogHeaderPanel hdrPanel;
+	
 	protected JComponent container;
 	
 	public AbstractDialog(
@@ -32,6 +34,10 @@ public abstract class AbstractDialog extends JDialog {
 		setMinimumSize(new Dimension(300, 260));
 	}
 	
+	public AbstractDialog(Window owner, String title, Icon icon) {
+		this(owner, title, "", "", Status.normal, icon);
+	}
+
 	public void open() {
 		setVisible(true);
 	}
@@ -50,7 +56,7 @@ public abstract class AbstractDialog extends JDialog {
 			Status status,
 			Icon logo) {
 		
-		final DialogHeaderPanel hdrPanel = new DialogHeaderPanel(
+		hdrPanel = new DialogHeaderPanel(
 				header, message, status, logo);
 		
 		container = createContainer();
@@ -66,6 +72,10 @@ public abstract class AbstractDialog extends JDialog {
 		add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
+	public DialogHeaderPanel getHeaderPanel() {
+		return hdrPanel;
+	}
+	
 	protected abstract JComponent createContainer();
 	
 	protected abstract List<JButton> createButtons();

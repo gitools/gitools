@@ -57,7 +57,7 @@ public class FileActionSet extends ActionSet {
 			openActionSet,
 			closeAction,
 			BaseAction.separator,
-			//exportWizardAction,
+			exportWizardAction,
 			exportActionSet,
 			BaseAction.separator,
 			exitAction

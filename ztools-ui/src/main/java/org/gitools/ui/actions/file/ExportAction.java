@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.wizard.WizardDialog;
 import org.gitools.ui.wizard.export.ExportWizard;
 
 public class ExportAction extends BaseAction {
@@ -20,12 +21,12 @@ public class ExportAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		/*ExportDialog dlg = new ExportDialog(AppFrame.instance());
-		dlg.setVisible(true);*/
 		
-		ExportWizard wiz = new ExportWizard(AppFrame.instance());
-		wiz.open();
+		WizardDialog wizDlg = new WizardDialog(
+				AppFrame.instance(),
+				new ExportWizard());
+		
+		wizDlg.open();
 		
 		AppFrame.instance().setStatusText("Done.");
 	}

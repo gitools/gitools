@@ -3,8 +3,8 @@
 	<formats>
 		<!--
 		<format>tar.bz2</format>
-		<format>tar.gz</format>-->
-		<format>zip</format>
+		<format>tar.gz</format>
+		<format>zip</format>-->
 		<format>dir</format>
 	</formats>
 	<includeSiteDirectory>false</includeSiteDirectory>
@@ -33,6 +33,13 @@
 				<include>**/*</include>
 			</includes>
 			<outputDirectory>templates</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>ztools-ui/src/main/resources/img</directory>
+			<includes>
+				<include>LogoMini.png</include>
+			</includes>
+			<outputDirectory></outputDirectory>
 		</fileSet>
 	</fileSets>
 	<moduleSets>

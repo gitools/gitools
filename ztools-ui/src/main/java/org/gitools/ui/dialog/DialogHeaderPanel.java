@@ -72,4 +72,40 @@ public class DialogHeaderPanel extends JComponent {
 		//super.paintComponent(g);
 		System.out.print("...");
 	}*/
+	
+	public String getHeader() {
+		return header;
+	}
+	
+	public void setHeader(String header) {
+		this.header = header;
+		headerLabel.setText(header);
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+		messageLabel.setText(message);
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+		//TODO status icon
+	}
+	
+	public Icon getLogo() {
+		return logo;
+	}
+	
+	public void setLogo(Icon logo) {
+		this.logo = logo;
+		logoLabel.setIcon(logo);
+	}
 }

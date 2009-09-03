@@ -7,26 +7,24 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.gitools.ui.wizard.WizardPage;
+import org.gitools.ui.wizard.AbstractWizardPage;
 
-public class ExportChooserPage extends WizardPage {
+public class ExportChooserPage extends AbstractWizardPage {
 
 	private static final long serialVersionUID = 873494691491409555L;
-
-	private static final Object ID = ExportChooserPage.class.getCanonicalName();
 	
 	protected JTree tree;
 	
-	public ExportChooserPage(Object id) {
+	public ExportChooserPage(String id) {
 		super(id);
 	}
 	
 	public ExportChooserPage() {
-		super(ID);
+		super(ExportChooserPage.class.getSimpleName());
 	}
 	
 	@Override
-	public JComponent createPageControls() {
+	public JComponent createControls() {
 		DefaultMutableTreeNode model = 
 			new DefaultMutableTreeNode();
 
@@ -51,11 +49,5 @@ public class ExportChooserPage extends WizardPage {
 		final JScrollPane scrollPane = new JScrollPane(tree);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		return scrollPane;
-	}
-	
-	@Override
-	public boolean canFlipToNextPage() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
