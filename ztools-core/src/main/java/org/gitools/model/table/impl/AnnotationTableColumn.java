@@ -5,12 +5,11 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.Table;
 
-@SuppressWarnings("unused")
+
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AnnotationTableColumn extends AbstractTableColumn implements
 		ITableColumn, Serializable {

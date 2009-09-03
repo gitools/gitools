@@ -405,12 +405,10 @@ public class MatrixView
 				columns[i] = i;
 			setVisibleColumns(columns);
 		}
-	System.out.println("exit  - inside afterMarshall");
 	}
 
 	// UnMarshalling
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		System.out.println("enter  - inside afterUnmarhall");
 		int count = 0;
 		int[] rows;
 		int[] columns;
@@ -431,6 +429,5 @@ public class MatrixView
 				columns[i] = i;
 			setVisibleColumns(columns);
 		}
-		System.out.println("exit  - inside afterUnmarhall");
 	}
 }

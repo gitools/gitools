@@ -14,7 +14,8 @@ import org.gitools.model.table.Table;
 
 	@XmlAccessorType(XmlAccessType.FIELD)
 public class AbstractTableColumn {
-	//internal column, reference of a Table or Matrix column
+	// internal column, 
+	// reference of a Table or Matrix column
 	protected int column;
 	
 	@XmlTransient
