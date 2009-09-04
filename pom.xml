@@ -165,6 +165,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	
+	<dependencies></dependencies>
 	<reporting>
 		<plugins>
 			<plugin>

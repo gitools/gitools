@@ -7,14 +7,14 @@ import javax.swing.JComponent;
 
 import org.gitools.ui.wizard.AbstractWizardPage;
 
-public class ModuleSourcePage extends AbstractWizardPage {
+public class DataSourcePage extends AbstractWizardPage {
 
-	private ModuleSourcePanel panel;
-	
-	public ModuleSourcePage() {
-		setTitle("Select modules source");
+	private DataSourcePanel panel;
+
+	public DataSourcePage() {
+		setTitle("Select data source");
 	}
-
+	
 	@Override
 	public JComponent createControls() {
 		ItemListener itemListener = new ItemListener() {
@@ -23,10 +23,11 @@ public class ModuleSourcePage extends AbstractWizardPage {
 			}
 		};
 		
-		panel = new ModuleSourcePanel();
+		panel = new DataSourcePanel();
 		panel.fileRbt.addItemListener(itemListener);
 		panel.intogenRbt.addItemListener(itemListener);
 		panel.biomartRbt.addItemListener(itemListener);
+		
 		return panel;
 	}
 	
