@@ -30,7 +30,7 @@ public class DataFilteringPanel extends javax.swing.JPanel {
         cutoffChk = new javax.swing.JCheckBox();
         omitUnmappedChk = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        cutoffCondBox = new javax.swing.JComboBox();
+        cutoffCondCbox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         cutoffValueField = new javax.swing.JTextField();
 
@@ -45,8 +45,8 @@ public class DataFilteringPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Condition");
 
-        cutoffCondBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<", "<=", ">", ">=", "=", "!=" }));
-        cutoffCondBox.setEnabled(false);
+        cutoffCondCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<", "<=", ">", ">=", "=", "!=" }));
+        cutoffCondCbox.setEnabled(false);
 
         jLabel2.setText("Value");
 
@@ -68,7 +68,7 @@ public class DataFilteringPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cutoffValueField, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                            .addComponent(cutoffCondBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 237, Short.MAX_VALUE)))
+                            .addComponent(cutoffCondCbox, javax.swing.GroupLayout.Alignment.LEADING, 0, 237, Short.MAX_VALUE)))
                     .addComponent(omitUnmappedChk, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -80,7 +80,7 @@ public class DataFilteringPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cutoffCondBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cutoffCondCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -92,13 +92,13 @@ public class DataFilteringPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 private void cutoffChkStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cutoffChkStateChanged
-    cutoffCondBox.setEnabled(cutoffChk.isSelected());
+    cutoffCondCbox.setEnabled(cutoffChk.isSelected());
     cutoffValueField.setEnabled(cutoffChk.isSelected());
 }//GEN-LAST:event_cutoffChkStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JCheckBox cutoffChk;
-    public javax.swing.JComboBox cutoffCondBox;
+    public javax.swing.JComboBox cutoffCondCbox;
     public javax.swing.JTextField cutoffValueField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

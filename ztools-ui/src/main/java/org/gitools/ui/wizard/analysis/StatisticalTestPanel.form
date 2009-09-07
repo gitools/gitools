@@ -18,7 +18,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel1" alignment="0" pref="376" max="32767" attributes="0"/>
+                  <Component id="descLabel" alignment="0" pref="376" max="32767" attributes="0"/>
                   <Component id="testCbox" alignment="0" pref="376" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -42,7 +42,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="testCbox" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="59" max="-2" attributes="0"/>
+              <Component id="descLabel" min="-2" pref="59" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="samplingSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -69,22 +69,25 @@
           </StringArray>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="testCboxItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="descLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Description"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="samplingSizeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sampling size"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="samplingSizeCbox">
       <Properties>
@@ -106,6 +109,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Estimator"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="estimatorCbox">
       <Properties>

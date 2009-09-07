@@ -4,18 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+import org.gitools.commands.ZCalcCommand;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.ProgressMonitorDialog;
 import org.gitools.ui.jobs.ZCalcCommandJob;
-import org.gitools.ui.wizard.WizardDialog;
-import org.gitools.ui.wizard.analysis.EnrichmentAnalysisWizard;
 import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.WizardDataModel;
 import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.commands.ZCalcCommand;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
@@ -31,13 +29,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		WizardDialog wizDlg = new WizardDialog(
-				AppFrame.instance(),
-				new EnrichmentAnalysisWizard());
-		
-		wizDlg.open();
-		
-		/*final ZCalcAnalysisWizard wizard = 
+		final ZCalcAnalysisWizard wizard = 
 			new ZCalcAnalysisWizard(AppFrame.instance());
 
 		final WizardDataModel dialogData = 
@@ -64,6 +56,6 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 					new ZCalcCommandJob(command, monitor, analysisPath));
 			
 			monitorDialog.setVisible(true);
-		}*/
+		}
 	}
 }

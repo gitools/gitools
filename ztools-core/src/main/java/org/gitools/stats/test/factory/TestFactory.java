@@ -6,7 +6,6 @@ import java.util.Map;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.Test;
 
-
 public abstract class TestFactory {
 
 	public static final String TEST_NAME_PROPERTY = "test-name";

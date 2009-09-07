@@ -18,7 +18,6 @@ import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
 
 @XmlSeeAlso({EnrichmentAnalysis.class})
 @XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType( propOrder={"startTime", "elapsedTime", "dataTableRef", "results" } )
 public class Analysis extends Artifact {
 
 	private static final long serialVersionUID = 44219853082656184L;

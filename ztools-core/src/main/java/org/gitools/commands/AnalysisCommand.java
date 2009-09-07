@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.gitools.datafilters.DoubleFilter;
-import org.gitools.datafilters.ValueFilter;
+import org.gitools.datafilters.BinaryCutoff;
+import org.gitools.datafilters.DoubleParser;
+import org.gitools.datafilters.ValueParser;
 import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
@@ -24,15 +25,23 @@ public abstract class AnalysisCommand implements Command {
 	protected static final char defaultSep = '\t';
 	protected static final char defaultQuote = '"';
 	
-	protected String analysisName;
+	protected String title;
+	protected String notes;
 	
+	@Deprecated
 	protected String testName;
+	
+	protected ToolConfig testConfig;
 
 	protected int samplingNumSamples;
 	
 	protected String dataFile;
 	
-	protected ValueFilter valueFilter;
+	protected boolean dataBinaryCutoffEnabled;
+	protected BinaryCutoff dataBinaryCutoff;
+	
+	@Deprecated
+	protected ValueParser valueParser;
 	
 	protected String modulesFile;
 	
@@ -48,16 +57,16 @@ public abstract class AnalysisCommand implements Command {
 
 	public AnalysisCommand(
 			String analysisName, String testName, int samplingNumSamples, 
-			String dataFile, ValueFilter valueFilter, 
+			String dataFile, ValueParser valueParser, 
 			String groupsFile, int minGroupSize, int maxGroupSize, 
 			boolean includeNonMappedItems, 
 			String workdir, String outputFormat, boolean resultsByCond) {
 		
-		this.analysisName = analysisName;
+		this.title = analysisName;
 		this.testName = testName;
 		this.samplingNumSamples = samplingNumSamples;
 		this.dataFile = dataFile;
-		this.valueFilter = valueFilter != null ? valueFilter : new DoubleFilter();
+		this.valueParser = valueParser != null ? valueParser : new DoubleParser();
 		this.modulesFile = groupsFile;
 		this.minModuleSize = minGroupSize;
 		this.maxModuleSize = maxGroupSize;
@@ -66,7 +75,150 @@ public abstract class AnalysisCommand implements Command {
 		this.outputFormat = outputFormat;
 		this.resultsByCond = resultsByCond;
 	}
+
+	public AnalysisCommand() {
+		samplingNumSamples = 10000;
+		dataBinaryCutoffEnabled = false;
+		valueParser = new DoubleParser();
+		minModuleSize = 0;
+		maxModuleSize = Integer.MAX_VALUE;
+		includeNonMappedItems = true;
+		outputFormat = "csv";
+		resultsByCond = true;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
 	
+	public void setNotes(String notes) {
+		this.notes = notes;	
+	}
+	
+	@Deprecated // Use testConfig instead
+	public String getTestName() {
+		return testName;
+	}
+
+	@Deprecated // Use testConfig instead
+	public void setTestName(String testName) {
+		this.testName = testName;
+	}
+
+	public ToolConfig getTestConfig() {
+		return testConfig;
+	}
+	
+	public void setTestConfig(ToolConfig testConfig) {
+		this.testConfig = testConfig;
+	}
+	
+	public int getSamplingNumSamples() {
+		return samplingNumSamples;
+	}
+
+	public void setSamplingNumSamples(int samplingNumSamples) {
+		this.samplingNumSamples = samplingNumSamples;
+	}
+
+	public String getDataFile() {
+		return dataFile;
+	}
+
+	public void setDataFile(String dataFile) {
+		this.dataFile = dataFile;
+	}
+
+	@Deprecated // Use dataBinaryCutoff* instead
+	public ValueParser getValueParser() {
+		return valueParser;
+	}
+
+	@Deprecated // Use dataBinaryCutoff* instead
+	public void setValueParser(ValueParser valueParser) {
+		this.valueParser = valueParser;
+	}
+	
+	public boolean getDataBinaryCutoffEnabled() {
+		return dataBinaryCutoffEnabled;
+	}
+	
+	public void setDataBinaryCutoffEnabled(boolean dataBinaryCutoffEnabled) {
+		this.dataBinaryCutoffEnabled = dataBinaryCutoffEnabled;
+	}
+
+	public BinaryCutoff getDataBinaryCutoff() {
+		return dataBinaryCutoff;
+	}
+	
+	public void setDataBinaryCutoff(BinaryCutoff dataBinaryCutoff) {
+		this.dataBinaryCutoff = dataBinaryCutoff;
+	}
+	
+	public String getModulesFile() {
+		return modulesFile;
+	}
+
+	public void setModulesFile(String modulesFile) {
+		this.modulesFile = modulesFile;
+	}
+
+	public int getMinModuleSize() {
+		return minModuleSize;
+	}
+
+	public void setMinModuleSize(int minModuleSize) {
+		this.minModuleSize = minModuleSize;
+	}
+
+	public int getMaxModuleSize() {
+		return maxModuleSize;
+	}
+
+	public void setMaxModuleSize(int maxModuleSize) {
+		this.maxModuleSize = maxModuleSize;
+	}
+
+	public boolean isIncludeNonMappedItems() {
+		return includeNonMappedItems;
+	}
+
+	public void setIncludeNonMappedItems(boolean includeNonMappedItems) {
+		this.includeNonMappedItems = includeNonMappedItems;
+	}
+
+	public String getWorkdir() {
+		return workdir;
+	}
+
+	public void setWorkdir(String workdir) {
+		this.workdir = workdir;
+	}
+
+	public String getOutputFormat() {
+		return outputFormat;
+	}
+
+	public void setOutputFormat(String outputFormat) {
+		this.outputFormat = outputFormat;
+	}
+
+	public boolean isResultsByCond() {
+		return resultsByCond;
+	}
+
+	public void setResultsByCond(boolean resultsByCond) {
+		this.resultsByCond = resultsByCond;
+	}
+
 	protected TestFactory createTestFactory(String toolName, String configName) {		
 		ToolConfig toolConfig =
 			TestFactory.createToolConfig(toolName, configName);
@@ -80,7 +232,7 @@ public abstract class AnalysisCommand implements Command {
 	protected void save(Analysis analysis, IProgressMonitor monitor) 
 			throws PersistenceException {
 
-		final String basePath = workdir + File.separator + analysisName;
+		final String basePath = workdir + File.separator + title;
 		
 		monitor.begin("Saving project ...", 1);
 		monitor.info("Location: " + basePath);

@@ -36,4 +36,16 @@ public class IntogenDataSetPage extends AbstractWizardPage {
 				|| panel.experimentsRbt.isSelected()
 				|| panel.combinationsRbt.isSelected());
 	}
+
+	public boolean isSamplesSelected() {
+		return panel.samplesRbt.isSelected();
+	}
+	
+	public boolean isExperimentsSelected() {
+		return panel.experimentsRbt.isSelected();
+	}
+	
+	public boolean isCombinationsSelected() {
+		return panel.combinationsRbt.isSelected();
+	}
 }

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
-import org.gitools.datafilters.DoubleFilter;
-import org.gitools.datafilters.ValueFilter;
+import org.gitools.datafilters.DoubleParser;
+import org.gitools.datafilters.ValueParser;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.resources.IResource;
 import org.gitools.utils.CSVStrategies;
@@ -32,12 +32,12 @@ public class TextDoubleMatrixPersistence
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
-		return read(resource, new DoubleFilter(), monitor);
+		return read(resource, new DoubleParser(), monitor);
 	}
 	
 	public DoubleMatrix read(
 			IResource resource, 
-			ValueFilter filt, 
+			ValueParser filt, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 
@@ -56,13 +56,13 @@ public class TextDoubleMatrixPersistence
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
-		readMetadata(resource, doubleMatrix, new DoubleFilter(), monitor);
+		readMetadata(resource, doubleMatrix, new DoubleParser(), monitor);
 	}
 	
 	public void readMetadata(
 			IResource resource, 
 			DoubleMatrix doubleMatrix, 
-			ValueFilter filt, 
+			ValueParser filt, 
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
@@ -123,13 +123,13 @@ public class TextDoubleMatrixPersistence
 			int[] rowsOrder, IProgressMonitor monitor) 
 			throws PersistenceException {
 
-		readData(resource, doubleMatrix, new DoubleFilter(), columnsOrder, rowsOrder, monitor);
+		readData(resource, doubleMatrix, new DoubleParser(), columnsOrder, rowsOrder, monitor);
 	}
 	
 	public void readData(
 			IResource resource,
 			DoubleMatrix doubleMatrix, 
-			ValueFilter filt,
+			ValueParser filt,
 			int[] columnsOrder, 
 			int[] rowsOrder, 
 			IProgressMonitor monitor)

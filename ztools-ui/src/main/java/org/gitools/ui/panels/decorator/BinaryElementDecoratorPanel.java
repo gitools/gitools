@@ -13,8 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.gitools.datafilters.BinaryCutoffFilter;
-import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
+import org.gitools.datafilters.CutoffCmp;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -26,18 +25,6 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private static final long serialVersionUID = -930914489603614155L;
 
-	private static class CutoffCmp {
-		public String title;
-		public BinaryCutoffCmp cmp;
-		public CutoffCmp(String title, BinaryCutoffCmp cmp) {
-			this.title = title;
-			this.cmp = cmp;
-		}
-		@Override public String toString() {
-			return title;
-		}
-	}
-	
 	private BinaryElementDecorator decorator;
 
 	private JComboBox valueCb;
@@ -66,50 +53,28 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		
 		valueCb.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED)
 					valueChanged();
-				}
 			}
 		});
 		
-		cmpCb = new JComboBox(new Object[] {
-			new CutoffCmp("=", BinaryCutoffFilter.EQ),
-			new CutoffCmp("<", BinaryCutoffFilter.LE),
-			new CutoffCmp("<=", BinaryCutoffFilter.LT),
-			new CutoffCmp(">", BinaryCutoffFilter.GT),
-			new CutoffCmp(">=", BinaryCutoffFilter.GE),
-			new CutoffCmp("!=", BinaryCutoffFilter.NE),
-			new CutoffCmp("abs =", BinaryCutoffFilter.ABS_EQ),
-			new CutoffCmp("abs <", BinaryCutoffFilter.ABS_LE),
-			new CutoffCmp("abs <=", BinaryCutoffFilter.ABS_LT),
-			new CutoffCmp("abs >", BinaryCutoffFilter.ABS_GT),
-			new CutoffCmp("abs >=", BinaryCutoffFilter.ABS_GE),
-			new CutoffCmp("abs !=", BinaryCutoffFilter.ABS_NE)
-		});
+		cmpCb = new JComboBox(CutoffCmp.comparators);
 		
 		cmpCb.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED)
 					cmpChanged();
-				}
 			}
 		});
 		
 		cutoffTf = new JTextField(Double.toString(decorator.getCutoff()));
 		cutoffTf.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				cutoffChanged();
-			}
-			@Override
-			public void insertUpdate(DocumentEvent e) {	
-				cutoffChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) { 
-				cutoffChanged();
-			}
+			@Override public void changedUpdate(DocumentEvent e) {
+				cutoffChanged(); }
+			@Override public void insertUpdate(DocumentEvent e) {	
+				cutoffChanged(); }
+			@Override public void removeUpdate(DocumentEvent e) { 
+				cutoffChanged(); }
 		});
 		
 		colorCc = new ColorChooserLabel(decorator.getColor());
@@ -145,10 +110,10 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		
 		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
 		
-		BinaryCutoffCmp cmp = decorator.getCutoffCmp();
+		CutoffCmp cmp = decorator.getCutoffCmp();
 		for (int i = 0; i < cmpCb.getItemCount(); i++) {
 			CutoffCmp cc = (CutoffCmp) cmpCb.getItemAt(i);
-			if (cc.cmp.equals(cmp))
+			if (cc.equals(cmp))
 				cmpCb.setSelectedIndex(i);
 		}
 	}
@@ -164,8 +129,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	
 	protected void cmpChanged() {
 		CutoffCmp cc = (CutoffCmp) cmpCb.getSelectedItem();
-		
-		decorator.setCutoffCmp(cc.cmp);
+		decorator.setCutoffCmp(cc);
 	}
 	
 	protected void cutoffChanged() {

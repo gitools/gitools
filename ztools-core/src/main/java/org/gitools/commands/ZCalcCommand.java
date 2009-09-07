@@ -2,7 +2,8 @@ package org.gitools.commands;
 
 import java.io.File;
 
-import org.gitools.datafilters.ValueFilter;
+import org.gitools.datafilters.BinaryCutoff;
+import org.gitools.datafilters.ValueParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
@@ -20,12 +21,16 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class ZCalcCommand extends AnalysisCommand {
 	
+	public ZCalcCommand() {
+		super();
+	}
+	
 	public ZCalcCommand(String analysisName, String testName,
-			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
+			int samplingNumSamples, String dataFile, ValueParser valueParser, 
 			String groupsFile, int minGroupSize, int maxModuleSize, boolean includeNonMappedItems, 
 			String workdir, String outputFormat, boolean resultsByCond) {
 		
-		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
+		super(analysisName, testName, samplingNumSamples, dataFile, valueParser, 
 				groupsFile, minGroupSize, maxModuleSize, includeNonMappedItems,
 				workdir, outputFormat, resultsByCond);
 	}
@@ -53,7 +58,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				doubleMatrix, moduleMap, 
-				dataFile, valueFilter, 
+				dataFile, valueParser, 
 				modulesFile, minModuleSize, maxModuleSize,
 				includeNonMappedItems,
 				monitor.subtask());
@@ -63,7 +68,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Create and process analysis
 		
 		Analysis analysis = new Analysis();
-		analysis.setTitle(analysisName);
+		analysis.setTitle(title);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(doubleMatrix);
 		analysis.setModuleSet(moduleMap);
@@ -85,7 +90,7 @@ public class ZCalcCommand extends AnalysisCommand {
 			DoubleMatrix doubleMatrix,
 			ModuleMap moduleMap,
 			String dataFileName,
-			ValueFilter valueFilter,
+			ValueParser valueParser,
 			String modulesFileName, 
 			int minModuleSize,
 			int maxModuleSize,
@@ -97,7 +102,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		
 		IResource resource = new FileResource(dataFileName);
 		TextDoubleMatrixPersistence dmPersistence = new TextDoubleMatrixPersistence();
-		dmPersistence.readMetadata(resource, doubleMatrix, valueFilter, monitor);
+		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
 		
 		// Load modules
 		
@@ -120,7 +125,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		dmPersistence.readData(
 				resource,
 				doubleMatrix,
-				valueFilter,
+				valueParser,
 				null, 
 				moduleMap.getItemsOrder(), 
 				monitor);

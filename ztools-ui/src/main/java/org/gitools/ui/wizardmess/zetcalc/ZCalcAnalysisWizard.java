@@ -11,7 +11,9 @@ import org.gitools.ui.wizardmess.AnalysisWizard;
 import com.nexes.wizard.WizardPanelDescriptor;
 
 import org.gitools.commands.ZCalcCommand;
-import org.gitools.datafilters.BinaryCutoffFilter;
+import org.gitools.datafilters.BinaryCutoff;
+import org.gitools.datafilters.BinaryCutoffParser;
+import org.gitools.datafilters.CutoffCmp;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
 
 
@@ -63,21 +65,14 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 
 	    if (ret == 0) {
 		    //Preparing the Analysis command
-		    BinaryCutoffFilter binaryCutoffFilter = null;
+		    BinaryCutoffParser binaryCutoffParser = null;
 		    if (!dataModel.getValue(BIN_CUTOFF_CONDITION).equals(DISABLED)) {
 				String cond = (String) dataModel.getValue(BIN_CUTOFF_CONDITION);
 				double cutoff = Double.parseDouble(dataModel.getValue(BIN_CUTOFF_VALUE).toString());
 				
-				if ("lt".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LT);
-				else if ("le".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LE);
-				else if ("eq".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.EQ);
-				else if ("gt".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GT);
-				else if ("ge".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GE);
+				final CutoffCmp cmp = CutoffCmp.abbreviatedNameMap.get(cond);
+				
+				binaryCutoffParser = new BinaryCutoffParser(new BinaryCutoff(cmp, cutoff));
 		    }
 	
 			String outputFormat = "csv";
@@ -117,7 +112,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 		    							(String) dataModel.getValue(STAT_TEST),
 		    							sampleSize,
 		    							(String) dataModel.getValue(DATA_FILE),
-		    							binaryCutoffFilter,
+		    							binaryCutoffParser,
 		    							(String) dataModel.getValue(MODULE_FILE),
 		    							minModuleSize,
 		    							maxModuleSize,

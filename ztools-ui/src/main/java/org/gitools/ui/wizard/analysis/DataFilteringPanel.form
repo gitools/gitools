@@ -28,7 +28,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="cutoffValueField" pref="237" max="32767" attributes="1"/>
-                          <Component id="cutoffCondBox" alignment="0" pref="237" max="32767" attributes="1"/>
+                          <Component id="cutoffCondCbox" alignment="0" pref="237" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                   <Component id="omitUnmappedChk" alignment="1" max="32767" attributes="1"/>
@@ -45,7 +45,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cutoffCondBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cutoffCondCbox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -84,7 +84,7 @@
         <Property name="text" type="java.lang.String" value="Condition"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cutoffCondBox">
+    <Component class="javax.swing.JComboBox" name="cutoffCondCbox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="6">

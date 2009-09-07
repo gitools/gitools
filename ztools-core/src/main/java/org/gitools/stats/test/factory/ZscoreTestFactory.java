@@ -43,14 +43,6 @@ public final class ZscoreTestFactory extends TestFactory {
 			this.numSamples = DEFAULT_NUM_SAMPLES;
 		}
 	}
-	
-	/*public ZscoreWithSamplingTestFactory(
-			int numSamples,
-			StatisticCalc statCalc) {
-	
-		this.numSamples = numSamples;
-		this.statCalc = statCalc;
-	}*/
 
 	@Override
 	public Test create() {

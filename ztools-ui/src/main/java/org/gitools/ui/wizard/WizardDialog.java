@@ -177,6 +177,7 @@ public class WizardDialog extends AbstractDialog {
 		if (currentPage != null) {
 			DialogHeaderPanel header = getHeaderPanel();
 			header.setHeader(currentPage.getTitle());
+			header.setMessage(currentPage.getMessage());
 			
 			IWizard wizard = getWizard();
 			setTitle(wizard.getTitle());

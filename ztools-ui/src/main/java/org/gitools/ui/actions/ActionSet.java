@@ -43,4 +43,15 @@ public class ActionSet extends BaseAction {
 			for (BaseAction action : actions)
 				action.setTreeEnabled(enabled);
 	}
+	
+	@Override
+	public boolean updateEnabledForModel(Object model) {
+		boolean someEnabled = false;
+		
+		for (BaseAction action : actions)
+			someEnabled |= action.updateEnabledForModel(model);
+		
+		setEnabled(someEnabled);
+		return someEnabled;
+	}
 }

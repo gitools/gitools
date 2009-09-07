@@ -17,4 +17,6 @@ public interface IWizardPage {
 	JComponent createControls();
 
 	String getTitle();
+
+	String getMessage();
 }

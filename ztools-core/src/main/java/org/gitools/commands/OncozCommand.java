@@ -2,7 +2,7 @@ package org.gitools.commands;
 
 import java.io.File;
 
-import org.gitools.datafilters.ValueFilter;
+import org.gitools.datafilters.ValueParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
@@ -20,11 +20,11 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 public class OncozCommand extends AnalysisCommand {
 	
 	public OncozCommand(String analysisName, String testName,
-			int samplingNumSamples, String dataFile, ValueFilter valueFilter, 
+			int samplingNumSamples, String dataFile, ValueParser valueParser, 
 			String groupsFile, int minModuleSize, int maxModuleSize, 
 			String workdir, String outputFormat, boolean resultsByCond) {
 		
-		super(analysisName, testName, samplingNumSamples, dataFile, valueFilter, 
+		super(analysisName, testName, samplingNumSamples, dataFile, valueParser, 
 				groupsFile, minModuleSize, maxModuleSize, true,
 				workdir, outputFormat, resultsByCond);
 	}
@@ -49,7 +49,7 @@ public class OncozCommand extends AnalysisCommand {
 		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				doubleMatrix, moduleMap, 
-				dataFile, valueFilter, 
+				dataFile, valueParser, 
 				modulesFile, minModuleSize, maxModuleSize,
 				includeNonMappedItems,
 				monitor.subtask());
@@ -59,7 +59,7 @@ public class OncozCommand extends AnalysisCommand {
 		// Create and process analysis
 		
 		Analysis analysis = new Analysis();
-		analysis.setTitle(analysisName);
+		analysis.setTitle(title);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(doubleMatrix);
 		analysis.setModuleSet(moduleMap);
@@ -76,7 +76,7 @@ public class OncozCommand extends AnalysisCommand {
 
 	private void loadDataAndModules(
 			DoubleMatrix doubleMatrix, ModuleMap moduleMap,
-			String dataFileName, ValueFilter valueFilter, 
+			String dataFileName, ValueParser valueParser, 
 			String modulesFileName,	int minModuleSize, int maxModuleSize,
 			boolean includeNonMappedItems,
 			IProgressMonitor monitor)
@@ -86,7 +86,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		IResource resource = new FileResource(dataFileName);
 		TextDoubleMatrixPersistence dmPersistence = new TextDoubleMatrixPersistence();
-		dmPersistence.readMetadata(resource, doubleMatrix, valueFilter, monitor);
+		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
 		
 		// Load modules
 		
@@ -118,7 +118,7 @@ public class OncozCommand extends AnalysisCommand {
 		dmPersistence.readData(
 				resource,
 				doubleMatrix,
-				valueFilter,
+				valueParser,
 				moduleMap.getItemsOrder(),
 				null,
 				monitor);		

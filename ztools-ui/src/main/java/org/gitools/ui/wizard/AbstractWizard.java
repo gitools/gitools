@@ -25,7 +25,11 @@ public abstract class AbstractWizard implements IWizard {
 	}
 	
 	public void addPage(IWizardPage page) {
-		addPage(page.getId(), page);
+		String id = page.getId();
+		if (id == null)
+			id = "Page" + pages.size();
+		
+		addPage(id, page);
 	}
 	
 	public void addPage(String id, IWizardPage page) {

@@ -6,8 +6,7 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.datafilters.BinaryCutoffFilter;
-import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
+import org.gitools.datafilters.CutoffCmp;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -27,7 +26,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 	
 	private double cutoff;
 	
-	private BinaryCutoffCmp cutoffCmp;
+	private CutoffCmp cutoffCmp;
 	
 	private Color color;
 	private Color nonSignificantColor;
@@ -42,7 +41,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		
 		cutoff = 1.0;
 		
-		cutoffCmp = BinaryCutoffFilter.EQ;
+		cutoffCmp = CutoffCmp.EQ;
 		
 		color = defaultColor;
 		nonSignificantColor = ColorConstants.nonSignificantColor;
@@ -57,7 +56,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		
 		cutoff = 1.0;
 		
-		cutoffCmp = BinaryCutoffFilter.EQ;
+		cutoffCmp = CutoffCmp.EQ;
 		
 		color = defaultColor;
 		nonSignificantColor = ColorConstants.nonSignificantColor;
@@ -72,11 +71,11 @@ public class BinaryElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
-	public BinaryCutoffCmp getCutoffCmp() {
+	public CutoffCmp getCutoffCmp() {
 		return cutoffCmp;
 	}
 	
-	public void setCutoffCmp(BinaryCutoffCmp cutoffCmp) {
+	public void setCutoffCmp(CutoffCmp cutoffCmp) {
 		this.cutoffCmp = cutoffCmp;
 		firePropertyChange(PROPERTY_CHANGED);
 	}

@@ -26,9 +26,9 @@ public class CloseAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		WorkspacePanel workspace = AppFrame.instance().getWorkspace();
-		AbstractEditor currentView = workspace.getSelectedView();
+		AbstractEditor currentView = workspace.getSelectedEditor();
 		if (currentView != null)
-			workspace.removeView(currentView);
+			workspace.removeEditor(currentView);
 		
 		AppFrame.instance().refresh();
 		AppFrame.instance().setStatusText("View closed.");

@@ -1,6 +1,6 @@
 package org.gitools.datafilters;
 
-public interface ValueFilter {
+public interface ValueParser {
 
 	double parseValue(String str);
 }

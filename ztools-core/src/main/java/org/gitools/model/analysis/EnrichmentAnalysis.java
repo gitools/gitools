@@ -13,17 +13,17 @@ public class EnrichmentAnalysis extends Analysis {
 
 	private static final long serialVersionUID = -7476200948081644842L;
 	
-	/** Filter to aply at the original matrix **/
+	/** Filter to apply at the original matrix **/
 	protected double cutoff;
 	protected String comparator;
 	
 	// FIXME: to Christian:
 	// We need annotations when loading the matrices,
 	// its true that we made Figures of them but we dont 
-	// have annotations to populate their decorators 
+	// have annotations to populate their decorators
 	
-	@XmlTransient
-	protected AnnotationMatrix annotations;
+	/*@XmlTransient
+	protected AnnotationMatrix annotations;*/
 	
 	public EnrichmentAnalysis (){
 		

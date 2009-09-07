@@ -13,32 +13,33 @@ import org.gitools.ui.wizard.AbstractWizardPage;
 
 public class FileChooserPage extends AbstractWizardPage {
 
-	private String title;
 	private int selectionMode;
+	private File currentPath;
+	private File selectedFile;
 	
 	private JFileChooser fileChooser;
 	
 	public FileChooserPage() {
-		this("Select file", JFileChooser.FILES_ONLY);
+		this(JFileChooser.FILES_ONLY);
 	}
 	
-	public FileChooserPage(String title) {
-		this(title, JFileChooser.FILES_ONLY);
-	}
-	
-	public FileChooserPage(String title, int selectionMode) {
-		this.title = title;
+	public FileChooserPage(int selectionMode) {
 		this.selectionMode = selectionMode;
 	}
 
 	@Override
 	public JComponent createControls() {
 
-		setTitle(title);
-		
 		fileChooser = new JFileChooser();
 		fileChooser.setControlButtonsAreShown(false);
 		fileChooser.setFileSelectionMode(selectionMode);
+		
+		if (currentPath != null)
+			fileChooser.setCurrentDirectory(currentPath);
+		if (selectedFile != null)
+			fileChooser.setSelectedFile(selectedFile);
+		updateComplete();
+		
 		fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())
@@ -56,6 +57,18 @@ public class FileChooserPage extends AbstractWizardPage {
 	private void updateComplete() {
 		setComplete(fileChooser.getSelectedFile() != null
 				|| fileChooser.getSelectedFiles().length > 0);
+	}
+	
+	public void setFileSelectionMode(int selectionMode) {
+		this.selectionMode = selectionMode;
+	}
+	
+	public void setCurrentPath(File file) {
+		currentPath = file;
+	}
+	
+	public void setSelectedFile(File file) {
+		selectedFile = file;
 	}
 	
 	public File getSelectedFile() {

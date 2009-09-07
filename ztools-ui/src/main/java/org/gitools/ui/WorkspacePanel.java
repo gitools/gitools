@@ -16,12 +16,12 @@ public class WorkspacePanel extends JTabbedPane {
 
 	private static final long serialVersionUID = 2170150185478413716L;
 
-	private AbstractEditor selectedView;
+	private AbstractEditor selectedEditor;
 	
 	//private JTabbedPane tabbedPane;
 	
 	public WorkspacePanel() {
-		this.selectedView = null;
+		this.selectedEditor = null;
 	
 		createComponents();
 		
@@ -31,9 +31,9 @@ public class WorkspacePanel extends JTabbedPane {
 					selectedView.disableActions();*/
 				refreshActions();
 				
-				selectedView = (AbstractEditor) getSelectedComponent();
-				if (selectedView != null)
-					selectedView.refreshActions();
+				selectedEditor = (AbstractEditor) getSelectedComponent();
+				if (selectedEditor != null)
+					selectedEditor.refreshActions();
 			}
 		});
 	}
@@ -42,51 +42,58 @@ public class WorkspacePanel extends JTabbedPane {
 		//tabbedPane = new JTabbedPane();
 	}
 	
-	public void addEditor(AbstractEditor view) {
-		if (view == null)
+	public void addEditor(AbstractEditor editor) {
+		if (editor == null)
 			return;
 		
-		final String name = view.getName() != null ? 
-				view.getName() : "";
+		final String name = editor.getName() != null ? 
+				editor.getName() : "";
 				
-		final Icon icon = view.getIcon();
+		final Icon icon = editor.getIcon();
 		
 		if (icon == null)
-			addTab(name, view);
+			addTab(name, editor);
 		else
-			addTab(name, icon, view);
+			addTab(name, icon, editor);
 		
 		/*if (selectedView != null)
 			selectedView.disableActions();*/
 		refreshActions();
 		
-		setSelectedComponent(view);
+		setSelectedComponent(editor);
 		
-		selectedView = view;
-		selectedView.refreshActions();
+		selectedEditor = editor;
+		selectedEditor.refreshActions();
 	}
 
-	public void removeView(AbstractEditor view) {
-		if (view == null)
+	public void removeEditor(AbstractEditor editor) {
+		if (editor == null)
 			return;
 		
-		int i = indexOfComponent(view);
+		int i = indexOfComponent(editor);
 		if (i != -1)
 			remove(i);
 		
 		refreshActions();
 		
-		view = (AbstractEditor) getSelectedComponent();
-		if (view != null)
-			view.refreshActions();
+		editor = (AbstractEditor) getSelectedComponent();
+		if (editor != null)
+			editor.refreshActions();
 	}
 	
-	public AbstractEditor getSelectedView() {
+	public AbstractEditor getSelectedEditor() {
 		return (AbstractEditor) getSelectedComponent();
 	}
 	
 	private void refreshActions() {
 		Actions.menuActionSet.setTreeEnabled(false);
+		
+		AbstractEditor editor = getSelectedEditor();
+		if (editor != null) {
+			Object model = editor.getModel();
+			if (model != null)
+				Actions.menuActionSet.updateEnabledForModel(model);
+		}
 		
 		MenuActionSet.fileActionSet.setEnabled(true);
 		MenuActionSet.helpActionSet.setEnabled(true);
@@ -94,6 +101,7 @@ public class WorkspacePanel extends JTabbedPane {
 		FileActionSet.newActionSet.setTreeEnabled(true);
 		FileActionSet.openActionSet.setTreeEnabled(true);
 		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
+		FileActionSet.importActionSet.setTreeEnabled(true);
 		FileActionSet.exportWizardAction.setEnabled(true);
 		FileActionSet.exitAction.setEnabled(true);
 

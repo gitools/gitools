@@ -107,7 +107,7 @@ public abstract class BaseAction extends AbstractAction {
 	protected AbstractEditor getSelectedEditor() {
 		return AppFrame.instance()
 			.getWorkspace()
-			.getSelectedView();
+			.getSelectedEditor();
 	}
 	
 	protected IMatrixView getMatrixView() {
@@ -173,11 +173,16 @@ public abstract class BaseAction extends AbstractAction {
 	}
 	
 	protected IProgressMonitor createProgressMonitor() {
-		return AppFrame.instance()
-			.createMonitor();
+		return AppFrame.instance().createMonitor();
 	}
 	
 	public void setTreeEnabled(boolean enabled) {
 		setEnabled(enabled);
+	}
+
+	public boolean updateEnabledForModel(Object model) {
+		// do not change enable state,
+		// delegate to overriding
+		return false;
 	}
 }

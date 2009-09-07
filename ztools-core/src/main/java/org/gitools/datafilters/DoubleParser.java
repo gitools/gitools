@@ -1,6 +1,6 @@
 package org.gitools.datafilters;
 
-public class DoubleFilter implements ValueFilter {
+public class DoubleParser implements ValueParser {
 
 	@Override
 	public double parseValue(String str) {

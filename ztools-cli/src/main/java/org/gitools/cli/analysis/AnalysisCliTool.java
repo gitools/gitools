@@ -6,9 +6,10 @@ import java.util.regex.Pattern;
 import org.gitools.cli.AbstractCliTool;
 import org.gitools.cli.InvalidArgumentException;
 import org.gitools.cli.RequiredArgumentException;
+import org.gitools.datafilters.BinaryCutoff;
+import org.gitools.datafilters.BinaryCutoffParser;
+import org.gitools.datafilters.CutoffCmp;
 import org.kohsuke.args4j.Option;
-
-import org.gitools.datafilters.BinaryCutoffFilter;
 
 public abstract class AnalysisCliTool extends AbstractCliTool {
 
@@ -31,11 +32,17 @@ public abstract class AnalysisCliTool extends AbstractCliTool {
 	public String outputFormat = "csv";
 	
 	@Option(name = "-b", aliases = "-bin-cutoff-filt", 
-			usage = "Binary cutoff filter:\nlt (less than), le (less equal than)," +
-					"\neq (equal), gt (greatar than), ge (greater equal than).", metaVar = "<condition,cutoff>")
+			usage = "Binary cutoff filter. Available conditions:\n" +
+					"lt (less than), le (less equal than),\n" +
+					"eq (equal), ne (not equal),\n" +
+					"gt (greatar than), ge (greater equal than)," +
+					"alt (abs less than), ale (abs less equal than),\n" +
+					"aeq (abs equal), ane (abs not equal),\n" +
+					"agt (abs greatar than), age (abs greater equal than)",
+			metaVar = "<condition,cutoff>")
 	public String binCutoff;
 	
-	protected BinaryCutoffFilter binaryCutoffFilter;
+	protected BinaryCutoffParser binaryCutoffParser;
 	
 	@Override
 	public void validateArguments(Object argsObject) 
@@ -47,7 +54,7 @@ public abstract class AnalysisCliTool extends AbstractCliTool {
         	throw new RequiredArgumentException("Data file has to be specified.");
 		
 		if (binCutoff != null) {
-			Pattern pat = Pattern.compile("^(lt|le|eq|gt|ge)\\,(.+)$");
+			Pattern pat = Pattern.compile("^(lt|le|eq|gt|ge|alt|ale|aeq|agt|age)\\,(.+)$");
 			binCutoff = binCutoff.toLowerCase();
 			Matcher mat = pat.matcher(binCutoff);
 			if (!mat.matches())
@@ -57,16 +64,9 @@ public abstract class AnalysisCliTool extends AbstractCliTool {
 				final String cond = mat.group(1);
 				final double cutoff = Double.parseDouble(mat.group(2));
 				
-				if ("lt".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LT);
-				else if ("le".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.LE);
-				else if ("eq".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.EQ);
-				else if ("gt".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GT);
-				else if ("ge".equals(cond))
-					binaryCutoffFilter = new BinaryCutoffFilter(cutoff, BinaryCutoffFilter.GE);
+				final CutoffCmp cmp = CutoffCmp.abbreviatedNameMap.get(cond);
+				
+				binaryCutoffParser = new BinaryCutoffParser(new BinaryCutoff(cmp, cutoff));
 			}
 			catch (NumberFormatException e) {
 				throw new InvalidArgumentException("Invalid cutoff: " + mat.group(2), e);

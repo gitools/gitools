@@ -20,4 +20,11 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 		return panel;
 	}
 
+	public String getAnalysisTitle() {
+		return panel.titleField.getText();
+	}
+	
+	public String getAnalysisNotes() {
+		return panel.notesArea.getText();
+	}
 }
