@@ -189,7 +189,7 @@ public abstract class BaseAction extends AbstractAction {
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	
-		int retval = fileChooser.showSaveDialog(AppFrame.instance());
+		int retval = fileChooser.showDialog(AppFrame.instance(), null);
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			return file;

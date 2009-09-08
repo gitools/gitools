@@ -1,20 +1,38 @@
 package org.gitools.ui;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.gitools.ui.actions.ActionSet;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.actions.FileActionSet;
-import org.gitools.ui.actions.HelpActionSet;
-import org.gitools.ui.actions.MenuActionSet;
+import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.editor.AbstractEditor;
-
 
 public class WorkspacePanel extends JTabbedPane {
 
 	private static final long serialVersionUID = 2170150185478413716L;
+
+	private static final Set<BaseAction> actions = new HashSet<BaseAction>();
+	static {
+		Stack<BaseAction> actionStack = new Stack<BaseAction>();
+		actionStack.push(Actions.menuActionSet);
+		actionStack.push(Actions.toolBarActionSet);
+		while (actionStack.size() > 0) {
+			BaseAction action = actionStack.pop();
+			actions.add(action);
+			if (action instanceof ActionSet) {
+				ActionSet as = (ActionSet) action;
+				for (BaseAction a : as.getActions())
+					actionStack.push(a);
+			}
+		}
+	}
 
 	private AbstractEditor selectedEditor;
 	
@@ -86,22 +104,8 @@ public class WorkspacePanel extends JTabbedPane {
 	}
 	
 	public void refreshActions() {
-		//Actions.menuActionSet.setTreeEnabled(false);
-		
 		AbstractEditor editor = getSelectedEditor();
 		Actions.menuActionSet.updateEnabledByEditor(editor);
-		
-		/*MenuActionSet.fileActionSet.setEnabled(true);
-		MenuActionSet.helpActionSet.setEnabled(true);
-		
-		FileActionSet.newActionSet.setTreeEnabled(true);
-		FileActionSet.openActionSet.setTreeEnabled(true);
-		FileActionSet.closeAction.setEnabled(getTabCount() > 0);
-		FileActionSet.importActionSet.setTreeEnabled(true);
-		FileActionSet.exportWizardAction.setEnabled(true);
-		FileActionSet.exitAction.setEnabled(true);
-
-		HelpActionSet.welcomeAction.setEnabled(true);
-		HelpActionSet.aboutAction.setEnabled(true);*/
+		Actions.toolBarActionSet.updateEnabledByEditor(editor);
 	}
 }
