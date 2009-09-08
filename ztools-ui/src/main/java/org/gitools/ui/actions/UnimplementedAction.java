@@ -16,6 +16,11 @@ public class UnimplementedAction extends BaseAction {
 		super(name);
 		setDefaultEnabled(true);
 	}
+	
+	public UnimplementedAction(String name, boolean enabled) {
+		super(name);
+		setDefaultEnabled(enabled);
+	}
 
 	private static final long serialVersionUID = -1820826246607830734L;
 

@@ -9,16 +9,18 @@ public class MtcActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 3899141800427183894L;
 	
-	public static final BaseAction mtcBonferroniAction = 
-		new MtcAction(new Bonferroni());
+	public static final BaseAction mtcBonferroniAction = new MtcAction(new Bonferroni());
 	
-	public static final BaseAction mtcBenjaminiHochbergFdrAction = 
-		new MtcAction(new BenjaminiHochbergFdr());
+	public static final BaseAction mtcBenjaminiHochbergFdrAction = new MtcAction(new BenjaminiHochbergFdr());
+	
+	public static final BaseAction mtcBenjaminiYekutieliFdrAction = new UnimplementedAction("Benjamini & Yekutieli FDR", false);
 	
 	public MtcActionSet() {
 		super("MTC", new BaseAction[] {
 				mtcBonferroniAction,
-				mtcBenjaminiHochbergFdrAction });
+				mtcBenjaminiHochbergFdrAction,
+				mtcBenjaminiYekutieliFdrAction 
+		});
 	}
 
 }
