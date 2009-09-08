@@ -16,6 +16,7 @@ public class ExitAction extends BaseAction {
 		
 		setDesc("Close aplication");
 		setMnemonic(KeyEvent.VK_X);
+		setDefaultEnabled(true);
 	}
 	
 	@Override

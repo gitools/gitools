@@ -28,9 +28,6 @@ import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
 import org.gitools.ui.AppFrame;
-import org.gitools.ui.actions.FileActionSet;
-import org.gitools.ui.actions.MenuActionSet;
-import org.gitools.ui.actions.TableActionSet;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.matrix.HeaderConfigPage.HeaderType;
 import org.gitools.ui.panels.TemplatePane;
@@ -111,6 +108,8 @@ public class MatrixEditor extends AbstractEditor {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
 				matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue()); }
 		});
+		
+		setSaveAsAllowed(true);
 	}
 
 	protected void modelPropertyChange(
@@ -412,16 +411,16 @@ public class MatrixEditor extends AbstractEditor {
 		matrixPanel.refresh();
 	}
 	
-	@Override
+	/*@Override
 	public void refreshActions() {
 		MenuActionSet.editActionSet.setTreeEnabled(true);
-		MenuActionSet.tableActionSet.setTreeEnabled(true);
+		MenuActionSet.dataActionSet.setTreeEnabled(true);
 		MenuActionSet.mtcActionSet.setTreeEnabled(true);
-		TableActionSet.fastSortRowsAction.setEnabled(true);
+		DataActionSet.fastSortRowsAction.setEnabled(true);
 		
 		FileActionSet.closeAction.setEnabled(true);
 		FileActionSet.exportActionSet.setTreeEnabled(true);
 		
 		MenuActionSet.mtcActionSet.setTreeEnabled(true);
-	}
+	}*/
 }

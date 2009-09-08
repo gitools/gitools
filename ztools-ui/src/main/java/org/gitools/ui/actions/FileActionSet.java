@@ -8,17 +8,22 @@ import org.gitools.ui.actions.file.ExportMatrixFigurePictureAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableOneParameterAction;
+import org.gitools.ui.actions.file.ImportEnsemblAnnotationsAction;
 import org.gitools.ui.actions.file.ImportEnsemblModulesAction;
 import org.gitools.ui.actions.file.ImportEnsemblTableAction;
 import org.gitools.ui.actions.file.ImportIntogenFigureAction;
-import org.gitools.ui.actions.file.ImportIntogenModulesAction;
+import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
 import org.gitools.ui.actions.file.ImportIntogenTableAction;
+import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
+import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisWizardAction;
 import org.gitools.ui.actions.file.NewOncozAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
+import org.gitools.ui.actions.file.OpenDataAction;
 import org.gitools.ui.actions.file.OpenMatrixAction;
-import org.gitools.ui.actions.file.SaveMatrixFigureAction;
+import org.gitools.ui.actions.file.SaveAction;
+import org.gitools.ui.actions.file.SaveAsAction;
 
 public class FileActionSet extends ActionSet {
 
@@ -29,26 +34,29 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
 	public static final BaseAction newEnrichmentAnalysisWizardAction = new NewEnrichmentAnalysisWizardAction();
 	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
+	public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
+	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
 	
 	public static final ActionSet newActionSet = new ActionSet("New", new BaseAction[] {
 			newEnrichmentAnalysisAction,
 			newEnrichmentAnalysisWizardAction,
-			newOncozAnalysisAction
+			newOncozAnalysisAction,
+			newCombinationAnalysisAction,
+			newCorrelationAnalysisAction
 	});
 	
+	public static final BaseAction openDataAction = new OpenDataAction();
 	public static final BaseAction openAnalysisAction = new OpenAnalysisAction();
 	public static final BaseAction openMatrixAction = new OpenMatrixAction();
 	
 	public static final ActionSet openActionSet = new ActionSet("Open", new BaseAction[] {
+			openDataAction,
 			openAnalysisAction,
 			openMatrixAction
 	});
 	
-	public static final BaseAction saveMatrixFigureAction = new SaveMatrixFigureAction();
-	
-	public static final ActionSet saveActionSet = new ActionSet("Save", new BaseAction[] {
-			saveMatrixFigureAction
-	});
+	public static final BaseAction saveAction = new SaveAction();
+	public static final BaseAction saveAsAction = new SaveAsAction();
 	
 	public static final BaseAction closeAction = new CloseAction();
 
@@ -56,19 +64,21 @@ public class FileActionSet extends ActionSet {
 	
 	// Import
 	
-	public static final BaseAction importIntogenTable = new ImportIntogenTableAction();
-	public static final BaseAction importIntogenModules = new ImportIntogenModulesAction();
-	public static final BaseAction importIntogenFigure = new ImportIntogenFigureAction();
+	public static final BaseAction importIntogenTableAction = new ImportIntogenTableAction();
+	public static final BaseAction importIntogenModulesAction = new ImportIntogenOncomodulesAction();
+	public static final BaseAction importIntogenFigureAction = new ImportIntogenFigureAction();
 	
-	public static final BaseAction importEnsemblTable = new ImportEnsemblTableAction();
-	public static final BaseAction importEnsemblModules = new ImportEnsemblModulesAction();
+	public static final BaseAction importEnsemblTableAction = new ImportEnsemblTableAction();
+	public static final BaseAction importEnsemblModulesAction = new ImportEnsemblModulesAction();
+	public static final BaseAction importEnsemblAnnotationsAction = new ImportEnsemblAnnotationsAction();
 	
 	public static final ActionSet importActionSet = new ActionSet("Import", new BaseAction[] {
-		importIntogenTable,
-		importIntogenModules,
-		importIntogenFigure,
-		importEnsemblTable,
-		importEnsemblModules
+		importIntogenTableAction,
+		importIntogenModulesAction,
+		importIntogenFigureAction,
+		importEnsemblTableAction,
+		importEnsemblModulesAction,
+		importEnsemblAnnotationsAction
 	});
 	
 	// Export
@@ -93,7 +103,10 @@ public class FileActionSet extends ActionSet {
 		super("File", new BaseAction[] {
 			newActionSet,
 			openActionSet,
-			saveActionSet,
+			BaseAction.separator,
+			saveAction,
+			saveAsAction,
+			BaseAction.separator,
 			closeAction,
 			BaseAction.separator,
 			importActionSet,
@@ -102,5 +115,7 @@ public class FileActionSet extends ActionSet {
 			BaseAction.separator,
 			exitAction
 		});
+		
+		setDefaultEnabled(true);
 	}
 }

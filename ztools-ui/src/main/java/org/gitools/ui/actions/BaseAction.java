@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.editor.IEditor;
 import org.gitools.ui.utils.Options;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -23,11 +24,15 @@ public abstract class BaseAction extends AbstractAction {
 	private static final long serialVersionUID = 8312774908067146251L;
 	
 	public static final BaseAction separator = new SeparatorAction();
+
+	private boolean defaultEnabled;
 	
 	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
 		super(name, icon);
 		
-		setEnabled(false);
+		this.defaultEnabled = false;
+		
+		setEnabled(defaultEnabled);
 		
 		if (desc != null)
 			putValue(SHORT_DESCRIPTION, desc);
@@ -104,8 +109,38 @@ public abstract class BaseAction extends AbstractAction {
 		return false;
 	}
 	
-	public boolean checkEnabled(Class<?> modelClass) {
-		return false;
+	public void setDefaultEnabled(boolean defaultEnabled) {
+		this.defaultEnabled = defaultEnabled;
+	}
+	
+	public void setTreeEnabled(boolean enabled) {
+		setEnabled(enabled);
+	}
+
+	public boolean updateEnabledByEditor(IEditor editor) {
+		boolean en = isEnabledByEditor(editor);
+		setEnabled(en);
+		return en;
+	}
+	
+	public boolean isEnabledByEditor(IEditor editor) {
+		if (editor != null) {
+			Object model = editor.getModel();
+			if (model != null)
+				return isEnabledByModel(model);
+		}
+		
+		return defaultEnabled;
+	}
+	
+	public boolean updateEnabledByModel(Object model) {
+		boolean en = isEnabledByModel(model);
+		setEnabled(en);
+		return en;
+	}
+	
+	protected boolean isEnabledByModel(Object model) {
+		return defaultEnabled;
 	}
 	
 	protected AbstractEditor getSelectedEditor() {
@@ -145,24 +180,30 @@ public abstract class BaseAction extends AbstractAction {
 	}
 	
 	protected File getSelectedFile(String title) {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastExportPath());
-		
+		return getSelectedFile(title, Options.instance().getLastPath());
+	}
+	
+	protected File getSelectedFile(String title, String currentPath) {
+		JFileChooser fileChooser = new JFileChooser(currentPath);
+
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		
+	
 		int retval = fileChooser.showSaveDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			return file;
 		}
-	
+
 		return null;
 	}
 	
 	protected File getSelectedPath(String title) {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastExportPath());
+		return getSelectedPath(title, Options.instance().getLastPath());
+	}
+	
+	protected File getSelectedPath(String title, String currentPath) {
+		JFileChooser fileChooser = new JFileChooser(currentPath);
 		
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -178,15 +219,5 @@ public abstract class BaseAction extends AbstractAction {
 	
 	protected IProgressMonitor createProgressMonitor() {
 		return AppFrame.instance().createMonitor();
-	}
-	
-	public void setTreeEnabled(boolean enabled) {
-		setEnabled(enabled);
-	}
-
-	public boolean updateEnabledForModel(Object model) {
-		// do not change enable state,
-		// delegate to overriding
-		return false;
 	}
 }

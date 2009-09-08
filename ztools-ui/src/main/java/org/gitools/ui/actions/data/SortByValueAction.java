@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.table;
+package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.gitools.ui.dialog.sort.SortDialogSimple;
 
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 
@@ -39,6 +40,12 @@ public class SortByValueAction extends BaseAction {
 			setDesc("Sort rows and columns ...");
 			break;
 		}
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 		
 	@Override

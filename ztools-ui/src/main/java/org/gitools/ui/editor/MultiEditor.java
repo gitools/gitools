@@ -6,6 +6,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.gitools.ui.AppFrame;
+
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+
 public class MultiEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = -6013660760909524202L;
@@ -22,11 +26,12 @@ public class MultiEditor extends AbstractEditor {
 		
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
-				refreshActions();
+				AppFrame.instance().getWorkspace().refreshActions();
+				/*refreshActions();
 				
 				AbstractEditor selectedView = getSelectedView();
 				if (selectedView != null)
-					selectedView.refreshActions();
+					selectedView.refreshActions();*/
 			}
 		});
 		
@@ -38,17 +43,37 @@ public class MultiEditor extends AbstractEditor {
 		tabbedPane.add(view, title);
 	}
 	
-	protected AbstractEditor getSelectedView() {
+	protected AbstractEditor getSelectedEditor() {
 		return (AbstractEditor) tabbedPane.getSelectedComponent();
 	}
 	
 	@Override
 	public Object getModel() {
-		return getSelectedView().getModel();
+		return getSelectedEditor().getModel();
+	}
+	
+	@Override
+	public boolean isDirty() {
+		return getSelectedEditor().isDirty();
+	}
+	
+	@Override
+	public boolean isSaveAsAllowed() {
+		return getSelectedEditor().isSaveAsAllowed();
+	}
+	
+	@Override
+	public void doSave(IProgressMonitor monitor) {
+		getSelectedEditor().doSave(monitor);
+	}
+	
+	@Override
+	public void doSaveAs(IProgressMonitor monitor) {
+		getSelectedEditor().doSaveAs(monitor);
 	}
 
 	@Override
 	public void refresh() {
-		getSelectedView().refresh();
+		getSelectedEditor().refresh();
 	}
 }

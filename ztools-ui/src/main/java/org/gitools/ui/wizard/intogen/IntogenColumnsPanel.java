@@ -10,10 +10,10 @@ package org.gitools.ui.wizard.intogen;
  *
  * @author  cperez
  */
-public class IntogenSamplesPanel extends javax.swing.JPanel {
+public class IntogenColumnsPanel extends javax.swing.JPanel {
 
     /** Creates new form IntogenSamplesPanel */
-    public IntogenSamplesPanel() {
+    public IntogenColumnsPanel() {
         initComponents();
     }
 
@@ -27,13 +27,13 @@ public class IntogenSamplesPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        selectionTable = new javax.swing.JTable();
+        columnsTable = new javax.swing.JTable();
         addBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        upBtn = new javax.swing.JButton();
+        downBtn = new javax.swing.JButton();
 
-        selectionTable.setModel(new javax.swing.table.DefaultTableModel(
+        columnsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -41,31 +41,31 @@ public class IntogenSamplesPanel extends javax.swing.JPanel {
 
             }
         ));
-        selectionTable.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(selectionTable);
-        selectionTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        columnsTable.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(columnsTable);
+        columnsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         addBtn.setText("Add...");
 
         removeBtn.setText("Remove");
 
-        jButton1.setText("Move up");
+        upBtn.setText("Move up");
 
-        jButton2.setText("Move down");
+        downBtn.setText("Move down");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                    .addComponent(jButton2, 0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(downBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(upBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -79,9 +79,9 @@ public class IntogenSamplesPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(removeBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addComponent(upBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(downBtn)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -89,11 +89,11 @@ public class IntogenSamplesPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton addBtn;
-    public javax.swing.JButton jButton1;
-    public javax.swing.JButton jButton2;
+    public javax.swing.JTable columnsTable;
+    public javax.swing.JButton downBtn;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JButton removeBtn;
-    public javax.swing.JTable selectionTable;
+    public javax.swing.JButton upBtn;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -4,18 +4,18 @@ import javax.swing.JComponent;
 
 import org.gitools.ui.wizard.AbstractWizardPage;
 
-public class IntogenSamplesPage extends AbstractWizardPage {
+public class IntogenColumnsPage extends AbstractWizardPage {
 
-	private IntogenSamplesPanel panel;
+	private IntogenColumnsPanel panel;
 
-	public IntogenSamplesPage() {
-		setTitle("Select samples");
+	public IntogenColumnsPage() {
+		setTitle("Select columns");
 		setComplete(true); // TODO it will depend on number of samples selected
 	}
 	
 	@Override
 	public JComponent createControls() {
-		panel = new IntogenSamplesPanel();
+		panel = new IntogenColumnsPanel();
 		return panel;
 	}
 

@@ -22,6 +22,7 @@ public class OpenMatrixAction extends BaseAction {
 		setSmallIconFromResource(IconNames.openMatrix16);
 		setLargeIconFromResource(IconNames.openMatrix24);
 		setMnemonic(KeyEvent.VK_M);
+		setDefaultEnabled(true);
 	}
 
 	@Override

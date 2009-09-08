@@ -31,9 +31,9 @@ public class WorkspacePanel extends JTabbedPane {
 					selectedView.disableActions();*/
 				refreshActions();
 				
-				selectedEditor = (AbstractEditor) getSelectedComponent();
+				/*selectedEditor = (AbstractEditor) getSelectedComponent();
 				if (selectedEditor != null)
-					selectedEditor.refreshActions();
+					selectedEditor.refreshActions();*/
 			}
 		});
 	}
@@ -63,7 +63,7 @@ public class WorkspacePanel extends JTabbedPane {
 		setSelectedComponent(editor);
 		
 		selectedEditor = editor;
-		selectedEditor.refreshActions();
+		//selectedEditor.refreshActions();
 	}
 
 	public void removeEditor(AbstractEditor editor) {
@@ -76,26 +76,22 @@ public class WorkspacePanel extends JTabbedPane {
 		
 		refreshActions();
 		
-		editor = (AbstractEditor) getSelectedComponent();
+		/*editor = (AbstractEditor) getSelectedComponent();
 		if (editor != null)
-			editor.refreshActions();
+			editor.refreshActions();*/
 	}
 	
 	public AbstractEditor getSelectedEditor() {
 		return (AbstractEditor) getSelectedComponent();
 	}
 	
-	private void refreshActions() {
-		Actions.menuActionSet.setTreeEnabled(false);
+	public void refreshActions() {
+		//Actions.menuActionSet.setTreeEnabled(false);
 		
 		AbstractEditor editor = getSelectedEditor();
-		if (editor != null) {
-			Object model = editor.getModel();
-			if (model != null)
-				Actions.menuActionSet.updateEnabledForModel(model);
-		}
+		Actions.menuActionSet.updateEnabledByEditor(editor);
 		
-		MenuActionSet.fileActionSet.setEnabled(true);
+		/*MenuActionSet.fileActionSet.setEnabled(true);
 		MenuActionSet.helpActionSet.setEnabled(true);
 		
 		FileActionSet.newActionSet.setTreeEnabled(true);
@@ -106,6 +102,6 @@ public class WorkspacePanel extends JTabbedPane {
 		FileActionSet.exitAction.setEnabled(true);
 
 		HelpActionSet.welcomeAction.setEnabled(true);
-		HelpActionSet.aboutAction.setEnabled(true);
+		HelpActionSet.aboutAction.setEnabled(true);*/
 	}
 }

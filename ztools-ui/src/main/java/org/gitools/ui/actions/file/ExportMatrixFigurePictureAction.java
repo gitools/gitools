@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
@@ -29,6 +30,11 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 	}
 	
 	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure;
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		IMatrixView matrixView = getMatrixView();
@@ -36,7 +42,9 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 			return;
 		
 		try {
-			File file = getSelectedFile("Select destination file");
+			File file = getSelectedFile(
+					"Select destination file",
+					Options.instance().getLastExportPath());
 			if (file == null)
 				return;
 			

@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 
 import org.gitools.ui.wizard.AbstractWizardPage;
 
+@Deprecated
 public class IntogenOncomodulePage extends AbstractWizardPage {
 
 	private IntogenOncomodulePanel panel;

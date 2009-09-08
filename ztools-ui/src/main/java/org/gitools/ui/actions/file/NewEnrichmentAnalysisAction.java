@@ -24,6 +24,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 		setDesc("Run an enrichment analysis");
 		setMnemonic(KeyEvent.VK_E);
+		setDefaultEnabled(true);
 	}
 
 	@Override

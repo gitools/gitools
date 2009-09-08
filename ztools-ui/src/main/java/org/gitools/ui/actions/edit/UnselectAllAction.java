@@ -7,6 +7,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 
 public class UnselectAllAction extends BaseAction {
@@ -20,6 +21,12 @@ public class UnselectAllAction extends BaseAction {
 		setSmallIconFromResource(IconNames.unselectAll16);
 		setLargeIconFromResource(IconNames.unselectAll24);
 		setMnemonic(KeyEvent.VK_U);
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override

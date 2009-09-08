@@ -22,6 +22,7 @@ public class OpenAnalysisAction extends BaseAction {
 		setSmallIconFromResource(IconNames.openAnalysis16);
 		setLargeIconFromResource(IconNames.openAnalysis24);
 		setMnemonic(KeyEvent.VK_A);
+		setDefaultEnabled(true);
 	}
 
 	@Override

@@ -22,6 +22,11 @@ public class ExportMatrixFigureHtmlAction extends BaseAction {
 	}
 	
 	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure;
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		final MatrixFigure figure = getMatrixFigure();
@@ -29,7 +34,10 @@ public class ExportMatrixFigureHtmlAction extends BaseAction {
 			return;
 		
 		try {
-			File basePath = getSelectedPath("Select destination folder");
+			File basePath = getSelectedPath(
+					"Select destination folder",
+					Options.instance().getLastExportPath());
+			
 			if (basePath == null)
 				return;
 

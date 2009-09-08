@@ -11,16 +11,16 @@ public class MenuActionSet extends ActionSet {
 
 	public static final ActionSet fileActionSet = new FileActionSet();
 	public static final ActionSet editActionSet = new EditActionSet();
-	public static final ActionSet tableActionSet = new TableActionSet();
-	public static final ActionSet mtcActionSet = new MtcActionSet();
+	public static final ActionSet dataActionSet = new DataActionSet();
+	public static final ActionSet matrixActionSet = new MatrixActionSet();
 	public static final ActionSet helpActionSet = new HelpActionSet();
 	
 	public MenuActionSet() {
 		super(new BaseAction[] {
 			fileActionSet,
 			editActionSet,
-			tableActionSet,
-			mtcActionSet,
+			dataActionSet,
+			matrixActionSet,
 			helpActionSet
 		});
 	}

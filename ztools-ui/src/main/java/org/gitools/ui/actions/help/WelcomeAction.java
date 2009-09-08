@@ -17,6 +17,7 @@ public class WelcomeAction extends BaseAction {
 		super("Welcome");
 		setDesc("View the welcome");
 		setMnemonic(KeyEvent.VK_W);
+		setDefaultEnabled(true);
 	}
 	
 	@Override

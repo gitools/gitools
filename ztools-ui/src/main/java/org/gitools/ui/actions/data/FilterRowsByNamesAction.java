@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.table;
+package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByNameDialog;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 
@@ -21,6 +22,12 @@ public class FilterRowsByNamesAction extends BaseAction {
 	public FilterRowsByNamesAction() {
 		super("Filter rows by name...");	
 		setDesc("Filter rows by name");
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override

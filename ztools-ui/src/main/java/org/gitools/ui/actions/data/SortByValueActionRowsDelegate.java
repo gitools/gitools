@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.table;
+package org.gitools.ui.actions.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;

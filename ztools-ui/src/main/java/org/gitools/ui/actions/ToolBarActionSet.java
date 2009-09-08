@@ -19,17 +19,17 @@ public final class ToolBarActionSet extends ActionSet {
 				EditActionSet.selectAllAction,
 				EditActionSet.unselectAllAction,
 				BaseAction.separator,
-				TableActionSet.hideSelectedColumns,
-				TableActionSet.showAllColumns,
-				TableActionSet.hideSelectedRows,
-				TableActionSet.showAllRows,
+				DataActionSet.hideSelectedColumns,
+				DataActionSet.showAllColumns,
+				DataActionSet.hideSelectedRows,
+				DataActionSet.showAllRows,
 				BaseAction.separator,
-				TableActionSet.moveColsLeftAction,
-				TableActionSet.moveColsRightAction,
-				TableActionSet.moveRowsUpAction,
-				TableActionSet.moveRowsDownAction,
+				DataActionSet.moveColsLeftAction,
+				DataActionSet.moveColsRightAction,
+				DataActionSet.moveRowsUpAction,
+				DataActionSet.moveRowsDownAction,
 				BaseAction.separator,
-				TableActionSet.fastSortRowsAction	
+				DataActionSet.fastSortRowsAction	
 		});
 	}
 	

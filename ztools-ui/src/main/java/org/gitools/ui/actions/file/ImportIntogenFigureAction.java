@@ -3,6 +3,7 @@ package org.gitools.ui.actions.file;
 import java.awt.event.ActionEvent;
 
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.actions.UnimplementedAction;
 
 public class ImportIntogenFigureAction extends BaseAction {
 
@@ -10,13 +11,12 @@ public class ImportIntogenFigureAction extends BaseAction {
 
 	public ImportIntogenFigureAction() {
 		super("IntOGen matrix figure ...");
-		setEnabled(true);
+		setDefaultEnabled(true);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		new UnimplementedAction().actionPerformed(e);
 	}
 
 }

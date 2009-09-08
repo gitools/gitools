@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.gitools.exporter.TextMatrixExporter;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.AppFrame;
@@ -25,6 +26,12 @@ public class ExportTableAllParametersAction extends BaseAction {
 	}
 	
 	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		IMatrixView matrixView = getMatrixView();
@@ -37,7 +44,9 @@ public class ExportTableAllParametersAction extends BaseAction {
 			propIndices[i] = i;
 		
 		try {
-			File file = getSelectedFile("Select destination file");
+			File file = getSelectedFile(
+					"Select destination file",
+					Options.instance().getLastExportPath());
 			if (file == null)
 				return;
 			

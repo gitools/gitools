@@ -17,6 +17,7 @@ public class ExportAction extends BaseAction {
 		
 		setDesc("Export...");
 		setMnemonic(KeyEvent.VK_X);
+		setDefaultEnabled(true);
 	}
 	
 	@Override

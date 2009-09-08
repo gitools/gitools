@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.gitools.exporter.TextMatrixExporter;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.AppFrame;
@@ -24,6 +25,12 @@ public class ExportTableOneParameterAction extends BaseAction {
 		
 		setDesc("Export a data table for a selected parameter");
 		setMnemonic(KeyEvent.VK_P);
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override
@@ -56,7 +63,9 @@ public class ExportTableOneParameterAction extends BaseAction {
 				propIndex = j;
 
 		try {
-			File file = getSelectedFile("Select destination file");
+			File file = getSelectedFile(
+					"Select destination file",
+					Options.instance().getLastExportPath());
 			if (file == null)
 				return;
 			

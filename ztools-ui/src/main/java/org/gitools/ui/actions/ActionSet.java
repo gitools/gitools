@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import org.gitools.ui.editor.IEditor;
+
 public class ActionSet extends BaseAction {
 
 	private static final long serialVersionUID = -1441656907811177103L;
@@ -45,11 +47,11 @@ public class ActionSet extends BaseAction {
 	}
 	
 	@Override
-	public boolean updateEnabledForModel(Object model) {
+	public boolean updateEnabledByEditor(IEditor editor) {
 		boolean someEnabled = false;
 		
 		for (BaseAction action : actions)
-			someEnabled |= action.updateEnabledForModel(model);
+			someEnabled |= action.updateEnabledByEditor(editor);
 		
 		setEnabled(someEnabled);
 		return someEnabled;

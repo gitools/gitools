@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.AppFrame;
@@ -28,6 +29,12 @@ public class ExportRowColumnNames extends BaseAction {
 	}
 	
 	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		final String visibleRows = "Visible row names";
@@ -36,9 +43,10 @@ public class ExportRowColumnNames extends BaseAction {
 		final String hiddenCols = "Hidden column names";
 
 		IMatrixView matrixView = getMatrixView();
-		IMatrix contents = matrixView.getContents();
 		if (matrixView == null)
 			return;
+		
+		IMatrix contents = matrixView.getContents();
 		
 		String[] possibilities = { 
 				visibleRows, visibleCols, hiddenRows, hiddenCols };
@@ -52,7 +60,9 @@ public class ExportRowColumnNames extends BaseAction {
 			return;
 
 		try {
-			File file = getSelectedFile("Select destination file");
+			File file = getSelectedFile(
+					"Select destination file",
+					Options.instance().getLastExportPath());
 			if (file == null)
 				return;
 			

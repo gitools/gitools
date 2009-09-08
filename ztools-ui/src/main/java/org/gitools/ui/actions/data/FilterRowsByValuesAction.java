@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.table;
+package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
 
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
@@ -23,6 +24,12 @@ public class FilterRowsByValuesAction extends BaseAction {
 	public FilterRowsByValuesAction() {
 		super("Filter rows by values...");	
 		setDesc("Filter rows by values");
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 
 public class InvertSelectionAction extends BaseAction {
@@ -15,6 +16,12 @@ public class InvertSelectionAction extends BaseAction {
 		super("Invert selection");
 		
 		setDesc("Invert selection");
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override

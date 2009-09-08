@@ -16,6 +16,7 @@ public class AboutAction extends BaseAction {
 		super("About " + AppFrame.getAppName() + "...");
 		setDesc("Know more about this application");
 		setMnemonic(KeyEvent.VK_A);
+		setDefaultEnabled(true);
 	}
 	
 	@Override

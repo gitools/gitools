@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 
-public class ImportEnsemblTableAction extends BaseAction {
+public class ImportEnsemblAnnotationsAction extends BaseAction {
 
-	private static final long serialVersionUID = 668140963768246841L;
+	private static final long serialVersionUID = 4381993756203388654L;
 
-	public ImportEnsemblTableAction() {
-		super("Ensembl data table ...");
+	public ImportEnsemblAnnotationsAction() {
+		super("Ensembl annotations ...");
 		setDefaultEnabled(true);
 	}
 	

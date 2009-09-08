@@ -1,6 +1,6 @@
 package org.gitools.ui.actions;
 
-import org.gitools.ui.actions.table.MtcAction;
+import org.gitools.ui.actions.data.MtcAction;
 
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.Bonferroni;

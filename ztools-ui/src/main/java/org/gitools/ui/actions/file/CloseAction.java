@@ -8,6 +8,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.WorkspacePanel;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.editor.IEditor;
 
 
 public class CloseAction extends BaseAction {
@@ -34,4 +35,9 @@ public class CloseAction extends BaseAction {
 		AppFrame.instance().setStatusText("View closed.");
 	}
 
+	@Override
+	public boolean isEnabledByEditor(IEditor editor) {
+		//TODO Allow Welcome to be closed ???
+		return editor != null;
+	}
 }

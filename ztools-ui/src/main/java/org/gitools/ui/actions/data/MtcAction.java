@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.table;
+package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 
@@ -14,6 +14,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 
 import org.gitools.stats.mtc.MultipleTestCorrection;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -30,6 +31,12 @@ public class MtcAction extends BaseAction {
 		setDesc("Calculate " + mtc.getName() + " multiple test correction");
 		
 		this.mtc = mtc;
+	}
+	
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof MatrixFigure
+			|| model instanceof IMatrixView;
 	}
 	
 	@Override
