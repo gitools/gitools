@@ -64,8 +64,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
 		
-		ObjectMatrix1D conditions = ObjectFactory1D.dense.make(
-				analysis.getDataTable().getColNames());
+		ObjectMatrix1D conditions = analysis.getDataTable().getColumns().copy();
 		
 		monitor.debug("Transposing data...");
 		DoubleMatrix2D data = analysis.getDataTable().getData().viewDice().copy();

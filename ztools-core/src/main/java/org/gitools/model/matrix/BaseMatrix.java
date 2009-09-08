@@ -1,15 +1,14 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 
+import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 
-@XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractMatrix 
-	extends Matrix {
+public abstract class BaseMatrix extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
 
@@ -20,10 +19,10 @@ public abstract class AbstractMatrix
 	protected IElementAdapter columnAdapter;
 	protected IElementAdapter cellAdapter;
 	
-	public AbstractMatrix() {
+	public BaseMatrix() {
 	}
 	
-	public AbstractMatrix(
+	public BaseMatrix(
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
 			IElementAdapter rowAdapter,
@@ -38,15 +37,25 @@ public abstract class AbstractMatrix
 		this.cellAdapter = cellAdapter;
 	}
 	
-
+	@XmlTransient
 	public ObjectMatrix1D getRows() {
 		return rows;
+	}
+	
+	public String[] getRowStrings() {
+		String[] a = new String[rows.size()];
+		rows.toArray(a);
+		return a;
 	}
 	
 	public void setRows(ObjectMatrix1D rows) {
 		this.rows = rows;
 	}
 
+	public void setRows(String[] names) {
+		this.rows = ObjectFactory1D.dense.make(names);
+	}
+	
 	public Object getRow(int index) {
 		return rows.get(index);
 	}
@@ -59,13 +68,23 @@ public abstract class AbstractMatrix
 		rows.set(index, row);
 	}
 	
-	
+	@XmlTransient
 	public ObjectMatrix1D getColumns() {
 		return columns;
 	}
 	
+	public String[] getColumnStrings() {
+		String[] a = new String[columns.size()];
+		columns.toArray(a);
+		return a;
+	}
+	
 	public void setColumns(ObjectMatrix1D columns) {
 		this.columns = columns;
+	}
+	
+	public void setColumns(String[] names) {
+		this.columns = ObjectFactory1D.dense.make(names);
 	}
 	
 	public Object getColumn(int index) {
@@ -101,6 +120,8 @@ public abstract class AbstractMatrix
 				getCell(row, column), id, value);
 	}
 	
+	//@XmlAnyElement
+	@XmlElement
 	public IElementAdapter getRowAdapter() {
 		return rowAdapter;
 	}
@@ -109,6 +130,8 @@ public abstract class AbstractMatrix
 		this.rowAdapter = rowAdapter;
 	}
 	
+	//@XmlAnyElement
+	@XmlElement
 	public IElementAdapter getColumnAdapter() {
 		return columnAdapter;
 	}
@@ -117,6 +140,8 @@ public abstract class AbstractMatrix
 		this.columnAdapter = columnAdapter;
 	}
 	
+	//@XmlAnyElement
+	@XmlElement
 	public IElementAdapter getCellAdapter() {
 		return cellAdapter;
 	}

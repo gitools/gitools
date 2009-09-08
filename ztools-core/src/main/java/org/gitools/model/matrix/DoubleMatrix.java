@@ -2,14 +2,13 @@ package org.gitools.model.matrix;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.basic.DoubleElementAdapter;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.ObjectFactory1D;
 
 /*@XmlType(
 		propOrder = {
@@ -17,22 +16,22 @@ import cern.colt.matrix.DoubleMatrix2D;
 				"colNames", 
 				"rowNames", 
 				"data"///})*/
-				
+
 @XmlAccessorType(XmlAccessType.NONE)
-public final class DoubleMatrix 
-	extends Matrix	{			
+public final class DoubleMatrix extends BaseMatrix	{			
+
+	private static final long serialVersionUID = -710485141066995079L;
 
 	protected String name;
 	
-	protected String[] colNames;
-	protected String[] rowNames;
+	/*protected String[] colNames;
+	protected String[] rowNames;*/
 	
 	protected DoubleMatrix2D data;
 
-	private IElementAdapter cellAdapter;
+	/*private IElementAdapter cellAdapter;
 	private IElementAdapter columnAdapter;
-	private IElementAdapter rowAdapter;
-	
+	private IElementAdapter rowAdapter;*/
 	
 	public DoubleMatrix(
 			String name, 
@@ -41,8 +40,10 @@ public final class DoubleMatrix
 			DoubleMatrix2D data) {
 		
 		this.name = name;
-		this.colNames = colNames;
-		this.rowNames = rowNames;
+		
+		this.columns = ObjectFactory1D.dense.make(colNames);
+		this.rows = ObjectFactory1D.dense.make(rowNames);
+		
 		this.data = data;
 		
 		this.cellAdapter = new DoubleElementAdapter();
@@ -62,15 +63,13 @@ public final class DoubleMatrix
 		this.name = name;
 	}
 
-	
-	public final String[] getColNames() {
+	/*public final String[] getColNames() {
 		return colNames;
 	}
 
 	public final void setColNames(String[] colNames) {
 		this.colNames = colNames;
 	}
-
 
 	public final String[] getRowNames() {
 		return rowNames;
@@ -79,8 +78,7 @@ public final class DoubleMatrix
 	public final void setRowNames(String[] rowNames) {
 		this.rowNames = rowNames;
 	}
-
-
+*/
 	public final DoubleMatrix2D getData() {
 		return data;
 	}
@@ -89,7 +87,7 @@ public final class DoubleMatrix
 		this.data = data;
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
@@ -99,7 +97,7 @@ public final class DoubleMatrix
 		sb.append(data).append('\n');
 		
 		return sb.toString();
-	}
+	}*/
 
 	@Override
 	public int getColumnCount() {
@@ -136,7 +134,7 @@ public final class DoubleMatrix
 		data.set(row, column, (Double)value);
 	}
 	
-	@Override
+	/*@Override
 	public Object getColumn(int index) {
 		return colNames[index];
 	}
@@ -159,5 +157,5 @@ public final class DoubleMatrix
 	@Override
 	public IElementAdapter getRowAdapter() {
 		return rowAdapter;
-	}
+	}*/
 }

@@ -1,11 +1,8 @@
 package org.gitools.ui.actions.file;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-
-import javax.swing.JFileChooser;
 
 import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
@@ -29,7 +26,7 @@ public class OpenMatrixAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = getSelectedPath();
+		final File selectedPath = getSelectedFile("Select file");
 		
 		if (selectedPath != null) {
 			Options.instance().setLastPath(selectedPath.getParent());
@@ -42,7 +39,7 @@ public class OpenMatrixAction extends BaseAction {
 		}
 	}
 	
-	private File getSelectedPath() {
+	/*private File getSelectedPath() {
 		JFileChooser fileChooser = new JFileChooser(
 				Options.instance().getLastPath());
 		
@@ -59,5 +56,5 @@ public class OpenMatrixAction extends BaseAction {
 			return fileChooser.getSelectedFile();
 		
 		return null;
-	}
+	}*/
 }

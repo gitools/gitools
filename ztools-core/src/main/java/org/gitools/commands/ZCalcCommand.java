@@ -114,11 +114,11 @@ public class ZCalcCommand extends AnalysisCommand {
 			moduleMap,
 			minModuleSize,
 			maxModuleSize,
-			doubleMatrix.getRowNames(),
+			doubleMatrix.getRowStrings(),
 			includeNonMappedItems,
 			monitor);
 		
-		doubleMatrix.setRowNames(moduleMap.getItemNames());
+		doubleMatrix.setRows(moduleMap.getItemNames());
 		
 		// Load data
 		

@@ -10,18 +10,19 @@ import org.gitools.resources.factory.ResourceFactory;
 
 public class XmlMatrixFigurePersistence extends XmlGenericPersistence {
 
-	@SuppressWarnings("unchecked")
-	public XmlMatrixFigurePersistence(ResourceFactory resourceFactory,
+	public XmlMatrixFigurePersistence(
+			ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
+		
 		super(entityClass);
 
-		XmlAdapter[] adapters = new XmlAdapter[3];
-		adapters[0] = new ResourceXmlAdapter(resourceFactory);
-		adapters[1] = new AnnotationMatrixXmlAdapter(resourceFactory);
-		adapters[2] = new MatrixXmlAdapter(resourceFactory);
-		super.adapters = adapters;
+		//IResource base = null;
 
-		
+		setAdapters(new XmlAdapter[] {
+				new ResourceXmlAdapter(resourceFactory),
+				new AnnotationMatrixXmlAdapter(resourceFactory),
+				new MatrixXmlAdapter(resourceFactory)
+		});
 	}
 
 }

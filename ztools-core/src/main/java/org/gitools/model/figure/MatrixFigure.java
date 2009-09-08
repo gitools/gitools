@@ -61,19 +61,15 @@ public class MatrixFigure
 	@XmlElement(type=MatrixView.class)
 	private IMatrixView matrixView;
 
-	
 	private boolean showGrid;
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 	
-	
 	private int cellSize;
-	
-	
+		
 	private int rowSize;
 
-	
 	private int columnSize;
 	
 	public MatrixFigure(){

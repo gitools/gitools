@@ -92,7 +92,7 @@ public class TextDoubleMatrixPersistence
 			
 			String[] columnNames = new String[numColumns];
 			System.arraycopy(header, 1, columnNames, 0, numColumns);
-			doubleMatrix.setColNames(columnNames);
+			doubleMatrix.setColumns(columnNames);
 			
 			// Read row names
 			
@@ -103,7 +103,7 @@ public class TextDoubleMatrixPersistence
 				names.add(fields[0]);
 			
 			String[] rowNames = names.toArray(new String[names.size()]);
-			doubleMatrix.setRowNames(rowNames);
+			doubleMatrix.setRows(rowNames);
 			
 			reader.close();
 		}
@@ -111,8 +111,8 @@ public class TextDoubleMatrixPersistence
 			throw new PersistenceException(e);
 		}
 		
-		monitor.info(doubleMatrix.getColNames().length + " columns");
-		monitor.info(doubleMatrix.getRowNames().length + " rows");
+		monitor.info(doubleMatrix.getColumnCount() + " columns");
+		monitor.info(doubleMatrix.getRowCount() + " rows");
 		
 		monitor.end();
 	}
@@ -137,11 +137,11 @@ public class TextDoubleMatrixPersistence
 		
 		monitor.begin("Reading data ...", 1);
 		
-		int numColumns = doubleMatrix.getColNames().length;
-		int numItems = doubleMatrix.getRowNames().length;
+		int numColumns = doubleMatrix.getColumnCount();
+		int numItems = doubleMatrix.getRowCount();
 		
-		String[] columnNames = doubleMatrix.getColNames();
-		String[] rowNames = doubleMatrix.getRowNames();
+		String[] columnNames = doubleMatrix.getColumnStrings();
+		String[] rowNames = doubleMatrix.getRowStrings();
 		
 		// Sort column names ordered by columnsOrder
 		
@@ -232,7 +232,7 @@ public class TextDoubleMatrixPersistence
 		
 		int numCols = matrix.columns();
 		
-		final String[] colNames = doubleMatrix.getColNames();
+		final String[] colNames = doubleMatrix.getColumnStrings();
 		
 		pw.print(doubleMatrix.getName() != null ? doubleMatrix.getName() : "");
 		
@@ -246,7 +246,7 @@ public class TextDoubleMatrixPersistence
 		
 		int numRows = matrix.rows();
 		
-		final String[] rowNames = doubleMatrix.getRowNames();
+		final String[] rowNames = doubleMatrix.getRowStrings();
 		
 		for (int i = 0; i < numRows; i++) {
 			final String name = i < rowNames.length ? rowNames[i] : "";

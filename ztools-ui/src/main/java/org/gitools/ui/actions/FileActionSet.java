@@ -18,13 +18,14 @@ import org.gitools.ui.actions.file.NewEnrichmentAnalysisWizardAction;
 import org.gitools.ui.actions.file.NewOncozAnalysisAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.actions.file.OpenMatrixAction;
+import org.gitools.ui.actions.file.SaveMatrixFigureAction;
 
 public class FileActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 5912417630655786267L;
 	
-	public static final BaseAction exitAction = new ExitAction();
-
+	// File
+	
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
 	public static final BaseAction newEnrichmentAnalysisWizardAction = new NewEnrichmentAnalysisWizardAction();
 	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
@@ -43,9 +44,17 @@ public class FileActionSet extends ActionSet {
 			openMatrixAction
 	});
 	
+	public static final BaseAction saveMatrixFigureAction = new SaveMatrixFigureAction();
+	
+	public static final ActionSet saveActionSet = new ActionSet("Save", new BaseAction[] {
+			saveMatrixFigureAction
+	});
+	
 	public static final BaseAction closeAction = new CloseAction();
 
-	// import
+	public static final BaseAction exitAction = new ExitAction();
+	
+	// Import
 	
 	public static final BaseAction importIntogenTable = new ImportIntogenTableAction();
 	public static final BaseAction importIntogenModules = new ImportIntogenModulesAction();
@@ -62,7 +71,8 @@ public class FileActionSet extends ActionSet {
 		importEnsemblModules
 	});
 	
-	// export
+	// Export
+	
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
 	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
@@ -83,6 +93,7 @@ public class FileActionSet extends ActionSet {
 		super("File", new BaseAction[] {
 			newActionSet,
 			openActionSet,
+			saveActionSet,
 			closeAction,
 			BaseAction.separator,
 			importActionSet,

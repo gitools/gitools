@@ -57,8 +57,7 @@ public class OncozProcessor extends AbstractProcessor {
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
 		
-		ObjectMatrix1D items = ObjectFactory1D.dense.make(
-				analysis.getDataTable().getRowNames());
+		ObjectMatrix1D items = analysis.getDataTable().getRows().copy();
 		
 		DoubleMatrix2D data = analysis.getDataTable().getData();
 		

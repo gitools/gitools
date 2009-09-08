@@ -104,6 +104,10 @@ public abstract class BaseAction extends AbstractAction {
 		return false;
 	}
 	
+	public boolean checkEnabled(Class<?> modelClass) {
+		return false;
+	}
+	
 	protected AbstractEditor getSelectedEditor() {
 		return AppFrame.instance()
 			.getWorkspace()

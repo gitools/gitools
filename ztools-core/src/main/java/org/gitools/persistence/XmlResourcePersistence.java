@@ -8,13 +8,14 @@ import org.gitools.resources.factory.ResourceFactory;
 
 public class XmlResourcePersistence extends XmlGenericPersistence {
 
-	public XmlResourcePersistence(ResourceFactory resourceFactory,
+	public XmlResourcePersistence(
+			ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
+		
 		super(entityClass);
 
-		super.adapters = new XmlAdapter[] { 
-				new ResourceXmlAdapter(resourceFactory) };
-	
+		setAdapters(new XmlAdapter[] {
+				new ResourceXmlAdapter(resourceFactory) });
 	}
 
 }

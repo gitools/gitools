@@ -21,12 +21,19 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 	@SuppressWarnings("unchecked")
 	protected XmlAdapter[] adapters;
 
-	public XmlGenericPersistence(Class<?> entityClass) throws JAXBException {
+	public XmlGenericPersistence(Class<?> entityClass)
+			throws JAXBException { //TODO remove exception
+		
 		adapters = new XmlAdapter[0];
-		context = JAXBContext.newInstance(entityClass);
-		System.out.println(this.getClass().toString() + entityClass);
+		context = JAXBContext.newInstance(entityClass); // TODO This is not the place to create new JAXB instance
+		System.out.println(this.getClass().toString() + entityClass); //FIXME remove
 	}
 
+	@SuppressWarnings("unchecked")
+	public void setAdapters(XmlAdapter[] adapters) {
+		this.adapters = adapters;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object read(IResource resource, IProgressMonitor monitor)

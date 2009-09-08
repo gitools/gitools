@@ -2,14 +2,9 @@ package org.gitools.model.matrix;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.model.matrix.element.array.ArrayElementAdapter;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
-import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
@@ -27,7 +22,7 @@ import cern.colt.matrix.ObjectMatrix2D;
 		ArrayElementAdapter.class})*/
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ObjectMatrix extends AbstractMatrix {
+public class ObjectMatrix extends BaseMatrix {
 
 	private static final long serialVersionUID = 4077172838934816719L;
 

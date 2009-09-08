@@ -99,14 +99,15 @@ public class OncozCommand extends AnalysisCommand {
 				moduleMap,
 				minModuleSize,
 				maxModuleSize,
-				doubleMatrix.getColNames(),
+				doubleMatrix.getColumnStrings(),
 				includeNonMappedItems,
 				monitor);
 		}
 		else {
-			moduleMap.setItemNames(doubleMatrix.getColNames());
+			String[] names = doubleMatrix.getColumnStrings();
+			moduleMap.setItemNames(names);
 			moduleMap.setModuleNames(new String[] {"all"});
-			int num = doubleMatrix.getColNames().length;
+			int num = names.length;
 			int[][] indices = new int[1][num];
 			for (int i = 0; i < num; i++)
 				indices[0][i] = i;
