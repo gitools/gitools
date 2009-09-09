@@ -20,6 +20,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>1.10</version>
 				<executions>
 					<execution>
 						<goals>

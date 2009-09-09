@@ -6,7 +6,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.gitools</groupId>
 	<artifactId>gitools-cli</artifactId>
 	<name>gitools-cli</name>
 	<description>gitools command line interface</description>
