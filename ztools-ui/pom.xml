@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<artifactId>ztools</artifactId>
-		<groupId>es.imim.bg.ztools</groupId>
+		<groupId>org.gitools</groupId>
+		<artifactId>gitools</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ztools-ui</artifactId>
-	<name>ztools-ui</name>
-	<description>ztools graphical user interface</description>
+	<artifactId>gitools-ui</artifactId>
+	<name>gitools-ui</name>
+	<description>gitools graphical user interface</description>
 
 	<properties>
 		<mainClass>org.gitools.ui.Main</mainClass>
@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ztools-core</artifactId>
+			<artifactId>gitools-core</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
