@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by Syed Haider -->
+<xs:schema version="1.0" 
+	targetNamespace="http://www.biomart.org:80/MartServiceSoap" 
+	xmlns:tns="http://www.biomart.org:80/MartServiceSoap"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:sawsdl="http://www.w3.org/ns/sawsdl"
+	elementFormDefault="qualified"
+	>
+	<!-- BioMartException -->
+	<xs:element name="BioMartException">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" name="message" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	
+	<!-- getRegistry -->
+	<xs:element name="getRegistry">
+		<xs:complexType>
+			<xs:sequence>
+					<!--xs:element name="x" type="xs:string"/-->
+			</xs:sequence>       
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="getRegistryResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="mart" type="tns:mart"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	<xs:complexType name="mart">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="database" type="xs:string"/>
+			<xs:element name="host" type="xs:string"/>
+			<xs:element name="path" type="xs:string"/>
+			<xs:element name="port" type="xs:string"/>
+			<xs:element name="visible" type="xs:int"/>
+			<xs:element name="default" type="xs:int"/>
+			<xs:element name="serverVirtualSchema" type="xs:string"/>
+			<xs:element name="includeDatasets" type="xs:string"/>
+			<xs:element name="martUser" type="xs:string"/>
+			<xs:element name="redirect" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- getDatasets -->
+	<xs:element name="getDatasets">
+		<xs:complexType>
+			<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="martName" type="xs:string"/>
+			</xs:sequence>       
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="getDatasetsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="datasetInfo" type="tns:datasetInfo"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	<xs:complexType name="datasetInfo">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="type" type="xs:string"/>
+			<xs:element name="visible" type="xs:int"/>
+			<xs:element name="interface" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- getAttributes -->
+	<xs:element name="getAttributes">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="1" name="datasetName" type="xs:string"/>
+				<xs:element minOccurs="0" maxOccurs="1" name="virtualSchema" type="xs:string"/>
+			</xs:sequence>       
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="getAttributesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="attributePage" type="tns:attributePage"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	<xs:complexType name="attributePage">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>			
+			<xs:element name="maxSelect" type="xs:int"/>
+			<xs:element name="formatters" type="xs:string"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="attributeGroup" type="tns:attributeGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attributeGroup">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="maxSelect" type="xs:int"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="attributeCollection" type="tns:attributeCollection"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attributeCollection">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="maxSelect" type="xs:int"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="attributeInfo" type="tns:attributeInfo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attributeInfo">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="modelReference" type="xs:anyURI"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- getFilters -->
+	<xs:element name="getFilters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="1" name="datasetName" type="xs:string"/>
+				<!--xs:element minOccurs="1" maxOccurs="1" name="datasetName" type="xs:string"/-->
+				<xs:element minOccurs="0" maxOccurs="1" name="virtualSchema" type="xs:string"/>
+			</xs:sequence>       
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="getFiltersResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="filterPage" type="tns:filterPage"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	<xs:complexType name="filterPage">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>			
+			<xs:element minOccurs="0" maxOccurs="1" name="filterGroup" type="tns:filterGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="filterGroup">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="filterCollection" type="tns:filterCollection"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="filterCollection">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="filterInfo" type="tns:filterInfo"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="filterInfo">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="displayName" type="xs:string"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="qualifier" type="xs:string"/>
+			<xs:element name="options" type="xs:string"/>
+			<xs:element name="modelReference" type="xs:anyURI"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- query -->
+	<xs:element name="query">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="1" name="virtualSchemaName" type="xs:string"/>
+				<!--xs:element minOccurs="1" maxOccurs="1" name="formatter" type="xs:string"/-->
+				<xs:element minOccurs="1" maxOccurs="1" name="header" type="xs:int"/>
+				<xs:element minOccurs="1" maxOccurs="1" name="count" type="xs:int"/>
+				<xs:element minOccurs="1" maxOccurs="1" name="uniqueRows" type="xs:int"/>
+				<xs:element minOccurs="1" maxOccurs="2" name="Dataset" type="tns:Dataset"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Dataset">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="name" type="xs:string"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="Filter" type="tns:Filter"/>
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="Attribute" type="tns:Attribute"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Attribute">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="name" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Filter">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="name" type="xs:string"/>
+			<xs:element minOccurs="1" maxOccurs="1" name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="queryResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="resultsRow" type="tns:resultsRow"/>
+			</xs:sequence>
+		</xs:complexType>		
+	</xs:element>
+	<xs:complexType name="resultsRow">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="item" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- TODO: automatic addition of operations if ontology terms are present in settings.conf -->
+	
+	
+</xs:schema>
