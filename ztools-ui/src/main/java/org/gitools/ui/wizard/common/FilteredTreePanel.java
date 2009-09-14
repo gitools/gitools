@@ -30,7 +30,7 @@ public class FilteredTreePanel extends javax.swing.JPanel {
         clearBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
-        colapseBtn = new javax.swing.JButton();
+        collapseBtn = new javax.swing.JButton();
         expandBtn = new javax.swing.JButton();
 
         clearBtn.setText("Clear");
@@ -38,7 +38,7 @@ public class FilteredTreePanel extends javax.swing.JPanel {
         tree.setModel(null);
         jScrollPane1.setViewportView(tree);
 
-        colapseBtn.setText("Collapse all");
+        collapseBtn.setText("Collapse all");
 
         expandBtn.setText("Expand all");
 
@@ -57,7 +57,7 @@ public class FilteredTreePanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(expandBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(colapseBtn)))
+                        .addComponent(collapseBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -71,7 +71,7 @@ public class FilteredTreePanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colapseBtn)
+                    .addComponent(collapseBtn)
                     .addComponent(expandBtn))
                 .addContainerGap())
         );
@@ -80,7 +80,7 @@ public class FilteredTreePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton clearBtn;
-    public javax.swing.JButton colapseBtn;
+    public javax.swing.JButton collapseBtn;
     public javax.swing.JButton expandBtn;
     public javax.swing.JTextField filterField;
     private javax.swing.JScrollPane jScrollPane1;

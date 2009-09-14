@@ -19,11 +19,7 @@ public class FilteredListPage extends AbstractWizardPage {
 	
 	private Object[] listData;
 	
-	private String lastFilterText;
-
-	public FilteredListPage() {
-		lastFilterText = "";
-	}
+	private String lastFilterText = "";
 	
 	@Override
 	public JComponent createControls() {

@@ -10,6 +10,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 	private BiomartDatabasePage databasePage;
 	private BiomartDatasetPage datasetPage;
 	private BiomartAttributePage modulesAttributePage;
+	private BiomartAttributePage dataAttributePage;
 
 	@Override
 	public void addPages() {
@@ -25,6 +26,10 @@ public class BiomartModulesWizard extends AbstractWizard {
 		modulesAttributePage = new BiomartAttributePage(port);
 		modulesAttributePage.setTitle("Select attribute for modules");
 		addPage(modulesAttributePage);
+		
+		dataAttributePage = new BiomartAttributePage(port);
+		dataAttributePage.setTitle("Select attribute for data");
+		addPage(dataAttributePage);
 	}
 	
 	@Override
@@ -32,11 +37,13 @@ public class BiomartModulesWizard extends AbstractWizard {
 		if (page == databasePage)
 			datasetPage.setMart(
 					databasePage.getMart());
-		else if (page == datasetPage) {
-			final String datasetName = datasetPage.getDataset().getName();
-			final String virtualSchema = databasePage.getMart().getServerVirtualSchema();
-			modulesAttributePage.setSource(datasetName, virtualSchema);
-		}
+		else if (page == datasetPage)
+			modulesAttributePage.setSource(
+					databasePage.getMart(),
+					datasetPage.getDataset());
+		else if (page == modulesAttributePage)
+			dataAttributePage.setAttributePages(
+					modulesAttributePage.getAttributePages());
 		
 		return super.getNextPage(page);
 	}
