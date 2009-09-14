@@ -3,8 +3,9 @@ package edu.upf.bg.colorscale;
 import java.awt.Color;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.colorscale.util.ColorUtils;
 
-public abstract class AbstractColorScale implements IColorScale {
+public abstract class AbstractColorScale implements IColorScale, IColorScaleHtml {
 
 	protected Color notANumberColor = ColorConstants.notANumberColor;
 	protected Color posInfinityColor = ColorConstants.posInfinityColor;
@@ -97,5 +98,11 @@ public abstract class AbstractColorScale implements IColorScale {
 
 	public void setMaxPoint(double maxPoint) {
 		this.maxPoint = maxPoint;
+	}
+	
+	@Override
+	public String valueHtmlColor(double value) {
+		Color color = valueColor(value);
+		return ColorUtils.colorToHtml(color);
 	}
 }
