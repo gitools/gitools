@@ -101,8 +101,16 @@ public abstract class AbstractColorScale implements IColorScale, IColorScaleHtml
 	}
 	
 	@Override
-	public String valueHtmlColor(double value) {
+	public String valueRGBHtmlColor(double value) {
 		Color color = valueColor(value);
-		return ColorUtils.colorToHtml(color);
+		return ColorUtils.colorToRGBHtml(color);
 	}
+
+	@Override
+	public String valueHexHtmlColor(double value) {
+	    Color color = valueColor(value);
+	    return ColorUtils.colorToHexHtml(color);
+	}
+	
+	
 }

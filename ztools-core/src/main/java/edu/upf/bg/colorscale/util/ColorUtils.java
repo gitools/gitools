@@ -20,7 +20,7 @@ public class ColorUtils {
 		return new Color(ir, ig, ib);
 	}
 	
-	public static String colorToHtml(Color color) {
+	public static String colorToRGBHtml(Color color) {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("rgb(");
@@ -30,4 +30,8 @@ public class ColorUtils {
 		
 		return sb.toString();
 	}
+	
+	 public static String colorToHexHtml(Color color) {
+		return "#" + Integer.toHexString((color.getRGB() & 0xffffff) | 0x1000000).substring(1);
+	 }
 }
