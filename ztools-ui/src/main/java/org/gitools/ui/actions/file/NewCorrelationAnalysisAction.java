@@ -10,7 +10,7 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 	private static final long serialVersionUID = -8917512377366424724L;
 
 	public NewCorrelationAnalysisAction() {
-		super("correlation analysis ...");
+		super("Correlation analysis ...");
 		
 		setDesc("Run a correlation analysis");
 		setMnemonic(KeyEvent.VK_C);

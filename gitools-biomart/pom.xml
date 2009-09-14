@@ -8,8 +8,7 @@
 		<artifactId>gitools</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
 	</parent>
-	
-	<groupId>org.gitools</groupId>
+
 	<artifactId>gitools-biomart</artifactId>
 	<version>1.5.0-SNAPSHOT</version>
 	<name>gitools-biomart</name>

@@ -8,7 +8,7 @@ public final class MatrixActionSet extends ActionSet {
 	public static final BaseAction cloneAction = new UnimplementedAction("Clone");
 	
 	public MatrixActionSet() {
-		super("Matrix", new BaseAction[] {
+		super("Heatmap", new BaseAction[] {
 				//cloneAction
 		});
 	}

@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 
-public class ImportEnsemblModulesAction extends BaseAction {
+public class ImportBiomartTableAction extends BaseAction {
 
 	private static final long serialVersionUID = 668140963768246841L;
 
-	public ImportEnsemblModulesAction() {
-		super("Ensembl modules ...");
+	public ImportBiomartTableAction() {
+		super("Data table ...");
 		setDefaultEnabled(true);
 	}
 	

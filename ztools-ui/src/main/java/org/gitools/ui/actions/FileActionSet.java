@@ -8,9 +8,9 @@ import org.gitools.ui.actions.file.ExportMatrixFigurePictureAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableOneParameterAction;
-import org.gitools.ui.actions.file.ImportEnsemblAnnotationsAction;
-import org.gitools.ui.actions.file.ImportEnsemblModulesAction;
-import org.gitools.ui.actions.file.ImportEnsemblTableAction;
+import org.gitools.ui.actions.file.ImportBioMartAnnotationsAction;
+import org.gitools.ui.actions.file.ImportBiomartModulesAction;
+import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportIntogenFigureAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
 import org.gitools.ui.actions.file.ImportIntogenTableAction;
@@ -19,9 +19,11 @@ import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisWizardAction;
 import org.gitools.ui.actions.file.NewOncozAnalysisAction;
+import org.gitools.ui.actions.file.NewProjectAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.actions.file.OpenDataAction;
 import org.gitools.ui.actions.file.OpenMatrixAction;
+import org.gitools.ui.actions.file.OpenProjectAction;
 import org.gitools.ui.actions.file.SaveAction;
 import org.gitools.ui.actions.file.SaveAsAction;
 
@@ -31,6 +33,8 @@ public class FileActionSet extends ActionSet {
 	
 	// File
 	
+	public static final BaseAction newProjectAction = new NewProjectAction();
+	
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
 	public static final BaseAction newEnrichmentAnalysisWizardAction = new NewEnrichmentAnalysisWizardAction();
 	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
@@ -38,18 +42,22 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
 	
 	public static final ActionSet newActionSet = new ActionSet("New", new BaseAction[] {
-			newEnrichmentAnalysisAction,
-			newEnrichmentAnalysisWizardAction,
-			newOncozAnalysisAction,
-			newCombinationAnalysisAction,
-			newCorrelationAnalysisAction
+			newProjectAction,
+			new ActionSet("Analysis", new BaseAction[] {
+				newEnrichmentAnalysisAction,
+				newEnrichmentAnalysisWizardAction,
+				newOncozAnalysisAction,
+				newCombinationAnalysisAction,
+				newCorrelationAnalysisAction })
 	});
 	
+	public static final BaseAction openProjectAction = new OpenProjectAction();
 	public static final BaseAction openDataAction = new OpenDataAction();
 	public static final BaseAction openAnalysisAction = new OpenAnalysisAction();
 	public static final BaseAction openMatrixAction = new OpenMatrixAction();
 	
 	public static final ActionSet openActionSet = new ActionSet("Open", new BaseAction[] {
+			openProjectAction,
 			openDataAction,
 			openAnalysisAction,
 			openMatrixAction
@@ -68,17 +76,19 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction importIntogenModulesAction = new ImportIntogenOncomodulesAction();
 	public static final BaseAction importIntogenFigureAction = new ImportIntogenFigureAction();
 	
-	public static final BaseAction importEnsemblTableAction = new ImportEnsemblTableAction();
-	public static final BaseAction importEnsemblModulesAction = new ImportEnsemblModulesAction();
-	public static final BaseAction importEnsemblAnnotationsAction = new ImportEnsemblAnnotationsAction();
+	public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
+	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
+	public static final BaseAction importBioMartAnnotationsAction = new ImportBioMartAnnotationsAction();
 	
 	public static final ActionSet importActionSet = new ActionSet("Import", new BaseAction[] {
-		importIntogenTableAction,
-		importIntogenModulesAction,
-		importIntogenFigureAction,
-		importEnsemblTableAction,
-		importEnsemblModulesAction,
-		importEnsemblAnnotationsAction
+			new ActionSet("IntOGen", new BaseAction[] {
+				importIntogenTableAction,
+				importIntogenModulesAction,
+				importIntogenFigureAction }),
+			new ActionSet("BioMart", new BaseAction[] {
+				importBioMartTableAction,
+				importBioMartModulesAction,
+				importBioMartAnnotationsAction })
 	});
 	
 	// Export

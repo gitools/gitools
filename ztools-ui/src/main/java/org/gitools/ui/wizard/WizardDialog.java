@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.gitools.ui.dialog.AbstractDialog;
+import org.gitools.ui.dialog.DialogButtonsPanel;
 import org.gitools.ui.dialog.DialogHeaderPanel;
 
 public class WizardDialog extends AbstractDialog {
@@ -69,7 +70,7 @@ public class WizardDialog extends AbstractDialog {
 		
 		currentPage = page;
 		
-		getWizard().setCurrentPage(currentPage);
+		getWizard().setCurrentPage(page);
 		
 		JComponent contents = getPageContents(page.getId());
 		if (contents == null)
@@ -80,6 +81,8 @@ public class WizardDialog extends AbstractDialog {
 		contents.repaint();
 		
 		updateState();
+		
+		page.updateControls();
 	}
 
 	private void updateButtons() {
@@ -125,13 +128,6 @@ public class WizardDialog extends AbstractDialog {
 			}
 		});
 		
-		finishButton = new JButton("Finish");
-		finishButton.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				finishActionPerformed();
-			}
-		});
-		
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
@@ -139,11 +135,20 @@ public class WizardDialog extends AbstractDialog {
 			}
 		});
 		
+		finishButton = new JButton("Finish");
+		finishButton.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				finishActionPerformed();
+			}
+		});
+		
 		return Arrays.asList(
 				backButton,
 				nextButton,
-				finishButton,
-				cancelButton);
+				DialogButtonsPanel.SEPARATOR,
+				cancelButton,
+				DialogButtonsPanel.SEPARATOR,
+				finishButton);
 	}
 	
 	private void backActionPerformed() {

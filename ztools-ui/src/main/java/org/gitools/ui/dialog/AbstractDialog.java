@@ -9,6 +9,9 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import org.gitools.ui.dialog.DialogHeaderPanel.Status;
 
@@ -59,17 +62,27 @@ public abstract class AbstractDialog extends JDialog {
 		hdrPanel = new DialogHeaderPanel(
 				header, message, status, logo);
 		
+		JPanel hp = new JPanel();
+		hp.setLayout(new BorderLayout());
+		hp.add(hdrPanel, BorderLayout.CENTER);
+		hp.add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.SOUTH);
+		
 		container = createContainer();
 		
 		final DialogButtonsPanel buttonsPanel = 
 			new DialogButtonsPanel(
 					createButtons());
 		
+		JPanel bp = new JPanel();
+		bp.setLayout(new BorderLayout());
+		bp.add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.NORTH);
+		bp.add(buttonsPanel, BorderLayout.CENTER);
+		
 		setLayout(new BorderLayout());
-		add(hdrPanel, BorderLayout.NORTH);
+		add(hp, BorderLayout.NORTH);
 		if (container != null)
 			add(container, BorderLayout.CENTER);
-		add(buttonsPanel, BorderLayout.SOUTH);
+		add(bp, BorderLayout.SOUTH);
 	}
 
 	public DialogHeaderPanel getHeaderPanel() {

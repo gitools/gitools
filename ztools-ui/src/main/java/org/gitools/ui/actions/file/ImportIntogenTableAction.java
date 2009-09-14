@@ -12,7 +12,7 @@ public class ImportIntogenTableAction extends BaseAction {
 	private static final long serialVersionUID = 668140963768246841L;
 
 	public ImportIntogenTableAction() {
-		super("IntOGen data table ...");
+		super("Data table ...");
 		setDefaultEnabled(true);
 	}
 	

@@ -17,8 +17,8 @@ public class OpenMatrixAction extends BaseAction {
 	private static final long serialVersionUID = -6528634034161710370L;
 
 	public OpenMatrixAction() {
-		super("matrix ...");
-		setDesc("Open a matrix from the file system");
+		super("Heat map ...");
+		setDesc("Open a heat map from the file system");
 		setSmallIconFromResource(IconNames.openMatrix16);
 		setLargeIconFromResource(IconNames.openMatrix24);
 		setMnemonic(KeyEvent.VK_M);

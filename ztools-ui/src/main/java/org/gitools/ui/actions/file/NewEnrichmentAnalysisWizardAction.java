@@ -14,7 +14,7 @@ public class NewEnrichmentAnalysisWizardAction extends BaseAction {
 	private static final long serialVersionUID = -8592231961109105958L;
 
 	public NewEnrichmentAnalysisWizardAction() {
-		super("enrichment analysis (new wizard) ...");
+		super("Enrichment analysis (new wizard) ...");
 
 		setDesc("Run an enrichment analysis");
 		setMnemonic(KeyEvent.VK_E);

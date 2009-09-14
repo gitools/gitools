@@ -20,7 +20,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 	private static final long serialVersionUID = -8592231961109105958L;
 
 	public NewEnrichmentAnalysisAction() {
-		super("enrichment analysis...");
+		super("Enrichment analysis...");
 
 		setDesc("Run an enrichment analysis");
 		setMnemonic(KeyEvent.VK_E);

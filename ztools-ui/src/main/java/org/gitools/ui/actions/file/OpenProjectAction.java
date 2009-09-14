@@ -1,16 +1,18 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 
-public class ImportIntogenFigureAction extends BaseAction {
+public class OpenProjectAction extends BaseAction {
 
-	private static final long serialVersionUID = 668140963768246841L;
+	private static final long serialVersionUID = -8008209863785533045L;
 
-	public ImportIntogenFigureAction() {
-		super("Heat map figure ...");
+	public OpenProjectAction() {
+		super("Project ...");
+		setMnemonic(KeyEvent.VK_P);
 		setDefaultEnabled(true);
 	}
 	

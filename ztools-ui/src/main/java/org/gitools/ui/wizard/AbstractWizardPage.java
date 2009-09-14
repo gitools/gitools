@@ -1,7 +1,5 @@
 package org.gitools.ui.wizard;
 
-import javax.swing.JComponent;
-
 public abstract class AbstractWizardPage implements IWizardPage {
 
 	private static final long serialVersionUID = -4330234851091328953L;
@@ -54,7 +52,10 @@ public abstract class AbstractWizardPage implements IWizardPage {
 		updateDialog();
 	}
 	
-	public abstract JComponent createControls();
+	@Override
+	public void updateControls() {
+		// do nothing
+	}
 	
 	@Override
 	public String getTitle() {

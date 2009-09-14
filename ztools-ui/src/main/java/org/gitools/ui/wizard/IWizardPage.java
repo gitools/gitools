@@ -15,6 +15,8 @@ public interface IWizardPage {
 	boolean isComplete();
 
 	JComponent createControls();
+	
+	void updateControls();
 
 	String getTitle();
 

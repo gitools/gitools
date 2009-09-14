@@ -20,7 +20,7 @@ public class MenuActionSet extends ActionSet {
 			fileActionSet,
 			editActionSet,
 			dataActionSet,
-			matrixActionSet,
+			//matrixActionSet,
 			helpActionSet
 		});
 	}

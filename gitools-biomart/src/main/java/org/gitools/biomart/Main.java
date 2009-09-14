@@ -2,12 +2,14 @@ package org.gitools.biomart;
 
 //import java.io.File;
 //import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
+import org.biomart._80.martservicesoap.AttributeCollection;
+import org.biomart._80.martservicesoap.AttributeGroup;
+import org.biomart._80.martservicesoap.AttributeInfo;
+import org.biomart._80.martservicesoap.AttributePage;
 import org.biomart._80.martservicesoap.BioMartSoapService;
+import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
 
@@ -28,19 +30,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		/*URL wsdlUrl = new URL("http://www.biomart.org/biomart/martwsdl");
-		wsdlUrl = new File("/home/cperez/projects/ztools/workspace/gitools/gitools-biomart/src/wsdl/mart.wsdl").toURL();
-		QName serviceName = new QName("http://localhost:8080/MartServiceSoap", "BioMartSoapService");
-		Service s = Service.create(wsdlUrl, serviceName);
-		MartServiceSoap p = s.getPort(MartServiceSoap.class);
-		List<Mart> m = p.getRegistry();
-		System.out.println(m);*/
-		
 		BioMartSoapService service = new BioMartSoapService();
-		
-		Iterator<QName> ports = service.getPorts();
-		while (ports.hasNext())
-			System.out.println(ports.next());
 
 		MartServiceSoap port = service.getBioMartSoapPort();
 		
@@ -49,8 +39,36 @@ public class Main {
         HTTPClientPolicy httpClientPolicy = http.getClient();
         httpClientPolicy.setAllowChunking(false);*/
         
+		System.out.println("Available marts:");
 		List<Mart> marts = port.getRegistry();
 		for (Mart mart : marts)
-			System.out.println(mart.getName());		
+			System.out.println("\t" + mart.getDisplayName() + " (" + mart.getName() + ")");
+		
+		Mart mart = marts.get(0);
+		System.out.println("\nDatasets of " + mart.getDisplayName() + ":");
+		List<DatasetInfo> dataSets = port.getDatasets(mart.getName());
+		DatasetInfo dataSet = null;
+		for (DatasetInfo ds : dataSets) {
+			System.out.println("\t" + ds.getDisplayName() + " (" + ds.getName() + ")");
+			if (ds.getName().equals("hsapiens_gene_ensembl"))
+				dataSet = ds;
+		}
+		
+		System.out.println("\nAttributes of " + dataSet.getDisplayName() + ":");
+		List<AttributePage> attrs = port.getAttributes(dataSet.getName(), "default");
+		for (AttributePage attrPage : attrs) {
+			System.out.println("\t" + attrPage.getDisplayName() + " (" + attrPage.getName() + ")");
+			System.out.println("\t[formaters = " + attrPage.getFormatters() + "]");
+			for (AttributeGroup attrGroup : attrPage.getAttributeGroup()) {
+				System.out.println("\t\t" + attrGroup.getDisplayName() + " (" + attrGroup.getName() + ")");
+				System.out.println("\t\t[max_select=" + attrGroup.getMaxSelect() + "]");
+				for (AttributeCollection attrColl : attrGroup.getAttributeCollection()) {
+					System.out.println("\t\t\t" + attrColl.getDisplayName() + " (" + attrColl.getName() + ")");
+					for (AttributeInfo attr : attrColl.getAttributeInfo()) {
+						System.out.println("\t\t\t\t" + attr.getDisplayName() + " (" + attr.getName() + ")");
+					}
+				}
+			}
+		}
 	}
 }

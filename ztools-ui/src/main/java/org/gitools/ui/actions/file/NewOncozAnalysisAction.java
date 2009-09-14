@@ -13,7 +13,7 @@ public class NewOncozAnalysisAction extends BaseAction {
 	private static final long serialVersionUID = -8592231961109105958L;
 
 	public NewOncozAnalysisAction() {
-		super("oncoz analysis ...");
+		super("Oncoz analysis ...");
 
 		setDesc("Run an oncoz analysis");
 		setMnemonic(KeyEvent.VK_O);

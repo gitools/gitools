@@ -1,6 +1,7 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.ui.actions.BaseAction;
@@ -11,7 +12,9 @@ public class OpenDataAction extends BaseAction {
 	private static final long serialVersionUID = 6300005223590277333L;
 
 	public OpenDataAction() {
-		super("data ...");
+		super("Data ...");
+		setMnemonic(KeyEvent.VK_D);
+		setDefaultEnabled(true);
 	}
 	
 	@Override

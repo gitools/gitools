@@ -17,7 +17,7 @@ public class OpenAnalysisAction extends BaseAction {
 	private static final long serialVersionUID = -6528634034161710370L;
 
 	public OpenAnalysisAction() {
-		super("analysis ...");
+		super("Analysis ...");
 		setDesc("Open an analysis from the file system");
 		setSmallIconFromResource(IconNames.openAnalysis16);
 		setLargeIconFromResource(IconNames.openAnalysis24);

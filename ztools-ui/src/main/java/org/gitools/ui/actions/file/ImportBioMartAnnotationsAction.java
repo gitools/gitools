@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 
-public class ImportEnsemblAnnotationsAction extends BaseAction {
+public class ImportBioMartAnnotationsAction extends BaseAction {
 
 	private static final long serialVersionUID = 4381993756203388654L;
 
-	public ImportEnsemblAnnotationsAction() {
-		super("Ensembl annotations ...");
+	public ImportBioMartAnnotationsAction() {
+		super("Annotations ...");
 		setDefaultEnabled(true);
 	}
 	

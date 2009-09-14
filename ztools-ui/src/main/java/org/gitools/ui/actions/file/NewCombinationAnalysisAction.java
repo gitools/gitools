@@ -10,7 +10,7 @@ public class NewCombinationAnalysisAction extends BaseAction {
 	private static final long serialVersionUID = 4604642713057641252L;
 
 	public NewCombinationAnalysisAction() {
-		super("combination analysis ...");
+		super("Combination analysis ...");
 		
 		setDesc("Run a combination analysis");
 		setMnemonic(KeyEvent.VK_B);
