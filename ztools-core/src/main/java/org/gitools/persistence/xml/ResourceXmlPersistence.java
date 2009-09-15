@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.xml;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.factory.ResourceFactory;
 
-public class XmlResourcePersistence extends XmlGenericPersistence {
+public class ResourceXmlPersistence extends AbstractXmlPersistence {
 
-	public XmlResourcePersistence(
+	public ResourceXmlPersistence(
 			ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
 		

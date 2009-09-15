@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.text;
 
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -11,6 +11,8 @@ import org.apache.commons.csv.CSVParser;
 import org.gitools.datafilters.DoubleParser;
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.matrix.DoubleMatrix;
+import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.IResource;
 import org.gitools.utils.CSVStrategies;
 
@@ -18,12 +20,12 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class TextDoubleMatrixPersistence 
+public class DoubleMatrixTextPersistence 
 		implements IEntityPersistence<DoubleMatrix> {
 
 	private static final long serialVersionUID = 1995227069362928225L;
 
-	public TextDoubleMatrixPersistence() {
+	public DoubleMatrixTextPersistence() {
 	}
 
 	@Override

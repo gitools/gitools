@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.xml;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -9,9 +9,10 @@ import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
 import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.factory.ResourceFactory;
 
-public class XmlEnrichmentAnalysisPersistence extends XmlGenericPersistence {
+public class EnrichmentAnalysisXmlPersistence extends AbstractXmlPersistence {
 
-	public XmlEnrichmentAnalysisPersistence(ResourceFactory resourceFactory,
+	@SuppressWarnings("unchecked")
+	public EnrichmentAnalysisXmlPersistence(ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
 		super(entityClass);
 
@@ -21,7 +22,7 @@ public class XmlEnrichmentAnalysisPersistence extends XmlGenericPersistence {
 		adapters[2] = new MatrixXmlAdapter(resourceFactory);
 		adapters[3] = new ModuleMapXmlAdapter(resourceFactory);
 		
-		super.adapters = adapters;
+		setAdapters(adapters);
 	}
 
 }

@@ -18,9 +18,9 @@ import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.persistence.AnalysisPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.SimpleMapPersistence;
-import org.gitools.persistence.TextDoubleMatrixPersistence;
-import org.gitools.persistence.TextObjectMatrixPersistence;
+import org.gitools.persistence.text.DoubleMatrixTextPersistence;
+import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 import org.gitools.stats.test.Test;
@@ -114,19 +114,19 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					analysis.setElapsedTime(Long.parseLong(fields[1]));
 				else if (tag.equals(tagData) && fields.length >= 2) {
 					IResource res = new FileResource(new File(basePath, fields[1]));
-					TextDoubleMatrixPersistence per = new TextDoubleMatrixPersistence();
+					DoubleMatrixTextPersistence per = new DoubleMatrixTextPersistence();
 					DoubleMatrix doubleMatrix = per.read(res, monitor.subtask());
 					analysis.setDataTable(doubleMatrix);
 				}
 				else if (tag.equals(tagModules) && fields.length >= 2) {
 					path = new File(basePath, fields[1]);
-					SimpleMapPersistence res = new SimpleMapPersistence(path);
+					ModuleMapTextSimplePersistence res = new ModuleMapTextSimplePersistence(path);
 					ModuleMap moduleMap = res.load(monitor.subtask());
 					analysis.setModuleSet(moduleMap);
 				}
 				else if (tag.equals(tagResults) && fields.length >= 2) {
 					IResource res = new FileResource(new File(basePath, fields[1]));
-					TextObjectMatrixPersistence per = new TextObjectMatrixPersistence();
+					ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 					ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
 					analysis.setResults(resultsMatrix);
 				}
@@ -137,7 +137,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 	
 			if (version == null && analysis.getResults() == null) { // old version
 				IResource res = new FileResource(new File(basePath, "results.csv"));
-				TextObjectMatrixPersistence per = new TextObjectMatrixPersistence();
+				ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 				ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
 				analysis.setResults(resultsMatrix);
 			}
@@ -168,14 +168,14 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			
 			writeDescription(workDirFile, analysis, test);
 			
-			new TextDoubleMatrixPersistence().write(
+			new DoubleMatrixTextPersistence().write(
 					new FileResource(new File(workDirFile, dataFileName)),
 					analysis.getDataTable(), monitor);
 			
-			new SimpleMapPersistence(new File(workDirFile, modulesFileName))
+			new ModuleMapTextSimplePersistence(new File(workDirFile, modulesFileName))
 					.save(analysis.getModuleMap(), monitor);
 			
-			new TextObjectMatrixPersistence().write(
+			new ObjectMatrixTextPersistence().write(
 					new FileResource(new File(workDirFile, resultsFileNamePrefix + ".cells.csv")),
 					analysis.getResults(), 
 					resultsOrderByCond, monitor);

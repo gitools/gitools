@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.text;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -20,6 +20,8 @@ import org.gitools.model.matrix.element.array.ArrayElementFactory;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementFactory;
+import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.IResource;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
@@ -33,7 +35,7 @@ import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class TextObjectMatrixPersistence
+public class ObjectMatrixTextPersistence
 		implements IEntityPersistence<ObjectMatrix> {
 
 	private static final long serialVersionUID = 3487889255829878181L;
@@ -78,7 +80,7 @@ public class TextObjectMatrixPersistence
 		return sb.toString();
 	}
 	
-	public TextObjectMatrixPersistence() {
+	public ObjectMatrixTextPersistence() {
 	}
 
 	public ObjectMatrix read(

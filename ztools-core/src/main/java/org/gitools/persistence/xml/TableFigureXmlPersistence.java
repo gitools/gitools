@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.xml;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -8,10 +8,10 @@ import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.factory.ResourceFactory;
 
-public class XmlTableFigurePersistence extends XmlGenericPersistence {
+public class TableFigureXmlPersistence extends AbstractXmlPersistence {
 
 	@SuppressWarnings("unchecked")
-	public XmlTableFigurePersistence(ResourceFactory resourceFactory,
+	public TableFigureXmlPersistence(ResourceFactory resourceFactory,
 			Class<?> entityClass) throws JAXBException {
 		super(entityClass);
 		

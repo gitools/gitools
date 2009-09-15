@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.xml;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -9,11 +9,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.IResource;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class XmlGenericPersistence implements IEntityPersistence<Object> {
+public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
 	private JAXBContext context;
@@ -21,7 +23,7 @@ public class XmlGenericPersistence implements IEntityPersistence<Object> {
 	@SuppressWarnings("unchecked")
 	protected XmlAdapter[] adapters;
 
-	public XmlGenericPersistence(Class<?> entityClass)
+	public AbstractXmlPersistence(Class<?> entityClass)
 			throws JAXBException { //TODO remove exception
 		
 		adapters = new XmlAdapter[0];

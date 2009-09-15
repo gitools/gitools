@@ -29,7 +29,7 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.IMatrixView;
-import org.gitools.persistence.TextAnnotationMatrixPersistence;
+import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 import org.gitools.ui.AppFrame;
@@ -157,7 +157,7 @@ public class HeaderConfigPage extends JPanel {
 	private void loadAnnotations() {
 		File file = getSelectedPath();
 		IResource res = new FileResource(file);
-		TextAnnotationMatrixPersistence amp = new TextAnnotationMatrixPersistence();
+		AnnotationMatrixTextPersistence amp = new AnnotationMatrixTextPersistence();
 		
 		AnnotationMatrix annMatrix = null;
 		try {

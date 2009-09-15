@@ -1,12 +1,14 @@
-package org.gitools.persistence;
+package org.gitools.persistence.text;
 
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVParser;
-import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.model.matrix.StringMatrix;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
+import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.IResource;
 import org.gitools.utils.CSVStrategies;
 
@@ -14,18 +16,19 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
+
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class TextAnnotationMatrixPersistence 
-		implements IEntityPersistence<AnnotationMatrix> {
-	
+public class StringMatrixTextPersistence
+		implements IEntityPersistence<StringMatrix> {
+
 	@Override
-	public AnnotationMatrix read(
-			IResource resource,
+	public StringMatrix read(
+			IResource resource, 
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
-		AnnotationMatrix matrix = new AnnotationMatrix();
+		StringMatrix matrix = new StringMatrix();
 		
 		try {
 			Reader reader = resource.openReader();
@@ -81,16 +84,16 @@ public class TextAnnotationMatrixPersistence
 		
 		return matrix;
 	}
-	
+
 	@Override
 	public void write(
 			IResource resource, 
-			AnnotationMatrix entity,
+			StringMatrix entity,
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
 		// TODO Auto-generated method stub
 		throw new PersistenceException("Unimplemented!!!");
 	}
-	
+
 }

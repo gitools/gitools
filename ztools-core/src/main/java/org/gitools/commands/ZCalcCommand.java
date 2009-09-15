@@ -9,8 +9,8 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.SimpleMapPersistence;
-import org.gitools.persistence.TextDoubleMatrixPersistence;
+import org.gitools.persistence.text.DoubleMatrixTextPersistence;
+import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 import org.gitools.stats.test.factory.TestFactory;
@@ -101,7 +101,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Load metadata
 		
 		IResource resource = new FileResource(dataFileName);
-		TextDoubleMatrixPersistence dmPersistence = new TextDoubleMatrixPersistence();
+		DoubleMatrixTextPersistence dmPersistence = new DoubleMatrixTextPersistence();
 		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
 		
 		// Load modules
@@ -109,8 +109,8 @@ public class ZCalcCommand extends AnalysisCommand {
 		File file = new File(modulesFileName);
 		moduleMap.setTitle(file.getName());
 		
-		SimpleMapPersistence simpleMapPersistence = new SimpleMapPersistence(file);
-		simpleMapPersistence.load(
+		ModuleMapTextSimplePersistence moduleMapTextSimplePersistence = new ModuleMapTextSimplePersistence(file);
+		moduleMapTextSimplePersistence.load(
 			moduleMap,
 			minModuleSize,
 			maxModuleSize,

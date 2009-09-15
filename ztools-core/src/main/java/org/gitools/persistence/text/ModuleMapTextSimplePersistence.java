@@ -1,4 +1,4 @@
-package org.gitools.persistence;
+package org.gitools.persistence.text;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -16,23 +16,25 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.FileResource;
 import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class SimpleMapPersistence extends FileResource {
+// FIXME Adapt to IEntityPersistence
+public class ModuleMapTextSimplePersistence extends FileResource {
 
 	private static final long serialVersionUID = -6679172401494740813L;
 	
 	public static final int defaultMinModuleSize = 20;
 	public static final int defaultMaxModuleSize = Integer.MAX_VALUE;
 	
-	public SimpleMapPersistence(String fileName) {
+	public ModuleMapTextSimplePersistence(String fileName) {
 		super(fileName);
 	}
 	
-	public SimpleMapPersistence(File file) {
+	public ModuleMapTextSimplePersistence(File file) {
 		super(file);
 	}
 	
@@ -259,9 +261,8 @@ public class SimpleMapPersistence extends FileResource {
 					pw.print(itemNames[i]);
 					pw.print('"');
 				}
-				
-				pw.print('\n');
 			}
+			pw.print('\n');
 			
 			final String[] moduleNames = moduleMap.getModuleNames();
 			

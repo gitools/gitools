@@ -8,7 +8,7 @@ import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
-import org.gitools.persistence.TextDoubleMatrixPersistence;
+import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
 import org.gitools.ui.AppFrame;
@@ -46,8 +46,8 @@ public class OpenMatrixJob implements Job {
 			monitor.begin("Loading matrix ...", 1);
 			
 			final IResource res = new FileResource(selectedPath);
-			final TextDoubleMatrixPersistence pers = 
-				new TextDoubleMatrixPersistence();
+			final DoubleMatrixTextPersistence pers = 
+				new DoubleMatrixTextPersistence();
 			final DoubleMatrix matrix = pers.read(res, monitor);
 					
 			final IMatrixView matrixView = new MatrixView(matrix);

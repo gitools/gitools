@@ -15,7 +15,7 @@ import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.StringMatrix;
 import org.gitools.resources.IResource;
 
-public class Extensions {
+public class ResourceNameSuffixes {
 
 	public static final String extensionSeparator = ".";
 
@@ -26,54 +26,45 @@ public class Extensions {
 	public static final String MATRIX_FIGURE = "figure";
 	public static final String TABLE_FIGURE = "table";
 
-	
 	public static final String OBJECT_MATRIX = "objectMatrix";
 	public static final String ANNOTATION_MATRIX = "annotationMatrix";
 	public static final String DOUBLE_MATRIX = "doubleMatrix";
 	public static final String STRING_MATRIX = "stringMatrix";
 
-	
-	
-	private static final Map<Class<?>, String> extensionsMap = new HashMap<Class<?>, String>();
+	private static final Map<Class<?>, String> suffixesMap = new HashMap<Class<?>, String>();
 
 	private static final Map<String, Class<?>> classesMap = new HashMap<String, Class<?>>();
 
 	public static final String MODULE_MAP = "moduleMap";
 
-	
-
-	
 	static {
 
-		extensionsMap.put(ObjectMatrix.class, Extensions.OBJECT_MATRIX);
-		extensionsMap.put(DoubleMatrix.class, Extensions.DOUBLE_MATRIX);
-		extensionsMap.put(StringMatrix.class, Extensions.STRING_MATRIX);
-		extensionsMap.put(AnnotationMatrix.class, Extensions.ANNOTATION_MATRIX);
+		suffixesMap.put(ObjectMatrix.class, ResourceNameSuffixes.OBJECT_MATRIX);
+		suffixesMap.put(DoubleMatrix.class, ResourceNameSuffixes.DOUBLE_MATRIX);
+		suffixesMap.put(StringMatrix.class, ResourceNameSuffixes.STRING_MATRIX);
+		suffixesMap.put(AnnotationMatrix.class, ResourceNameSuffixes.ANNOTATION_MATRIX);
 
-		classesMap.put(Extensions.PROJECT, Project.class);
-		classesMap.put(Extensions.CONTENTS, ResourceContainer.class);
-		classesMap.put(Extensions.ENRICHMENT_ANALYSIS,  EnrichmentAnalysis.class);
+		classesMap.put(ResourceNameSuffixes.PROJECT, Project.class);
+		classesMap.put(ResourceNameSuffixes.CONTENTS, ResourceContainer.class);
+		classesMap.put(ResourceNameSuffixes.ENRICHMENT_ANALYSIS,  EnrichmentAnalysis.class);
 		
-		classesMap.put(Extensions.MATRIX_FIGURE, MatrixFigure.class);
-		classesMap.put(Extensions.TABLE_FIGURE, TableFigure.class);
+		classesMap.put(ResourceNameSuffixes.MATRIX_FIGURE, MatrixFigure.class);
+		classesMap.put(ResourceNameSuffixes.TABLE_FIGURE, TableFigure.class);
 		
-		classesMap.put(Extensions.OBJECT_MATRIX, ObjectMatrix.class);
-		classesMap.put(Extensions.DOUBLE_MATRIX, DoubleMatrix.class);
-		classesMap.put(Extensions.STRING_MATRIX, StringMatrix.class);
-		classesMap.put(Extensions.ANNOTATION_MATRIX, AnnotationMatrix.class);
+		classesMap.put(ResourceNameSuffixes.OBJECT_MATRIX, ObjectMatrix.class);
+		classesMap.put(ResourceNameSuffixes.DOUBLE_MATRIX, DoubleMatrix.class);
+		classesMap.put(ResourceNameSuffixes.STRING_MATRIX, StringMatrix.class);
+		classesMap.put(ResourceNameSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
 
-		classesMap.put(Extensions.MODULE_MAP, ModuleMap.class);
-		
-		
-		
+		classesMap.put(ResourceNameSuffixes.MODULE_MAP, ModuleMap.class);		
 	}
 
-	private Extensions() {
+	private ResourceNameSuffixes() {
 
 	}
 
 	public static String getEntityExtension(Class<?> entityClass) {
-		return (String) extensionsMap.get(entityClass);
+		return (String) suffixesMap.get(entityClass);
 	}
 
 	public static Class<?> getEntityClass(String extension) {
@@ -86,9 +77,9 @@ public class Extensions {
 		String extension;
 
 		if (uri.endsWith("project.xml"))
-			return classesMap.get(Extensions.PROJECT);
+			return classesMap.get(ResourceNameSuffixes.PROJECT);
 		if (uri.endsWith("contents.xml"))
-			return classesMap.get(Extensions.CONTENTS);
+			return classesMap.get(ResourceNameSuffixes.CONTENTS);
 
 		extension = uri.substring(uri.lastIndexOf('.') + 1);
 		extension.replace(extension, " ");

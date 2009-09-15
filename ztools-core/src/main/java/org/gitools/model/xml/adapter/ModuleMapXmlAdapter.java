@@ -3,7 +3,7 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.Extensions;
+import org.gitools.persistence.ResourceNameSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.resources.factory.ResourceFactory;
 
@@ -24,7 +24,7 @@ public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 	@Override
 	public ModuleMap unmarshal(String v) throws Exception {
 		return (ModuleMap) PersistenceManager.load(resourceFactory,
-				resourceFactory.getResource(v), Extensions.MODULE_MAP);
+				resourceFactory.getResource(v), ResourceNameSuffixes.MODULE_MAP);
 	}
 
 }

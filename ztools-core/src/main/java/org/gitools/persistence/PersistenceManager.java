@@ -2,9 +2,7 @@ package org.gitools.persistence;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.gitools.model.Artifact;
 import org.gitools.model.ModuleMap;
@@ -16,6 +14,15 @@ import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
+import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
+import org.gitools.persistence.text.DoubleMatrixTextPersistence;
+import org.gitools.persistence.text.ModuleMapTextIndicesPersistence;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
+import org.gitools.persistence.xml.MatrixFigureXmlPersistence;
+import org.gitools.persistence.xml.ResourceXmlPersistence;
+import org.gitools.persistence.xml.TableFigureXmlPersistence;
 import org.gitools.resources.IResource;
 import org.gitools.resources.factory.ResourceFactory;
 
@@ -30,39 +37,36 @@ public class PersistenceManager {
 	private static final Map<Integer, Object > cache = new HashMap<Integer, Object>();
 	
 	static {
-
-		persistenceMap.put(Project.class, XmlGenericPersistence.class);
-		persistenceMap.put(EnrichmentAnalysis.class, XmlEnrichmentAnalysisPersistence.class);
-		persistenceMap.put(ResourceContainer.class, XmlResourcePersistence.class);
-		persistenceMap.put(MatrixFigure.class, XmlMatrixFigurePersistence.class);
-		persistenceMap.put(TableFigure.class,  XmlTableFigurePersistence.class);
-		persistenceMap.put(ObjectMatrix.class, TextObjectMatrixPersistence.class);
-		persistenceMap.put(DoubleMatrix.class, TextDoubleMatrixPersistence.class);
-		persistenceMap.put(AnnotationMatrix.class, TextAnnotationMatrixPersistence.class);
-		persistenceMap.put(ModuleMap.class, ModuleMapPersistence.class);
-
+		persistenceMap.put(Project.class, AbstractXmlPersistence.class);
+		persistenceMap.put(EnrichmentAnalysis.class, EnrichmentAnalysisXmlPersistence.class);
+		persistenceMap.put(ResourceContainer.class, ResourceXmlPersistence.class);
+		persistenceMap.put(MatrixFigure.class, MatrixFigureXmlPersistence.class);
+		persistenceMap.put(TableFigure.class,  TableFigureXmlPersistence.class);
+		persistenceMap.put(ObjectMatrix.class, ObjectMatrixTextPersistence.class);
+		persistenceMap.put(DoubleMatrix.class, DoubleMatrixTextPersistence.class);
+		persistenceMap.put(AnnotationMatrix.class, AnnotationMatrixTextPersistence.class);
+		persistenceMap.put(ModuleMap.class, ModuleMapTextIndicesPersistence.class);
 	}
 
-
-
 	@SuppressWarnings("unchecked")
-	public static <T> IEntityPersistence<T> 
-		createEntityPersistence(ResourceFactory resourceFactory, Class<T> entityClass) {
+	public static <T> IEntityPersistence<T> createEntityPersistence(
+			ResourceFactory resourceFactory,
+			Class<T> entityClass) {
 
 		Class<?> resourceClass = persistenceMap.get(entityClass);
 		
 		try {
 			Constructor<?> c;
 			
-			if (resourceClass.equals(XmlGenericPersistence.class)) {
+			if (resourceClass.equals(AbstractXmlPersistence.class)) {
 				c = resourceClass.getConstructor(Class.class);
-					return (IEntityPersistence) c.newInstance(entityClass);
-				}
+				return (IEntityPersistence) c.newInstance(entityClass);
+			}
 			
-			if ((resourceClass.equals(XmlMatrixFigurePersistence.class)) ||
-				(resourceClass.equals(XmlTableFigurePersistence.class))  ||
-				(resourceClass.equals(XmlEnrichmentAnalysisPersistence.class))  ||
-				(resourceClass.equals(XmlResourcePersistence.class))) {
+			if ((resourceClass.equals(MatrixFigureXmlPersistence.class)) ||
+				(resourceClass.equals(TableFigureXmlPersistence.class))  ||
+				(resourceClass.equals(EnrichmentAnalysisXmlPersistence.class))  ||
+				(resourceClass.equals(ResourceXmlPersistence.class))) {
 				
 				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
 				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
@@ -75,7 +79,6 @@ public class PersistenceManager {
 			return null;
 		}
 	}
-
 
 	@SuppressWarnings("unchecked")
 	public static Object load(
@@ -97,8 +100,8 @@ public class PersistenceManager {
 		Class<?> entityClass;
 		
 		if(entityType==null)
-			entityClass = Extensions.getEntityClass(resource);
-		else entityClass = Extensions.getEntityClass(entityType);
+			entityClass = ResourceNameSuffixes.getEntityClass(resource);
+		else entityClass = ResourceNameSuffixes.getEntityClass(entityType);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence( resourceFactory, entityClass);
@@ -116,7 +119,6 @@ public class PersistenceManager {
 		return entity;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	public static boolean store(
 			ResourceFactory resourceFactory,
@@ -124,6 +126,7 @@ public class PersistenceManager {
 			Object entity) 
 			throws PersistenceException {
 
+		// FIXME the monitor should be passed through method parameters
 		IProgressMonitor monitor = new DefaultProgressMonitor();
 		monitor.begin("Storing ... " + resource.toURI(), 1);
 
