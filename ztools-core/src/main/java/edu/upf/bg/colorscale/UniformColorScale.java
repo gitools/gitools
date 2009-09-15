@@ -1,8 +1,9 @@
 package edu.upf.bg.colorscale;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class UniformColorScale implements IColorScale {
+public class UniformColorScale implements IColorScale, Serializable {
 
 	protected Color color;
 	
