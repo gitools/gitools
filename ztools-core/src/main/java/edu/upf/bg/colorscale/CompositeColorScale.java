@@ -1,12 +1,13 @@
 package edu.upf.bg.colorscale;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 public class CompositeColorScale extends AbstractColorScale {
 
-	public static class ScaleRange {
+	public static class ScaleRange implements Serializable {
 		public double minPoint;
 		public double maxPoint;
 		public IColorScale scale;

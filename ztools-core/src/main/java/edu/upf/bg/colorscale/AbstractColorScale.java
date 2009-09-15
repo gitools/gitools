@@ -1,11 +1,12 @@
 package edu.upf.bg.colorscale;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.colorscale.util.ColorUtils;
 
-public abstract class AbstractColorScale implements IColorScale, IColorScaleHtml {
+public abstract class AbstractColorScale implements IColorScale, IColorScaleHtml, Serializable {
 
 	protected Color notANumberColor = ColorConstants.notANumberColor;
 	protected Color posInfinityColor = ColorConstants.posInfinityColor;
