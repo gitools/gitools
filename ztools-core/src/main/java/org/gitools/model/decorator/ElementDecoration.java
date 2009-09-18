@@ -1,8 +1,10 @@
 package org.gitools.model.decorator;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class ElementDecoration {
+public class ElementDecoration 
+	implements Serializable{
 
 	public enum TextAlignment {
 		left, right, center
