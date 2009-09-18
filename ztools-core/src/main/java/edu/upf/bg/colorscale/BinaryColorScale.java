@@ -2,13 +2,12 @@ package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-import org.gitools.datafilters.BinaryCutoffFilter;
-import org.gitools.datafilters.BinaryCutoffFilter.BinaryCutoffCmp;
+import org.gitools.datafilters.CutoffCmp;
 
 public class BinaryColorScale extends AbstractColorScale {
 
 	private double cutoff = 1.0;
-	private BinaryCutoffCmp cutoffCmp = BinaryCutoffFilter.EQ;
+	private CutoffCmp cutoffCmp = CutoffCmp.EQ;;
 
 	public BinaryColorScale(double minPoint, double maxPoint, double cutoff,
 			Color minColor, Color maxColor, Color nonSignificantColor) {
@@ -43,11 +42,11 @@ public class BinaryColorScale extends AbstractColorScale {
 		this.cutoff = cutoff;
 	}
 
-	public BinaryCutoffCmp getCutoffCmp() {
+	public CutoffCmp getCutoffCmp() {
 		return cutoffCmp;
 	}
 
-	public void setCutoffCmp(BinaryCutoffCmp cutoffCmp) {
+	public void setCutoffCmp(CutoffCmp cutoffCmp) {
 		this.cutoffCmp = cutoffCmp;
 	}
 
