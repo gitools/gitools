@@ -2,15 +2,9 @@ package edu.upf.bg.colorscale;
 
 import java.awt.Color;
 
-import edu.upf.bg.colorscale.util.ColorConstants;
-
 public class BinaryColorScale extends AbstractColorScale {
 
 	private double cutoff = 1.0;
-	
-	private Color nonSignificantColor  = 
-		ColorConstants.nonSignificantColor;
-	
 	
 	public BinaryColorScale( 
 			double minPoint, 
@@ -23,7 +17,6 @@ public class BinaryColorScale extends AbstractColorScale {
 		this.cutoff = cutoff;
 		this.minColor = minColor;
 		this.maxColor = maxColor;
-		this.nonSignificantColor = nonSignificantColor;
 	}
 	
 	public BinaryColorScale() {
@@ -42,15 +35,7 @@ public class BinaryColorScale extends AbstractColorScale {
 		return value >= cutoff ? 
 				maxColor: minColor;
 	}
-
-	public void setNonSignificantColor(Color nonSignificantColor) {
-		this.nonSignificantColor = nonSignificantColor;
-	}
-
-	public Color getNonSignificantColor() {
-		return nonSignificantColor;
-	}
-
+	
 	public double getCutoff() {
 		return cutoff;
 	}
@@ -58,6 +43,5 @@ public class BinaryColorScale extends AbstractColorScale {
 	public void setCutoff(double cutoff) {
 		this.cutoff = cutoff;
 	}
-
 	
 }
