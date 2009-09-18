@@ -31,7 +31,7 @@ public class GenericFormatter implements Serializable {
 	private Map<Class<?>, String> genericFormatMap;
 	
 	private StringBuilder sb;
-	private transient Formatter fmt;
+	private Formatter fmt;
 	
 	public GenericFormatter(String ltString) {
 		this.ltString = ltString;
