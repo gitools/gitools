@@ -30,8 +30,8 @@ public class PValueElementDecorator extends ElementDecorator {
 	@XmlTransient
 	//FIXME:
 	private transient PValueColorScale scale;
-	@XmlTransient
-	private GenericFormatter fmt = new GenericFormatter("<");
+	
+	private transient GenericFormatter fmt = new GenericFormatter("<");
 	
 	public PValueElementDecorator(){
 		

@@ -86,12 +86,12 @@ public class PersistenceManager {
 			IResource resource, 
 			String entityType)
 				throws PersistenceException {
-
+		System.out.println("entrando con entityType " + resource.toString() + entityType );
 		int key =resource.hashCode();
-		if (cache.containsKey(key)){
+	/*	if (cache.containsKey(key)){
 			System.out.println("using cache for " + resource.toURI());
 			return cache.get(key);
-		}
+		}*/
 		
 		IProgressMonitor monitor = 
 			new DefaultProgressMonitor();
@@ -116,6 +116,8 @@ public class PersistenceManager {
 	
 		if(!cache.containsKey(key))
 			cache.put(key, entity);
+		
+	
 		return entity;
 	}
 

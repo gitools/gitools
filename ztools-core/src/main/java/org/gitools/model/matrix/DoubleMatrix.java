@@ -101,12 +101,14 @@ public final class DoubleMatrix extends BaseMatrix	{
 
 	@Override
 	public int getColumnCount() {
-		return data.columns();
+		//return data.columns();
+		return columns.cardinality();
 	}
 
 	@Override
 	public int getRowCount() {
-		return data.rows();
+		//return data.rows();
+	return rows.cardinality();
 	}
 	
 	@Override

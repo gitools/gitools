@@ -54,6 +54,7 @@ public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 			reader.close();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new PersistenceException("Error opening resource: "
 					+ resource.toURI(), e);
 		}
@@ -67,9 +68,7 @@ public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 
 		Writer writer;
 		try {
-
 			writer = resource.openWriter();
-
 			Marshaller m = context.createMarshaller();
 			for (XmlAdapter adapter : adapters) {
 				m.setAdapter(adapter);

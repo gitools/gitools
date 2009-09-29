@@ -31,7 +31,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 	private Color color;
 	private Color nonSignificantColor;
 	
-	private GenericFormatter fmt = new GenericFormatter("<");
+	private transient GenericFormatter fmt = new GenericFormatter("<");
 	
 	
 	public BinaryElementDecorator() {

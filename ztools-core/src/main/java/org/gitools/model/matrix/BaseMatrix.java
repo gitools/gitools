@@ -1,14 +1,21 @@
 package org.gitools.model.matrix;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-
-public abstract class BaseMatrix extends Matrix {
+@XmlSeeAlso( { 
+	ObjectMatrix.class,
+	StringMatrix.class,
+	DoubleMatrix.class,
+	AnnotationMatrix.class })
+	@XmlAccessorType(XmlAccessType.NONE)
+	public abstract class BaseMatrix extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
 
@@ -37,7 +44,7 @@ public abstract class BaseMatrix extends Matrix {
 		this.cellAdapter = cellAdapter;
 	}
 	
-	@XmlTransient
+	
 	public ObjectMatrix1D getRows() {
 		return rows;
 	}
@@ -68,7 +75,7 @@ public abstract class BaseMatrix extends Matrix {
 		rows.set(index, row);
 	}
 	
-	@XmlTransient
+	
 	public ObjectMatrix1D getColumns() {
 		return columns;
 	}
@@ -121,7 +128,7 @@ public abstract class BaseMatrix extends Matrix {
 	}
 	
 	//@XmlAnyElement
-	@XmlElement
+	//@XmlElement
 	public IElementAdapter getRowAdapter() {
 		return rowAdapter;
 	}
@@ -131,7 +138,7 @@ public abstract class BaseMatrix extends Matrix {
 	}
 	
 	//@XmlAnyElement
-	@XmlElement
+	//@XmlElement
 	public IElementAdapter getColumnAdapter() {
 		return columnAdapter;
 	}
@@ -141,7 +148,7 @@ public abstract class BaseMatrix extends Matrix {
 	}
 	
 	//@XmlAnyElement
-	@XmlElement
+	//@XmlElement
 	public IElementAdapter getCellAdapter() {
 		return cellAdapter;
 	}

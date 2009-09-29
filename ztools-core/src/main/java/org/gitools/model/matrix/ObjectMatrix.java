@@ -10,17 +10,6 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
-/*@XmlType(
-		propOrder = {
-				"rowAdapter",
-				"columnAdapter",
-				"cellAdapter"})*/
-
-/*@XmlSeeAlso(value = {
-		BeanElementAdapter.class, 
-		StringElementAdapter.class,
-		ArrayElementAdapter.class})*/
-
 @XmlAccessorType(XmlAccessType.NONE)
 public class ObjectMatrix extends BaseMatrix {
 
@@ -51,17 +40,17 @@ public class ObjectMatrix extends BaseMatrix {
 				columns.size());
 	}
 	
-	@XmlTransient
+	//@XmlTransient
 	public int getRowCount() {
 		return cells.rows();
 	}
 	
-	@XmlTransient
+	//@XmlTransient
 	public int getColumnCount() {
 		return cells.columns();
 	}
 	
-	@XmlTransient
+	//@XmlTransient
 	public ObjectMatrix2D getCells() {
 		return cells;
 	}
