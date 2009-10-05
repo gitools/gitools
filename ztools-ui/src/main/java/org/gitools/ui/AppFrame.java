@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -12,13 +11,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import org.apache.velocity.app.VelocityEngine;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
 import org.gitools.ui.editor.matrix.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
-import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.utils.Options;
 
@@ -53,7 +50,7 @@ public class AppFrame extends JFrame {
 	
 	private JTabbedPane leftPanel;
 	
-	private TemplatePane detailsPanel;
+	//private TemplatePane detailsPanel;
 	
 	private WorkspacePanel workspace;
 	
@@ -115,13 +112,13 @@ public class AppFrame extends JFrame {
 		
 		toolBar = Actions.toolBarActionSet.createToolBar();
 		
-		Properties props = new Properties();
+		/*Properties props = new Properties();
 		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-		detailsPanel = new TemplatePane(props);
+		detailsPanel = new TemplatePane(props);*/
 		
 		leftPanel = new JTabbedPane();
 		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
-		leftPanel.add(detailsPanel, "Details");
+		//TODO leftPanel.add(detailsPanel, "Details");
 		
 		workspace = new WorkspacePanel();
 		
@@ -186,9 +183,9 @@ public class AppFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	public TemplatePane getDetailsPane() {
+	/*public TemplatePane getDetailsPane() {
 		return detailsPanel;
-	}
+	}*/
 	
 	public WorkspacePanel getWorkspace() {
 		return workspace;
@@ -211,4 +208,3 @@ public class AppFrame extends JFrame {
 		
 	}
 }
-

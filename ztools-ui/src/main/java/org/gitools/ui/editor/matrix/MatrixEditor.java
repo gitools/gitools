@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -15,6 +16,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.HeaderDecorator;
@@ -27,7 +29,6 @@ import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.matrix.HeaderConfigPage.HeaderType;
 import org.gitools.ui.panels.TemplatePane;
@@ -42,6 +43,12 @@ public class MatrixEditor extends AbstractEditor {
 	private static final long serialVersionUID = -540561086703759209L;
 
 	private static final String defaultTemplateName = "/vm/details/noselection.vm";
+
+	public enum WorkbenchLayout {
+		LEFT, RIGHT, TOP, BOTTOM
+	}
+	
+	private static final int defaultDividerLocation = 280;
 	
 	private MatrixFigure model;
 	
@@ -50,6 +57,8 @@ public class MatrixEditor extends AbstractEditor {
 	private MatrixPanel matrixPanel;
 	
 	private JTabbedPane tabbedPane;
+	
+	private TemplatePane detailsPanel;
 	
 	protected boolean blockSelectionUpdate;
 
@@ -65,6 +74,8 @@ public class MatrixEditor extends AbstractEditor {
 	private PropertyChangeListener rowDecoratorListener;
 
 	private PropertyChangeListener colDecoratorListener;
+
+	private JSplitPane configSplitPane;
 
 	public MatrixEditor(MatrixFigure model) {
 		
@@ -254,7 +265,7 @@ public class MatrixEditor extends AbstractEditor {
 				context.put("cell", cellMap);
 			}
 		}
-		System.out.println("row:" + row + ", col:" + column);
+		//System.out.println("row:" + row + ", col:" + column);
 		
 		/*else if (column < 0) {
 			System.out.println("row:" + row);
@@ -266,11 +277,11 @@ public class MatrixEditor extends AbstractEditor {
 		//System.out.println("refreshCellDetails(" + row + ", " + column + ")");
 		
 		try {
-			final TemplatePane templatePane = AppFrame.instance().getDetailsPane();
+			//final TemplatePane templatePane = AppFrame.instance().getDetailsPane();
 			
-			templatePane.setTemplate(templateName);
-			templatePane.setContext(context);
-			templatePane.render();
+			detailsPanel.setTemplate(templateName);
+			detailsPanel.setContext(context);
+			detailsPanel.render();
 		}
 		catch (Exception e) {
 			e.printStackTrace(); //FIXME
@@ -296,6 +307,11 @@ public class MatrixEditor extends AbstractEditor {
 	private void createComponents() {
 		
 		final IMatrixView matrixView = getMatrixView();
+		
+		/* Details panel */
+		Properties props = new Properties();
+		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		detailsPanel = new TemplatePane(props);
 		
 		/* Color matrix */
 		
@@ -362,19 +378,26 @@ public class MatrixEditor extends AbstractEditor {
 		tabbedPane.addTab("Columns", columnsConfigPage);
 		tabbedPane.addTab("Cells", cellsConfigPage);
 		
-		/* Split */
+		configSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		configSplitPane.setResizeWeight(1.0);
+		configSplitPane.setDividerLocation(defaultDividerLocation);
+		configSplitPane.setOneTouchExpandable(true);
+		configSplitPane.setContinuousLayout(true);
+		configSplitPane.add(matrixPanel);
+		configSplitPane.add(detailsPanel);
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setResizeWeight(1.0);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setContinuousLayout(true);
-		splitPane.add(matrixPanel);
-		splitPane.add(tabbedPane);
-		
+		final JSplitPane splitPaneLayout = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPaneLayout.setResizeWeight(1.0);
+		splitPaneLayout.setDividerLocation(defaultDividerLocation);
+		splitPaneLayout.setOneTouchExpandable(true);
+		splitPaneLayout.setContinuousLayout(true);
+		splitPaneLayout.add(configSplitPane);
+		splitPaneLayout.add(tabbedPane);
+			
 		setLayout(new BorderLayout());
-		add(splitPane, BorderLayout.CENTER);
+		add(splitPaneLayout, BorderLayout.CENTER);
 	}
-
+	
 	private void refreshColorMatrixWidth() {
 		/*CellDecorationConfig config = 
 			getTable().getCellDecoration(
