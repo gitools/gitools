@@ -17,9 +17,9 @@ import org.gitools.datafilters.CutoffCmp;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.AppFrame;
 
 public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 

@@ -4,31 +4,33 @@ import java.io.Reader;
 import java.io.Writer;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.persistence.IEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.resources.IResource;
+import org.gitools.resources.factory.ResourceFactory;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
-	private JAXBContext context;
+	private Class<?> entityClass;
 
 	@SuppressWarnings("unchecked")
 	protected XmlAdapter[] adapters;
 
-	public AbstractXmlPersistence(Class<?> entityClass)
-			throws JAXBException { //TODO remove exception
+	public AbstractXmlPersistence(Class<?> entityClass) {
 		
-		adapters = new XmlAdapter[0];
-		context = JAXBContext.newInstance(entityClass); // TODO This is not the place to create new JAXB instance
-		System.out.println(this.getClass().toString() + entityClass); //FIXME remove
+		this.entityClass = entityClass;
+		
+		setAdapters(new XmlAdapter[] {
+			new ResourceXmlAdapter(new ResourceFactory())
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,10 +48,11 @@ public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 
 		try {
 			reader = resource.openReader();
+			JAXBContext context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
-			for (XmlAdapter adapter : adapters) {
+			for (XmlAdapter adapter : adapters)
 				u.setAdapter(adapter);
-			}
+
 			entity = (Object) u.unmarshal(reader);
 			reader.close();
 
@@ -69,10 +72,11 @@ public class AbstractXmlPersistence implements IEntityPersistence<Object> {
 		Writer writer;
 		try {
 			writer = resource.openWriter();
+			JAXBContext context = JAXBContext.newInstance(entityClass);
 			Marshaller m = context.createMarshaller();
-			for (XmlAdapter adapter : adapters) {
+			for (XmlAdapter adapter : adapters)
 				m.setAdapter(adapter);
-			}
+
 			m.marshal(entity, writer);
 			writer.close();
 

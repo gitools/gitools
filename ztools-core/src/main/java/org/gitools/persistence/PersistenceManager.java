@@ -26,7 +26,6 @@ import org.gitools.persistence.xml.TableFigureXmlPersistence;
 import org.gitools.resources.IResource;
 import org.gitools.resources.factory.ResourceFactory;
 
-import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class PersistenceManager {
@@ -53,26 +52,24 @@ public class PersistenceManager {
 			ResourceFactory resourceFactory,
 			Class<T> entityClass) {
 
-		Class<?> resourceClass = persistenceMap.get(entityClass);
+		Class<?> persistenceClass = persistenceMap.get(entityClass);
 		
 		try {
-			Constructor<?> c;
-			
-			if (resourceClass.equals(AbstractXmlPersistence.class)) {
-				c = resourceClass.getConstructor(Class.class);
+			if (persistenceClass.equals(AbstractXmlPersistence.class)) {
+				Constructor<?> c = persistenceClass.getConstructor(Class.class);
 				return (IEntityPersistence) c.newInstance(entityClass);
 			}
 			
-			if ((resourceClass.equals(MatrixFigureXmlPersistence.class)) ||
-				(resourceClass.equals(TableFigureXmlPersistence.class))  ||
-				(resourceClass.equals(EnrichmentAnalysisXmlPersistence.class))  ||
-				(resourceClass.equals(ResourceXmlPersistence.class))) {
+			if ((persistenceClass.equals(MatrixFigureXmlPersistence.class)) ||
+				(persistenceClass.equals(TableFigureXmlPersistence.class))  ||
+				(persistenceClass.equals(EnrichmentAnalysisXmlPersistence.class))  ||
+				(persistenceClass.equals(ResourceXmlPersistence.class))) {
 				
-				c = resourceClass.getConstructor(ResourceFactory.class, Class.class);
+				Constructor<?> c = persistenceClass.getConstructor(ResourceFactory.class, Class.class);
 				return (IEntityPersistence) c.newInstance(resourceFactory, entityClass);
 			}
 			
-			return (IEntityPersistence<T>) resourceClass.newInstance();
+			return (IEntityPersistence<T>) persistenceClass.newInstance();
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,65 +77,76 @@ public class PersistenceManager {
 		}
 	}
 
+	public static Object load(
+			IResource resource,
+			String entityType,
+			IProgressMonitor monitor)
+				throws PersistenceException {
+		
+		return load(new ResourceFactory(), resource, entityType, monitor);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static Object load(
 			ResourceFactory resourceFactory,
-			IResource resource, 
-			String entityType)
+			IResource resource,
+			String entityType,
+			IProgressMonitor monitor)
 				throws PersistenceException {
 		
-		int key =resource.hashCode();
+		int key = resource.hashCode();
 		
 		if (cache.containsKey(key)){
-			System.out.println("using cache for " + resource.toURI());
+			//System.out.println("using cache for " + resource.toURI());
 			return cache.get(key);
 		}
 		
-		IProgressMonitor monitor = 
-			new DefaultProgressMonitor();
 		monitor.begin("Start loading ... " + resource.toURI(), 1);
 
 		Class<?> entityClass;
 		
-		if(entityType==null)
+		if (entityType == null)
 			entityClass = ResourceNameSuffixes.getEntityClass(resource);
-		else entityClass = ResourceNameSuffixes.getEntityClass(entityType);
+		else
+			entityClass = ResourceNameSuffixes.getEntityClass(entityType);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence( resourceFactory, entityClass);
-		
+			createEntityPersistence(resourceFactory, entityClass);
 
-		Object entity = entityPersistence.
-			read(resource, monitor);
-		
+		Object entity = entityPersistence.read(resource, monitor);
+
 		//FIXME: it must go on every entityPersistence
 		if (entity instanceof Artifact)
 			((Artifact) entity).setResource(resource);		
 	
 		if(!cache.containsKey(key))
 			cache.put(key, entity);
-		
-	
+
 		return entity;
 	}
 
+	public static void store(
+			IResource resource,
+			Object entity,
+			IProgressMonitor monitor) 
+			throws PersistenceException {
+		
+		store(new ResourceFactory(), resource, entity, monitor);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public static boolean store(
+	public static void store(
 			ResourceFactory resourceFactory,
 			IResource resource,
-			Object entity) 
+			Object entity,
+			IProgressMonitor monitor) 
 			throws PersistenceException {
 
-		// FIXME the monitor should be passed through method parameters
-		IProgressMonitor monitor = new DefaultProgressMonitor();
-		monitor.begin("Storing ... " + resource.toURI(), 1);
+		monitor.begin("Storing " + resource.toURI() + " ...", 1);
 
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(resourceFactory, entity.getClass());
 
-		entityPersistence.
-			write(resource, entity, monitor);
-
-		return true;
+		entityPersistence.write(resource, entity, monitor);
 	}
 }

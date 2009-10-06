@@ -31,7 +31,6 @@ public class Project extends Artifact {
 	private List<Laboratory> laboratories = new ArrayList<Laboratory>();
 
 	public Project() {
-
 	}
 
 	public List<Publication> getPublications() {

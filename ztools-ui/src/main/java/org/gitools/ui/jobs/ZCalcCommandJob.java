@@ -2,7 +2,7 @@ package org.gitools.ui.jobs;
 
 import java.io.File;
 
-import org.gitools.ui.AppFrame;
+import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.commands.ZCalcCommand;

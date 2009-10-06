@@ -18,4 +18,14 @@ public interface IResource extends Serializable {
 	IResource resolve(String str);
 	
 	IResource relativize(IResource resource);
+
+	IResource[] list();
+
+	boolean isContainer();
+
+	boolean exists();
+
+	void mkdir();
+
+	IResource getParent();
 }

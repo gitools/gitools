@@ -5,10 +5,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.commands.ZCalcCommand;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.ProgressMonitorDialog;
 import org.gitools.ui.jobs.ZCalcCommandJob;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.WizardDataModel;
 import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;

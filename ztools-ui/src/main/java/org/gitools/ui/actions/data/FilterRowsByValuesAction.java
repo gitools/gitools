@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
+import org.gitools.ui.platform.AppFrame;
 
 
 import org.gitools.model.figure.MatrixFigure;

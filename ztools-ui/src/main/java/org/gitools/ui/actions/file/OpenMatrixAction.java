@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.jobs.OpenMatrixJob;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;

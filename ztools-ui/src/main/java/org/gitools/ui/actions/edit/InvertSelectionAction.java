@@ -2,8 +2,8 @@ package org.gitools.ui.actions.edit;
 
 import java.awt.event.ActionEvent;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;

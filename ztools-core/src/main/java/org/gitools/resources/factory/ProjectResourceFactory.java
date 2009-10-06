@@ -12,10 +12,10 @@ public class ProjectResourceFactory extends ResourceFactory {
 
 	}
 
-	public ProjectResource getResource(String location) {
+	public ProjectResource createResourceFromString(String location) {
 		
-		if (location.contains(ProjectResource.scheme)) {
-			String newLocation = location.substring(ProjectResource.scheme.length());
+		if (location.startsWith(ProjectResource.SCHEME + ":")) {
+			String newLocation = location.substring(ProjectResource.SCHEME.length() + 1);
 			return new ProjectResource(base, newLocation);
 		}
 		return null;

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.gitools.ui.AppFrame;
+import org.gitools.ui.platform.AppFrame;
 
 public class UnimplementedAction extends BaseAction {
 

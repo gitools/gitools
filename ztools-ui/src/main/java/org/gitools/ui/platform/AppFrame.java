@@ -1,9 +1,10 @@
-package org.gitools.ui;
+package org.gitools.ui.platform;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -11,13 +12,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import org.gitools.model.Workspace;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
 import org.gitools.ui.editor.matrix.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
+import org.gitools.ui.platform.navigator.NavigatorPanel;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.utils.Options;
+import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -50,9 +56,9 @@ public class AppFrame extends JFrame {
 	
 	private JTabbedPane leftPanel;
 	
-	//private TemplatePane detailsPanel;
+	private NavigatorPanel navPanel;
 	
-	private WorkspacePanel workspace;
+	private EditorsPanel editorsPanel;
 	
 	private StatusBar statusBar;
 	
@@ -74,7 +80,7 @@ public class AppFrame extends JFrame {
 		
 		createWelcomeView();
 		createDemoView();
-		workspace.setSelectedIndex(0);
+		editorsPanel.setSelectedIndex(0);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -112,15 +118,14 @@ public class AppFrame extends JFrame {
 		
 		toolBar = Actions.toolBarActionSet.createToolBar();
 		
-		/*Properties props = new Properties();
-		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-		detailsPanel = new TemplatePane(props);*/
-		
+		Workspace workspace = openWorkspace();
+		navPanel = new NavigatorPanel(workspace);
+				
 		leftPanel = new JTabbedPane();
 		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
-		//TODO leftPanel.add(detailsPanel, "Details");
+		leftPanel.add(navPanel, "Navigator");
 		
-		workspace = new WorkspacePanel();
+		editorsPanel = new EditorsPanel();
 		
 		statusBar = new StatusBar();
 		
@@ -150,10 +155,10 @@ public class AppFrame extends JFrame {
 		final JSplitPane splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
 			splitPane.add(leftPanel);
-			splitPane.add(workspace);
+			splitPane.add(editorsPanel);
 		}
 		else {
-			splitPane.add(workspace);
+			splitPane.add(editorsPanel);
 			splitPane.add(leftPanel);
 		}
 		splitPane.setDividerLocation(defaultDividerLocation);
@@ -166,16 +171,39 @@ public class AppFrame extends JFrame {
 		add(statusBar, BorderLayout.SOUTH);
 	}
 	
+	private Workspace openWorkspace() {
+		String pathStr = Options.instance().getWorkspacePath();
+		File wpath = new File(pathStr);
+		
+		Workspace workspace = null;
+		
+		if (WorkspaceManager.instance().exists(wpath)) {
+			try {
+				workspace = WorkspaceManager.instance().open(wpath);
+			} catch (PersistenceException e) {}
+			
+			//FIXME throw exception
+			if (workspace == null)
+				workspace = new Workspace();
+		}
+		else
+			workspace = WorkspaceManager.instance().create(wpath);
+		
+		WorkspaceManager.instance().setCurrent(workspace);
+		
+		return workspace;
+	}
+	
 	private void createWelcomeView() {
 		AbstractEditor view = new WelcomeEditor();
-		workspace.addEditor(view);
+		editorsPanel.addEditor(view);
 	}
 	
 	private void createDemoView() {
 		AbstractEditor demoView = 
 			new DemoEditor(40, 12);
 		
-		workspace.addEditor(demoView);
+		editorsPanel.addEditor(demoView);
 	}
 
 	public void start() {
@@ -183,12 +211,12 @@ public class AppFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	/*public TemplatePane getDetailsPane() {
-		return detailsPanel;
-	}*/
+	public NavigatorPanel getNavigatorPanel() {
+		return navPanel;
+	}
 	
-	public WorkspacePanel getWorkspace() {
-		return workspace;
+	public EditorsPanel getEditorsPanel() {
+		return editorsPanel;
 	}
 	
 	public JobProcessor getJobProcessor() {

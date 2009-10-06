@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.sort.SortDialogSimple;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.matrix.sort.SortCriteria;

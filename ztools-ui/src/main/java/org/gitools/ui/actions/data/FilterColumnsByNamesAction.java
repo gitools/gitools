@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByNameDialog;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;

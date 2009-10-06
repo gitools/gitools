@@ -7,14 +7,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.xml.adapter.ResourceXmlAdapter;
 import org.gitools.resources.IResource;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "title", "description", "resource", "attributes" })
+@XmlType(propOrder = { "title", "description", "attributes" })
+
 public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
@@ -26,7 +26,8 @@ public class Artifact extends AbstractModel implements Serializable {
 	protected String description;
 
 	/** resource wich this artifact is related to **/
-	@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
+	//@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
+	@XmlTransient
 	protected IResource resource;
 
 	/** Extra attributes **/
@@ -38,7 +39,6 @@ public class Artifact extends AbstractModel implements Serializable {
 	/* constructors */
 
 	public Artifact() {
-
 	}
 
 	/* getters and setters */

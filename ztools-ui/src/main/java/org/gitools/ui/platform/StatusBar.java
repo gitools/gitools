@@ -1,4 +1,4 @@
-package org.gitools.ui;
+package org.gitools.ui.platform;
 
 import java.awt.BorderLayout;
 

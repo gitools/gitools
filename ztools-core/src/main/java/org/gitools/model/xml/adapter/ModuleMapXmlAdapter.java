@@ -7,6 +7,8 @@ import org.gitools.persistence.ResourceNameSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.resources.factory.ResourceFactory;
 
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+
 public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 
 	ResourceFactory resourceFactory;
@@ -24,7 +26,9 @@ public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 	@Override
 	public ModuleMap unmarshal(String v) throws Exception {
 		return (ModuleMap) PersistenceManager.load(resourceFactory,
-				resourceFactory.getResource(v), ResourceNameSuffixes.MODULE_MAP);
+				resourceFactory.createResourceFromString(v),
+				ResourceNameSuffixes.MODULE_MAP,
+				new NullProgressMonitor());
 	}
 
 }

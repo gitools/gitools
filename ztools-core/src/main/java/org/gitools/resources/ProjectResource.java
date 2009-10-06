@@ -8,7 +8,9 @@ import java.net.URI;
 
 public class ProjectResource implements IResource {
 
-	public static String scheme = "project:";
+	private static final long serialVersionUID = 8970466799805795935L;
+
+	public static final String SCHEME = "project";
 
 	protected IResource base;
 	protected String location;
@@ -52,16 +54,40 @@ public class ProjectResource implements IResource {
 
 	@Override
 	public String toString() {
-		return scheme + location;
+		return SCHEME + ":" + location;
 	}
 
 	@Override
 	public IResource relativize(IResource resource) {
-		String location = this.resource.toURI().relativize(resource.toURI())
-				.toString();
+		String location = this.resource.toURI().relativize(resource.toURI()).toString();
 		return new ProjectResource(base, location);
 	}
+	
+	@Override
+	public IResource[] list() {
+		return resource.list();
+	}
+	
+	@Override
+	public boolean isContainer() {
+		return resource.isContainer();
+	}
+	
+	@Override
+	public boolean exists() {
+		return resource.exists();
+	}
 
+	@Override
+	public void mkdir() {
+		resource.mkdir();
+	}
+	
+	@Override
+	public IResource getParent() {
+		return resource.getParent();
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

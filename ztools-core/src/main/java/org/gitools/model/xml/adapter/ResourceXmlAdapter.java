@@ -7,7 +7,7 @@ import org.gitools.resources.factory.ResourceFactory;
 
 public class ResourceXmlAdapter extends XmlAdapter<String, IResource> {
 
-	ResourceFactory resourceFactory;
+	private ResourceFactory resourceFactory;
 	
 	public ResourceXmlAdapter(ResourceFactory factoryResource) {
 		this.resourceFactory = factoryResource;
@@ -15,15 +15,15 @@ public class ResourceXmlAdapter extends XmlAdapter<String, IResource> {
 
 	@Override
 	public String marshal(IResource resource) throws Exception {
-		if(resource == null) return null;
-		return resource.toString();
+		if(resource == null)
+			return null;
 		
+		return resource.toString();
 	}
 
 	@Override
 	public IResource unmarshal(String location) throws Exception {
-		return resourceFactory.getResource(location);
-		
+		return resourceFactory.createResourceFromString(location);
 	}
 
 }

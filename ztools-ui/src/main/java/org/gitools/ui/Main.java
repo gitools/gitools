@@ -2,6 +2,8 @@ package org.gitools.ui;
 
 import javax.swing.UIManager;
 
+import org.gitools.ui.platform.AppFrame;
+
 public class Main {
 
 	public static void main(String[] args) {

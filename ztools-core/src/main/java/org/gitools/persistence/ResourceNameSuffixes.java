@@ -84,7 +84,7 @@ public class ResourceNameSuffixes {
 		extension = uri.substring(uri.lastIndexOf('.') + 1);
 		extension.replace(extension, " ");
 
-		System.out.println("la extension es .. " + extension);
+		//System.out.println("la extension es .. " + extension);
 
 		return classesMap.get(extension);
 	}

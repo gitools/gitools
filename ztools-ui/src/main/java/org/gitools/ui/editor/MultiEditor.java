@@ -6,7 +6,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.gitools.ui.AppFrame;
+import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -26,7 +26,7 @@ public class MultiEditor extends AbstractEditor {
 		
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
-				AppFrame.instance().getWorkspace().refreshActions();
+				AppFrame.instance().getEditorsPanel().refreshActions();
 				/*refreshActions();
 				
 				AbstractEditor selectedView = getSelectedView();

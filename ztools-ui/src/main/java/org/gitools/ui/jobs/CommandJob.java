@@ -1,7 +1,7 @@
 package org.gitools.ui.jobs;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.commands.Command;
+import org.gitools.ui.platform.AppFrame;
 
 public class CommandJob implements Job {
 

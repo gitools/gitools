@@ -24,8 +24,6 @@ public class FileResource implements IResource {
 
 	private File file;
 	
-	private URI uri;
-	
 	public FileResource() {
 	}
 	
@@ -34,13 +32,10 @@ public class FileResource implements IResource {
 	}
 	
 	public FileResource(File file) {
-		this.file = file;
-		this.uri = file.toURI();
-	
+		this.file = file;	
 	}
 	
-	public FileResource (URI uri){
-		this.uri = uri;
+	public FileResource(URI uri){
 		this.file = new File(uri);
 	}
 	
@@ -56,7 +51,7 @@ public class FileResource implements IResource {
 	
 	@Override
 	public URI toURI() {
-		return uri;
+		return file.toURI();
 	}
 	
 	public String getResourcePath() {
@@ -115,13 +110,47 @@ public class FileResource implements IResource {
 
 	@Override
 	public FileResource resolve(String str) {
-		return new FileResource (uri.resolve(str));
-		
+		File rfile = new File(file, str);
+		return new FileResource(rfile);
 	}
 
 	@Override
 	public IResource relativize(IResource resource) {
-		 return new FileResource (this.uri.relativize(resource.toURI()));
-		
+		return new FileResource (file.toURI().relativize(resource.toURI()));
+	}
+
+	@Override
+	public IResource[] list() {
+		File[] files = file.listFiles();
+		IResource[] resources = new IResource[files.length];
+		for (int i = 0; i < files.length; i++)
+			resources[i] = new FileResource(files[i]);
+			
+		return resources;
+	}
+	
+	@Override
+	public boolean isContainer() {
+		return file.isDirectory();
+	}
+
+	@Override
+	public boolean exists() {
+		return file.exists();
+	}
+
+	@Override
+	public void mkdir() {
+		file.mkdirs();
+	}
+	
+	@Override
+	public IResource getParent() {
+		return new FileResource(file.getParentFile());
+	}
+	
+	@Override
+	public String toString() {
+		return file.getAbsolutePath();
 	}
 }

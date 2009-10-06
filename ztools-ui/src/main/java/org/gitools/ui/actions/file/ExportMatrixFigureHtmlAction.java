@@ -6,8 +6,8 @@ import java.io.File;
 
 import org.gitools.exporter.HtmlMatrixExporter;
 import org.gitools.model.figure.MatrixFigure;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 public class ExportMatrixFigureHtmlAction extends BaseAction {

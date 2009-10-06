@@ -13,8 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.IconUtils;
 
 

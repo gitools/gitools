@@ -8,10 +8,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.IEditor;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -145,7 +145,7 @@ public abstract class BaseAction extends AbstractAction {
 	
 	protected AbstractEditor getSelectedEditor() {
 		return AppFrame.instance()
-			.getWorkspace()
+			.getEditorsPanel()
 			.getSelectedEditor();
 	}
 	

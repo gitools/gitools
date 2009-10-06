@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.gitools.ui.AppFrame;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 

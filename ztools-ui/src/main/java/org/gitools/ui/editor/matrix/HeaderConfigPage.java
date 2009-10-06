@@ -32,9 +32,9 @@ import org.gitools.model.matrix.IMatrixView;
 import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 import cern.colt.matrix.ObjectMatrix1D;

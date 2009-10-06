@@ -5,9 +5,9 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.figure.MatrixFigure;

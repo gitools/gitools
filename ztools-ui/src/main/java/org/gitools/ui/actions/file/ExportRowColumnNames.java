@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
 
 public class ExportRowColumnNames extends BaseAction {

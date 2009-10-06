@@ -7,10 +7,12 @@ import org.gitools.persistence.ResourceNameSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.resources.factory.ResourceFactory;
 
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+
 public class AnnotationMatrixXmlAdapter extends
 		XmlAdapter<String, AnnotationMatrix> {
 
-	ResourceFactory resourceFactory;
+	private ResourceFactory resourceFactory;
 	
 	public AnnotationMatrixXmlAdapter(ResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
@@ -24,7 +26,9 @@ public class AnnotationMatrixXmlAdapter extends
 
 	public AnnotationMatrix unmarshal(String v) throws Exception {
 		return (AnnotationMatrix) PersistenceManager.load(resourceFactory,
-				resourceFactory.getResource(v), ResourceNameSuffixes.ANNOTATION_MATRIX);
+				resourceFactory.createResourceFromString(v),
+				ResourceNameSuffixes.ANNOTATION_MATRIX,
+				new NullProgressMonitor());
 
 	}
 

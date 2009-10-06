@@ -11,8 +11,8 @@ import org.gitools.model.matrix.MatrixView;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.resources.FileResource;
 import org.gitools.resources.IResource;
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.editor.matrix.MatrixEditor;
+import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -62,7 +62,7 @@ public class OpenMatrixJob implements Job {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-					AppFrame.instance().getWorkspace().addEditor(editor);
+					AppFrame.instance().getEditorsPanel().addEditor(editor);
 					AppFrame.instance().refresh();
 				}
 			});

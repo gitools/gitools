@@ -3,9 +3,9 @@ package org.gitools.ui.actions.help;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.gitools.ui.AppFrame;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.AboutDialog;
+import org.gitools.ui.platform.AppFrame;
 
 
 public class AboutAction extends BaseAction {

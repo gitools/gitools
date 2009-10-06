@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+//TODO Improve options model: Pages, XmlSerializer, ...
 public class Options {
 
 	/*private static final String appPath = 
@@ -24,6 +25,9 @@ public class Options {
 	private static final String configFile = 
 		configPath + File.separator + configFileName;
 	
+	private static final String workspacePath =
+		configPath + File.separator + "workspace";
+
 	private static final Options instance = new Options();
 	
 	private Properties props;
@@ -117,5 +121,13 @@ public class Options {
 
 	public void setLastMapPath(String lastPath) {
 		props.setProperty("last-map-path", lastPath);
+	}
+	
+	public String getWorkspacePath() {
+		return props.getProperty("workspace", workspacePath);
+	}
+	
+	public void setWorkspacePath(String workspacePath) {
+		props.setProperty("workspace", workspacePath);
 	}
 }

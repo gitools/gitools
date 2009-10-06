@@ -9,6 +9,8 @@ import org.gitools.persistence.ResourceNameSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.resources.factory.ResourceFactory;
 
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	ResourceFactory resourceFactory;
@@ -31,7 +33,9 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
 		Matrix contents = v.getMatrix();
 		String extension = ResourceNameSuffixes.getEntityExtension(contents.getClass());
-		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory, contents.getResource(),extension);
+		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory,
+				contents.getResource(), extension,
+				new NullProgressMonitor());
 		matrix.setTitle(contents.getTitle());
 		matrix.setDescription(contents.getDescription());
 		return matrix;

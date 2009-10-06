@@ -1,4 +1,4 @@
-package org.gitools.ui;
+package org.gitools.ui.platform;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ import org.gitools.ui.actions.Actions;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.editor.AbstractEditor;
 
-public class WorkspacePanel extends JTabbedPane {
+public class EditorsPanel extends JTabbedPane {
 
 	private static final long serialVersionUID = 2170150185478413716L;
 
@@ -34,13 +34,11 @@ public class WorkspacePanel extends JTabbedPane {
 		}
 	}
 
-	private AbstractEditor selectedEditor;
+	//private AbstractEditor selectedEditor;
 	
 	//private JTabbedPane tabbedPane;
 	
-	public WorkspacePanel() {
-		this.selectedEditor = null;
-	
+	public EditorsPanel() {	
 		createComponents();
 		
 		addChangeListener(new ChangeListener() {
@@ -80,7 +78,7 @@ public class WorkspacePanel extends JTabbedPane {
 		
 		setSelectedComponent(editor);
 		
-		selectedEditor = editor;
+		//selectedEditor = editor;
 		//selectedEditor.refreshActions();
 	}
 
