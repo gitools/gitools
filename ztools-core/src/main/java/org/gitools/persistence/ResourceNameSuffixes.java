@@ -3,9 +3,11 @@ package org.gitools.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileObject;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
-import org.gitools.model.ResourceContainer;
+import org.gitools.model.Container;
 import org.gitools.model.analysis.EnrichmentAnalysis;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.figure.TableFigure;
@@ -13,7 +15,6 @@ import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.StringMatrix;
-import org.gitools.resources.IResource;
 
 public class ResourceNameSuffixes {
 
@@ -45,7 +46,7 @@ public class ResourceNameSuffixes {
 		suffixesMap.put(AnnotationMatrix.class, ResourceNameSuffixes.ANNOTATION_MATRIX);
 
 		classesMap.put(ResourceNameSuffixes.PROJECT, Project.class);
-		classesMap.put(ResourceNameSuffixes.CONTENTS, ResourceContainer.class);
+		classesMap.put(ResourceNameSuffixes.CONTENTS, Container.class);
 		classesMap.put(ResourceNameSuffixes.ENRICHMENT_ANALYSIS,  EnrichmentAnalysis.class);
 		
 		classesMap.put(ResourceNameSuffixes.MATRIX_FIGURE, MatrixFigure.class);
@@ -71,22 +72,18 @@ public class ResourceNameSuffixes {
 		return (Class<?>) classesMap.get(extension);
 	}
 
-	public static Class<?> getEntityClass(IResource resource) {
+	public static Class<?> getEntityClass(FileObject resource) {
 
-		String uri = resource.toURI().toString();
-		String extension;
-
-		if (uri.endsWith("project.xml"))
+		FileName fileName = resource.getName();
+		String baseName = fileName.getBaseName();
+		String ext = fileName.getExtension();
+		
+		if (baseName.equals(PROJECT))
 			return classesMap.get(ResourceNameSuffixes.PROJECT);
-		if (uri.endsWith("contents.xml"))
+		if (baseName.equals(CONTENTS))
 			return classesMap.get(ResourceNameSuffixes.CONTENTS);
 
-		extension = uri.substring(uri.lastIndexOf('.') + 1);
-		extension.replace(extension, " ");
-
-		//System.out.println("la extension es .. " + extension);
-
-		return classesMap.get(extension);
+		return classesMap.get(ext);
 	}
 
 }

@@ -8,81 +8,96 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.xml.adapter.ResourceXmlAdapter;
-import org.gitools.persistence.IEntityPersistence;
+import org.apache.commons.vfs.FileObject;
+import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.IResource;
-import org.gitools.resources.factory.ResourceFactory;
+import org.gitools.persistence.PersistenceUtils;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class AbstractXmlPersistence implements IEntityPersistence<Object> {
+public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistence<T> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
-	private Class<?> entityClass;
-
-	@SuppressWarnings("unchecked")
-	protected XmlAdapter[] adapters;
-
-	public AbstractXmlPersistence(Class<?> entityClass) {
-		
+	
+	private Class<T> entityClass;
+	
+	private XmlAdapter<?, ?>[] adapters;
+	
+	public AbstractXmlPersistence(Class<T> entityClass) {	
 		this.entityClass = entityClass;
-		
-		setAdapters(new XmlAdapter[] {
-			new ResourceXmlAdapter(new ResourceFactory())
-		});
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setAdapters(XmlAdapter[] adapters) {
+	public void setAdapters(XmlAdapter<?, ?>[] adapters) {
 		this.adapters = adapters;
+	}
+	
+	public XmlAdapter<?, ?>[] getAdapters() {
+		return adapters;
+	}
+	
+	/** Classes extending AbstractXmlPersistence should
+	 * override this method if they need to specify adapters. */
+	protected XmlAdapter<?, ?>[] createAdapters() {
+		return new XmlAdapter<?, ?>[0];
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object read(IResource resource, IProgressMonitor monitor)
+	public T read(
+			FileObject resource,
+			IProgressMonitor monitor)
 			throws PersistenceException {
 
-		Object entity;
+		T entity;
 		Reader reader;
 
 		try {
-			reader = resource.openReader();
+			reader = PersistenceUtils.openReader(resource);
 			JAXBContext context = JAXBContext.newInstance(entityClass);
 			Unmarshaller u = context.createUnmarshaller();
-			for (XmlAdapter adapter : adapters)
+			
+			if (adapters == null)
+				setAdapters(createAdapters());
+			
+			for (XmlAdapter<?, ?> adapter : adapters)
 				u.setAdapter(adapter);
 
-			entity = (Object) u.unmarshal(reader);
+			entity = (T) u.unmarshal(reader);
 			reader.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new PersistenceException("Error opening resource: "
-					+ resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
 		}
+		
 		return entity;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void write(IResource resource, Object entity,
-			IProgressMonitor monitor) throws PersistenceException {
+	public void write(
+			FileObject resource,
+			T entity,
+			IProgressMonitor monitor)
+			throws PersistenceException {
 
 		Writer writer;
+		
 		try {
-			writer = resource.openWriter();
+			writer = PersistenceUtils.openWriter(resource);
 			JAXBContext context = JAXBContext.newInstance(entityClass);
 			Marshaller m = context.createMarshaller();
-			for (XmlAdapter adapter : adapters)
+		
+			if (adapters == null)
+				setAdapters(createAdapters());
+			
+			for (XmlAdapter<?, ?> adapter : adapters)
 				m.setAdapter(adapter);
 
 			m.marshal(entity, writer);
 			writer.close();
 
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: "
-					+ resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
 		}
 	}
 }

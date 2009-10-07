@@ -5,10 +5,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.table.ITable;
 import org.gitools.model.table.Table;
 
+//FIXME Review
 public class TableXmlAdapter extends XmlAdapter<Table, ITable> {
-
-	public TableXmlAdapter() {
-	}
 
 	@Override
 	public Table marshal(ITable v) throws Exception {

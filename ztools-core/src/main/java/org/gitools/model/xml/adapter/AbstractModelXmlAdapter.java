@@ -7,8 +7,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.xml.AbstractModelDecoratorElement;
 
-public class AbstractModelXmlAdapter extends
-		XmlAdapter<AbstractModelDecoratorElement, List<AbstractModel>> {
+//FIXME Esta clase tiene muy mala pinta !!!!!!!!!!!
+public class AbstractModelXmlAdapter
+		extends XmlAdapter<AbstractModelDecoratorElement, List<AbstractModel>> {
+	
 	@Override
 	public AbstractModelDecoratorElement marshal(List<AbstractModel> elems)
 			throws Exception {

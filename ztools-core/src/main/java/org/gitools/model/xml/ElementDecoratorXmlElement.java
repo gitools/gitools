@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ElementDecoratorXmlELement {
+public class ElementDecoratorXmlElement {
 
 	private String decorator;
 	private Map<String, String> configuration;
 
-	public ElementDecoratorXmlELement() {
+	public ElementDecoratorXmlElement() {
 
 	}
 
-	public ElementDecoratorXmlELement(String descriptor,
+	public ElementDecoratorXmlElement(String descriptor,
 			Map<String, String> configuration) {
 		this.decorator = descriptor;
 		this.configuration = configuration;

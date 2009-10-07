@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResourceContainer extends Artifact {
+public class Container extends Artifact {
 
 	private static final long serialVersionUID = 9028366098418461333L;
 
@@ -21,7 +21,7 @@ public class ResourceContainer extends Artifact {
 	@XmlElement(name = "reference")
 	protected List<ResourceReference> references = new ArrayList<ResourceReference>(0);
 
-	public ResourceContainer() {
+	public Container() {
 	}
 
 	public List<ResourceReference> getReferences() {

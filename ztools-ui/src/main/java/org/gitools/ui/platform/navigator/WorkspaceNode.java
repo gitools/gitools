@@ -33,6 +33,6 @@ public class WorkspaceNode extends NavigatorNode {
 	
 	@Override
 	public boolean isLeaf() {
-		return false;
+		return getWorkspace().getProjects().size() == 0;
 	}
 }

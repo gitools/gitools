@@ -10,16 +10,17 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
+import org.apache.commons.vfs.FileObject;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.IResource;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class ModuleMapTextIndicesPersistence
-		implements IEntityPersistence<ModuleMap> {
+		extends AbstractEntityPersistence<ModuleMap> {
 
 	private static final CSVStrategy csvStrategy = CSVStrategies.TSV;
 
@@ -27,16 +28,16 @@ public class ModuleMapTextIndicesPersistence
 	}
 
 	@Override
-	public ModuleMap read(IResource resource, IProgressMonitor monitor)
+	public ModuleMap read(FileObject resource, IProgressMonitor monitor)
 			throws PersistenceException {
 
 		Reader reader;
 
 		try {
-			reader = resource.openReader();
+			reader = PersistenceUtils.openReader(resource);
 		} catch (Exception e) {
 			throw new PersistenceException("Error opening resource: "
-					+ resource.toURI(), e);
+					+ resource.getName(), e);
 		}
 
 		CSVParser parser = new CSVParser(reader, csvStrategy);
@@ -56,12 +57,13 @@ public class ModuleMapTextIndicesPersistence
 
 	@Override
 	public void write(
-			IResource resource,
+			FileObject resource,
 			ModuleMap moduleMap,
 			IProgressMonitor monitor) throws PersistenceException {
 		
 		try {
-			final PrintWriter pw = new PrintWriter(resource.openWriter());
+			final PrintWriter pw = new PrintWriter(
+					PersistenceUtils.openWriter(resource));
 			
 			final String[] itemNames = moduleMap.getItemNames();
 			
@@ -149,7 +151,5 @@ public class ModuleMapTextIndicesPersistence
 		monitor.info(moduleNames.size() + " modules");
 
 		monitor.end();
-
 	}
-
 }

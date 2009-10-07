@@ -5,18 +5,19 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.Matrix;
 import org.gitools.model.xml.MatrixXmlElement;
-import org.gitools.persistence.ResourceNameSuffixes;
+import org.gitools.persistence.IFileObjectResolver;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.resources.factory.ResourceFactory;
+import org.gitools.persistence.ResourceNameSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
+//FIXME Review: calculon ????
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
-	ResourceFactory resourceFactory;
+	IFileObjectResolver fileObjectResolver;
 
-	public MatrixXmlAdapter(ResourceFactory resourceFactory){
-		this.resourceFactory = resourceFactory;
+	public MatrixXmlAdapter(IFileObjectResolver fileObjectResolver){
+		this.fileObjectResolver = fileObjectResolver;
 	}
 	
 	
@@ -33,7 +34,7 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
 		Matrix contents = v.getMatrix();
 		String extension = ResourceNameSuffixes.getEntityExtension(contents.getClass());
-		Matrix matrix =  (Matrix) PersistenceManager.load(resourceFactory,
+		Matrix matrix =  (Matrix) PersistenceManager.load(fileObjectResolver,
 				contents.getResource(), extension,
 				new NullProgressMonitor());
 		matrix.setTitle(contents.getTitle());

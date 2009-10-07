@@ -13,7 +13,6 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
 import org.gitools.model.Workspace;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
@@ -180,14 +179,17 @@ public class AppFrame extends JFrame {
 		if (WorkspaceManager.instance().exists(wpath)) {
 			try {
 				workspace = WorkspaceManager.instance().open(wpath);
-			} catch (PersistenceException e) {}
+			} catch (Exception e) {}
 			
 			//FIXME throw exception
 			if (workspace == null)
 				workspace = new Workspace();
 		}
-		else
-			workspace = WorkspaceManager.instance().create(wpath);
+		else {
+			try {
+				workspace = WorkspaceManager.instance().create(wpath);
+			} catch (Exception e) {}
+		}
 		
 		WorkspaceManager.instance().setCurrent(workspace);
 		

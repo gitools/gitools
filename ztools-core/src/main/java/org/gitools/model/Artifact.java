@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.gitools.resources.IResource;
+import org.apache.commons.vfs.FileObject;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "title", "description", "attributes" })
@@ -28,7 +28,7 @@ public class Artifact extends AbstractModel implements Serializable {
 	/** resource wich this artifact is related to **/
 	//@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
 	@XmlTransient
-	protected IResource resource;
+	protected FileObject resource;
 
 	/** Extra attributes **/
 
@@ -67,11 +67,11 @@ public class Artifact extends AbstractModel implements Serializable {
 		this.attributes = attributes;
 	}
 
-	public IResource getResource() {
+	public FileObject getResource() {
 		return resource;
 	}
 
-	public void setResource(IResource resource) {
+	public void setResource(FileObject resource) {
 		this.resource = resource;
 	}
 

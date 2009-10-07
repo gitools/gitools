@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.xml.adapter.ResourceXmlAdapter;
-import org.gitools.resources.IResource;
+import org.apache.commons.vfs.FileObject;
+import org.gitools.model.xml.adapter.FileObjectXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,13 +18,13 @@ public class ResourceReference implements Serializable {
 	
 	protected String title;
 	
-	@XmlJavaTypeAdapter(ResourceXmlAdapter.class)
-	protected IResource resource;
+	@XmlJavaTypeAdapter(FileObjectXmlAdapter.class)
+	protected FileObject resource;
 	
 	public ResourceReference() {
 	}
 	
-	public ResourceReference(String title, IResource resource) {
+	public ResourceReference(String title, FileObject resource) {
 		this.title = title;
 		this.resource = resource;
 	}
@@ -37,11 +37,11 @@ public class ResourceReference implements Serializable {
 		this.title = title;
 	}
 	
-	public IResource getResource() {
+	public FileObject getResource() {
 		return resource;
 	}
 	
-	public void setResource(IResource resource) {
+	public void setResource(FileObject resource) {
 		this.resource = resource;
 	}
 
@@ -77,6 +77,4 @@ public class ResourceReference implements Serializable {
 			return false;
 		return true;
 	}
-
-
 }

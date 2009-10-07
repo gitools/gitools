@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.table.ITableColumn;
 import org.gitools.model.table.impl.AbstractTableColumn;
 
+//FIXME Review
 public class TableColumnXmlAdapter extends XmlAdapter<AbstractTableColumn, ITableColumn> {
 
 	@Override

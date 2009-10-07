@@ -24,14 +24,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.VFS;
 import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.IMatrixView;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
-import org.gitools.resources.FileResource;
-import org.gitools.resources.IResource;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
@@ -106,7 +108,13 @@ public class HeaderConfigPage extends JPanel {
 		final JButton annButton = new JButton("...");
 		annButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				loadAnnotations(); }
+				try {
+					loadAnnotations();
+				} catch (PersistenceException e1) {
+					e1.printStackTrace();
+					AppFrame.instance().setStatusText("Error loading annotations.");
+				}
+			}
 		});
 		
 		final JLabel annNameLabel = new JLabel("Name");
@@ -154,19 +162,18 @@ public class HeaderConfigPage extends JPanel {
 		return null;
 	}
 	
-	private void loadAnnotations() {
+	private void loadAnnotations() throws PersistenceException {
 		File file = getSelectedPath();
-		IResource res = new FileResource(file);
+		FileObject res = null;	
+		try {
+			res = VFS.getManager().toFileObject(file);
+		} catch (FileSystemException e) {
+			throw new PersistenceException(e);
+		}
+		
 		AnnotationMatrixTextPersistence amp = new AnnotationMatrixTextPersistence();
 		
-		AnnotationMatrix annMatrix = null;
-		try {
-			annMatrix = amp.read(res, new NullProgressMonitor());
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+		AnnotationMatrix annMatrix = amp.read(res, new NullProgressMonitor());
 		
 		AnnotationHeaderDecorator decorator = getHeaderDecorator();
 		decorator.setAnnotations(annMatrix);

@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.vfs.FileObject;
 import org.gitools.datafilters.DoubleParser;
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.IResource;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
 import cern.colt.matrix.DoubleFactory2D;
@@ -21,7 +22,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class DoubleMatrixTextPersistence 
-		implements IEntityPersistence<DoubleMatrix> {
+	extends AbstractEntityPersistence<DoubleMatrix> {
 
 	private static final long serialVersionUID = 1995227069362928225L;
 
@@ -30,7 +31,7 @@ public class DoubleMatrixTextPersistence
 
 	@Override
 	public DoubleMatrix read(
-			IResource resource, 
+			FileObject resource, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
@@ -38,7 +39,7 @@ public class DoubleMatrixTextPersistence
 	}
 	
 	public DoubleMatrix read(
-			IResource resource, 
+			FileObject resource, 
 			ValueParser filt, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
@@ -53,7 +54,7 @@ public class DoubleMatrixTextPersistence
 	}
 
 	public void readMetadata(
-			IResource resource,
+			FileObject resource,
 			DoubleMatrix doubleMatrix, 
 			IProgressMonitor monitor)
 			throws PersistenceException {
@@ -62,7 +63,7 @@ public class DoubleMatrixTextPersistence
 	}
 	
 	public void readMetadata(
-			IResource resource, 
+			FileObject resource, 
 			DoubleMatrix doubleMatrix, 
 			ValueParser filt, 
 			IProgressMonitor monitor)
@@ -72,9 +73,9 @@ public class DoubleMatrixTextPersistence
 		
 		Reader reader = null;
 		try {
-			reader = resource.openReader();
+			reader = PersistenceUtils.openReader(resource);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
 		}
 		
 		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
@@ -120,7 +121,7 @@ public class DoubleMatrixTextPersistence
 	}
 	
 	public void readData(
-			IResource resource,
+			FileObject resource,
 			DoubleMatrix doubleMatrix, int[] columnsOrder,
 			int[] rowsOrder, IProgressMonitor monitor) 
 			throws PersistenceException {
@@ -129,7 +130,7 @@ public class DoubleMatrixTextPersistence
 	}
 	
 	public void readData(
-			IResource resource,
+			FileObject resource,
 			DoubleMatrix doubleMatrix, 
 			ValueParser filt,
 			int[] columnsOrder, 
@@ -158,9 +159,9 @@ public class DoubleMatrixTextPersistence
 		
 		Reader reader;
 		try {
-			reader = resource.openReader();
+			reader = PersistenceUtils.openReader(resource);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
 		}
 		
 		try {
@@ -216,16 +217,16 @@ public class DoubleMatrixTextPersistence
 	
 	@Override
 	public void write(
-			IResource resource,
+			FileObject resource,
 			DoubleMatrix doubleMatrix,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
 		Writer writer;
 		try {
-			writer = resource.openWriter();
+			writer = PersistenceUtils.openWriter(resource);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.toURI(), e);
+			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
 		}
 		
 		PrintWriter pw = new PrintWriter(writer);
@@ -270,7 +271,7 @@ public class DoubleMatrixTextPersistence
 		try {
 			writer.close();
 		} catch (Exception e) {
-			throw new PersistenceException("Error closing resource: " + resource.toURI(), e);
+			throw new PersistenceException("Error closing resource: " + resource.getName(), e);
 		}
 	}
 }

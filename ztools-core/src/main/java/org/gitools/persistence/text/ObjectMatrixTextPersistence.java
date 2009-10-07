@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.vfs.FileObject;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementFactory;
@@ -20,9 +21,9 @@ import org.gitools.model.matrix.element.array.ArrayElementFactory;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementAdapter;
 import org.gitools.model.matrix.element.bean.BeanElementFactory;
-import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.IResource;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
@@ -36,7 +37,7 @@ import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class ObjectMatrixTextPersistence
-		implements IEntityPersistence<ObjectMatrix> {
+		extends AbstractEntityPersistence<ObjectMatrix> {
 
 	private static final long serialVersionUID = 3487889255829878181L;
 
@@ -84,7 +85,7 @@ public class ObjectMatrixTextPersistence
 	}
 
 	public ObjectMatrix read(
-			IResource resource,
+			FileObject resource,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
@@ -94,7 +95,7 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	public void read(
-			IResource resource,
+			FileObject resource,
 			ObjectMatrix resultsMatrix, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
@@ -102,7 +103,7 @@ public class ObjectMatrixTextPersistence
 		monitor.begin("Reading results ...", 1);
 		
 		try {
-			Reader reader = resource.openReader();
+			Reader reader = PersistenceUtils.openReader(resource);
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 			
@@ -254,7 +255,7 @@ public class ObjectMatrixTextPersistence
 	}
 
 	public void write(
-			IResource resource,
+			FileObject resource,
 			ObjectMatrix results, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
@@ -263,14 +264,14 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	public void write(
-			IResource resource,
+			FileObject resource,
 			ObjectMatrix results, 
 			boolean orderByColumn,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
 		try {
-			Writer writer = resource.openWriter();
+			Writer writer = PersistenceUtils.openWriter(resource);
 			//String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
 			writeCells(writer, results, orderByColumn, monitor);
 			writer.close();

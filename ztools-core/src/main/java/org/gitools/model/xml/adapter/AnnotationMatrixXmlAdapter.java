@@ -3,19 +3,21 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.persistence.FileObjectResolver;
+import org.gitools.persistence.IFileObjectResolver;
 import org.gitools.persistence.ResourceNameSuffixes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.resources.factory.ResourceFactory;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
-public class AnnotationMatrixXmlAdapter extends
-		XmlAdapter<String, AnnotationMatrix> {
+//FIXME Review
+public class AnnotationMatrixXmlAdapter
+		extends XmlAdapter<String, AnnotationMatrix> {
 
-	private ResourceFactory resourceFactory;
+	private IFileObjectResolver fileObjectResolver;
 	
-	public AnnotationMatrixXmlAdapter(ResourceFactory resourceFactory) {
-		this.resourceFactory = resourceFactory;
+	public AnnotationMatrixXmlAdapter(IFileObjectResolver fileObjectResolver) {
+		this.fileObjectResolver = fileObjectResolver;
 	}
 
 	@Override
@@ -25,8 +27,8 @@ public class AnnotationMatrixXmlAdapter extends
 	}
 
 	public AnnotationMatrix unmarshal(String v) throws Exception {
-		return (AnnotationMatrix) PersistenceManager.load(resourceFactory,
-				resourceFactory.createResourceFromString(v),
+		return (AnnotationMatrix) PersistenceManager.load(fileObjectResolver,
+				fileObjectResolver.createResourceFromString(v),
 				ResourceNameSuffixes.ANNOTATION_MATRIX,
 				new NullProgressMonitor());
 

@@ -3,18 +3,18 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.ResourceNameSuffixes;
+import org.gitools.persistence.IFileObjectResolver;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.resources.factory.ResourceFactory;
+import org.gitools.persistence.ResourceNameSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
 public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 
-	ResourceFactory resourceFactory;
+	IFileObjectResolver fileObjectResolver;
 	
-	public ModuleMapXmlAdapter(ResourceFactory resourceFactory){
-		this.resourceFactory = resourceFactory;
+	public ModuleMapXmlAdapter(IFileObjectResolver fileObjectResolver){
+		this.fileObjectResolver = fileObjectResolver;
 	}
 	
 	@Override
@@ -25,8 +25,8 @@ public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 
 	@Override
 	public ModuleMap unmarshal(String v) throws Exception {
-		return (ModuleMap) PersistenceManager.load(resourceFactory,
-				resourceFactory.createResourceFromString(v),
+		return (ModuleMap) PersistenceManager.load(fileObjectResolver,
+				fileObjectResolver.createResourceFromString(v),
 				ResourceNameSuffixes.MODULE_MAP,
 				new NullProgressMonitor());
 	}

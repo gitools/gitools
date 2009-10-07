@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.net.URI;
 
+@Deprecated
 public interface IResource extends Serializable {
 
 	Reader openReader() throws FileNotFoundException, IOException;

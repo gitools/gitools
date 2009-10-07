@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]> {
 
-	static String elemSeparator = ",";
+	private static final String elemSeparator = ",";
 
 	@Override
 	public String marshal(int[] v) throws Exception {

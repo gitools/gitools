@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 
+@Deprecated
 public class ProjectResource implements IResource {
 
 	private static final long serialVersionUID = 8970466799805795935L;

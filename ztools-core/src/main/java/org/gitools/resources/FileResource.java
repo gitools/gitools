@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-
+@Deprecated
 public class FileResource implements IResource {
 
 	private static final long serialVersionUID = 1165427781549776789L;

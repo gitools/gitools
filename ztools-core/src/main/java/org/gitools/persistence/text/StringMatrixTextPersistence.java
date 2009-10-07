@@ -5,33 +5,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.vfs.FileObject;
 import org.gitools.model.matrix.StringMatrix;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
-import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.IResource;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class StringMatrixTextPersistence
-		implements IEntityPersistence<StringMatrix> {
+		extends AbstractEntityPersistence<StringMatrix> {
 
 	@Override
 	public StringMatrix read(
-			IResource resource, 
+			FileObject resource, 
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
 		StringMatrix matrix = new StringMatrix();
 		
 		try {
-			Reader reader = resource.openReader();
+			Reader reader = PersistenceUtils.openReader(resource);
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 			
 			// header
@@ -87,7 +87,7 @@ public class StringMatrixTextPersistence
 
 	@Override
 	public void write(
-			IResource resource, 
+			FileObject resource, 
 			StringMatrix entity,
 			IProgressMonitor monitor)
 			throws PersistenceException {
