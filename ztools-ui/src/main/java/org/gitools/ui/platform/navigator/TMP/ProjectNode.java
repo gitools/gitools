@@ -1,4 +1,4 @@
-package org.gitools.ui.platform.navigator;
+package org.gitools.ui.platform.navigator.TMP;
 
 import org.gitools.model.Project;
 

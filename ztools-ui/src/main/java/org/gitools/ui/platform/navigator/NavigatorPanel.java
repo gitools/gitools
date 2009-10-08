@@ -26,8 +26,7 @@ public class NavigatorPanel extends JPanel {
 	}
 
 	private void createComponents() {
-		tree = new JTree();
-		tree.setModel(new NavigatorTreeModel(workspace));
+		tree = new JTree(new WorkspaceNode(workspace));
 		
 		setLayout(new BorderLayout());
 		add(tree);

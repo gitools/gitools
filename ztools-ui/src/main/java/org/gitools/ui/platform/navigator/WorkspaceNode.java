@@ -1,38 +1,25 @@
 package org.gitools.ui.platform.navigator;
 
-import java.util.List;
-
-import org.gitools.model.Project;
 import org.gitools.model.Workspace;
 
-public class WorkspaceNode extends NavigatorNode {
+public class WorkspaceNode extends AbstractNode {
 
+	private static final long serialVersionUID = 5411843318201716836L;
+
+	private Workspace workspace;
+	
 	public WorkspaceNode(Workspace workspace) {
-		super(workspace);
+		super();
+		
+		this.workspace = workspace;
 	}
 	
-	protected Workspace getWorkspace() {
-		return (Workspace) getObject();
-	}
-	
-	@Override
-	public int getChildCount() {
-		return getWorkspace().getProjects().size();
+	public Workspace getWorkspace() {
+		return workspace;
 	}
 	
 	@Override
-	public NavigatorNode getChild(int index) {
-		return new ProjectNode(getWorkspace().getProjects().get(index));
-	}
-	
-	@Override
-	public int getIndexOfChild(NavigatorNode child) {
-		List<Project> projects = getWorkspace().getProjects();
-		return projects.indexOf(child.getObject());
-	}
-	
-	@Override
-	public boolean isLeaf() {
-		return getWorkspace().getProjects().size() == 0;
+	public String getLabel() {
+		return "workspace";
 	}
 }

@@ -1,4 +1,4 @@
-package org.gitools.ui.platform.navigator;
+package org.gitools.ui.platform.navigator.TMP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,8 @@ public class NavigatorTreeModel implements TreeModel {
 	
 	@Override
 	public Object getRoot() {
-		return new WorkspaceNode(workspace);
+		//return new WorkspaceNode(workspace);
+		return new FileNode(workspace.getResource());
 	}
 	
 	@Override
