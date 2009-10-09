@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.vfs.FileObject;
+import org.gitools.model.Artifact;
 import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
@@ -85,12 +86,8 @@ public class PersistenceManager {
 		
 		int key = resource.hashCode();
 		
-		if (cache.containsKey(key)){
-			//System.out.println("using cache for " + resource.toURI());
+		if (cache.containsKey(key))
 			return cache.get(key);
-		}
-		
-		//monitor.begin("Start loading ... " + resource.getName(), 1);
 
 		Class<?> entityClass;
 		
@@ -104,12 +101,11 @@ public class PersistenceManager {
 
 		Object entity = entityPersistence.read(resource, monitor);
 
-		//FIXME: it must go on every entityPersistence
-		//if (entity instanceof Artifact)
-		//	((Artifact) entity).setResource(resource);		
+		if (entity instanceof Artifact)
+			((Artifact) entity).setResource(resource);		
 	
-		if(!cache.containsKey(key))
-			cache.put(key, entity);
+		//if (!cache.containsKey(key))
+		cache.put(key, entity);
 
 		return entity;
 	}
