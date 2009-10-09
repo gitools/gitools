@@ -4,7 +4,17 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
 
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.VFS;
 import org.gitools.model.Workspace;
 
 public class NavigatorPanel extends JPanel {
@@ -26,9 +36,64 @@ public class NavigatorPanel extends JPanel {
 	}
 
 	private void createComponents() {
-		tree = new JTree(new WorkspaceNode(workspace));
+		//tree = new JTree(new WorkspaceNode(workspace));
+		DefaultMutableTreeNode rootNode = null;
+		try {
+			FileObject fileObject = VFS.getManager().resolveFile("/home");
+			rootNode = new FileObjectNode(fileObject);
+		} catch (FileSystemException ex) {
+			ex.printStackTrace();
+			rootNode = new DefaultMutableTreeNode("ERROR");
+		}
 		
+		tree = new JTree(rootNode);
+		tree.addTreeWillExpandListener(new TreeWillExpandListener() {
+			
+			@Override public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+				Object node = event.getPath().getLastPathComponent();
+				if (node instanceof INavigatorNode)
+					((INavigatorNode) node).expand();
+			}
+			
+			@Override public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+				Object node = event.getPath().getLastPathComponent();
+				if (node instanceof INavigatorNode)
+					((INavigatorNode) node).collapse();
+			}
+		});
+		
+		tree.getModel().addTreeModelListener(new TreeModelListener() {
+			
+			@Override
+			public void treeStructureChanged(TreeModelEvent e) {
+				System.out.println("structure changed" + e.getTreePath());
+			}
+			
+			@Override
+			public void treeNodesRemoved(TreeModelEvent e) {
+				System.out.println("nodes removed" + e.getTreePath());
+			}
+			
+			@Override
+			public void treeNodesInserted(TreeModelEvent e) {
+				System.out.println("nodes inserted" + e.getTreePath());
+			}
+			
+			@Override
+			public void treeNodesChanged(TreeModelEvent e) {
+				System.out.println("nodes changed" + e.getTreePath());
+			}
+		});
+
 		setLayout(new BorderLayout());
 		add(tree);
+	}
+
+	public WorkspaceNode getWorkspaceNode() {
+		return (WorkspaceNode) tree.getModel().getRoot();
+	}
+	
+	public void refresh() {
+		((DefaultTreeModel) tree.getModel()).reload();
 	}
 }

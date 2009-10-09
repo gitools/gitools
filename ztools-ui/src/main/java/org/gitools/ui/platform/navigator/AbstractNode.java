@@ -9,6 +9,14 @@ public abstract class AbstractNode extends DefaultMutableTreeNode implements INa
 
 	private boolean expanded;
 	
+	public AbstractNode() {
+		super();
+	}
+	
+	public AbstractNode(Object userObject) {
+		super(userObject);
+	}
+	
 	public boolean isExpanded() {
 		return expanded;
 	}
@@ -36,6 +44,11 @@ public abstract class AbstractNode extends DefaultMutableTreeNode implements INa
 	public String getLabel() {
 		final Object userObject = getUserObject();
 		return userObject != null ? userObject.toString() : "";
+	}
+	
+	@Override
+	public boolean isLeaf() {
+		return isExpanded() ? super.isLeaf() : false;
 	}
 	
 	@Override
