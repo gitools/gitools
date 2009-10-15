@@ -21,9 +21,13 @@ public class FileObjectResolver implements IFileObjectResolver {
 	public FileObject createResourceFromString(String location) {
 		FileObject fileObject = null;
 		try {
-			FileSystemManager fsManager = VFS.getManager();
-			fileObject = fsManager.resolveFile(location);
+			//FileSystemManager fsManager = VFS.getManager();
+			//fileObject = fsManager.resolveFile(location);
 			//TODO relative paths's
+			fileObject = basePath.resolveFile(location);
+			System.out.println("resolved file :   " + fileObject.getName());
+		
+		
 		} catch (FileSystemException e) {}
 		
 		return fileObject;
