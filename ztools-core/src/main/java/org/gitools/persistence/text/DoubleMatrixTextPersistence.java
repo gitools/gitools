@@ -1,5 +1,6 @@
 package org.gitools.persistence.text;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -8,7 +9,6 @@ import java.util.List;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.vfs.FileObject;
 import org.gitools.datafilters.DoubleParser;
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.matrix.DoubleMatrix;
@@ -31,39 +31,39 @@ public class DoubleMatrixTextPersistence
 
 	@Override
 	public DoubleMatrix read(
-			FileObject resource, 
+			File file, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
-		return read(resource, new DoubleParser(), monitor);
+		return read(file, new DoubleParser(), monitor);
 	}
 	
 	public DoubleMatrix read(
-			FileObject resource, 
+			File file, 
 			ValueParser filt, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 
 		DoubleMatrix doubleMatrix = new DoubleMatrix();
 		
-		readMetadata(resource, doubleMatrix, filt, monitor);
+		readMetadata(file, doubleMatrix, filt, monitor);
 		
-		readData(resource, doubleMatrix, filt, null, null, monitor);
+		readData(file, doubleMatrix, filt, null, null, monitor);
 		
 		return doubleMatrix;
 	}
 
 	public void readMetadata(
-			FileObject resource,
+			File file,
 			DoubleMatrix doubleMatrix, 
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
-		readMetadata(resource, doubleMatrix, new DoubleParser(), monitor);
+		readMetadata(file, doubleMatrix, new DoubleParser(), monitor);
 	}
 	
 	public void readMetadata(
-			FileObject resource, 
+			File file, 
 			DoubleMatrix doubleMatrix, 
 			ValueParser filt, 
 			IProgressMonitor monitor)
@@ -73,9 +73,9 @@ public class DoubleMatrixTextPersistence
 		
 		Reader reader = null;
 		try {
-			reader = PersistenceUtils.openReader(resource);
+			reader = PersistenceUtils.openReader(file);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
+			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
 		
 		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
@@ -121,16 +121,16 @@ public class DoubleMatrixTextPersistence
 	}
 	
 	public void readData(
-			FileObject resource,
+			File file,
 			DoubleMatrix doubleMatrix, int[] columnsOrder,
 			int[] rowsOrder, IProgressMonitor monitor) 
 			throws PersistenceException {
 
-		readData(resource, doubleMatrix, new DoubleParser(), columnsOrder, rowsOrder, monitor);
+		readData(file, doubleMatrix, new DoubleParser(), columnsOrder, rowsOrder, monitor);
 	}
 	
 	public void readData(
-			FileObject resource,
+			File file,
 			DoubleMatrix doubleMatrix, 
 			ValueParser filt,
 			int[] columnsOrder, 
@@ -159,9 +159,9 @@ public class DoubleMatrixTextPersistence
 		
 		Reader reader;
 		try {
-			reader = PersistenceUtils.openReader(resource);
+			reader = PersistenceUtils.openReader(file);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
+			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
 		
 		try {
@@ -217,16 +217,16 @@ public class DoubleMatrixTextPersistence
 	
 	@Override
 	public void write(
-			FileObject resource,
+			File file,
 			DoubleMatrix doubleMatrix,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
 		Writer writer;
 		try {
-			writer = PersistenceUtils.openWriter(resource);
+			writer = PersistenceUtils.openWriter(file);
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + resource.getName(), e);
+			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
 		
 		PrintWriter pw = new PrintWriter(writer);
@@ -271,7 +271,7 @@ public class DoubleMatrixTextPersistence
 		try {
 			writer.close();
 		} catch (Exception e) {
-			throw new PersistenceException("Error closing resource: " + resource.getName(), e);
+			throw new PersistenceException("Error closing resource: " + file.getName(), e);
 		}
 	}
 }

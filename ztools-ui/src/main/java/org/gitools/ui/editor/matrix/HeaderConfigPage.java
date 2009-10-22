@@ -24,9 +24,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.VFS;
 import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
@@ -163,13 +160,7 @@ public class HeaderConfigPage extends JPanel {
 	}
 	
 	private void loadAnnotations() throws PersistenceException {
-		File file = getSelectedPath();
-		FileObject res = null;	
-		try {
-			res = VFS.getManager().toFileObject(file);
-		} catch (FileSystemException e) {
-			throw new PersistenceException(e);
-		}
+		File res = getSelectedPath();
 		
 		AnnotationMatrixTextPersistence amp = new AnnotationMatrixTextPersistence();
 		

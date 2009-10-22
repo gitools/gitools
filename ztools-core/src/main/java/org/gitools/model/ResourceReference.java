@@ -1,14 +1,15 @@
 package org.gitools.model;
 
+import java.io.File;
 import java.io.Serializable;
+import java.net.URI;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.vfs.FileObject;
-import org.gitools.model.xml.adapter.FileObjectXmlAdapter;
+import org.gitools.model.xml.adapter.FileXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,13 +19,13 @@ public class ResourceReference implements Serializable {
 	
 	protected String title;
 	
-	@XmlJavaTypeAdapter(FileObjectXmlAdapter.class)
-	protected FileObject resource;
+	@XmlJavaTypeAdapter(FileXmlAdapter.class)
+	protected File resource;
 	
 	public ResourceReference() {
 	}
 	
-	public ResourceReference(String title, FileObject resource) {
+	public ResourceReference(String title, File resource) {
 		this.title = title;
 		this.resource = resource;
 	}
@@ -37,14 +38,13 @@ public class ResourceReference implements Serializable {
 		this.title = title;
 	}
 	
-	public FileObject getResource() {
+	public File getResource() {
 		return resource;
 	}
 	
-	public void setResource(FileObject resource) {
+	public void setResource(File resource) {
 		this.resource = resource;
 	}
-
 
 	@Override
 	public int hashCode() {

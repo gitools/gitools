@@ -29,7 +29,7 @@ public class NewProjectAction extends BaseAction {
 				"Project name", "New project...",
 				JOptionPane.QUESTION_MESSAGE);
 
-		Workspace workspace = WorkspaceManager.instance().getCurrent();
+		Workspace workspace = WorkspaceManager.getDefault().getCurrent();
 		try {
 			workspace.createProject(name);
 			

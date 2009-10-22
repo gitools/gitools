@@ -23,7 +23,7 @@ import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
 
-@XmlType( propOrder={"" +
+@XmlType( propOrder={
 		"cellDecorator", 
 		"rowDecorator", 
 		"columnDecorator", 

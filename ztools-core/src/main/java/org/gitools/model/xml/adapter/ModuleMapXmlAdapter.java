@@ -3,31 +3,34 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IFileObjectResolver;
+import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.ResourceNameSuffixes;
+import org.gitools.persistence.FileSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
 public class ModuleMapXmlAdapter extends XmlAdapter <String, ModuleMap>{
 
-	IFileObjectResolver fileObjectResolver;
+	IPathResolver pathResolver;
 	
-	public ModuleMapXmlAdapter(IFileObjectResolver fileObjectResolver){
-		this.fileObjectResolver = fileObjectResolver;
+	public ModuleMapXmlAdapter(IPathResolver pathResolver){
+		this.pathResolver = pathResolver;
 	}
 	
 	@Override
 	public String marshal(ModuleMap v) throws Exception {
 		if( v== null) return null;
-		return v.getResource().toString();
+		//FIXME Artifact.getResource()
+		//return v.getResource().toString();
+		return null;
 	}
 
 	@Override
 	public ModuleMap unmarshal(String v) throws Exception {
-		return (ModuleMap) PersistenceManager.load(fileObjectResolver,
-				fileObjectResolver.createResourceFromString(v),
-				ResourceNameSuffixes.MODULE_MAP,
+		return (ModuleMap) PersistenceManager.getDefault().load(
+				pathResolver,
+				pathResolver.createResourceFromString(v),
+				FileSuffixes.MODULE_MAP,
 				new NullProgressMonitor());
 	}
 

@@ -2,7 +2,11 @@ package org.gitools.persistence;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -11,47 +15,42 @@ import java.io.Writer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-
 public class PersistenceUtils {
 
-	public static Reader openReader(FileObject path) throws FileSystemException, IOException {
+	public static Reader openReader(File path) throws IOException {
 		if (path == null)
 			return null;
 		
-		FileName pathName = path.getName();
-		if (!pathName.getScheme().equals("gz")
-				&& path.getName().getExtension().equals(".gz"))
+		if (path == null)
+			return null;
+		
+		if (path.getName().endsWith(".gz"))
 			return
-				new BufferedReader(
-						new InputStreamReader(
-								new GZIPInputStream(
-										path.getContent().getInputStream())));
+				new InputStreamReader(
+					new GZIPInputStream(
+							new FileInputStream(path)));
 		else
 			return 
 				new BufferedReader(
-					new InputStreamReader(
-							path.getContent().getInputStream()));
+					new FileReader(path));
 	}
 	
-	public static Writer openWriter(FileObject path) throws FileNotFoundException, IOException {
+	public static Writer openWriter(File path) throws IOException {
+		return openWriter(path, false);
+	}
+	
+	public static Writer openWriter(File path, boolean append) throws IOException {
 		if (path == null)
 			return null;
 		
-		FileName pathName = path.getName();
-		if (!pathName.getScheme().equals("gz")
-				&& path.getName().getExtension().equals(".gz"))
+		if (path.getName().endsWith(".gz"))
 			return
-				new BufferedWriter(
-						new OutputStreamWriter(
-								new GZIPOutputStream(
-										path.getContent().getOutputStream())));
+				new OutputStreamWriter(
+					new GZIPOutputStream(
+							new FileOutputStream(path, append)));
 		else
 			return 
 				new BufferedWriter(
-					new OutputStreamWriter(
-							path.getContent().getOutputStream()));
+					new FileWriter(path, append));
 	}
 }

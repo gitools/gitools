@@ -1,15 +1,15 @@
 package org.gitools.ui.platform.navigator;
 
+import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
 import org.gitools.model.Project;
 import org.gitools.model.Workspace;
+import org.gitools.persistence.PersistenceManager;
 
 public class WorkspaceNode extends AbstractNode {
 
@@ -40,14 +40,12 @@ public class WorkspaceNode extends AbstractNode {
 		for (Entry<Project, ProjectNode> entry : nodeMap.entrySet()) {
 			final Project project = entry.getKey();
 			final ProjectNode node = entry.getValue();
-			try {
-				final FileObject fileObject = project.getResource();
-				fileObject.refresh();
-				if (!fileObject.exists())
-					remove(node);
-			} catch (FileSystemException ex) {
-				ex.printStackTrace();
-			}
+			
+			final File file = PersistenceManager.getDefault()
+										.getEntityFile(project).getParentFile();
+			
+			if (file != null && !file.exists())
+				remove(node);
 		}
 		
 		// Check for new project nodes

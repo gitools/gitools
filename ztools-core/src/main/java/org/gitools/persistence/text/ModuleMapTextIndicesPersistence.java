@@ -1,5 +1,6 @@
 package org.gitools.persistence.text;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +11,6 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
-import org.apache.commons.vfs.FileObject;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
@@ -28,16 +28,16 @@ public class ModuleMapTextIndicesPersistence
 	}
 
 	@Override
-	public ModuleMap read(FileObject resource, IProgressMonitor monitor)
+	public ModuleMap read(File file, IProgressMonitor monitor)
 			throws PersistenceException {
 
 		Reader reader;
 
 		try {
-			reader = PersistenceUtils.openReader(resource);
+			reader = PersistenceUtils.openReader(file);
 		} catch (Exception e) {
 			throw new PersistenceException("Error opening resource: "
-					+ resource.getName(), e);
+					+ file.getName(), e);
 		}
 
 		CSVParser parser = new CSVParser(reader, csvStrategy);
@@ -57,13 +57,13 @@ public class ModuleMapTextIndicesPersistence
 
 	@Override
 	public void write(
-			FileObject resource,
+			File file,
 			ModuleMap moduleMap,
 			IProgressMonitor monitor) throws PersistenceException {
 		
 		try {
 			final PrintWriter pw = new PrintWriter(
-					PersistenceUtils.openWriter(resource));
+					PersistenceUtils.openWriter(file));
 			
 			final String[] itemNames = moduleMap.getItemNames();
 			

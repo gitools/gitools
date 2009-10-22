@@ -3,10 +3,9 @@ package org.gitools.model.xml.adapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.persistence.FileObjectResolver;
-import org.gitools.persistence.IFileObjectResolver;
-import org.gitools.persistence.ResourceNameSuffixes;
+import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.FileSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
@@ -14,24 +13,26 @@ import edu.upf.bg.progressmonitor.NullProgressMonitor;
 public class AnnotationMatrixXmlAdapter
 		extends XmlAdapter<String, AnnotationMatrix> {
 
-	private IFileObjectResolver fileObjectResolver;
+	private IPathResolver pathResolver;
 	
-	public AnnotationMatrixXmlAdapter(IFileObjectResolver fileObjectResolver) {
-		this.fileObjectResolver = fileObjectResolver;
+	public AnnotationMatrixXmlAdapter(IPathResolver pathResolver) {
+		this.pathResolver = pathResolver;
 	}
 
 	@Override
 	public String marshal(AnnotationMatrix v) throws Exception {
 		if(v == null) return null;
-		return v.getResource().toString();
+		//FIXME Artifact.getResource()
+		//return v.getResource().toString();
+		return null;
 	}
 
 	public AnnotationMatrix unmarshal(String v) throws Exception {
-		return (AnnotationMatrix) PersistenceManager.load(fileObjectResolver,
-				fileObjectResolver.createResourceFromString(v),
-				ResourceNameSuffixes.ANNOTATION_MATRIX,
+		return (AnnotationMatrix) PersistenceManager.getDefault().load(
+				pathResolver,
+				pathResolver.createResourceFromString(v),
+				FileSuffixes.ANNOTATION_MATRIX,
 				new NullProgressMonitor());
-
 	}
 
 }

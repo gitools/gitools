@@ -2,9 +2,6 @@ package org.gitools.commands;
 
 import java.io.File;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.VFS;
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
@@ -85,12 +82,7 @@ public class OncozCommand extends AnalysisCommand {
 		
 		// Load metadata
 		
-		FileObject resource = null;
-		try {
-			resource = VFS.getManager().resolveFile(dataFileName);
-		} catch (FileSystemException e) {
-			throw new PersistenceException(e);
-		}
+		File resource = new File(dataFileName);
 		
 		DoubleMatrixTextPersistence dmPersistence = new DoubleMatrixTextPersistence();
 		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);

@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.VFS;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.analysis.Analysis;
@@ -20,10 +18,10 @@ import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.persistence.AnalysisPersistence;
 import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
-import org.gitools.resources.FileResource;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 
@@ -89,7 +87,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 		
 		try {
 			File path = new File(basePath, descFileName);
-			Reader reader = FileResource.openReader(path);
+			Reader reader = PersistenceUtils.openReader(path);
 			CSVParser parser = new CSVParser(reader, csvStrategy);
 			
 			analysis.setToolConfig(new ToolConfig());
@@ -114,7 +112,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 				else if (tag.equals(tagElapsedTime) && fields.length >= 2)
 					analysis.setElapsedTime(Long.parseLong(fields[1]));
 				else if (tag.equals(tagData) && fields.length >= 2) {
-					FileObject res = VFS.getManager().resolveFile(new File(basePath), fields[1]);
+					File res = new File(basePath, fields[1]);
 					DoubleMatrixTextPersistence per = new DoubleMatrixTextPersistence();
 					DoubleMatrix doubleMatrix = per.read(res, monitor.subtask());
 					analysis.setDataTable(doubleMatrix);
@@ -126,7 +124,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					analysis.setModuleSet(moduleMap);
 				}
 				else if (tag.equals(tagResults) && fields.length >= 2) {
-					FileObject res = VFS.getManager().resolveFile(new File(basePath), fields[1]);
+					File res = new File(basePath, fields[1]);
 					ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 					ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
 					analysis.setResults(resultsMatrix);
@@ -137,7 +135,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			}
 	
 			if (version == null && analysis.getResults() == null) { // old version
-				FileObject res = VFS.getManager().resolveFile(new File(basePath), "results.csv");
+				File res = new File(basePath, "results.csv");
 				ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 				ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
 				analysis.setResults(resultsMatrix);
@@ -170,14 +168,14 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			writeDescription(workDirFile, analysis, test);
 			
 			new DoubleMatrixTextPersistence().write(
-					VFS.getManager().resolveFile(workDirFile, dataFileName),
+					new File(workDirFile, dataFileName),
 					analysis.getDataTable(), monitor);
 			
 			new ModuleMapTextSimplePersistence(new File(workDirFile, modulesFileName))
 					.save(analysis.getModuleMap(), monitor);
 			
 			new ObjectMatrixTextPersistence().write(
-					VFS.getManager().resolveFile(workDirFile, resultsFileNamePrefix + ".cells.csv"),
+					new File(workDirFile, resultsFileNamePrefix + ".cells.csv"),
 					analysis.getResults(), 
 					resultsOrderByCond, monitor);
 		}

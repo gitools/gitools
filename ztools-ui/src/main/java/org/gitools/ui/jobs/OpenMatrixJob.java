@@ -4,14 +4,10 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.VFS;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.ui.editor.matrix.MatrixEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -47,15 +43,8 @@ public class OpenMatrixJob implements Job {
 		try {
 			monitor.begin("Loading matrix ...", 1);
 			
-			FileObject resource = null;
-			try {
-				resource = VFS.getManager().toFileObject(selectedPath);
-			} catch (FileSystemException e) {
-				throw new PersistenceException(e);
-			}
-			
 			final DoubleMatrixTextPersistence pers = new DoubleMatrixTextPersistence();
-			final DoubleMatrix matrix = pers.read(resource, monitor);
+			final DoubleMatrix matrix = pers.read(selectedPath, monitor);
 					
 			final IMatrixView matrixView = new MatrixView(matrix);
 			

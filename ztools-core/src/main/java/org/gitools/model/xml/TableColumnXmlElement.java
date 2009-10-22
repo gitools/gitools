@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.xml.adapter.FileObjectXmlAdapter;
+import org.gitools.model.xml.adapter.FileXmlAdapter;
 import org.gitools.resources.IResource;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -13,7 +13,7 @@ import org.gitools.resources.IResource;
 public class TableColumnXmlElement {
 
 	@SuppressWarnings("unused")
-	@XmlJavaTypeAdapter(FileObjectXmlAdapter.class)
+	@XmlJavaTypeAdapter(FileXmlAdapter.class)
 	private IResource reference;
 	private String type;
 

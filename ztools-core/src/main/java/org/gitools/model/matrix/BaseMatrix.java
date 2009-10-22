@@ -3,19 +3,19 @@ package org.gitools.model.matrix;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
+
 @XmlSeeAlso( { 
 	ObjectMatrix.class,
 	StringMatrix.class,
 	DoubleMatrix.class,
 	AnnotationMatrix.class })
-	@XmlAccessorType(XmlAccessType.NONE)
-	public abstract class BaseMatrix extends Matrix {
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class BaseMatrix extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
 

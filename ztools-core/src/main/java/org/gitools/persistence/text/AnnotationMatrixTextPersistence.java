@@ -1,11 +1,11 @@
 package org.gitools.persistence.text;
 
+import java.io.File;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.vfs.FileObject;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.persistence.AbstractEntityPersistence;
@@ -24,14 +24,14 @@ public class AnnotationMatrixTextPersistence
 	
 	@Override
 	public AnnotationMatrix read(
-			FileObject resource,
+			File file,
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
 		AnnotationMatrix matrix = new AnnotationMatrix();
 		
 		try {
-			Reader reader = PersistenceUtils.openReader(resource);
+			Reader reader = PersistenceUtils.openReader(file);
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 			
 			// header
@@ -87,7 +87,7 @@ public class AnnotationMatrixTextPersistence
 	
 	@Override
 	public void write(
-			FileObject resource, 
+			File file, 
 			AnnotationMatrix entity,
 			IProgressMonitor monitor)
 			throws PersistenceException {

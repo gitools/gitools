@@ -1,6 +1,7 @@
 package org.gitools.ui.platform.navigator;
 
 import java.awt.BorderLayout;
+import java.io.File;
 
 import javax.swing.JPanel;
 import javax.swing.JTree;
@@ -12,9 +13,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.VFS;
 import org.gitools.model.Workspace;
 
 public class NavigatorPanel extends JPanel {
@@ -26,7 +24,8 @@ public class NavigatorPanel extends JPanel {
 	private JTree tree;
 	
 	public NavigatorPanel() {
-		this.workspace = new Workspace();
+		File path = new File(System.getProperty("user.home")); //FIXME
+		this.workspace = new Workspace(path);
 	}
 	
 	public NavigatorPanel(Workspace workspace) {
@@ -38,13 +37,9 @@ public class NavigatorPanel extends JPanel {
 	private void createComponents() {
 		//tree = new JTree(new WorkspaceNode(workspace));
 		DefaultMutableTreeNode rootNode = null;
-		try {
-			FileObject fileObject = VFS.getManager().resolveFile("/home");
-			rootNode = new FileObjectNode(fileObject);
-		} catch (FileSystemException ex) {
-			ex.printStackTrace();
-			rootNode = new DefaultMutableTreeNode("ERROR");
-		}
+		
+		File file = new File(System.getProperty("user.dir"));//FIXME
+		rootNode = new FileNode(file);
 		
 		tree = new JTree(rootNode);
 		tree.addTreeWillExpandListener(new TreeWillExpandListener() {

@@ -25,10 +25,10 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>commons-vfs</groupId>
 			<artifactId>commons-vfs</artifactId>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<reporting>

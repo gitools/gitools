@@ -1,9 +1,10 @@
 package org.gitools.ui.platform.navigator;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
+import java.io.File;
+
 import org.gitools.model.Project;
+import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.PersistenceManager;
 
 public class ProjectNode extends AbstractNode {
 
@@ -23,23 +24,23 @@ public class ProjectNode extends AbstractNode {
 	public void expand() {
 		super.expand();
 		
-		try {
-			FileObject projectFile = project.getResource().getParent();
-			FileObject[] files = projectFile.getChildren();
-			for (FileObject file : files) {
-				if (!file.getName().getBaseName().matches("project.xml")) {
-					FileObjectNode node = new FileObjectNode(file);
-					add(node);
-				}
+		File projectFile = PersistenceManager.getDefault()
+								.getEntityFile(project).getParentFile();
+		
+		File[] files = projectFile.listFiles();
+		for (File file : files) {
+			if (!file.getName().matches(FileSuffixes.PROJECT)) {
+				FileNode node = new FileNode(file);
+				add(node);
 			}
-		} catch (FileSystemException e) {
-			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	public String getLabel() {
-		FileName name = project.getResource().getName();
-		return name.getParent().getBaseName();
+		File projectFile = PersistenceManager.getDefault()
+								.getEntityFile(project).getParentFile();
+		
+		return projectFile.getParentFile().getName();
 	}
 }

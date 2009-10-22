@@ -176,22 +176,22 @@ public class AppFrame extends JFrame {
 		
 		Workspace workspace = null;
 		
-		if (WorkspaceManager.instance().exists(wpath)) {
+		if (WorkspaceManager.getDefault().exists(wpath)) {
 			try {
-				workspace = WorkspaceManager.instance().open(wpath);
+				workspace = WorkspaceManager.getDefault().open(wpath);
 			} catch (Exception e) {}
 			
 			//FIXME throw exception
 			if (workspace == null)
-				workspace = new Workspace();
+				workspace = new Workspace(new File(System.getProperty("user.dir")));
 		}
 		else {
 			try {
-				workspace = WorkspaceManager.instance().create(wpath);
+				workspace = WorkspaceManager.getDefault().create(wpath);
 			} catch (Exception e) {}
 		}
 		
-		WorkspaceManager.instance().setCurrent(workspace);
+		WorkspaceManager.getDefault().setCurrent(workspace);
 		
 		return workspace;
 	}

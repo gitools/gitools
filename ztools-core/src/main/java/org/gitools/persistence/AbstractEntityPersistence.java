@@ -2,13 +2,13 @@ package org.gitools.persistence;
 
 public abstract class AbstractEntityPersistence<T> implements IEntityPersistence<T> {
 
-	protected IFileObjectResolver fileObjectResolver;
+	protected IPathResolver pathResolver;
 	
-	public void setFileObjectResolver(IFileObjectResolver fileObjectResolver) {
-		this.fileObjectResolver = fileObjectResolver;
+	public void setPathResolver(IPathResolver pathResolver) {
+		this.pathResolver = pathResolver;
 	}
 	
-	public IFileObjectResolver getFileObjectResolver() {
-		return fileObjectResolver;
+	public IPathResolver getFileObjectResolver() {
+		return pathResolver;
 	}
 }

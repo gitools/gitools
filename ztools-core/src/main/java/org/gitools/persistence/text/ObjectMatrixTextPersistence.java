@@ -1,5 +1,6 @@
 package org.gitools.persistence.text;
 
+import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.vfs.FileObject;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementFactory;
@@ -85,17 +85,17 @@ public class ObjectMatrixTextPersistence
 	}
 
 	public ObjectMatrix read(
-			FileObject resource,
+			File file,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
 		ObjectMatrix resultsMatrix = new ObjectMatrix();
-		read(resource, resultsMatrix, monitor);
+		read(file, resultsMatrix, monitor);
 		return resultsMatrix;
 	}
 	
 	public void read(
-			FileObject resource,
+			File file,
 			ObjectMatrix resultsMatrix, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
@@ -103,7 +103,7 @@ public class ObjectMatrixTextPersistence
 		monitor.begin("Reading results ...", 1);
 		
 		try {
-			Reader reader = PersistenceUtils.openReader(resource);
+			Reader reader = PersistenceUtils.openReader(file);
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 			
@@ -255,23 +255,23 @@ public class ObjectMatrixTextPersistence
 	}
 
 	public void write(
-			FileObject resource,
+			File file,
 			ObjectMatrix results, 
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
-		write(resource, results, true, monitor);
+		write(file, results, true, monitor);
 	}
 	
 	public void write(
-			FileObject resource,
+			File file,
 			ObjectMatrix results, 
 			boolean orderByColumn,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
 		try {
-			Writer writer = PersistenceUtils.openWriter(resource);
+			Writer writer = PersistenceUtils.openWriter(file);
 			//String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
 			writeCells(writer, results, orderByColumn, monitor);
 			writer.close();

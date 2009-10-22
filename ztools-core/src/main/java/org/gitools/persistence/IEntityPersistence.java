@@ -1,16 +1,17 @@
 package org.gitools.persistence;
 
-import org.apache.commons.vfs.FileObject;
+import java.io.File;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public interface IEntityPersistence<T> {
 
-	void setFileObjectResolver(IFileObjectResolver fileObjectResolver);
+	//TODO Rename to setPathResolver
+	void setPathResolver(IPathResolver pathResolver);
 	
-	T read(FileObject resource, IProgressMonitor monitor)
+	T read(File file, IProgressMonitor monitor)
 		throws PersistenceException;
 	
-	void write(FileObject resource, T entity, IProgressMonitor monitor)
+	void write(File file, T entity, IProgressMonitor monitor)
 		throws PersistenceException;;
 }

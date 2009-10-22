@@ -2,7 +2,6 @@ package org.gitools.model.matrix;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.matrix.element.IElementAdapter;
 

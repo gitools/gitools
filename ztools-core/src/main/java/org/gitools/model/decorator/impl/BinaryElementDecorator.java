@@ -36,8 +36,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 	
 	public BinaryElementDecorator() {
 		
-		valueIndex = getPropertyIndex(new String[] {
-				"value" });
+		valueIndex = getPropertyIndex(new String[] {"value"});
 		
 		cutoff = 1.0;
 		
@@ -51,8 +50,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 	public BinaryElementDecorator(IElementAdapter adapter) {
 		super(adapter);
 	
-		valueIndex = getPropertyIndex(new String[] {
-				"value" });
+		valueIndex = getPropertyIndex(new String[] {"value"});
 		
 		cutoff = 1.0;
 		

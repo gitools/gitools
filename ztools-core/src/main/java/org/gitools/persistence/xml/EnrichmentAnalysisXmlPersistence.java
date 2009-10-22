@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.analysis.EnrichmentAnalysis;
 import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
-import org.gitools.model.xml.adapter.FileObjectXmlAdapter;
+import org.gitools.model.xml.adapter.FileXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
 
@@ -19,10 +19,10 @@ public class EnrichmentAnalysisXmlPersistence
 	@Override
 	protected XmlAdapter<?, ?>[] createAdapters() {
 		return new XmlAdapter[] {
-				new FileObjectXmlAdapter(fileObjectResolver),
-				new AnnotationMatrixXmlAdapter(fileObjectResolver),
-				new MatrixXmlAdapter(fileObjectResolver),
-				new ModuleMapXmlAdapter(fileObjectResolver)	};
+				new FileXmlAdapter(pathResolver),
+				new AnnotationMatrixXmlAdapter(pathResolver),
+				new MatrixXmlAdapter(pathResolver),
+				new ModuleMapXmlAdapter(pathResolver)	};
 	}
 
 }

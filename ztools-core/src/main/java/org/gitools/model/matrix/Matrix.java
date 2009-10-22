@@ -2,11 +2,10 @@ package org.gitools.model.matrix;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.gitools.model.Artifact;
+
 @XmlSeeAlso({BaseMatrix.class})	
 public abstract class Matrix
 		extends Artifact

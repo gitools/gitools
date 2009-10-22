@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
-import org.gitools.model.xml.adapter.FileObjectXmlAdapter;
+import org.gitools.model.xml.adapter.FileXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
 public class MatrixFigureXmlPersistence
@@ -17,8 +17,8 @@ public class MatrixFigureXmlPersistence
 	@Override
 	protected XmlAdapter<?, ?>[] createAdapters() {
 		return new XmlAdapter[] {
-				new FileObjectXmlAdapter(fileObjectResolver),
-				new AnnotationMatrixXmlAdapter(fileObjectResolver),
-				new MatrixXmlAdapter(fileObjectResolver) };
+				new FileXmlAdapter(pathResolver),
+				new AnnotationMatrixXmlAdapter(pathResolver),
+				new MatrixXmlAdapter(pathResolver) };
 	}
 }
