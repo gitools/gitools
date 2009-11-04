@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.gitools.model.Project;
-import org.gitools.model.Workspace;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.workspace.Workspace;
+import org.gitools.workspace.WorkspaceProjectRef;
 
 public class WorkspaceNode extends AbstractNode {
 
@@ -22,24 +22,26 @@ public class WorkspaceNode extends AbstractNode {
 		
 		this.workspace = workspace;
 		
-		for (Project project : workspace.getProjects())
-			add(new ProjectNode(project));
+		for (WorkspaceProjectRef projectRef : workspace.getProjectReferences())
+			add(new WorkspaceProjectNode(projectRef));
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void refresh() {
-		final Map<Project, ProjectNode> nodeMap = new HashMap<Project, ProjectNode>();
-		Enumeration<ProjectNode> e = children();
+		final Map<WorkspaceProjectRef, WorkspaceProjectNode> nodeMap =
+			new HashMap<WorkspaceProjectRef, WorkspaceProjectNode>();
+		
+		Enumeration<WorkspaceProjectNode> e = children();
 		while (e.hasMoreElements()) {
-			ProjectNode node = e.nextElement();
-			nodeMap.put(node.getProject(), node);
+			WorkspaceProjectNode node = e.nextElement();
+			nodeMap.put(node.getProjectRef(), node);
 		}
 		
 		// Check that current project nodes exist in file system
-		for (Entry<Project, ProjectNode> entry : nodeMap.entrySet()) {
-			final Project project = entry.getKey();
-			final ProjectNode node = entry.getValue();
+		for (Entry<WorkspaceProjectRef, WorkspaceProjectNode> entry : nodeMap.entrySet()) {
+			final WorkspaceProjectRef project = entry.getKey();
+			final WorkspaceProjectNode node = entry.getValue();
 			
 			final File file = PersistenceManager.getDefault()
 										.getEntityFile(project).getParentFile();
@@ -49,11 +51,11 @@ public class WorkspaceNode extends AbstractNode {
 		}
 		
 		// Check for new project nodes
-		List<Project> projects = workspace.getProjects();
-		for (Project project : projects) {
-			if (!nodeMap.containsKey(project)) {
-				ProjectNode node = new ProjectNode(project);
-				nodeMap.put(project, node);
+		List<WorkspaceProjectRef> projectRefs = workspace.getProjectReferences();
+		for (WorkspaceProjectRef projectRef : projectRefs) {
+			if (!nodeMap.containsKey(projectRef)) {
+				WorkspaceProjectNode node = new WorkspaceProjectNode(projectRef);
+				nodeMap.put(projectRef, node);
 				add(node);
 			}
 		}

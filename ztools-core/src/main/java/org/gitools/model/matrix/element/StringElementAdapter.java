@@ -1,13 +1,11 @@
-package org.gitools.model.matrix.element.basic;
+package org.gitools.model.matrix.element;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.model.matrix.element.AbstractElementAdapter;
-
-
 @XmlRootElement
-public class StringElementAdapter 
-		extends AbstractElementAdapter {
+public class StringElementAdapter extends AbstractElementAdapter {
+
+	private static final long serialVersionUID = -5327572398900806886L;
 
 	public StringElementAdapter() {
 		super(String.class);

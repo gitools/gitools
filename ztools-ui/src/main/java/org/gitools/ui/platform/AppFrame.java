@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -12,7 +11,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import org.gitools.model.Workspace;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
@@ -22,6 +20,7 @@ import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.platform.navigator.NavigatorPanel;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.utils.Options;
+import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -171,27 +170,7 @@ public class AppFrame extends JFrame {
 	}
 	
 	private Workspace openWorkspace() {
-		String pathStr = Options.instance().getWorkspacePath();
-		File wpath = new File(pathStr);
-		
-		Workspace workspace = null;
-		
-		if (WorkspaceManager.getDefault().exists(wpath)) {
-			try {
-				workspace = WorkspaceManager.getDefault().open(wpath);
-			} catch (Exception e) {}
-			
-			//FIXME throw exception
-			if (workspace == null)
-				workspace = new Workspace(new File(System.getProperty("user.dir")));
-		}
-		else {
-			try {
-				workspace = WorkspaceManager.getDefault().create(wpath);
-			} catch (Exception e) {}
-		}
-		
-		WorkspaceManager.getDefault().setCurrent(workspace);
+		Workspace workspace = WorkspaceManager.getDefault().getWorkspace();
 		
 		return workspace;
 	}

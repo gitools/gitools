@@ -8,8 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType( propOrder={"name", "url" } )
-public class Laboratory 
-	implements Serializable {
+public class Laboratory implements Serializable {
 
 	private static final long serialVersionUID = 6128418993564199357L;
 
@@ -20,13 +19,18 @@ public class Laboratory
 	private String url;
 
 	/*
-	 * Maybe we can also store to wich affiliation this lab belongs to and the
+	 * Maybe we can also store to which affiliation this lab belongs to and the
 	 * laboratory address 
 	 * private String address; 
 	 * private Affiliation affiliation;
 	 */
+	
 	public Laboratory() {
+	}
 
+	public Laboratory(String name, String url) {
+		this.name = name;
+		this.url = url;
 	}
 
 	public String getName() {

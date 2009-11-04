@@ -3,90 +3,89 @@ package org.gitools.model.matrix;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.gitools.model.matrix.element.basic.DoubleElementAdapter;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
+import org.gitools.model.matrix.element.DoubleElementAdapter;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 
-/*@XmlType(
-		propOrder = {
-				"name"///, 
-				"colNames", 
-				"rowNames", 
-				"data"///})*/
-
+//TODO remove JAXB support
 @XmlAccessorType(XmlAccessType.NONE)
+
 public final class DoubleMatrix extends BaseMatrix	{			
 
 	private static final long serialVersionUID = -710485141066995079L;
 
-	protected String name;
+	protected DoubleMatrix2D cells;
 	
-	/*protected String[] colNames;
-	protected String[] rowNames;*/
-	
-	protected DoubleMatrix2D data;
-
-	/*private IElementAdapter cellAdapter;
-	private IElementAdapter columnAdapter;
-	private IElementAdapter rowAdapter;*/
-	
-	public DoubleMatrix(
-			String name, 
-			String[] colNames, 
-			String[] rowNames, 
-			DoubleMatrix2D data) {
-		
-		this.name = name;
-		
-		this.columns = ObjectFactory1D.dense.make(colNames);
-		this.rows = ObjectFactory1D.dense.make(rowNames);
-		
-		this.data = data;
-		
-		this.cellAdapter = new DoubleElementAdapter();
-		this.rowAdapter = new StringElementAdapter();
-		this.columnAdapter = new StringElementAdapter();
-	}
-
 	public DoubleMatrix() {
 		this("", new String[0], new String[0], DoubleFactory2D.dense.make(0, 0));
 	}
 	
+	public DoubleMatrix(
+			String title, 
+			String[] colNames, 
+			String[] rowNames, 
+			DoubleMatrix2D cells) {
+
+		super(
+				title,
+				ObjectFactory1D.dense.make(rowNames),
+				ObjectFactory1D.dense.make(colNames),
+				new DoubleElementAdapter());
+		
+		this.cells = cells;
+	}
+	
+	@Deprecated // Use getTitle() instead.
 	public final String getName() {
-		return name;
+		return getTitle();
 	}
 
+	@Deprecated // Use setTitle() instead.
 	public final void setName(String name) {
-		this.name = name;
+		setTitle(name);
 	}
 
-	/*public final String[] getColNames() {
-		return colNames;
+	// rows and columns
+	
+	@Override
+	public int getColumnCount() {
+		return columns.cardinality();
 	}
 
-	public final void setColNames(String[] colNames) {
-		this.colNames = colNames;
+	@Override
+	public int getRowCount() {
+		return rows.cardinality();
 	}
-
-	public final String[] getRowNames() {
-		return rowNames;
-	}
-
-	public final void setRowNames(String[] rowNames) {
-		this.rowNames = rowNames;
-	}
-*/
+	
+	// cells
+	
+	//TODO rename to getCells
 	public final DoubleMatrix2D getData() {
-		return data;
+		return cells;
 	}
 
+	//TODO rename to setCells
 	public final void setData(DoubleMatrix2D data) {
-		this.data = data;
+		this.cells = data;
+	}
+	
+	@Override
+	public Object getCell(int row, int column) {
+		return cells.get(row, column);
+	}
+	
+	@Override
+	public Object getCellValue(int row, int column, int index) {
+		return cells.get(row, column);
 	}
 
+	@Override
+	public void setCellValue(int row, int column, int index, Object value) {
+		cells.set(row, column, (Double)value);
+	}
+	
 	/*@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -97,67 +96,5 @@ public final class DoubleMatrix extends BaseMatrix	{
 		sb.append(data).append('\n');
 		
 		return sb.toString();
-	}*/
-
-	@Override
-	public int getColumnCount() {
-		//return data.columns();
-		return columns.cardinality();
-	}
-
-	@Override
-	public int getRowCount() {
-		//return data.rows();
-	return rows.cardinality();
-	}
-	
-	@Override
-	public Object getCell(int row, int column) {
-		return data.get(row, column);
-	}
-
-	@Override
-	public Object getCellValue(int row, int column, int index) {
-		return data.get(row, column);
-	}
-
-	@Override
-	public Object getCellValue(int row, int column, String id) {
-		return data.get(row, column);
-	}
-
-	@Override
-	public void setCellValue(int row, int column, int index, Object value) {
-		data.set(row, column, (Double)value);
-	}
-
-	@Override
-	public void setCellValue(int row, int column, String id, Object value) {
-		data.set(row, column, (Double)value);
-	}
-	
-	/*@Override
-	public Object getColumn(int index) {
-		return colNames[index];
-	}
-
-	@Override
-	public Object getRow(int index) {
-		return rowNames[index];
-	}
-
-	@Override
-	public IElementAdapter getCellAdapter() {
-		return cellAdapter;
-	}
-
-	@Override
-	public IElementAdapter getColumnAdapter() {
-		return columnAdapter;
-	}
-
-	@Override
-	public IElementAdapter getRowAdapter() {
-		return rowAdapter;
 	}*/
 }

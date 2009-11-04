@@ -23,13 +23,13 @@ public class MatrixModelAdapter implements TableModel {
 
 	public String getColumnName(int col) {
 		return col < model.getColumnCount() ? 
-				model.getColumn(col).toString() : " ";
+				model.getColumnLabel(col) : " ";
 	}
 
 	public Object getValueAt(int row, int col) {
 		return col < model.getColumnCount() ?
 				model.getCell(row, col) :
-				model.getRow(row).toString();
+				model.getRowLabel(row);
 	}
 	
 	public void setValueAt(Object value, int row, int col) {

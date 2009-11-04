@@ -11,11 +11,13 @@ import org.gitools.model.table.Table;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AnnotationTableColumn extends AbstractTableColumn implements
-		ITableColumn, Serializable {
+public class AnnotationTableColumn
+		extends AbstractTableColumn
+		implements ITableColumn, Serializable {
+
+	private static final long serialVersionUID = 212215870893703067L;
 
 	public AnnotationTableColumn() {
-
 	}
 
 	public AnnotationTableColumn(Table table, int column) {
@@ -46,7 +48,7 @@ public class AnnotationTableColumn extends AbstractTableColumn implements
 	@Override
 	public Object getValue(int row) {
 		if (column < 0) 
-			return table.getMatrix().getRow(row);
+			return table.getMatrix().getRowLabel(row);
 		return table.getAnnotations().getCell(row, column);
 	}
 

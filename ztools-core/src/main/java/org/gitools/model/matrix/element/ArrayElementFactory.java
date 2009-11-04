@@ -1,6 +1,5 @@
-package org.gitools.model.matrix.element.array;
+package org.gitools.model.matrix.element;
 
-import org.gitools.model.matrix.element.IElementFactory;
 
 public class ArrayElementFactory implements IElementFactory {
 

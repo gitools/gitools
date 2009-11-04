@@ -5,25 +5,24 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import org.gitools.model.matrix.element.bean.BeanElementProperty;
-
-
 @XmlRootElement
 @XmlSeeAlso(value = {
 		BeanElementProperty.class})
 		
-public abstract class AbstractElementProperty 
+public abstract class AbstractElementAttribute 
 		implements IElementProperty, Serializable {
+
+	private static final long serialVersionUID = -6293895024608178858L;
 
 	protected String id;
 	protected String name;
 	protected String description;
 	protected Class<?> valueClass;
 	
-	public AbstractElementProperty() {
+	public AbstractElementAttribute() {
 	}
 	
-	public AbstractElementProperty(
+	public AbstractElementAttribute(
 			String id, String name, String description, 
 			Class<?> valueClass) {
 		

@@ -211,10 +211,10 @@ public class HeaderConfigPage extends JPanel {
 		List<Integer> indices = new ArrayList<Integer>();
 		
 		for (int i = 0; i < count; i++) {
-			Object element = type == HeaderType.rows ?
-					matrixView.getRow(i) : matrixView.getColumn(i);
+			String element = type == HeaderType.rows ?
+					matrixView.getRowLabel(i) : matrixView.getColumnLabel(i);
 
-			int j = annotations.getRowIndex(element.toString());
+			int j = annotations.getRowIndex(element);
 			if (j >= 0)
 				indices.add(i);
 		}

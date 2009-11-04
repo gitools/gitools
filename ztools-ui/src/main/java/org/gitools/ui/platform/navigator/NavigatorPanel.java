@@ -13,7 +13,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 
-import org.gitools.model.Workspace;
+import org.gitools.workspace.Workspace;
+import org.gitools.workspace.WorkspaceManager;
 
 public class NavigatorPanel extends JPanel {
 
@@ -24,8 +25,11 @@ public class NavigatorPanel extends JPanel {
 	private JTree tree;
 	
 	public NavigatorPanel() {
-		File path = new File(System.getProperty("user.home")); //FIXME
-		this.workspace = new Workspace(path);
+		this.workspace = WorkspaceManager.getDefault().getWorkspace();
+	}
+	
+	public Workspace getWorkspace() {
+		return workspace;
 	}
 	
 	public NavigatorPanel(Workspace workspace) {

@@ -8,7 +8,9 @@ import org.gitools.model.table.Table;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixPropertyTableColumn extends MatrixCellTableColumn {
 
-	int property;
+	private static final long serialVersionUID = 7454639163784197446L;
+	
+	protected int property;
 
 	public MatrixPropertyTableColumn() {
 		super();

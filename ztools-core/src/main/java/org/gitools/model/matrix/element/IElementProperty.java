@@ -7,5 +7,4 @@ public interface IElementProperty {
 	String getDescription();
 	
 	Class<?> getValueClass();
-	
 }

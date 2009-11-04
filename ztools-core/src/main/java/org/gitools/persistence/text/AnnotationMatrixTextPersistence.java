@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.csv.CSVParser;
 import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
@@ -68,11 +67,6 @@ public class AnnotationMatrixTextPersistence
 			
 			matrix.setRows(rows);
 			matrix.setCells(data);
-			
-			StringElementAdapter adapter = new StringElementAdapter();
-			matrix.setColumnAdapter(adapter);
-			matrix.setRowAdapter(adapter);
-			matrix.setCellAdapter(adapter);
 		
 			rawData.clear();
 			

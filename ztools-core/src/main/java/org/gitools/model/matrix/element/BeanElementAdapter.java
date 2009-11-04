@@ -1,4 +1,4 @@
-package org.gitools.model.matrix.element.bean;
+package org.gitools.model.matrix.element;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,15 +6,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.model.matrix.element.AbstractElementAdapter;
-import org.gitools.model.matrix.element.IElementProperty;
-import org.gitools.model.matrix.element.Property;
-
-
 @XmlRootElement
-public class BeanElementAdapter 
-		extends AbstractElementAdapter {
-	
+public class BeanElementAdapter extends AbstractElementAdapter {
+
+	private static final long serialVersionUID = 2174377187447656241L;
+
 	protected BeanElementAdapter() {
 	}
 	

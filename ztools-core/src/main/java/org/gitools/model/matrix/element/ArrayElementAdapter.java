@@ -1,21 +1,19 @@
-package org.gitools.model.matrix.element.array;
+package org.gitools.model.matrix.element;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.model.matrix.element.AbstractElementAdapter;
-import org.gitools.model.matrix.element.AbstractElementProperty;
-import org.gitools.model.matrix.element.IElementProperty;
-
-
 @XmlRootElement
 public class ArrayElementAdapter 
 		extends AbstractElementAdapter {
 
-	private static class ArrayElementProperty 
-			extends AbstractElementProperty {
+	private static final long serialVersionUID = 5864596809781257355L;
+
+	private static class ArrayElementProperty extends AbstractElementAttribute {
+
+		private static final long serialVersionUID = 7803752573190009823L;
 
 		public ArrayElementProperty(String id, String name, String description) {
 			super(id, name, description, double.class);
@@ -50,5 +48,4 @@ public class ArrayElementAdapter
 		if (element != null)
 			((double[])element)[index] = (Double) value;
 	}
-
 }

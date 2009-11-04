@@ -1,7 +1,8 @@
 package org.gitools.model.matrix.element;
 
 import java.util.List;
-		
+
+//TODO Rename to IAttributeAdapter ?
 public interface IElementAdapter {
 	
 	Class<?> getElementClass();
@@ -12,7 +13,5 @@ public interface IElementAdapter {
 	int getPropertyIndex(String string);
 	
 	Object getValue(Object element, int index);
-	Object getValue(Object element, String id);
 	void setValue(Object element, int index, Object value);
-	void setValue(Object element, String id, Object value);
 }

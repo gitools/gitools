@@ -224,11 +224,11 @@ public class MatrixEditor extends AbstractEditor {
 		String templateName = defaultTemplateName;
 		
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
-			final Object columnElement = matrixView.getColumn(column);
+			//final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
+			final Object columnElement = matrixView.getColumnLabel(column);
 			
-			final IElementAdapter rowAdapter = matrixView.getRowAdapter();
-			final Object rowElement = matrixView.getRow(row);
+			//final IElementAdapter rowAdapter = matrixView.getRowAdapter();
+			final Object rowElement = matrixView.getRowLabel(row);
 			
 			final IElementAdapter cellAdapter = matrixView.getCellAdapter();
 			final Object cellElement = matrixView.getCell(row, column);
@@ -241,10 +241,10 @@ public class MatrixEditor extends AbstractEditor {
 				context.put("zscoreScale", new ZScoreColorScale()); //FIXME
 				context.put("pvalueScale", new PValueColorScale()); //FIXME
 				
-				context.put("columnAdapter", columnAdapter);
+				//context.put("columnAdapter", columnAdapter);
 				context.put("columnElement", columnElement);
 				
-				context.put("rowAdapter", rowAdapter);
+				//context.put("rowAdapter", rowAdapter);
 				context.put("rowElement", rowElement);
 				
 				context.put("cellAdapter", cellAdapter);

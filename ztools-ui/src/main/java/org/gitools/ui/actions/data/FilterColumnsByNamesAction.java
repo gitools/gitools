@@ -73,7 +73,7 @@ public class FilterColumnsByNamesAction extends BaseAction {
 		Map<String, Integer> nameToColumnMap = new HashMap<String, Integer>();
 		
 		for (int i = 0; i < columnCount; i++) {
-			final String columnName = contents.getColumn(i).toString();
+			final String columnName = contents.getColumnLabel(i);
 			nameToColumnMap.put(columnName, i);
 		}
 		
@@ -96,7 +96,7 @@ public class FilterColumnsByNamesAction extends BaseAction {
 		
 		// Check patterns
 		for (int i = 0; i < columnCount; i++) {
-			final String columnName = contents.getColumn(i).toString();
+			final String columnName = contents.getColumnLabel(i);
 			for (int j = 0; j < patterns.size(); j++)
 				if (patterns.get(j).matcher(columnName).matches()) {
 					columns.add(i);

@@ -1,20 +1,24 @@
 package org.gitools.model.matrix;
 
+import java.util.List;
+
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 
 public interface IMatrix {
 
 	// rows
 	
 	int getRowCount();
-	Object getRow(int index);
-	IElementAdapter getRowAdapter();
+	String getRowLabel(int index);
+	
+	//IElementAdapter getRowAdapter();
 	
 	// columns
 	
 	int getColumnCount();
-	Object getColumn(int index);
-	IElementAdapter getColumnAdapter();
+	String getColumnLabel(int index);
+	//IElementAdapter getColumnAdapter();
 	
 	// cells
 	
@@ -25,4 +29,6 @@ public interface IMatrix {
 	void setCellValue(int row, int column, String id, Object value);
 	
 	IElementAdapter getCellAdapter();
+	
+	List<IElementProperty> getCellAttributes();
 }

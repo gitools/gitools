@@ -1,20 +1,25 @@
 package org.gitools.model.matrix;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 
+//TODO remove JAXB support
 @XmlSeeAlso( { 
 	ObjectMatrix.class,
 	StringMatrix.class,
 	DoubleMatrix.class,
 	AnnotationMatrix.class })
 @XmlAccessorType(XmlAccessType.NONE)
+
 public abstract class BaseMatrix extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
@@ -22,28 +27,31 @@ public abstract class BaseMatrix extends Matrix {
 	protected ObjectMatrix1D rows;
 	protected ObjectMatrix1D columns;
 	
-	protected IElementAdapter rowAdapter;
-	protected IElementAdapter columnAdapter;
 	protected IElementAdapter cellAdapter;
 	
 	public BaseMatrix() {
+		this(
+				"",
+				ObjectFactory1D.dense.make(0),
+				ObjectFactory1D.dense.make(0),
+				null);
 	}
 	
 	public BaseMatrix(
+			String title,
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
-			IElementAdapter rowAdapter,
-			IElementAdapter columnAdapter,
 			IElementAdapter cellAdapter) {
+		
+		this.title = title;
 		
 		this.rows = rows;
 		this.columns = columns;
 		
-		this.rowAdapter = rowAdapter;
-		this.columnAdapter = columnAdapter;
 		this.cellAdapter = cellAdapter;
 	}
 	
+	// rows
 	
 	public ObjectMatrix1D getRows() {
 		return rows;
@@ -67,7 +75,12 @@ public abstract class BaseMatrix extends Matrix {
 		return rows.get(index);
 	}
 	
+	@Deprecated // Use getRowLabel() instead
 	public String getRowString(int index) {
+		return (String) rows.get(index);
+	}
+	
+	public String getRowLabel(int index) {
 		return (String) rows.get(index);
 	}
 	
@@ -75,6 +88,7 @@ public abstract class BaseMatrix extends Matrix {
 		rows.set(index, row);
 	}
 	
+	// columns
 	
 	public ObjectMatrix1D getColumns() {
 		return columns;
@@ -98,62 +112,54 @@ public abstract class BaseMatrix extends Matrix {
 		return columns.get(index);
 	}
 	
+	@Deprecated // Use getColumnLabel() instead
 	public String getColumnString(int index) {
 		return (String) columns.get(index);
 	}
 	
+	public String getColumnLabel(int index) {
+		return (String) columns.get(index);
+	}
 	
 	public void setColumn(int index, Object column) {
 		columns.set(index, column);
 	}
 	
-	public Object getCellValue(int row, int column, int property) {
-		return cellAdapter.getValue(
-				getCell(row, column), property);
-	}
+	// cells
 	
+	@Override
 	public Object getCellValue(int row, int column, String id) {
-		return cellAdapter.getValue(
-				getCell(row, column), id);
+		return getCellValue(row, column, getCellAttributeIndex(id));
 	}
-	
-	public void setCellValue(int row, int column, int property, Object value) {
-		cellAdapter.setValue(
-				getCell(row, column), property, value);
-	}
-	
+
+	@Override
 	public void setCellValue(int row, int column, String id, Object value) {
-		cellAdapter.setValue(
-				getCell(row, column), id, value);
+		setCellValue(row, column, getCellAttributeIndex(id), value);
 	}
 	
-	//@XmlAnyElement
-	//@XmlElement
-	public IElementAdapter getRowAdapter() {
-		return rowAdapter;
-	}
+	// adapters
 	
-	public void setRowAdapter(IElementAdapter rowAdapter) {
-		this.rowAdapter = rowAdapter;
-	}
-	
-	//@XmlAnyElement
-	//@XmlElement
-	public IElementAdapter getColumnAdapter() {
-		return columnAdapter;
-	}
-	
-	public void setColumnAdapter(IElementAdapter columnAdapter) {
-		this.columnAdapter = columnAdapter;
-	}
-	
-	//@XmlAnyElement
-	//@XmlElement
+	@Override
 	public IElementAdapter getCellAdapter() {
 		return cellAdapter;
 	}
 	
 	public void setCellAdapter(IElementAdapter cellAdapter) {
 		this.cellAdapter = cellAdapter;
+	}
+	
+	// attributes
+	
+	@Override
+	public List<IElementProperty> getCellAttributes() {
+		return cellAdapter.getProperties();
+	}
+	
+	private int getCellAttributeIndex(String id) {
+		Integer index = cellAdapter.getPropertyIndex(id);
+		if (index == null)
+			throw new RuntimeException("There isn't any property with id: " + id);
+		
+		return index.intValue();
 	}
 }

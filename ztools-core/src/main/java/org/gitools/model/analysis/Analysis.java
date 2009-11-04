@@ -24,20 +24,20 @@ public class Analysis extends Artifact {
 
 	protected Date startTime;	
 	protected long elapsedTime;
-	
-	/** Original matrix, before ToolConfig applied **/
-	
-	
+
+	@Deprecated
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected DoubleMatrix dataTable;
 	
+	@Deprecated
 	@XmlJavaTypeAdapter(ModuleMapXmlAdapter.class)
 	protected ModuleMap moduleMap;
 	
-	
+	@Deprecated
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected ObjectMatrix resultsMatrix;
 
+	@Deprecated
 	@XmlTransient
 	protected ToolConfig toolConfig;
 
@@ -60,42 +60,52 @@ public class Analysis extends Artifact {
 		this.elapsedTime = elapsedTime;
 	}
 
+	@Deprecated
 	public ToolConfig getToolConfig() {
 		return toolConfig;
 	}
 
+	@Deprecated
 	public void setToolConfig(ToolConfig toolConfig) {
 		this.toolConfig = toolConfig;
 	}
 
+	@Deprecated
 	public DoubleMatrix getDataTable() {
 		return dataTable;
 	}
 
+	@Deprecated
 	public void setDataTable(DoubleMatrix dataTable) {
 		this.dataTable = dataTable;
 	}
 
+	@Deprecated
 	public String getDataTableRef() {
 		return dataTable.getName();
 	}
 
+	@Deprecated
 	public ModuleMap getModuleMap() {
 		return moduleMap;
 	}
 
+	@Deprecated
 	public void setModuleSet(ModuleMap moduleMap) {
 		this.moduleMap = moduleMap;
 	}
 
+	@Deprecated
 	public String getModuleMapRef() {
 		return moduleMap.getTitle();
 	}
 
+	@Deprecated
 	public ObjectMatrix getResults() {
 		return resultsMatrix;
 	}
 
+	@Deprecated
 	public void setResults(ObjectMatrix resultsMatrix) {
 		this.resultsMatrix = resultsMatrix;
 	}

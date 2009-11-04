@@ -92,6 +92,8 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 			
 			for (XmlAdapter<?, ?> adapter : adapters)
 				m.setAdapter(adapter);
+			
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			m.marshal(entity, writer);
 			writer.close();

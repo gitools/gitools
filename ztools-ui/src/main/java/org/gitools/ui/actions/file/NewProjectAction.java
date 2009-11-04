@@ -5,11 +5,11 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
 
-import org.gitools.model.Workspace;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.navigator.NavigatorPanel;
+import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 public class NewProjectAction extends BaseAction {
@@ -29,17 +29,17 @@ public class NewProjectAction extends BaseAction {
 				"Project name", "New project...",
 				JOptionPane.QUESTION_MESSAGE);
 
-		Workspace workspace = WorkspaceManager.getDefault().getCurrent();
-		try {
-			workspace.createProject(name);
+		Workspace workspace = WorkspaceManager.getDefault().getWorkspace();
+		//try {
+			//TODO workspace.createProject(name);
 			
 			NavigatorPanel navPanel = AppFrame.instance().getNavigatorPanel();
 			navPanel.getWorkspaceNode().refresh();
 			navPanel.refresh();
-		} catch (PersistenceException e1) {
-			e1.printStackTrace();
+		/*} catch (PersistenceException ex) {
+			ex.printStackTrace();
 			AppFrame.instance().setStatusText("Error creating project.");
-		}
+		}*/
 	}
 
 }

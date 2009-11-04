@@ -2,7 +2,6 @@ package org.gitools.model;
 
 import java.io.File;
 import java.io.Serializable;
-import java.net.URI;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

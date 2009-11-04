@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "title", "description", "attributes" })
-
 public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
@@ -23,7 +22,6 @@ public class Artifact extends AbstractModel implements Serializable {
 	protected String description;
 
 	/** Extra attributes **/
-
 	@XmlElementWrapper(name = "attributes")
 	@XmlElement(name = "attribute")
 	private List<Attribute> attributes = null;

@@ -188,10 +188,11 @@ public class MatrixPanel extends JPanel {
 	
 	private void refreshTableRowsRenderer() {
 		if (model != null) {
-			final IElementAdapter adapter = model.getRowAdapter();
+			//final IElementAdapter adapter = model.getRowAdapter();
 			
 			table.setDefaultRenderer(
-					adapter.getElementClass(), 
+					//adapter.getElementClass(),
+					String.class,
 					new RowsMatrixRenderer(
 							rowsDecorator,
 							selMode == SelectionMode.rows));

@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.gitools.model.matrix.element.IElementAdapter;
-
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
@@ -24,14 +22,12 @@ public class AnnotationMatrix extends StringMatrix {
 	}
 	
 	public AnnotationMatrix(
+			String title,
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
-			ObjectMatrix2D cells,
-			IElementAdapter rowAdapter,
-			IElementAdapter columnAdapter,
-			IElementAdapter cellAdapter) {
+			ObjectMatrix2D cells) {
 	    
-		super(rows, columns, cells, rowAdapter, columnAdapter, cellAdapter);
+		super(title, rows, columns, cells);
 		
 		updateRowsMap();
 		updateColumnsMap();

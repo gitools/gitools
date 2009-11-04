@@ -1,4 +1,4 @@
-package org.gitools.model.matrix.element.bean;
+package org.gitools.model.matrix.element;
 
 import java.lang.reflect.Method;
 
@@ -7,13 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.matrix.element.AbstractElementProperty;
-
-
 @XmlRootElement
-public class BeanElementProperty 
-		extends AbstractElementProperty {
+public class BeanElementProperty extends AbstractElementAttribute {
 
+	private static final long serialVersionUID = 1735870808859461498L;
+	
 	protected Method getterMethod;
 	protected Method setterMethod;
 	

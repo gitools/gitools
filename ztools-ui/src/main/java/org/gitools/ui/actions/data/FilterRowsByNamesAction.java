@@ -73,7 +73,7 @@ public class FilterRowsByNamesAction extends BaseAction {
 		Map<String, Integer> nameToRowMap = new HashMap<String, Integer>();
 		
 		for (int i = 0; i < rowCount; i++) {
-			final String rowName = contents.getRow(i).toString();
+			final String rowName = contents.getRowLabel(i);
 			nameToRowMap.put(rowName, i);
 		}
 		
@@ -96,7 +96,7 @@ public class FilterRowsByNamesAction extends BaseAction {
 		
 		// Check patterns
 		for (int i = 0; i < rowCount; i++) {
-			final String rowName = contents.getRow(i).toString();
+			final String rowName = contents.getRowLabel(i);
 			for (int j = 0; j < patterns.size(); j++)
 				if (patterns.get(j).matcher(rowName).matches()) {
 					rows.add(i);

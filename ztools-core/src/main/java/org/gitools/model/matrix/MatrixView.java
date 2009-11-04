@@ -1,6 +1,8 @@
 package org.gitools.model.matrix;
+
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -51,7 +53,7 @@ public class MatrixView
 	
 	protected int selectedPropertyIndex;
 	
-	public MatrixView(){
+	public MatrixView() {
 		visibleRows = new int[0];
 		visibleColumns = new int[0];
 		selectedRows = new int[0];
@@ -81,12 +83,14 @@ public class MatrixView
 		
 		// selected property
 		
-		IElementAdapter cellAdapter = contents.getCellAdapter();
-		for (int i = 0; i < cellAdapter.getPropertyCount(); i++) {
-			IElementProperty prop = cellAdapter.getProperty(i);
-			if ("right-p-value".equals(prop.getId())
-					|| "p-value".equals(prop.getId()))
+		int i = 0;
+		for (IElementProperty attr : contents.getCellAttributes()) {
+			if ("right-p-value".equals(attr.getId())
+					|| "p-value".equals(attr.getId())) {
 					selectedPropertyIndex = i;
+					break;
+			}
+			i++;
 		}
 	}
 	
@@ -243,7 +247,7 @@ public class MatrixView
 		this.selectedPropertyIndex = index;		
 	}
 
-	/* ITableContents */
+	/* IMatrix */
 	
 	@Override
 	public int getRowCount() {
@@ -251,13 +255,8 @@ public class MatrixView
 	}
 	
 	@Override
-	public Object getRow(int index) {
-		return contents.getRow(visibleRows[index]);
-	}
-
-	@Override
-	public IElementAdapter getRowAdapter() {
-		return contents.getRowAdapter();
+	public String getRowLabel(int index) {
+		return contents.getRowLabel(visibleRows[index]);
 	}
 	
 	@Override
@@ -266,22 +265,15 @@ public class MatrixView
 	}
 	
 	@Override
-	public Object getColumn(int index) {
-		return contents.getColumn(visibleColumns[index]);
-	}
-
-	@Override
-	public IElementAdapter getColumnAdapter() {
-		return contents.getColumnAdapter();
+	public String getColumnLabel(int index) {
+		return contents.getColumnLabel(visibleColumns[index]);
 	}
 	
 	@Override
 	public Object getCell(int row, int column) {
-		return contents.getCell(
-				visibleRows[row], 
-				visibleColumns[column]);
+		return contents.getCell(visibleRows[row], visibleColumns[column]);
 	}
-
+	
 	@Override
 	public Object getCellValue(int row, int column, int index) {
 		return contents.getCellValue(
@@ -317,6 +309,11 @@ public class MatrixView
 	@Override
 	public IElementAdapter getCellAdapter() {
 		return contents.getCellAdapter();
+	}
+	
+	@Override
+	public List<IElementProperty> getCellAttributes() {
+		return contents.getCellAttributes();
 	}
 	
 	// internal operations

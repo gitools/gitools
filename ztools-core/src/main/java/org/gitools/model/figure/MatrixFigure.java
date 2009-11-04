@@ -2,6 +2,7 @@ package org.gitools.model.figure;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,10 +19,10 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
-import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
 
 @XmlType( propOrder={
 		"cellDecorator", 
@@ -34,7 +35,6 @@ import org.gitools.model.xml.adapter.MatrixFigureXmlAdapter;
 		"rowSize",
 		"columnSize"} )
 
-@XmlJavaTypeAdapter(MatrixFigureXmlAdapter.class)	
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
 public class MatrixFigure 
@@ -72,8 +72,7 @@ public class MatrixFigure
 
 	private int columnSize;
 	
-	public MatrixFigure(){
-		
+	public MatrixFigure() {
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
 		this.cellSize = 18;
@@ -112,13 +111,18 @@ public class MatrixFigure
 		ElementDecorator decorator = null;
 		
 		IElementAdapter adapter = matrixView.getCellAdapter();
-		Class<?> elementClass = adapter.getElementClass();
+		List<IElementProperty> attributes = matrixView.getCellAttributes();
 		
-		//FIXME No funciona
-		if (Double.class.isInstance(elementClass)
-				|| double.class.isInstance(elementClass))
-			decorator = ElementDecoratorFactory.create(
-					ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+		int attrIndex = matrixView.getSelectedPropertyIndex();
+		if (attrIndex >= 0 && attrIndex < attributes.size()) {
+			Class<?> elementClass = attributes.get(attrIndex).getValueClass();
+			
+			//FIXME No funciona
+			if (Double.class.isInstance(elementClass)
+					|| double.class.isInstance(elementClass))
+				decorator = ElementDecoratorFactory.create(
+						ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+		}
 		
 		if (decorator == null)
 			decorator = ElementDecoratorFactory.create(

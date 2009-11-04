@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.model.matrix.element.IElementAdapter;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ElementDecorator extends AbstractModel {
@@ -18,8 +19,7 @@ public abstract class ElementDecorator extends AbstractModel {
 	@XmlTransient
 	protected IElementAdapter adapter;
 	
-	public ElementDecorator(){
-		
+	public ElementDecorator() {
 	}
 	
 	public ElementDecorator(IElementAdapter adapter) {
@@ -37,8 +37,7 @@ public abstract class ElementDecorator extends AbstractModel {
 	public abstract void decorate(
 			ElementDecoration decoration, 
 			Object element);
-	
-	
+
 	public Map<String, String> getConfiguration(){
 		return null;
 	}

@@ -1,6 +1,5 @@
-package org.gitools.model.matrix.element.bean;
+package org.gitools.model.matrix.element;
 
-import org.gitools.model.matrix.element.IElementFactory;
 
 public class BeanElementFactory implements IElementFactory {
 

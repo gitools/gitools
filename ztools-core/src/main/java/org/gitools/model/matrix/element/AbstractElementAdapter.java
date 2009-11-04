@@ -11,15 +11,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import org.gitools.model.matrix.element.bean.BeanElementProperty;
-
-
 @XmlRootElement
 @XmlSeeAlso(value = {
 		BeanElementProperty.class})
 		
 public abstract class AbstractElementAdapter
 		implements IElementAdapter, Serializable {
+
+	private static final long serialVersionUID = -4797939915206004479L;
 
 	protected Class<?> elementClass;
 	
@@ -76,13 +75,5 @@ public abstract class AbstractElementAdapter
 	
 	public abstract Object getValue(Object element, int index);
 	
-	public Object getValue(Object element, String id) {
-		return getValue(element, getPropertyIndex(id));
-	}
-	
 	public abstract void setValue(Object element, int index, Object value);
-	
-	public void setValue(Object element, String id, Object value) {
-		setValue(element, getPropertyIndex(id), value);
-	}
 }

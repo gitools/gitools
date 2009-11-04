@@ -3,9 +3,10 @@ package org.gitools.exporter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.utils.CompressedFile;
 
 public class TextMatrixExporter {
@@ -19,13 +20,13 @@ public class TextMatrixExporter {
 		//header
 
 		for (int c = 0; c < colCount; c++)
-			pw.print("\t" + matrixView.getColumn(c).toString());
+			pw.print("\t" + matrixView.getColumnLabel(c));
 		pw.println();
 		
 		// body
 		
 		for (int r = 0; r < rowCount; r++) {
-			pw.print(matrixView.getRow(r).toString());
+			pw.print(matrixView.getRowLabel(r).toString());
 			for (int c = 0; c < colCount; c++)
 				pw.print("\t" + matrixView.getCellValue(r, c, propIndex).toString());
 			pw.println();
@@ -37,17 +38,18 @@ public class TextMatrixExporter {
 	public static void exportProperties(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
 		PrintWriter pw = new PrintWriter(CompressedFile.openWriter(file));
 		
-		IElementAdapter adapter = matrixView.getCellAdapter();
+		List<IElementProperty> attributes = matrixView.getCellAttributes();
 		
 		final int rowCount = matrixView.getRowCount();
 		final int colCount = matrixView.getColumnCount();
+		
 		final int propCount = propIndices.length;
 		
-		//header
+		// header
 
 		pw.print("row\tcolumn");
-		for (int p = 0; p < propCount; p++)
-			pw.print("\t" + adapter.getProperty(p).getId());
+		for (IElementProperty attr : attributes)
+			pw.print("\t" + attr.getId());
 		pw.println();
 		
 		// body
@@ -56,8 +58,8 @@ public class TextMatrixExporter {
 			final int r = i / colCount;
 			final int c = i % colCount;
 			
-			pw.print(matrixView.getRow(r).toString());
-			pw.print("\t" + matrixView.getColumn(c).toString());
+			pw.print(matrixView.getRowLabel(r));
+			pw.print("\t" + matrixView.getColumnLabel(c));
 			for (int p = 0; p < propCount; p++)
 				pw.print("\t" + matrixView.getCellValue(r, c, p).toString());
 			pw.println();

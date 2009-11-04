@@ -4,8 +4,7 @@ import java.util.Date;
 
 import org.gitools.model.analysis.Analysis;
 import org.gitools.model.matrix.ObjectMatrix;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
-import org.gitools.model.matrix.element.bean.BeanElementAdapter;
+import org.gitools.model.matrix.element.BeanElementAdapter;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
@@ -19,7 +18,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 /* Notes:
@@ -87,8 +85,6 @@ public class ZCalcProcessor extends AbstractProcessor {
 		resultsMatrix.setRows(modules);
 		resultsMatrix.makeData();
 		
-		resultsMatrix.setRowAdapter(new StringElementAdapter());
-		resultsMatrix.setColumnAdapter(new StringElementAdapter());
 		resultsMatrix.setCellAdapter(
 				new BeanElementAdapter(test.getResultClass()));
 		

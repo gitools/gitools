@@ -13,14 +13,13 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.gitools.model.matrix.ObjectMatrix;
+import org.gitools.model.matrix.element.ArrayElementAdapter;
+import org.gitools.model.matrix.element.ArrayElementFactory;
+import org.gitools.model.matrix.element.BeanElementAdapter;
+import org.gitools.model.matrix.element.BeanElementFactory;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementFactory;
 import org.gitools.model.matrix.element.IElementProperty;
-import org.gitools.model.matrix.element.array.ArrayElementAdapter;
-import org.gitools.model.matrix.element.array.ArrayElementFactory;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
-import org.gitools.model.matrix.element.bean.BeanElementAdapter;
-import org.gitools.model.matrix.element.bean.BeanElementFactory;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
@@ -135,6 +134,11 @@ public class ObjectMatrixTextPersistence
 				elementFactory = new BeanElementFactory(elementClass);
 			}
 			
+			Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
+			int index = 0;
+			for (IElementProperty attr : elementAdapter.getProperties())
+				attrIdmap.put(attr.getId(), index++);
+			
 			// read body
 			Map<String, Integer> columnMap = new HashMap<String, Integer>();
 			Map<String, Integer> rowMap = new HashMap<String, Integer>();
@@ -159,8 +163,7 @@ public class ObjectMatrixTextPersistence
 				Object element = elementFactory.create();
 	
 				for (int i = 2; i < line.length; i++) {
-					final int pix = elementAdapter
-						.getPropertyIndex(paramNames[i - 2]);
+					final int pix = attrIdmap.get(paramNames[i - 2]);
 					
 					Object value = parsePropertyValue(
 							elementAdapter.getProperty(pix), line[i]);
@@ -187,8 +190,6 @@ public class ObjectMatrixTextPersistence
 			resultsMatrix.setRows(rows);
 			resultsMatrix.makeData();
 			
-			resultsMatrix.setColumnAdapter(new StringElementAdapter());
-			resultsMatrix.setRowAdapter(new StringElementAdapter());
 			resultsMatrix.setCellAdapter(elementAdapter);
 			
 			for (Object[] result : list) {

@@ -1,18 +1,18 @@
-package org.gitools.model.matrix.element.basic;
+package org.gitools.model.matrix.element;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gitools.model.matrix.element.AbstractElementAdapter;
-import org.gitools.model.matrix.element.AbstractElementProperty;
-import org.gitools.model.matrix.element.IElementProperty;
-
-
 public class DoubleElementAdapter extends AbstractElementAdapter {
 
-	private class Property extends AbstractElementProperty implements Serializable {
-		public Property(String id, String name, String description, Class<?> valueClass) {
+	private static final long serialVersionUID = 3053254525952874940L;
+
+	private class InternalAttribute extends AbstractElementAttribute implements Serializable {
+
+		private static final long serialVersionUID = -6461253830835864744L;
+
+		public InternalAttribute(String id, String name, String description, Class<?> valueClass) {
 			super(id,name, description, valueClass);
 		}
 
@@ -37,7 +37,7 @@ public class DoubleElementAdapter extends AbstractElementAdapter {
 
 	private List<IElementProperty> getPropertyList() {
 		final List<IElementProperty> properties = new ArrayList<IElementProperty>();
-		IElementProperty property = new Property("value", "Value", "" , double.class);
+		IElementProperty property = new InternalAttribute("value", "Value", "" , double.class);
 		properties.add(property);
 		return properties;
 	}

@@ -1,4 +1,4 @@
-package org.gitools.model.matrix;
+package org.gitools.model.table;
 
 public class TableFormatException extends RuntimeException {
 

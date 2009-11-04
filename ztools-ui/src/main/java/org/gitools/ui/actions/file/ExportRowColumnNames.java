@@ -72,22 +72,22 @@ public class ExportRowColumnNames extends BaseAction {
 			
 			if (visibleRows.equals(selected)) {
 				for (int i = 0; i < matrixView.getRowCount(); i++)
-					pw.println(matrixView.getRow(i).toString());
+					pw.println(matrixView.getRowLabel(i));
 			}
 			else if (visibleCols.equals(selected)) {
 				for (int i = 0; i < matrixView.getColumnCount(); i++)
-					pw.println(matrixView.getColumn(i).toString());
+					pw.println(matrixView.getColumnLabel(i));
 			} 
 			else if (hiddenRows.equals(selected)) {
 				for (int i = 0; i < contents.getRowCount(); i++) {
 					if (!inArray(i, matrixView.getVisibleRows()))
-							pw.println(contents.getRow(i).toString());
+							pw.println(contents.getRowLabel(i));
 				}
 			}
 			else if (hiddenCols.equals(selected)) {
 				for (int i = 0; i < contents.getColumnCount(); i++) {
 					if (!inArray(i, matrixView.getVisibleColumns()))
-							pw.println(contents.getColumn(i).toString());
+							pw.println(contents.getColumnLabel(i));
 				}
 			}
 			
@@ -106,5 +106,4 @@ public class ExportRowColumnNames extends BaseAction {
 				return true;
 		return false;
 	}
-
 }

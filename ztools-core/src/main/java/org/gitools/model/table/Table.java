@@ -26,7 +26,7 @@ import org.gitools.model.xml.adapter.TableColumnXmlAdapter;
 public class Table extends Artifact
 	implements ITable, Serializable {
 
-	private int  rowCount = 0;
+	private int rowCount = 0;
 
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	private IMatrix matrix;

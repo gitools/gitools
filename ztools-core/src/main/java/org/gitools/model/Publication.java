@@ -1,47 +1,52 @@
 package org.gitools.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "title", "journal","pubmed",  "abstr","authors", "externalLink" })
 public class Publication 
 	implements Serializable {
 
 	private static final long serialVersionUID = 4040601803383233010L;
 
-	
-	private String title;  
+	private String title;
+	private String authors;
+	private String abstr;
 	private String journal;
 	private String pubmed;
-	
-	private String abstr;
-	
-	//FIXME:
-	@XmlTransient
-	private Date year;
-	
-	
-	@XmlElementWrapper(name = "authors")
-    @XmlElement(name = "author")
-    private List<Author> authors = new ArrayList<Author>();
-	
-	// private Reference linkPublication;
-	private String externalLink;
+	private String url;
 
 	public Publication() {
-
 	}
 
+	public Publication(String title, String authors, String abstr,
+			String journal, String pubmed, String url) {
+		this.title = title;
+		this.authors = authors;
+		this.abstr = abstr;
+		this.journal = journal;
+		this.pubmed = pubmed;
+		this.url = url;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getAuthors() {
+		return authors;
+	}
+	
+	public void setAuthors(String authors) {
+		this.authors = authors;
+	}
+	
 	public String getAbstract() {
 		return abstr;
 	}
@@ -50,55 +55,27 @@ public class Publication
 		this.abstr = abstr;
 	}
 
-	public List<Author> getAuthors() {
-		return authors;
-	}
-
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
-	}
-
-	public void addAuthor(Author e) {
-		this.authors.add(e);
-	}
-
 	public String getJournal() {
 		return journal;
 	}
-
+	
 	public void setJournal(String journal) {
 		this.journal = journal;
 	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Date getYear() {
-		return year;
-	}
-
-	public void setYear(Date year) {
-		this.year = year;
-	}
-
+	
 	public String getPubmed() {
 		return pubmed;
 	}
-
+	
 	public void setPubmed(String pubmed) {
 		this.pubmed = pubmed;
 	}
-
-	public String getExternalLink() {
-		return externalLink;
+	
+	public String getUrl() {
+		return url;
 	}
-
-	public void setExternalLink(String externalLink) {
-		this.externalLink = externalLink;
+	
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

@@ -42,4 +42,8 @@ public class Attribute implements Serializable{
 		this.value = value;
 	}
 
+	public void setNameValue(String name, String value) {
+		setName(name);
+		setValue(value);
+	}
 }

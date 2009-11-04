@@ -4,30 +4,32 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.model.matrix.element.StringElementAdapter;
 
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
+//TODO remove JAXB support
 @XmlAccessorType(XmlAccessType.NONE)
+
 public class StringMatrix extends ObjectMatrix {
 
 	private static final long serialVersionUID = 5061265701379494159L;
 
 	public StringMatrix() {
 		super();
+		
+		setCellAdapter(new StringElementAdapter());
 	}
 	
 	public StringMatrix(
+			String title,
 			ObjectMatrix1D rows,
 			ObjectMatrix1D columns,
-			ObjectMatrix2D cells,
-			IElementAdapter rowAdapter,
-			IElementAdapter columnAdapter,
-			IElementAdapter cellAdapter) {
+			ObjectMatrix2D cells) {
 	    
-		super(rows, columns, cells, rowAdapter, columnAdapter, cellAdapter);
+		super(title, rows, columns, cells, new StringElementAdapter());
 	}
 	
 	public void makeData() {

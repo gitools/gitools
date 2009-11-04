@@ -1,13 +1,5 @@
 package org.gitools.ui.editor.matrix;
 
-
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectFactory2D;
-import cern.colt.matrix.ObjectMatrix1D;
-import cern.colt.matrix.ObjectMatrix2D;
-
 import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -16,8 +8,14 @@ import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.ObjectMatrix;
-import org.gitools.model.matrix.element.array.ArrayElementAdapter;
-import org.gitools.model.matrix.element.basic.StringElementAdapter;
+import org.gitools.model.matrix.element.ArrayElementAdapter;
+
+import cern.colt.matrix.DoubleFactory1D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectFactory1D;
+import cern.colt.matrix.ObjectFactory2D;
+import cern.colt.matrix.ObjectMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 public class DemoEditor extends MatrixEditor {
 
@@ -62,11 +60,10 @@ public class DemoEditor extends MatrixEditor {
 			colNames.setQuick(i, "col " + (i + 1));
 		
 		ObjectMatrix resultsMatrix = new ObjectMatrix(
+				"Demo",
 				rowNames,
 				colNames,   
 				data,
-				new StringElementAdapter(), 
-				new StringElementAdapter(),
 				new ArrayElementAdapter(new String[] {"p-value", "corrected-p-value"}));
 		
 		Analysis analysis = new Analysis();
