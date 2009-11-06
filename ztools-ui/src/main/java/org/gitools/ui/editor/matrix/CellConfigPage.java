@@ -2,6 +2,7 @@ package org.gitools.ui.editor.matrix;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +18,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -26,9 +29,11 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.figure.MatrixFigure;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
+import org.gitools.ui.utils.IconUtils;
 
 public class CellConfigPage extends JPanel {
 
@@ -85,12 +90,43 @@ public class CellConfigPage extends JPanel {
 			}
 		});
 		
-		final JSpinner cellSizeSp = new JSpinner(
-				new SpinnerNumberModel(model.getCellSize(), 1, 64, 1));
-		cellSizeSp.addChangeListener(new ChangeListener() {
+		final JToggleButton syncCellSizeBtn = new JToggleButton(
+				IconUtils.getIconResource(IconNames.chain24));
+		syncCellSizeBtn.setFocusable(false);
+		syncCellSizeBtn.setPreferredSize(new Dimension(30, 30));
+				
+		final JSpinner cellWidthSp = new JSpinner(
+				new SpinnerNumberModel(model.getCellWidth(), 1, 128, 1));
+		final JSpinner cellHeightSp = new JSpinner(
+				new SpinnerNumberModel(model.getCellWidth(), 1, 128, 1));
+		
+		cellWidthSp.addChangeListener(new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent e) {
-				SpinnerNumberModel m = (SpinnerNumberModel) cellSizeSp.getModel();
-				model.setCellSize(m.getNumber().intValue());
+				SpinnerNumberModel m = (SpinnerNumberModel) cellWidthSp.getModel();
+				model.setCellWidth(m.getNumber().intValue());
+				if (syncCellSizeBtn.isSelected())
+					cellHeightSp.getModel().setValue((m.getNumber().intValue()));
+			}
+		});
+		
+		cellHeightSp.addChangeListener(new ChangeListener() {
+			@Override public void stateChanged(ChangeEvent e) {
+				SpinnerNumberModel m = (SpinnerNumberModel) cellHeightSp.getModel();
+				model.setCellHeight(m.getNumber().intValue());
+				if (syncCellSizeBtn.isSelected())
+					cellWidthSp.getModel().setValue((m.getNumber().intValue()));
+			}
+		});
+		
+		syncCellSizeBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				SpinnerNumberModel wm = (SpinnerNumberModel) cellWidthSp.getModel();
+				SpinnerNumberModel hm = (SpinnerNumberModel) cellHeightSp.getModel();
+				boolean wgth = wm.getNumber().intValue() > hm.getNumber().intValue();
+				if (wgth)
+					hm.setValue(wm.getNumber().intValue());
+				else
+					wm.setValue(hm.getNumber().intValue());
 			}
 		});
 		
@@ -98,8 +134,13 @@ public class CellConfigPage extends JPanel {
 		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		mainPanel.add(new JLabel("Show"));
 		mainPanel.add(showCombo);
-		mainPanel.add(new JLabel("Size"));
-		mainPanel.add(cellSizeSp);
+		mainPanel.add(new JSeparator());
+		mainPanel.add(new JLabel("Width"));
+		mainPanel.add(cellWidthSp);
+		mainPanel.add(new JLabel("Height"));
+		mainPanel.add(cellHeightSp);
+		mainPanel.add(syncCellSizeBtn);
+		mainPanel.add(new JSeparator());
 		mainPanel.add(showGridCb);
 		mainPanel.add(gridColorCc);
 				

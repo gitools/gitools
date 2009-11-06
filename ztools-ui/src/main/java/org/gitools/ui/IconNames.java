@@ -57,4 +57,6 @@ public class IconNames {
 	
 	public static final String moveColsRight16 = "/img/MoveColsRight16.gif";
 	public static final String moveColsRight24 = "/img/MoveColsRight24.gif";
+	
+	public static final String chain24 = "/img/Chain.png";
 }

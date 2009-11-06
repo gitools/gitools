@@ -32,8 +32,8 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 		"showGrid", 
 		"gridColor",
 		"cellSize", 
-		"rowSize",
-		"columnSize"} )
+		"rowHeaderSize",
+		"columnHeaderSize"} )
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
@@ -66,18 +66,27 @@ public class MatrixFigure
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 	
-	private int cellSize;
+	//private int cellSize;
+	private int cellWidth;
+	private int cellHeight;
 		
-	private int rowSize;
+	private int rowHeaderSize;
 
-	private int columnSize;
+	private int columnHeaderSize;
 	
 	public MatrixFigure() {
-		this.showGrid = true;
-		this.gridColor = Color.WHITE;
-		this.cellSize = 18;
-		this.rowSize = 400;
-		this.columnSize = 200;
+		this(
+				null, null, //FIXME should it be null ?
+				new AnnotationHeaderDecorator(),
+				new AnnotationHeaderDecorator());
+	}
+	
+	public MatrixFigure(IMatrixView matrixView) {
+		this(
+				matrixView,
+				cellDecoratorFromMatrix(matrixView),
+				new AnnotationHeaderDecorator(),
+				new AnnotationHeaderDecorator());
 	}
 	
 	public MatrixFigure(
@@ -92,17 +101,11 @@ public class MatrixFigure
 		this.columnDecorator = columnsDecorator;
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
-		this.cellSize = 18;
-		this.rowSize = 400;
-		this.columnSize = 200;
-	}
-	
-	public MatrixFigure(IMatrixView matrixView) {
-		this(
-				matrixView,
-				cellDecoratorFromMatrix(matrixView),
-				new AnnotationHeaderDecorator(),
-				new AnnotationHeaderDecorator());
+		//this.cellSize = 18;
+		this.cellWidth = 18;
+		this.cellHeight = 18;
+		this.rowHeaderSize = 400;
+		this.columnHeaderSize = 200;
 	}
 	
 	private static ElementDecorator cellDecoratorFromMatrix(
@@ -188,32 +191,49 @@ public class MatrixFigure
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
-	public int getCellSize() {
+	/*public int getCellSize() {
 		return cellSize;
 	}
 	
 	public void setCellSize(int cellSize) {
 		this.cellSize = cellSize;
 		firePropertyChange(PROPERTY_CHANGED);
+	}*/
+	
+	public int getCellWidth() {
+		return cellWidth;
 	}
 	
-	public int getRowSize() {
-		return rowSize;
-	}
-	
-	public void setRowSize(int rowSize) {
-		this.rowSize = rowSize;
+	public void setCellWidth(int cellWidth) {
+		this.cellWidth = cellWidth;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
-	public int getColumnSize() {
-		return columnSize;
+	public int getCellHeight() {
+		return cellHeight;
 	}
 	
-	public void setColumnSize(int columnSize) {
-		this.columnSize = columnSize;
+	public void setCellHeight(int cellHeight) {
+		this.cellHeight = cellHeight;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
-
+	
+	public int getRowHeaderSize() {
+		return rowHeaderSize;
+	}
+	
+	public void setRowHeaderSize(int rowSize) {
+		this.rowHeaderSize = rowSize;
+		firePropertyChange(PROPERTY_CHANGED);
+	}
+	
+	public int getColumnHeaderSize() {
+		return columnHeaderSize;
+	}
+	
+	public void setColumnHeaderSize(int columnSize) {
+		this.columnHeaderSize = columnSize;
+		firePropertyChange(PROPERTY_CHANGED);
+	}
 	
 }

@@ -473,9 +473,9 @@ public class MatrixPanel extends JPanel {
 		return table.getGridColor();
 	}
 
-	public void setCellSize(int cellSize) {
-		columnsWidth = cellSize;
-		rowsHeight = cellSize;
+	public void setCellSize(int width, int height) {
+		columnsWidth = width;
+		rowsHeight = height;
 		refreshTableColumnsWidth();
 		table.setRowHeight(rowsHeight);
 	}

@@ -32,6 +32,7 @@ import org.gitools.stats.test.results.ZScoreResult;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.matrix.HeaderConfigPage.HeaderType;
 import org.gitools.ui.panels.TemplatePane;
+import org.gitools.ui.panels.heatmap.HeatmapPanel;
 import org.gitools.ui.panels.matrix.MatrixPanel;
 
 import edu.upf.bg.GenericFormatter;
@@ -150,9 +151,9 @@ public class MatrixEditor extends AbstractEditor {
 		else if (MatrixFigure.PROPERTY_CHANGED.equals(propertyName)) {
 			matrixPanel.setShowGrid(model.isShowGrid());
 			matrixPanel.setGridColor(model.getGridColor());
-			matrixPanel.setCellSize(model.getCellSize());
-			matrixPanel.setRowsHeaderWidth(model.getRowSize());
-			matrixPanel.setColumnsHeaderHeight(model.getColumnSize());
+			matrixPanel.setCellSize(model.getCellWidth(), model.getCellHeight());
+			matrixPanel.setRowsHeaderWidth(model.getRowHeaderSize());
+			matrixPanel.setColumnsHeaderHeight(model.getColumnHeaderSize());
 		}
 		
 		matrixPanel.refresh();
@@ -320,9 +321,9 @@ public class MatrixEditor extends AbstractEditor {
 		matrixPanel.setModel(matrixView);
 		matrixPanel.setShowGrid(model.isShowGrid());
 		matrixPanel.setGridColor(model.getGridColor());
-		matrixPanel.setCellSize(model.getCellSize());
-		matrixPanel.setRowsHeaderWidth(model.getRowSize());
-		matrixPanel.setColumnsHeaderHeight(model.getColumnSize());
+		matrixPanel.setCellSize(model.getCellWidth(), model.getCellHeight());
+		matrixPanel.setRowsHeaderWidth(model.getRowHeaderSize());
+		matrixPanel.setColumnsHeaderHeight(model.getColumnHeaderSize());
 		
 		matrixPanel.setCellDecorator(model.getCellDecorator());
 		matrixPanel.setRowDecorator(model.getRowDecorator());
@@ -383,7 +384,8 @@ public class MatrixEditor extends AbstractEditor {
 		configSplitPane.setDividerLocation(defaultDividerLocation);
 		configSplitPane.setOneTouchExpandable(true);
 		configSplitPane.setContinuousLayout(true);
-		configSplitPane.add(matrixPanel);
+		//configSplitPane.add(matrixPanel);
+		configSplitPane.add(new HeatmapPanel(model)); //FIXME
 		configSplitPane.add(detailsPanel);
 		
 		final JSplitPane splitPaneLayout = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

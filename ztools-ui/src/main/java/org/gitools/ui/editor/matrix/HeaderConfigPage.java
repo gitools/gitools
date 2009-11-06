@@ -59,16 +59,16 @@ public class HeaderConfigPage extends JPanel {
 	}
 
 	private void createComponents() {
-		int size = type == HeaderType.rows ? model.getRowSize() 
-				: type == HeaderType.columns ? model.getColumnSize() : 0;
+		int size = type == HeaderType.rows ? model.getRowHeaderSize() 
+				: type == HeaderType.columns ? model.getColumnHeaderSize() : 0;
 		final JSpinner sizeSpinner = new JSpinner(
 				new SpinnerNumberModel(size, 0, 600, 8));
 		sizeSpinner.addChangeListener(new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent e) {
 				SpinnerNumberModel m = (SpinnerNumberModel) sizeSpinner.getModel();
 				switch (type) {
-				case rows: model.setRowSize(m.getNumber().intValue()); break;
-				case columns: model.setColumnSize(m.getNumber().intValue()); break;
+				case rows: model.setRowHeaderSize(m.getNumber().intValue()); break;
+				case columns: model.setColumnHeaderSize(m.getNumber().intValue()); break;
 				}
 			}
 		});
