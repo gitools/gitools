@@ -88,6 +88,24 @@ public class HeatmapBodyDrawer {
 				cellHeight * rowCount + extBorder);
 	}
 	
+	public int getRowFromY(int y) {
+		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int rowCount = heatmap.getMatrixView().getRowCount();
+		int extBorder = 2 * 1 - 1;
+		int row = y > 0 && y < cellHeight * rowCount + extBorder ? (y - 1) / cellHeight : -1;
+		return row;
+	}
+	
+	public int getColumnFromX(int x) {
+		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int cellWidth = heatmap.getCellWidth() + gridSize;
+		int columnCount = heatmap.getMatrixView().getColumnCount();
+		int extBorder = 2 * 1 - 1;
+		int column = x > 0 && x < cellWidth * columnCount + extBorder ? (x - 1) / cellWidth : -1;
+		return column;
+	}
+	
 	public ElementDecorator getDecorator() {
 		return decorator;
 	}

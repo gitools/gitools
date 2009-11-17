@@ -6,14 +6,14 @@ import java.awt.Rectangle;
 
 import org.gitools.model.figure.MatrixFigure;
 
-public class HeatMapDraw {
+public class HeatmapDrawer {
 
 	private MatrixFigure heatmap;
 	
-	public HeatMapDraw() {
+	public HeatmapDrawer() {
 	}
 
-	public HeatMapDraw(MatrixFigure heatmap) {
+	public HeatmapDrawer(MatrixFigure heatmap) {
 		this.heatmap = heatmap;
 	}
 	
