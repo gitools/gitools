@@ -3,33 +3,28 @@ package org.gitools.ui.panels.heatmap;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
-import javax.swing.Scrollable;
-import javax.swing.SwingConstants;
 
-import org.gitools.heatmap.HeatmapBodyDrawer;
+import org.gitools.heatmap.HeatmapHeaderDrawer;
 import org.gitools.model.figure.MatrixFigure;
 
-public class HeatmapBodyPanel extends JPanel implements Scrollable {
+public class HeatmapHeaderPanel extends JPanel {
 
 	private static final long serialVersionUID = 930370133535101914L;
 
 	private MatrixFigure heatmap;
 	
-	private HeatmapBodyDrawer drawer;
+	private HeatmapHeaderDrawer drawer;
 		
-	public HeatmapBodyPanel(MatrixFigure heatmap) {
+	public HeatmapHeaderPanel(MatrixFigure heatmap, boolean horizontal) {
 		this.heatmap = heatmap;
 		
-		this.drawer = new HeatmapBodyDrawer(heatmap);
+		this.drawer = new HeatmapHeaderDrawer(heatmap, horizontal);
 		
 		heatmapChanged();
-
-		setBorder(null);
 	}
 	
 	public MatrixFigure getHeatmap() {
@@ -68,39 +63,5 @@ public class HeatmapBodyPanel extends JPanel implements Scrollable {
 	@Override
 	protected void paintComponent(Graphics g) {
 		drawer.draw((Graphics2D) g);
-	}
-
-	@Override
-	public int getScrollableBlockIncrement(
-			Rectangle visibleRect, int orientation, int direction) {
-		
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
-		int size = orientation == SwingConstants.HORIZONTAL ?
-			heatmap.getCellWidth() : heatmap.getCellHeight();
-		return size + gridSize;
-	}
-
-	@Override
-	public int getScrollableUnitIncrement(
-			Rectangle visibleRect, int orientation, int direction) {
-		
-		return 1;
-	}
-	
-	@Override
-	public Dimension getPreferredScrollableViewportSize() {
-		Dimension sz = getPreferredSize();
-		return sz;
-	}
-
-	@Override
-	public boolean getScrollableTracksViewportHeight() {
-		return false;
-	}
-
-	@Override
-	public boolean getScrollableTracksViewportWidth() {
-		return false;
-	}
-	
+	}	
 }

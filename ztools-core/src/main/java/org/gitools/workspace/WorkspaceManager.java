@@ -102,6 +102,11 @@ public class WorkspaceManager {
 			JAXBContext context = JAXBContext.newInstance(Workspace.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			
+			File path = workspace.getXmlPath().getParentFile();
+			if (!path.exists())
+				path.mkdirs();
+			
 			m.marshal(workspace, new FileOutputStream(workspace.getXmlPath()));
 		} catch (Exception e) {
 			e.printStackTrace();

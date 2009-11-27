@@ -14,6 +14,10 @@ public class HeatmapPanel extends JPanel {
 	private MatrixFigure heatmap;
 
 	private HeatmapBodyPanel bodyPanel;
+
+	private HeatmapHeaderPanel columnHeaderPanel;
+
+	private HeatmapHeaderPanel rowHeaderPanel;
 	
 	public HeatmapPanel(MatrixFigure heatmap) {
 		this.heatmap = heatmap;
@@ -31,8 +35,13 @@ public class HeatmapPanel extends JPanel {
 	
 	private void createComponents() {
 		bodyPanel = new HeatmapBodyPanel(heatmap);
+		columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
+		rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
 		
 		JScrollPane scrollPane = new JScrollPane(bodyPanel);
+		scrollPane.setViewportBorder(null);
+		scrollPane.setColumnHeaderView(columnHeaderPanel);
+		scrollPane.setRowHeaderView(rowHeaderPanel);
 		
 		setLayout(new BorderLayout());
 		add(scrollPane, BorderLayout.CENTER);
