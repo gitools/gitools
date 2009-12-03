@@ -7,11 +7,10 @@ import org.gitools.model.matrix.Matrix;
 import org.gitools.model.xml.MatrixXmlElement;
 import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.FileSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
-//FIXME Review: calculon ????
+
 public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 
 	IPathResolver pathResolver;
@@ -23,24 +22,12 @@ public class MatrixXmlAdapter extends XmlAdapter<MatrixXmlElement, IMatrix> {
 	
 	@Override
 	public MatrixXmlElement marshal(IMatrix v) throws Exception {
-		if (v== null) return null; 
-		Matrix matrix = (Matrix) v;
-		matrix.setTitle("calculon");
-		matrix.setDescription("description");
-		return new MatrixXmlElement(matrix);
+		return new MatrixXmlElement(PersistenceManager.getDefault().getEntityFile(v));
 	}
 
 	@Override
 	public IMatrix unmarshal(MatrixXmlElement v) throws Exception {
-		Matrix contents = v.getMatrix();
-		String extension = FileSuffixes.getEntityExtension(contents.getClass());
-		//FIXME Artifact.getResource()
-		/*Matrix matrix =  (Matrix) PersistenceManager.load(fileObjectResolver,
-				contents.getResource(), extension,
-				new NullProgressMonitor());
-		matrix.setTitle(contents.getTitle());
-		matrix.setDescription(contents.getDescription());
-		return matrix;*/
-		return null;
+		return (Matrix) PersistenceManager.getDefault().load(
+				pathResolver, v.getResource(), null, new NullProgressMonitor());
 	}
 }

@@ -34,7 +34,6 @@ public class FileSuffixes {
 		suffixesMap.put(AnnotationMatrix.class, FileSuffixes.ANNOTATION_MATRIX);	
 	}
 
-	//FIXME Esto no va aqui
 	public static String getEntityExtension(Class<?> entityClass) {
 		return (String) suffixesMap.get(entityClass);
 	}

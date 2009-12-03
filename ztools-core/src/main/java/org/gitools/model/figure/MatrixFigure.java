@@ -31,7 +31,8 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 		"matrixView",
 		"showGrid", 
 		"gridColor",
-		"cellSize", 
+		"cellHeight",
+		"cellWidth",
 		"rowHeaderSize",
 		"columnHeaderSize"} )
 

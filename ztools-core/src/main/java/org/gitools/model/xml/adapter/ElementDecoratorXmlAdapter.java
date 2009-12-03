@@ -11,15 +11,16 @@ public class ElementDecoratorXmlAdapter
 	
 	@Override
 	public ElementDecoratorXmlElement marshal(ElementDecorator v) throws Exception {
-		return new ElementDecoratorXmlElement(ElementDecoratorFactory
-				.getDescriptor(v.getClass()).getName(), v.getConfiguration());
+		return new ElementDecoratorXmlElement(
+				ElementDecoratorFactory.getDescriptor(
+						v.getClass()).getName(), v.getConfiguration());
 	}
 
 	@Override
 	public ElementDecorator unmarshal(ElementDecoratorXmlElement v) throws Exception {
-
-		ElementDecorator decorator = (ElementDecorator) ElementDecoratorFactory
-				.create(v.getDecorator(), null);
+		ElementDecorator decorator = 
+			(ElementDecorator) ElementDecoratorFactory.
+				create(v.getDecorator(), null);
 		decorator.setConfiguration(v.getConfiguration());
 		return decorator;
 	}

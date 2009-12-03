@@ -16,9 +16,7 @@ public class FileXmlAdapter extends XmlAdapter<String, File> {
 
 	@Override
 	public String marshal(File resource) throws Exception {
-		if(resource == null)
-			return null;
-		
+		if(resource == null) return null;
 		return resource.getName().toString();
 	}
 

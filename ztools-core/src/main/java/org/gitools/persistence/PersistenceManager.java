@@ -111,7 +111,7 @@ public class PersistenceManager implements Serializable {
 			return entityCache.get(fileKey);
 
 		//if (mimeType == null)
-			mimeType = MimeTypeManager.getDefault().fromFile(file);
+		mimeType = MimeTypeManager.getDefault().fromFile(file);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(pathResolver, mimeType);
