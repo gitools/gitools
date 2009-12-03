@@ -24,7 +24,7 @@ public class WorkspaceManagerTest extends TestCase {
 
 	@Test
 	public void testWorkspaceOpen() {
-		File xmlPath = openResourceFile("/workspace/" + FileSuffixes.PROJECT);
+		File xmlPath = openResourceFile("workspace/" + FileSuffixes.WORKSPACE);
 		WorkspaceManager wm = WorkspaceManager.createManager(xmlPath);
 		Workspace ws = wm.getWorkspace();
 		assertNotNull(ws);
@@ -73,6 +73,7 @@ public class WorkspaceManagerTest extends TestCase {
 	
 	protected File openResourceFile(String resourceName) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		System.out.println(resourceName);
 		URL resource = classLoader.getResource(resourceName);
 		URI uri = null;
 		try {

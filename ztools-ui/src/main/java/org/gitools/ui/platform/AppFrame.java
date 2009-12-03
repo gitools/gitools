@@ -24,6 +24,9 @@ import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.Properties;
+import org.apache.velocity.app.VelocityEngine;
+import org.gitools.ui.panels.TemplatePane;
 
 public class AppFrame extends JFrame {
 
@@ -55,6 +58,8 @@ public class AppFrame extends JFrame {
 	private JTabbedPane leftPanel;
 	
 	private NavigatorPanel navPanel;
+
+	private TemplatePane detailsPanel;
 	
 	private EditorsPanel editorsPanel;
 	
@@ -121,7 +126,13 @@ public class AppFrame extends JFrame {
 				
 		leftPanel = new JTabbedPane();
 		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
-		leftPanel.add(navPanel, "Navigator");
+		//leftPanel.add(navPanel, "Navigator");
+
+		/* Details panel */
+		Properties props = new Properties();
+		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+		detailsPanel = new TemplatePane(props);
+		leftPanel.add(detailsPanel, "Details");
 		
 		editorsPanel = new EditorsPanel();
 		

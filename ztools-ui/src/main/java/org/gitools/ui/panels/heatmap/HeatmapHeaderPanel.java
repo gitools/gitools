@@ -3,6 +3,7 @@ package org.gitools.ui.panels.heatmap;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -62,6 +63,9 @@ public class HeatmapHeaderPanel extends JPanel {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-		drawer.draw((Graphics2D) g);
+		Dimension size = drawer.getSize();
+		Rectangle box = new Rectangle(0, 0, size.width, size.height);
+		Rectangle clip = g.getClipBounds();
+		drawer.draw((Graphics2D) g, box, clip);
 	}	
 }

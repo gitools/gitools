@@ -10,6 +10,8 @@ import org.gitools.model.matrix.StringMatrix;
 
 public class FileSuffixes {
 
+	public static final String WORKSPACE = "workspace.xml";
+
 	public static final String PROJECT = "project.xml";
 	public static final String CONTENT = "contents.xml";
 	

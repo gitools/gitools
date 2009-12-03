@@ -10,51 +10,42 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 
-public class HeatmapBodyDrawer {
-
-	private MatrixFigure heatmap;
+public class HeatmapBodyDrawer extends AbstractDrawer {
 	
 	private ElementDecorator decorator;
-	
+
 	public HeatmapBodyDrawer(MatrixFigure heatmap) {
-		this.heatmap = heatmap;
+		super(heatmap);
 	}
-	
-	public MatrixFigure getHeatmap() {
-		return heatmap;
-	}
-	
-	public void setHeatmap(MatrixFigure heatmap) {
-		this.heatmap = heatmap;
-	}
-	
-	public void draw(Graphics2D g) {
-		Dimension size = getSize();
-		Rectangle box = new Rectangle(0, 0, size.width, size.height);
-		Rectangle clip = g.getClipBounds();
-		
-		int extBorderSize = 1;
-		
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+
+	@Override
+	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
+
+		int borderSize = getBorderSize();
+		int gridSize = getGridSize();
 		
 		// Clear background to grid color
 		g.setColor(heatmap.getGridColor());
-		g.fillRect(box.x, box.y, box.width - 1, box.height - 1);
+		g.fillRect(clip.x, clip.y, clip.width, clip.height);
 		
 		// Draw borders and grid background
-		g.setColor(Color.BLACK);
-		g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-		box.grow(-extBorderSize, -extBorderSize);
+		if (heatmap.isShowBorders()) {
+			g.setColor(Color.BLACK);
+			g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
+			box.grow(-borderSize, -borderSize);
+		}
 		
 		IMatrixView data = heatmap.getMatrixView();
 		
 		int cellWidth = heatmap.getCellWidth() + gridSize;
 		int cellHeight = heatmap.getCellHeight() + gridSize;
-		
+
+		//TODO take into account extBorderSize
 		int rowStart = clip.y / cellHeight;
 		int rowEnd = (clip.y + clip.height + cellHeight - 1) / cellHeight;
 		rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
-		
+
+		//TODO take into account extBorderSize
 		int colStart = clip.x / cellWidth;
 		int colEnd = (clip.x + clip.width + cellWidth - 1) / cellWidth;
 		colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
@@ -76,6 +67,7 @@ public class HeatmapBodyDrawer {
 		}
 	}
 
+	@Override
 	public Dimension getSize() {
 		int gridSize = heatmap.isShowGrid() ? 1 : 0;
 		int cellWidth = heatmap.getCellWidth() + gridSize;

@@ -67,13 +67,14 @@ public class MatrixFigure
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 	
-	//private int cellSize;
 	private int cellWidth;
 	private int cellHeight;
 		
 	private int rowHeaderSize;
 
 	private int columnHeaderSize;
+
+	private boolean showBorders;
 	
 	public MatrixFigure() {
 		this(
@@ -102,11 +103,11 @@ public class MatrixFigure
 		this.columnDecorator = columnsDecorator;
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
-		//this.cellSize = 18;
 		this.cellWidth = 18;
 		this.cellHeight = 18;
 		this.rowHeaderSize = 400;
 		this.columnHeaderSize = 200;
+		this.showBorders = false;
 	}
 	
 	private static ElementDecorator cellDecoratorFromMatrix(
@@ -191,16 +192,7 @@ public class MatrixFigure
 		this.gridColor = gridColor;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
-	
-	/*public int getCellSize() {
-		return cellSize;
-	}
-	
-	public void setCellSize(int cellSize) {
-		this.cellSize = cellSize;
-		firePropertyChange(PROPERTY_CHANGED);
-	}*/
-	
+
 	public int getCellWidth() {
 		return cellWidth;
 	}
@@ -236,5 +228,12 @@ public class MatrixFigure
 		this.columnHeaderSize = columnSize;
 		firePropertyChange(PROPERTY_CHANGED);
 	}
-	
+
+	public boolean isShowBorders() {
+		return showBorders;
+	}
+
+	public void setShowBorders(boolean showBorders) {
+		this.showBorders = showBorders;
+	}
 }

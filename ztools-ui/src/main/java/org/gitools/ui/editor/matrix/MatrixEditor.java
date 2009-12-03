@@ -379,25 +379,28 @@ public class MatrixEditor extends AbstractEditor {
 		tabbedPane.addTab("Columns", columnsConfigPage);
 		tabbedPane.addTab("Cells", cellsConfigPage);
 		
-		configSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		configSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		configSplitPane.setResizeWeight(1.0);
-		configSplitPane.setDividerLocation(defaultDividerLocation);
+		//configSplitPane.setDividerLocation(defaultDividerLocation);
+		configSplitPane.setDividerLocation(1.0);
 		configSplitPane.setOneTouchExpandable(true);
 		configSplitPane.setContinuousLayout(true);
 		//configSplitPane.add(matrixPanel);
 		configSplitPane.add(new HeatmapPanel(model)); //FIXME
-		configSplitPane.add(detailsPanel);
+		configSplitPane.add(tabbedPane);
+		//configSplitPane.add(detailsPanel);
 		
-		final JSplitPane splitPaneLayout = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		/*final JSplitPane splitPaneLayout = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPaneLayout.setResizeWeight(1.0);
 		splitPaneLayout.setDividerLocation(defaultDividerLocation);
 		splitPaneLayout.setOneTouchExpandable(true);
 		splitPaneLayout.setContinuousLayout(true);
 		splitPaneLayout.add(configSplitPane);
-		splitPaneLayout.add(tabbedPane);
+		splitPaneLayout.add(tabbedPane);*/
 			
 		setLayout(new BorderLayout());
-		add(splitPaneLayout, BorderLayout.CENTER);
+		//add(splitPaneLayout, BorderLayout.CENTER);
+		add(configSplitPane, BorderLayout.CENTER);
 	}
 	
 	private void refreshColorMatrixWidth() {

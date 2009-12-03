@@ -40,6 +40,10 @@ public class HeatmapBodyPanel extends JPanel implements Scrollable {
 		this.heatmap = heatmap;
 		heatmapChanged();
 	}
+
+	public HeatmapBodyDrawer getDrawer() {
+		return drawer;
+	}
 	
 	private void heatmapChanged() {
 		setPreferredSize(drawer.getSize());
@@ -67,7 +71,10 @@ public class HeatmapBodyPanel extends JPanel implements Scrollable {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-		drawer.draw((Graphics2D) g);
+		Dimension size = drawer.getSize();
+		Rectangle box = new Rectangle(0, 0, size.width, size.height);
+		Rectangle clip = g.getClipBounds();
+		drawer.draw((Graphics2D) g, box, clip);
 	}
 
 	@Override

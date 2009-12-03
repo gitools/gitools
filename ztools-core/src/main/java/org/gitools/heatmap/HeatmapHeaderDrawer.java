@@ -11,126 +11,89 @@ import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.figure.MatrixFigure;
 import org.gitools.model.matrix.IMatrixView;
 
-public class HeatmapHeaderDrawer {
+public class HeatmapHeaderDrawer extends AbstractDrawer {
 
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
-	
-	private MatrixFigure heatmap;
 	
 	private boolean horizontal;
 	
 	public HeatmapHeaderDrawer(MatrixFigure heatmap, boolean horizontal) {
-		this.heatmap = heatmap;
+		super(heatmap);
 		this.horizontal = horizontal;
 	}
-	
-	public MatrixFigure getHeatmap() {
-		return heatmap;
-	}
-	
-	public void setHeatmap(MatrixFigure heatmap) {
-		this.heatmap = heatmap;
-	}
-	
-	public void draw(Graphics2D g) {
-		Dimension size = getSize();
-		Rectangle box = new Rectangle(0, 0, size.width, size.height);
-		Rectangle clip = g.getClipBounds();
-		
-		int extBorderSize = 1;
-		
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
-		
-		// Draw borders and grid background
-		g.setColor(Color.BLACK);
-		
-		/*g.drawLine(box.x, box.y, box.x + box.width - 1, box.y);
-		g.drawLine(box.x, box.y, box.x, box.y + box.height - 1);
-		g.drawLine(box.x, box.y + box.height - 1, box.x + box.width - 1, box.y + box.height - 1);*/
-		
-		g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-		
-		box.x += horizontal ? 0 : extBorderSize; box.width -= extBorderSize * (horizontal ? 1 : 2);
-		box.y += extBorderSize; box.height -= extBorderSize * (horizontal ? 1 : 2);
-		g.setClip(box.x, box.y, box.width, box.height);
-		
+
+	@Override
+	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
+
+		// Draw borders
+		if (heatmap.isShowBorders()) {
+			int borderSize = getBorderSize();
+
+			g.setColor(Color.BLACK);
+			g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
+			box.x += horizontal ? 0 : borderSize;
+			box.width -= borderSize * (horizontal ? 1 : 2);
+			box.y += borderSize;
+			box.height -= borderSize * (horizontal ? 1 : 2);
+		}
+
 		IMatrixView data = heatmap.getMatrixView();
-		
-		int cellWidth = horizontal ? heatmap.getCellWidth() + gridSize : heatmap.getRowHeaderSize();
-		
-		int cellHeight = horizontal ? heatmap.getColumnHeaderSize() : heatmap.getCellHeight() + gridSize;
-		
+
 		HeaderDecorator deco = horizontal ? heatmap.getColumnDecorator() : heatmap.getRowDecorator();
 		HeaderDecoration decoration = new HeaderDecoration();
-		
+
 		final Color gridColor = heatmap.getGridColor();
+
+		int gridSize = getGridSize();
 		
+		int maxWidth = horizontal ? clip.height : clip.width;
+		int width = horizontal ? heatmap.getColumnHeaderSize() : heatmap.getRowHeaderSize();
+		int height = horizontal ? heatmap.getCellWidth() + gridSize : heatmap.getCellHeight() + gridSize;
+
+		width = width < maxWidth ? maxWidth : width;
+
+		int clipStart = horizontal ? clip.x - box.x : clip.y - box.y;
+		int clipEnd = horizontal ? clipStart + clip.width : clipStart + clip.height;
+		int count = horizontal ? data.getColumnCount() : data.getRowCount();
+
+		int start = (clipStart - height) / height;
+		int end = (clipEnd + height - 1) / height;
+
+		start = start > 0 ? start : 0;
+		end = end < count ? end : count;
+
+		final AffineTransform at = new AffineTransform();
 		if (horizontal) {
-			int colStart = (clip.x - cellWidth) / cellWidth;
-			colStart = colStart > 0 ? colStart : 0;
-			int colEnd = (clip.x + clip.width + cellWidth - 1) / cellWidth;
-			colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
-			
-			final AffineTransform at = new AffineTransform();
-			at.setToTranslation(0, cellHeight);
+			at.setToTranslation(0, width);
 			g.transform(at);
 			at.setToRotation(radianAngle90);
 			g.transform(at);
-			
-			g.setColor(Color.RED);
-			g.drawRect(0, 0, cellHeight, cellWidth * heatmap.getMatrixView().getColumnCount());
-			g.drawLine(0, 0, cellHeight, cellWidth * heatmap.getMatrixView().getColumnCount());
-			
-			int tmp = cellWidth;
-			cellWidth = cellHeight;
-			cellHeight = tmp;
-			
-			int y = box.y + colStart * cellHeight;
-			int x = box.x;
-			for (int col = colStart; col < colEnd; col++) {
-				String element = data.getColumnLabel(col);
-				deco.decorate(decoration, element);
-				
-				g.setColor(decoration.getBgColor());
-				g.fillRect(x, y, cellWidth - gridSize, cellHeight - gridSize);
-				
-				g.setColor(gridColor);
-				g.drawLine(x, y + cellHeight - 1, x + cellWidth - 1, y + cellHeight - 1);
-				
-				g.setColor(decoration.getFgColor());
-				int fh = g.getFontMetrics().getHeight();
-				g.drawString(element, x, y + ((fh + cellHeight) / 2) - 1); //TODO extract constant
-				
-				y += cellHeight;
-			}
 		}
-		else {
-			int rowStart = (clip.y - cellHeight) / cellHeight;
-			rowStart = rowStart > 0 ? rowStart : 0;
-			int rowEnd = (clip.y + clip.height + cellHeight - 1) / cellHeight;
-			rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
-			
-			int x = box.x;
-			int y = box.y + rowStart * cellHeight;
-			for (int row = rowStart; row < rowEnd; row++) {
-				String element = data.getRowLabel(row);
-				deco.decorate(decoration, element);
-				
-				g.setColor(decoration.getBgColor());
-				g.fillRect(x, y, cellWidth - gridSize + 1, cellHeight - gridSize);
-				
-				g.setColor(gridColor);
-				g.drawLine(x, y + cellHeight - 1, x + cellWidth - 1, y + cellHeight - 1);
-				
-				g.setColor(decoration.getFgColor());
-				int fh = g.getFontMetrics().getHeight();
-				g.drawString(element, x, y + ((fh + cellHeight) / 2) - 1); //TODO extract constant
-				
-				y += cellHeight;
-			}
+
+		int fontHeight = g.getFontMetrics().getHeight();
+		int fontOffset = ((fontHeight + height) / 2) - 1;
+
+		int x = box.x;
+		int y = box.y + start * height;
+		for (int index = start; index < end; index++) {
+			String element = horizontal ?
+				data.getColumnLabel(index) : data.getRowLabel(index);
+			deco.decorate(decoration, element);
+
+			g.setColor(decoration.getBgColor());
+			g.fillRect(x, y, width, height - gridSize);
+
+			g.setColor(gridColor);
+			g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+
+			g.setColor(decoration.getFgColor());
+			g.drawString(element, x, y + fontOffset);
+
+			y += height;
 		}
 	}
-	
+
+	@Override
 	public Dimension getSize() {
 		int gridSize = heatmap.isShowGrid() ? 1 : 0;
 		int extBorder = 2 * 1 - 1;
