@@ -3,6 +3,7 @@ package org.gitools.heatmap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.gitools.model.decorator.ElementDecoration;
@@ -52,14 +53,20 @@ public class HeatmapBodyDrawer extends AbstractDrawer {
 		
 		ElementDecorator deco = heatmap.getCellDecorator();
 		ElementDecoration decoration = new ElementDecoration();
-		
+
+		int leadRow = heatmap.getMatrixView().getSelectionLeadRow();
+		int leadColumn = heatmap.getMatrixView().getSelectionLeadColumn();
+
 		int y = box.y + rowStart * cellHeight;
 		for (int row = rowStart; row < rowEnd; row++) {
 			int x = box.x + colStart * cellWidth;
 			for (int col = colStart; col < colEnd; col++) {
 				Object element = data.getCell(row, col);
 				deco.decorate(decoration, element);
-				g.setColor(decoration.getBgColor());
+				Color color = decoration.getBgColor();
+				if (row == leadRow && col == leadColumn)
+					color = color.darker();
+				g.setColor(color);
 				g.fillRect(x, y, cellWidth - gridSize, cellHeight - gridSize);
 				x += cellWidth;
 			}
@@ -97,7 +104,19 @@ public class HeatmapBodyDrawer extends AbstractDrawer {
 		int column = x > 0 && x < cellWidth * columnCount + extBorder ? (x - 1) / cellWidth : -1;
 		return column;
 	}
-	
+
+	public Point getCoordinates(Point p) {
+		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int rowCount = heatmap.getMatrixView().getRowCount();
+		int cellWidth = heatmap.getCellWidth() + gridSize;
+		int columnCount = heatmap.getMatrixView().getColumnCount();
+		int extBorder = /*2 * 1 - 1*/ 0;
+		int row = p.y > 0 && p.y < cellHeight * rowCount + extBorder ? (p.y - 1) / cellHeight : -1;
+		int column = p.x > 0 && p.x < cellWidth * columnCount + extBorder ? (p.x - 1) / cellWidth : -1;
+		return new Point(row, column);
+	}
+
 	public ElementDecorator getDecorator() {
 		return decorator;
 	}

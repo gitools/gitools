@@ -31,6 +31,8 @@ public class HeatmapPanel extends JPanel {
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
 	
+	private HeatmapBodyMouseController bodyMouseController;
+	
 	public HeatmapPanel(MatrixFigure heatmap) {
 		this.heatmap = heatmap;
 		
@@ -53,6 +55,9 @@ public class HeatmapPanel extends JPanel {
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
+		bodyMouseController =
+				new HeatmapBodyMouseController(heatmap, bodyVP, bodyPanel);
+		
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 

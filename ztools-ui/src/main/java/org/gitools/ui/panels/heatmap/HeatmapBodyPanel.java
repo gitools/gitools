@@ -55,6 +55,15 @@ public class HeatmapBodyPanel extends JPanel implements Scrollable {
 					repaint();
 			}
 		});
+
+		heatmap.getMatrixView().addPropertyChangeListener(new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals(MatrixFigure.PROPERTY_CHANGED))
+					heatmapPropertyChanged();
+				else
+					repaint();
+			}
+		});
 	}
 	
 	private void heatmapPropertyChanged() {
