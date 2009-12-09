@@ -22,4 +22,9 @@ public class FilePathResolver implements IPathResolver {
 			file = new File(basePath, location);
 		return file;
 	}
+
+	@Override
+	public String pathToString() {
+		return basePath.toString();
+	}
 }

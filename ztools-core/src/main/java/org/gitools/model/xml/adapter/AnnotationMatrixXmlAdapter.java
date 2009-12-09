@@ -1,11 +1,12 @@
 package org.gitools.model.xml.adapter;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.FileSuffixes;
 
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 
@@ -21,18 +22,15 @@ public class AnnotationMatrixXmlAdapter
 
 	@Override
 	public String marshal(AnnotationMatrix v) throws Exception {
-		if(v == null) return null;
-		//FIXME Artifact.getResource()
-		//return v.getResource().toString();
-		return null;
-	}
-
+		return PersistenceManager.getDefault().getEntityFile(v).toURI()
+				.relativize(
+						URI.create(pathResolver.pathToString())).toString();
+		}
+	
+	@Override
 	public AnnotationMatrix unmarshal(String v) throws Exception {
 		return (AnnotationMatrix) PersistenceManager.getDefault().load(
-				pathResolver,
-				pathResolver.createResourceFromString(v),
-				FileSuffixes.ANNOTATION_MATRIX,
-				new NullProgressMonitor());
-	}
+				pathResolver, pathResolver.createResourceFromString(v), null, new NullProgressMonitor());
 
+	}
 }

@@ -8,4 +8,5 @@ public interface IPathResolver {
 	File createResourceFromString(String location);
 	
 	//TODO Add pathToString() : String
+	String pathToString();
 }

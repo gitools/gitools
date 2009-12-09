@@ -1,6 +1,7 @@
 package org.gitools.model.xml.adapter;
 
 import java.io.File;
+import java.net.URI;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -16,8 +17,8 @@ public class FileXmlAdapter extends XmlAdapter<String, File> {
 
 	@Override
 	public String marshal(File resource) throws Exception {
-		if(resource == null) return null;
-		return resource.getName().toString();
+		return resource.toURI().relativize(
+				URI.create(pathResolver.pathToString())).toString();
 	}
 
 	@Override
