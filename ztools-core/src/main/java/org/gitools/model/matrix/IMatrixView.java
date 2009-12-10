@@ -39,9 +39,11 @@ public interface IMatrixView extends IModel, IMatrix {
 	
 	int[] getSelectedRows();
 	void setSelectedRows(int[] indices);
-	
+	boolean isRowSelected(int index);
+
 	int[] getSelectedColumns();
 	void setSelectedColumns(int[] indices);
+	boolean isColumnSelected(int index);
 	
 	void selectAll();
 	void invertSelection();

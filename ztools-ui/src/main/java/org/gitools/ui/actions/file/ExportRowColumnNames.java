@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.actions.BaseAction;
@@ -30,7 +30,7 @@ public class ExportRowColumnNames extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof MatrixFigure
+		return model instanceof HeatmapFigure
 			|| model instanceof IMatrixView;
 	}
 	

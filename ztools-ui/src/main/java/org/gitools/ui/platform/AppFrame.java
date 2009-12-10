@@ -15,7 +15,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
-import org.gitools.ui.editor.matrix.DemoEditor;
+import org.gitools.ui.editor.heatmap.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.platform.navigator.NavigatorPanel;
 import org.gitools.ui.utils.IconUtils;
@@ -27,6 +27,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
 import org.apache.velocity.app.VelocityEngine;
 import org.gitools.ui.panels.TemplatePane;
+import org.gitools.ui.view.details.DetailsView;
 
 public class AppFrame extends JFrame {
 
@@ -59,7 +60,7 @@ public class AppFrame extends JFrame {
 	
 	private NavigatorPanel navPanel;
 
-	private TemplatePane detailsPanel;
+	private DetailsView detailsView;
 	
 	private EditorsPanel editorsPanel;
 	
@@ -86,7 +87,7 @@ public class AppFrame extends JFrame {
 		editorsPanel.setSelectedIndex(0);
 		
 		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
+			@Override public void windowClosing(WindowEvent e) {
 				Options.instance().save();
 				System.exit(0);
 			}
@@ -128,11 +129,9 @@ public class AppFrame extends JFrame {
 		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
 		//leftPanel.add(navPanel, "Navigator");
 
-		/* Details panel */
-		Properties props = new Properties();
-		props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-		detailsPanel = new TemplatePane(props);
-		leftPanel.add(detailsPanel, "Details");
+		/* Details view */
+		detailsView = new DetailsView();
+		leftPanel.add(detailsView, "Details");
 		
 		editorsPanel = new EditorsPanel();
 		
@@ -213,6 +212,10 @@ public class AppFrame extends JFrame {
 	
 	public JobProcessor getJobProcessor() {
 		return jobProcessor;
+	}
+
+	public DetailsView getDetailsView() {
+		return detailsView;
 	}
 	
 	public void setStatusText(String text) {

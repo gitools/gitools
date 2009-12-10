@@ -3,12 +3,13 @@ package org.gitools.heatmap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
 import org.gitools.model.decorator.HeaderDecoration;
 import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.IMatrixView;
 
 public class HeatmapHeaderDrawer extends AbstractDrawer {
@@ -17,7 +18,7 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 	
 	private boolean horizontal;
 	
-	public HeatmapHeaderDrawer(MatrixFigure heatmap, boolean horizontal) {
+	public HeatmapHeaderDrawer(HeatmapFigure heatmap, boolean horizontal) {
 		super(heatmap);
 		this.horizontal = horizontal;
 	}
@@ -77,16 +78,27 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 		int y = box.y + start * height;
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
-				data.getColumnLabel(index) : data.getRowLabel(index);
+				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
 			deco.decorate(decoration, element);
 
-			g.setColor(decoration.getBgColor());
+			Color bgColor = decoration.getBgColor();
+			Color fgColor = decoration.getFgColor();
+
+			boolean selected = horizontal ?
+				data.isColumnSelected(index) : data.isRowSelected(index);
+
+			if (selected) {
+				bgColor = bgColor.darker();
+				fgColor = fgColor.darker();
+			}
+
+			g.setColor(bgColor);
 			g.fillRect(x, y, width, height - gridSize);
 
 			g.setColor(gridColor);
 			g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
 
-			g.setColor(decoration.getFgColor());
+			g.setColor(fgColor);
 			g.drawString(element, x, y + fontOffset);
 
 			y += height;
@@ -111,5 +123,53 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 			return new Dimension(
 					headerSize, cellHeight * rowCount + extBorder);
 		}
+	}
+
+	@Override
+	public HeatmapPosition getPosition(Point p) {
+		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+
+		int row = -1;
+		int col = -1;
+
+		if (horizontal) {
+			int cellSize = heatmap.getCellWidth() + gridSize;
+			int totalSize = cellSize * heatmap.getMatrixView().getColumnCount();
+			if (p.x >= 0 && p.x < totalSize)
+				col = p.x / cellSize;
+		}
+		else {
+			int cellSize = heatmap.getCellHeight() + gridSize;
+			int totalSize = cellSize * heatmap.getMatrixView().getRowCount();
+			if (p.y >= 0 && p.y < totalSize)
+				row = p.y / cellSize;
+		}
+
+		return new HeatmapPosition(row, col);
+	}
+
+	@Override
+	public Point getPoint(HeatmapPosition p) {
+		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+
+		int x = 0;
+		int y = 0;
+
+		if (horizontal) {
+			int cellSize = heatmap.getCellWidth() + gridSize;
+			int totalSize = cellSize * heatmap.getMatrixView().getColumnCount();
+			x = p.column >= 0 ? p.column * cellSize : 0;
+			if (x > totalSize)
+				x = totalSize;
+		}
+		else {
+			int cellSize = heatmap.getCellHeight() + gridSize;
+			int totalSize = cellSize * heatmap.getMatrixView().getRowCount();
+			y = p.row >= 0 ? p.row * cellSize : 0;
+			if (y > totalSize)
+				y = totalSize;
+		}
+
+		return new Point(x, y);
 	}
 }

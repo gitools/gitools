@@ -70,8 +70,8 @@ public class TemplatePane extends JPanel {
 		infoPane.setContentType("text/html");
 		//infoPane.setAutoscrolls(false);
 		infoScrollPane = new JScrollPane(infoPane);
-		infoScrollPane.setBorder(
-				BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		/*infoScrollPane.setBorder(
+				BorderFactory.createEmptyBorder(8, 8, 8, 8));*/
 		
 		setLayout(new BorderLayout());
 		add(infoScrollPane, BorderLayout.CENTER);

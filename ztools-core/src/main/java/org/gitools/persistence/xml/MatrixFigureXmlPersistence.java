@@ -2,16 +2,16 @@ package org.gitools.persistence.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
 import org.gitools.model.xml.adapter.FileXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
 public class MatrixFigureXmlPersistence
-		extends AbstractXmlPersistence<MatrixFigure> {
+		extends AbstractXmlPersistence<HeatmapFigure> {
 
 	public MatrixFigureXmlPersistence() {
-		super(MatrixFigure.class);
+		super(HeatmapFigure.class);
 	}
 
 	@Override

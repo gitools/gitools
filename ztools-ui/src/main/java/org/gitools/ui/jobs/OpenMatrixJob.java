@@ -4,12 +4,12 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.ui.editor.matrix.MatrixEditor;
+import org.gitools.ui.editor.heatmap.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -48,10 +48,10 @@ public class OpenMatrixJob implements Job {
 					
 			final IMatrixView matrixView = new MatrixView(matrix);
 			
-			final MatrixFigure figure = new MatrixFigure(matrixView);
+			final HeatmapFigure figure = new HeatmapFigure(matrixView);
 			figure.setShowGrid(false);
 			
-			final MatrixEditor editor = new MatrixEditor(figure);
+			final HeatmapEditor editor = new HeatmapEditor(figure);
 			
 			editor.setName(selectedPath.getName());
 			

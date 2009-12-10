@@ -8,6 +8,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -32,7 +33,8 @@ public class MatrixView
 
 	private static final long serialVersionUID = -8602409555044803568L;
 
-	
+	private static final int INT_BIT_SIZE = 32;
+
 	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
 	protected IMatrix contents;
 	
@@ -52,12 +54,18 @@ public class MatrixView
 	protected int selectionLeadColumn;
 	
 	protected int selectedPropertyIndex;
+
+	@XmlTransient
+	private int[] selectedColumnsBitmap;
+	private int[] selectedRowsBitmap;
 	
 	public MatrixView() {
 		visibleRows = new int[0];
 		visibleColumns = new int[0];
 		selectedRows = new int[0];
 		selectedColumns = new int[0];
+		selectedColumnsBitmap = new int[0];
+		selectedRowsBitmap = new int[0];
 		selectionLeadRow = selectionLeadColumn = -1;
 	}
 	
@@ -78,7 +86,10 @@ public class MatrixView
 		
 		selectedRows = new int[0];
 		selectedColumns = new int[0];
-		
+
+		selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
+		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
+
 		selectionLeadRow = selectionLeadColumn = -1;
 		
 		// selected property
@@ -161,9 +172,17 @@ public class MatrixView
 	@Override
 	public void setSelectedRows(int[] indices) {
 		this.selectedRows = indices;
+		updateSelectionBitmap(selectedRowsBitmap, indices);
 		firePropertyChange(SELECTION_CHANGED);
 	}
-	
+
+	@Override
+	public boolean isRowSelected(int index) {
+		int bindex = index / INT_BIT_SIZE;
+		int bit = 1 << (index % INT_BIT_SIZE);
+		return (selectedRowsBitmap[bindex] & bit) != 0;
+	}
+
 	@Override
 	public int[] getSelectedColumns() {
 		return selectedColumns;
@@ -172,15 +191,27 @@ public class MatrixView
 	@Override
 	public void setSelectedColumns(int[] indices) {
 		this.selectedColumns = indices;
+		updateSelectionBitmap(selectedColumnsBitmap, indices);
 		firePropertyChange(SELECTION_CHANGED);
 	}
-	
+
+	@Override
+	public boolean isColumnSelected(int index) {
+		int bindex = index / INT_BIT_SIZE;
+		int bit = 1 << (index % INT_BIT_SIZE);
+		return (selectedColumnsBitmap[bindex] & bit) != 0;
+	}
+
 	@Override
 	public void selectAll() {
 		selectedRows = new int[getRowCount()];
 		for (int i = 0; i < getRowCount(); i++)
 			selectedRows[i] = i;
 		selectedColumns = new int[0];
+
+		Arrays.fill(selectedRowsBitmap, -1);
+		Arrays.fill(selectedColumnsBitmap, 0);
+
 		firePropertyChange(SELECTION_CHANGED);
 	}
 	
@@ -200,26 +231,13 @@ public class MatrixView
 	public void clearSelection() {
 		selectedColumns = new int[0];
 		selectedRows = new int[0];
+
+		Arrays.fill(selectedRowsBitmap, 0);
+		Arrays.fill(selectedColumnsBitmap, 0);
+
 		firePropertyChange(SELECTION_CHANGED);
 	}
 	
-	private int[] invertSelectionArray(int[] array, int count) {
-		int size = count - array.length;
-		int[] invArray = new int[size];
-		
-		int j = 0;
-		int lastIndex = 0;
-		for (int i = 0; i < array.length; i++) {
-			while (lastIndex < array[i])
-				invArray[j++] = lastIndex++;
-			lastIndex = array[i] + 1;
-		}
-		while (lastIndex < count)
-			invArray[j++] = lastIndex++;
-		
-		return invArray;
-	}
-
 	@Override
 	public int getSelectionLeadRow() {
 		return selectionLeadRow;
@@ -356,6 +374,37 @@ public class MatrixView
 			selection[i]++;
 	}
 
+	private int[] invertSelectionArray(int[] array, int count) {
+		int size = count - array.length;
+		int[] invArray = new int[size];
+
+		int j = 0;
+		int lastIndex = 0;
+		for (int i = 0; i < array.length; i++) {
+			while (lastIndex < array[i])
+				invArray[j++] = lastIndex++;
+			lastIndex = array[i] + 1;
+		}
+		while (lastIndex < count)
+			invArray[j++] = lastIndex++;
+
+		return invArray;
+	}
+
+	private int[] newSelectionBitmap(int size) {
+		int[] a = new int[(size + INT_BIT_SIZE - 1) / INT_BIT_SIZE];
+		Arrays.fill(a, 0);
+		return a;
+	}
+
+	private void updateSelectionBitmap(int[] bitmap, int[] indices) {
+		Arrays.fill(bitmap, 0);
+		for (int index : indices) {
+			int bindex = index / INT_BIT_SIZE;
+			int bit = 1 << (index % INT_BIT_SIZE);
+			bitmap[bindex] |= bit;
+		}
+	}
 
 	// FIXME:
 	// 	this must be common to MatrixView and TableView
@@ -425,4 +474,5 @@ public class MatrixView
 			setVisibleColumns(columns);
 		}
 	}
+
 }

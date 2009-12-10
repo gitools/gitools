@@ -1,0 +1,45 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body>
+    <table>
+		#section( "Name" )
+		#nameRow( $name )
+
+		#if( $annotations.size() > 0 )
+			#section( "Annotations" )
+			<tr>
+				<table>
+					#foreach($key in $annotations.keySet())
+					<tr>
+						<td class="label">$key:</td>
+					</tr>
+					<tr>
+						<td class="value">$fmt.format($annotations.get($key))</td>
+					</tr>
+					#end
+				</table>
+			</tr>
+		#end
+
+		#if( $links.size() > 0 )
+			#section( "Links" )
+			<tr>
+				<table>
+					#foreach($key in $links.keySet())
+					<tr>
+						<td class="label">$key:</td>
+					</tr>
+					<tr>
+						<td class="value">$fmt.format($links.get($key))</td>
+					</tr>
+					#end
+				</table>
+			</tr>
+		#end
+    </table>
+</body>
+</html>

@@ -8,7 +8,7 @@ import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
 import org.gitools.model.analysis.EnrichmentAnalysis;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.figure.TableFigure;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.DoubleMatrix;
@@ -54,7 +54,7 @@ public class MimeTypeManager {
 		
 		classMap.put(EnrichmentAnalysis.class, MimeTypes.ENRICHMENT_ANALYSIS);
 		
-		classMap.put(MatrixFigure.class, MimeTypes.MATRIX_FIGURE);
+		classMap.put(HeatmapFigure.class, MimeTypes.MATRIX_FIGURE);
 		classMap.put(TableFigure.class, MimeTypes.TABLE_FIGURE);
 		
 		classMap.put(ObjectMatrix.class, MimeTypes.OBJECT_MATRIX);

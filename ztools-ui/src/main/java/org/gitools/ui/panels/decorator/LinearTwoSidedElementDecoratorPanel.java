@@ -18,7 +18,7 @@ import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel {
@@ -37,7 +37,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 	private ColorChooserLabel midColorCc;
 	private ColorChooserLabel maxColorCc;
 	
-	public LinearTwoSidedElementDecoratorPanel(MatrixFigure model) {
+	public LinearTwoSidedElementDecoratorPanel(HeatmapFigure model) {
 		super(model);
 	
 		this.decorator = (LinearTwoSidedElementDecorator) model.getCellDecorator();

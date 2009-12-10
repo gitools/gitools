@@ -80,6 +80,7 @@ public abstract class BaseMatrix extends Matrix {
 		return (String) rows.get(index);
 	}
 	
+	@Override
 	public String getRowLabel(int index) {
 		return (String) rows.get(index);
 	}
@@ -117,6 +118,7 @@ public abstract class BaseMatrix extends Matrix {
 		return (String) columns.get(index);
 	}
 	
+	@Override
 	public String getColumnLabel(int index) {
 		return (String) columns.get(index);
 	}

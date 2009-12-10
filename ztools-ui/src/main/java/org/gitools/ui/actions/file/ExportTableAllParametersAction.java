@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.gitools.exporter.TextMatrixExporter;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.actions.BaseAction;
@@ -27,7 +27,7 @@ public class ExportTableAllParametersAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof MatrixFigure
+		return model instanceof HeatmapFigure
 			|| model instanceof IMatrixView;
 	}
 	

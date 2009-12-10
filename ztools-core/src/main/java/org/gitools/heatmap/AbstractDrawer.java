@@ -19,22 +19,23 @@ package org.gitools.heatmap;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 
 public abstract class AbstractDrawer {
 
-	protected MatrixFigure heatmap;
+	protected HeatmapFigure heatmap;
 
-	public AbstractDrawer(MatrixFigure heatmap) {
+	public AbstractDrawer(HeatmapFigure heatmap) {
 		this.heatmap = heatmap;
 	}
 
-	public MatrixFigure getHeatmap() {
+	public HeatmapFigure getHeatmap() {
 		return heatmap;
 	}
 
-	public void setHeatmap(MatrixFigure heatmap) {
+	public void setHeatmap(HeatmapFigure heatmap) {
 		this.heatmap = heatmap;
 	}
 
@@ -49,4 +50,8 @@ public abstract class AbstractDrawer {
 	public abstract Dimension getSize();
 	
 	public abstract void draw(Graphics2D g, Rectangle box, Rectangle clip);
+
+	public abstract HeatmapPosition getPosition(Point p);
+
+	public abstract Point getPoint(HeatmapPosition p);
 }

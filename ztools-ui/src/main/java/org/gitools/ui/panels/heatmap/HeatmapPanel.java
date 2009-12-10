@@ -8,17 +8,20 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 import javax.swing.JViewport;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.heatmap.HeatmapPosition;
+import org.gitools.model.figure.HeatmapFigure;
 
 public class HeatmapPanel extends JPanel {
 
 	private static final long serialVersionUID = 5817479437770943868L;
 	
-	private MatrixFigure heatmap;
+	private HeatmapFigure heatmap;
 
 	private HeatmapBodyPanel bodyPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
@@ -31,19 +34,19 @@ public class HeatmapPanel extends JPanel {
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
 	
-	private HeatmapBodyMouseController bodyMouseController;
-	
-	public HeatmapPanel(MatrixFigure heatmap) {
+	public HeatmapPanel(HeatmapFigure heatmap) {
 		this.heatmap = heatmap;
-		
+
+		heatmapChanged();
+
 		createComponents();
 	}
 	
-	public MatrixFigure getHeatmap() {
+	public HeatmapFigure getHeatmap() {
 		return heatmap;
 	}
 	
-	public void setHeatmap(MatrixFigure heatmap) {
+	public void setHeatmap(HeatmapFigure heatmap) {
 		this.heatmap = heatmap;
 	}
 	
@@ -55,14 +58,17 @@ public class HeatmapPanel extends JPanel {
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
-		bodyMouseController =
-				new HeatmapBodyMouseController(heatmap, bodyVP, bodyPanel);
+		HeatmapBodyController bodyController = new HeatmapBodyController(this);
 		
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 
+		HeatmapHeaderController colController = new HeatmapHeaderController(this, true);
+
 		rowVP = new JViewport();
 		rowVP.setView(rowHeaderPanel);
+
+		HeatmapHeaderController rowController = new HeatmapHeaderController(this, false);
 
 		colSB = new JScrollBar(JScrollBar.HORIZONTAL);
 		colSB.addAdjustmentListener(new AdjustmentListener() {
@@ -126,6 +132,94 @@ public class HeatmapPanel extends JPanel {
 		colVP.setViewPosition(new Point(colValue, 0));
 		rowVP.setViewPosition(new Point(0, rowValue));
 		bodyVP.setViewPosition(new Point(colValue, rowValue));
+	}
+
+	public JViewport getBodyViewPort() {
+		return bodyVP;
+	}
+
+	public JViewport getColumnViewPort() {
+		return colVP;
+	}
+
+	public JViewport getRowViewPort() {
+		return rowVP;
+	}
+
+	public HeatmapBodyPanel getBodyPanel() {
+		return bodyPanel;
+	}
+	
+	public HeatmapHeaderPanel getColumnPanel() {
+		return columnHeaderPanel;
+	}
+
+	public HeatmapHeaderPanel getRowPanel() {
+		return rowHeaderPanel;
+	}
+
+	public HeatmapPosition getScrollPosition() {
+		Point pos = new Point(
+				colSB.getValue(),
+				rowSB.getValue());
+
+		return bodyPanel.getDrawer().getPosition(pos);
+	}
+
+	public Point getScrollValue() {
+		return new Point(
+				colSB.getValue(),
+				rowSB.getValue());
+	}
+
+	public void setScrollColumnPosition(int index) {
+		Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(0, index));
+
+		colSB.setValue(pos.x);
+	}
+
+	public void setScrollColumnValue(int value) {
+		colSB.setValue(value);
+	}
+
+	public void setScrollRowPosition(int index) {
+		Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(index, 0));
+
+		rowSB.setValue(pos.y);
+	}
+
+	public void setScrollRowValue(int value) {
+		rowSB.setValue(value);
+	}
+
+	private void heatmapChanged() {
+		PropertyChangeListener listener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals(HeatmapFigure.PROPERTY_CHANGED)) {
+					heatmapPropertyChanged();
+				} else {
+					repaint();
+				}
+			}
+		};
+
+		heatmap.addPropertyChangeListener(listener);
+		heatmap.getMatrixView().addPropertyChangeListener(listener);
+	}
+
+	private void heatmapPropertyChanged() {
+		Dimension ps = getPreferredSize();
+		if (ps.width != heatmap.getCellWidth()
+				|| ps.height != heatmap.getCellHeight()) {
+
+			updateScrolls();;
+
+			repaint();
+			revalidate();
+		}
+		else
+			repaint();
 	}
 
     /*@Override

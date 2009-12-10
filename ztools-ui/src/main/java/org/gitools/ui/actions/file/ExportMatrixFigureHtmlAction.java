@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.exporter.HtmlMatrixExporter;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.Options;
@@ -23,13 +23,13 @@ public class ExportMatrixFigureHtmlAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof MatrixFigure;
+		return model instanceof HeatmapFigure;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final MatrixFigure figure = getMatrixFigure();
+		final HeatmapFigure figure = getMatrixFigure();
 		if (figure == null)
 			return;
 		

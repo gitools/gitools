@@ -36,10 +36,12 @@ public class ObjectMatrix extends BaseMatrix {
 
 	// rows and columns
 	
+	@Override
 	public int getRowCount() {
 		return cells.rows();
 	}
 	
+	@Override
 	public int getColumnCount() {
 		return cells.columns();
 	}

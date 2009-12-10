@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.model.decorator.HeaderDecoration;
 import org.gitools.model.decorator.HeaderDecorator;
 import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
 import org.gitools.model.matrix.IMatrixView;
@@ -39,7 +40,7 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "matrixFigure")
-public class MatrixFigure 
+public class HeatmapFigure
 		extends Figure
 		implements Serializable {
 
@@ -78,14 +79,14 @@ public class MatrixFigure
 	@XmlTransient
 	private boolean showBorders;
 	
-	public MatrixFigure() {
+	public HeatmapFigure() {
 		this(
 				null, null, //FIXME should it be null ?
 				new AnnotationHeaderDecorator(),
 				new AnnotationHeaderDecorator());
 	}
 	
-	public MatrixFigure(IMatrixView matrixView) {
+	public HeatmapFigure(IMatrixView matrixView) {
 		this(
 				matrixView,
 				cellDecoratorFromMatrix(matrixView),
@@ -93,7 +94,7 @@ public class MatrixFigure
 				new AnnotationHeaderDecorator());
 	}
 	
-	public MatrixFigure(
+	public HeatmapFigure(
 			IMatrixView matrixView,
 			ElementDecorator cellDecorator,
 			HeaderDecorator rowsDecorator,
@@ -237,5 +238,19 @@ public class MatrixFigure
 
 	public void setShowBorders(boolean showBorders) {
 		this.showBorders = showBorders;
+	}
+
+	public String getColumnLabel(int index) {
+		String header = matrixView.getColumnLabel(index);
+		HeaderDecoration decoration = new HeaderDecoration();
+		columnDecorator.decorate(decoration, header);
+		return decoration.getText();
+	}
+
+	public String getRowLabel(int index) {
+		String header = matrixView.getRowLabel(index);
+		HeaderDecoration decoration = new HeaderDecoration();
+		rowDecorator.decorate(decoration, header);
+		return decoration.getText();
 	}
 }

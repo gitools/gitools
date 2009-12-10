@@ -15,7 +15,7 @@ import javax.swing.event.DocumentListener;
 
 import org.gitools.datafilters.CutoffCmp;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
@@ -35,7 +35,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private ColorChooserLabel colorCc;
 	
-	public BinaryElementDecoratorPanel(MatrixFigure model) {
+	public BinaryElementDecoratorPanel(HeatmapFigure model) {
 		super(model);
 		
 		this.decorator = (BinaryElementDecorator) getDecorator();

@@ -32,6 +32,7 @@ public class StringMatrix extends ObjectMatrix {
 		super(title, rows, columns, cells, new StringElementAdapter());
 	}
 	
+	@Override
 	public void makeData() {
 		cells = ObjectFactory2D.dense.make(
 				rows.size(),
@@ -39,15 +40,18 @@ public class StringMatrix extends ObjectMatrix {
 	}
 	
 	@XmlTransient
+	@Override
 	public int getRowCount() {
 		return cells.rows();
 	}
 	
 	@XmlTransient
+	@Override
 	public int getColumnCount() {
 		return cells.columns();
 	}
 	
+	@Override
 	public String getCell(int row, int column) {
 		return (String) cells.get(row, column);
 	}

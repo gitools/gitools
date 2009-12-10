@@ -1,19 +1,10 @@
 package org.gitools.ui.editor;
 
-import javax.swing.Icon;
-import javax.swing.JPanel;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.view.IView;
 
-public interface IEditor {
+public interface IEditor extends IView {
 
-	String getName();
-	void setName(String name);
-	
-	Icon getIcon();
-	
-	JPanel getPanel();
-	
 	Object getModel();
 	
 	boolean isDirty();
@@ -23,8 +14,4 @@ public interface IEditor {
 	boolean isSaveAsAllowed();
 	
 	void doSaveAs(IProgressMonitor monitor);
-	
-	void refresh();
-	
-	//void refreshActions();	
 }

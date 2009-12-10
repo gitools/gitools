@@ -16,7 +16,7 @@ import org.gitools.ui.utils.Options;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.IMatrixView;
 
 public abstract class BaseAction extends AbstractAction {
@@ -159,22 +159,22 @@ public abstract class BaseAction extends AbstractAction {
 		Object model = editor.getModel();
 		if (model instanceof IMatrixView)
 			matrixView = (IMatrixView) model;
-		else if (model instanceof MatrixFigure)
-			matrixView = ((MatrixFigure)model).getMatrixView();
+		else if (model instanceof HeatmapFigure)
+			matrixView = ((HeatmapFigure)model).getMatrixView();
 		
 		return matrixView;
 	}
 	
-	protected MatrixFigure getMatrixFigure() {
+	protected HeatmapFigure getMatrixFigure() {
 		AbstractEditor editor = getSelectedEditor();
 		if (editor == null)
 			return null;
 		
-		MatrixFigure figure = null;
+		HeatmapFigure figure = null;
 		
 		Object model = editor.getModel();
-		if (model instanceof MatrixFigure)
-			figure = (MatrixFigure)model;
+		if (model instanceof HeatmapFigure)
+			figure = (HeatmapFigure)model;
 		
 		return figure;
 	}

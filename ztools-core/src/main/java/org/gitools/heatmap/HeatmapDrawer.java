@@ -2,13 +2,14 @@ package org.gitools.heatmap;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 
 public class HeatmapDrawer extends AbstractDrawer {
 
-	public HeatmapDrawer(MatrixFigure heatmap) {
+	public HeatmapDrawer(HeatmapFigure heatmap) {
 		super(heatmap);
 	}
 
@@ -21,4 +22,15 @@ public class HeatmapDrawer extends AbstractDrawer {
 	public Dimension getSize() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public HeatmapPosition getPosition(Point p) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public Point getPoint(HeatmapPosition p) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
 }

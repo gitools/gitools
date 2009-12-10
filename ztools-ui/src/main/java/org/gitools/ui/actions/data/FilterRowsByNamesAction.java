@@ -11,7 +11,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByNameDialog;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.model.figure.MatrixFigure;
+import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.model.matrix.IMatrix;
 import org.gitools.model.matrix.IMatrixView;
 
@@ -26,7 +26,7 @@ public class FilterRowsByNamesAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof MatrixFigure
+		return model instanceof HeatmapFigure
 			|| model instanceof IMatrixView;
 	}
 	
