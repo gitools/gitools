@@ -15,11 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.ui.view.details;
+package org.gitools.ui.view.entity;
 
 import javax.swing.JComponent;
 
-public abstract class DetailsController {
+public abstract class EntryController {
 
 	public abstract JComponent getDetailsComponent(Object context);
 }

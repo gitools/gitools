@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package org.gitools.ui.view.details;
+package org.gitools.ui.view.entity;
 
+import org.gitools.ui.view.details.*;
 import org.gitools.ui.view.entity.EntityController;
 import java.awt.BorderLayout;
 import java.util.HashMap;
@@ -26,13 +27,13 @@ import javax.swing.JScrollPane;
 import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.ui.view.AbstractView;
 
-public class DetailsView extends AbstractView {
+public class EntityView extends AbstractView {
 
 	private JScrollPane scrollPane;
 
 	private Map<Class<?>, EntityController> ctrlMap;
 
-	public DetailsView() {
+	public EntityView() {
 		ctrlMap = new HashMap<Class<?>, EntityController>();
 
 		createComponents();
