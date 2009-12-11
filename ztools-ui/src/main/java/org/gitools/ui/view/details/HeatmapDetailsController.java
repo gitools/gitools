@@ -45,7 +45,7 @@ import org.gitools.stats.test.results.ZScoreResult;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.view.entity.EntityController;
 
-public class HeatmapDetailsController extends EntityController {
+public class HeatmapDetailsController implements EntityController {
 
 	private static final String defaultTemplateName = "/vm/details/noselection.vm";
 	private static final String headerTemplateName = "/vm/details/header.vm";
@@ -62,7 +62,7 @@ public class HeatmapDetailsController extends EntityController {
 	}
 
 	@Override
-	public JComponent getDetailsComponent(Object ctx) {
+	public JComponent getComponent(Object ctx) {
 		TemplatePane panel = getTemplatePanel();
 
 		final HeatmapFigure heatmap = (HeatmapFigure) ctx;

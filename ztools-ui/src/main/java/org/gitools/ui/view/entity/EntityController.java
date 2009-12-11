@@ -15,19 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.ui.view.details;
+package org.gitools.ui.view.entity;
 
-import org.gitools.ui.view.entity.EntityController;
-import org.gitools.model.figure.HeatmapFigure;
-import org.gitools.ui.view.entity.EntityView;
+import javax.swing.JComponent;
 
-public class DetailsView extends EntityView {
+public interface EntityController {
 
-	@Override
-	protected EntityController createController(Object context) {
-		if (context instanceof HeatmapFigure)
-			return new HeatmapDetailsController();
-		
-		return null;
-	}
+	public abstract JComponent getComponent(Object context);
 }

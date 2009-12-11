@@ -27,6 +27,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener {
 		this.color = color;
 		this.setBackground(color);
 		this.setToolTipText(toolTipText);
+		this.setText("");
 		
 		this.listeners = new ArrayList<ColorChangeListener>(1);
 		
@@ -42,6 +43,10 @@ public class ColorChooserLabel extends JLabel implements MouseListener {
 	
 	public ColorChooserLabel(Color color) {
 		this(color, null);
+	}
+
+	public ColorChooserLabel() {
+		this(Color.WHITE, null);
 	}
 
 	public Color getColor() {

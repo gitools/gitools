@@ -41,8 +41,6 @@ public class HeatmapEditor extends AbstractEditor {
 	
 	private JTabbedPane tabbedPane;
 	
-	//private TemplatePane detailsPanel;
-	
 	protected boolean blockSelectionUpdate;
 
 	private PropertyChangeListener modelListener;
@@ -311,16 +309,9 @@ public class HeatmapEditor extends AbstractEditor {
 	protected IMatrixView getMatrixView() {
 		return model.getMatrixView();
 	}
-	
-	@Deprecated //When getModel return TableViewModel
-	public void setTable(IMatrixView tableModel) {
-		this.model.setMatrixView(tableModel);
-		refresh();
-	}
 
 	@Override
 	public Object getModel() {
-		//return model.getMatrixView(); //TODO: return HeatmapFigure
 		return model;
 	}
 
@@ -328,6 +319,12 @@ public class HeatmapEditor extends AbstractEditor {
 	public void refresh() {
 		matrixPanel.refresh();
 	}
+
+	@Override
+	public void doVisible() {
+		AppFrame.instance().getPropertiesView().update(model);
+	}
+
 	
 	/*@Override
 	public void refreshActions() {

@@ -8,11 +8,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class AnnotationMatrix extends StringMatrix {
 
 	private static final long serialVersionUID = 2941738380629859631L;
+
+	public static class Annotation {
+		private String key;
+		private String value;
+
+		public Annotation(String key, String value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		public String getKey() {
+			return key;
+		}
+
+		public String getValue() {
+			return value;
+		}
+	}
 
 	private Map<String, Integer> rowMap;
 	private Map<String, Integer> colMap;
@@ -60,7 +80,23 @@ public class AnnotationMatrix extends StringMatrix {
 			index = idx.intValue();
 		return index;
 	}
-	
+
+	public List<Annotation> getAnnotations(String label) {
+		List<Annotation> ann = new ArrayList<Annotation>();
+		int index = getRowIndex(label);
+		if (index >= 0) {
+			int numAnn = getColumnCount();
+			for (int i = 0; i < numAnn; i++) {
+				String value = getCell(index, i);
+				if (value != null) {
+					String key = getColumnLabel(i);
+					ann.add(new Annotation(key, value));
+				}
+			}
+		}
+		return ann;
+	}
+
 	private void updateRowsMap() {
 		if (rowMap == null)
 			rowMap = new HashMap<String, Integer>();

@@ -42,14 +42,12 @@ public class EditorsPanel extends JTabbedPane {
 		createComponents();
 		
 		addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent evt) {
-				/*if (selectedView != null)
-					selectedView.disableActions();*/
+			@Override public void stateChanged(ChangeEvent evt) {
 				refreshActions();
-				
-				/*selectedEditor = (AbstractEditor) getSelectedComponent();
+
+				AbstractEditor selectedEditor = getSelectedEditor();
 				if (selectedEditor != null)
-					selectedEditor.refreshActions();*/
+					selectedEditor.doVisible();
 			}
 		});
 	}

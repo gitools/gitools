@@ -13,12 +13,12 @@
 			#section( "Annotations" )
 			<tr>
 				<table>
-					#foreach($key in $annotations.keySet())
+					#foreach($ann in $annotations)
 					<tr>
-						<td class="label">$key:</td>
+						<td class="label">$ann.key:</td>
 					</tr>
 					<tr>
-						<td class="value">$fmt.format($annotations.get($key))</td>
+						<td class="value">$fmt.format($ann.value)</td>
 					</tr>
 					#end
 				</table>

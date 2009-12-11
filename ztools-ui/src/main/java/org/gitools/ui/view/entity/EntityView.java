@@ -17,24 +17,21 @@
 
 package org.gitools.ui.view.entity;
 
-import org.gitools.ui.view.details.*;
-import org.gitools.ui.view.entity.EntityController;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import org.gitools.model.figure.HeatmapFigure;
 import org.gitools.ui.view.AbstractView;
 
-public class EntityView extends AbstractView {
+public abstract class EntityView extends AbstractView {
 
 	private JScrollPane scrollPane;
 
-	private Map<Class<?>, EntityController> ctrlMap;
+	private Map<Class<?>, EntityController> controllerCache;
 
 	public EntityView() {
-		ctrlMap = new HashMap<Class<?>, EntityController>();
+		controllerCache = new HashMap<Class<?>, EntityController>();
 
 		createComponents();
 	}
@@ -47,15 +44,16 @@ public class EntityView extends AbstractView {
 	}
 
 	public void update(Object context) {
-		EntityController controller = ctrlMap.get(context.getClass());
+		EntityController controller = controllerCache.get(context.getClass());
 		if (controller == null) {
-			if (context instanceof HeatmapFigure)
-				controller = new HeatmapDetailsController();
-			ctrlMap.put(context.getClass(), controller);
+			controller = createController(context);
+			controllerCache.put(context.getClass(), controller);
 		}
 
-		JComponent component = controller.getDetailsComponent(context);
+		JComponent component = controller.getComponent(context);
 		component.setBorder(null);
 		scrollPane.setViewportView(component);
 	}
+
+	protected abstract EntityController createController(Object context);
 }

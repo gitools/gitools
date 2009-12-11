@@ -14,4 +14,6 @@ public interface IEditor extends IView {
 	boolean isSaveAsAllowed();
 	
 	void doSaveAs(IProgressMonitor monitor);
+
+	void doVisible();
 }

@@ -37,4 +37,8 @@ public abstract class AbstractEditor
 	@Override
 	public void doSaveAs(IProgressMonitor monitor) {	
 	}
+
+	@Override
+	public void doVisible() {
+	}
 }

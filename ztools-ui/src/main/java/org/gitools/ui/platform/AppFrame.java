@@ -28,6 +28,7 @@ import java.util.Properties;
 import org.apache.velocity.app.VelocityEngine;
 import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.view.details.DetailsView;
+import org.gitools.ui.view.properties.PropertiesView;
 
 public class AppFrame extends JFrame {
 
@@ -61,6 +62,8 @@ public class AppFrame extends JFrame {
 	private NavigatorPanel navPanel;
 
 	private DetailsView detailsView;
+
+	private PropertiesView propertiesView;
 	
 	private EditorsPanel editorsPanel;
 	
@@ -132,7 +135,11 @@ public class AppFrame extends JFrame {
 		/* Details view */
 		detailsView = new DetailsView();
 		leftPanel.add(detailsView, "Details");
-		
+
+		/* Properties view */
+		propertiesView = new PropertiesView();
+		leftPanel.add(propertiesView, "Properties");
+
 		editorsPanel = new EditorsPanel();
 		
 		statusBar = new StatusBar();
@@ -216,6 +223,10 @@ public class AppFrame extends JFrame {
 
 	public DetailsView getDetailsView() {
 		return detailsView;
+	}
+
+	public PropertiesView getPropertiesView() {
+		return propertiesView;
 	}
 	
 	public void setStatusText(String text) {
