@@ -57,6 +57,7 @@ public class MatrixView
 
 	@XmlTransient
 	private int[] selectedColumnsBitmap;
+	@XmlTransient
 	private int[] selectedRowsBitmap;
 	
 	public MatrixView() {

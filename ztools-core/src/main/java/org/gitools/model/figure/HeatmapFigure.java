@@ -39,7 +39,7 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 		"columnHeaderSize"} )
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "matrixFigure")
+@XmlRootElement(name = "heatmapFigure")
 public class HeatmapFigure
 		extends Figure
 		implements Serializable {
