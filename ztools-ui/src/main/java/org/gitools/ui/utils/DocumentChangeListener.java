@@ -1,4 +1,4 @@
-package org.gitools.ui.editor.heatmap;
+package org.gitools.ui.utils;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

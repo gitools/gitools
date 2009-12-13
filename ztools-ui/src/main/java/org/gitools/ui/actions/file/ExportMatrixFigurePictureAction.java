@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -31,7 +31,7 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof HeatmapFigure;
+		return model instanceof Heatmap;
 	}
 	
 	@Override

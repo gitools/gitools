@@ -8,14 +8,14 @@ import java.awt.Rectangle;
 
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 public class HeatmapBodyDrawer extends AbstractDrawer {
 	
 	//private ElementDecorator decorator;
 
-	public HeatmapBodyDrawer(HeatmapFigure heatmap) {
+	public HeatmapBodyDrawer(Heatmap heatmap) {
 		super(heatmap);
 	}
 

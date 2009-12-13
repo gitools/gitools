@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public class HeatmapDrawer extends AbstractDrawer {
 
-	public HeatmapDrawer(HeatmapFigure heatmap) {
+	public HeatmapDrawer(Heatmap heatmap) {
 		super(heatmap);
 	}
 

@@ -110,14 +110,14 @@ public class PersistenceManager implements Serializable {
 		if (entityCache.containsKey(fileKey))
 			return entityCache.get(fileKey);
 
-//		if (mimeType == null)
+		if (mimeType == null)
 			mimeType = MimeTypeManager.getDefault().fromFile(file);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(pathResolver, mimeType);
 
 	
-		//FIXME: heap problems with anotations..
+		//FIXME: heap problems with annotations..
 		Object entity = entityPersistence.read(file, monitor);
 
 		entityCache.put(fileKey, entity);

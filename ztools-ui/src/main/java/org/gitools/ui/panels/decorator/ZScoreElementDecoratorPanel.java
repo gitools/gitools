@@ -22,7 +22,7 @@ import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 
@@ -46,7 +46,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel rmaxColorCc;
 	private ColorChooserLabel nsigColorCc;
 	
-	public ZScoreElementDecoratorPanel(HeatmapFigure model) {
+	public ZScoreElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
 		this.decorator = (ZScoreElementDecorator) model.getCellDecorator();

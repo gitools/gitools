@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 
 public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 
@@ -15,7 +15,7 @@ public class ColumnsMatrixRenderer extends HeaderMatrixRenderer {
 	protected static final double radianAngle = (-90.0 / 180.0) * Math.PI;
 
 	public ColumnsMatrixRenderer(
-			HeaderDecorator decorator,
+			HeatmapHeader decorator,
 			boolean highlightSelected) {
 	
 		super(decorator, highlightSelected);

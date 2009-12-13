@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,8 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.table.ITable;
@@ -69,14 +67,14 @@ public class TableFigure extends Figure implements Serializable {
 		
 		ElementDecorator cellDecorator;
 		IElementAdapter elementAdapter;
-		HeaderDecorator headerDecorator;
+		HeatmapHeader headerDecorator;
 
 		for (int i = 0; i < tableView.getColumnCount(); i++) {
 			
 			elementAdapter = tableView.getCellColumnAdapter(i);
 			cellDecorator = new FormattedTextElementDecorator(elementAdapter);
 
-			headerDecorator = new AnnotationHeaderDecorator();
+			headerDecorator = new HeatmapHeader();
 			cellDecorators.add(cellDecorator);
 			headerDecorators.add(headerDecorator);
 

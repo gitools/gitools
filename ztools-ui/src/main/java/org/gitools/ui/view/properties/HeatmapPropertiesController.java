@@ -18,17 +18,29 @@
 package org.gitools.ui.view.properties;
 
 import javax.swing.JComponent;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.ui.view.entity.EntityController;
 
-/**
- *
- * @author cperez
- */
 class HeatmapPropertiesController implements EntityController {
+
+	private HeatmapPropertiesPanel panel;
 
 	@Override
 	public JComponent getComponent(Object context) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		Heatmap heatmap = (Heatmap) context;
+
+		HeatmapPropertiesPanel component = getPanel();
+		if (component.getHeatmap() != heatmap)
+			component.setHeatmap(heatmap);
+		
+		return component;
+	}
+
+	protected HeatmapPropertiesPanel getPanel() {
+		if (panel == null)
+			panel = new HeatmapPropertiesPanel();
+		
+		return panel;
 	}
 
 }

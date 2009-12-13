@@ -1,4 +1,4 @@
-package org.gitools.model.figure;
+package org.gitools.model.figure.heatmap;
 
 import java.awt.Color;
 import java.io.Serializable;
@@ -15,16 +15,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.HeaderDecoration;
-import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
+import org.gitools.model.figure.Figure;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
-import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 
 @XmlType( propOrder={
 		"cellDecorator", 
@@ -39,8 +36,8 @@ import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 		"columnHeaderSize"} )
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "heatmapFigure")
-public class HeatmapFigure
+@XmlRootElement(name = "heatmap")
+public class Heatmap
 		extends Figure
 		implements Serializable {
 
@@ -49,17 +46,19 @@ public class HeatmapFigure
 	public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
 	public static final String ROW_DECORATOR_CHANGED = "rowDecorator";
 	public static final String COLUMN_DECORATOR_CHANGED = "columnDecorator";
-	public static final String TABLE_CHANGED = "table";
+	public static final String MATRIX_VIEW_CHANGED = "matrixView";
+	public static final String GRID_PROPERTY_CHANGED = "gridProperty";
+	public static final String CELL_SIZE_CHANGED = "cellSize";
+	public static final String ROW_HEADER_SIZE_CHANGED = "rowHeaderSize";
+	public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
 	
 	
 	@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
 	private ElementDecorator cellDecorator;
 	
-	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
-	private HeaderDecorator rowDecorator;
+	private HeatmapHeader rowHeader;
 	
-	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
-	private HeaderDecorator columnDecorator;
+	private HeatmapHeader columnHeader;
 	
 	@XmlElement(type=MatrixView.class)
 	private IMatrixView matrixView;
@@ -79,31 +78,31 @@ public class HeatmapFigure
 	@XmlTransient
 	private boolean showBorders;
 	
-	public HeatmapFigure() {
+	public Heatmap() {
 		this(
 				null, null, //FIXME should it be null ?
-				new AnnotationHeaderDecorator(),
-				new AnnotationHeaderDecorator());
+				new HeatmapHeader(),
+				new HeatmapHeader());
 	}
 	
-	public HeatmapFigure(IMatrixView matrixView) {
+	public Heatmap(IMatrixView matrixView) {
 		this(
 				matrixView,
 				cellDecoratorFromMatrix(matrixView),
-				new AnnotationHeaderDecorator(),
-				new AnnotationHeaderDecorator());
+				new HeatmapHeader(),
+				new HeatmapHeader());
 	}
 	
-	public HeatmapFigure(
+	public Heatmap(
 			IMatrixView matrixView,
 			ElementDecorator cellDecorator,
-			HeaderDecorator rowsDecorator,
-			HeaderDecorator columnsDecorator) {
+			HeatmapHeader rowsDecorator,
+			HeatmapHeader columnsDecorator) {
 		
 		this.matrixView = matrixView;
 		this.cellDecorator = cellDecorator;
-		this.rowDecorator = rowsDecorator;
-		this.columnDecorator = columnsDecorator;
+		this.rowHeader = rowsDecorator;
+		this.columnHeader = columnsDecorator;
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
 		this.cellWidth = 18;
@@ -149,23 +148,23 @@ public class HeatmapFigure
 		firePropertyChange(CELL_DECORATOR_CHANGED, old, decorator);
 	}
 	
-	public HeaderDecorator getRowDecorator() {
-		return rowDecorator;
+	public HeatmapHeader getRowHeader() {
+		return rowHeader;
 	}
 	
-	public void setRowDecorator(HeaderDecorator rowDecorator) {
-		final HeaderDecorator old = this.rowDecorator;
-		this.rowDecorator = rowDecorator;
+	public void setRowDecorator(HeatmapHeader rowDecorator) {
+		final HeatmapHeader old = this.rowHeader;
+		this.rowHeader = rowDecorator;
 		firePropertyChange(ROW_DECORATOR_CHANGED, old, rowDecorator);
 	}
 	
-	public HeaderDecorator getColumnDecorator() {
-		return columnDecorator;
+	public HeatmapHeader getColumnHeader() {
+		return columnHeader;
 	}
 	
-	public void setColumnDecorator(HeaderDecorator columnDecorator) {
-		final HeaderDecorator old = this.columnDecorator;
-		this.columnDecorator = columnDecorator;
+	public void setColumnDecorator(HeatmapHeader columnDecorator) {
+		final HeatmapHeader old = this.columnHeader;
+		this.columnHeader = columnDecorator;
 		firePropertyChange(COLUMN_DECORATOR_CHANGED, old, columnDecorator);
 	}
 	
@@ -174,8 +173,9 @@ public class HeatmapFigure
 	}
 	
 	public final void setMatrixView(IMatrixView matrixView) {
+		final IMatrixView old = this.matrixView;
 		this.matrixView = matrixView;
-		firePropertyChange(TABLE_CHANGED);
+		firePropertyChange(MATRIX_VIEW_CHANGED, old, matrixView);
 	}
 	
 	public boolean isShowGrid() {
@@ -184,7 +184,7 @@ public class HeatmapFigure
 	
 	public void setShowGrid(boolean showGrid) {
 		this.showGrid = showGrid;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(GRID_PROPERTY_CHANGED);
 	}
 	
 	public Color getGridColor() {
@@ -193,7 +193,7 @@ public class HeatmapFigure
 	
 	public void setGridColor(Color gridColor) {
 		this.gridColor = gridColor;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(GRID_PROPERTY_CHANGED);
 	}
 
 	public int getCellWidth() {
@@ -202,16 +202,16 @@ public class HeatmapFigure
 	
 	public void setCellWidth(int cellWidth) {
 		this.cellWidth = cellWidth;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(CELL_SIZE_CHANGED);
 	}
-	
+
 	public int getCellHeight() {
 		return cellHeight;
 	}
 	
 	public void setCellHeight(int cellHeight) {
 		this.cellHeight = cellHeight;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(CELL_SIZE_CHANGED);
 	}
 	
 	public int getRowHeaderSize() {
@@ -220,16 +220,16 @@ public class HeatmapFigure
 	
 	public void setRowHeaderSize(int rowSize) {
 		this.rowHeaderSize = rowSize;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(ROW_HEADER_SIZE_CHANGED);
 	}
-	
+
 	public int getColumnHeaderSize() {
 		return columnHeaderSize;
 	}
 	
 	public void setColumnHeaderSize(int columnSize) {
 		this.columnHeaderSize = columnSize;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(COLUMN_HEADER_SIZE_CHANGED);
 	}
 
 	public boolean isShowBorders() {
@@ -242,15 +242,29 @@ public class HeatmapFigure
 
 	public String getColumnLabel(int index) {
 		String header = matrixView.getColumnLabel(index);
-		HeaderDecoration decoration = new HeaderDecoration();
-		columnDecorator.decorate(decoration, header);
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+		columnHeader.decorate(decoration, header);
 		return decoration.getText();
 	}
 
 	public String getRowLabel(int index) {
 		String header = matrixView.getRowLabel(index);
-		HeaderDecoration decoration = new HeaderDecoration();
-		rowDecorator.decorate(decoration, header);
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+		rowHeader.decorate(decoration, header);
 		return decoration.getText();
+	}
+
+	public String getColumnLinkUrl(int index) {
+		String header = matrixView.getColumnLabel(index);
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+		columnHeader.decorate(decoration, header);
+		return decoration.getUrl();
+	}
+
+	public String getRowLinkUrl(int index) {
+		String header = matrixView.getRowLabel(index);
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+		rowHeader.decorate(decoration, header);
+		return decoration.getUrl();
 	}
 }

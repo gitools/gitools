@@ -15,13 +15,13 @@ import javax.swing.JScrollBar;
 
 import javax.swing.JViewport;
 import org.gitools.heatmap.HeatmapPosition;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public class HeatmapPanel extends JPanel {
 
 	private static final long serialVersionUID = 5817479437770943868L;
 	
-	private HeatmapFigure heatmap;
+	private Heatmap heatmap;
 
 	private HeatmapBodyPanel bodyPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
@@ -34,7 +34,7 @@ public class HeatmapPanel extends JPanel {
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
 	
-	public HeatmapPanel(HeatmapFigure heatmap) {
+	public HeatmapPanel(Heatmap heatmap) {
 		this.heatmap = heatmap;
 
 		heatmapChanged();
@@ -42,11 +42,11 @@ public class HeatmapPanel extends JPanel {
 		createComponents();
 	}
 	
-	public HeatmapFigure getHeatmap() {
+	public Heatmap getHeatmap() {
 		return heatmap;
 	}
 	
-	public void setHeatmap(HeatmapFigure heatmap) {
+	public void setHeatmap(Heatmap heatmap) {
 		this.heatmap = heatmap;
 	}
 	
@@ -196,7 +196,7 @@ public class HeatmapPanel extends JPanel {
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(HeatmapFigure.PROPERTY_CHANGED)) {
+				if (evt.getPropertyName().equals(Heatmap.PROPERTY_CHANGED)) {
 					heatmapPropertyChanged();
 				} else {
 					repaint();

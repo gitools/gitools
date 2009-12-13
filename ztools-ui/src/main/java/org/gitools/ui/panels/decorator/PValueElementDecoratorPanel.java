@@ -23,7 +23,7 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
 
@@ -45,7 +45,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel maxColorCc;
 	private ColorChooserLabel nsigColorCc;
 	
-	public PValueElementDecoratorPanel(HeatmapFigure model) {
+	public PValueElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
 		this.decorator = (PValueElementDecorator) getDecorator();

@@ -15,9 +15,7 @@
 				<table>
 					#foreach($ann in $annotations)
 					<tr>
-						<td class="label">$ann.key:</td>
-					</tr>
-					<tr>
+						<td class="label">$ann.key</td>
 						<td class="value">$fmt.format($ann.value)</td>
 					</tr>
 					#end
@@ -25,19 +23,10 @@
 			</tr>
 		#end
 
-		#if( $links.size() > 0 )
+		#if( ! $linkName.isEmpty() )
 			#section( "Links" )
 			<tr>
-				<table>
-					#foreach($key in $links.keySet())
-					<tr>
-						<td class="label">$key:</td>
-					</tr>
-					<tr>
-						<td class="value">$fmt.format($links.get($key))</td>
-					</tr>
-					#end
-				</table>
+				<td><a href="$linkUrl">$linkName</a></td>
 			</tr>
 		#end
     </table>

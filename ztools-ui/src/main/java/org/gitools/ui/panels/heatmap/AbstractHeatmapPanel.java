@@ -25,18 +25,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import org.gitools.heatmap.AbstractDrawer;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
-/**
- *
- * @author cperez
- */
 public class AbstractHeatmapPanel extends JPanel {
 
-	protected HeatmapFigure heatmap;
+	protected Heatmap heatmap;
 	protected AbstractDrawer drawer;
 
-	public AbstractHeatmapPanel(HeatmapFigure heatmap, AbstractDrawer drawer) {
+	public AbstractHeatmapPanel(Heatmap heatmap, AbstractDrawer drawer) {
 		this.heatmap = heatmap;
 		this.drawer = drawer;
 
@@ -45,11 +41,11 @@ public class AbstractHeatmapPanel extends JPanel {
 		setBorder(null);
 	}
 
-	public HeatmapFigure getHeatmap() {
+	public Heatmap getHeatmap() {
 		return heatmap;
 	}
 	
-	public void setHeatmap(HeatmapFigure heatmap) {
+	public void setHeatmap(Heatmap heatmap) {
 		this.heatmap = heatmap;
 		heatmapChanged();
 	}
@@ -72,29 +68,33 @@ public class AbstractHeatmapPanel extends JPanel {
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(HeatmapFigure.PROPERTY_CHANGED)) {
-					heatmapPropertyChanged();
-				} else {
-					repaint();
+				if (evt.getSource().equals(heatmap)
+						|| evt.getSource().equals(heatmap.getColumnHeader())
+						|| evt.getSource().equals(heatmap.getRowHeader())) {
+
+					heatmapPropertyChanged(evt);
 				}
+				else
+					repaint();
 			}
 		};
 
 		heatmap.addPropertyChangeListener(listener);
+		heatmap.getColumnHeader().addPropertyChangeListener(listener);
+		heatmap.getRowHeader().addPropertyChangeListener(listener);
 		heatmap.getMatrixView().addPropertyChangeListener(listener);
 	}
 
-	private void heatmapPropertyChanged() {
+	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		Dimension ps = getPreferredSize();
 		if (ps.width != heatmap.getCellWidth()
 				|| ps.height != heatmap.getCellHeight()) {
 			
 			setPreferredSize(drawer.getSize());
 			
-			repaint();
 			revalidate();
 		}
-		else
-			repaint();
+
+		repaint();
 	}
 }

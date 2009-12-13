@@ -10,8 +10,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
-import org.gitools.model.decorator.HeaderDecoration;
-import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeaderDecoration;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 
 public class HeaderMatrixRenderer 
 		extends JLabel 
@@ -19,7 +19,7 @@ public class HeaderMatrixRenderer
 
 	private static final long serialVersionUID = -1567024460723517390L;
 
-	protected HeaderDecorator decorator;
+	protected HeatmapHeader decorator;
 	
 	protected boolean showGrid;
 	protected Color gridColor = Color.WHITE;
@@ -30,7 +30,7 @@ public class HeaderMatrixRenderer
 	protected int minimumRequiredTextSize;
 	
 	public HeaderMatrixRenderer(
-			HeaderDecorator decorator,
+			HeatmapHeader decorator,
 			boolean highlightSelected) {
 		this.decorator = decorator;
 		this.highlightSelected = highlightSelected;
@@ -58,7 +58,7 @@ public class HeaderMatrixRenderer
 	private void configureRenderer(
 			JLabel label, Object value) {
 
-		final HeaderDecoration decoration = new HeaderDecoration();
+		final HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
 		decorator.decorate(decoration, value);
 		label.setText(decoration.getText());
 		if (!decoration.getToolTip().isEmpty())

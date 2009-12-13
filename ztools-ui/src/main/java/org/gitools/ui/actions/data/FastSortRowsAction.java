@@ -10,7 +10,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 public class FastSortRowsAction extends BaseAction {
@@ -28,7 +28,7 @@ public class FastSortRowsAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof HeatmapFigure
+		return model instanceof Heatmap
 			|| model instanceof IMatrixView;
 	}
 	

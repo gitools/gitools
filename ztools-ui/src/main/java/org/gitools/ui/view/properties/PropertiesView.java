@@ -17,7 +17,7 @@
 
 package org.gitools.ui.view.properties;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.ui.view.entity.EntityController;
 import org.gitools.ui.view.entity.EntityView;
 
@@ -25,7 +25,7 @@ public class PropertiesView extends EntityView {
 
 	@Override
 	protected EntityController createController(Object context) {
-		if (context instanceof HeatmapFigure)
+		if (context instanceof Heatmap)
 			return new HeatmapPropertiesController();
 
 		return null;

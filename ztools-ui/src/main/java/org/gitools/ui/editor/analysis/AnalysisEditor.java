@@ -4,8 +4,8 @@ import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.ui.editor.MultiEditor;
@@ -46,8 +46,8 @@ public class AnalysisEditor extends MultiEditor {
 						dataTable.getCellAdapter());
 			
 			dataView = new HeatmapEditor(
-					new HeatmapFigure(dataTable, dataRowDecorator,
-							new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
+					new Heatmap(dataTable, dataRowDecorator,
+							new HeatmapHeader(), new HeatmapHeader()));
 			
 			addView(dataView, "Data");
 		}
@@ -62,8 +62,8 @@ public class AnalysisEditor extends MultiEditor {
 					resultsTable.getCellAdapter());
 		
 		resultsView = new HeatmapEditor(
-				new HeatmapFigure(resultsTable, resultsRowDecorator,
-						new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator()));
+				new Heatmap(resultsTable, resultsRowDecorator,
+						new HeatmapHeader(), new HeatmapHeader()));
 
 		addView(resultsView, "Results");
 	}

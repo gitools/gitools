@@ -24,9 +24,6 @@ import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Properties;
-import org.apache.velocity.app.VelocityEngine;
-import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.view.details.DetailsView;
 import org.gitools.ui.view.properties.PropertiesView;
 
@@ -51,7 +48,7 @@ public class AppFrame extends JFrame {
 			appVersion = "SNAPSHOT";
 	}
 	
-	private static final int defaultDividerLocation = 280;
+	private static final int defaultDividerLocation = 340;
 	
 	private WorkbenchLayout layout;
 	
@@ -84,10 +81,6 @@ public class AppFrame extends JFrame {
 		
 		this.layout = WorkbenchLayout.LEFT;
 		createComponents();
-		
-		createWelcomeView();
-		createDemoView();
-		editorsPanel.setSelectedIndex(0);
 		
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent e) {
@@ -205,6 +198,10 @@ public class AppFrame extends JFrame {
 	}
 
 	public void start() {
+		createWelcomeView();
+		createDemoView();
+		editorsPanel.setSelectedIndex(0);
+		
 		setLocationByPlatform(true);
 		setVisible(true);
 	}

@@ -1,4 +1,4 @@
-package org.gitools.ui.editor.heatmap;
+package org.gitools.ui.editor.heatmap.DEPRECATED;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,9 +24,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.persistence.PersistenceException;
@@ -47,11 +46,11 @@ public class HeaderConfigPage extends JPanel {
 		rows, columns
 	}
 	
-	private HeatmapFigure model;
+	private Heatmap model;
 	private HeaderType type;
 	private JComboBox annNameCombo;
 	
-	public HeaderConfigPage(HeatmapFigure model, HeaderType type) {
+	public HeaderConfigPage(Heatmap model, HeaderType type) {
 		this.model = model;
 		this.type = type;
 		
@@ -73,7 +72,7 @@ public class HeaderConfigPage extends JPanel {
 			}
 		});
 		
-		final HeaderDecorator hd = getHeaderDecorator();
+		final HeatmapHeader hd = getHeaderDecorator();
 		
 		final ColorChooserLabel fgColorCc = new ColorChooserLabel(hd.getForegroundColor());
 		fgColorCc.setToolTipText("Foreground color");
@@ -122,7 +121,7 @@ public class HeaderConfigPage extends JPanel {
 		annNameCombo.setMinimumSize(new Dimension(120, 10));
 		annNameCombo.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				getHeaderDecorator().setNamePattern(
+				getHeaderDecorator().setLabelPattern(
 						(String) annNameCombo.getSelectedItem());
 			}
 		});
@@ -151,10 +150,10 @@ public class HeaderConfigPage extends JPanel {
 		add(p2, BorderLayout.NORTH);
 	}
 	
-	protected AnnotationHeaderDecorator getHeaderDecorator() {
+	protected HeatmapHeader getHeaderDecorator() {
 		switch (type) {
-		case rows: return (AnnotationHeaderDecorator) model.getRowDecorator();
-		case columns: return (AnnotationHeaderDecorator) model.getColumnDecorator();
+		case rows: return model.getRowHeader();
+		case columns: return model.getColumnHeader();
 		}
 		return null;
 	}
@@ -166,7 +165,7 @@ public class HeaderConfigPage extends JPanel {
 		
 		AnnotationMatrix annMatrix = amp.read(res, new NullProgressMonitor());
 		
-		AnnotationHeaderDecorator decorator = getHeaderDecorator();
+		HeatmapHeader decorator = getHeaderDecorator();
 		decorator.setAnnotations(annMatrix);
 		
 		ObjectMatrix1D columns = annMatrix.getColumns();
@@ -204,7 +203,7 @@ public class HeaderConfigPage extends JPanel {
 		int count = type == HeaderType.rows ? 
 				matrixView.getRowCount() : matrixView.getColumnCount();
 		
-		AnnotationHeaderDecorator decorator = getHeaderDecorator();
+		HeatmapHeader decorator = getHeaderDecorator();
 		
 		AnnotationMatrix annotations = decorator.getAnnotations();
 		

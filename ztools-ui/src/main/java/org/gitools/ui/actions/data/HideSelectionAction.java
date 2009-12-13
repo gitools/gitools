@@ -8,7 +8,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 public class HideSelectionAction extends BaseAction {
@@ -45,7 +45,7 @@ public class HideSelectionAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof HeatmapFigure
+		return model instanceof Heatmap
 			|| model instanceof IMatrixView;
 	}
 	

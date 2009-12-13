@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.model.matrix.element.IElementProperty;
@@ -15,11 +15,11 @@ public abstract class AbstractElementDecoratorPanel extends JPanel {
 
 	private static final long serialVersionUID = 7349354490870110812L;
 
-	protected HeatmapFigure model;
+	protected Heatmap model;
 	
 	protected List<IndexedProperty> valueProperties;
 
-	public AbstractElementDecoratorPanel(HeatmapFigure model) {
+	public AbstractElementDecoratorPanel(Heatmap model) {
 		this.model = model;
 	}
 	

@@ -8,11 +8,11 @@ import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public class ElementDecoratorPanelFactory {
 
-	public static JComponent create(Class<? extends ElementDecorator> decoratorClass, HeatmapFigure model) {
+	public static JComponent create(Class<? extends ElementDecorator> decoratorClass, Heatmap model) {
 		
 		if (PValueElementDecorator.class.equals(decoratorClass))
 			return new PValueElementDecoratorPanel(model);

@@ -7,9 +7,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
-import org.gitools.model.decorator.HeaderDecoration;
-import org.gitools.model.decorator.HeaderDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.HeatmapHeaderDecoration;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 public class HeatmapHeaderDrawer extends AbstractDrawer {
@@ -18,7 +18,7 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 	
 	private boolean horizontal;
 	
-	public HeatmapHeaderDrawer(HeatmapFigure heatmap, boolean horizontal) {
+	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
 		this.horizontal = horizontal;
 	}
@@ -40,9 +40,11 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 
 		IMatrixView data = heatmap.getMatrixView();
 
-		HeaderDecorator deco = horizontal ? heatmap.getColumnDecorator() : heatmap.getRowDecorator();
-		HeaderDecoration decoration = new HeaderDecoration();
+		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
 
+		g.setFont(hdr.getFont());
+		
 		final Color gridColor = heatmap.getGridColor();
 
 		int gridSize = getGridSize();
@@ -79,7 +81,7 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
 				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
-			deco.decorate(decoration, element);
+			hdr.decorate(decoration, element);
 
 			Color bgColor = decoration.getBgColor();
 			Color fgColor = decoration.getFgColor();

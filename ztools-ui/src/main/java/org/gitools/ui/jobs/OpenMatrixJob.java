@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.DoubleMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.MatrixView;
@@ -48,7 +48,7 @@ public class OpenMatrixJob implements Job {
 					
 			final IMatrixView matrixView = new MatrixView(matrix);
 			
-			final HeatmapFigure figure = new HeatmapFigure(matrixView);
+			final Heatmap figure = new Heatmap(matrixView);
 			figure.setShowGrid(false);
 			
 			final HeatmapEditor editor = new HeatmapEditor(figure);

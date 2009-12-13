@@ -31,8 +31,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.AnnotationMatrix;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
@@ -65,7 +65,7 @@ public class HeatmapDetailsController implements EntityController {
 	public JComponent getComponent(Object ctx) {
 		TemplatePane panel = getTemplatePanel();
 
-		final HeatmapFigure heatmap = (HeatmapFigure) ctx;
+		final Heatmap heatmap = (Heatmap) ctx;
 		final IMatrixView matrixView = heatmap.getMatrixView();
 		int row = matrixView.getSelectionLeadRow();
 		int rowCount = matrixView.getRowCount();
@@ -123,31 +123,32 @@ public class HeatmapDetailsController implements EntityController {
 			Map<String, String> links = new HashMap<String, String>();
 
 			if (column >= 0 && column < columnCount) {
+				context.put("linkName", heatmap.getColumnHeader().getLinkName());
+				context.put("linkUrl", heatmap.getColumnLinkUrl(row));
+
 				name = heatmap.getColumnLabel(column);
 				String label = heatmap.getMatrixView().getColumnLabel(column);
-				if (heatmap.getColumnDecorator() instanceof AnnotationHeaderDecorator) {
-					AnnotationHeaderDecorator dec = (AnnotationHeaderDecorator) heatmap.getColumnDecorator();
-					AnnotationMatrix annMatrix = dec.getAnnotations();
-					if (annMatrix != null)
-						annotations = annMatrix.getAnnotations(label);
-				}
+				HeatmapHeader hdr = heatmap.getColumnHeader();
+				AnnotationMatrix annMatrix = hdr.getAnnotations();
+				if (annMatrix != null)
+					annotations = annMatrix.getAnnotations(label);
 			}
 			else if (row >= 0 && row < rowCount) {
+				context.put("linkName", heatmap.getRowHeader().getLinkName());
+				context.put("linkUrl", heatmap.getRowLinkUrl(row));
+
 				name = heatmap.getRowLabel(row);
 				String label = heatmap.getMatrixView().getRowLabel(row);
-				if (heatmap.getRowDecorator() instanceof AnnotationHeaderDecorator) {
-					AnnotationHeaderDecorator dec = (AnnotationHeaderDecorator) heatmap.getRowDecorator();
-					AnnotationMatrix annMatrix = dec.getAnnotations();
-					if (annMatrix != null)
-						annotations = annMatrix.getAnnotations(label);
-				}
+				HeatmapHeader hdr = heatmap.getRowHeader();
+				AnnotationMatrix annMatrix = hdr.getAnnotations();
+				if (annMatrix != null)
+					annotations = annMatrix.getAnnotations(label);
 			}
 
 			templateName = headerTemplateName;
 						
 			context.put("name", name);
 			context.put("annotations", annotations);
-			context.put("links", links);
 		}
 
 		try {

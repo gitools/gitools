@@ -5,14 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 
 public class RowsMatrixRenderer extends HeaderMatrixRenderer {
 
 	private static final long serialVersionUID = -257470002216448607L;
 
 	public RowsMatrixRenderer(
-			HeaderDecorator decorator,
+			HeatmapHeader decorator,
 			boolean highlightSelected) {
 		
 		super(decorator, highlightSelected);

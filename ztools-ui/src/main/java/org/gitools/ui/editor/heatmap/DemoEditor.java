@@ -4,8 +4,7 @@ import org.gitools.model.analysis.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.AnnotationHeaderDecorator;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.MatrixView;
 import org.gitools.model.matrix.ObjectMatrix;
 import org.gitools.model.matrix.element.ArrayElementAdapter;
@@ -16,7 +15,7 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import org.gitools.ui.editor.heatmap.HeatmapEditor;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 
 public class DemoEditor extends HeatmapEditor {
 
@@ -28,13 +27,14 @@ public class DemoEditor extends HeatmapEditor {
 		setName("Demo");
 	}
 	
-	private static HeatmapFigure createModel(int rows, int cols) {
+	private static Heatmap createModel(int rows, int cols) {
 		MatrixView matrixView = createTable(rows, cols);
 		ElementDecorator decorator = ElementDecoratorFactory.create(
 				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
-		return new HeatmapFigure(matrixView, decorator,
-				new AnnotationHeaderDecorator(), new AnnotationHeaderDecorator());
+		return new Heatmap(matrixView, decorator,
+				new HeatmapHeader(),
+				new HeatmapHeader());
 	}
 
 	private static MatrixView createTable(int rows, int cols) {		

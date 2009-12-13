@@ -16,7 +16,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementAdapter;
 import org.gitools.ui.model.SelectionMode;
@@ -40,8 +40,8 @@ public class MatrixPanel extends JPanel {
 	
 	private IMatrixView model;
 
-	private HeaderDecorator columnsDecorator;
-	private HeaderDecorator rowsDecorator;
+	private HeatmapHeader columnsDecorator;
+	private HeatmapHeader rowsDecorator;
 	
 	public MatrixPanel() {
 		
@@ -224,20 +224,20 @@ public class MatrixPanel extends JPanel {
 	// ---------------------------------------------------------------------------
 	// decorators
 	
-	public HeaderDecorator getRowDecorator() {
+	public HeatmapHeader getRowDecorator() {
 		return rowsDecorator;
 	}
 	
-	public void setRowDecorator(HeaderDecorator decorator) {
+	public void setRowDecorator(HeatmapHeader decorator) {
 		this.rowsDecorator = decorator;
 		refreshTableRowsRenderer();
 	}
 	
-	public HeaderDecorator getColumnDecorator() {
+	public HeatmapHeader getColumnDecorator() {
 		return columnsDecorator;
 	}
 	
-	public void setColumnDecorator(HeaderDecorator decorator) {
+	public void setColumnDecorator(HeatmapHeader decorator) {
 		this.columnsDecorator = decorator;
 		refreshTableColumnsRenderer();
 	}

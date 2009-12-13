@@ -26,7 +26,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.Arrays;
 import javax.swing.JViewport;
 import org.gitools.heatmap.HeatmapPosition;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 /**
@@ -37,10 +37,9 @@ public class HeatmapHeaderController
 		implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private enum Mode {
-
 		none, selecting, moving
 	}
-	private final HeatmapFigure heatmap;
+	private final Heatmap heatmap;
 	private final JViewport viewPort;
 	private final HeatmapHeaderPanel headerPanel;
 	private final HeatmapPanel panel;

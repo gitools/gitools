@@ -26,7 +26,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JViewport;
 import org.gitools.heatmap.HeatmapPosition;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
 /**
@@ -40,7 +40,7 @@ public class HeatmapBodyController
 		none, selecting, moving
 	}
 
-	private final HeatmapFigure heatmap;
+	private final Heatmap heatmap;
 	private final JViewport viewPort;
 	private final HeatmapPanel panel;
 	private final HeatmapBodyPanel bodyPanel;

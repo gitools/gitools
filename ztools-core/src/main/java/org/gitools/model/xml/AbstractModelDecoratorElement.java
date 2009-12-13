@@ -11,9 +11,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.HeaderDecorator;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
-import org.gitools.model.xml.adapter.HeaderDecoratorXmlAdapter;
 import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,8 +22,7 @@ public class AbstractModelDecoratorElement {
 
 	@XmlElementWrapper(name = "headerDecoratorType")
 	@XmlElement(name = "headerDecorator")
-	@XmlJavaTypeAdapter(HeaderDecoratorXmlAdapter.class)
-	private List<HeaderDecorator> headerDecorators = new ArrayList<HeaderDecorator>();
+	private List<HeatmapHeader> headerDecorators = new ArrayList<HeatmapHeader>();
 
 	@XmlElementWrapper(name = "elementDecoratorType")
 	@XmlElement(name = "elementDecorator")
@@ -43,8 +41,8 @@ public class AbstractModelDecoratorElement {
 		int i = 0;
 		
 		for (AbstractModel elem : elems) {
-			if (elem instanceof HeaderDecorator) {
-				headerDecorators.add((HeaderDecorator) elem);
+			if (elem instanceof HeatmapHeader) {
+				headerDecorators.add((HeatmapHeader) elem);
 				order[i] = nHeaders;
 				nHeaders++;
 			} else if (elem instanceof ElementDecorator) {

@@ -10,7 +10,7 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.matrix.sort.SortCriteria;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 
@@ -44,7 +44,7 @@ public class SortByValueAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof HeatmapFigure
+		return model instanceof Heatmap
 			|| model instanceof IMatrixView;
 	}
 		

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.gitools.exporter.TextMatrixExporter;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.actions.BaseAction;
@@ -29,7 +29,7 @@ public class ExportTableOneParameterAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof HeatmapFigure
+		return model instanceof Heatmap
 			|| model instanceof IMatrixView;
 	}
 	

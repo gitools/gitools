@@ -21,21 +21,21 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public abstract class AbstractDrawer {
 
-	protected HeatmapFigure heatmap;
+	protected Heatmap heatmap;
 
-	public AbstractDrawer(HeatmapFigure heatmap) {
+	public AbstractDrawer(Heatmap heatmap) {
 		this.heatmap = heatmap;
 	}
 
-	public HeatmapFigure getHeatmap() {
+	public Heatmap getHeatmap() {
 		return heatmap;
 	}
 
-	public void setHeatmap(HeatmapFigure heatmap) {
+	public void setHeatmap(Heatmap heatmap) {
 		this.heatmap = heatmap;
 	}
 

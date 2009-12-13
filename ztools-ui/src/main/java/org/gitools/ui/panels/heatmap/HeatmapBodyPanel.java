@@ -7,7 +7,7 @@ import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
 import org.gitools.heatmap.HeatmapBodyDrawer;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public class HeatmapBodyPanel extends AbstractHeatmapPanel implements Scrollable {
 
@@ -17,7 +17,7 @@ public class HeatmapBodyPanel extends AbstractHeatmapPanel implements Scrollable
 	
 	//private HeatmapBodyDrawer drawer;
 		
-	public HeatmapBodyPanel(HeatmapFigure heatmap) {
+	public HeatmapBodyPanel(Heatmap heatmap) {
 		super(heatmap, new HeatmapBodyDrawer(heatmap));
 	}
 

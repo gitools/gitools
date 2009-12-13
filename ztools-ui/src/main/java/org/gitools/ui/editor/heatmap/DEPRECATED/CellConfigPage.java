@@ -1,4 +1,4 @@
-package org.gitools.ui.editor.heatmap;
+package org.gitools.ui.editor.heatmap.DEPRECATED;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,7 +28,7 @@ import javax.swing.event.ChangeListener;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
@@ -39,7 +39,7 @@ public class CellConfigPage extends JPanel {
 
 	private static final long serialVersionUID = 7931473950086532892L;
 	
-	private HeatmapFigure model;
+	private Heatmap model;
 	
 	private JComboBox showCombo;
 	private JCheckBox showGridCb;
@@ -47,7 +47,7 @@ public class CellConfigPage extends JPanel {
 	
 	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
 	
-	public CellConfigPage(HeatmapFigure model) {
+	public CellConfigPage(Heatmap model) {
 		
 		this.model = model;
 		

@@ -15,6 +15,10 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	private static final long serialVersionUID = 5752318457428475330L;
 
+	public static final String TITLE_CHANGED = "titleChanged";
+	public static final String DESC_CHANGED = "descChanged";
+	public static final String ATTRIBUTES_CHANGED = "attributesChanged";
+
 	/** short description **/
 	protected String title;
 
@@ -39,6 +43,7 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+		firePropertyChange(TITLE_CHANGED);
 	}
 
 	public String getDescription() {
@@ -47,6 +52,7 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+		firePropertyChange(DESC_CHANGED);
 	}
 
 	public List<Attribute> getAttributes() {
@@ -55,5 +61,6 @@ public class Artifact extends AbstractModel implements Serializable {
 
 	public void setAttributes(List<Attribute> attributes) {
 		this.attributes = attributes;
+		firePropertyChange(ATTRIBUTES_CHANGED);
 	}
 }

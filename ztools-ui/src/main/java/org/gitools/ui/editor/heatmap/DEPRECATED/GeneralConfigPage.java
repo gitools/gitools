@@ -1,5 +1,6 @@
-package org.gitools.ui.editor.heatmap;
+package org.gitools.ui.editor.heatmap.DEPRECATED;
 
+import org.gitools.ui.utils.DocumentChangeListener;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
@@ -12,15 +13,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 public class GeneralConfigPage extends JPanel {
 
 	private static final long serialVersionUID = -8596459827146598515L;
 
-	private HeatmapFigure model;
+	private Heatmap model;
 	
-	public GeneralConfigPage(HeatmapFigure model) {
+	public GeneralConfigPage(Heatmap model) {
 		this.model = model;
 		
 		createComponents();

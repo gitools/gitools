@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.gitools.model.decorator.ElementDecoration;
-import org.gitools.model.figure.HeatmapFigure;
+import org.gitools.model.figure.heatmap.Heatmap;
 
 import edu.upf.bg.GenericFormatter;
 
@@ -16,7 +16,7 @@ public class HtmlMatrixExporter extends AbstractHtmlExporter {
 		super();
 	}
 	
-	public void exportMatrixFigure(HeatmapFigure figure) {
+	public void exportMatrixFigure(Heatmap figure) {
         
 		File templatePath = getTemplatePath();
 		if (templatePath == null)

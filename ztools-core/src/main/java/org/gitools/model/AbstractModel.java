@@ -18,10 +18,12 @@ public abstract class AbstractModel
 	public AbstractModel() {
 	}
 	
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.add(listener);
 	}
 	
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.remove(listener);
 	}
