@@ -50,13 +50,13 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		int cellHeight = heatmap.getCellHeight() + gridSize;
 
 		//TODO take into account extBorderSize
-		int rowStart = clip.y / cellHeight;
-		int rowEnd = (clip.y + clip.height + cellHeight - 1) / cellHeight;
+		int rowStart = (clip.y - box.y) / cellHeight;
+		int rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
 		rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
 
 		//TODO take into account extBorderSize
-		int colStart = clip.x / cellWidth;
-		int colEnd = (clip.x + clip.width + cellWidth - 1) / cellWidth;
+		int colStart = (clip.x - box.x) / cellWidth;
+		int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
 		colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
 		
 		ElementDecorator deco = heatmap.getCellDecorator();
