@@ -1,1 +1,1 @@
-java -jar ..\lib\ztools-ui-${project.version}.jar %*
+java -jar ..\lib\gitools-ui-${project.version}.jar %*

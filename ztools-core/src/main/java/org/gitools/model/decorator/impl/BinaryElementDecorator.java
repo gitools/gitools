@@ -1,5 +1,6 @@
 package org.gitools.model.decorator.impl;
 
+import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,6 +109,11 @@ public class BinaryElementDecorator extends ElementDecorator {
 		decoration.setToolTip(fmt.format(v));
 	}
 
+	@Override
+	public IColorScale getScale() {
+		return scale;
+	}
+	
 	//FIXME scale comparison state
 	@Override
 	public Map<String, String> getConfiguration() {

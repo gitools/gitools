@@ -50,8 +50,8 @@ public abstract class SimpleColorScale extends AbstractColorScale {
 		this.min = min;
 		this.max = max;
 
-		points.add(min);
-		points.add(max);
+		addPoint(min);
+		addPoint(max);
 	}
 
 	public Color limitsColor(double value) {
@@ -115,5 +115,10 @@ public abstract class SimpleColorScale extends AbstractColorScale {
 
 	public void setMax(ColorScalePoint max) {
 		this.max = max;
+	}
+
+	@Override
+	public ColorScaleRange getRange() {
+		return new ColorScaleRange(min.getValue(), max.getValue());
 	}
 }

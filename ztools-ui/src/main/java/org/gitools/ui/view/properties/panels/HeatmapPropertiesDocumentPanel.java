@@ -25,7 +25,6 @@ package org.gitools.ui.view.properties.panels;
 
 import java.beans.PropertyChangeEvent;
 import javax.swing.event.DocumentEvent;
-import org.gitools.model.Artifact;
 import org.gitools.ui.utils.DocumentChangeListener;
 
 public class HeatmapPropertiesDocumentPanel extends HeatmapPropertiesAbstractPanel {

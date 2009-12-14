@@ -1,5 +1,6 @@
 package org.gitools.model.decorator.impl;
 
+import edu.upf.bg.colorscale.IColorScale;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
 import java.util.Map;
@@ -57,6 +58,11 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		}
 		decoration.setText(cellText);
 		decoration.setToolTip(cellText);
+	}
+
+	@Override
+	public IColorScale getScale() {
+		return null;
 	}
 
 	@Override

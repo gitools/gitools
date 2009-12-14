@@ -25,13 +25,10 @@ public class MultiEditor extends AbstractEditor {
 		tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		
 		tabbedPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent evt) {
+			@Override public void stateChanged(ChangeEvent evt) {
 				AppFrame.instance().getEditorsPanel().refreshActions();
-				/*refreshActions();
-				
-				AbstractEditor selectedView = getSelectedView();
-				if (selectedView != null)
-					selectedView.refreshActions();*/
+
+				getSelectedEditor().doVisible();
 			}
 		});
 		
@@ -70,6 +67,11 @@ public class MultiEditor extends AbstractEditor {
 	@Override
 	public void doSaveAs(IProgressMonitor monitor) {
 		getSelectedEditor().doSaveAs(monitor);
+	}
+
+	@Override
+	public void doVisible() {
+		getSelectedEditor().doVisible();
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class HeatmapBodyController
 		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
 		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
-		mode = shiftDown && ctrlDown ? Mode.moving : Mode.selecting;
+		mode = shiftDown || ctrlDown ? Mode.moving : Mode.selecting;
 		switch (mode) {
 			case selecting: updateSelection(e); break;
 			case moving: updateScroll(e, false); break;

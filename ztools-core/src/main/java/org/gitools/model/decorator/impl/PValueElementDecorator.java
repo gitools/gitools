@@ -14,6 +14,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
@@ -98,14 +99,9 @@ public class PValueElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	public final PValueColorScale getScale() {
+	public final PValueColorScale getPValueScale() {
 		return scale;
 	}
-
-	/*public final void setScale(PValueColorScale scale) {
-		this.scale = scale;
-		firePropertyChange(PROPERTY_CHANGED);
-	}*/
 
 	public Color getMinColor() {
 		return scale.getMin().getColor();
@@ -168,6 +164,11 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
+	}
+
+	@Override
+	public IColorScale getScale() {
+		return scale;
 	}
 
 	//FIXME scale state

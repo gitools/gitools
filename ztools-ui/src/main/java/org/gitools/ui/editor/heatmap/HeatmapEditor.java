@@ -1,5 +1,6 @@
 package org.gitools.ui.editor.heatmap;
 
+import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,24 +23,24 @@ public class HeatmapEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = -540561086703759209L;
 
-	public enum WorkbenchLayout {
-		LEFT, RIGHT, TOP, BOTTOM
-	}
-	
 	private Heatmap heatmap;
-	
-	private JTabbedPane tabbedPane;
+
+	private HeatmapPanel heatmapPanel;
+
+	private ColorScalePanel colorScalePanel;
+
+	//private JTabbedPane tabbedPane;
 	
 	protected boolean blockSelectionUpdate;
 
-	private PropertyChangeListener modelListener;
+	private PropertyChangeListener heatmapListener;
 	private PropertyChangeListener cellDecoratorListener;
 
 	private PropertyChangeListener rowDecoratorListener;
 
 	private PropertyChangeListener colDecoratorListener;
 
-	private JSplitPane splitPane;
+	//private JSplitPane splitPane;
 
 	public HeatmapEditor(Heatmap heatmap) {
 		
@@ -51,15 +52,16 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		createComponents();
 		
-		modelListener = new PropertyChangeListener() {
+		heatmapListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				modelPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				heatmapPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		};
 		
 		cellDecoratorListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
+				colorScalePanel.repaint();
 			}
 		};
 		
@@ -73,8 +75,7 @@ public class HeatmapEditor extends AbstractEditor {
 			}
 		};
 		
-		heatmap.addPropertyChangeListener(modelListener);
-		
+		heatmap.addPropertyChangeListener(heatmapListener);
 		heatmap.getCellDecorator().addPropertyChangeListener(cellDecoratorListener);
 		heatmap.getRowHeader().addPropertyChangeListener(rowDecoratorListener);
 		heatmap.getColumnHeader().addPropertyChangeListener(colDecoratorListener);
@@ -87,7 +88,7 @@ public class HeatmapEditor extends AbstractEditor {
 		setSaveAsAllowed(true);
 	}
 
-	protected void modelPropertyChange(
+	protected void heatmapPropertyChange(
 			String propertyName, Object oldValue, Object newValue) {
 		
 		if (Heatmap.CELL_DECORATOR_CHANGED.equals(propertyName)) {
@@ -95,6 +96,8 @@ public class HeatmapEditor extends AbstractEditor {
 			prevDecorator.removePropertyChangeListener(cellDecoratorListener);
 			final ElementDecorator nextDecorator = (ElementDecorator) newValue;
 			nextDecorator.addPropertyChangeListener(cellDecoratorListener);
+
+			colorScalePanel.setScale(nextDecorator.getScale());
 		}
 		else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(propertyName)) {
 			final HeatmapHeader prevDecorator = (HeatmapHeader) oldValue;
@@ -126,9 +129,9 @@ public class HeatmapEditor extends AbstractEditor {
 		}
 		else if (IMatrixView.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName)) {
 			if (oldValue != null)
-				((IModel) oldValue).removePropertyChangeListener(modelListener);
+				((IModel) oldValue).removePropertyChangeListener(heatmapListener);
 			
-			((IModel) newValue).addPropertyChangeListener(modelListener);
+			((IModel) newValue).addPropertyChangeListener(heatmapListener);
 		}
 	}
 
@@ -139,22 +142,29 @@ public class HeatmapEditor extends AbstractEditor {
 	private void createComponents() {
 		
 		final IMatrixView matrixView = getMatrixView();
-		
-		/* Heatmap panel */
-		
-		/* Configuration panels */
 
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		// Color scale panel
+
+		colorScalePanel = new ColorScalePanel(heatmap.getCellDecorator().getScale());
+
+		// Heatmap panel
+
+		heatmapPanel = new HeatmapPanel(heatmap);
+
+		// Main panel
+
+		/*splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setResizeWeight(1.0);
 		//configSplitPane.setDividerLocation(defaultDividerLocation);
 		splitPane.setDividerLocation(1.0);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
-		splitPane.add(new HeatmapPanel(heatmap));
-		splitPane.add(new JPanel());
+		splitPane.add(heatmapPanel);
+		splitPane.add(colorScalePanel);*/
 		
 		setLayout(new BorderLayout());
-		add(splitPane, BorderLayout.CENTER);
+		add(heatmapPanel, BorderLayout.CENTER);
+		add(colorScalePanel, BorderLayout.SOUTH);
 	}
 
 	protected IMatrixView getMatrixView() {

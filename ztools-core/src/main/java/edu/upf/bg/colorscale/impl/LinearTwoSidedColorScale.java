@@ -23,6 +23,8 @@ public class LinearTwoSidedColorScale extends CompositeColorScale {
 		super(min, max);
 	
 		this.mid = mid;
+
+		addPoint(mid);
 		
 		leftScale = new LinearColorScale(min, mid);
 		leftScaleFrag = new ColorScaleFragment(min, mid, leftScale);

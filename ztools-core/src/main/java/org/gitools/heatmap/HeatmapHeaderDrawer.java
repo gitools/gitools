@@ -106,8 +106,10 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			g.setColor(bgColor);
 			g.fillRect(x, y, width, height - gridSize);
 
-			g.setColor(fgColor);
-			g.drawString(element, x + padding, y + fontOffset);
+			if (fontHeight <= height - gridSize) {
+				g.setColor(fgColor);
+				g.drawString(element, x + padding, y + fontOffset);
+			}
 
 			y += height;
 		}

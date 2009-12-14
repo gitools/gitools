@@ -20,6 +20,8 @@ public class BinaryColorScale extends SimpleColorScale {
 
 		super(min, max);
 
+		addPoint(new ColorScalePoint(cutoff));
+		
 		this.cutoff = cutoff;
 		this.cutoffCmp = cmp;
 	}

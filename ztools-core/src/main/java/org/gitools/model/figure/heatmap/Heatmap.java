@@ -107,7 +107,7 @@ public class Heatmap
 		this.gridColor = Color.WHITE;
 		this.cellWidth = 18;
 		this.cellHeight = 18;
-		this.rowHeaderSize = 400;
+		this.rowHeaderSize = 300;
 		this.columnHeaderSize = 200;
 		this.showBorders = false;
 	}

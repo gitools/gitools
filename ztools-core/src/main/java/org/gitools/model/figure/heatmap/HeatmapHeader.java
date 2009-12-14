@@ -52,7 +52,7 @@ public class HeatmapHeader extends AbstractModel {
 		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 10);
 		labelPattern = "${id}";
-		linkName = "Link";
+		linkName = "Google";
 		linkPattern = "http://www.google.com/search?q=${url:id}";
 	}
 	

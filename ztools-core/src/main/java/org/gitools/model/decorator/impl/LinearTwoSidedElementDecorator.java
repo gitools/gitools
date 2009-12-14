@@ -14,6 +14,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
@@ -129,6 +130,11 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
+	}
+
+	@Override
+	public IColorScale getScale() {
+		return scale;
 	}
 
 	//FIXME scale configuration missing

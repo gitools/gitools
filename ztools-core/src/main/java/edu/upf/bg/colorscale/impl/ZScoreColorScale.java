@@ -49,6 +49,9 @@ public class ZScoreColorScale extends CompositeColorScale {
 
 		nonSigLeft = new ColorScalePoint(centerValue - sigHalfAmplitude);
 		nonSigRight = new ColorScalePoint(centerValue + sigHalfAmplitude);
+
+		addPoint(nonSigLeft);
+		addPoint(nonSigRight);
 		
 		nonSigScale = new UniformColorScale(nonSignificantColor);
 		nonSigScaleFrag = new ColorScaleFragment(nonSigLeft, nonSigRight, nonSigScale);

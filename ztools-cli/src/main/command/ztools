@@ -1,7 +1,0 @@
-#!/bin/bash
-
-BINDIR=$(dirname "$0")
-
-source $BINDIR/common.sh
-
-$javacmd -jar $LIBDIR/ztools-ui-${project.version}.jar $*

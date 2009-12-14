@@ -38,7 +38,7 @@ public class HeatmapPropertiesPanel extends JPanel {
     public HeatmapPropertiesPanel() {
         initComponents();
 
-		tabs.addTab("Details", new HeatmapPropertiesDocumentPanel());
+		tabs.addTab("Document", new HeatmapPropertiesDocumentPanel());
 		tabs.addTab("Rows", new HeatmapPropertiesHeaderPanel(true));
 		tabs.addTab("Columns", new HeatmapPropertiesHeaderPanel(false));
 		tabs.addTab("Cells", new HeatmapPropertiesCellsPanel());

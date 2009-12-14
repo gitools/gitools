@@ -1,5 +1,6 @@
 package org.gitools.model.decorator;
 
+import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Map;
@@ -39,6 +40,8 @@ public abstract class ElementDecorator extends AbstractModel {
 	public abstract void decorate(
 			ElementDecoration decoration, 
 			Object element);
+
+	public abstract IColorScale getScale();
 
 	//FIXME use JAXB to save state
 	public Map<String, String> getConfiguration() {

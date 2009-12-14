@@ -37,6 +37,8 @@ public class PValueColorScale extends CompositeColorScale {
 
 		sigLevel = new ColorScalePoint(significanceLevel + epsilon, maxColor);
 
+		addPoint(sigLevel);
+
 		nonSigScale = new UniformColorScale(nonSignificantColor);
 		nonSigScaleFrag = new ColorScaleFragment(sigLevel, max, nonSigScale);
 		

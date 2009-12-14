@@ -26,8 +26,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <Component id="jPanel1" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -169,7 +169,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="decoPanel" alignment="0" min="-2" pref="266" max="-2" attributes="0"/>
-                      <Component id="cellDecorator" alignment="0" pref="266" max="32767" attributes="0"/>
+                      <Component id="cellDecorator" alignment="0" pref="271" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -181,7 +181,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cellDecorator" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="decoPanel" pref="99" max="32767" attributes="0"/>
+                  <Component id="decoPanel" pref="108" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>

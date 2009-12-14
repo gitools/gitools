@@ -14,6 +14,7 @@ import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.jet.stat.Probability;
 import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
@@ -109,7 +110,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
-	public final ZScoreColorScale getScale() {
+	public final ZScoreColorScale getZScoreScale() {
 		return scale;
 	}
 
@@ -195,6 +196,11 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		decoration.setToolTip(fmt.pvalue(v));
 	}
 
+	@Override
+	public IColorScale getScale() {
+		return scale;
+	}
+	
 	//FIXME scale state
 	@Override
 	public Map<String, String> getConfiguration() {

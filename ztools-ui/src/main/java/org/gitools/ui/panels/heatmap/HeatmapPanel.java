@@ -1,8 +1,11 @@
 package org.gitools.ui.panels.heatmap;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
@@ -227,12 +230,12 @@ public class HeatmapPanel extends JPanel {
 		repaint();
 	}
 
-    /*@Override
+    @Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension sz = getSize();
 		Rectangle r = new Rectangle(new Point(0, 0), sz);
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		g.fillRect(r.x, r.y, r.width, r.height);
-	}*/
+	}
 }
