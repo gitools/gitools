@@ -33,8 +33,6 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private JTextField cutoffTf;
 
-	private ColorChooserLabel colorCc;
-	
 	public BinaryElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
@@ -76,16 +74,15 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 			@Override public void removeUpdate(DocumentEvent e) { 
 				cutoffChanged(); }
 		});
-		
-		colorCc = new ColorChooserLabel(decorator.getColor());
+
+		final ColorChooserLabel colorCc = new ColorChooserLabel(decorator.getColor());
 		colorCc.setToolTipText("Condition color");
 		colorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setColor(color); }
 		});
 		
-		final ColorChooserLabel nonSigColorCc = 
-			new ColorChooserLabel(decorator.getNonSignificantColor());
+		final ColorChooserLabel nonSigColorCc = new ColorChooserLabel(decorator.getNonSignificantColor());
 		nonSigColorCc.setToolTipText("Non condition color");
 		nonSigColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {

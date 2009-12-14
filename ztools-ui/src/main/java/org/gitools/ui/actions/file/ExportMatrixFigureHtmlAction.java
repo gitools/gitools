@@ -8,7 +8,7 @@ import org.gitools.exporter.HtmlMatrixExporter;
 import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 public class ExportMatrixFigureHtmlAction extends BaseAction {
 
@@ -36,12 +36,12 @@ public class ExportMatrixFigureHtmlAction extends BaseAction {
 		try {
 			File basePath = getSelectedPath(
 					"Select destination folder",
-					Options.instance().getLastExportPath());
+					Settings.getDefault().getLastExportPath());
 			
 			if (basePath == null)
 				return;
 
-			Options.instance().setLastExportPath(basePath.getAbsolutePath());
+			Settings.getDefault().setLastExportPath(basePath.getAbsolutePath());
 			
 			HtmlMatrixExporter exporter = new HtmlMatrixExporter();
 			exporter.setBasePath(basePath);

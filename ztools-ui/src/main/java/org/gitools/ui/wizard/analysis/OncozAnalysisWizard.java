@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.AbstractWizard;
 import org.gitools.ui.wizard.common.FileChooserPage;
 
@@ -30,7 +30,7 @@ public class OncozAnalysisWizard extends AbstractWizard {
 		selectDestDirPage.setTitle("Select destination folder");
 		selectDestDirPage.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		selectDestDirPage.setSelectedFile(
-				new File(Options.instance().getLastWorkPath()));
+				new File(Settings.getDefault().getLastWorkPath()));
 		addPage(selectDestDirPage);
 
 		// Data file
@@ -38,7 +38,7 @@ public class OncozAnalysisWizard extends AbstractWizard {
 		dataFilePage = new FileChooserPage();
 		dataFilePage.setTitle("Select data file");
 		dataFilePage.setCurrentPath(
-				new File(Options.instance().getLastDataPath()));
+				new File(Settings.getDefault().getLastDataPath()));
 		addPage(dataFilePage);
 		
 		// Data filtering

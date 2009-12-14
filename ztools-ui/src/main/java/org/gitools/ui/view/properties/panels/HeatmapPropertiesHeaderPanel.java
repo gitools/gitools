@@ -49,9 +49,10 @@ import org.gitools.persistence.FilePathResolver;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.dialog.FontChooserDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel {
 
@@ -232,7 +233,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private File getSelectedPath() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				Settings.getDefault().getLastPath());
 
 		fileChooser.setDialogTitle("Select file");
 		fileChooser.setMinimumSize(new Dimension(800,600));
@@ -283,6 +284,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Size, Colors and Font"));
 
         headerSizeLabel.setText("Width");
+
+        size.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         jLabel6.setText("Fg");
 
@@ -446,6 +449,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         jLabel12.setText("Url pattern");
 
         linkPattern.setColumns(10);
+        linkPattern.setLineWrap(true);
         linkPattern.setRows(3);
         linkPattern.setTabSize(4);
         jScrollPane3.setViewportView(linkPattern);
@@ -528,9 +532,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	private void fontSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSelectActionPerformed
 		HeatmapHeader hdr = getHeader();
 
-		Font f = selectFont(hdr.getFont());
-		if (f != null)
-			hdr.setFont(f);
+		FontChooserDialog dlg =
+				new FontChooserDialog(AppFrame.instance(), hdr.getFont());
+		dlg.setVisible(true);
+
+		if (!dlg.isCancelled())
+			hdr.setFont(dlg.getFont());
 	}//GEN-LAST:event_fontSelectActionPerformed
 
 	private void annFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annFilterActionPerformed

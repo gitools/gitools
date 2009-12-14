@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
 import org.gitools.model.figure.heatmap.HeatmapHeaderDecoration;
@@ -12,7 +13,7 @@ import org.gitools.model.figure.heatmap.HeatmapHeader;
 import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
-public class HeatmapHeaderDrawer extends AbstractDrawer {
+public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 	
@@ -25,6 +26,10 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
+
+		g.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Draw borders
 		if (heatmap.isShowBorders()) {
@@ -78,6 +83,7 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 
 		int x = box.x;
 		int y = box.y + start * height;
+		int padding = (horizontal ? 3 : 2);
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
 				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
@@ -94,14 +100,14 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 				fgColor = fgColor.darker();
 			}
 
+			g.setColor(gridColor);
+			g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+			
 			g.setColor(bgColor);
 			g.fillRect(x, y, width, height - gridSize);
 
-			g.setColor(gridColor);
-			g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-
 			g.setColor(fgColor);
-			g.drawString(element, x, y + fontOffset);
+			g.drawString(element, x + padding, y + fontOffset);
 
 			y += height;
 		}
@@ -110,7 +116,7 @@ public class HeatmapHeaderDrawer extends AbstractDrawer {
 	@Override
 	public Dimension getSize() {
 		int gridSize = heatmap.isShowGrid() ? 1 : 0;
-		int extBorder = 2 * 1 - 1;
+		int extBorder = /*2 * 1 - 1*/ 0;
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;
 			int columnCount = heatmap.getMatrixView().getColumnCount();

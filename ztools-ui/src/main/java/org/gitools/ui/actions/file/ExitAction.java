@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 
 public class ExitAction extends BaseAction {
@@ -24,7 +24,7 @@ public class ExitAction extends BaseAction {
 		
 		//TODO: Ask confirmation !
 		
-		Options.instance().save();
+		Settings.getDefault().save();
 		System.exit(0);
 	}
 

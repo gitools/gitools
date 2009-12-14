@@ -28,7 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 
 public class FilterRowsByNameDialog extends JDialog {
@@ -207,7 +207,7 @@ public class FilterRowsByNameDialog extends JDialog {
 	
 	protected File getSelectedFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastExportPath());
+				Settings.getDefault().getLastExportPath());
 		
 		fileChooser.setDialogTitle("Select the file containing names");
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -215,7 +215,7 @@ public class FilterRowsByNameDialog extends JDialog {
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			final File file = fileChooser.getSelectedFile();
-			Options.instance().setLastExportPath(file.getParent());
+			Settings.getDefault().setLastExportPath(file.getParent());
 			return file;
 		}
 		

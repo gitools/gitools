@@ -1,8 +1,12 @@
 package edu.upf.bg.colorscale;
 
 import java.awt.Color;
+import java.util.List;
 
 public interface IColorScale {
 	
-	public Color valueColor(double value);
+	Color valueColor(double value);
+
+	ColorScaleRange getRange();
+	List<ColorScalePoint> getPoints();
 }

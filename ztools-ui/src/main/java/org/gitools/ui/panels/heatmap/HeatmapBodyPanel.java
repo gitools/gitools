@@ -12,10 +12,6 @@ import org.gitools.model.figure.heatmap.Heatmap;
 public class HeatmapBodyPanel extends AbstractHeatmapPanel implements Scrollable {
 
 	private static final long serialVersionUID = 930370133535101914L;
-
-	//private HeatmapFigure heatmap;
-	
-	//private HeatmapBodyDrawer drawer;
 		
 	public HeatmapBodyPanel(Heatmap heatmap) {
 		super(heatmap, new HeatmapBodyDrawer(heatmap));

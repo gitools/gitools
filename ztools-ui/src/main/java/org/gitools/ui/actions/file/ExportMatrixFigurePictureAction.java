@@ -11,7 +11,7 @@ import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
@@ -44,11 +44,11 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 		try {
 			File file = getSelectedFile(
 					"Select destination file",
-					Options.instance().getLastExportPath());
+					Settings.getDefault().getLastExportPath());
 			if (file == null)
 				return;
 			
-			Options.instance().setLastExportPath(file.getAbsolutePath());
+			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
 			
 			Document doc = new Document(PageSize.A4, 10, 10, 10, 10);
 			PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(file));

@@ -10,7 +10,7 @@ import java.io.File;
 import javax.swing.*;
 
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizardmess.AbstractWizard;
 import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.AnalysisWizardPanelDescriptor;
@@ -158,14 +158,14 @@ public class ZCalcAnalysisDataDescriptor extends AnalysisWizardPanelDescriptor {
 
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastDataPath());
+				Settings.getDefault().getLastDataPath());
 
 		fileChooser.setDialogTitle("Select file");
 
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			Options.instance().setLastDataPath(selectedFile.getParent());
+			Settings.getDefault().setLastDataPath(selectedFile.getParent());
 			return selectedFile;
 		}
 

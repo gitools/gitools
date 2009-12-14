@@ -14,7 +14,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
-import edu.upf.bg.colorscale.PValueColorScale;
+import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -27,8 +27,7 @@ public class PValueElementDecorator extends ElementDecorator {
 	private boolean useCorrection;
 	private double significanceLevel;
 	
-	@XmlTransient
-	//FIXME:
+	@XmlTransient //FIXME
 	private transient PValueColorScale scale;
 	
 	private transient GenericFormatter fmt = new GenericFormatter("<");
@@ -103,26 +102,26 @@ public class PValueElementDecorator extends ElementDecorator {
 		return scale;
 	}
 
-	public final void setScale(PValueColorScale scale) {
+	/*public final void setScale(PValueColorScale scale) {
 		this.scale = scale;
 		firePropertyChange(PROPERTY_CHANGED);
-	}
+	}*/
 
 	public Color getMinColor() {
-		return scale.getMinColor();
+		return scale.getMin().getColor();
 	}
 
 	public void setMinColor(Color color) {
-		scale.setMinColor(color);
+		scale.getMin().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public Color getMaxColor() {
-		return scale.getMaxColor();
+		return scale.getSigLevel().getLeftColor();
 	}
 
 	public void setMaxColor(Color color) {
-		scale.setMaxColor(color);
+		scale.getSigLevel().setLeftColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
@@ -171,6 +170,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		decoration.setToolTip(fmt.pvalue(v));
 	}
 
+	//FIXME scale state
 	@Override
 	public Map<String, String> getConfiguration() {
 		

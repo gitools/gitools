@@ -3,7 +3,6 @@ package org.gitools.ui.panels.heatmap;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
@@ -22,6 +21,7 @@ public class HeatmapPanel extends JPanel {
 	private static final long serialVersionUID = 5817479437770943868L;
 	
 	private Heatmap heatmap;
+	private final PropertyChangeListener heatmapListener;
 
 	private HeatmapBodyPanel bodyPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
@@ -37,7 +37,13 @@ public class HeatmapPanel extends JPanel {
 	public HeatmapPanel(Heatmap heatmap) {
 		this.heatmap = heatmap;
 
-		heatmapChanged();
+		heatmapListener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				heatmapPropertyChanged(evt);
+			}
+		};
+
+		heatmapChanged(null);
 
 		createComponents();
 	}
@@ -47,7 +53,12 @@ public class HeatmapPanel extends JPanel {
 	}
 	
 	public void setHeatmap(Heatmap heatmap) {
+		Heatmap old = this.heatmap;
 		this.heatmap = heatmap;
+		bodyPanel.setHeatmap(heatmap);
+		columnHeaderPanel.setHeatmap(heatmap);
+		rowHeaderPanel.setHeatmap(heatmap);
+		heatmapChanged(old);
 	}
 	
 	private void createComponents() {
@@ -123,9 +134,6 @@ public class HeatmapPanel extends JPanel {
 	}
 
 	private void updateViewPorts() {
-		Dimension totalSize = bodyPanel.getPreferredSize();
-		Rectangle visibleSize = bodyPanel.getBounds();
-
 		int colValue = colSB.getValue();
 		int rowValue = rowSB.getValue();
 
@@ -192,34 +200,31 @@ public class HeatmapPanel extends JPanel {
 		rowSB.setValue(value);
 	}
 
-	private void heatmapChanged() {
-		PropertyChangeListener listener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(Heatmap.PROPERTY_CHANGED)) {
-					heatmapPropertyChanged();
-				} else {
-					repaint();
-				}
-			}
-		};
+	private void heatmapChanged(Heatmap old) {
 
-		heatmap.addPropertyChangeListener(listener);
-		heatmap.getMatrixView().addPropertyChangeListener(listener);
+		if (old != null) {
+			old.removePropertyChangeListener(heatmapListener);
+			old.getMatrixView().removePropertyChangeListener(heatmapListener);
+		}
+
+		heatmap.addPropertyChangeListener(heatmapListener);
+		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
 	}
 
-	private void heatmapPropertyChanged() {
-		Dimension ps = getPreferredSize();
-		if (ps.width != heatmap.getCellWidth()
-				|| ps.height != heatmap.getCellHeight()) {
+	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
+		String pname = evt.getPropertyName();
 
-			updateScrolls();;
+		if (
+				(evt.getSource().equals(heatmap)
+				&& (Heatmap.CELL_SIZE_CHANGED.equals(pname)
+					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)))
+				|| evt.getSource().equals(heatmap.getMatrixView())) {
 
-			repaint();
+			updateScrolls();
 			revalidate();
 		}
-		else
-			repaint();
+
+		repaint();
 	}
 
     /*@Override
@@ -230,6 +235,4 @@ public class HeatmapPanel extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(r.x, r.y, r.width, r.height);
 	}*/
-
-
 }

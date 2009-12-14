@@ -8,7 +8,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.jobs.OpenMatrixJob;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -30,8 +30,8 @@ public class OpenMatrixAction extends BaseAction {
 		final File selectedPath = getSelectedFile("Select file");
 		
 		if (selectedPath != null) {
-			Options.instance().setLastPath(selectedPath.getParent());
-			Options.instance().save();
+			Settings.getDefault().setLastPath(selectedPath.getParent());
+			Settings.getDefault().save();
 
 			final IProgressMonitor monitor = createProgressMonitor();
 			

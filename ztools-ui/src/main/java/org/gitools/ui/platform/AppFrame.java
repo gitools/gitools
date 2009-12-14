@@ -19,7 +19,7 @@ import org.gitools.ui.editor.heatmap.DemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.platform.navigator.NavigatorPanel;
 import org.gitools.ui.utils.IconUtils;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
@@ -84,7 +84,7 @@ public class AppFrame extends JFrame {
 		
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowClosing(WindowEvent e) {
-				Options.instance().save();
+				Settings.getDefault().save();
 				System.exit(0);
 			}
 		});

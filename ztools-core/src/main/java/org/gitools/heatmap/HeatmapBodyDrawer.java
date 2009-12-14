@@ -11,7 +11,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
-public class HeatmapBodyDrawer extends AbstractDrawer {
+public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 	
 	//private ElementDecorator decorator;
 
@@ -36,7 +36,7 @@ public class HeatmapBodyDrawer extends AbstractDrawer {
 		// Clear background to grid color
 		g.setColor(heatmap.getGridColor());
 		g.fillRect(clip.x, clip.y, clip.width, clip.height);
-		
+
 		// Draw borders and grid background
 		if (heatmap.isShowBorders()) {
 			g.setColor(Color.BLACK);
@@ -89,7 +89,7 @@ public class HeatmapBodyDrawer extends AbstractDrawer {
 		int cellHeight = heatmap.getCellHeight() + gridSize;
 		int rowCount = heatmap.getMatrixView().getRowCount();
 		int columnCount = heatmap.getMatrixView().getColumnCount();
-		int extBorder = 2 * 1 - 1;
+		int extBorder = /*2 * 1 - 1*/ 0;
 		return new Dimension(
 				cellWidth * columnCount + extBorder,
 				cellHeight * rowCount + extBorder);

@@ -29,8 +29,8 @@ public class ElementDecoratorFactory {
 		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
 		
-		descriptors.add(new ElementDecoratorDescriptor(
-				ElementDecoratorNames.FORMATTED_TEXT, FormattedTextElementDecorator.class));
+		/*descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.FORMATTED_TEXT, FormattedTextElementDecorator.class));*/
 	
 	}
 	

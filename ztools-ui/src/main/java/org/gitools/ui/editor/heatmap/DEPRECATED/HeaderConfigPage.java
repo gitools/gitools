@@ -33,7 +33,7 @@ import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
 import org.gitools.ui.component.ColorChooserLabel;
 import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
@@ -184,7 +184,7 @@ public class HeaderConfigPage extends JPanel {
 	
 	private File getSelectedPath() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
+				Settings.getDefault().getLastPath());
 		
 		fileChooser.setDialogTitle("Select file");
 		fileChooser.setMinimumSize(new Dimension(800,600));

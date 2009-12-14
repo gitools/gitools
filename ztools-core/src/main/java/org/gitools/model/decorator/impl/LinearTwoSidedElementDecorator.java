@@ -14,7 +14,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
-import edu.upf.bg.colorscale.LinearTwoSidedColorScale;
+import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -58,56 +58,56 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final double getMinValue() {
-		return scale.getMinPoint();
+		return scale.getMin().getValue();
 	}
 
 	public final void setMinValue(double minValue) {
-		scale.setMinPoint(minValue);
+		scale.getMin().setValue(minValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final double getMidValue() {
-		return scale.getMidPoint();
+		return scale.getMid().getValue();
 	}
 
 	public final void setMidValue(double midValue) {
-		scale.setMidPoint(midValue);
+		scale.getMid().setValue(midValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final double getMaxValue() {
-		return scale.getMaxPoint();
+		return scale.getMax().getValue();
 	}
 
 	public final void setMaxValue(double maxValue) {
-		scale.setMaxPoint(maxValue);
+		scale.getMax().setValue(maxValue);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final Color getMinColor() {
-		return scale.getMinColor();
+		return scale.getMin().getColor();
 	}
 
 	public final void setMinColor(Color minColor) {
-		scale.setMinColor(minColor);
+		scale.getMin().setColor(minColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final Color getMidColor() {
-		return scale.getMidColor();
+		return scale.getMid().getColor();
 	}
 
 	public final void setMidColor(Color midColor) {
-		scale.setMidColor(midColor);
+		scale.getMid().setColor(midColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
 	public final Color getMaxColor() {
-		return scale.getMaxColor();
+		return scale.getMax().getColor();
 	}
 
 	public final void setMaxColor(Color maxColor) {
-		scale.setMaxColor(maxColor);
+		scale.getMax().setColor(maxColor);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 
@@ -130,7 +130,8 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
 	}
-	
+
+	//FIXME scale configuration missing
 	@Override
 	public Map<String, String> getConfiguration() {
 		

@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.model.ToolConfig;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.AbstractWizard;
 import org.gitools.ui.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.FileChooserPage;
@@ -35,7 +35,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		selectDestDirPage.setTitle("Select destination folder");
 		selectDestDirPage.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		selectDestDirPage.setSelectedFile(
-				new File(Options.instance().getLastWorkPath()));
+				new File(Settings.getDefault().getLastWorkPath()));
 		addPage(selectDestDirPage);
 
 		// Data file
@@ -43,7 +43,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		dataFilePage = new FileChooserPage();
 		dataFilePage.setTitle("Select data file");
 		dataFilePage.setCurrentPath(
-				new File(Options.instance().getLastDataPath()));
+				new File(Settings.getDefault().getLastDataPath()));
 		addPage(dataFilePage);
 		
 		// Data filtering
@@ -56,7 +56,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		moduleFilePage = new FileChooserPage();
 		moduleFilePage.setTitle("Select modules file");
 		moduleFilePage.setCurrentPath(
-				new File(Options.instance().getLastMapPath()));
+				new File(Settings.getDefault().getLastMapPath()));
 		addPage(moduleFilePage);
 		
 		// Module filtering

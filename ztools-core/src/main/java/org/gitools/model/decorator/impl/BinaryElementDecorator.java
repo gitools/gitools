@@ -13,37 +13,22 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.matrix.element.IElementAdapter;
 
 import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.colorscale.impl.BinaryColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 @XmlRootElement
 public class BinaryElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = 8832886601133057329L;
-
-	private static final Color defaultColor = new Color(20, 120, 250);
 	
 	private int valueIndex;
-	
-	private double cutoff;
-	
-	private CutoffCmp cutoffCmp;
-	
-	private Color color;
-	private Color nonSignificantColor;
-	
+
+	private BinaryColorScale scale;
+
 	private transient GenericFormatter fmt = new GenericFormatter("<");
-	
-	
+
 	public BinaryElementDecorator() {
-		
-		valueIndex = getPropertyIndex(new String[] {"value"});
-		
-		cutoff = 1.0;
-		
-		cutoffCmp = CutoffCmp.EQ;
-		
-		color = defaultColor;
-		nonSignificantColor = ColorConstants.nonSignificantColor;
+		this(null);
 	}
 	
 	
@@ -51,13 +36,8 @@ public class BinaryElementDecorator extends ElementDecorator {
 		super(adapter);
 	
 		valueIndex = getPropertyIndex(new String[] {"value"});
-		
-		cutoff = 1.0;
-		
-		cutoffCmp = CutoffCmp.EQ;
-		
-		color = defaultColor;
-		nonSignificantColor = ColorConstants.nonSignificantColor;
+
+		this.scale = new BinaryColorScale();
 	}
 
 	public int getValueIndex() {
@@ -70,38 +50,38 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public CutoffCmp getCutoffCmp() {
-		return cutoffCmp;
+		return scale.getCutoffCmp();
 	}
 	
 	public void setCutoffCmp(CutoffCmp cutoffCmp) {
-		this.cutoffCmp = cutoffCmp;
+		this.scale.setCutoffCmp(cutoffCmp);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public double getCutoff() {
-		return cutoff;
+		return scale.getCutoff();
 	}
 	
 	public void setCutoff(double cutoff) {
-		this.cutoff = cutoff;
+		this.scale.setCutoff(cutoff);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public Color getColor() {
-		return color;
+		return scale.getMax().getColor();
 	}
 	
 	public void setColor(Color color) {
-		this.color = color;
+		this.scale.getMax().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public Color getNonSignificantColor() {
-		return nonSignificantColor;
+		return scale.getMin().getColor();
 	}
 	
 	public void setNonSignificantColor(Color color) {
-		this.nonSignificantColor = color;
+		this.scale.getMin().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
@@ -122,24 +102,22 @@ public class BinaryElementDecorator extends ElementDecorator {
 		
 		double v = MatrixUtils.doubleValue(value);
 		
-		boolean isSig = cutoffCmp.compare(v, cutoff);
-		
-		final Color c = Double.isNaN(v) ? ColorConstants.notANumberColor
-				: isSig ? color : nonSignificantColor;
+		final Color c = scale.valueColor(v);
 		
 		decoration.setBgColor(c);
 		decoration.setToolTip(fmt.format(v));
 	}
 
+	//FIXME scale comparison state
 	@Override
 	public Map<String, String> getConfiguration() {
 		
 		Map<String, String> configuration = new HashMap <String, String>();
 		
 		configuration.put("valueIndex", Integer.toString(valueIndex));
-		configuration.put("color",  "#"+Integer.toHexString(color.getRGB()));
-		configuration.put("nonSignificantColor", "#"+Integer.toHexString(nonSignificantColor.getRGB()));;
-		configuration.put("cutoff", Double.toString(cutoff));
+		configuration.put("color",  "#"+Integer.toHexString(getColor().getRGB()));
+		configuration.put("nonSignificantColor", "#"+Integer.toHexString(getNonSignificantColor().getRGB()));
+		configuration.put("cutoff", Double.toString(getCutoff()));
 		
 		return configuration;
 	}
@@ -148,8 +126,8 @@ public class BinaryElementDecorator extends ElementDecorator {
 	public void setConfiguration(Map<String, String> configuration) {
 		
 		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-		this.color = Color.decode(configuration.get("color"));
-		this.nonSignificantColor = Color.decode(configuration.get("nonSignificantColor"));
-		this.cutoff = Double.parseDouble((String) configuration.get("cutoff"));
+		setColor(Color.decode(configuration.get("color")));
+		setNonSignificantColor(Color.decode(configuration.get("nonSignificantColor")));
+		setCutoff(Double.parseDouble((String) configuration.get("cutoff")));
 	}
 }

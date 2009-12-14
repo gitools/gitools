@@ -2,8 +2,12 @@ package org.gitools.ui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.Map.Entry;
 
@@ -11,6 +15,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -19,6 +25,8 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.gitools.ui.dialog.ExceptionDialog;
+import org.gitools.ui.platform.AppFrame;
 
 public class TemplatePane extends JPanel {
 
@@ -66,13 +74,39 @@ public class TemplatePane extends JPanel {
 
 	private void createComponents() {
 		infoPane = new JTextPane();
+		infoPane.setEditable(false);
 		infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
 		//infoPane.setAutoscrolls(false);
 		infoScrollPane = new JScrollPane(infoPane);
 		/*infoScrollPane.setBorder(
 				BorderFactory.createEmptyBorder(8, 8, 8, 8));*/
-		
+
+		infoPane.addHyperlinkListener(new HyperlinkListener() {
+			@Override
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					final String desc = e.getDescription();
+					if (desc.startsWith("action:"))
+						performUrlAction(desc.substring("action:".length()));
+					else {
+						try {
+							Desktop.getDesktop().browse(
+									new URL(e.getDescription()).toURI());
+						} catch (Exception e1) {
+							ExceptionDialog dlg =
+									new ExceptionDialog(AppFrame.instance(), e1);
+							dlg.setVisible(true);
+						}
+					}
+				}
+			}
+
+			private void performUrlAction(String substring) {
+				throw new UnsupportedOperationException("Not yet implemented");
+			}
+		});
+
 		setLayout(new BorderLayout());
 		add(infoScrollPane, BorderLayout.CENTER);
 	}

@@ -12,7 +12,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.IEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -180,7 +180,7 @@ public abstract class BaseAction extends AbstractAction {
 	}
 	
 	protected File getSelectedFile(String title) {
-		return getSelectedFile(title, Options.instance().getLastPath());
+		return getSelectedFile(title, Settings.getDefault().getLastPath());
 	}
 	
 	protected File getSelectedFile(String title, String currentPath) {
@@ -199,7 +199,7 @@ public abstract class BaseAction extends AbstractAction {
 	}
 	
 	protected File getSelectedPath(String title) {
-		return getSelectedPath(title, Options.instance().getLastPath());
+		return getSelectedPath(title, Settings.getDefault().getLastPath());
 	}
 	
 	protected File getSelectedPath(String title, String currentPath) {

@@ -23,11 +23,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import org.gitools.model.figure.heatmap.Heatmap;
 
-public abstract class AbstractDrawer {
+public abstract class AbstractHeatmapDrawer {
 
 	protected Heatmap heatmap;
 
-	public AbstractDrawer(Heatmap heatmap) {
+	public AbstractHeatmapDrawer(Heatmap heatmap) {
 		this.heatmap = heatmap;
 	}
 
@@ -48,7 +48,14 @@ public abstract class AbstractDrawer {
 	}
 
 	public abstract Dimension getSize();
-	
+
+	/**
+	 * Draw contents on the rectangle delimited by box using the clip.
+	 *
+	 * @param g Drawing device
+	 * @param box The bounds of the total canvas
+	 * @param clip The clip (inside the box)
+	 */
 	public abstract void draw(Graphics2D g, Rectangle box, Rectangle clip);
 
 	public abstract HeatmapPosition getPosition(Point p);

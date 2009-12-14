@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizardmess.AbstractWizard;
 import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.AnalysisWizardPanelDescriptor;
@@ -55,7 +55,7 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     	analysisNameField.addKeyListener(keyListener);
     	
     	workDirField = mainPanel.getWorkDirField();
-    	workDirField.setText(Options.instance().getLastWorkPath());
+    	workDirField.setText(Settings.getDefault().getLastWorkPath());
     	
     	chooserButton = mainPanel.getChooserButton();
     	
@@ -128,7 +128,7 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
     
 	private File selectDir() {
 		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastWorkPath());
+				Settings.getDefault().getLastWorkPath());
 		
 		fileChooser.setDialogTitle("Select working path");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -136,7 +136,7 @@ public class ZCalcAnalysisMainDescriptor extends AnalysisWizardPanelDescriptor {
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = fileChooser.getSelectedFile();
-			Options.instance().setLastWorkPath(selectedFile.getAbsolutePath());
+			Settings.getDefault().setLastWorkPath(selectedFile.getAbsolutePath());
 			return selectedFile;
 		}
 		

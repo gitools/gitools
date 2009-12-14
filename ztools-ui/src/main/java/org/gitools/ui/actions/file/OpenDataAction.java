@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 public class OpenDataAction extends BaseAction {
 
@@ -22,8 +22,8 @@ public class OpenDataAction extends BaseAction {
 		final File selectedPath = getSelectedFile("Select file");
 		
 		if (selectedPath != null) {
-			Options.instance().setLastPath(selectedPath.getParent());
-			Options.instance().save();
+			Settings.getDefault().setLastPath(selectedPath.getParent());
+			Settings.getDefault().save();
 		}
 			
 	}

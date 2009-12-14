@@ -14,7 +14,7 @@ import org.gitools.model.matrix.IMatrixView;
 import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.Options;
+import org.gitools.ui.settings.Settings;
 
 public class ExportTableOneParameterAction extends BaseAction {
 
@@ -65,11 +65,11 @@ public class ExportTableOneParameterAction extends BaseAction {
 		try {
 			File file = getSelectedFile(
 					"Select destination file",
-					Options.instance().getLastExportPath());
+					Settings.getDefault().getLastExportPath());
 			if (file == null)
 				return;
 			
-			Options.instance().setLastExportPath(file.getAbsolutePath());
+			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
 			
 			TextMatrixExporter.exportProperty(matrixView, propIndex, file);
 		}

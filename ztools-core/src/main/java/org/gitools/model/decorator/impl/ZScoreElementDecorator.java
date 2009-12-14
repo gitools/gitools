@@ -14,7 +14,7 @@ import org.gitools.model.matrix.element.IElementAdapter;
 
 import cern.jet.stat.Probability;
 import edu.upf.bg.GenericFormatter;
-import edu.upf.bg.colorscale.ZScoreColorScale;
+import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -119,38 +119,38 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 
 	public Color getLeftMinColor() {
-		return scale.getLeftMinColor();
+		return scale.getMin().getColor();
 	}
 	
 	public void setLeftMinColor(Color color) {
-		scale.setLeftMinColor(color);
+		scale.getMin().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public Color getLeftMaxColor() {
-		return scale.getLeftMaxColor();
+		return scale.getCenter().getLeftColor();
 	}
 	
 	public void setLeftMaxColor(Color color) {
-		scale.setLeftMaxColor(color);
+		scale.getCenter().setLeftColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public Color getRightMinColor() {
-		return scale.getRightMinColor();
+		return scale.getCenter().getRightColor();
 	}
 	
 	public void setRightMinColor(Color color) {
-		scale.setRightMinColor(color);
+		scale.getCenter().setRightColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
 	public Color getRightMaxColor() {
-		return scale.getRightMaxColor();
+		return scale.getMax().getColor();
 	}
 	
 	public void setRightMaxColor(Color color) {
-		scale.setRightMaxColor(color);
+		scale.getMax().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
@@ -195,6 +195,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		decoration.setToolTip(fmt.pvalue(v));
 	}
 
+	//FIXME scale state
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -216,5 +217,4 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
 		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
 	}
-
 }

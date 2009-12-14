@@ -87,7 +87,9 @@ public class HeatmapPropertiesDocumentPanel extends HeatmapPropertiesAbstractPan
         jLabel2.setText("Description");
 
         description.setColumns(10);
+        description.setLineWrap(true);
         description.setRows(5);
+        description.setWrapStyleWord(true);
         jScrollPane2.setViewportView(description);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

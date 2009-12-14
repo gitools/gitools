@@ -1,5 +1,7 @@
 package org.gitools.model.decorator;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,7 +40,8 @@ public abstract class ElementDecorator extends AbstractModel {
 			ElementDecoration decoration, 
 			Object element);
 
-	public Map<String, String> getConfiguration(){
+	//FIXME use JAXB to save state
+	public Map<String, String> getConfiguration() {
 		return null;
 	}
 	

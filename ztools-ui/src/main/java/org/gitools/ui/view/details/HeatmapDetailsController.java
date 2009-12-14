@@ -18,8 +18,8 @@
 package org.gitools.ui.view.details;
 
 import edu.upf.bg.GenericFormatter;
-import edu.upf.bg.colorscale.PValueColorScale;
-import edu.upf.bg.colorscale.ZScoreColorScale;
+import edu.upf.bg.colorscale.impl.PValueColorScale;
+import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class HeatmapDetailsController implements EntityController {
 
 			if (column >= 0 && column < columnCount) {
 				context.put("linkName", heatmap.getColumnHeader().getLinkName());
-				context.put("linkUrl", heatmap.getColumnLinkUrl(row));
+				context.put("linkUrl", heatmap.getColumnLinkUrl(column));
 
 				name = heatmap.getColumnLabel(column);
 				String label = heatmap.getMatrixView().getColumnLabel(column);

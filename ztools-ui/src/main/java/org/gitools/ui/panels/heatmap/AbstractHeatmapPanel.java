@@ -24,19 +24,32 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
-import org.gitools.heatmap.AbstractDrawer;
+import org.gitools.heatmap.AbstractHeatmapDrawer;
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.heatmap.Heatmap;
+import org.gitools.model.figure.heatmap.HeatmapHeader;
 
 public class AbstractHeatmapPanel extends JPanel {
 
 	protected Heatmap heatmap;
-	protected AbstractDrawer drawer;
 
-	public AbstractHeatmapPanel(Heatmap heatmap, AbstractDrawer drawer) {
+	protected AbstractHeatmapDrawer drawer;
+	private final PropertyChangeListener heatmapListener;
+
+	public AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer) {
 		this.heatmap = heatmap;
 		this.drawer = drawer;
 
-		heatmapChanged();
+		heatmapListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				heatmapPropertyChanged(evt);
+			}
+		};
+
+		updateSubscriptions(null);
+
+		setPreferredSize(drawer.getSize());
 
 		setBorder(null);
 	}
@@ -46,11 +59,14 @@ public class AbstractHeatmapPanel extends JPanel {
 	}
 	
 	public void setHeatmap(Heatmap heatmap) {
+		Heatmap old = this.heatmap;
 		this.heatmap = heatmap;
-		heatmapChanged();
+		this.drawer.setHeatmap(heatmap);
+		updateSubscriptions(old);
+		setPreferredSize(drawer.getSize());
 	}
 
-	public AbstractDrawer getDrawer() {
+	public AbstractHeatmapDrawer getDrawer() {
 		return drawer;
 	}
 
@@ -62,37 +78,52 @@ public class AbstractHeatmapPanel extends JPanel {
 		drawer.draw((Graphics2D) g, box, clip);
 	}
 
-	private void heatmapChanged() {
-		setPreferredSize(drawer.getSize());
-		
-		PropertyChangeListener listener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getSource().equals(heatmap)
-						|| evt.getSource().equals(heatmap.getColumnHeader())
-						|| evt.getSource().equals(heatmap.getRowHeader())) {
+	private void updateSubscriptions(Heatmap old) {
+		if (old != null) {
+			old.removePropertyChangeListener(heatmapListener);
+			old.getColumnHeader().removePropertyChangeListener(heatmapListener);
+			old.getRowHeader().removePropertyChangeListener(heatmapListener);
+			old.getCellDecorator().removePropertyChangeListener(heatmapListener);
+			old.getMatrixView().removePropertyChangeListener(heatmapListener);
+		}
 
-					heatmapPropertyChanged(evt);
-				}
-				else
-					repaint();
-			}
-		};
-
-		heatmap.addPropertyChangeListener(listener);
-		heatmap.getColumnHeader().addPropertyChangeListener(listener);
-		heatmap.getRowHeader().addPropertyChangeListener(listener);
-		heatmap.getMatrixView().addPropertyChangeListener(listener);
+		heatmap.addPropertyChangeListener(heatmapListener);
+		heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
+		heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
+		heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
+		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
 	}
 
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
-		Dimension ps = getPreferredSize();
-		if (ps.width != heatmap.getCellWidth()
-				|| ps.height != heatmap.getCellHeight()) {
-			
-			setPreferredSize(drawer.getSize());
-			
-			revalidate();
+		String pname = evt.getPropertyName();
+
+		if (evt.getSource().equals(heatmap)
+				|| evt.getSource().equals(heatmap.getColumnHeader())
+				|| evt.getSource().equals(heatmap.getRowHeader())) {
+
+			if (evt.getSource().equals(heatmap)) {
+				if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname)) {
+					((ElementDecorator) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+					heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
+				}
+				else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(pname)) {
+					((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+					heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
+				}
+				else if (Heatmap.ROW_DECORATOR_CHANGED.equals(pname)) {
+					((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+					heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
+				}
+			}
+
+			Dimension ps = getPreferredSize();
+			//FIXME
+			if (ps.width != heatmap.getCellWidth()
+					|| ps.height != heatmap.getCellHeight()) {
+
+				setPreferredSize(drawer.getSize());
+				revalidate();
+			}
 		}
 
 		repaint();

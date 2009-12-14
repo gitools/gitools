@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 
 import org.gitools.model.figure.heatmap.Heatmap;
 
-public class HeatmapDrawer extends AbstractDrawer {
+public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
 	public HeatmapDrawer(Heatmap heatmap) {
 		super(heatmap);

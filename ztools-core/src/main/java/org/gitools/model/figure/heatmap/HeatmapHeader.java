@@ -2,6 +2,7 @@ package org.gitools.model.figure.heatmap;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.net.URLEncoder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -52,7 +53,7 @@ public class HeatmapHeader extends AbstractModel {
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 10);
 		labelPattern = "${id}";
 		linkName = "Link";
-		linkPattern = "www.example.org/${id}";
+		linkPattern = "http://www.google.com/search?q=${url:id}";
 	}
 	
 	public Color getForegroundColor() {
@@ -203,22 +204,47 @@ public class HeatmapHeader extends AbstractModel {
 		return output.toString();
 	}
 
+	private interface VarEncoder {
+		String encode(String string);
+	}
+
 	private String expandVariable(
 			AnnotationMatrix annotations,
 			String var, int ri, String id) {
 
+		VarEncoder encoder = new VarEncoder() {
+			@Override public String encode(String string) {
+				return string; }
+		};
+
+		String[] part = var.split("\\:");
+		if (part.length == 2) {
+			if (part[0].equalsIgnoreCase("url")) {
+				encoder = new VarEncoder() {
+					@Override public String encode(String string) {
+						try {
+							return URLEncoder.encode(string, "UTF-8");
+						} catch (Exception ex) {
+							return string;
+						}
+					}
+				};
+				var = part[1];
+			}
+		}
+
 		if (var.equalsIgnoreCase("id"))
-			return id;
+			return encoder.encode(id);
 
 		if (annotations == null || ri < 0)
 			return "";
-		
+
 		StringBuilder output = new StringBuilder();
 		int ci = annotations.getColumnIndex(var);
 		if (ci < 0)
 			output.append("${").append(var).append('}');
 		else
-			output.append(annotations.getCell(ri, ci));
+			output.append(encoder.encode(annotations.getCell(ri, ci)));
 
 		return output.toString();
 	}
