@@ -24,6 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import org.gitools.ui.view.AbstractView;
 
+//TODO allow definition of a <Class, Controller> map from outside
 public abstract class EntityView extends AbstractView {
 
 	private JScrollPane scrollPane;

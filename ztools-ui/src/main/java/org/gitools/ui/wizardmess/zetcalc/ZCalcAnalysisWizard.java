@@ -10,7 +10,7 @@ import org.gitools.ui.wizardmess.AnalysisWizard;
 
 import com.nexes.wizard.WizardPanelDescriptor;
 
-import org.gitools.commands.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.datafilters.BinaryCutoffParser;
 import org.gitools.datafilters.CutoffCmp;

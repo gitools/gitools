@@ -17,7 +17,8 @@
 
 package org.gitools.ui.view.properties;
 
-import org.gitools.model.figure.heatmap.Heatmap;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesController;
 import org.gitools.ui.view.entity.EntityController;
 import org.gitools.ui.view.entity.EntityView;
 
