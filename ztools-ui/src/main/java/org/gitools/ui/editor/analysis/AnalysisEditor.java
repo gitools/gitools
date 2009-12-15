@@ -1,15 +1,15 @@
 package org.gitools.ui.editor.analysis;
 
-import org.gitools.model.analysis.Analysis;
+import org.gitools.model.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.figure.heatmap.HeatmapHeader;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.MatrixView;
+import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.editor.MultiEditor;
-import org.gitools.ui.editor.heatmap.HeatmapEditor;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
 
 public class AnalysisEditor extends MultiEditor {
 
