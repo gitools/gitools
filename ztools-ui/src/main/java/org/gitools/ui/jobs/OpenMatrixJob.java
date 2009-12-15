@@ -4,12 +4,12 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.MatrixView;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.ui.editor.heatmap.HeatmapEditor;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;

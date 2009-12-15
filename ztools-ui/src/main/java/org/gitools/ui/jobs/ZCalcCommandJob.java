@@ -5,7 +5,7 @@ import java.io.File;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.commands.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 
 public class ZCalcCommandJob implements Job {
 	
