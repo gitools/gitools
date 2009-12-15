@@ -15,9 +15,9 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
-import org.gitools.ui.editor.heatmap.DemoEditor;
+import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
-import org.gitools.ui.platform.navigator.NavigatorPanel;
+import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.workspace.Workspace;
@@ -192,7 +192,7 @@ public class AppFrame extends JFrame {
 	
 	private void createDemoView() {
 		AbstractEditor demoView = 
-			new DemoEditor(40, 12);
+			new HeatmapDemoEditor(40, 12);
 		
 		editorsPanel.addEditor(demoView);
 	}

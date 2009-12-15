@@ -22,9 +22,9 @@ import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementProperty;
 
 public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 

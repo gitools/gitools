@@ -8,7 +8,7 @@ import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
-import org.gitools.model.figure.heatmap.Heatmap;
+import org.gitools.heatmap.model.Heatmap;
 
 public class ElementDecoratorPanelFactory {
 
