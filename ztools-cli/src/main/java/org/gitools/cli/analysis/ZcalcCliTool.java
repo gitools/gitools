@@ -9,7 +9,7 @@ import org.kohsuke.args4j.Option;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import org.gitools.commands.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 
 public class ZcalcCliTool extends AnalysisCliTool implements CliTool {
 
