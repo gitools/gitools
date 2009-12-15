@@ -3,7 +3,7 @@ package org.gitools.ui.actions.file;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.gitools.commands.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizard.WizardDialog;

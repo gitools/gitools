@@ -10,8 +10,8 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.aggregation.IAggregator;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.sort.SortCriteria;
-import org.gitools.model.matrix.IMatrix;
-import org.gitools.model.matrix.IMatrixView;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
 
 public class SortByValueActionColumnsDelegate {
 	

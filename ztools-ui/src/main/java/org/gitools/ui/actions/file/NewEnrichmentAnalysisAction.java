@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import org.gitools.commands.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.ProgressMonitorDialog;
 import org.gitools.ui.jobs.ZCalcCommandJob;

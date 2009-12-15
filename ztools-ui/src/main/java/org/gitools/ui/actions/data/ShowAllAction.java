@@ -6,9 +6,9 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrix;
-import org.gitools.model.matrix.IMatrixView;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
 
 public class ShowAllAction extends BaseAction {
 

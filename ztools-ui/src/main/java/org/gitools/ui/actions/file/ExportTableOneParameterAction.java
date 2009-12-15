@@ -9,9 +9,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.gitools.exporter.TextMatrixExporter;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.IElementProperty;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;

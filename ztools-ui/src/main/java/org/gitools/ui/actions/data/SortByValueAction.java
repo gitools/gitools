@@ -10,9 +10,9 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.matrix.sort.SortCriteria;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.IElementProperty;
 
 public class SortByValueAction extends BaseAction {
 

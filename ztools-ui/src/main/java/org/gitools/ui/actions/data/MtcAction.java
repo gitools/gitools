@@ -14,10 +14,10 @@ import cern.colt.matrix.DoubleMatrix2D;
 
 import org.gitools.stats.mtc.MultipleTestCorrection;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrix;
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.IElementAdapter;
 
 public class MtcAction extends BaseAction {
 
