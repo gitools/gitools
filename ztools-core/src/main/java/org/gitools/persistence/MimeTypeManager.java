@@ -7,13 +7,13 @@ import java.util.Map;
 import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
-import org.gitools.model.analysis.EnrichmentAnalysis;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.figure.TableFigure;
-import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.model.matrix.ObjectMatrix;
-import org.gitools.model.matrix.StringMatrix;
+import org.gitools.model.EnrichmentAnalysis;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.table.model.TableFigure;
+import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.ObjectMatrix;
+import org.gitools.matrix.model.StringMatrix;
 
 public class MimeTypeManager {
 

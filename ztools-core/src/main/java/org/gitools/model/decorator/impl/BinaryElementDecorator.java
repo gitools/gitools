@@ -11,9 +11,9 @@ import org.gitools.datafilters.CutoffCmp;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAdapter;
 
-import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.impl.BinaryColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 

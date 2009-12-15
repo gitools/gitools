@@ -1,4 +1,4 @@
-package edu.upf.bg;
+package edu.upf.bg.formatter;
 
 import java.io.Serializable;
 import java.util.Formatter;

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAdapter;
 
 public class FormattedTextElementDecorator extends ElementDecorator {
 	

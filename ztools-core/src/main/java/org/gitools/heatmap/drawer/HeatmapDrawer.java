@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
-import org.gitools.model.figure.heatmap.Heatmap;
+import org.gitools.heatmap.model.Heatmap;
 
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 

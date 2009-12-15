@@ -1,19 +1,20 @@
-package org.gitools.commands;
+package org.gitools.analysis.htest.oncozet;
 
 import java.io.File;
 
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.analysis.Analysis;
-import org.gitools.model.matrix.DoubleMatrix;
+import org.gitools.model.Analysis;
+import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 import org.gitools.stats.test.factory.TestFactory;
-import org.gitools.tool.processors.OncozProcessor;
+import org.gitools.analysis.htest.oncozet.OncozProcessor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.AnalysisCommand;
 
 public class OncozCommand extends AnalysisCommand {
 	

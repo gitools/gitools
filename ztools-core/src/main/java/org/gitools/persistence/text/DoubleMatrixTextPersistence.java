@@ -11,7 +11,7 @@ import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.gitools.datafilters.DoubleParser;
 import org.gitools.datafilters.ValueParser;
-import org.gitools.model.matrix.DoubleMatrix;
+import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;

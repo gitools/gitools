@@ -15,7 +15,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.gitools.resources.FileResource;
+import org.gitools._DEPRECATED.resources.FileResource;
 
 public class TemplateEngine {
 

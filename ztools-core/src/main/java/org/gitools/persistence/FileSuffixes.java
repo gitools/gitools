@@ -3,10 +3,10 @@ package org.gitools.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.gitools.model.matrix.AnnotationMatrix;
-import org.gitools.model.matrix.DoubleMatrix;
-import org.gitools.model.matrix.ObjectMatrix;
-import org.gitools.model.matrix.StringMatrix;
+import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.ObjectMatrix;
+import org.gitools.matrix.model.StringMatrix;
 
 public class FileSuffixes {
 

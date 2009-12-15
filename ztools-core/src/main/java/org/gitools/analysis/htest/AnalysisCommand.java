@@ -1,4 +1,4 @@
-package org.gitools.commands;
+package org.gitools.analysis.htest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +11,7 @@ import org.gitools.datafilters.DoubleParser;
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.analysis.Analysis;
+import org.gitools.model.Analysis;
 import org.gitools.persistence.AnalysisPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.analysis.CsvAnalysisResource;
@@ -19,6 +19,7 @@ import org.gitools.persistence.analysis.REXmlAnalysisResource;
 import org.gitools.stats.test.factory.TestFactory;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.commands.Command;
 
 public abstract class AnalysisCommand implements Command {
 

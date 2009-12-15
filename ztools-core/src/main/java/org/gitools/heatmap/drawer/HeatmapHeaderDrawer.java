@@ -9,10 +9,10 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
-import org.gitools.model.figure.heatmap.HeatmapHeaderDecoration;
-import org.gitools.model.figure.heatmap.HeatmapHeader;
-import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrixView;
+import org.gitools.heatmap.model.HeatmapHeaderDecoration;
+import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 

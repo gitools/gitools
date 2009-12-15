@@ -10,10 +10,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAdapter;
 
 import cern.jet.stat.Probability;
-import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;

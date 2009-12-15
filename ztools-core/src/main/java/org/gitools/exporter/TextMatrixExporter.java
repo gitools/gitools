@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.gitools.model.matrix.IMatrixView;
-import org.gitools.model.matrix.element.IElementProperty;
-import org.gitools.utils.CompressedFile;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.utils.IOUtils;
 
 public class TextMatrixExporter {
 
 	public static void exportProperty(IMatrixView matrixView, int propIndex, File file) throws IOException {
-		PrintWriter pw = new PrintWriter(CompressedFile.openWriter(file));
+		PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 		
 		int rowCount = matrixView.getRowCount();
 		int colCount = matrixView.getColumnCount();
@@ -36,7 +36,7 @@ public class TextMatrixExporter {
 	}
 	
 	public static void exportProperties(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
-		PrintWriter pw = new PrintWriter(CompressedFile.openWriter(file));
+		PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 		
 		List<IElementProperty> attributes = matrixView.getCellAttributes();
 		

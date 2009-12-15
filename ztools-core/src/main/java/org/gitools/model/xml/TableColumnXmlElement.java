@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.xml.adapter.FileXmlAdapter;
-import org.gitools.resources.IResource;
+import org.gitools._DEPRECATED.resources.IResource;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "type", "reference" })

@@ -1,7 +1,7 @@
 package org.gitools.persistence;
 
-import org.gitools.model.analysis.Analysis;
-import org.gitools.resources.FileResource;
+import org.gitools.model.Analysis;
+import org.gitools._DEPRECATED.resources.FileResource;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 

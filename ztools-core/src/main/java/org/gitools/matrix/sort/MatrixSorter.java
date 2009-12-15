@@ -1,6 +1,6 @@
 package org.gitools.matrix.sort;
 
-import org.gitools.model.matrix.IMatrixView;
+import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixSorter {
 

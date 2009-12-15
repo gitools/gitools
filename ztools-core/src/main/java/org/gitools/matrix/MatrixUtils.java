@@ -1,7 +1,7 @@
 package org.gitools.matrix;
 
-import org.gitools.model.matrix.element.IElementAdapter;
-import org.gitools.model.matrix.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementProperty;
 
 public class MatrixUtils {
 

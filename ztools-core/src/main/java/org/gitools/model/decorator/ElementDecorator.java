@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.AbstractModel;
-import org.gitools.model.matrix.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

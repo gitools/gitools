@@ -2,8 +2,8 @@ package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.matrix.IMatrix;
-import org.gitools.model.matrix.Matrix;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.Matrix;
 import org.gitools.model.xml.MatrixXmlElement;
 import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;

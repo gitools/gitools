@@ -17,7 +17,7 @@ import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.resources.FileResource;
+import org.gitools._DEPRECATED.resources.FileResource;
 import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;

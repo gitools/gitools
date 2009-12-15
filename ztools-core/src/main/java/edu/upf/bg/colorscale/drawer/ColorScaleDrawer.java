@@ -17,7 +17,7 @@
 
 package edu.upf.bg.colorscale.drawer;
 
-import edu.upf.bg.GenericFormatter;
+import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.IColorScale;

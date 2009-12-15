@@ -2,8 +2,8 @@ package org.gitools.model.xml.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.table.ITableColumn;
-import org.gitools.model.table.impl.AbstractTableColumn;
+import org.gitools.table.model.ITableColumn;
+import org.gitools.table.model.impl.AbstractTableColumn;
 
 //FIXME Review
 public class TableColumnXmlAdapter extends XmlAdapter<AbstractTableColumn, ITableColumn> {

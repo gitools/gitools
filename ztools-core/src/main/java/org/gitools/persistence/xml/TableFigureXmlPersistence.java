@@ -2,7 +2,7 @@ package org.gitools.persistence.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.figure.TableFigure;
+import org.gitools.table.model.TableFigure;
 import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
 import org.gitools.model.xml.adapter.FileXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;

@@ -4,7 +4,7 @@ import java.net.URI;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.persistence.IPathResolver;
 import org.gitools.persistence.PersistenceManager;
 

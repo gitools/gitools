@@ -16,7 +16,7 @@ import java.io.Writer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class CompressedFile {
+public class IOUtils {
 
 	public static Reader openReader(File path) throws FileNotFoundException, IOException {
 		if (path == null)
