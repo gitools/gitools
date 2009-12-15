@@ -4,10 +4,6 @@ import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JPanel;
-
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
@@ -150,6 +146,7 @@ public class HeatmapEditor extends AbstractEditor {
 		// Heatmap panel
 
 		heatmapPanel = new HeatmapPanel(heatmap);
+		heatmapPanel.requestFocusInWindow();
 
 		// Main panel
 
@@ -183,5 +180,6 @@ public class HeatmapEditor extends AbstractEditor {
 	@Override
 	public void doVisible() {
 		AppFrame.instance().getPropertiesView().update(heatmap);
+		heatmapPanel.requestFocusInWindow();
 	}
 }

@@ -34,4 +34,11 @@ public class ColorUtils {
 	 public static String colorToHexHtml(Color color) {
 		return "#" + Integer.toHexString((color.getRGB() & 0xffffff) | 0x1000000).substring(1);
 	 }
+
+	public static Color invert(Color color) {
+		int r = 255 - color.getRed();
+		int g = 255 - color.getGreen();
+		int b = 255 - color.getBlue();
+		return new Color(r, g, b);
+	}
 }

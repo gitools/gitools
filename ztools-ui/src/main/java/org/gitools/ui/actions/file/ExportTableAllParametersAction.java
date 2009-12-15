@@ -13,6 +13,7 @@ import org.gitools.model.matrix.element.IElementProperty;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
 
 public class ExportTableAllParametersAction extends BaseAction {
 
@@ -44,7 +45,7 @@ public class ExportTableAllParametersAction extends BaseAction {
 			propIndices[i] = i;
 		
 		try {
-			File file = getSelectedFile(
+			File file = FileChooserUtils.getSelectedFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath());
 			if (file == null)

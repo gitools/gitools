@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.heatmap;
+package org.gitools.heatmap.drawer;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -26,9 +26,12 @@ import org.gitools.model.figure.heatmap.Heatmap;
 public abstract class AbstractHeatmapDrawer {
 
 	protected Heatmap heatmap;
+	
+	protected boolean pictureMode;
 
 	public AbstractHeatmapDrawer(Heatmap heatmap) {
 		this.heatmap = heatmap;
+		this.pictureMode = false;
 	}
 
 	public Heatmap getHeatmap() {
@@ -45,6 +48,14 @@ public abstract class AbstractHeatmapDrawer {
 
 	protected int getBorderSize() {
 		return heatmap.isShowBorders() ? 1 : 0;
+	}
+
+	public boolean isPictureMode() {
+		return pictureMode;
+	}
+
+	public void setPictureMode(boolean pictureMode) {
+		this.pictureMode = pictureMode;
 	}
 
 	public abstract Dimension getSize();

@@ -1,38 +1,32 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 
 import org.gitools.model.figure.heatmap.Heatmap;
-import org.gitools.model.matrix.IMatrixView;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import org.gitools.heatmap.HeatmapDrawer;
+import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.utils.FileChooserUtils;
 
-public class ExportMatrixFigurePictureAction extends BaseAction {
+public class ExportHeatmapImageAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportMatrixFigurePictureAction() {
-		super("Export matrix figure as an image ...");
+	public ExportHeatmapImageAction() {
+		super("Export heatmap as an image ...");
 		
-		setDesc("Export a matrix figure in an image format");
+		setDesc("Export the heatmap as an image file");
 		setMnemonic(KeyEvent.VK_I);
 	}
 	
@@ -57,9 +51,10 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 		hm = (Heatmap) model;
 
 		HeatmapDrawer drawer = new HeatmapDrawer(hm);
+		drawer.setPictureMode(true);
 
 		try {
-			File file = getSelectedFile(
+			File file = FileChooserUtils.getSelectedImageFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath());
 			if (file == null)
@@ -67,14 +62,24 @@ public class ExportMatrixFigurePictureAction extends BaseAction {
 			
 			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
 
-			Dimension size = drawer.getSize();
+			String formatExtension = FileChooserUtils.getExtension(file);
 
-			BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = bi.createGraphics();
-			drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
-			ImageIO.write(bi, "png", file);
+			if (FileChooserUtils.isImageExtension(formatExtension)) {
+				Dimension size = drawer.getSize();
 
-			AppFrame.instance().setStatusText("Table exported.");
+				int type = formatExtension.equals(FileChooserUtils.png) ?
+					BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;
+				
+				BufferedImage bi = new BufferedImage(size.width, size.height, type);
+				Graphics2D g = bi.createGraphics();
+				drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
+
+				ImageIO.write(bi, formatExtension, file);
+
+				AppFrame.instance().setStatusText("Image created.");
+			}
+			else
+				AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
 		}
 		catch (Exception ex) {
 			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());

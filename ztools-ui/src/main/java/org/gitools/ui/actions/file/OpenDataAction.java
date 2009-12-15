@@ -6,6 +6,7 @@ import java.io.File;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenDataAction extends BaseAction {
 
@@ -19,7 +20,7 @@ public class OpenDataAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = getSelectedFile("Select file");
+		final File selectedPath = FileChooserUtils.getSelectedFile("Select file");
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

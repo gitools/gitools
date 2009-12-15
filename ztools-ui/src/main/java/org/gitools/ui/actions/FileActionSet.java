@@ -3,8 +3,8 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
-import org.gitools.ui.actions.file.ExportMatrixFigureHtmlAction;
-import org.gitools.ui.actions.file.ExportMatrixFigurePictureAction;
+import org.gitools.ui.actions.file.ExportHeatmapHtmlAction;
+import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableOneParameterAction;
@@ -98,8 +98,8 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
 	public static final BaseAction exportTableParameter = new ExportTableOneParameterAction();
 	public static final BaseAction exportTableAllParameters = new ExportTableAllParametersAction();
-	public static final BaseAction exportMatrixFigurePicture = new ExportMatrixFigurePictureAction();
-	public static final BaseAction exportMatrixFigureHtml = new ExportMatrixFigureHtmlAction();
+	public static final BaseAction exportMatrixFigurePicture = new ExportHeatmapImageAction();
+	public static final BaseAction exportMatrixFigureHtml = new ExportHeatmapHtmlAction();
 
 	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
 			exportRowColumnNamesAction,

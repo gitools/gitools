@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.heatmap;
+package org.gitools.heatmap.drawer;
 
 /**
  *

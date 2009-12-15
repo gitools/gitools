@@ -9,13 +9,14 @@ import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
 
-public class ExportMatrixFigureHtmlAction extends BaseAction {
+public class ExportHeatmapHtmlAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportMatrixFigureHtmlAction() {
-		super("Export matrix figure as html ...");
+	public ExportHeatmapHtmlAction() {
+		super("Export heatmap as html ...");
 		
 		setDesc("Export a matrix figure in html format");
 		setMnemonic(KeyEvent.VK_H);
@@ -34,7 +35,7 @@ public class ExportMatrixFigureHtmlAction extends BaseAction {
 			return;
 		
 		try {
-			File basePath = getSelectedPath(
+			File basePath = FileChooserUtils.getSelectedPath(
 					"Select destination folder",
 					Settings.getDefault().getLastExportPath());
 			

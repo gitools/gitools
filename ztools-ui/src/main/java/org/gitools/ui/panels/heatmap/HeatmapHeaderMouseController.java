@@ -25,7 +25,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Arrays;
 import javax.swing.JViewport;
-import org.gitools.heatmap.HeatmapPosition;
+import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.matrix.IMatrixView;
 
@@ -33,7 +33,7 @@ import org.gitools.model.matrix.IMatrixView;
  *
  * @author cperez
  */
-public class HeatmapHeaderController
+public class HeatmapHeaderMouseController
 		implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private enum Mode {
@@ -56,7 +56,7 @@ public class HeatmapHeaderController
 	private Point startPoint;
 	private Point startScrollValue;
 	
-	public HeatmapHeaderController(HeatmapPanel panel, boolean horizontal) {
+	public HeatmapHeaderMouseController(HeatmapPanel panel, boolean horizontal) {
 		this.heatmap = panel.getHeatmap();
 		this.viewPort = horizontal ? panel.getColumnViewPort() : panel.getRowViewPort();
 		this.headerPanel = horizontal ? panel.getColumnPanel() : panel.getRowPanel();
@@ -72,7 +72,7 @@ public class HeatmapHeaderController
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//System.out.println("clicked");
+		panel.requestFocusInWindow();
 	}
 
 	@Override
@@ -86,6 +86,8 @@ public class HeatmapHeaderController
 			case selecting: updateSelection(e, false); break;
 			case moving: updateScroll(e, false); break;
 		}
+
+		panel.requestFocusInWindow();
 	}
 
 	@Override

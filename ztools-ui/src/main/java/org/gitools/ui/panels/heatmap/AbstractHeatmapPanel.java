@@ -24,10 +24,11 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
-import org.gitools.heatmap.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.figure.heatmap.Heatmap;
 import org.gitools.model.figure.heatmap.HeatmapHeader;
+import org.gitools.model.matrix.IMatrixView;
 
 public class AbstractHeatmapPanel extends JPanel {
 
@@ -97,29 +98,31 @@ public class AbstractHeatmapPanel extends JPanel {
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
 
-		if (evt.getSource().equals(heatmap)
-				|| evt.getSource().equals(heatmap.getColumnHeader())
-				|| evt.getSource().equals(heatmap.getRowHeader())) {
-
-			if (evt.getSource().equals(heatmap)) {
-				if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname)) {
-					((ElementDecorator) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-					heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
-				}
-				else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(pname)) {
-					((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-					heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
-				}
-				else if (Heatmap.ROW_DECORATOR_CHANGED.equals(pname)) {
-					((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-					heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
-				}
+		if (evt.getSource().equals(heatmap)) {
+			if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname)) {
+				((ElementDecorator) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+				heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
+			} else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(pname)) {
+				((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+				heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
+			} else if (Heatmap.ROW_DECORATOR_CHANGED.equals(pname)) {
+				((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+				heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
+			} else if (Heatmap.MATRIX_VIEW_CHANGED.equals(pname)) {
+				((IMatrixView) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
+				heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
 			}
 
-			Dimension ps = getPreferredSize();
-			//FIXME
-			if (ps.width != heatmap.getCellWidth()
-					|| ps.height != heatmap.getCellHeight()) {
+			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
+					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)) {
+				
+				setPreferredSize(drawer.getSize());
+				revalidate();
+			}
+		}
+		else if (evt.getSource().equals(heatmap.getMatrixView())) {
+			if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
+					|| IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname)) {
 
 				setPreferredSize(drawer.getSize());
 				revalidate();

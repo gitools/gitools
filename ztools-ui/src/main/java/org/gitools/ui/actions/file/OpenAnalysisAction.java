@@ -11,6 +11,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenAnalysisAction extends BaseAction {
 
@@ -27,7 +28,8 @@ public class OpenAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = getSelectedPath("Select the analysis folder");
+		final File selectedPath = FileChooserUtils.getSelectedPath(
+				"Select the analysis folder");
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

@@ -11,6 +11,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenMatrixAction extends BaseAction {
 
@@ -27,7 +28,7 @@ public class OpenMatrixAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = getSelectedFile("Select file");
+		final File selectedPath = FileChooserUtils.getSelectedFile("Select file");
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

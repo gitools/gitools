@@ -1,5 +1,6 @@
-package org.gitools.heatmap;
+package org.gitools.heatmap.drawer;
 
+import edu.upf.bg.colorscale.util.ColorUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -71,11 +72,17 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 			for (int col = colStart; col < colEnd; col++) {
 				Object element = data.getCell(row, col);
 				deco.decorate(decoration, element);
+				
 				Color color = decoration.getBgColor();
-				if (row == leadRow && col == leadColumn)
-					color = color.darker();
 				g.setColor(color);
+
 				g.fillRect(x, y, cellWidth - gridSize, cellHeight - gridSize);
+
+				if (!pictureMode && row == leadRow && col == leadColumn) {
+					g.setColor(ColorUtils.invert(color));
+					g.drawRect(x, y, cellWidth - gridSize - 1, cellHeight - gridSize - 1);
+				}
+
 				x += cellWidth;
 			}
 			y += cellHeight;

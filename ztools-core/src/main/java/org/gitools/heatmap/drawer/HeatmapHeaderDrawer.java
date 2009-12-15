@@ -1,5 +1,6 @@
-package org.gitools.heatmap;
+package org.gitools.heatmap.drawer;
 
+import edu.upf.bg.colorscale.util.ColorUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -18,7 +19,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 	
 	private boolean horizontal;
-	
+
 	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
 		this.horizontal = horizontal;
@@ -81,6 +82,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		int fontHeight = g.getFontMetrics().getHeight();
 		int fontOffset = ((fontHeight + height) / 2) - 1;
 
+		int leadRow = data.getSelectionLeadRow();
+		int leadColumn = data.getSelectionLeadColumn();
+
 		int x = box.x;
 		int y = box.y + start * height;
 		int padding = (horizontal ? 3 : 2);
@@ -92,19 +96,31 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			Color bgColor = decoration.getBgColor();
 			Color fgColor = decoration.getFgColor();
 
-			boolean selected = horizontal ?
-				data.isColumnSelected(index) : data.isRowSelected(index);
+			boolean selected = !pictureMode && (horizontal ?
+				data.isColumnSelected(index) : data.isRowSelected(index));
 
 			if (selected) {
 				bgColor = bgColor.darker();
 				fgColor = fgColor.darker();
 			}
 
+			boolean lead = !pictureMode && (horizontal ?
+				(leadColumn == index) && (leadRow == -1) :
+				(leadRow == index) && (leadColumn == -1));
+
 			g.setColor(gridColor);
-			g.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+			g.drawLine(x, y + height - 1, x + width, y + height - 1);
 			
 			g.setColor(bgColor);
-			g.fillRect(x, y, width, height - gridSize);
+			if (selected)
+				g.fillRect(x, y, width, height);
+			else
+				g.fillRect(x, y, width, height - gridSize);
+
+			if (lead) {
+				g.setColor(ColorUtils.invert(bgColor));
+				g.drawRect(x, y, width, height - 1);
+			}
 
 			if (fontHeight <= height - gridSize) {
 				g.setColor(fgColor);

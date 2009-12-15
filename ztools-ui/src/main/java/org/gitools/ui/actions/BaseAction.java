@@ -179,44 +179,6 @@ public abstract class BaseAction extends AbstractAction {
 		return figure;
 	}
 	
-	protected File getSelectedFile(String title) {
-		return getSelectedFile(title, Settings.getDefault().getLastPath());
-	}
-	
-	protected File getSelectedFile(String title, String currentPath) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
-
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-	
-		int retval = fileChooser.showDialog(AppFrame.instance(), null);
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
-		}
-
-		return null;
-	}
-	
-	protected File getSelectedPath(String title) {
-		return getSelectedPath(title, Settings.getDefault().getLastPath());
-	}
-	
-	protected File getSelectedPath(String title, String currentPath) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
-		
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
-		}
-	
-		return null;
-	}
-	
 	protected IProgressMonitor createProgressMonitor() {
 		return AppFrame.instance().createMonitor();
 	}

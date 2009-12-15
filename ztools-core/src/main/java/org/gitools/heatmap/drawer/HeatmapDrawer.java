@@ -1,4 +1,4 @@
-package org.gitools.heatmap;
+package org.gitools.heatmap.drawer;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -62,6 +62,14 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 	@Override
 	public Point getPoint(HeatmapPosition p) {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void setPictureMode(boolean pictureMode) {
+		super.setPictureMode(pictureMode);
+		body.setPictureMode(pictureMode);
+		rows.setPictureMode(pictureMode);
+		columns.setPictureMode(pictureMode);
 	}
 
 }

@@ -10,14 +10,17 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 import javax.swing.JViewport;
-import org.gitools.heatmap.HeatmapPosition;
+import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.model.figure.heatmap.Heatmap;
+import org.gitools.model.matrix.IMatrixView;
 
 public class HeatmapPanel extends JPanel {
 
@@ -49,6 +52,8 @@ public class HeatmapPanel extends JPanel {
 		heatmapChanged(null);
 
 		createComponents();
+
+		setFocusable(true);
 	}
 	
 	public Heatmap getHeatmap() {
@@ -72,17 +77,17 @@ public class HeatmapPanel extends JPanel {
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
-		HeatmapBodyController bodyController = new HeatmapBodyController(this);
+		HeatmapBodyMouseController bodyController = new HeatmapBodyMouseController(this);
 		
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 
-		HeatmapHeaderController colController = new HeatmapHeaderController(this, true);
+		HeatmapHeaderMouseController colController = new HeatmapHeaderMouseController(this, true);
 
 		rowVP = new JViewport();
 		rowVP.setView(rowHeaderPanel);
 
-		HeatmapHeaderController rowController = new HeatmapHeaderController(this, false);
+		HeatmapHeaderMouseController rowController = new HeatmapHeaderMouseController(this, false);
 
 		colSB = new JScrollBar(JScrollBar.HORIZONTAL);
 		colSB.addAdjustmentListener(new AdjustmentListener() {
@@ -110,6 +115,8 @@ public class HeatmapPanel extends JPanel {
 			@Override public void componentShown(ComponentEvent e) {}
 			@Override public void componentHidden(ComponentEvent e) {}
 		});
+
+		new HeatmapKeyboardController(this);
 	}
 
 	private void updateScrolls() {
@@ -119,19 +126,45 @@ public class HeatmapPanel extends JPanel {
 		int scrollWidth = totalSize.width - visibleSize.width;
 		int scrollHeight = totalSize.height - visibleSize.height;
 
+		IMatrixView mv = heatmap.getMatrixView();
+		int row = mv.getSelectionLeadRow();
+		int col = mv.getSelectionLeadColumn();
+
+		Point leadPoint = bodyPanel.getDrawer()
+				.getPoint(new HeatmapPosition(row, col));
+
+		int leadPointXEnd = leadPoint.x + heatmap.getCellWidth()
+				+ (heatmap.isShowGrid() ? 1 : 0);
+		int leadPointYEnd = leadPoint.y + heatmap.getCellHeight()
+				+ (heatmap.isShowGrid() ? 1 : 0);
+
 		colSB.setValueIsAdjusting(true);
 		colSB.setMinimum(0);
 		colSB.setMaximum(totalSize.width - 1);
+
 		if (colSB.getValue() > scrollWidth)
 			colSB.setValue(scrollWidth);
+
+		if (leadPoint.x < colSB.getValue())
+			colSB.setValue(leadPoint.x);
+		else if (leadPointXEnd > colSB.getValue() + visibleSize.width)
+			colSB.setValue(leadPointXEnd - visibleSize.width);
+
 		colSB.setVisibleAmount(visibleSize.width);
 		colSB.setValueIsAdjusting(false);
 
 		rowSB.setValueIsAdjusting(true);
 		rowSB.setMinimum(0);
 		rowSB.setMaximum(totalSize.height - 1);
+
 		if (rowSB.getValue() > scrollHeight)
 			rowSB.setValue(scrollHeight);
+
+		if (leadPoint.y < rowSB.getValue())
+			rowSB.setValue(leadPoint.y);
+		else if (leadPointYEnd > rowSB.getValue() + visibleSize.height)
+			rowSB.setValue(leadPointYEnd - visibleSize.height);
+		
 		rowSB.setVisibleAmount(visibleSize.height);
 		rowSB.setValueIsAdjusting(false);
 	}
@@ -217,10 +250,11 @@ public class HeatmapPanel extends JPanel {
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
 
+		//FIXME imatrixview only when visibility or lead changed
 		if (
 				(evt.getSource().equals(heatmap)
-				&& (Heatmap.CELL_SIZE_CHANGED.equals(pname)
-					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)))
+					&& (Heatmap.CELL_SIZE_CHANGED.equals(pname)
+						|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)))
 				|| evt.getSource().equals(heatmap.getMatrixView())) {
 
 			updateScrolls();
