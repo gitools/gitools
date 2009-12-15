@@ -9,21 +9,21 @@ import org.gitools.datafilters.CutoffCmp;
 
 public class BinaryColorScale extends SimpleColorScale {
 
-	private double cutoff;
+	private ColorScalePoint cutoff;
 	private CutoffCmp cutoffCmp;
 
 	public BinaryColorScale(
 			ColorScalePoint min,
 			ColorScalePoint max,
-			double cutoff,
+			double cutoffValue,
 			CutoffCmp cmp) {
 
 		super(min, max);
 
-		addPoint(new ColorScalePoint(cutoff));
-		
-		this.cutoff = cutoff;
+		this.cutoff = new ColorScalePoint(cutoffValue);
 		this.cutoffCmp = cmp;
+
+		addPoint(cutoff);
 	}
 
 	public BinaryColorScale() {
@@ -39,16 +39,12 @@ public class BinaryColorScale extends SimpleColorScale {
 		if (color != null)
 			return color;
 
-		boolean satisfies = cutoffCmp.compare(value, cutoff);
+		boolean satisfies = cutoffCmp.compare(value, cutoff.getValue());
 		return satisfies ? max.getColor() : min.getColor();
 	}
 
-	public double getCutoff() {
+	public ColorScalePoint getCutoff() {
 		return cutoff;
-	}
-
-	public void setCutoff(double cutoff) {
-		this.cutoff = cutoff;
 	}
 
 	public CutoffCmp getCutoffCmp() {
@@ -58,5 +54,4 @@ public class BinaryColorScale extends SimpleColorScale {
 	public void setCutoffCmp(CutoffCmp cutoffCmp) {
 		this.cutoffCmp = cutoffCmp;
 	}
-
 }

@@ -60,11 +60,11 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public double getCutoff() {
-		return scale.getCutoff();
+		return scale.getCutoff().getValue();
 	}
 	
 	public void setCutoff(double cutoff) {
-		this.scale.setCutoff(cutoff);
+		this.scale.getCutoff().setValue(cutoff);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
