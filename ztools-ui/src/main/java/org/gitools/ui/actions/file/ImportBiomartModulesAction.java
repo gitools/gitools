@@ -23,6 +23,8 @@ public class ImportBiomartModulesAction extends BaseAction {
 				AppFrame.instance(), wizard);
 		
 		wizDlg.open();
+
+		wizard.getModuleData();
 	}
 
 }

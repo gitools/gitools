@@ -30,6 +30,7 @@ public abstract class AbstractDialog extends JDialog {
 			Icon logo) {
 	
 		super(owner, title);
+		setModal(true);
 		
 		createComponents(header, message, status, logo);
 		

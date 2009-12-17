@@ -24,6 +24,8 @@ public class BiomartAttributePage extends FilteredTreePage {
 	private DatasetInfo dataset;
 	
 	private List<AttributePage> attrPages;
+
+	private AttributeInfo attribute;
 	
 	private boolean updated;
 	
@@ -100,6 +102,8 @@ public class BiomartAttributePage extends FilteredTreePage {
 		if (node != null && (node.getUserObject() instanceof AttributeWrapper)) {				
 			AttributeWrapper aw = (AttributeWrapper) node.getUserObject();
 			complete = aw.getType() == AttributeWrapper.NodeType.ATTRIBUTE;
+			if (complete)
+				attribute = (AttributeInfo) aw.getObject();
 		}
 		
 		setComplete(complete);
@@ -118,6 +122,10 @@ public class BiomartAttributePage extends FilteredTreePage {
 	
 	public synchronized List<AttributePage> getAttributePages() {
 		return attrPages;
+	}
+
+	public AttributeInfo getAttribute() {
+		return attribute;
 	}
 
 	@Override
