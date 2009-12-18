@@ -1,0 +1,23 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body >
+    <table>
+		#section( "Condition" )
+		#nameRow( $columnElement )
+		
+		#section( "Module" )
+		#nameRow( $rowElement )
+		#valueRow( "N" $cell.N )
+		
+		#zscoreRow( "Z-Score" $cell.z-score )
+		#zscoreScale()
+		
+		#pvalueRow( "P-Value" $cell.p-value )
+		#pvalueScale()
+    </table>
+</body>
+</html>

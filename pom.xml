@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
@@ -67,7 +68,7 @@
 						<archive>
 							<manifest>
 								<addClasspath>true</addClasspath>
-								<classpathPrefix />
+								<classpathPrefix/>
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							</manifest>
@@ -119,18 +120,19 @@
 	<modules>
 		<module>ztools-core</module>
 		<module>ztools-cli</module>
-		<module>ztools-ui</module>
 		<!-- <module>ztools-report</module> -->
 		<module>gitools-biomart</module>
-	</modules>
-	
+    <module>gitools-ui-platform</module>
+    <module>gitools-ui</module>
+  </modules>
+
 	<repositories>
 		<repository>
 			<id>java.net</id>
 			<url>http://download.java.net/maven/2</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -162,7 +164,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ztools-repository</id>
@@ -170,7 +172,7 @@
 			<url>file://${basedir}/target/deploy</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -178,7 +180,7 @@
 			<version>4.5</version>
 		</dependency>
 	</dependencies>
-	
+
 	<reporting>
 		<plugins>
 			<plugin>

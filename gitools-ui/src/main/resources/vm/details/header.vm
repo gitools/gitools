@@ -1,0 +1,34 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+    </style>
+</head>
+<body>
+    <table>
+		#section( "Name" )
+		#nameRow( $name )
+
+		#if( $annotations.size() > 0 )
+			#section( "Annotations" )
+			<tr>
+				<table>
+					#foreach($ann in $annotations)
+					<tr>
+						<td class="label">$ann.key</td>
+						<td class="value">$fmt.format($ann.value)</td>
+					</tr>
+					#end
+				</table>
+			</tr>
+		#end
+
+		#if( ! $linkName.isEmpty() )
+			#section( "Links" )
+			<tr>
+				<td><a href="$linkUrl">$linkName</a></td>
+			</tr>
+		#end
+    </table>
+</body>
+</html>
