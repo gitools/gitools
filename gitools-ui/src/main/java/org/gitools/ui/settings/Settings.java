@@ -62,6 +62,7 @@ public class Settings {
     }
 
 	private String lastPath = userPath;
+	private String lastImportPath = userPath;
 	private String lastExportPath = userPath;
 	private String lastWorkPath = userPath;
 	private String lastDataPath = userPath;
@@ -96,6 +97,14 @@ public class Settings {
 
 	public void setLastPath(String lastPath) {
 		this.lastPath = lastPath; //props.setProperty("last-path", lastPath);
+	}
+
+	public String getLastImportPath() {
+		return lastImportPath;
+	}
+
+	public void setLastImportPath(String lastImportPath) {
+		this.lastImportPath = lastImportPath;
 	}
 
 	public String getLastExportPath() {

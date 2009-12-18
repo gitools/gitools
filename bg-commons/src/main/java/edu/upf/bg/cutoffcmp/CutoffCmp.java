@@ -1,4 +1,4 @@
-package org.gitools.datafilters;
+package edu.upf.bg.cutoffcmp;
 
 import java.io.Serializable;
 import java.util.HashMap;

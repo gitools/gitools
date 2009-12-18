@@ -122,8 +122,9 @@
 		<module>ztools-cli</module>
 		<!-- <module>ztools-report</module> -->
 		<module>gitools-biomart</module>
-    <module>gitools-ui-platform</module>
-    <module>gitools-ui</module>
+		<module>gitools-ui-platform</module>
+		<module>gitools-ui</module>
+    <module>bg-commons</module>
   </modules>
 
 	<repositories>

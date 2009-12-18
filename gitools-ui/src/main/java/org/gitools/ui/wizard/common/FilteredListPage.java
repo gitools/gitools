@@ -95,8 +95,11 @@ public class FilteredListPage extends AbstractWizardPage {
 	protected void setListData(Object[] listData) {
 		this.listData = listData;
 		ListModel model = createListModel(listData, getFilterText());
+		
 		panel.list.setModel(model);
 		selectionChangeActionPerformed();
+
+		panel.filterField.requestFocusInWindow();
 	}
 	
 	public Object getSelection() {

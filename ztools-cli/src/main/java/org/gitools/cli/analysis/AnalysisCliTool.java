@@ -1,5 +1,6 @@
 package org.gitools.cli.analysis;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +9,6 @@ import org.gitools.cli.InvalidArgumentException;
 import org.gitools.cli.RequiredArgumentException;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.datafilters.BinaryCutoffParser;
-import org.gitools.datafilters.CutoffCmp;
 import org.kohsuke.args4j.Option;
 
 public abstract class AnalysisCliTool extends AbstractCliTool {

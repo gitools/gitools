@@ -1,5 +1,6 @@
 package org.gitools.ui.panels.decorator;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
@@ -13,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.gitools.datafilters.CutoffCmp;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;

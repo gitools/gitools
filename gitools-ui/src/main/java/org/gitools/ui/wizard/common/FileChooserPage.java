@@ -41,7 +41,7 @@ public class FileChooserPage extends AbstractWizardPage {
 		updateComplete();
 		
 		fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
 				if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())
 					|| JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName()))
 					updateComplete();

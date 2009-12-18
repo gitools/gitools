@@ -6,16 +6,115 @@
 
 package org.gitools.ui.wizard.common;
 
-/**
- *
- * @author  chris
- */
-public class FilteredTreePanel extends javax.swing.JPanel {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
+import javax.swing.JTree;
+import javax.swing.event.DocumentEvent;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import org.gitools.ui.utils.DocumentChangeListener;
+
+public abstract class FilteredTreePanel extends javax.swing.JPanel {
+
+	private String lastFilterText = "";
 
     /** Creates new form FilteredTreePanel */
     public FilteredTreePanel() {
         initComponents();
+
+		filterField.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
+				updateFilter();	}
+		});
+
+		clearBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				filterField.setText("");
+				filterField.requestFocusInWindow();
+			}
+		});
+
+		expandBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				expandAll(); }
+		});
+
+		collapseBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				collapseAll(); }
+		});
+
+		updateFilter();
     }
+
+	private void updateFilter() {
+		final String filterText = getFilterText();
+
+		clearBtn.setEnabled(!filterText.isEmpty());
+
+		if (!filterText.equalsIgnoreCase(lastFilterText)) {
+			lastFilterText = filterText;
+			tree.setModel(createModel(getFilterText()));
+			expandAll();
+		}
+	}
+
+	protected abstract TreeModel createModel(String filterText);
+
+	private String getFilterText() {
+		return filterField.getText();
+	}
+
+	public TreeModel getModel() {
+		return tree.getModel();
+	}
+
+	public void setModel(TreeModel model) {
+		tree.setModel(model);
+	}
+
+	// If expand is true, expands all nodes in the tree.
+	// Otherwise, collapses all nodes in the tree.
+	public void expandCollapse(JTree tree, boolean expand) {
+		TreeNode root = (TreeNode) tree.getModel().getRoot();
+
+		// Traverse tree from root
+		expandCollapse(tree, new TreePath(root), expand);
+
+		// Do not collapse first level nodes
+		if (!tree.isRootVisible() && !expand)
+			tree.expandPath(new TreePath(root));
+	}
+
+	private void expandCollapse(JTree tree, TreePath parent, boolean expand) {
+		// Traverse children
+		TreeNode node = (TreeNode) parent.getLastPathComponent();
+		if (node.getChildCount() >= 0) {
+			for (Enumeration<?> e = node.children(); e.hasMoreElements();) {
+				TreeNode n = (TreeNode) e.nextElement();
+				TreePath path = parent.pathByAddingChild(n);
+				expandCollapse(tree, path, expand);
+			}
+		}
+
+		// Expansion or collapse must be done bottom-up
+		if (expand)
+			tree.expandPath(parent);
+		else
+			tree.collapsePath(parent);
+	}
+
+	public void expandAll() {
+		expandCollapse(tree, true);
+		filterField.requestFocusInWindow();
+	}
+
+	public void collapseAll() {
+		expandCollapse(tree, false);
+		filterField.requestFocusInWindow();
+	}
 
     /** This method is called from within the constructor to
      * initialize the form.

@@ -129,16 +129,18 @@ public class FileChooserUtils {
 		return null;
 	}
 
-	public static String getExtension(File f) {
-        String ext = null;
-        String s = f.getName();
-        int i = s.lastIndexOf('.');
+	public static String getExtension(File file) {
+		return getExtension(file.getName());
+	}
 
-        if (i > 0 &&  i < s.length() - 1) {
-            ext = s.substring(i+1).toLowerCase();
-        }
-        return ext;
-    }
+	public static String getExtension(String fileName) {
+		String ext = null;
+		int i = fileName.lastIndexOf('.');
+
+		if (i > 0 && i < fileName.length() - 1)
+			ext = fileName.substring(i + 1).toLowerCase();
+		return ext;
+	}
 
 	public static boolean isImageExtension(String extension) {
 		return extension.equals(tif)

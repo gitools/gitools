@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.gitools.datafilters.CutoffCmp;
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;

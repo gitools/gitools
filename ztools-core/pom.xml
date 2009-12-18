@@ -29,6 +29,11 @@
 			<groupId>commons-vfs</groupId>
 			<artifactId>commons-vfs</artifactId>
 		</dependency> -->
+	 <dependency>
+	  <groupId>edu.upf.bg</groupId>
+	  <artifactId>bg-commons</artifactId>
+	  <version>0.1.0-SNAPSHOT</version>
+	 </dependency>
 	</dependencies>
 
 	<reporting>
@@ -66,3 +71,5 @@
 		</plugins>
 	</reporting>
 </project>
+
+

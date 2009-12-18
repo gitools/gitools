@@ -36,6 +36,8 @@ public class WizardDialog extends AbstractDialog {
 	protected JButton finishButton;
 	protected JButton cancelButton;
 
+	protected boolean cancelled;
+
 	public WizardDialog(Window owner, IWizard wizard) {
 		
 		super(owner, wizard.getTitle(), wizard.getIcon());
@@ -50,6 +52,8 @@ public class WizardDialog extends AbstractDialog {
 		wizard.addPages();
 
 		setCurrentPage(wizard.getStartingPage());
+
+		cancelled = false;
 	}
 
 	public IWizard getWizard() {
@@ -106,6 +110,10 @@ public class WizardDialog extends AbstractDialog {
 		return contents;
 	}
 
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
 	@Override
 	protected JComponent createContainer() {
 		pagePanel = new JPanel(new BorderLayout());
@@ -114,14 +122,14 @@ public class WizardDialog extends AbstractDialog {
 	
 	@Override
 	protected List<JButton> createButtons() {
-		backButton = new JButton("Back");
+		backButton = new JButton("< Back");
 		backButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				backActionPerformed();
 			}
 		});
 		
-		nextButton = new JButton("Next");
+		nextButton = new JButton("Next >");
 		nextButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				nextActionPerformed();
@@ -174,6 +182,8 @@ public class WizardDialog extends AbstractDialog {
 	private void cancelActionPerformed() {
 		if (currentPage != null)
 			currentPage.getWizard().performCancel();
+
+		cancelled = true;
 		
 		setVisible(false);
 	}

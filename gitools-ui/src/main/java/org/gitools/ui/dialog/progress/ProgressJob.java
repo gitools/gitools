@@ -11,10 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author chris
- */
+//TODO It should implement or provide IProgressMonitor
 public abstract class ProgressJob {
 
     private ProgressDialog dlg;

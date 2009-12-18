@@ -1,6 +1,8 @@
 package org.gitools.ui.wizard;
 
-public abstract class AbstractWizardPage implements IWizardPage {
+import javax.swing.JPanel;
+
+public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
 	private static final long serialVersionUID = -4330234851091328953L;
 

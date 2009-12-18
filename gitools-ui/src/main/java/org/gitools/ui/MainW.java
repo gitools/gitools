@@ -4,7 +4,7 @@ import javax.swing.UIManager;
 
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizard.WizardDialog;
-import org.gitools.ui.wizard.biomart.BiomartModulesWizard;
+import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
 
 public class MainW {
 

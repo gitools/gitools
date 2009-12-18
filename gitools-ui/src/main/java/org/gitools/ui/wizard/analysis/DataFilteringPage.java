@@ -1,12 +1,12 @@
 package org.gitools.ui.wizard.analysis;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.datafilters.CutoffCmp;
 import org.gitools.ui.wizard.AbstractWizardPage;
 
 public class DataFilteringPage extends AbstractWizardPage {

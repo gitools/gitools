@@ -3,9 +3,8 @@ package edu.upf.bg.colorscale.impl;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.SimpleColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.Color;
-
-import org.gitools.datafilters.CutoffCmp;
 
 public class BinaryColorScale extends SimpleColorScale {
 

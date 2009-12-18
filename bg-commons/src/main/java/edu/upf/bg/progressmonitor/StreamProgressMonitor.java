@@ -3,9 +3,6 @@ package edu.upf.bg.progressmonitor;
 import java.io.PrintStream;
 
 import cern.colt.Timer;
-import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
 public class StreamProgressMonitor extends DefaultProgressMonitor {
 
