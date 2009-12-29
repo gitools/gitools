@@ -18,9 +18,13 @@
 package edu.upf.bg.colorscale;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class ColorScalePoint {
+public class ColorScalePoint 
+	implements Serializable {
 
+	private static final long serialVersionUID = -7085812262326883603L;
+	
 	protected String name;
 	protected double value;
 	protected Color leftColor;

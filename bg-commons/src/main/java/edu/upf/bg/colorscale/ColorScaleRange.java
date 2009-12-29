@@ -17,7 +17,12 @@
 
 package edu.upf.bg.colorscale;
 
-public class ColorScaleRange {
+import java.io.Serializable;
+
+public class ColorScaleRange 
+	implements Serializable{
+
+	private static final long serialVersionUID = -282583238189211275L;
 
 	private double min;
 	private double max;
