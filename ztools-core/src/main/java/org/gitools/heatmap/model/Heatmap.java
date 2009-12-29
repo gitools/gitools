@@ -12,21 +12,21 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.Figure;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.model.Figure;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 
 @XmlType( propOrder={
-		"cellDecorator", 
-		"rowDecorator", 
-		"columnDecorator", 
+		"cellDecorator",
+		"rowHeader",
+		"columnHeader",
 		"matrixView",
 		"showGrid", 
 		"gridColor",
@@ -57,7 +57,6 @@ public class Heatmap
 	private ElementDecorator cellDecorator;
 	
 	private HeatmapHeader rowHeader;
-	
 	private HeatmapHeader columnHeader;
 	
 	@XmlElement(type=MatrixView.class)

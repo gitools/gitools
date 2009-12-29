@@ -43,7 +43,6 @@ public class HeatmapHeader extends AbstractModel {
 	protected AnnotationMatrix annotations;
 
 	protected String labelPattern;
-
 	protected String linkName;
 	protected String linkPattern;
 
