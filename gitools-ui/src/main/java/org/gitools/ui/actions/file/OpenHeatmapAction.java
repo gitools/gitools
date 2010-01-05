@@ -13,13 +13,13 @@ import org.gitools.ui.settings.Settings;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class OpenMatrixAction extends BaseAction {
+public class OpenHeatmapAction extends BaseAction {
 
 	private static final long serialVersionUID = -6528634034161710370L;
 
-	public OpenMatrixAction() {
-		super("Heat map ...");
-		setDesc("Open a heat map from the file system");
+	public OpenHeatmapAction() {
+		super("Heatmap ...");
+		setDesc("Open a heatmap from the file system");
 		setSmallIconFromResource(IconNames.openMatrix16);
 		setLargeIconFromResource(IconNames.openMatrix24);
 		setMnemonic(KeyEvent.VK_M);
@@ -29,7 +29,7 @@ public class OpenMatrixAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		final File selectedPath = FileChooserUtils.selectFile(
-				"Select file", FileChooserUtils.MODE_SAVE);
+				"Select file", FileChooserUtils.MODE_OPEN);
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

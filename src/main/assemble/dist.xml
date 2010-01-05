@@ -1,5 +1,6 @@
 <assembly>
 	<id>bin</id>
+
 	<formats>
 		<!--
 		<format>tar.bz2</format>
@@ -7,7 +8,9 @@
 		<format>zip</format>-->
 		<format>dir</format>
 	</formats>
+
 	<includeSiteDirectory>false</includeSiteDirectory>
+
 	<fileSets>
 		<!-- <fileSet>
 			<directory>src/main/command</directory>
@@ -19,7 +22,7 @@
 			<filtered>true</filtered>
 		</fileSet>-->
 		<fileSet>
-			<directory>ztools-cli/src/main/command</directory>
+			<directory>gitools-cli/src/main/command</directory>
 			<includes>
 				<include>*</include>
 			</includes>
@@ -35,13 +38,14 @@
 			<outputDirectory>templates</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>ztools-ui/src/main/resources/img</directory>
+			<directory>gitools-ui/src/main/resources/img</directory>
 			<includes>
 				<include>LogoMini.png</include>
 			</includes>
 			<outputDirectory></outputDirectory>
 		</fileSet>
 	</fileSets>
+
 	<moduleSets>
 		<moduleSet>
 			<binaries>

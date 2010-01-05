@@ -3,18 +3,17 @@ package org.gitools.ui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Point;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -136,5 +135,10 @@ public class TemplatePane extends JPanel {
 		final StringWriter sw = new StringWriter();
 		template.merge(context, sw);
 		infoPane.setText(sw.toString());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override public void run() {
+				infoScrollPane.getViewport().setViewPosition(new Point());
+			}
+		});
 	}
 }

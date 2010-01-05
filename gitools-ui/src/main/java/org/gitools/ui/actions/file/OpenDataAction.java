@@ -22,7 +22,7 @@ public class OpenDataAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		final File selectedPath = FileChooserUtils.selectFile(
 				"Select file",
-				FileChooserUtils.MODE_SAVE);
+				FileChooserUtils.MODE_OPEN);
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

@@ -12,6 +12,7 @@ import javax.swing.event.ChangeListener;
 import org.gitools.ui.actions.ActionSet;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.component.ButtonTabComponent;
 import org.gitools.ui.editor.AbstractEditor;
 
 public class EditorsPanel extends JTabbedPane {
@@ -69,6 +70,8 @@ public class EditorsPanel extends JTabbedPane {
 			addTab(name, editor);
 		else
 			addTab(name, icon, editor);
+
+		setTabComponentAt(getTabCount() - 1, new ButtonTabComponent(this));
 		
 		/*if (selectedView != null)
 			selectedView.disableActions();*/

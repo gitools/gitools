@@ -1,6 +1,7 @@
 package org.gitools.ui.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import org.apache.velocity.VelocityContext;
 
 import org.gitools.ui.IconNames;
+import org.gitools.ui.panels.TemplatePane;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.IconUtils;
 
@@ -24,6 +28,8 @@ public class AboutDialog extends JDialog {
 	
 	private String appName;
 	private String appVersion;
+
+	private TemplatePane creditsPane;
 	
 	public AboutDialog(JFrame owner) {
 		super(owner);
@@ -37,15 +43,34 @@ public class AboutDialog extends JDialog {
 		createComponents();
 		
 		//getContentPane().setBackground(Color.WHITE);
+
 		pack();
 	}
 
 	private void createComponents() {
 		JLabel imageLabel = new JLabel(
 				IconUtils.getIconResource(IconNames.aboutLogo));
-		imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 0));
+		imageLabel.setVerticalAlignment(SwingConstants.TOP);
+
+		creditsPane = new TemplatePane();
+		creditsPane.setFocusable(false);
+		Dimension dim = new Dimension(550, 374);
+		creditsPane.setPreferredSize(dim);
+		creditsPane.setMaximumSize(dim);
+		try {
+			creditsPane.setTemplate("/vm/about.vm");
+			VelocityContext context = new VelocityContext();
+			context.put("appName", appName);
+			context.put("appVersion", appVersion);
+			creditsPane.setContext(context);
+			creditsPane.render();
+		}
+		catch (Exception ex) {
+			System.err.println("Unexpected error creating credits pane.");
+		}
 		
-		JTextPane infoPane = new JTextPane();
+		/*JTextPane infoPane = new JTextPane();
 		infoPane.setFocusable(false);
 		//infoPane.setBackground(Color.WHITE);
 		infoPane.setContentType("text/html");
@@ -66,7 +91,7 @@ public class AboutDialog extends JDialog {
 						"<p>Thanks to:<ul>" +
 						"<li>Sonja Haenzelmann</li>" +
 						"<li>Khademul Islam</li>" +
-						"<li>Gunnes Gundem</li></ul></p>");
+						"<li>Gunnes Gundem</li></ul></p>");*/
 		
 		JButton acceptBtn = new JButton("Accept");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
@@ -84,7 +109,7 @@ public class AboutDialog extends JDialog {
 
 		JPanel contPanel = new JPanel();
 		contPanel.setLayout(new BorderLayout());
-		contPanel.add(infoPane, BorderLayout.CENTER);
+		contPanel.add(creditsPane, BorderLayout.CENTER);
 		contPanel.add(btnPanel, BorderLayout.SOUTH);
 		contPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		

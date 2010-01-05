@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;

@@ -4,7 +4,7 @@
 		#include("/vm/style/default.css")
     </style>
 </head>
-<body >
+<body>
     <table>
 		#section( "Condition" )
 		#nameRow( $columnElement )

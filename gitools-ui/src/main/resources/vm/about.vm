@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				background-color: #ffffff;
+				font-family: sans-serif;
+				padding: 8px;
+				margin: 0px;
+			}
+
+			A:link, A:visited {
+				text-decoration: none;
+			}
+
+			A:hover {
+				color: #f43a01;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>$appName</h1>
+		<p>Version $appVersion</p>
+		<p>Biomedical Genomics Laboratory at GRIB<br>
+		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
+
+		<p>Authors:</p>
+		<ul>
+			<li>Nuria Lopez-Bigas</li>
+			<li>Christian Perez-Llamas</li>
+		</ul>
+
+		<p>Former programmers:</p>
+		<ul>
+			<li>Michael Schroeder</li>
+			<li>Sergi Hernandez</li>
+		</ul>
+
+		<p>Bug reporting and suggestions:</p>
+		<ul>
+			<li>Sonja Haenzelmann</li>
+			<li>Khademul Islam</li>
+			<li>Gunnes Gundem</li>
+			<li>Alba Jene</li>
+		</ul>
+	</body>
+</html>

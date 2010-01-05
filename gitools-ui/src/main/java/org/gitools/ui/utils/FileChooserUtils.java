@@ -91,9 +91,9 @@ public class FileChooserUtils {
 		int retval = JFileChooser.CANCEL_OPTION;
 
 		if (mode == FileChooserUtils.MODE_SAVE)
-			fileChooser.showSaveDialog(AppFrame.instance());
+			retval = fileChooser.showSaveDialog(AppFrame.instance());
 		else if (mode == FileChooserUtils.MODE_OPEN)
-			fileChooser.showOpenDialog(AppFrame.instance());
+			retval = fileChooser.showOpenDialog(AppFrame.instance());
 		
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
@@ -132,9 +132,9 @@ public class FileChooserUtils {
 		int retval = JFileChooser.CANCEL_OPTION;
 
 		if (mode == FileChooserUtils.MODE_SAVE)
-			fileChooser.showSaveDialog(AppFrame.instance());
+			retval = fileChooser.showSaveDialog(AppFrame.instance());
 		else if (mode == FileChooserUtils.MODE_OPEN)
-			fileChooser.showOpenDialog(AppFrame.instance());
+			retval = fileChooser.showOpenDialog(AppFrame.instance());
 
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
