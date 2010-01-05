@@ -118,14 +118,15 @@
 	</build>
 	
 	<modules>
-		<module>ztools-core</module>
-		<module>ztools-cli</module>
-		<!-- <module>ztools-report</module> -->
+		<module>bg-commons</module>
+		<module>gitools-core</module>
+		<module>gitools-cli</module>
 		<module>gitools-biomart</module>
 		<module>gitools-ui-platform</module>
 		<module>gitools-ui</module>
-    <module>bg-commons</module>
-  </modules>
+		
+		<!-- <module>ztools-report</module> -->
+	</modules>
 
 	<repositories>
 		<repository>

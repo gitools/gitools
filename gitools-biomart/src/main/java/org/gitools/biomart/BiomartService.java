@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
@@ -58,14 +59,18 @@ public class BiomartService {
 
 	private static final String defaultRestUrl = "http://www.biomart.org/biomart/martservice";
 
+	public static final String defaultWsdlUrl = "/wsdl/mart.wsdl";
+
 	private static BiomartService instance;
 
 	private MartServiceSoap port;
-	private String restUrl;
+	
+	private final BiomartConfiguration conf;
+	//private String restUrl;
 
 	protected BiomartService(BiomartConfiguration conf) {
-		// TODO wsdl url
-		this.restUrl = conf.getRestUrl();
+		this.conf = conf;
+		//this.restUrl = conf.getRestUrl();
 	}
 
 	public static final BiomartService getDefault() {
@@ -76,21 +81,19 @@ public class BiomartService {
 
 	private static BiomartService createDefaultService() {
 		BiomartService service = new BiomartService(
-				new BiomartConfiguration(null /*FIXME*/, defaultRestUrl));
+				new BiomartConfiguration(defaultWsdlUrl, defaultRestUrl));
 
 		return service;
 	}
 
-	private static MartServiceSoap createPort() {
-		//FIXME use wsdlUrl
-		BioMartSoapService service = new BioMartSoapService();
+	private static MartServiceSoap createPort(URL wsdlUrl) {
+		BioMartSoapService service = new BioMartSoapService(wsdlUrl);
 		return service.getBioMartSoapPort();
 	}
 
-
 	private MartServiceSoap getMartPort() {
 		if (port == null)
-			port = createPort();
+			port = createPort(this.getClass().getResource(conf.getWdslUrl()));
 
 		return port;
 	}
@@ -140,7 +143,7 @@ public class BiomartService {
 	
 	public InputStream queryAsStream(Query query, String format) throws BiomartServiceException {
 		final String queryString = createQueryXml(query, format, true);
-		final String urlString = restUrl + "?query=" + queryString;
+		final String urlString = conf.getRestUrl() + "?query=" + queryString;
 
 		try {
 			URL url = new URL(urlString);

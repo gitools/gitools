@@ -98,7 +98,7 @@
 							<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>${basedir}/src/wsdl/mart.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/mart.wsdl</wsdl>
 								</wsdlOption>
 							</wsdlOptions>
 							<targetNameSpace>x</targetNameSpace>
