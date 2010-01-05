@@ -45,9 +45,10 @@ public class ExportTableAllParametersAction extends BaseAction {
 			propIndices[i] = i;
 		
 		try {
-			File file = FileChooserUtils.getSelectedFile(
+			File file = FileChooserUtils.selectFile(
 					"Select destination file",
-					Settings.getDefault().getLastExportPath());
+					Settings.getDefault().getLastExportPath(),
+					FileChooserUtils.MODE_SAVE);
 			if (file == null)
 				return;
 			

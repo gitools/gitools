@@ -13,7 +13,7 @@ public abstract class FilteredTreePage extends AbstractWizardPage {
 	@Override
 	public JComponent createControls() {
 		panel = new FilteredTreePanel() {
-			@Override protected TreeModel createModel(String filterText) {
+			@Override protected TreeModel updateModel(String filterText) {
 				return pageCreateModel(filterText);
 			}
 		};

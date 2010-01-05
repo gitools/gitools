@@ -17,10 +17,6 @@
 
 package edu.upf.bg.benchmark;
 
-/**
- *
- * @author cperez
- */
 public class TimeCounter {
 
 	private boolean paused;
@@ -57,6 +53,24 @@ public class TimeCounter {
 
 	public float getElapsedSeconds() {
 		return getElapsed() / 1000000000.0f;
+	}
+
+	@Override
+	public String toString() {
+		long e = getElapsed();
+		double millis = e / 1000000.0;
+		double secs = e / 1000000000.0;
+		double mins = e / 60000000000.0;
+
+		String time = "";
+		if (millis < 1000)
+			time = Double.toString(millis) + " millisecs";
+		else if (secs < 60)
+			time = Double.toString(secs) + " secs";
+		else
+			time = Double.toString(mins) + " mins";
+
+		return time;
 	}
 
 }

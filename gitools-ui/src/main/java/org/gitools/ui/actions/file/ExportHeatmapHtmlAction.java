@@ -35,7 +35,7 @@ public class ExportHeatmapHtmlAction extends BaseAction {
 			return;
 		
 		try {
-			File basePath = FileChooserUtils.getSelectedPath(
+			File basePath = FileChooserUtils.selectPath(
 					"Select destination folder",
 					Settings.getDefault().getLastExportPath());
 			

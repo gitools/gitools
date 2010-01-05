@@ -14,12 +14,15 @@ import org.biomart._80.martservicesoap.AttributePage;
 import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
-import org.gitools.ui.biomart.wizard.AttributesTreeModel.AttributeWrapper;
+import org.gitools.biomart.BiomartService;
+import org.gitools.ui.biomart.panel.AttributesTreeModel;
+import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePage;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
-	private MartServiceSoap port;
+	private BiomartService biomartService;
+
 	private Mart mart;
 	private DatasetInfo dataset;
 	
@@ -29,10 +32,11 @@ public class BiomartAttributePage extends FilteredTreePage {
 	
 	private boolean updated;
 	
-	public BiomartAttributePage(MartServiceSoap port) {
+	public BiomartAttributePage(BiomartService biomartService) {
 		super();
 	
-		this.port = port;
+		this.biomartService = biomartService;
+		
 		this.mart = null;
 		this.dataset = null;
 		this.attrPages = null;
@@ -67,8 +71,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 			@Override public void run() {
 				try {
 					if (attrPages == null) {
-						attrPages = port.getAttributes(
-								dataset.getName(), mart.getServerVirtualSchema());
+						attrPages = biomartService.getAttributes(mart, dataset);
 						
 						setAttributePages(attrPages);
 					}

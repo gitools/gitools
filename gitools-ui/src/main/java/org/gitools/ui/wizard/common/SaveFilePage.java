@@ -23,6 +23,7 @@
 
 package org.gitools.ui.wizard.common;
 
+import org.gitools.fileutils.FileFormat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -35,37 +36,14 @@ import org.gitools.ui.wizard.AbstractWizardPage;
 
 public class SaveFilePage extends AbstractWizardPage {
 
-	public static class Format {
-		private String title;
-		private String extension;
-
-		public Format(String title, String extension) {
-			this.title = title;
-			this.extension = extension;
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public String getExtension() {
-			return extension;
-		}
-
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
-
     /** Creates new form SaveFilePage */
     public SaveFilePage() {
         initComponents();
 
 		fileName.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
-				updateGeneratedFile();
 				setComplete(!fileName.getText().isEmpty());
+				updateGeneratedFile();
 			}
 		});
 
@@ -110,26 +88,26 @@ public class SaveFilePage extends AbstractWizardPage {
 		folder.setText(folderPath);
 	}
 
-	public void setFormats(Format[] formats) {
+	public void setFormats(FileFormat[] formats) {
 		boolean active = formats != null && formats.length > 0;
 		formatLabel.setVisible(active);
 		format.setVisible(active);
 		format.setModel(new DefaultComboBoxModel(formats));
 	}
 
-	public int getSelectedFormatIndex() {
-		return format.getSelectedIndex();
+	public FileFormat getFormat() {
+		return (FileFormat) format.getSelectedItem();
 	}
 
 	public File getSelectedFile() {
 		StringBuilder sb = new StringBuilder();
 		String name = getFileName();
 		sb.append(name);
-		File file = new File(getFileName());
+		File file = new File(name);
 
 		String ext = FileChooserUtils.getExtension(file);
-		if ((ext == null) && format.getSelectedIndex() >= 0) {
-			Format fmt = (Format) format.getSelectedItem();
+		if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0) {
+			FileFormat fmt = (FileFormat) format.getSelectedItem();
 			if (!name.endsWith("."))
 				sb.append('.');
 			sb.append(fmt.getExtension());
@@ -230,7 +208,7 @@ public class SaveFilePage extends AbstractWizardPage {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void browseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtnActionPerformed
-		File selPath = FileChooserUtils.getSelectedPath(
+		File selPath = FileChooserUtils.selectPath(
 				"Select folder", folder.getText());
 		folder.setText(selPath.getAbsolutePath());
 	}//GEN-LAST:event_browseBtnActionPerformed

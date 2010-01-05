@@ -28,7 +28,7 @@ public class OpenAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = FileChooserUtils.getSelectedPath(
+		final File selectedPath = FileChooserUtils.selectPath(
 				"Select the analysis folder");
 		
 		if (selectedPath != null) {

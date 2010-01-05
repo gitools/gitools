@@ -20,7 +20,9 @@ public class OpenDataAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = FileChooserUtils.getSelectedFile("Select file");
+		final File selectedPath = FileChooserUtils.selectFile(
+				"Select file",
+				FileChooserUtils.MODE_SAVE);
 		
 		if (selectedPath != null) {
 			Settings.getDefault().setLastPath(selectedPath.getParent());

@@ -80,11 +80,11 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	}
 	
 	protected void updateDialog() {
-		IWizard wizard = getWizard();
-		if (wizard == null)
+		IWizard wz = getWizard();
+		if (wz == null)
 			return;
 		
-		WizardDialog dialog = wizard.getDialog();
+		WizardDialog dialog = wz.getDialog();
 		if (dialog == null)
 			return;
 		

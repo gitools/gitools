@@ -44,10 +44,12 @@ public abstract class AbstractWizard implements IWizard {
 		return pages.size() > 0 ? pages.get(0) : null;
 	}
 	
+	@Override
 	public IWizardPage getCurrentPage() {
 		return currentPage;
 	}
 	
+	@Override
 	public void setCurrentPage(IWizardPage currentPage) {
 		this.currentPage = currentPage;
 	}
@@ -93,6 +95,7 @@ public abstract class AbstractWizard implements IWizard {
 		return dialog;
 	}
 	
+	@Override
 	public void setDialog(WizardDialog dialog) {
 		this.dialog = dialog;
 	}

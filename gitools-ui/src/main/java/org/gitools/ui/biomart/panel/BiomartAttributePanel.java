@@ -17,14 +17,25 @@
 
 package org.gitools.ui.biomart.panel;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import org.biomart._80.martservicesoap.AttributeInfo;
 import org.biomart._80.martservicesoap.AttributePage;
 import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
-import org.gitools.ui.biomart.wizard.AttributesTreeModel;
+import org.gitools.biomart.BiomartService;
+import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePanel extends FilteredTreePanel {
@@ -35,53 +46,174 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 
 	private List<AttributePage> attrPages;
 
-	private AttributeInfo attribute;
+	private List<AttributeInfo> selectedAttr;
+	private List<String> selectedAttrNames;
+	private Set<String> selectedAttrNamesSet;
 
-	private boolean updated;
+	public static interface AttributeSelectionListener {
+		void selectionChanged();
+	}
 
-	public BiomartAttributePanel(MartServiceSoap port) {
+	private List<AttributeSelectionListener> attributeSelectionListeners =
+			new ArrayList<AttributeSelectionListener>();
+
+	public BiomartAttributePanel() {
 		super();
 
-		this.port = port;
+		this.port = null;
 		this.mart = null;
 		this.dataset = null;
 		this.attrPages = null;
 
-		updated = false;
+		this.selectedAttr = new ArrayList<AttributeInfo>();
+		this.selectedAttrNames = new ArrayList<String>();
+		this.selectedAttrNamesSet = new HashSet<String>();
 
 		tree.setRootVisible(false);
-
-		updateAttributes();
+		tree.addTreeSelectionListener(new TreeSelectionListener() {
+			@Override public void valueChanged(TreeSelectionEvent e) {
+				selectionChanged(e);
+			}
+		});
 	}
 
-	private void updateAttributes() {
+	public void setBiomartParameters(
+			MartServiceSoap port,
+			Mart mart,
+			DatasetInfo dataset) {
+
+		this.port = port;
+		this.mart = mart;
+		this.dataset = dataset;
+
+		loadAttributePages();
+	}
+
+	private void loadAttributePages() {
+		setControlsEnabled(false);
+
+		TreeNode node = new DefaultMutableTreeNode("Loading...");
+		TreeModel model = new DefaultTreeModel(node);
+		setModel(model);
+
+		//TODO fire loading starts
+
+		new Thread(new Runnable() {
+			@Override public void run() {
+				loadingThread(); }
+		}).start();
+	}
+
+	public List<AttributeInfo> getSelectedAttributes() {
+		return selectedAttr;
+	}
+
+	public List<String> getSelectedAttributeNames() {
+		return selectedAttrNames;
+	}
+
+	private void loadingThread() {
 		try {
-			if (attrPages == null) {
-				attrPages = port.getAttributes(
-						dataset.getName(), mart.getServerVirtualSchema());
+			final List<AttributePage> pages =
+					BiomartService.getDefault().getAttributes(mart, dataset);
 
-				setAttributePages(attrPages);
-			}
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override public void run() {
+					setControlsEnabled(true);
 
-			final AttributesTreeModel model = new AttributesTreeModel(attrPages);
+					setAttributePages(pages);
 
-			setModel(model);
-			expandAll();
-
-			updated = true;
+					//TODO fire loading ends
+				}
+			});
 		}
 		catch (Exception e) {
-			e.printStackTrace(); //FIXME
+			//TODO fire loading exception
+			e.printStackTrace();
 		}
+	}
+
+	private void selectionChanged(TreeSelectionEvent e) {
+		TreePath[] paths = e.getPaths();
+		if (paths == null)
+			return;
+
+		StringBuilder sb = new StringBuilder();
+
+		for (TreePath sel : paths) {
+			DefaultMutableTreeNode node =
+					(DefaultMutableTreeNode) sel.getLastPathComponent();
+			AttributeWrapper attrw =
+					(AttributeWrapper) node.getUserObject();
+			AttributeInfo attribute =
+					attrw.getType() == AttributeWrapper.NodeType.ATTRIBUTE
+					? (AttributeInfo) attrw.getObject() : null;
+
+			if (e.isAddedPath(sel)) {
+				if (attribute != null) {
+					if (!selectedAttrNamesSet.contains(attribute.getName())) {
+						sb.setLength(0);
+
+						Object[] opath = sel.getPath();
+						if (opath.length > 1) {
+							sb.append(opath[1].toString());
+							for (int i = 2; i < opath.length; i++)
+								sb.append(" > ").append(opath[i].toString());
+						}
+
+						selectedAttr.add(attribute);
+						selectedAttrNames.add(sb.toString());
+						selectedAttrNamesSet.add(attribute.getName());
+
+						for (AttributeSelectionListener l : attributeSelectionListeners)
+							l.selectionChanged();
+					}
+				}
+				else
+					tree.getSelectionModel().removeSelectionPath(sel);
+			}
+			else if (attribute != null) {
+				int i = selectedAttr.indexOf(attribute);
+				selectedAttr.remove(i);
+				selectedAttrNames.remove(i);
+				selectedAttrNamesSet.remove(attribute.getName());
+
+				for (AttributeSelectionListener l : attributeSelectionListeners)
+					l.selectionChanged();
+			}
+		}
+	}
+
+	public void addAttributeSelectionListener(AttributeSelectionListener listener) {
+		attributeSelectionListeners.add(listener);
+	}
+
+	public void removeAttributeSelectionListener(AttributeSelectionListener listener) {
+		attributeSelectionListeners.remove(listener);
+	}
+
+	private void setControlsEnabled(boolean enabled) {
+		filterField.setEnabled(enabled);
+		//expandBtn.setEnabled(enabled);
+		//collapseBtn.setEnabled(enabled);
 	}
 
 	@Override
-	protected TreeModel createModel(String filterText) {
+	protected TreeModel updateModel(String filterText) {
+		if (attrPages == null)
+				return null;
+
 		return new AttributesTreeModel(attrPages, filterText);
 	}
 
 	public synchronized void setAttributePages(List<AttributePage> attrPages) {
 		this.attrPages = attrPages;
+
+		final AttributesTreeModel model = attrPages == null ? null :
+				new AttributesTreeModel(attrPages);
+		
+		setModel(model);
+		expandAll();
 	}
 
 	public synchronized List<AttributePage> getAttributePages() {

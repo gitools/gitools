@@ -1,4 +1,4 @@
-package org.gitools.ui.biomart.wizard;
+package org.gitools.ui.biomart.panel;
 
 import java.util.List;
 

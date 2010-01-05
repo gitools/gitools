@@ -25,6 +25,9 @@ import org.gitools.ui.settings.Settings;
 
 public class FileChooserUtils {
 
+	public static final int MODE_SAVE = 1;
+	public static final int MODE_OPEN = 2;
+
 	public final static String jpeg = "jpeg";
     public final static String jpg = "jpg";
     public final static String gif = "gif";
@@ -75,17 +78,23 @@ public class FileChooserUtils {
 		}
 	};
 
-	public static File getSelectedFile(String title) {
-		return getSelectedFile(title, Settings.getDefault().getLastPath());
+	public static File selectFile(String title, int mode) {
+		return selectFile(title, Settings.getDefault().getLastPath(), mode);
 	}
 
-	public static File getSelectedFile(String title, String currentPath) {
+	public static File selectFile(String title, String currentPath, int mode) {
 		JFileChooser fileChooser = new JFileChooser(currentPath);
 
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-		int retval = fileChooser.showDialog(AppFrame.instance(), null);
+		int retval = JFileChooser.CANCEL_OPTION;
+
+		if (mode == FileChooserUtils.MODE_SAVE)
+			fileChooser.showSaveDialog(AppFrame.instance());
+		else if (mode == FileChooserUtils.MODE_OPEN)
+			fileChooser.showOpenDialog(AppFrame.instance());
+		
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			return file;
@@ -94,11 +103,11 @@ public class FileChooserUtils {
 		return null;
 	}
 
-	public static File getSelectedPath(String title) {
-		return getSelectedPath(title, Settings.getDefault().getLastPath());
+	public static File selectPath(String title) {
+		return selectPath(title, Settings.getDefault().getLastPath());
 	}
 
-	public static File getSelectedPath(String title, String currentPath) {
+	public static File selectPath(String title, String currentPath) {
 		JFileChooser fileChooser = new JFileChooser(currentPath);
 
 		fileChooser.setDialogTitle(title);
@@ -113,14 +122,20 @@ public class FileChooserUtils {
 		return null;
 	}
 
-	public static File getSelectedImageFile(String title, String currentPath) {
+	public static File selectImageFile(String title, String currentPath, int mode) {
 		JFileChooser fileChooser = new JFileChooser(currentPath);
 
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.addChoosableFileFilter(imageFileFilter);
 
-		int retval = fileChooser.showDialog(AppFrame.instance(), null);
+		int retval = JFileChooser.CANCEL_OPTION;
+
+		if (mode == FileChooserUtils.MODE_SAVE)
+			fileChooser.showSaveDialog(AppFrame.instance());
+		else if (mode == FileChooserUtils.MODE_OPEN)
+			fileChooser.showOpenDialog(AppFrame.instance());
+
 		if (retval == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			return file;

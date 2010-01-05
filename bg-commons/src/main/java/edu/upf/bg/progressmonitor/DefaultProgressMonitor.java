@@ -21,38 +21,46 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 		this.parent = parent;
 	}
 
+	@Override
 	public void begin(String title, int totalWork) {
 		this.title = title;
 		this.totalWork = totalWork;
 		this.worked = 0;
 	}
 
+	@Override
 	public void title(String title) {
 		this.title = title;
 	}
 
+	@Override
 	public void worked(int workInc) {
 		worked += workInc;
 		if (worked > totalWork)
 			worked = totalWork;
 	}
 	
+	@Override
 	public boolean isCancelled() {
 		return false;
 	}
 	
+	@Override
 	public void end() {
 		worked = totalWork;
 	}
 
+	@Override
 	public int getLevel() {
 		return level;
 	}
 
+	@Override
 	public void setLevel(int level) {
 		this.level = level;
 	}
 
+	@Override
 	public IProgressMonitor subtask() {
 		return new DefaultProgressMonitor(this);
 	}

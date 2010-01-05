@@ -7,9 +7,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.gitools.ui.utils.DocumentChangeListener;
 
 import org.gitools.ui.wizard.AbstractWizardPage;
 
@@ -25,13 +25,9 @@ public class FilteredListPage extends AbstractWizardPage {
 	public JComponent createControls() {
 		panel = new FilteredListPanel();
 		
-		panel.filterField.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				updateFilterActionPerformed(); }
-			@Override public void insertUpdate(DocumentEvent e) {
-				updateFilterActionPerformed(); }
-			@Override public void removeUpdate(DocumentEvent e) {
-				updateFilterActionPerformed(); }
+		panel.filterField.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
+				updateFilter(); }
 		});
 		
 		panel.clearBtn.addActionListener(new ActionListener() {
@@ -47,7 +43,7 @@ public class FilteredListPage extends AbstractWizardPage {
 			}
 		});
 		
-		updateFilterActionPerformed();
+		updateFilter();
 		
 		return panel;
 	}
@@ -56,7 +52,7 @@ public class FilteredListPage extends AbstractWizardPage {
 		return panel.filterField.getText();
 	}
 	
-	private void updateFilterActionPerformed() {
+	private void updateFilter() {
 		final String filterText = getFilterText();
 		
 		panel.clearBtn.setEnabled(!filterText.isEmpty());

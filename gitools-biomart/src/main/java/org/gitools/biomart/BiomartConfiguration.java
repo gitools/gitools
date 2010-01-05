@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 cperez.
+ *  Copyright 2009 chris.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,17 +17,22 @@
 
 package org.gitools.biomart;
 
-public class BiomartServiceException extends Exception {
+public class BiomartConfiguration {
 
-	public BiomartServiceException(String msg) {
-		super(msg);
+	private String wdslUrl;
+
+	private String restUrl;
+
+	public BiomartConfiguration(String wdslUrl, String restUrl) {
+		this.wdslUrl = wdslUrl;
+		this.restUrl = restUrl;
 	}
 
-	public BiomartServiceException(String msg, Throwable cause) {
-		super(msg, cause);
+	public String getWdslUrl() {
+		return wdslUrl;
 	}
 
-	BiomartServiceException(Throwable cause) {
-		super(cause);
+	public String getRestUrl() {
+		return restUrl;
 	}
 }

@@ -101,11 +101,13 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 			print(" " + time);
 	}
 	
+	@Override
 	public void info(String msg) {
 		if (verbose)
 			log(msg);
 	}
 	
+	@Override
 	public void debug(String msg) {
 		if (debug)
 			log(msg);

@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 
-public class ImportIntogenFigureAction extends BaseAction {
+public class ImportIntogenHeatmapAction extends BaseAction {
 
 	private static final long serialVersionUID = 668140963768246841L;
 
-	public ImportIntogenFigureAction() {
-		super("Heat map figure ...");
+	public ImportIntogenHeatmapAction() {
+		super("Heatmap figure ...");
 		setDefaultEnabled(true);
 	}
 	

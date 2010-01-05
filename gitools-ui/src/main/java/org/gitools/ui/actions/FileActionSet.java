@@ -8,10 +8,9 @@ import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportRowColumnNames;
 import org.gitools.ui.actions.file.ExportTableAllParametersAction;
 import org.gitools.ui.actions.file.ExportTableOneParameterAction;
-import org.gitools.ui.actions.file.ImportBioMartAnnotationsAction;
+import org.gitools.ui.actions.file.ImportBioMartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
-import org.gitools.ui.actions.file.ImportBiomartTableAction;
-import org.gitools.ui.actions.file.ImportIntogenFigureAction;
+import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
 import org.gitools.ui.actions.file.ImportIntogenTableAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
@@ -74,11 +73,10 @@ public class FileActionSet extends ActionSet {
 	
 	public static final BaseAction importIntogenTableAction = new ImportIntogenTableAction();
 	public static final BaseAction importIntogenModulesAction = new ImportIntogenOncomodulesAction();
-	public static final BaseAction importIntogenFigureAction = new ImportIntogenFigureAction();
+	public static final BaseAction importIntogenFigureAction = new ImportIntogenHeatmapAction();
 	
-	public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
-	public static final BaseAction importBioMartAnnotationsAction = new ImportBioMartAnnotationsAction();
+	public static final BaseAction importBioMartTableAction = new ImportBioMartTableAction();
 	
 	public static final ActionSet importActionSet = new ActionSet("Import", new BaseAction[] {
 			new ActionSet("IntOGen", new BaseAction[] {
@@ -87,8 +85,7 @@ public class FileActionSet extends ActionSet {
 				importIntogenFigureAction }),
 			new ActionSet("BioMart", new BaseAction[] {
 				importBioMartTableAction,
-				importBioMartModulesAction,
-				importBioMartAnnotationsAction })
+				importBioMartModulesAction })
 	});
 	
 	// Export

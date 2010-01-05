@@ -27,9 +27,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="format" pref="371" max="32767" attributes="0"/>
-                          <Component id="fileName" pref="371" max="32767" attributes="0"/>
-                          <Component id="folder" alignment="0" pref="371" max="32767" attributes="0"/>
+                          <Component id="format" pref="374" max="32767" attributes="0"/>
+                          <Component id="fileName" pref="374" max="32767" attributes="0"/>
+                          <Component id="folder" alignment="0" pref="374" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="browseBtn" min="-2" max="-2" attributes="0"/>

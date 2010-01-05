@@ -54,9 +54,11 @@ public class ExportHeatmapImageAction extends BaseAction {
 		drawer.setPictureMode(true);
 
 		try {
-			File file = FileChooserUtils.getSelectedImageFile(
+			File file = FileChooserUtils.selectImageFile(
 					"Select destination file",
-					Settings.getDefault().getLastExportPath());
+					Settings.getDefault().getLastExportPath(),
+					FileChooserUtils.MODE_SAVE);
+			
 			if (file == null)
 				return;
 			

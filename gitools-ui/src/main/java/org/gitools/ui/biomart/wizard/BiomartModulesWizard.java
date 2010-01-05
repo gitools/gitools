@@ -1,14 +1,13 @@
 package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
-import javax.swing.JFileChooser;
 import org.biomart._80.martservicesoap.Attribute;
-
-import org.biomart._80.martservicesoap.BioMartSoapService;
 import org.biomart._80.martservicesoap.Dataset;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.biomart._80.martservicesoap.Query;
+import org.gitools.biomart.BiomartService;
+import org.gitools.fileutils.FileFormat;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.AbstractWizard;
 import org.gitools.ui.wizard.IWizardPage;
@@ -24,52 +23,40 @@ public class BiomartModulesWizard extends AbstractWizard {
 	private BiomartAttributePage dataAttributePage;
 	private SaveFilePage saveFilePage;
 
-	private MartServiceSoap martPort;
+	private BiomartService biomartService;
+
+	public BiomartModulesWizard(BiomartService biomartService) {
+		this.biomartService = biomartService;
+		setTitle("Import modules...");
+	}
 
 	@Override
 	public void addPages() {
-		MartServiceSoap port = getMartServicePort();
 
-		
-		// Destination directory
-		
-		/*destPathPage = new FileChooserPage();
-		destPathPage.setTitle("Select destination file");
-		destPathPage.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		addPage(destPathPage);*/
+		// Destination
+		saveFilePage = new SaveFilePage();
+		saveFilePage.setTitle("Select destination file");
+		saveFilePage.setFolder(Settings.getDefault().getLastExportPath());
+		saveFilePage.setFormats(biomartService.getSupportedFormats());
+		addPage(saveFilePage);
 		
 		// Database
-		
-		databasePage = new BiomartDatabasePage(port);
+		databasePage = new BiomartDatabasePage(biomartService);
 		addPage(databasePage);
 		
 		// Dataset
-		
-		datasetPage = new BiomartDatasetPage(port);
+		datasetPage = new BiomartDatasetPage(biomartService);
 		addPage(datasetPage);
 		
 		// Modules attribute
-		
-		modulesAttributePage = new BiomartAttributePage(port);
+		modulesAttributePage = new BiomartAttributePage(biomartService);
 		modulesAttributePage.setTitle("Select attribute for modules");
 		addPage(modulesAttributePage);
 		
 		// Data attribute
-		
-		dataAttributePage = new BiomartAttributePage(port);
+		dataAttributePage = new BiomartAttributePage(biomartService);
 		dataAttributePage.setTitle("Select attribute for data");
 		addPage(dataAttributePage);
-
-		// Destination
-
-		saveFilePage = new SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastExportPath());
-		saveFilePage.setFormats(new SaveFilePage.Format[] {
-			new SaveFilePage.Format("Tab Separated Fields (tsv)", "tsv"),
-			new SaveFilePage.Format("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz"),
-		});
-		addPage(saveFilePage);
 	}
 
 	@Override
@@ -80,8 +67,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page == databasePage)
-			datasetPage.setMart(
-					databasePage.getMart());
+			datasetPage.setMart(databasePage.getMart());
 		else if (page == datasetPage)
 			modulesAttributePage.setSource(
 					databasePage.getMart(),
@@ -93,24 +79,14 @@ public class BiomartModulesWizard extends AbstractWizard {
 		return super.getNextPage(page);
 	}
 
-	private MartServiceSoap getMartServicePort() {
-		if (martPort == null) {
-			BioMartSoapService service = new BioMartSoapService();
-			martPort = service.getBioMartSoapPort();
-		}
-		return martPort;
-	}
-
 	public File getSelectedFile() {
 		return saveFilePage.getSelectedFile();
 	}
 
 	public Query getQuery() {
-		MartServiceSoap port = getMartServicePort();
 		Mart mart = databasePage.getMart();
 
-		//TODO this info should come from another page
-		int header = 1;
+		int header = 0;
 		int count = 0;
 		int uniqueRows = 1;
 
@@ -148,5 +124,9 @@ public class BiomartModulesWizard extends AbstractWizard {
 		}*/
 
 		return query;
+	}
+
+	public FileFormat getFormat() {
+		return saveFilePage.getFormat();
 	}
 }

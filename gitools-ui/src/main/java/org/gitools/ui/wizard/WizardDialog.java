@@ -44,6 +44,7 @@ public class WizardDialog extends AbstractDialog {
 		
 		setMinimumSize(new Dimension(800, 600));
 		setPreferredSize(new Dimension(800, 600));
+		setLocationRelativeTo(owner);
 		
 		pageControlsMap = new HashMap<String, JComponent>();
 		pageHistory = new Stack<IWizardPage>();

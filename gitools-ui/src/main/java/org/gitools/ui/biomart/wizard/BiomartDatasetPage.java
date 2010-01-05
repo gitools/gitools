@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
+import org.gitools.biomart.BiomartService;
 import org.gitools.ui.wizard.common.FilteredListPage;
 
 public class BiomartDatasetPage extends FilteredListPage {
@@ -29,15 +30,17 @@ public class BiomartDatasetPage extends FilteredListPage {
 		}
 	}
 	
-	private MartServiceSoap port;
+	private BiomartService biomartService;
+
 	private Mart mart;
 
 	private boolean updated;
 	
-	public BiomartDatasetPage(MartServiceSoap port) {
+	public BiomartDatasetPage(BiomartService biomartService) {
 		super();
 		
-		this.port = port;
+		this.biomartService = biomartService;
+		
 		this.mart = null;
 		updated = false;
 		
@@ -60,7 +63,7 @@ public class BiomartDatasetPage extends FilteredListPage {
 		new Thread(new Runnable() {
 			@Override public void run() {
 				try {
-					List<DatasetInfo> dataSets = port.getDatasets(mart.getName());
+					List<DatasetInfo> dataSets = biomartService.getDatasets(mart);
 					final List<DatasetListWrapper> visibleDataSets = new ArrayList<DatasetListWrapper>();
 					for (DatasetInfo ds : dataSets)
 						if (ds.getVisible() != 0)

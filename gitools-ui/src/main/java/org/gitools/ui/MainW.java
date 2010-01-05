@@ -1,6 +1,7 @@
 package org.gitools.ui;
 
 import javax.swing.UIManager;
+import org.gitools.biomart.BiomartService;
 
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizard.WizardDialog;
@@ -21,7 +22,9 @@ public class MainW {
 		/*OperatingSystemMXBean osbean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 		System.out.println(osbean.getSystemLoadAverage());*/
 		
-		BiomartModulesWizard wizard = new BiomartModulesWizard();
+		BiomartModulesWizard wizard = new BiomartModulesWizard(
+				BiomartService.getDefault());
+		
 		WizardDialog wizDlg = new WizardDialog(
 				AppFrame.instance(), wizard);
 		

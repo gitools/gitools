@@ -2,6 +2,7 @@ package org.gitools.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -37,6 +38,9 @@ public class DialogHeaderPanel extends JComponent {
 		this.message = message;
 		this.status = status;
 		this.logo = logo;
+
+		setMinimumSize(new Dimension(0, 80));
+		setPreferredSize(new Dimension(0, 80));
 		
 		logoLabel = (logo != null) ? new JLabel(logo) : new JLabel();
 		logoLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));

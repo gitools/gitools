@@ -56,12 +56,12 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
 
 		if (!filterText.equalsIgnoreCase(lastFilterText)) {
 			lastFilterText = filterText;
-			tree.setModel(createModel(getFilterText()));
+			tree.setModel(updateModel(getFilterText()));
 			expandAll();
 		}
 	}
 
-	protected abstract TreeModel createModel(String filterText);
+	protected abstract TreeModel updateModel(String filterText);
 
 	private String getFilterText() {
 		return filterField.getText();
@@ -73,12 +73,29 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
 
 	public void setModel(TreeModel model) {
 		tree.setModel(model);
+
+		updateExpandCollapseButtons();
+	}
+
+	private void updateExpandCollapseButtons() {
+		boolean enabled = false;
+
+		TreeModel model = tree.getModel();
+		if (model != null)
+			enabled = model.getRoot() != null;
+
+		expandBtn.setEnabled(enabled);
+		collapseBtn.setEnabled(enabled);
 	}
 
 	// If expand is true, expands all nodes in the tree.
 	// Otherwise, collapses all nodes in the tree.
 	public void expandCollapse(JTree tree, boolean expand) {
-		TreeNode root = (TreeNode) tree.getModel().getRoot();
+		TreeModel model = tree.getModel();
+		if (model == null)
+			return;
+
+		TreeNode root = (TreeNode) model.getRoot();
 
 		// Traverse tree from root
 		expandCollapse(tree, new TreePath(root), expand);
@@ -132,6 +149,8 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
         collapseBtn = new javax.swing.JButton();
         expandBtn = new javax.swing.JButton();
 
+        filterField.setFocusCycleRoot(true);
+
         clearBtn.setText("Clear");
 
         tree.setModel(null);
@@ -148,9 +167,9 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                        .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearBtn))
                     .addGroup(layout.createSequentialGroup()
