@@ -1,5 +1,6 @@
 package org.gitools.ui.editor.html;
 
+import org.gitools.ui.platform.editor.HtmlEditor;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;

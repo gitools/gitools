@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.editor.IEditor;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class SaveAction extends BaseAction {
 

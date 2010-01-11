@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.dialog.ProgressMonitorDialog;
+import org.gitools.ui.platform.dialog.ProgressMonitorDialog;
 import org.gitools.ui.jobs.ZCalcCommandJob;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizardmess.AnalysisWizard;

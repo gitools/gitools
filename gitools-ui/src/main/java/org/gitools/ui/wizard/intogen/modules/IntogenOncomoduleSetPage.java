@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class IntogenOncomoduleSetPage extends AbstractWizardPage {
 

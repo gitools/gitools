@@ -124,14 +124,14 @@
             <Property name="text" type="java.lang.String" value="Fg"/>
           </Properties>
         </Component>
-        <Component class="org.gitools.ui.component.ColorChooserLabel" name="fgColor">
+        <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="fgColor">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bg"/>
           </Properties>
         </Component>
-        <Component class="org.gitools.ui.component.ColorChooserLabel" name="bgColor">
+        <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="bgColor">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>

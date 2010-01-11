@@ -7,6 +7,7 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.actions.ActionUtils;
 
 public class InvertSelectionAction extends BaseAction {
 
@@ -26,7 +27,7 @@ public class InvertSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IMatrixView matrixView = getMatrixView();
+		IMatrixView matrixView = ActionUtils.getMatrixView();
 		
 		
 		if (matrixView != null){	

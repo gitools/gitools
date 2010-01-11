@@ -1,4 +1,4 @@
-package org.gitools.ui.dialog;
+package org.gitools.ui.platform.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import org.gitools.ui.dialog.DialogHeaderPanel.Status;
+import org.gitools.ui.platform.dialog.DialogHeaderPanel.Status;
 
 public abstract class AbstractDialog extends JDialog {
 

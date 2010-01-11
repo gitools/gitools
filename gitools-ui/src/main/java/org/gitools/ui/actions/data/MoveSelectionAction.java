@@ -8,6 +8,7 @@ import org.gitools.ui.actions.BaseAction;
 
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.actions.ActionUtils;
 
 public class MoveSelectionAction extends BaseAction {
 
@@ -64,7 +65,7 @@ public class MoveSelectionAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IMatrixView matrixView = getMatrixView();
+		IMatrixView matrixView = ActionUtils.getMatrixView();
 		
 		if (matrixView == null)
 			return;

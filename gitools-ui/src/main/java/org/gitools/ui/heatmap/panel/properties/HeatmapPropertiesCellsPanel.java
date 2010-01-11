@@ -40,7 +40,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel {
@@ -117,7 +117,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
         cellHeight = new javax.swing.JSpinner();
         cellSyncSize = new javax.swing.JToggleButton();
         showGrid = new javax.swing.JCheckBox();
-        gridColor = new org.gitools.ui.component.ColorChooserLabel();
+        gridColor = new org.gitools.ui.platform.component.ColorChooserLabel();
         jPanel1 = new javax.swing.JPanel();
         cellDecorator = new javax.swing.JComboBox();
         decoPanel = new javax.swing.JPanel();
@@ -309,7 +309,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
     private javax.swing.JToggleButton cellSyncSize;
     private javax.swing.JSpinner cellWidth;
     private javax.swing.JPanel decoPanel;
-    private org.gitools.ui.component.ColorChooserLabel gridColor;
+    private org.gitools.ui.platform.component.ColorChooserLabel gridColor;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

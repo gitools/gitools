@@ -1,7 +1,7 @@
 package org.gitools.ui.wizard.intogen.modules;
 
-import org.gitools.ui.wizard.AbstractWizard;
-import org.gitools.ui.wizard.IWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
 
 public class IntogenOncomodulesWizard extends AbstractWizard {
 

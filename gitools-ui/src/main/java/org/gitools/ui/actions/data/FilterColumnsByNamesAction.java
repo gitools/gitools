@@ -14,6 +14,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.actions.ActionUtils;
 
 public class FilterColumnsByNamesAction extends BaseAction {
 
@@ -33,7 +34,7 @@ public class FilterColumnsByNamesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final IMatrixView matrixView = getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
 		

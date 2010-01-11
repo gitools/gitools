@@ -32,7 +32,7 @@ import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class SaveFilePage extends AbstractWizardPage {
 

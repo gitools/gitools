@@ -1,4 +1,4 @@
-package org.gitools.ui.dialog;
+package org.gitools.ui.platform.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

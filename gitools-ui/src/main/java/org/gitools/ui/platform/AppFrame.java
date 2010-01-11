@@ -13,12 +13,11 @@ import javax.swing.WindowConstants;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
 import org.gitools.ui.jobs.JobProcessor;
 import org.gitools.ui.workspace.NavigatorPanel;
-import org.gitools.ui.utils.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;

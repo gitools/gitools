@@ -9,6 +9,7 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.actions.ActionUtils;
 
 public class UnselectAllAction extends BaseAction {
 
@@ -31,7 +32,7 @@ public class UnselectAllAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IMatrixView matrixView = getMatrixView();
+		IMatrixView matrixView = ActionUtils.getMatrixView();
 		
 		if (matrixView != null)
 			matrixView.clearSelection();

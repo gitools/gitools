@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import org.gitools.ui.view.AbstractView;
+import org.gitools.ui.platform.view.AbstractView;
 
 //TODO allow definition of a <Class, Controller> map from outside
 public abstract class EntityView extends AbstractView {

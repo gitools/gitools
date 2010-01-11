@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class FileChooserPage extends AbstractWizardPage {
 

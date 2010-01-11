@@ -7,7 +7,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class ExportChooserPage extends AbstractWizardPage {
 

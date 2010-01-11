@@ -12,6 +12,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.actions.ActionUtils;
 
 public class FastSortRowsAction extends BaseAction {
 
@@ -41,7 +42,7 @@ public class FastSortRowsAction extends BaseAction {
 			criteriaList.add(new SortCriteria(
 					indices[i], selParamIndex, true));*/
 		
-		final IMatrixView matrixView = getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		
 		if (matrixView == null)
 			return;

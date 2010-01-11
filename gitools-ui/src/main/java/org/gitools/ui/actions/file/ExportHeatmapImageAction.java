@@ -16,7 +16,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
-import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
 public class ExportHeatmapImageAction extends BaseAction {
@@ -38,7 +39,7 @@ public class ExportHeatmapImageAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		AbstractEditor editor = getSelectedEditor();
+		AbstractEditor editor = ActionUtils.getSelectedEditor();
 		if (editor == null)
 			return;
 

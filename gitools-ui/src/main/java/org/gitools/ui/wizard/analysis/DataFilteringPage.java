@@ -7,7 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class DataFilteringPage extends AbstractWizardPage {
 

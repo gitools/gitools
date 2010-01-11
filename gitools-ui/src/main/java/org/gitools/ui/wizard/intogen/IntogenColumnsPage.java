@@ -2,7 +2,7 @@ package org.gitools.ui.wizard.intogen;
 
 import javax.swing.JComponent;
 
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class IntogenColumnsPage extends AbstractWizardPage {
 

@@ -19,6 +19,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
+		
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>gitools-core</artifactId>
 			<version>${project.version}</version>
@@ -33,31 +38,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-ui-platform</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- <dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency>
-	 <dependency>
-	  <groupId>edu.upf.bg</groupId>
-	  <artifactId>bg-commons</artifactId>
-	  <version>0.1.0-SNAPSHOT</version>
-	 </dependency>
-	 <dependency>
-	  <artifactId>gitools-core</artifactId>
-	  <groupId>org.gitools</groupId>
-	  <type>jar</type>
-	  <version>1.5.0-SNAPSHOT</version>
-	  <exclusions>
-	   <exclusion>
-	    <artifactId>concurrent</artifactId>
-	    <groupId>concurrent</groupId>
-	   </exclusion>
-	  </exclusions>
-	 </dependency>
 	</dependencies>
 
 	<build>

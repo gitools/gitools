@@ -6,6 +6,7 @@ import java.io.File;
 
 import org.gitools.exporter.HtmlMatrixExporter;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
@@ -30,7 +31,7 @@ public class ExportHeatmapHtmlAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final Heatmap figure = getMatrixFigure();
+		final Heatmap figure = ActionUtils.getMatrixFigure();
 		if (figure == null)
 			return;
 		

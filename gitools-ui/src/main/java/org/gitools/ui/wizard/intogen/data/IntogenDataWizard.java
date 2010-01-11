@@ -2,8 +2,8 @@ package org.gitools.ui.wizard.intogen.data;
 
 import javax.swing.JFileChooser;
 
-import org.gitools.ui.wizard.AbstractWizard;
-import org.gitools.ui.wizard.IWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.FileChooserPage;
 import org.gitools.ui.wizard.intogen.IntogenColumnsPage;
 
@@ -63,7 +63,7 @@ public class IntogenDataWizard extends AbstractWizard {
 		// Results
 		
 		intogenDataResultsPage = new IntogenDataResultsPage();
-		addPage(intogenDataResultsPage);
+		addPage((IWizardPage) intogenDataResultsPage); //FIXME this cast shouldn't be necessary
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.ui.actions.ActionUtils;
 
 public class FilterRowsByValuesAction extends BaseAction {
 
@@ -35,7 +36,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = getMatrixView();
+		IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
 

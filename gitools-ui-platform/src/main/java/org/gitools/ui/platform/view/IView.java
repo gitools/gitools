@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.ui.view;
+package org.gitools.ui.platform.view;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;

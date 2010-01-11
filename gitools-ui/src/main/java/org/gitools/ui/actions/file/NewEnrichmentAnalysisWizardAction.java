@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.wizard.WizardDialog;
+import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.analysis.EnrichmentAnalysisWizard;
 
 public class NewEnrichmentAnalysisWizardAction extends BaseAction {

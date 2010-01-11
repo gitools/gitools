@@ -18,6 +18,7 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.ui.actions.ActionUtils;
 
 public class MtcAction extends BaseAction {
 
@@ -42,7 +43,7 @@ public class MtcAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		final IMatrixView matrixView = getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		
 		if (matrixView == null)
 			return;

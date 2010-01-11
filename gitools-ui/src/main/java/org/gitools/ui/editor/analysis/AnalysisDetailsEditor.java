@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.model.Analysis;
-import org.gitools.ui.editor.AbstractEditor;
-import org.gitools.ui.panels.TemplatePane;
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.panel.TemplatePane;
 
 import edu.upf.bg.formatter.GenericFormatter;
 

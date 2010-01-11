@@ -14,5 +14,14 @@
 	<name>gitools-ui-platform</name>
 
 	<dependencies>
+		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
 	</dependencies>
 </project>

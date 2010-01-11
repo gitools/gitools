@@ -1,6 +1,6 @@
 package org.gitools.ui.wizard.export;
 
-import org.gitools.ui.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.AbstractWizard;
 
 public class ExportWizard extends AbstractWizard {
 

@@ -5,7 +5,7 @@
 
 package org.gitools.ui.dialog.progress;
 
-import org.gitools.ui.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import java.awt.Frame;
 import java.util.Timer;
 import java.util.TimerTask;

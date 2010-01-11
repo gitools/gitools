@@ -1,7 +1,7 @@
-package org.gitools.ui.editor;
+package org.gitools.ui.platform.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.ui.view.AbstractView;
+import org.gitools.ui.platform.view.AbstractView;
 
 public abstract class AbstractEditor
 		extends AbstractView

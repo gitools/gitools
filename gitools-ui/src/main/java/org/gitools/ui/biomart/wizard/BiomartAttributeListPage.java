@@ -26,7 +26,7 @@ import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class BiomartAttributeListPage extends AbstractWizardPage {
 

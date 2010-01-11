@@ -1,5 +1,6 @@
 package org.gitools.ui.dialog;
 
+import org.gitools.ui.platform.dialog.AbstractDialog;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.gitools.ui.dialog.DialogHeaderPanel.Status;
+import org.gitools.ui.platform.dialog.DialogHeaderPanel.Status;
 
 public class ExportDialog extends AbstractDialog {
 

@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.wizard.common.FileChooserPage;
 
 public class OncozAnalysisWizard extends AbstractWizard {

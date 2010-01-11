@@ -1,4 +1,4 @@
-package org.gitools.ui.editor;
+package org.gitools.ui.platform.editor;
 
 import java.awt.BorderLayout;
 
@@ -9,6 +9,7 @@ import javax.swing.event.ChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
 public class MultiEditor extends AbstractEditor {
 

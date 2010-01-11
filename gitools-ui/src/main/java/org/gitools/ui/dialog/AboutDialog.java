@@ -12,14 +12,13 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import org.apache.velocity.VelocityContext;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.panels.TemplatePane;
+import org.gitools.ui.platform.panel.TemplatePane;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.utils.IconUtils;
+import org.gitools.ui.platform.IconUtils;
 
 
 public class AboutDialog extends JDialog {

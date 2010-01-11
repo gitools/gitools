@@ -1,9 +1,10 @@
-package org.gitools.ui.panels;
+package org.gitools.ui.platform.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Point;
+import java.awt.Window;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -24,8 +25,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.gitools.ui.dialog.ExceptionDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 public class TemplatePane extends JPanel {
 
@@ -39,8 +39,16 @@ public class TemplatePane extends JPanel {
 	private JScrollPane infoScrollPane;
 	private JTextPane infoPane;
 
+	private Window parent;
+
 	public TemplatePane(Properties props) {
-		
+		this(null, props);
+	}
+
+	public TemplatePane(Window parent, Properties props) {
+
+		this.parent = parent;
+
 		velocityEngine = new VelocityEngine();
 		
 		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
@@ -94,7 +102,7 @@ public class TemplatePane extends JPanel {
 									new URL(e.getDescription()).toURI());
 						} catch (Exception e1) {
 							ExceptionDialog dlg =
-									new ExceptionDialog(AppFrame.instance(), e1);
+									new ExceptionDialog(parent, e1);
 							dlg.setVisible(true);
 						}
 					}

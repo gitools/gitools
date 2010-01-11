@@ -10,7 +10,7 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.biomart.wizard.BiomartTableWizard;
 import org.gitools.ui.dialog.progress.ProgressJob;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.wizard.WizardDialog;
+import org.gitools.ui.platform.wizard.WizardDialog;
 
 public class ImportBioMartTableAction extends BaseAction {
 

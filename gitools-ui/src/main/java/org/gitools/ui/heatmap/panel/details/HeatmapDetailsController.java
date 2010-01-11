@@ -42,7 +42,7 @@ import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
-import org.gitools.ui.panels.TemplatePane;
+import org.gitools.ui.platform.panel.TemplatePane;
 import org.gitools.ui.view.entity.EntityController;
 
 public class HeatmapDetailsController implements EntityController {

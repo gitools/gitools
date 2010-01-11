@@ -9,8 +9,8 @@ import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartService;
 import org.gitools.fileutils.FileFormat;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.AbstractWizard;
-import org.gitools.ui.wizard.IWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.FileChooserPage;
 import org.gitools.ui.wizard.common.SaveFilePage;
 

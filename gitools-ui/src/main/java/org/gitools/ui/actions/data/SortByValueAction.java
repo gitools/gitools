@@ -13,6 +13,7 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.ui.actions.ActionUtils;
 
 public class SortByValueAction extends BaseAction {
 
@@ -51,7 +52,7 @@ public class SortByValueAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = getMatrixView();
+		IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
 				

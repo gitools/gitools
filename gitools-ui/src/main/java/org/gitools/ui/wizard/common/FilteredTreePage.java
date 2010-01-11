@@ -4,7 +4,7 @@ package org.gitools.ui.wizard.common;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeModel;
 
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public abstract class FilteredTreePage extends AbstractWizardPage {
 

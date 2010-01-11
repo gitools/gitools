@@ -8,7 +8,7 @@ import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.editor.MultiEditor;
+import org.gitools.ui.platform.editor.MultiEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 
 public class AnalysisEditor extends MultiEditor {

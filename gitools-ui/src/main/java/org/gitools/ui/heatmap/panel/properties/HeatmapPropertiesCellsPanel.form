@@ -149,7 +149,7 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="showGridStateChanged"/>
           </Events>
         </Component>
-        <Component class="org.gitools.ui.component.ColorChooserLabel" name="gridColor">
+        <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="gridColor">
         </Component>
       </SubComponents>
     </Container>

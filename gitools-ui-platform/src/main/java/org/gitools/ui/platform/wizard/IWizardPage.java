@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard;
+package org.gitools.ui.platform.wizard;
 
 import javax.swing.JComponent;
 

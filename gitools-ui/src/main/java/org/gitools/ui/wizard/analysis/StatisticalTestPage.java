@@ -10,7 +10,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.BinomialTestFactory;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
-import org.gitools.ui.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class StatisticalTestPage extends AbstractWizardPage {
 

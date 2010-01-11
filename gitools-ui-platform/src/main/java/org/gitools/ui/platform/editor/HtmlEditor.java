@@ -1,4 +1,4 @@
-package org.gitools.ui.editor.html;
+package org.gitools.ui.platform.editor;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -10,8 +10,6 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
-
-import org.gitools.ui.editor.AbstractEditor;
 
 public class HtmlEditor extends AbstractEditor {
 

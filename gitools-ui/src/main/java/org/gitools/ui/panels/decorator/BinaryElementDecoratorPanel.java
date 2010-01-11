@@ -17,8 +17,8 @@ import javax.swing.event.DocumentListener;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.ui.component.ColorChooserLabel;
-import org.gitools.ui.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.component.ColorChooserLabel;
+import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {

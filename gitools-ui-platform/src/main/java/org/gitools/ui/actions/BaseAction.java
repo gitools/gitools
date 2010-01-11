@@ -1,23 +1,13 @@
 package org.gitools.ui.actions;
 
-import java.io.File;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
-import org.gitools.ui.IconNames;
-import org.gitools.ui.editor.AbstractEditor;
-import org.gitools.ui.editor.IEditor;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.Settings;
-
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.IconUtils;
 
 public abstract class BaseAction extends AbstractAction {
 
@@ -100,7 +90,7 @@ public abstract class BaseAction extends AbstractAction {
 	private ImageIcon getIconResource(String name) {
 		URL url = getClass().getResource(name);
 		if (url == null)
-			url = getClass().getResource(IconNames.nullResource);
+			url = getClass().getResource(IconUtils.nullResourceImage);
 		
 		return new ImageIcon(url);
 	}
@@ -141,45 +131,5 @@ public abstract class BaseAction extends AbstractAction {
 	
 	protected boolean isEnabledByModel(Object model) {
 		return defaultEnabled;
-	}
-	
-	protected AbstractEditor getSelectedEditor() {
-		return AppFrame.instance()
-			.getEditorsPanel()
-			.getSelectedEditor();
-	}
-	
-	protected IMatrixView getMatrixView() {
-		AbstractEditor editor = getSelectedEditor();
-		if (editor == null)
-			return null;
-		
-		IMatrixView matrixView = null;
-		
-		Object model = editor.getModel();
-		if (model instanceof IMatrixView)
-			matrixView = (IMatrixView) model;
-		else if (model instanceof Heatmap)
-			matrixView = ((Heatmap)model).getMatrixView();
-		
-		return matrixView;
-	}
-	
-	protected Heatmap getMatrixFigure() {
-		AbstractEditor editor = getSelectedEditor();
-		if (editor == null)
-			return null;
-		
-		Heatmap figure = null;
-		
-		Object model = editor.getModel();
-		if (model instanceof Heatmap)
-			figure = (Heatmap)model;
-		
-		return figure;
-	}
-	
-	protected IProgressMonitor createProgressMonitor() {
-		return AppFrame.instance().createMonitor();
 	}
 }

@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartService;
-import org.gitools.ui.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizard.common.FilteredListPage;
 

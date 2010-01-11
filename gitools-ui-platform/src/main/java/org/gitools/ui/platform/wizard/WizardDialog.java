@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard;
+package org.gitools.ui.platform.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,9 +15,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.gitools.ui.dialog.AbstractDialog;
-import org.gitools.ui.dialog.DialogButtonsPanel;
-import org.gitools.ui.dialog.DialogHeaderPanel;
+import org.gitools.ui.platform.dialog.AbstractDialog;
+import org.gitools.ui.platform.dialog.DialogButtonsPanel;
+import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 
 public class WizardDialog extends AbstractDialog {
 

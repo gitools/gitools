@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 
 
 /**
@@ -461,7 +462,7 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
     private static ImageIcon getIconResource(String name) {
 		URL url = Wizard.class.getResource(name);
 		if (url == null)
-			url = Wizard.class.getResource(IconNames.nullResource);
+			url = Wizard.class.getResource(IconUtils.nullResourceImage);
 		
 		return new ImageIcon(url);
 	}

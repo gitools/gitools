@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
-import org.gitools.ui.editor.IEditor;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class SaveAsAction extends BaseAction {
 

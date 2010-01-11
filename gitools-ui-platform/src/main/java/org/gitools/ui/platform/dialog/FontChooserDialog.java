@@ -21,7 +21,7 @@
  * Created on 13-dic-2009, 14:49:10
  */
 
-package org.gitools.ui.dialog;
+package org.gitools.ui.platform.dialog;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;

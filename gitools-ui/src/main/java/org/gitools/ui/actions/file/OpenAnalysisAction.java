@@ -35,7 +35,7 @@ public class OpenAnalysisAction extends BaseAction {
 			Settings.getDefault().setLastPath(selectedPath.getParent());
 			Settings.getDefault().save();
 
-			final IProgressMonitor monitor = createProgressMonitor();
+			final IProgressMonitor monitor = AppFrame.instance().createMonitor();
 			
 			AppFrame.instance().getJobProcessor().addJob(
 					new OpenAnalysisJob(selectedPath, monitor));

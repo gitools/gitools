@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import org.gitools.ui.editor.IEditor;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class ActionSet extends BaseAction {
 
@@ -39,6 +39,7 @@ public class ActionSet extends BaseAction {
 				action.actionPerformed(e);
 	}
 
+	@Override
 	public void setTreeEnabled(boolean enabled) {
 		setEnabled(enabled);
 		if (actions != null)

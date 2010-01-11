@@ -1,4 +1,4 @@
-package org.gitools.ui.wizard;
+package org.gitools.ui.platform.wizard;
 
 import java.util.ArrayList;
 import java.util.HashMap;

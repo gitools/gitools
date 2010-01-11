@@ -10,7 +10,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.ui.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.platform.AppFrame;
 
