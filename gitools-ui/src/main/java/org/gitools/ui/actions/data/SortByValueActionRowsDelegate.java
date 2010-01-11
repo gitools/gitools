@@ -67,7 +67,7 @@ public class SortByValueActionRowsDelegate {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final List<Integer> directions = new ArrayList<Integer>();
 		
-		final int criterias = criteriaList.size();
+		final int numCriteria = criteriaList.size();
 		
 		for (int i = 0; i < criteriaList.size(); i++) {
 			SortCriteria sortCriteria = criteriaList.get(i);
@@ -90,7 +90,7 @@ public class SortByValueActionRowsDelegate {
 				double aggr1 = 0, aggr2 = 0;
 
 				
-				while (aggr1 == aggr2 && level < criterias) {
+				while (aggr1 == aggr2 && level < numCriteria) {
 						
 					for (int i = 0; i < N; i++) {
 						int col = selection[i];
@@ -109,8 +109,8 @@ public class SortByValueActionRowsDelegate {
 							row2.set(i, v2);
 						}
 					}
-					aggr1 = aggregators.get(level).aggregate(row1);
-					aggr2 = aggregators.get(level).aggregate(row2);
+					///FIXME aggr1 = aggregators.get(level).aggregate(row1);
+					///FIXME aggr2 = aggregators.get(level).aggregate(row2);
 					level++;
 				}
 

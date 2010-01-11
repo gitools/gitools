@@ -1,14 +1,13 @@
 package org.gitools.aggregation;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.math.Functions;
 
 /** Multiplication */
-public class MultAggregator implements IAggregator {
+public class MultAggregator extends AbstractAggregator {
 	
 	@Override
-	public double aggregate(DoubleMatrix1D row) {
-		return row.aggregate(Functions.mult, Functions.identity);
+	public double aggregate(double[] data) {
+		return aggregate(data, Functions.mult, 1);
 	}
 
 	@Override

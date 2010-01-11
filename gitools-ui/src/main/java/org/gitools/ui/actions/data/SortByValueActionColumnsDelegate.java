@@ -111,8 +111,8 @@ public class SortByValueActionColumnsDelegate {
 							col2.set(i, v2);
 						}
 					}
-					aggr1 = aggregators.get(level).aggregate(col1);
-					aggr2 = aggregators.get(level).aggregate(col2);
+					///FIXME aggr1 = aggregators.get(level).aggregate(col1);
+					///FIXME aggr2 = aggregators.get(level).aggregate(col2);
 					level++;
 				}
 	

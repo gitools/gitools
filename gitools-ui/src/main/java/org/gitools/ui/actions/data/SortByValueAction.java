@@ -13,32 +13,46 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.sort.MatrixColumnSorter;
+import org.gitools.matrix.sort.MatrixRowAndColumnSorter;
+import org.gitools.matrix.sort.MatrixRowSorter;
+import org.gitools.matrix.sort.MatrixSorter;
 import org.gitools.ui.actions.ActionUtils;
 
 public class SortByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
-	private SortSubject sortSubject;
+	
+	private MatrixSorter sorter;
+	private String typeName;
 	
 	public enum SortSubject {
 		ROW, COLUMN, BOTH
 	}
 
-	public SortByValueAction(SortSubject sortSubject) {
-		super(null);	
-		this.sortSubject = sortSubject;
-		switch (this.sortSubject) {
+	public SortByValueAction(SortSubject type) {
+		super(null);
+
+		switch (type) {
 		case COLUMN:
 			setName("Sort columns ...");
 			setDesc("Sort columns ...");
+			typeName = "Columns";
+			sorter = new MatrixColumnSorter();
 			break;
+
 		case ROW:
 			setName("Sort rows ...");
 			setDesc("Sort rows ...");
+			typeName = "Rows";
+			sorter = new MatrixRowSorter();
 			break;
+
 		case BOTH:
 			setName("Sort rows and columns ...");
 			setDesc("Sort rows and columns ...");
+			typeName = "Rows and columns";
+			sorter = new MatrixRowAndColumnSorter();
 			break;
 		}
 	}
@@ -58,45 +72,25 @@ public class SortByValueAction extends BaseAction {
 				
 		//select properties
 		List<IElementProperty> cellProps = matrixView.getCellAdapter().getProperties();
-		ListIterator<IElementProperty> i = cellProps.listIterator();
-		Object[] props = new Object[cellProps.size()];
-		int counter = 0;
-		while (i.hasNext()) {
-			IElementProperty ep = i.next();
-			props[counter] = ep.getName();
-			counter++;
-		}
-		
+		String[] propNames = new String[cellProps.size()];
+		for (int i = 0; i < cellProps.size(); i++)
+			propNames[i] = cellProps.get(i).getName();
+
 		final SortDialogSimple d = new SortDialogSimple(
 				AppFrame.instance(),
 				getName(),
 				true,
-				props,
+				propNames,
 				AggregatorFactory.getAggregatorsArray());
 		
 		final List<SortCriteria> criteriaList = d.getCriteriaList();
-		if (criteriaList.size() == 0)
+		if (criteriaList.size() == 0) {
+			AppFrame.instance().setStatusText("No criteria specified.");
 			return;
-
-		switch (this.sortSubject) {
-			case COLUMN:
-				new SortByValueActionColumnsDelegate(matrixView, criteriaList, false);
-				AppFrame.instance().setStatusText("Columns sorted.");
-				break;
-			case ROW:
-				new SortByValueActionRowsDelegate(matrixView, criteriaList, false);
-				AppFrame.instance().setStatusText("Rows sorted.");
-				break;
-			case BOTH:
-				new SortByValueActionRowsDelegate(matrixView, criteriaList, false);
-				new SortByValueActionColumnsDelegate(matrixView, criteriaList, false);
-				AppFrame.instance().setStatusText("Rows and columns sorted.");
-				break;
 		}
-				
 
-		
-		
-		
+		SortCriteria[] criteriaArray = new SortCriteria[criteriaList.size()];
+		sorter.sort(matrixView, criteriaList.toArray(criteriaArray));
+		AppFrame.instance().setStatusText(typeName + " sorted.");
 	}
 }

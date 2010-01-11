@@ -1,14 +1,13 @@
 package org.gitools.aggregation;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.math.Functions;
 
 /** Sum of logarithms */
-public class LogSumAggregator implements IAggregator {
+public class LogSumAggregator extends AbstractAggregator {
 
 	@Override
-	public double aggregate(DoubleMatrix1D data) {
-		return data.aggregate(Functions.plus, Functions.log);
+	public double aggregate(double[] data) {
+		return aggregate(data, Functions.plus, Functions.log, 0);
 	}
 
 	@Override

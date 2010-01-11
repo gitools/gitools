@@ -1,14 +1,13 @@
 package org.gitools.aggregation;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.math.Functions;
 
 /** Sum */
-public class SumAggregator implements IAggregator {
+public class SumAggregator extends AbstractAggregator {
 
 	@Override
-	public double aggregate(DoubleMatrix1D row) {
-		return row.aggregate(Functions.plus, Functions.identity);
+	public double aggregate(double[] data) {
+		return aggregate(data, Functions.plus, 0);
 	}
 
 	@Override
