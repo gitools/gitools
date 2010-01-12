@@ -127,8 +127,8 @@ public class HeatmapPanel extends JPanel {
 		int scrollHeight = totalSize.height - visibleSize.height;
 
 		IMatrixView mv = heatmap.getMatrixView();
-		int row = mv.getSelectionLeadRow();
-		int col = mv.getSelectionLeadColumn();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
 
 		Point leadPoint = bodyPanel.getDrawer()
 				.getPoint(new HeatmapPosition(row, col));

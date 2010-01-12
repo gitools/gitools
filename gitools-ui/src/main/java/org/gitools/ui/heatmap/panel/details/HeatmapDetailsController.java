@@ -67,9 +67,9 @@ public class HeatmapDetailsController implements EntityController {
 
 		final Heatmap heatmap = (Heatmap) ctx;
 		final IMatrixView matrixView = heatmap.getMatrixView();
-		int row = matrixView.getSelectionLeadRow();
+		int row = matrixView.getLeadSelectionRow();
 		int rowCount = matrixView.getRowCount();
-		int column = matrixView.getSelectionLeadColumn();
+		int column = matrixView.getLeadSelectionColumn();
 		int columnCount = matrixView.getColumnCount();
 
 		VelocityContext context = new VelocityContext();

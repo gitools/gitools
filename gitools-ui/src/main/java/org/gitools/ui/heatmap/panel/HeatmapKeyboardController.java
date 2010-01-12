@@ -20,6 +20,7 @@ package org.gitools.ui.heatmap.panel;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
@@ -39,38 +40,48 @@ public class HeatmapKeyboardController extends KeyAdapter {
 	public void keyPressed(KeyEvent e) {
 		IMatrixView mv = hm.getMatrixView();
 
-		int row = mv.getSelectionLeadRow();
-		int col = mv.getSelectionLeadColumn();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
 
 		int key = e.getKeyCode();
 
 		int modifiers = e.getModifiers();
 		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
 		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+		boolean altDown = ((modifiers & InputEvent.ALT_MASK) != 0);
 
 		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP
 				|| key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
 
-			if (!shiftDown && !ctrlDown)
-				changeLead(e);
-			else if (!shiftDown && ctrlDown)
+			if (!shiftDown && !ctrlDown && !altDown)
+				changeLead(e, true);
+			else if (!shiftDown && ctrlDown && !altDown)
+				changeLead(e, false);
+			else if (shiftDown && ctrlDown && !altDown)
 				moveLead(e);
-			else if (shiftDown && !ctrlDown)
+			else if (!shiftDown && !ctrlDown && altDown)
 				moveSelection(e);
+
+			if (ctrlDown)
+				e.consume();
 		}
 		else {
 			switch (key) {
 				case KeyEvent.VK_DELETE:
 					hideLead(e);
 					break;
+
+				case KeyEvent.VK_SPACE:
+					selectLead(e);
+					break;
 			}
 		}
 	}
 
-	private void changeLead(KeyEvent e) {
+	private void changeLead(KeyEvent e, boolean clearSelection) {
 		IMatrixView mv = hm.getMatrixView();
-		int row = mv.getSelectionLeadRow();
-		int col = mv.getSelectionLeadColumn();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
@@ -102,12 +113,16 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		}
 
 		mv.setLeadSelection(row, col);
+		if (clearSelection) {
+			mv.setSelectedRows(new int[0]);
+			mv.setSelectedColumns(new int[0]);
+		}
 	}
 
 	private void hideLead(KeyEvent e) {
 		IMatrixView mv = hm.getMatrixView();
-		int row = mv.getSelectionLeadRow();
-		int col = mv.getSelectionLeadColumn();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
 
 		if (row != -1) {
 			int[] rows = mv.getVisibleRows();
@@ -136,8 +151,8 @@ public class HeatmapKeyboardController extends KeyAdapter {
 
 	private void moveLead(KeyEvent e) {
 		IMatrixView mv = hm.getMatrixView();
-		int row = mv.getSelectionLeadRow();
-		int col = mv.getSelectionLeadColumn();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
 
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
@@ -157,12 +172,98 @@ public class HeatmapKeyboardController extends KeyAdapter {
 					mv.moveColumnsLeft(new int[] { col });
 				break;
 		}
-
-		changeLead(e);
-		e.consume();
 	}
 
 	private void moveSelection(KeyEvent e) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		IMatrixView mv = hm.getMatrixView();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
+
+		if (row != -1 && col != -1)
+			return;
+
+		boolean horizontal = (row == -1 && col >= 0);
+
+		int[] sel = horizontal ? mv.getSelectedColumns() : mv.getSelectedRows();
+		
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_DOWN:
+				if (row >= 0 && row < mv.getRowCount() - 1)
+					mv.moveRowsDown(sel);
+				break;
+			case KeyEvent.VK_UP:
+				if (row > 0 && row < mv.getRowCount())
+					mv.moveRowsUp(sel);
+				break;
+			case KeyEvent.VK_RIGHT:
+				if (col >= 0 && col < mv.getColumnCount() - 1)
+					mv.moveColumnsRight(sel);
+				break;
+			case KeyEvent.VK_LEFT:
+				if (col > 0 && col < mv.getColumnCount())
+					mv.moveColumnsLeft(sel);
+				break;
+		}
+	}
+
+	private void selectLead(KeyEvent e) {
+		IMatrixView mv = hm.getMatrixView();
+		int row = mv.getLeadSelectionRow();
+		int col = mv.getLeadSelectionColumn();
+
+		if (row != -1 && col != -1)
+			return;
+
+		int modifiers = e.getModifiers();
+		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
+		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+
+		boolean horizontal = (row == -1 && col >= 0);
+
+		int index = horizontal ? col : row;
+
+		int[] sel = null;
+
+		if (!ctrlDown) {
+			if (row >= 0 && col == -1)
+				sel = new int[] { row };
+			else if (row == -1 && col >= 0)
+				sel = new int[] { col };
+		}
+		else {
+			boolean selected = horizontal ?
+					mv.isColumnSelected(col) : mv.isRowSelected(row);
+
+			int[] prevSel = horizontal ?
+					mv.getSelectedColumns() : mv.getSelectedRows();
+
+			if (!selected) {
+				sel = new int[prevSel.length + 1];
+				System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
+				sel[sel.length - 1] = index;
+				Arrays.sort(sel);
+			}
+			else {
+				sel = new int[prevSel.length - 1];
+				int i = 0;
+				int j = 0;
+				while (i < prevSel.length) {
+					if (prevSel[i] != index)
+						sel[j++] = prevSel[i];
+					i++;
+				}
+			}
+		}
+
+		if (horizontal) {
+			if (mv.getSelectedRows().length != 0)
+				mv.setSelectedRows(new int[0]);
+			mv.setSelectedColumns(sel);
+		}
+		else {
+			if (mv.getSelectedColumns().length != 0)
+				mv.setSelectedColumns(new int[0]);
+			mv.setSelectedRows(sel);
+		}
 	}
 }

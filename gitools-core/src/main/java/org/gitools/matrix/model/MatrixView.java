@@ -1,6 +1,7 @@
 package org.gitools.matrix.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -120,8 +121,23 @@ public class MatrixView
 
 	@Override
 	public void setVisibleRows(int[] indices) {
+		// update selection according to new visibility
+		int[] selection = selectionFromVisible(selectedRowsBitmap, indices);
+		
+		int nextLeadRow = -1;
+		final int leadRow = selectionLeadRow >= 0 ? visibleRows[selectionLeadRow] : -1;
+
+		int leadColumn = selectionLeadColumn >= 0 ? visibleColumns[selectionLeadColumn] : -1;
+
+		for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
+			if (indices[i] == leadRow)
+				nextLeadRow = i;
+
 		this.visibleRows = indices;
 		firePropertyChange(VISIBLE_ROWS_CHANGED);
+
+		setSelectedRows(selection);
+		setLeadSelection(nextLeadRow, selectionLeadColumn);
 	}
 
 	@Override
@@ -131,12 +147,32 @@ public class MatrixView
 
 	@Override
 	public void setVisibleColumns(int[] indices) {
+		// update selection according to new visibility
+		int[] selection = selectionFromVisible(selectedColumnsBitmap, indices);
+
+		int nextLeadColumn = -1;
+		final int leadColumn = selectionLeadColumn >= 0 ? visibleColumns[selectionLeadColumn] : -1;
+
+		for (int i = 0; i < indices.length && nextLeadColumn == -1; i++)
+			if (indices[i] == leadColumn)
+				nextLeadColumn = i;
+
 		this.visibleColumns = indices;
 		firePropertyChange(VISIBLE_COLUMNS_CHANGED);
+
+		setSelectedColumns(selection);
+		setLeadSelection(selectionLeadRow, nextLeadColumn);
 	}
 	
 	@Override
 	public void moveRowsUp(int[] indices) {
+		if (indices != null && indices.length > 0) {
+			Arrays.sort(indices);
+			if (indices[0] > 0
+					&& Arrays.binarySearch(indices, selectionLeadRow) >= 0)
+				selectionLeadRow--;
+		}
+
 		arrayMoveLeft(visibleRows, indices, selectedRows);
 		firePropertyChange(VISIBLE_ROWS_CHANGED);
 		firePropertyChange(SELECTION_CHANGED);
@@ -144,6 +180,13 @@ public class MatrixView
 	
 	@Override
 	public void moveRowsDown(int[] indices) {
+		if (indices != null && indices.length > 0) {
+			Arrays.sort(indices);
+			if (indices[indices.length - 1] < contents.getRowCount() - 1
+					&& Arrays.binarySearch(indices, selectionLeadRow) >= 0)
+				selectionLeadRow++;
+		}
+
 		arrayMoveRight(visibleRows, indices, selectedRows);
 		firePropertyChange(VISIBLE_ROWS_CHANGED);
 		firePropertyChange(SELECTION_CHANGED);
@@ -151,6 +194,13 @@ public class MatrixView
 	
 	@Override
 	public void moveColumnsLeft(int[] indices) {
+		if (indices != null && indices.length > 0) {
+			Arrays.sort(indices);
+			if (indices[0] > 0
+					&& Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
+				selectionLeadColumn--;
+		}
+
 		arrayMoveLeft(visibleColumns, indices, selectedColumns);
 		firePropertyChange(VISIBLE_COLUMNS_CHANGED);
 		firePropertyChange(SELECTION_CHANGED);
@@ -158,6 +208,13 @@ public class MatrixView
 
 	@Override
 	public void moveColumnsRight(int[] indices) {
+		if (indices != null && indices.length > 0) {
+			Arrays.sort(indices);
+			if (indices[indices.length - 1] < contents.getColumnCount() - 1
+					&& Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
+				selectionLeadColumn++;
+		}
+
 		arrayMoveRight(visibleColumns, indices, selectedColumns);
 		firePropertyChange(VISIBLE_COLUMNS_CHANGED);
 		firePropertyChange(SELECTION_CHANGED);
@@ -173,15 +230,13 @@ public class MatrixView
 	@Override
 	public void setSelectedRows(int[] indices) {
 		this.selectedRows = indices;
-		updateSelectionBitmap(selectedRowsBitmap, indices);
+		updateSelectionBitmap(selectedRowsBitmap, indices, visibleRows);
 		firePropertyChange(SELECTION_CHANGED);
 	}
 
 	@Override
 	public boolean isRowSelected(int index) {
-		int bindex = index / INT_BIT_SIZE;
-		int bit = 1 << (index % INT_BIT_SIZE);
-		return (selectedRowsBitmap[bindex] & bit) != 0;
+		return checkSelectionBitmap(selectedRowsBitmap, visibleRows[index]);
 	}
 
 	@Override
@@ -192,15 +247,13 @@ public class MatrixView
 	@Override
 	public void setSelectedColumns(int[] indices) {
 		this.selectedColumns = indices;
-		updateSelectionBitmap(selectedColumnsBitmap, indices);
+		updateSelectionBitmap(selectedColumnsBitmap, indices, visibleColumns);
 		firePropertyChange(SELECTION_CHANGED);
 	}
 
 	@Override
 	public boolean isColumnSelected(int index) {
-		int bindex = index / INT_BIT_SIZE;
-		int bit = 1 << (index % INT_BIT_SIZE);
-		return (selectedColumnsBitmap[bindex] & bit) != 0;
+		return checkSelectionBitmap(selectedColumnsBitmap, visibleColumns[index]);
 	}
 
 	@Override
@@ -240,12 +293,12 @@ public class MatrixView
 	}
 	
 	@Override
-	public int getSelectionLeadRow() {
+	public int getLeadSelectionRow() {
 		return selectionLeadRow;
 	}
 	
 	@Override
-	public int getSelectionLeadColumn() {
+	public int getLeadSelectionColumn() {
 		return selectionLeadColumn;
 	}
 	
@@ -392,19 +445,38 @@ public class MatrixView
 		return invArray;
 	}
 
+	private int[] selectionFromVisible(int[] bitmap, int[] visible) {
+		int selectionCount = 0;
+		int[] selectionBuffer = new int[visible.length];
+		for (int i = 0; i < visible.length; i++)
+			if (checkSelectionBitmap(bitmap, visible[i]))
+				selectionBuffer[selectionCount++] = i;
+
+		int[] selection = new int[selectionCount];
+		System.arraycopy(selectionBuffer, 0, selection, 0, selectionCount);
+		return selection;
+	}
+	
 	private int[] newSelectionBitmap(int size) {
 		int[] a = new int[(size + INT_BIT_SIZE - 1) / INT_BIT_SIZE];
 		Arrays.fill(a, 0);
 		return a;
 	}
 
-	private void updateSelectionBitmap(int[] bitmap, int[] indices) {
+	private void updateSelectionBitmap(int[] bitmap, int[] indices, int[] visible) {
 		Arrays.fill(bitmap, 0);
-		for (int index : indices) {
+		for (int visibleIndex : indices) {
+			int index = visible[visibleIndex];
 			int bindex = index / INT_BIT_SIZE;
 			int bit = 1 << (index % INT_BIT_SIZE);
 			bitmap[bindex] |= bit;
 		}
+	}
+
+	private boolean checkSelectionBitmap(int[] bitmap, int index) {
+		int bindex = index / INT_BIT_SIZE;
+		int bit = 1 << (index % INT_BIT_SIZE);
+		return (bitmap[bindex] & bit) != 0;
 	}
 
 	// FIXME:
@@ -475,5 +547,4 @@ public class MatrixView
 			setVisibleColumns(columns);
 		}
 	}
-
 }

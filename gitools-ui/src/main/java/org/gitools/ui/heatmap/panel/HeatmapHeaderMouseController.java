@@ -29,16 +29,13 @@ import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
-/**
- *
- * @author cperez
- */
 public class HeatmapHeaderMouseController
 		implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private enum Mode {
 		none, selecting, moving
 	}
+
 	private final Heatmap heatmap;
 	private final JViewport viewPort;
 	private final HeatmapHeaderPanel headerPanel;

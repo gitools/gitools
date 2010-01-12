@@ -82,8 +82,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		int fontHeight = g.getFontMetrics().getHeight();
 		int fontOffset = ((fontHeight + height) / 2) - 1;
 
-		int leadRow = data.getSelectionLeadRow();
-		int leadColumn = data.getSelectionLeadColumn();
+		int leadRow = data.getLeadSelectionRow();
+		int leadColumn = data.getLeadSelectionColumn();
 
 		int x = box.x;
 		int y = box.y + start * height;

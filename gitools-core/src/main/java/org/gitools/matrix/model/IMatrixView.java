@@ -49,8 +49,8 @@ public interface IMatrixView extends IModel, IMatrix {
 	void invertSelection();
 	void clearSelection();
 	
-	int getSelectionLeadRow();
-	int getSelectionLeadColumn();
+	int getLeadSelectionRow();
+	int getLeadSelectionColumn();
 	void setLeadSelection(int row, int column);
 	
 	// properties
