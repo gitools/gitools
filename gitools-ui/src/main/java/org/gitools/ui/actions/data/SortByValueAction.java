@@ -2,7 +2,6 @@ package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.sort.SortDialogSimple;

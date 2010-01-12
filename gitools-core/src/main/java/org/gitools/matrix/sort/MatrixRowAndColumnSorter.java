@@ -19,10 +19,11 @@ package org.gitools.matrix.sort;
 
 import org.gitools.matrix.model.IMatrixView;
 
-public class MatrixRowAndColumnSorter implements MatrixSorter {
+public class MatrixRowAndColumnSorter extends MatrixSorter {
 
 	@Override
 	public void sort(IMatrixView matrixView, SortCriteria[] criteria) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		sortRows(matrixView, matrixView.getSelectedColumns(), criteria);
+		sortColumns(matrixView, matrixView.getSelectedColumns(), criteria);
 	}
 }
