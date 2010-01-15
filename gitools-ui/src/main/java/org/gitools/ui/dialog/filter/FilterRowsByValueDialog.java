@@ -1,5 +1,6 @@
 package org.gitools.ui.dialog.filter;
 
+import org.gitools.matrix.filter.ValueFilterCriteria;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -41,59 +42,9 @@ public class FilterRowsByValueDialog extends JDialog {
 	public Boolean sameCell() {
 		return sameCell;
 	}
-	
-	public enum ValueCondition {  
-		GE("greater or equal"),
-		LE("lower or equal"),
-		GT("greater than"),
-		LT("lower than"),
-		EQ("equal"), 
-		NE("not equal");
-	
-		private String title;
-		
-		private ValueCondition(String title) {
-			this.title = title;
-		}
-		
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
-	
-	public static class ValueCriteria {
-		
-		protected Object param;
-		protected ValueCondition condition;
-		protected String value;
-		
-		public ValueCriteria(Object param, ValueCondition condition, String value) {
-			this.param = param;
-			this.condition = condition;
-			this.value = value;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
-		public ValueCondition getCondition() {
-			return this.condition;
-		}
-
-		public Object getParam() {
-			return this.param;
-		}
-		
-		@Override
-		public String toString() {
-			return param.toString() + " " + condition.toString() + " " + value;
-		}
-	}
 
 	private Object[] params;
-	private List<ValueCriteria> values;
+	private List<ValueFilterCriteria> values;
 
 	public FilterRowsByValueDialog(JFrame owner, Object[] params, String target) {
 		super(owner);
@@ -239,7 +190,7 @@ public class FilterRowsByValueDialog extends JDialog {
 
 	protected void addElmenent(DefaultListModel listModel, JCheckBox sameCellCheckbox) {
 		FilterRowsByValueCriteriaDialog d = new FilterRowsByValueCriteriaDialog(this, params);
-		ValueCriteria c = d.getCriteria();
+		ValueFilterCriteria c = d.getCriteria();
 		if (c != null)
 			listModel.addElement(c);
 		if (listModel.getSize() > 1)
@@ -313,11 +264,11 @@ public class FilterRowsByValueDialog extends JDialog {
 	}
 
 	protected void acceptChanges(DefaultListModel listModel, boolean newIncludeHidden, boolean newAllCells, boolean newSameCell) {
-		List<ValueCriteria> list = 
-			new ArrayList<ValueCriteria>(listModel.getSize());
+		List<ValueFilterCriteria> list =
+			new ArrayList<ValueFilterCriteria>(listModel.getSize());
 		
 		for (int i = 0; i < listModel.getSize(); i++)
-			list.add((ValueCriteria) listModel.getElementAt(i));
+			list.add((ValueFilterCriteria) listModel.getElementAt(i));
 		
 		includeHidden = newIncludeHidden;
 		allCells = newAllCells;
@@ -334,7 +285,7 @@ public class FilterRowsByValueDialog extends JDialog {
 		setVisible(false);
 	}
 	
-	public List<ValueCriteria> getValues() {
+	public List<ValueFilterCriteria> getValues() {
 		setVisible(true);
 		return values;
 	}

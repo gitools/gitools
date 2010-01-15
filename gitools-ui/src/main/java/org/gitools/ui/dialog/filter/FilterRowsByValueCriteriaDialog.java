@@ -16,8 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
-import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
+import org.gitools.matrix.filter.ValueFilterCondition;
+import org.gitools.matrix.filter.ValueFilterCriteria;
 
 
 public class FilterRowsByValueCriteriaDialog extends JDialog {
@@ -25,7 +25,7 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 	private static final long serialVersionUID = 4201760423693544699L;
 	
 	private Object[] params;
-	private ValueCriteria criteria;
+	private ValueFilterCriteria criteria;
 
 	public FilterRowsByValueCriteriaDialog(JDialog owner, Object[] params) {
 		super(owner);
@@ -49,7 +49,7 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 			paramBox.addItem(o);
 		
 		final JComboBox conditionBox = new JComboBox();
-		for (ValueCondition ce : ValueCondition.values())
+		for (ValueFilterCondition ce : ValueFilterCondition.values())
 			conditionBox.addItem(ce);
 		
 		final JTextField valueField = new JTextField();
@@ -122,10 +122,10 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 
 	protected void acceptChanges(JComboBox paramBox, JComboBox conditionBox, JTextField valueField) {
 		Object param = params[paramBox.getSelectedIndex()];
-		ValueCondition valueCondition = (ValueCondition) conditionBox.getSelectedObjects()[0];
+		ValueFilterCondition valueCondition = (ValueFilterCondition) conditionBox.getSelectedObjects()[0];
 		String text = valueField.getText();
 		if(!text.isEmpty()){
-			criteria = new ValueCriteria(param, valueCondition, text);
+			criteria = new ValueFilterCriteria(param, valueCondition, text);
 			setVisible(false);
 		}
 	}
@@ -135,7 +135,7 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 		setVisible(false);
 	}
 	
-	public ValueCriteria getCriteria() {
+	public ValueFilterCriteria getCriteria() {
 		setVisible(true);
 		return criteria;
 	}

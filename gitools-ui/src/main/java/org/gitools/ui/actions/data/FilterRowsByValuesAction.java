@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.dialog.filter.FilterRowsByValueDialog;
-import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCondition;
-import org.gitools.ui.dialog.filter.FilterRowsByValueDialog.ValueCriteria;
+import org.gitools.matrix.filter.ValueFilterCondition;
+import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.AppFrame;
 
 
@@ -48,7 +48,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 
 		
 		FilterRowsByValueDialog d = new FilterRowsByValueDialog(AppFrame.instance(), params, "row");
-		List<ValueCriteria> valueList = d.getValues();
+		List<ValueFilterCriteria> valueList = d.getValues();
 		boolean includeHidden = d.hiddenIncluded();
 		boolean allCells = d.allCells();
 		boolean sameCell = d.sameCell();
@@ -68,16 +68,16 @@ public class FilterRowsByValuesAction extends BaseAction {
 			}
 			int cellProps = cellPropsList.size();
 			for(int i = 0; i < rows; i++) {
-				List<ValueCriteria> tempValueList = valueList;
+				List<ValueFilterCriteria> tempValueList = valueList;
 				int[][] eval = new int[tempValueList.size()][cols];
 
 				
 				for (int j = 0; j < cols; j++) {
 					
 					int vcCounter = 0;
-					Iterator<ValueCriteria> valueListIt = tempValueList.iterator();
+					Iterator<ValueFilterCriteria> valueListIt = tempValueList.iterator();
 					while (tempValueList.size() > 0 && valueListIt.hasNext()) {
-						ValueCriteria vc = valueListIt.next();
+						ValueFilterCriteria vc = valueListIt.next();
 						String vcParam = vc.getParam().toString();
 						for (int k = 0; k < cellProps; k++) {
 							
@@ -154,8 +154,8 @@ public class FilterRowsByValuesAction extends BaseAction {
 		return addRow;
 	}
 
-	private int evaluateCriteria(ValueCriteria vc, double value) {
-		ValueCondition vcond = vc.getCondition();
+	private int evaluateCriteria(ValueFilterCriteria vc, double value) {
+		ValueFilterCondition vcond = vc.getCondition();
 		double conditionValue = Double.parseDouble(vc.getValue());
 		boolean evaluation = false;
 		switch (vcond) {
