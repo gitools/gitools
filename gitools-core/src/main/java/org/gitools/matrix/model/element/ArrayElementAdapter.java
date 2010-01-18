@@ -30,7 +30,7 @@ public class ArrayElementAdapter
 		
 		this.ids = ids;
 		
-		List<IElementProperty> properties = new ArrayList<IElementProperty>();
+		List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
 		
 		for (String id : ids)
 			properties.add(new ArrayElementProperty(id, id, ""));

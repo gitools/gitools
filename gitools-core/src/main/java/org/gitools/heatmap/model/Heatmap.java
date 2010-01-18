@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -117,7 +117,7 @@ public class Heatmap
 		ElementDecorator decorator = null;
 		
 		IElementAdapter adapter = matrixView.getCellAdapter();
-		List<IElementProperty> attributes = matrixView.getCellAttributes();
+		List<IElementAttribute> attributes = matrixView.getCellAttributes();
 		
 		int attrIndex = matrixView.getSelectedPropertyIndex();
 		if (attrIndex >= 0 && attrIndex < attributes.size()) {

@@ -1,6 +1,6 @@
 package org.gitools.stats.test.results;
 
-import org.gitools.matrix.model.element.Property;
+import org.gitools.matrix.model.element.AttributeDef;
 
 public class FisherResult extends CommonResult {
 
@@ -27,7 +27,7 @@ public class FisherResult extends CommonResult {
 		this.d = d;
 	}
 	
-	@Property(id = "a", name = "a", description = "Number of positive events that belongs to the module")
+	@AttributeDef(id = "a", name = "a", description = "Number of positive events that belongs to the module")
 	public int getA() {
 		return a;
 	}
@@ -36,7 +36,7 @@ public class FisherResult extends CommonResult {
 		this.a = a;
 	}
 	
-	@Property(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
+	@AttributeDef(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
 	public int getB() {
 		return b;
 	}
@@ -45,7 +45,7 @@ public class FisherResult extends CommonResult {
 		this.b = b;
 	}
 	
-	@Property(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
+	@AttributeDef(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
 	public int getC() {
 		return c;
 	}
@@ -54,7 +54,7 @@ public class FisherResult extends CommonResult {
 		this.c = c;
 	}
 	
-	@Property(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
+	@AttributeDef(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
 	public int getD() {
 		return d;
 	}

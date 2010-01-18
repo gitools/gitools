@@ -2,7 +2,7 @@ package org.gitools.stats.test.results;
 
 import java.io.Serializable;
 
-import org.gitools.matrix.model.element.Property;
+import org.gitools.matrix.model.element.AttributeDef;
 
 public class CommonResult implements Serializable{
 
@@ -25,7 +25,7 @@ public class CommonResult implements Serializable{
 		this.twoTailPvalue = twoTailPvalue;
 	}
 	
-	@Property(id = "N", name = "N", description = "Number of elements")
+	@AttributeDef(id = "N", name = "N", description = "Number of elements")
 	public int getN() {
 		return N;
 	}
@@ -34,7 +34,7 @@ public class CommonResult implements Serializable{
 		N = n;
 	}
 	
-	@Property(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
+	@AttributeDef(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
 	public double getLeftPvalue() {
 		return leftPvalue;
 	}
@@ -43,7 +43,7 @@ public class CommonResult implements Serializable{
 		this.leftPvalue = leftPvalue;
 	}
 	
-	@Property(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
+	@AttributeDef(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
 	public double getRightPvalue() {
 		return rightPvalue;
 	}
@@ -52,7 +52,7 @@ public class CommonResult implements Serializable{
 		this.rightPvalue = rightPvalue;
 	}
 	
-	@Property(id = "two-tail-p-value", name = "Two tail P-Value", description = "P-Value for alternative hipothesis different than")
+	@AttributeDef(id = "two-tail-p-value", name = "Two tail P-Value", description = "P-Value for alternative hipothesis different than")
 	public double getTwoTailPvalue() {
 		return twoTailPvalue;
 	}
@@ -61,7 +61,7 @@ public class CommonResult implements Serializable{
 		this.twoTailPvalue = twoTailPvalue;
 	}
 	
-	@Property(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
+	@AttributeDef(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
 	public double getCorrLeftPvalue() {
 		return corrLeftPvalue;
 	}
@@ -70,7 +70,7 @@ public class CommonResult implements Serializable{
 		this.corrLeftPvalue = corrLeftPvalue;
 	}
 	
-	@Property(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
+	@AttributeDef(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
 	public double getCorrRightPvalue() {
 		return corrRightPvalue;
 	}
@@ -79,7 +79,7 @@ public class CommonResult implements Serializable{
 		this.corrRightPvalue = corrRightPvalue;
 	}
 	
-	@Property(id = "corrected-two-tail-p-value", name = "Corrected two tail P-Value", description = "Corrected P-Value for alternative hipothesis different than")
+	@AttributeDef(id = "corrected-two-tail-p-value", name = "Corrected two tail P-Value", description = "Corrected P-Value for alternative hipothesis different than")
 	public double getCorrTwoTailPvalue() {
 		return corrTwoTailPvalue;
 	}

@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 
@@ -96,7 +96,7 @@ public class MatrixView
 		// selected property
 		
 		int i = 0;
-		for (IElementProperty attr : contents.getCellAttributes()) {
+		for (IElementAttribute attr : contents.getCellAttributes()) {
 			if ("right-p-value".equals(attr.getId())
 					|| "p-value".equals(attr.getId())) {
 					selectedPropertyIndex = i;
@@ -383,7 +383,7 @@ public class MatrixView
 	}
 	
 	@Override
-	public List<IElementProperty> getCellAttributes() {
+	public List<IElementAttribute> getCellAttributes() {
 		return contents.getCellAttributes();
 	}
 	

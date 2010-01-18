@@ -1,6 +1,6 @@
 package org.gitools.matrix.model.element;
 		
-public interface IElementProperty {
+public interface IElementAttribute {
 
 	String getId();
 	String getName();

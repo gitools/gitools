@@ -9,7 +9,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 public abstract class AbstractElementDecoratorPanel extends JPanel {
 
@@ -38,7 +38,7 @@ public abstract class AbstractElementDecoratorPanel extends JPanel {
 			properties = new ArrayList<IndexedProperty>(numProps);
 		
 		for (int i = 0; i < numProps; i++) {
-			final IElementProperty property = adapter.getProperty(i);
+			final IElementAttribute property = adapter.getProperty(i);
 			properties.add(new IndexedProperty(i, property));
 		}
 		

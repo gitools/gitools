@@ -1,6 +1,6 @@
 package org.gitools.stats.test.results;
 
-import org.gitools.matrix.model.element.Property;
+import org.gitools.matrix.model.element.AttributeDef;
 
 public class ZScoreResult extends CommonResult {
 
@@ -29,7 +29,7 @@ public class ZScoreResult extends CommonResult {
 		this.zscore = zscore;
 	}
 
-	@Property(id = "observed", name = "Observed value", description = "Value observed")
+	@AttributeDef(id = "observed", name = "Observed value", description = "Value observed")
 	public double getObserved() {
 		return observed;
 	}
@@ -38,7 +38,7 @@ public class ZScoreResult extends CommonResult {
 		this.observed = observed;
 	}
 	
-	@Property(id = "expected-mean", name = "Expected mean", description = "Value mean expected by chance")
+	@AttributeDef(id = "expected-mean", name = "Expected mean", description = "Value mean expected by chance")
 	public double getExpectedMean() {
 		return expectedMean;
 	}
@@ -47,7 +47,7 @@ public class ZScoreResult extends CommonResult {
 		this.expectedMean = expectedMean;
 	}
 	
-	@Property(id = "expected-stdev", name = "Expected stddev", description = "Value standard deviation expected by chance")
+	@AttributeDef(id = "expected-stdev", name = "Expected stddev", description = "Value standard deviation expected by chance")
 	public double getExpectedStdev() {
 		return expectedStdev;
 	}
@@ -56,7 +56,7 @@ public class ZScoreResult extends CommonResult {
 		this.expectedStdev = expectedStdev;
 	}
 	
-	@Property(id = "z-score", name = "Z Score", description = "Normal distribution Z Score")
+	@AttributeDef(id = "z-score", name = "Z Score", description = "Normal distribution Z Score")
 	public double getZscore() {
 		return zscore;
 	}

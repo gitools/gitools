@@ -1,12 +1,12 @@
 package org.gitools.ui.panels.decorator;
 
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 public class IndexedProperty {
 	private int index;
-	private IElementProperty property;
+	private IElementAttribute property;
 	
-	public IndexedProperty(int index, IElementProperty property) {
+	public IndexedProperty(int index, IElementAttribute property) {
 		this.index = index;
 		this.property = property;
 	}
@@ -15,7 +15,7 @@ public class IndexedProperty {
 		return index;
 	}
 	
-	public IElementProperty getProperty() {
+	public IElementAttribute getProperty() {
 		return property;
 	}
 	

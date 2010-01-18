@@ -28,7 +28,7 @@ public class BeanElementAdapter extends AbstractElementAdapter {
 	}
 	
 	protected void readProperties() {
-		List<IElementProperty> properties = new ArrayList<IElementProperty>();
+		List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
 		
 		for (Method m : elementClass.getMethods()) {
 			boolean isGet = m.getName().startsWith("get");
@@ -45,7 +45,7 @@ public class BeanElementAdapter extends AbstractElementAdapter {
 				String name = id;
 				String description = "";
 				
-				Property a = m.getAnnotation(Property.class);
+				AttributeDef a = m.getAnnotation(AttributeDef.class);
 				if (a != null) {
 					if (a.id() != null)
 						id = a.id();
@@ -61,7 +61,7 @@ public class BeanElementAdapter extends AbstractElementAdapter {
 							"set" + getterName,	new Class<?>[] { propertyClass });
 				} catch (Exception e) {	}
 				
-				IElementProperty prop = new BeanElementProperty(
+				IElementAttribute prop = new BeanElementProperty(
 						id, name, description, propertyClass, 
 						m, setterMethod);
 				

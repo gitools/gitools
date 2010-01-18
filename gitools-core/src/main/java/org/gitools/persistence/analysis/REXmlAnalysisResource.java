@@ -9,7 +9,7 @@ import java.util.zip.DataFormatException;
 
 import org.gitools.model.Analysis;
 import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.AnalysisPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.stats.test.BinomialTest;
@@ -73,12 +73,12 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 			Test test = testFactory.create(); //FIXME?
 			String statName = test.getName();
 			
-			List<IElementProperty> properties = resultsMatrix.getCellAdapter().getProperties();
+			List<IElementAttribute> properties = resultsMatrix.getCellAdapter().getProperties();
 	
 			final String[] paramNames = new String[properties.size()];
 			final Map<String, Integer> paramIndexMap = new HashMap<String, Integer>();
 			for (int i = 0; i < properties.size(); i++) {
-				final IElementProperty prop = properties.get(i);
+				final IElementAttribute prop = properties.get(i);
 				paramNames[i] = prop.getId();
 				paramIndexMap.put(paramNames[i], i);
 			}

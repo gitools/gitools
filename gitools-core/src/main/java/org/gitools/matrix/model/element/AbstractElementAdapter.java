@@ -22,7 +22,7 @@ public abstract class AbstractElementAdapter
 
 	protected Class<?> elementClass;
 	
-	private transient List<IElementProperty> properties = new ArrayList<IElementProperty>(0);
+	private transient List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
 	
 	private transient Map<String, Integer> propIdToIndexMap;
 	
@@ -46,20 +46,20 @@ public abstract class AbstractElementAdapter
 		return properties.size();
 	}
 	
-	public final IElementProperty getProperty(int index) {
+	public final IElementAttribute getProperty(int index) {
 		return properties.get(index);
 	}
 	
 	//@XmlElement(name = "Property", type=ElementProperty.class)
-	public final List<IElementProperty> getProperties() {
+	public final List<IElementAttribute> getProperties() {
 		return Collections.unmodifiableList(properties);
 	}
 	
-	protected final void setProperties(List<IElementProperty> properties)  {
+	protected final void setProperties(List<IElementAttribute> properties)  {
 		this.properties = properties;
 		propIdToIndexMap = new HashMap<String, Integer>();
 		for (int index = 0; index < properties.size(); index++) {
-			IElementProperty prop = properties.get(index); 
+			IElementAttribute prop = properties.get(index);
 			propIdToIndexMap.put(prop.getId(), index);
 		}
 	}

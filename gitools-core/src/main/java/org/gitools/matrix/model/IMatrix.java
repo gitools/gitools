@@ -3,7 +3,7 @@ package org.gitools.matrix.model;
 import java.util.List;
 
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 public interface IMatrix {
 
@@ -30,5 +30,5 @@ public interface IMatrix {
 	
 	IElementAdapter getCellAdapter();
 	
-	List<IElementProperty> getCellAttributes();
+	List<IElementAttribute> getCellAttributes();
 }

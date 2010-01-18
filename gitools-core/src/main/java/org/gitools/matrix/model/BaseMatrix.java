@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
@@ -153,7 +153,7 @@ public abstract class BaseMatrix extends Matrix {
 	// attributes
 	
 	@Override
-	public List<IElementProperty> getCellAttributes() {
+	public List<IElementAttribute> getCellAttributes() {
 		return cellAdapter.getProperties();
 	}
 	

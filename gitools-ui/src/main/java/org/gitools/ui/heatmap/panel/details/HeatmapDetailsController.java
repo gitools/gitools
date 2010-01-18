@@ -36,7 +36,7 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
@@ -102,14 +102,14 @@ public class HeatmapDetailsController implements EntityController {
 				context.put("cellAdapter", cellAdapter);
 				context.put("cellElement", cellElement);
 
-				final List<IElementProperty> properties =
+				final List<IElementAttribute> properties =
 					cellAdapter.getProperties();
 
 				final Map<String, Object> cellMap =
 					new HashMap<String, Object>();
 
 				for (int index = 0; index < properties.size(); index++) {
-					final IElementProperty prop = properties.get(index);
+					final IElementAttribute prop = properties.get(index);
 					cellMap.put(prop.getId(),
 							cellAdapter.getValue(cellElement, index));
 				}

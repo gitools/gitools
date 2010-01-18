@@ -1,7 +1,7 @@
 package org.gitools.matrix;
 
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 public class MatrixUtils {
 
@@ -20,7 +20,7 @@ public class MatrixUtils {
 		return v;
 	}
 	
-	public static int correctedValueIndex(IElementAdapter adapter, IElementProperty prop) {
+	public static int correctedValueIndex(IElementAdapter adapter, IElementAttribute prop) {
 		int numProps = adapter.getPropertyCount();
 		
 		String id = "corrected-" + prop.getId();

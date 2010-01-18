@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.utils.IOUtils;
 
 public class TextMatrixExporter {
@@ -38,7 +38,7 @@ public class TextMatrixExporter {
 	public static void exportProperties(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
 		PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 		
-		List<IElementProperty> attributes = matrixView.getCellAttributes();
+		List<IElementAttribute> attributes = matrixView.getCellAttributes();
 		
 		final int rowCount = matrixView.getRowCount();
 		final int colCount = matrixView.getColumnCount();
@@ -48,7 +48,7 @@ public class TextMatrixExporter {
 		// header
 
 		pw.print("row\tcolumn");
-		for (IElementProperty attr : attributes)
+		for (IElementAttribute attr : attributes)
 			pw.print("\t" + attr.getId());
 		pw.println();
 		

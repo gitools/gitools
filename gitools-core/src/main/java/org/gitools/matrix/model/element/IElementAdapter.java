@@ -8,8 +8,8 @@ public interface IElementAdapter {
 	Class<?> getElementClass();
 	
 	int getPropertyCount();
-	IElementProperty getProperty(int index);
-	List<IElementProperty> getProperties();
+	IElementAttribute getProperty(int index);
+	List<IElementAttribute> getProperties();
 	int getPropertyIndex(String string);
 	
 	Object getValue(Object element, int index);

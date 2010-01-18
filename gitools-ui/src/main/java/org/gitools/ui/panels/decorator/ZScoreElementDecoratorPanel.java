@@ -24,7 +24,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 
 public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
@@ -58,7 +58,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		valueProperties = new ArrayList<IndexedProperty>();
 		corrValueProperties = new ArrayList<IndexedProperty>();
 		for (int i = 0; i < numProps; i++) {
-			final IElementProperty property = adapter.getProperty(i);
+			final IElementAttribute property = adapter.getProperty(i);
 			
 			if (property.getId().endsWith("z-score"))
 				valueProperties.add(new IndexedProperty(i, property));

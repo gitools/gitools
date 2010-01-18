@@ -11,7 +11,7 @@ import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixColumnSorter;
 import org.gitools.matrix.sort.MatrixRowAndColumnSorter;
 import org.gitools.matrix.sort.MatrixRowSorter;
@@ -70,7 +70,7 @@ public class SortByValueAction extends BaseAction {
 			return;
 				
 		//select properties
-		List<IElementProperty> cellProps = matrixView.getCellAdapter().getProperties();
+		List<IElementAttribute> cellProps = matrixView.getCellAdapter().getProperties();
 		String[] propNames = new String[cellProps.size()];
 		for (int i = 0; i < cellProps.size(); i++)
 			propNames[i] = cellProps.get(i).getName();

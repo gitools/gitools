@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 		BeanElementProperty.class})
 		
 public abstract class AbstractElementAttribute 
-		implements IElementProperty, Serializable {
+		implements IElementAttribute, Serializable {
 
 	private static final long serialVersionUID = -6293895024608178858L;
 

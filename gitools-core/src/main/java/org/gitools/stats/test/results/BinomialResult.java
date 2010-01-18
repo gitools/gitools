@@ -1,6 +1,6 @@
 package org.gitools.stats.test.results;
 
-import org.gitools.matrix.model.element.Property;
+import org.gitools.matrix.model.element.AttributeDef;
 
 public class BinomialResult extends CommonResult {
 
@@ -35,7 +35,7 @@ public class BinomialResult extends CommonResult {
 		this.probability = p;
 	}
 	
-	@Property(id = "observed", name = "Observed events", description = "Number of positive events observed")
+	@AttributeDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
 	public int getObserved() {
 		return observed;
 	}
@@ -44,7 +44,7 @@ public class BinomialResult extends CommonResult {
 		this.observed = observed;
 	}
 	
-	@Property(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
+	@AttributeDef(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
 	public double getExpectedMean() {
 		return expectedMean;
 	}
@@ -53,7 +53,7 @@ public class BinomialResult extends CommonResult {
 		this.expectedMean = expectedMean;
 	}
 	
-	@Property(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
+	@AttributeDef(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
 	public double getExpectedStdev() {
 		return expectedStdev;
 	}
@@ -62,7 +62,7 @@ public class BinomialResult extends CommonResult {
 		this.expectedStdev = expectedStdev;
 	}
 	
-	@Property(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
+	@AttributeDef(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
 	public Distribution getDistribution() {
 		return distribution;
 	}
@@ -71,7 +71,7 @@ public class BinomialResult extends CommonResult {
 		this.distribution = distribution;
 	}
 	
-	@Property(id = "probability", name = "Probability", description = "Population probability of a positive event")
+	@AttributeDef(id = "probability", name = "Probability", description = "Population probability of a positive event")
 	public double getProbability() {
 		return probability;
 	}

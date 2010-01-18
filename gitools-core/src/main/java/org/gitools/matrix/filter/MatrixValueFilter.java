@@ -34,6 +34,7 @@ public class MatrixValueFilter {
 
 		final IMatrix matrix = matrixView.getContents();
 
+		
 		/*int[] indices = null;
 
 		if (includeHidden) {

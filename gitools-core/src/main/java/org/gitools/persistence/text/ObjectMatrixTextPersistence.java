@@ -19,7 +19,7 @@ import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.matrix.model.element.BeanElementFactory;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementFactory;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
@@ -63,7 +63,7 @@ public class ObjectMatrixTextPersistence
 		}
 	}
 	
-	private static String getElementClassId(List<IElementProperty> properties) {
+	private static String getElementClassId(List<IElementAttribute> properties) {
 		String[] ids = new String[properties.size()];
 		for (int i = 0; i < properties.size(); i++)
 			ids[i] = properties.get(i).getId();
@@ -136,7 +136,7 @@ public class ObjectMatrixTextPersistence
 			
 			Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
 			int index = 0;
-			for (IElementProperty attr : elementAdapter.getProperties())
+			for (IElementAttribute attr : elementAdapter.getProperties())
 				attrIdmap.put(attr.getId(), index++);
 			
 			// read body
@@ -209,7 +209,7 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	//FIXME: We need a ValueParserFactory
-	private Object parsePropertyValue(IElementProperty property, String string) {
+	private Object parsePropertyValue(IElementAttribute property, String string) {
 		
 		final Class<?> propertyClass = property.getValueClass();
 		
@@ -292,7 +292,7 @@ public class ObjectMatrixTextPersistence
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (IElementProperty prop : resultsMatrix.getCellAdapter().getProperties()) {
+		for (IElementAttribute prop : resultsMatrix.getCellAdapter().getProperties()) {
 			out.writeSeparator();
 			out.writeQuotedValue(prop.getId());
 		}

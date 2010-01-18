@@ -9,7 +9,7 @@ import java.util.List;
 import org.gitools.exporter.TextMatrixExporter;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -40,7 +40,7 @@ public class ExportTableAllParametersAction extends BaseAction {
 		if (matrixView == null)
 			return;
 		
-		final List<IElementProperty> properties = matrixView.getCellAdapter().getProperties();
+		final List<IElementAttribute> properties = matrixView.getCellAdapter().getProperties();
 		final int[] propIndices = new int[properties.size()];
 		for (int i = 0; i < properties.size(); i++)
 			propIndices[i] = i;

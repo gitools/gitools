@@ -35,9 +35,9 @@ public class DoubleElementAdapter extends AbstractElementAdapter {
 				getClass().getSimpleName() + " doesn't support change string value.");
 	}
 
-	private List<IElementProperty> getPropertyList() {
-		final List<IElementProperty> properties = new ArrayList<IElementProperty>();
-		IElementProperty property = new InternalAttribute("value", "Value", "" , double.class);
+	private List<IElementAttribute> getPropertyList() {
+		final List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
+		IElementAttribute property = new InternalAttribute("value", "Value", "" , double.class);
 		properties.add(property);
 		return properties;
 	}

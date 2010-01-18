@@ -1,6 +1,6 @@
 package org.gitools.stats.test.results;
 
-import org.gitools.matrix.model.element.Property;
+import org.gitools.matrix.model.element.AttributeDef;
 
 public class CombinationResult {
 
@@ -11,7 +11,7 @@ public class CombinationResult {
 	public CombinationResult() {
 	}
 	
-	@Property(id = "N", name = "N", description = "Number of elements")
+	@AttributeDef(id = "N", name = "N", description = "Number of elements")
 	public int getN() {
 		return N;
 	}
@@ -20,7 +20,7 @@ public class CombinationResult {
 		N = n;
 	}
 	
-	@Property(id = "z-score", name = "Z Score", description = "Combined Z Score")
+	@AttributeDef(id = "z-score", name = "Z Score", description = "Combined Z Score")
 	public double getZscore() {
 		return zscore;
 	}
@@ -29,7 +29,7 @@ public class CombinationResult {
 		this.zscore = zscore;
 	}
 	
-	@Property(id = "p-value", name = "P-Value", description = "Combined P-Value")
+	@AttributeDef(id = "p-value", name = "P-Value", description = "Combined P-Value")
 	public double getPvalue() {
 		return pvalue;
 	}

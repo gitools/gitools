@@ -15,7 +15,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementProperty;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 
 public class FilterRowsByValuesAction extends BaseAction {
@@ -40,7 +40,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 		if (matrixView == null)
 			return;
 
-		List<IElementProperty> cellPropsList = matrixView.getContents().getCellAdapter().getProperties();
+		List<IElementAttribute> cellPropsList = matrixView.getContents().getCellAdapter().getProperties();
 		
 		Object[] params = new Object[cellPropsList.size()];
 		for (int i = 0; i < cellPropsList.size(); i++)
