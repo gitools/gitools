@@ -15,14 +15,15 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.dialog.filter.LabelFilterDialog;
 
-public class FilterRowsByNamesAction extends BaseAction {
+public class FilterByLabelAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public FilterRowsByNamesAction() {
-		super("Filter rows by name...");	
-		setDesc("Filter rows by name");
+	public FilterByLabelAction() {
+		super("Filter by label...");
+		setDesc("Filter by label");
 	}
 	
 	@Override
@@ -37,7 +38,9 @@ public class FilterRowsByNamesAction extends BaseAction {
 		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
-		
+
+		LabelFilterDialog dlg = new LabelFilterDialog(AppFrame.instance());
+
 		// Show dialog
 		FilterRowsByNameDialog d = 
 			new FilterRowsByNameDialog(AppFrame.instance());

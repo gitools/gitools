@@ -2,7 +2,7 @@ package org.gitools.ui.actions;
 
 import org.gitools.ui.actions.data.FastSortRowsAction;
 import org.gitools.ui.actions.data.FilterColumnsByNamesAction;
-import org.gitools.ui.actions.data.FilterRowsByNamesAction;
+import org.gitools.ui.actions.data.FilterByLabelAction;
 import org.gitools.ui.actions.data.FilterByValuesAction;
 import org.gitools.ui.actions.data.HideSelectionAction;
 import org.gitools.ui.actions.data.MoveSelectionAction;
@@ -16,7 +16,7 @@ public final class DataActionSet extends ActionSet {
 
 	private static final long serialVersionUID = 4844715504798938035L;
 	
-	public static final BaseAction filterRowsByNames = new FilterRowsByNamesAction();
+	public static final BaseAction filterRowsByNames = new FilterByLabelAction();
 	
 	public static final BaseAction filterRowsByValues = new FilterByValuesAction();
 	
