@@ -78,7 +78,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 					Iterator<ValueFilterCriteria> valueListIt = tempValueList.iterator();
 					while (tempValueList.size() > 0 && valueListIt.hasNext()) {
 						ValueFilterCriteria vc = valueListIt.next();
-						String vcParam = vc.getParam().toString();
+						String vcParam = vc.getAttributeName().toString();
 						for (int k = 0; k < cellProps; k++) {
 							
 							String property = cellPropsList.get(k).getName();
@@ -156,7 +156,7 @@ public class FilterRowsByValuesAction extends BaseAction {
 
 	private int evaluateCriteria(ValueFilterCriteria vc, double value) {
 		ValueFilterCondition vcond = vc.getCondition();
-		double conditionValue = Double.parseDouble(vc.getValue());
+		double conditionValue = vc.getValue();
 		boolean evaluation = false;
 		switch (vcond) {
 			case EQ:

@@ -125,7 +125,7 @@ public class FilterRowsByValueCriteriaDialog extends JDialog {
 		ValueFilterCondition valueCondition = (ValueFilterCondition) conditionBox.getSelectedObjects()[0];
 		String text = valueField.getText();
 		if(!text.isEmpty()){
-			criteria = new ValueFilterCriteria(param, valueCondition, text);
+			criteria = new ValueFilterCriteria(param.toString(), valueCondition, text);
 			setVisible(false);
 		}
 	}

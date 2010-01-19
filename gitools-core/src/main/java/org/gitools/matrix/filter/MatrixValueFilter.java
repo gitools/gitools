@@ -17,8 +17,9 @@
 
 package org.gitools.matrix.filter;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixValueFilter {
@@ -27,51 +28,41 @@ public class MatrixValueFilter {
 			IMatrixView matrixView,
 			int[] selection,
 			List<ValueFilterCriteria> criteriaList,
-			boolean includeHidden,
 			boolean allCriteriaPerCell,		// For a given cell all criteria should match
 			boolean allCells				// All cells in a row/column should match
 			) {
 
-		final IMatrix matrix = matrixView.getContents();
-
-		
-		/*int[] indices = null;
-
-		if (includeHidden) {
-			if (selection == null || selection.length == 0) {
-				int[] sel = new int[selection.length];
-				int[] visible = matrixView.getVisibleColumns();
-				for (int i = 0; i < selection.length; i++)
-					sel[i] = visible[selection[i]];
-				selection = sel;
-			}
-		}
-		else {
-
-		}
-
 		if (selection == null || selection.length == 0) {
-			int numColumns = includeHidden ? matrix.getColumnCount() : matrixView.getColumnCount();
+			int numColumns = matrixView.getColumnCount();
 			int[] sel = new int[numColumns];
 			for (int i = 0; i < sel.length; i++)
 				sel[i] = i;
 		}
-		else if (includeHidden) {
-			int[] sel = new int[selection.length];
-			int[] visible = matrixView.getVisibleColumns();
-			for (int i = 0; i < selection.length; i++)
-				sel[i] = visible[selection[i]];
-			selection = sel;
-		}*/
 
-		for (int row = 0; row < matrix.getRowCount(); row++) {
-			boolean filter = false;
+		List<Integer> filterin = new ArrayList<Integer>();
 
-			//TODO
-
-			if (filter) {
-				// TODO filter out
+		for (int row = 0; row < matrixView.getRowCount(); row++) {
+			boolean cellsAnd = true;
+			boolean cellsOr = false;
+			for (int col = 0; col < selection.length; col++) {
+				boolean critAnd = true;
+				boolean critOr = false;
+				for (int critIndex = 0; critIndex < criteriaList.size(); critIndex++) {
+					ValueFilterCriteria criteria = criteriaList.get(critIndex);
+					double value = MatrixUtils.doubleValue(
+							matrixView.getCellValue(row, col, criteria.getAttributeIndex()));
+					boolean critRes = criteria.getComparator().compare(value, criteria.getValue());
+					critAnd &= critRes;
+					critOr |= critRes;
+				}
+				boolean critFilterIn = allCriteriaPerCell ? critAnd : critOr;
+				cellsAnd &= critFilterIn;
+				cellsOr |= critFilterIn;
 			}
+			boolean cellsFilterIn = allCells ? cellsAnd : cellsOr;
+
+			if (cellsFilterIn)
+				filterin.add(row);
 		}
 	}
 }
