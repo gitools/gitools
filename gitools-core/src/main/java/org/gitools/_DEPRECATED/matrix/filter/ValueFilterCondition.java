@@ -1,4 +1,4 @@
-package org.gitools.matrix.filter;
+package org.gitools._DEPRECATED.matrix.filter;
 
 public enum ValueFilterCondition {
 

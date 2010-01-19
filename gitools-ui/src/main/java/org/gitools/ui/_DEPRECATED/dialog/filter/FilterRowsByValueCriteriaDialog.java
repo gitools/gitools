@@ -1,4 +1,4 @@
-package org.gitools.ui.dialog.filter;
+package org.gitools.ui._DEPRECATED.dialog.filter;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -16,7 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.gitools.matrix.filter.ValueFilterCondition;
+import org.gitools._DEPRECATED.matrix.filter.ValueFilterCondition;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 
 

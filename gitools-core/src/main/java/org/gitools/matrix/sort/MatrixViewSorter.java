@@ -6,7 +6,7 @@ import org.gitools.aggregation.IAggregator;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrixView;
 
-public abstract class MatrixSorter {
+public abstract class MatrixViewSorter {
 
 	public abstract void sort(IMatrixView matrixView, SortCriteria[] criteria);
 

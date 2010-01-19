@@ -3,7 +3,7 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.data.FastSortRowsAction;
 import org.gitools.ui.actions.data.FilterColumnsByNamesAction;
 import org.gitools.ui.actions.data.FilterRowsByNamesAction;
-import org.gitools.ui.actions.data.FilterRowsByValuesAction;
+import org.gitools.ui.actions.data.FilterByValuesAction;
 import org.gitools.ui.actions.data.HideSelectionAction;
 import org.gitools.ui.actions.data.MoveSelectionAction;
 import org.gitools.ui.actions.data.ShowAllAction;
@@ -18,7 +18,7 @@ public final class DataActionSet extends ActionSet {
 	
 	public static final BaseAction filterRowsByNames = new FilterRowsByNamesAction();
 	
-	public static final BaseAction filterRowsByValues = new FilterRowsByValuesAction();
+	public static final BaseAction filterRowsByValues = new FilterByValuesAction();
 	
 	public static final BaseAction showAllRows = new ShowAllAction(ShowAllAction.ElementType.ROWS);
 	

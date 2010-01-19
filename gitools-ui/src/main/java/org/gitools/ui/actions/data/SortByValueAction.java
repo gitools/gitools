@@ -12,17 +12,17 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.matrix.sort.MatrixColumnSorter;
-import org.gitools.matrix.sort.MatrixRowAndColumnSorter;
-import org.gitools.matrix.sort.MatrixRowSorter;
-import org.gitools.matrix.sort.MatrixSorter;
+import org.gitools.matrix.sort.MatrixViewColumnSorter;
+import org.gitools.matrix.sort.MatrixViewBothSorter;
+import org.gitools.matrix.sort.MatrixViewRowSorter;
+import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
 
 public class SortByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 	
-	private MatrixSorter sorter;
+	private MatrixViewSorter sorter;
 	private String typeName;
 	
 	public enum SortSubject {
@@ -37,21 +37,21 @@ public class SortByValueAction extends BaseAction {
 			setName("Sort columns ...");
 			setDesc("Sort columns ...");
 			typeName = "Columns";
-			sorter = new MatrixColumnSorter();
+			sorter = new MatrixViewColumnSorter();
 			break;
 
 		case ROW:
 			setName("Sort rows ...");
 			setDesc("Sort rows ...");
 			typeName = "Rows";
-			sorter = new MatrixRowSorter();
+			sorter = new MatrixViewRowSorter();
 			break;
 
 		case BOTH:
 			setName("Sort rows and columns ...");
 			setDesc("Sort rows and columns ...");
 			typeName = "Rows and columns";
-			sorter = new MatrixRowAndColumnSorter();
+			sorter = new MatrixViewBothSorter();
 			break;
 		}
 	}

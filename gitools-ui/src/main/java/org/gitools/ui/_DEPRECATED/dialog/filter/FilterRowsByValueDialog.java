@@ -1,4 +1,4 @@
-package org.gitools.ui.dialog.filter;
+package org.gitools.ui._DEPRECATED.dialog.filter;
 
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import java.awt.BorderLayout;
