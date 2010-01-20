@@ -139,6 +139,7 @@ public class ValueFilterDialog extends javax.swing.JDialog {
         saveBtn = new javax.swing.JButton();
 
         setTitle("Filter criteria");
+        setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

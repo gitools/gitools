@@ -23,16 +23,51 @@
 
 package org.gitools.ui.dialog.filter;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
+
 public class LabelFilterDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
 
+	private DefaultTableModel tableModel = new DefaultTableModel(new String[] {"Values"}, 0);
+
     /** Creates new form LabelFilterDialog */
     public LabelFilterDialog(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+
+		tableModel.addTableModelListener(new TableModelListener() {
+			@Override public void tableChanged(TableModelEvent e) {
+				saveBtn.setEnabled(table.getRowCount() > 0);
+			}
+		});
+
+		table.setModel(tableModel);
+
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override public void valueChanged(ListSelectionEvent e) {
+				removeBtn.setEnabled(table.getSelectedRowCount() > 0);
+			}
+		});
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -61,6 +96,8 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         applyToColumnsCheck = new javax.swing.JCheckBox();
         useRegexCheck = new javax.swing.JCheckBox();
 
+        setTitle("Filter labels...");
+        setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -102,14 +139,34 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBtnActionPerformed(evt);
+            }
+        });
 
         loadBtn.setText("Load...");
+        loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBtnActionPerformed(evt);
+            }
+        });
 
         saveBtn.setText("Save...");
         saveBtn.setEnabled(false);
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
         applyToRowsCheck.setSelected(true);
         applyToRowsCheck.setText("Apply to rows");
@@ -188,6 +245,84 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
+	private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+		tableModel.addRow(new String[] {""});
+	}//GEN-LAST:event_addBtnActionPerformed
+
+	private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
+		int[] rows = table.getSelectedRows();
+		Arrays.sort(rows);
+		for (int i = 0; i < rows.length; i++)
+			tableModel.removeRow(rows[i] - i);
+	}//GEN-LAST:event_removeBtnActionPerformed
+
+	private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.getDataVector().clear(); //start from scratch
+
+		try {
+			File file = FileChooserUtils.selectFile(
+					"Select the file containing values",
+					Settings.getDefault().getLastFilterPath(),
+					FileChooserUtils.MODE_OPEN);
+
+			if (file == null)
+				return;
+
+			Settings.getDefault().setLastFilterPath(file.getParent());
+
+			Vector<String> columnIdentifiers = new Vector<String>(1);
+			columnIdentifiers.add("Values");
+			model.setDataVector(readNamesFromFile(file), columnIdentifiers);
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}//GEN-LAST:event_loadBtnActionPerformed
+
+	protected Vector<Vector<String>> readNamesFromFile(File file) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line;
+
+	    Vector<Vector<String>> names = new Vector<Vector<String>>();
+
+	    while ((line = br.readLine()) != null) {
+	    	line = line.trim();
+	    	if(!line.isEmpty()) {
+				final Vector v = new Vector(1);
+				v.add(line);
+	    		names.add(v);
+			}
+	    }
+
+	    return names;
+	}
+
+	private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+		try {
+			File file = FileChooserUtils.selectFile(
+					"Select file name ...",
+					Settings.getDefault().getLastFilterPath(),
+					FileChooserUtils.MODE_SAVE);
+
+			if (file == null)
+				return;
+
+			Settings.getDefault().setLastFilterPath(file.getParent());
+
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+			for (Vector<String> v : (Vector<Vector<String>>) model.getDataVector())
+				bw.append(v.get(0)).append('\n');
+			bw.close();
+		}
+		catch (Exception ex) {
+			ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
+			edlg.setVisible(true);
+		}
+	}//GEN-LAST:event_saveBtnActionPerformed
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -209,4 +344,25 @@ public class LabelFilterDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private int returnStatus = RET_CANCEL;
+
+	public boolean isApplyToRowsChecked() {
+		return applyToRowsCheck.isSelected();
+	}
+
+	public boolean isApplyToColumnsChecked() {
+		return applyToColumnsCheck.isSelected();
+	}
+
+	public boolean isUseRegexChecked() {
+		return useRegexCheck.isSelected();
+	}
+
+	public List<String> getValues() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		List<String> values = new ArrayList<String>(model.getRowCount());
+		for (Vector<String> v: (Vector<Vector<String>>) model.getDataVector())
+			values.add(v.get(0));
+
+		return values;
+	}
 }

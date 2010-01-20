@@ -25,6 +25,25 @@ import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixViewValueFilter {
 
+	public static void filter(
+			IMatrixView matrixView,
+			List<ValueFilterCriteria> criteriaList,
+			boolean allCriteria,		// For a given cell all criteria should match
+			boolean allElements,		// All cells in a row/column should match
+			boolean invertCriteria,
+			boolean applyToRows,
+			boolean applyToColumns
+			) {
+
+		if (applyToRows)
+			filterRows(matrixView, matrixView.getSelectedColumns(),
+					criteriaList, allCriteria, allElements, invertCriteria);
+
+		if (applyToColumns)
+			filterColumns(matrixView, matrixView.getSelectedRows(),
+					criteriaList, allCriteria, allElements, invertCriteria);
+	}
+
 	public static void filterRows(
 			IMatrixView matrixView,
 			int[] selection,

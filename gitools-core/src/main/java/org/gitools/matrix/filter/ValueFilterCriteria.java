@@ -5,8 +5,6 @@ import edu.upf.bg.cutoffcmp.CutoffCmp;
 
 public class ValueFilterCriteria {
 
-	protected ValueFilterCondition condition;
-	
 	protected String attributeName;
 	protected int attributeIndex;
 	protected CutoffCmp comparator;
@@ -17,12 +15,6 @@ public class ValueFilterCriteria {
 		this.attributeIndex = attributeIndex;
 		this.comparator = comparator;
 		this.value = value;
-	}
-
-	@Deprecated
-	public ValueFilterCriteria(String attributeName, ValueFilterCondition condition, String value) {
-		this(attributeName, -1, CutoffCmp.EQ, Double.parseDouble(value));
-		this.condition = condition;
 	}
 
 	public String getAttributeName() {
@@ -57,13 +49,8 @@ public class ValueFilterCriteria {
 		this.value = value;
 	}
 
-	@Deprecated
-	public ValueFilterCondition getCondition() {
-		return this.condition;
-	}
-
 	@Override
 	public String toString() {
-		return attributeName.toString() + " " + condition.toString() + " " + value;
+		return attributeName.toString() + " " + comparator.toString() + " " + value;
 	}
 }

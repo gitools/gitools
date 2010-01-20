@@ -18,11 +18,11 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.ValueFilterDialog;
 
-public class FilterByValuesAction extends BaseAction {
+public class FilterByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 
-	public FilterByValuesAction() {
+	public FilterByValueAction() {
 		super("Filter by values...");	
 		setDesc("Filter by values");
 	}
@@ -59,17 +59,11 @@ public class FilterByValuesAction extends BaseAction {
 		dlg.setVisible(true);
 
 		if (dlg.getReturnStatus() == ValueFilterDialog.RET_OK) {
-			if (dlg.isApplyToRowsChecked())
-				MatrixViewValueFilter.filterRows(
-						matrixView, matrixView.getSelectedColumns(),
-						dlg.getCriteriaList(), dlg.isAllCriteriaChecked(),
-						dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked());
-
-			if (dlg.isApplyToColumnsChecked())
-				MatrixViewValueFilter.filterColumns(
-						matrixView, matrixView.getSelectedRows(),
-						dlg.getCriteriaList(), dlg.isAllCriteriaChecked(),
-						dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked());
+			MatrixViewValueFilter.filter(
+					matrixView,
+					dlg.getCriteriaList(), dlg.isAllCriteriaChecked(),
+					dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked(),
+					dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
 
 			AppFrame.instance().setStatusText("Filter applied.");
 		}

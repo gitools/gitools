@@ -67,6 +67,7 @@ public class Settings {
 	private String lastWorkPath = userPath;
 	private String lastDataPath = userPath;
 	private String lastMapPath = userPath;
+	private String lastFilterPath = userPath;
 	private String workspacePath = defaultWorkspacePath;
 
 	private Settings() {
@@ -92,11 +93,11 @@ public class Settings {
     }
 
 	public String getLastPath() {
-		return lastPath; //props.getProperty("last-path", userPath);
+		return lastPath;
 	}
 
 	public void setLastPath(String lastPath) {
-		this.lastPath = lastPath; //props.setProperty("last-path", lastPath);
+		this.lastPath = lastPath;
 	}
 
 	public String getLastImportPath() {
@@ -108,42 +109,50 @@ public class Settings {
 	}
 
 	public String getLastExportPath() {
-		return lastExportPath; //props.getProperty("last-export-path", getLastPath());
+		return lastExportPath;
 	}
 
 	public void setLastExportPath(String lastExportPath) {
-		this.lastExportPath = lastExportPath; //props.setProperty("last-export-path", lastExportPath);
+		this.lastExportPath = lastExportPath;
 	}
 	
 	public String getLastWorkPath() {
-		return lastWorkPath; //props.getProperty("last-work-path", getLastPath());
+		return lastWorkPath;
 	}
 
 	public void setLastWorkPath(String lastWorkPath) {
-		this.lastWorkPath = lastPath; //props.setProperty("last-work-path", lastWorkPath);
+		this.lastWorkPath = lastPath;
 	}
 	
 	public String getLastDataPath() {
-		return lastDataPath; //props.getProperty("last-data-path", getLastPath());
+		return lastDataPath;
 	}
 
 	public void setLastDataPath(String lastDataPath) {
-		this.lastDataPath = lastDataPath; //props.setProperty("last-data-path", lastDataPath);
+		this.lastDataPath = lastDataPath;
 	}
 	
 	public String getLastMapPath() {
-		return lastMapPath; //props.getProperty("last-map-path", getLastPath());
+		return lastMapPath;
 	}
 
 	public void setLastMapPath(String lastMapPath) {
-		this.lastMapPath = lastMapPath; //props.setProperty("last-map-path", lastMapPath);
+		this.lastMapPath = lastMapPath;
 	}
-	
+
+	public String getLastFilterPath() {
+		return lastFilterPath;
+	}
+
+	public void setLastFilterPath(String lastFilterPath) {
+		this.lastFilterPath = lastFilterPath;
+	}
+
 	public String getWorkspacePath() {
-		return workspacePath; //props.getProperty("workspace", workspacePath);
+		return workspacePath;
 	}
 	
 	public void setWorkspacePath(String workspacePath) {
-		this.workspacePath = workspacePath; //props.setProperty("workspace", workspacePath);
+		this.workspacePath = workspacePath;
 	}
 }
