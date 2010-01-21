@@ -19,11 +19,11 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class ExportRowColumnNames extends BaseAction {
+public class ExportLabelNames extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportRowColumnNames() {
+	public ExportLabelNames() {
 		super("Export row/column names");
 		
 		setDesc("Export row or column names");
