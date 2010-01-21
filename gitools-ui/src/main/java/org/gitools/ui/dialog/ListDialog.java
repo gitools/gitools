@@ -23,22 +23,20 @@ package org.gitools.ui.dialog;
  * Created on Jan 21, 2010, 12:44:50 PM
  */
 
-
-
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ListDialog extends javax.swing.JDialog {
+public class ListDialog<T> extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
 
-	private Object[] objects;
+	private T[] objects;
 
     /** Creates new form ListDialog */
-    public ListDialog(java.awt.Window parent, boolean modal, Object[] objects) {
+    public ListDialog(java.awt.Window parent, boolean modal, T[] objects) {
         super(parent);
 		setModal(modal);
 
@@ -55,8 +53,10 @@ public class ListDialog extends javax.swing.JDialog {
 		DefaultListModel model = new DefaultListModel();
 		list.setModel(model);
 
-		for (Object o : objects)
+		for (T o : objects)
 			model.addElement(o);
+
+		okButton.setEnabled(false);
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -161,11 +161,23 @@ public class ListDialog extends javax.swing.JDialog {
 
     private int returnStatus = RET_CANCEL;
 
+	/**
+	 * ListSelectionModel.SINGLE_SELECTION
+	 * ListSelectionModel.SINGLE_INTERVAL_SELECTION
+	 * ListSelectionModel.MULTIPLE_INTERVAL_SELECTION */
+	public void setSelectionMode(int selectionMode) {
+		list.setSelectionMode(selectionMode);
+	}
+
 	public int[] getSelectedIndices() {
 		return list.getSelectedIndices();
 	}
 	
 	public Object[] getSelectedObjects() {
 		return list.getSelectedValues();
+	}
+
+	public T getSelectedObject() {
+		return (T) (list.getSelectedValues()[0]);
 	}
 }

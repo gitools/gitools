@@ -38,7 +38,7 @@ public class ExportMatrix extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		IMatrixView matrixView = ActionUtils.getMatrixView();
+		IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
 		if (matrixView == null)
 			return;
 		

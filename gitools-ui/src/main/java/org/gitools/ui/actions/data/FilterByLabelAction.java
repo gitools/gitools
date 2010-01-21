@@ -31,13 +31,7 @@ public class FilterByLabelAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		IMatrixView matrixView = null;
-		IEditor editor = ActionUtils.getSelectedEditor();
-		Object model = editor.getModel();
-		if (model instanceof Heatmap)
-			matrixView = new HeatmapMatrixViewAdapter((Heatmap) model);
-		else
-			matrixView = ActionUtils.getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
 
 		if (matrixView == null)
 			return;

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import org.gitools.exporter.HtmlMatrixExporter;
+import org.gitools.exporter.HtmlHeatmapExporter;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.actions.BaseAction;
@@ -31,7 +31,7 @@ public class ExportHeatmapHtmlAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final Heatmap figure = ActionUtils.getMatrixFigure();
+		final Heatmap figure = ActionUtils.getHeatmap();
 		if (figure == null)
 			return;
 		
@@ -45,10 +45,10 @@ public class ExportHeatmapHtmlAction extends BaseAction {
 
 			Settings.getDefault().setLastExportPath(basePath.getAbsolutePath());
 			
-			HtmlMatrixExporter exporter = new HtmlMatrixExporter();
+			HtmlHeatmapExporter exporter = new HtmlHeatmapExporter();
 			exporter.setBasePath(basePath);
 			exporter.setIndexName("index.html");
-			exporter.exportMatrixFigure(figure);
+			exporter.exportHeatmap(figure);
 		}
 		catch (Exception ex) {
 			AppFrame.instance().setStatusText("There was an error exporting: " + ex.getMessage());

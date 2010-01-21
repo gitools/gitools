@@ -19,14 +19,14 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class ExportLabelNames extends BaseAction {
+public class ExportLabelNamesAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportLabelNames() {
-		super("Export row/column names");
+	public ExportLabelNamesAction() {
+		super("Export labels ...");
 		
-		setDesc("Export row or column names");
+		setDesc("Export row or column labels");
 		setMnemonic(KeyEvent.VK_N);
 	}
 	
@@ -44,7 +44,7 @@ public class ExportLabelNames extends BaseAction {
 		final String hiddenRows = "Hidden row names";
 		final String hiddenCols = "Hidden column names";
 
-		IMatrixView matrixView = ActionUtils.getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
 		if (matrixView == null)
 			return;
 		

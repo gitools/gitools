@@ -10,13 +10,13 @@ import org.gitools.heatmap.model.Heatmap;
 
 import edu.upf.bg.formatter.GenericFormatter;
 
-public class HtmlMatrixExporter extends AbstractHtmlExporter {
+public class HtmlHeatmapExporter extends AbstractHtmlExporter {
 	
-	public HtmlMatrixExporter() {
+	public HtmlHeatmapExporter() {
 		super();
 	}
 	
-	public void exportMatrixFigure(Heatmap figure) {
+	public void exportHeatmap(Heatmap figure) {
         
 		File templatePath = getTemplatePath();
 		if (templatePath == null)

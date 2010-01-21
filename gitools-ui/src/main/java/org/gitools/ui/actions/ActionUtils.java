@@ -19,9 +19,11 @@ package org.gitools.ui.actions;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapMatrixViewAdapter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class ActionUtils {
 
@@ -47,7 +49,18 @@ public class ActionUtils {
 		return matrixView;
 	}
 
-	public static Heatmap getMatrixFigure() {
+	public static IMatrixView getHeatmapMatrixView() {
+		IMatrixView matrixView = null;
+		IEditor editor = ActionUtils.getSelectedEditor();
+		Object model = editor.getModel();
+		if (model instanceof Heatmap)
+			matrixView = new HeatmapMatrixViewAdapter((Heatmap) model);
+		else
+			matrixView = getMatrixView();
+		return matrixView;
+	}
+
+	public static Heatmap getHeatmap() {
 		AbstractEditor editor = getSelectedEditor();
 		if (editor == null)
 			return null;

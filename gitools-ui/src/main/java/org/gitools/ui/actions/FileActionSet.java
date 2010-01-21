@@ -5,7 +5,7 @@ import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportHeatmapHtmlAction;
 import org.gitools.ui.actions.file.ExportHeatmapImageAction;
-import org.gitools.ui.actions.file.ExportRowColumnNames;
+import org.gitools.ui.actions.file.ExportLabelNamesAction;
 import org.gitools.ui.actions.file.ExportTable;
 import org.gitools.ui.actions.file.ExportMatrix;
 import org.gitools.ui.actions.file.ImportBioMartTableAction;
@@ -92,7 +92,7 @@ public class FileActionSet extends ActionSet {
 	
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
-	public static final BaseAction exportRowColumnNamesAction = new ExportRowColumnNames();
+	public static final BaseAction exportRowColumnNamesAction = new ExportLabelNamesAction();
 	public static final BaseAction exportTableParameter = new ExportMatrix();
 	public static final BaseAction exportTableAllParameters = new ExportTable();
 	public static final BaseAction exportMatrixFigurePicture = new ExportHeatmapImageAction();

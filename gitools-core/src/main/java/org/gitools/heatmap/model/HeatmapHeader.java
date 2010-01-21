@@ -238,6 +238,9 @@ public class HeatmapHeader extends AbstractModel {
 		if (annotations == null || ri < 0)
 			return "";
 
+		/*if (var.equalsIgnoreCase("index"))
+			return encoder.encode(String.valueOf(ri));*/
+		
 		StringBuilder output = new StringBuilder();
 		int ci = annotations.getColumnIndex(var);
 		if (ci < 0)
