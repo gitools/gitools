@@ -159,7 +159,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 		
-		analysis.setResults(resultsMatrix);
+		analysis.setResultsMatrix(resultsMatrix);
 		
 		monitor.end();
 	}

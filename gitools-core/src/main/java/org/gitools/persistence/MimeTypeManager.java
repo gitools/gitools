@@ -7,7 +7,7 @@ import java.util.Map;
 import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
-import org.gitools.model.EnrichmentAnalysis;
+import org.gitools.model.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.table.model.TableFigure;
 import org.gitools.matrix.model.AnnotationMatrix;

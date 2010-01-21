@@ -6,10 +6,12 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapMatrixViewAdapter;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.LabelFilterDialog;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class FilterByLabelAction extends BaseAction {
 
@@ -29,9 +31,14 @@ public class FilterByLabelAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		//TODO Consider Heatmap
-		
-		final IMatrixView matrixView = ActionUtils.getMatrixView();
+		IMatrixView matrixView = null;
+		IEditor editor = ActionUtils.getSelectedEditor();
+		Object model = editor.getModel();
+		if (model instanceof Heatmap)
+			matrixView = new HeatmapMatrixViewAdapter((Heatmap) model);
+		else
+			matrixView = ActionUtils.getMatrixView();
+
 		if (matrixView == null)
 			return;
 

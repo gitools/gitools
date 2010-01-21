@@ -57,7 +57,7 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 			out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			out.println("<analysis name=\"" + analysis.getTitle() + "\" binomial=\"false\">");
 			
-			ObjectMatrix resultsMatrix = analysis.getResults();
+			ObjectMatrix resultsMatrix = analysis.getResultsMatrix();
 			
 			String[] condNames = new String[resultsMatrix.getColumnCount()];
 			for (int i = 0; i < condNames.length; i++)

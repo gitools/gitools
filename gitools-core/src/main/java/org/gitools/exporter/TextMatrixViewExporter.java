@@ -9,9 +9,9 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.utils.IOUtils;
 
-public class TextMatrixExporter {
+public class TextMatrixViewExporter {
 
-	public static void exportProperty(IMatrixView matrixView, int propIndex, File file) throws IOException {
+	public static void exportMatrix(IMatrixView matrixView, int propIndex, File file) throws IOException {
 		PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 		
 		int rowCount = matrixView.getRowCount();
@@ -35,7 +35,7 @@ public class TextMatrixExporter {
 		pw.close();
 	}
 	
-	public static void exportProperties(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
+	public static void exportTable(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
 		PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 		
 		List<IElementAttribute> attributes = matrixView.getCellAttributes();
@@ -48,8 +48,10 @@ public class TextMatrixExporter {
 		// header
 
 		pw.print("row\tcolumn");
-		for (IElementAttribute attr : attributes)
+		for (int i = 0; i < propIndices.length; i++) {
+			IElementAttribute attr = attributes.get(propIndices[i]);
 			pw.print("\t" + attr.getId());
+		}
 		pw.println();
 		
 		// body
@@ -61,7 +63,7 @@ public class TextMatrixExporter {
 			pw.print(matrixView.getRowLabel(r));
 			pw.print("\t" + matrixView.getColumnLabel(c));
 			for (int p = 0; p < propCount; p++)
-				pw.print("\t" + matrixView.getCellValue(r, c, p).toString());
+				pw.print("\t" + matrixView.getCellValue(r, c, propIndices[p]).toString());
 			pw.println();
 		}
 		

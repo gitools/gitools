@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools.model.enrichment;
 
 import java.util.Properties;
 
@@ -7,9 +7,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.ModuleMap;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
+import org.gitools.model.Analysis;
+import org.gitools.model.ModuleMap;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
 
@@ -37,6 +38,7 @@ public class EnrichmentAnalysis extends Analysis {
 	protected String testName;
 	
 	/** Test configuration */
+	//TODO xml adapter
 	protected Properties testConfig;
 	
 	/** Results */

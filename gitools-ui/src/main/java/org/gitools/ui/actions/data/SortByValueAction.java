@@ -12,9 +12,6 @@ import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.matrix.sort.MatrixViewColumnSorter;
-import org.gitools.matrix.sort.MatrixViewBothSorter;
-import org.gitools.matrix.sort.MatrixViewRowSorter;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
 
@@ -22,7 +19,8 @@ public class SortByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 	
-	private MatrixViewSorter sorter;
+	private boolean sortByRow;
+	private boolean sortByColumn;
 	private String typeName;
 	
 	public enum SortSubject {
@@ -37,21 +35,24 @@ public class SortByValueAction extends BaseAction {
 			setName("Sort columns ...");
 			setDesc("Sort columns ...");
 			typeName = "Columns";
-			sorter = new MatrixViewColumnSorter();
+			sortByRow = false;
+			sortByColumn = true;
 			break;
 
 		case ROW:
 			setName("Sort rows ...");
 			setDesc("Sort rows ...");
 			typeName = "Rows";
-			sorter = new MatrixViewRowSorter();
+			sortByRow = true;
+			sortByColumn = false;
 			break;
 
 		case BOTH:
 			setName("Sort rows and columns ...");
 			setDesc("Sort rows and columns ...");
 			typeName = "Rows and columns";
-			sorter = new MatrixViewBothSorter();
+			sortByRow = true;
+			sortByColumn = true;
 			break;
 		}
 	}
@@ -89,7 +90,7 @@ public class SortByValueAction extends BaseAction {
 		}
 
 		SortCriteria[] criteriaArray = new SortCriteria[criteriaList.size()];
-		sorter.sort(matrixView, criteriaList.toArray(criteriaArray));
+		MatrixViewSorter.sort(matrixView, criteriaList.toArray(criteriaArray), sortByRow, sortByColumn);
 		AppFrame.instance().setStatusText(typeName + " sorted.");
 	}
 }

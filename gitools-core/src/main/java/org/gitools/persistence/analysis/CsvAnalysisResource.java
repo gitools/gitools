@@ -121,24 +121,24 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					path = new File(basePath, fields[1]);
 					ModuleMapTextSimplePersistence res = new ModuleMapTextSimplePersistence(path);
 					ModuleMap moduleMap = res.load(monitor.subtask());
-					analysis.setModuleSet(moduleMap);
+					analysis.setModuleMap(moduleMap);
 				}
 				else if (tag.equals(tagResults) && fields.length >= 2) {
 					File res = new File(basePath, fields[1]);
 					ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 					ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
-					analysis.setResults(resultsMatrix);
+					analysis.setResultsMatrix(resultsMatrix);
 				}
 				
 				/*else if (tag.equals(tagUserName) && line.length >= 2)
 					userName = line[1];*/
 			}
 	
-			if (version == null && analysis.getResults() == null) { // old version
+			if (version == null && analysis.getResultsMatrix() == null) { // old version
 				File res = new File(basePath, "results.csv");
 				ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 				ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
-				analysis.setResults(resultsMatrix);
+				analysis.setResultsMatrix(resultsMatrix);
 			}
 		}
 		catch (Exception e) {
@@ -176,7 +176,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			
 			new ObjectMatrixTextPersistence().write(
 					new File(workDirFile, resultsFileNamePrefix + ".cells.csv"),
-					analysis.getResults(), 
+					analysis.getResultsMatrix(),
 					resultsOrderByCond, monitor);
 		}
 		catch (Exception e) {

@@ -1,5 +1,6 @@
 package org.gitools.model;
 
+import org.gitools.model.enrichment.EnrichmentAnalysis;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,9 +9,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.model.Artifact;
-import org.gitools.model.ModuleMap;
-import org.gitools.model.ToolConfig;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.xml.adapter.MatrixXmlAdapter;
@@ -91,7 +89,7 @@ public class Analysis extends Artifact {
 	}
 
 	@Deprecated
-	public void setModuleSet(ModuleMap moduleMap) {
+	public void setModuleMap(ModuleMap moduleMap) {
 		this.moduleMap = moduleMap;
 	}
 
@@ -101,12 +99,12 @@ public class Analysis extends Artifact {
 	}
 
 	@Deprecated
-	public ObjectMatrix getResults() {
+	public ObjectMatrix getResultsMatrix() {
 		return resultsMatrix;
 	}
 
 	@Deprecated
-	public void setResults(ObjectMatrix resultsMatrix) {
+	public void setResultsMatrix(ObjectMatrix resultsMatrix) {
 		this.resultsMatrix = resultsMatrix;
 	}
 }

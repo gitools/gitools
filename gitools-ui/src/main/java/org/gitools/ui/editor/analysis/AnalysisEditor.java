@@ -54,7 +54,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		// create results view
 		
-		IMatrixView resultsTable = new MatrixView(analysis.getResults());
+		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
 		
 		ElementDecorator resultsRowDecorator = 
 			ElementDecoratorFactory.create(

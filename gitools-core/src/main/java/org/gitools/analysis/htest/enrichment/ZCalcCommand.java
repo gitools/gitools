@@ -69,7 +69,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		analysis.setTitle(title);
 		analysis.setToolConfig(testFactory.getTestConfig());
 		analysis.setDataTable(doubleMatrix);
-		analysis.setModuleSet(moduleMap);
+		analysis.setModuleMap(moduleMap);
 		analysis.getToolConfig().put(
 				ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
 				String.valueOf(samplingNumSamples));

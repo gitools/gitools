@@ -8,7 +8,13 @@ import org.gitools.matrix.model.IMatrixView;
 
 public abstract class MatrixViewSorter {
 
-	public abstract void sort(IMatrixView matrixView, SortCriteria[] criteria);
+	public static void sort(IMatrixView matrixView, SortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
+		if (applyToRows)
+			sortRows(matrixView, matrixView.getSelectedColumns(), criteria);
+
+		if (applyToColumns)
+			sortColumns(matrixView, matrixView.getSelectedRows(), criteria);
+	}
 
 	protected static void sortRows(final IMatrixView matrixView, int[] selColumns, final SortCriteria[] criteriaArray) {
 
