@@ -16,7 +16,7 @@ public class FilePathResolver implements IPathResolver {
 	}
 
 	@Override
-	public File createResourceFromString(String location) {
+	public File stringToPath(String location) {
 		File file = new File(location);
 		if (!file.isAbsolute())
 			file = new File(basePath, location);

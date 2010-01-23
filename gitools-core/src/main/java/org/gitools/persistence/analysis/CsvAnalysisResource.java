@@ -27,6 +27,7 @@ import org.gitools.stats.test.factory.TestFactory;
 
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.HtestAnalysis;
 
 public class CsvAnalysisResource extends AnalysisPersistence {
 
@@ -74,15 +75,15 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 	}
 	
 	@Override
-	public Analysis load(IProgressMonitor monitor)
+	public HtestAnalysis load(IProgressMonitor monitor)
 			throws PersistenceException {
 
-	    Analysis analysis = new Analysis();
+	    HtestAnalysis analysis = new HtestAnalysis();
 		load(analysis, monitor);
 		return analysis;
 	}
 	
-	public void load(Analysis analysis, IProgressMonitor monitor)
+	public void load(HtestAnalysis analysis, IProgressMonitor monitor)
 			throws PersistenceException {
 		
 		try {
@@ -90,7 +91,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			Reader reader = PersistenceUtils.openReader(path);
 			CSVParser parser = new CSVParser(reader, csvStrategy);
 			
-			analysis.setToolConfig(new ToolConfig());
+			analysis.setTestConfig(new ToolConfig());
 			
 			String version = null;
 			
@@ -102,9 +103,9 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 				else if (tag.equals(tagAnalysisName) && fields.length >= 2)
 					analysis.setTitle(fields[1]);
 				else if (tag.equals(tagToolName) && fields.length >= 2)
-					analysis.getToolConfig().setName(fields[1]);
+					analysis.getTestConfig().setName(fields[1]);
 				else if (tag.equals(tagToolProperty) && fields.length >= 3)
-					analysis.getToolConfig().put(fields[1], fields[2]);
+					analysis.getTestConfig().put(fields[1], fields[2]);
 				else if (tag.equals(tagElapsedTime) && fields.length >= 2)
 					try {
 						analysis.setStartTime(new SimpleDateFormat(dateFormat).parse(fields[1]));
@@ -121,7 +122,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					path = new File(basePath, fields[1]);
 					ModuleMapTextSimplePersistence res = new ModuleMapTextSimplePersistence(path);
 					ModuleMap moduleMap = res.load(monitor.subtask());
-					analysis.setModuleMap(moduleMap);
+					//FIXME analysis.setModuleMap(moduleMap);
 				}
 				else if (tag.equals(tagResults) && fields.length >= 2) {
 					File res = new File(basePath, fields[1]);
@@ -148,7 +149,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 	
 	@Override
 	public void save(
-			Analysis analysis,
+			HtestAnalysis analysis,
 			IProgressMonitor monitor)
 			throws PersistenceException {
 	
@@ -161,7 +162,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 				workDirFile.mkdirs();
 			
 			TestFactory testFactory = 
-				TestFactory.createFactory(analysis.getToolConfig());
+				TestFactory.createFactory(analysis.getTestConfig());
 			
 			Test test = testFactory.create(); //FIXME?
 			
@@ -170,9 +171,10 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			new DoubleMatrixTextPersistence().write(
 					new File(workDirFile, dataFileName),
 					analysis.getDataTable(), monitor);
-			
-			new ModuleMapTextSimplePersistence(new File(workDirFile, modulesFileName))
-					.save(analysis.getModuleMap(), monitor);
+
+			//FIXME
+			/*new ModuleMapTextSimplePersistence(new File(workDirFile, modulesFileName))
+					.save(analysis.getModuleMap(), monitor);*/
 			
 			new ObjectMatrixTextPersistence().write(
 					new File(workDirFile, resultsFileNamePrefix + ".cells.csv"),
@@ -188,7 +190,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 
 	protected void writeDescription(
 			File workDirFile, 
-			Analysis analysis,
+			HtestAnalysis analysis,
 			Test method) throws IOException {
 		
 		Writer writer = new FileWriter(new File(
@@ -205,7 +207,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 		
 		out.writeProperty(tagAnalysisName, analysis.getTitle());
 		
-		ToolConfig toolConfig = analysis.getToolConfig();
+		ToolConfig toolConfig = analysis.getTestConfig();
 		
 		out.writeProperty(tagToolName, toolConfig.getName());
 		

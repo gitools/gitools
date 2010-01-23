@@ -100,6 +100,14 @@ public abstract class CutoffCmp implements Serializable {
 			nameMap.put(cmp.getLongName(), cmp);
 		}
 	}
+
+	public static CutoffCmp getFromName(String name) {
+		CutoffCmp cmp = abbreviatedNameMap.get(name);
+		if (cmp != null)
+			return cmp;
+
+		return nameMap.get(name);
+	}
 	
 	private String shortName;
 	private String longName;

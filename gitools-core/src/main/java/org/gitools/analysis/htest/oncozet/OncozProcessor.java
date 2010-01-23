@@ -25,6 +25,7 @@ public class OncozProcessor extends AbstractProcessor {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
+			@Override
 			public boolean apply(double element) {
 				return !Double.isNaN(element);
 			}
@@ -40,9 +41,9 @@ public class OncozProcessor extends AbstractProcessor {
 		}
 	}
 	
-	private Analysis analysis;
+	private OncozAnalysis analysis;
 	
-	public OncozProcessor(Analysis analysis) {
+	public OncozProcessor(OncozAnalysis analysis) {
 		
 		this.analysis = analysis;
 	}
@@ -52,7 +53,7 @@ public class OncozProcessor extends AbstractProcessor {
 		Date startTime = new Date();
 	
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getToolConfig());
+			TestFactory.createFactory(analysis.getTestConfig());
 		
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
@@ -62,9 +63,9 @@ public class OncozProcessor extends AbstractProcessor {
 		DoubleMatrix2D data = analysis.getDataTable().getData();
 		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
-				analysis.getModuleMap().getModuleNames());
+				analysis.getSetsMap().getModuleNames());
 		
-		int[][] moduleItemIndices = analysis.getModuleMap().getItemIndices();
+		int[][] moduleItemIndices = analysis.getSetsMap().getItemIndices();
 		
 		final int numColumns = data.columns();
 		final int numItems = data.rows();
@@ -141,7 +142,7 @@ public class OncozProcessor extends AbstractProcessor {
 				}
 
 				slot.execute(new Runnable() {
-					public void run() {
+					@Override public void run() {
 						//FIXME: It will be fixed, itemValues has to be filtered 
 						//for the group and item indices related to all population.
 						

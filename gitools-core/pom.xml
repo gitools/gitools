@@ -25,15 +25,11 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>commons-vfs</groupId>
-			<artifactId>commons-vfs</artifactId>
-		</dependency> -->
-	 <dependency>
-	  <groupId>edu.upf.bg</groupId>
-	  <artifactId>bg-commons</artifactId>
-	  <version>0.1.0-SNAPSHOT</version>
-	 </dependency>
+
+		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
 	</dependencies>
 
 	<reporting>

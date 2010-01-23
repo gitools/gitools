@@ -1,6 +1,6 @@
 package org.gitools.ui.editor.analysis;
 
-import org.gitools.model.Analysis;
+import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
@@ -15,13 +15,13 @@ public class AnalysisEditor extends MultiEditor {
 
 	private static final long serialVersionUID = 5866176431409745805L;
 
-	protected Analysis analysis;
+	protected HtestAnalysis analysis;
 	
 	private AnalysisDetailsEditor detailsView;
 	private HeatmapEditor dataView;
 	private HeatmapEditor resultsView;
 	
-	public AnalysisEditor(Analysis analysis) {
+	public AnalysisEditor(HtestAnalysis analysis) {
 		super();
 		
 		this.analysis = analysis;

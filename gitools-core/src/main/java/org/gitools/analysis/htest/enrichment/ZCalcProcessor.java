@@ -29,6 +29,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
+			@Override
 			public boolean apply(double element) {
 				return !Double.isNaN(element);
 			}
@@ -45,10 +46,9 @@ public class ZCalcProcessor extends AbstractProcessor {
 		}
 	}
 
-	private Analysis analysis;
+	private EnrichmentAnalysis analysis;
 	
-	public ZCalcProcessor(
-			Analysis analysis) {
+	public ZCalcProcessor(EnrichmentAnalysis analysis) {
 		
 		this.analysis = analysis;
 	}
@@ -58,7 +58,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		Date startTime = new Date();
 		
 		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getToolConfig());
+			TestFactory.createFactory(analysis.getTestConfig());
 		
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
@@ -76,7 +76,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		final int numConditions = data.rows();
 		final int numModules = modules.size();
 		
-		monitor.begin("zetcalc analysis...", numConditions * numModules);
+		monitor.begin("enrichment analysis...", numConditions * numModules);
 		
 		Test test = testFactory.create();
 		
@@ -131,7 +131,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 				final int moduleIdx = moduleIndex;
 				
 				slot.execute(new Runnable() {
-					public void run() { 
+					@Override public void run() {
 						CommonResult result = slot.test.processTest(
 								condName, condItems,
 								moduleName, itemIndices);

@@ -1,43 +1,20 @@
 package org.gitools.model;
 
-import org.gitools.model.enrichment.EnrichmentAnalysis;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
-import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
-
-@XmlSeeAlso({EnrichmentAnalysis.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Analysis extends Artifact {
 
 	private static final long serialVersionUID = 44219853082656184L;
 
+	/** Analysis start time */
 	protected Date startTime;	
+
+	/** Analysis elapsed time in nano-seconds */
 	protected long elapsedTime;
-
-	@Deprecated
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
-	protected DoubleMatrix dataTable;
-	
-	@Deprecated
-	@XmlJavaTypeAdapter(ModuleMapXmlAdapter.class)
-	protected ModuleMap moduleMap;
-	
-	@Deprecated
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
-	protected ObjectMatrix resultsMatrix;
-
-	@Deprecated
-	@XmlTransient
-	protected ToolConfig toolConfig;
 
 	public Analysis() {
 	}
@@ -58,7 +35,7 @@ public class Analysis extends Artifact {
 		this.elapsedTime = elapsedTime;
 	}
 
-	@Deprecated
+	/*@Deprecated
 	public ToolConfig getToolConfig() {
 		return toolConfig;
 	}
@@ -106,5 +83,5 @@ public class Analysis extends Artifact {
 	@Deprecated
 	public void setResultsMatrix(ObjectMatrix resultsMatrix) {
 		this.resultsMatrix = resultsMatrix;
-	}
+	}*/
 }

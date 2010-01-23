@@ -2,9 +2,15 @@ package org.gitools.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ToolConfig {
-	
+
+	//FIXME This shouldn't be here
 	public static final String ZETCALC = "zetcalc";
 	public static final String ONCOZET = "oncozet";
 	

@@ -1,6 +1,5 @@
 package org.gitools.ui.heatmap.editor;
 
-import org.gitools.model.Analysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
@@ -15,6 +14,7 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
+import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.heatmap.model.HeatmapHeader;
 
 public class HeatmapDemoEditor extends HeatmapEditor {
@@ -67,7 +67,7 @@ public class HeatmapDemoEditor extends HeatmapEditor {
 				data,
 				new ArrayElementAdapter(new String[] {"p-value", "corrected-p-value"}));
 		
-		Analysis analysis = new Analysis();
+		HtestAnalysis analysis = new HtestAnalysis();
 		analysis.setResultsMatrix(resultsMatrix);
 		
 		return new MatrixView(resultsMatrix);

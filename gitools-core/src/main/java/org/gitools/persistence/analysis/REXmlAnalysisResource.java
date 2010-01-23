@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
-import org.gitools.model.Analysis;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.AnalysisPersistence;
@@ -23,6 +22,8 @@ import org.gitools.stats.test.results.BinomialResult.Distribution;
 import org.gitools.utils.Util;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 
 public class REXmlAnalysisResource extends AnalysisPersistence {
 
@@ -39,10 +40,15 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 	
 	@Override
 	public void save(
-			Analysis analysis, 
+			HtestAnalysis analysis,
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
+		if (!(analysis instanceof EnrichmentAnalysis))
+			throw new UnsupportedOperationException("RE xml loading unsupported.");
+
+		final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
+
 		monitor.begin("Saving analysis in rexml format...", 1);
 		
 		try {
@@ -68,7 +74,7 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 				moduleNames[i] = resultsMatrix.getRow(i).toString();
 			
 			TestFactory testFactory = 
-				TestFactory.createFactory(analysis.getToolConfig());
+				TestFactory.createFactory(analysis.getTestConfig());
 			
 			Test test = testFactory.create(); //FIXME?
 			String statName = test.getName();
@@ -96,7 +102,7 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 			}
 			out.println("\t</property-list>");
 			
-			final int[][] moduleItemIndices = analysis.getModuleMap().getItemIndices();
+			final int[][] moduleItemIndices = enrichAnalysis.getModuleMap().getItemIndices();
 			
 			for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 				final String moduleName = moduleNames[moduleIndex];
@@ -251,7 +257,7 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 	}
 
 	@Override
-	public Analysis load(IProgressMonitor monitor) {
+	public HtestAnalysis load(IProgressMonitor monitor) {
 		throw new UnsupportedOperationException("RE xml loading unsupported.");
 	}
 }

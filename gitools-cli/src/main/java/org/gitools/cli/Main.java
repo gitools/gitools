@@ -1,15 +1,14 @@
 package org.gitools.cli;
 
+import edu.upf.bg.tools.exception.ToolException;
 import java.io.PrintStream;
 
-import org.gitools.cli.analysis.OncozCliTool;
-import org.gitools.cli.analysis.ZcalcCliTool;
-import org.gitools.cli.convert.DataFilterCliTool;
-import org.gitools.cli.convert.ModuleSetConvertCliTool;
 import org.kohsuke.args4j.CmdLineParser;
 
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import org.gitools.threads.ThreadManager;
+import edu.upf.bg.tools.ToolManager;
+import edu.upf.bg.tools.ToolSet;
+import edu.upf.bg.tools.XmlToolSetResource;
+import java.io.InputStreamReader;
 
 public class Main {
 
@@ -19,86 +18,14 @@ public class Main {
 	private static final String versionString = 
 		Main.class.getPackage().getImplementationVersion();
 	
-	public static void main(String[] sargs) {
+	public static void main(String[] args) throws ToolException {
 		
-		if (sargs.length < 1) {
-			System.err.println("The tool you want to run must be specified.");
-			System.exit(-1);
-		}
-		
-		String[] delegatedArgs = new String[sargs.length - 1];
-		System.arraycopy(sargs, 1, delegatedArgs, 0, sargs.length - 1);
-		
-		String toolName = sargs[0];
-		
-		Class<? extends CliTool> toolClass = null;
-		
-		if (toolName.equals("zcalc"))
-			toolClass = ZcalcCliTool.class;
-		else if (toolName.equals("oncoz"))
-			toolClass = OncozCliTool.class;
-		else if (toolName.equals("mset-conv"))
-			toolClass = ModuleSetConvertCliTool.class;
-		else if (toolName.equals("data-filt"))
-			toolClass = DataFilterCliTool.class;
-		else {
-			System.err.println("The tool you want to run doesn't exit: " + toolName);
-			System.exit(-1);
-		}
-		
-		CliTool cliTool = null;
-		try {
-			cliTool = toolClass.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		
-		BasicArguments args = (BasicArguments) cliTool;
-		
-		CmdLineParser parser = new CmdLineParser(args);
+		final ToolSet toolSet = XmlToolSetResource.load(
+				new InputStreamReader(Main.class.getClassLoader()
+					.getResourceAsStream("gitools-cli.xml")));
 
-        parser.setUsageWidth(80);
-
-        try {
-            parser.parseArgument(delegatedArgs);
-            
-            if (args.version) {
-            	printVersion();
-            	System.exit(0);
-            }
-            
-            if (args.help) {
-            	printUsage(System.out, parser, toolName);
-            	System.exit(0);
-            }
-            
-            cliTool.validateArguments(args);
-        } 
-        catch(Exception e ) {
-        	System.err.println(e.getMessage());
-            printUsage(System.err, parser, toolName);
-            System.exit(-1);
-        }
-        
-		ThreadManager.setNumThreads(args.maxProcs);
-		
-		int code = 0;
-		try {
-			code = cliTool.run(args);
-		}
-		catch (CliToolException e) {
-			if (args != null && args.debug)
-				e.printStackTrace();
-			else
-				System.err.println("ERROR: " + e.toString());
-			
-            System.exit(-1);
-		}
-		
-		ThreadManager.shutdown(new NullProgressMonitor());
-		
-		System.out.println();
+		final ToolManager toolManager = new ToolManager(toolSet, appName, versionString);
+		int code = toolManager.launch(args);
 		System.exit(code);
 	}
 	

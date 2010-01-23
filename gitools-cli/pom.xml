@@ -25,11 +25,11 @@
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
 		</dependency>
-	 <dependency>
-	  <groupId>edu.upf.bg</groupId>
-	  <artifactId>bg-commons</artifactId>
-	  <version>0.1.0-SNAPSHOT</version>
-	 </dependency>
+
+		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

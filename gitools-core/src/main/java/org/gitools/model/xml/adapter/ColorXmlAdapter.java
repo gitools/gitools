@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class ColorXmlAdapter extends XmlAdapter<String, Color>{
+public class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
 	@Override
 	public String marshal(Color v) throws Exception {

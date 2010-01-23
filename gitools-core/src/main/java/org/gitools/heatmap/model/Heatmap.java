@@ -23,20 +23,8 @@ import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.xml.adapter.ColorXmlAdapter;
 import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
 
-@XmlType( propOrder={
-		"cellDecorator",
-		"rowHeader",
-		"columnHeader",
-		"matrixView",
-		"showGrid", 
-		"gridColor",
-		"cellHeight",
-		"cellWidth",
-		"rowHeaderSize",
-		"columnHeaderSize"} )
-
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "heatmap")
+@XmlRootElement()
 public class Heatmap
 		extends Figure
 		implements Serializable {

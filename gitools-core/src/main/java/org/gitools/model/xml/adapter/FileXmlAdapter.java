@@ -23,7 +23,7 @@ public class FileXmlAdapter extends XmlAdapter<String, File> {
 
 	@Override
 	public File unmarshal(String location) throws Exception {
-		return pathResolver.createResourceFromString(location);
+		return pathResolver.stringToPath(location);
 	}
 
 }

@@ -4,8 +4,7 @@ import java.io.File;
 
 public interface IPathResolver {
 
-	//TODO Rename to stringToPath
-	File createResourceFromString(String location);
+	File stringToPath(String location);
 	
 	//TODO Add pathToString() : String
 	String pathToString();

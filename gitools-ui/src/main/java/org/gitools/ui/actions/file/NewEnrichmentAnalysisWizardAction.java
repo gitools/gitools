@@ -30,8 +30,9 @@ public class NewEnrichmentAnalysisWizardAction extends BaseAction {
 				AppFrame.instance(), wizard);
 		
 		wizDlg.open();
-		
-		ZCalcCommand cmd = new ZCalcCommand();
+
+		//FIXME
+		/*ZCalcCommand cmd = new ZCalcCommand();
 		//analysisName, testName, samplingNumSamples, 
 		//dataFile, valueFilter, groupsFile, minGroupSize, maxModuleSize, 
 		//includeNonMappedItems, workdir, outputFormat, resultsByCond
@@ -42,6 +43,6 @@ public class NewEnrichmentAnalysisWizardAction extends BaseAction {
 		cmd.setDataFile(wizard.getDataFile().getAbsolutePath());
 		cmd.setDataBinaryCutoffEnabled(wizard.getDataBinaryCutoffEnabled());
 		cmd.setDataBinaryCutoff(wizard.getDataBinaryCutoff());
-		
+		*/
 	}
 }

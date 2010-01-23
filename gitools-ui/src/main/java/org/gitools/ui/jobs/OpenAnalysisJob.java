@@ -8,6 +8,7 @@ import org.gitools.ui.editor.analysis.AnalysisEditor;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.HtestAnalysis;
 
 import org.gitools.model.Analysis;
 import org.gitools.persistence.AnalysisPersistence;
@@ -47,7 +48,7 @@ public class OpenAnalysisJob implements Job {
 				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
 			monitor.begin("Loading analysis ...", 1);
-			Analysis analysis = analysisPer.load(monitor);
+			HtestAnalysis analysis = analysisPer.load(monitor);
 
 			final AnalysisEditor editor = new AnalysisEditor(analysis);
 			

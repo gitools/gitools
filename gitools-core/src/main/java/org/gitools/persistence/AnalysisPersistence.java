@@ -1,11 +1,9 @@
 package org.gitools.persistence;
 
-import org.gitools.model.Analysis;
-import org.gitools._DEPRECATED.resources.FileResource;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.HtestAnalysis;
 
-public abstract class AnalysisPersistence extends FileResource {
+public abstract class AnalysisPersistence {// extends FileResource {
 
 	private static final long serialVersionUID = -5243387650958406472L;
 	
@@ -17,10 +15,10 @@ public abstract class AnalysisPersistence extends FileResource {
 		//new File(basePath, name + File.separator + "analysis.xml")
 	}
 	
-	public abstract Analysis load(IProgressMonitor monitor) 
+	public abstract HtestAnalysis load(IProgressMonitor monitor)
 			throws PersistenceException;
 	
-	public abstract void save(Analysis analysis, IProgressMonitor monitor) 
+	public abstract void save(HtestAnalysis analysis, IProgressMonitor monitor)
 			throws PersistenceException;
 
 }

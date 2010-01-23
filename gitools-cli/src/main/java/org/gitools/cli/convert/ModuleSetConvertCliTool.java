@@ -1,24 +1,10 @@
 package org.gitools.cli.convert;
 
-import org.gitools.cli.AbstractCliTool;
-import org.gitools.cli.CliToolException;
-import org.gitools.cli.InvalidArgumentException;
-import org.gitools.cli.RequiredArgumentException;
-
 import cern.jet.stat.Probability;
 
-public class ModuleSetConvertCliTool extends AbstractCliTool {
+public class ModuleSetConvertCliTool {//extends AbstractCliTool {
 
-	@Override
-	public void validateArguments(Object argsObject)
-			throws RequiredArgumentException, InvalidArgumentException {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-	public int run(Object argsObject) 
-			throws CliToolException {
+	public int run(Object argsObject) {
 		// TODO Auto-generated method stub
 		
 		System.out.println("k"+"\t" +"n"+ "\t" +"p"+ "\t" +"lpv"+ "\t" +"rpv"+ "\t" +"rppv"+ "\t" +"tpv"+ "\tRl\tRr\tRt");

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tools>
+	<!-- Analysis -->
+	<tool>
+    	<name>enrichment</name>
+        <description>Run an enrichment analysis</description>
+        <argumentsClass>org.gitools.cli.htest.ZcalcCliTool$ZcalcArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.htest.ZcalcCliTool</lifeCycleClass>
+    </tool>
+
+	<tool>
+    	<name>oncoz</name>
+        <description>Run a driver alterations identification analysis</description>
+        <argumentsClass>org.gitools.cli.htest.OncozCliTool$OncozArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.htest.OncozCliTool</lifeCycleClass>
+    </tool>
+</tools>

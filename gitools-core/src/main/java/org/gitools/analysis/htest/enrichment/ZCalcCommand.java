@@ -4,86 +4,107 @@ import java.io.File;
 
 import org.gitools.datafilters.ValueParser;
 import org.gitools.model.ModuleMap;
-import org.gitools.model.ToolConfig;
-import org.gitools.model.Analysis;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
-import org.gitools.stats.test.factory.TestFactory;
-import org.gitools.stats.test.factory.ZscoreTestFactory;
-import org.gitools.analysis.htest.enrichment.ZCalcProcessor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.analysis.htest.AnalysisCommand;
+import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 
-public class ZCalcCommand extends AnalysisCommand {
+public class ZCalcCommand extends HtestCommand {
+
+	protected String modulesPath;
 	
-	public ZCalcCommand() {
-		super();
-	}
-	
-	public ZCalcCommand(String analysisName, String testName,
-			int samplingNumSamples, String dataFile, ValueParser valueParser, 
-			String groupsFile, int minGroupSize, int maxModuleSize, boolean includeNonMappedItems, 
-			String workdir, String outputFormat, boolean resultsByCond) {
+	public ZCalcCommand(
+			EnrichmentAnalysis analysis,
+			String dataFile,
+			String modulesFile,
+			String workdir,
+			String fileName,
+			String outputFormat,
+			boolean resultsByCond) {
 		
-		super(analysisName, testName, samplingNumSamples, dataFile, valueParser, 
-				groupsFile, minGroupSize, maxModuleSize, includeNonMappedItems,
-				workdir, outputFormat, resultsByCond);
+		super(analysis, dataFile,
+				workdir, fileName,
+				outputFormat, resultsByCond);
+
+		this.modulesPath = modulesFile;
 	}
 	
+	@Override
 	public void run(IProgressMonitor monitor) 
 			throws PersistenceException, InterruptedException {
 		
-		// Prepare output
-		
-		//AnalysisResource output = createOutput(outputFormat);
-		
-		// Prepare test factory
-		
-		TestFactory testFactory = 
-			createTestFactory(ToolConfig.ZETCALC, testName);
+		final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
 		
 		// Load data and modules
 		
 		monitor.begin("Loading ...", 1);
-		monitor.info("Data: " + dataFile);
-		monitor.info("Modules: " + modulesFile);
+		monitor.info("Data: " + dataPath);
+		monitor.info("Modules: " + modulesPath);
 		
 		DoubleMatrix doubleMatrix = new DoubleMatrix();
-		//FIXME: id
 		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				doubleMatrix, moduleMap, 
-				dataFile, valueParser, 
-				modulesFile, minModuleSize, maxModuleSize,
-				includeNonMappedItems,
+				dataPath, createValueParser(analysis),
+				modulesPath,
+				enrichAnalysis.getMinModuleSize(),
+				enrichAnalysis.getMaxModuleSize(),
+				!enrichAnalysis.isDiscardNonMappedRows(),
 				monitor.subtask());
+
+		enrichAnalysis.setDataTable(doubleMatrix);
+		enrichAnalysis.setModuleMap(moduleMap);
 		
 		monitor.end();
 		
 		// Create and process analysis
 		
-		Analysis analysis = new Analysis();
-		analysis.setTitle(title);
-		analysis.setToolConfig(testFactory.getTestConfig());
-		analysis.setDataTable(doubleMatrix);
-		analysis.setModuleMap(moduleMap);
-		analysis.getToolConfig().put(
-				ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
-				String.valueOf(samplingNumSamples));
-		
-		ZCalcProcessor processor = 
-			new ZCalcProcessor(analysis);
+		ZCalcProcessor processor = new ZCalcProcessor(enrichAnalysis);
 		
 		processor.run(monitor);
-		
-		// Save analysis
-		
-		save(analysis, monitor);
+
+		save(enrichAnalysis, monitor);
+
+		monitor.end();
 	}
 
+	private void save(final EnrichmentAnalysis enrichAnalysis, IProgressMonitor monitor) throws PersistenceException {
+
+		File workdirFile = new File(workdir);
+		if (!workdirFile.exists()) {
+			workdirFile.mkdirs();
+		}
+
+		monitor.begin("Saving analysis ...", 1);
+
+		File modFile = new File(workdirFile, fileName + ".modules");
+		monitor.info("Modules: " + modFile.getAbsolutePath());
+		ModuleMapTextSimplePersistence modPersist = new ModuleMapTextSimplePersistence(modFile);
+		modPersist.save(enrichAnalysis.getModuleMap(), monitor);
+
+		File dataFile = new File(workdirFile, fileName + ".data");
+		monitor.info("Data: " + dataFile.getAbsolutePath());
+		DoubleMatrixTextPersistence dataPersist = new DoubleMatrixTextPersistence();
+		dataPersist.write(dataFile, enrichAnalysis.getDataTable(), monitor);
+
+		File enrichmentFile = new File(workdirFile, fileName + ".enrichment");
+		monitor.info("Enrichment: " + enrichmentFile.getAbsolutePath());
+		EnrichmentAnalysisXmlPersistence p = new EnrichmentAnalysisXmlPersistence();
+		p.write(enrichmentFile, enrichAnalysis, monitor);
+	}
+
+	public String getModulesFile() {
+		return modulesPath;
+	}
+
+	public void setModulesFile(String modulesFile) {
+		this.modulesPath = modulesFile;
+	}
+	
 	private void loadDataAndModules(
 			DoubleMatrix doubleMatrix,
 			ModuleMap moduleMap,
@@ -99,7 +120,7 @@ public class ZCalcCommand extends AnalysisCommand {
 		// Load metadata
 		
 		File resource = new File(dataFileName);
-		
+
 		DoubleMatrixTextPersistence dmPersistence = new DoubleMatrixTextPersistence();
 		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
 		
@@ -130,17 +151,4 @@ public class ZCalcCommand extends AnalysisCommand {
 				monitor);
 		
 	}
-
-	/*private AnalysisResource createOutput(String outputFormat) {
-		AnalysisResource output = null;
-		
-		if (outputFormat.equalsIgnoreCase("csv"))
-			output = new TabAnalysisResource(workdir, resultsByCond, defaultSep, defaultQuote);
-		else if (outputFormat.equalsIgnoreCase("rexml"))
-			output = new REXmlAnalysisResource(workdir, minModuleSize, maxModuleSize);
-		else
-			throw new IllegalArgumentException("Unknown output format '" + outputFormat + "'");
-		
-		return output;
-	}*/
 }

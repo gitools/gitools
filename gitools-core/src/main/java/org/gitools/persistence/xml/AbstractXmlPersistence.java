@@ -81,7 +81,9 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 			throws PersistenceException {
 
 		Writer writer;
-		
+
+		beforeWrite(file, entity, monitor);
+
 		try {
 			writer = PersistenceUtils.openWriter(file);
 			JAXBContext context = JAXBContext.newInstance(entityClass);
@@ -101,5 +103,10 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 		} catch (Exception e) {
 			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
+
+		afterWrite(file, entity, monitor);
 	}
+
+	protected void beforeWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+	protected void afterWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
 }

@@ -26,7 +26,7 @@ public class AnnotationMatrixXmlAdapter
 	@Override
 	public AnnotationMatrix unmarshal(String v) throws Exception {
 		AnnotationMatrix annotations =  (AnnotationMatrix) PersistenceManager.getDefault().load(
-				pathResolver, pathResolver.createResourceFromString(v), null, new NullProgressMonitor());
+				pathResolver, pathResolver.stringToPath(v), null, new NullProgressMonitor());
 
 		return annotations;
 	}

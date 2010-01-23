@@ -1,7 +1,5 @@
 package org.gitools.ui.wizardmess.zetcalc;
 
-
-
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -16,7 +14,7 @@ import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.datafilters.BinaryCutoffParser;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
 
-
+@Deprecated
 public class ZCalcAnalysisWizard extends AnalysisWizard {
 	
 	ZCalcCommand command; 
@@ -107,7 +105,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 			boolean omitNonMappedItems = Boolean.parseBoolean(
 					dataModel.getValue(OMIT_NON_MAPPED_ITMEMS).toString());
 			
-		    command = new ZCalcCommand(
+		    /*command = new ZCalcCommand(
 		    							(String) dataModel.getValue(ANALYSIS_NAME),
 		    							(String) dataModel.getValue(STAT_TEST),
 		    							sampleSize,
@@ -120,6 +118,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 		    							(String) dataModel.getValue(ANALYSIS_WORKING_DIR),
 		    							outputFormat,
 		    							true);
+			 */
 	    }
 	    else {
 	    	command = null;
