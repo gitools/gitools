@@ -20,6 +20,10 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.stats.mtc.MTCFactory;
+import org.gitools.stats.mtc.MTC;
 
 public class OncozProcessor extends AbstractProcessor {
 
@@ -57,10 +61,17 @@ public class OncozProcessor extends AbstractProcessor {
 		
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
+
+		IMatrix dataMatrix = analysis.getDataMatrix();
+		if (!(dataMatrix instanceof DoubleMatrix))
+			throw new RuntimeException("This processor only works with DoubleMatrix data. "
+					+ dataMatrix.getClass().getSimpleName() + " found instead.");
+
+		DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
+
+		ObjectMatrix1D items = doubleMatrix.getRows().copy();
 		
-		ObjectMatrix1D items = analysis.getDataTable().getRows().copy();
-		
-		DoubleMatrix2D data = analysis.getDataTable().getData();
+		DoubleMatrix2D data = doubleMatrix.getCells();
 		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
 				analysis.getSetsMap().getModuleNames());
@@ -71,7 +82,7 @@ public class OncozProcessor extends AbstractProcessor {
 		final int numItems = data.rows();
 		final int numModules = modules.size();
 		
-		monitor.begin("oncoz analysis...", numItems * numModules);
+		monitor.begin("Running oncoz analysis...", numItems * numModules);
 	
 		Test test = testFactory.create();
 		
@@ -165,9 +176,12 @@ public class OncozProcessor extends AbstractProcessor {
 		
 		/* Multiple test correction */
 		
+		MTC mtc =
+				MTCFactory.createFromName(analysis.getMtc());
+
 		multipleTestCorrection(
-				resultsMatrix, 
-				new BenjaminiHochbergFdr(), //TODO It should be configurable 
+				resultsMatrix,
+				mtc,
 				monitor.subtask());
 		
 		analysis.setStartTime(startTime);

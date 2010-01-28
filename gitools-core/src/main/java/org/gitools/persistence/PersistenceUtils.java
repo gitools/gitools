@@ -55,6 +55,7 @@ public class PersistenceUtils {
 					new FileWriter(path, append));
 	}
 
+	// Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls
 	public static String getRelativePath(String basePath, String targetPath) {
 		
 		final String pathSeparator = File.separator;
@@ -96,7 +97,7 @@ public class PersistenceUtils {
 		String relative = "";
 		if (base.length == commonIndex) {
 			//  Comment this out if you prefer that a relative path not start with ./
-			relative = "." + pathSeparator;
+			//relative = "." + pathSeparator;
 		} else {
 			int numDirsUp = base.length - commonIndex - (isDir ? 0 : 1); /* only subtract 1 if it  is a file. */
 			//  The number of directories we have to backtrack is the length of
@@ -113,6 +114,15 @@ public class PersistenceUtils {
 		}
 
 		return relative;
+	}
 
+	public static String getBaseName(String fileName) {
+		int pos = fileName.lastIndexOf('.');
+		if (pos == -1)
+			return fileName;
+		else if (pos == 0)
+			return "";
+		else
+			return fileName.substring(0, pos);
 	}
 }

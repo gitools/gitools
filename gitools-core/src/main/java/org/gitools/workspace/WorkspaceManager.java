@@ -9,7 +9,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.gitools.model.Project;
-import org.gitools.persistence.FilePathResolver;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
@@ -117,9 +116,8 @@ public class WorkspaceManager {
 		if (!basePath.exists())
 			basePath.mkdirs();
 		File file = new File(basePath, FileSuffixes.PROJECT);
-		FilePathResolver pathResolver = new FilePathResolver(basePath);
 		IProgressMonitor monitor = new StreamProgressMonitor(System.out, true, true);
-		PersistenceManager.getDefault().store(pathResolver, file, project, monitor);
+		PersistenceManager.getDefault().store(file, project, monitor);
 		return project;
 	}
 	

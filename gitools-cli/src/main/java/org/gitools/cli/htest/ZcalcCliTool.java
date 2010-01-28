@@ -62,18 +62,7 @@ public class ZcalcCliTool extends HtestCliTool {
 		ZcalcArguments args = (ZcalcArguments) argsObject;
 
 		EnrichmentAnalysis analysis = new EnrichmentAnalysis();
-		analysis.setTitle(args.analysisTitle);
-		analysis.setDescription(args.analysisNotes);
-		analysis.setAttributes(analysisAttributes);
-
-		analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
-		analysis.setBinaryCutoffCmp(binaryCutoffCmp);
-		analysis.setBinaryCutoffValue(binaryCutoffValue);
-
-		for (String[] c : testConfigParams)
-			testConfig.put(c[0], c[1]);
-
-		analysis.setTestConfig(testConfig);
+		prepareAnalysis(analysis, args);
 
 		analysis.setMinModuleSize(args.minModuleSize);
 		analysis.setMaxModuleSize(args.maxModuleSize);

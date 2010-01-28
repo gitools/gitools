@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.gitools.model.xml.adapter.ConfigurationXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -15,9 +17,9 @@ public class ToolConfig {
 	public static final String ONCOZET = "oncozet";
 	
 	protected String name;
-	
-	protected Map<String, String> properties = 
-		new HashMap<String, String>();
+
+	@XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
+	protected Map<String, String> configuration = new HashMap<String, String>();
 	
 	public ToolConfig(String name) {
 		this.name = name;
@@ -34,19 +36,19 @@ public class ToolConfig {
 		this.name = name;
 	}
 	
-	public Map<String, String> getProperties() {
-		return properties;
+	public Map<String, String> getConfiguration() {
+		return configuration;
 	}
 	
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
+	public void setConfiguration(Map<String, String> configuration) {
+		this.configuration = configuration;
 	}
 	
 	public void put(String name, String value) {
-		properties.put(name, value);
+		configuration.put(name, value);
 	}
 	
 	public String get(String name) {
-		return properties.get(name);
+		return configuration.get(name);
 	}
 }

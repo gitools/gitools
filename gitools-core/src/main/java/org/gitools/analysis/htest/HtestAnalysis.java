@@ -26,12 +26,12 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncozAnalysis;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.xml.adapter.CutoffCmpXmlAdapter;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 
@@ -53,17 +53,17 @@ public class HtestAnalysis extends Analysis {
 	protected double binaryCutoffValue;
 
 	/** Test name */
-	@XmlTransient //FIXME XmlTransient
 	protected ToolConfig testConfig;
 
 	/** Data */
-	@XmlTransient //FIXME XmlTransient
-	//@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
-	protected DoubleMatrix dataTable;
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	protected IMatrix dataMatrix;
+
+	/** Multiple test correction */
+	protected String mtc;
 
 	/** Results */
-	@XmlTransient //FIXME XmlTransient
-	//@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected ObjectMatrix resultsMatrix;
 
 	public HtestAnalysis() {
@@ -101,12 +101,28 @@ public class HtestAnalysis extends Analysis {
 		this.testConfig = testConfig;
 	}
 
-	public DoubleMatrix getDataTable() {
+	public IMatrix getDataMatrix() {
+		return dataMatrix;
+	}
+
+	public void setDataMatrix(IMatrix dataTable) {
+		this.dataMatrix = dataTable;
+	}
+
+	/*public DoubleMatrix getDataTable() {
 		return dataTable;
 	}
 
 	public void setDataTable(DoubleMatrix dataTable) {
 		this.dataTable = dataTable;
+	}*/
+
+	public String getMtc() {
+		return mtc;
+	}
+
+	public void setMtc(String mtc) {
+		this.mtc = mtc;
 	}
 
 	public ObjectMatrix getResultsMatrix() {

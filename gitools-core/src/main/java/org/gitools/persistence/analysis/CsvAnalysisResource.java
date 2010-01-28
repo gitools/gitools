@@ -13,7 +13,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.Analysis;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.persistence.AnalysisPersistence;
@@ -28,6 +27,7 @@ import org.gitools.stats.test.factory.TestFactory;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.matrix.model.IMatrix;
 
 public class CsvAnalysisResource extends AnalysisPersistence {
 
@@ -116,12 +116,12 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					File res = new File(basePath, fields[1]);
 					DoubleMatrixTextPersistence per = new DoubleMatrixTextPersistence();
 					DoubleMatrix doubleMatrix = per.read(res, monitor.subtask());
-					analysis.setDataTable(doubleMatrix);
+					analysis.setDataMatrix(doubleMatrix);
 				}
 				else if (tag.equals(tagModules) && fields.length >= 2) {
 					path = new File(basePath, fields[1]);
 					ModuleMapTextSimplePersistence res = new ModuleMapTextSimplePersistence(path);
-					ModuleMap moduleMap = res.load(monitor.subtask());
+					//ModuleMap moduleMap = res.load(monitor.subtask());
 					//FIXME analysis.setModuleMap(moduleMap);
 				}
 				else if (tag.equals(tagResults) && fields.length >= 2) {
@@ -165,12 +165,19 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 				TestFactory.createFactory(analysis.getTestConfig());
 			
 			Test test = testFactory.create(); //FIXME?
-			
+
+			IMatrix dataMatrix = analysis.getDataMatrix();
+			if (!(dataMatrix instanceof DoubleMatrix))
+				throw new RuntimeException("This processor only works with DoubleMatrix data. "
+						+ dataMatrix.getClass().getSimpleName() + " found instead.");
+
+			DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
+
 			writeDescription(workDirFile, analysis, test);
 			
 			new DoubleMatrixTextPersistence().write(
 					new File(workDirFile, dataFileName),
-					analysis.getDataTable(), monitor);
+					doubleMatrix, monitor);
 
 			//FIXME
 			/*new ModuleMapTextSimplePersistence(new File(workDirFile, modulesFileName))
@@ -211,7 +218,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 		
 		out.writeProperty(tagToolName, toolConfig.getName());
 		
-		for (String name : toolConfig.getProperties().keySet())
+		for (String name : toolConfig.getConfiguration().keySet())
 			out.writePropertyList(tagToolProperty, new String[] {
 					name, toolConfig.get(name) });
 		

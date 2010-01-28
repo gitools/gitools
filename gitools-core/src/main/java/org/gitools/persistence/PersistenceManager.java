@@ -71,7 +71,6 @@ public class PersistenceManager implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public <T> IEntityPersistence<T> createEntityPersistence(
-			IPathResolver pathResolver,
 			String mimeType) {
 
 		Class<?> persistenceClass = persistenceMap.get(mimeType);
@@ -80,7 +79,6 @@ public class PersistenceManager implements Serializable {
 			Constructor<?> c = persistenceClass.getConstructor();
 			IEntityPersistence<T> entityPersistence =
 				(IEntityPersistence<T>) c.newInstance();
-			entityPersistence.setPathResolver(pathResolver);
 			
 			return entityPersistence;
 		} catch (Exception e) {
@@ -91,15 +89,13 @@ public class PersistenceManager implements Serializable {
 	}
 
 	public Object load(
-			IPathResolver pathResolver,
 			File file,
 			IProgressMonitor monitor)
 				throws PersistenceException {
-		return load(pathResolver, file, null, monitor);
+		return load(file, null, monitor);
 	}
 	
 	public Object load(
-			IPathResolver pathResolver,
 			File file,
 			String mimeType,
 			IProgressMonitor monitor)
@@ -114,7 +110,7 @@ public class PersistenceManager implements Serializable {
 			mimeType = MimeTypeManager.getDefault().fromFile(file);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence(pathResolver, mimeType);
+			createEntityPersistence(mimeType);
 
 	
 		//FIXME: heap problems with annotations..
@@ -127,7 +123,6 @@ public class PersistenceManager implements Serializable {
 	}
 
 	public void store(
-			IPathResolver pathResolver,
 			File file,
 			Object entity,
 			IProgressMonitor monitor) 
@@ -136,7 +131,7 @@ public class PersistenceManager implements Serializable {
 		String mimeType = MimeTypeManager.getDefault().fromClass(entity.getClass());
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence(pathResolver, mimeType);
+			createEntityPersistence(mimeType);
 
 		entityPersistence.write(file, entity, monitor);
 		

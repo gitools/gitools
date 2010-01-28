@@ -3,9 +3,8 @@ package org.gitools.persistence.xml;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.model.xml.adapter.AnnotationMatrixXmlAdapter;
-import org.gitools.model.xml.adapter.FileXmlAdapter;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.PersistenceContext;
 
 public class HeatmapXmlPersistence
 		extends AbstractXmlPersistence<Heatmap> {
@@ -16,9 +15,9 @@ public class HeatmapXmlPersistence
 
 	@Override
 	protected XmlAdapter<?, ?>[] createAdapters() {
-		return new XmlAdapter[] {
-				new FileXmlAdapter(pathResolver),
-				new AnnotationMatrixXmlAdapter(pathResolver),
-				new MatrixXmlAdapter(pathResolver) };
+		PersistenceContext context = getPersistenceContext();
+		return new XmlAdapter<?, ?>[] {
+			new PersistenceReferenceXmlAdapter(context)
+		};
 	}
 }

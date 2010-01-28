@@ -5,6 +5,10 @@
 
 package org.gitools.ui.dialog.progress;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import java.awt.Frame;
 import java.util.Timer;
@@ -65,6 +69,10 @@ public abstract class ProgressJob {
         this.dlg = dlg;
     }
 
+	protected IProgressMonitor getProgressMonitor() {
+		return new NullProgressMonitor(); //TODO
+	}
+
     protected void start(final String msg, final int work) {
         SwingUtilities.invokeLater(new Runnable() {
 			@Override public void run() {
@@ -110,7 +118,7 @@ public abstract class ProgressJob {
         setCancelled(true);
     }
 
-    public void execute() {
+    public void asyncExecute() {
         jobThread = new Thread() {
             @Override
             public void run() {
@@ -130,6 +138,16 @@ public abstract class ProgressJob {
 
         jobThread.start();
     }
+
+	public void execute() {
+		asyncExecute();
+		
+		try {
+			jobThread.join();
+		} catch (InterruptedException ex) {
+			Logger.getLogger(ProgressJob.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
     protected abstract void runJob();
 

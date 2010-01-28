@@ -12,7 +12,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 
-import org.gitools.stats.mtc.MultipleTestCorrection;
+import org.gitools.stats.mtc.MTC;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
@@ -24,9 +24,9 @@ public class MtcAction extends BaseAction {
 
 	private static final long serialVersionUID = 991170566166881702L;
 
-	protected MultipleTestCorrection mtc;
+	protected MTC mtc;
 	
-	public MtcAction(MultipleTestCorrection mtc) {
+	public MtcAction(MTC mtc) {
 		super(mtc.getName());
 		
 		setDesc("Calculate " + mtc.getName() + " multiple test correction");

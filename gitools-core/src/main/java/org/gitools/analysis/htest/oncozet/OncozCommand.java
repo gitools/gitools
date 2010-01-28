@@ -64,7 +64,7 @@ public class OncozCommand extends HtestCommand {
 				oncozAnalysis.getMaxSetSize(),
 				true, monitor.subtask());
 
-		oncozAnalysis.setDataTable(doubleMatrix);
+		oncozAnalysis.setDataMatrix(doubleMatrix);
 		oncozAnalysis.setSetsMap(setsMap);
 
 		monitor.end();

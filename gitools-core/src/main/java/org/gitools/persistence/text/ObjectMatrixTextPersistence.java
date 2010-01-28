@@ -83,6 +83,7 @@ public class ObjectMatrixTextPersistence
 	public ObjectMatrixTextPersistence() {
 	}
 
+	@Override
 	public ObjectMatrix read(
 			File file,
 			IProgressMonitor monitor) 
@@ -99,7 +100,8 @@ public class ObjectMatrixTextPersistence
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
-		monitor.begin("Reading results ...", 1);
+		monitor.begin("Loading results ...", 1);
+		monitor.info("File: " + file.getAbsolutePath());
 		
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
@@ -255,6 +257,7 @@ public class ObjectMatrixTextPersistence
 		return value;
 	}
 
+	@Override
 	public void write(
 			File file,
 			ObjectMatrix results, 
@@ -270,7 +273,10 @@ public class ObjectMatrixTextPersistence
 			boolean orderByColumn,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
-		
+
+		monitor.begin("Saving results...", results.getRowCount() * results.getColumnCount());
+		monitor.info("File: " + file.getAbsolutePath());
+
 		try {
 			Writer writer = PersistenceUtils.openWriter(file);
 			//String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
@@ -279,6 +285,9 @@ public class ObjectMatrixTextPersistence
 		}
 		catch (Exception e) {
 			throw new PersistenceException(e);
+		}
+		finally {
+			monitor.end();
 		}
 	}
 	
@@ -305,19 +314,20 @@ public class ObjectMatrixTextPersistence
 		if (orderByColumn) {
 			for (int colIndex = 0; colIndex < numColumns; colIndex++)
 				for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
-					writeLine(out, resultsMatrix, colIndex, rowIndex);
+					writeLine(out, resultsMatrix, colIndex, rowIndex, monitor);
 		}
 		else {
 			for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
 				for (int colIndex = 0; colIndex < numColumns; colIndex++)
-					writeLine(out, resultsMatrix, colIndex, rowIndex);
+					writeLine(out, resultsMatrix, colIndex, rowIndex, monitor);
 		}
 	}
 
 	private void writeLine(
 			RawCsvWriter out, 
 			ObjectMatrix resultsMatrix,
-			int colIndex, int rowIndex) {
+			int colIndex, int rowIndex,
+			IProgressMonitor monitor) {
 		
 		final String colName = resultsMatrix.getColumn(colIndex).toString();
 		final String rowName = resultsMatrix.getRow(rowIndex).toString();
@@ -348,5 +358,7 @@ public class ObjectMatrixTextPersistence
 		}
 		
 		out.writeNewLine();
+
+		monitor.worked(1);
 	}
 }

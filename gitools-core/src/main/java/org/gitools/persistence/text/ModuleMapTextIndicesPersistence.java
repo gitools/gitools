@@ -33,6 +33,9 @@ public class ModuleMapTextIndicesPersistence
 
 		Reader reader;
 
+		monitor.begin("Loading modules...", 1);
+		monitor.info("File: " + file.getAbsolutePath());
+
 		try {
 			reader = PersistenceUtils.openReader(file);
 		} catch (Exception e) {
@@ -51,8 +54,10 @@ public class ModuleMapTextIndicesPersistence
 		} catch (Exception e) {
 			throw new PersistenceException(e);
 		}
-		return moduleMap;
 
+		monitor.end();
+		
+		return moduleMap;
 	}
 
 	@Override
@@ -60,7 +65,10 @@ public class ModuleMapTextIndicesPersistence
 			File file,
 			ModuleMap moduleMap,
 			IProgressMonitor monitor) throws PersistenceException {
-		
+
+		monitor.begin("Saving modules...", moduleMap.getModuleNames().length);
+		monitor.info("File: " + file.getAbsolutePath());
+
 		try {
 			final PrintWriter pw = new PrintWriter(
 					PersistenceUtils.openWriter(file));
@@ -95,12 +103,17 @@ public class ModuleMapTextIndicesPersistence
 				}
 				
 				pw.print('\n');
+
+				monitor.worked(1);
 			}
 			
 			pw.close();
 		}
 		catch (Exception e) {
 			throw new PersistenceException(e);
+		}
+		finally {
+			monitor.end();
 		}
 	}
 

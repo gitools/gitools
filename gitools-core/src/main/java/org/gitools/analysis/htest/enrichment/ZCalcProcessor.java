@@ -1,11 +1,13 @@
 package org.gitools.analysis.htest.enrichment;
 
 import java.util.Date;
+import org.gitools.matrix.model.IMatrix;
 
 import org.gitools.model.Analysis;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.results.CommonResult;
@@ -20,6 +22,8 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.stats.mtc.MTCFactory;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.
@@ -59,14 +63,19 @@ public class ZCalcProcessor extends AbstractProcessor {
 		
 		TestFactory testFactory = 
 			TestFactory.createFactory(analysis.getTestConfig());
-		
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
+
+		IMatrix dataMatrix = analysis.getDataMatrix();
+		if (!(dataMatrix instanceof DoubleMatrix))
+			throw new RuntimeException("This processor only works with DoubleMatrix data. "
+					+ dataMatrix.getClass().getSimpleName() + " found instead.");
+
+		DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
+
+		ObjectMatrix1D conditions = doubleMatrix.getColumns().copy();
 		
-		ObjectMatrix1D conditions = analysis.getDataTable().getColumns().copy();
-		
-		monitor.debug("Transposing data...");
-		DoubleMatrix2D data = analysis.getDataTable().getData().viewDice().copy();
+		DoubleMatrix2D data = doubleMatrix.getCells().viewDice().copy();
 		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
 				analysis.getModuleMap().getModuleNames());
@@ -76,7 +85,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		final int numConditions = data.rows();
 		final int numModules = modules.size();
 		
-		monitor.begin("enrichment analysis...", numConditions * numModules);
+		monitor.begin("Running enrichment analysis...", numConditions * numModules);
 		
 		Test test = testFactory.create();
 		
@@ -148,12 +157,15 @@ public class ZCalcProcessor extends AbstractProcessor {
 		}
 		
 		ThreadManager.shutdown(monitor);
-		
+
 		/* Multiple test correction */
 		
+		MTC mtc =
+				MTCFactory.createFromName(analysis.getMtc());
+
 		multipleTestCorrection(
 				resultsMatrix, 
-				new BenjaminiHochbergFdr(), //TODO It should be configurable 
+				mtc,
 				monitor.subtask());
 
 		analysis.setStartTime(startTime);

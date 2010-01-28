@@ -26,7 +26,7 @@ public final class ZscoreTestFactory extends TestFactory {
 	public ZscoreTestFactory(ToolConfig config) {
 		super(config);
 		
-		Map<String, String> props = config.getProperties();
+		Map<String, String> props = config.getConfiguration();
 		
 		final String estimatorName = props.get(ESTIMATOR_PROPERTY);
 		if (MEAN_ESTIMATOR.equalsIgnoreCase(estimatorName))

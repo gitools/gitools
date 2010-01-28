@@ -48,7 +48,6 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.FilePathResolver;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.dialog.ListDialog;
@@ -518,7 +517,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 			AnnotationMatrix annMatrix =
 					(AnnotationMatrix) PersistenceManager.getDefault().load(
-						new FilePathResolver(file.getParentFile()),
 						file, MimeTypes.ANNOTATION_MATRIX,
 						new NullProgressMonitor());
 

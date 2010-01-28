@@ -22,6 +22,9 @@ import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
+/** Read/Write modules from a two columns tabulated file,
+ * first column for item and second for module. */
+
 // FIXME Adapt to IEntityPersistence
 public class ModuleMapTextSimplePersistence extends FileResource {
 
@@ -36,13 +39,6 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 	
 	public ModuleMapTextSimplePersistence(File file) {
 		super(file);
-	}
-	
-	public ModuleMap load(IProgressMonitor monitor)
-			throws PersistenceException {
-
-		//TODO: new modules format
-		return null;
 	}
 	
 	public ModuleMap load(
@@ -247,7 +243,9 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 			ModuleMap moduleMap,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
-		
+
+		monitor.begin("Saving modules...", 1);
+
 		try {
 			final PrintWriter pw = new PrintWriter(openWriter());
 			
@@ -287,6 +285,9 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 		}
 		catch (Exception e) {
 			throw new PersistenceException(e);
+		}
+		finally {
+			monitor.end();
 		}
 	}
 }

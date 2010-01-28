@@ -19,7 +19,7 @@ import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisWizardAction;
 import org.gitools.ui.actions.file.NewOncozAnalysisAction;
 import org.gitools.ui.actions.file.NewProjectAction;
-import org.gitools.ui.actions.file.OpenAnalysisAction;
+import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenDataAction;
 import org.gitools.ui.actions.file.OpenHeatmapAction;
 import org.gitools.ui.actions.file.OpenProjectAction;
@@ -52,7 +52,7 @@ public class FileActionSet extends ActionSet {
 	
 	public static final BaseAction openProjectAction = new OpenProjectAction();
 	public static final BaseAction openDataAction = new OpenDataAction();
-	public static final BaseAction openAnalysisAction = new OpenAnalysisAction();
+	public static final BaseAction openAnalysisAction = new OpenEnrichmentAnalysisAction();
 	public static final BaseAction openMatrixAction = new OpenHeatmapAction();
 	
 	public static final ActionSet openActionSet = new ActionSet("Open", new BaseAction[] {

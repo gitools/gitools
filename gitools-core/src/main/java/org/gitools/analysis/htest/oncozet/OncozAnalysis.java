@@ -24,14 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.model.ModuleMap;
-import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
 public class OncozAnalysis extends HtestAnalysis implements Serializable {
 
 	/** Modules */
-	@XmlJavaTypeAdapter(ModuleMapXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected ModuleMap setsMap;
 
 	/** Minimum set size */

@@ -14,17 +14,27 @@ import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.PersistenceContext;
 
 public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistence<T> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
 	
 	private Class<T> entityClass;
-	
+
 	private XmlAdapter<?, ?>[] adapters;
+
+	private boolean recursivePersistence;
+
+	private String persistenceTitle;
+
+	private PersistenceContext persistenceContext;
 	
 	public AbstractXmlPersistence(Class<T> entityClass) {	
 		this.entityClass = entityClass;
+		this.persistenceTitle = entityClass.getSimpleName();
+		this.recursivePersistence = true;
+		this.persistenceContext = new PersistenceContext();
 	}
 
 	public void setAdapters(XmlAdapter<?, ?>[] adapters) {
@@ -34,13 +44,40 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 	public XmlAdapter<?, ?>[] getAdapters() {
 		return adapters;
 	}
+
+	public PersistenceContext getPersistenceContext() {
+		return persistenceContext;
+	}
+
+	public void setPersistenceContext(PersistenceContext persistenceContext) {
+		this.persistenceContext = persistenceContext;
+	}
 	
 	/** Classes extending AbstractXmlPersistence should
 	 * override this method if they need to specify adapters. */
 	protected XmlAdapter<?, ?>[] createAdapters() {
 		return new XmlAdapter<?, ?>[0];
 	}
+
+	public boolean isRecursivePersistence() {
+		return recursivePersistence;
+	}
+
+	public void setRecursivePersistence(boolean recirsivePersistence) {
+		this.recursivePersistence = recirsivePersistence;
+	}
 	
+	public String getPersistenceTitle() {
+		return persistenceTitle;
+	}
+
+	public void setPersistenceTitle(String entityName) {
+		this.persistenceTitle = entityName;
+	}
+
+	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {}
+	protected void afterRead(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public T read(
@@ -50,6 +87,8 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 
 		T entity;
 		Reader reader;
+
+		beforeRead(file, monitor);
 
 		try {
 			reader = PersistenceUtils.openReader(file);
@@ -69,9 +108,14 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 			e.printStackTrace();
 			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
+
+		afterRead(file, entity, monitor);
 		
 		return entity;
 	}
+
+	protected void beforeWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+	protected void afterWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
 
 	@Override
 	public void write(
@@ -82,7 +126,10 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 
 		Writer writer;
 
-		beforeWrite(file, entity, monitor);
+		monitor.begin("Saving " + persistenceTitle + "...", 1);
+		monitor.info("File: " + file.getAbsolutePath());
+
+		beforeWrite(file, entity, monitor.subtask());
 
 		try {
 			writer = PersistenceUtils.openWriter(file);
@@ -104,9 +151,8 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 			throw new PersistenceException("Error opening resource: " + file.getName(), e);
 		}
 
-		afterWrite(file, entity, monitor);
-	}
+		afterWrite(file, entity, monitor.subtask());
 
-	protected void beforeWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
-	protected void afterWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+		monitor.end();
+	}
 }

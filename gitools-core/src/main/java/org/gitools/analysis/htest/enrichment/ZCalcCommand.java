@@ -56,7 +56,7 @@ public class ZCalcCommand extends HtestCommand {
 				!enrichAnalysis.isDiscardNonMappedRows(),
 				monitor.subtask());
 
-		enrichAnalysis.setDataTable(doubleMatrix);
+		enrichAnalysis.setDataMatrix(doubleMatrix);
 		enrichAnalysis.setModuleMap(moduleMap);
 		
 		monitor.end();
@@ -68,32 +68,17 @@ public class ZCalcCommand extends HtestCommand {
 		processor.run(monitor);
 
 		save(enrichAnalysis, monitor);
-
-		monitor.end();
 	}
 
 	private void save(final EnrichmentAnalysis enrichAnalysis, IProgressMonitor monitor) throws PersistenceException {
 
 		File workdirFile = new File(workdir);
-		if (!workdirFile.exists()) {
+		if (!workdirFile.exists())
 			workdirFile.mkdirs();
-		}
-
-		monitor.begin("Saving analysis ...", 1);
-
-		File modFile = new File(workdirFile, fileName + ".modules");
-		monitor.info("Modules: " + modFile.getAbsolutePath());
-		ModuleMapTextSimplePersistence modPersist = new ModuleMapTextSimplePersistence(modFile);
-		modPersist.save(enrichAnalysis.getModuleMap(), monitor);
-
-		File dataFile = new File(workdirFile, fileName + ".data");
-		monitor.info("Data: " + dataFile.getAbsolutePath());
-		DoubleMatrixTextPersistence dataPersist = new DoubleMatrixTextPersistence();
-		dataPersist.write(dataFile, enrichAnalysis.getDataTable(), monitor);
 
 		File enrichmentFile = new File(workdirFile, fileName + ".enrichment");
-		monitor.info("Enrichment: " + enrichmentFile.getAbsolutePath());
 		EnrichmentAnalysisXmlPersistence p = new EnrichmentAnalysisXmlPersistence();
+		p.setRecursivePersistence(true);
 		p.write(enrichmentFile, enrichAnalysis, monitor);
 	}
 

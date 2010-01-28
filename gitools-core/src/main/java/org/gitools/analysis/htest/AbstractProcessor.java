@@ -1,7 +1,7 @@
 package org.gitools.analysis.htest;
 
 import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.stats.mtc.MultipleTestCorrection;
+import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.results.CommonResult;
 
 import cern.colt.matrix.DoubleFactory2D;
@@ -12,7 +12,7 @@ public class AbstractProcessor {
 
 	protected void multipleTestCorrection(
 			ObjectMatrix res,
-			MultipleTestCorrection mtc, 
+			MTC mtc,
 			IProgressMonitor monitor) {
 		
 		monitor.begin(mtc.getName() + " correction...", 1);

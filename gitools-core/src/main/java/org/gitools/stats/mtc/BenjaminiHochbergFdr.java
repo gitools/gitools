@@ -2,7 +2,7 @@ package org.gitools.stats.mtc;
 
 import cern.colt.matrix.DoubleMatrix1D;
 
-public class BenjaminiHochbergFdr implements MultipleTestCorrection {
+public class BenjaminiHochbergFdr implements MTC {
 
 	@Override
 	public String getName() {

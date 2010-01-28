@@ -19,7 +19,7 @@ public class BinomialTestFactory extends TestFactory {
 	public BinomialTestFactory(ToolConfig config) {
 		super(config);
 		
-		final String aproxModeName = config.getProperties().get(APROXIMATION_PROPERTY);
+		final String aproxModeName = config.getConfiguration().get(APROXIMATION_PROPERTY);
 		
 		if ("exact".equalsIgnoreCase(aproxModeName))
 			this.aproxMode = AproximationMode.onlyExact;

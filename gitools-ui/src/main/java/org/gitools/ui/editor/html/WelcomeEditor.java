@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
-import org.gitools.ui.actions.file.OpenAnalysisAction;
+import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
 
 
 public class WelcomeEditor extends HtmlEditor {
@@ -31,7 +31,7 @@ public class WelcomeEditor extends HtmlEditor {
 				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("openAnalysis")) {
-			new OpenAnalysisAction()
+			new OpenEnrichmentAnalysisAction()
 				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 	}

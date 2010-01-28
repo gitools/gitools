@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.gitools.analysis.htest.HtestAnalysis;
 
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.model.Attribute;
@@ -47,8 +48,10 @@ public abstract class HtestCliTool extends AbstractTool {
 				" Available configuration parameters:")
 		public List<String> testConf = new ArrayList<String>(0);
 	
-		/*@Option(name = "-s", aliases = "-num-samples", usage = "Number of samples to take when randomizing\n(default: 10000).", metaVar = "<n>")
-		public int samplingNumSamples = 10000;*/
+		@Option(name = "-mtc", metaVar = "<name>",
+				usage = "Multiple test correxction method.\n" +
+				"Available: bonferroni, bh. (default: bh)")
+		public String mtc = "bh";
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",
 				usage = "File with data to be processed.")
@@ -131,5 +134,22 @@ public abstract class HtestCliTool extends AbstractTool {
 				throw new ToolValidationException("Invalid cutoff: " + mat.group(2));
 			}
 		}
+	}
+
+	protected void prepareAnalysis(HtestAnalysis analysis, HtestArguments args) {
+		analysis.setTitle(args.analysisTitle);
+		analysis.setDescription(args.analysisNotes);
+		analysis.setAttributes(analysisAttributes);
+
+		analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
+		analysis.setBinaryCutoffCmp(binaryCutoffCmp);
+		analysis.setBinaryCutoffValue(binaryCutoffValue);
+
+		for (String[] c : testConfigParams)
+			testConfig.put(c[0], c[1]);
+
+		analysis.setTestConfig(testConfig);
+
+		analysis.setMtc(args.mtc);
 	}
 }

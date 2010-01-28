@@ -55,18 +55,7 @@ public class OncozCliTool extends HtestCliTool {
 		OncozArguments args = (OncozArguments) argsObject;
 
 		OncozAnalysis analysis = new OncozAnalysis();
-		analysis.setTitle(args.analysisTitle);
-		analysis.setDescription(args.analysisNotes);
-		analysis.setAttributes(analysisAttributes);
-
-		analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
-		analysis.setBinaryCutoffCmp(binaryCutoffCmp);
-		analysis.setBinaryCutoffValue(binaryCutoffValue);
-
-		for (String[] c : testConfigParams)
-			testConfig.put(c[0], c[1]);
-
-		analysis.setTestConfig(testConfig);
+		prepareAnalysis(analysis, args);
 
 		analysis.setMinSetSize(args.minSetSize);
 		analysis.setMaxSetSize(args.maxSetSize);

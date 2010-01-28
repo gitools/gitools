@@ -5,14 +5,13 @@ import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.HtestAnalysis;
 
 import org.gitools.model.ModuleMap;
-import org.gitools.model.xml.adapter.ModuleMapXmlAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
 
-@XmlRootElement(name = "EnrichmentAnalysis")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 
@@ -22,8 +21,7 @@ public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 	protected boolean discardNonMappedRows;
 
 	/** Modules */
-	@XmlTransient //FIXME XmlTransient
-	@XmlJavaTypeAdapter(ModuleMapXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected ModuleMap moduleMap;
 
 	/** Minimum module size */

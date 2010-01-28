@@ -8,25 +8,18 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType( 
-		propOrder={
-		"contents",
-		"visibleRows", "visibleColumns",
-		"selectedRows", "selectedColumns", 
-		"selectionLeadRow", "selectionLeadColumn",
-		"selectedPropertyIndex"} )
-
 public class MatrixView
 		extends AbstractModel
 		implements Serializable, IMatrixView {
@@ -35,7 +28,7 @@ public class MatrixView
 
 	private static final int INT_BIT_SIZE = 32;
 
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected IMatrix contents;
 	
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)

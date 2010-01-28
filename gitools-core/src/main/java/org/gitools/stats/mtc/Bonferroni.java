@@ -3,7 +3,7 @@ package org.gitools.stats.mtc;
 import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;
 
-public class Bonferroni implements MultipleTestCorrection {
+public class Bonferroni implements MTC {
 
 	@Override
 	public String getName() {

@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.Artifact;
@@ -17,21 +16,19 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.Matrix;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.table.model.impl.AbstractTableColumn;
-import org.gitools.model.xml.adapter.MatrixXmlAdapter;
 import org.gitools.model.xml.adapter.TableColumnXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "rowCount", "matrix", "annotations", "columns" })
-public class Table extends Artifact
-	implements ITable, Serializable {
+public class Table extends Artifact	implements ITable, Serializable {
 
 	private int rowCount = 0;
 
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	private IMatrix matrix;
 	
-	@XmlJavaTypeAdapter(MatrixXmlAdapter.class)
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	private AnnotationMatrix annotations;
 
 	@XmlElementWrapper(name = "columns")

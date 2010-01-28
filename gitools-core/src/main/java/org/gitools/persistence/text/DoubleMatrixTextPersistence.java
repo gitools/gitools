@@ -44,12 +44,17 @@ public class DoubleMatrixTextPersistence
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 
+		monitor.begin("Loading matrix...", 1);
+		monitor.info("File: " + file.getAbsolutePath());
+
 		DoubleMatrix doubleMatrix = new DoubleMatrix();
 		
 		readMetadata(file, doubleMatrix, filt, monitor);
 		
 		readData(file, doubleMatrix, filt, null, null, monitor);
-		
+
+		monitor.end();
+
 		return doubleMatrix;
 	}
 
@@ -89,7 +94,7 @@ public class DoubleMatrixTextPersistence
 			
 			// Read datafile name and column names
 			
-			doubleMatrix.setName(header[0]);
+			doubleMatrix.setTitle(header[0]);
 			
 			int numColumns = header.length - 1;
 			
@@ -172,7 +177,7 @@ public class DoubleMatrixTextPersistence
 			DoubleMatrix2D matrix = 
 				DoubleFactory2D.dense.make(numItems, numColumns);
 			
-			doubleMatrix.setData(matrix);
+			doubleMatrix.setCells(matrix);
 			
 			String[] fields;
 			int row = 0;
@@ -221,7 +226,10 @@ public class DoubleMatrixTextPersistence
 			DoubleMatrix doubleMatrix,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
-		
+
+		monitor.begin("Saving matrix...", doubleMatrix.getCells().columns());
+		monitor.info("File: " + file.getAbsolutePath());
+
 		Writer writer;
 		try {
 			writer = PersistenceUtils.openWriter(file);
@@ -231,13 +239,13 @@ public class DoubleMatrixTextPersistence
 		
 		PrintWriter pw = new PrintWriter(writer);
 		
-		DoubleMatrix2D matrix = doubleMatrix.getData();
+		DoubleMatrix2D matrix = doubleMatrix.getCells();
 		
 		int numCols = matrix.columns();
 		
 		final String[] colNames = doubleMatrix.getColumnStrings();
 		
-		pw.print(doubleMatrix.getName() != null ? doubleMatrix.getName() : "");
+		pw.print(doubleMatrix.getTitle() != null ? doubleMatrix.getTitle() : "");
 		
 		for (int i = 0; i < numCols; i++) {
 			final String name = i < colNames.length ? colNames[i] : "";
@@ -266,6 +274,8 @@ public class DoubleMatrixTextPersistence
 			}
 			
 			pw.print('\n');
+
+			monitor.worked(1);
 		}
 		
 		try {
@@ -273,5 +283,7 @@ public class DoubleMatrixTextPersistence
 		} catch (Exception e) {
 			throw new PersistenceException("Error closing resource: " + file.getName(), e);
 		}
+
+		monitor.end();
 	}
 }

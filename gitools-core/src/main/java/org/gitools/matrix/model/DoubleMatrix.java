@@ -1,16 +1,10 @@
 package org.gitools.matrix.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
 import org.gitools.matrix.model.element.DoubleElementAdapter;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
-
-//TODO remove JAXB support
-@XmlAccessorType(XmlAccessType.NONE)
 
 public final class DoubleMatrix extends BaseMatrix	{			
 
@@ -36,16 +30,6 @@ public final class DoubleMatrix extends BaseMatrix	{
 		
 		this.cells = cells;
 	}
-	
-	@Deprecated // Use getTitle() instead.
-	public final String getName() {
-		return getTitle();
-	}
-
-	@Deprecated // Use setTitle() instead.
-	public final void setName(String name) {
-		setTitle(name);
-	}
 
 	// rows and columns
 	
@@ -61,14 +45,12 @@ public final class DoubleMatrix extends BaseMatrix	{
 	
 	// cells
 	
-	//TODO rename to getCells
-	public final DoubleMatrix2D getData() {
+	public final DoubleMatrix2D getCells() {
 		return cells;
 	}
 
-	//TODO rename to setCells
-	public final void setData(DoubleMatrix2D data) {
-		this.cells = data;
+	public final void setCells(DoubleMatrix2D cells) {
+		this.cells = cells;
 	}
 	
 	@Override
