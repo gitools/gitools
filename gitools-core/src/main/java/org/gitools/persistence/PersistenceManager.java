@@ -61,7 +61,7 @@ public class PersistenceManager implements Serializable {
 		persistenceMap.put(MimeTypes.PROJECT, ProjectXmlPersistence.class);
 		persistenceMap.put(MimeTypes.ENRICHMENT_ANALYSIS, EnrichmentAnalysisXmlPersistence.class);
 		persistenceMap.put(MimeTypes.CONTENT, ContainerXmlPersistence.class);
-		persistenceMap.put(MimeTypes.MATRIX_FIGURE, HeatmapXmlPersistence.class);
+		persistenceMap.put(MimeTypes.HEATMAP_FIGURE, HeatmapXmlPersistence.class);
 		persistenceMap.put(MimeTypes.TABLE_FIGURE, TableFigureXmlPersistence.class);
 		persistenceMap.put(MimeTypes.OBJECT_MATRIX, ObjectMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.DOUBLE_MATRIX, DoubleMatrixTextPersistence.class);

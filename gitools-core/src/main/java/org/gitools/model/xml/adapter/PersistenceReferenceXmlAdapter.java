@@ -25,7 +25,8 @@ import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.PersistenceUtils;
 
-public class PersistenceReferenceXmlAdapter<T> extends XmlAdapter<PersistenceReferenceXmlElement, T> {
+public class PersistenceReferenceXmlAdapter<T>
+		extends XmlAdapter<PersistenceReferenceXmlElement, T> {
 
 	private PersistenceContext context;
 
@@ -37,7 +38,7 @@ public class PersistenceReferenceXmlAdapter<T> extends XmlAdapter<PersistenceRef
 	public T unmarshal(PersistenceReferenceXmlElement v) throws Exception {
 		File baseFile = new File(context.getBasePath());
 
-		boolean absolute = v.getPath().matches("$(\\/|[a-zA-Z]\\:\\\\)");
+		boolean absolute = PersistenceUtils.isAbsolute(v.getPath());
 
 		File file = absolute ?
 			new File(v.getPath()) : new File(baseFile, v.getPath());
@@ -48,7 +49,12 @@ public class PersistenceReferenceXmlAdapter<T> extends XmlAdapter<PersistenceRef
 
 		IProgressMonitor monitor = context.getMonitor();
 
-		return (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
+		T entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
+
+		context.setMimeType(entity, mimeType);
+		context.setFilePath(entity, file.getAbsolutePath());
+
+		return entity;
 	}
 
 	@Override

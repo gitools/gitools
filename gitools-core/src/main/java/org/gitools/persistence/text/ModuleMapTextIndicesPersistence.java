@@ -121,7 +121,7 @@ public class ModuleMapTextIndicesPersistence
 			CSVParser parser) throws FileNotFoundException, IOException,
 			DataFormatException {
 
-		monitor.begin("Reading  item names ...", 1);
+		monitor.begin("Reading item names ...", 1);
 
 		final String[] itemNames = parser.getLine();
 
@@ -136,7 +136,7 @@ public class ModuleMapTextIndicesPersistence
 	private void loadModules(ModuleMap moduleMap, IProgressMonitor monitor,
 			CSVParser parser) throws NumberFormatException, IOException {
 
-		monitor.begin("Reading  modules names ...", 1);
+		monitor.begin("Reading modules names ...", 1);
 
 		String[] fields;
 		final List<String> moduleNames = new ArrayList<String>();

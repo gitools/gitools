@@ -62,7 +62,7 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 
 						editor.setName(analysis.getTitle());
 
-						SwingUtilities.invokeAndWait(new Runnable() {
+						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
 								AppFrame.instance().getEditorsPanel().addEditor(editor);

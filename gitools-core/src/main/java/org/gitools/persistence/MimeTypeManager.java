@@ -37,7 +37,7 @@ public class MimeTypeManager {
 		
 		extMap.put(FileSuffixes.ENRICHMENT_ANALYSIS, MimeTypes.ENRICHMENT_ANALYSIS);
 		
-		extMap.put(FileSuffixes.MATRIX_FIGURE, MimeTypes.MATRIX_FIGURE);
+		extMap.put(FileSuffixes.HEATMAP_FIGURE, MimeTypes.HEATMAP_FIGURE);
 		extMap.put(FileSuffixes.TABLE_FIGURE, MimeTypes.TABLE_FIGURE);
 		
 		extMap.put(FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
@@ -54,7 +54,7 @@ public class MimeTypeManager {
 		
 		classMap.put(EnrichmentAnalysis.class, MimeTypes.ENRICHMENT_ANALYSIS);
 		
-		classMap.put(Heatmap.class, MimeTypes.MATRIX_FIGURE);
+		classMap.put(Heatmap.class, MimeTypes.HEATMAP_FIGURE);
 		classMap.put(TableFigure.class, MimeTypes.TABLE_FIGURE);
 		
 		classMap.put(ObjectMatrix.class, MimeTypes.OBJECT_MATRIX);

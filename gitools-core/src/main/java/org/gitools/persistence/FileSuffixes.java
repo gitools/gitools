@@ -17,7 +17,7 @@ public class FileSuffixes {
 	
 	public static final String ENRICHMENT_ANALYSIS = "analysis";
 	
-	public static final String MATRIX_FIGURE = "figure";
+	public static final String HEATMAP_FIGURE = "heatmap";
 	public static final String TABLE_FIGURE = "table";
 
 	public static final String OBJECT_MATRIX = "objectMatrix";
@@ -25,7 +25,7 @@ public class FileSuffixes {
 	public static final String DOUBLE_MATRIX = "doubleMatrix";
 	public static final String STRING_MATRIX = "stringMatrix";
 
-	public static final String MODULE_MAP = "moduleMap";
+	public static final String MODULE_MAP = "modules.gz";
 
 	private static final Map<Class<?>, String> suffixesMap = new HashMap<Class<?>, String>();
 	

@@ -125,4 +125,8 @@ public class PersistenceUtils {
 		else
 			return fileName.substring(0, pos);
 	}
+
+	public static boolean isAbsolute(String path) {
+		return path.matches("^(\\/|[a-zA-Z]\\:\\\\)");
+	}
 }
