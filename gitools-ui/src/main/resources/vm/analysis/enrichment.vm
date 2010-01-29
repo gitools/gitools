@@ -5,10 +5,16 @@
 		
 		.sectionHeader {
 			background-color: rgb(250, 210, 150);
+			font-weight: bold;
 			margin: 1px;
 			text-align: left;
 		}
-		
+
+		.attrTable {
+			margin: 0px 4px;
+			width: 90%;
+		}
+
 		.propTable {
 			margin: 1px;
 			width: 90%;
@@ -18,6 +24,7 @@
 			margin: 1px;
 			text-align: left;
 			font-weight: bold;
+			white-space: nowrap;
 		}
 		
 		.propValue {
@@ -31,7 +38,7 @@
 <body>
     <table>
     	<tr>
-    		<td class="sectionHeader">Analysis</td>
+    		<td class="sectionHeader">Details</td>
     	</tr>
     	<tr>
     		<table class="propTable">
@@ -39,20 +46,98 @@
     				<td class="propName">Name</td>
     				<td class="propValue">$analysis.title</td>
     			</tr>
-    			#if ( $analysis.startTime )
+				<tr>
+    				<td class="propName">Notes</td>
+    				<td class="propValue">$analysis.description</td>
+    			</tr>
+			</table>
+			<table>
+				<tr><td class="propName">Attributes</td><tr>
+				<tr><td class="propValue">
+    				<table class="attrTable" border="1" cellspacing="0">
+						#foreach($attr in $analysis.attributes)
+							#if ($attr.name)
+							<tr>
+								<td class="propName">$attr.name</td>
+								<td class="propValue">$attr.value</td>
+							</tr>
+							#end
+						#end
+					</table>
+    			</td></tr>
+			</table>
+			<table class="propTable">
     			<tr>
     				<td class="propName">Created</td>
     				<td class="propValue">$fmt.format($analysis.startTime)</td>
     			</tr>
-    			#end
-    			#if ( $analysis.elapsedTime > 0 )
     			<tr>
     				<td class="propName">Elapsed time</td>
     				<td class="propValue">$fmt.elapsedTime($analysis.elapsedTime)</td>
     			</tr>
-    			#end
     		</table>
     	</tr>
+
+		<tr>
+    		<td class="sectionHeader">Data</td>
+    	</tr>
+		<tr>
+			<table>
+				<tr>
+    				<td class="propName">Filter</td>
+    				<td class="propValue">
+						#if ( $analysis.binaryCutoffEnabled )
+							Binary cutoff filter for values $analysis.binaryCutoffCmp.longName $analysis.binaryCutoffValue
+						#else
+							Disabled
+						#end
+					</td>
+    			</tr>
+			</table>
+		</tr>
+
+		<tr>
+    		<td class="sectionHeader">Modules</td>
+    	</tr>
+		<tr>
+			<table class="propTable">
+				<tr>
+    				<td class="propName">Minimum number of items</td>
+					<td class="propValue">
+					#if ($analysis.minModuleSize != 0)
+						$analysis.minModuleSize
+					#else
+						No limit
+					#end
+					</td>
+    			</tr>
+				<tr>
+    				<td class="propName">Maximum number of items</td>
+					<td class="propValue">
+					#if ($analysis.maxModuleSize != 2147483647)
+						$analysis.maxModuleSize
+					#else
+						No limit
+					#end
+					</td>
+    			</tr>
+			</table>
+		</tr>
+
+		<tr>
+    		<td class="sectionHeader">Results</td>
+    	</tr>
+		<tr>
+			<table>
+				<tr><td class="propName">Test configuration</td></tr>
+			</table>
+			<table class="propTable">
+    			<tr>
+    				<td class="propName">Multiple test correction</td>
+    				<td class="propValue">$analysis.mtc</td>
+    			</tr>
+			</table>
+		</tr>
     </table>
 </body>
 </html>

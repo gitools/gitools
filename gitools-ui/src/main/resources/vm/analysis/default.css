@@ -1,0 +1,21 @@
+
+body {
+	font-family: sans-serif;
+}
+
+h1 {
+	margin: 0.01in 0.1in;
+	padding: 0.01in 0.1in;
+	color: orange;
+	/*background-color: orange;*/
+	/* border-bottom: 1px solid black; */
+}
+
+h2 {
+	margin: 0.01in 0.2in;
+}
+
+p {
+	padding: 0.01in 0.1in;
+}
+

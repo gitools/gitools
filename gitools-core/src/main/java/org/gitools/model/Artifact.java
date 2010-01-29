@@ -1,6 +1,7 @@
 package org.gitools.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,7 +29,7 @@ public class Artifact extends AbstractModel implements Serializable {
 	/** Extra attributes **/
 	@XmlElementWrapper(name = "attributes")
 	@XmlElement(name = "attribute")
-	private List<Attribute> attributes = null;
+	private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
