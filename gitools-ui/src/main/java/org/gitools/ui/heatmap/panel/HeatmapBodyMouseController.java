@@ -117,7 +117,7 @@ public class HeatmapBodyMouseController
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		int rotation = e.getWheelRotation();
+		int rotation = e.getWheelRotation() * -1;
 
 		int modifiers = e.getModifiers();
 		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
