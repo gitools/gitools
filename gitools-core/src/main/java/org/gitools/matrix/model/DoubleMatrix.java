@@ -65,7 +65,12 @@ public final class DoubleMatrix extends BaseMatrix	{
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		cells.set(row, column, (Double)value);
+		cells.set(row, column, (Double) value);
+	}
+
+	@Override
+	public void makeCells(int rows, int columns) {
+		this.cells = DoubleFactory2D.dense.make(rows, columns);
 	}
 	
 	/*@Override

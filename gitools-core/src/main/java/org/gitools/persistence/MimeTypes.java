@@ -13,8 +13,13 @@ public class MimeTypes {
 	
 	public static final String OBJECT_MATRIX = "application/gitools-matrix-object";
 	public static final String DOUBLE_MATRIX = "application/gitools-matrix-double";
+	public static final String BINARY_MATRIX = "application/gitools-matrix-binary";
 	public static final String STRING_MATRIX = "application/gitools-matrix-string";
 	public static final String ANNOTATION_MATRIX = "application/gitools-matrix-annotation";
+
+	public static final String ELEMENT_LISTS = "application/gitools-element-lists";
 	
-	public static final String MODULE_MAP = "application/gitools-modules-indexed";
+	public static final String MODULES_INDEXED_MAP = "application/gitools-modules-indexed";
+	public static final String MODULES_2C_MAP = "application/gitools-modules-2c-map";
+
 }

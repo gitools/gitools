@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.wizard.analysis.OncozAnalysisWizard;
+import org.gitools.ui.analysis.htest.wizard.OncozAnalysisWizard;
 
 public class NewOncozAnalysisAction extends BaseAction {
 

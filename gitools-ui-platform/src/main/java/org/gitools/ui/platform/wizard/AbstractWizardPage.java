@@ -1,6 +1,7 @@
 package org.gitools.ui.platform.wizard;
 
 import javax.swing.JPanel;
+import org.gitools.ui.platform.dialog.MessageStatus;
 
 public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
@@ -12,10 +13,12 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	
 	private boolean pageComplete;
 	
-	private String title;
-	
-	private String message;
-	
+	private String title = "";
+
+	private MessageStatus status = MessageStatus.INFO;
+
+	private String message = "";
+
 	public AbstractWizardPage() {
 	}
 	
@@ -70,11 +73,27 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	}
 
 	@Override
+	public MessageStatus getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(MessageStatus status) {
+		this.status = status;
+		updateDialog();
+	}
+
+	@Override
 	public String getMessage() {
 		return message;
 	}
 	
 	public void setMessage(String message) {
+		this.message = message;
+		updateDialog();
+	}
+
+	public void setMessage(MessageStatus status, String message) {
+		this.status = status;
 		this.message = message;
 		updateDialog();
 	}

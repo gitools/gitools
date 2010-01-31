@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.datafilters.DoubleParser;
-import org.gitools.datafilters.ValueParser;
+import org.gitools.datafilters.DoubleTranslator;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.AnalysisPersistence;
@@ -20,7 +20,7 @@ import org.gitools.stats.test.factory.TestFactory;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.commands.Command;
-import org.gitools.datafilters.BinaryCutoffParser;
+import org.gitools.datafilters.BinaryCutoffTranslator;
 
 public abstract class HtestCommand implements Command {
 
@@ -29,6 +29,7 @@ public abstract class HtestCommand implements Command {
 
 	protected HtestAnalysis analysis;
 
+	protected String dataMime;
 	protected String dataPath;
 
 	protected String workdir;
@@ -41,6 +42,7 @@ public abstract class HtestCommand implements Command {
 
 	public HtestCommand(
 			HtestAnalysis analysis,
+			String dataMime,
 			String dataFile,
 			String workdir,
 			String fileName,
@@ -48,6 +50,7 @@ public abstract class HtestCommand implements Command {
 			boolean resultsByCond) {
 
 		this.analysis = analysis;
+		this.dataMime = dataMime;
 		this.dataPath = dataFile;
 		this.workdir = workdir;
 		this.fileName = fileName;
@@ -61,6 +64,14 @@ public abstract class HtestCommand implements Command {
 
 	public void setAnalysis(HtestAnalysis analysis) {
 		this.analysis = analysis;
+	}
+
+	public String getDataMime() {
+		return dataMime;
+	}
+
+	public void setDataMime(String dataMime) {
+		this.dataMime = dataMime;
 	}
 	
 	public String getDataFile() {
@@ -103,12 +114,12 @@ public abstract class HtestCommand implements Command {
 		this.resultsByCond = resultsByCond;
 	}
 
-	protected ValueParser createValueParser(HtestAnalysis analysis) {
+	protected ValueTranslator createValueParser(HtestAnalysis analysis) {
 		return analysis.isBinaryCutoffEnabled() ?
-			new BinaryCutoffParser(new BinaryCutoff(
+			new BinaryCutoffTranslator(new BinaryCutoff(
 				analysis.getBinaryCutoffCmp(),
 				analysis.getBinaryCutoffValue())) :
-			new DoubleParser();
+			new DoubleTranslator();
 	}
 	
 	protected TestFactory createTestFactory(String toolName, String configName) {		

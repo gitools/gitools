@@ -2,7 +2,7 @@ package org.gitools.analysis.htest.enrichment;
 
 import java.io.File;
 
-import org.gitools.datafilters.ValueParser;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ModuleMap;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
@@ -11,14 +11,19 @@ import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
+import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 
-public class ZCalcCommand extends HtestCommand {
+public class EnrichmentCommand extends HtestCommand {
 
 	protected String modulesPath;
 	
-	public ZCalcCommand(
+	public EnrichmentCommand(
 			EnrichmentAnalysis analysis,
+			String dataMime,
 			String dataFile,
 			String modulesFile,
 			String workdir,
@@ -26,9 +31,8 @@ public class ZCalcCommand extends HtestCommand {
 			String outputFormat,
 			boolean resultsByCond) {
 		
-		super(analysis, dataFile,
-				workdir, fileName,
-				outputFormat, resultsByCond);
+		super(analysis, dataMime, dataFile,
+				workdir, fileName, outputFormat, resultsByCond);
 
 		this.modulesPath = modulesFile;
 	}
@@ -49,7 +53,8 @@ public class ZCalcCommand extends HtestCommand {
 		ModuleMap moduleMap = new ModuleMap();
 		loadDataAndModules(
 				doubleMatrix, moduleMap, 
-				dataPath, createValueParser(analysis),
+				dataMime, dataPath,
+				createValueParser(analysis),
 				modulesPath,
 				enrichAnalysis.getMinModuleSize(),
 				enrichAnalysis.getMaxModuleSize(),
@@ -63,7 +68,7 @@ public class ZCalcCommand extends HtestCommand {
 		
 		// Create and process analysis
 		
-		ZCalcProcessor processor = new ZCalcProcessor(enrichAnalysis);
+		EnrichmentProcessor processor = new EnrichmentProcessor(enrichAnalysis);
 		
 		processor.run(monitor);
 
@@ -93,8 +98,9 @@ public class ZCalcCommand extends HtestCommand {
 	private void loadDataAndModules(
 			DoubleMatrix doubleMatrix,
 			ModuleMap moduleMap,
+			String dataFileMime,
 			String dataFileName,
-			ValueParser valueParser,
+			ValueTranslator valueTranslator,
 			String modulesFileName, 
 			int minModuleSize,
 			int maxModuleSize,
@@ -104,11 +110,20 @@ public class ZCalcCommand extends HtestCommand {
 		
 		// Load metadata
 		
-		File resource = new File(dataFileName);
+		File dataFile = new File(dataFileName);
 
-		DoubleMatrixTextPersistence dmPersistence = new DoubleMatrixTextPersistence();
-		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
-		
+		MatrixTextPersistence dmPersistence = null;
+
+		if (dataFileMime.equals(MimeTypes.DOUBLE_MATRIX))
+			dmPersistence = new DoubleMatrixTextPersistence();
+		else if (dataFileMime.equals(MimeTypes.BINARY_MATRIX))
+			dmPersistence = new DoubleBinaryMatrixTextPersistence();
+		else
+			throw new PersistenceException("Unsupported mime type: " + dataFileMime);
+
+		dmPersistence.readMetadata(dataFile, doubleMatrix, monitor);
+		String[] rows = doubleMatrix.getRowStrings();
+
 		// Load modules
 		
 		File file = new File(modulesFileName);
@@ -119,7 +134,7 @@ public class ZCalcCommand extends HtestCommand {
 			moduleMap,
 			minModuleSize,
 			maxModuleSize,
-			doubleMatrix.getRowStrings(),
+			rows,
 			includeNonMappedItems,
 			monitor);
 		
@@ -128,9 +143,9 @@ public class ZCalcCommand extends HtestCommand {
 		// Load data
 		
 		dmPersistence.readData(
-				resource,
+				dataFile,
 				doubleMatrix,
-				valueParser,
+				valueTranslator,
 				null, 
 				moduleMap.getItemsOrder(), 
 				monitor);

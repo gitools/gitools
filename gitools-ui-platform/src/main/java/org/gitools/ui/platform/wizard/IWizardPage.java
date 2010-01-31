@@ -1,6 +1,7 @@
 package org.gitools.ui.platform.wizard;
 
 import javax.swing.JComponent;
+import org.gitools.ui.platform.dialog.MessageStatus;
 
 public interface IWizardPage {
 
@@ -20,5 +21,7 @@ public interface IWizardPage {
 
 	String getTitle();
 
+	MessageStatus getStatus();
+	
 	String getMessage();
 }

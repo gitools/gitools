@@ -16,7 +16,6 @@ import org.gitools.ui.actions.file.ImportIntogenTableAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
-import org.gitools.ui.actions.file.NewEnrichmentAnalysisWizardAction;
 import org.gitools.ui.actions.file.NewOncozAnalysisAction;
 import org.gitools.ui.actions.file.NewProjectAction;
 import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
@@ -35,7 +34,6 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction newProjectAction = new NewProjectAction();
 	
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
-	public static final BaseAction newEnrichmentAnalysisWizardAction = new NewEnrichmentAnalysisWizardAction();
 	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
 	public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
 	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
@@ -44,7 +42,6 @@ public class FileActionSet extends ActionSet {
 			//newProjectAction,
 			new ActionSet("Analysis", new BaseAction[] {
 				newEnrichmentAnalysisAction,
-				newEnrichmentAnalysisWizardAction,
 				newOncozAnalysisAction,
 				newCombinationAnalysisAction,
 				newCorrelationAnalysisAction })

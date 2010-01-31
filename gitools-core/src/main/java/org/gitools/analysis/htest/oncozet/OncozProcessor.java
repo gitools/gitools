@@ -90,7 +90,7 @@ public class OncozProcessor extends AbstractProcessor {
 		
 		resultsMatrix.setColumns(modules);
 		resultsMatrix.setRows(items);
-		resultsMatrix.makeData();
+		resultsMatrix.makeCells();
 		
 		resultsMatrix.setCellAdapter(
 				new BeanElementAdapter(test.getResultClass()));

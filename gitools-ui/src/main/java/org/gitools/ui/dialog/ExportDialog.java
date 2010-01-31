@@ -13,7 +13,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.gitools.ui.platform.dialog.DialogHeaderPanel.Status;
+import org.gitools.ui.platform.dialog.MessageStatus;
 
 public class ExportDialog extends AbstractDialog {
 
@@ -27,7 +27,7 @@ public class ExportDialog extends AbstractDialog {
 				"Export", 
 				"Select", 
 				"Choose export destination", 
-				Status.normal, 
+				MessageStatus.INFO,
 				null);
 		
 		setModalityType(ModalityType.APPLICATION_MODAL);

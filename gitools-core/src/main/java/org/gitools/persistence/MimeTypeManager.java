@@ -45,7 +45,7 @@ public class MimeTypeManager {
 		extMap.put(FileSuffixes.STRING_MATRIX, MimeTypes.STRING_MATRIX);
 		extMap.put(FileSuffixes.ANNOTATION_MATRIX, MimeTypes.ANNOTATION_MATRIX);
 
-		extMap.put(FileSuffixes.MODULE_MAP, MimeTypes.MODULE_MAP);
+		extMap.put(FileSuffixes.MODULES_INDEXED_MAP, MimeTypes.MODULES_INDEXED_MAP);
 		
 		// class mapping
 		
@@ -62,7 +62,7 @@ public class MimeTypeManager {
 		classMap.put(StringMatrix.class, MimeTypes.STRING_MATRIX);
 		classMap.put(AnnotationMatrix.class, MimeTypes.ANNOTATION_MATRIX);
 
-		classMap.put(ModuleMap.class, MimeTypes.MODULE_MAP);
+		classMap.put(ModuleMap.class, MimeTypes.MODULES_INDEXED_MAP);
 	}
 	
 	public String fromFile(File file) {

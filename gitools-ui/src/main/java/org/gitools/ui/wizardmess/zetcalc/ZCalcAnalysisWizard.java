@@ -9,15 +9,15 @@ import org.gitools.ui.wizardmess.AnalysisWizard;
 import com.nexes.wizard.WizardPanelDescriptor;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 
-import org.gitools.analysis.htest.enrichment.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.datafilters.BinaryCutoffParser;
+import org.gitools.datafilters.BinaryCutoffTranslator;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
 
 @Deprecated
 public class ZCalcAnalysisWizard extends AnalysisWizard {
 	
-	ZCalcCommand command; 
+	EnrichmentCommand command;
 	
 	public ZCalcAnalysisWizard(JFrame owner){
 		super();
@@ -63,14 +63,14 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 
 	    if (ret == 0) {
 		    //Preparing the Analysis command
-		    BinaryCutoffParser binaryCutoffParser = null;
+		    BinaryCutoffTranslator binaryCutoffParser = null;
 		    if (!dataModel.getValue(BIN_CUTOFF_CONDITION).equals(DISABLED)) {
 				String cond = (String) dataModel.getValue(BIN_CUTOFF_CONDITION);
 				double cutoff = Double.parseDouble(dataModel.getValue(BIN_CUTOFF_VALUE).toString());
 				
 				final CutoffCmp cmp = CutoffCmp.abbreviatedNameMap.get(cond);
 				
-				binaryCutoffParser = new BinaryCutoffParser(new BinaryCutoff(cmp, cutoff));
+				binaryCutoffParser = new BinaryCutoffTranslator(new BinaryCutoff(cmp, cutoff));
 		    }
 	
 			String outputFormat = "csv";
@@ -125,7 +125,7 @@ public class ZCalcAnalysisWizard extends AnalysisWizard {
 	    }
 	}
 	
-	public ZCalcCommand getCommand(){
+	public EnrichmentCommand getCommand(){
 		return command;
 	}
 	

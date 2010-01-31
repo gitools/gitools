@@ -7,8 +7,8 @@ import javax.swing.SwingUtilities;
 
 import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.gitools.biomart.BiomartService;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredListPage;
 
 public class BiomartDatasetPage extends FilteredListPage {
@@ -55,7 +55,8 @@ public class BiomartDatasetPage extends FilteredListPage {
 	
 		if (updated)
 			return;
-		
+
+		setStatus(MessageStatus.PROGRESS);
 		setMessage("Retrieving datasets for " + mart.getDisplayName() + " ...");
 		
 		setListData(new Object[] {});
@@ -74,13 +75,14 @@ public class BiomartDatasetPage extends FilteredListPage {
 							setListData(visibleDataSets.toArray(
 									new DatasetListWrapper[visibleDataSets.size()]));
 							
-							setMessage("");
+							setMessage(MessageStatus.INFO, "");
 						}
 					});
 					
 					updated = true;
 				}
 				catch (Exception e) {
+					setStatus(MessageStatus.ERROR);
 					setMessage(e.getMessage());
 					e.printStackTrace();
 				}

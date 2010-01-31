@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import org.gitools.ui.platform.dialog.DialogHeaderPanel.Status;
-
 public abstract class AbstractDialog extends JDialog {
 
 	private static final long serialVersionUID = 5886096207448862426L;
@@ -26,7 +24,7 @@ public abstract class AbstractDialog extends JDialog {
 	public AbstractDialog(
 			Window owner,
 			String title, String header, 
-			String message, Status status,
+			String message, MessageStatus status,
 			Icon logo) {
 	
 		super(owner, title);
@@ -39,7 +37,7 @@ public abstract class AbstractDialog extends JDialog {
 	}
 	
 	public AbstractDialog(Window owner, String title, Icon icon) {
-		this(owner, title, "", "", Status.normal, icon);
+		this(owner, title, "", "", MessageStatus.INFO, icon);
 	}
 
 	public void open() {
@@ -57,11 +55,14 @@ public abstract class AbstractDialog extends JDialog {
 	protected void createComponents(
 			String header, 
 			String message, 
-			Status status,
+			MessageStatus status,
 			Icon logo) {
 		
-		hdrPanel = new DialogHeaderPanel(
-				header, message, status, logo);
+		hdrPanel = new DialogHeaderPanel();
+		hdrPanel.setHeader(header);
+		hdrPanel.setMessage(message);
+		hdrPanel.setStatus(status);
+		hdrPanel.setLogo(logo);
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new BorderLayout());

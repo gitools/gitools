@@ -48,13 +48,6 @@ public class ObjectMatrix extends BaseMatrix {
 	
 	// cells
 	
-	//TODO rename to makeCells()
-	public void makeData() {
-		cells = ObjectFactory2D.dense.make(
-				rows.size(),
-				columns.size());
-	}
-	
 	public ObjectMatrix2D getCells() {
 		return cells;
 	}
@@ -80,5 +73,14 @@ public class ObjectMatrix extends BaseMatrix {
 	@Override
 	public void setCellValue(int row, int column, int property, Object value) {
 		cellAdapter.setValue(getCell(row, column), property, value);
+	}
+
+	public void makeCells() {
+		makeCells(rows.size(), columns.size());
+	}
+
+	@Override
+	public void makeCells(int rows, int columns) {
+		cells = ObjectFactory2D.dense.make(rows, columns);
 	}
 }

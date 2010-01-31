@@ -5,16 +5,16 @@ import java.io.File;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.analysis.htest.enrichment.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 
 public class ZCalcCommandJob implements Job {
 	
-	ZCalcCommand command;
+	EnrichmentCommand command;
 	IProgressMonitor monitor;
 	File analysisPath;
 	
 	public ZCalcCommandJob(
-			ZCalcCommand command, 
+			EnrichmentCommand command,
 			IProgressMonitor monitor, 
 			File analysisPath) {
 		

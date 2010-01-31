@@ -15,17 +15,20 @@ public class FileSuffixes {
 	public static final String PROJECT = "project.xml";
 	public static final String CONTENT = "contents.xml";
 	
-	public static final String ENRICHMENT_ANALYSIS = "analysis";
+	public static final String ENRICHMENT_ANALYSIS = "enrichment";
+	public static final String ONCOZ_ANALYSIS = "oncodriver";
 	
 	public static final String HEATMAP_FIGURE = "heatmap";
 	public static final String TABLE_FIGURE = "table";
 
-	public static final String OBJECT_MATRIX = "objectMatrix";
-	public static final String ANNOTATION_MATRIX = "annotationMatrix";
-	public static final String DOUBLE_MATRIX = "doubleMatrix";
-	public static final String STRING_MATRIX = "stringMatrix";
+	public static final String OBJECT_MATRIX = "objectmatrix.gz";
+	public static final String DOUBLE_MATRIX = "doublematrix.gz";
+	public static final String BINARY_MATRIX = "binarymatrix.gz";
+	public static final String STRING_MATRIX = "stringmatrix.gz";
+	public static final String ANNOTATION_MATRIX = "annotationmatrix.gz";
 
-	public static final String MODULE_MAP = "modules.gz";
+	public static final String MODULES_INDEXED_MAP = "modules.gz";
+	public static final String MODULES_2C_MAP = "modules2c.gz";
 
 	private static final Map<Class<?>, String> suffixesMap = new HashMap<Class<?>, String>();
 	

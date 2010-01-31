@@ -117,6 +117,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 				moduleOrder[i] = i;
 			
 			Arrays.sort(moduleOrder, new Comparator<Integer>() {
+				@Override
 				public int compare(Integer o1, Integer o2) {
 					int l1 = tmpModuleItemIndices[o1].length;
 					int l2 = tmpModuleItemIndices[o2].length;

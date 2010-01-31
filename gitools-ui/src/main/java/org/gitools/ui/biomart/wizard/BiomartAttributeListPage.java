@@ -26,6 +26,7 @@ import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class BiomartAttributeListPage extends AbstractWizardPage {
@@ -60,6 +61,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		//panel.setAddBtnEnabled(false);
 		panel.setAttributePages(null);
 
+		setStatus(MessageStatus.PROGRESS);
 		setMessage("Retrieving available attributes ...");
 
 		if (panel.getAttributePages() == null) {
@@ -82,10 +84,12 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 					//panel.setAddBtnEnabled(true);
 					panel.setAttributePages(attrPages);
 
+					setStatus(MessageStatus.WARN);
 					setMessage("Press [Add...] button to select attributes");
 				}
 			});
 		} catch (Exception ex) {
+			setStatus(MessageStatus.ERROR);
 			setMessage(ex.getMessage());
 			ex.printStackTrace();
 		}

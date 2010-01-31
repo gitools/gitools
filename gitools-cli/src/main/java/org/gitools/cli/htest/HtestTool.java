@@ -13,9 +13,10 @@ import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.model.Attribute;
 import org.gitools.model.ToolConfig;
+import org.gitools.persistence.MimeTypes;
 import org.kohsuke.args4j.Option;
 
-public abstract class HtestCliTool extends AbstractTool {
+public abstract class HtestTool extends AbstractTool {
 
 	public static class HtestArguments extends GitoolsArguments {
 		@Option(name = "-N", aliases = "-name", metaVar = "<name>",
@@ -52,6 +53,13 @@ public abstract class HtestCliTool extends AbstractTool {
 				usage = "Multiple test correxction method.\n" +
 				"Available: bonferroni, bh. (default: bh)")
 		public String mtc = "bh";
+
+		@Option(name = "-dm", aliases = "-data-mime", metaVar = "<file>",
+				usage = "Data file format (MIME). Available formats:\n" +
+				MimeTypes.DOUBLE_MATRIX + "\n" +
+				MimeTypes.BINARY_MATRIX + "\n" +
+				MimeTypes.ELEMENT_LISTS)
+		public String dataMime = MimeTypes.DOUBLE_MATRIX;
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",
 				usage = "File with data to be processed.")

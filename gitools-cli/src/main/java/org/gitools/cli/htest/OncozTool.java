@@ -14,7 +14,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 
-public class OncozCliTool extends HtestCliTool {
+public class OncozTool extends HtestTool {
 
 	public static class OncozArguments extends HtestArguments {
 		@Option(name = "-s", aliases = {"-sets"}, metaVar = "<file>",
@@ -61,8 +61,8 @@ public class OncozCliTool extends HtestCliTool {
 		analysis.setMaxSetSize(args.maxSetSize);
 
 		OncozCommand cmd = new OncozCommand(
-        		analysis, args.dataFile, args.setsFile,
-				args.workdir, args.analysisName,
+        		analysis, args.dataMime, args.dataFile,
+				args.setsFile, args.workdir, args.analysisName,
 				args.outputFormat, true);
         
         IProgressMonitor monitor = !args.quiet ?

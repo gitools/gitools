@@ -2,23 +2,11 @@ package org.gitools.matrix.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-
-//TODO remove JAXB support
-@XmlSeeAlso( { 
-	ObjectMatrix.class,
-	StringMatrix.class,
-	DoubleMatrix.class,
-	AnnotationMatrix.class })
-@XmlAccessorType(XmlAccessType.NONE)
 
 public abstract class BaseMatrix extends Matrix {
 
@@ -50,7 +38,9 @@ public abstract class BaseMatrix extends Matrix {
 		
 		this.cellAdapter = cellAdapter;
 	}
-	
+
+	public abstract void makeCells(int rows, int columns);
+
 	// rows
 	
 	public ObjectMatrix1D getRows() {

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 
-import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
+import org.gitools.ui._DEPRECATED.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
 
 

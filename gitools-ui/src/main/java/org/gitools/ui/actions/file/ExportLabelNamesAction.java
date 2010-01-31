@@ -69,7 +69,7 @@ public class ExportLabelNamesAction extends BaseAction {
 			if (file == null)
 				return;
 			
-			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
+			Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 			
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			

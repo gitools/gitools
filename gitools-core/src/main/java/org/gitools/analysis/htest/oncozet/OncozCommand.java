@@ -2,16 +2,18 @@ package org.gitools.analysis.htest.oncozet;
 
 import java.io.File;
 
-import org.gitools.datafilters.ValueParser;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ModuleMap;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
-import org.gitools.stats.test.factory.TestFactory;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
+import org.gitools.persistence.text.MatrixTextPersistence;
 
 public class OncozCommand extends HtestCommand {
 
@@ -19,6 +21,7 @@ public class OncozCommand extends HtestCommand {
 
 	public OncozCommand(
 			OncozAnalysis analysis,
+			String dataMime,
 			String dataFile,
 			String setsFile,
 			String workdir,
@@ -26,9 +29,8 @@ public class OncozCommand extends HtestCommand {
 			String outputFormat,
 			boolean resultsByCond) {
 		
-		super(analysis, dataFile,
-				workdir, fileName,
-				outputFormat, resultsByCond);
+		super(analysis, dataMime, dataFile,
+				workdir, fileName, outputFormat, resultsByCond);
 
 		this.setsFile = setsFile;
 	}
@@ -58,7 +60,8 @@ public class OncozCommand extends HtestCommand {
 
 		loadDataAndModules(
 				doubleMatrix, setsMap,
-				dataPath, createValueParser(analysis),
+				dataMime, dataPath,
+				createValueParser(analysis),
 				setsFile,
 				oncozAnalysis.getMinSetSize(),
 				oncozAnalysis.getMaxSetSize(),
@@ -79,8 +82,9 @@ public class OncozCommand extends HtestCommand {
 	}
 
 	private void loadDataAndModules(
-			DoubleMatrix doubleMatrix, ModuleMap moduleMap,
-			String dataFileName, ValueParser valueParser, 
+			DoubleMatrix matrix, ModuleMap moduleMap,
+			String dataFileMime, String dataFileName,
+			ValueTranslator valueTranslator,
 			String setsFileName, int minSetsSize, int maxSetsSize,
 			boolean includeNonMappedItems,
 			IProgressMonitor monitor)
@@ -88,10 +92,18 @@ public class OncozCommand extends HtestCommand {
 		
 		// Load metadata
 		
-		File resource = new File(dataFileName);
+		File dataFile = new File(dataFileName);
 		
-		DoubleMatrixTextPersistence dmPersistence = new DoubleMatrixTextPersistence();
-		dmPersistence.readMetadata(resource, doubleMatrix, valueParser, monitor);
+		MatrixTextPersistence dmPersistence = null;
+
+		if (dataFileMime.equals(MimeTypes.DOUBLE_MATRIX))
+			dmPersistence = new DoubleMatrixTextPersistence();
+		else if (dataFileMime.equals(MimeTypes.BINARY_MATRIX))
+			dmPersistence = new DoubleBinaryMatrixTextPersistence();
+		else
+			throw new PersistenceException("Unsupported mime type: " + dataFileMime);
+
+		dmPersistence.readMetadata(dataFile, matrix, monitor);
 		
 		// Load sets
 		
@@ -104,12 +116,12 @@ public class OncozCommand extends HtestCommand {
 				moduleMap,
 				minSetsSize,
 				maxSetsSize,
-				doubleMatrix.getColumnStrings(),
+				matrix.getColumnStrings(),
 				includeNonMappedItems,
 				monitor);
 		}
 		else {
-			String[] names = doubleMatrix.getColumnStrings();
+			String[] names = matrix.getColumnStrings();
 			moduleMap.setItemNames(names);
 			moduleMap.setModuleNames(new String[] {"all"});
 			int num = names.length;
@@ -122,9 +134,9 @@ public class OncozCommand extends HtestCommand {
 		// Load data
 		
 		dmPersistence.readData(
-				resource,
-				doubleMatrix,
-				valueParser,
+				dataFile,
+				matrix,
+				valueTranslator,
 				moduleMap.getItemsOrder(),
 				null,
 				monitor);		

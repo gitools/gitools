@@ -29,7 +29,7 @@ import org.gitools.stats.mtc.MTCFactory;
  * 'cond' is an abbreviation for condition.
  */
 
-public class ZCalcProcessor extends AbstractProcessor {
+public class EnrichmentProcessor extends AbstractProcessor {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -52,7 +52,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 
 	private EnrichmentAnalysis analysis;
 	
-	public ZCalcProcessor(EnrichmentAnalysis analysis) {
+	public EnrichmentProcessor(EnrichmentAnalysis analysis) {
 		
 		this.analysis = analysis;
 	}
@@ -93,7 +93,7 @@ public class ZCalcProcessor extends AbstractProcessor {
 		
 		resultsMatrix.setColumns(conditions);
 		resultsMatrix.setRows(modules);
-		resultsMatrix.makeData();
+		resultsMatrix.makeCells();
 		
 		resultsMatrix.setCellAdapter(
 				new BeanElementAdapter(test.getResultClass()));

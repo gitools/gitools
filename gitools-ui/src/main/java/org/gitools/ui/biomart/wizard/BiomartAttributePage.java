@@ -13,10 +13,10 @@ import org.biomart._80.martservicesoap.AttributeInfo;
 import org.biomart._80.martservicesoap.AttributePage;
 import org.biomart._80.martservicesoap.DatasetInfo;
 import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredTreePage;
 
 public class BiomartAttributePage extends FilteredTreePage {
@@ -62,7 +62,8 @@ public class BiomartAttributePage extends FilteredTreePage {
 	public void updateControls() {
 		if (updated)
 			return;
-		
+
+		setStatus(MessageStatus.PROGRESS);
 		setMessage("Retrieving available attributes ...");
 		
 		setComplete(false);
@@ -82,13 +83,14 @@ public class BiomartAttributePage extends FilteredTreePage {
 						@Override public void run() {
 							getPanel().setModel(model);
 							getPanel().expandAll();
-							setMessage("");
+							setMessage(MessageStatus.INFO, "");
 						}
 					});
 					
 					updated = true;
 				}
 				catch (Exception e) {
+					setStatus(MessageStatus.ERROR);
 					setMessage(e.getMessage());
 					e.printStackTrace();
 				}

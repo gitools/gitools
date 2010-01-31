@@ -190,7 +190,7 @@ public class ObjectMatrixTextPersistence
 			
 			resultsMatrix.setColumns(columns);
 			resultsMatrix.setRows(rows);
-			resultsMatrix.makeData();
+			resultsMatrix.makeCells();
 			
 			resultsMatrix.setCellAdapter(elementAdapter);
 			

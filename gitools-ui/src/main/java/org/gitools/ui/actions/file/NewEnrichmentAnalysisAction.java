@@ -2,25 +2,18 @@ package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
-import org.gitools.analysis.htest.enrichment.ZCalcCommand;
 import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.platform.dialog.ProgressMonitorDialog;
-import org.gitools.ui.jobs.ZCalcCommandJob;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.wizardmess.AnalysisWizard;
-import org.gitools.ui.wizardmess.WizardDataModel;
-import org.gitools.ui.wizardmess.zetcalc.ZCalcAnalysisWizard;
-
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8592231961109105958L;
 
 	public NewEnrichmentAnalysisAction() {
-		super("Enrichment analysis...");
+		super("Enrichment analysis ...");
 
 		setDesc("Run an enrichment analysis");
 		setMnemonic(KeyEvent.VK_E);
@@ -30,33 +23,25 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final ZCalcAnalysisWizard wizard = 
-			new ZCalcAnalysisWizard(AppFrame.instance());
+		EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
+		
+		WizardDialog wizDlg = new WizardDialog(
+				AppFrame.instance(), wizard);
+		
+		wizDlg.open();
 
-		final WizardDataModel dialogData = 
-			wizard.getWizardDataModel();
-
-		final ZCalcCommand command = wizard.getCommand();
-
-		final String workDir = (String) dialogData
-				.getValue(AnalysisWizard.ANALYSIS_WORKING_DIR);
-		final String analysisName = (String) dialogData
-				.getValue(AnalysisWizard.ANALYSIS_NAME);
-
-		final File analysisPath = new File(workDir, analysisName);
-
-		if (command != null) {
-
-			final ProgressMonitorDialog monitorDialog = new ProgressMonitorDialog(
-					AppFrame.instance(), "Log");
-
-			final IProgressMonitor monitor = 
-				monitorDialog.getProgressMonitor();
-
-			AppFrame.instance().getJobProcessor().addJob(
-					new ZCalcCommandJob(command, monitor, analysisPath));
-			
-			monitorDialog.setVisible(true);
-		}
+		//FIXME
+		/*ZCalcCommand cmd = new ZCalcCommand();
+		//analysisName, testName, samplingNumSamples, 
+		//dataFile, valueFilter, groupsFile, minGroupSize, maxModuleSize, 
+		//includeNonMappedItems, workdir, outputFormat, resultsByCond
+		
+		cmd.setTitle(wizard.getAnalysisTitle());
+		cmd.setNotes(wizard.getAnalysisNotes());
+		cmd.setTestConfig(wizard.getTestConfig());
+		cmd.setDataFile(wizard.getDataFile().getAbsolutePath());
+		cmd.setDataBinaryCutoffEnabled(wizard.getDataBinaryCutoffEnabled());
+		cmd.setDataBinaryCutoff(wizard.getDataBinaryCutoff());
+		*/
 	}
 }

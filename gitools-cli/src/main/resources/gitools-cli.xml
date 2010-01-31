@@ -4,14 +4,14 @@
 	<tool>
     	<name>enrichment</name>
         <description>Run an enrichment analysis</description>
-        <argumentsClass>org.gitools.cli.htest.ZcalcCliTool$ZcalcArguments</argumentsClass>
-        <lifeCycleClass>org.gitools.cli.htest.ZcalcCliTool</lifeCycleClass>
+        <argumentsClass>org.gitools.cli.htest.EnrichmentTool$EnrichmentArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.htest.EnrichmentTool</lifeCycleClass>
     </tool>
 
 	<tool>
     	<name>oncoz</name>
         <description>Run a driver alterations identification analysis</description>
-        <argumentsClass>org.gitools.cli.htest.OncozCliTool$OncozArguments</argumentsClass>
-        <lifeCycleClass>org.gitools.cli.htest.OncozCliTool</lifeCycleClass>
+        <argumentsClass>org.gitools.cli.htest.OncozTool$OncozArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.htest.OncozTool</lifeCycleClass>
     </tool>
 </tools>

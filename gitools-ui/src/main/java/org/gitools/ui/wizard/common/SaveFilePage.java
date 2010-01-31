@@ -30,6 +30,7 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -62,9 +63,9 @@ public class SaveFilePage extends AbstractWizardPage {
 		File file = getSelectedFile();
 		path.setText(file.getAbsolutePath());
 		if (isComplete() && file.exists())
-			setMessage("WARNING: File " + file.getName() + " already exists");
+			setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
 		else
-			setMessage("");
+			setMessage(MessageStatus.INFO, "");
 	}
 
 	@Override
@@ -89,14 +90,19 @@ public class SaveFilePage extends AbstractWizardPage {
 	}
 
 	public void setFormats(FileFormat[] formats) {
-		boolean active = formats != null && formats.length > 0;
+		/*boolean active = formats != null && formats.length > 0;
 		formatLabel.setVisible(active);
-		format.setVisible(active);
+		format.setVisible(active);*/
 		format.setModel(new DefaultComboBoxModel(formats));
 	}
 
 	public FileFormat getFormat() {
 		return (FileFormat) format.getSelectedItem();
+	}
+
+	public void setFormatsVisible(boolean visible) {
+		formatLabel.setVisible(visible);
+		format.setVisible(visible);
 	}
 
 	public File getSelectedFile() {
@@ -139,7 +145,7 @@ public class SaveFilePage extends AbstractWizardPage {
         jLabel4 = new javax.swing.JLabel();
         path = new javax.swing.JTextField();
 
-        jLabel1.setText("File name");
+        jLabel1.setText("Name");
 
         fileName.setFocusCycleRoot(true);
 
@@ -172,9 +178,9 @@ public class SaveFilePage extends AbstractWizardPage {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(format, 0, 371, Short.MAX_VALUE)
-                            .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
+                            .addComponent(format, 0, 390, Short.MAX_VALUE)
+                            .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(browseBtn))
                     .addGroup(layout.createSequentialGroup()
@@ -210,7 +216,8 @@ public class SaveFilePage extends AbstractWizardPage {
 	private void browseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtnActionPerformed
 		File selPath = FileChooserUtils.selectPath(
 				"Select folder", folder.getText());
-		folder.setText(selPath.getAbsolutePath());
+		if (selPath != null)
+			folder.setText(selPath.getAbsolutePath());
 	}//GEN-LAST:event_browseBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

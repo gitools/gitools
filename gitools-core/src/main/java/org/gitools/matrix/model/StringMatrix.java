@@ -33,7 +33,7 @@ public class StringMatrix extends ObjectMatrix {
 	}
 	
 	@Override
-	public void makeData() {
+	public void makeCells() {
 		cells = ObjectFactory2D.dense.make(
 				rows.size(),
 				columns.size());

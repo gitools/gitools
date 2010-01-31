@@ -8,15 +8,15 @@ import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.enrichment.ZCalcCommand;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 
-public class ZcalcCliTool extends HtestCliTool {
+public class EnrichmentTool extends HtestTool {
 
-	public static class ZcalcArguments extends HtestArguments {
-		@Option(name = "-c", aliases = {"-class", "-m", "-modules"}, metaVar = "<file>",
+	public static class EnrichmentArguments extends HtestArguments {
+		@Option(name = "-m", aliases = "-modules", metaVar = "<file>",
 				usage = "File with mappings between items and modules.")
 		public String modulesFile;
 
@@ -39,7 +39,7 @@ public class ZcalcCliTool extends HtestCliTool {
 		
 		super.validate(argsObject);
 		
-		ZcalcArguments args = (ZcalcArguments) argsObject;
+		EnrichmentArguments args = (EnrichmentArguments) argsObject;
 
 		testConfig = TestFactory.createToolConfig(
 				ToolConfig.ZETCALC, args.testName);
@@ -59,7 +59,7 @@ public class ZcalcCliTool extends HtestCliTool {
 	@Override
 	public void run(Object argsObject) throws ToolException {
 		
-		ZcalcArguments args = (ZcalcArguments) argsObject;
+		EnrichmentArguments args = (EnrichmentArguments) argsObject;
 
 		EnrichmentAnalysis analysis = new EnrichmentAnalysis();
 		prepareAnalysis(analysis, args);
@@ -69,9 +69,9 @@ public class ZcalcCliTool extends HtestCliTool {
 
 		analysis.setDiscardNonMappedRows(args.discardNonMappedRows);
         
-		ZCalcCommand cmd = new ZCalcCommand(
-        		analysis, args.dataFile, args.modulesFile,
-				args.workdir, args.analysisName,
+		EnrichmentCommand cmd = new EnrichmentCommand(
+        		analysis, args.dataMime, args.dataFile,
+				args.modulesFile, args.workdir, args.analysisName,
 				args.outputFormat, true);
         
         IProgressMonitor monitor = !args.quiet ? 

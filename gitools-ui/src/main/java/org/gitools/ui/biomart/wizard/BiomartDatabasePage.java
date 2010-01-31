@@ -9,6 +9,7 @@ import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredListPage;
 
 public class BiomartDatabasePage extends FilteredListPage {
@@ -48,7 +49,7 @@ public class BiomartDatabasePage extends FilteredListPage {
 		if (updated)
 			return;
 		
-		setMessage("Retrieving databases...");
+		setMessage(MessageStatus.PROGRESS, "Retrieving databases...");
 		
 		setListData(new Object[] {});
 		
@@ -66,12 +67,13 @@ public class BiomartDatabasePage extends FilteredListPage {
 							setListData(listData.toArray(
 									new DatabaseListWrapper[listData.size()]));
 							
-							setMessage("");
+							setMessage(MessageStatus.INFO, "");
 						}
 					});
 					
 					updated = true;
 				} catch (Exception e) {
+					setStatus(MessageStatus.ERROR);
 					setMessage(e.getMessage());
 					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), e);
 					dlg.setVisible(true);

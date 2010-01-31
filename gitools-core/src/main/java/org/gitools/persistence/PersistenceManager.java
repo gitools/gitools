@@ -66,7 +66,7 @@ public class PersistenceManager implements Serializable {
 		persistenceMap.put(MimeTypes.OBJECT_MATRIX, ObjectMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.DOUBLE_MATRIX, DoubleMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.ANNOTATION_MATRIX, AnnotationMatrixTextPersistence.class);
-		persistenceMap.put(MimeTypes.MODULE_MAP, ModuleMapTextIndicesPersistence.class);
+		persistenceMap.put(MimeTypes.MODULES_INDEXED_MAP, ModuleMapTextIndicesPersistence.class);
 	}
 	
 	@SuppressWarnings("unchecked")
