@@ -1,24 +1,11 @@
 package org.gitools.analysis.htest;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.model.Project;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.AnalysisPersistence;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.analysis.CsvAnalysisResource;
-import org.gitools.persistence.analysis.REXmlAnalysisResource;
 import org.gitools.stats.test.factory.TestFactory;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.commands.Command;
 import org.gitools.datafilters.BinaryCutoffTranslator;
 
@@ -36,26 +23,18 @@ public abstract class HtestCommand implements Command {
 
 	protected String fileName;
 
-	protected String outputFormat;
-
-	protected boolean resultsByCond;
-
 	public HtestCommand(
 			HtestAnalysis analysis,
 			String dataMime,
 			String dataFile,
 			String workdir,
-			String fileName,
-			String outputFormat,
-			boolean resultsByCond) {
+			String fileName) {
 
 		this.analysis = analysis;
 		this.dataMime = dataMime;
 		this.dataPath = dataFile;
 		this.workdir = workdir;
 		this.fileName = fileName;
-		this.outputFormat = outputFormat;
-		this.resultsByCond = resultsByCond;
 	}
 
 	public HtestAnalysis getaAnalysis() {
@@ -98,22 +77,6 @@ public abstract class HtestCommand implements Command {
 		this.fileName = fileName;
 	}
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
-
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
-
-	public boolean isResultsByCond() {
-		return resultsByCond;
-	}
-
-	public void setResultsByCond(boolean resultsByCond) {
-		this.resultsByCond = resultsByCond;
-	}
-
 	protected ValueTranslator createValueParser(HtestAnalysis analysis) {
 		return analysis.isBinaryCutoffEnabled() ?
 			new BinaryCutoffTranslator(new BinaryCutoff(
@@ -132,7 +95,7 @@ public abstract class HtestCommand implements Command {
 		return testFactory;
 	}
 	
-	protected void save(HtestAnalysis analysis, IProgressMonitor monitor)
+/*	protected void save(HtestAnalysis analysis, IProgressMonitor monitor)
 			throws PersistenceException {
 
 		final String basePath = workdir; //+ File.separator + analysis.getTitle();
@@ -164,29 +127,5 @@ public abstract class HtestCommand implements Command {
 		
 		monitor.end();
 	}
-
-	private void saveProject(
-			String basePath, HtestAnalysis analysis, IProgressMonitor monitor)
-			throws FileNotFoundException, IOException {
-		
-		File path = new File(basePath);
-		if (!path.exists())
-			path.mkdirs();
-		
-		Project proj = new Project();
-		//inv.setSummary("inv summary");
-		//inv.setNotes("inv notes");
-		// TODO
-		//proj.getAnalysis().add(analysis);
-		//proj.getDataTables().add(analysis.getDataTable());
-		//proj.getModuleMaps().add(analysis.getModuleMap());
-		
-		//FIXME: 
-//		ProjectPersistence res = new ProjectPersistence(path, "project.xml");
-//		try {
-//			res.save(proj, monitor.subtask());
-//		} catch (JAXBException e) {
-//			e.printStackTrace();
-//		}
-	}
+*/
 }

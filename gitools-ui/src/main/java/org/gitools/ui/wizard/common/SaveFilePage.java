@@ -105,7 +105,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		format.setVisible(visible);
 	}
 
-	public File getSelectedFile() {
+	public String getFile() {
 		StringBuilder sb = new StringBuilder();
 		String name = getFileName();
 		sb.append(name);
@@ -118,12 +118,16 @@ public class SaveFilePage extends AbstractWizardPage {
 				sb.append('.');
 			sb.append(fmt.getExtension());
 		}
-		
+
+		return sb.toString();
+	}
+
+	public File getSelectedFile() {
 		String folderName = folder.getText();
 		if (folderName.isEmpty())
 			folderName = System.getProperty("user.dir");
 
-		return new File(folderName, sb.toString());
+		return new File(folderName, getFile());
 	}
 
     /** This method is called from within the constructor to

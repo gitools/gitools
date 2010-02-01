@@ -2,6 +2,8 @@ package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 
 import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -30,18 +32,17 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 		
 		wizDlg.open();
 
-		//FIXME
-		/*ZCalcCommand cmd = new ZCalcCommand();
-		//analysisName, testName, samplingNumSamples, 
-		//dataFile, valueFilter, groupsFile, minGroupSize, maxModuleSize, 
-		//includeNonMappedItems, workdir, outputFormat, resultsByCond
+		EnrichmentAnalysis analysis = wizard.getAnalysis();
+
+		EnrichmentCommand cmd = new EnrichmentCommand(
+				analysis,
+				wizard.getDataFileMime(),
+				wizard.getDataFile().getAbsolutePath(),
+				wizard.getModulesFileMime(),
+				wizard.getModulesFile().getAbsolutePath(),
+				wizard.getWorkdir(),
+				wizard.getFileName());
+
 		
-		cmd.setTitle(wizard.getAnalysisTitle());
-		cmd.setNotes(wizard.getAnalysisNotes());
-		cmd.setTestConfig(wizard.getTestConfig());
-		cmd.setDataFile(wizard.getDataFile().getAbsolutePath());
-		cmd.setDataBinaryCutoffEnabled(wizard.getDataBinaryCutoffEnabled());
-		cmd.setDataBinaryCutoff(wizard.getDataBinaryCutoff());
-		*/
 	}
 }

@@ -11,26 +11,28 @@ import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
+import org.gitools.persistence.xml.OncozAnalysisXmlPersistence;
 
 public class OncozCommand extends HtestCommand {
 
+	protected String setsMime;
 	protected String setsFile;
 
 	public OncozCommand(
 			OncozAnalysis analysis,
 			String dataMime,
 			String dataFile,
+			String setsMime,
 			String setsFile,
 			String workdir,
-			String fileName,
-			String outputFormat,
-			boolean resultsByCond) {
+			String fileName) {
 		
 		super(analysis, dataMime, dataFile,
-				workdir, fileName, outputFormat, resultsByCond);
+				workdir, fileName);
 
 		this.setsFile = setsFile;
 	}
@@ -140,5 +142,17 @@ public class OncozCommand extends HtestCommand {
 				moduleMap.getItemsOrder(),
 				null,
 				monitor);		
+	}
+
+	private void save(final OncozAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
+
+		File workdirFile = new File(workdir);
+		if (!workdirFile.exists())
+			workdirFile.mkdirs();
+
+		File file = new File(workdirFile, fileName + "." + FileSuffixes.ONCOZ_ANALYSIS);
+		OncozAnalysisXmlPersistence p = new OncozAnalysisXmlPersistence();
+		p.setRecursivePersistence(true);
+		p.write(file, analysis, monitor);
 	}
 }

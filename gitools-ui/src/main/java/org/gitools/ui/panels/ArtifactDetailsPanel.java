@@ -4,18 +4,18 @@
  * Created on September 4, 2009, 12:31 PM
  */
 
-package org.gitools.ui.analysis.htest.wizard;
+package org.gitools.ui.panels;
 
-/**
- *
- * @author  cperez
- */
-public class AnalysisDetailsPanel extends javax.swing.JPanel {
+import java.util.ArrayList;
+import java.util.List;
+import org.gitools.model.Attribute;
+
+public class ArtifactDetailsPanel extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = -6310021084299136899L;
 	
 	/** Creates new form AnalysisDetailsPanel */
-    public AnalysisDetailsPanel() {
+    public ArtifactDetailsPanel() {
         initComponents();
     }
 
@@ -122,17 +122,29 @@ public class AnalysisDetailsPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton attrAddBtn;
-    public javax.swing.JButton attrEditBtn;
-    public javax.swing.JButton attrRemoveBtn;
-    public javax.swing.JTable attrTable;
+    private javax.swing.JButton attrAddBtn;
+    private javax.swing.JButton attrEditBtn;
+    private javax.swing.JButton attrRemoveBtn;
+    private javax.swing.JTable attrTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    public javax.swing.JTextArea notesArea;
-    public javax.swing.JTextField titleField;
+    private javax.swing.JTextArea notesArea;
+    private javax.swing.JTextField titleField;
     // End of variables declaration//GEN-END:variables
 
+	public String getArtifactTitle() {
+		return titleField.getText();
+	}
+
+	public String getArtifactNotes() {
+		return notesArea.getText();
+	}
+
+	public List<Attribute> getArtifactAttributes() {
+		//TODO...
+		return new ArrayList<Attribute>(0);
+	}
 }

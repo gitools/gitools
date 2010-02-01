@@ -49,10 +49,13 @@ public class DataPage extends AbstractWizardPage {
 
 		bgDataRb.addItemListener(itemListener);
 		bgAnnotatedRb.addItemListener(itemListener);
-		bgFileRb.addItemListener(itemListener);
 
 		filePath.getDocument().addDocumentListener(docCompleteListener);
-		bgFilePath.getDocument().addDocumentListener(docCompleteListener);
+
+		rowFilterEnabledCheck.addItemListener(itemListener);
+		rowFilterFilePath.getDocument().addDocumentListener(docCompleteListener);
+		rowFilterIncludeRb.addItemListener(itemListener);
+		rowFilterExcludeRb.addItemListener(itemListener);
 
 		cutoffEnabledCheck.addItemListener(itemListener);
 		String[] cmpNames = new String[CutoffCmp.comparators.length];
@@ -72,14 +75,13 @@ public class DataPage extends AbstractWizardPage {
 		cutoffCmpCb.setEnabled(filteringControlsEnabled && cutoffEnabledCheck.isSelected());
 		cutoffValue.setEnabled(filteringControlsEnabled && cutoffEnabledCheck.isSelected());
 
-		bgFilePath.setEnabled(bgFileRb.isSelected());
-		bgFileBrowseBtn.setEnabled(bgFileRb.isSelected());
+		rowFilterFilePath.setEnabled(rowFilterEnabledCheck.isSelected());
+		rowFilterFileBrowseBtn.setEnabled(rowFilterEnabledCheck.isSelected());
 
 		setMessage(MessageStatus.INFO, "");
 
 		boolean c = !filePath.getText().isEmpty();
-		if (bgFileRb.isSelected())
-			c &= !bgFilePath.getText().isEmpty();
+		
 		if (cutoffEnabledCheck.isSelected()) {
 			boolean fail = false;
 			try {
@@ -119,12 +121,15 @@ public class DataPage extends AbstractWizardPage {
         jLabel3 = new javax.swing.JLabel();
         bgDataRb = new javax.swing.JRadioButton();
         bgAnnotatedRb = new javax.swing.JRadioButton();
-        bgFileRb = new javax.swing.JRadioButton();
-        bgFilePath = new javax.swing.JTextField();
-        bgFileBrowseBtn = new javax.swing.JButton();
+        rowFilterFilePath = new javax.swing.JTextField();
+        rowFilterFileBrowseBtn = new javax.swing.JButton();
         cutoffEnabledCheck = new javax.swing.JCheckBox();
         cutoffCmpCb = new javax.swing.JComboBox();
         cutoffValue = new javax.swing.JTextField();
+        rowFilterEnabledCheck = new javax.swing.JCheckBox();
+        rowFilterIncludeRb = new javax.swing.JRadioButton();
+        rowFilterExcludeRb = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
 
         jLabel1.setText("Data contents");
 
@@ -148,26 +153,37 @@ public class DataPage extends AbstractWizardPage {
         buttonGroup1.add(bgAnnotatedRb);
         bgAnnotatedRb.setText("Only the data elements with module annotation");
 
-        buttonGroup1.add(bgFileRb);
-        bgFileRb.setText("A file");
+        rowFilterFilePath.setEnabled(false);
 
-        bgFilePath.setEnabled(false);
-
-        bgFileBrowseBtn.setText("Browse...");
-        bgFileBrowseBtn.setEnabled(false);
-        bgFileBrowseBtn.addActionListener(new java.awt.event.ActionListener() {
+        rowFilterFileBrowseBtn.setText("Browse...");
+        rowFilterFileBrowseBtn.setEnabled(false);
+        rowFilterFileBrowseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bgFileBrowseBtnActionPerformed(evt);
+                rowFilterFileBrowseBtnActionPerformed(evt);
             }
         });
 
-        cutoffEnabledCheck.setText("Apply binary cutoff filter to values");
+        cutoffEnabledCheck.setText("Transform to 1, 0 otherwise, cells with value");
         cutoffEnabledCheck.setEnabled(false);
 
         cutoffCmpCb.setEnabled(false);
 
         cutoffValue.setColumns(6);
         cutoffValue.setEnabled(false);
+
+        rowFilterEnabledCheck.setText("Filter rows by label from the file");
+        rowFilterEnabledCheck.setEnabled(false);
+
+        buttonGroup2.add(rowFilterIncludeRb);
+        rowFilterIncludeRb.setSelected(true);
+        rowFilterIncludeRb.setText("Include only rows which labels are in the file");
+        rowFilterIncludeRb.setEnabled(false);
+
+        buttonGroup2.add(rowFilterExcludeRb);
+        rowFilterExcludeRb.setText("Exclude rows which labels are in the file");
+        rowFilterExcludeRb.setEnabled(false);
+
+        jLabel4.setText("Filters:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -186,21 +202,27 @@ public class DataPage extends AbstractWizardPage {
                         .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fileBrowseBtn))
-                    .addComponent(jLabel3)
-                    .addComponent(bgDataRb)
-                    .addComponent(bgAnnotatedRb)
+                    .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(bgFileRb)
+                        .addComponent(rowFilterEnabledCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bgFilePath, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                        .addComponent(rowFilterFilePath, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bgFileBrowseBtn))
+                        .addComponent(rowFilterFileBrowseBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rowFilterExcludeRb)
+                            .addComponent(rowFilterIncludeRb)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cutoffEnabledCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cutoffCmpCb, 0, 254, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
+                    .addComponent(bgDataRb)
+                    .addComponent(bgAnnotatedRb))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -216,22 +238,28 @@ public class DataPage extends AbstractWizardPage {
                     .addComponent(fileBrowseBtn)
                     .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bgDataRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bgAnnotatedRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bgFileRb)
-                    .addComponent(bgFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bgFileBrowseBtn))
+                    .addComponent(rowFilterEnabledCheck)
+                    .addComponent(rowFilterFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rowFilterFileBrowseBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rowFilterIncludeRb)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rowFilterExcludeRb)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cutoffEnabledCheck)
                     .addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bgDataRb)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bgAnnotatedRb)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -247,25 +275,22 @@ public class DataPage extends AbstractWizardPage {
 		}
 	}//GEN-LAST:event_fileBrowseBtnActionPerformed
 
-	private void bgFileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bgFileBrowseBtnActionPerformed
+	private void rowFilterFileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rowFilterFileBrowseBtnActionPerformed
 		File selPath = FileChooserUtils.selectFile(
 				"Select file",
 				Settings.getDefault().getLastPath(),
 				FileChooserUtils.MODE_OPEN);
 
 		if (selPath != null) {
-			bgFilePath.setText(selPath.getAbsolutePath());
+			rowFilterFilePath.setText(selPath.getAbsolutePath());
 			Settings.getDefault().setLastPath(selPath.getAbsolutePath());
 		}
-	}//GEN-LAST:event_bgFileBrowseBtnActionPerformed
+	}//GEN-LAST:event_rowFilterFileBrowseBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton bgAnnotatedRb;
     private javax.swing.JRadioButton bgDataRb;
-    private javax.swing.JButton bgFileBrowseBtn;
-    private javax.swing.JTextField bgFilePath;
-    private javax.swing.JRadioButton bgFileRb;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox cutoffCmpCb;
@@ -277,6 +302,12 @@ public class DataPage extends AbstractWizardPage {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JCheckBox rowFilterEnabledCheck;
+    private javax.swing.JRadioButton rowFilterExcludeRb;
+    private javax.swing.JButton rowFilterFileBrowseBtn;
+    private javax.swing.JTextField rowFilterFilePath;
+    private javax.swing.JRadioButton rowFilterIncludeRb;
     // End of variables declaration//GEN-END:variables
 
 	public DataContents getDataContents() {
@@ -297,5 +328,9 @@ public class DataPage extends AbstractWizardPage {
 
 	public double getBinaryCutoffValue() {
 		return Double.parseDouble(cutoffValue.getText());
+	}
+
+	public boolean isDiscardNonMappedRows() {
+		return bgAnnotatedRb.isSelected();
 	}
 }

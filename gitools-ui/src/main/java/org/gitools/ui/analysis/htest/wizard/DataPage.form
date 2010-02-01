@@ -37,23 +37,31 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="fileBrowseBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="bgDataRb" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="bgAnnotatedRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="bgFileRb" min="-2" max="-2" attributes="0"/>
+                      <Component id="rowFilterEnabledCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="bgFilePath" pref="519" max="32767" attributes="0"/>
+                      <Component id="rowFilterFilePath" pref="352" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="bgFileBrowseBtn" min="-2" max="-2" attributes="0"/>
+                      <Component id="rowFilterFileBrowseBtn" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="rowFilterExcludeRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="rowFilterIncludeRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cutoffEnabledCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cutoffCmpCb" min="-2" pref="202" max="-2" attributes="0"/>
+                      <Component id="cutoffCmpCb" pref="254" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cutoffValue" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bgDataRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bgAnnotatedRb" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -74,24 +82,30 @@
                   <Component id="filePath" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="bgDataRb" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="bgAnnotatedRb" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="bgFileRb" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="bgFilePath" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="bgFileBrowseBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rowFilterEnabledCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rowFilterFilePath" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rowFilterFileBrowseBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="rowFilterIncludeRb" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="rowFilterExcludeRb" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cutoffEnabledCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cutoffCmpCb" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cutoffValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="75" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="bgDataRb" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bgAnnotatedRb" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -150,31 +164,23 @@
         <Property name="text" type="java.lang.String" value="Only the data elements with module annotation"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="bgFileRb">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="buttonGroup1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="A file"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="bgFilePath">
+    <Component class="javax.swing.JTextField" name="rowFilterFilePath">
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="bgFileBrowseBtn">
+    <Component class="javax.swing.JButton" name="rowFilterFileBrowseBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Browse..."/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bgFileBrowseBtnActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rowFilterFileBrowseBtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cutoffEnabledCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Apply binary cutoff filter to values"/>
+        <Property name="text" type="java.lang.String" value="Transform to 1, 0 otherwise, cells with value"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -190,6 +196,36 @@
       <Properties>
         <Property name="columns" type="int" value="6"/>
         <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="rowFilterEnabledCheck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Filter rows by label from the file"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="rowFilterIncludeRb">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup2"/>
+        </Property>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Include only rows which labels are in the file"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="rowFilterExcludeRb">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="buttonGroup2"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Exclude rows which labels are in the file"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Filters:"/>
       </Properties>
     </Component>
   </SubComponents>

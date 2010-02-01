@@ -183,4 +183,8 @@ public class StatisticalTestPage extends AbstractWizardPage {
 
 		return null;
 	}
+
+	public String getMtc() {
+		return "bh"; // TODO getMtc() ...
+	}
 }

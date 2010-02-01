@@ -11,29 +11,30 @@ import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 
 public class EnrichmentCommand extends HtestCommand {
 
+	protected String modulesMime;
 	protected String modulesPath;
 	
 	public EnrichmentCommand(
 			EnrichmentAnalysis analysis,
 			String dataMime,
 			String dataFile,
+			String modulesMime,
 			String modulesFile,
 			String workdir,
-			String fileName,
-			String outputFormat,
-			boolean resultsByCond) {
+			String fileName) {
 		
 		super(analysis, dataMime, dataFile,
-				workdir, fileName, outputFormat, resultsByCond);
+				workdir, fileName);
 
+		this.modulesMime = modulesMime;
 		this.modulesPath = modulesFile;
 	}
 	
@@ -75,16 +76,16 @@ public class EnrichmentCommand extends HtestCommand {
 		save(enrichAnalysis, monitor);
 	}
 
-	private void save(final EnrichmentAnalysis enrichAnalysis, IProgressMonitor monitor) throws PersistenceException {
+	private void save(final EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
 
 		File workdirFile = new File(workdir);
 		if (!workdirFile.exists())
 			workdirFile.mkdirs();
 
-		File enrichmentFile = new File(workdirFile, fileName + ".enrichment");
+		File file = new File(workdirFile, fileName + "." + FileSuffixes.ENRICHMENT_ANALYSIS);
 		EnrichmentAnalysisXmlPersistence p = new EnrichmentAnalysisXmlPersistence();
 		p.setRecursivePersistence(true);
-		p.write(enrichmentFile, enrichAnalysis, monitor);
+		p.write(file, analysis, monitor);
 	}
 
 	public String getModulesFile() {

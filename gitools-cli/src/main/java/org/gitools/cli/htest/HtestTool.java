@@ -69,9 +69,9 @@ public abstract class HtestTool extends AbstractTool {
 				usage = "Working directory (default: current dir).")
 		public String workdir = System.getProperty("user.dir");
 
-		@Option(name = "-f", aliases = "-fmt", metaVar = "<format>",
+		/*@Option(name = "-f", aliases = "-fmt", metaVar = "<format>",
 				usage = "Output format:\ncsv, rexml (default: csv).")
-		public String outputFormat = "csv";
+		public String outputFormat = "csv";*/
 
 		@Option(name = "-b", aliases = "-bin-cutoff-filt",
 				usage = "Binary cutoff filter. Available conditions:\n" +

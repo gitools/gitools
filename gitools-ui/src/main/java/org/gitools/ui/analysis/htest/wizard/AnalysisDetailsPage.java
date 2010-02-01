@@ -1,12 +1,15 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.panels.ArtifactDetailsPanel;
+import java.util.List;
 import javax.swing.JComponent;
+import org.gitools.model.Attribute;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class AnalysisDetailsPage extends AbstractWizardPage {
 
-	private AnalysisDetailsPanel panel;
+	private ArtifactDetailsPanel panel;
 
 	public AnalysisDetailsPage() {
 		setTitle("Analysis details");
@@ -15,16 +18,20 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 	
 	@Override
 	public JComponent createControls() {
-		panel = new AnalysisDetailsPanel();
+		panel = new ArtifactDetailsPanel();
 		
 		return panel;
 	}
 
 	public String getAnalysisTitle() {
-		return panel.titleField.getText();
+		return panel.getArtifactTitle();
 	}
 	
 	public String getAnalysisNotes() {
-		return panel.notesArea.getText();
+		return panel.getArtifactNotes();
+	}
+
+	public List<Attribute> getAnalysisAttributes() {
+		return panel.getArtifactAttributes();
 	}
 }

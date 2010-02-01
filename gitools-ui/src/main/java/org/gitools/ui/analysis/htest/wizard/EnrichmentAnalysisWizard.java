@@ -1,23 +1,19 @@
 package org.gitools.ui.analysis.htest.wizard;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.io.File;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 
-import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.fileutils.FileFormat;
-import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.wizard.common.FileChooserPage;
 import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class EnrichmentAnalysisWizard extends AbstractWizard {
 	
 	private SaveFilePage saveFilePage;
-	private DataPage dataSourcePage;
-	private FileChooserPage moduleFilePage;
+	private DataPage dataPage;
 	private ModulesPage modulesPage;
 	private StatisticalTestPage statisticalTestPage;
 	private AnalysisDetailsPage analysisDetailsPage;
@@ -43,8 +39,8 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		addPage(saveFilePage);
 
 		// Data
-		dataSourcePage = new DataPage();
-		addPage(dataSourcePage);
+		dataPage = new DataPage();
+		addPage(dataPage);
 		
 		// Modules
 		modulesPage = new ModulesPage();
@@ -80,28 +76,45 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		Settings.getDefault().setLastWorkPath(saveFilePage.getFolder());
 	}
 
-
-	public String getAnalysisTitle() {
-		return analysisDetailsPage.getAnalysisTitle();
+	public String getWorkdir() {
+		return saveFilePage.getFolder();
 	}
 
-	public String getAnalysisNotes() {
-		return analysisDetailsPage.getAnalysisNotes();
+	public String getFileName() {
+		return saveFilePage.getFile();
 	}
 
-	public ToolConfig getTestConfig() {
-		return statisticalTestPage.getTestConfig();
+	public String getDataFileMime() {
+		return dataPage.getDataContents().getMime();
 	}
-
+	
 	public File getDataFile() {
-		return dataSourcePage.getSelectedFile();
+		return dataPage.getSelectedFile();
 	}
 
-	public boolean isBinaryCutoffEnabled() {
-		return dataSourcePage.isBinaryCutoffEnabled();
+	public String getModulesFileMime() {
+		return modulesPage.getFileMime();
 	}
 
-	public CutoffCmp getDataBinaryCutoffCmp() {
-		return dataSourcePage.getBinaryCutoffCmp();
+	public File getModulesFile() {
+		return modulesPage.getSelectedFile();
+	}
+
+	public EnrichmentAnalysis getAnalysis() {
+		EnrichmentAnalysis analysis = new EnrichmentAnalysis();
+
+		analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
+		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
+		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+		analysis.setBinaryCutoffEnabled(dataPage.isComplete());
+		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
+		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());
+		analysis.setDiscardNonMappedRows(dataPage.isDiscardNonMappedRows());
+		analysis.setMinModuleSize(modulesPage.getMinSize());
+		analysis.setMaxModuleSize(modulesPage.getMaxSize());
+		analysis.setTestConfig(statisticalTestPage.getTestConfig());
+		analysis.setMtc(statisticalTestPage.getMtc());
+
+		return analysis;
 	}
 }
