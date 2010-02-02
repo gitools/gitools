@@ -133,11 +133,11 @@ public class HeatmapHeaderMouseController
 				panel.setScrollRowPosition(pos.row + rotation);
 		}
 		else {
-			int width = heatmap.getCellWidth() + rotation;
+			int width = heatmap.getCellWidth() + rotation * -1;
 			if (width < 1)
 				width = 1;
 
-			int height = heatmap.getCellHeight() + rotation;
+			int height = heatmap.getCellHeight() + rotation * -1;
 			if (height < 1)
 				height = 1;
 

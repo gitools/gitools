@@ -323,7 +323,7 @@ public class DataPage extends AbstractWizardPage {
 	}
 
 	public CutoffCmp getBinaryCutoffCmp() {
-		return (CutoffCmp) cutoffCmpCb.getSelectedItem();
+		return CutoffCmp.getFromName((String) cutoffCmpCb.getSelectedItem());
 	}
 
 	public double getBinaryCutoffValue() {

@@ -14,10 +14,6 @@ package org.gitools.ui.dialog.progress;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author chris
- */
 public class ProgressDialog extends javax.swing.JDialog {
 
     public interface CancelListener {
@@ -29,7 +25,9 @@ public class ProgressDialog extends javax.swing.JDialog {
     /** Creates new form ProgressDialog */
     public ProgressDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
+        
+		initComponents();
+
         progressBar.setMinimum(0);
         progressBar.setIndeterminate(true);
     }
@@ -50,9 +48,11 @@ public class ProgressDialog extends javax.swing.JDialog {
         msgLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
         cancelBtn = new javax.swing.JButton();
+        infoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        msgLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         msgLabel.setText("Working...");
 
         cancelBtn.setText("Cancel");
@@ -62,6 +62,8 @@ public class ProgressDialog extends javax.swing.JDialog {
             }
         });
 
+        infoLabel.setText("info");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -69,8 +71,9 @@ public class ProgressDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addComponent(msgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                    .addComponent(msgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelBtn, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -81,9 +84,11 @@ public class ProgressDialog extends javax.swing.JDialog {
                 .addComponent(msgLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -94,32 +99,26 @@ public class ProgressDialog extends javax.swing.JDialog {
             listener.cancelled();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ProgressDialog dialog = new ProgressDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 
     public void setMessage(String msg) {
         msgLabel.setText(msg);
+		infoLabel.setText("");
     }
+
+	public void setMessage(String msg, String info) {
+        msgLabel.setText(msg);
+		infoLabel.setText(info);
+    }
+
+	public void setInfo(String info) {
+		infoLabel.setText(info);
+	}
 
     public void setWork(int work) {
         progressBar.setMaximum(work);

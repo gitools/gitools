@@ -154,6 +154,7 @@ public class BiomartService {
 		}
 	}
 
+	//TODO use monitor
 	public void queryModule(Query query, File file, String format) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
 		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
@@ -165,6 +166,7 @@ public class BiomartService {
 		queryModule(query, tableWriter);
 	}
 
+	//TODO use monitor
 	public void queryModule(Query query, SequentialTableWriter writer) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 
@@ -206,6 +208,7 @@ public class BiomartService {
 		log.fine("queryModule: elapsed time " + time.toString());
 	}
 
+	//TODO use monitor
 	public void queryTable(Query query, File file, String format) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
 		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV))
@@ -217,6 +220,7 @@ public class BiomartService {
 		queryTable(query, tableWriter);
 	}
 
+	//TODO use monitor
 	public void queryTable(Query query, SequentialTableWriter writer) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 

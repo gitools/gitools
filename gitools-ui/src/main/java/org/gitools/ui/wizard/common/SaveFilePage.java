@@ -220,6 +220,7 @@ public class SaveFilePage extends AbstractWizardPage {
 	private void browseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtnActionPerformed
 		File selPath = FileChooserUtils.selectPath(
 				"Select folder", folder.getText());
+
 		if (selPath != null)
 			folder.setText(selPath.getAbsolutePath());
 	}//GEN-LAST:event_browseBtnActionPerformed

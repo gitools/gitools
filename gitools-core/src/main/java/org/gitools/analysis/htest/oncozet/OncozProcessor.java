@@ -166,10 +166,10 @@ public class OncozProcessor extends AbstractProcessor {
 				});
 				
 				condMonitor.worked(1);
-				monitor.worked(1);
 			}
 			
 			condMonitor.end();
+			monitor.worked(1);
 		}
 		
 		ThreadManager.shutdown(monitor);

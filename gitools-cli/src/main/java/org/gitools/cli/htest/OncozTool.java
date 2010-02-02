@@ -11,6 +11,7 @@ import org.gitools.analysis.htest.oncozet.OncozAnalysis;
 
 import org.gitools.analysis.htest.oncozet.OncozCommand;
 import org.gitools.model.ToolConfig;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
@@ -64,7 +65,7 @@ public class OncozTool extends HtestTool {
 		OncozCommand cmd = new OncozCommand(
         		analysis, args.dataMime, args.dataFile,
 				MimeTypes.MODULES_2C_MAP, args.setsFile,
-				args.workdir, args.analysisName);
+				args.workdir, args.analysisName + "." + FileSuffixes.ONCOZ_ANALYSIS);
         
         IProgressMonitor monitor = !args.quiet ?
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

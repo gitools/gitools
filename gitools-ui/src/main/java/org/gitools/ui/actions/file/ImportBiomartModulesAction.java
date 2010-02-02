@@ -1,5 +1,6 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -48,7 +49,8 @@ public class ImportBiomartModulesAction extends BaseAction {
 
 		new ProgressJob(AppFrame.instance()) {
 			@Override protected void runJob() {
-				start("Downloading data...", 1);
+				IProgressMonitor monitor = getProgressMonitor();
+				monitor.begin("Downloading data...", 1);
 
 				Query query = wizard.getQuery();
 				String format = (String) wizard.getFormat().getUserObject();

@@ -10,6 +10,7 @@ import edu.upf.bg.tools.exception.ToolValidationException;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.model.ToolConfig;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
@@ -73,7 +74,7 @@ public class EnrichmentTool extends HtestTool {
 		EnrichmentCommand cmd = new EnrichmentCommand(
         		analysis, args.dataMime, args.dataFile,
 				MimeTypes.MODULES_2C_MAP, args.modulesFile, //FIXME modulesMime
-				args.workdir, args.analysisName);
+				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT_ANALYSIS);
         
         IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

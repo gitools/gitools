@@ -11,7 +11,6 @@ import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
@@ -82,7 +81,7 @@ public class EnrichmentCommand extends HtestCommand {
 		if (!workdirFile.exists())
 			workdirFile.mkdirs();
 
-		File file = new File(workdirFile, fileName + "." + FileSuffixes.ENRICHMENT_ANALYSIS);
+		File file = new File(workdirFile, fileName);
 		EnrichmentAnalysisXmlPersistence p = new EnrichmentAnalysisXmlPersistence();
 		p.setRecursivePersistence(true);
 		p.write(file, analysis, monitor);

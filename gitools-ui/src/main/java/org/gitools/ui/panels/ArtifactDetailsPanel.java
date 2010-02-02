@@ -44,7 +44,9 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
         jLabel2.setText("Notes");
 
         notesArea.setColumns(20);
-        notesArea.setRows(5);
+        notesArea.setLineWrap(true);
+        notesArea.setRows(3);
+        notesArea.setTabSize(4);
         jScrollPane1.setViewportView(notesArea);
 
         jLabel3.setText("Attributes");

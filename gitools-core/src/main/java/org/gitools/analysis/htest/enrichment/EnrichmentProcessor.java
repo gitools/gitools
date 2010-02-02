@@ -85,7 +85,7 @@ public class EnrichmentProcessor extends AbstractProcessor {
 		final int numConditions = data.rows();
 		final int numModules = modules.size();
 		
-		monitor.begin("Running enrichment analysis...", numConditions * numModules);
+		monitor.begin("Running enrichment analysis...", numConditions);
 		
 		Test test = testFactory.create();
 		
@@ -150,18 +150,17 @@ public class EnrichmentProcessor extends AbstractProcessor {
 				});
 				
 				condMonitor.worked(1);
-				monitor.worked(1);
 			}
 
 			condMonitor.end();
+			monitor.worked(1);
 		}
 		
 		ThreadManager.shutdown(monitor);
 
 		/* Multiple test correction */
 		
-		MTC mtc =
-				MTCFactory.createFromName(analysis.getMtc());
+		MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
 		multipleTestCorrection(
 				resultsMatrix, 

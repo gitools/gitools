@@ -121,7 +121,7 @@ public class Settings {
 	}
 
 	public void setLastWorkPath(String lastWorkPath) {
-		this.lastWorkPath = lastPath;
+		this.lastWorkPath = lastWorkPath;
 	}
 	
 	public String getLastDataPath() {

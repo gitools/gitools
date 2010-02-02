@@ -181,7 +181,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
 			break;
 		}
 
-		return null;
+		return config;
 	}
 
 	public String getMtc() {

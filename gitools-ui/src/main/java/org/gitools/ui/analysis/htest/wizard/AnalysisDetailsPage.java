@@ -14,12 +14,12 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 	public AnalysisDetailsPage() {
 		setTitle("Analysis details");
 		setComplete(true);
+
+		panel = new ArtifactDetailsPanel();
 	}
 	
 	@Override
 	public JComponent createControls() {
-		panel = new ArtifactDetailsPanel();
-		
 		return panel;
 	}
 

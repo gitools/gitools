@@ -157,6 +157,7 @@ public class ModulesPage extends AbstractWizardPage {
 
         maxSizeValueCb.setEditable(true);
         maxSizeValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20", "30", "50", "100" }));
+        maxSizeValueCb.setEnabled(false);
 
         jLabel3.setText("Modules filtering options:");
 

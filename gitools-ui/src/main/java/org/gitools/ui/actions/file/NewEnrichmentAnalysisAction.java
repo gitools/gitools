@@ -1,7 +1,9 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 
@@ -9,6 +11,8 @@ import org.gitools.ui.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
+import org.gitools.ui.dialog.progress.ProgressJob;
+import org.gitools.ui.editor.analysis.AnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
@@ -32,9 +36,12 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 		
 		wizDlg.open();
 
-		EnrichmentAnalysis analysis = wizard.getAnalysis();
+		if (wizDlg.isCancelled())
+			return;
 
-		EnrichmentCommand cmd = new EnrichmentCommand(
+		final EnrichmentAnalysis analysis = wizard.getAnalysis();
+
+		final EnrichmentCommand cmd = new EnrichmentCommand(
 				analysis,
 				wizard.getDataFileMime(),
 				wizard.getDataFile().getAbsolutePath(),
@@ -43,6 +50,34 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 				wizard.getWorkdir(),
 				wizard.getFileName());
 
-		
+		new ProgressJob(null) {
+			@Override
+			protected void runJob() {
+				IProgressMonitor monitor = getProgressMonitor();
+
+				try {
+					cmd.run(monitor);
+
+					final AnalysisEditor editor = new AnalysisEditor(analysis);
+
+					editor.setName(analysis.getTitle());
+
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							AppFrame.instance().getEditorsPanel().addEditor(editor);
+							AppFrame.instance().refresh();
+						}
+					});
+
+					monitor.end();
+
+					AppFrame.instance().setStatusText("Done.");
+				}
+				catch (Exception ex) {
+					exception(ex);
+				}
+			}
+		}.execute();
 	}
 }

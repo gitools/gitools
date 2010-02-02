@@ -150,7 +150,7 @@ public class OncozCommand extends HtestCommand {
 		if (!workdirFile.exists())
 			workdirFile.mkdirs();
 
-		File file = new File(workdirFile, fileName + "." + FileSuffixes.ONCOZ_ANALYSIS);
+		File file = new File(workdirFile, fileName);
 		OncozAnalysisXmlPersistence p = new OncozAnalysisXmlPersistence();
 		p.setRecursivePersistence(true);
 		p.write(file, analysis, monitor);

@@ -1,8 +1,5 @@
 package edu.upf.bg.progressmonitor;
 
-import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-
 public class DefaultProgressMonitor implements IProgressMonitor {
 
 	protected String title;
@@ -60,6 +57,15 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 		this.level = level;
 	}
 
+	//@Override
+	public int getWorked() {
+		return worked;
+	}
+
+	public int getTotalWork() {
+		return totalWork;
+	}
+	
 	@Override
 	public IProgressMonitor subtask() {
 		return new DefaultProgressMonitor(this);

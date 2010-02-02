@@ -7,15 +7,12 @@ package org.gitools.ui.dialog.progress;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import java.awt.Frame;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.SwingUtilities;
 
-//TODO It should implement or provide IProgressMonitor
 public abstract class ProgressJob {
 
     private ProgressDialog dlg;
@@ -53,7 +50,7 @@ public abstract class ProgressJob {
         this.jobThread = jobThread;
     }
 
-    private ProgressDialog getDlg() {
+    private synchronized ProgressDialog getDlg() {
         if (dlg == null) {
             dlg = new ProgressDialog(parent, false);
             dlg.addCancelListener(new ProgressDialog.CancelListener() {
@@ -65,42 +62,14 @@ public abstract class ProgressJob {
         return dlg;
     }
 
-    private void setDlg(ProgressDialog dlg) {
+    private synchronized void setDlg(ProgressDialog dlg) {
         this.dlg = dlg;
     }
 
 	protected IProgressMonitor getProgressMonitor() {
-		return new NullProgressMonitor(); //TODO
+		//return new NullProgressMonitor(); //TODO
+		return new ProgressJobMonitor(getDlg(), System.out, true, false);
 	}
-
-    protected void start(final String msg, final int work) {
-        SwingUtilities.invokeLater(new Runnable() {
-			@Override public void run() {
-                ProgressDialog dlg = getDlg();
-                if (!dlg.isVisible())
-                    dlg.setVisible(true);
-                dlg.setMessage(msg);
-                dlg.setWork(work);
-                dlg.setProgress(0);
-            }
-        });
-    }
-
-    protected void message(final String msg) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() {
-                getDlg().setMessage(msg);
-            }
-        });
-    }
-
-    protected void progress(final int progress) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() {
-                getDlg().setProgress(progress);
-            }
-        });
-    }
 
     protected void done() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -123,14 +92,13 @@ public abstract class ProgressJob {
             @Override
             public void run() {
                 runJob();
+
+				done();
+
                 setJobThread(null);
 
                 if (cause != null) {
                     ExceptionDialog ed = new ExceptionDialog(parent, cause);
-                    /*JOptionPane.showMessageDialog(parent,
-                            "Ha habido un error:\n" +
-                            cause.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);*/
                     ed.setVisible(true);
                 }
             }
@@ -141,12 +109,9 @@ public abstract class ProgressJob {
 
 	public void execute() {
 		asyncExecute();
-		
-		try {
-			jobThread.join();
-		} catch (InterruptedException ex) {
-			Logger.getLogger(ProgressJob.class.getName()).log(Level.SEVERE, null, ex);
-		}
+
+		getDlg().setModal(true);
+		getDlg().setVisible(true);
 	}
 
     protected abstract void runJob();

@@ -29,10 +29,6 @@ import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
-/**
- *
- * @author chris
- */
 public class HeatmapBodyMouseController
 		implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -117,7 +113,7 @@ public class HeatmapBodyMouseController
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		int rotation = e.getWheelRotation() * -1;
+		int rotation = e.getWheelRotation();
 
 		int modifiers = e.getModifiers();
 		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
@@ -128,11 +124,11 @@ public class HeatmapBodyMouseController
 			panel.setScrollRowPosition(pos.row + rotation);
 		}
 		else {
-			int width = heatmap.getCellWidth() + rotation;
+			int width = heatmap.getCellWidth() + rotation * -1;
 			if (width < 1)
 				width = 1;
 
-			int height = heatmap.getCellHeight() + rotation;
+			int height = heatmap.getCellHeight() + rotation * -1;
 			if (height < 1)
 				height = 1;
 

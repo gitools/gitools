@@ -15,6 +15,8 @@ public interface IProgressMonitor {
 	public int getLevel();
 	
 	public void setLevel(int level);
+
+	//public int getWorked();
 	
 	public IProgressMonitor subtask();
 

@@ -25,8 +25,9 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="progressBar" alignment="0" pref="376" max="32767" attributes="0"/>
-                  <Component id="msgLabel" alignment="0" pref="376" max="32767" attributes="0"/>
+                  <Component id="progressBar" alignment="0" pref="551" max="32767" attributes="0"/>
+                  <Component id="msgLabel" alignment="0" min="-2" pref="551" max="-2" attributes="0"/>
+                  <Component id="infoLabel" alignment="0" min="-2" pref="551" max="-2" attributes="0"/>
                   <Component id="cancelBtn" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -40,9 +41,11 @@
               <Component id="msgLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="progressBar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="cancelBtn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="infoLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="cancelBtn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -50,6 +53,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="msgLabel">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="Working..."/>
       </Properties>
     </Component>
@@ -62,6 +66,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelBtnActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="infoLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="info"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
