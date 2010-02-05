@@ -1,5 +1,7 @@
 package org.gitools.ui.actions;
 
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.help.AboutAction;
 import org.gitools.ui.actions.help.WelcomeAction;
 

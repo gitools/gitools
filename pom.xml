@@ -191,6 +191,18 @@
 				<artifactId>log4j</artifactId>
 				<version>1.2.14</version>
 			</dependency>
+
+			<dependency>
+				<groupId>cobra</groupId>
+				<artifactId>cobra</artifactId>
+				<version>0.98.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>rhino</groupId>
+				<artifactId>js</artifactId>
+				<version>1.7R2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

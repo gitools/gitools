@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -26,10 +26,10 @@ public class CloseAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EditorsPanel workspace = AppFrame.instance().getEditorsPanel();
-		AbstractEditor currentView = workspace.getSelectedEditor();
-		if (currentView != null)
-			workspace.removeEditor(currentView);
+		EditorsPanel editorsPanel = AppFrame.instance().getEditorsPanel();
+		AbstractEditor currentEditor = editorsPanel.getSelectedEditor();
+		if (currentEditor != null)
+			editorsPanel.removeEditor(currentEditor);
 		
 		AppFrame.instance().refresh();
 		AppFrame.instance().setStatusText("View closed.");
@@ -37,7 +37,6 @@ public class CloseAction extends BaseAction {
 
 	@Override
 	public boolean isEnabledByEditor(IEditor editor) {
-		//TODO Allow Welcome to be closed ???
 		return editor != null;
 	}
 }

@@ -1,9 +1,10 @@
 package org.gitools.ui.actions.data;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.dialog.sort.SortDialogSimple;
 import org.gitools.ui.platform.AppFrame;
 
@@ -14,6 +15,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
 
 public class SortByValueAction extends BaseAction {
 
@@ -66,7 +69,7 @@ public class SortByValueAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = ActionUtils.getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
 				
@@ -89,8 +92,22 @@ public class SortByValueAction extends BaseAction {
 			return;
 		}
 
-		SortCriteria[] criteriaArray = new SortCriteria[criteriaList.size()];
-		MatrixViewSorter.sort(matrixView, criteriaList.toArray(criteriaArray), sortByRow, sortByColumn);
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				monitor.begin("Sorting ...", 1);
+
+				SortCriteria[] criteriaArray =
+						new SortCriteria[criteriaList.size()];
+
+				MatrixViewSorter.sort(matrixView,
+						criteriaList.toArray(criteriaArray),
+						sortByRow, sortByColumn);
+
+				monitor.end();
+			}
+		});
+
 		AppFrame.instance().setStatusText(typeName + " sorted.");
 	}
 }

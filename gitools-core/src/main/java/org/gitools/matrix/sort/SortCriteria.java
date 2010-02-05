@@ -26,11 +26,14 @@ public final class SortCriteria {
 		}
 	}
 
+	@Deprecated
 	protected Object property;
+
 	protected int propertyIndex;
 	protected IAggregator aggregator;
 	protected SortDirection direction;
 
+	@Deprecated
 	public SortCriteria(
 			Object prop, 
 			int propIndex,
@@ -43,10 +46,22 @@ public final class SortCriteria {
 		this.aggregator = aggregator;
 	}
 
+	public SortCriteria(
+			int propIndex,
+			IAggregator aggregator,
+			SortDirection direction) {
+
+		this.propertyIndex = propIndex;
+		this.direction = direction;
+		this.aggregator = aggregator;
+	}
+
+	@Deprecated
 	public final Object getProperty() {
 		return property;
 	}
 
+	@Deprecated
 	public final void setProperty(Object prop) {
 		this.property = prop;
 	}

@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.gitools.ui.editor.analysis.AnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;

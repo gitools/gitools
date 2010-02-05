@@ -1,11 +1,12 @@
 package org.gitools.ui.actions.data;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools._DEPRECATED.matrix.filter.ValueFilterCondition;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.AppFrame;
@@ -17,6 +18,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.ValueFilterDialog;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
 
 public class FilterByValueAction extends BaseAction {
 
@@ -36,7 +39,7 @@ public class FilterByValueAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		IMatrixView matrixView = ActionUtils.getMatrixView();
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
 
@@ -55,19 +58,31 @@ public class FilterByValueAction extends BaseAction {
 		ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<ValueFilterCriteria>(1);
 		initialCriteria.add(new ValueFilterCriteria(attrNames[pvalueIndex], pvalueIndex, CutoffCmp.LT, 0.05));
 		
-		ValueFilterDialog dlg = new ValueFilterDialog(AppFrame.instance(), attrNames, CutoffCmp.comparators, initialCriteria);
+		final ValueFilterDialog dlg = new ValueFilterDialog(AppFrame.instance(),
+				attrNames, CutoffCmp.comparators, initialCriteria);
+
 		dlg.setVisible(true);
 
-		if (dlg.getReturnStatus() == ValueFilterDialog.RET_OK) {
-			MatrixViewValueFilter.filter(
-					matrixView,
-					dlg.getCriteriaList(), dlg.isAllCriteriaChecked(),
-					dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked(),
-					dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
-
-			AppFrame.instance().setStatusText("Filter applied.");
-		}
-		else
+		if (dlg.getReturnStatus() != ValueFilterDialog.RET_OK) {
 			AppFrame.instance().setStatusText("Filter cancelled.");
+			return;
+		}
+
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				monitor.begin("Filtering ...", 1);
+
+				MatrixViewValueFilter.filter(matrixView,
+						dlg.getCriteriaList(),
+						dlg.isAllCriteriaChecked(),
+						dlg.isAllElementsChecked(),
+						dlg.isInvertCriteriaChecked(),
+						dlg.isApplyToRowsChecked(),
+						dlg.isApplyToColumnsChecked());
+			}
+		});
+
+		AppFrame.instance().setStatusText("Filter applied.");
 	}
 }

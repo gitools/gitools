@@ -1,17 +1,18 @@
 package org.gitools.ui.actions.data;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapMatrixViewAdapter;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.LabelFilterDialog;
-import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
 
 public class FilterByLabelAction extends BaseAction {
 
@@ -36,18 +37,31 @@ public class FilterByLabelAction extends BaseAction {
 		if (matrixView == null)
 			return;
 
-		LabelFilterDialog dlg = new LabelFilterDialog(AppFrame.instance());
+		final LabelFilterDialog dlg =
+				new LabelFilterDialog(AppFrame.instance());
+
 		dlg.setVisible(true);
 
-		if (dlg.getReturnStatus() == LabelFilterDialog.RET_OK) {
-			MatrixViewLabelFilter.filter(matrixView, dlg.getValues(),
-					dlg.isUseRegexChecked(),
-					dlg.isApplyToRowsChecked(),
-					dlg.isApplyToColumnsChecked());
-
-			AppFrame.instance().setStatusText("Filter by label done.");
-		}
-		else
+		if (dlg.getReturnStatus() != LabelFilterDialog.RET_OK) {
 			AppFrame.instance().setStatusText("Filter cancelled.");
+			return;
+		}
+
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				monitor.begin("Filtering ...", 1);
+
+				MatrixViewLabelFilter.filter(matrixView,
+						dlg.getValues(),
+						dlg.isUseRegexChecked(),
+						dlg.isApplyToRowsChecked(),
+						dlg.isApplyToColumnsChecked());
+
+				monitor.end();
+			}
+		});
+
+		AppFrame.instance().setStatusText("Filter by label done.");
 	}
 }

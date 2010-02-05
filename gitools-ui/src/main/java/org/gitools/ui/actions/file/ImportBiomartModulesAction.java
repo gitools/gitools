@@ -3,15 +3,15 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileWriter;
 import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartService;
 
-import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.dialog.progress.ProgressJob;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
+import org.gitools.ui.dialog.progress.JobRunnable;
 
 public class ImportBiomartModulesAction extends BaseAction {
 
@@ -35,21 +35,10 @@ public class ImportBiomartModulesAction extends BaseAction {
 			return;
 
 		final File file = wizard.getSelectedFile();
-		/*if (file.exists()) {
-			int res = JOptionPane.showConfirmDialog(AppFrame.instance(),
-					"File " + file.getAbsolutePath() + " already exists.\n" +
-					"Do you want to overwrite it ?",
-					"File exists",
-					JOptionPane.WARNING_MESSAGE,
-					JOptionPane.YES_NO_OPTION);
 
-			if (res != JOptionPane.YES_OPTION)
-				return;
-		}*/
-
-		new ProgressJob(AppFrame.instance()) {
-			@Override protected void runJob() {
-				IProgressMonitor monitor = getProgressMonitor();
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
 				monitor.begin("Downloading data...", 1);
 
 				Query query = wizard.getQuery();
@@ -59,12 +48,12 @@ public class ImportBiomartModulesAction extends BaseAction {
 					BiomartService.getDefault().queryModule(query, file, format);
 				}
 				catch (Exception ex) {
-					exception(ex);
+					monitor.exception(ex);
 				}
 
-				done();
+				monitor.end();
 			}
-		}.execute();
+		});
 	}
 
 }

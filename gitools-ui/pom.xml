@@ -53,6 +53,11 @@
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>cobra</groupId>
+			<artifactId>cobra</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

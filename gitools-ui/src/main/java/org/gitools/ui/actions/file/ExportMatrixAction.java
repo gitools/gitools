@@ -1,5 +1,6 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -13,16 +14,18 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class ExportMatrix extends BaseAction {
+public class ExportMatrixAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportMatrix() {
+	public ExportMatrixAction() {
 		super("Export matrix ...");
 		
 		setDesc("Export a matrix");
@@ -38,7 +41,7 @@ public class ExportMatrix extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
+		final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
 		if (matrixView == null)
 			return;
 		
@@ -58,27 +61,40 @@ public class ExportMatrix extends BaseAction {
 
 		if (selected == null || selected.isEmpty())
 			return;
-		
-		int propIndex = 0;
+
+		int index = 0;
 		for (int j = 0; j < propNames.length; j++)
 			if (propNames[j].equals(selected))
-				propIndex = j;
+				index = j;
 
-		try {
-			File file = FileChooserUtils.selectFile(
+		final int propIndex = index;
+
+		final File file = FileChooserUtils.selectFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath(),
 					FileChooserUtils.MODE_SAVE);
-			if (file == null)
-				return;
-			
-			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
-			
-			TextMatrixViewExporter.exportMatrix(matrixView, propIndex, file);
-		}
-		catch (IOException ex) {
-			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());
-		}
+
+		if (file == null)
+			return;
+
+		Settings.getDefault().setLastExportPath(file.getAbsolutePath());
+
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				try {
+					monitor.begin("Exporting to image ...", 1);
+					monitor.info("File: " + file.getName());
+				
+					TextMatrixViewExporter.exportMatrix(matrixView, propIndex, file);
+		
+					monitor.end();
+				}
+				catch (IOException ex) {
+					monitor.exception(ex);
+				}
+			}
+		});
 		
 		AppFrame.instance().setStatusText(selected + " exported.");
 	}

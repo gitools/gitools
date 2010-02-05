@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;

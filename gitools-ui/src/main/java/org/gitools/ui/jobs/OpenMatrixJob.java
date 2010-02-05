@@ -14,6 +14,7 @@ import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
+@Deprecated
 public class OpenMatrixJob implements Job {
 
 	private File selectedPath;

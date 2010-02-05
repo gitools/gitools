@@ -9,9 +9,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.gitools.ui.actions.ActionSet;
+import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.component.TabCloseButton;
 import org.gitools.ui.platform.editor.AbstractEditor;
 

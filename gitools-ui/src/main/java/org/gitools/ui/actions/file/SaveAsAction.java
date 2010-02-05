@@ -3,7 +3,7 @@ package org.gitools.ui.actions.file;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.UnimplementedAction;
 import org.gitools.ui.platform.editor.IEditor;
 

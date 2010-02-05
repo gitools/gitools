@@ -5,12 +5,21 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.jobs.OpenMatrixJob;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import javax.swing.SwingUtilities;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.text.DoubleMatrixTextPersistence;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenHeatmapAction extends BaseAction {
@@ -28,36 +37,50 @@ public class OpenHeatmapAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedPath = FileChooserUtils.selectFile(
+		final File file = FileChooserUtils.selectFile(
 				"Select file", FileChooserUtils.MODE_OPEN);
 		
-		if (selectedPath != null) {
-			Settings.getDefault().setLastPath(selectedPath.getParent());
-			Settings.getDefault().save();
+		if (file == null)
+			return;
 
-			final IProgressMonitor monitor = AppFrame.instance().createMonitor();
-			
-			AppFrame.instance().getJobProcessor().addJob(
-					new OpenMatrixJob(selectedPath, monitor));
-		}
+		Settings.getDefault().setLastPath(file.getParent());
+		Settings.getDefault().save();
+
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				try {
+					monitor.begin("Loading matrix ...", 1);
+					monitor.info("File: " + file.getName());
+
+					final DoubleMatrixTextPersistence pers = new DoubleMatrixTextPersistence();
+					final DoubleMatrix matrix = pers.read(file, monitor);
+
+					final IMatrixView matrixView = new MatrixView(matrix);
+
+					final Heatmap figure = new Heatmap(matrixView);
+					figure.setShowGrid(false);
+
+					final HeatmapEditor editor = new HeatmapEditor(figure);
+
+					editor.setName(file.getName());
+
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							AppFrame.instance().getEditorsPanel().addEditor(editor);
+							AppFrame.instance().refresh();
+						}
+					});
+
+					monitor.end();
+				}
+				catch (Exception ex) {
+					monitor.exception(ex);
+				}
+			}
+		});
+
+		AppFrame.instance().setStatusText("Done.");
 	}
-	
-	/*private File getSelectedPath() {
-		JFileChooser fileChooser = new JFileChooser(
-				Options.instance().getLastPath());
-		
-		fileChooser.setDialogTitle("Select file");
-		fileChooser.setMinimumSize(new Dimension(800,600));
-		fileChooser.setPreferredSize(new Dimension(800,600));
-		//fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		//FileFilter fileFilter = new FileFilter(LangKey.XMI);
-		//fileFilter.setDescription(LangManager.instance().getString(LangKey.XMI_FILES));
-		//fileChooser.addChoosableFileFilter(fileFilter);
-		
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION)
-			return fileChooser.getSelectedFile();
-		
-		return null;
-	}*/
 }

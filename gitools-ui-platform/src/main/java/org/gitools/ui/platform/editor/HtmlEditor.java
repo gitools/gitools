@@ -10,7 +10,10 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.html.HTML;
 
+@Deprecated
 public class HtmlEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = 1693342849779799326L;
@@ -39,9 +42,13 @@ public class HtmlEditor extends AbstractEditor {
 			@Override
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == EventType.ACTIVATED) {
-					final String desc = e.getDescription();
-					if (desc.startsWith("action:"))
-						performUrlAction(desc.substring("action:".length()));
+					AttributeSet attrs = e.getSourceElement().getAttributes();
+					AttributeSet aTagAttrs = (AttributeSet) attrs.getAttribute(HTML.Tag.A);
+					String rel = (String) aTagAttrs.getAttribute(HTML.Attribute.REL);
+					String href = (String) aTagAttrs.getAttribute(HTML.Attribute.HREF);
+
+					if (rel != null && rel.equalsIgnoreCase("action"))
+						performUrlAction(href);
 					else {
 						try {
 							htmlPane.setPage(e.getURL());
@@ -63,26 +70,18 @@ public class HtmlEditor extends AbstractEditor {
 
 	protected void performUrlAction(String name) {
 	}
-
-	/*protected JTextPane getHtmlPane() {
-		return htmlPane;
-	}*/
 	
-	protected void setPage(URL url) throws IOException {
+	protected void navigate(URL url) throws Exception {
 		htmlPane.setPage(url);
 	}
 	
-	protected URL getPage() {
+	protected URL getUrl() {
 		return htmlPane.getPage();
 	}
 	
 	@Override
 	public Object getModel() {
 		return htmlPane.getDocument();
-	}
-
-	@Override
-	public void refresh() {
 	}
 
 }

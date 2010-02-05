@@ -10,14 +10,36 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.actions.DataActionSet;
+import org.gitools.ui.actions.EditActionSet;
+import org.gitools.ui.actions.ToolBarActionSet;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.platform.AppFrame;
-
+import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.ui.platform.actions.BaseAction;
 
 public class HeatmapEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = -540561086703759209L;
+
+	private static final ActionSet toolBarAS = new ActionSet(new BaseAction[] {
+				EditActionSet.selectAllAction,
+				EditActionSet.unselectAllAction,
+				BaseAction.separator,
+				DataActionSet.hideSelectedColumns,
+				DataActionSet.showAllColumns,
+				DataActionSet.hideSelectedRows,
+				DataActionSet.showAllRows,
+				BaseAction.separator,
+				DataActionSet.moveColsLeftAction,
+				DataActionSet.moveColsRightAction,
+				DataActionSet.moveRowsUpAction,
+				DataActionSet.moveRowsDownAction,
+				BaseAction.separator,
+				DataActionSet.fastSortRowsAction
+		});
 
 	private Heatmap heatmap;
 
@@ -160,6 +182,7 @@ public class HeatmapEditor extends AbstractEditor {
 		splitPane.add(colorScalePanel);*/
 		
 		setLayout(new BorderLayout());
+		add(ActionSetUtils.createToolBar(toolBarAS), BorderLayout.NORTH);
 		add(heatmapPanel, BorderLayout.CENTER);
 		add(colorScalePanel, BorderLayout.SOUTH);
 	}

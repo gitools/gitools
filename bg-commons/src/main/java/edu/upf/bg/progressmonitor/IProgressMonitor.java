@@ -7,6 +7,8 @@ public interface IProgressMonitor {
 	public void title(String title);
 	
 	public void worked(int workInc);
+
+	public void cancel();
 	
 	public boolean isCancelled();
 	
@@ -22,4 +24,6 @@ public interface IProgressMonitor {
 
 	public void info(String msg);
 	public void debug(String msg);
+
+	public void exception(Throwable cause);
 }

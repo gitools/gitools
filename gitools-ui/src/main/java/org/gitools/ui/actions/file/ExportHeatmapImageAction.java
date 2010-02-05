@@ -1,12 +1,13 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
@@ -17,6 +18,8 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
@@ -43,50 +46,59 @@ public class ExportHeatmapImageAction extends BaseAction {
 		if (editor == null)
 			return;
 
-		Heatmap hm = null;
-
-		Object model = editor.getModel();
+		final Object model = editor.getModel();
 		if (!(model instanceof Heatmap))
 			return;
 
-		hm = (Heatmap) model;
-
-		HeatmapDrawer drawer = new HeatmapDrawer(hm);
-		drawer.setPictureMode(true);
-
-		try {
-			File file = FileChooserUtils.selectImageFile(
+		final File file = FileChooserUtils.selectImageFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath(),
 					FileChooserUtils.MODE_SAVE);
-			
-			if (file == null)
-				return;
-			
-			Settings.getDefault().setLastExportPath(file.getAbsolutePath());
 
-			String formatExtension = FileChooserUtils.getExtension(file);
+		if (file == null)
+			return;
 
-			if (FileChooserUtils.isImageExtension(formatExtension)) {
-				Dimension size = drawer.getSize();
+		Settings.getDefault().setLastExportPath(file.getAbsolutePath());
 
-				int type = formatExtension.equals(FileChooserUtils.png) ?
-					BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;
-				
-				BufferedImage bi = new BufferedImage(size.width, size.height, type);
-				Graphics2D g = bi.createGraphics();
-				drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
+		final String formatExtension = FileChooserUtils.getExtension(file);
 
-				ImageIO.write(bi, formatExtension, file);
+		if (!FileChooserUtils.isImageExtension(formatExtension)) {
+			AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
+			return;
+		}
 
-				AppFrame.instance().setStatusText("Image created.");
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				try {
+					monitor.begin("Exporting to image ...", 1);
+					monitor.info("File: " + file.getName());
+
+					Heatmap hm = (Heatmap) model;
+
+					HeatmapDrawer drawer = new HeatmapDrawer(hm);
+					drawer.setPictureMode(true);
+
+					Dimension size = drawer.getSize();
+
+					int type = formatExtension.equals(FileChooserUtils.png) ?
+						BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;
+
+					BufferedImage bi = new BufferedImage(size.width, size.height, type);
+					Graphics2D g = bi.createGraphics();
+					drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
+
+					ImageIO.write(bi, formatExtension, file);
+
+					monitor.end();
+				}
+				catch (Exception ex) {
+					monitor.exception(ex);
+				}
 			}
-			else
-				AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
-		}
-		catch (Exception ex) {
-			AppFrame.instance().setStatusText("There was an error exporting the data: " + ex.getMessage());
-		}
+		});
+
+		AppFrame.instance().setStatusText("Image created.");
 	}
 
 	/*Document doc = new Document(PageSize.A4, 10, 10, 10, 10);

@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 import org.gitools.persistence.PersistenceException;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.workspace.Workspace;

@@ -13,7 +13,7 @@ public class Main {
 		} catch (Exception e) {
 			System.err.println("Error loading Look&Feel: " + e);
 		}
-		
+
 		AppFrame.instance().start();
 	}
 

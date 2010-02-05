@@ -17,7 +17,6 @@
 
 package org.gitools.ui.actions;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapMatrixViewAdapter;
 import org.gitools.matrix.model.IMatrixView;

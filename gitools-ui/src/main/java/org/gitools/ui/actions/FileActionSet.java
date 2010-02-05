@@ -1,13 +1,15 @@
 package org.gitools.ui.actions;
 
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportHeatmapHtmlAction;
 import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportLabelNamesAction;
-import org.gitools.ui.actions.file.ExportTable;
-import org.gitools.ui.actions.file.ExportMatrix;
+import org.gitools.ui.actions.file.ExportTableAction;
+import org.gitools.ui.actions.file.ExportMatrixAction;
 import org.gitools.ui.actions.file.ImportBioMartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
@@ -90,8 +92,8 @@ public class FileActionSet extends ActionSet {
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
 	public static final BaseAction exportRowColumnNamesAction = new ExportLabelNamesAction();
-	public static final BaseAction exportTableParameter = new ExportMatrix();
-	public static final BaseAction exportTableAllParameters = new ExportTable();
+	public static final BaseAction exportTableParameter = new ExportMatrixAction();
+	public static final BaseAction exportTableAllParameters = new ExportTableAction();
 	public static final BaseAction exportMatrixFigurePicture = new ExportHeatmapImageAction();
 	public static final BaseAction exportMatrixFigureHtml = new ExportHeatmapHtmlAction();
 

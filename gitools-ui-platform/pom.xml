@@ -23,5 +23,15 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>cobra</groupId>
+			<artifactId>cobra</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>rhino</groupId>
+			<artifactId>js</artifactId>
+		</dependency>
 	</dependencies>
 </project>

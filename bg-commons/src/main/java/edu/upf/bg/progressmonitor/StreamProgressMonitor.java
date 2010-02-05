@@ -100,7 +100,14 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 		else
 			print(" " + time);
 	}
-	
+
+	@Override
+	public void exception(Throwable cause) {
+		super.exception(cause);
+
+		print("\n\nEXCEPTION: " + cause.getLocalizedMessage());
+	}
+
 	@Override
 	public void info(String msg) {
 		if (verbose)

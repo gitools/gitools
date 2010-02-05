@@ -14,7 +14,7 @@ package org.gitools.ui.dialog.progress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgressDialog extends javax.swing.JDialog {
+public class JobProgressDialog extends javax.swing.JDialog {
 
     public interface CancelListener {
         void cancelled();
@@ -23,8 +23,9 @@ public class ProgressDialog extends javax.swing.JDialog {
     protected List<CancelListener> listeners = new ArrayList<CancelListener>();
 
     /** Creates new form ProgressDialog */
-    public ProgressDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public JobProgressDialog(java.awt.Window parent, boolean modal) {
+        super(parent);
+		setModal(modal);
         
 		initComponents();
 
@@ -51,6 +52,7 @@ public class ProgressDialog extends javax.swing.JDialog {
         infoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setLocationByPlatform(true);
 
         msgLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         msgLabel.setText("Working...");

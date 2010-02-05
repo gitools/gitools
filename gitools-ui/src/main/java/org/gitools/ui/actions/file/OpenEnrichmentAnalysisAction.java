@@ -3,13 +3,9 @@ package org.gitools.ui.actions.file;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.gitools.persistence.PersistenceException;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.BaseAction;
-import org.gitools.ui.jobs.OpenAnalysisJob;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
@@ -18,8 +14,10 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.dialog.progress.ProgressJob;
-import org.gitools.ui.editor.analysis.AnalysisEditor;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.analysis.htest.editor.AnalysisDetailsEditor;
+import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenEnrichmentAnalysisAction extends BaseAction {
@@ -46,11 +44,9 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 			Settings.getDefault().setLastPath(selectedFile.getParent());
 			Settings.getDefault().save();
 
-			new ProgressJob(AppFrame.instance()) {
+			JobThread.execute(AppFrame.instance(), new JobRunnable() {
 				@Override
-				protected void runJob() {
-					final IProgressMonitor monitor = getProgressMonitor();
-
+				public void run(IProgressMonitor monitor) {
 					try {
 						EnrichmentAnalysis analysis =
 								(EnrichmentAnalysis) PersistenceManager.getDefault().load(
@@ -58,7 +54,10 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 									MimeTypes.ENRICHMENT_ANALYSIS,
 									monitor);
 
-						final AnalysisEditor editor = new AnalysisEditor(analysis);
+						if (monitor.isCancelled())
+							return;
+
+						final AnalysisDetailsEditor editor = new AnalysisDetailsEditor(analysis);
 
 						editor.setName(analysis.getTitle());
 
@@ -70,10 +69,10 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 							}
 						});
 					} catch (Exception ex) {
-						exception(ex);
+						monitor.exception(ex);
 					}
 				}
-			}.execute();
+			});
 		}
 	}
 }

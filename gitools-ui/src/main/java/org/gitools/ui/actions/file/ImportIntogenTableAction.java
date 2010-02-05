@@ -2,7 +2,7 @@ package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.intogen.data.IntogenDataWizard;

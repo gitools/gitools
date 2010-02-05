@@ -30,6 +30,15 @@
 			<fileMode>0770</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
+
+		<!-- <fileSet>
+			<directory>ext</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<outputDirectory>lib/ext</outputDirectory>
+		</fileSet> -->
+
 		<fileSet>
 			<directory>templates</directory>
 			<includes>
@@ -37,6 +46,7 @@
 			</includes>
 			<outputDirectory>templates</outputDirectory>
 		</fileSet>
+
 		<fileSet>
 			<directory>gitools-ui/src/main/resources/img</directory>
 			<includes>

@@ -3,7 +3,7 @@ package org.gitools.ui.actions.data;
 import java.awt.event.ActionEvent;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.model.Heatmap;

@@ -1,5 +1,6 @@
 package org.gitools.ui.actions;
 
+import org.gitools.ui.platform.actions.BaseAction;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;

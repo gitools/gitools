@@ -1,5 +1,6 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -14,7 +15,9 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
@@ -48,7 +51,7 @@ public class ExportLabelNamesAction extends BaseAction {
 		if (matrixView == null)
 			return;
 		
-		IMatrix contents = matrixView.getContents();
+		final IMatrix contents = matrixView.getContents();
 		
 		String[] possibilities = { 
 				visibleRows, visibleCols, hiddenRows, hiddenCols };
@@ -61,44 +64,55 @@ public class ExportLabelNamesAction extends BaseAction {
 		if (selected == null || selected.isEmpty())
 			return;
 
-		try {
-			File file = FileChooserUtils.selectFile(
+		final File file = FileChooserUtils.selectFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath(),
 					FileChooserUtils.MODE_SAVE);
-			if (file == null)
-				return;
+
+		if (file == null)
+			return;
+
+		Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) {
+				try {
+					monitor.begin("Exporting " + selected.toLowerCase() + " ...", 1);
+					monitor.info("File: " + file.getName());
+
+					PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
-			Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
-			
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-			
-			if (visibleRows.equals(selected)) {
-				for (int i = 0; i < matrixView.getRowCount(); i++)
-					pw.println(matrixView.getRowLabel(i));
-			}
-			else if (visibleCols.equals(selected)) {
-				for (int i = 0; i < matrixView.getColumnCount(); i++)
-					pw.println(matrixView.getColumnLabel(i));
-			} 
-			else if (hiddenRows.equals(selected)) {
-				for (int i = 0; i < contents.getRowCount(); i++) {
-					if (!inArray(i, matrixView.getVisibleRows()))
-							pw.println(contents.getRowLabel(i));
+					if (visibleRows.equals(selected)) {
+						for (int i = 0; i < matrixView.getRowCount(); i++)
+							pw.println(matrixView.getRowLabel(i));
+					}
+					else if (visibleCols.equals(selected)) {
+						for (int i = 0; i < matrixView.getColumnCount(); i++)
+							pw.println(matrixView.getColumnLabel(i));
+					}
+					else if (hiddenRows.equals(selected)) {
+						for (int i = 0; i < contents.getRowCount(); i++) {
+							if (!inArray(i, matrixView.getVisibleRows()))
+									pw.println(contents.getRowLabel(i));
+						}
+					}
+					else if (hiddenCols.equals(selected)) {
+						for (int i = 0; i < contents.getColumnCount(); i++) {
+							if (!inArray(i, matrixView.getVisibleColumns()))
+									pw.println(contents.getColumnLabel(i));
+						}
+					}
+
+					pw.close();
+
+					monitor.end();
+				}
+				catch (IOException ex) {
+					monitor.exception(ex);
 				}
 			}
-			else if (hiddenCols.equals(selected)) {
-				for (int i = 0; i < contents.getColumnCount(); i++) {
-					if (!inArray(i, matrixView.getVisibleColumns()))
-							pw.println(contents.getColumnLabel(i));
-				}
-			}
-			
-			pw.close();
-		}
-		catch (IOException ex) {
-			AppFrame.instance().setStatusText("There was an error exporting names: " + ex.getMessage());
-		}
+		});
 		
 		AppFrame.instance().setStatusText(selected + " exported.");
 	}

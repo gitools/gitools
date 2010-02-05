@@ -12,6 +12,9 @@ public class NullProgressMonitor implements IProgressMonitor {
 	public int getLevel() {	return 0; }
 
 	@Override
+	public void cancel() { }
+
+	@Override
 	public boolean isCancelled() { return false; }
 
 	@Override
@@ -34,4 +37,6 @@ public class NullProgressMonitor implements IProgressMonitor {
 	@Override
 	public void info(String msg) {}
 
+	@Override
+	public void exception(Throwable cause) { }
 }

@@ -1,5 +1,8 @@
 package org.gitools.ui.actions;
 
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.actions.SeparatorAction;
 import java.util.List;
 
 import javax.swing.JMenu;
@@ -9,6 +12,7 @@ import org.gitools.ui.actions.EditActionSet;
 import org.gitools.ui.actions.FileActionSet;
 import org.gitools.ui.actions.HelpActionSet;
 import org.gitools.ui.actions.MatrixActionSet;
+import org.gitools.ui.platform.actions.ActionSetUtils;
 
 public class MenuActionSet extends ActionSet {
 
@@ -31,24 +35,6 @@ public class MenuActionSet extends ActionSet {
 	}
 	
 	public JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
-		for (BaseAction a : actions)
-			menuBar.add(createMenu(a));
-		return menuBar;
-	}
-	
-	public JMenu createMenu(BaseAction action) {
-		JMenu menu = new JMenu(action);
-		
-		List<BaseAction> actions = ((ActionSet)action).getActions();
-		for (BaseAction a : actions)
-			if (a instanceof SeparatorAction)
-				menu.addSeparator();
-			else if (a instanceof ActionSet)
-				menu.add(createMenu(a));
-			else
-				menu.add(a);
-		
-		return menu;
+		return ActionSetUtils.createMenuBar(this);
 	}
 }

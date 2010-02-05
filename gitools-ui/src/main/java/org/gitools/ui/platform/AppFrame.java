@@ -23,6 +23,7 @@ import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.intogen.editor.IntogenWebEditor;
 import org.gitools.ui.view.details.DetailsView;
 import org.gitools.ui.view.properties.PropertiesView;
 
@@ -117,8 +118,8 @@ public class AppFrame extends JFrame {
 		
 		toolBar = Actions.toolBarActionSet.createToolBar();
 		
-		Workspace workspace = openWorkspace();
-		navPanel = new NavigatorPanel(workspace);
+		/*Workspace workspace = openWorkspace();
+		navPanel = new NavigatorPanel(workspace);*/
 				
 		leftPanel = new JTabbedPane();
 		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
@@ -194,6 +195,9 @@ public class AppFrame extends JFrame {
 			new HeatmapDemoEditor(40, 12);
 		
 		editorsPanel.addEditor(demoView);
+
+		IntogenWebEditor intogen = new IntogenWebEditor();
+		editorsPanel.addEditor(intogen);
 	}
 
 	public void start() {

@@ -7,12 +7,13 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 
-import org.gitools.ui.actions.BaseAction;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
-import org.gitools.ui.dialog.progress.ProgressJob;
-import org.gitools.ui.editor.analysis.AnalysisEditor;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
@@ -50,13 +51,14 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 				wizard.getWorkdir(),
 				wizard.getFileName());
 
-		new ProgressJob(null) {
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override
-			protected void runJob() {
-				IProgressMonitor monitor = getProgressMonitor();
-
+			public void run(IProgressMonitor monitor) {
 				try {
 					cmd.run(monitor);
+
+					if (monitor.isCancelled())
+						return;
 
 					final AnalysisEditor editor = new AnalysisEditor(analysis);
 
@@ -75,9 +77,9 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 					AppFrame.instance().setStatusText("Done.");
 				}
 				catch (Exception ex) {
-					exception(ex);
+					monitor.exception(ex);
 				}
 			}
-		}.execute();
+		});
 	}
 }

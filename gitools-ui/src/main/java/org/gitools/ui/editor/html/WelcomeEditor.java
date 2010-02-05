@@ -1,31 +1,31 @@
 package org.gitools.ui.editor.html;
 
-import org.gitools.ui.platform.editor.HtmlEditor;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 
-import org.gitools.ui._DEPRECATED.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
+import org.gitools.ui.platform.editor.Html4Editor;
 
 
-public class WelcomeEditor extends HtmlEditor {
+public class WelcomeEditor extends Html4Editor {
 
 	private static final long serialVersionUID = 6851947500231401412L;
 
 	public WelcomeEditor() {
 		super("Welcome");
-		
+
 		try {
 			URL url = getClass().getResource("/html/welcome.html");
-			setPage(url);
-		} catch (IOException e) {
+			navigate(url);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	protected void performUrlAction(String name) {
+	protected void performUrlAction(String name, Map<String, String> params) {
 		if (name.equals("newEnrichmentAnalysis")) {
 			new NewEnrichmentAnalysisAction()
 				.actionPerformed(new ActionEvent(this, 0, name));

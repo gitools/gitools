@@ -22,17 +22,17 @@ import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import java.io.PrintStream;
 import javax.swing.SwingUtilities;
 
-public class ProgressJobMonitor extends StreamProgressMonitor {
+public class JobProgressMonitor extends StreamProgressMonitor {
 
-	private final ProgressDialog dlg;
+	private final JobProgressDialog dlg;
 
-	public ProgressJobMonitor(ProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
+	public JobProgressMonitor(JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
 		super(out, verbose, debug);
 
 		this.dlg = dlg;
 	}
 
-	private ProgressJobMonitor(IProgressMonitor parentMonitor, ProgressDialog dlg,
+	private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg,
 			PrintStream out, boolean verbose, boolean debug) {
 
 		super(parentMonitor, out, verbose, debug);
@@ -115,7 +115,7 @@ public class ProgressJobMonitor extends StreamProgressMonitor {
 			boolean verbose,
 			boolean debug) {
 
-		return new ProgressJobMonitor(
+		return new JobProgressMonitor(
 				parentMonitor, dlg, out, verbose, debug);
 	}
 }

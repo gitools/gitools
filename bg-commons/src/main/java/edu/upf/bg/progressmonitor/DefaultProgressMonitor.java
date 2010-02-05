@@ -6,12 +6,16 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 	protected int totalWork;
 	protected int worked;
 	protected int level;
+	protected boolean cancelled;
+
+	protected Throwable cause;
 	
 	protected IProgressMonitor parent;
 	
 	public DefaultProgressMonitor() {
 		title = "";
 		totalWork = worked = level = 0;
+		cancelled = false;
 	}
 	
 	public DefaultProgressMonitor(IProgressMonitor parent) {
@@ -23,6 +27,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 		this.title = title;
 		this.totalWork = totalWork;
 		this.worked = 0;
+		this.cancelled = false;
 	}
 
 	@Override
@@ -39,7 +44,12 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 	
 	@Override
 	public boolean isCancelled() {
-		return false;
+		return cancelled;
+	}
+
+	@Override
+	public void cancel() {
+		this.cancelled = true;
 	}
 	
 	@Override
@@ -76,4 +86,14 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 
 	@Override
 	public void info(String msg) {}
+
+	@Override
+	public void exception(Throwable cause) {
+		this.cause = cause;
+		this.cancelled = true;
+	}
+
+	public Throwable getCause() {
+		return cause;
+	}
 }
