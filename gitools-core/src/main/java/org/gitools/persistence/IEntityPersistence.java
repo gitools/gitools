@@ -3,6 +3,7 @@ package org.gitools.persistence;
 import java.io.File;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.Properties;
 
 public interface IEntityPersistence<T> {
 
@@ -11,4 +12,6 @@ public interface IEntityPersistence<T> {
 	
 	void write(File file, T entity, IProgressMonitor monitor)
 		throws PersistenceException;;
+
+	public void setProperties(Properties properties);
 }

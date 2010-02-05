@@ -4,14 +4,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import cern.colt.bitvector.BitMatrix;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 @XmlAccessorType(XmlAccessType.NONE)	
 public class ModuleMap extends Artifact {
@@ -107,12 +103,65 @@ public class ModuleMap extends Artifact {
 		itemIndices[moduleIndex] = indices;
 	}
 	
-	public final int[][] getItemIndices() {
+	public final int[][] getAllItemIndices() {
 		return itemIndices;
 	}
 
-	public final void setItemIndices(int[][] itemIndices) {
+	public final void setAllItemIndices(int[][] itemIndices) {
 		this.itemIndices = itemIndices;
+	}
+
+	public final ModuleMap remap(String[] names, int minSize, int maxSize) {
+
+		// prepare a item name to index map for input names
+		Map<String, Integer> nameIndices = new HashMap<String, Integer>();
+		for (int i = 0; i < names.length; i++)
+			nameIndices.put(names[i], i);
+
+		// prepare new indices for item names
+		int[] indexMap = new int[itemNames.length];
+		for (int i = 0; i < itemNames.length; i++) {
+			Integer index = nameIndices.get(itemNames[i]);
+			if (index == null)
+				index = -1;
+			indexMap[i] = index;
+		}
+
+		// remap indices
+		List<String> modNames = new ArrayList<String>();
+		List<int[]> modIndices = new ArrayList<int[]>();
+		
+		for (int i = 0; i < itemIndices.length; i++) {
+			int[] indices = itemIndices[i];
+			int numItems = 0;
+			for (int j = 0; j < indices.length; j++) {
+				int newIndex = indexMap[indices[j]];
+				indices[j] = newIndex;
+				numItems += newIndex >= 0 ? 1 : 0;
+			}
+
+			boolean inRange = numItems >= minSize && numItems <= maxSize;
+
+			if (numItems != indices.length && inRange) {
+				int[] newIndices = new int[numItems];
+				int k = 0;
+				for (int j = 0; j < indices.length; j++)
+					if (indices[j] != -1)
+						newIndices[k++] = indices[j];
+				indices = newIndices;
+			}
+
+			if (inRange) {
+				modNames.add(moduleNames[i]);
+				modIndices.add(indices);
+			}
+		}
+
+		ModuleMap mmap = new ModuleMap();
+		mmap.setItemNames(names);
+		mmap.setModuleNames(modNames.toArray(new String[modNames.size()]));
+		mmap.setAllItemIndices(modIndices.toArray(new int[modIndices.size()][]));
+		return mmap;
 	}
 
 	public BitMatrix getMap() {
@@ -130,147 +179,6 @@ public class ModuleMap extends Artifact {
 		}
 		
 		return map;
-	}
-
-	/** Filters out modules with less items than minModuleSize
-	 * and with more items than maxModulesSize considering only
-	 * the item names in itemNames.
-	 *
-	 * It will return the items indices that should be considered for the background.
-	 */
-	public int[] filter(
-			int minModuleSize,
-			int maxModuleSize,
-			String[] bgItemNames,
-			boolean includeNonMappedItems) {
-
-		// create a map between the item names and its row position
-
-		Map<String, Integer> itemNameToRowMapping = new TreeMap<String, Integer>();
-		for (int i = 0; i < bgItemNames.length; i++)
-			itemNameToRowMapping.put(bgItemNames[i], i);
-
-		// create a map between module name and set of item indices
-		final Map<String, SortedSet<Integer>> moduleItemsMap =
-			new HashMap<String, SortedSet<Integer>>();
-
-		for (int mi = 0; mi < moduleNames.length; mi++) {
-			SortedSet<Integer> indices = new TreeSet<Integer>();
-			moduleItemsMap.put(moduleNames[mi], indices);
-			for (int ii = 0; ii < itemNames.length; ii++) {
-				Integer index = itemNameToRowMapping.get(itemNames[ii]);
-				if (index != null)
-					indices.add(index);
-			}
-		}
-
-		// itemHasMapping[idx] = true means that itemNames[idx] has references from at least one module
-		final boolean[] itemHasMappings = new boolean[bgItemNames.length];
-
-		// copy module names and module item indices to arrays
-
-		final Set<Map.Entry<String, SortedSet<Integer>>> entries = moduleItemsMap.entrySet();
-		final String[] tmpModuleNames = new String[entries.size()];
-		final int[][] tmpModuleItemIndices = new int[entries.size()][];
-		int index = 0;
-
-		for (Map.Entry<String, SortedSet<Integer>> entry : entries) {
-			SortedSet<Integer> indices = entry.getValue();
-			tmpModuleNames[index] = entry.getKey();
-			int[] ia = tmpModuleItemIndices[index] = new int[indices.size()];
-			int i = 0;
-			for (Integer idx : indices ) {
-				ia[i++] = idx;
-				itemHasMappings[idx] = true;
-			}
-			index++;
-		}
-
-		// sort groups by number of items
-
-		int numModules = entries.size();
-		final Integer[] moduleOrder = new Integer[numModules];
-		for (int i = 0; i < moduleOrder.length; i++)
-			moduleOrder[i] = i;
-
-		Arrays.sort(moduleOrder, new Comparator<Integer>() {
-			@Override public int compare(Integer o1, Integer o2) {
-				int l1 = tmpModuleItemIndices[o1].length;
-				int l2 = tmpModuleItemIndices[o2].length;
-				return l2 - l1;
-			}
-		});
-
-		// filter by number of items
-
-		int start = 0;
-		int end = numModules - 1;
-		while (start < numModules
-				&& tmpModuleItemIndices[moduleOrder[start]].length > maxModuleSize) {
-			int order = moduleOrder[start];
-			tmpModuleNames[order] = null;
-			tmpModuleItemIndices[order] = null;
-			start++;
-		}
-		while (end >= start
-				&& tmpModuleItemIndices[moduleOrder[end]].length < minModuleSize) {
-			int order = moduleOrder[end];
-			tmpModuleNames[order] = null;
-			tmpModuleItemIndices[order] = null;
-			end--;
-		}
-		end++;
-
-		final int fileNumModules = numModules;
-
-		numModules = end - start;
-		String[] moduleNames = new String[numModules];
-		int[][] moduleItemIndices = new int[numModules][];
-
-		// Prepare map between original item index
-		// and data row where will be stored,
-		// sorted according to group size.
-		// Get group names and update group item indices.
-
-		int [] itemsOrder = new int[bgItemNames.length];
-		Arrays.fill(itemsOrder, -1);
-
-		int numItems = 0;
-		for (int i = start; i < end; i++) {
-			int order = moduleOrder[i];
-
-			moduleNames[i - start] = tmpModuleNames[order];
-			moduleItemIndices[i - start] = tmpModuleItemIndices[order];
-
-			final int[] indices = tmpModuleItemIndices[order];
-
-			for (int j = 0; j < indices.length; j++) {
-				int idx = indices[j];
-				if (itemsOrder[idx] < 0)
-					itemsOrder[idx] = numItems++;
-				indices[j] = itemsOrder[idx];
-			}
-		}
-
-		// Put the rest of the items at the end
-		for (int i = 0; i < itemsOrder.length; i++)
-			if (itemsOrder[i] < 0
-					&& (includeNonMappedItems || itemHasMappings[i]))
-				itemsOrder[i] = numItems++;
-
-		// Create ordered list of item names
-
-		final String[] orderedItemNames = new String[numItems];
-		for (int i = 0; i < itemsOrder.length; i++)
-			if (itemsOrder[i] >= 0)
-				orderedItemNames[itemsOrder[i]] = bgItemNames[i];
-
-		setModuleNames(moduleNames);
-		setItemNames(orderedItemNames);
-		//moduleMap.setNumMappedItems(numItems);
-		setItemIndices(moduleItemIndices);
-		
-		return itemsOrder;
 	}
 
 	@Deprecated

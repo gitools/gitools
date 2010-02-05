@@ -102,7 +102,7 @@ public class REXmlAnalysisResource extends AnalysisPersistence {
 			}
 			out.println("\t</property-list>");
 			
-			final int[][] moduleItemIndices = enrichAnalysis.getModuleMap().getItemIndices();
+			final int[][] moduleItemIndices = enrichAnalysis.getModuleMap().getAllItemIndices();
 			
 			for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
 				final String moduleName = moduleNames[moduleIndex];

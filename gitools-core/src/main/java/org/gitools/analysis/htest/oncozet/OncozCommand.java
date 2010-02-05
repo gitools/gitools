@@ -130,7 +130,7 @@ public class OncozCommand extends HtestCommand {
 			int[][] indices = new int[1][num];
 			for (int i = 0; i < num; i++)
 				indices[0][i] = i;
-			moduleMap.setItemIndices(indices);
+			moduleMap.setAllItemIndices(indices);
 		}
 		
 		// Load data

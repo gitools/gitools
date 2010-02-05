@@ -2,10 +2,8 @@ package org.gitools.analysis.htest.oncozet;
 
 import java.util.Date;
 
-import org.gitools.model.Analysis;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
-import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.results.CommonResult;
@@ -18,10 +16,12 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
+import com.sun.xml.internal.ws.api.server.Module;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.mtc.MTC;
 
@@ -67,16 +67,22 @@ public class OncozProcessor extends AbstractProcessor {
 			throw new RuntimeException("This processor only works with DoubleMatrix data. "
 					+ dataMatrix.getClass().getSimpleName() + " found instead.");
 
+		String[] labels = new String[dataMatrix.getColumnCount()];
+		for (int i = 0; i < labels.length; i++)
+			labels[i] = dataMatrix.getColumnLabel(i);
+
+		ModuleMap smap = analysis.getSetsMap();
+		smap = smap.remap(labels, analysis.getMinSetSize(), analysis.getMaxSetSize());
+
 		DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
 
 		ObjectMatrix1D items = doubleMatrix.getRows().copy();
 		
 		DoubleMatrix2D data = doubleMatrix.getCells();
 		
-		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
-				analysis.getSetsMap().getModuleNames());
+		ObjectMatrix1D modules = ObjectFactory1D.dense.make(smap.getModuleNames());
 		
-		int[][] moduleItemIndices = analysis.getSetsMap().getItemIndices();
+		int[][] moduleItemIndices = smap.getAllItemIndices();
 		
 		final int numColumns = data.columns();
 		final int numItems = data.rows();

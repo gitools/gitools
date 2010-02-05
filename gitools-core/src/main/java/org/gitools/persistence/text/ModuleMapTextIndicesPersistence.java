@@ -5,22 +5,25 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVStrategy;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class ModuleMapTextIndicesPersistence
-		extends AbstractEntityPersistence<ModuleMap> {
+		extends ModuleMapPersistence<ModuleMap> {
 
 	private static final CSVStrategy csvStrategy = CSVStrategies.TSV;
 
@@ -88,7 +91,7 @@ public class ModuleMapTextIndicesPersistence
 			
 			final String[] moduleNames = moduleMap.getModuleNames();
 			
-			final int[][] indices = moduleMap.getItemIndices();
+			final int[][] indices = moduleMap.getAllItemIndices();
 			
 			int numModules = moduleNames.length;
 			
@@ -136,32 +139,93 @@ public class ModuleMapTextIndicesPersistence
 	private void loadModules(ModuleMap moduleMap, IProgressMonitor monitor,
 			CSVParser parser) throws NumberFormatException, IOException {
 
-		monitor.begin("Reading modules names ...", 1);
+		monitor.begin("Reading modules ...", 1);
+
+		String[] itemNames = moduleMap.getItemNames();
+
+		// Prepare valid item names depending on whether item name filtering is enabled or not
+
+		BitSet valid = new BitSet(itemNames.length);
+
+		if (isItemNamesFilterEnabled()) {
+			Map<String, Integer> itemIndices = new HashMap<String, Integer>();
+			for (int i = 0; i < itemNames.length; i++)
+				itemIndices.put(itemNames[i], i);
+
+			for (String name : getItemNames()) {
+				Integer index = itemIndices.get(name);
+				if (index != null)
+					valid.set(index);
+			}
+		}
+		else
+			valid.set(0, itemNames.length);
+
+		// Load mapping and mark items used
+
+		BitSet used = new BitSet(itemNames.length);
 
 		String[] fields;
-		final List<String> moduleNames = new ArrayList<String>();
-		final List<int[]> itemIndices = new ArrayList<int[]>();
+		final Map<String, Set<Integer>> mapItemIndices = new HashMap<String, Set<Integer>>();
+
+		int minSize = getMinSize();
+		int maxSize = getMaxSize();
 
 		while ((fields = parser.getLine()) != null) {
 
-			moduleNames.add(fields[0]);
+			String moduleName = fields[0];
 
-			int[] items = new int[fields.length - 1];
+			Set<Integer> items = new HashSet<Integer>();
 
 			for (int j = 1; j < fields.length; j++) {
-				items[j - 1] = Integer.parseInt(fields[j]);
+				int index = Integer.parseInt(fields[j]);
+				boolean inRange = index >= 0 && index < itemNames.length;
+				if (inRange && valid.get(index)) {
+					items.add(index);
+					used.set(index);
+				}
 			}
-			itemIndices.add(items);
 
+			if (items.size() >= minSize && items.size() <= maxSize)
+				mapItemIndices.put(moduleName, items);
+			else
+				items.clear();
 		}
-		
-		moduleMap.setModuleNames(
-				moduleNames.toArray(new String[moduleNames.size()]));
-		
-		moduleMap.setItemIndices(
-				itemIndices.toArray(new int[moduleNames.size()][]));
 
-		monitor.info(moduleNames.size() + " modules");
+		// Remap indices as there are items that may not be used
+
+		int lastIndex = 0;
+		int[] indexMap = new int[itemNames.length];
+		for (int i = 0; i < itemNames.length; i++)
+			if (used.get(i))
+				indexMap[i] = lastIndex++;
+
+		int i = 0;
+		String[] finalItemNames = new String[lastIndex];
+		for (int j = 0; j < itemNames.length; j++)
+			if (used.get(j))
+				finalItemNames[i++] = itemNames[j];
+
+		i = 0;
+		String[] moduleNames = new String[mapItemIndices.size()];
+
+		int[][] moduleItemIndices = new int[moduleNames.length][];
+
+		for (Map.Entry<String, Set<Integer>> entry : mapItemIndices.entrySet()) {
+			moduleNames[i] = entry.getKey();
+
+			int[] indices = new int[entry.getValue().size()];
+			Iterator<Integer> it = entry.getValue().iterator();
+			for (int j = 0; j < indices.length; j++)
+				indices[j] = indexMap[it.next()];
+			moduleItemIndices[i] = indices;
+		}
+
+		moduleMap.setItemNames(finalItemNames);
+		moduleMap.setModuleNames(moduleNames);
+		moduleMap.setAllItemIndices(moduleItemIndices);
+
+		monitor.info(moduleNames.length + " modules and " + finalItemNames.length + " items annotated");
 
 		monitor.end();
 	}

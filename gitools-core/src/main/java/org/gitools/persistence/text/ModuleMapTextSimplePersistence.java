@@ -25,7 +25,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 /** Read/Write modules from a two columns tabulated file,
  * first column for item and second for module. */
 
-// FIXME Adapt to IEntityPersistence
+@Deprecated // use ModuleMapText2cPersistence instead
 public class ModuleMapTextSimplePersistence extends FileResource {
 
 	private static final long serialVersionUID = -6679172401494740813L;
@@ -192,7 +192,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 			moduleMap.setModuleNames(moduleNames);
 			moduleMap.setItemNames(orderedItemNames);
 			//moduleMap.setNumMappedItems(numItems);
-			moduleMap.setItemIndices(moduleItemIndices);
+			moduleMap.setAllItemIndices(moduleItemIndices);
 			moduleMap.setItemsOrder(itemsOrder);
 			
 			monitor.info(numModules + " modules loaded");
@@ -265,7 +265,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 			
 			final String[] moduleNames = moduleMap.getModuleNames();
 			
-			final int[][] indices = moduleMap.getItemIndices();
+			final int[][] indices = moduleMap.getAllItemIndices();
 			
 			int numModules = moduleNames.length;
 			

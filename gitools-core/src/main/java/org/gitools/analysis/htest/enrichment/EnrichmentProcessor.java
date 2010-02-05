@@ -23,6 +23,7 @@ import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
 import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTCFactory;
 
 /* Notes:
@@ -71,16 +72,23 @@ public class EnrichmentProcessor extends AbstractProcessor {
 			throw new RuntimeException("This processor only works with DoubleMatrix data. "
 					+ dataMatrix.getClass().getSimpleName() + " found instead.");
 
+		String[] labels = new String[dataMatrix.getRowCount()];
+		for (int i = 0; i < labels.length; i++)
+			labels[i] = dataMatrix.getRowLabel(i);
+
+		ModuleMap mmap = analysis.getModuleMap();
+		mmap = mmap.remap(labels,
+				analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+
 		DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
 
 		ObjectMatrix1D conditions = doubleMatrix.getColumns().copy();
 		
 		DoubleMatrix2D data = doubleMatrix.getCells().viewDice().copy();
 		
-		ObjectMatrix1D modules = ObjectFactory1D.dense.make(
-				analysis.getModuleMap().getModuleNames());
+		ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
 		
-		int[][] moduleItemIndices = analysis.getModuleMap().getItemIndices();
+		int[][] moduleItemIndices = mmap.getAllItemIndices();
 		
 		final int numConditions = data.rows();
 		final int numModules = modules.size();

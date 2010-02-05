@@ -17,6 +17,7 @@ import org.gitools.persistence.xml.ProjectXmlPersistence;
 import org.gitools.persistence.xml.TableFigureXmlPersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.Properties;
 
 public class PersistenceManager implements Serializable {
 
@@ -71,7 +72,7 @@ public class PersistenceManager implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	public <T> IEntityPersistence<T> createEntityPersistence(
-			String mimeType) {
+			String mimeType, Properties properties) {
 
 		Class<?> persistenceClass = persistenceMap.get(mimeType);
 		
@@ -79,7 +80,9 @@ public class PersistenceManager implements Serializable {
 			Constructor<?> c = persistenceClass.getConstructor();
 			IEntityPersistence<T> entityPersistence =
 				(IEntityPersistence<T>) c.newInstance();
-			
+
+			entityPersistence.setProperties(properties);
+
 			return entityPersistence;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,12 +95,23 @@ public class PersistenceManager implements Serializable {
 			File file,
 			IProgressMonitor monitor)
 				throws PersistenceException {
+
 		return load(file, null, monitor);
 	}
-	
+
 	public Object load(
 			File file,
 			String mimeType,
+			IProgressMonitor monitor)
+				throws PersistenceException {
+
+		return load(file, mimeType, new Properties(), monitor);
+	}
+
+	public Object load(
+			File file,
+			String mimeType,
+			Properties properties,
 			IProgressMonitor monitor)
 				throws PersistenceException {
 		
@@ -110,7 +124,7 @@ public class PersistenceManager implements Serializable {
 			mimeType = MimeTypeManager.getDefault().fromFile(file);
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence(mimeType);
+			createEntityPersistence(mimeType, properties);
 
 	
 		//FIXME: heap problems with annotations..
@@ -125,13 +139,23 @@ public class PersistenceManager implements Serializable {
 	public void store(
 			File file,
 			Object entity,
+			IProgressMonitor monitor)
+			throws PersistenceException {
+
+		store(file, entity, new Properties(), monitor);
+	}
+
+	public void store(
+			File file,
+			Object entity,
+			Properties properties,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 
 		String mimeType = MimeTypeManager.getDefault().fromClass(entity.getClass());
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
-			createEntityPersistence(mimeType);
+			createEntityPersistence(mimeType, properties);
 
 		entityPersistence.write(file, entity, monitor);
 		
