@@ -27,101 +27,53 @@ import org.gitools.ui.actions.file.OpenProjectAction;
 import org.gitools.ui.actions.file.SaveAction;
 import org.gitools.ui.actions.file.SaveAsAction;
 
-public class FileActionSet extends ActionSet {
+public class FileActions {
 
-	private static final long serialVersionUID = 5912417630655786267L;
-	
-	// File
-	
+	// New
+
 	public static final BaseAction newProjectAction = new NewProjectAction();
 	
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
 	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
 	public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
 	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
-	
-	public static final ActionSet newActionSet = new ActionSet("New", new BaseAction[] {
-			//newProjectAction,
-			new ActionSet("Analysis", new BaseAction[] {
-				newEnrichmentAnalysisAction,
-				newOncozAnalysisAction,
-				newCombinationAnalysisAction,
-				newCorrelationAnalysisAction })
-	});
-	
+
+	// Open
+
 	public static final BaseAction openProjectAction = new OpenProjectAction();
 	public static final BaseAction openDataAction = new OpenDataAction();
-	public static final BaseAction openAnalysisAction = new OpenEnrichmentAnalysisAction();
-	public static final BaseAction openMatrixAction = new OpenHeatmapAction();
-	
-	public static final ActionSet openActionSet = new ActionSet("Open", new BaseAction[] {
-			//openProjectAction,
-			openDataAction,
-			openAnalysisAction,
-			openMatrixAction
-	});
-	
+	public static final BaseAction openEnrichmentAnalysisAction = new OpenEnrichmentAnalysisAction();
+	public static final BaseAction openHeatmapFromMatrixAction = new OpenHeatmapAction();
+
+	// Save
+
 	public static final BaseAction saveAction = new SaveAction();
 	public static final BaseAction saveAsAction = new SaveAsAction();
-	
+
+	// Close
+
 	public static final BaseAction closeAction = new CloseAction();
+
+	// Exit
 
 	public static final BaseAction exitAction = new ExitAction();
 	
 	// Import
 	
 	public static final BaseAction importIntogenTableAction = new ImportIntogenTableAction();
-	public static final BaseAction importIntogenModulesAction = new ImportIntogenOncomodulesAction();
-	public static final BaseAction importIntogenFigureAction = new ImportIntogenHeatmapAction();
+	public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
+	public static final BaseAction importIntogenHeatmapAction = new ImportIntogenHeatmapAction();
 	
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
 	public static final BaseAction importBioMartTableAction = new ImportBioMartTableAction();
-	
-	public static final ActionSet importActionSet = new ActionSet("Import", new BaseAction[] {
-			new ActionSet("IntOGen", new BaseAction[] {
-				importIntogenTableAction,
-				importIntogenModulesAction,
-				importIntogenFigureAction }),
-			new ActionSet("BioMart", new BaseAction[] {
-				importBioMartTableAction,
-				importBioMartModulesAction })
-	});
 	
 	// Export
 	
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
-	public static final BaseAction exportRowColumnNamesAction = new ExportLabelNamesAction();
-	public static final BaseAction exportTableParameter = new ExportMatrixAction();
-	public static final BaseAction exportTableAllParameters = new ExportTableAction();
-	public static final BaseAction exportMatrixFigurePicture = new ExportHeatmapImageAction();
-	public static final BaseAction exportMatrixFigureHtml = new ExportHeatmapHtmlAction();
-
-	public static final ActionSet exportActionSet = new ActionSet("Export", new BaseAction[] {
-			exportRowColumnNamesAction,
-			exportTableParameter,
-			exportTableAllParameters,
-			exportMatrixFigurePicture,
-			exportMatrixFigureHtml
-	});
-
-	public FileActionSet() {
-		super("File", new BaseAction[] {
-			newActionSet,
-			openActionSet,
-			BaseAction.separator,
-			saveAction,
-			saveAsAction,
-			BaseAction.separator,
-			closeAction,
-			BaseAction.separator,
-			importActionSet,
-			//exportWizardAction,
-			exportActionSet,
-			BaseAction.separator,
-			exitAction
-		});
-		
-		setDefaultEnabled(true);
-	}
+	public static final BaseAction exportLabelNamesAction = new ExportLabelNamesAction();
+	public static final BaseAction exportMatrixAction = new ExportMatrixAction();
+	public static final BaseAction exportTableAction = new ExportTableAction();
+	public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+	public static final BaseAction exportHeatmapHtmlAction = new ExportHeatmapHtmlAction();
 }

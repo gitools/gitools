@@ -35,7 +35,6 @@ public class FastSortRowsAction extends BaseAction {
 	
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		System.out.println(model.getClass().getName());
 		return model instanceof Heatmap
 			|| model instanceof IMatrixView;
 	}

@@ -16,7 +16,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-import com.sun.xml.internal.ws.api.server.Module;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
 import org.gitools.matrix.model.DoubleMatrix;

@@ -22,8 +22,6 @@ public abstract class BaseAction extends AbstractAction {
 		
 		this.defaultEnabled = false;
 		
-		setEnabled(defaultEnabled);
-		
 		if (desc != null)
 			putValue(SHORT_DESCRIPTION, desc);
 		
@@ -101,6 +99,7 @@ public abstract class BaseAction extends AbstractAction {
 	
 	public void setDefaultEnabled(boolean defaultEnabled) {
 		this.defaultEnabled = defaultEnabled;
+		setEnabled(defaultEnabled);
 	}
 	
 	public void setTreeEnabled(boolean enabled) {

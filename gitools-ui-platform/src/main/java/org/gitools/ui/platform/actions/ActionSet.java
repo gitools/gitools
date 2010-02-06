@@ -1,6 +1,5 @@
 package org.gitools.ui.platform.actions;
 
-import org.gitools.ui.platform.actions.BaseAction;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;

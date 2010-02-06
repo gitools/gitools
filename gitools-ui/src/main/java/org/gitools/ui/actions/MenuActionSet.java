@@ -2,35 +2,99 @@ package org.gitools.ui.actions;
 
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.actions.SeparatorAction;
-import java.util.List;
 
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import org.gitools.ui.actions.DataActionSet;
-import org.gitools.ui.actions.EditActionSet;
-import org.gitools.ui.actions.FileActionSet;
-import org.gitools.ui.actions.HelpActionSet;
-import org.gitools.ui.actions.MatrixActionSet;
+
 import org.gitools.ui.platform.actions.ActionSetUtils;
 
 public class MenuActionSet extends ActionSet {
 
 	private static final long serialVersionUID = -7702905459240675073L;
 
-	public static final ActionSet fileActionSet = new FileActionSet();
-	public static final ActionSet editActionSet = new EditActionSet();
-	public static final ActionSet dataActionSet = new DataActionSet();
-	public static final ActionSet matrixActionSet = new MatrixActionSet();
-	public static final ActionSet helpActionSet = new HelpActionSet();
-	
 	public MenuActionSet() {
 		super(new BaseAction[] {
-			fileActionSet,
-			editActionSet,
-			dataActionSet,
-			//matrixActionSet,
-			helpActionSet
+			new ActionSet("File", new BaseAction[] {
+				new ActionSet("New", new BaseAction[] {
+					//FileActionSet.newProjectAction,
+					new ActionSet("Analysis", new BaseAction[] {
+						FileActions.newEnrichmentAnalysisAction,
+						FileActions.newOncozAnalysisAction,
+						FileActions.newCombinationAnalysisAction,
+						FileActions.newCorrelationAnalysisAction
+					})
+				}),
+				new ActionSet("Open", new BaseAction[] {
+					FileActions.openProjectAction,
+					FileActions.openDataAction,
+					FileActions.openEnrichmentAnalysisAction,
+					FileActions.openHeatmapFromMatrixAction
+				}),
+				BaseAction.separator,
+				FileActions.saveAction,
+				FileActions.saveAsAction,
+				BaseAction.separator,
+				FileActions.closeAction,
+				BaseAction.separator,
+				new ActionSet("Import", new BaseAction[] {
+					new ActionSet("IntOGen", new BaseAction[] {
+						FileActions.importIntogenTableAction,
+						FileActions.importIntogenOncomodulesAction,
+						FileActions.importIntogenHeatmapAction
+					}),
+					new ActionSet("BioMart", new BaseAction[] {
+						FileActions.importBioMartTableAction,
+						FileActions.importBioMartModulesAction
+					})
+				}),
+				//FileActionSet.exportWizardAction,
+				new ActionSet("Export", new BaseAction[] {
+					FileActions.exportLabelNamesAction,
+					FileActions.exportMatrixAction,
+					FileActions.exportTableAction,
+					FileActions.exportHeatmapImageAction,
+					FileActions.exportHeatmapHtmlAction
+				}),
+				BaseAction.separator,
+				FileActions.exitAction
+			}),
+			new ActionSet("Edit", new BaseAction[] {
+					EditActions.selectAllAction,
+					EditActions.unselectAllAction,
+					EditActions.invertSelectionAction
+			}),
+			new ActionSet("Data", new BaseAction[] {
+				new ActionSet("Filter", new BaseAction[] {
+					DataActions.filterByLabelAction,
+					DataActions.filterByValueAction
+				}),
+				new ActionSet("Sort", new BaseAction[] {
+					DataActions.sortRowsAction,
+					DataActions.sortColumnsAction,
+					DataActions.sortRowsAndColumnsAction
+				}),
+				new ActionSet("Move", new BaseAction[] {
+					DataActions.moveRowsUpAction,
+					DataActions.moveRowsDownAction,
+					DataActions.moveColsLeftAction,
+					DataActions.moveColsRightAction
+				}),
+				new ActionSet("Visibility", new BaseAction[] {
+					DataActions.showAllRowsAction,
+					DataActions.hideSelectedRowsAction,
+					DataActions.showAllColumnsAction,
+					DataActions.hideSelectedColumnsAction
+				}),
+				new ActionSet("MTC", new BaseAction[] {
+					MtcActions.mtcBonferroniAction,
+					MtcActions.mtcBenjaminiHochbergFdrAction,
+					MtcActions.mtcBenjaminiYekutieliFdrAction
+				})
+			}),
+			new ActionSet("Help", new BaseAction[] {
+				HelpActions.welcomeAction,
+				BaseAction.separator,
+				HelpActions.aboutAction
+			})
 		});
 	}
 	

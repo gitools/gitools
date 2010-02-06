@@ -116,6 +116,7 @@ public class PersistenceUtils {
 		return relative;
 	}
 
+	/** Returns the file name without extension */
 	public static String getBaseName(String fileName) {
 		int pos = fileName.lastIndexOf('.');
 		if (pos == -1)
@@ -126,6 +127,7 @@ public class PersistenceUtils {
 			return fileName.substring(0, pos);
 	}
 
+	/** Return whether is or not an absolute path */
 	public static boolean isAbsolute(String path) {
 		return path.matches("^(\\/|[a-zA-Z]\\:\\\\)");
 	}

@@ -11,9 +11,9 @@ public final class ToolBarActionSet extends ActionSet {
 
 	public ToolBarActionSet() {
 		super(new BaseAction[] {
-				FileActionSet.openAnalysisAction,
-				FileActionSet.openMatrixAction,
-				FileActionSet.closeAction
+				FileActions.openEnrichmentAnalysisAction,
+				FileActions.openHeatmapFromMatrixAction,
+				FileActions.closeAction
 		});
 	}
 

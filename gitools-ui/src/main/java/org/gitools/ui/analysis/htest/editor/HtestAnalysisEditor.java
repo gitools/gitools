@@ -3,21 +3,29 @@ package org.gitools.ui.analysis.htest.editor;
 import java.awt.BorderLayout;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.model.Analysis;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePane;
 
 import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.ui.platform.actions.BaseAction;
 
-public class AnalysisDetailsEditor extends AbstractEditor {
+public class HtestAnalysisEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = 8258025724628410016L;
 
-	private Analysis analysis;
+	public static final ActionSet toolBar = new ActionSet(new BaseAction[] {
+		new NewDataHeatmapFromHtestAnalysis(),
+		new NewResultsHeatmapFromHtestAnalysis()
+	});
+
+	private HtestAnalysis analysis;
 	
 	private TemplatePane templatePane;
 
-	public AnalysisDetailsEditor(Analysis analysis) {
+	public HtestAnalysisEditor(HtestAnalysis analysis) {
 		this.analysis = analysis;
 		
 		createComponents();
@@ -39,15 +47,12 @@ public class AnalysisDetailsEditor extends AbstractEditor {
 		}
 		
 		setLayout(new BorderLayout());
-		add(templatePane);
+		add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
+		add(templatePane, BorderLayout.CENTER);
 	}
 
 	@Override
 	public Object getModel() {
 		return analysis;
-	}
-
-	@Override
-	public void refresh() {
 	}
 }

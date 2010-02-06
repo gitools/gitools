@@ -14,9 +14,10 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
-import org.gitools.ui.analysis.htest.editor.AnalysisDetailsEditor;
+import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
@@ -35,13 +36,13 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File selectedFile = FileChooserUtils.selectFile(
+		final File file = FileChooserUtils.selectFile(
 				"Select the analysis file",
 				Settings.getDefault().getLastPath(),
 				FileChooserUtils.MODE_OPEN);
 		
-		if (selectedFile != null) {
-			Settings.getDefault().setLastPath(selectedFile.getParent());
+		if (file != null) {
+			Settings.getDefault().setLastPath(file.getParent());
 			Settings.getDefault().save();
 
 			JobThread.execute(AppFrame.instance(), new JobRunnable() {
@@ -50,16 +51,16 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 					try {
 						EnrichmentAnalysis analysis =
 								(EnrichmentAnalysis) PersistenceManager.getDefault().load(
-									selectedFile,
+									file,
 									MimeTypes.ENRICHMENT_ANALYSIS,
 									monitor);
 
 						if (monitor.isCancelled())
 							return;
 
-						final AnalysisDetailsEditor editor = new AnalysisDetailsEditor(analysis);
+						final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
 
-						editor.setName(analysis.getTitle());
+						editor.setName(PersistenceUtils.getBaseName(file.getName()));
 
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override

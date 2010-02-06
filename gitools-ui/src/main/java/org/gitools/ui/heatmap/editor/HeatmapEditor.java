@@ -11,8 +11,8 @@ import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.actions.DataActionSet;
-import org.gitools.ui.actions.EditActionSet;
+import org.gitools.ui.actions.DataActions;
+import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.actions.ToolBarActionSet;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
@@ -25,20 +25,20 @@ public class HeatmapEditor extends AbstractEditor {
 	private static final long serialVersionUID = -540561086703759209L;
 
 	private static final ActionSet toolBarAS = new ActionSet(new BaseAction[] {
-				EditActionSet.selectAllAction,
-				EditActionSet.unselectAllAction,
+				EditActions.selectAllAction,
+				EditActions.unselectAllAction,
 				BaseAction.separator,
-				DataActionSet.hideSelectedColumns,
-				DataActionSet.showAllColumns,
-				DataActionSet.hideSelectedRows,
-				DataActionSet.showAllRows,
+				DataActions.hideSelectedColumnsAction,
+				DataActions.showAllColumnsAction,
+				DataActions.hideSelectedRowsAction,
+				DataActions.showAllRowsAction,
 				BaseAction.separator,
-				DataActionSet.moveColsLeftAction,
-				DataActionSet.moveColsRightAction,
-				DataActionSet.moveRowsUpAction,
-				DataActionSet.moveRowsDownAction,
+				DataActions.moveColsLeftAction,
+				DataActions.moveColsRightAction,
+				DataActions.moveRowsUpAction,
+				DataActions.moveRowsDownAction,
 				BaseAction.separator,
-				DataActionSet.fastSortRowsAction
+				DataActions.fastSortRowsAction
 		});
 
 	private Heatmap heatmap;

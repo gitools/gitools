@@ -17,7 +17,7 @@ public class AnalysisEditor extends MultiEditor {
 
 	protected HtestAnalysis analysis;
 	
-	private AnalysisDetailsEditor detailsView;
+	private HtestAnalysisEditor detailsView;
 	private HeatmapEditor dataView;
 	private HeatmapEditor resultsView;
 	
@@ -32,7 +32,7 @@ public class AnalysisEditor extends MultiEditor {
 	private void createViews() {
 		// create details panel
 		
-		detailsView = new AnalysisDetailsEditor(analysis);
+		detailsView = new HtestAnalysisEditor(analysis);
 		addView(detailsView, "Description");
 		
 		// create data view

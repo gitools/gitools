@@ -59,4 +59,11 @@ public class IconNames {
 	public static final String moveColsRight24 = "/img/MoveColsRight24.gif";
 	
 	public static final String chain24 = "/img/Chain.png";
+
+	public static final String newDataHeatmap16 = "/img/NewDataHeatmap16.gif";
+	public static final String newDataHeatmap24 = "/img/NewDataHeatmap24.gif";
+
+	public static final String newResultsHeatmap16 = "/img/NewResultsHeatmap16.gif";
+	public static final String newResultsHeatmap24 = "/img/NewResultsHeatmap24.gif";
+
 }

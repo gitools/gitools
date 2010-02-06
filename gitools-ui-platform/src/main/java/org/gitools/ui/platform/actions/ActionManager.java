@@ -17,8 +17,13 @@
 
 package org.gitools.ui.platform.actions;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class ActionManager {
 
@@ -32,21 +37,63 @@ public class ActionManager {
 		return defaultActionManager;
 	}
 
-	private Map<String, BaseAction> actions;
+	private Set<BaseAction> rootActions;
+	private Set<BaseAction> baseActions;
+
+	private Map<String, BaseAction> actionMap;
 
 	public ActionManager() {
-		actions = new HashMap<String, BaseAction>();
+		rootActions = new HashSet<BaseAction>();
+		baseActions = new HashSet<BaseAction>();
+		actionMap = new HashMap<String, BaseAction>();
 	}
 
 	public BaseAction getAction(String id) {
-		return actions.get(id);
+		return actionMap.get(id);
 	}
 
 	public void addAction(BaseAction action) {
-		actions.put(action.getClass().getName(), action);
+		baseActions.add(action);
+		actionMap.put(action.getClass().getName(), action);
 	}
 
 	public void addAction(BaseAction action, String id) {
-		actions.put(id, action);
+		baseActions.add(action);
+		actionMap.put(id, action);
+	}
+
+	public void addActionsFromClass(Class<?> cls) {
+		for (Field field : cls.getDeclaredFields()) {
+			if (BaseAction.class.isAssignableFrom(field.getType())) {
+				try {
+					addAction((BaseAction) field.get(null), field.getName());
+				} catch (Exception ex) {
+					// do nothing
+				}
+			}
+		}
+	}
+
+	public void addActionsFromActionSet(ActionSet actionSet) {
+		Stack<BaseAction> actionStack = new Stack<BaseAction>();
+		actionStack.push(actionSet);
+		while (actionStack.size() > 0) {
+			BaseAction action = actionStack.pop();
+			addAction(action);
+			if (action instanceof ActionSet) {
+				ActionSet as = (ActionSet) action;
+				for (BaseAction a : as.getActions())
+					actionStack.push(a);
+			}
+		}
+	}
+
+	public void addRootAction(BaseAction action) {
+		rootActions.add(action);
+	}
+
+	public void updateEnabledByEditor(IEditor editor) {
+		for (BaseAction action : rootActions)
+			action.updateEnabledByEditor(editor);
 	}
 }

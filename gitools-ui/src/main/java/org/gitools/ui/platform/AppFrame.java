@@ -234,6 +234,7 @@ public class AppFrame extends JFrame {
 		repaint();
 	}
 
+	@Deprecated
 	public IProgressMonitor createMonitor() {
 		return statusBar.createMonitor();
 	}
