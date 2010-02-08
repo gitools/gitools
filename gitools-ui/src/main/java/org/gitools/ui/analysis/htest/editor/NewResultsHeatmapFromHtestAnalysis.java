@@ -51,11 +51,11 @@ public class NewResultsHeatmapFromHtestAnalysis extends BaseAction {
 
 		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IEditor editor = editorPanel.getSelectedEditor();
-		if (!(editor instanceof HtestAnalysisEditor))
+		IEditor currentEditor = editorPanel.getSelectedEditor();
+		if (!(currentEditor instanceof HtestAnalysisEditor))
 			return;
 
-		HtestAnalysis analysis = (HtestAnalysis) editor.getModel();
+		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
 		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
 
@@ -68,9 +68,11 @@ public class NewResultsHeatmapFromHtestAnalysis extends BaseAction {
 				new Heatmap(resultsTable, resultsRowDecorator,
 						new HeatmapHeader(), new HeatmapHeader()));
 
-		resultsEditor.setName(editor.getName() + " (results)");
+		resultsEditor.setName(currentEditor.getName() + " (results)");
 
 		editorPanel.addEditor(resultsEditor);
+
+		AppFrame.instance().setStatusText("New heatmap created.");
 	}
 
 }

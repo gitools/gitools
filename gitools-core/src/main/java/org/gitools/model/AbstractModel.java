@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public abstract class AbstractModel 
-		implements IModel, Serializable {
+		implements IModel, Serializable, Cloneable {
 
 	private static final long serialVersionUID = -8918954049958104274L;
 
 	public static final String PROPERTY_CHANGED = "propertyChanged";
 	
-	protected ArrayList<PropertyChangeListener> listeners =
+	protected transient ArrayList<PropertyChangeListener> listeners =
 		new ArrayList<PropertyChangeListener>(0);
 	
 	public AbstractModel() {

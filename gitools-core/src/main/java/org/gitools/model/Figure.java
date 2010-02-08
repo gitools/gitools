@@ -3,8 +3,6 @@ package org.gitools.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.gitools.model.Artifact;
-
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Figure extends Artifact {
 
@@ -15,6 +13,12 @@ public class Figure extends Artifact {
 
 	public Figure() {
 		super();
+	}
+
+	public Figure(Figure figure) {
+		super(figure);
+		
+		this.footer = figure.getFooter();
 	}
 
 	public String getFooter() {

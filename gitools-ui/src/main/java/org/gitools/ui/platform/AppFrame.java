@@ -196,8 +196,8 @@ public class AppFrame extends JFrame {
 		
 		editorsPanel.addEditor(demoView);
 
-		IntogenWebEditor intogen = new IntogenWebEditor();
-		editorsPanel.addEditor(intogen);
+		/*IntogenWebEditor intogen = new IntogenWebEditor();
+		editorsPanel.addEditor(intogen);*/
 	}
 
 	public void start() {

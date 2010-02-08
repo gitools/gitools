@@ -17,6 +17,7 @@ import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreElementDecorator extends ElementDecorator {
@@ -29,7 +30,8 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	private double significanceLevel;
 	
 	private ZScoreColorScale scale;
-	
+
+	@XmlTransient
 	private GenericFormatter fmt = new GenericFormatter("<");
 	
 	
@@ -58,6 +60,18 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		
 		scale = new ZScoreColorScale();
 	}
+
+	/*@Override
+	public Object clone() {
+		ZScoreElementDecorator obj = null;
+		try {
+			obj = (ZScoreElementDecorator) super.clone();
+			obj.scale = scale.clone();
+			obj.fmt = new GenericFormatter("<");
+		}
+		catch (CloneNotSupportedException ex) { }
+		return obj;
+	}*/
 
 	public final int getValueIndex() {
 		return valueIndex;

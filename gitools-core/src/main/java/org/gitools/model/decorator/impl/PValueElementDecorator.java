@@ -28,10 +28,10 @@ public class PValueElementDecorator extends ElementDecorator {
 	private boolean useCorrection;
 	private double significanceLevel;
 	
-	@XmlTransient //FIXME
-	private transient PValueColorScale scale;
-	
-	private transient GenericFormatter fmt = new GenericFormatter("<");
+	private PValueColorScale scale;
+
+	@XmlTransient
+	private GenericFormatter fmt = new GenericFormatter("<");
 	
 	public PValueElementDecorator(){
 		

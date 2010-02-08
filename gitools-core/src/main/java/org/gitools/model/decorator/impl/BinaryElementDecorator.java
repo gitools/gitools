@@ -32,13 +32,23 @@ public class BinaryElementDecorator extends ElementDecorator {
 		this(null);
 	}
 	
-	
 	public BinaryElementDecorator(IElementAdapter adapter) {
 		super(adapter);
 	
 		valueIndex = getPropertyIndex(new String[] {"value"});
 
 		this.scale = new BinaryColorScale();
+	}
+
+	@Override
+	public Object clone() {
+		BinaryElementDecorator obj = null;
+		try {
+			obj = (BinaryElementDecorator) super.clone();
+			obj.fmt = new GenericFormatter("<");
+		}
+		catch (CloneNotSupportedException ex) { }
+		return obj;
 	}
 
 	public int getValueIndex() {

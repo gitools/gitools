@@ -25,6 +25,16 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		this.formatString = "%1$s";
 	}
 
+	@Override
+	public Object clone() {
+		FormattedTextElementDecorator obj = null;
+		try {
+			obj = (FormattedTextElementDecorator) super.clone();
+		}
+		catch (CloneNotSupportedException ex) { }
+		return obj;
+	}
+
 	public void setFormatString(String formatString) {
 		this.formatString = formatString;
 	}

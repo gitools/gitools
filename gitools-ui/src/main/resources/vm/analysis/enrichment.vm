@@ -51,10 +51,11 @@
     				<td class="propValue">$analysis.description</td>
     			</tr>
 			</table>
+			#if( $analysis.attributes.size() )
 			<table>
 				<tr><td class="propName">Attributes</td><tr>
 				<tr><td class="propValue">
-    				<table class="attrTable" border="1" cellspacing="0">
+    				<table class="attrTable" border="0" cellspacing="0">
 						#foreach($attr in $analysis.attributes)
 							#if ($attr.name)
 							<tr>
@@ -66,6 +67,7 @@
 					</table>
     			</td></tr>
 			</table>
+			#end
 			<table class="propTable">
     			<tr>
     				<td class="propName">Created</td>
@@ -131,6 +133,7 @@
 			<table>
 				<tr><td class="propName">Test configuration</td></tr>
 			</table>
+
 			<table class="propTable">
     			<tr>
     				<td class="propName">Multiple test correction</td>

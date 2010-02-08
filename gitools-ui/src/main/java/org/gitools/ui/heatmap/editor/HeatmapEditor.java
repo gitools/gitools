@@ -13,7 +13,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;
-import org.gitools.ui.actions.ToolBarActionSet;
+import org.gitools.ui.actions.HeatmapActions;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.platform.AppFrame;
@@ -38,7 +38,9 @@ public class HeatmapEditor extends AbstractEditor {
 				DataActions.moveRowsUpAction,
 				DataActions.moveRowsDownAction,
 				BaseAction.separator,
-				DataActions.fastSortRowsAction
+				DataActions.fastSortRowsAction,
+				BaseAction.separator,
+				HeatmapActions.cloneAction
 		});
 
 	private Heatmap heatmap;

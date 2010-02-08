@@ -24,8 +24,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	private static final long serialVersionUID = -181427286948958314L;
 
 	private int valueIndex;
-	@XmlTransient
+	
 	private LinearTwoSidedColorScale scale;
+
 	@XmlTransient
 	private GenericFormatter fmt = new GenericFormatter("<");
 	
@@ -38,8 +39,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		scale = new LinearTwoSidedColorScale();
 
 	}
-	
-	
+
 	public LinearTwoSidedElementDecorator(IElementAdapter adapter) {
 		super(adapter);
 		
@@ -48,6 +48,18 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		
 		scale = new LinearTwoSidedColorScale();
 	}
+
+	/*@Override
+	public Object clone() {
+		LinearTwoSidedElementDecorator obj = null;
+		try {
+			obj = (LinearTwoSidedElementDecorator) super.clone();
+			obj.scale = scale.clone();
+			obj.fmt = new GenericFormatter("<");
+		}
+		catch (CloneNotSupportedException ex) { }
+		return obj;
+	}*/
 
 	public final int getValueIndex() {
 		return valueIndex;

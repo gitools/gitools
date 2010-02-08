@@ -2,6 +2,7 @@ package org.gitools.heatmap.model;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,6 +17,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.Attribute;
 import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -71,7 +73,15 @@ public class Heatmap
 				new HeatmapHeader(),
 				new HeatmapHeader());
 	}
-	
+
+	public Heatmap(Heatmap hm) {
+		super(hm);
+
+		//this.cellDecorator = hm.getCellDecorator().clone();
+
+
+	}
+
 	public Heatmap(IMatrixView matrixView) {
 		this(
 				matrixView,

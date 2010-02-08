@@ -18,8 +18,20 @@
 package org.gitools.ui.analysis.htest.editor;
 
 import java.awt.event.ActionEvent;
+import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class NewDataHeatmapFromHtestAnalysis extends BaseAction {
 
@@ -35,7 +47,35 @@ public class NewDataHeatmapFromHtestAnalysis extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+
+		IEditor currentEditor = editorPanel.getSelectedEditor();
+		if (!(currentEditor instanceof HtestAnalysisEditor))
+			return;
+
+		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
+
+		if (analysis.getDataMatrix() == null) {
+			AppFrame.instance().setStatusText("Analysis doesn't contains data.");
+			return;
+		}
+
+		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
+
+		ElementDecorator dataRowDecorator =
+			ElementDecoratorFactory.create(
+					ElementDecoratorNames.BINARY,
+					dataTable.getCellAdapter());
+
+		HeatmapEditor dataEditor = new HeatmapEditor(
+				new Heatmap(dataTable, dataRowDecorator,
+						new HeatmapHeader(), new HeatmapHeader()));
+
+		dataEditor.setName(currentEditor.getName() + " (data)");
+
+		editorPanel.addEditor(dataEditor);
+
+		AppFrame.instance().setStatusText("New heatmap created.");
 	}
 
 }

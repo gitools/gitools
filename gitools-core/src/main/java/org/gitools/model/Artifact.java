@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "title", "description", "attributes" })
-public class Artifact extends AbstractModel implements Serializable {
+public class Artifact extends AbstractModel {
 
 	private static final long serialVersionUID = 5752318457428475330L;
 
@@ -29,11 +29,17 @@ public class Artifact extends AbstractModel implements Serializable {
 	/** Extra attributes **/
 	@XmlElementWrapper(name = "attributes")
 	@XmlElement(name = "attribute")
-	private List<Attribute> attributes = new ArrayList<Attribute>(0);
+	protected List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
 	public Artifact() {
+	}
+
+	public Artifact(Artifact artifact) {
+		this.title = artifact.getTitle();
+		this.description = artifact.getDescription();
+		this.attributes = (List<Attribute>) ((ArrayList<Attribute>) artifact.getAttributes()).clone();
 	}
 
 	/* getters and setters */
