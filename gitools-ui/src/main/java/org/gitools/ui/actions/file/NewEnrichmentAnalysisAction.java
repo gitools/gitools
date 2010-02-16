@@ -32,8 +32,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 		EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
 		
-		WizardDialog wizDlg = new WizardDialog(
-				AppFrame.instance(), wizard);
+		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 		
 		wizDlg.open();
 

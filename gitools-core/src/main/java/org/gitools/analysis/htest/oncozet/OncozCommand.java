@@ -63,7 +63,7 @@ public class OncozCommand extends HtestCommand {
 		loadDataAndModules(
 				doubleMatrix, setsMap,
 				dataMime, dataPath,
-				createValueParser(analysis),
+				createValueTranslator(analysis),
 				setsFile,
 				oncozAnalysis.getMinSetSize(),
 				oncozAnalysis.getMaxSetSize(),
@@ -100,7 +100,7 @@ public class OncozCommand extends HtestCommand {
 
 		if (dataFileMime.equals(MimeTypes.DOUBLE_MATRIX))
 			dmPersistence = new DoubleMatrixTextPersistence();
-		else if (dataFileMime.equals(MimeTypes.BINARY_MATRIX))
+		else if (dataFileMime.equals(MimeTypes.DOUBLE_BINARY_MATRIX))
 			dmPersistence = new DoubleBinaryMatrixTextPersistence();
 		else
 			throw new PersistenceException("Unsupported mime type: " + dataFileMime);

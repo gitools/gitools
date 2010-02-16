@@ -2,7 +2,6 @@ package org.gitools.persistence.text;
 
 import java.io.File;
 
-import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 
@@ -18,6 +17,9 @@ public class DoubleMatrixTextPersistence
 
 	@Override
 	protected DoubleMatrix createEntity() {
+		/*return isBinaryValues() ?
+			new DoubleBinaryMatrix() : new DoubleMatrix();*/
+
 		return new DoubleMatrix();
 	}
 
@@ -27,7 +29,7 @@ public class DoubleMatrixTextPersistence
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
-		return read(file, new DoubleTranslator(), monitor);
+		return read(file, getValueTranslator(), monitor);
 	}
 	
 	public void readData(
@@ -37,7 +39,7 @@ public class DoubleMatrixTextPersistence
 			IProgressMonitor monitor)
 			throws PersistenceException {
 
-		readData(file, doubleMatrix, new DoubleTranslator(),
+		readData(file, doubleMatrix, getValueTranslator(),
 				columnsOrder, rowsOrder, monitor);
 	}
 
@@ -48,6 +50,6 @@ public class DoubleMatrixTextPersistence
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 
-		write(file, doubleMatrix, new DoubleTranslator(), monitor);
+		write(file, doubleMatrix, getValueTranslator(), monitor);
 	}
 }

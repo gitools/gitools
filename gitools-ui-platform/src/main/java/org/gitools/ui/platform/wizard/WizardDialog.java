@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ public class WizardDialog extends AbstractDialog {
 	public WizardDialog(Window owner, IWizard wizard) {
 		
 		super(owner, wizard.getTitle(), wizard.getIcon());
-		
+
 		setMinimumSize(new Dimension(800, 600));
 		setPreferredSize(new Dimension(800, 600));
 		setLocationRelativeTo(owner);
@@ -54,7 +56,7 @@ public class WizardDialog extends AbstractDialog {
 
 		setCurrentPage(wizard.getStartingPage());
 
-		cancelled = false;
+		cancelled = true;
 	}
 
 	public IWizard getWizard() {
@@ -176,6 +178,8 @@ public class WizardDialog extends AbstractDialog {
 	private void finishActionPerformed() {
 		if (currentPage != null)
 			currentPage.getWizard().performFinish();
+
+		cancelled = false;
 		
 		setVisible(false);
 	}

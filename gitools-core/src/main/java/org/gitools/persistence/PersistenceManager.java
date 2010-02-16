@@ -18,6 +18,9 @@ import org.gitools.persistence.xml.TableFigureXmlPersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
+import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
+import org.gitools.persistence.text.ElementListsTextPersistence;
+import org.gitools.persistence.text.ModuleMapText2CPersistence;
 
 public class PersistenceManager implements Serializable {
 
@@ -66,7 +69,10 @@ public class PersistenceManager implements Serializable {
 		persistenceMap.put(MimeTypes.TABLE_FIGURE, TableFigureXmlPersistence.class);
 		persistenceMap.put(MimeTypes.OBJECT_MATRIX, ObjectMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.DOUBLE_MATRIX, DoubleMatrixTextPersistence.class);
+		persistenceMap.put(MimeTypes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrixTextPersistence.class);
+		persistenceMap.put(MimeTypes.ELEMENT_LISTS, ElementListsTextPersistence.class);
 		persistenceMap.put(MimeTypes.ANNOTATION_MATRIX, AnnotationMatrixTextPersistence.class);
+		persistenceMap.put(MimeTypes.MODULES_2C_MAP, ModuleMapText2CPersistence.class);
 		persistenceMap.put(MimeTypes.MODULES_INDEXED_MAP, ModuleMapTextIndicesPersistence.class);
 	}
 	
@@ -142,17 +148,28 @@ public class PersistenceManager implements Serializable {
 			IProgressMonitor monitor)
 			throws PersistenceException {
 
-		store(file, entity, new Properties(), monitor);
+		String mimeType = MimeTypeManager.getDefault().fromClass(entity.getClass());
+
+		store(file, mimeType, entity, new Properties(), monitor);
 	}
 
 	public void store(
 			File file,
+			String mimeType,
+			Object entity,
+			IProgressMonitor monitor)
+			throws PersistenceException {
+
+		store(file, mimeType, entity, new Properties(), monitor);
+	}
+
+	public void store(
+			File file,
+			String mimeType,
 			Object entity,
 			Properties properties,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
-
-		String mimeType = MimeTypeManager.getDefault().fromClass(entity.getClass());
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(mimeType, properties);

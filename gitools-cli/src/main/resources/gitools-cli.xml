@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <tools>
+	<!-- Conversion -->
+	<tool>
+    	<name>convert</name>
+        <description>Convert files between different formats</description>
+        <argumentsClass>org.gitools.cli.convert.ConvertTool$Arguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.convert.ConvertTool</lifeCycleClass>
+    </tool>
+
 	<!-- Analysis -->
 	<tool>
     	<name>enrichment</name>

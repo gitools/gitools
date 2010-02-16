@@ -26,15 +26,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
+import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
 public abstract class MatrixTextPersistence<T extends BaseMatrix>
-		extends AbstractEntityPersistence<T> {
+		extends BaseMatrixPersistence<T> {
+
+	public static final String BINARY_VALUES = "binary_values";
+	public static final String VALUE_TRANSLATOR = "value_translator";
+	
+	protected boolean isBinaryValues() {
+		if (getProperties().contains(BINARY_VALUES))
+			return (Boolean) getProperties().get(BINARY_VALUES);
+		else
+			return false;
+	}
+
+	protected ValueTranslator getValueTranslator() {
+		if (getProperties().contains(VALUE_TRANSLATOR))
+			return (ValueTranslator) getProperties().get(VALUE_TRANSLATOR);
+		else
+			return new DoubleTranslator();
+	}
 
 	protected abstract T createEntity();
 	
@@ -109,8 +126,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			throw new PersistenceException(e);
 		}
 
-		monitor.info(matrix.getColumnCount() + " columns");
-		monitor.info(matrix.getRowCount() + " rows");
+		monitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
 
 		monitor.end();
 	}

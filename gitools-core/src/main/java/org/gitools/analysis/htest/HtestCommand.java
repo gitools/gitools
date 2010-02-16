@@ -77,7 +77,7 @@ public abstract class HtestCommand implements Command {
 		this.fileName = fileName;
 	}
 
-	protected ValueTranslator createValueParser(HtestAnalysis analysis) {
+	protected ValueTranslator createValueTranslator(HtestAnalysis analysis) {
 		return analysis.isBinaryCutoffEnabled() ?
 			new BinaryCutoffTranslator(new BinaryCutoff(
 				analysis.getBinaryCutoffCmp(),

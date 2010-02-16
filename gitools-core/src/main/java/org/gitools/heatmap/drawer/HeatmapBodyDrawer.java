@@ -138,7 +138,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		if (x > totalWidth)
 			x = totalWidth;
 
-		int y = p.row >= 0 ? p.row * cellWidth : 0;
+		int y = p.row >= 0 ? p.row * cellHeight : 0;
 		if (y > totalHeight)
 			y = totalHeight;
 

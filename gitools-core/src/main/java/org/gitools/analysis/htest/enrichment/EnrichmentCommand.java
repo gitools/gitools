@@ -2,18 +2,24 @@ package org.gitools.analysis.htest.enrichment;
 
 import java.io.File;
 
-import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ModuleMap;
-import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 import org.gitools.analysis.htest.HtestCommand;
-import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
+import org.gitools.datafilters.ValueTranslator;
+import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.DoubleBinaryMatrix;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.text.BaseMatrixPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
+import org.gitools.persistence.text.ModuleMapPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 
 public class EnrichmentCommand extends HtestCommand {
@@ -49,20 +55,14 @@ public class EnrichmentCommand extends HtestCommand {
 		monitor.info("Data: " + dataPath);
 		monitor.info("Modules: " + modulesPath);
 		
-		DoubleMatrix doubleMatrix = new DoubleMatrix();
-		ModuleMap moduleMap = new ModuleMap();
-		loadDataAndModules(
-				doubleMatrix, moduleMap, 
+		Object[] ret = loadDataAndModules(
 				dataMime, dataPath,
-				createValueParser(analysis),
-				modulesPath,
-				enrichAnalysis.getMinModuleSize(),
-				enrichAnalysis.getMaxModuleSize(),
-				!enrichAnalysis.isDiscardNonMappedRows(),
+				modulesMime, modulesPath,
+				enrichAnalysis,
 				monitor.subtask());
 
-		enrichAnalysis.setDataMatrix(doubleMatrix);
-		enrichAnalysis.setModuleMap(moduleMap);
+		enrichAnalysis.setDataMatrix((IMatrix) ret[0]);
+		enrichAnalysis.setModuleMap((ModuleMap) ret[1]);
 		
 		monitor.end();
 		
@@ -94,61 +94,90 @@ public class EnrichmentCommand extends HtestCommand {
 	public void setModulesFile(String modulesFile) {
 		this.modulesPath = modulesFile;
 	}
-	
-	private void loadDataAndModules(
-			DoubleMatrix doubleMatrix,
-			ModuleMap moduleMap,
+
+	/** Loads data and modules taking into account filtering
+	 *
+	 * @param dataFileMime
+	 * @param dataFileName
+	 * @param modulesFileMime
+	 * @param modulesFileName
+	 * @param analysis
+	 * @param monitor
+	 * @return [0] = IMatrix with the data, [1] = ModuleMap with the modules
+	 * @throws PersistenceException
+	 */
+	private Object[] loadDataAndModules(
 			String dataFileMime,
 			String dataFileName,
-			ValueTranslator valueTranslator,
-			String modulesFileName, 
-			int minModuleSize,
-			int maxModuleSize,
-			boolean includeNonMappedItems,
+			String modulesFileMime,
+			String modulesFileName,
+			EnrichmentAnalysis analysis,
 			IProgressMonitor monitor)
 			throws PersistenceException {
 		
-		// Load metadata
+		// Load data
 		
 		File dataFile = new File(dataFileName);
 
-		MatrixTextPersistence dmPersistence = null;
+		ValueTranslator valueTranslator = createValueTranslator(analysis);
 
-		if (dataFileMime.equals(MimeTypes.DOUBLE_MATRIX))
-			dmPersistence = new DoubleMatrixTextPersistence();
-		else if (dataFileMime.equals(MimeTypes.BINARY_MATRIX))
-			dmPersistence = new DoubleBinaryMatrixTextPersistence();
-		else
-			throw new PersistenceException("Unsupported mime type: " + dataFileMime);
+		Properties dataProps = new Properties();
+		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
+		dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
 
-		dmPersistence.readMetadata(dataFile, doubleMatrix, monitor);
-		String[] rows = doubleMatrix.getRowStrings();
+		BaseMatrix dataMatrix = (BaseMatrix) PersistenceManager.getDefault()
+				.load(dataFile, dataFileMime, dataProps, monitor);
 
 		// Load modules
-		
+
 		File file = new File(modulesFileName);
-		moduleMap.setTitle(file.getName());
-		
-		ModuleMapTextSimplePersistence moduleMapTextSimplePersistence = new ModuleMapTextSimplePersistence(file);
-		moduleMapTextSimplePersistence.load(
-			moduleMap,
-			minModuleSize,
-			maxModuleSize,
-			rows,
-			includeNonMappedItems,
-			monitor);
-		
-		doubleMatrix.setRows(moduleMap.getItemNames());
-		
-		// Load data
-		
-		dmPersistence.readData(
-				dataFile,
-				doubleMatrix,
-				valueTranslator,
-				null, 
-				moduleMap.getItemsOrder(), 
-				monitor);
-		
+
+		Properties modProps = new Properties();
+		modProps.put(ModuleMapPersistence.ITEM_NAMES_FILTER_ENABLED, true);
+		modProps.put(ModuleMapPersistence.ITEM_NAMES, dataMatrix.getRowStrings());
+		modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinModuleSize());
+		modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
+
+		ModuleMap moduleMap = (ModuleMap) PersistenceManager.getDefault()
+				.load(file, modulesFileMime, modProps, monitor);
+
+		// Filter rows if DiscardNonMappedRows is enabled
+
+		if (analysis.isDiscardNonMappedRows()) {
+
+			BaseMatrix fmatrix = null;
+			try {
+				fmatrix = dataMatrix.getClass().newInstance();
+			} catch (Exception ex) {
+				throw new PersistenceException("Error filtering data matrix.", ex);
+			}
+
+			List<Integer> rows = new ArrayList<Integer>();
+
+			String[] names = moduleMap.getItemNames();
+			Set<String> nameSet = new HashSet<String>();
+			for (String name : names)
+				nameSet.add(name);
+
+			for (int i = 0; i < dataMatrix.getRowCount(); i++)
+				if (nameSet.contains(dataMatrix.getRowLabel(i)))
+					rows.add(i);
+
+			fmatrix.makeCells(rows.size(), dataMatrix.getColumnCount());
+			
+			int numColumns = dataMatrix.getColumnCount();
+			for (int ri = 0; ri < rows.size(); ri++) {
+				int srcRow = rows.get(ri);
+				fmatrix.setRow(ri, dataMatrix.getRowLabel(srcRow));
+				for (int ci = 0; ci < numColumns; ci++) {
+					Object value = dataMatrix.getCellValue(srcRow, ci, 0);
+					fmatrix.setCellValue(ri, ci, 0, value);
+				}
+			}
+
+			dataMatrix = fmatrix;
+		}
+
+		return new Object[] { dataMatrix, moduleMap };
 	}
 }

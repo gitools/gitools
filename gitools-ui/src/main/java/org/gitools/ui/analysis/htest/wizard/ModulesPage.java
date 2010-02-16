@@ -47,7 +47,7 @@ public class ModulesPage extends AbstractWizardPage {
 
 		final FileFormat[] formats = new FileFormat[] {
 			new FileFormat("Two columns mappings", MimeTypes.MODULES_2C_MAP),
-			new FileFormat("Binary data matrix", MimeTypes.BINARY_MATRIX),
+			new FileFormat("Binary data matrix", MimeTypes.DOUBLE_BINARY_MATRIX),
 			new FileFormat("Indexed mappings", MimeTypes.MODULES_INDEXED_MAP)
 		};
 
