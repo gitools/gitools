@@ -44,11 +44,11 @@ public class ConvertTool extends AbstractTool {
 				usage = "Input file MIME type.")
 		public String inputFileMime;
 
-		@Option(name = "-i", aliases = "-output", metaVar = "<path>",
+		@Option(name = "-o", aliases = "-output", metaVar = "<path>",
 				usage = "Output file.")
 		public String outputFileName;
 
-		@Option(name = "-im", aliases = "-output-mime", metaVar = "<MIME>",
+		@Option(name = "-om", aliases = "-output-mime", metaVar = "<MIME>",
 				usage = "Output file MIME type.")
 		public String outputFileMime;
 	}
