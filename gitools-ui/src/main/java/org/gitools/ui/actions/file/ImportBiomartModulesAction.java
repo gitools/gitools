@@ -45,7 +45,8 @@ public class ImportBiomartModulesAction extends BaseAction {
 				String format = (String) wizard.getFormat().getUserObject();
 
 				try {
-					BiomartService.getDefault().queryModule(query, file, format);
+					BiomartService.getDefault()
+							.queryModule(query, file, format, monitor);
 				}
 				catch (Exception ex) {
 					monitor.exception(ex);

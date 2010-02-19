@@ -24,7 +24,7 @@ import java.util.List;
 public class TestMain {
 
 	public static void main(String[] unusedArgs) throws ToolException {
-		String cmd = "enrichment -t binomial-exact" +
+		/*String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
 				" -d /home/chris/temp/gitools-stuff/data.tsv -b gt,0.5" +
 				" -m /home/chris/temp/gitools-stuff/modules.tsv" +
@@ -32,6 +32,18 @@ public class TestMain {
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
+				" -verbose -debug -err-log -";*/
+
+		String cmd = "convert" +
+				" -i data.tsv" +
+				" -im application/gitools-matrix-double" +
+				" -o pru.txt" +
+				" -om application/gitools-element-lists" +
+				" -verbose -debug -err-log -";
+
+		cmd = "convert" +
+				" -o d3.list -om application/gitools-element-lists" +
+				" -i d2.matrix -im application/gitools-matrix-double" +
 				" -verbose -debug -err-log -";
 
 		String[] args = cmdLineSplit(cmd);

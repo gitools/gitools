@@ -47,12 +47,12 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 
 	@Override
 	public int getRowCount() {
-		return rows.cardinality();
+		return cells.rows();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return columns.cardinality();
+		return cells.columns();
 	}
 
 	// Cells
@@ -70,7 +70,7 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 		if (cellsNan.getQuick(row, column))
 			return Double.NaN;
 		else
-			return cells.getQuick(row, column) ? 1.0 : 0.0;
+			return cells.getQuick(column, row) ? 1.0 : 0.0;
 	}
 
 	@Override
@@ -80,13 +80,22 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		cells.putQuick(row, column, Double.isNaN((Double) value));
-		cells.putQuick(row, column, ((Double) value) == 1.0);
+		cells.putQuick(column, row, ((Double) value) == 1.0);
+		cellsNan.putQuick(column, row, Double.isNaN((Double) value));
 	}
 
 	@Override
 	public void makeCells(int rows, int columns) {
-		cells = new BitMatrix(rows, columns);
-		cellsNan = new BitMatrix(rows, columns);
+		cells = new BitMatrix(columns, rows);
+		cells.clear();
+
+		cellsNan = new BitMatrix(columns, rows);
+		cellsNan.clear();
+
+		if (this.rows == null || this.rows.cardinality() != rows)
+			setRows(ObjectFactory1D.dense.make(rows));
+
+		if (this.columns == null || this.columns.cardinality() != columns)
+			setColumns(ObjectFactory1D.dense.make(columns));
 	}
 }

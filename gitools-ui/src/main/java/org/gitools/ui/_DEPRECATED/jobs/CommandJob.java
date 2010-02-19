@@ -1,4 +1,4 @@
-package org.gitools.ui.jobs;
+package org.gitools.ui._DEPRECATED.jobs;
 
 import org.gitools.ui.commands.Command;
 import org.gitools.ui.platform.AppFrame;

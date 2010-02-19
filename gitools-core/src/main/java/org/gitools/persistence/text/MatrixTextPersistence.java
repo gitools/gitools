@@ -142,8 +142,8 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 		monitor.begin("Reading data ...", 1);
 
-		int numColumns = matrix.getColumnCount();
-		int numItems = matrix.getRowCount();
+		int numColumns = matrix.getColumns().cardinality();
+		int numItems = matrix.getRows().cardinality();
 
 		String[] columnNames = matrix.getColumnStrings();
 		String[] rowNames = matrix.getRowStrings();

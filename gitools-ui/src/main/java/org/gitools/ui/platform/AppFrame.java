@@ -16,7 +16,7 @@ import org.gitools.ui.actions.Actions;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
-import org.gitools.ui.jobs.JobProcessor;
+import org.gitools.ui._DEPRECATED.jobs.JobProcessor;
 import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.ui.settings.Settings;
 import org.gitools.workspace.Workspace;

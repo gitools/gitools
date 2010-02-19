@@ -1,26 +1,24 @@
-package org.gitools.ui.jobs;
+package org.gitools.ui._DEPRECATED.jobs;
 
 import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.platform.AppFrame;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.htest.HtestAnalysis;
 
-@Deprecated
-public class OpenMatrixJob implements Job {
+import org.gitools.persistence.AnalysisPersistence;
+import org.gitools.persistence.analysis.CsvAnalysisResource;
+
+public class OpenAnalysisJob implements Job {
 
 	private File selectedPath;
 	private IProgressMonitor monitor;
 	
-	public OpenMatrixJob(
+	public OpenAnalysisJob(
 			File selectedPath, IProgressMonitor monitor) {
 		
 		this.selectedPath = selectedPath;
@@ -30,7 +28,7 @@ public class OpenMatrixJob implements Job {
 	@Override
 	public void run() {
         AppFrame.instance()
-        	.setStatusText("Opening matrix...");
+        	.setStatusText("Opening analysis...");
         
 		openAnalysisJob(selectedPath, monitor);
 	}
@@ -42,19 +40,18 @@ public class OpenMatrixJob implements Job {
 			return;
 		
 		try {
-			monitor.begin("Loading matrix ...", 1);
+			//ProjectResource projRes = new ProjectResource(selectedPath);
+			//Project proj = projRes.load(monitor);
 			
-			final DoubleMatrixTextPersistence pers = new DoubleMatrixTextPersistence();
-			final DoubleMatrix matrix = pers.read(selectedPath, monitor);
-					
-			final IMatrixView matrixView = new MatrixView(matrix);
+			AnalysisPersistence analysisPer =
+				new CsvAnalysisResource(selectedPath.getAbsolutePath());
 			
-			final Heatmap figure = new Heatmap(matrixView);
-			figure.setShowGrid(false);
+			monitor.begin("Loading analysis ...", 1);
+			HtestAnalysis analysis = analysisPer.load(monitor);
+
+			final AnalysisEditor editor = new AnalysisEditor(analysis);
 			
-			final HeatmapEditor editor = new HeatmapEditor(figure);
-			
-			editor.setName(selectedPath.getName());
+			editor.setName(analysis.getTitle());
 			
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
@@ -66,7 +63,8 @@ public class OpenMatrixJob implements Job {
 			
 			monitor.end();
 			
-			AppFrame.instance().setStatusText("Done.");
+			AppFrame.instance()
+        		.setStatusText("Done.");
 		} 
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -74,7 +72,7 @@ public class OpenMatrixJob implements Job {
 				@Override
 				public void run() {
 					AppFrame.instance()
-						.setStatusText("Error loading matrix.");
+						.setStatusText("Error loading analysis.");
 				}
 			});
 		}

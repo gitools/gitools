@@ -54,6 +54,9 @@ public class MatrixConversion implements ConversionDelegate {
 			monitor.worked(1);
 		}
 
+		dstMatrix.setColumns(srcMatrix.getColumns());
+		dstMatrix.setRows(srcMatrix.getRows());
+
 		monitor.end();
 		
 		return dstMatrix;

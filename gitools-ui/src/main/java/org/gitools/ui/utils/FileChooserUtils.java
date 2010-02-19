@@ -103,6 +103,48 @@ public class FileChooserUtils {
 		return null;
 	}
 
+	public static Object[] selectFile(String title, int mode, FileFilter[] filters) {
+		return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
+	}
+
+	/** Select a file taking into account a set of file filters.
+	 *
+	 * @param title
+	 * @param currentPath
+	 * @param mode
+	 * @param filters
+	 * @return {file, filter}
+	 */
+	public static Object[] selectFile(String title, String currentPath, int mode, FileFilter[] filters) {
+		JFileChooser fileChooser = new JFileChooser(currentPath);
+
+		fileChooser.setDialogTitle(title);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+		if (filters != null) {
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			for (FileFilter filter : filters)
+				fileChooser.addChoosableFileFilter(filter);
+			
+			if (filters.length > 0)
+				fileChooser.setFileFilter(filters[0]);
+		}
+
+		int retval = JFileChooser.CANCEL_OPTION;
+
+		if (mode == FileChooserUtils.MODE_SAVE)
+			retval = fileChooser.showSaveDialog(AppFrame.instance());
+		else if (mode == FileChooserUtils.MODE_OPEN)
+			retval = fileChooser.showOpenDialog(AppFrame.instance());
+
+		File file = null;
+
+		if (retval == JFileChooser.APPROVE_OPTION)
+			file = fileChooser.getSelectedFile();
+
+		return new Object[] {file, fileChooser.getFileFilter()};
+	}
+
 	public static File selectPath(String title) {
 		return selectPath(title, Settings.getDefault().getLastPath());
 	}

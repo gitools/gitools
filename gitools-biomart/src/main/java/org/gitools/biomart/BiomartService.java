@@ -19,6 +19,7 @@ package org.gitools.biomart;
 
 import org.gitools.biomart.tablewriter.SequentialTableWriter;
 import edu.upf.bg.benchmark.TimeCounter;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -29,7 +30,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.logging.Logger;
 import org.biomart._80.martservicesoap.Attribute;
 import org.biomart._80.martservicesoap.AttributePage;
 import org.biomart._80.martservicesoap.BioMartException_Exception;
@@ -41,10 +41,12 @@ import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.tablewriter.TsvTableWriter;
 import org.gitools.fileutils.FileFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BiomartService {
 
-	private static final Logger log = Logger.getLogger(BiomartService.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(BiomartService.class.getName());
 
 	public static final String FORMAT_TSV = "TSV";
 	public static final String FORMAT_TSV_GZ = "GZ";
@@ -154,8 +156,7 @@ public class BiomartService {
 		}
 	}
 
-	//TODO use monitor
-	public void queryModule(Query query, File file, String format) throws BiomartServiceException {
+	public void queryModule(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
 		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
 			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
@@ -163,11 +164,13 @@ public class BiomartService {
 		if (tableWriter == null)
 			throw new BiomartServiceException("Unrecognized format: " + format);
 
-		queryModule(query, tableWriter);
+		queryModule(query, tableWriter, monitor);
+
+		if (monitor.isCancelled())
+			file.delete();
 	}
 
-	//TODO use monitor
-	public void queryModule(Query query, SequentialTableWriter writer) throws BiomartServiceException {
+	public void queryModule(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 
 		InputStream in = queryAsStream(query, FORMAT_TSV);
@@ -187,15 +190,19 @@ public class BiomartService {
 			throw new BiomartServiceException(ex);
 		}
 
+		int count = 0;
 		try {
 			String next = null;
-			while ((next = br.readLine()) != null) {
+			while ((next = br.readLine()) != null && !monitor.isCancelled()) {
 				String[] fields = next.split("\t");
 				if (fields.length == 2
 						&& !fields[0].isEmpty()
 						&& !fields[0].isEmpty())
 
 					writer.write(fields);
+
+				if ((++count % 1000) == 0)
+					monitor.info(count + " rows readed");
 			}
 		}
 		catch (Exception ex) {
@@ -205,23 +212,24 @@ public class BiomartService {
 			writer.close();
 		}
 
-		log.fine("queryModule: elapsed time " + time.toString());
+		log.info("queryModule: elapsed time " + time.toString());
 	}
 
-	//TODO use monitor
-	public void queryTable(Query query, File file, String format) throws BiomartServiceException {
+	public void queryTable(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
-		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV))
+		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
 			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
 
 		if (tableWriter == null)
 			throw new BiomartServiceException("Unrecognized format: " + format);
 
-		queryTable(query, tableWriter);
+		queryTable(query, tableWriter, monitor);
+
+		if (monitor.isCancelled())
+			file.delete();
 	}
 
-	//TODO use monitor
-	public void queryTable(Query query, SequentialTableWriter writer) throws BiomartServiceException {
+	public void queryTable(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 
 		InputStream in = queryAsStream(query, FORMAT_TSV);
@@ -241,11 +249,14 @@ public class BiomartService {
 			throw new BiomartServiceException(ex);
 		}
 
+		int count = 0;
 		try {
 			String next = null;
-			while ((next = br.readLine()) != null) {
+			while ((next = br.readLine()) != null && !monitor.isCancelled()) {
 				String[] fields = next.split("\t");
 				writer.write(fields);
+				if ((++count % 1000) == 0)
+					monitor.info(count + " rows readed");
 			}
 		}
 		catch (Exception ex) {
@@ -255,7 +266,10 @@ public class BiomartService {
 			writer.close();
 		}
 
-		log.fine("queryModule: elapsed time " + time.toString());
+		if (monitor.isCancelled())
+			log.info("queryModule: cancelled with " + count + " rows");
+		else
+			log.info("queryModule: " + count + " rows in " + time.toString());
 	}
 
 	public List<Mart> getRegistry() throws BiomartServiceException {

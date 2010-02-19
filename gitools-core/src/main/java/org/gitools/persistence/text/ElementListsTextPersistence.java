@@ -98,6 +98,7 @@ public class ElementListsTextPersistence
 				int[] rows = colRowsIt.next();
 				for (int row : rows)
 					matrix.setCellValue(row, colIndex, 0, 1.0);
+				colIndex++;
 			}
 			
 			reader.close();
@@ -136,6 +137,7 @@ public class ElementListsTextPersistence
 				if (value == 1.0)
 					pw.append('\t').append(matrix.getRowLabel(ri));
 			}
+			pw.println();
 		}
 
 		try {

@@ -51,7 +51,7 @@ public class BiomartTableWizard extends AbstractWizard {
 		// Destination
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastExportPath());
+		saveFilePage.setFolder(Settings.getDefault().getLastDataPath());
 		saveFilePage.setFormats(biomartService.getSupportedFormats());
 		addPage(saveFilePage);
 		
@@ -81,6 +81,14 @@ public class BiomartTableWizard extends AbstractWizard {
 					datasetPage.getDataset());
 	
 		return nextPage;
+	}
+
+	@Override
+	public void performFinish() {
+		super.performFinish();
+
+		Settings.getDefault().setLastDataPath(saveFilePage.getFolder());
+		Settings.getDefault().save();
 	}
 
 	public File getSelectedFile() {

@@ -13,11 +13,11 @@ import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
-public class ImportBioMartTableAction extends BaseAction {
+public class ImportBiomartTableAction extends BaseAction {
 
 	private static final long serialVersionUID = 4381993756203388654L;
 
-	public ImportBioMartTableAction() {
+	public ImportBiomartTableAction() {
 		super("Table ...");
 		setDefaultEnabled(true);
 	}
@@ -45,7 +45,8 @@ public class ImportBioMartTableAction extends BaseAction {
 				String format = (String) wizard.getFormat().getUserObject();
 
 				try {
-					BiomartService.getDefault().queryTable(query, file, format);
+					BiomartService.getDefault()
+							.queryTable(query, file, format, monitor);
 				}
 				catch (Exception ex) {
 					monitor.exception(ex);

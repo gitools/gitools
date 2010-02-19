@@ -7,7 +7,7 @@ import java.io.File;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ProgressMonitorDialog;
-import org.gitools.ui.jobs.ZCalcCommandJob;
+import org.gitools.ui._DEPRECATED.jobs.ZCalcCommandJob;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.wizardmess.AnalysisWizard;
 import org.gitools.ui.wizardmess.WizardDataModel;

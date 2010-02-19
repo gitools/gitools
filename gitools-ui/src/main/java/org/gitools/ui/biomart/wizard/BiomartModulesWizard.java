@@ -36,7 +36,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 		// Destination
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastExportPath());
+		saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
 		saveFilePage.setFormats(biomartService.getSupportedFormats());
 		addPage(saveFilePage);
 		
@@ -61,7 +61,8 @@ public class BiomartModulesWizard extends AbstractWizard {
 
 	@Override
 	public void performFinish() {
-		Settings.getDefault().setLastExportPath(saveFilePage.getFolder());
+		Settings.getDefault().setLastMapPath(saveFilePage.getFolder());
+		Settings.getDefault().save();
 	}
 	
 	@Override

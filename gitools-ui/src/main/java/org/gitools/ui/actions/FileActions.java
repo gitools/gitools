@@ -10,7 +10,7 @@ import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportLabelNamesAction;
 import org.gitools.ui.actions.file.ExportTableAction;
 import org.gitools.ui.actions.file.ExportMatrixAction;
-import org.gitools.ui.actions.file.ImportBioMartTableAction;
+import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
@@ -65,7 +65,7 @@ public class FileActions {
 	public static final BaseAction importIntogenHeatmapAction = new ImportIntogenHeatmapAction();
 	
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
-	public static final BaseAction importBioMartTableAction = new ImportBioMartTableAction();
+	public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
 	
 	// Export
 	
