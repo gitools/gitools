@@ -24,6 +24,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 
@@ -58,6 +59,9 @@ public class TemplatePane extends JPanel {
 		
 		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
 		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
+
+		velocityEngine.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM_CLASS,
+				"org.apache.velocity.runtime.log.Log4JLogChute" );
 		
 		//FIXME: external parameter
 		// velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");

@@ -46,7 +46,10 @@ public class ImportBiomartTableAction extends BaseAction {
 
 				try {
 					BiomartService.getDefault()
-							.queryTable(query, file, format, monitor);
+							.queryTable(query, file, format,
+							wizard.isSkipRowsWithEmptyValuesEnabled(),
+							wizard.emptyValuesReplacement(),
+							monitor);
 				}
 				catch (Exception ex) {
 					monitor.exception(ex);

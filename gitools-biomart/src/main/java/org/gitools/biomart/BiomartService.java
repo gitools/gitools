@@ -215,7 +215,20 @@ public class BiomartService {
 		log.info("queryModule: elapsed time " + time.toString());
 	}
 
-	public void queryTable(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
+	/** query a table
+	 *
+	 * @param query
+	 * @param file
+	 * @param format
+	 * @param skipRowsWithEmptyValues whether skip or not rows having empty values
+	 * @param emptyValuesReplacement if empty values not skipped which value to use instead
+	 * @param monitor
+	 * @throws BiomartServiceException
+	 */
+	public void queryTable(Query query, File file, String format,
+			boolean skipRowsWithEmptyValues,
+			String emptyValuesReplacement,
+			IProgressMonitor monitor) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
 		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
 			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
@@ -223,13 +236,17 @@ public class BiomartService {
 		if (tableWriter == null)
 			throw new BiomartServiceException("Unrecognized format: " + format);
 
-		queryTable(query, tableWriter, monitor);
+		queryTable(query, tableWriter,
+				skipRowsWithEmptyValues, emptyValuesReplacement, monitor);
 
 		if (monitor.isCancelled())
 			file.delete();
 	}
 
-	public void queryTable(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException {
+	public void queryTable(Query query, SequentialTableWriter writer,
+			boolean skipRowsWithEmptyValues,
+			String emptyValuesReplacement,
+			IProgressMonitor monitor) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 
 		InputStream in = queryAsStream(query, FORMAT_TSV);
@@ -254,9 +271,19 @@ public class BiomartService {
 			String next = null;
 			while ((next = br.readLine()) != null && !monitor.isCancelled()) {
 				String[] fields = next.split("\t");
-				writer.write(fields);
-				if ((++count % 1000) == 0)
-					monitor.info(count + " rows read");
+				
+				boolean hasEmptyValues = false;
+				for (int i = 0; i < fields.length; i++) {
+					hasEmptyValues |= fields[i].isEmpty();
+					if (fields[i].isEmpty())
+						fields[i] = emptyValuesReplacement;
+				}
+
+				if (!(skipRowsWithEmptyValues && hasEmptyValues)) {
+					writer.write(fields);
+					if ((++count % 1000) == 0)
+						monitor.info(count + " rows read");
+				}
 			}
 		}
 		catch (Exception ex) {

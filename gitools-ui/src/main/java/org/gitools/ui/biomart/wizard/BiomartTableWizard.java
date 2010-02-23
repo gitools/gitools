@@ -33,10 +33,11 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class BiomartTableWizard extends AbstractWizard {
 
+	private SaveFilePage saveFilePage;
 	private BiomartDatabasePage databasePage;
 	private BiomartDatasetPage datasetPage;
 	private BiomartAttributeListPage attrListPage;
-	private SaveFilePage saveFilePage;
+	private BiomartTableFilteringPage filteringPage;
 
 	private BiomartService biomartService;
 
@@ -67,6 +68,10 @@ public class BiomartTableWizard extends AbstractWizard {
 		attrListPage = new BiomartAttributeListPage(biomartService);
 		attrListPage.setTitle("Select attributes");
 		addPage(attrListPage);
+
+		// Filtering
+		filteringPage = new BiomartTableFilteringPage();
+		addPage(filteringPage);
 	}
 
 	@Override
@@ -81,6 +86,17 @@ public class BiomartTableWizard extends AbstractWizard {
 					datasetPage.getDataset());
 	
 		return nextPage;
+	}
+
+	@Override
+	public boolean canFinish() {
+		boolean canFinish = super.canFinish();
+
+		IWizardPage page = getCurrentPage();
+
+		canFinish |= page == attrListPage && page.isComplete();
+
+		return canFinish;
 	}
 
 	@Override
@@ -124,5 +140,13 @@ public class BiomartTableWizard extends AbstractWizard {
 
 	public FileFormat getFormat() {
 		return saveFilePage.getFormat();
+	}
+
+	public boolean isSkipRowsWithEmptyValuesEnabled() {
+		return filteringPage.isSkipRowsWithEmptyValuesEnabled();
+	}
+
+	public String emptyValuesReplacement() {
+		return filteringPage.emptyValuesReplacement();
 	}
 }

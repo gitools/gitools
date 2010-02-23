@@ -124,9 +124,10 @@
 		<module>gitools-biomart</module>
 		<module>gitools-ui-platform</module>
 		<module>gitools-ui</module>
+		<module>gitools-intogen</module>
 		
 		<!-- <module>ztools-report</module> -->
-	</modules>
+  </modules>
 
 	<repositories>
 		<repository>
