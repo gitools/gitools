@@ -19,6 +19,7 @@ package org.gitools.persistence.text;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -34,7 +35,7 @@ import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.utils.CSVStrategies;
 
-public class ElementListsTextPersistence
+public class GeneMatrixTransposedPersistence
 		extends BaseMatrixPersistence<DoubleBinaryMatrix> {
 
 	@Override
@@ -64,19 +65,25 @@ public class ElementListsTextPersistence
 			Map<String, Integer> rowIndices = new HashMap<String, Integer>();
 
 			while ((fields = parser.getLine()) != null) {
+
+				if (fields.length < 2)
+					throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
+
 				colNames.add(fields[0]);
 
-				int[] rows = new int[fields.length - 1];
+				// fields[1] is for description, but currently not used
+
+				int[] rows = new int[fields.length - 2];
 				colRowIndices.add(rows);
 
-				for (int i = 1; i < fields.length; i++) {
+				for (int i = 2; i < fields.length; i++) {
 					Integer rowIndex = rowIndices.get(fields[i]);
 					if (rowIndex == null) {
 						rowIndex = rowIndices.size();
 						rowIndices.put(fields[i], rowIndex);
 					}
 
-					rows[i - 1] = rowIndex;
+					rows[i - 2] = rowIndex;
 				}
 			}
 
@@ -107,7 +114,7 @@ public class ElementListsTextPersistence
 
 			monitor.end();
 		}
-		catch (Exception e) {
+		catch (IOException e) {
 			throw new PersistenceException(e);
 		}
 
@@ -131,7 +138,8 @@ public class ElementListsTextPersistence
 		final int rowCount = matrix.getRowCount();
 
 		for (int ci = 0; ci < matrix.getColumnCount(); ci++) {
-			pw.print(matrix.getColumnLabel(ci));
+			pw.append(matrix.getColumnLabel(ci));
+			pw.append('\t'); // description, but currently not used
 			for (int ri = 0; ri < rowCount; ri++) {
 				Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
 				if (value == 1.0)

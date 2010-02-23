@@ -23,6 +23,7 @@ import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.intogen.editor.IntogenOncomodulesPage;
 import org.gitools.ui.intogen.editor.IntogenWebEditor;
 import org.gitools.ui.view.details.DetailsView;
 import org.gitools.ui.view.properties.PropertiesView;

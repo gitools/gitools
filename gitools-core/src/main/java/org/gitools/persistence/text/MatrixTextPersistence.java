@@ -126,7 +126,8 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			throw new PersistenceException(e);
 		}
 
-		monitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
+		monitor.info(matrix.getColumns().cardinality() + " columns and "
+				+ matrix.getRows().cardinality() + " rows");
 
 		monitor.end();
 	}

@@ -11,6 +11,7 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.table.model.TableFigure;
 import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.StringMatrix;
@@ -42,8 +43,12 @@ public class MimeTypeManager {
 		
 		extMap.put(FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
 		extMap.put(FileSuffixes.DOUBLE_MATRIX, MimeTypes.DOUBLE_MATRIX);
+		extMap.put(FileSuffixes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX);
 		extMap.put(FileSuffixes.STRING_MATRIX, MimeTypes.STRING_MATRIX);
 		extMap.put(FileSuffixes.ANNOTATION_MATRIX, MimeTypes.ANNOTATION_MATRIX);
+
+		extMap.put(FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX);
+		extMap.put(FileSuffixes.GENE_MATRIX_TRANSPOSED, MimeTypes.GENE_MATRIX_TRANSPOSED);
 
 		extMap.put(FileSuffixes.MODULES_INDEXED_MAP, MimeTypes.MODULES_INDEXED_MAP);
 		
@@ -59,6 +64,7 @@ public class MimeTypeManager {
 		
 		classMap.put(ObjectMatrix.class, MimeTypes.OBJECT_MATRIX);
 		classMap.put(DoubleMatrix.class, MimeTypes.DOUBLE_MATRIX);
+		classMap.put(DoubleBinaryMatrix.class, MimeTypes.DOUBLE_BINARY_MATRIX);
 		classMap.put(StringMatrix.class, MimeTypes.STRING_MATRIX);
 		classMap.put(AnnotationMatrix.class, MimeTypes.ANNOTATION_MATRIX);
 

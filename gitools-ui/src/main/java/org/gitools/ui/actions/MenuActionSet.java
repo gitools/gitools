@@ -24,8 +24,7 @@ public class MenuActionSet extends ActionSet {
 					})
 				}),
 				new ActionSet("Open", new BaseAction[] {
-					FileActions.openProjectAction,
-					FileActions.openDataAction,
+					//FileActions.openProjectAction,
 					FileActions.openEnrichmentAnalysisAction,
 					FileActions.openHeatmapFromMatrixAction
 				}),
@@ -37,9 +36,9 @@ public class MenuActionSet extends ActionSet {
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
 					new ActionSet("IntOGen", new BaseAction[] {
-						FileActions.importIntogenTableAction,
+						//FileActions.importIntogenTableAction,
 						FileActions.importIntogenOncomodulesAction,
-						FileActions.importIntogenHeatmapAction
+						//FileActions.importIntogenHeatmapAction
 					}),
 					new ActionSet("BioMart", new BaseAction[] {
 						FileActions.importBioMartTableAction,

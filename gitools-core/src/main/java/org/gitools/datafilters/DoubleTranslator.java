@@ -14,8 +14,11 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
 	@Override
 	public String valueToString(Double value) {
-		return Double.isNaN(value) ?
-			"-" : String.valueOf(value);
+		if (Double.isNaN(value))
+			return "-";
+
+		String s = String.valueOf(value);
+		return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
 	}
 
 }

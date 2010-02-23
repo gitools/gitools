@@ -3,10 +3,8 @@ package org.gitools.analysis.htest.enrichment;
 import java.util.Date;
 import org.gitools.matrix.model.IMatrix;
 
-import org.gitools.model.Analysis;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
-import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
@@ -16,12 +14,15 @@ import org.gitools.threads.ThreadQueue;
 import org.gitools.threads.ThreadSlot;
 
 import cern.colt.function.DoubleProcedure;
+import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.AbstractProcessor;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTCFactory;
@@ -68,29 +69,31 @@ public class EnrichmentProcessor extends AbstractProcessor {
 		//final int numParams = paramNames.length;
 
 		IMatrix dataMatrix = analysis.getDataMatrix();
-		if (!(dataMatrix instanceof DoubleMatrix))
-			throw new RuntimeException("This processor only works with DoubleMatrix data. "
-					+ dataMatrix.getClass().getSimpleName() + " found instead.");
+		/*if (!(dataMatrix instanceof BaseMatrix))
+			throw new RuntimeException("This processor only works with BaseMatrix data. "
+					+ dataMatrix.getClass().getSimpleName() + " found instead.");*/
 
-		String[] labels = new String[dataMatrix.getRowCount()];
+		final int numConditions = dataMatrix.getColumnCount();
+		final int numRows = dataMatrix.getRowCount();
+
+		String[] labels = new String[numRows];
 		for (int i = 0; i < labels.length; i++)
 			labels[i] = dataMatrix.getRowLabel(i);
 
 		ModuleMap mmap = analysis.getModuleMap();
 		mmap = mmap.remap(labels,
-				analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+				analysis.getMinModuleSize(),
+				analysis.getMaxModuleSize());
 
-		DoubleMatrix doubleMatrix = (DoubleMatrix) dataMatrix;
+		//DoubleMatrix2D data = null;
+		ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumnCount());
+		for (int i = 0; i < numConditions; i++)
+			conditions.setQuick(i, dataMatrix.getColumnLabel(i));
 
-		ObjectMatrix1D conditions = doubleMatrix.getColumns().copy();
-		
-		DoubleMatrix2D data = doubleMatrix.getCells().viewDice().copy();
-		
 		ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
 		
 		int[][] moduleItemIndices = mmap.getAllItemIndices();
 		
-		final int numConditions = data.rows();
 		final int numModules = modules.size();
 		
 		monitor.begin("Running enrichment analysis...", numConditions);
@@ -121,10 +124,18 @@ public class EnrichmentProcessor extends AbstractProcessor {
 		
 		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
 			
-			final String condName = conditions.getQuick(condIndex).toString();
+			//final String condName = conditions.getQuick(condIndex).toString();
+			final String condName = dataMatrix.getColumnLabel(condIndex);
 			
-			final DoubleMatrix1D condItems = data.viewRow(condIndex);
-			
+			//final DoubleMatrix1D condItems = data.viewRow(condIndex);
+			final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
+			for (int i = 0; i < numRows; i++) {
+				double value = MatrixUtils.doubleValue(
+						dataMatrix.getCellValue(i, condIndex, 0));
+
+				condItems.setQuick(i, value);
+			}
+
 			DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
 			
 			final IProgressMonitor condMonitor = monitor.subtask();

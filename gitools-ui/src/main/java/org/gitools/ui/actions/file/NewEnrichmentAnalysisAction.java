@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
+import org.gitools.persistence.PersistenceUtils;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -14,6 +15,7 @@ import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
@@ -30,7 +32,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
+		final EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
 		
 		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 		
@@ -59,9 +61,9 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 					if (monitor.isCancelled())
 						return;
 
-					final AnalysisEditor editor = new AnalysisEditor(analysis);
+					final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
 
-					editor.setName(analysis.getTitle());
+					editor.setName(PersistenceUtils.getBaseName(wizard.getDataFile().getAbsolutePath()));
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

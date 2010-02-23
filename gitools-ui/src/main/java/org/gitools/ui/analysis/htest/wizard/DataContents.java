@@ -4,7 +4,8 @@ import org.gitools.persistence.MimeTypes;
 
 public enum DataContents {
 
-	LIST_OF_ELEMENTS("List of elements", MimeTypes.ELEMENT_LISTS),
+	GENE_MATRIX_TRANSPOSED("Concept elements lists by rows (GMT)", MimeTypes.GENE_MATRIX_TRANSPOSED),
+	GENE_MATRIX("Concept elements lists by columns (GMX)", MimeTypes.GENE_MATRIX),
 	BINARY_DATA_MATRIX("Binary data matrix", MimeTypes.DOUBLE_BINARY_MATRIX),
 	CONTINUOUS_DATA_MATRIX("Continuous data matrix", MimeTypes.DOUBLE_MATRIX);
 

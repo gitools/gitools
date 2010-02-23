@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 chris.
+ *  Copyright 2010 cperez.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,19 +15,9 @@
  *  under the License.
  */
 
-package org.gitools.ui.intogen.editor;
+package org.gitools.persistence.text;
 
-import org.gitools.ui.platform.editor.Html4Editor;
 
-public class IntogenWebEditor extends Html4Editor {
+public class GeneSetPersistence {
 
-	public IntogenWebEditor() {
-		super("IntOGen");
-
-		/*try {
-			navigate(new URL("http://www.intogen.org"));
-		} catch (MalformedURLException ex) {
-			LoggerFactory.getLogger(IntogenWebEditor.class).error(ex.toString());
-		}*/
-	}
 }

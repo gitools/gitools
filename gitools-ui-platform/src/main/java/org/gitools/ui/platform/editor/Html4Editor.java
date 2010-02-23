@@ -21,6 +21,8 @@ import java.awt.BorderLayout;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import org.lobobrowser.html.FormInput;
+import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
@@ -74,6 +76,18 @@ public class Html4Editor extends AbstractEditor {
 				catch (LinkVetoException ex) {
 				}
 			}
+
+			@Override
+			public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+				try {
+					Html4Editor.this.submitForm(method, action, target, enctype, formInputs);
+					System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+					super.submitForm(method, action, target, enctype, formInputs);
+				}
+				catch (LinkVetoException ex) {
+				}
+			}
+
 		};
 
 		setLayout(new BorderLayout());
@@ -97,6 +111,13 @@ public class Html4Editor extends AbstractEditor {
 		}
 	}
 
+	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+		System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+		if (formInputs != null)
+			for (FormInput fi : formInputs)
+				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());
+	}
+
 	protected void performUrlAction(String name, Map<String, String> params) {
 		// do nothing
 	}
@@ -104,4 +125,10 @@ public class Html4Editor extends AbstractEditor {
 	public void navigate(URL url) throws Exception {
 		rcontext.navigate(url, "_self");
 	}
+
+	public HtmlRendererContext getHtmlRenderContext() {
+		return rcontext;
+	}
+
+
 }

@@ -1,6 +1,7 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
+import org.gitools.ui.intogen.editor.IntogenOncomodulesPage;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -18,11 +19,14 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		WizardDialog wizDlg = new WizardDialog(
+		/*WizardDialog wizDlg = new WizardDialog(
 				AppFrame.instance(),
 				new IntogenOncomodulesWizard());
 		
-		wizDlg.open();
+		wizDlg.open();*/
+
+		IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
+		AppFrame.instance().getEditorsPanel().addEditor(editor);
 	}
 
 }

@@ -20,21 +20,26 @@ package org.gitools.cli;
 import edu.upf.bg.tools.exception.ToolException;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitools.persistence.MimeTypes;
 
 public class TestMain {
 
 	public static void main(String[] unusedArgs) throws ToolException {
-		/*String cmd = "enrichment -t binomial-exact" +
+		String stuff = "/home/cperez/temp/gitools-stuff";
+		String temp = "/home/cperez/temp/gitools-stuff";
+		
+		String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
-				" -d /home/chris/temp/gitools-stuff/data.tsv -b gt,0.5" +
-				" -m /home/chris/temp/gitools-stuff/modules.tsv" +
-				" -w /home/chris/temp/gitools-temp/test -N test" +
+				" -d " + stuff + "/data.tsv -b gt,0.5" +
+				" -dm " + MimeTypes.DOUBLE_BINARY_MATRIX + 
+				" -m " + stuff + "/modules.tsv" +
+				" -w "+ temp + "/test -N test" +
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
-				" -verbose -debug -err-log -";*/
+				" -verbose -debug -err-log -";
 
-		String cmd = "convert" +
+		/*String cmd = "convert" +
 				" -i data.tsv" +
 				" -im application/gitools-matrix-double" +
 				" -o pru.txt" +
@@ -44,7 +49,7 @@ public class TestMain {
 		cmd = "convert" +
 				" -o d3.list -om application/gitools-element-lists" +
 				" -i d2.matrix -im application/gitools-matrix-double" +
-				" -verbose -debug -err-log -";
+				" -verbose -debug -err-log -";*/
 
 		String[] args = cmdLineSplit(cmd);
 

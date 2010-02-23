@@ -36,7 +36,7 @@ public class MatrixConversion implements ConversionDelegate {
 			dstMatrix = new DoubleMatrix();
 		else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstMime))
 			dstMatrix = new DoubleBinaryMatrix();
-		else if (MimeTypes.ELEMENT_LISTS.equals(dstMime))
+		else if (MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstMime))
 			dstMatrix = new DoubleBinaryMatrix();
 
 		int numCols = srcMatrix.getColumnCount();

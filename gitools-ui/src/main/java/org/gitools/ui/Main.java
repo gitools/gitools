@@ -1,5 +1,7 @@
 package org.gitools.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import org.gitools.ui.actions.Actions;
 
@@ -14,6 +16,8 @@ public class Main {
 		} catch (Exception e) {
 			System.err.println("Error loading Look&Feel: " + e);
 		}
+
+		Logger.getLogger("org.lobobrowser").setLevel(Level.WARNING);
 
 		Actions.init();
 

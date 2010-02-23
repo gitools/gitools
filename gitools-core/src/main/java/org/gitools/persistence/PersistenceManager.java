@@ -19,7 +19,8 @@ import org.gitools.persistence.xml.TableFigureXmlPersistence;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
-import org.gitools.persistence.text.ElementListsTextPersistence;
+import org.gitools.persistence.text.GeneMatrixPersistence;
+import org.gitools.persistence.text.GeneMatrixTransposedPersistence;
 import org.gitools.persistence.text.ModuleMapText2CPersistence;
 
 public class PersistenceManager implements Serializable {
@@ -67,10 +68,13 @@ public class PersistenceManager implements Serializable {
 		persistenceMap.put(MimeTypes.CONTENT, ContainerXmlPersistence.class);
 		persistenceMap.put(MimeTypes.HEATMAP_FIGURE, HeatmapXmlPersistence.class);
 		persistenceMap.put(MimeTypes.TABLE_FIGURE, TableFigureXmlPersistence.class);
+
 		persistenceMap.put(MimeTypes.OBJECT_MATRIX, ObjectMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.DOUBLE_MATRIX, DoubleMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrixTextPersistence.class);
-		persistenceMap.put(MimeTypes.ELEMENT_LISTS, ElementListsTextPersistence.class);
+		persistenceMap.put(MimeTypes.GENE_MATRIX, GeneMatrixPersistence.class);
+		persistenceMap.put(MimeTypes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
+
 		persistenceMap.put(MimeTypes.ANNOTATION_MATRIX, AnnotationMatrixTextPersistence.class);
 		persistenceMap.put(MimeTypes.MODULES_2C_MAP, ModuleMapText2CPersistence.class);
 		persistenceMap.put(MimeTypes.MODULES_INDEXED_MAP, ModuleMapTextIndicesPersistence.class);

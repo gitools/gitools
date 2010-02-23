@@ -202,7 +202,7 @@ public class BiomartService {
 					writer.write(fields);
 
 				if ((++count % 1000) == 0)
-					monitor.info(count + " rows readed");
+					monitor.info(count + " rows read");
 			}
 		}
 		catch (Exception ex) {
@@ -256,7 +256,7 @@ public class BiomartService {
 				String[] fields = next.split("\t");
 				writer.write(fields);
 				if ((++count % 1000) == 0)
-					monitor.info(count + " rows readed");
+					monitor.info(count + " rows read");
 			}
 		}
 		catch (Exception ex) {

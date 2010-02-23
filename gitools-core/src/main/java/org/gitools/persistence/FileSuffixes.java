@@ -23,9 +23,12 @@ public class FileSuffixes {
 
 	public static final String OBJECT_MATRIX = "objectmatrix.gz";
 	public static final String DOUBLE_MATRIX = "doublematrix.gz";
-	public static final String BINARY_MATRIX = "binarymatrix.gz";
+	public static final String DOUBLE_BINARY_MATRIX = "binarymatrix.gz";
 	public static final String STRING_MATRIX = "stringmatrix.gz";
 	public static final String ANNOTATION_MATRIX = "annotationmatrix.gz";
+
+	public static final String GENE_MATRIX = "gmx";
+	public static final String GENE_MATRIX_TRANSPOSED = "gmt";
 
 	public static final String MODULES_INDEXED_MAP = "modules.gz";
 	public static final String MODULES_2C_MAP = "modules2c.gz";

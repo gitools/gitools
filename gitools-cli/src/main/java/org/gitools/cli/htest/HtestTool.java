@@ -58,7 +58,8 @@ public abstract class HtestTool extends AbstractTool {
 				usage = "Data file format (MIME). Available formats:\n" +
 				MimeTypes.DOUBLE_MATRIX + "\n" +
 				MimeTypes.DOUBLE_BINARY_MATRIX + "\n" +
-				MimeTypes.ELEMENT_LISTS)
+				MimeTypes.GENE_MATRIX + "\n" +
+				MimeTypes.GENE_MATRIX_TRANSPOSED)
 		public String dataMime = MimeTypes.DOUBLE_MATRIX;
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",

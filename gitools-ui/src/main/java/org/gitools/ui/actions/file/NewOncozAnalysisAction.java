@@ -17,7 +17,8 @@ public class NewOncozAnalysisAction extends BaseAction {
 
 		setDesc("Run an oncoz analysis");
 		setMnemonic(KeyEvent.VK_O);
-		setDefaultEnabled(true);
+		
+		setDefaultEnabled(false);
 	}
 
 	@Override

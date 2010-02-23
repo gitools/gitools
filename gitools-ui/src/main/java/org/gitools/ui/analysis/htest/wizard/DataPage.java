@@ -69,7 +69,7 @@ public class DataPage extends AbstractWizardPage {
 
 	private void updateState() {
 		boolean filteringControlsEnabled =
-				((DataContents) dataContentsCb.getSelectedItem()) != DataContents.LIST_OF_ELEMENTS;
+				((DataContents) dataContentsCb.getSelectedItem()) != DataContents.GENE_MATRIX_TRANSPOSED;
 
 		cutoffEnabledCheck.setEnabled(filteringControlsEnabled);
 		cutoffCmpCb.setEnabled(filteringControlsEnabled && cutoffEnabledCheck.isSelected());
