@@ -17,7 +17,14 @@
 
 package org.gitools.ui.intogen.editor;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.File;
 import java.net.URL;
+import java.util.Properties;
+import org.gitools.intogen.IntogenService;
+import org.gitools.intogen.IntogenServiceException;
+import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.Html4Editor;
@@ -39,9 +46,30 @@ public class IntogenOncomodulesPage extends Html4Editor {
 	}
 
 	@Override
-	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+	protected void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
 		if (method.equalsIgnoreCase("post")) {
-			super.submitForm(method, action, target, enctype, formInputs);
+			//super.submitForm(method, action, target, enctype, formInputs);
+
+			final File file = new File("/home/cperez/temp/gitools");
+			final String prefix = "x";
+
+			final Properties properties = new Properties();
+			for (FormInput fi : formInputs)
+				properties.setProperty(fi.getName(), fi.getTextValue());
+			
+			JobThread.execute(AppFrame.instance(), new JobRunnable() {
+				@Override
+				public void run(IProgressMonitor monitor) {
+					try {
+						IntogenService.getDefault().queryOncomodulesFromPOST(
+								file, prefix, action, properties, monitor);
+					}
+					catch (IntogenServiceException ex) {
+						monitor.exception(ex);
+					}
+				}
+			});
+
 			throw new LinkVetoException();
 		}
 	}

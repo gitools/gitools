@@ -25,10 +25,6 @@ package org.gitools.ui.heatmap.panel.properties;
 
 import javax.swing.JPanel;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesAbstractPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesCellsPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesDocumentPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesHeaderPanel;
 
 public class HeatmapPropertiesPanel extends JPanel {
 

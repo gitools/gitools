@@ -21,12 +21,18 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import org.gitools.persistence.PersistenceUtils;
 
 
 public class IntogenService {
@@ -44,14 +50,16 @@ public class IntogenService {
 		return service;
 	}
 
-	public void queryOncomodulesFromPOST(File file,
+	public void queryOncomodulesFromPOST(
+			File file,
+			String prefix,
 			URL action,
 			Properties properties,
-			IProgressMonitor monitor) {
-
-		DataInputStream input;
+			IProgressMonitor monitor) throws IntogenServiceException {
 
 		try {
+			monitor.begin("Querying for data ...", 1);
+
 			// URL connection channel.
 			URLConnection urlConn = action.openConnection();
 
@@ -64,7 +72,12 @@ public class IntogenService {
 			DataOutputStream printout = new DataOutputStream(urlConn.getOutputStream());
 
 			StringBuilder content = new StringBuilder();
+			boolean first = true;
 			for (Map.Entry entry : properties.entrySet()) {
+				if (!first)
+					content.append('&');
+				first = false;
+				
 				content.append(entry.getKey()).append('=');
 				content.append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
 			}
@@ -73,17 +86,50 @@ public class IntogenService {
 			printout.flush();
 			printout.close();
 
+			monitor.end();
+
+			monitor.begin("Downloading data ...", 1);
+
 			// Get response data.
-			input = new DataInputStream(urlConn.getInputStream());
-			String str;
-			while (null != ((str = input.readLine()))) {
-				System.out.println(str);
+			ZipInputStream zin = new ZipInputStream(urlConn.getInputStream());
+
+			ZipEntry ze;
+			while ((ze = zin.getNextEntry()) != null) {
+				IProgressMonitor mnt = monitor.subtask();
+
+				String name = ze.getName();
+				if (name.equals("modulemap.csv"))
+					name = prefix + ".oncomodules.gz";
+				else if (name.equals("oncomodules.csv"))
+					name = prefix + ".annotations.gz";
+
+				mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
+
+				File outFile = new File(file, name);
+				if (!outFile.getParentFile().exists())
+					outFile.getParentFile().mkdirs();
+				
+				OutputStream fout = PersistenceUtils.openOutputStream(outFile);
+
+				final int BUFFER_SIZE = 4 * 1024;
+				byte[] data = new byte[BUFFER_SIZE];
+				int count;
+				while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
+					fout.write(data, 0, count);
+					mnt.worked(count);
+				}
+				zin.closeEntry();
+				fout.close();
+
+				mnt.end();
 			}
-			input.close();
+			
+			zin.close();
+
+			monitor.end();
 		}
 		catch (IOException ex) {
-			
+			throw new IntogenServiceException(ex);
 		}
-
 	}
 }

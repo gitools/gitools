@@ -1,12 +1,10 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
-import org.gitools.ui.intogen.editor.IntogenOncomodulesPage;
+import org.gitools.ui.intogen.dialog.IntogenOncomodulesDialog;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.wizard.intogen.modules.IntogenOncomodulesWizard;
 
 public class ImportIntogenOncomodulesAction extends BaseAction {
 
@@ -25,8 +23,11 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 		
 		wizDlg.open();*/
 
-		IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
-		AppFrame.instance().getEditorsPanel().addEditor(editor);
+		/*IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
+		AppFrame.instance().getEditorsPanel().addEditor(editor);*/
+
+		IntogenOncomodulesDialog dlg = new IntogenOncomodulesDialog(AppFrame.instance(), true);
+		dlg.setVisible(true);
 	}
 
 }

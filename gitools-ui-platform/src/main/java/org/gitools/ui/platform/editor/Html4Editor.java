@@ -123,7 +123,7 @@ public class Html4Editor extends AbstractEditor {
 	}
 
 	public void navigate(URL url) throws Exception {
-		rcontext.navigate(url, "_self");
+		rcontext.navigate(url, "_this");
 	}
 
 	public HtmlRendererContext getHtmlRenderContext() {

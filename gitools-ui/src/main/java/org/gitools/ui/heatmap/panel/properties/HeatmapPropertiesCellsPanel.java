@@ -25,8 +25,6 @@ package org.gitools.ui.heatmap.panel.properties;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
@@ -52,6 +50,14 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
     public HeatmapPropertiesCellsPanel() {
         initComponents();
     }
+
+	@Override
+	public void setHeatmap(Heatmap heatmap) {
+		if (getHeatmap() != heatmap)
+			decoratorCache.clear();
+		
+		super.setHeatmap(heatmap);
+	}
 
 	@Override
 	protected void initControls() {
@@ -269,12 +275,19 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	}//GEN-LAST:event_showGridStateChanged
 
 	private void cellDecoratorChanged(ItemEvent evt) {
-		final ElementDecoratorDescriptor descriptor =
-			(ElementDecoratorDescriptor) evt.getItem();
+		/*final ElementDecoratorDescriptor descriptor =
+			(ElementDecoratorDescriptor) evt.getItem();*/
 
-		if (evt.getStateChange() == ItemEvent.DESELECTED)
+		if (evt.getStateChange() == ItemEvent.DESELECTED) {
+			ElementDecoratorDescriptor descriptor =
+				ElementDecoratorFactory.getDescriptor(hm.getCellDecorator().getClass());
+
 			decoratorCache.put(descriptor, hm.getCellDecorator());
+		}
 		else if (evt.getStateChange() == ItemEvent.SELECTED) {
+			ElementDecoratorDescriptor descriptor =
+				(ElementDecoratorDescriptor) evt.getItem();
+
 			ElementDecorator decorator = decoratorCache.get(descriptor);
 			if (decorator == null)
 				decorator = ElementDecoratorFactory.create(

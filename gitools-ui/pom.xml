@@ -39,6 +39,13 @@
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-intogen</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>gitools-ui-platform</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>

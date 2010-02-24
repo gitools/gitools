@@ -1,5 +1,6 @@
 package org.gitools.persistence;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -53,6 +55,24 @@ public class PersistenceUtils {
 			return 
 				new BufferedWriter(
 					new FileWriter(path, append));
+	}
+
+	public static OutputStream openOutputStream(File path) throws IOException {
+		return openOutputStream(path, false);
+	}
+
+	public static OutputStream openOutputStream(File path, boolean append) throws IOException {
+		if (path == null)
+			return null;
+
+		if (path.getName().endsWith(".gz"))
+			return
+				new GZIPOutputStream(
+						new FileOutputStream(path, append));
+		else
+			return
+				new BufferedOutputStream(
+					new FileOutputStream(path, append));
 	}
 
 	// Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls

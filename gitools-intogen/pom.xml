@@ -18,5 +18,12 @@
 			<groupId>edu.upf.bg</groupId>
 			<artifactId>bg-commons</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
