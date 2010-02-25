@@ -17,8 +17,10 @@
 
 package org.gitools.ui.heatmap.editor;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.EditorsPanel;
@@ -46,7 +48,22 @@ public class CloneHeatmapAction extends BaseAction {
 
 		Heatmap hm = (Heatmap) currentEditor.getModel();
 
-		Heatmap clone = SerialClone.clone(hm);
+		//Heatmap clone = SerialClone.clone(hm);
+		Heatmap clone = new Heatmap(new MatrixView(hm.getMatrixView()));
+		clone.setTitle(hm.getTitle());
+		clone.setDescription(hm.getDescription());
+		clone.setAttributes(SerialClone.xclone(hm.getAttributes()));
+		clone.setFooter(hm.getFooter());
+		clone.setCellHeight(hm.getCellHeight());
+		clone.setCellWidth(hm.getCellWidth());
+		clone.setColumnHeaderSize(hm.getColumnHeaderSize());
+		clone.setRowHeaderSize(hm.getRowHeaderSize());
+		clone.setGridColor(hm.getGridColor());
+		clone.setShowGrid(hm.isShowGrid());
+		clone.setShowBorders(hm.isShowBorders());
+		clone.setCellDecorator(SerialClone.xclone(hm.getCellDecorator()));
+		clone.setColumnHeader(SerialClone.xclone(hm.getColumnHeader()));
+		clone.setRowHeader(SerialClone.xclone(hm.getRowHeader()));
 
 		HeatmapEditor ed = new HeatmapEditor(clone);
 

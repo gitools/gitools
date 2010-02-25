@@ -2,7 +2,6 @@ package org.gitools.heatmap.model;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,14 +9,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.Attribute;
 import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -102,8 +99,8 @@ public class Heatmap
 		this.columnHeader = columnsDecorator;
 		this.showGrid = true;
 		this.gridColor = Color.WHITE;
-		this.cellWidth = 18;
-		this.cellHeight = 18;
+		this.cellWidth = 14;
+		this.cellHeight = 14;
 		this.rowHeaderSize = 300;
 		this.columnHeaderSize = 200;
 		this.showBorders = false;
@@ -149,7 +146,7 @@ public class Heatmap
 		return rowHeader;
 	}
 	
-	public void setRowDecorator(HeatmapHeader rowDecorator) {
+	public void setRowHeader(HeatmapHeader rowDecorator) {
 		final HeatmapHeader old = this.rowHeader;
 		this.rowHeader = rowDecorator;
 		firePropertyChange(ROW_DECORATOR_CHANGED, old, rowDecorator);
@@ -159,7 +156,7 @@ public class Heatmap
 		return columnHeader;
 	}
 	
-	public void setColumnDecorator(HeatmapHeader columnDecorator) {
+	public void setColumnHeader(HeatmapHeader columnDecorator) {
 		final HeatmapHeader old = this.columnHeader;
 		this.columnHeader = columnDecorator;
 		firePropertyChange(COLUMN_DECORATOR_CHANGED, old, columnDecorator);

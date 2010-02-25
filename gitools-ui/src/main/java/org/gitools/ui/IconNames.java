@@ -67,4 +67,8 @@ public class IconNames {
 	public static final String newResultsHeatmap24 = "/img/NewResultsHeatmap24.gif";
 
 	public static final String cloneHeatmap24 = "/img/CloneHeatmap24.gif";
+
+	public static final String viewAnnotatedElements16 = "/img/ViewAnnotatedElements16.gif";
+	public static final String viewAnnotatedElements24 = "/img/ViewAnnotatedElements24.gif";
+
 }

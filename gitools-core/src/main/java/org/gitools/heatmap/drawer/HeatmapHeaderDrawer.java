@@ -105,8 +105,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			}
 
 			boolean lead = !pictureMode && (horizontal ?
-				(leadColumn == index) && (leadRow == -1) :
-				(leadRow == index) && (leadColumn == -1));
+				(leadColumn == index) /*&& (leadRow == -1)*/ :
+				(leadRow == index) /*&& (leadColumn == -1)*/);
 
 			g.setColor(gridColor);
 			g.drawLine(x, y + height - 1, x + width, y + height - 1);

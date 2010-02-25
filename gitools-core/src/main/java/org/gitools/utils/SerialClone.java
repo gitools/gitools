@@ -16,6 +16,7 @@
  */
 package org.gitools.utils;
 
+import com.thoughtworks.xstream.XStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -100,5 +101,11 @@ public class SerialClone {
 				throws IOException, ClassNotFoundException {
 			return output.classQueue.poll();
 		}
+	}
+
+	public static <T> T xclone(T x) {
+		XStream xstream = new XStream();
+		String xml = xstream.toXML(x);
+		return (T) xstream.fromXML(xml);
 	}
 }

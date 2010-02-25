@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.net.URL;
 import java.util.Properties;
+import javax.swing.SwingUtilities;
 import org.gitools.intogen.IntogenService;
 import org.gitools.intogen.IntogenServiceException;
 import org.gitools.ui.dialog.progress.JobRunnable;
@@ -92,22 +93,20 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 		panel.setLayout(new BorderLayout());
 		panel.add(htmlPanel, BorderLayout.CENTER);
 
-		try {
-			rcontext.navigate(new URL("http://ankara:8080/oncomodules"), "_this");
-		}
-		catch (Exception ex) {
-			setVisible(false);
-			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-			dlg.setVisible(true);
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override public void run() {
+				try {
+					rcontext.navigate(new URL(Settings.getDefault().getIntogenOncomodulesUrl()), "_this");
+				}
+				catch (Exception ex) {
+					setVisible(false);
+					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
+					dlg.setVisible(true);
+				}
+			}
+		});
 
 		pack();
-		htmlPanel.invalidate();
-		htmlPanel.repaint();
-		panel.invalidate();
-		panel.repaint();
-		this.invalidate();
-		this.repaint();
 
 		folder.setText(Settings.getDefault().getLastExportPath());
     }

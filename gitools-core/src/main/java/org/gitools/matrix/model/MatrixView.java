@@ -98,7 +98,22 @@ public class MatrixView
 			i++;
 		}
 	}
-	
+
+	public MatrixView(IMatrixView matrixView) {
+		this.contents = matrixView.getContents();
+		this.visibleRows = matrixView.getVisibleRows();
+		this.visibleColumns = matrixView.getVisibleColumns();
+		this.selectedRows = matrixView.getSelectedRows();
+		this.selectedColumns = matrixView.getSelectedColumns();
+		this.selectionLeadRow = matrixView.getLeadSelectionRow();
+		this.selectionLeadColumn = matrixView.getLeadSelectionColumn();
+		this.selectedPropertyIndex = matrixView.getSelectedPropertyIndex();
+
+		selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
+		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
+	}
+
+
 	/* visibility */
 	
 	@Override

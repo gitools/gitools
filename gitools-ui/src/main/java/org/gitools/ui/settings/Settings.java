@@ -69,6 +69,7 @@ public class Settings {
 	private String lastMapPath = userPath;
 	private String lastFilterPath = userPath;
 	private String workspacePath = defaultWorkspacePath;
+	private String intogenOncomodulesUrl = "http://ankara:8080/oncomodules";
 
 	private Settings() {
 	}
@@ -154,5 +155,13 @@ public class Settings {
 	
 	public void setWorkspacePath(String workspacePath) {
 		this.workspacePath = workspacePath;
+	}
+
+	public String getIntogenOncomodulesUrl() {
+		return intogenOncomodulesUrl;
+	}
+
+	public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
+		this.intogenOncomodulesUrl = intogenOncomodulesUrl;
 	}
 }

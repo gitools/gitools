@@ -1,15 +1,22 @@
 package org.gitools.ui.heatmap.editor;
 
 import edu.upf.bg.colorscale.drawer.ColorScalePanel;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JToolBar;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;
@@ -53,6 +60,8 @@ public class HeatmapEditor extends AbstractEditor {
 	
 	protected boolean blockSelectionUpdate;
 
+	protected List<BaseAction> externalToolbarActions;
+
 	private PropertyChangeListener heatmapListener;
 	private PropertyChangeListener cellDecoratorListener;
 
@@ -63,8 +72,13 @@ public class HeatmapEditor extends AbstractEditor {
 	//private JSplitPane splitPane;
 
 	public HeatmapEditor(Heatmap heatmap) {
+		this(heatmap, null);
+	}
+
+	public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions) {
 		
 		this.heatmap = heatmap;
+		this.externalToolbarActions = externalToolbarActions;
 		
 		final IMatrixView matrixView = heatmap.getMatrixView();
 	
@@ -161,7 +175,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 	private void createComponents() {
 		
-		final IMatrixView matrixView = getMatrixView();
+		//final IMatrixView matrixView = getMatrixView();
 
 		// Color scale panel
 
@@ -171,9 +185,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 		heatmapPanel = new HeatmapPanel(heatmap);
 		heatmapPanel.requestFocusInWindow();
-
 		// Main panel
-
 		/*splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setResizeWeight(1.0);
 		//configSplitPane.setDividerLocation(defaultDividerLocation);
@@ -183,8 +195,15 @@ public class HeatmapEditor extends AbstractEditor {
 		splitPane.add(heatmapPanel);
 		splitPane.add(colorScalePanel);*/
 		
+		List<BaseAction> actions = new ArrayList<BaseAction>(toolBarAS.getActions());
+		if (externalToolbarActions != null)
+			actions.addAll(externalToolbarActions);
+		ActionSet as = new ActionSet(actions);
+		
+		JToolBar toolBar = ActionSetUtils.createToolBar(as);
+
 		setLayout(new BorderLayout());
-		add(ActionSetUtils.createToolBar(toolBarAS), BorderLayout.NORTH);
+		add(toolBar, BorderLayout.NORTH);
 		add(heatmapPanel, BorderLayout.CENTER);
 		add(colorScalePanel, BorderLayout.SOUTH);
 	}
@@ -206,5 +225,17 @@ public class HeatmapEditor extends AbstractEditor {
 	public void doVisible() {
 		AppFrame.instance().getPropertiesView().update(heatmap);
 		heatmapPanel.requestFocusInWindow();
+	}
+
+	@Override
+	public void doSave(IProgressMonitor monitor) {
+		File file = null; //getEditorFile();
+
+		try {
+			PersistenceManager.getDefault().store(file, getModel(), monitor);
+		}
+		catch (PersistenceException ex) {
+			monitor.exception(ex);
+		}
 	}
 }

@@ -14,7 +14,6 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
-import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
@@ -63,7 +62,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 					final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
 
-					editor.setName(PersistenceUtils.getBaseName(wizard.getDataFile().getAbsolutePath()));
+					editor.setName(PersistenceUtils.getBaseName(wizard.getDataFile().getName()));
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

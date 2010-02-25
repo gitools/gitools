@@ -21,8 +21,8 @@ public class ModuleMap extends Artifact {
 
 	protected int[] itemsOrder;
 	
-	//protected Map<String, Integer> moduleIndexMap;
-	//protected Map<String, Integer> itemIndexMap;
+	protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
+	protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 	//protected BitMatrix map;
 
 	public ModuleMap() {
@@ -49,8 +49,9 @@ public class ModuleMap extends Artifact {
 	public ModuleMap(String[] moduleNames, String[] itemNames,
 			int[][] itemIndices, int[] itemsOrder) {
 
-		this.moduleNames = moduleNames;
-		this.itemNames = itemNames;
+		setModuleNames(moduleNames);
+		setItemNames(itemNames);
+
 		this.itemIndices = itemIndices;
 		this.itemsOrder = itemsOrder;
 	}
@@ -61,6 +62,9 @@ public class ModuleMap extends Artifact {
 	
 	public void setModuleNames(String[] moduleNames) {
 		this.moduleNames = moduleNames;
+
+		for (int i = 0; i < moduleNames.length; i++)
+			moduleIndexMap.put(moduleNames[i], i);
 	}
 	
 	public int getModuleCount() {
@@ -73,6 +77,10 @@ public class ModuleMap extends Artifact {
 	
 	public void setModuleName(int index, String name) {
 		moduleNames[index] = name;
+
+		moduleIndexMap.clear();
+		for (int i = 0; i < moduleNames.length; i++)
+			moduleIndexMap.put(moduleNames[i], i);
 	}
 	
 	public String[] getItemNames() {
@@ -81,6 +89,9 @@ public class ModuleMap extends Artifact {
 	
 	public void setItemNames(String[] itemNames) {
 		this.itemNames = itemNames;
+
+		for (int i = 0; i < itemNames.length; i++)
+			itemIndexMap.put(itemNames[i], i);
 	}
 	
 	public int getItemCount() {
@@ -93,6 +104,10 @@ public class ModuleMap extends Artifact {
 	
 	public void setItemName(int index, String name) {
 		itemNames[index] = name;
+
+		itemIndexMap.clear();
+		for (int i = 0; i < itemNames.length; i++)
+			itemIndexMap.put(itemNames[i], i);
 	}
 	
 	public int[] getItemIndices(int moduleIndex) {
@@ -130,30 +145,33 @@ public class ModuleMap extends Artifact {
 		// remap indices
 		List<String> modNames = new ArrayList<String>();
 		List<int[]> modIndices = new ArrayList<int[]>();
-		
+
+		int[] remapedIndices = null;
 		for (int i = 0; i < itemIndices.length; i++) {
 			int[] indices = itemIndices[i];
+			remapedIndices = new int[indices.length];
+
 			int numItems = 0;
 			for (int j = 0; j < indices.length; j++) {
 				int newIndex = indexMap[indices[j]];
-				indices[j] = newIndex;
+				remapedIndices[j] = newIndex;
 				numItems += newIndex >= 0 ? 1 : 0;
 			}
 
 			boolean inRange = numItems >= minSize && numItems <= maxSize;
 
-			if (numItems != indices.length && inRange) {
+			if (numItems != remapedIndices.length && inRange) {
 				int[] newIndices = new int[numItems];
 				int k = 0;
-				for (int j = 0; j < indices.length; j++)
-					if (indices[j] != -1)
-						newIndices[k++] = indices[j];
-				indices = newIndices;
+				for (int j = 0; j < remapedIndices.length; j++)
+					if (remapedIndices[j] != -1)
+						newIndices[k++] = remapedIndices[j];
+				remapedIndices = newIndices;
 			}
 
 			if (inRange) {
 				modNames.add(moduleNames[i]);
-				modIndices.add(indices);
+				modIndices.add(remapedIndices);
 			}
 		}
 
@@ -181,7 +199,7 @@ public class ModuleMap extends Artifact {
 		return map;
 	}
 
-	@Deprecated
+	/*@Deprecated
 	public int[] getItemsOrder() {
 		return itemsOrder;
 	}
@@ -189,5 +207,13 @@ public class ModuleMap extends Artifact {
 	@Deprecated
 	public void setItemsOrder(int[] itemsOrder) {
 		this.itemsOrder = itemsOrder;
+	}*/
+
+	public int[] getItemIndices(String modName) {
+		Integer modIndex = moduleIndexMap.get(modName);
+		if (modIndex == null)
+			return null;
+
+		return itemIndices[modIndex];
 	}
 }

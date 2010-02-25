@@ -22,9 +22,9 @@ public abstract class AbstractElementAdapter
 
 	protected Class<?> elementClass;
 	
-	private transient List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
+	private /*transient*/ List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
 	
-	private transient Map<String, Integer> propIdToIndexMap;
+	private /*transient*/ Map<String, Integer> propIdToIndexMap;
 	
 	public AbstractElementAdapter() {
 	}
@@ -34,6 +34,7 @@ public abstract class AbstractElementAdapter
 	}
 	
 	@XmlElement
+	@Override
 	public Class<?> getElementClass() {
 		return elementClass;
 	}
@@ -42,15 +43,18 @@ public abstract class AbstractElementAdapter
 		this.elementClass = elementClass;
 	}
 	
+	@Override
 	public final int getPropertyCount() {
 		return properties.size();
 	}
 	
+	@Override
 	public final IElementAttribute getProperty(int index) {
 		return properties.get(index);
 	}
 	
 	//@XmlElement(name = "Property", type=ElementProperty.class)
+	@Override
 	public final List<IElementAttribute> getProperties() {
 		return Collections.unmodifiableList(properties);
 	}
@@ -73,7 +77,9 @@ public abstract class AbstractElementAdapter
 		return index.intValue();
 	}
 	
+	@Override
 	public abstract Object getValue(Object element, int index);
 	
+	@Override
 	public abstract void setValue(Object element, int index, Object value);
 }

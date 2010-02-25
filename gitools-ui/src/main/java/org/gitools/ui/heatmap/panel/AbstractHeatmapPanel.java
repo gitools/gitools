@@ -114,7 +114,9 @@ public class AbstractHeatmapPanel extends JPanel {
 			}
 
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
-					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)) {
+					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)
+					|| Heatmap.COLUMN_HEADER_SIZE_CHANGED.equals(pname)
+					|| Heatmap.ROW_HEADER_SIZE_CHANGED.equals(pname)) {
 				
 				setPreferredSize(drawer.getSize());
 				revalidate();

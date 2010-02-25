@@ -193,7 +193,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 			moduleMap.setItemNames(orderedItemNames);
 			//moduleMap.setNumMappedItems(numItems);
 			moduleMap.setAllItemIndices(moduleItemIndices);
-			moduleMap.setItemsOrder(itemsOrder);
+			//Deprecated moduleMap.setItemsOrder(itemsOrder);
 			
 			monitor.info(numModules + " modules loaded");
 			monitor.info((fileNumModules - numModules) + " modules discarded");

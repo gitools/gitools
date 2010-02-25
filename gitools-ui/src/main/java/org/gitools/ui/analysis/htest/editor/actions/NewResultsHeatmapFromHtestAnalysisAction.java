@@ -15,10 +15,13 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.htest.editor;
+package org.gitools.ui.analysis.htest.editor.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
@@ -27,26 +30,28 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 
-public class NewDataHeatmapFromHtestAnalysis extends BaseAction {
+public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
-	public NewDataHeatmapFromHtestAnalysis() {
-		super("New heatmap from data");
+	public NewResultsHeatmapFromHtestAnalysisAction() {
+		super("New heatmap from results");
 
-		setDesc("New heatmap from data");
-		setSmallIconFromResource(IconNames.newDataHeatmap16);
-		setLargeIconFromResource(IconNames.newDataHeatmap24);
+		setDesc("New heatmap from results");
+		setSmallIconFromResource(IconNames.newResultsHeatmap16);
+		setLargeIconFromResource(IconNames.newResultsHeatmap24);
 
 		setDefaultEnabled(true);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
 		IEditor currentEditor = editorPanel.getSelectedEditor();
@@ -55,25 +60,29 @@ public class NewDataHeatmapFromHtestAnalysis extends BaseAction {
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
-		if (analysis.getDataMatrix() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contains data.");
-			return;
+		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
+
+		ElementDecorator resultsRowDecorator =
+			ElementDecoratorFactory.create(
+					ElementDecoratorNames.PVALUE,
+					resultsTable.getCellAdapter());
+
+		List<BaseAction> actions = new ArrayList<BaseAction>();
+		if (analysis instanceof EnrichmentAnalysis) {
+			EnrichmentAnalysis a = (EnrichmentAnalysis) analysis;
+			actions.add(BaseAction.separator);
+			actions.add(new ViewAnnotatedElementsHeatmapAction(
+					a.getDataMatrix(), a.getModuleMap()));
 		}
 
-		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
+		HeatmapEditor resultsEditor = new HeatmapEditor(
+				new Heatmap(resultsTable, resultsRowDecorator,
+						new HeatmapHeader(), new HeatmapHeader()),
+				actions);
 
-		ElementDecorator dataRowDecorator =
-			ElementDecoratorFactory.create(
-					ElementDecoratorNames.BINARY,
-					dataTable.getCellAdapter());
+		resultsEditor.setName(currentEditor.getName() + " (results)");
 
-		HeatmapEditor dataEditor = new HeatmapEditor(
-				new Heatmap(dataTable, dataRowDecorator,
-						new HeatmapHeader(), new HeatmapHeader()));
-
-		dataEditor.setName(currentEditor.getName() + " (data)");
-
-		editorPanel.addEditor(dataEditor);
+		editorPanel.addEditor(resultsEditor);
 
 		AppFrame.instance().setStatusText("New heatmap created.");
 	}

@@ -26,7 +26,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 
 	private BinaryColorScale scale;
 
-	private transient GenericFormatter fmt = new GenericFormatter("<");
+	private /*transient*/ GenericFormatter fmt = new GenericFormatter("<");
 
 	public BinaryElementDecorator() {
 		this(null);

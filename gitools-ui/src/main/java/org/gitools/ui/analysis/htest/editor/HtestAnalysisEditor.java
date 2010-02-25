@@ -1,5 +1,7 @@
 package org.gitools.ui.analysis.htest.editor;
 
+import org.gitools.ui.analysis.htest.editor.actions.NewDataHeatmapFromHtestAnalysisAction;
+import org.gitools.ui.analysis.htest.editor.actions.NewResultsHeatmapFromHtestAnalysisAction;
 import java.awt.BorderLayout;
 
 import org.apache.velocity.VelocityContext;
@@ -17,8 +19,8 @@ public class HtestAnalysisEditor extends AbstractEditor {
 	private static final long serialVersionUID = 8258025724628410016L;
 
 	public static final ActionSet toolBar = new ActionSet(new BaseAction[] {
-		new NewDataHeatmapFromHtestAnalysis(),
-		new NewResultsHeatmapFromHtestAnalysis()
+		new NewDataHeatmapFromHtestAnalysisAction(),
+		new NewResultsHeatmapFromHtestAnalysisAction()
 	});
 
 	private HtestAnalysis analysis;

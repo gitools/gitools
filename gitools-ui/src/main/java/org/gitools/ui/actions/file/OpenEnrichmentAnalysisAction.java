@@ -18,7 +18,6 @@ import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
-import org.gitools.ui.analysis.htest.editor.AnalysisEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
 public class OpenEnrichmentAnalysisAction extends BaseAction {

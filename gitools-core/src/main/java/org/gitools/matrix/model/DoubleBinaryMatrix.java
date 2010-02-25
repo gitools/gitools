@@ -67,7 +67,7 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 
 	@Override
 	public Object getCell(int row, int column) {
-		if (cellsNan.getQuick(row, column))
+		if (cellsNan.getQuick(column, row))
 			return Double.NaN;
 		else
 			return cells.getQuick(column, row) ? 1.0 : 0.0;

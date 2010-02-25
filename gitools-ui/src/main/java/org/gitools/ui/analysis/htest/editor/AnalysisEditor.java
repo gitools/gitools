@@ -11,6 +11,7 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.platform.editor.MultiEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 
+@Deprecated
 public class AnalysisEditor extends MultiEditor {
 
 	private static final long serialVersionUID = 5866176431409745805L;

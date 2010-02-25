@@ -79,7 +79,9 @@ public class ModuleMapTextIndicesPersistence
 			final String[] itemNames = moduleMap.getItemNames();
 			
 			if (itemNames.length > 0) {
+				pw.print('"');
 				pw.print(itemNames[0]);
+				pw.print('"');
 	
 				for (int i = 1; i < itemNames.length; i++) {
 					pw.print("\t\"");
@@ -219,6 +221,7 @@ public class ModuleMapTextIndicesPersistence
 			for (int j = 0; j < indices.length; j++)
 				indices[j] = indexMap[it.next()];
 			moduleItemIndices[i] = indices;
+			i++;
 		}
 
 		moduleMap.setItemNames(finalItemNames);

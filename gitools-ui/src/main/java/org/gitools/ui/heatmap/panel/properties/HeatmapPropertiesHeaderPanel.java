@@ -560,14 +560,17 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 				indices.add(i);
 		}
 
-		int[] view = new int[indices.size()];
+		int[] view = rowMode ?
+			matrixView.getVisibleRows() : matrixView.getVisibleColumns();
+
+		int[] newView = new int[indices.size()];
 		for (int i = 0; i < indices.size(); i++)
-			view[i] = indices.get(i);
+			newView[i] = view[indices.get(i)];
 
 		if (rowMode)
-			matrixView.setVisibleRows(view);
+			matrixView.setVisibleRows(newView);
 		else
-			matrixView.setVisibleColumns(view);
+			matrixView.setVisibleColumns(newView);
 	}//GEN-LAST:event_annFilterActionPerformed
 
 	private void annClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annClearActionPerformed

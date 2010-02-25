@@ -27,6 +27,10 @@ public class ActionSet extends BaseAction {
 		this.actions = Arrays.asList(actions);
 		setEnabled(true);
 	}
+
+	public ActionSet(List<BaseAction> actions) {
+		this(actions.toArray(new BaseAction[actions.size()]));
+	}
 	
 	public List<BaseAction> getActions() {
 		return actions;

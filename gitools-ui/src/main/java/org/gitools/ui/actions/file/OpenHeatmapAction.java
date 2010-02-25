@@ -1,6 +1,5 @@
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -11,24 +10,15 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -105,27 +95,7 @@ public class OpenHeatmapAction extends BaseAction {
 
 					final IMatrixView matrixView = new MatrixView(matrix);
 
-					final Heatmap figure = new Heatmap(matrixView);
-
-					if (matrix instanceof DoubleBinaryMatrix) {
-						BinaryElementDecorator decorator =
-							(BinaryElementDecorator) ElementDecoratorFactory.create(
-									ElementDecoratorNames.BINARY,
-									matrix.getCellAdapter());
-						decorator.setCutoff(1.0);
-						decorator.setCutoffCmp(CutoffCmp.EQ);
-						figure.setCellDecorator(decorator);
-						figure.setShowGrid(false);
-					} else if (matrix instanceof DoubleMatrix) {
-						figure.setShowGrid(false);
-					}
-					else if (matrix instanceof ObjectMatrix) {
-						ElementDecorator decorator =
-							ElementDecoratorFactory.create(
-									ElementDecoratorNames.PVALUE,
-									matrix.getCellAdapter());
-						figure.setCellDecorator(decorator);
-					}
+					Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
 
 					final HeatmapEditor editor = new HeatmapEditor(figure);
 

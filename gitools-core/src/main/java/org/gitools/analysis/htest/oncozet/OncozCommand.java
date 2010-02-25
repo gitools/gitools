@@ -11,7 +11,6 @@ import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestCommand;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
@@ -139,7 +138,7 @@ public class OncozCommand extends HtestCommand {
 				dataFile,
 				matrix,
 				valueTranslator,
-				moduleMap.getItemsOrder(),
+				null, //DEPRECATED moduleMap.getItemsOrder(),
 				null,
 				monitor);		
 	}
