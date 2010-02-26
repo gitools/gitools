@@ -108,7 +108,7 @@ public class BiomartTableWizard extends AbstractWizard {
 	}
 
 	public File getSelectedFile() {
-		return saveFilePage.getSelectedFile();
+		return saveFilePage.getFile();
 	}
 
 	public List<AttributeInfo> getAttributeList() {

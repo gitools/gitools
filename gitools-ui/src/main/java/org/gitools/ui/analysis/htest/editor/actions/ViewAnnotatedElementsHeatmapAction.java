@@ -22,32 +22,41 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JOptionPane;
+import org.gitools.fileutils.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 
 public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 
+	protected String title;
 	protected IMatrix matrix;
 	protected ModuleMap map;
 
-	public ViewAnnotatedElementsHeatmapAction(IMatrix matrix, ModuleMap map) {
+	public ViewAnnotatedElementsHeatmapAction(
+			String title, IMatrix matrix, ModuleMap map) {
 		super("View annotated elements");
 
 		setDesc("View annotated elements in a new heatmap");
 		setLargeIconFromResource(IconNames.viewAnnotatedElements24);
 		setSmallIconFromResource(IconNames.viewAnnotatedElements16);
 
+		this.title = title;
 		this.matrix = matrix;
 		this.map = map;
 	}
@@ -58,12 +67,36 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 
 		IEditor currentEditor = editorPanel.getSelectedEditor();
 
+		// Check selection
 		Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
 		IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
 		IMatrix srcMatrix = srcMatrixView.getContents();
 		int[] selRows = srcMatrixView.getSelectedRows();
-		if (selRows == null || selRows.length == 0)
-			selRows = new int[] {srcMatrixView.getLeadSelectionRow()};
+		int leadRow = srcMatrixView.getLeadSelectionRow();
+		if ((selRows == null || selRows.length == 0) && leadRow != -1)
+			selRows = new int[] {leadRow};
+		else if (leadRow == -1) {
+			JOptionPane.showMessageDialog(AppFrame.instance(),
+				"You must select some rows before.",
+				"Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Set file name
+		SaveFileWizard wiz = SaveFileWizard.createSimple(
+				"New heatmap",
+				editorPanel.createName(),
+				Settings.getDefault().getLastPath(),
+				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		Settings.getDefault().setLastPath(wiz.getFolder());
+
+		// Retrieve elements
 		int[] view = srcMatrixView.getVisibleRows();
 
 		Set<Integer> elements = new HashSet<Integer>();
@@ -72,8 +105,14 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		for (int i = 0; i < matrix.getRowCount(); i++)
 			itemNameMap.put(matrix.getRowLabel(i), i);
 
+		StringBuilder moduleNames = new StringBuilder();
+
 		for (int i = 0; i < selRows.length; i++) {
 			String modName = srcMatrix.getRowLabel(view[selRows[i]]);
+			if (i != 0)
+				moduleNames.append(", ");
+			moduleNames.append(modName);
+
 			int[] indices = map.getItemIndices(modName);
 			if (indices != null)
 				for (int index : indices) {
@@ -89,14 +128,18 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		for (Integer index : elements)
 			newView[i++] = index;
 
+		// Create heatmap
 		final IMatrixView matrixView = new MatrixView(matrix);
 		matrixView.setVisibleRows(newView);
 
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
+		heatmap.setTitle(title);
+		heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
 
+		// Create editor
 		HeatmapEditor dataEditor = new HeatmapEditor(heatmap);
 
-		dataEditor.setName(currentEditor.getName() + " (data)");
+		dataEditor.setFile(wiz.getFile());
 
 		editorPanel.addEditor(dataEditor);
 

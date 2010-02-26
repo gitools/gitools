@@ -24,7 +24,6 @@
 package org.gitools.ui.intogen.dialog;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.BorderLayout;
 import java.io.File;
 import java.net.URL;
 import java.util.Properties;
@@ -38,13 +37,12 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.lobobrowser.html.FormInput;
-import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
 
 public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 
-	private HtmlPanel htmlPanel;
+	//private HtmlPanel htmlPanel;
 	private SimpleHtmlRendererContext rcontext;
 
     /** Creates new form IntogenOncomodulesDialog */
@@ -54,7 +52,13 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 		
         initComponents();
 
-		htmlPanel = new HtmlPanel();
+		namePrefix.setText("unnamed");
+		namePrefix.setSelectionStart(0);
+		namePrefix.setSelectionEnd(namePrefix.getDocument().getLength());
+		namePrefix.requestFocusInWindow();
+		folder.setText(Settings.getDefault().getLastExportPath());
+		
+		//htmlPanel = new HtmlPanel();
 		rcontext = new SimpleHtmlRendererContext(htmlPanel, new SimpleUserAgentContext()) {
 			@Override
 			public void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs) {
@@ -90,8 +94,8 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 			}
 		};
 
-		panel.setLayout(new BorderLayout());
-		panel.add(htmlPanel, BorderLayout.CENTER);
+		/*panel.setLayout(new BorderLayout());
+		panel.add(htmlPanel, BorderLayout.CENTER);*/
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override public void run() {
@@ -105,10 +109,6 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 				}
 			}
 		});
-
-		pack();
-
-		folder.setText(Settings.getDefault().getLastExportPath());
     }
 
     /** This method is called from within the constructor to
@@ -120,21 +120,18 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         namePrefix = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         folder = new javax.swing.JTextField();
         folderBtn = new javax.swing.JButton();
+        htmlPanel = new org.lobobrowser.html.gui.HtmlPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("IntOGen Oncomodules import");
         setLocationByPlatform(true);
 
-        panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panel.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setText("Name");
+        jLabel1.setText("Name prefix");
 
         jLabel2.setText("Folder");
 
@@ -145,22 +142,24 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
             }
         });
 
+        htmlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(namePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
-                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE))
+                            .addComponent(namePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(folderBtn)))
                 .addContainerGap())
@@ -178,7 +177,7 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
                     .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(folderBtn))
                 .addGap(18, 18, 18)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -198,10 +197,10 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField folder;
     private javax.swing.JButton folderBtn;
+    private org.lobobrowser.html.gui.HtmlPanel htmlPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField namePrefix;
-    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 
 }

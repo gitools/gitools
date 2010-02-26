@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<heatmap>
+    <attributes/>
+    <cellDecorator>
+        <decorator>P-Value scale</decorator>
+        <configuration>
+            <entry>
+                <key>significanceLevel</key>
+                <value>0.05</value>
+            </entry>
+            <entry>
+                <key>valueIndex</key>
+                <value>0</value>
+            </entry>
+            <entry>
+                <key>correctedValueIndex</key>
+                <value>1</value>
+            </entry>
+            <entry>
+                <key>useCorrection</key>
+                <value>false</value>
+            </entry>
+        </configuration>
+    </cellDecorator>
+    <rowHeader>
+        <foregroundColor>#ff000000</foregroundColor>
+        <backgroundColor>#ffffffff</backgroundColor>

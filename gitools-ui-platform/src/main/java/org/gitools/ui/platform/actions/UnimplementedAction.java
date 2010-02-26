@@ -1,13 +1,13 @@
-package org.gitools.ui.actions;
+package org.gitools.ui.platform.actions;
 
-import org.gitools.ui.platform.actions.BaseAction;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.gitools.ui.platform.AppFrame;
-
 public class UnimplementedAction extends BaseAction {
+
+	private static final long serialVersionUID = -1820826246607830734L;
 
 	public UnimplementedAction() {
 		super("unimplemented");
@@ -23,13 +23,14 @@ public class UnimplementedAction extends BaseAction {
 		setDefaultEnabled(enabled);
 	}
 
-	private static final long serialVersionUID = -1820826246607830734L;
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JOptionPane.showMessageDialog(AppFrame.instance(),
+		JOptionPane.showMessageDialog(getParent(),
 				"That action is unimplemented.\n" +
 				"Be patient my friend.");
 	}
 
+	protected Window getParent() {
+		return null;
+	}
 }

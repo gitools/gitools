@@ -17,15 +17,21 @@
 
 package org.gitools.ui.heatmap.editor;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import org.gitools.fileutils.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.SerialClone;
 
 public class CloneHeatmapAction extends BaseAction {
@@ -46,9 +52,21 @@ public class CloneHeatmapAction extends BaseAction {
 		if (!(currentEditor instanceof HeatmapEditor))
 			return;
 
+		SaveFileWizard wiz = SaveFileWizard.createSimple(
+				"New heatmap",
+				editorPanel.createName(),
+				Settings.getDefault().getLastPath(),
+				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		Settings.getDefault().setLastPath(wiz.getFolder());
+
 		Heatmap hm = (Heatmap) currentEditor.getModel();
 
-		//Heatmap clone = SerialClone.clone(hm);
 		Heatmap clone = new Heatmap(new MatrixView(hm.getMatrixView()));
 		clone.setTitle(hm.getTitle());
 		clone.setDescription(hm.getDescription());
@@ -66,6 +84,7 @@ public class CloneHeatmapAction extends BaseAction {
 		clone.setRowHeader(SerialClone.xclone(hm.getRowHeader()));
 
 		HeatmapEditor ed = new HeatmapEditor(clone);
+		ed.setFile(wiz.getFile());
 
 		editorPanel.addEditor(ed);
 	}

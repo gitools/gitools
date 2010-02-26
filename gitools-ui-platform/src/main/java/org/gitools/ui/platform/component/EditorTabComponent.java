@@ -10,44 +10,65 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.editor.IEditor;
 
 /**
  * Component to be used as tabComponent;
  * Contains a JLabel to show the text and
  * a JButton to close the tab it belongs to
  */
-public class TabCloseButton extends JPanel {
+public class EditorTabComponent extends JPanel {
 
-	private final JTabbedPane pane;
+	private final EditorsPanel editorPanel;
+	private final AbstractEditor editor;
 
-	public TabCloseButton(final JTabbedPane pane) {
-		//unset default FlowLayout' gaps
-		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		if (pane == null) {
-			throw new NullPointerException("TabbedPane is null");
-		}
-		this.pane = pane;
+	private final JLabel label;
+
+	public EditorTabComponent(
+			EditorsPanel editorPanel,
+			AbstractEditor editor) {
+
+		this.editorPanel = editorPanel;
+		this.editor = editor;
+
+		editor.addEditorListener(new AbstractEditor.EditorListener() {
+			@Override public void dirtyChanged(IEditor editor) {
+				updateLabel(); }
+
+			@Override public void nameChanged(IEditor editor) {
+				updateLabel(); }
+		});
+
 		setOpaque(false);
 
-		//make JLabel read titles from JTabbedPane
-		JLabel label = new JLabel() {
-			@Override
-			public String getText() {
-				int i = pane.indexOfTabComponent(TabCloseButton.this);
-				if (i != -1)
-					return pane.getTitleAt(i);
-				return null;
-			}
-		};
+		label = new JLabel();
 
-		add(label);
 		//add more space between the label and the button
 		label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
+		updateLabel();
+		
 		//tab button
 		JButton button = new TabButton();
-		add(button);
+
+		setLayout(new BorderLayout());
+		add(label, BorderLayout.CENTER);
+		add(button, BorderLayout.EAST);
+		
 		//add more space to the top of the component
 		setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+	}
+
+	private void updateLabel() {
+		if (editor.isDirty())
+			label.setFont(label.getFont().deriveFont(Font.BOLD));
+		else
+			label.setFont(label.getFont().deriveFont(Font.PLAIN));
+
+		String suffix = editor.isDirty() ? " *" : "";
+		label.setText(editor.getName() + suffix);
 	}
 
 	private class TabButton extends JButton implements ActionListener {
@@ -74,15 +95,12 @@ public class TabCloseButton extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int i = pane.indexOfTabComponent(TabCloseButton.this);
-			if (i != -1)
-				pane.remove(i);
+			editorPanel.removeEditor(editor);
 		}
 
 		//we don't want to update UI for this button
 		@Override
-		public void updateUI() {
-		}
+		public void updateUI() { }
 
 		//paint the cross
 		@Override
@@ -107,8 +125,7 @@ public class TabCloseButton extends JPanel {
 
 	private final static MouseListener buttonMouseListener = new MouseAdapter() {
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
+		@Override public void mouseEntered(MouseEvent e) {
 			Component component = e.getComponent();
 			if (component instanceof AbstractButton) {
 				AbstractButton button = (AbstractButton) component;
@@ -116,8 +133,7 @@ public class TabCloseButton extends JPanel {
 			}
 		}
 
-		@Override
-		public void mouseExited(MouseEvent e) {
+		@Override public void mouseExited(MouseEvent e) {
 			Component component = e.getComponent();
 			if (component instanceof AbstractButton) {
 				AbstractButton button = (AbstractButton) component;
@@ -126,4 +142,3 @@ public class TabCloseButton extends JPanel {
 		}
 	};
 }
-

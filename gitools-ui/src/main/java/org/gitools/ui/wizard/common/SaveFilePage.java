@@ -60,7 +60,7 @@ public class SaveFilePage extends AbstractWizardPage {
     }
 
 	private void updateGeneratedFile() {
-		File file = getSelectedFile();
+		File file = getFile();
 		path.setText(file.getAbsolutePath());
 		if (isComplete() && file.exists())
 			setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
@@ -94,6 +94,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		formatLabel.setVisible(active);
 		format.setVisible(active);*/
 		format.setModel(new DefaultComboBoxModel(formats));
+		updateGeneratedFile();
 	}
 
 	public FileFormat getFormat() {
@@ -105,7 +106,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		format.setVisible(visible);
 	}
 
-	public String getFile() {
+	public String getFilePath() {
 		StringBuilder sb = new StringBuilder();
 		String name = getFileName();
 		sb.append(name);
@@ -122,12 +123,12 @@ public class SaveFilePage extends AbstractWizardPage {
 		return sb.toString();
 	}
 
-	public File getSelectedFile() {
+	public File getFile() {
 		String folderName = folder.getText();
 		if (folderName.isEmpty())
 			folderName = System.getProperty("user.dir");
 
-		return new File(folderName, getFile());
+		return new File(folderName, getFilePath());
 	}
 
     /** This method is called from within the constructor to

@@ -8,7 +8,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 
 
 public class CloseAction extends BaseAction {

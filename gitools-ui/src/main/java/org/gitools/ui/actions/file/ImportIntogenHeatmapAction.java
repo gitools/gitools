@@ -1,9 +1,11 @@
 package org.gitools.ui.actions.file;
 
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.actions.UnimplementedAction;
+import org.gitools.ui.platform.actions.UnimplementedAction;
 
 public class ImportIntogenHeatmapAction extends BaseAction {
 
@@ -16,7 +18,10 @@ public class ImportIntogenHeatmapAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new UnimplementedAction().actionPerformed(e);
+		new UnimplementedAction() {
+			@Override protected Window getParent() {
+				return AppFrame.instance(); }
+		}.actionPerformed(e);
 	}
 
 }

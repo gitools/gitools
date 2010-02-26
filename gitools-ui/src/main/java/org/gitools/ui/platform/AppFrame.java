@@ -1,5 +1,6 @@
 package org.gitools.ui.platform;
 
+import org.gitools.ui.platform.editor.EditorsPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;

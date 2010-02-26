@@ -106,7 +106,7 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new PersistenceException("Error opening resource: " + file.getName(), e);
+			throw new PersistenceException("Error reading resource: " + file.getName(), e);
 		}
 
 		afterRead(file, entity, monitor);
@@ -148,7 +148,7 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 			writer.close();
 
 		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + file.getName(), e);
+			throw new PersistenceException("Error writing resource: " + file.getName(), e);
 		}
 
 		afterWrite(file, entity, monitor.subtask());

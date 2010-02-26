@@ -81,7 +81,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 
 	public String getFileName() {
-		return saveFilePage.getFile();
+		return saveFilePage.getFilePath();
 	}
 
 	public String getDataFileMime() {

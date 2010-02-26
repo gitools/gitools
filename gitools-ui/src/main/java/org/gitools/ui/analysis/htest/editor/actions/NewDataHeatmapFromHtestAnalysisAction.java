@@ -18,18 +18,24 @@
 package org.gitools.ui.analysis.htest.editor.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.fileutils.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 
@@ -58,9 +64,23 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 			return;
 		}
 
+		SaveFileWizard wiz = SaveFileWizard.createSimple(
+				"New heatmap from analysis data",
+				editorPanel.createName(),
+				Settings.getDefault().getLastPath(),
+				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		Settings.getDefault().setLastPath(wiz.getFolder());
+		
 		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
 
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+		heatmap.setTitle(analysis.getTitle() + " (data)");
 
 		/*List<BaseAction> actions = new ArrayList<BaseAction>();
 		if (analysis instanceof EnrichmentAnalysis) {
@@ -72,7 +92,9 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 		HeatmapEditor dataEditor = new HeatmapEditor(
 				heatmap/*, actions*/);
 
-		dataEditor.setName(currentEditor.getName() + " (data)");
+		File file = new File(wiz.getSaveFilePage().getFilePath());
+		dataEditor.setFile(file);
+		//dataEditor.setName(file.getName());
 
 		editorPanel.addEditor(dataEditor);
 

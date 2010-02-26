@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.fileutils.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
@@ -29,13 +30,17 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
@@ -58,6 +63,19 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		if (!(currentEditor instanceof HtestAnalysisEditor))
 			return;
 
+		SaveFileWizard wiz = SaveFileWizard.createSimple(
+				"New heatmap from analysis results",
+				editorPanel.createName(),
+				Settings.getDefault().getLastPath(),
+				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		Settings.getDefault().setLastPath(wiz.getFolder());
+
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
 		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
@@ -72,15 +90,18 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 			EnrichmentAnalysis a = (EnrichmentAnalysis) analysis;
 			actions.add(BaseAction.separator);
 			actions.add(new ViewAnnotatedElementsHeatmapAction(
-					a.getDataMatrix(), a.getModuleMap()));
+					a.getTitle(),
+					a.getDataMatrix(),
+					a.getModuleMap()));
 		}
 
-		HeatmapEditor resultsEditor = new HeatmapEditor(
-				new Heatmap(resultsTable, resultsRowDecorator,
-						new HeatmapHeader(), new HeatmapHeader()),
-				actions);
+		Heatmap heatmap = new Heatmap(resultsTable, resultsRowDecorator,
+						new HeatmapHeader(), new HeatmapHeader());
+		heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		resultsEditor.setName(currentEditor.getName() + " (results)");
+		HeatmapEditor resultsEditor = new HeatmapEditor(heatmap, actions);
+
+		resultsEditor.setFile(wiz.getFile());
 
 		editorPanel.addEditor(resultsEditor);
 

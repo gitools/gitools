@@ -90,22 +90,26 @@ public class HeatmapEditor extends AbstractEditor {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				heatmapPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				setDirty(true);
 			}
 		};
 		
 		cellDecoratorListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
 				colorScalePanel.repaint();
+				setDirty(true);
 			}
 		};
 		
 		rowDecoratorListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
+				setDirty(true);
 			}
 		};
 		
 		colDecoratorListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
+				setDirty(true);
 			}
 		};
 		
@@ -229,7 +233,9 @@ public class HeatmapEditor extends AbstractEditor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		File file = null; //getEditorFile();
+		File file = getFile();
+		if (file == null)
+			file = new File(getName());
 
 		try {
 			PersistenceManager.getDefault().store(file, getModel(), monitor);

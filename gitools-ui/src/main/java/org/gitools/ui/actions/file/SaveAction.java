@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import org.gitools.ui.dialog.progress.JobRunnable;
 import org.gitools.ui.dialog.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.EditorsPanel;
+import org.gitools.ui.platform.editor.EditorsPanel;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
