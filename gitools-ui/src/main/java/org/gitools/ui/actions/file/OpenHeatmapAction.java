@@ -19,8 +19,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 

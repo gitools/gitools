@@ -16,9 +16,9 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.Matrix;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
 import org.gitools.table.model.impl.AbstractTableColumn;
-import org.gitools.model.xml.adapter.TableColumnXmlAdapter;
+import org.gitools.model.xml.TableColumnXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Table extends Artifact	implements ITable, Serializable {

@@ -3,6 +3,7 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
@@ -12,8 +13,8 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
@@ -42,10 +43,13 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 		final EnrichmentAnalysis analysis = wizard.getAnalysis();
 
+		File populationFile = wizard.getPopulationFile();
+		
 		final EnrichmentCommand cmd = new EnrichmentCommand(
 				analysis,
 				wizard.getDataFileMime(),
 				wizard.getDataFile().getAbsolutePath(),
+				populationFile != null ? populationFile.getAbsolutePath() : null,
 				wizard.getModulesFileMime(),
 				wizard.getModulesFile().getAbsolutePath(),
 				wizard.getWorkdir(),

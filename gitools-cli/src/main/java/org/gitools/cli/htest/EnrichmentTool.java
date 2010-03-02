@@ -73,6 +73,7 @@ public class EnrichmentTool extends HtestTool {
         
 		EnrichmentCommand cmd = new EnrichmentCommand(
         		analysis, args.dataMime, args.dataFile,
+				args.populationFile,
 				MimeTypes.MODULES_2C_MAP, args.modulesFile, //FIXME modulesMime
 				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT_ANALYSIS);
         

@@ -7,11 +7,11 @@ import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartService;
 
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
-import org.gitools.ui.dialog.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobRunnable;
 
 public class ImportBiomartModulesAction extends BaseAction {
 

@@ -2,11 +2,9 @@ package org.gitools.cli.convert;
 
 import cern.jet.stat.Probability;
 
-public class ModuleSetConvertCliTool {//extends AbstractCliTool {
+public class ModuleSetConvertCliTool {
 
-	public int run(Object argsObject) {
-		// TODO Auto-generated method stub
-		
+	public static void main(String[] args) {
 		System.out.println("k"+"\t" +"n"+ "\t" +"p"+ "\t" +"lpv"+ "\t" +"rpv"+ "\t" +"rppv"+ "\t" +"tpv"+ "\tRl\tRr\tRt");
 		int n = 39;
 		double p = 0.026426896012509773;
@@ -18,7 +16,6 @@ public class ModuleSetConvertCliTool {//extends AbstractCliTool {
 			double rppv2 = 1 - Probability.poisson(k, n*p);
 			System.out.println(k + "\t" + n + "\t" + p + "\t" + lpv + "\t" + rpv + "\t" + rppv2 + "\t" + tpv + "\t0\t0\t0");
 		}
-		return 0;
 	}
 
 }

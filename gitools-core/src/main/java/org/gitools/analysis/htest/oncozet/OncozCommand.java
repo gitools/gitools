@@ -24,14 +24,15 @@ public class OncozCommand extends HtestCommand {
 	public OncozCommand(
 			OncozAnalysis analysis,
 			String dataMime,
-			String dataFile,
+			String dataPath,
+			String populationPath,
 			String setsMime,
 			String setsFile,
 			String workdir,
 			String fileName) {
 		
-		super(analysis, dataMime, dataFile,
-				workdir, fileName);
+		super(analysis, dataMime, dataPath,
+				populationPath, workdir, fileName);
 
 		this.setsFile = setsFile;
 	}

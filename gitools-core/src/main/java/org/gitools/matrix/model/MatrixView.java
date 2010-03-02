@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,8 +13,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
-import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.model.xml.IndexArrayXmlAdapter;
+import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -29,6 +27,7 @@ public class MatrixView
 	private static final int INT_BIT_SIZE = 32;
 
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	//@XmlTransient
 	protected IMatrix contents;
 	
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
@@ -50,6 +49,7 @@ public class MatrixView
 
 	@XmlTransient
 	private int[] selectedColumnsBitmap;
+
 	@XmlTransient
 	private int[] selectedRowsBitmap;
 	
@@ -491,7 +491,7 @@ public class MatrixView
 
 	// Marshal and unMarshall methods
 	// Marshalling
-	public void beforeMarshal(Marshaller u) {
+	/*public void beforeMarshal(Marshaller u) {
 		boolean naturalOrder = true;
 		int rows = visibleRows.length;
 		int columns = visibleColumns.length;
@@ -553,5 +553,5 @@ public class MatrixView
 				columns[i] = i;
 			setVisibleColumns(columns);
 		}
-	}
+	}*/
 }

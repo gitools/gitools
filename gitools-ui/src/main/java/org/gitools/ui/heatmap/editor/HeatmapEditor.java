@@ -2,19 +2,23 @@ package org.gitools.ui.heatmap.editor;
 
 import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+import org.gitools.fileutils.FileFormat;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.platform.actions.ActionSet;
@@ -26,6 +30,9 @@ import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class HeatmapEditor extends AbstractEditor {
 
@@ -160,8 +167,10 @@ public class HeatmapEditor extends AbstractEditor {
 			refreshCellDetails();
 		}
 		else if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName)) {
+			setDirty(true);
 		}
 		else if (IMatrixView.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName)) {
+			setDirty(true);
 		}
 		else if (IMatrixView.CELL_VALUE_CHANGED.equals(propertyName)) {
 		}
@@ -170,6 +179,8 @@ public class HeatmapEditor extends AbstractEditor {
 				((IModel) oldValue).removePropertyChangeListener(heatmapListener);
 			
 			((IModel) newValue).addPropertyChangeListener(heatmapListener);
+
+			setDirty(true);
 		}
 	}
 
@@ -228,14 +239,30 @@ public class HeatmapEditor extends AbstractEditor {
 	@Override
 	public void doVisible() {
 		AppFrame.instance().getPropertiesView().update(heatmap);
+		refreshCellDetails();
 		heatmapPanel.requestFocusInWindow();
 	}
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		File file = getFile();
-		if (file == null)
-			file = new File(getName());
+		if (file == null) {
+			SaveFileWizard wiz = SaveFileWizard.createSimple(
+					"Save heatmap",
+					getName(),
+					Settings.getDefault().getLastPath(),
+					new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+			WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+			dlg.setVisible(true);
+			if (dlg.isCancelled())
+				return;
+
+			Settings.getDefault().setLastPath(wiz.getFolder());
+
+			file = wiz.getFile();
+			setFile(file);
+		}
 
 		try {
 			PersistenceManager.getDefault().store(file, getModel(), monitor);
@@ -243,5 +270,46 @@ public class HeatmapEditor extends AbstractEditor {
 		catch (PersistenceException ex) {
 			monitor.exception(ex);
 		}
+
+		setDirty(false);
+	}
+
+	@Override
+	public boolean doClose() {
+		if (isDirty()) {
+			int res = JOptionPane.showOptionDialog(AppFrame.instance(),
+					"File " + getName() + " is modified.\n" +
+					"Save changes ?",
+					"Close",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					new String[] {
+						"Cancel", "Discard", "Save" },
+					"Save");
+
+			if (res == -1 || res == 0)
+				return false;
+			else if (res == 2) {
+				SaveFileWizard wiz = SaveFileWizard.createSimple(
+						"Save heatmap",
+						getName(),
+						Settings.getDefault().getLastPath(),
+						new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+
+				WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+				dlg.setVisible(true);
+				if (dlg.isCancelled())
+					return false;
+
+				Settings.getDefault().setLastPath(wiz.getFolder());
+
+				setFile(wiz.getFile());
+
+				doSave(new NullProgressMonitor());
+			}
+		}
+
+		return true;
 	}
 }

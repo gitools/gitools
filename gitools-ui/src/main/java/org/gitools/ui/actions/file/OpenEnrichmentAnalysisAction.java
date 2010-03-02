@@ -15,8 +15,8 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 

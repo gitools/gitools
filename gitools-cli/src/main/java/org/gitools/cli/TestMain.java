@@ -28,7 +28,7 @@ public class TestMain {
 		String stuff = "/home/cperez/temp/gitools-stuff";
 		String temp = "/home/cperez/temp/gitools-stuff";
 		
-		String cmd = "enrichment -t binomial-exact" +
+		/*String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
 				" -d " + stuff + "/data.tsv -b gt,0.5" +
 				" -dm " + MimeTypes.DOUBLE_BINARY_MATRIX + 
@@ -37,9 +37,9 @@ public class TestMain {
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
-				" -verbose -debug -err-log -";
+				" -verbose -debug -err-log -";*/
 
-		/*String cmd = "convert" +
+		String cmd = "convert" +
 				" -i data.tsv" +
 				" -im application/gitools-matrix-double" +
 				" -o pru.txt" +
@@ -47,9 +47,11 @@ public class TestMain {
 				" -verbose -debug -err-log -";
 
 		cmd = "convert" +
-				" -o d3.list -om application/gitools-element-lists" +
-				" -i d2.matrix -im application/gitools-matrix-double" +
-				" -verbose -debug -err-log -";*/
+				" -o " + stuff + "/d2.tsv" +
+				" -om " + MimeTypes.DOUBLE_BINARY_MATRIX +
+				" -i " + stuff + "/data.gmx" +
+				" -im " + MimeTypes.GENE_MATRIX +
+				" -verbose -debug -err-log -";
 
 		String[] args = cmdLineSplit(cmd);
 

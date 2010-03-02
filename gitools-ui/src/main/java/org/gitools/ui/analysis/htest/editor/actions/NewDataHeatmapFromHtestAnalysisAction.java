@@ -64,7 +64,7 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 			return;
 		}
 
-		SaveFileWizard wiz = SaveFileWizard.createSimple(
+		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
 				"New heatmap from analysis data",
 				editorPanel.createName(),
 				Settings.getDefault().getLastPath(),
@@ -75,7 +75,7 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
-		Settings.getDefault().setLastPath(wiz.getFolder());
+		Settings.getDefault().setLastPath(wiz.getFolder());*/
 		
 		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
 
@@ -92,9 +92,12 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 		HeatmapEditor dataEditor = new HeatmapEditor(
 				heatmap/*, actions*/);
 
-		File file = new File(wiz.getSaveFilePage().getFilePath());
-		dataEditor.setFile(file);
-		//dataEditor.setName(file.getName());
+		dataEditor.setName(editorPanel.createName(
+				EditorsPanel.DEFAULT_NAME_PREFIX,
+				"." + FileSuffixes.HEATMAP_FIGURE));
+
+		/*File file = new File(wiz.getSaveFilePage().getFilePath());
+		dataEditor.setFile(file);*/
 
 		editorPanel.addEditor(dataEditor);
 

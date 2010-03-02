@@ -15,6 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings {
+
+	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = "http://www.intogen.org/oncomodules";
 	
 	private static final String userPath = 
 		System.getProperty("user.home", ".");

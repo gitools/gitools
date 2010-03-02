@@ -19,6 +19,8 @@ public abstract class HtestCommand implements Command {
 	protected String dataMime;
 	protected String dataPath;
 
+	protected String populationPath;
+
 	protected String workdir;
 
 	protected String fileName;
@@ -26,13 +28,15 @@ public abstract class HtestCommand implements Command {
 	public HtestCommand(
 			HtestAnalysis analysis,
 			String dataMime,
-			String dataFile,
+			String dataPath,
+			String populationPath,
 			String workdir,
 			String fileName) {
 
 		this.analysis = analysis;
 		this.dataMime = dataMime;
-		this.dataPath = dataFile;
+		this.dataPath = dataPath;
+		this.populationPath = populationPath;
 		this.workdir = workdir;
 		this.fileName = fileName;
 	}
@@ -53,12 +57,20 @@ public abstract class HtestCommand implements Command {
 		this.dataMime = dataMime;
 	}
 	
-	public String getDataFile() {
+	public String getDataPath() {
 		return dataPath;
 	}
 
-	public void setDataFile(String dataFile) {
-		this.dataPath = dataFile;
+	public void setDataPath(String dataPath) {
+		this.dataPath = dataPath;
+	}
+
+	public String getPopulationPath() {
+		return populationPath;
+	}
+
+	public void setPopulationPath(String populationPath) {
+		this.populationPath = populationPath;
 	}
 
 	public String getWorkdir() {

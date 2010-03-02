@@ -8,8 +8,8 @@ import org.gitools.biomart.BiomartService;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.biomart.wizard.BiomartTableWizard;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 

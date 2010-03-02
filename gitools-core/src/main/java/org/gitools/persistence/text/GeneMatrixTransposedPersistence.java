@@ -87,12 +87,33 @@ public class GeneMatrixTransposedPersistence
 				}
 			}
 
-			matrix.makeCells(rowIndices.size(), colNames.size());
+			// incorporate population labels
+
+			String[] populationLabels = getPopulationLabels();
+			if (populationLabels != null) {
+				for (String name : populationLabels) {
+					Integer index = rowIndices.get(name);
+					if (index == null)
+						rowIndices.put(name, rowIndices.size());
+				}
+			}
+
+			int numRows = rowIndices.size();
+			int numColumns = colNames.size();
+			
+			matrix.makeCells(numRows, numColumns);
 
 			// set row names
 
 			for (Map.Entry<String, Integer> entry : rowIndices.entrySet())
 				matrix.setRow(entry.getValue(), entry.getKey());
+
+			// fill matrix with background value
+
+			double backgroundValue = getBackgroundValue();
+			for (int row = 0; row < numRows; row++)
+				for (int col = 0; col < numColumns; col++)
+					matrix.setCellValue(row, col, 0, backgroundValue);
 
 			// set column names and cell values
 

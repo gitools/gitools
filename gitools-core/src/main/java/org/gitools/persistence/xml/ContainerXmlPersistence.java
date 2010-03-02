@@ -5,7 +5,7 @@ import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.model.Container;
-import org.gitools.model.xml.adapter.FileXmlAdapter;
+import org.gitools.model.xml.FileXmlAdapter;
 import org.gitools.persistence.PersistenceException;
 
 public class ContainerXmlPersistence

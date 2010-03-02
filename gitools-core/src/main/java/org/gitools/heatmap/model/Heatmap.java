@@ -8,8 +8,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.gitools.heatmap.xml.HeatmapMatrixViewXmlAdapter;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
@@ -19,8 +21,8 @@ import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.xml.adapter.ColorXmlAdapter;
-import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
+import org.gitools.model.xml.ColorXmlAdapter;
+import org.gitools.model.xml.ElementDecoratorXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
@@ -40,13 +42,17 @@ public class Heatmap
 	public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
 	
 	
-	@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
+	//@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
+	@XmlTransient
 	private ElementDecorator cellDecorator;
-	
+
+	@XmlTransient
 	private HeatmapHeader rowHeader;
+
+	@XmlTransient
 	private HeatmapHeader columnHeader;
 	
-	@XmlElement(type=MatrixView.class)
+	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
 	private IMatrixView matrixView;
 
 	private boolean showGrid;

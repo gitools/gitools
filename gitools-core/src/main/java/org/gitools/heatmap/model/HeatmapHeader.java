@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.model.xml.adapter.ColorXmlAdapter;
-import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.model.xml.ColorXmlAdapter;
+import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

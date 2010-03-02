@@ -19,8 +19,8 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.table.model.ITable;
 import org.gitools.table.model.TableFormatException;
 import org.gitools.table.model.impl.TableView;
-import org.gitools.model.xml.adapter.AbstractModelXmlAdapter;
-import org.gitools.model.xml.adapter.ColorXmlAdapter;
+import org.gitools.model.xml.AbstractModelXmlAdapter;
+import org.gitools.model.xml.ColorXmlAdapter;
 
 @SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.FIELD)

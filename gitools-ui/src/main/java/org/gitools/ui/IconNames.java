@@ -15,7 +15,10 @@ public class IconNames {
 
 	public static final String close16 = "/img/Close16.gif";
 	public static final String close24 = "/img/Close24.gif";
-	
+
+	public static final String save16 = "/img/Save16.gif";
+	public static final String save24 = "/img/Save24.gif";
+
 	public static final String columnSelection16 = "/img/ColumnSelection16.gif";
 	public static final String columnSelection24 = "/img/ColumnSelection24.gif";
 	

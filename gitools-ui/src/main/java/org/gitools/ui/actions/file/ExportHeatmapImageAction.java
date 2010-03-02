@@ -18,8 +18,8 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 

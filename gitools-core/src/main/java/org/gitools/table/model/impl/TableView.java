@@ -14,7 +14,7 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.table.model.ITable;
 import org.gitools.table.model.ITableColumn;
 import org.gitools.table.model.Table;
-import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
+import org.gitools.model.xml.IndexArrayXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "contents", "visibleRows", "visibleColumns" })

@@ -64,6 +64,7 @@ public class OncozTool extends HtestTool {
 
 		OncozCommand cmd = new OncozCommand(
         		analysis, args.dataMime, args.dataFile,
+				args.populationFile,
 				MimeTypes.MODULES_2C_MAP, args.setsFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.ONCOZ_ANALYSIS);
         

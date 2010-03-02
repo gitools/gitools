@@ -41,14 +41,15 @@ public class MimeTypeManager {
 		extMap.put(FileSuffixes.HEATMAP_FIGURE, MimeTypes.HEATMAP_FIGURE);
 		extMap.put(FileSuffixes.TABLE_FIGURE, MimeTypes.TABLE_FIGURE);
 		
+		extMap.put(FileSuffixes.GENE_SET, MimeTypes.GENE_SET);
+		extMap.put(FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX);
+		extMap.put(FileSuffixes.GENE_MATRIX_TRANSPOSED, MimeTypes.GENE_MATRIX_TRANSPOSED);
+
 		extMap.put(FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
 		extMap.put(FileSuffixes.DOUBLE_MATRIX, MimeTypes.DOUBLE_MATRIX);
 		extMap.put(FileSuffixes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX);
 		extMap.put(FileSuffixes.STRING_MATRIX, MimeTypes.STRING_MATRIX);
 		extMap.put(FileSuffixes.ANNOTATION_MATRIX, MimeTypes.ANNOTATION_MATRIX);
-
-		extMap.put(FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX);
-		extMap.put(FileSuffixes.GENE_MATRIX_TRANSPOSED, MimeTypes.GENE_MATRIX_TRANSPOSED);
 
 		extMap.put(FileSuffixes.MODULES_INDEXED_MAP, MimeTypes.MODULES_INDEXED_MAP);
 		

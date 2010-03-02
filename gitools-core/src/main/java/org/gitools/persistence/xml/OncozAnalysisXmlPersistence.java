@@ -3,7 +3,7 @@ package org.gitools.persistence.xml;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.analysis.htest.oncozet.OncozAnalysis;
-import org.gitools.model.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 
 public class OncozAnalysisXmlPersistence

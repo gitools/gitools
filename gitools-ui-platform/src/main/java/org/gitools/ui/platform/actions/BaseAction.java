@@ -70,7 +70,7 @@ public abstract class BaseAction extends AbstractAction {
 	}
 	
 	protected void setSmallIconFromResource(String name) {
-		setLargeIcon(getIconResource(name));
+		setSmallIcon(getIconResource(name));
 	}
 	
 	protected ImageIcon getLargeIcon() {

@@ -35,7 +35,9 @@ public class EditorTabComponent extends JPanel {
 
 		editor.addEditorListener(new AbstractEditor.EditorListener() {
 			@Override public void dirtyChanged(IEditor editor) {
-				updateLabel(); }
+				updateLabel();
+				System.out.println(editor.getName() + (editor.isDirty() ? " -> dirty" : ""));
+			}
 
 			@Override public void nameChanged(IEditor editor) {
 				updateLabel(); }
@@ -44,6 +46,14 @@ public class EditorTabComponent extends JPanel {
 		setOpaque(false);
 
 		label = new JLabel();
+		label.setOpaque(false);
+		label.setFocusable(false);
+		label.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				EditorTabComponent.this.editorPanel.setSelectedEditor(
+						EditorTabComponent.this.editor);
+			}
+		});
 
 		//add more space between the label and the button
 		label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
@@ -67,16 +77,20 @@ public class EditorTabComponent extends JPanel {
 		else
 			label.setFont(label.getFont().deriveFont(Font.PLAIN));
 
-		String suffix = editor.isDirty() ? " *" : "";
-		label.setText(editor.getName() + suffix);
+		label.setText(editor.getName());
+
+		String toolTip = null;
+		if (editor.getFile() != null)
+			toolTip = editor.getFile().getAbsolutePath();
+		label.setToolTipText(toolTip);
 	}
 
 	private class TabButton extends JButton implements ActionListener {
 
 		public TabButton() {
-			int size = 17;
+			int size = 18;
 			setPreferredSize(new Dimension(size, size));
-			setToolTipText("close this tab");
+			setToolTipText("Close this editor");
 			//Make the button looks the same for all Laf's
 			setUI(new BasicButtonUI());
 			//Make it transparent

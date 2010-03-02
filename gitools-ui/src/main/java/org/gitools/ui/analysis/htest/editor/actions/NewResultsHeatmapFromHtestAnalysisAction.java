@@ -63,7 +63,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		if (!(currentEditor instanceof HtestAnalysisEditor))
 			return;
 
-		SaveFileWizard wiz = SaveFileWizard.createSimple(
+		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
 				"New heatmap from analysis results",
 				editorPanel.createName(),
 				Settings.getDefault().getLastPath(),
@@ -74,7 +74,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
-		Settings.getDefault().setLastPath(wiz.getFolder());
+		Settings.getDefault().setLastPath(wiz.getFolder());*/
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
@@ -101,7 +101,11 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
 		HeatmapEditor resultsEditor = new HeatmapEditor(heatmap, actions);
 
-		resultsEditor.setFile(wiz.getFile());
+		resultsEditor.setName(editorPanel.createName(
+				EditorsPanel.DEFAULT_NAME_PREFIX,
+				"." + FileSuffixes.HEATMAP_FIGURE));
+
+		//resultsEditor.setFile(wiz.getFile());
 
 		editorPanel.addEditor(resultsEditor);
 

@@ -27,8 +27,11 @@ public abstract class AbstractEditor
 
 	@Override
 	public void setName(String name) {
-		super.setName(name);
-		for (EditorListener l : listeners) l.nameChanged(this);
+		String oldName = getName();
+		if (oldName == null || !oldName.equals(name)) {
+			super.setName(name);
+			for (EditorListener l : listeners) l.nameChanged(this);
+		}
 	}
 
 	public File getFile() {
@@ -36,9 +39,11 @@ public abstract class AbstractEditor
 	}
 
 	public void setFile(File file) {
-		this.file = file;
-		for (EditorListener l : listeners) l.fileChanged(this);
-		setName(file.getName());
+		if (this.file != file || !this.file.equals(file)) {
+			this.file = file;
+			for (EditorListener l : listeners) l.fileChanged(this);
+			setName(file.getName());
+		}
 	}
 	
 	@Override
@@ -47,8 +52,10 @@ public abstract class AbstractEditor
 	}
 	
 	protected void setDirty(boolean dirty) {
-		this.dirty = dirty;
-		for (EditorListener l : listeners) l.dirtyChanged(this);
+		if (this.dirty != dirty) {
+			this.dirty = dirty;
+			for (EditorListener l : listeners) l.dirtyChanged(this);
+		}
 	}
 	
 	@Override
@@ -72,6 +79,11 @@ public abstract class AbstractEditor
 
 	@Override
 	public void doVisible() {
+	}
+
+	@Override
+	public boolean doClose() {
+		return true;
 	}
 
 	public void addEditorListener(EditorListener listener) {

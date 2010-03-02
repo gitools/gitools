@@ -11,8 +11,8 @@ import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.LabelFilterDialog;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 public class FilterByLabelAction extends BaseAction {
 

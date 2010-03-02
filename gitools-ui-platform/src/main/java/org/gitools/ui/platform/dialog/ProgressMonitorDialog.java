@@ -19,6 +19,7 @@ import javax.swing.JTextArea;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 
+@Deprecated
 public class ProgressMonitorDialog extends JDialog {
 
 	private static final long serialVersionUID = 2488949387143866229L;

@@ -66,6 +66,10 @@ public abstract class HtestTool extends AbstractTool {
 				usage = "File with data to be processed.")
 		public String dataFile;
 
+		@Option(name = "-P", aliases = "-population", metaVar = "<file>",
+				usage = "File with background population elements.")
+		public String populationFile;
+
 		@Option(name = "-w", aliases = "-workdir", metaVar = "<dir>",
 				usage = "Working directory (default: current dir).")
 		public String workdir = System.getProperty("user.dir");

@@ -27,11 +27,12 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.net.URL;
 import java.util.Properties;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.gitools.intogen.IntogenService;
 import org.gitools.intogen.IntogenServiceException;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.settings.Settings;
@@ -60,6 +61,35 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 		
 		//htmlPanel = new HtmlPanel();
 		rcontext = new SimpleHtmlRendererContext(htmlPanel, new SimpleUserAgentContext()) {
+
+			@Override
+			public void error(String message, Throwable throwable) {
+				String url = Settings.getDefault().getIntogenOncomodulesUrl();
+				if (!url.equals(Settings.DEFAULT_INTOGEN_ONCOMODULES_URL))
+					Settings.getDefault().setIntogenOncomodulesUrl(Settings.DEFAULT_INTOGEN_ONCOMODULES_URL);
+
+				int ret = JOptionPane.showConfirmDialog(AppFrame.instance(),
+							"There was an error trying to conect to " + url +
+							"\nPress OK to try again or Cancel to close this dialog and try later.",
+							"Error",
+							JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.ERROR_MESSAGE);
+
+				if (ret == JOptionPane.OK_OPTION) {
+					try {
+						rcontext.navigate(new URL(Settings.getDefault().getIntogenOncomodulesUrl()), "_this");
+					}
+					catch (Exception ex) {
+						setVisible(false);
+						ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
+						dlg.setVisible(true);
+					}
+				}
+				else {
+					setVisible(false);
+				}
+			}
+
 			@Override
 			public void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs) {
 				/*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
@@ -103,9 +133,17 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 					rcontext.navigate(new URL(Settings.getDefault().getIntogenOncomodulesUrl()), "_this");
 				}
 				catch (Exception ex) {
-					setVisible(false);
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-					dlg.setVisible(true);
+					if (!Settings.getDefault().getIntogenOncomodulesUrl().equals(Settings.DEFAULT_INTOGEN_ONCOMODULES_URL))
+						Settings.getDefault().setIntogenOncomodulesUrl(Settings.DEFAULT_INTOGEN_ONCOMODULES_URL);
+					
+					try {
+						rcontext.navigate(new URL(Settings.getDefault().getIntogenOncomodulesUrl()), "_this");
+					}
+					catch (Exception ex2) {
+						setVisible(false);
+						ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex2);
+						dlg.setVisible(true);
+					}
 				}
 			}
 		});

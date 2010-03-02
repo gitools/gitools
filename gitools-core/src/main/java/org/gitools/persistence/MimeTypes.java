@@ -17,6 +17,7 @@ public class MimeTypes {
 	public static final String STRING_MATRIX = "application/gitools-matrix-string";
 	public static final String ANNOTATION_MATRIX = "application/gitools-matrix-annotation";
 
+	public static final String GENE_SET = "application/gitools-grp";
 	public static final String GENE_MATRIX = "application/gitools-gmx";
 	public static final String GENE_MATRIX_TRANSPOSED = "application/gitools-gmt";
 	

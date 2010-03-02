@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.model.xml.adapter.ElementDecoratorXmlAdapter;
-import org.gitools.model.xml.adapter.IndexArrayXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AbstractModelDecoratorElement {

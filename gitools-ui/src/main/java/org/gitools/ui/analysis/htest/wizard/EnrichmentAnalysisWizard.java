@@ -89,9 +89,13 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 	
 	public File getDataFile() {
-		return dataPage.getSelectedFile();
+		return dataPage.getDataFile();
 	}
 
+	public File getPopulationFile() {
+		return dataPage.getPopulationFile();
+	}
+	
 	public String getModulesFileMime() {
 		return modulesPage.getFileMime();
 	}

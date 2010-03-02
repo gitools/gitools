@@ -15,8 +15,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 public class SortByValueAction extends BaseAction {
 

@@ -23,7 +23,9 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.DataFormatException;
 import org.apache.commons.csv.CSVParser;
 import org.gitools.datafilters.DoubleTranslator;
@@ -46,6 +48,10 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			return false;
 	}
 
+	/** Returns the String <-> Double translator to use.
+	 *
+	 * @return value translator
+	 */
 	protected ValueTranslator getValueTranslator() {
 		if (getProperties().contains(VALUE_TRANSLATOR))
 			return (ValueTranslator) getProperties().get(VALUE_TRANSLATOR);
@@ -117,6 +123,19 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			while ((fields = parser.getLine()) != null)
 				names.add(fields[0]);
 
+			// Incorporate background names
+
+			String[] populationLabels = getPopulationLabels();
+			if (populationLabels != null) {
+				final Set<String> nameSet = new HashSet<String>(names);
+				for (String name : populationLabels) {
+					if (!nameSet.contains(name)) {
+						names.add(name);
+						nameSet.add(name);
+					}
+				}
+			}
+
 			String[] rowNames = names.toArray(new String[names.size()]);
 			matrix.setRows(rowNames);
 
@@ -144,7 +163,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		monitor.begin("Reading data ...", 1);
 
 		int numColumns = matrix.getColumns().cardinality();
-		int numItems = matrix.getRows().cardinality();
+		int numRows = matrix.getRows().cardinality();
 
 		String[] columnNames = matrix.getColumnStrings();
 		String[] rowNames = matrix.getRowStrings();
@@ -172,7 +191,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 			parser.getLine(); // discard header
 
-			matrix.makeCells(numItems, numColumns);
+			matrix.makeCells(numRows, numColumns);
 
 			String[] fields;
 			int row = 0;
@@ -203,6 +222,16 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 						col++;
 					}
 				}
+				row++;
+			}
+
+			// Fill the rest of population rows with background value
+
+			double backgroundValue = getBackgroundValue();
+			while (row < numRows) {
+				for (int col = 0; col < numColumns; col++)
+					matrix.setCellValue(row, col, 0, backgroundValue);
+
 				row++;
 			}
 

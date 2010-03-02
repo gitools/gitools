@@ -3,8 +3,9 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import org.gitools.ui.dialog.progress.JobRunnable;
-import org.gitools.ui.dialog.progress.JobThread;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
@@ -17,7 +18,10 @@ public class SaveAction extends BaseAction {
 
 	public SaveAction() {
 		super("Save");
+
 		setDesc("Save changes");
+		setLargeIconFromResource(IconNames.save24);
+		setSmallIconFromResource(IconNames.save16);
 		setMnemonic(KeyEvent.VK_S);
 	}
 

@@ -19,6 +19,8 @@ public class EditorsPanel extends JTabbedPane {
 
 	private int nameCount = 0;
 
+	//private AbstractEditor.EditorListener editorListener;
+
 	//private JTabbedPane tabbedPane;
 	
 	public EditorsPanel() {	
@@ -26,15 +28,22 @@ public class EditorsPanel extends JTabbedPane {
 		
 		addChangeListener(new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent evt) {
-				refreshActions();
-
 				AbstractEditor selectedEditor = getSelectedEditor();
 				if (selectedEditor != null)
 					selectedEditor.doVisible();
+
+				refreshActions();
 			}
 		});
+
+		/*editorListener = new AbstractEditor.EditorListener() {
+			@Override public void dirtyChanged(IEditor editor) {
+				EditorTabComponent tab = getEditorTab(editor);
+				
+			}
+		};*/
 	}
-	
+
 	private void createComponents() {
 		//tabbedPane = new JTabbedPane();
 	}
@@ -54,6 +63,8 @@ public class EditorsPanel extends JTabbedPane {
 			addTab(name, icon, editor);
 
 		setTabComponentAt(getTabCount() - 1, new EditorTabComponent(this, editor));
+
+		//editor.addEditorListener(editorListener);
 		
 		refreshActions();
 		
@@ -63,12 +74,16 @@ public class EditorsPanel extends JTabbedPane {
 	public void removeEditor(AbstractEditor editor) {
 		if (editor == null)
 			return;
-		
-		int i = indexOfComponent(editor);
-		if (i != -1)
-			remove(i);
-		
-		refreshActions();
+
+		//editor.removeEditorListener(editorListener);
+
+		if (editor.doClose()) {
+			int i = indexOfComponent(editor);
+			if (i != -1)
+				remove(i);
+
+			refreshActions();
+		}
 	}
 	
 	public AbstractEditor getSelectedEditor() {
@@ -97,5 +112,21 @@ public class EditorsPanel extends JTabbedPane {
 			name = prefix + (nameCount++) + suffix;
 		
 		return name;
+	}
+
+	private EditorTabComponent getEditorTab(IEditor editor) {
+		int index = getEditorIndex(editor);
+		return (EditorTabComponent) getTabComponentAt(index);
+	}
+
+	private int getEditorIndex(IEditor editor) {
+		for (int i = 0; i < getComponentCount(); i++)
+			if (getComponent(i) == editor)
+				return i;
+		return -1;
+	}
+
+	public void setSelectedEditor(AbstractEditor editor) {
+		setSelectedComponent(editor);
 	}
 }

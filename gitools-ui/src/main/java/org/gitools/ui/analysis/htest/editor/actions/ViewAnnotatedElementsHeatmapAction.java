@@ -83,7 +83,7 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		}
 
 		// Set file name
-		SaveFileWizard wiz = SaveFileWizard.createSimple(
+		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
 				"New heatmap",
 				editorPanel.createName(),
 				Settings.getDefault().getLastPath(),
@@ -94,7 +94,7 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
-		Settings.getDefault().setLastPath(wiz.getFolder());
+		Settings.getDefault().setLastPath(wiz.getFolder());*/
 
 		// Retrieve elements
 		int[] view = srcMatrixView.getVisibleRows();
@@ -139,7 +139,11 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		// Create editor
 		HeatmapEditor dataEditor = new HeatmapEditor(heatmap);
 
-		dataEditor.setFile(wiz.getFile());
+		dataEditor.setName(editorPanel.createName(
+				EditorsPanel.DEFAULT_NAME_PREFIX,
+				"." + FileSuffixes.HEATMAP_FIGURE));
+
+		//dataEditor.setFile(wiz.getFile());
 
 		editorPanel.addEditor(dataEditor);
 

@@ -14,10 +14,9 @@ import java.util.Set;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.text.BaseMatrixPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
@@ -31,13 +30,14 @@ public class EnrichmentCommand extends HtestCommand {
 			EnrichmentAnalysis analysis,
 			String dataMime,
 			String dataFile,
+			String populationPath,
 			String modulesMime,
 			String modulesFile,
 			String workdir,
 			String fileName) {
 		
 		super(analysis, dataMime, dataFile,
-				workdir, fileName);
+				populationPath, workdir, fileName);
 
 		this.modulesMime = modulesMime;
 		this.modulesPath = modulesFile;
@@ -57,6 +57,7 @@ public class EnrichmentCommand extends HtestCommand {
 		
 		Object[] ret = loadDataAndModules(
 				dataMime, dataPath,
+				populationPath,
 				modulesMime, modulesPath,
 				enrichAnalysis,
 				monitor.subtask());
@@ -109,12 +110,26 @@ public class EnrichmentCommand extends HtestCommand {
 	private Object[] loadDataAndModules(
 			String dataFileMime,
 			String dataFileName,
+			String populationFileName,
 			String modulesFileMime,
 			String modulesFileName,
 			EnrichmentAnalysis analysis,
 			IProgressMonitor monitor)
 			throws PersistenceException {
-		
+
+		// Load background population
+
+		String[] populationLabels = null;
+
+		if (populationFileName != null) {
+			File bgFile = new File(populationFileName);
+
+			List<String> popLabels = (List<String>) PersistenceManager.getDefault()
+					.load(bgFile, MimeTypes.GENE_SET, monitor);
+
+			populationLabels = popLabels.toArray(new String[popLabels.size()]);
+		}
+
 		// Load data
 		
 		File dataFile = new File(dataFileName);
@@ -124,6 +139,8 @@ public class EnrichmentCommand extends HtestCommand {
 		Properties dataProps = new Properties();
 		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
 		dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
+		if (populationLabels != null)
+			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 
 		BaseMatrix dataMatrix = (BaseMatrix) PersistenceManager.getDefault()
 				.load(dataFile, dataFileMime, dataProps, monitor);
