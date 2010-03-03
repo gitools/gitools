@@ -14,7 +14,7 @@ import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
-import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -27,7 +27,6 @@ public class MatrixView
 	private static final int INT_BIT_SIZE = 32;
 
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	//@XmlTransient
 	protected IMatrix contents;
 	
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
@@ -36,15 +35,20 @@ public class MatrixView
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
 	protected int[] visibleColumns;
 	
-	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
+	//@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
+	@XmlTransient
 	protected int[] selectedRows;
 	
-	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
+	//@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
+	@XmlTransient
 	protected int[] selectedColumns;
-	
+
+	@XmlTransient
 	protected int selectionLeadRow;
+
+	@XmlTransient
 	protected int selectionLeadColumn;
-	
+
 	protected int selectedPropertyIndex;
 
 	@XmlTransient

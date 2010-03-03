@@ -6,23 +6,19 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.heatmap.xml.HeatmapMatrixViewXmlAdapter;
 
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.xml.ColorXmlAdapter;
-import org.gitools.model.xml.ElementDecoratorXmlAdapter;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
@@ -43,13 +39,11 @@ public class Heatmap
 	
 	
 	//@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
-	@XmlTransient
+	//@XmlTransient
 	private ElementDecorator cellDecorator;
 
-	@XmlTransient
 	private HeatmapHeader rowHeader;
 
-	@XmlTransient
 	private HeatmapHeader columnHeader;
 	
 	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
@@ -183,8 +177,9 @@ public class Heatmap
 	}
 	
 	public void setShowGrid(boolean showGrid) {
+		boolean old = this.showGrid;
 		this.showGrid = showGrid;
-		firePropertyChange(GRID_PROPERTY_CHANGED);
+		firePropertyChange(GRID_PROPERTY_CHANGED, old, showGrid);
 	}
 	
 	public Color getGridColor() {
@@ -192,8 +187,9 @@ public class Heatmap
 	}
 	
 	public void setGridColor(Color gridColor) {
+		Color old = this.gridColor;
 		this.gridColor = gridColor;
-		firePropertyChange(GRID_PROPERTY_CHANGED);
+		firePropertyChange(GRID_PROPERTY_CHANGED, old, gridColor);
 	}
 
 	public int getCellWidth() {
@@ -201,8 +197,9 @@ public class Heatmap
 	}
 	
 	public void setCellWidth(int cellWidth) {
+		int old = this.cellWidth;
 		this.cellWidth = cellWidth;
-		firePropertyChange(CELL_SIZE_CHANGED);
+		firePropertyChange(CELL_SIZE_CHANGED, old, cellWidth);
 	}
 
 	public int getCellHeight() {
@@ -210,26 +207,29 @@ public class Heatmap
 	}
 	
 	public void setCellHeight(int cellHeight) {
+		int old = this.cellHeight;
 		this.cellHeight = cellHeight;
-		firePropertyChange(CELL_SIZE_CHANGED);
+		firePropertyChange(CELL_SIZE_CHANGED, old, cellHeight);
 	}
 	
 	public int getRowHeaderSize() {
 		return rowHeaderSize;
 	}
 	
-	public void setRowHeaderSize(int rowSize) {
-		this.rowHeaderSize = rowSize;
-		firePropertyChange(ROW_HEADER_SIZE_CHANGED);
+	public void setRowHeaderSize(int rowHeaderSize) {
+		int old = this.rowHeaderSize;
+		this.rowHeaderSize = rowHeaderSize;
+		firePropertyChange(ROW_HEADER_SIZE_CHANGED, old, rowHeaderSize);
 	}
 
 	public int getColumnHeaderSize() {
 		return columnHeaderSize;
 	}
 	
-	public void setColumnHeaderSize(int columnSize) {
-		this.columnHeaderSize = columnSize;
-		firePropertyChange(COLUMN_HEADER_SIZE_CHANGED);
+	public void setColumnHeaderSize(int columnHeaderSize) {
+		int old = this.columnHeaderSize;
+		this.columnHeaderSize = columnHeaderSize;
+		firePropertyChange(COLUMN_HEADER_SIZE_CHANGED, old, columnHeaderSize);
 	}
 
 	public boolean isShowBorders() {

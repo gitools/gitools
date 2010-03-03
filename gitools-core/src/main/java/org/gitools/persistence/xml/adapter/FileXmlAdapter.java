@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.model.xml;
+package org.gitools.persistence.xml.adapter;
 
 import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;

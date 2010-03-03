@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.HtestAnalysis;
 
 import org.gitools.model.ModuleMap;
-import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

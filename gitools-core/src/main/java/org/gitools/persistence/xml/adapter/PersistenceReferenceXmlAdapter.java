@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.model.xml;
+package org.gitools.persistence.xml.adapter;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
@@ -64,7 +64,12 @@ public class PersistenceReferenceXmlAdapter<T>
 			mimeType = MimeTypeManager.getDefault().fromClass(v.getClass());
 
 		File baseFile = new File(context.getBasePath());
+		
 		File file = new File(context.getFilePath(v));
+		File linkFile = PersistenceManager.getDefault().getEntityFile(v);
+		if (linkFile != null)
+			file = linkFile;
+
 		String path = PersistenceUtils.getRelativePath(
 				baseFile.getAbsolutePath(),
 				file.getAbsolutePath());

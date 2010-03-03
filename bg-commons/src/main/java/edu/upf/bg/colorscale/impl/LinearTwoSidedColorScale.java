@@ -4,15 +4,27 @@ import edu.upf.bg.colorscale.ColorScaleFragment;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.CompositeColorScale;
 import java.awt.Color;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedColorScale extends CompositeColorScale {
 
 	protected ColorScalePoint mid;
-	
+
+	@XmlTransient
 	private ColorScaleFragment leftScaleFrag;
-	private ColorScaleFragment rightScaleFrag;
 	
+	@XmlTransient
 	private LinearColorScale leftScale;
+
+	@XmlTransient
+	private ColorScaleFragment rightScaleFrag;
+
+	@XmlTransient
 	private LinearColorScale rightScale;
 	
 	public LinearTwoSidedColorScale(

@@ -12,8 +12,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.model.xml.ColorXmlAdapter;
-import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import edu.upf.bg.xml.adapter.FontXmlAdapter;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -35,11 +36,11 @@ public class HeatmapHeader extends AbstractModel {
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color backgroundColor;
 
-	//TODO font adapter
-	@XmlTransient
+	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	@XmlTransient
 	protected AnnotationMatrix annotations;
 
 	protected String labelPattern;

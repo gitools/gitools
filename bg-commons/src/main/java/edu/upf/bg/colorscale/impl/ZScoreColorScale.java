@@ -6,7 +6,13 @@ import edu.upf.bg.colorscale.CompositeColorScale;
 import java.awt.Color;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreColorScale extends CompositeColorScale {
 
 	private double halfAmplitude;
@@ -16,13 +22,22 @@ public class ZScoreColorScale extends CompositeColorScale {
 	private final ColorScalePoint nonSigLeft;
 	private final ColorScalePoint nonSigRight;
 
+	@XmlTransient
 	private UniformColorScale nonSigScale;
+
+	@XmlTransient
 	private ColorScaleFragment nonSigScaleFrag;
 
+	@XmlTransient
 	private LinearColorScale leftScale;
+
+	@XmlTransient
 	private ColorScaleFragment leftScaleFrag;
 
+	@XmlTransient
 	private LinearColorScale rightScale;
+
+	@XmlTransient
 	private ColorScaleFragment rightScaleFrag;
 	
 	public ZScoreColorScale(

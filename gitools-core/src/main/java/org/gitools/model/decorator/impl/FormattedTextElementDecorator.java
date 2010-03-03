@@ -75,6 +75,7 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 	
@@ -85,6 +86,7 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		return configuration;
 	}
 
+	@Deprecated
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 	

@@ -30,6 +30,8 @@ import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
@@ -97,7 +99,6 @@ public class HeatmapEditor extends AbstractEditor {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				heatmapPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-				setDirty(true);
 			}
 		};
 		
@@ -158,6 +159,8 @@ public class HeatmapEditor extends AbstractEditor {
 		}
 		else if (Heatmap.PROPERTY_CHANGED.equals(propertyName)) {
 		}
+
+		setDirty(true);
 	}
 	
 	protected void matrixPropertyChange(
@@ -306,7 +309,11 @@ public class HeatmapEditor extends AbstractEditor {
 
 				setFile(wiz.getFile());
 
-				doSave(new NullProgressMonitor());
+				JobThread.execute(AppFrame.instance(), new JobRunnable() {
+					@Override public void run(IProgressMonitor monitor) {
+						doSave(monitor);
+					}
+				});
 			}
 		}
 

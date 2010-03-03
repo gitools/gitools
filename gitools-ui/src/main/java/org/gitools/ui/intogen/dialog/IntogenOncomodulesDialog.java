@@ -90,6 +90,7 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 				}
 			}
 			
+			@Override
 			protected boolean isNavigationAsynchronous() {
 				return false;
 			}

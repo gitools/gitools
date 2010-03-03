@@ -16,8 +16,12 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.impl.BinaryColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BinaryElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = 8832886601133057329L;
@@ -26,7 +30,8 @@ public class BinaryElementDecorator extends ElementDecorator {
 
 	private BinaryColorScale scale;
 
-	private /*transient*/ GenericFormatter fmt = new GenericFormatter("<");
+	@XmlTransient
+	private /*transient*/ GenericFormatter fmt;
 
 	public BinaryElementDecorator() {
 		this(null);
@@ -38,9 +43,11 @@ public class BinaryElementDecorator extends ElementDecorator {
 		valueIndex = getPropertyIndex(new String[] {"value"});
 
 		this.scale = new BinaryColorScale();
+
+		fmt = new GenericFormatter("<");
 	}
 
-	@Override
+	/*@Override
 	public Object clone() {
 		BinaryElementDecorator obj = null;
 		try {
@@ -49,7 +56,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		}
 		catch (CloneNotSupportedException ex) { }
 		return obj;
-	}
+	}*/
 
 	public int getValueIndex() {
 		return valueIndex;
@@ -124,7 +131,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		return scale;
 	}
 	
-	//FIXME scale comparison state
+	@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -138,6 +145,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		return configuration;
 	}
 
+	@Deprecated
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 		

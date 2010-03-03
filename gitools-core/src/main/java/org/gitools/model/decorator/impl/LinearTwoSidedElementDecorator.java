@@ -17,7 +17,9 @@ import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedElementDecorator extends ElementDecorator {
 
@@ -28,16 +30,17 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	private LinearTwoSidedColorScale scale;
 
 	@XmlTransient
-	private GenericFormatter fmt = new GenericFormatter("<");
+	private GenericFormatter fmt;
 	
 	
-	public LinearTwoSidedElementDecorator(){
+	public LinearTwoSidedElementDecorator() {
 		
 		valueIndex = getPropertyIndex(new String[] {
 				"value", "log2ratio" });
 		
 		scale = new LinearTwoSidedColorScale();
 
+		fmt = new GenericFormatter("<");
 	}
 
 	public LinearTwoSidedElementDecorator(IElementAdapter adapter) {
@@ -47,6 +50,8 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 				"value", "log2ratio" });
 		
 		scale = new LinearTwoSidedColorScale();
+
+		fmt = new GenericFormatter("<");
 	}
 
 	/*@Override
@@ -149,7 +154,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		return scale;
 	}
 
-	//FIXME scale configuration missing
+	@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -158,6 +163,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		return configuration;
 	}
 
+	@Deprecated
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	

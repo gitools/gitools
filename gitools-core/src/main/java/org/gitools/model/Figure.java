@@ -8,6 +8,8 @@ public class Figure extends Artifact {
 
 	private static final long serialVersionUID = -5908048128953551645L;
 
+	public static final String FOOTER_CHANGED = "footerChanged";
+
 	/** Footer **/
 	private String footer;
 
@@ -26,6 +28,8 @@ public class Figure extends Artifact {
 	}
 
 	public void setFooter(String footer) {
+		String oldValue = this.footer;
 		this.footer = footer;
+		firePropertyChange(FOOTER_CHANGED, oldValue, footer);
 	}
 }

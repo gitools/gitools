@@ -30,8 +30,8 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.xml.CutoffCmpXmlAdapter;
-import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
+import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 

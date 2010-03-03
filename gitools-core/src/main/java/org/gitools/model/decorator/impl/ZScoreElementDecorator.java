@@ -17,8 +17,10 @@ import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreElementDecorator extends ElementDecorator {
 
@@ -215,7 +217,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		return scale;
 	}
 	
-	//FIXME scale state
+	@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -229,6 +231,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		return configuration;
 	}
 
+	@Deprecated
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 	

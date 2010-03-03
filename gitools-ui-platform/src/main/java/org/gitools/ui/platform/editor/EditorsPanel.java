@@ -23,8 +23,10 @@ public class EditorsPanel extends JTabbedPane {
 
 	//private JTabbedPane tabbedPane;
 	
-	public EditorsPanel() {	
+	public EditorsPanel() {
 		createComponents();
+
+		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		addChangeListener(new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent evt) {

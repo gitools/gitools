@@ -6,6 +6,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.xml.ElementDecoratorXmlElement;
 
+@Deprecated
 public class ElementDecoratorXmlAdapter
 	extends XmlAdapter<ElementDecoratorXmlElement, ElementDecorator> {
 	

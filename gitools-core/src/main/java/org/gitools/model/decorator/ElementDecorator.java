@@ -6,13 +6,26 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.BinaryElementDecorator;
+import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
+import org.gitools.model.decorator.impl.PValueElementDecorator;
+import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({
+	BinaryElementDecorator.class,
+	FormattedTextElementDecorator.class,
+	LinearTwoSidedElementDecorator.class,
+	PValueElementDecorator.class,
+	ZScoreElementDecorator.class
+})
 public abstract class ElementDecorator extends AbstractModel {
 
 	private static final long serialVersionUID = -2101303088018509837L;
@@ -41,11 +54,12 @@ public abstract class ElementDecorator extends AbstractModel {
 
 	public abstract IColorScale getScale();
 
-	//FIXME use JAXB to save state
+	@Deprecated //FIXME use JAXB to save state
 	public Map<String, String> getConfiguration() {
 		return null;
 	}
-	
+
+	@Deprecated
 	public abstract void setConfiguration(Map<String, String> configuration);
 	
 	protected int getPropertyIndex(String[] names) {

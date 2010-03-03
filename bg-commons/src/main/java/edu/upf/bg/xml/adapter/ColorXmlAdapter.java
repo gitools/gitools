@@ -1,4 +1,4 @@
-package org.gitools.model.xml;
+package edu.upf.bg.xml.adapter;
 
 import java.awt.Color;
 

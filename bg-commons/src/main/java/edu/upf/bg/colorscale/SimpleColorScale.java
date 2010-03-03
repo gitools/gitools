@@ -18,19 +18,36 @@
 package edu.upf.bg.colorscale;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class SimpleColorScale extends AbstractColorScale {
 
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color notANumberColor = ColorConstants.notANumberColor;
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color posInfinityColor = ColorConstants.posInfinityColor;
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color negInfinityColor = ColorConstants.negInfinityColor;
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color emptyColor = ColorConstants.emptyColor;
 
 	protected ColorScalePoint min;
 	protected ColorScalePoint max;
+
+	public SimpleColorScale() {
+	}
 
 	public SimpleColorScale(
 			ColorScalePoint min,

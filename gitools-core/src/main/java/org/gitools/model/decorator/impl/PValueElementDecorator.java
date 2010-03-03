@@ -17,7 +17,9 @@ import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PValueElementDecorator extends ElementDecorator {
 
@@ -31,9 +33,9 @@ public class PValueElementDecorator extends ElementDecorator {
 	private PValueColorScale scale;
 
 	@XmlTransient
-	private GenericFormatter fmt = new GenericFormatter("<");
+	private GenericFormatter fmt;
 	
-	public PValueElementDecorator(){
+	public PValueElementDecorator() {
 		
 		valueIndex = getPropertyIndex(new String[] {
 				"right-p-value", "p-value" });
@@ -45,6 +47,8 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		significanceLevel = 0.05;
 		scale = new PValueColorScale();
+
+		fmt = new GenericFormatter("<");
 	}
 	
 	public PValueElementDecorator(IElementAdapter adapter) {
@@ -60,6 +64,8 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		significanceLevel = 0.05;
 		scale = new PValueColorScale();
+
+		fmt = new GenericFormatter("<");
 	}
 
 	public final int getValueIndex() {
@@ -113,11 +119,11 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public Color getMaxColor() {
-		return scale.getSigLevel().getLeftColor();
+		return scale.getSigLevelPoint().getLeftColor();
 	}
 
 	public void setMaxColor(Color color) {
-		scale.getSigLevel().setLeftColor(color);
+		scale.getSigLevelPoint().setLeftColor(color);
 		firePropertyChange(PROPERTY_CHANGED);
 	}
 	
@@ -171,7 +177,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		return scale;
 	}
 
-	//FIXME scale state
+	@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -185,6 +191,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		return configuration;
 	}
 
+	@Deprecated
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 		

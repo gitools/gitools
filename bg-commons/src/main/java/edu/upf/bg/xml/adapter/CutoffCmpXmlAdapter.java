@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.model.xml;
+package edu.upf.bg.xml.adapter;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -29,7 +29,7 @@ public class CutoffCmpXmlAdapter extends XmlAdapter<String, CutoffCmp> {
 
 	@Override
 	public String marshal(CutoffCmp v) throws Exception {
-		return v.getLongName();
+		return v.getAbbreviation();
 	}
 
 }

@@ -20,7 +20,7 @@ import org.gitools.table.model.ITable;
 import org.gitools.table.model.TableFormatException;
 import org.gitools.table.model.impl.TableView;
 import org.gitools.model.xml.AbstractModelXmlAdapter;
-import org.gitools.model.xml.ColorXmlAdapter;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 
 @SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.FIELD)

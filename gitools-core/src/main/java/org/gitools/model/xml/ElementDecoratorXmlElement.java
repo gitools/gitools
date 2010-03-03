@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+@Deprecated
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ElementDecoratorXmlElement {
 

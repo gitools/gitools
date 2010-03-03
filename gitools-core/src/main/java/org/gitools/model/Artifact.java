@@ -48,8 +48,9 @@ public class Artifact extends AbstractModel {
 	}
 
 	public void setTitle(String title) {
+		String oldValue = this.title;
 		this.title = title;
-		firePropertyChange(TITLE_CHANGED);
+		firePropertyChange(TITLE_CHANGED, oldValue, title);
 	}
 
 	public String getDescription() {
@@ -57,8 +58,9 @@ public class Artifact extends AbstractModel {
 	}
 
 	public void setDescription(String description) {
+		String oldValue = this.description;
 		this.description = description;
-		firePropertyChange(DESC_CHANGED);
+		firePropertyChange(DESC_CHANGED, oldValue, description);
 	}
 
 	public List<Attribute> getAttributes() {
@@ -66,7 +68,8 @@ public class Artifact extends AbstractModel {
 	}
 
 	public void setAttributes(List<Attribute> attributes) {
+		List<Attribute> oldValue = this.attributes;
 		this.attributes = attributes;
-		firePropertyChange(ATTRIBUTES_CHANGED);
+		firePropertyChange(ATTRIBUTES_CHANGED, oldValue, attributes);
 	}
 }

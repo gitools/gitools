@@ -8,10 +8,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractColorScale implements IColorScale, IColorScaleHtml, Serializable {
 
+	@XmlTransient
 	private ColorScaleRange range;
+
+	/*@XmlElementWrapper(name = "points")
+	@XmlElement(name = "point")*/
+	@XmlTransient
 	private List<ColorScalePoint> points;
 
 	public AbstractColorScale() {

@@ -6,7 +6,14 @@ import edu.upf.bg.colorscale.CompositeColorScale;
 import java.awt.Color;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class PValueColorScale extends CompositeColorScale {
 	
 	public static final double defaultLogFactor = 0.25;
@@ -14,14 +21,16 @@ public class PValueColorScale extends CompositeColorScale {
 	private static final double epsilon = 1e-16;
 	
 	private double significanceLevel;
-	
+
 	private UniformColorScale nonSigScale;
+
 	private ColorScaleFragment nonSigScaleFrag;
 
 	private LogColorScale scale;
+
 	private ColorScaleFragment scaleFrag;
 	
-	private final ColorScalePoint sigLevel;
+	private ColorScalePoint sigLevel;
 
 	public PValueColorScale(
 			double significanceLevel, 
@@ -67,10 +76,15 @@ public class PValueColorScale extends CompositeColorScale {
 		sigLevel.setValue(significanceLevel + epsilon);
 	}
 
-	public ColorScalePoint getSigLevel() {
+	public ColorScalePoint getSigLevelPoint() {
 		return sigLevel;
 	}
 
+	public void setSigLevelPoint(ColorScalePoint sigLevel) {
+		this.sigLevel = sigLevel;
+	}
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	public Color getNonSignificantColor() {
 		return max.getColor();
 	}

@@ -3,12 +3,25 @@ package edu.upf.bg.colorscale;
 import java.awt.Color;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CompositeColorScale extends SimpleColorScale {
-	
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color undefinedColor;
-	
+
+	@XmlTransient
 	protected ColorScaleFragment[] fragments;
+
+	public CompositeColorScale() {
+	}
 	
 	public CompositeColorScale(
 			ColorScalePoint min,

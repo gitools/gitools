@@ -18,7 +18,12 @@
 package edu.upf.bg.colorscale;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScaleRange 
 	implements Serializable{
 
@@ -26,6 +31,9 @@ public class ColorScaleRange
 
 	private double min;
 	private double max;
+
+	public ColorScaleRange() {
+	}
 
 	public ColorScaleRange(double min, double max) {
 		this.min = min;

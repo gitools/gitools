@@ -5,7 +5,7 @@ import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.model.xml.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;

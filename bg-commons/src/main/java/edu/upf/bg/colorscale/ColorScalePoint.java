@@ -17,9 +17,16 @@
 
 package edu.upf.bg.colorscale;
 
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import java.awt.Color;
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScalePoint 
 	implements Serializable {
 
@@ -27,8 +34,15 @@ public class ColorScalePoint
 	
 	protected String name;
 	protected double value;
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color leftColor;
+
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color rightColor;
+
+	public ColorScalePoint() {
+	}
 
 	public ColorScalePoint(String name, double value, Color leftColor, Color rightColor) {
 		this.name = name;
