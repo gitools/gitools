@@ -89,15 +89,31 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 					setVisible(false);
 				}
 			}
-
+			
+			protected boolean isNavigationAsynchronous() {
+				return false;
+			}
+			
 			@Override
 			public void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs) {
 				/*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
 				if (formInputs != null)
 					for (FormInput fi : formInputs)
 						System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
-
-				if (!method.equalsIgnoreCase("post")) {
+				
+				boolean startDownload = false;
+				if (method.equalsIgnoreCase("post") && formInputs != null) {
+					
+					// Look for a download=TRUE field.
+					for (FormInput fi : formInputs) {
+						if (fi.getName().equalsIgnoreCase("download") && fi.getTextValue().equalsIgnoreCase("true")) {
+							startDownload = true;
+							break;
+						}
+					}
+				}
+				
+				if (!startDownload) {
 					super.submitForm(method, action, target, enctype, formInputs);
 					return;
 				}
