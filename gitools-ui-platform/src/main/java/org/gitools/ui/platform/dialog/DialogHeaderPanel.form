@@ -29,7 +29,7 @@
                   <Component id="title" alignment="0" pref="602" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="logo" min="-2" pref="69" max="-2" attributes="0"/>
+              <Component id="logo" pref="69" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -39,7 +39,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="logo" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                  <Component id="logo" alignment="0" pref="58" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="title" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -80,6 +80,9 @@
         <Property name="requestFocusEnabled" type="boolean" value="false"/>
         <Property name="verticalTextPosition" type="int" value="1"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="logoMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -36,7 +36,7 @@ public class MenuActionSet extends ActionSet {
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
 					new ActionSet("IntOGen", new BaseAction[] {
-						//FileActions.importIntogenTableAction,
+						FileActions.importIntogenTableAction,
 						FileActions.importIntogenOncomodulesAction,
 						//FileActions.importIntogenHeatmapAction
 					}),

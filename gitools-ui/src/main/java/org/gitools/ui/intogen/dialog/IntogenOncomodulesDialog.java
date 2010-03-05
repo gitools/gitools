@@ -130,7 +130,7 @@ public class IntogenOncomodulesDialog extends javax.swing.JDialog {
 					@Override
 					public void run(IProgressMonitor monitor) {
 						try {
-							IntogenService.getDefault().queryOncomodulesFromPOST(
+							IntogenService.getDefault().queryFromPOST(
 									file, prefix, action, properties, monitor);
 						}
 						catch (IntogenServiceException ex) {

@@ -112,10 +112,10 @@ public class Html4Editor extends AbstractEditor {
 	}
 
 	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-		System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+		/*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
 		if (formInputs != null)
 			for (FormInput fi : formInputs)
-				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());
+				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
 	}
 
 	protected void performUrlAction(String name, Map<String, String> params) {

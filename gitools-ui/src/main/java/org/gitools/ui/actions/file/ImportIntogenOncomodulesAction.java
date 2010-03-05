@@ -1,7 +1,7 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
-import org.gitools.ui.intogen.dialog.IntogenOncomodulesDialog;
+import org.gitools.ui.intogen.dialog.IntogenImportDialog;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -26,7 +26,9 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 		/*IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
 		AppFrame.instance().getEditorsPanel().addEditor(editor);*/
 
-		IntogenOncomodulesDialog dlg = new IntogenOncomodulesDialog(AppFrame.instance(), true);
+		IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.instance(),
+				IntogenImportDialog.ImportType.ONCOMODULES);
+
 		dlg.setVisible(true);
 	}
 

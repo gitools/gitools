@@ -24,7 +24,10 @@
 package org.gitools.ui.platform.dialog;
 
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
@@ -36,6 +39,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 	private static final Color PROGRESS_COLOR = new Color(100, 180, 250);
 
 	private MessageStatus status;
+	private String logoLink;
 
     public DialogHeaderPanel() {
         initComponents();
@@ -93,6 +97,11 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
         logo.setFocusable(false);
         logo.setRequestFocusEnabled(false);
         logo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        logo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -104,7 +113,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
                     .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
                     .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -112,7 +121,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -120,6 +129,18 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+	private void logoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoMouseClicked
+		if (logoLink != null) {
+			try {
+				Desktop.getDesktop().browse(
+						new URL(logoLink).toURI());
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	}//GEN-LAST:event_logoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -165,5 +186,17 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 
 	public void setLogo(Icon logo) {
 		this.logo.setIcon(logo);
+	}
+
+	public String getLogoLink() {
+		return logoLink;
+	}
+
+	public void setLogoLink(String logoLink) {
+		this.logoLink = logoLink;
+		if (logoLink == null)
+			logo.setCursor(Cursor.getDefaultCursor());
+		else
+			logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 }

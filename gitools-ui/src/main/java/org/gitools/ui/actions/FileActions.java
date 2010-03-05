@@ -14,7 +14,7 @@ import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
-import org.gitools.ui.actions.file.ImportIntogenTableAction;
+import org.gitools.ui.actions.file.ImportIntogenDataAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
@@ -58,7 +58,7 @@ public class FileActions {
 	
 	// Import
 	
-	public static final BaseAction importIntogenTableAction = new ImportIntogenTableAction();
+	public static final BaseAction importIntogenTableAction = new ImportIntogenDataAction();
 	public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
 	public static final BaseAction importIntogenHeatmapAction = new ImportIntogenHeatmapAction();
 	

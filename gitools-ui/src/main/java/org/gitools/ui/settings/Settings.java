@@ -16,7 +16,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings {
 
-	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = "http://www.intogen.org/oncomodules";
+	public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
+	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
+	public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
 	
 	private static final String userPath = 
 		System.getProperty("user.home", ".");
@@ -71,7 +73,8 @@ public class Settings {
 	private String lastMapPath = userPath;
 	private String lastFilterPath = userPath;
 	private String workspacePath = defaultWorkspacePath;
-	private String intogenOncomodulesUrl = "http://ankara:8080/oncomodules";
+	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
+	private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
 
 	private Settings() {
 	}
@@ -165,5 +168,13 @@ public class Settings {
 
 	public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
 		this.intogenOncomodulesUrl = intogenOncomodulesUrl;
+	}
+
+	public String getIntogenDataUrl() {
+		return intogenDataUrl;
+	}
+
+	public void setIntogenDataUrl(String intogenDataUrl) {
+		this.intogenDataUrl = intogenDataUrl;
 	}
 }
