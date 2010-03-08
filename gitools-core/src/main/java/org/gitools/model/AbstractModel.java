@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class AbstractModel 
 		implements IModel, Serializable, Cloneable {
@@ -36,7 +37,7 @@ public abstract class AbstractModel
 	protected void firePropertyChange(String propName) {
 		//firePropertyChange(propName, null, null);
 
-		System.out.println("PropertyChange: " + propName);
+		System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
 
 		for (PropertyChangeListener l : getListeners()) {
 			PropertyChangeEvent evt =

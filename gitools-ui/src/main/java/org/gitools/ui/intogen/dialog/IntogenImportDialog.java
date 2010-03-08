@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -42,6 +43,7 @@ import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
+import org.xml.sax.SAXException;
 
 public class IntogenImportDialog extends JDialog {
 
@@ -68,10 +70,10 @@ public class IntogenImportDialog extends JDialog {
 		setTitle("IntOGen import...");
 
 		headerPanel = new DialogHeaderPanel();
-		headerPanel.setHeader("www.intogen.org");
+		headerPanel.setTitle("www.intogen.org");
 		headerPanel.setMessage("");
-		headerPanel.setLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
-		headerPanel.setLogoLink("http://www.intogen.org");
+		headerPanel.setRightLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
+		headerPanel.setRightLogoLink("http://www.intogen.org");
 		
 		htmlPanel = new HtmlPanel();
 
@@ -135,8 +137,20 @@ public class IntogenImportDialog extends JDialog {
 			}
 
 			@Override
+			protected void submitFormSync(String method, URL action, String target, String enctype, FormInput[] formInputs) throws IOException, SAXException {
+				super.submitFormSync(method, action, target, enctype, formInputs);
+
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						htmlPanel.repaint();
+						IntogenImportDialog.this.repaint();
+					}
+				});
+			}
+
+			@Override
 			public void setStatus(String message) {
-				headerPanel.setStatus(MessageStatus.INFO);
+				headerPanel.setMessageStatus(MessageStatus.INFO);
 				headerPanel.setMessage(message);
 			}
 

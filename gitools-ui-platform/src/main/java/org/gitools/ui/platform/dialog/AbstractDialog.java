@@ -59,10 +59,10 @@ public abstract class AbstractDialog extends JDialog {
 			Icon logo) {
 		
 		hdrPanel = new DialogHeaderPanel();
-		hdrPanel.setHeader(header);
+		hdrPanel.setTitle(header);
 		hdrPanel.setMessage(message);
-		hdrPanel.setStatus(status);
-		hdrPanel.setLogo(logo);
+		hdrPanel.setMessageStatus(status);
+		hdrPanel.setRightLogo(logo);
 		
 		JPanel hp = new JPanel();
 		hp.setLayout(new BorderLayout());

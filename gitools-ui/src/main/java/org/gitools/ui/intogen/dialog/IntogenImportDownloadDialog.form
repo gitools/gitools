@@ -122,7 +122,6 @@
     </Component>
     <Component class="org.gitools.ui.platform.dialog.DialogHeaderPanel" name="headerPanel">
       <Properties>
-        <Property name="header" type="java.lang.String" value="Select name prefix and folder"/>
         <Property name="message" type="java.lang.String" value=""/>
       </Properties>
     </Component>

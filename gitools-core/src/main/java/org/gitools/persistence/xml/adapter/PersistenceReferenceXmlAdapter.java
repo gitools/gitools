@@ -76,7 +76,8 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		IProgressMonitor monitor = context.getMonitor();
 
-		PersistenceManager.getDefault().store(file, v, monitor);
+		if (linkFile == null)
+			PersistenceManager.getDefault().store(file, v, monitor);
 
 		return new PersistenceReferenceXmlElement(mimeType, path);
 	}

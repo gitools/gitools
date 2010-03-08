@@ -49,8 +49,9 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 		
         initComponents();
 
-		headerPanel.setLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
-		headerPanel.setLogoLink("http://www.intogen.org");
+		headerPanel.setTitle("Select name prefix and folder");
+		headerPanel.setRightLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
+		headerPanel.setRightLogoLink("http://www.intogen.org");
 
 		namePrefix.setText("unnamed");
 		namePrefix.setSelectionStart(0);
@@ -62,7 +63,7 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 			@Override protected void update(DocumentEvent e) {
 				boolean exists = checkFileExists();
 				if (exists) {
-					headerPanel.setStatus(MessageStatus.WARN);
+					headerPanel.setMessageStatus(MessageStatus.WARN);
 					headerPanel.setMessage("Files already exist and will be overwriten: " + getOverwritenFiles());
 				}
 			}
@@ -149,7 +150,6 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 
         jLabel2.setText("Folder");
 
-        headerPanel.setHeader("Select name prefix and folder");
         headerPanel.setMessage("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -38,17 +38,19 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 	private static final Color ERROR_COLOR = new Color(250, 150, 150);
 	private static final Color PROGRESS_COLOR = new Color(100, 180, 250);
 
-	private MessageStatus status;
-	private String logoLink;
+	private MessageStatus messageStatus;
+	private String rightLogoLink;
 
     public DialogHeaderPanel() {
         initComponents();
 
-		title.setFont(title.getFont().deriveFont(Font.BOLD));
+		title.setFont(title.getFont().deriveFont(Font.BOLD, 16));
+		title.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-		logo.setText("");
-
-		status = MessageStatus.INFO;
+		messageStatus = MessageStatus.INFO;
+		leftLogo.setText("");
+		leftLogo.setVisible(false);
+		rightLogo.setText("");
     }
 
 	public DialogHeaderPanel(
@@ -58,10 +60,10 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 			Icon logo) {
 		this();
 
-		setHeader(header);
-		setStatus(status);
+		setTitle(header);
+		setMessageStatus(status);
 		setMessage(message);
-		setLogo(logo);
+		setRightLogo(logo);
 	}
 
     /** This method is called from within the constructor to
@@ -75,7 +77,8 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 
         title = new javax.swing.JLabel();
         message = new javax.swing.JLabel();
-        logo = new javax.swing.JLabel();
+        rightLogo = new javax.swing.JLabel();
+        leftLogo = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.white);
         setFocusable(false);
@@ -92,14 +95,25 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
         message.setRequestFocusEnabled(false);
         message.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
-        logo.setText("Logo");
-        logo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        logo.setFocusable(false);
-        logo.setRequestFocusEnabled(false);
-        logo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        logo.addMouseListener(new java.awt.event.MouseAdapter() {
+        rightLogo.setText("RightLogo");
+        rightLogo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        rightLogo.setFocusable(false);
+        rightLogo.setRequestFocusEnabled(false);
+        rightLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        rightLogo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoMouseClicked(evt);
+                rightLogoMouseClicked(evt);
+            }
+        });
+
+        leftLogo.setText("LeftLogo");
+        leftLogo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        leftLogo.setFocusable(false);
+        leftLogo.setRequestFocusEnabled(false);
+        leftLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        leftLogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                leftLogoMouseClicked(evt);
             }
         });
 
@@ -109,52 +123,76 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
-                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rightLogo)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(rightLogo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                    .addComponent(leftLogo, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(message)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void logoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoMouseClicked
-		if (logoLink != null) {
+	private void rightLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rightLogoMouseClicked
+		if (rightLogoLink != null) {
 			try {
 				Desktop.getDesktop().browse(
-						new URL(logoLink).toURI());
+						new URL(rightLogoLink).toURI());
 			}
 			catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-	}//GEN-LAST:event_logoMouseClicked
+	}//GEN-LAST:event_rightLogoMouseClicked
+
+	private void leftLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leftLogoMouseClicked
+		// TODO add your handling code here:
+	}//GEN-LAST:event_leftLogoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel logo;
+    private javax.swing.JLabel leftLogo;
     private javax.swing.JLabel message;
+    private javax.swing.JLabel rightLogo;
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 
-	public String getHeader() {
+	public String getTitle() {
 		return title.getText();
 	}
 
-	public void setHeader(String title) {
+	public void setTitle(String title) {
 		this.title.setText(title);
+	}
+
+	public Font getTitleFont() {
+		return title.getFont();
+	}
+
+	public void setTitleFont(Font font) {
+		title.setFont(font);
+	}
+
+	public Color getTitleColor() {
+		return title.getForeground();
+	}
+
+	public void setTitleColor(Color color) {
+		title.setForeground(color);
 	}
 
 	public String getMessage() {
@@ -165,12 +203,12 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 		this.message.setText(message);
 	}
 
-	public MessageStatus getStatus() {
-		return status;
+	public MessageStatus getMessageStatus() {
+		return messageStatus;
 	}
 
-	public void setStatus(MessageStatus status) {
-		this.status = status;
+	public void setMessageStatus(MessageStatus status) {
+		this.messageStatus = status;
 		//TODO status icon
 		switch (status) {
 			case INFO: message.setBackground(INFO_COLOR); break;
@@ -180,23 +218,39 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 		}
 	}
 
-	public Icon getLogo() {
-		return logo.getIcon();
+	public Icon getRightLogo() {
+		return rightLogo.getIcon();
 	}
 
-	public void setLogo(Icon logo) {
-		this.logo.setIcon(logo);
+	public void setRightLogo(Icon logo) {
+		this.rightLogo.setIcon(logo);
 	}
 
-	public String getLogoLink() {
-		return logoLink;
+	public String getRightLogoLink() {
+		return rightLogoLink;
 	}
 
-	public void setLogoLink(String logoLink) {
-		this.logoLink = logoLink;
+	public void setRightLogoLink(String logoLink) {
+		this.rightLogoLink = logoLink;
 		if (logoLink == null)
-			logo.setCursor(Cursor.getDefaultCursor());
+			rightLogo.setCursor(Cursor.getDefaultCursor());
 		else
-			logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			rightLogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	}
+
+	public Icon getLeftLogo() {
+		return leftLogo.getIcon();
+	}
+
+	public void setLeftLogo(Icon logo) {
+		leftLogo.setIcon(logo);
+	}
+
+	public boolean isLeftLogoVisible() {
+		return leftLogo.isVisible();
+	}
+
+	public void setLeftLogoVisible(boolean visible) {
+		leftLogo.setVisible(visible);
 	}
 }
