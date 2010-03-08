@@ -25,13 +25,14 @@ package org.gitools.ui.intogen.dialog;
 
 import java.io.File;
 import javax.swing.event.DocumentEvent;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class IntogenImportSaveDialog extends javax.swing.JDialog {
+public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 
 	private String overwritenFiles;
 
@@ -41,12 +42,15 @@ public class IntogenImportSaveDialog extends javax.swing.JDialog {
     public static final int RET_OK = 1;
 
     /** Creates new form IntogenImportSaveDialog */
-    public IntogenImportSaveDialog(java.awt.Window parent) {
+    public IntogenImportDownloadDialog(java.awt.Window parent) {
         super(parent);
 
 		setModal(true);
 		
         initComponents();
+
+		headerPanel.setLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
+		headerPanel.setLogoLink("http://www.intogen.org");
 
 		namePrefix.setText("unnamed");
 		namePrefix.setSelectionStart(0);
@@ -112,6 +116,7 @@ public class IntogenImportSaveDialog extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         headerPanel = new org.gitools.ui.platform.dialog.DialogHeaderPanel();
 
+        setTitle("Download...");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -178,7 +183,7 @@ public class IntogenImportSaveDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)

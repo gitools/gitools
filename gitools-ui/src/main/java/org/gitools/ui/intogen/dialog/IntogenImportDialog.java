@@ -102,7 +102,7 @@ public class IntogenImportDialog extends JDialog {
 					return;
 				}
 
-				IntogenImportSaveDialog saveDlg = new IntogenImportSaveDialog(IntogenImportDialog.this);
+				IntogenImportDownloadDialog saveDlg = new IntogenImportDownloadDialog(IntogenImportDialog.this);
 				saveDlg.setVisible(true);
 				if (saveDlg.isCancelled())
 					return;
@@ -164,6 +164,10 @@ public class IntogenImportDialog extends JDialog {
 				}
 			}
 
+			@Override
+			protected boolean isNavigationAsynchronous() {
+				return false;
+			}
 		};
 
 		setLayout(new BorderLayout());

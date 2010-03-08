@@ -18,16 +18,14 @@
 package org.gitools.intogen;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -50,8 +48,8 @@ public class IntogenService {
 		return service;
 	}
 
-	public void queryOncomodulesFromPOST(
-			File file,
+	public void queryFromPOST(
+			File folder,
 			String prefix,
 			URL action,
 			Properties properties,
@@ -88,6 +86,14 @@ public class IntogenService {
 
 			monitor.end();
 
+			Map<String, String> nameMap = new HashMap<String, String>();
+			nameMap.put("modulemap.csv", prefix + ".oncomodules.gz");
+			nameMap.put("oncomodules.csv", prefix + ".annotations.gz");
+
+			nameMap.put("data.tsv", prefix + ".data.gz");
+			nameMap.put("row.annotations", prefix + ".row.annotations.gz");
+			nameMap.put("column.annotations", prefix + ".column.annotations.gz");
+
 			monitor.begin("Downloading data ...", 1);
 
 			// Get response data.
@@ -97,15 +103,15 @@ public class IntogenService {
 			while ((ze = zin.getNextEntry()) != null) {
 				IProgressMonitor mnt = monitor.subtask();
 
-				String name = ze.getName();
-				if (name.equals("modulemap.csv"))
-					name = prefix + ".oncomodules.gz";
-				else if (name.equals("oncomodules.csv"))
-					name = prefix + ".annotations.gz";
+				long totalKb = ze.getSize() / 1024;
+
+				String name = nameMap.get(ze.getName());
+				if (name == null)
+					name = prefix + "." + ze.getName();
 
 				mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
 
-				File outFile = new File(file, name);
+				File outFile = new File(folder, name);
 				if (!outFile.getParentFile().exists())
 					outFile.getParentFile().mkdirs();
 				
@@ -113,9 +119,12 @@ public class IntogenService {
 
 				final int BUFFER_SIZE = 4 * 1024;
 				byte[] data = new byte[BUFFER_SIZE];
+				int partial = 0;
 				int count;
 				while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
 					fout.write(data, 0, count);
+					partial += count;
+					mnt.info((partial / 1024) + " Kb read");
 					mnt.worked(count);
 				}
 				zin.closeEntry();
