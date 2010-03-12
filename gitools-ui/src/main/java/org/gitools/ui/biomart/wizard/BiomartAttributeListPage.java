@@ -49,7 +49,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		panel = new BiomartAttributeListPanel();
 		panel.addAttributeListChangeListener(new BiomartAttributeListPanel.AttributeListChangeListener() {
 			@Override public void listChanged() {
-				setComplete(panel.getAttributeListSize() > 1);
+				setComplete(panel.getAttributeListSize() > 0);
 			}
 		});
 

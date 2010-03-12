@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;

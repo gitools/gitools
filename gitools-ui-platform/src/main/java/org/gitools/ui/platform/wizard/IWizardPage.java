@@ -1,7 +1,9 @@
 package org.gitools.ui.platform.wizard;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.help.HelpContext;
 
 public interface IWizardPage {
 
@@ -21,7 +23,11 @@ public interface IWizardPage {
 
 	String getTitle();
 
+	Icon getLogo();
+
 	MessageStatus getStatus();
 	
 	String getMessage();
+
+	HelpContext getHelpContext();
 }

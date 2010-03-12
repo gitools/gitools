@@ -45,7 +45,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
         initComponents();
 
 		title.setFont(title.getFont().deriveFont(Font.BOLD, 16));
-		title.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+		title.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		messageStatus = MessageStatus.INFO;
 		leftLogo.setText("");
@@ -97,6 +97,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 
         rightLogo.setText("RightLogo");
         rightLogo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        rightLogo.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         rightLogo.setFocusable(false);
         rightLogo.setRequestFocusEnabled(false);
         rightLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -108,6 +109,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 
         leftLogo.setText("LeftLogo");
         leftLogo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        leftLogo.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         leftLogo.setFocusable(false);
         leftLogo.setRequestFocusEnabled(false);
         leftLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -122,28 +124,24 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(leftLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                    .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                    .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(rightLogo)
-                .addContainerGap())
+                .addComponent(rightLogo))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rightLogo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                    .addComponent(leftLogo, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(title)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(message)))
-                .addContainerGap())
+                .addComponent(title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(message)
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+            .addComponent(rightLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -244,13 +242,11 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 
 	public void setLeftLogo(Icon logo) {
 		leftLogo.setIcon(logo);
+		leftLogo.setVisible(logo != null);
+
 	}
 
 	public boolean isLeftLogoVisible() {
 		return leftLogo.isVisible();
-	}
-
-	public void setLeftLogoVisible(boolean visible) {
-		leftLogo.setVisible(visible);
 	}
 }

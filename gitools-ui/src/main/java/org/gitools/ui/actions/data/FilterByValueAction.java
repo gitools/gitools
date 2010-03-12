@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools._DEPRECATED.matrix.filter.ValueFilterCondition;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.AppFrame;
 

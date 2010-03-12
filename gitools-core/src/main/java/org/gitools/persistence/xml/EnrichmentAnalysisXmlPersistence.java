@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
+import org.gitools.persistence.PersistenceEntityContext;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 
@@ -41,20 +42,20 @@ public class EnrichmentAnalysisXmlPersistence
 			IProgressMonitor monitor) throws PersistenceException {
 
 		File baseFile = file.getParentFile();
-		String baseName = PersistenceUtils.getBaseName(file.getName());
+		String baseName = PersistenceUtils.getFileName(file.getName());
 
 		PersistenceContext context = getPersistenceContext();
 		context.setBasePath(baseFile.getAbsolutePath());
 		context.setMonitor(monitor);
 
 		//context.setMimeType(entity.getDataTable(), MimeTypes.DOUBLE_MATRIX);
-		context.setFilePath(entity.getDataMatrix(),
-				new File(baseFile, baseName + ".data.gz").getAbsolutePath());
+		context.setEntityContext(entity.getDataMatrix(), new PersistenceEntityContext(
+				new File(baseFile, baseName + ".data.gz").getAbsolutePath(), false));
 
-		context.setFilePath(entity.getModuleMap(),
-				new File(baseFile, baseName + ".modules.gz").getAbsolutePath());
+		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
+				new File(baseFile, baseName + ".modules.gz").getAbsolutePath(), false));
 
-		context.setFilePath(entity.getResultsMatrix(),
-				new File(baseFile, baseName + ".results.gz").getAbsolutePath());
+		context.setEntityContext(entity.getResultsMatrix(), new PersistenceEntityContext(
+				new File(baseFile, baseName + ".results.gz").getAbsolutePath()));
 	}
 }

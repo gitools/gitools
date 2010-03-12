@@ -1,7 +1,9 @@
 package org.gitools.ui.platform.wizard;
 
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.help.HelpContext;
 
 public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
@@ -15,16 +17,22 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	
 	private String title = "";
 
+	private Icon logo;
+
 	private MessageStatus status = MessageStatus.INFO;
 
 	private String message = "";
 
+	private HelpContext helpContext;
+
 	public AbstractWizardPage() {
+		this(null);
 	}
 	
 	public AbstractWizardPage(String id) {
-		this.id = id;
+		this.id = id != null ? id : this.getClass().getCanonicalName();
 		this.pageComplete = false;
+		this.helpContext = new HelpContext(this.getClass());
 	}
 	
 	@Override
@@ -73,6 +81,15 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	}
 
 	@Override
+	public Icon getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Icon logo) {
+		this.logo = logo;
+	}
+
+	@Override
 	public MessageStatus getStatus() {
 		return this.status;
 	}
@@ -92,12 +109,21 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 		updateDialog();
 	}
 
+	@Override
+	public HelpContext getHelpContext() {
+		return helpContext;
+	}
+
+	public void setHelpContext(HelpContext helpContext) {
+		this.helpContext = helpContext;
+	}
+
 	public void setMessage(MessageStatus status, String message) {
 		this.status = status;
 		this.message = message;
 		updateDialog();
 	}
-	
+
 	protected void updateDialog() {
 		IWizard wz = getWizard();
 		if (wz == null)

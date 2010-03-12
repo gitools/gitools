@@ -27,8 +27,10 @@ public class PersistenceContext extends HashMap<Object, Object> {
 
 	private String basePath;
 
-	private Map<Object, String> mimeType = new HashMap<Object, String>();
-	private Map<Object, String> filePath = new HashMap<Object, String>();
+	private Map<Object, PersistenceEntityContext> entityContext =
+			new HashMap<Object, PersistenceEntityContext>();
+
+	//private Map<Object, String> filePath = new HashMap<Object, String>();
 
 	public PersistenceContext() {
 	}
@@ -49,20 +51,22 @@ public class PersistenceContext extends HashMap<Object, Object> {
 		this.basePath = basePath;
 	}
 
+	@Deprecated
 	public String getMimeType(Object key) {
-		return mimeType.get(key);
+		return entityContext.get(key).getMimeType();
 	}
 
-	public void setMimeType(Object object, String mimeType) {
-		this.mimeType.put(object, mimeType);
-	}
-
+	@Deprecated
 	public String getFilePath(Object key) {
-		return filePath.get(key);
+		return entityContext.get(key).getFilePath();
 	}
 
-	public void setFilePath(Object key, String filePath) {
-		this.filePath.put(key, filePath);
+	public PersistenceEntityContext getEntityContext(Object key) {
+		return entityContext.get(key);
+	}
+
+	public void setEntityContext(Object key, PersistenceEntityContext context) {
+		this.entityContext.put(key, context);
 	}
 
 	public String getString(Object key) {

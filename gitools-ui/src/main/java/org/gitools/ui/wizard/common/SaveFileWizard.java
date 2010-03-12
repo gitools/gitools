@@ -18,7 +18,7 @@
 package org.gitools.ui.wizard.common;
 
 import java.io.File;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 
@@ -73,7 +73,7 @@ public class SaveFileWizard extends AbstractWizard {
 		page.setFileName(fileName);
 		page.setFolder(folder);
 		page.setFormats(fileFormats);
-		page.setFormatsVisible(false);
+		page.setFormatsVisible(fileFormats.length > 1);
 		return wiz;
 	}
 }

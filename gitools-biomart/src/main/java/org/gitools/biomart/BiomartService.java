@@ -40,7 +40,7 @@ import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.tablewriter.TsvTableWriter;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

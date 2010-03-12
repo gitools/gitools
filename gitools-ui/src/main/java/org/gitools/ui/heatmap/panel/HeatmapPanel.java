@@ -132,9 +132,9 @@ public class HeatmapPanel extends JPanel {
 				.getPoint(new HeatmapPosition(row, col));
 
 		int leadPointXEnd = leadPoint.x + heatmap.getCellWidth()
-				+ (heatmap.isShowGrid() ? 1 : 0);
+				+ (heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0);
 		int leadPointYEnd = leadPoint.y + heatmap.getCellHeight()
-				+ (heatmap.isShowGrid() ? 1 : 0);
+				+ (heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0);
 
 		colSB.setValueIsAdjusting(true);
 		colSB.setMinimum(0);

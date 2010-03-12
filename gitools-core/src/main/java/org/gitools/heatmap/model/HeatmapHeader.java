@@ -39,8 +39,8 @@ public class HeatmapHeader extends AbstractModel {
 	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
-	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	@XmlTransient
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	//@XmlTransient
 	protected AnnotationMatrix annotations;
 
 	protected String labelPattern;

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 
 import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.Html4Editor;
 
 
@@ -34,5 +35,10 @@ public class WelcomeEditor extends Html4Editor {
 			new OpenEnrichmentAnalysisAction()
 				.actionPerformed(new ActionEvent(this, 0, name));
 		}
+	}
+
+	@Override
+	public void doVisible() {
+		AppFrame.instance().setLeftPanelVisible(false);
 	}
 }

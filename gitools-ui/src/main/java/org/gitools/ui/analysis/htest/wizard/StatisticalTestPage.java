@@ -14,6 +14,8 @@ import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.BinomialTestFactory;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.factory.ZscoreTestFactory;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class StatisticalTestPage extends AbstractWizardPage {
@@ -38,6 +40,9 @@ public class StatisticalTestPage extends AbstractWizardPage {
         initComponents();
 
 		setTitle("Select statistical test");
+
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_STATISTICAL_TEST, 96));
+
 		setComplete(true);
 
 		testCbox.addActionListener(new ActionListener() {

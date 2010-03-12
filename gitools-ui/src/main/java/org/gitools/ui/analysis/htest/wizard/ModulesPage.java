@@ -14,7 +14,10 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
@@ -25,31 +28,22 @@ public class ModulesPage extends AbstractWizardPage {
 
 	private static final long serialVersionUID = -3938595143114651781L;
 
-	private static class FileFormat {
-		public String title;
-		public String mime;
-
-		public FileFormat(String title, String mime) {
-			this.title = title;
-			this.mime = mime;
-		}
-
-		@Override public String toString() {
-			return title;
-		}
-	}
+	private static final FileFormat[] formats = new FileFormat[] {
+			FileFormats.MODULES_2C_MAP,
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.MODULES_INDEXED_MAP
+	};
 
 	/** Creates new form ModuleFilteringPanel */
     public ModulesPage() {
 		setTitle("Select modules");
+		
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_MODULES, 96));
 
         initComponents();
-
-		final FileFormat[] formats = new FileFormat[] {
-			new FileFormat("Two columns mappings", MimeTypes.MODULES_2C_MAP),
-			new FileFormat("Binary data matrix", MimeTypes.DOUBLE_BINARY_MATRIX),
-			new FileFormat("Indexed mappings", MimeTypes.MODULES_INDEXED_MAP)
-		};
 
 		fileFormatCb.setModel(new DefaultComboBoxModel(formats));
 
@@ -104,6 +98,13 @@ public class ModulesPage extends AbstractWizardPage {
 			setStatus(MessageStatus.ERROR);
 			setMessage("Invalid number for modules having less annotated rows filter");
 			completed = false;
+		}
+
+		String path = filePath.getText().trim().toLowerCase();
+		if (!path.isEmpty()) {
+			String ext = getFileFormat().getExtension().toLowerCase();
+			if (!path.endsWith(ext))
+				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");
 		}
 
 		setComplete(completed);
@@ -231,6 +232,14 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 			FileChooserUtils.MODE_OPEN);
 
 	if (selPath != null) {
+		String fileName = selPath.getName().toLowerCase();
+		for (FileFormat ff : formats) {
+			String ext = ff.getExtension().toLowerCase();
+			if (fileName.endsWith(ext)) {
+				fileFormatCb.setSelectedItem(ff);
+				break;
+			}
+		}
 		filePath.setText(selPath.getAbsolutePath());
 		Settings.getDefault().setLastMapPath(selPath.getAbsolutePath());
 	}
@@ -250,8 +259,12 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     public javax.swing.JComboBox minSizeValueCb;
     // End of variables declaration//GEN-END:variables
 
+	protected FileFormat getFileFormat() {
+		return (FileFormat) fileFormatCb.getSelectedItem();
+	}
+
 	public String getFileMime() {
-		return ((FileFormat) fileFormatCb.getSelectedItem()).mime;
+		return ((FileFormat) fileFormatCb.getSelectedItem()).getMime();
 	}
 
 	public File getSelectedFile() {

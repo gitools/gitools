@@ -17,11 +17,16 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.wizard.common.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class ExportHeatmapImageAction extends BaseAction {
 
@@ -50,15 +55,33 @@ public class ExportHeatmapImageAction extends BaseAction {
 		if (!(model instanceof Heatmap))
 			return;
 
-		final File file = FileChooserUtils.selectImageFile(
+		SaveFileWizard saveWiz = new SaveFileWizard();
+		SaveFilePage savePg = saveWiz.getSaveFilePage();
+		savePg.setFolder(Settings.getDefault().getLastExportPath());
+		savePg.setFileName(editor.getName());
+		savePg.setFormats(new FileFormat[] {
+			FileFormats.PNG,
+			FileFormats.JPG
+		});
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), saveWiz);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+
+		/*final File file = FileChooserUtils.selectImageFile(
 					"Select destination file",
 					Settings.getDefault().getLastExportPath(),
 					FileChooserUtils.MODE_SAVE);
 
 		if (file == null)
 			return;
+		 
+		 Settings.getDefault().setLastExportPath(file.getAbsolutePath());*/
 
-		Settings.getDefault().setLastExportPath(file.getAbsolutePath());
+		final File file = saveWiz.getFile();
 
 		final String formatExtension = FileChooserUtils.getExtension(file);
 
@@ -79,14 +102,18 @@ public class ExportHeatmapImageAction extends BaseAction {
 					HeatmapDrawer drawer = new HeatmapDrawer(hm);
 					drawer.setPictureMode(true);
 
-					Dimension size = drawer.getSize();
+					Dimension heatmapSize = drawer.getSize();
 
-					int type = formatExtension.equals(FileChooserUtils.png) ?
-						BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;
+					/*int type = formatExtension.equals(FileChooserUtils.png) ?
+						BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;*/
 
-					BufferedImage bi = new BufferedImage(size.width, size.height, type);
+					int type = BufferedImage.TYPE_INT_ARGB;
+
+					BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, type);
 					Graphics2D g = bi.createGraphics();
-					drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
+					drawer.draw(g,
+							new Rectangle(new Point(), heatmapSize),
+							new Rectangle(new Point(), heatmapSize));
 
 					ImageIO.write(bi, formatExtension, file);
 

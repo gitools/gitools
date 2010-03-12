@@ -13,7 +13,7 @@ public abstract class AbstractWizard implements IWizard {
 	
 	private String title;
 	
-	private Icon icon;
+	private Icon logo;
 	
 	protected IWizardPage currentPage;
 	
@@ -110,12 +110,12 @@ public abstract class AbstractWizard implements IWizard {
 	}
 	
 	@Override
-	public Icon getIcon() {
-		return icon;
+	public Icon getLogo() {
+		return logo;
 	}
 	
-	public void setIcon(Icon icon) {
-		this.icon = icon;
+	public void setLogo(Icon icon) {
+		this.logo = icon;
 	}
 	
 	@Override

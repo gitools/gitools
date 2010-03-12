@@ -17,7 +17,6 @@ import org.gitools.ui.actions.Actions;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.editor.html.WelcomeEditor;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
-import org.gitools.ui._DEPRECATED.jobs.JobProcessor;
 import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.ui.settings.Settings;
 import org.gitools.workspace.Workspace;
@@ -55,6 +54,7 @@ public class AppFrame extends JFrame {
 	private JToolBar toolBar;
 	
 	private JTabbedPane leftPanel;
+	private int leftPanelSize;
 	
 	private NavigatorPanel navPanel;
 
@@ -65,8 +65,8 @@ public class AppFrame extends JFrame {
 	private EditorsPanel editorsPanel;
 	
 	private StatusBar statusBar;
-	
-	private JobProcessor jobProcessor;
+
+	private JSplitPane splitPane;
 	
 	private static AppFrame instance;
 	
@@ -77,9 +77,11 @@ public class AppFrame extends JFrame {
 	}
 	
 	private AppFrame() {
-		createActions();
+
+		this.leftPanelSize = defaultDividerLocation;
 		
 		this.layout = WorkbenchLayout.LEFT;
+
 		createComponents();
 		
 		addWindowListener(new WindowAdapter() {
@@ -97,8 +99,6 @@ public class AppFrame extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 650));
 		pack();
-		
-		jobProcessor = new JobProcessor();
 	}
 
 	public static String getAppName() {
@@ -107,10 +107,6 @@ public class AppFrame extends JFrame {
 	
 	public static String getAppVersion() {
 		return appVersion;
-	}
-	
-	private void createActions() {
-		//FileActionSet.openAnalysisAction.setEnabled(true);
 	}
 	
 	private void createComponents() {
@@ -160,7 +156,7 @@ public class AppFrame extends JFrame {
 		case BOTTOM: leftOrTop = false; break;
 		}
 		
-		final JSplitPane splitPane = new JSplitPane(splitOrientation);
+		splitPane = new JSplitPane(splitOrientation);
 		if (leftOrTop) {
 			splitPane.add(leftPanel);
 			splitPane.add(editorsPanel);
@@ -169,7 +165,7 @@ public class AppFrame extends JFrame {
 			splitPane.add(editorsPanel);
 			splitPane.add(leftPanel);
 		}
-		splitPane.setDividerLocation(defaultDividerLocation);
+		splitPane.setDividerLocation(leftPanelSize);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setContinuousLayout(true);
 		
@@ -205,17 +201,26 @@ public class AppFrame extends JFrame {
 		setLocationByPlatform(true);
 		setVisible(true);
 	}
-	
+
+	public void setLeftPanelVisible(boolean visible) {
+		boolean prevVisible = leftPanel.isVisible();
+
+		if (prevVisible != visible) {
+			if (!visible)
+				leftPanelSize = splitPane.getDividerLocation();
+			else
+				splitPane.setDividerLocation(leftPanelSize);
+
+			leftPanel.setVisible(visible);
+		}
+	}
+
 	public NavigatorPanel getNavigatorPanel() {
 		return navPanel;
 	}
 	
 	public EditorsPanel getEditorsPanel() {
 		return editorsPanel;
-	}
-	
-	public JobProcessor getJobProcessor() {
-		return jobProcessor;
 	}
 
 	public DetailsView getDetailsView() {

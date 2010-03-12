@@ -3,8 +3,10 @@ package org.gitools.ui.analysis.htest.wizard;
 import java.io.File;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileSuffixes;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
@@ -22,6 +24,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		super();
 		
 		setTitle("New enrichment analysis");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ENRICHMENT, 96));
 	}
 	
 	@Override
@@ -85,7 +88,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 
 	public String getDataFileMime() {
-		return dataPage.getDataContents().getMime();
+		return dataPage.getFileFormat().getMime();
 	}
 	
 	public File getDataFile() {

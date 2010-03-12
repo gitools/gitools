@@ -36,5 +36,5 @@ public interface IWizard {
 	
 	String getTitle();
 	
-	Icon getIcon();
+	Icon getLogo();
 }

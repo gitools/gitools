@@ -20,7 +20,7 @@ package org.gitools.ui.analysis.htest.editor.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;

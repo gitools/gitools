@@ -80,6 +80,12 @@
 			<groupId>edu.upf.bg</groupId>
 			<artifactId>bg-commons</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

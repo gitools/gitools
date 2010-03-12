@@ -2,7 +2,6 @@ package org.gitools.ui.heatmap.editor;
 
 import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
@@ -241,6 +240,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 	@Override
 	public void doVisible() {
+		AppFrame.instance().setLeftPanelVisible(true);
 		AppFrame.instance().getPropertiesView().update(heatmap);
 		refreshCellDetails();
 		heatmapPanel.requestFocusInWindow();

@@ -22,7 +22,9 @@ import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.persistence.MimeTypeManager;
 import org.gitools.persistence.PersistenceContext;
+import org.gitools.persistence.PersistenceEntityContext;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceManager.FileRef;
 import org.gitools.persistence.PersistenceUtils;
 
 public class PersistenceReferenceXmlAdapter<T>
@@ -36,6 +38,9 @@ public class PersistenceReferenceXmlAdapter<T>
 
 	@Override
 	public T unmarshal(PersistenceReferenceXmlElement v) throws Exception {
+		if (v.getPath() == null)
+			return null;
+		
 		File baseFile = new File(context.getBasePath());
 
 		boolean absolute = PersistenceUtils.isAbsolute(v.getPath());
@@ -51,23 +56,30 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		T entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
 
-		context.setMimeType(entity, mimeType);
-		context.setFilePath(entity, file.getAbsolutePath());
+		context.setEntityContext(entity,
+				new PersistenceEntityContext(mimeType, file.getAbsolutePath()));
 
 		return entity;
 	}
 
 	@Override
 	public PersistenceReferenceXmlElement marshal(T v) throws Exception {
-		String mimeType = context.getMimeType(v);
+		if (v == null)
+			return new PersistenceReferenceXmlElement();
+		
+		PersistenceEntityContext entityContext = context.getEntityContext(v);
+
+		String mimeType = entityContext.getMimeType();
 		if (mimeType == null)
 			mimeType = MimeTypeManager.getDefault().fromClass(v.getClass());
 
 		File baseFile = new File(context.getBasePath());
 		
-		File file = new File(context.getFilePath(v));
-		File linkFile = PersistenceManager.getDefault().getEntityFile(v);
-		if (linkFile != null)
+		File file = new File(entityContext.getFilePath());
+
+		FileRef fileRef = PersistenceManager.getDefault().getEntityFileRef(v);
+		File linkFile = fileRef != null ? fileRef.getFile() : null;
+		if (entityContext.isReferenceCacheEnabled() && linkFile != null)
 			file = linkFile;
 
 		String path = PersistenceUtils.getRelativePath(
@@ -76,7 +88,7 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		IProgressMonitor monitor = context.getMonitor();
 
-		if (linkFile == null)
+		if (!entityContext.isReferenceCacheEnabled() || linkFile == null)
 			PersistenceManager.getDefault().store(file, v, monitor);
 
 		return new PersistenceReferenceXmlElement(mimeType, path);

@@ -1,6 +1,5 @@
 package org.gitools.matrix.filter;
 
-import org.gitools._DEPRECATED.matrix.filter.ValueFilterCondition;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 
 public class ValueFilterCriteria {

@@ -42,8 +42,12 @@ public abstract class AbstractHeatmapDrawer {
 		this.heatmap = heatmap;
 	}
 
-	protected int getGridSize() {
-		return heatmap.isShowGrid() ? 1 : 0;
+	protected int getRowsGridSize() {
+		return heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0;
+	}
+
+	protected int getColumnsGridSize() {
+		return heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0;
 	}
 
 	protected int getBorderSize() {

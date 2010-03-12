@@ -14,6 +14,7 @@ import java.util.Set;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
@@ -142,8 +143,15 @@ public class EnrichmentCommand extends HtestCommand {
 		if (populationLabels != null)
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 
-		BaseMatrix dataMatrix = (BaseMatrix) PersistenceManager.getDefault()
+		Object obj = PersistenceManager.getDefault()
 				.load(dataFile, dataFileMime, dataProps, monitor);
+
+		BaseMatrix dataMatrix = null;
+		if (obj instanceof BaseMatrix)
+			dataMatrix = (BaseMatrix) obj;
+		else if (obj instanceof ModuleMap) {
+			dataMatrix = moduleMapToMatrix((ModuleMap) obj);
+		}
 
 		// Load modules
 
@@ -196,5 +204,22 @@ public class EnrichmentCommand extends HtestCommand {
 		}
 
 		return new Object[] { dataMatrix, moduleMap };
+	}
+
+	private BaseMatrix moduleMapToMatrix(ModuleMap mmap) {
+		DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
+		String[] columns = mmap.getModuleNames();
+		String[] rows = mmap.getItemNames();
+		matrix.setColumns(columns);
+		matrix.setRows(rows);
+		matrix.makeCells(rows.length, columns.length);
+		for (int col = 0; col < mmap.getModuleCount(); col++)
+			for (int row : mmap.getItemIndices(col))
+				matrix.setCellValue(row, col, 0, 1.0);
+		return matrix;
+	}
+
+	private ModuleMap matrixToModuleMap(IMatrix matrix) {
+		throw new UnsupportedOperationException("Conversion from matrix format to modules not implemented yet");
 	}
 }

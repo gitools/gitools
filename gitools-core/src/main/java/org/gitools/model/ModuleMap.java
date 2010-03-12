@@ -19,7 +19,7 @@ public class ModuleMap extends Artifact {
 
 	protected int[][] itemIndices;
 
-	protected int[] itemsOrder;
+	//protected int[] itemsOrder;
 	
 	protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
 	protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
@@ -45,15 +45,15 @@ public class ModuleMap extends Artifact {
 		map = new BitMatrix(moduleNames.length, itemNames.length);
 	}*/
 	
-	@Deprecated
+	//@Deprecated
 	public ModuleMap(String[] moduleNames, String[] itemNames,
-			int[][] itemIndices, int[] itemsOrder) {
+			int[][] itemIndices/*, int[] itemsOrder*/) {
 
 		setModuleNames(moduleNames);
 		setItemNames(itemNames);
 
 		this.itemIndices = itemIndices;
-		this.itemsOrder = itemsOrder;
+		//this.itemsOrder = itemsOrder;
 	}
 	
 	public String[] getModuleNames() {
@@ -81,6 +81,10 @@ public class ModuleMap extends Artifact {
 		moduleIndexMap.clear();
 		for (int i = 0; i < moduleNames.length; i++)
 			moduleIndexMap.put(moduleNames[i], i);
+	}
+
+	public int getModuleItemCount(int index) {
+		return itemIndices[index].length;
 	}
 	
 	public String[] getItemNames() {
@@ -215,5 +219,12 @@ public class ModuleMap extends Artifact {
 			return null;
 
 		return itemIndices[modIndex];
+	}
+
+	public void printItemCount() {
+		for (int i = 0; i < getModuleCount(); i++) {
+			System.out.print(getModuleName(i) + "\t");
+			System.out.println(getModuleItemCount(i));
+		}
 	}
 }

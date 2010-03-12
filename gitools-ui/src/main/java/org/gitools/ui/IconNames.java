@@ -74,4 +74,19 @@ public class IconNames {
 	public static final String viewAnnotatedElements16 = "/img/ViewAnnotatedElements16.gif";
 	public static final String viewAnnotatedElements24 = "/img/ViewAnnotatedElements24.gif";
 
+	public static final String LOGO_INTOGEN = "/img/intogen/IntOGenWebLogo.png";
+	
+	public static final String LOGO_BIOMART_IMPORT = "/img/logos/BiomartImport.png";
+	
+	public static final String LOGO_ENRICHMENT = "/img/logos/Enrichment.png";
+
+	public static final String LOGO_SAVE = "/img/logos/Save.png";
+
+	public static final String LOGO_DATA = "/img/logos/Data.png";
+
+	public static final String LOGO_MODULES = "/img/logos/Modules.png";
+
+	public static final String LOGO_STATISTICAL_TEST = "/img/logos/StatisticalTest.png";
+
+	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
 }

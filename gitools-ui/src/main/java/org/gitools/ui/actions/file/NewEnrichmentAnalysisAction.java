@@ -66,7 +66,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 					final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
 
-					editor.setName(PersistenceUtils.getBaseName(wizard.getDataFile().getName()));
+					editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

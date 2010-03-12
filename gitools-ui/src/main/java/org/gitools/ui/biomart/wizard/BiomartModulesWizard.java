@@ -4,10 +4,11 @@ import java.io.File;
 import org.biomart._80.martservicesoap.Attribute;
 import org.biomart._80.martservicesoap.Dataset;
 import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
 import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartService;
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
@@ -27,7 +28,9 @@ public class BiomartModulesWizard extends AbstractWizard {
 
 	public BiomartModulesWizard(BiomartService biomartService) {
 		this.biomartService = biomartService;
+		
 		setTitle("Import modules...");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
 	}
 
 	@Override
@@ -50,11 +53,13 @@ public class BiomartModulesWizard extends AbstractWizard {
 		
 		// Modules attribute
 		modulesAttributePage = new BiomartAttributePage(biomartService);
+		modulesAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "1");
 		modulesAttributePage.setTitle("Select attribute for modules");
 		addPage(modulesAttributePage);
 		
 		// Data attribute
 		dataAttributePage = new BiomartAttributePage(biomartService);
+		dataAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "2");
 		dataAttributePage.setTitle("Select attribute for data");
 		addPage(dataAttributePage);
 	}
@@ -69,10 +74,11 @@ public class BiomartModulesWizard extends AbstractWizard {
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (page == databasePage)
 			datasetPage.setMart(databasePage.getMart());
-		else if (page == datasetPage)
+		else if (page == datasetPage) {
 			modulesAttributePage.setSource(
 					databasePage.getMart(),
 					datasetPage.getDataset());
+		}
 		else if (page == modulesAttributePage)
 			dataAttributePage.setAttributePages(
 					modulesAttributePage.getAttributePages());

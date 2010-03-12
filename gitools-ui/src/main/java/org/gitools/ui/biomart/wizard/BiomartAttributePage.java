@@ -1,5 +1,6 @@
 package org.gitools.ui.biomart.wizard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -16,8 +17,11 @@ import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartService;
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredTreePage;
+import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
@@ -67,6 +71,8 @@ public class BiomartAttributePage extends FilteredTreePage {
 		setMessage("Retrieving available attributes ...");
 		
 		setComplete(false);
+
+		panel.setModel(new AttributesTreeModel(new ArrayList<AttributePage>(0)));
 		
 		new Thread(new Runnable() {
 			@Override public void run() {
@@ -81,8 +87,9 @@ public class BiomartAttributePage extends FilteredTreePage {
 					
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override public void run() {
-							getPanel().setModel(model);
-							getPanel().expandAll();
+							FilteredTreePanel p = getPanel();
+							p.setModel(model);
+							p.expandAll();
 							setMessage(MessageStatus.INFO, "");
 						}
 					});
@@ -91,8 +98,9 @@ public class BiomartAttributePage extends FilteredTreePage {
 				}
 				catch (Exception e) {
 					setStatus(MessageStatus.ERROR);
-					setMessage(e.getMessage());
-					e.printStackTrace();
+					setMessage(e.getClass().getSimpleName() + ": " + e.getMessage());
+					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), e);
+					dlg.setVisible(true);
 				}
 			}
 		}).start();
@@ -123,6 +131,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 
 	public synchronized void setAttributePages(List<AttributePage> attrPages) {
 		this.attrPages = attrPages;
+		updated = false;
 	}
 	
 	public synchronized List<AttributePage> getAttributePages() {

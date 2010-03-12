@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +18,10 @@ import javax.swing.JPanel;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.help.Help;
+import org.gitools.ui.platform.help.HelpContext;
+import org.gitools.ui.platform.help.HelpException;
 
 public class WizardDialog extends AbstractDialog {
 
@@ -32,7 +34,8 @@ public class WizardDialog extends AbstractDialog {
 	protected Stack<IWizardPage> pageHistory;
 	
 	protected JPanel pagePanel;
-	
+
+	protected JButton helpButton;
 	protected JButton backButton;
 	protected JButton nextButton;
 	protected JButton finishButton;
@@ -42,7 +45,7 @@ public class WizardDialog extends AbstractDialog {
 
 	public WizardDialog(Window owner, IWizard wizard) {
 		
-		super(owner, wizard.getTitle(), wizard.getIcon());
+		super(owner, wizard.getTitle(), wizard.getLogo());
 
 		setMinimumSize(new Dimension(800, 600));
 		setPreferredSize(new Dimension(800, 600));
@@ -125,6 +128,14 @@ public class WizardDialog extends AbstractDialog {
 	
 	@Override
 	protected List<JButton> createButtons() {
+
+		helpButton = new JButton("Help");
+		helpButton.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				helpActionPerformed();
+			}
+		});
+
 		backButton = new JButton("< Back");
 		backButton.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
@@ -152,6 +163,8 @@ public class WizardDialog extends AbstractDialog {
 				finishActionPerformed();
 			}
 		});
+
+		nextButton.setDefaultCapable(true);
 		
 		return Arrays.asList(
 				backButton,
@@ -159,9 +172,23 @@ public class WizardDialog extends AbstractDialog {
 				DialogButtonsPanel.SEPARATOR,
 				cancelButton,
 				DialogButtonsPanel.SEPARATOR,
-				finishButton);
+				finishButton,
+				DialogButtonsPanel.SEPARATOR,
+				helpButton);
 	}
-	
+
+	private void helpActionPerformed() {
+		HelpContext context = currentPage.getHelpContext();
+		if (context != null) {
+			try {
+				Help.getDefault().showHelp(context);
+			} catch (HelpException ex) {
+				ExceptionDialog dlg = new ExceptionDialog(this, ex);
+				dlg.setVisible(true);
+			}
+		}
+	}
+
 	private void backActionPerformed() {
 		setCurrentPage(pageHistory.pop(), false);
 	}
@@ -197,6 +224,7 @@ public class WizardDialog extends AbstractDialog {
 		if (currentPage != null) {
 			DialogHeaderPanel header = getHeaderPanel();
 			header.setTitle(currentPage.getTitle());
+			header.setLeftLogo(currentPage.getLogo());
 			header.setMessageStatus(currentPage.getStatus());
 			header.setMessage(currentPage.getMessage());
 			

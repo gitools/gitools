@@ -23,7 +23,6 @@ import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -46,9 +45,11 @@ public class HeatmapUtil {
 			decorator.setCutoff(1.0);
 			decorator.setCutoffCmp(CutoffCmp.EQ);
 			figure.setCellDecorator(decorator);
-			figure.setShowGrid(false);
+			figure.setRowsGridEnabled(false);
+			figure.setColumnsGridEnabled(false);
 		} else if (matrix instanceof DoubleMatrix) {
-			figure.setShowGrid(false);
+			figure.setRowsGridEnabled(false);
+			figure.setColumnsGridEnabled(false);
 		}
 		else if (matrix instanceof ObjectMatrix) {
 			ElementDecorator decorator =

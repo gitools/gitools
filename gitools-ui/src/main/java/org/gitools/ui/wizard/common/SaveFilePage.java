@@ -23,13 +23,15 @@
 
 package org.gitools.ui.wizard.common;
 
-import org.gitools.fileutils.FileFormat;
+import org.gitools.persistence.FileFormat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
@@ -39,6 +41,8 @@ public class SaveFilePage extends AbstractWizardPage {
 
     /** Creates new form SaveFilePage */
     public SaveFilePage() {
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
+
         initComponents();
 
 		fileName.getDocument().addDocumentListener(new DocumentChangeListener() {

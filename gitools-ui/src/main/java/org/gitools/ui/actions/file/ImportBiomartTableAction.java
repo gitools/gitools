@@ -42,7 +42,7 @@ public class ImportBiomartTableAction extends BaseAction {
 				monitor.begin("Downloading data...", 1);
 
 				Query query = wizard.getQuery();
-				String format = (String) wizard.getFormat().getUserObject();
+				String format = (String) wizard.getFormat().getMime();
 
 				try {
 					BiomartService.getDefault()

@@ -25,6 +25,7 @@ package org.gitools.ui.intogen.dialog;
 
 import java.io.File;
 import javax.swing.event.DocumentEvent;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -50,7 +51,7 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
         initComponents();
 
 		headerPanel.setTitle("Select name prefix and folder");
-		headerPanel.setRightLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
+		headerPanel.setRightLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
 		headerPanel.setRightLogoLink("http://www.intogen.org");
 
 		namePrefix.setText("unnamed");

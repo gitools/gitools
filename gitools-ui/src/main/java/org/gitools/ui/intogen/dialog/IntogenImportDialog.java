@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.gitools.intogen.IntogenService;
 import org.gitools.intogen.IntogenServiceException;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
@@ -72,7 +73,7 @@ public class IntogenImportDialog extends JDialog {
 		headerPanel = new DialogHeaderPanel();
 		headerPanel.setTitle("www.intogen.org");
 		headerPanel.setMessage("");
-		headerPanel.setRightLogo(IconUtils.getIconResource("/img/intogen/IntOGenWebLogo.png"));
+		headerPanel.setRightLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
 		headerPanel.setRightLogoLink("http://www.intogen.org");
 		
 		htmlPanel = new HtmlPanel();

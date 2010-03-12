@@ -32,11 +32,12 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
 		int borderSize = getBorderSize();
-		int gridSize = getGridSize();
+		int rowsGridSize = getRowsGridSize();
+		int columnsGridSize = getColumnsGridSize();
 		
 		// Clear background to grid color
-		g.setColor(heatmap.getGridColor());
-		g.fillRect(clip.x, clip.y, clip.width, clip.height);
+		/*g.setColor(heatmap.getRowsGridColor());
+		g.fillRect(clip.x, clip.y, clip.width, clip.height);*/
 
 		// Draw borders and grid background
 		if (heatmap.isShowBorders()) {
@@ -47,8 +48,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		
 		IMatrixView data = heatmap.getMatrixView();
 		
-		int cellWidth = heatmap.getCellWidth() + gridSize;
-		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int cellWidth = heatmap.getCellWidth() + columnsGridSize;
+		int cellHeight = heatmap.getCellHeight() + rowsGridSize;
 
 		//TODO take into account extBorderSize
 		int rowStart = (clip.y - box.y) / cellHeight;
@@ -76,11 +77,19 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 				Color color = decoration.getBgColor();
 				g.setColor(color);
 
-				g.fillRect(x, y, cellWidth - gridSize, cellHeight - gridSize);
+				g.fillRect(x, y, cellWidth - columnsGridSize, cellHeight - rowsGridSize);
+
+				g.setColor(heatmap.getRowsGridColor());
+
+				g.fillRect(x, y + cellHeight - rowsGridSize, cellWidth, rowsGridSize);
+
+				g.setColor(heatmap.getColumnsGridColor());
+
+				g.fillRect(x + cellHeight - rowsGridSize, y, columnsGridSize, cellHeight - rowsGridSize);
 
 				if (!pictureMode && row == leadRow && col == leadColumn) {
 					g.setColor(ColorUtils.invert(color));
-					g.drawRect(x, y, cellWidth - gridSize - 1, cellHeight - gridSize - 1);
+					g.drawRect(x, y, cellWidth - columnsGridSize - 1, cellHeight - rowsGridSize - 1);
 				}
 
 				x += cellWidth;
@@ -91,9 +100,10 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public Dimension getSize() {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
-		int cellWidth = heatmap.getCellWidth() + gridSize;
-		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int rowsGridSize = getRowsGridSize();
+		int columnsGridSize = getColumnsGridSize();
+		int cellWidth = heatmap.getCellWidth() + columnsGridSize;
+		int cellHeight = heatmap.getCellHeight() + rowsGridSize;
 		int rowCount = heatmap.getMatrixView().getRowCount();
 		int columnCount = heatmap.getMatrixView().getColumnCount();
 		int extBorder = /*2 * 1 - 1*/ 0;
@@ -104,14 +114,15 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public HeatmapPosition getPosition(Point p) {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int rowsGridSize = getRowsGridSize();
+		int columnsGridSize = getColumnsGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
 
-		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int cellHeight = heatmap.getCellHeight() + rowsGridSize;
 		int rowCount = heatmap.getMatrixView().getRowCount();
 		int totalHeight = cellHeight * rowCount + extBorder;
 
-		int cellWidth = heatmap.getCellWidth() + gridSize;
+		int cellWidth = heatmap.getCellWidth() + columnsGridSize;
 		int columnCount = heatmap.getMatrixView().getColumnCount();
 		int totalWidth = cellWidth * columnCount + extBorder;
 		
@@ -123,14 +134,15 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public Point getPoint(HeatmapPosition p) {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int rowsGridSize = getRowsGridSize();
+		int columnsGridSize = getColumnsGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
 
-		int cellHeight = heatmap.getCellHeight() + gridSize;
+		int cellHeight = heatmap.getCellHeight() + rowsGridSize;
 		int rowCount = heatmap.getMatrixView().getRowCount();
 		int totalHeight = cellHeight * rowCount + extBorder;
 
-		int cellWidth = heatmap.getCellWidth() + gridSize;
+		int cellWidth = heatmap.getCellWidth() + columnsGridSize;
 		int columnCount = heatmap.getMatrixView().getColumnCount();
 		int totalWidth = cellWidth * columnCount + extBorder;
 

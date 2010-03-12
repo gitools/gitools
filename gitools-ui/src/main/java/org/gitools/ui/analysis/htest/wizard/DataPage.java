@@ -15,6 +15,10 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
@@ -24,14 +28,25 @@ import org.gitools.ui.utils.FileChooserUtils;
 public class DataPage extends AbstractWizardPage {
 
 	private static final long serialVersionUID = 3840797252370672587L;
-	
+
+	private static final FileFormat[] formats = new FileFormat[] {
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.MODULES_2C_MAP,
+			FileFormats.MODULES_INDEXED_MAP
+	};
+
 	/** Creates new form DataSourcePanel */
     public DataPage() {
 		setTitle("Select data source");
+
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_DATA, 96));
 		
         initComponents();
 
-		dataContentsCb.setModel(new DefaultComboBoxModel(DataContents.values()));
+		dataContentsCb.setModel(new DefaultComboBoxModel(formats));
 		dataContentsCb.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				updateState(); }
@@ -69,12 +84,9 @@ public class DataPage extends AbstractWizardPage {
     }
 
 	private void updateState() {
-		DataContents dc = (DataContents) dataContentsCb.getSelectedItem();
+		FileFormat ff = (FileFormat) dataContentsCb.getSelectedItem();
 
-		boolean binaryFilterEnabled =
-				dc != DataContents.BINARY_DATA_MATRIX &&
-				dc != DataContents.GENE_MATRIX &&
-				dc != DataContents.GENE_MATRIX_TRANSPOSED;
+		boolean binaryFilterEnabled = ff == FileFormats.DOUBLE_MATRIX;
 
 		cutoffEnabledCheck.setEnabled(binaryFilterEnabled);
 		cutoffCmpCb.setEnabled(binaryFilterEnabled && cutoffEnabledCheck.isSelected());
@@ -85,6 +97,13 @@ public class DataPage extends AbstractWizardPage {
 		rowFilterFileBrowseBtn.setEnabled(rowFilterEnabledCheck.isSelected());
 
 		setMessage(MessageStatus.INFO, "");
+
+		String path = dataFilePath.getText().trim().toLowerCase();
+		if (!path.isEmpty()) {
+			String ext = getFileFormat().getExtension().toLowerCase();
+			if (!path.endsWith(ext))
+				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");
+		}
 
 		boolean c = !dataFilePath.getText().isEmpty();
 		
@@ -280,6 +299,15 @@ public class DataPage extends AbstractWizardPage {
 				FileChooserUtils.MODE_OPEN);
 
 		if (selPath != null) {
+			String fileName = selPath.getName().toLowerCase();
+			for (FileFormat ff : formats) {
+				String ext = ff.getExtension().toLowerCase();
+				if (fileName.endsWith(ext)) {
+					dataContentsCb.setSelectedItem(ff);
+					break;
+				}
+			}
+			
 			dataFilePath.setText(selPath.getAbsolutePath());
 			Settings.getDefault().setLastDataPath(selPath.getAbsolutePath());
 		}
@@ -332,8 +360,8 @@ public class DataPage extends AbstractWizardPage {
     private javax.swing.JRadioButton rowFilterIncludeRb;
     // End of variables declaration//GEN-END:variables
 
-	public DataContents getDataContents() {
-		return (DataContents) dataContentsCb.getSelectedItem();
+	public FileFormat getFileFormat() {
+		return (FileFormat) dataContentsCb.getSelectedItem();
 	}
 
 	public File getDataFile() {

@@ -119,7 +119,7 @@ public class PersistenceUtils {
 			//  Comment this out if you prefer that a relative path not start with ./
 			//relative = "." + pathSeparator;
 		} else {
-			int numDirsUp = base.length - commonIndex - (isDir ? 0 : 1); /* only subtract 1 if it  is a file. */
+			int numDirsUp = base.length - commonIndex; /*- (isDir ? 0 : 1); /* only subtract 1 if it  is a file. */
 			//  The number of directories we have to backtrack is the length of
 			//  the base path MINUS the number of common path elements, minus
 			//  one because the last element in the path isn't a directory.
@@ -136,15 +136,23 @@ public class PersistenceUtils {
 		return relative;
 	}
 
+	/** Returns file name (including extension) without path */
+	public static String getBaseName(String path) {
+		int sep = path.lastIndexOf(File.separatorChar);
+		return path.substring(sep + 1);
+	}
+
 	/** Returns the file name without extension */
-	public static String getBaseName(String fileName) {
-		int pos = fileName.lastIndexOf('.');
-		if (pos == -1)
-			return fileName;
-		else if (pos == 0)
-			return "";
-		else
-			return fileName.substring(0, pos);
+	public static String getFileName(String path) {
+		int dot = path.lastIndexOf('.');
+		int sep = path.lastIndexOf(File.separatorChar);
+		return path.substring(sep + 1, dot);
+	}
+
+	/** Returns only the extension from the last point */
+	public static String getExtension(String path) {
+		int dot = path.lastIndexOf('.');
+		return path.substring(dot + 1);
 	}
 
 	/** Return whether is or not an absolute path */

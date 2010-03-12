@@ -48,6 +48,22 @@ public class PersistenceManager implements Serializable {
 				&& file.lastModified() == f.file.lastModified();
 		}
 	}
+
+	public static class FileRef {
+		private File file;
+		private String mime;
+
+		public FileRef(File file, String mime) {
+			this.file = file;
+			this.mime = mime;
+		}
+		public File getFile() {
+			return file;
+		}
+		public String getMime() {
+			return mime;
+		}
+	}
 	
 	private static PersistenceManager defaultManager;
 	
@@ -55,7 +71,7 @@ public class PersistenceManager implements Serializable {
 		new HashMap<String, Class<? extends IEntityPersistence<?>>>();
 
 	private final Map<FileKey, Object> entityCache = new HashMap<FileKey, Object>();
-	private final Map<Object, File> entityFileMap = new HashMap<Object, File>();
+	private final Map<Object, FileRef> entityFileRefMap = new HashMap<Object, FileRef>();
 	
 	public static final PersistenceManager getDefault() {
 		if (defaultManager == null)
@@ -146,7 +162,7 @@ public class PersistenceManager implements Serializable {
 		Object entity = entityPersistence.read(file, monitor);
 
 		entityCache.put(fileKey, entity);
-		entityFileMap.put(entity, file);
+		entityFileRefMap.put(entity, new FileRef(file, mimeType));
 
 		return entity;
 	}
@@ -186,10 +202,20 @@ public class PersistenceManager implements Serializable {
 		entityPersistence.write(file, entity, monitor);
 		
 		entityCache.put(new FileKey(file), entity);
-		entityFileMap.put(entity, file);
+		entityFileRefMap.put(entity, new FileRef(file, mimeType));
 	}
-	
+
+	@Deprecated // use getEntityFileRef() instead
 	public File getEntityFile(Object entity) {
-		return entityFileMap.get(entity);
+		return entityFileRefMap.get(entity).getFile();
+	}
+
+	@Deprecated // use getEntityFileRef() instead
+	public String getEntityMime(Object entity) {
+		return entityFileRefMap.get(entity).getMime();
+	}
+
+	public FileRef getEntityFileRef(Object entity) {
+		return entityFileRefMap.get(entity);
 	}
 }

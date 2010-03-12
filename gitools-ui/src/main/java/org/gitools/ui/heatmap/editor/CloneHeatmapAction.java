@@ -18,7 +18,6 @@
 package org.gitools.ui.heatmap.editor;
 
 import java.awt.event.ActionEvent;
-import org.gitools.fileutils.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileSuffixes;
@@ -27,9 +26,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.SerialClone;
 
 public class CloneHeatmapAction extends BaseAction {
@@ -74,8 +70,12 @@ public class CloneHeatmapAction extends BaseAction {
 		clone.setCellWidth(hm.getCellWidth());
 		clone.setColumnHeaderSize(hm.getColumnHeaderSize());
 		clone.setRowHeaderSize(hm.getRowHeaderSize());
-		clone.setGridColor(hm.getGridColor());
-		clone.setShowGrid(hm.isShowGrid());
+		clone.setRowsGridColor(hm.getRowsGridColor());
+		clone.setRowsGridEnabled(hm.isRowsGridEnabled());
+		clone.setRowsGridSize(hm.getRowsGridSize());
+		clone.setColumnsGridColor(hm.getColumnsGridColor());
+		clone.setColumnsGridEnabled(hm.isColumnsGridEnabled());
+		clone.setColumnsGridSize(hm.getColumnsGridSize());
 		clone.setShowBorders(hm.isShowBorders());
 		clone.setCellDecorator(SerialClone.xclone(hm.getCellDecorator()));
 		clone.setColumnHeader(SerialClone.xclone(hm.getColumnHeader()));

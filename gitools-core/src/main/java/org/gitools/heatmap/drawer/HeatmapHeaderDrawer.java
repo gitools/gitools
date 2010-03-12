@@ -51,13 +51,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 		g.setFont(hdr.getFont());
 		
-		final Color gridColor = heatmap.getGridColor();
+		final Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
 
 		int gridSize = getGridSize();
 		
 		int maxWidth = horizontal ? clip.height : clip.width;
 		int width = horizontal ? heatmap.getColumnHeaderSize() : heatmap.getRowHeaderSize();
-		int height = horizontal ? heatmap.getCellWidth() + gridSize : heatmap.getCellHeight() + gridSize;
+		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
 
 		width = width < maxWidth ? maxWidth : width;
 
@@ -80,7 +80,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		}
 
 		int fontHeight = g.getFontMetrics().getHeight();
-		int fontOffset = ((fontHeight + height) / 2) - 1;
+		int fontOffset = ((fontHeight + height - gridSize) / 2) - 1;
 
 		int leadRow = data.getLeadSelectionRow();
 		int leadColumn = data.getLeadSelectionColumn();
@@ -109,17 +109,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				(leadRow == index) /*&& (leadColumn == -1)*/);
 
 			g.setColor(gridColor);
-			g.drawLine(x, y + height - 1, x + width, y + height - 1);
+			g.fillRect(x, y + height - gridSize, width, gridSize);
 			
 			g.setColor(bgColor);
-			if (selected)
-				g.fillRect(x, y, width, height);
-			else
-				g.fillRect(x, y, width, height - gridSize);
+			g.fillRect(x, y, width, height - gridSize);
 
 			if (lead) {
 				g.setColor(ColorUtils.invert(bgColor));
-				g.drawRect(x, y, width, height - 1);
+				g.drawRect(x, y, width, height - gridSize);
 			}
 
 			if (fontHeight <= height - gridSize) {
@@ -133,8 +130,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public Dimension getSize() {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int gridSize = getGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
+
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;
 			int columnCount = heatmap.getMatrixView().getColumnCount();
@@ -153,7 +151,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public HeatmapPosition getPosition(Point p) {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int gridSize = getGridSize();
 
 		int row = -1;
 		int col = -1;
@@ -176,7 +174,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public Point getPoint(HeatmapPosition p) {
-		int gridSize = heatmap.isShowGrid() ? 1 : 0;
+		int gridSize = getGridSize();
 
 		int x = 0;
 		int y = 0;
@@ -197,5 +195,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		}
 
 		return new Point(x, y);
+	}
+
+	private int getGridSize() {
+		return horizontal ? getColumnsGridSize() : getRowsGridSize();
 	}
 }
