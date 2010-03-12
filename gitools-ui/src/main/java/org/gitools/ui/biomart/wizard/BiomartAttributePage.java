@@ -10,11 +10,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 
-import org.biomart._80.martservicesoap.AttributeInfo;
-import org.biomart._80.martservicesoap.AttributePage;
-import org.biomart._80.martservicesoap.DatasetInfo;
-import org.biomart._80.martservicesoap.Mart;
-import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.cxf.AttributeInfo;
+import org.gitools.biomart.cxf.AttributePage;
+import org.gitools.biomart.cxf.DatasetInfo;
+import org.gitools.biomart.cxf.Mart;
+import org.gitools.biomart.IBiomartService;
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.platform.AppFrame;
@@ -25,7 +25,7 @@ import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
-	private BiomartService biomartService;
+	private IBiomartService biomartService;
 
 	private Mart mart;
 	private DatasetInfo dataset;
@@ -36,7 +36,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 	
 	private boolean updated;
 	
-	public BiomartAttributePage(BiomartService biomartService) {
+	public BiomartAttributePage(IBiomartService biomartService) {
 		super();
 	
 		this.biomartService = biomartService;

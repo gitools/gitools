@@ -20,11 +20,11 @@ package org.gitools.ui.biomart.wizard;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import org.biomart._80.martservicesoap.AttributeInfo;
-import org.biomart._80.martservicesoap.AttributePage;
-import org.biomart._80.martservicesoap.DatasetInfo;
-import org.biomart._80.martservicesoap.Mart;
-import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.cxf.AttributeInfo;
+import org.gitools.biomart.cxf.AttributePage;
+import org.gitools.biomart.cxf.DatasetInfo;
+import org.gitools.biomart.cxf.Mart;
+import org.gitools.biomart.IBiomartService;
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -38,9 +38,9 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 
 	private BiomartAttributeListPanel panel;
 	
-	private final BiomartService biomartService;
+	private final IBiomartService biomartService;
 
-	public BiomartAttributeListPage(BiomartService biomartService) {
+	public BiomartAttributeListPage(IBiomartService biomartService) {
 		this.biomartService = biomartService;
 	}
 

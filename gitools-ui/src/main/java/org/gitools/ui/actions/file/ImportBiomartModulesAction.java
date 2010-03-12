@@ -3,8 +3,11 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import org.biomart._80.martservicesoap.Query;
-import org.gitools.biomart.BiomartService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.gitools.biomart.BiomartServiceException;
+import org.gitools.biomart.cxf.Query;
+import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.ui.IconNames;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -27,37 +30,33 @@ public class ImportBiomartModulesAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final BiomartModulesWizard wizard = new BiomartModulesWizard(
-				BiomartService.getDefault());
 		
-		WizardDialog wdlg = new WizardDialog(
-				AppFrame.instance(), wizard);
-		
-		wdlg.open();
-		if (wdlg.isCancelled())
-			return;
-
-		final File file = wizard.getSelectedFile();
-
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				monitor.begin("Downloading data...", 1);
-
-				Query query = wizard.getQuery();
-				String format = (String) wizard.getFormat().getMime();
-
-				try {
-					BiomartService.getDefault()
-							.queryModule(query, file, format, monitor);
-				}
-				catch (Exception ex) {
-					monitor.exception(ex);
-				}
-
-				monitor.end();
+		try {
+			final BiomartModulesWizard wizard = new BiomartModulesWizard(BiomartServiceFactory.createDefaultservice());
+			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
+			wdlg.open();
+			if (wdlg.isCancelled()) {
+				return;
 			}
-		});
+			final File file = wizard.getSelectedFile();
+			JobThread.execute(AppFrame.instance(), new JobRunnable() {
+
+				@Override
+				public void run(IProgressMonitor monitor) {
+					monitor.begin("Downloading data...", 1);
+					Query query = wizard.getQuery();
+					String format = (String) wizard.getFormat().getMime();
+					try {
+						BiomartServiceFactory.createDefaultservice().queryModule(query, file, format, monitor);
+					} catch (Exception ex) {
+						monitor.exception(ex);
+					}
+					monitor.end();
+				}
+			});
+		} catch (BiomartServiceException ex) {
+			Logger.getLogger(ImportBiomartModulesAction.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 }

@@ -26,11 +26,11 @@ package org.gitools.ui.biomart.dialog;
 import java.util.List;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import org.biomart._80.martservicesoap.AttributeInfo;
-import org.biomart._80.martservicesoap.AttributePage;
-import org.biomart._80.martservicesoap.DatasetInfo;
-import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
+import org.gitools.biomart.cxf.AttributeInfo;
+import org.gitools.biomart.cxf.AttributePage;
+import org.gitools.biomart.cxf.DatasetInfo;
+import org.gitools.biomart.cxf.Mart;
+import org.gitools.biomart.cxf.MartServiceSoap;
 import org.gitools.ui.biomart.panel.BiomartAttributePanel.AttributeSelectionListener;
 
 public class BiomartAttributeDialog extends javax.swing.JDialog {
