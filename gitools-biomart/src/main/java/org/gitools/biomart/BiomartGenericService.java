@@ -433,7 +433,9 @@ public class BiomartGenericService implements IBiomartService {
 			log.info("queryModule: " + count + " rows in " + time.toString());
 		}
 	}
-
+	
+/**
+ * 
 	public static void main(String[] args) throws BiomartServiceException {
 
 		try {
@@ -450,33 +452,12 @@ public class BiomartGenericService implements IBiomartService {
 				}
 			}
 
-			//b.marshallingJAXBClass(GetRegistryResponse.class);
-			// WEBSITE 1
-            /*
-			b.conf.getServiceNamespace() = "http://www.biomart.org:80/MartServiceSoap";
-			b.conf.getServicePortName() = "BioMartSoapPort";
-			b.conf.getWdslUrl() = "http://www.biomart.org:80/biomart/martwsdl";
-			b.conf.getServiceName()= "BioMartSoapService";
-			 */
-			// WEBSITE 3
-            /*
-			b.WSDL_LOCATION = "http://www.ebi.ac.uk/Tools/webservices/wsdl/WSDbfetch.wsdl";
-			b.conf.getServiceNamespace() = "http://www.ebi.ac.uk/ws/services/WSDbfetch";
-			b.conf.getServicePortName() = "WSDbfetch";
-			b.conf.getServiceName()= "WSDBFetchServerLegacyService";
-			// WEBSITE 4
-			b.conf.getServiceNamespace() = "http://webservices.service.ae3";
-			b.conf.getServicePortName() = "AtlasWebServiceImplPort";
-			b.conf.getWdslUrl() = "http://www.ebi.ac.uk/microarray-as/atlas/services/AtlasWebService?wsdl";
-			b.conf.getServiceName()= "AtlasWebServiceImp";
-			 *
-			 */
-			//b.initParams();
-			//b.test5("getSupportedDBs");
 		} catch (BiomartServiceException ex) {
 			throw new BiomartServiceException("Programm finished with errors.", ex);
 		}
 
 
 	}
+	*/
+
 }

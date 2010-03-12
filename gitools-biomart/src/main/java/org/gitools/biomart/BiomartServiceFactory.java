@@ -16,11 +16,6 @@
  */
 package org.gitools.biomart;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.gitools.biomart.cxf.DatasetInfo;
-import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 
@@ -67,10 +62,11 @@ public class BiomartServiceFactory {
      * Creates the default Biomart Service (currently through Biomart Central Portal)
      * @return biomart service
      */
-    public static IBiomartService createDefaultservice() {
+    public static IBiomartService createDefaultservice() throws BiomartServiceException {
 
-        IBiomartService bs = BiomartCentralPortalService.getDefault();
-        return bs;
+		BiomartSource bs = BiomartSourceManager.getDefault().getBiomartListSrc().getSources().get(0);
+
+        return  createService(bs);
     }
 
     /*public static void main(String[] args) {
