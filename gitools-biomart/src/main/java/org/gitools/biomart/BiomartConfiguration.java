@@ -14,25 +14,57 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package org.gitools.biomart;
+
+import org.gitools.biomart.settings.BiomartSource;
 
 public class BiomartConfiguration {
 
-	private String wdslUrl;
+    private String restUrl;
+    private String version;
+    public String serviceNamespace;
+    public String servicePortName;
+    private String wdslUrl;
+    public String serviceName;
 
-	private String restUrl;
 
-	public BiomartConfiguration(String wdslUrl, String restUrl) {
-		this.wdslUrl = wdslUrl;
-		this.restUrl = restUrl;
-	}
+    public BiomartConfiguration(String wdslUrl, String restUrl) {
+        this.wdslUrl = wdslUrl;
+        this.restUrl = restUrl;
+    }
 
-	public String getWdslUrl() {
-		return wdslUrl;
-	}
+    public BiomartConfiguration(BiomartSource bs)
+    {
+        this.wdslUrl = bs.getWsdlLocation();
+        this.restUrl = bs.getServiceRest();
+        this.version = bs.getVersion();
+        this.serviceName = bs.getServiceName();
+        this.serviceNamespace = bs.getServiceNamespace();
+        this.servicePortName = bs.getServicePortName();
+    }
+    
+    public String getServiceName() {
+        return serviceName;
+    }
 
-	public String getRestUrl() {
-		return restUrl;
-	}
+    public String getServiceNamespace() {
+        return serviceNamespace;
+    }
+
+    public String getServicePortName() {
+        return servicePortName;
+    }
+
+
+    public String getWdslUrl() {
+        return wdslUrl;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 }
