@@ -4,6 +4,8 @@ import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.JMenuBar;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 
 import org.gitools.ui.platform.actions.ActionSetUtils;
 
@@ -35,12 +37,12 @@ public class MenuActionSet extends ActionSet {
 				FileActions.closeAction,
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
-					new ActionSet("IntOGen", new BaseAction[] {
+					new ActionSet("IntOGen", IconUtils.getImageIconResource(IconNames.intogen16), new BaseAction[] {
 						FileActions.importIntogenTableAction,
 						FileActions.importIntogenOncomodulesAction,
 						//FileActions.importIntogenHeatmapAction
 					}),
-					new ActionSet("BioMart", new BaseAction[] {
+					new ActionSet("BioMart", IconUtils.getImageIconResource(IconNames.biomart16), new BaseAction[] {
 						FileActions.importBioMartTableAction,
 						FileActions.importBioMartModulesAction
 					})
@@ -51,7 +53,8 @@ public class MenuActionSet extends ActionSet {
 					FileActions.exportMatrixAction,
 					FileActions.exportTableAction,
 					FileActions.exportHeatmapImageAction,
-					FileActions.exportHeatmapHtmlAction
+					FileActions.exportScaleImageAction
+					//FileActions.exportHeatmapHtmlAction
 				}),
 				BaseAction.separator,
 				FileActions.exitAction

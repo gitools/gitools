@@ -47,7 +47,7 @@ public abstract class MatrixViewSorter {
 				while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
 					criteria = criteriaArray[criteriaIndex];
 					IAggregator aggregator = criteria.getAggregator();
-					int propIndex = criteria.getPropertyIndex();
+					int propIndex = criteria.getAttributeIndex();
 
 					aggr1 = aggregateValue(matrixView, selectedColumns, idx1, propIndex, aggregator, valueBuffer);
 					aggr2 = aggregateValue(matrixView, selectedColumns, idx2, propIndex, aggregator, valueBuffer);
@@ -120,7 +120,7 @@ public abstract class MatrixViewSorter {
 				while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
 					criteria = criteriaArray[criteriaIndex];
 					IAggregator aggregator = criteria.getAggregator();
-					int propIndex = criteria.getPropertyIndex();
+					int propIndex = criteria.getAttributeIndex();
 
 					aggr1 = aggregateValue(matrixView, selectedRows, idx1, propIndex, aggregator, valueBuffer);
 					aggr2 = aggregateValue(matrixView, selectedRows, idx2, propIndex, aggregator, valueBuffer);

@@ -1,5 +1,7 @@
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.colorscale.IColorScale;
+import edu.upf.bg.colorscale.drawer.ColorScaleDrawer;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
@@ -27,18 +30,16 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 
-public class ExportHeatmapImageAction extends BaseAction {
+public class ExportScaleImageAction extends BaseAction {
 
 	private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportHeatmapImageAction() {
-		super("Export heatmap as an image ...");
+	public ExportScaleImageAction() {
+		super("Export scale as an image ...");
 		
-		setDesc("Export the heatmap as an image file");
-		setMnemonic(KeyEvent.VK_I);
+		setDesc("Export the scale as an image file");
 	}
 	
 	@Override
@@ -58,8 +59,8 @@ public class ExportHeatmapImageAction extends BaseAction {
 			return;
 
 		SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-				"Export heatmap to image ...",
-				PersistenceUtils.getFileName(editor.getName()),
+				"Export scale to image ...",
+				PersistenceUtils.getFileName(editor.getName()) + "-scale",
 				Settings.getDefault().getLastExportPath(),
 				new FileFormat[] {
 					FileFormats.PNG,
@@ -73,19 +74,9 @@ public class ExportHeatmapImageAction extends BaseAction {
 
 		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-		/*final File file = FileChooserUtils.selectImageFile(
-					"Select destination file",
-					Settings.getDefault().getLastExportPath(),
-					FileChooserUtils.MODE_SAVE);
-
-		if (file == null)
-			return;
-		 
-		 Settings.getDefault().setLastExportPath(file.getAbsolutePath());*/
-
 		final File file = saveWiz.getFile();
 
-		final String formatExtension = FileChooserUtils.getExtension(file);
+		final String formatExtension = PersistenceUtils.getExtension(file.getName());
 
 		if (!FileChooserUtils.isImageExtension(formatExtension)) {
 			AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
@@ -96,30 +87,32 @@ public class ExportHeatmapImageAction extends BaseAction {
 			@Override
 			public void run(IProgressMonitor monitor) {
 				try {
-					monitor.begin("Exporting heatmap to image ...", 1);
+					monitor.begin("Exporting scale to image ...", 1);
 					monitor.info("File: " + file.getName());
 
 					Heatmap hm = (Heatmap) model;
+					ElementDecorator cd = hm.getCellDecorator();
+					IColorScale scale = cd != null ? cd.getScale() : null;
+					if (scale != null) {
+						ColorScaleDrawer drawer = new ColorScaleDrawer(scale);
+						//drawer.setPictureMode(true);
 
-					HeatmapDrawer drawer = new HeatmapDrawer(hm);
-					drawer.setPictureMode(true);
+						Dimension size = drawer.getSize();
+						size.width = 1024;
 
-					Dimension heatmapSize = drawer.getSize();
+						BufferedImage bi = new BufferedImage(
+								size.width, size.height, BufferedImage.TYPE_INT_RGB);
 
-					/*int type = formatExtension.equals(FileChooserUtils.png) ?
-						BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;*/
+						Graphics2D g = bi.createGraphics();
+						g.setColor(Color.WHITE);
+						g.fillRect(0, 0, size.width, size.height);
 
-					int type = BufferedImage.TYPE_INT_RGB;
+						drawer.draw(g,
+								new Rectangle(new Point(), size),
+								new Rectangle(new Point(), size));
 
-					BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, type);
-					Graphics2D g = bi.createGraphics();
-					g.setColor(Color.WHITE);
-					g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
-					drawer.draw(g,
-							new Rectangle(new Point(), heatmapSize),
-							new Rectangle(new Point(), heatmapSize));
-
-					ImageIO.write(bi, formatExtension, file);
+						ImageIO.write(bi, formatExtension, file);
+					}
 
 					monitor.end();
 				}

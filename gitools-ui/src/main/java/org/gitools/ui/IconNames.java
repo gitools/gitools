@@ -74,6 +74,12 @@ public class IconNames {
 	public static final String viewAnnotatedElements16 = "/img/ViewAnnotatedElements16.gif";
 	public static final String viewAnnotatedElements24 = "/img/ViewAnnotatedElements24.gif";
 
+	public static final String biomart16 = "/img/Biomart16.png";
+	public static final String biomart24 = "/img/Biomart24.png";
+
+	public static final String intogen16 = "/img/Intogen16.png";
+	public static final String intogen24 = "/img/Intogen24.png";
+
 	public static final String LOGO_INTOGEN = "/img/intogen/IntOGenWebLogo.png";
 	
 	public static final String LOGO_BIOMART_IMPORT = "/img/logos/BiomartImport.png";

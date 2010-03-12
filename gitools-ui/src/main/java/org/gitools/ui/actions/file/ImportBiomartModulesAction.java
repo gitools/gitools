@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartService;
+import org.gitools.ui.IconNames;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobThread;
@@ -19,6 +20,8 @@ public class ImportBiomartModulesAction extends BaseAction {
 
 	public ImportBiomartModulesAction() {
 		super("Modules ...");
+		setLargeIconFromResource(IconNames.biomart24);
+		setSmallIconFromResource(IconNames.biomart16);
 		setDefaultEnabled(true);
 	}
 	

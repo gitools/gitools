@@ -1,6 +1,7 @@
 package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.intogen.dialog.IntogenImportDialog;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -12,6 +13,8 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 
 	public ImportIntogenOncomodulesAction() {
 		super("Oncomodules ...");
+		setLargeIconFromResource(IconNames.intogen24);
+		setSmallIconFromResource(IconNames.intogen16);
 		setDefaultEnabled(true);
 	}
 	

@@ -146,7 +146,7 @@ public class PersistenceUtils {
 	public static String getFileName(String path) {
 		int dot = path.lastIndexOf('.');
 		int sep = path.lastIndexOf(File.separatorChar);
-		return path.substring(sep + 1, dot);
+		return dot != -1 ? path.substring(sep + 1, dot) : path.substring(sep + 1);
 	}
 
 	/** Returns only the extension from the last point */

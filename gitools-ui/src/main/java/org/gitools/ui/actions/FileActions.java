@@ -1,6 +1,5 @@
 package org.gitools.ui.actions;
 
-import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.file.CloseAction;
 import org.gitools.ui.actions.file.ExitAction;
@@ -10,6 +9,7 @@ import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportLabelNamesAction;
 import org.gitools.ui.actions.file.ExportTableAction;
 import org.gitools.ui.actions.file.ExportMatrixAction;
+import org.gitools.ui.actions.file.ExportScaleImageAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
@@ -74,4 +74,5 @@ public class FileActions {
 	public static final BaseAction exportTableAction = new ExportTableAction();
 	public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
 	public static final BaseAction exportHeatmapHtmlAction = new ExportHeatmapHtmlAction();
+	public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
 }

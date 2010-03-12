@@ -62,21 +62,26 @@ public class SortDialogSimple extends SortDialog {
 			IAggregator[] aggregators) {
 		
 		this(owner, title, advancedEnabled, properties, aggregators,
-				new SortCriteria(properties[0], 0, aggregators[0], SortDirection.ASCENDING));
+				new SortCriteria(properties[0].toString(), 0,
+				aggregators[0], SortDirection.ASCENDING));
 	}
 	
 	private void createComponents() {
 		
-		final JLabel propLabel = new JLabel("Property: ");
-		
-		final JComboBox propBox = new JComboBox(properties);
-		propBox.setSelectedItem(criteria.getProperty());
+		final JLabel propLabel = new JLabel("Attribute: ");
+
+		String[] attrNames = new String[properties.length];
+		for (int i = 0; i < properties.length; i++)
+			attrNames[i] = properties[i].toString();
+
+		final JComboBox propBox = new JComboBox(attrNames);
+		propBox.setSelectedItem(criteria.getAttributeName());
 		propBox.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					//FIXME use only one, property or index, but not both
-					criteria.setProperty(e.getItem());
-					criteria.setPropertyIndex(propBox.getSelectedIndex());
+					criteria.setAttributeName((String) e.getItem());
+					criteria.setAttributeIndex(propBox.getSelectedIndex());
 				}
 			}
 		});

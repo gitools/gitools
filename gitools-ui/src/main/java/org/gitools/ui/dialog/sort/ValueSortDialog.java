@@ -21,22 +21,21 @@
  * Created on Jan 19, 2010, 2:04:30 PM
  */
 
-package org.gitools.ui.dialog.filter;
+package org.gitools.ui.dialog.sort;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import org.gitools.matrix.filter.ValueFilterCriteria;
+import org.gitools.aggregation.IAggregator;
+import org.gitools.matrix.sort.SortCriteria;
 
-public class ValueFilterDialog extends javax.swing.JDialog {
+public class ValueSortDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
@@ -75,21 +74,25 @@ public class ValueFilterDialog extends javax.swing.JDialog {
 	}
 
 	private String[] attributeNames;
-	private CutoffCmp[] comparators;
+	private IAggregator[] aggregators;
+	private SortCriteria.SortDirection[] directions;
 
-	private ValueFilterCriteriaTableModel criteriaModel;
+	private ValueSortCriteriaTableModel criteriaModel;
 
     /** Creates new form FilterDialog */
-    public ValueFilterDialog(java.awt.Frame parent,
-			String[] attributeNames, CutoffCmp[] comparators,
-			List<ValueFilterCriteria> initialCriteriaList) {
+    public ValueSortDialog(java.awt.Frame parent,
+			String[] attributeNames,
+			IAggregator[] aggregators,
+			SortCriteria.SortDirection[] directions,
+			List<SortCriteria> initialCriteriaList) {
 
         super(parent, true);
 
 		this.attributeNames = attributeNames;
-		this.comparators = comparators;
+		this.aggregators = aggregators;
+		this.directions = directions;
 
-		this.criteriaModel = new ValueFilterCriteriaTableModel(attributeNames);
+		this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
 
 		initComponents();
 
@@ -106,8 +109,8 @@ public class ValueFilterDialog extends javax.swing.JDialog {
 		
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
-		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(comparators));
-		columnModel.getColumn(2).setCellEditor(new DefaultCellEditor(new JTextField()));
+		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
+		columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -309,8 +312,8 @@ public class ValueFilterDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
 	private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-		criteriaModel.addCriteria(new ValueFilterCriteria(
-				attributeNames[0], 0, comparators[0], 0.0));
+		criteriaModel.addCriteria(new SortCriteria(
+				attributeNames[0], 0, aggregators[0], directions[0]));
 	}//GEN-LAST:event_tableAddBtnActionPerformed
 
 	private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
@@ -365,7 +368,7 @@ public class ValueFilterDialog extends javax.swing.JDialog {
 		return invertCriteriaCheck.isSelected();
 	}
 
-	public List<ValueFilterCriteria> getCriteriaList() {
+	public List<SortCriteria> getCriteriaList() {
 		return criteriaModel.getList();
 	}
 }

@@ -2,6 +2,7 @@ package org.gitools.ui.actions.file;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -13,6 +14,8 @@ public class ImportIntogenHeatmapAction extends BaseAction {
 
 	public ImportIntogenHeatmapAction() {
 		super("Heatmap figure ...");
+		setLargeIconFromResource(IconNames.intogen24);
+		setSmallIconFromResource(IconNames.intogen16);
 		setDefaultEnabled(true);
 	}
 	

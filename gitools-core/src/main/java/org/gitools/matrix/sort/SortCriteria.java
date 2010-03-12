@@ -26,52 +26,45 @@ public final class SortCriteria {
 		}
 	}
 
-	@Deprecated
-	protected Object property;
-
-	protected int propertyIndex;
+	protected String attributeName;
+	protected int attributeIndex;
 	protected IAggregator aggregator;
 	protected SortDirection direction;
 
-	@Deprecated
 	public SortCriteria(
-			Object prop, 
-			int propIndex,
+			int attributeIndex,
 			IAggregator aggregator,
 			SortDirection direction) {
 		
-		this.property = prop;
-		this.propertyIndex = propIndex;
-		this.direction = direction;
-		this.aggregator = aggregator;
+		this(null, attributeIndex, aggregator, direction);
 	}
 
 	public SortCriteria(
-			int propIndex,
+			String attributeName,
+			int attributeIndex,
 			IAggregator aggregator,
 			SortDirection direction) {
 
-		this.propertyIndex = propIndex;
+		this.attributeName = attributeName;
+		this.attributeIndex = attributeIndex;
 		this.direction = direction;
 		this.aggregator = aggregator;
 	}
 
-	@Deprecated
-	public final Object getProperty() {
-		return property;
+	public String getAttributeName() {
+		return attributeName;
 	}
 
-	@Deprecated
-	public final void setProperty(Object prop) {
-		this.property = prop;
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
 	}
 
-	public final int getPropertyIndex() {
-		return propertyIndex;
+	public final int getAttributeIndex() {
+		return attributeIndex;
 	}
 
-	public final void setPropertyIndex(int propIndex) {
-		this.propertyIndex = propIndex;
+	public final void setAttributeIndex(int propIndex) {
+		this.attributeIndex = propIndex;
 	}
 
 	public final SortDirection getDirection() {
@@ -92,7 +85,7 @@ public final class SortCriteria {
 
 	@Override
 	public String toString() {
-		return property.toString() + ", "
+		return attributeName + ", "
 			+ aggregator.toString() + ", "
 			+ direction.toString();
 	}
