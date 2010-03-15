@@ -70,9 +70,8 @@ public class MenuActionSet extends ActionSet {
 					DataActions.filterByValueAction
 				}),
 				new ActionSet("Sort", new BaseAction[] {
-					DataActions.sortRowsAction,
-					DataActions.sortColumnsAction,
-					DataActions.sortRowsAndColumnsAction
+					DataActions.sortByLabelAction,
+					DataActions.sortByValueAction
 				}),
 				new ActionSet("Move", new BaseAction[] {
 					DataActions.moveRowsUpAction,

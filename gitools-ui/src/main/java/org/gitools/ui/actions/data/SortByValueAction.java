@@ -2,19 +2,22 @@ package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
+import org.gitools.aggregation.IAggregator;
 
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.dialog.sort.SortDialogSimple;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.aggregation.AggregatorFactory;
+import org.gitools.aggregation.MultAggregator;
 import org.gitools.matrix.sort.SortCriteria;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.dialog.sort.ValueSortDialog;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -22,42 +25,10 @@ public class SortByValueAction extends BaseAction {
 
 	private static final long serialVersionUID = -1582437709508438222L;
 	
-	private boolean sortByRow;
-	private boolean sortByColumn;
-	private String typeName;
-	
-	public enum SortSubject {
-		ROW, COLUMN, BOTH
-	}
+	public SortByValueAction() {
+		super("Sort by value ...");
 
-	public SortByValueAction(SortSubject type) {
-		super(null);
-
-		switch (type) {
-		case COLUMN:
-			setName("Sort columns ...");
-			setDesc("Sort columns ...");
-			typeName = "Columns";
-			sortByRow = false;
-			sortByColumn = true;
-			break;
-
-		case ROW:
-			setName("Sort rows ...");
-			setDesc("Sort rows ...");
-			typeName = "Rows";
-			sortByRow = true;
-			sortByColumn = false;
-			break;
-
-		case BOTH:
-			setName("Sort rows and columns ...");
-			setDesc("Sort rows and columns ...");
-			typeName = "Rows and columns";
-			sortByRow = true;
-			sortByColumn = true;
-			break;
-		}
+		setDesc("Sort by value ...");
 	}
 	
 	@Override
@@ -72,21 +43,53 @@ public class SortByValueAction extends BaseAction {
 		final IMatrixView matrixView = ActionUtils.getMatrixView();
 		if (matrixView == null)
 			return;
-				
-		//select properties
-		List<IElementAttribute> cellProps = matrixView.getCellAdapter().getProperties();
-		String[] propNames = new String[cellProps.size()];
-		for (int i = 0; i < cellProps.size(); i++)
-			propNames[i] = cellProps.get(i).getName();
 
-		final SortDialogSimple d = new SortDialogSimple(
+		// Aggregators
+
+		int aggrIndex = -1;
+		IAggregator[] aggregators = AggregatorFactory.getAggregatorsArray();
+		for (int i = 0; i < aggregators.length && aggrIndex == -1; i++)
+			if (aggregators[i].getClass().equals(MultAggregator.class))
+				aggrIndex = i;
+
+		// Attributes
+
+		int attrIndex = -1;
+
+		List<IElementAttribute> cellProps = matrixView.getCellAdapter().getProperties();
+		String[] attributeNames = new String[cellProps.size()];
+		for (int i = 0; i < cellProps.size(); i++) {
+			String name = cellProps.get(i).getName();
+			attributeNames[i] = name;
+			if (attrIndex == -1 && name.contains("p-value"))
+				attrIndex = i;
+		}
+
+		if (attrIndex == -1)
+			attrIndex = 0;
+
+		// Default criteria
+
+		List<SortCriteria> initialCriteria = new ArrayList<SortCriteria>(1);
+		if (attributeNames.length > 0) {
+			initialCriteria.add(new SortCriteria(
+					attributeNames[attrIndex], attrIndex,
+					aggregators[aggrIndex],
+					SortCriteria.SortDirection.ASCENDING));
+		}
+
+		final ValueSortDialog dlg = new ValueSortDialog(
 				AppFrame.instance(),
-				getName(),
-				true,
-				propNames,
-				AggregatorFactory.getAggregatorsArray());
-		
-		final List<SortCriteria> criteriaList = d.getCriteriaList();
+				attributeNames,
+				aggregators,
+				SortCriteria.SortDirection.values(),
+				initialCriteria);
+		dlg.setVisible(true);
+
+		if (dlg.isCancelled())
+			return;
+
+		final List<SortCriteria> criteriaList = dlg.getCriteriaList();
 		if (criteriaList.size() == 0) {
 			AppFrame.instance().setStatusText("No criteria specified.");
 			return;
@@ -100,14 +103,15 @@ public class SortByValueAction extends BaseAction {
 				SortCriteria[] criteriaArray =
 						new SortCriteria[criteriaList.size()];
 
-				MatrixViewSorter.sort(matrixView,
+				MatrixViewSorter.sortByValue(matrixView,
 						criteriaList.toArray(criteriaArray),
-						sortByRow, sortByColumn);
+						dlg.isApplyToRowsChecked(),
+						dlg.isApplyToColumnsChecked());
 
 				monitor.end();
 			}
 		});
 
-		AppFrame.instance().setStatusText(typeName + " sorted.");
+		AppFrame.instance().setStatusText("Sorted.");
 	}
 }

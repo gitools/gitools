@@ -10,7 +10,7 @@ import org.gitools.ui.actions.data.ShowAllAction;
 import org.gitools.ui.actions.data.SortByValueAction;
 import org.gitools.ui.actions.data.HideSelectionAction.ElementType;
 import org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection;
-import org.gitools.ui.actions.data.SortByValueAction.SortSubject;
+import org.gitools.ui.actions.data.SortByLabelAction;
 
 public final class DataActions {
 	
@@ -26,11 +26,9 @@ public final class DataActions {
 	
 	public static final BaseAction fastSortRowsAction = new FastSortRowsAction();
 
-	public static final BaseAction sortRowsAction = new SortByValueAction(SortSubject.ROW);
-	
-	public static final BaseAction sortColumnsAction = new SortByValueAction(SortSubject.COLUMN);
-	
-	public static final BaseAction sortRowsAndColumnsAction = new SortByValueAction(SortSubject.BOTH);
+	public static final BaseAction sortByLabelAction = new SortByLabelAction();
+
+	public static final BaseAction sortByValueAction = new SortByValueAction();
 	
 	public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
 	

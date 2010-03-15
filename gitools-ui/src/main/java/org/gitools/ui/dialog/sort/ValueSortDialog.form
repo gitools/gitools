@@ -6,7 +6,7 @@
     </Component>
   </NonVisualComponents>
   <Properties>
-    <Property name="title" type="java.lang.String" value="Filter criteria"/>
+    <Property name="title" type="java.lang.String" value="Sort by value"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
@@ -53,9 +53,6 @@
                   <Component id="applyToColumnsRb" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="applyToRowsAndColumnsRb" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="allCriteriaCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="allElementsCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="invertCriteriaCheck" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -75,14 +72,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" pref="177" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="183" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="allCriteriaCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="allElementsCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="invertCriteriaCheck" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -91,7 +82,7 @@
               <Component id="applyToColumnsRb" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="applyToRowsAndColumnsRb" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -179,21 +170,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tableRemoveBtnActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="allCriteriaCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="All criteria should match"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="allElementsCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="All elements should match"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="invertCriteriaCheck">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Invert criteria when filtering"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="loadBtn">
       <Properties>

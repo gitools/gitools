@@ -27,7 +27,6 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class ExportHeatmapImageAction extends BaseAction {
@@ -73,24 +72,9 @@ public class ExportHeatmapImageAction extends BaseAction {
 
 		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-		/*final File file = FileChooserUtils.selectImageFile(
-					"Select destination file",
-					Settings.getDefault().getLastExportPath(),
-					FileChooserUtils.MODE_SAVE);
-
-		if (file == null)
-			return;
-		 
-		 Settings.getDefault().setLastExportPath(file.getAbsolutePath());*/
-
 		final File file = saveWiz.getFile();
 
-		final String formatExtension = FileChooserUtils.getExtension(file);
-
-		if (!FileChooserUtils.isImageExtension(formatExtension)) {
-			AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
-			return;
-		}
+		final String formatExtension = saveWiz.getFormat().getExtension();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override

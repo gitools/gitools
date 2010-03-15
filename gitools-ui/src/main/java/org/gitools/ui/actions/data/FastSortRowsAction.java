@@ -59,7 +59,7 @@ public class FastSortRowsAction extends BaseAction {
 
 				monitor.begin("Sorting ...", 1);
 
-				MatrixViewSorter.sort(matrixView, criteriaArray, true, false);
+				MatrixViewSorter.sortByValue(matrixView, criteriaArray, true, false);
 
 				monitor.end();
 			}

@@ -194,7 +194,6 @@
 
     <build>
         <plugins>
-<!--
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
@@ -218,7 +217,6 @@
                     </execution>
                 </executions>
             </plugin>
--->
 
             <!-- Plugin to add source path to build cycle -->
 <!--

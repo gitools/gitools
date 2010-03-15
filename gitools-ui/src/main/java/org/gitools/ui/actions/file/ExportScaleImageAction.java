@@ -6,7 +6,6 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.heatmap.model.Heatmap;
@@ -20,7 +19,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.PersistenceUtils;
@@ -76,12 +74,7 @@ public class ExportScaleImageAction extends BaseAction {
 
 		final File file = saveWiz.getFile();
 
-		final String formatExtension = PersistenceUtils.getExtension(file.getName());
-
-		if (!FileChooserUtils.isImageExtension(formatExtension)) {
-			AppFrame.instance().setStatusText("Unsupported export format: " + formatExtension);
-			return;
-		}
+		final String formatExtension = saveWiz.getFormat().getExtension();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override

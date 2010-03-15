@@ -39,6 +39,8 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class SaveFilePage extends AbstractWizardPage {
 
+	private FileFormat[] formats;
+
     /** Creates new form SaveFilePage */
     public SaveFilePage() {
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
@@ -65,11 +67,17 @@ public class SaveFilePage extends AbstractWizardPage {
 
 	private void updateGeneratedFile() {
 		File file = getFile();
-		path.setText(file.getAbsolutePath());
+		String fn = file.getAbsolutePath();
+		path.setText(fn);
 		if (isComplete() && file.exists())
 			setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
 		else
 			setMessage(MessageStatus.INFO, "");
+
+		FileFormat fmt = getFormat();
+		if (formats != null && formats.length > 1
+				&& fmt != null && !fn.toLowerCase().endsWith(fmt.getExtension().toLowerCase()))
+			setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
 	}
 
 	@Override
@@ -97,6 +105,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		/*boolean active = formats != null && formats.length > 0;
 		formatLabel.setVisible(active);
 		format.setVisible(active);*/
+		this.formats = formats;
 		format.setModel(new DefaultComboBoxModel(formats));
 		updateGeneratedFile();
 	}

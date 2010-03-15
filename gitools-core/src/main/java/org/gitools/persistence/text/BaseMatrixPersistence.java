@@ -40,7 +40,7 @@ public abstract class BaseMatrixPersistence<T extends BaseMatrix>
 	 * @return background value
 	 */
 	protected double getBackgroundValue() {
-		if (getProperties().contains(BACKGROUND_VALUE))
+		if (getProperties().containsKey(BACKGROUND_VALUE))
 			return (Double) getProperties().get(BACKGROUND_VALUE);
 		else
 			return 0.0;

@@ -19,13 +19,12 @@ package org.gitools.ui.platform.help;
 
 import java.awt.Desktop;
 import java.net.URL;
-import java.util.Properties;
 
 
 public class DesktopNavigatorHelp extends Help {
 
-	public DesktopNavigatorHelp(Properties urlMap) {
-		super(urlMap);
+	public DesktopNavigatorHelp() {
+		super();
 	}
 
 	@Override

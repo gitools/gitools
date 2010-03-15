@@ -25,7 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -113,9 +114,9 @@ public class IntogenImportDialog extends JDialog {
 				final File folder = new File(saveDlg.getFolder());
 				final String prefix = saveDlg.getNamePrefix();
 
-				final Properties properties = new Properties();
+				final List<String[]> properties = new ArrayList<String[]>(formInputs.length);
 				for (FormInput fi : formInputs)
-					properties.setProperty(fi.getName(), fi.getTextValue());
+					properties.add(new String[] {fi.getName(), fi.getTextValue()});
 
 				JobThread.execute(AppFrame.instance(), new JobRunnable() {
 					@Override
@@ -189,7 +190,7 @@ public class IntogenImportDialog extends JDialog {
 		add(headerPanel, BorderLayout.NORTH);
 		add(htmlPanel, BorderLayout.CENTER);
 
-		setPreferredSize(new Dimension(700, 520));
+		setPreferredSize(new Dimension(720, 520));
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

@@ -17,49 +17,157 @@
 
 package org.gitools.ui.platform.help;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Help {
 
-	private static final String HELP_MAP = "/help/map.properties";
-
 	private static Help instance;
 
-	protected Properties urlMap = new Properties();
+	public static class UrlMap {
+		private Pattern pattern;
+		private String url;
 
-	protected Help(Properties urlMap) {
+		public UrlMap(Pattern pattern, String url) {
+			this.pattern = pattern;
+			this.url = url;
+		}
+
+		public Pattern getPattern() {
+			return pattern;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+	}
+
+	protected Properties properties;
+	protected List<UrlMap> urlMap;
+
+	public Help() {
+		this(new Properties(), new ArrayList<UrlMap>());
+	}
+
+	protected Help(Properties properties, List<UrlMap> urlMap) {
+		this.properties = properties;
 		this.urlMap = urlMap;
 	}
 
 	public static Help getDefault() {
-		if (instance == null) {
-			Properties urlMap = new Properties();
-			URL res = Help.class.getClassLoader().getResource(HELP_MAP);
-			try {
-				if (res != null) {
-					InputStream in = res.openStream();
-					urlMap.load(in);
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-			instance = new DesktopNavigatorHelp(urlMap);
-		}
+		if (instance == null)
+			instance = new DesktopNavigatorHelp();
 		
 		return instance;
 	}
 
+	public void loadProperties(InputStream in) throws IOException {
+		properties.load(in);
+		in.close();
+	}
+
+	public void loadUrlMap(InputStream in) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String line;
+		int lineNum = 1;
+		while ((line = br.readLine()) != null) {
+			String[] fields = line.split("\t");
+			if (fields.length != 2)
+				throw new Exception("Error reading help url mappings:" +
+						" Two columns expected at line " + lineNum);
+			
+			urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
+			lineNum++;
+		}
+		br.close();
+	}
+
 	protected URL getHelpUrl(HelpContext context) throws MalformedURLException {
 		String id = context.getId();
-		String urlStr = urlMap.getProperty(id);
-		if (urlStr == null)
-			urlStr = id;
+		String urlStr = null; // FIXME Use a default url
+		for (UrlMap map : urlMap) {
+			Matcher matcher = map.getPattern().matcher(id);
+			if (matcher.matches()) {
+				Properties p = new Properties(properties);
+				for (int i = 0; i < matcher.groupCount(); i++)
+					p.setProperty("" + i, matcher.group(i));
+				urlStr = expandPattern(properties, map.getUrl());
+				System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
+				break;
+			}
+		}
+
 		return new URL(urlStr);
 	}
 
 	public abstract void showHelp(HelpContext context) throws HelpException;
+
+	private String expandPattern(
+			Properties properties,
+			String pattern) {
+
+		final StringBuilder output = new StringBuilder();
+		final StringBuilder var = new StringBuilder();
+
+		char state = 'C';
+
+		int pos = 0;
+
+		while (pos < pattern.length()) {
+
+			char ch = pattern.charAt(pos++);
+
+			switch (state) {
+			case 'C': // copying normal characters
+				if (ch == '$')
+					state = '$';
+				else
+					output.append(ch);
+				break;
+
+			case '$': // start of variable
+				if (ch == '{')
+					state = 'V';
+				else {
+					output.append('$').append(ch);
+					state = 'C';
+				}
+				break;
+
+			case 'V': // reading name of variable
+				if (ch == '}')
+					state = 'X';
+				else
+					var.append(ch);
+				break;
+
+			case 'X': // expand variable
+				output.append(properties.getProperty(var.toString()));
+				var.setLength(0);
+				pos--;
+				state = 'C';
+				break;
+			}
+		}
+
+		switch (state) {
+		case '$': output.append('$'); break;
+		case 'V': output.append("${").append(var); break;
+		case 'X':
+			output.append(properties.getProperty(var.toString()));
+			break;
+		}
+
+		return output.toString();
+	}
 }

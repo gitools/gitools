@@ -114,8 +114,8 @@ public class ValueSortDialog extends javax.swing.JDialog {
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-    public int getReturnStatus() {
-        return returnStatus;
+    public boolean isCancelled() {
+        return returnStatus != RET_OK;
     }
 
     /** This method is called from within the constructor to
@@ -134,9 +134,6 @@ public class ValueSortDialog extends javax.swing.JDialog {
         table = new javax.swing.JTable();
         tableAddBtn = new javax.swing.JButton();
         tableRemoveBtn = new javax.swing.JButton();
-        allCriteriaCheck = new javax.swing.JCheckBox();
-        allElementsCheck = new javax.swing.JCheckBox();
-        invertCriteriaCheck = new javax.swing.JCheckBox();
         loadBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -145,7 +142,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         applyToRowsAndColumnsRb = new javax.swing.JRadioButton();
         applyToColumnsRb = new javax.swing.JRadioButton();
 
-        setTitle("Filter criteria");
+        setTitle("Sort by value");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -202,12 +199,6 @@ public class ValueSortDialog extends javax.swing.JDialog {
             }
         });
 
-        allCriteriaCheck.setText("All criteria should match");
-
-        allElementsCheck.setText("All elements should match");
-
-        invertCriteriaCheck.setText("Invert criteria when filtering");
-
         loadBtn.setText("Load...");
         loadBtn.setEnabled(false);
 
@@ -249,10 +240,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
                     .addComponent(applyToRowsRb)
                     .addComponent(applyToColumnsRb)
                     .addComponent(applyToRowsAndColumnsRb)
-                    .addComponent(jLabel2)
-                    .addComponent(allCriteriaCheck)
-                    .addComponent(allElementsCheck)
-                    .addComponent(invertCriteriaCheck))
+                    .addComponent(jLabel2))
                 .addContainerGap())
         );
 
@@ -271,13 +259,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
                         .addComponent(loadBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(allCriteriaCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(allElementsCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(invertCriteriaCheck)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -286,7 +268,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
                 .addComponent(applyToColumnsRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(applyToRowsAndColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -327,14 +309,11 @@ public class ValueSortDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox allCriteriaCheck;
-    private javax.swing.JCheckBox allElementsCheck;
     private javax.swing.JRadioButton applyToColumnsRb;
     private javax.swing.ButtonGroup applyToGroup;
     private javax.swing.JRadioButton applyToRowsAndColumnsRb;
     private javax.swing.JRadioButton applyToRowsRb;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JCheckBox invertCriteriaCheck;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -354,18 +333,6 @@ public class ValueSortDialog extends javax.swing.JDialog {
 
 	public boolean isApplyToColumnsChecked() {
 		return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
-	}
-
-	public boolean isAllCriteriaChecked() {
-		return allCriteriaCheck.isSelected();
-	}
-
-	public boolean isAllElementsChecked() {
-		return allElementsCheck.isSelected();
-	}
-
-	public boolean isInvertCriteriaChecked() {
-		return invertCriteriaCheck.isSelected();
 	}
 
 	public List<SortCriteria> getCriteriaList() {

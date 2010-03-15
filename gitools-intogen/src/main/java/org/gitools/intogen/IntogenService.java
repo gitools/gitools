@@ -26,8 +26,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.gitools.persistence.PersistenceUtils;
@@ -52,7 +52,7 @@ public class IntogenService {
 			File folder,
 			String prefix,
 			URL action,
-			Properties properties,
+			List<String[]> properties,
 			IProgressMonitor monitor) throws IntogenServiceException {
 
 		try {
@@ -71,22 +71,27 @@ public class IntogenService {
 
 			StringBuilder content = new StringBuilder();
 			boolean first = true;
-			for (Map.Entry entry : properties.entrySet()) {
+			for (String[] entry : properties) {
 				if (!first)
 					content.append('&');
 				first = false;
 				
-				content.append(entry.getKey()).append('=');
-				content.append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
+				content.append(entry[0]).append('=');
+				content.append(URLEncoder.encode(entry[1], "UTF-8"));
 			}
 
 			printout.writeBytes(content.toString());
 			printout.flush();
 			printout.close();
 
+			System.out.println(content.toString());
+
 			monitor.end();
 
 			Map<String, String> nameMap = new HashMap<String, String>();
+			nameMap.put("modulemap.tsv", prefix + ".oncomodules.gz");
+			nameMap.put("oncomodules.tsv", prefix + ".annotations.gz");
+			
 			nameMap.put("modulemap.csv", prefix + ".oncomodules.gz");
 			nameMap.put("oncomodules.csv", prefix + ".annotations.gz");
 

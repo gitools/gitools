@@ -40,6 +40,18 @@ public class TestMain {
 				" -A author=Christian" +
 				" -verbose -debug -err-log -";
 
+		cmd = "enrichment -t binomial-exact" +
+				" -d " + stuff + "/real/data.tsv" +
+				" -dm " + MimeTypes.DOUBLE_MATRIX +
+				" -b lt,0.05" +
+				" -m " + stuff + "/real/modules.tsv" +
+				" -min 100" +
+				" -w "+ temp + "/test -N test" +
+				" -title 'Test Analysis'" +
+				" -notes 'Testing...'" +
+				" -A author=Christian" +
+				" -verbose -debug -err-log -";
+
 		/*String cmd = "convert" +
 				" -i data.tsv" +
 				" -im application/gitools-matrix-double" +

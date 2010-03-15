@@ -42,7 +42,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 	public static final String VALUE_TRANSLATOR = "value_translator";
 	
 	protected boolean isBinaryValues() {
-		if (getProperties().contains(BINARY_VALUES))
+		if (getProperties().containsKey(BINARY_VALUES))
 			return (Boolean) getProperties().get(BINARY_VALUES);
 		else
 			return false;
@@ -53,7 +53,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 	 * @return value translator
 	 */
 	protected ValueTranslator getValueTranslator() {
-		if (getProperties().contains(VALUE_TRANSLATOR))
+		if (getProperties().containsKey(VALUE_TRANSLATOR))
 			return (ValueTranslator) getProperties().get(VALUE_TRANSLATOR);
 		else
 			return new DoubleTranslator();
