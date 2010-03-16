@@ -81,7 +81,7 @@ public class Html4Editor extends AbstractEditor {
 			public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
 				try {
 					Html4Editor.this.submitForm(method, action, target, enctype, formInputs);
-					System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+					//System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
 					super.submitForm(method, action, target, enctype, formInputs);
 				}
 				catch (LinkVetoException ex) {

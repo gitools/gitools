@@ -17,7 +17,6 @@
 
 package org.gitools.ui.platform.help;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,12 +80,16 @@ public abstract class Help {
 		String line;
 		int lineNum = 1;
 		while ((line = br.readLine()) != null) {
-			String[] fields = line.split("\t");
-			if (fields.length != 2)
-				throw new Exception("Error reading help url mappings:" +
-						" Two columns expected at line " + lineNum);
-			
-			urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
+			line = line.trim();
+			if (!line.isEmpty()) {
+				String[] fields = line.split("\t");
+
+				if (fields.length == 2)
+					urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
+				else
+					throw new Exception("Error reading help url mappings:" +
+							" Two columns expected at line " + lineNum);
+			}
 			lineNum++;
 		}
 		br.close();

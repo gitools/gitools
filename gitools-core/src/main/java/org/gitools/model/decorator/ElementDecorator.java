@@ -54,13 +54,13 @@ public abstract class ElementDecorator extends AbstractModel {
 
 	public abstract IColorScale getScale();
 
-	@Deprecated //FIXME use JAXB to save state
+/*	@Deprecated //FIXME use JAXB to save state
 	public Map<String, String> getConfiguration() {
 		return null;
 	}
 
 	@Deprecated
-	public abstract void setConfiguration(Map<String, String> configuration);
+	public abstract void setConfiguration(Map<String, String> configuration);*/
 	
 	protected int getPropertyIndex(String[] names) {
 		int index = -1;

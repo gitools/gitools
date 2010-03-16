@@ -53,8 +53,9 @@ public class MenuActionSet extends ActionSet {
 					FileActions.exportMatrixAction,
 					FileActions.exportTableAction,
 					FileActions.exportHeatmapImageAction,
-					FileActions.exportScaleImageAction
-					//FileActions.exportHeatmapHtmlAction
+					FileActions.exportScaleImageAction,
+					FileActions.exportHeatmapHtmlAction,
+					FileActions.exportPdfReportAction
 				}),
 				BaseAction.separator,
 				FileActions.exitAction

@@ -86,6 +86,7 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         applyToColumnsRb = new javax.swing.JRadioButton();
         applyToRowsAndColumnsRb = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
+        useOriginalIds = new javax.swing.JCheckBox();
 
         setTitle("Filter labels...");
         setLocationByPlatform(true);
@@ -146,6 +147,8 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         applyToGroup.add(applyToRowsAndColumnsRb);
         applyToRowsAndColumnsRb.setText("rows and columns");
 
+        useOriginalIds.setText("Use original ids only (without annotation substitutions)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,11 +169,12 @@ public class LabelFilterDialog extends javax.swing.JDialog {
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
-                    .addComponent(useRegexCheck)
                     .addComponent(jLabel2)
                     .addComponent(applyToRowsRb)
                     .addComponent(applyToColumnsRb)
-                    .addComponent(applyToRowsAndColumnsRb))
+                    .addComponent(applyToRowsAndColumnsRb)
+                    .addComponent(useOriginalIds)
+                    .addComponent(useRegexCheck))
                 .addContainerGap())
         );
 
@@ -187,9 +191,11 @@ public class LabelFilterDialog extends javax.swing.JDialog {
                         .addComponent(loadBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(useRegexCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(useOriginalIds)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -300,6 +306,7 @@ public class LabelFilterDialog extends javax.swing.JDialog {
     private javax.swing.JButton okButton;
     private javax.swing.JTextArea patterns;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JCheckBox useOriginalIds;
     private javax.swing.JCheckBox useRegexCheck;
     // End of variables declaration//GEN-END:variables
 
@@ -315,6 +322,10 @@ public class LabelFilterDialog extends javax.swing.JDialog {
 
 	public boolean isUseRegexChecked() {
 		return useRegexCheck.isSelected();
+	}
+
+	public boolean isUseOriginalIds() {
+		return useOriginalIds.isSelected();
 	}
 
 	public List<String> getValues() {

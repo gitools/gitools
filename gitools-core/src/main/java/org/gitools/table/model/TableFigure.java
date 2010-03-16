@@ -16,8 +16,6 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.table.model.ITable;
-import org.gitools.table.model.TableFormatException;
 import org.gitools.table.model.impl.TableView;
 import org.gitools.model.xml.AbstractModelXmlAdapter;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;

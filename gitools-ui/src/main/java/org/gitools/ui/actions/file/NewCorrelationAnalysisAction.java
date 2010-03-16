@@ -2,6 +2,8 @@ package org.gitools.ui.actions.file;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import org.gitools.ui.dialog.UnimplementedDialog;
+import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
 
@@ -14,12 +16,13 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 		
 		setDesc("Run a correlation analysis");
 		setMnemonic(KeyEvent.VK_C);
+
+		setDefaultEnabled(true);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		UnimplementedDialog.show(AppFrame.instance());
 	}
 
 }

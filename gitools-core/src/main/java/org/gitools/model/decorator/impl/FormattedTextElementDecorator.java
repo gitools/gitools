@@ -75,7 +75,7 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		return null;
 	}
 
-	@Deprecated
+	/*@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 	
@@ -92,6 +92,6 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 	
 		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
 		this.formatString = configuration.get("formatString");
-	}
+	}*/
 
 }

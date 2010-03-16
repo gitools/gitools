@@ -47,14 +47,19 @@ public class SortByLabelAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final IMatrixView matrixView = ActionUtils.getMatrixView();
-		if (matrixView == null)
-			return;
-
 		final LabelSortDialog dlg = new LabelSortDialog(AppFrame.instance(), SortDirection.values());
 		dlg.setVisible(true);
 
 		if (dlg.isCancelled())
+			return;
+
+		boolean origIds = dlg.isUseOriginalIds();
+
+		final IMatrixView matrixView = origIds ?
+			ActionUtils.getMatrixView() :
+			ActionUtils.getHeatmapMatrixView();
+
+		if (matrixView == null)
 			return;
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {

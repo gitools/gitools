@@ -9,6 +9,7 @@ import org.gitools.ui.actions.file.ExportHeatmapImageAction;
 import org.gitools.ui.actions.file.ExportLabelNamesAction;
 import org.gitools.ui.actions.file.ExportTableAction;
 import org.gitools.ui.actions.file.ExportMatrixAction;
+import org.gitools.ui.actions.file.ExportPdfReportAction;
 import org.gitools.ui.actions.file.ExportScaleImageAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
@@ -75,4 +76,5 @@ public class FileActions {
 	public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
 	public static final BaseAction exportHeatmapHtmlAction = new ExportHeatmapHtmlAction();
 	public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
+	public static final BaseAction exportPdfReportAction = new ExportPdfReportAction();
 }

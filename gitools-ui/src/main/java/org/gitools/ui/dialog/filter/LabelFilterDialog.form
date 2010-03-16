@@ -50,11 +50,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="useRegexCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="applyToRowsRb" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="applyToColumnsRb" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="applyToRowsAndColumnsRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="useOriginalIds" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="useRegexCheck" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -72,10 +73,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" pref="246" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="222" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="useRegexCheck" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="useOriginalIds" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -192,6 +195,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="useOriginalIds">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Use original ids only (without annotation substitutions)"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

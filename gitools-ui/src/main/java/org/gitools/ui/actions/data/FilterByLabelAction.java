@@ -32,14 +32,18 @@ public class FilterByLabelAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
-
-		if (matrixView == null)
-			return;
-
 		final LabelFilterDialog dlg =
 				new LabelFilterDialog(AppFrame.instance());
 
+		boolean origIds = dlg.isUseOriginalIds();
+
+		final IMatrixView matrixView = origIds ?
+			ActionUtils.getMatrixView() :
+			ActionUtils.getHeatmapMatrixView();
+
+		if (matrixView == null)
+			return;
+		
 		dlg.setVisible(true);
 
 		if (dlg.getReturnStatus() != LabelFilterDialog.RET_OK) {

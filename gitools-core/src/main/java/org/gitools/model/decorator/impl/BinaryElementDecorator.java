@@ -2,8 +2,6 @@ package org.gitools.model.decorator.impl;
 
 import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -131,7 +129,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		return scale;
 	}
 	
-	@Deprecated
+	/*@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -153,5 +151,5 @@ public class BinaryElementDecorator extends ElementDecorator {
 		setColor(Color.decode(configuration.get("color")));
 		setNonSignificantColor(Color.decode(configuration.get("nonSignificantColor")));
 		setCutoff(Double.parseDouble((String) configuration.get("cutoff")));
-	}
+	}*/
 }

@@ -13,6 +13,7 @@ import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 
+@Deprecated
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AbstractModelDecoratorElement {
 	@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
@@ -24,7 +25,7 @@ public class AbstractModelDecoratorElement {
 
 	@XmlElementWrapper(name = "elementDecoratorType")
 	@XmlElement(name = "elementDecorator")
-	@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
+	//@XmlJavaTypeAdapter(ElementDecoratorXmlAdapter.class)
 	private List<ElementDecorator> elementDecorators = new ArrayList<ElementDecorator>();
 
 	public AbstractModelDecoratorElement() {

@@ -36,6 +36,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 	private ColorChooserLabel minColorCc;
 	private ColorChooserLabel midColorCc;
 	private ColorChooserLabel maxColorCc;
+	private ColorChooserLabel emptyCc;
 	
 	public LinearTwoSidedElementDecoratorPanel(Heatmap model) {
 		super(model);
@@ -111,21 +112,30 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 			@Override public void colorChanged(Color color) {
 				decorator.setMaxColor(color); }
 		});
-		
+
+		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+		emptyCc.setToolTipText("Empty cell color");
+		emptyCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setEmptyColor(color); }
+		});
+
 		refresh();
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
-		add(new JLabel("Min"));
+		add(new JLabel(" Min"));
 		add(minValTxt);
 		add(minColorCc);
-		add(new JLabel("Mid"));
+		add(new JLabel(" Mid"));
 		add(midValTxt);
 		add(midColorCc);
-		add(new JLabel("Max"));
+		add(new JLabel(" Max"));
 		add(maxValTxt);
 		add(maxColorCc);
+		add(new JLabel(" Empty"));
+		add(emptyCc);
 	}
 
 	private void refresh() {

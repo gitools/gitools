@@ -217,7 +217,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		return scale;
 	}
 	
-	@Deprecated
+	/*@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -239,5 +239,5 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
 		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
 		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
-	}
+	}*/
 }

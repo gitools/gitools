@@ -71,8 +71,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setValueIndex(int valueIndex) {
+		int old = this.valueIndex;
 		this.valueIndex = valueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
 	}
 
 	public final double getMinValue() {
@@ -80,8 +81,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMinValue(double minValue) {
+		double old = scale.getMin().getValue();
 		scale.getMin().setValue(minValue);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, minValue);
 	}
 
 	public final double getMidValue() {
@@ -89,8 +91,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMidValue(double midValue) {
+		double old = scale.getMid().getValue();
 		scale.getMid().setValue(midValue);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, midValue);
 	}
 
 	public final double getMaxValue() {
@@ -98,8 +101,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMaxValue(double maxValue) {
+		double old = scale.getMax().getValue();
 		scale.getMax().setValue(maxValue);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, maxValue);
 	}
 
 	public final Color getMinColor() {
@@ -107,8 +111,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMinColor(Color minColor) {
+		Color old = scale.getMin().getColor();
 		scale.getMin().setColor(minColor);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, minColor);
 	}
 
 	public final Color getMidColor() {
@@ -116,8 +121,9 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMidColor(Color midColor) {
+		Color old = scale.getMid().getColor();
 		scale.getMid().setColor(midColor);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, midColor);
 	}
 
 	public final Color getMaxColor() {
@@ -125,8 +131,19 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	}
 
 	public final void setMaxColor(Color maxColor) {
+		Color old = scale.getMax().getColor();
 		scale.getMax().setColor(maxColor);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, maxColor);
+	}
+
+	public Color getEmptyColor() {
+		return scale.getEmptyColor();
+	}
+	
+	public void setEmptyColor(Color color) {
+		Color old = scale.getEmptyColor();
+		scale.setEmptyColor(color);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 
 	@Override
@@ -154,7 +171,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		return scale;
 	}
 
-	@Deprecated
+	/*@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -167,5 +184,5 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	@Override
 	public void setConfiguration(Map<String, String> configuration) {
 		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-	}
+	}*/
 }

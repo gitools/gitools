@@ -1,1 +1,3 @@
+Analysis:Enrichment:Save	${doc}/enrichment
+
 .*	${base}

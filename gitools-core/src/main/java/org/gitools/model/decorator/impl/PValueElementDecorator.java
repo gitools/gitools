@@ -1,8 +1,6 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -177,7 +175,7 @@ public class PValueElementDecorator extends ElementDecorator {
 		return scale;
 	}
 
-	@Deprecated
+	/*@Deprecated
 	@Override
 	public Map<String, String> getConfiguration() {
 		
@@ -199,5 +197,5 @@ public class PValueElementDecorator extends ElementDecorator {
 		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
 		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
 		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
-	}
+	}*/
 }

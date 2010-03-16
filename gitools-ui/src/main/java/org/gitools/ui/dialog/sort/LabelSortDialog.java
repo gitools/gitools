@@ -65,6 +65,7 @@ public class LabelSortDialog extends javax.swing.JDialog {
         applyToRowsAndColumnsRb = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         directionCb = new javax.swing.JComboBox();
+        useOriginalIds = new javax.swing.JCheckBox();
 
         setTitle("Sort by label");
         setLocationByPlatform(true);
@@ -100,6 +101,8 @@ public class LabelSortDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Direction");
 
+        useOriginalIds.setText("Use original ids only (without annotation substitutions)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,7 +110,7 @@ public class LabelSortDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,7 +122,8 @@ public class LabelSortDialog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(directionCb, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(directionCb, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(useOriginalIds))
                 .addContainerGap())
         );
 
@@ -132,7 +136,9 @@ public class LabelSortDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(directionCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(useOriginalIds)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(applyToRowsRb)
@@ -181,6 +187,7 @@ public class LabelSortDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton okButton;
+    private javax.swing.JCheckBox useOriginalIds;
     // End of variables declaration//GEN-END:variables
 
     private int returnStatus = RET_CANCEL;
@@ -191,6 +198,10 @@ public class LabelSortDialog extends javax.swing.JDialog {
 
 	public boolean isApplyToColumnsChecked() {
 		return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
+	}
+
+	public boolean isUseOriginalIds() {
+		return useOriginalIds.isSelected();
 	}
 	
 	public SortDirection getSortDirection() {
