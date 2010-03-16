@@ -182,7 +182,7 @@ public class IntogenImportDialog extends JDialog {
 
 			@Override
 			protected boolean isNavigationAsynchronous() {
-				return false;
+				return true; //false;
 			}
 		};
 
@@ -190,7 +190,7 @@ public class IntogenImportDialog extends JDialog {
 		add(headerPanel, BorderLayout.NORTH);
 		add(htmlPanel, BorderLayout.CENTER);
 
-		setPreferredSize(new Dimension(720, 520));
+		setPreferredSize(new Dimension(780, 520));
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

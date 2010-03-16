@@ -1,0 +1,232 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Oncodrive
+\end_layout
+
+\begin_layout Standard
+Oncodrive is a method to identify driver alterations in a matrix of genes
+ altered over a number of samples.
+ We assume that the genes that are altered in more samples than expected
+ by chance are those that contribute the most to the cancerous phenotype
+ and are therefore driver alterations (See 
+\begin_inset CommandInset href
+LatexCommand href
+name "Gundem et al., Nature Methods, 2010"
+target "http://www.ncbi.nlm.nih.gov/pubmed/20111033"
+
+\end_inset
+
+ for more information).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/analysis_oncodriver_figure.png
+	lyxscale 20
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+We depict a representative experiment using a matrix where columns represent
+ the samples and rows the genes analyzed, dark cells indicate that this
+ gene is altered in the sample and white cells that this gene is not altered.
+ These experiments can analyze different types of alterations (such as amplifica
+tions or deletions, point mutations, over or under-expression, methylation
+ alterations).
+ OncoDrive method will identify genes that are altered in more samples than
+ expected by chance.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+How is this calculated ?
+\end_layout
+
+\begin_layout Subsection
+For Binary Data Matrices
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+A natural interpretation of such binary data implies the use of the Binomial
+ distribution to compute the probability of observing a given number of
+ gene alterations.
+\end_layout
+
+\begin_layout Plain Layout
+
+Thus we consider $X_1
+\backslash
+ldots,X_m$ random variables (number of genes present in the matrix) with
+ $
+\backslash
+mathtt{N_1},
+\backslash
+ldots 
+\backslash
+mathtt{N_m}$ observations (replicates).
+ We employ binomial distribution to model the data, assuming that every
+ gene comes from the binomial distribution $X_i
+\backslash
+sim
+\backslash
+mathtt{Bin(N_i,p)}$, where parameters $N_i$ and $
+\backslash
+mathtt{p}$ denote the number of replicates of i and the probability of observing
+ 1 in a given sample, respectively.
+ The precise estimate of $
+\backslash
+mathtt{p}$ per experiment was computed as the empirical frequency of the
+ total number of alterations among $N=
+\backslash
+sum_{i=1}^nN_i$ samples present in the microarray.
+ That is to say, if $
+\backslash
+mathtt{n_i}$ denotes the number of changes for a gene i, $n_i=
+\backslash
+sum_{k=1}^{N_i} X_{i,k}$,  we get $
+\backslash
+mathtt{p=
+\backslash
+frac{
+\backslash
+sum_{i=1}^mn_i}{N}}$.
+ 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+For a given experiment, the cumulative probability of observing an altered
+ behavior of a gene i at least $n_i$ times in a random sample of size $N_i$
+ is given by :$$
+\backslash
+mathtt{P(X_i
+\backslash
+geq n_i)=
+\backslash
+sum_{k=n_i}^{N_i} {N_i
+\backslash
+choose k} p^k(1-p)^{N_i-k}}$$
+\backslash
+label{eq:bin}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+For Continous Data Matrices
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+Continuous data matrices can also be input files to calculate OncoDrive,
+ this data is first discretized internally using a dynamic fold change criterion.
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+See 
+\begin_inset CommandInset href
+LatexCommand href
+name "Gundem et al., Nature Methods, 2010"
+target "http://www.ncbi.nlm.nih.gov/pubmed/20111033"
+
+\end_inset
+
+ for rurther details on the discretization method.
+\end_layout
+
+\end_body
+\end_document
