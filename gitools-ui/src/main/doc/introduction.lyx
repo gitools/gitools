@@ -37,6 +37,7 @@
 \tracking_changes false
 \output_changes false
 \author "" 
+\author "" 
 \end_header
 
 \begin_body
@@ -45,12 +46,165 @@
 What is Gitools ?
 \end_layout
 
+\begin_layout Standard
+Gitools is a framework for analysis and visualization of genomic data.
+ Gitools allows importation of data directly from Biomart compatible databases
+ and IntOGen facilitating the exploration and mining of large amount of
+ oncogenomics data and allows performing several types of analyses, such
+ as enrichment analyses, correlations, finding driver alterations and others.
+\end_layout
+
+\begin_layout Standard
+The main workflow is summarized in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:The-main-workflow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/summary_workflow.png
+	lyxscale 20
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-main-workflow"
+
+\end_inset
+
+The main workflow summarized: The first step involves preparing the data
+ to work with by editing files manually using Excel or any other well known
+ program or alternativelly importing the data from any of the Gitools available
+ data importers as Biomart or IntOGen.
+ The second step consist in analyzing the data.
+ There are different methods implemented as enrichment analysis, Z-weight
+ combinations, correlations and oncogenomics driver alterations.
+ The third step is to explore the data and the results using the implemented
+ browsers where the heatmap allows to explore different results (for example
+ for genes in rows) over different conditions (in columns).
+ In th last step you can export the data, the results and the generated
+ figures in different ways (as tabulated files, as images, as PDF and/or
+ as static HTML)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Authors
 \end_layout
 
+\begin_layout Standard
+Gitools has been conceived by Nuria López-Bigas and the architecture and
+ most of the programming has be done by Christian Pérez-Llamas.
+ Other people has contributed too, Jordi Deu-Pons with the interface to
+ import IntOGen data and Xavier Rafael-Palou improving the interface with
+ Biomart.
+\end_layout
+
+\begin_layout Section
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+GiTools is being developed under the grants of the Ministry of Science of
+ Spain (CODE/NUMBER!!!) and Human Frontiers Science Program (CODE/NUMBER!!!).
+\end_layout
+
+\begin_layout Standard
+It is important also the feedback received from users, specially our early
+ bug reporters: Alba Jené-Sanz and Gunes Gundem.
+\end_layout
+
 \begin_layout Section
 License
+\end_layout
+
+\begin_layout LyX-Code
+Copyright 2010 Universitat Pompeu Fabra (UPF)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Licensed under the Apache License, Version 2.0 (the "License");
+\end_layout
+
+\begin_layout LyX-Code
+you may not use this file except in compliance with the License.
+\end_layout
+
+\begin_layout LyX-Code
+You may obtain a copy of the License at 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+http://www.apache.org/licenses/LICENSE-2.0
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+Unless required by applicable law or agreed to in writing,
+\end_layout
+
+\begin_layout LyX-Code
+software distributed under the License is distributed on
+\end_layout
+
+\begin_layout LyX-Code
+an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+\end_layout
+
+\begin_layout LyX-Code
+either express or implied.
+ See the License for the specific
+\end_layout
+
+\begin_layout LyX-Code
+language governing permissions and limitations under the License.
 \end_layout
 
 \end_body
