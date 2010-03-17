@@ -14,10 +14,8 @@
 		#valueRow( "N" $cell.N )
 		
 		#zscoreRow( "Z-Score" $cell.z-score )
-		#zscoreScale()
 		
 		#pvalueRow( "P-Value" $cell.p-value )
-		#pvalueScale()
     </table>
 </body>
 </html>

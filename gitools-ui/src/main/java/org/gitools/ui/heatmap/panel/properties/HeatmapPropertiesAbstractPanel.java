@@ -26,6 +26,8 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 	protected Heatmap hm;
 	private PropertyChangeListener heatmapListener;
 
+	protected boolean updatingControls = false;
+
 	public HeatmapPropertiesAbstractPanel() {
 		heatmapListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {

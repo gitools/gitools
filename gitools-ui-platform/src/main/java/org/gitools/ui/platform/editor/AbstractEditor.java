@@ -4,6 +4,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.view.AbstractView;
 
 public abstract class AbstractEditor
@@ -55,6 +56,7 @@ public abstract class AbstractEditor
 		if (this.dirty != dirty) {
 			this.dirty = dirty;
 			for (EditorListener l : listeners) l.dirtyChanged(this);
+			ActionManager.getDefault().updateEnabledByEditor(this);
 		}
 	}
 	

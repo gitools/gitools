@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.model.AbstractModel;
@@ -60,18 +59,20 @@ public class HeatmapHeader extends AbstractModel {
 		return foregroundColor;
 	}
 	
-	public void setForegroundColor(Color foregroundColor) {
-		this.foregroundColor = foregroundColor;
-		firePropertyChange(FG_COLOR_CHANGED);
+	public void setForegroundColor(Color color) {
+		Color old = this.foregroundColor;
+		this.foregroundColor = color;
+		firePropertyChange(FG_COLOR_CHANGED, old, color);
 	}
 	
 	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
 	
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
-		firePropertyChange(BG_COLOR_CHANGED);
+	public void setBackgroundColor(Color color) {
+		Color old = this.backgroundColor;
+		this.backgroundColor = color;
+		firePropertyChange(BG_COLOR_CHANGED, old, color);
 	}
 
 	public Font getFont() {
@@ -79,8 +80,9 @@ public class HeatmapHeader extends AbstractModel {
 	}
 
 	public void setFont(Font font) {
+		Font old = this.font;
 		this.font = font;
-		firePropertyChange(FONT_CHANGED);
+		firePropertyChange(FONT_CHANGED, old, font);
 	}
 
 	public AnnotationMatrix getAnnotations() {
@@ -88,17 +90,19 @@ public class HeatmapHeader extends AbstractModel {
 	}
 
 	public void setAnnotations(AnnotationMatrix annotations) {
+		AnnotationMatrix old = this.annotations;
 		this.annotations = annotations;
-		firePropertyChange(ANNOTATIONS_CHANGED);
+		firePropertyChange(ANNOTATIONS_CHANGED, old, annotations);
 	}
 
 	public String getLabelPattern() {
 		return labelPattern;
 	}
 
-	public void setLabelPattern(String namePattern) {
-		this.labelPattern = namePattern;
-		firePropertyChange(LABEL_PATTERN_CHANGED);
+	public void setLabelPattern(String pattern) {
+		String old = this.labelPattern;
+		this.labelPattern = pattern;
+		firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
 	}
 
 	public String getLinkName() {
@@ -106,8 +110,9 @@ public class HeatmapHeader extends AbstractModel {
 	}
 
 	public void setLinkName(String linkName) {
+		String old = this.linkName;
 		this.linkName = linkName;
-		firePropertyChange(LINK_NAME_CHANGED);
+		firePropertyChange(LINK_NAME_CHANGED, old, linkName);
 	}
 
 	public String getLinkPattern() {
@@ -115,8 +120,9 @@ public class HeatmapHeader extends AbstractModel {
 	}
 
 	public void setLinkPattern(String linkPattern) {
+		String old = this.linkPattern;
 		this.linkPattern = linkPattern;
-		firePropertyChange(LINK_PATTERN_CHANGED);
+		firePropertyChange(LINK_PATTERN_CHANGED, old, linkPattern);
 	}
 
 	public HeatmapHeaderDecoration decorate(HeatmapHeaderDecoration decoration, Object header) {

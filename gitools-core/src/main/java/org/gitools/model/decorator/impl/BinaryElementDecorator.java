@@ -61,8 +61,9 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public void setValueIndex(int valueIndex) {
+		int old = this.valueIndex;
 		this.valueIndex = valueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
 	}
 	
 	public CutoffCmp getCutoffCmp() {
@@ -70,8 +71,9 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public void setCutoffCmp(CutoffCmp cutoffCmp) {
+		CutoffCmp old = scale.getCutoffCmp();
 		this.scale.setCutoffCmp(cutoffCmp);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, cutoffCmp);
 	}
 	
 	public double getCutoff() {
@@ -79,8 +81,9 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public void setCutoff(double cutoff) {
+		double old = scale.getCutoff().getValue();
 		this.scale.getCutoff().setValue(cutoff);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, cutoff);
 	}
 	
 	public Color getColor() {
@@ -88,8 +91,9 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public void setColor(Color color) {
+		Color old = scale.getMax().getColor();
 		this.scale.getMax().setColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getNonSignificantColor() {
@@ -97,8 +101,9 @@ public class BinaryElementDecorator extends ElementDecorator {
 	}
 	
 	public void setNonSignificantColor(Color color) {
+		Color old = scale.getMin().getColor();
 		this.scale.getMin().setColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	@Override
@@ -128,28 +133,4 @@ public class BinaryElementDecorator extends ElementDecorator {
 	public IColorScale getScale() {
 		return scale;
 	}
-	
-	/*@Deprecated
-	@Override
-	public Map<String, String> getConfiguration() {
-		
-		Map<String, String> configuration = new HashMap <String, String>();
-		
-		configuration.put("valueIndex", Integer.toString(valueIndex));
-		configuration.put("color",  "#"+Integer.toHexString(getColor().getRGB()));
-		configuration.put("nonSignificantColor", "#"+Integer.toHexString(getNonSignificantColor().getRGB()));
-		configuration.put("cutoff", Double.toString(getCutoff()));
-		
-		return configuration;
-	}
-
-	@Deprecated
-	@Override
-	public void setConfiguration(Map<String, String> configuration) {
-		
-		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-		setColor(Color.decode(configuration.get("color")));
-		setNonSignificantColor(Color.decode(configuration.get("nonSignificantColor")));
-		setCutoff(Double.parseDouble((String) configuration.get("cutoff")));
-	}*/
 }

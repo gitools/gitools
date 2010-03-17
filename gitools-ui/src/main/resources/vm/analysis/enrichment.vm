@@ -137,7 +137,13 @@
 			<table class="propTable">
     			<tr>
     				<td class="propName">Multiple test correction</td>
-    				<td class="propValue">$analysis.mtc</td>
+					#set( $mtc = "" )
+					#if( $analysis.mtc == "bh" )
+						#set( $mtc = "Benjamini Hochberg FDR" )
+					#elseif( $analysis.mtc == "bonferroni" )
+						#set( $mtc = "Bonferroni" )
+					#end
+    				<td class="propValue">$mtc</td>
     			</tr>
 			</table>
 		</tr>

@@ -36,9 +36,9 @@ public class MimeTypeManager {
 		extMap.put(FileSuffixes.PROJECT, MimeTypes.PROJECT);
 		extMap.put(FileSuffixes.CONTENT, MimeTypes.CONTENT);
 		
-		extMap.put(FileSuffixes.ENRICHMENT_ANALYSIS, MimeTypes.ENRICHMENT_ANALYSIS);
+		extMap.put(FileSuffixes.ENRICHMENT, MimeTypes.ENRICHMENT_ANALYSIS);
 		
-		extMap.put(FileSuffixes.HEATMAP_FIGURE, MimeTypes.HEATMAP_FIGURE);
+		extMap.put(FileSuffixes.HEATMAP, MimeTypes.HEATMAP_FIGURE);
 		extMap.put(FileSuffixes.TABLE_FIGURE, MimeTypes.TABLE_FIGURE);
 		
 		extMap.put(FileSuffixes.GENE_SET, MimeTypes.GENE_SET);

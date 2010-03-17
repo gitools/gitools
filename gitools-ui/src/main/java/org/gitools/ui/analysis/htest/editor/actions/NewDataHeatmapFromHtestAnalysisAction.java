@@ -18,9 +18,7 @@
 package org.gitools.ui.analysis.htest.editor.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.persistence.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
@@ -33,9 +31,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 
@@ -63,19 +58,6 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 			AppFrame.instance().setStatusText("Analysis doesn't contains data.");
 			return;
 		}
-
-		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
-				"New heatmap from analysis data",
-				editorPanel.createName(),
-				Settings.getDefault().getLastPath(),
-				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
-
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
-
-		Settings.getDefault().setLastPath(wiz.getFolder());*/
 		
 		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
 
@@ -89,17 +71,14 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 			actions.add(new ViewAnnotatedElementsHeatmapAction(dataTable, a.getModuleMap()));
 		}*/
 
-		HeatmapEditor dataEditor = new HeatmapEditor(
+		HeatmapEditor editor = new HeatmapEditor(
 				heatmap/*, actions*/);
 
-		dataEditor.setName(editorPanel.createName(
-				EditorsPanel.DEFAULT_NAME_PREFIX,
-				"." + FileSuffixes.HEATMAP_FIGURE));
+		editor.setName(editorPanel.deriveName(
+				currentEditor.getName(), FileSuffixes.ENRICHMENT,
+				"-data", FileSuffixes.HEATMAP));
 
-		/*File file = new File(wiz.getSaveFilePage().getFilePath());
-		dataEditor.setFile(file);*/
-
-		editorPanel.addEditor(dataEditor);
+		editorPanel.addEditor(editor);
 
 		AppFrame.instance().setStatusText("New heatmap created.");
 	}

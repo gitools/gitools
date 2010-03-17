@@ -1,8 +1,6 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -80,8 +78,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 
 	public final void setValueIndex(int valueIndex) {
+		int old = this.valueIndex;
 		this.valueIndex = valueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
 	}
 
 	public int getCorrectedValueIndex() {
@@ -89,17 +88,19 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setCorrectedValueIndex(int correctionValueIndex) {
+		int old = this.correctedValueIndex;
 		this.correctedValueIndex = correctionValueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old , correctionValueIndex);
 	}
 	
 	public final boolean getUseCorrection() {
 		return useCorrection;
 	}
 
-	public final void setUseCorrection(boolean useCorrectedScale) {
-		this.useCorrection = useCorrectedScale;
-		firePropertyChange(PROPERTY_CHANGED);
+	public final void setUseCorrection(boolean useCorrection) {
+		boolean old = this.useCorrection;
+		this.useCorrection = useCorrection;
+		firePropertyChange(PROPERTY_CHANGED, old, useCorrection);
 	}
 
 	public double getSignificanceLevel() {
@@ -107,9 +108,10 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setSignificanceLevel(double sigLevel) {
+		double old = this.significanceLevel;
 		this.significanceLevel = sigLevel;
 		setSigHalfAmplitude(calculateSigHalfAmplitudeFromSigLevel(sigLevel));
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, sigLevel);
 	}
 	
 	private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel) {
@@ -122,8 +124,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 
 	public final void setSigHalfAmplitude(double sigHalfAmplitude) {
+		double old = scale.getSigHalfAmplitude();
 		scale.setSigHalfAmplitude(sigHalfAmplitude);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, sigHalfAmplitude);
 	}
 
 	public final ZScoreColorScale getZScoreScale() {
@@ -131,8 +134,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 
 	public final void setScale(ZScoreColorScale scale) {
+		ZScoreColorScale old = this.scale;
 		this.scale = scale;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, scale);
 	}
 
 	public Color getLeftMinColor() {
@@ -140,8 +144,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setLeftMinColor(Color color) {
+		Color old = scale.getMin().getColor();
 		scale.getMin().setColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getLeftMaxColor() {
@@ -149,8 +154,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setLeftMaxColor(Color color) {
+		Color old = scale.getCenter().getLeftColor();
 		scale.getCenter().setLeftColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getRightMinColor() {
@@ -158,8 +164,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setRightMinColor(Color color) {
+		Color old = scale.getCenter().getRightColor();
 		scale.getCenter().setRightColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getRightMaxColor() {
@@ -167,8 +174,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setRightMaxColor(Color color) {
+		Color old = scale.getMax().getColor();
 		scale.getMax().setColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getNonSignificantColor() {
@@ -176,8 +184,9 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	public void setNonSignificantColor(Color color) {
+		Color old = scale.getNonSignificantColor();
 		scale.setNonSignificantColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	@Override
@@ -216,28 +225,4 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	public IColorScale getScale() {
 		return scale;
 	}
-	
-	/*@Deprecated
-	@Override
-	public Map<String, String> getConfiguration() {
-		
-		Map<String, String> configuration = new HashMap <String, String>();
-		
-		configuration.put("valueIndex", Integer.toString(valueIndex));
-		configuration.put("correctedValueIndex", Integer.toString(correctedValueIndex));
-		configuration.put("useCorrection", Boolean.toString(useCorrection));
-		configuration.put("significanceLevel", Double.toString(significanceLevel));
-		
-		return configuration;
-	}
-
-	@Deprecated
-	@Override
-	public void setConfiguration(Map<String, String> configuration) {
-	
-		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
-		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
-		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
-	}*/
 }

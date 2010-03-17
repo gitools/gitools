@@ -36,8 +36,8 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
 		saveFilePage.setFormats(new FileFormat[] {
 			new FileFormat("Enrichment analysis (*." 
-					+ FileSuffixes.ENRICHMENT_ANALYSIS + ")",
-					FileSuffixes.ENRICHMENT_ANALYSIS) });
+					+ FileSuffixes.ENRICHMENT + ")",
+					FileSuffixes.ENRICHMENT) });
 		saveFilePage.setFormatsVisible(false);
 		addPage(saveFilePage);
 

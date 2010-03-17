@@ -61,6 +61,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private boolean rowMode;
 
+	private boolean updatingControls = false;
+
     /** Creates new form HeatmapPropertiesHeaderPanel */
     public HeatmapPropertiesHeaderPanel(boolean rowMode) {
 		this.rowMode = rowMode;
@@ -77,36 +79,42 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 		size.addChangeListener(new ChangeListener() {
 			@Override public void stateChanged(ChangeEvent e) {
-				sizeChangePerformed(); }
+				if (!updatingControls)
+					sizeChangePerformed(); }
 		});
 
 		fgColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				getHeader().setForegroundColor(color);
+				if (!updatingControls)
+					getHeader().setForegroundColor(color);
 			}
 		});
 
 		bgColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				getHeader().setBackgroundColor(color);
+				if (!updatingControls)
+					getHeader().setBackgroundColor(color);
 			}
 		});
 
 		labelPattern.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				getHeader().setLabelPattern(labelPattern.getText());
+				if (!updatingControls)
+					getHeader().setLabelPattern(labelPattern.getText());
 			}
 		});
 
 		linkName.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				getHeader().setLinkName(linkName.getText());
+				if (!updatingControls)
+					getHeader().setLinkName(linkName.getText());
 			}
 		});
 
 		linkPattern.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
-				getHeader().setLinkPattern(linkPattern.getText());
+				if (!updatingControls)
+					getHeader().setLinkPattern(linkPattern.getText());
 			}
 		});
 	}
@@ -121,6 +129,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	
 	@Override
 	protected void updateControls() {
+		updatingControls = true;
+
 		HeatmapHeader hdr = getHeader();
 		
 		size.setValue(rowMode ?
@@ -135,6 +145,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 		linkName.setText(hdr.getLinkName());
 		linkPattern.setText(hdr.getLinkPattern());
+
+		updatingControls = false;
 	}
 
 	private void updateFontTitle() {
@@ -152,7 +164,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		AnnotationMatrix annMatrix = hdr.getAnnotations();
 		
 		if (annMatrix != null) {
-			File file = PersistenceManager.getDefault().getEntityFile(annMatrix);
+			File file = PersistenceManager.getDefault().getEntityFileRef(annMatrix).getFile();
 			if (file != null)
 				annFile.setText(file.getName());
 

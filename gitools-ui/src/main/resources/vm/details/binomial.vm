@@ -24,8 +24,6 @@
 		#pvalueRow( "Right" $cell.right-p-value )
 		#pvalueRow( "Two-Tail" $cell.two-tail-p-value )
 		
-		#pvalueScale()
-		
 		#section( "Correction" )
 		#cpvalueRow( "Left" $cell.corrected-left-p-value )
 		#cpvalueRow( "Right" $cell.corrected-right-p-value )

@@ -39,6 +39,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 	private static final Color PROGRESS_COLOR = new Color(100, 180, 250);
 
 	private MessageStatus messageStatus;
+	private String leftLogoLink;
 	private String rightLogoLink;
 
     public DialogHeaderPanel() {
@@ -148,8 +149,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 	private void rightLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rightLogoMouseClicked
 		if (rightLogoLink != null) {
 			try {
-				Desktop.getDesktop().browse(
-						new URL(rightLogoLink).toURI());
+				Desktop.getDesktop().browse(new URL(rightLogoLink).toURI());
 			}
 			catch (Exception ex) {
 				ex.printStackTrace();
@@ -158,7 +158,14 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_rightLogoMouseClicked
 
 	private void leftLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leftLogoMouseClicked
-		// TODO add your handling code here:
+		if (leftLogoLink != null) {
+			try {
+				Desktop.getDesktop().browse(new URL(leftLogoLink).toURI());
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}//GEN-LAST:event_leftLogoMouseClicked
 
 
@@ -244,6 +251,14 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 		leftLogo.setIcon(logo);
 		leftLogo.setVisible(logo != null);
 
+	}
+
+	public String getLeftLogoLink() {
+		return leftLogoLink;
+	}
+
+	public void setLeftLogoLink(String leftLogoLink) {
+		this.leftLogoLink = leftLogoLink;
 	}
 
 	public boolean isLeftLogoVisible() {

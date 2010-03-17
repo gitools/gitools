@@ -41,23 +41,12 @@ public class CloneHeatmapAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IEditor currentEditor = editorPanel.getSelectedEditor();
+		IEditor currEd = editorPanel.getSelectedEditor();
 
-		if (!(currentEditor instanceof HeatmapEditor))
+		if (!(currEd instanceof HeatmapEditor))
 			return;
 
-		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
-				"New heatmap",
-				editorPanel.createName(),
-				Settings.getDefault().getLastPath(),
-				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
-
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
-
-		Settings.getDefault().setLastPath(wiz.getFolder());*/
+		HeatmapEditor currentEditor = (HeatmapEditor) currEd;
 
 		Heatmap hm = (Heatmap) currentEditor.getModel();
 
@@ -81,13 +70,12 @@ public class CloneHeatmapAction extends BaseAction {
 		clone.setColumnHeader(SerialClone.xclone(hm.getColumnHeader()));
 		clone.setRowHeader(SerialClone.xclone(hm.getRowHeader()));
 
-		HeatmapEditor ed = new HeatmapEditor(clone);
-		ed.setName(editorPanel.createName(
-				EditorsPanel.DEFAULT_NAME_PREFIX,
-				"." + FileSuffixes.HEATMAP_FIGURE));
-		//ed.setFile(wiz.getFile());
+		HeatmapEditor editor = new HeatmapEditor(clone, currentEditor.getExternalToolbarActions());
 
-		editorPanel.addEditor(ed);
+		editor.setName(editorPanel.deriveName(
+				currentEditor.getName(), FileSuffixes.HEATMAP,
+				"", FileSuffixes.HEATMAP));
+
+		editorPanel.addEditor(editor);
 	}
-
 }

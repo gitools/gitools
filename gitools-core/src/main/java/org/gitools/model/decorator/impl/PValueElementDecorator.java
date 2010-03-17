@@ -71,8 +71,9 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public final void setValueIndex(int valueIndex) {
+		int old = this.valueIndex;
 		this.valueIndex = valueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
 	}
 
 	public final int getCorrectedValueIndex() {
@@ -80,17 +81,19 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public final void setCorrectedValueIndex(int correctedValueIndex) {
+		int old = this.correctedValueIndex;
 		this.correctedValueIndex = correctedValueIndex;
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, correctedValueIndex);
 	}
 
 	public final boolean getUseCorrection() {
 		return useCorrection;
 	}
 
-	public final void setUseCorrection(boolean useCorrectedScale) {
-		this.useCorrection = useCorrectedScale;
-		firePropertyChange(PROPERTY_CHANGED);
+	public final void setUseCorrection(boolean useCorrection) {
+		boolean old = this.useCorrection;
+		this.useCorrection = useCorrection;
+		firePropertyChange(PROPERTY_CHANGED, old, useCorrection);
 	}
 
 	public final double getSignificanceLevel() {
@@ -98,9 +101,10 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public final void setSignificanceLevel(double significanceLevel) {
+		double old = this.significanceLevel;
 		this.significanceLevel = significanceLevel;
 		scale.setSignificanceLevel(significanceLevel);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, significanceLevel);
 	}
 
 	public final PValueColorScale getPValueScale() {
@@ -112,8 +116,9 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public void setMinColor(Color color) {
+		Color old = scale.getMin().getColor();
 		scale.getMin().setColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 
 	public Color getMaxColor() {
@@ -121,8 +126,9 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public void setMaxColor(Color color) {
+		Color old = scale.getSigLevelPoint().getLeftColor();
 		scale.getSigLevelPoint().setLeftColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getNonSignificantColor() {
@@ -130,8 +136,9 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public void setNonSignificantColor(Color color) {
+		Color old = scale.getNonSignificantColor();
 		scale.setNonSignificantColor(color);
-		firePropertyChange(PROPERTY_CHANGED);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	@Override
@@ -174,28 +181,4 @@ public class PValueElementDecorator extends ElementDecorator {
 	public IColorScale getScale() {
 		return scale;
 	}
-
-	/*@Deprecated
-	@Override
-	public Map<String, String> getConfiguration() {
-		
-		Map<String, String> configuration = new HashMap <String, String>();
-		
-		configuration.put("valueIndex", Integer.toString(valueIndex));
-		configuration.put("correctedValueIndex", Integer.toString(correctedValueIndex));
-		configuration.put("useCorrection", Boolean.toString(useCorrection));
-		configuration.put("significanceLevel", Double.toString(significanceLevel));
-		
-		return configuration;
-	}
-
-	@Deprecated
-	@Override
-	public void setConfiguration(Map<String, String> configuration) {
-		
-		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-		this.correctedValueIndex = Integer.parseInt((String) configuration.get("correctedValueIndex"));
-		this.useCorrection = Boolean.parseBoolean ((String) configuration.get("useCorrection"));
-		this.significanceLevel = Double.parseDouble((String) configuration.get("significanceLevel"));
-	}*/
 }

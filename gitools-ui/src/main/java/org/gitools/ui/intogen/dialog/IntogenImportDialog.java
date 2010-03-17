@@ -74,8 +74,9 @@ public class IntogenImportDialog extends JDialog {
 		headerPanel = new DialogHeaderPanel();
 		headerPanel.setTitle("www.intogen.org");
 		headerPanel.setMessage("");
-		headerPanel.setRightLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
-		headerPanel.setRightLogoLink("http://www.intogen.org");
+		headerPanel.setLeftLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
+		headerPanel.setLeftLogoLink("http://www.intogen.org");
+		headerPanel.setRightLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_INTOGEN_IMPORT, 96));
 		
 		htmlPanel = new HtmlPanel();
 
@@ -182,7 +183,7 @@ public class IntogenImportDialog extends JDialog {
 
 			@Override
 			protected boolean isNavigationAsynchronous() {
-				return true; //false;
+				return false;
 			}
 		};
 

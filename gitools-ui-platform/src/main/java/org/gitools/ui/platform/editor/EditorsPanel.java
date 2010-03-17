@@ -1,7 +1,9 @@
 package org.gitools.ui.platform.editor;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
@@ -15,9 +17,9 @@ public class EditorsPanel extends JTabbedPane {
 
 	private static final long serialVersionUID = 2170150185478413716L;
 
-	public static final String DEFAULT_NAME_PREFIX = "unnamed-";
+	public static final String DEFAULT_NAME_PREFIX = "unnamed";
 
-	private int nameCount = 0;
+	private Map<String, Integer> nameCounts = new HashMap<String, Integer>();
 
 	//private AbstractEditor.EditorListener editorListener;
 
@@ -109,11 +111,34 @@ public class EditorsPanel extends JTabbedPane {
 			names.add(editor.getName());
 		}
 
-		String name = prefix + (nameCount++) + suffix;
+		Integer c = nameCounts.get(prefix);
+		if (c == null)
+			c = 0;
+
+		int nameCount = c;
+		String name = prefix + "-" + (nameCount++) + suffix;
 		while (names.contains(name))
-			name = prefix + (nameCount++) + suffix;
-		
+			name = prefix + "-" + (nameCount++) + suffix;
+
+		nameCounts.put(prefix, nameCount);
 		return name;
+	}
+
+	public String deriveName(String name, String removeExtension, String prefixAdd, String newExtension) {
+		if (name.endsWith(removeExtension))
+			name = name.substring(0, name.length() - removeExtension.length() - 1);
+		
+		int i = name.length() - 1;
+		while (i >= 0 && Character.isDigit(name.charAt(i))) i--;
+		if (name.charAt(i) != '-')
+			i++;
+
+		name = name.substring(0, i);
+
+		if (!name.endsWith(prefixAdd))
+			name += prefixAdd;
+		
+		return createName(name, "." + newExtension);
 	}
 
 	private EditorTabComponent getEditorTab(IEditor editor) {

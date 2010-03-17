@@ -81,6 +81,8 @@ public class IconNames {
 	public static final String intogen24 = "/img/Intogen24.png";
 
 	public static final String LOGO_INTOGEN = "/img/intogen/IntOGenWebLogo.png";
+
+	public static final String LOGO_INTOGEN_IMPORT = "/img/logos/IntogenImport.png";
 	
 	public static final String LOGO_BIOMART_IMPORT = "/img/logos/BiomartImport.png";
 	

@@ -63,22 +63,27 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	protected void initControls() {
 		rowsGridColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				hm.setRowsGridColor(color); }
+				if (!updatingControls)
+					hm.setRowsGridColor(color); }
 		});
 
 		columnsGridColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
-				hm.setColumnsGridColor(color); }
+				if (!updatingControls)
+					hm.setColumnsGridColor(color); }
 		});
 
 		cellDecorator.addItemListener(new ItemListener() {
 			@Override public void itemStateChanged(ItemEvent e) {
-				cellDecoratorChanged(e); }
+				if (!updatingControls)
+					cellDecoratorChanged(e); }
 		});
 	}
 
 	@Override
 	protected void updateControls() {
+		updatingControls = true;
+
 		cellWidth.setValue(hm.getCellWidth());
 		cellHeight.setValue(hm.getCellHeight());
 		rowsGridEnabled.setSelected(hm.isRowsGridEnabled());
@@ -102,6 +107,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 		cellDecorator.setSelectedItem(descriptor);
 
 		changeDecoratorPanel(descriptor);
+
+		updatingControls = false;
 	}
 
 	@Override

@@ -225,6 +225,10 @@ public class HeatmapEditor extends AbstractEditor {
 		add(colorScalePanel, BorderLayout.SOUTH);
 	}
 
+	public List<BaseAction> getExternalToolbarActions() {
+		return externalToolbarActions;
+	}
+
 	protected IMatrixView getMatrixView() {
 		return heatmap.getMatrixView();
 	}
@@ -254,7 +258,7 @@ public class HeatmapEditor extends AbstractEditor {
 					"Save heatmap",
 					getName(),
 					Settings.getDefault().getLastPath(),
-					new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+					new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP)});
 
 			WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
 			dlg.setVisible(true);
@@ -298,7 +302,7 @@ public class HeatmapEditor extends AbstractEditor {
 						"Save heatmap",
 						getName(),
 						Settings.getDefault().getLastPath(),
-						new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
+						new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP)});
 
 				WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
 				dlg.setVisible(true);

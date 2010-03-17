@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.persistence.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
@@ -38,9 +37,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
@@ -62,19 +58,6 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		IEditor currentEditor = editorPanel.getSelectedEditor();
 		if (!(currentEditor instanceof HtestAnalysisEditor))
 			return;
-
-		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
-				"New heatmap from analysis results",
-				editorPanel.createName(),
-				Settings.getDefault().getLastPath(),
-				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
-
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
-
-		Settings.getDefault().setLastPath(wiz.getFolder());*/
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
@@ -99,15 +82,13 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 						new HeatmapHeader(), new HeatmapHeader());
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		HeatmapEditor resultsEditor = new HeatmapEditor(heatmap, actions);
+		HeatmapEditor editor = new HeatmapEditor(heatmap, actions);
 
-		resultsEditor.setName(editorPanel.createName(
-				EditorsPanel.DEFAULT_NAME_PREFIX,
-				"." + FileSuffixes.HEATMAP_FIGURE));
+		editor.setName(editorPanel.deriveName(
+				currentEditor.getName(), FileSuffixes.ENRICHMENT,
+				"-results", FileSuffixes.HEATMAP));
 
-		//resultsEditor.setFile(wiz.getFile());
-
-		editorPanel.addEditor(resultsEditor);
+		editorPanel.addEditor(editor);
 
 		AppFrame.instance().setStatusText("New heatmap created.");
 	}

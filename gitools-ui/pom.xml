@@ -22,7 +22,7 @@
 			<groupId>edu.upf.bg</groupId>
 			<artifactId>bg-commons</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>gitools-core</artifactId>
@@ -55,7 +55,7 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency> -->
-		
+
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
@@ -103,5 +103,6 @@
 		</plugins>
 	</build>
 </project>
+
 
 

@@ -75,7 +75,7 @@ public class EnrichmentTool extends HtestTool {
         		analysis, args.dataMime, args.dataFile,
 				args.populationFile,
 				MimeTypes.MODULES_2C_MAP, args.modulesFile, //FIXME modulesMime
-				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT_ANALYSIS);
+				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT);
         
         IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

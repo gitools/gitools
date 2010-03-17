@@ -38,19 +38,25 @@ public class HeatmapPropertiesDocumentPanel extends HeatmapPropertiesAbstractPan
 	protected void initControls() {
 		title.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
-				hm.setTitle(title.getText()); }
+				if (!updatingControls)
+					hm.setTitle(title.getText()); }
 		});
 
 		description.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
-				hm.setDescription(description.getText()); }
+				if (!updatingControls)
+					hm.setDescription(description.getText()); }
 		});
 	}
 
 	@Override
 	protected void updateControls() {
+		updatingControls = true;
+
 		title.setText(hm.getTitle());
 		description.setText(hm.getDescription());
+
+		updatingControls = false;
 	}
 
 	@Override

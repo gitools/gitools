@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
-import org.gitools.persistence.FileFormat;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
@@ -37,9 +36,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 
 
 public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
@@ -82,20 +78,6 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 			return;
 		}
 
-		// Set file name
-		/*SaveFileWizard wiz = SaveFileWizard.createSimple(
-				"New heatmap",
-				editorPanel.createName(),
-				Settings.getDefault().getLastPath(),
-				new FileFormat[] {new FileFormat("Heatmap", FileSuffixes.HEATMAP_FIGURE)});
-
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
-
-		Settings.getDefault().setLastPath(wiz.getFolder());*/
-
 		// Retrieve elements
 		int[] view = srcMatrixView.getVisibleRows();
 
@@ -137,15 +119,13 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
 
 		// Create editor
-		HeatmapEditor dataEditor = new HeatmapEditor(heatmap);
+		HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-		dataEditor.setName(editorPanel.createName(
-				EditorsPanel.DEFAULT_NAME_PREFIX,
-				"." + FileSuffixes.HEATMAP_FIGURE));
-
-		//dataEditor.setFile(wiz.getFile());
-
-		editorPanel.addEditor(dataEditor);
+		editor.setName(editorPanel.deriveName(
+				currentEditor.getName(), FileSuffixes.HEATMAP,
+				"-data", FileSuffixes.HEATMAP));
+		
+		editorPanel.addEditor(editor);
 
 		AppFrame.instance().setStatusText("New heatmap created.");
 	}
