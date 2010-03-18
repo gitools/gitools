@@ -1,1 +1,1 @@
-java -jar ..\lib\gitools-ui-${project.version}.jar %*
+java %GITOOLS_JAVA_OPTS% -jar ..\lib\gitools-ui-${project.version}.jar %*

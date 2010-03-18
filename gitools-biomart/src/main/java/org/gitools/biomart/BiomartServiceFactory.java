@@ -64,7 +64,7 @@ public class BiomartServiceFactory {
      */
     public static IBiomartService createDefaultservice() throws BiomartServiceException {
 
-		BiomartSource bs = BiomartSourceManager.getDefault().getBiomartListSrc().getSources().get(0);
+		BiomartSource bs = BiomartSourceManager.getDefault().getSources().get(0);
 
         return  createService(bs);
     }

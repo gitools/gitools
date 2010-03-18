@@ -37,6 +37,7 @@
 \tracking_changes false
 \output_changes false
 \author "" 
+\author "" 
 \end_header
 
 \begin_body
@@ -111,20 +112,68 @@ filename "analysis_enrichment.lyx"
 
 \end_layout
 
+\begin_layout Section
+GSEA
+\end_layout
+
 \begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "analysis_correlations.lyx"
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This analysis is not yet implemented but is planned for next releases.
+\end_layout
 
 \end_inset
 
 
 \end_layout
 
+\begin_layout Section
+Oncodrive analysis
+\end_layout
+
 \begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "analysis_combinations.lyx"
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This analysis is not yet implemented but is planned for next releases.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Correlations
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This analysis is not yet implemented but is planned for next releases.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Combinations
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This analysis is not yet implemented but is planned for next releases.
+\end_layout
 
 \end_inset
 
@@ -132,11 +181,31 @@ filename "analysis_combinations.lyx"
 \end_layout
 
 \begin_layout Chapter
-Browsing Data and Results
+Visualization of Data and Results
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "visualization.lyx"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chapter
 Exporting Work
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "exporting.lyx"
+
+\end_inset
+
+
 \end_layout
 
 \end_body

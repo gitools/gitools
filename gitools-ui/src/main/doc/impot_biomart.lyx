@@ -43,15 +43,6 @@
 \begin_body
 
 \begin_layout Section
-Import from BioMart
-\end_layout
-
-\begin_layout Standard
-You can import data matrices, modules and annotations directly from Biomart
- using gitools.
-\end_layout
-
-\begin_layout Section
 What is Biomart ?
 \end_layout
 
@@ -59,15 +50,12 @@ What is Biomart ?
 BioMart is a query-oriented data management system developed jointly by
  the Ontario Institute for Cancer Research (OICR) and the European Bioinformatic
 s Institute (EBI).
- Numerous data portals are accessible through Biomart.
+ Numerous data portals are accessible through Biomart (to put some examples
+ Ensembl, UniProt or Reactome).
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-Visit Biomart at 
+To know more visit the Biomart Central Portal at 
 \begin_inset CommandInset href
 LatexCommand href
 target "http://www.biomart.org"
@@ -75,6 +63,49 @@ target "http://www.biomart.org"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Import from BioMart
+\end_layout
+
+\begin_layout Standard
+You can import matrices, modules and tables directly from Biomart using
+ Gitools.
+\end_layout
+
+\begin_layout Subsection
+Importing tables
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Importing modules
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

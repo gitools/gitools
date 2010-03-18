@@ -54,6 +54,13 @@
 			</includes>
 			<outputDirectory></outputDirectory>
 		</fileSet>
+
+		<fileSet>
+			<includes>
+				<include>LICENSE-2.0.txt</include>
+			</includes>
+			<outputDirectory></outputDirectory>
+		</fileSet>
 	</fileSets>
 
 	<moduleSets>

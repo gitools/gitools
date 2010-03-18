@@ -22,18 +22,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "biomartSource")
+@XmlRootElement(name = "biomart-source")
 public class BiomartSources {
 
     @XmlElementWrapper(name = "sources")
     @XmlElement(name = "source")
-    private List<BiomartSource> lSources = new ArrayList<BiomartSource>();
+    private List<BiomartSource> sources = new ArrayList<BiomartSource>();
 
     public List<BiomartSource> getSources() {
-        return lSources;
+        return sources;
     }
 
     public void setSources(List<BiomartSource> src) {
-        this.lSources = src;
+        this.sources = src;
     }
 }

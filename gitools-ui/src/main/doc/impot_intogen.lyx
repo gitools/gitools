@@ -43,27 +43,31 @@
 \begin_body
 
 \begin_layout Section
-Import from IntOGen
-\end_layout
-
-\begin_layout Standard
-You can import matrices, modules and annotations directly from IntOGen using
- gitools.
-\end_layout
-
-\begin_layout Section
 What is IntOGen ?
 \end_layout
 
 \begin_layout Standard
 Integrative OncoGenomics (IntOGen), a discovery tool for cancer researchers,
  is a resource that integrates multidimensional OncoGenomics Data for the
- identification of genes and groups of genes (biological modules) involved
- in cancer development.
+ identification of genes and groups of genes (modules) involved in cancer
+ development.
 \end_layout
 
 \begin_layout Standard
-(See 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain that it contains data at different levels, experiments and combinations.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For more information see 
 \begin_inset CommandInset href
 LatexCommand href
 name "Gundem et al., Nature Methods, 2010"
@@ -71,11 +75,7 @@ target "http://www.ncbi.nlm.nih.gov/pubmed/20111033"
 
 \end_inset
 
- for more information)
-\end_layout
-
-\begin_layout Standard
-Visit IntOGen at 
+ or visit IntOGen at 
 \begin_inset CommandInset href
 LatexCommand href
 target "http://www.intogen.org"
@@ -83,6 +83,81 @@ target "http://www.intogen.org"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Section
+Import data from IntOGen
+\end_layout
+
+\begin_layout Standard
+You can import p-value matrices and modules for cancer related genes (oncomodule
+s) directly from IntOGen using Gitools.
+\end_layout
+
+\begin_layout Subsection
+Importing p-value matrices
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain what a p-value matrix is and that can be obtained at the level of
+ experiments and for combinations and the different parameters (ICD, Platform,
+ Publication, ...).
+ Put some screenshots.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Importing oncomodules
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain what an oncomodule is and that can be obtained at the level of experimen
+ts and for combinations and the different parameters (ICD, Platform, Publication
+, ...).
+ Put some screenshots.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

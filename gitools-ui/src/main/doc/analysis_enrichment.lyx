@@ -43,7 +43,7 @@
 \begin_body
 
 \begin_layout Section
-Enrichment 
+Enrichment analysis
 \end_layout
 
 \begin_layout Standard
@@ -62,14 +62,51 @@ How is this calculated ?
 \begin_layout Standard
 Currently there are three different methods for enrichment analysis implemented
  in Gitools.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Talk about only one method with different statistical tests.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Binomial (Bernoulli) test
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Fisher's exact test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -77,9 +114,22 @@ Z-score test
 \end_layout
 
 \begin_layout Standard
-To use the Z-score test a Continous Data Matrix is needed.
- Gitools tests if there is a significant deviation from random expectation
- for an estimator value (mean or median) of each module in each condition:
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Elaborate more on this.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Z-score test is used to see if there is a significant deviation from
+ random expectation for an estimator value (mean or median) of each module
+ in each of the conditions:
 \end_layout
 
 \begin_layout Standard
@@ -94,11 +144,43 @@ where
 \begin_inset Formula $\mu_{i}$
 \end_inset
 
- is the mean, and 
+ is the mean and 
 \begin_inset Formula $\sigma_{i}$
 \end_inset
 
- is the standard deviation.
+ is the standard deviation of the estimator for different permutations for
+ condition i.
+\end_layout
+
+\begin_layout Section
+How to run an enrichment analysis
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain each of the wizard pages and its options.
+ Put screenshots.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

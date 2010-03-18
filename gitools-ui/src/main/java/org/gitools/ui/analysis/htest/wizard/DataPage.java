@@ -101,7 +101,8 @@ public class DataPage extends AbstractWizardPage {
 		String path = dataFilePath.getText().trim().toLowerCase();
 		if (!path.isEmpty()) {
 			String ext = getFileFormat().getExtension().toLowerCase();
-			if (!path.endsWith(ext))
+			if (!path.endsWith(ext) &&
+					!path.endsWith(ext + ".gz"))
 				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");
 		}
 

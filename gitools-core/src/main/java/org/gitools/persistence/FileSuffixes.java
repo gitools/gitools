@@ -26,14 +26,14 @@ public class FileSuffixes {
 	public static final String GENE_MATRIX = "gmx";
 	public static final String GENE_MATRIX_TRANSPOSED = "gmt";
 
-	public static final String OBJECT_MATRIX = "objectmatrix.gz";
-	public static final String DOUBLE_MATRIX = "doublematrix.gz";
-	public static final String DOUBLE_BINARY_MATRIX = "binarymatrix.gz";
-	public static final String STRING_MATRIX = "stringmatrix.gz";
-	public static final String ANNOTATION_MATRIX = "annotationmatrix.gz";
+	public static final String OBJECT_MATRIX = "tsv";
+	public static final String DOUBLE_MATRIX = "cdm";
+	public static final String DOUBLE_BINARY_MATRIX = "bdm";
+	public static final String STRING_MATRIX = "tsv";
+	public static final String ANNOTATION_MATRIX = "tsv";
 
-	public static final String MODULES_INDEXED_MAP = "modules.gz";
-	public static final String MODULES_2C_MAP = "modules2c.gz";
+	public static final String MODULES_INDEXED_MAP = "ixm";
+	public static final String MODULES_2C_MAP = "tcm";
 
 	private static final Map<Class<?>, String> suffixesMap = new HashMap<Class<?>, String>();
 

@@ -1,0 +1,184 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Editors
+\end_layout
+
+\begin_layout Standard
+Gitools is document editor oriented, this means that you can have many documents
+ opened at the same time, edit them and save changes.
+ For each kind of document you would have at least one kind of editor, so
+ for example a matrix can be visualized with a numeric spreadsheet, but
+ also with a color heatmap.
+\end_layout
+
+\begin_layout Standard
+There are different kind of editors planned, for the time being the most
+ mature one is the heatmap editor.
+\end_layout
+
+\begin_layout Section
+Heatmap
+\end_layout
+
+\begin_layout Standard
+A heatmap is a graphical representation of data where the values taken by
+ a variable in a two-dimensional map are represented as colors.
+ In the case of Gitools we can represent both numerical matrices and tables
+ in heatmaps.
+\end_layout
+
+\begin_layout Standard
+There are many applications for drawing heatmaps but Gitools allows also
+ editing and configuring it interactively and with many options.
+ Apart from that Gitools allows also easy navigation over the cells and
+ exploration of the data or result attributes associated to each cell.
+\end_layout
+
+\begin_layout Standard
+As an example of the kind of heatmaps that can be represented see the figures
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Heatmap-screenshot1"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Heatmap-screenshot2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/editor_heatmap_screenshot1.png
+	lyxscale 20
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Heatmap-screenshot1"
+
+\end_inset
+
+Screenshot of a heatmap editor opened for the results of an enrichment analysis.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/editor_heatmap_screenshot2.png
+	lyxscale 20
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Heatmap-screenshot2"
+
+\end_inset
+
+Screenshot of a heatmap editor opened for an expression matrix.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

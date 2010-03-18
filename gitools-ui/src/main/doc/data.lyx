@@ -43,52 +43,86 @@
 \begin_body
 
 \begin_layout Section
-Data matrices
+Data
 \end_layout
 
 \begin_layout Standard
-Data Matrices provide values for a number of items (i.e.
- genes) in several conditions.
- Data Matrices can provide continuous values (
+There are different kinds of data needed for different features in Gitools.
+ Here we explain them independently on how can they be represented in the
+ file system.
+\end_layout
+
+\begin_layout Subsection
+Matrices
+\end_layout
+
+\begin_layout Standard
+A matrix is a bidimensional structure in which for each dimension (row and
+ column) there is a value (cell).
+ All the values are of the same type (for example all are p-values or log
+\begin_inset Formula $_{2}$
+\end_inset
+
+ratios).
+ It is the equivalent to 
+\emph on
+GNU R matrix
+\emph default
+.
+ Matrices can contain continuous values (
 \begin_inset Formula $\mathbb{R}$
 \end_inset
 
 ) or binary values (1, 0).
- Any continuous Data Matrix can be converted to a binary Data Matrix in
- GiTools providing a criteria (i.e.
- value higher than 2).
+ There could be empty values too (usually represented as a hyphen '-' in
+ text file formats).
  
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+Matrices provide values for a number of items (i.e.
+ one gene for each row) in several conditions (i.e.
+ one condition for each column).
+\end_layout
+
+\begin_layout Subsection
 Modules
 \end_layout
 
 \begin_layout Standard
-Modules are lists of genes or other items with a common biological property.
- For example, genes in the same pathway form a module.
- They are also called gene sets or concepts.
+Modules are lists of genes or other biological elements with a common biological
+ property.
+ They are also known as gene sets or concepts.
+ For example, genes in the same pathway or genes regulated by the same transcrip
+tion factor form a module.
+ You can have many modules, i.e one for each known pathway or TF as seen
+ in the example before.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Tables
 \end_layout
 
 \begin_layout Standard
-Annotations are files that provide mappings to synonymous ids, descriptions
- or any other information about the items used in the analysis.
- Annotations can refer to Columns or Rows in any Data matrix or Result matrix.
-\end_layout
+A table represents a list of attributes, where each row is an element of
+ the list and each column an attribute.
+ Each attribute can be of different type (i.e.
+ one column with the gene id and other with a log
+\begin_inset Formula $_{2}$
+\end_inset
 
-\begin_layout Section
-How can I get them ?
+ratio).
+ It is the equivalent to 
+\emph on
+GNU R data.frame
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
-You can import Data Matrices directly from Biomart or IntOGen or prepare
- them in an excel file and save the file as tab separated file.
- If you import matrices and modules from IntOGen the annotation files are
- already provided by default.
+In Gitools they are used for different things, for providing extra attributes
+ to row and column labels in heatmaps and for representing results of some
+ analysis.
 \end_layout
 
 \begin_layout Section
@@ -96,9 +130,34 @@ File formats
 \end_layout
 
 \begin_layout Standard
-Continuous Data Matrices are provided in CDM format while Binary Data Matrices
- can be provided in sevaral formats depending on what is more convenient
- to the user.
+Data can be retrieved from or stored in files in many different formats.
+ Some file formats are useful to represent different kind of data, too.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Talk about gzip compressed variants
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reference file format conversion tool
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -110,6 +169,12 @@ CDM file format is a tab delimited matrix of items (i.e.
  genes) and conditions.
  The numbers in each cell indicates the values that this item has in that
  condition.
+ Empty values can be represented with the hyphen '-'.
+\end_layout
+
+\begin_layout Standard
+It is useful for representing matrices (i.e.
+ expression data for a microarray).
 \end_layout
 
 \begin_layout Standard
@@ -129,8 +194,24 @@ Binary data matrix (BDM)
 \begin_layout Standard
 BDM file format is a tab delimited binary matrix of items (i.e.
  genes) and conditions.
- 1 indicates that the item has this condition or is in this gene set and
- 0 otherwise.
+ Values can only be 1 or 0, and can have different meanings depending what
+ are they used for.
+ Empty values can be represented with the hyphen '-'.
+\end_layout
+
+\begin_layout Standard
+They are useful for representing matrices as well as modules.
+\end_layout
+
+\begin_layout Standard
+When representing matrices a 1 means that this item (row) presents a positive
+ event (for example a mutation) in this condition (column) and 0 otherwise.
+\end_layout
+
+\begin_layout Standard
+When representing modules, rows correspond to genes or biological elements
+ and each column a different module, then a 1 is used to specify that a
+ given gene or biological element is related to a given module and 0 otherwise.
 \end_layout
 
 \begin_layout Standard
@@ -150,8 +231,15 @@ Gene matrix transposed (GMT)
 \begin_layout Standard
 GMT file format is a simple tab delimited file to provide gene sets.
  Each row describes a gene set, the first column indicates the name of the
- gene set and the second column the description.
- 
+ gene set and the second column the description (you can leave description
+ empty), the rest of columns are used to enumerate the genes related to
+ this gene set.
+\end_layout
+
+\begin_layout Standard
+Usually this format is used for representing modules but can also be used
+ to represent binary data matrices (i.e.
+ when you have lists of differentially expressed gens for different conditions).
 \end_layout
 
 \begin_layout Standard
@@ -165,14 +253,7 @@ GMT file format is a simple tab delimited file to provide gene sets.
 \end_layout
 
 \begin_layout Standard
-GMT files provided as Data in GiTools will be converted to Binary Data Matrices
- in which each gene set will be a column (i.e.
- condition) and each gene (or item) will have a value of 1 if it was in
- the gene set and 0 otherwise.
-\end_layout
-
-\begin_layout Standard
-GMX and GMT formats are as those used by 
+This format is the same used in 
 \begin_inset CommandInset href
 LatexCommand href
 name "GSEA tool"
@@ -191,8 +272,15 @@ Gene matrix (GMX)
 GMX file format is a simple tab delimited file to provide gene sets.
  Each column describes a gene set, the first row indicates the name of the
  gene set and the second row the description (you can leave description
- empty).
+ empty), the rest of rows are used to enumerate the genes related to this
+ gene set.
  
+\end_layout
+
+\begin_layout Standard
+Usually this format is used for representing modules but can also be used
+ to represent binary data matrices (i.e.
+ when you have lists of differentially expressed gens for different conditions).
 \end_layout
 
 \begin_layout Standard
@@ -206,14 +294,7 @@ GMX file format is a simple tab delimited file to provide gene sets.
 \end_layout
 
 \begin_layout Standard
-GMT files provided as Data in GiTools will be converted to Binary Data Matrices
- in which each gene set will be a column (i.e.
- condition) and each gene (or item) will have a value of 1 if it was in
- the gene set and 0 otherwise.
-\end_layout
-
-\begin_layout Standard
-GMX and GMT formats are as those used by 
+This format is the same used in 
 \begin_inset CommandInset href
 LatexCommand href
 name "GSEA tool"
@@ -229,10 +310,21 @@ Two columns mapping (TCM)
 \end_layout
 
 \begin_layout Standard
-TCM file format is a simple tab delimited file in which the first column
- indicates the ID of gene or item and the second column the name of the
- module it belongs to.
- 
+TCM file format is a simple tab delimited file to provide gene sets.
+ It has two columns, the first column indicates the ID of gene or biological
+ element and the second column the name of the module it belongs to.
+\end_layout
+
+\begin_layout Standard
+Usually this format is used for representing modules but can also be used
+ to represent binary data matrices (i.e.
+ when you have lists of differentially expressed gens for different conditions).
+\end_layout
+
+\begin_layout Standard
+This format uses more disk space than others so it is better to use some
+ of GMX or GMT, but usually it is how you get data from Biomart so Gitools
+ supports it too.
 \end_layout
 
 \begin_layout Standard
@@ -246,14 +338,56 @@ TCM file format is a simple tab delimited file in which the first column
 \end_layout
 
 \begin_layout Subsection
-Annotations
+Tab separated values (TSV)
 \end_layout
 
 \begin_layout Standard
-The format of annotations files is a simple table in which the first column
- is the ID used in the matrix or module file and next columns are annotations
- of these items.
- The first row is the header of the columns.
+This format is a generic text file format used for many different things.
+ The main characteristic is that uses the tab character for separating fields
+ and new line character/s for separating rows.
+ All of the previous formats are based on it.
+\end_layout
+
+\begin_layout Standard
+It can be used to represent matrices, modules and tables.
+\end_layout
+
+\begin_layout Section
+How can I get data ready for my analysis ?
+\end_layout
+
+\begin_layout Standard
+The first and more evident way to create data is using for example a program
+ like 
+\emph on
+Excel
+\emph default
+ or 
+\emph on
+OpenOffice
+\emph default
+ and then exporting to tabulated text file.
+ But you can also retrieve data from different external data sources like
+ 
+\emph on
+Biomart
+\emph default
+ or 
+\emph on
+IntOGen
+\emph default
+.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+How to import data from those data sources is explained in X.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

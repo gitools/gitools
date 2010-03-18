@@ -35,12 +35,12 @@ public class BiomartConfiguration {
 
     public BiomartConfiguration(BiomartSource bs)
     {
-        this.wdslUrl = bs.getWsdlLocation();
-        this.restUrl = bs.getServiceRest();
+        this.wdslUrl = bs.getWsdlUrl();
+        this.restUrl = bs.getRestUrl();
         this.version = bs.getVersion();
         this.serviceName = bs.getServiceName();
-        this.serviceNamespace = bs.getServiceNamespace();
-        this.servicePortName = bs.getServicePortName();
+        this.serviceNamespace = bs.getNamespace();
+        this.servicePortName = bs.getPortName();
     }
     
     public String getServiceName() {
