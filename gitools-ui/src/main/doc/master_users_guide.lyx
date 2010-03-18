@@ -17,7 +17,7 @@
 
 \graphics default
 \paperfontsize default
-\spacing onehalf
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -37,24 +37,9 @@
 \tracking_changes false
 \output_changes false
 \author "" 
-\author "" 
 \end_header
 
 \begin_body
-
-\begin_layout Part
-Installation guide
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "installation.lyx"
-
-\end_inset
-
-
-\end_layout
 
 \begin_layout Part
 User's guide
@@ -152,38 +137,6 @@ Browsing Data and Results
 
 \begin_layout Chapter
 Exporting Work
-\end_layout
-
-\begin_layout Part
-Tutorials
-\end_layout
-
-\begin_layout Chapter
-Preparing the data
-\end_layout
-
-\begin_layout Section
-Importing data from IntOGen
-\end_layout
-
-\begin_layout Section
-Importing data from BioMart
-\end_layout
-
-\begin_layout Chapter
-Running analysis
-\end_layout
-
-\begin_layout Section
-Running an enrichment analysis
-\end_layout
-
-\begin_layout Chapter
-Generating figures
-\end_layout
-
-\begin_layout Section
-Working with heatmaps
 \end_layout
 
 \end_body
