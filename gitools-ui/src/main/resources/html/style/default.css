@@ -1,41 +1,25 @@
 body {
-	/*background-color: #eaefb5;*/
 	background-color: #ffffff;
 	font-family: sans-serif;
-	margin: 0px;
+	margin: 10px 20px;
 }
 
-.header {
-	border: none;
+table {
 	width: 100%;
-	margin: 0px;
-	padding: 16px;
-	/*background-image: url(img/header.png);
-	background-repeat: repeat-x;*/
-	vertical-align: middle;
+	border: 0px;
 }
 
-.section {
-	position: relative;;
-	margin-left: 24px;
-	padding: 12px;
+td {
+	padding: 5px 10px;
 }
 
-.section h2 {
-	color: #f4663a;
-	margin: 0px;
-	padding: 4px;
+img {
+	border: 0px;
 }
 
-.section p {
-	margin: 0px;
-	padding: 2px;
-}
-
-A:link, A:visited { 
-	text-decoration: none; 
-}
-
-A:hover { 
-	color: #f43a01; 
+h1 {
+	border-bottom:1px solid #f29128;
+	color:#f29128;
+	font-size:18px;
+	font-family:arial,sans-serif;
 }
