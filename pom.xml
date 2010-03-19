@@ -138,8 +138,8 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>ztools-repository</id>
-			<name>ztools repository</name>
+			<id>gitools-repository</id>
+			<name>gitools repository</name>
 			<url>file://${basedir}/target/deploy</url>
 		</snapshotRepository>
 	</distributionManagement>

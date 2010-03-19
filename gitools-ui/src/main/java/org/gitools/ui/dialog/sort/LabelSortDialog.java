@@ -56,6 +56,7 @@ public class LabelSortDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        applyToGroup = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -92,11 +93,14 @@ public class LabelSortDialog extends javax.swing.JDialog {
 
         jLabel2.setText("Apply to:");
 
+        applyToGroup.add(applyToRowsRb);
         applyToRowsRb.setSelected(true);
         applyToRowsRb.setText("rows");
 
+        applyToGroup.add(applyToColumnsRb);
         applyToColumnsRb.setText("columns");
 
+        applyToGroup.add(applyToRowsAndColumnsRb);
         applyToRowsAndColumnsRb.setText("rows and columns");
 
         jLabel1.setText("Direction");
@@ -179,6 +183,7 @@ public class LabelSortDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton applyToColumnsRb;
+    private javax.swing.ButtonGroup applyToGroup;
     private javax.swing.JRadioButton applyToRowsAndColumnsRb;
     private javax.swing.JRadioButton applyToRowsRb;
     private javax.swing.JButton cancelButton;

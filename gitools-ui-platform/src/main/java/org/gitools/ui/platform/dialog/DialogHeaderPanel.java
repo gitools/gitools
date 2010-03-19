@@ -257,8 +257,12 @@ public class DialogHeaderPanel extends javax.swing.JPanel {
 		return leftLogoLink;
 	}
 
-	public void setLeftLogoLink(String leftLogoLink) {
-		this.leftLogoLink = leftLogoLink;
+	public void setLeftLogoLink(String logoLink) {
+		this.leftLogoLink = logoLink;
+		if (logoLink == null)
+			leftLogo.setCursor(Cursor.getDefaultCursor());
+		else
+			leftLogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 
 	public boolean isLeftLogoVisible() {

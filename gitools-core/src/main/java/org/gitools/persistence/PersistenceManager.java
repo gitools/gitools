@@ -28,7 +28,7 @@ public class PersistenceManager implements Serializable {
 
 	private static final long serialVersionUID = -1442103565401901838L;
 
-	private static class FileKey {
+	/*private static class FileKey {
 		private File file;
 		public FileKey(File file) {
 			this.file = file;
@@ -47,7 +47,7 @@ public class PersistenceManager implements Serializable {
 			return file.hashCode() == f.file.hashCode()
 				&& file.lastModified() == f.file.lastModified();
 		}
-	}
+	}*/
 
 	public static class FileRef {
 		private File file;
@@ -63,6 +63,24 @@ public class PersistenceManager implements Serializable {
 		public String getMime() {
 			return mime;
 		}
+		@Override
+		public int hashCode() {
+			int code = file.hashCode();
+			code = 37 * code + (int) file.lastModified();
+			code = 37 * code + mime.hashCode();
+			return code;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null)
+				return false;
+			else if (!(obj instanceof FileRef))
+				return false;
+			FileRef f = (FileRef) obj;
+			return file.hashCode() == f.file.hashCode()
+				&& file.lastModified() == f.file.lastModified()
+				&& ((mime == null && f.mime == null) || (mime != null && mime.equals(f.mime)));
+		}
 	}
 	
 	private static PersistenceManager defaultManager;
@@ -70,7 +88,7 @@ public class PersistenceManager implements Serializable {
 	private final Map<String, Class<? extends IEntityPersistence<?>>> persistenceMap =
 		new HashMap<String, Class<? extends IEntityPersistence<?>>>();
 
-	private final Map<FileKey, Object> entityCache = new HashMap<FileKey, Object>();
+	private final Map<FileRef, Object> entityCache = new HashMap<FileRef, Object>();
 	private final Map<Object, FileRef> entityFileRefMap = new HashMap<Object, FileRef>();
 	
 	public static final PersistenceManager getDefault() {
@@ -146,7 +164,7 @@ public class PersistenceManager implements Serializable {
 			IProgressMonitor monitor)
 				throws PersistenceException {
 		
-		FileKey fileKey = new FileKey(file);
+		FileRef fileKey = new FileRef(file, mimeType);
 		
 		if (entityCache.containsKey(fileKey))
 			return entityCache.get(fileKey);
@@ -201,7 +219,7 @@ public class PersistenceManager implements Serializable {
 
 		entityPersistence.write(file, entity, monitor);
 		
-		entityCache.put(new FileKey(file), entity);
+		entityCache.put(new FileRef(file, mimeType), entity);
 		entityFileRefMap.put(entity, new FileRef(file, mimeType));
 	}
 

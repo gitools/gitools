@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.editor.html.WelcomeEditor;
+import org.gitools.ui.welcome.WelcomeEditor;
 import org.gitools.ui.platform.AppFrame;
 
 

@@ -65,8 +65,6 @@ import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.Query;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
-import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.biomart.tablewriter.SequentialTableWriter;
 import org.gitools.biomart.tablewriter.TsvTableWriter;
 import org.gitools.persistence.FileFormat;

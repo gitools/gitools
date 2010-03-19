@@ -17,8 +17,10 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -66,8 +68,7 @@ public class OpenHeatmapAction extends BaseAction {
 		FileFilter[] filters = new FileFilter[] {
 			new FF("Results file", MimeTypes.OBJECT_MATRIX),
 			new FF("Matrix file", MimeTypes.DOUBLE_MATRIX),
-			new FF("Binary matrix file", MimeTypes.DOUBLE_BINARY_MATRIX) /*,
-			new FF("Element lists file", MimeTypes.ELEMENT_LISTS)*/
+			new FF("Binary matrix file", MimeTypes.DOUBLE_BINARY_MATRIX)
 		};
 
 		final Object[] ret = FileChooserUtils.selectFile(
@@ -99,7 +100,8 @@ public class OpenHeatmapAction extends BaseAction {
 
 					final HeatmapEditor editor = new HeatmapEditor(figure);
 
-					editor.setName(file.getName());
+					editor.setName(PersistenceUtils.getFileName(file.getName())
+							+ "." + FileSuffixes.HEATMAP);
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

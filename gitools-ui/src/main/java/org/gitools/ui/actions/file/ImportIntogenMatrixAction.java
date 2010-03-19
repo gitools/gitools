@@ -7,11 +7,11 @@ import org.gitools.ui.intogen.dialog.IntogenImportDialog;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-public class ImportIntogenDataAction extends BaseAction {
+public class ImportIntogenMatrixAction extends BaseAction {
 
 	private static final long serialVersionUID = 668140963768246841L;
 
-	public ImportIntogenDataAction() {
+	public ImportIntogenMatrixAction() {
 		super("Data ...");
 		setLargeIconFromResource(IconNames.intogen24);
 		setSmallIconFromResource(IconNames.intogen16);

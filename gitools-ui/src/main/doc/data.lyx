@@ -64,9 +64,9 @@ A matrix is a bidimensional structure in which for each dimension (row and
 \end_inset
 
 ratios).
- It is the equivalent to 
+ For R users it is the equivalent to 
 \emph on
-GNU R matrix
+matrix
 \emph default
 .
  Matrices can contain continuous values (
@@ -112,9 +112,9 @@ A table represents a list of attributes, where each row is an element of
 \end_inset
 
 ratio).
- It is the equivalent to 
+ For R users it is the equivalent to 
 \emph on
-GNU R data.frame
+data.frame
 \emph default
 .
 \end_layout

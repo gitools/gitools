@@ -15,7 +15,7 @@ import javax.swing.WindowConstants;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.editor.html.WelcomeEditor;
+import org.gitools.ui.welcome.WelcomeEditor;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
 import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.ui.settings.Settings;
@@ -97,7 +97,7 @@ public class AppFrame extends JFrame {
 		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(800, 650));
+		setPreferredSize(new Dimension(900, 650));
 		pack();
 	}
 

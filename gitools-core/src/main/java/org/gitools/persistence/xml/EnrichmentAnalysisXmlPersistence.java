@@ -5,6 +5,7 @@ import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.persistence.MimeTypeManager;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;
@@ -49,13 +50,14 @@ public class EnrichmentAnalysisXmlPersistence
 		context.setMonitor(monitor);
 
 		//context.setMimeType(entity.getDataTable(), MimeTypes.DOUBLE_MATRIX);
+		//String dataExt = MimeTypeManager.getDefault().fromClass(entity.getDataMatrix().getClass());
 		context.setEntityContext(entity.getDataMatrix(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".data.gz").getAbsolutePath(), false));
+				new File(baseFile, baseName + "-data.tsv.gz").getAbsolutePath(), false));
 
 		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".modules.gz").getAbsolutePath(), false));
+				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
 
 		context.setEntityContext(entity.getResultsMatrix(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".results.gz").getAbsolutePath()));
+				new File(baseFile, baseName + "-results.tsv.gz").getAbsolutePath()));
 	}
 }

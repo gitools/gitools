@@ -20,26 +20,32 @@
 	<body>
 		<h1>$appName</h1>
 		<p>Version $appVersion</p>
-		<p>Biomedical Genomics Laboratory at GRIB<br>
+		<p>Biomedical Genomics Laboratory<br>
 		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
 
-		<p>Authors:</p>
+		<p><b>Authors:</b></p>
 		<ul>
 			<li>Nuria Lopez-Bigas</li>
 			<li>Christian Perez-Llamas</li>
 		</ul>
 
-		<p>Former programmers:</p>
+		<p><b>Collaborators:</b></p>
+		<ul>
+			<li>Xavier Rafael-Pons</li>
+			<li>Jordi Deu-Pons</li>
+		</ul>
+
+		<p><b>Former collaborators:</b></p>
 		<ul>
 			<li>Michael Schroeder</li>
 			<li>Sergi Hernandez</li>
 		</ul>
 
-		<p>Bug reporting and suggestions:</p>
+		<p><b>Bug reporting and suggestions:</b></p>
 		<ul>
 			<li>Sonja Haenzelmann</li>
 			<li>Khademul Islam</li>
-			<li>Gunnes Gundem</li>
+			<li>Gunes Gundem</li>
 			<li>Alba Jene</li>
 		</ul>
 	</body>
