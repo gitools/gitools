@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.gitools</groupId>
 		<artifactId>gitools</artifactId>
-		<version>1.5.1-SNAPSHOT</version>
+		<version>1.5.0</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -16,19 +16,20 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>gitools-core</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.upf.bg</groupId>
-			<artifactId>bg-commons</artifactId>
 		</dependency>
 	</dependencies>
 

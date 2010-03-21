@@ -1,12 +1,17 @@
 package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
+import org.biomart._80.martservicesoap.Attribute;
+import org.biomart._80.martservicesoap.Dataset;
+import org.biomart._80.martservicesoap.Mart;
+import org.biomart._80.martservicesoap.Query;
 
-import org.gitools.biomart.cxf.Attribute;
+/*import org.gitools.biomart.cxf.Attribute;
 import org.gitools.biomart.cxf.Dataset;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.IBiomartService;
+import org.gitools.biomart.IBiomartService;*/import org.gitools.biomart.BiomartCentralPortalService;
+
 
 import org.gitools.persistence.FileFormat;
 import org.gitools.ui.IconNames;
@@ -26,9 +31,10 @@ public class BiomartModulesWizard extends AbstractWizard {
 	private BiomartAttributePage dataAttributePage;
 	private SaveFilePage saveFilePage;
 
-	private IBiomartService biomartService;
+	//private IBiomartService biomartService;
+	private BiomartCentralPortalService biomartService;
 
-	public BiomartModulesWizard(IBiomartService biomartService) {
+	public BiomartModulesWizard(BiomartCentralPortalService biomartService/*IBiomartService biomartService*/) {
 		this.biomartService = biomartService;
 		
 		setTitle("Import modules...");

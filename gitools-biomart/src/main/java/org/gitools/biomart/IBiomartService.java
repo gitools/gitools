@@ -28,10 +28,6 @@ import org.gitools.biomart.cxf.Query;
 import org.gitools.biomart.tablewriter.SequentialTableWriter;
 import org.gitools.persistence.FileFormat;
 
-/**
- *
- * @author xavier
- */
 public interface IBiomartService {
 
     List<AttributePage> getAttributes(Mart mart, DatasetInfo dataset) throws BiomartServiceException;

@@ -19,12 +19,19 @@ package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
 import java.util.List;
-import org.gitools.biomart.cxf.Attribute;
+import org.biomart._80.martservicesoap.Attribute;
+/*import org.gitools.biomart.cxf.Attribute;
 import org.gitools.biomart.cxf.AttributeInfo;
 import org.gitools.biomart.cxf.Dataset;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.IBiomartService;
+import org.gitools.biomart.IBiomartService;*/import org.biomart._80.martservicesoap.AttributeInfo;
+import org.biomart._80.martservicesoap.Dataset;
+import org.biomart._80.martservicesoap.Mart;
+import org.biomart._80.martservicesoap.Query;
+
+import org.gitools.biomart.BiomartCentralPortalService;
+
 import org.gitools.persistence.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
@@ -41,9 +48,10 @@ public class BiomartTableWizard extends AbstractWizard {
 	private BiomartAttributeListPage attrListPage;
 	private BiomartTableFilteringPage filteringPage;
 
-	private IBiomartService biomartService;
+	//private IBiomartService biomartService;
+	private BiomartCentralPortalService biomartService;
 
-	public BiomartTableWizard(IBiomartService biomartService) {
+	public BiomartTableWizard(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
 		this.biomartService = biomartService;
 		
 		setTitle("Import table ...");

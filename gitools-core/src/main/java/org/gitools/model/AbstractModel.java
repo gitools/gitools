@@ -37,7 +37,7 @@ public abstract class AbstractModel
 	protected void firePropertyChange(String propName) {
 		//firePropertyChange(propName, null, null);
 
-		System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
+		//System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
 
 		for (PropertyChangeListener l : getListeners()) {
 			PropertyChangeEvent evt =
@@ -52,7 +52,7 @@ public abstract class AbstractModel
 		if ((oldValue != null && !oldValue.equals(newValue)) ||
 				(oldValue == null && newValue != null)) {
 
-			System.out.println("PropertyChange: " + propName + ", " + oldValue + ", " + newValue);
+			//System.out.println("PropertyChange: " + propName + ", " + oldValue + ", " + newValue);
 
 			for (PropertyChangeListener l : getListeners()) {
 				PropertyChangeEvent evt =

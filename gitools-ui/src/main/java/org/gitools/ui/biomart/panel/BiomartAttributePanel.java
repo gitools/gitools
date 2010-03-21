@@ -29,11 +29,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import org.gitools.biomart.cxf.AttributeInfo;
+import org.biomart._80.martservicesoap.AttributeInfo;
+import org.biomart._80.martservicesoap.AttributePage;
+import org.biomart._80.martservicesoap.DatasetInfo;
+import org.biomart._80.martservicesoap.Mart;
+/*import org.gitools.biomart.cxf.AttributeInfo;
 import org.gitools.biomart.cxf.AttributePage;
 import org.gitools.biomart.cxf.DatasetInfo;
 import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.cxf.MartServiceSoap;
+import org.gitools.biomart.cxf.MartServiceSoap;*/import org.biomart._80.martservicesoap.MartServiceSoap;
+
 import org.gitools.biomart.BiomartCentralPortalService;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePanel;

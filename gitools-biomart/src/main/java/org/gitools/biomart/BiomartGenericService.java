@@ -153,12 +153,8 @@ public class BiomartGenericService implements IBiomartService {
 		Object gr = null;
 		try {
 			//Initial declarations
-			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 			JAXBContext context = JAXBContext.newInstance(req.getClass());
 			Marshaller m = context.createMarshaller();
-			ByteArrayInputStream bais = null;
-			Source input = null;
-			String content = null;
 
 			// Create the dynamic invocation object from a service
 			Dispatch<Source> dispatch = service.createDispatch(
@@ -167,7 +163,7 @@ public class BiomartGenericService implements IBiomartService {
 					Service.Mode.PAYLOAD);
 
 			// Build the xml envelop
-			baos1 = new ByteArrayOutputStream();
+			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
 			OutputFormat form = new OutputFormat();
 			XMLWriter writer = new XMLWriter(baos1, form);
 
@@ -179,9 +175,9 @@ public class BiomartGenericService implements IBiomartService {
 			//System.out.println(baos1);
 
 			//Convert bytearray into Source class
-			content = new String(baos1.toByteArray());
-			bais = new ByteArrayInputStream(content.getBytes());
-			input = new StreamSource(bais);
+			String content = new String(baos1.toByteArray());
+			ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
+			Source input = new StreamSource(bais);
 
 			// Invoke the operation.
 			Source output = dispatch.invoke(input);
@@ -190,6 +186,7 @@ public class BiomartGenericService implements IBiomartService {
 			StreamResult result = new StreamResult(new ByteArrayOutputStream());
 			Transformer trans = TransformerFactory.newInstance().newTransformer();
 			trans.transform(output, result);
+			
 			// Write out the response content.
 			ByteArrayOutputStream baos = (ByteArrayOutputStream) result.getOutputStream();
 			String responseContent = new String(baos.toByteArray());

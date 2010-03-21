@@ -30,7 +30,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-import org.gitools.biomart.cxf.Attribute;
+import org.biomart._80.martservicesoap.Attribute;
+import org.biomart._80.martservicesoap.AttributePage;
+import org.biomart._80.martservicesoap.BioMartException_Exception;
+import org.biomart._80.martservicesoap.BioMartSoapService;
+import org.biomart._80.martservicesoap.Dataset;
+import org.biomart._80.martservicesoap.DatasetInfo;
+import org.biomart._80.martservicesoap.Mart;
+/*import org.gitools.biomart.cxf.Attribute;
 import org.gitools.biomart.cxf.AttributePage;
 import org.gitools.biomart.cxf.BioMartException_Exception;
 import org.gitools.biomart.cxf.BioMartSoapService;
@@ -38,14 +45,16 @@ import org.gitools.biomart.cxf.Dataset;
 import org.gitools.biomart.cxf.DatasetInfo;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.MartServiceSoap;
-import org.gitools.biomart.cxf.Query;
+import org.gitools.biomart.cxf.Query;*/import org.biomart._80.martservicesoap.MartServiceSoap;
+import org.biomart._80.martservicesoap.Query;
+
 import org.gitools.biomart.tablewriter.TsvTableWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.gitools.persistence.FileFormat;
 
 @Deprecated
-public class BiomartCentralPortalService implements IBiomartService {
+public class BiomartCentralPortalService /*implements IBiomartService*/ {
 
 	private static final Logger log = LoggerFactory.getLogger(BiomartCentralPortalService.class.getName());
 
@@ -138,12 +147,12 @@ public class BiomartCentralPortalService implements IBiomartService {
 			return sw.toString();
 	}
 
-    @Override
+    //@Override
 	public FileFormat[] getSupportedFormats() {
 		return supportedFormats;
 	}
 
-    @Override
+    //@Override
 	public InputStream queryAsStream(Query query, String format) throws BiomartServiceException {
 		final String queryString = createQueryXml(query, format, true);
 		final String urlString = conf.getRestUrl() + "?query=" + queryString;
@@ -160,7 +169,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 		}
 	}
 
-    @Override
+    //@Override
 	public void queryModule(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
 		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
@@ -175,7 +184,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 			file.delete();
 	}
 
-    @Override
+    //@Override
 	public void queryModule(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException {
 		TimeCounter time = new TimeCounter();
 
@@ -231,7 +240,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 	 * @param monitor
 	 * @throws BiomartServiceException
 	 */
-    @Override
+    //@Override
 	public void queryTable(Query query, File file, String format,
 			boolean skipRowsWithEmptyValues,
 			String emptyValuesReplacement,
@@ -250,7 +259,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 			file.delete();
 	}
 
-    @Override
+    //@Override
 	public void queryTable(Query query, SequentialTableWriter writer,
 			boolean skipRowsWithEmptyValues,
 			String emptyValuesReplacement,
@@ -307,7 +316,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 			log.info("queryModule: " + count + " rows in " + time.toString());
 	}
 
-    @Override
+    //@Override
 	public List<Mart> getRegistry() throws BiomartServiceException {
 		try {
 			return getMartPort().getRegistry();
@@ -317,7 +326,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 		}
 	}
 
-    @Override
+    //@Override
 	public List<DatasetInfo> getDatasets(Mart mart) throws BiomartServiceException {
 		try {
 			return port.getDatasets(mart.getName());
@@ -327,7 +336,7 @@ public class BiomartCentralPortalService implements IBiomartService {
 		}
 	}
 
-    @Override
+    //@Override
 	public List<AttributePage> getAttributes(Mart mart, DatasetInfo dataset) throws BiomartServiceException {
 		try {
 			return getMartPort().getAttributes(

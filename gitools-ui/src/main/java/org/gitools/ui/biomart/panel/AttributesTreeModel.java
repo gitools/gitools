@@ -4,11 +4,15 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import org.biomart._80.martservicesoap.AttributeCollection;
+import org.biomart._80.martservicesoap.AttributeGroup;
+import org.biomart._80.martservicesoap.AttributeInfo;
+import org.biomart._80.martservicesoap.AttributePage;
 
-import org.gitools.biomart.cxf.AttributeCollection;
+/*import org.gitools.biomart.cxf.AttributeCollection;
 import org.gitools.biomart.cxf.AttributeGroup;
 import org.gitools.biomart.cxf.AttributeInfo;
-import org.gitools.biomart.cxf.AttributePage;
+import org.gitools.biomart.cxf.AttributePage;*/
 
 public class AttributesTreeModel extends DefaultTreeModel {
 

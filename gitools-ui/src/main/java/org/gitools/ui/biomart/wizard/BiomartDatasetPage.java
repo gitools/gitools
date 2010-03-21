@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
+import org.biomart._80.martservicesoap.DatasetInfo;
+import org.biomart._80.martservicesoap.Mart;
+import org.gitools.biomart.BiomartCentralPortalService;
 
-import org.gitools.biomart.cxf.DatasetInfo;
+/*import org.gitools.biomart.cxf.DatasetInfo;
 import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.IBiomartService;
+import org.gitools.biomart.IBiomartService;*/
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredListPage;
 
@@ -30,13 +33,14 @@ public class BiomartDatasetPage extends FilteredListPage {
 		}
 	}
 	
-	private IBiomartService biomartService;
+	//private IBiomartService biomartService;
+	private BiomartCentralPortalService biomartService;
 
 	private Mart mart;
 
 	private boolean updated;
 	
-	public BiomartDatasetPage(IBiomartService biomartService) {
+	public BiomartDatasetPage(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
 		super();
 		
 		this.biomartService = biomartService;

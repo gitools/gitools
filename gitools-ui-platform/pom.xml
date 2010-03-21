@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gitools</artifactId>
 		<groupId>org.gitools</groupId>
-		<version>1.5.1-SNAPSHOT</version>
+		<version>1.5.0</version>
 	</parent>
 
 	<groupId>org.gitools</groupId>
@@ -23,13 +23,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>cobra</groupId>
-			<artifactId>cobra</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>rhino</groupId>
 			<artifactId>js</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>cobra</groupId>
+			<artifactId>cobra</artifactId>
 		</dependency>
 	</dependencies>
 </project>
