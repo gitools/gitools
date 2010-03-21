@@ -31,7 +31,7 @@
 		<license>
 			<name>Apache 2</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<!-- <distribution>manual</distribution> -->
+			<distribution>manual</distribution>
 		</license>
 	</licenses>
 
@@ -51,9 +51,9 @@
 		<module>gitools-core</module>
 		<module>gitools-cli</module>
 		<module>gitools-biomart</module>
+		<module>gitools-intogen</module>
 		<module>gitools-ui-platform</module>
 		<module>gitools-ui</module>
-		<module>gitools-intogen</module>
 
 		<!-- <module>ztools-report</module> -->
 	</modules>
@@ -149,6 +149,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

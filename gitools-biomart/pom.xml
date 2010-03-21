@@ -8,7 +8,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 
-		<artifactId>gitools-biomart</artifactId>
+	<artifactId>gitools-biomart</artifactId>
 	<name>gitools-biomart</name>
 	<description>GiTools BioMart Bridge</description>
 
@@ -17,6 +17,24 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+            <type>jar</type>
+        </dependency>
+
 		<!-- <dependency>
 	      <groupId>com.sun.xml.ws</groupId>
 	      <artifactId>jaxws-rt</artifactId>
@@ -75,32 +93,13 @@
 			<version>3.8.2</version>
 			<scope>test</scope>
 		</dependency>-->
-		<dependency>
-			<groupId>edu.upf.bg</groupId>
-			<artifactId>bg-commons</artifactId>
-		</dependency>
+		
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>gitools-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-        <dependency>
-            <groupId>edu.upf.bg</groupId>
-            <artifactId>bg-commons</artifactId>
-        </dependency>
         <!-- <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>2.2</version>
         </dependency> -->
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j-core</artifactId>
-            <version>1.4-dev-8</version>
-            <type>jar</type>
-        </dependency>
 	</dependencies>
 
     <repositories>
