@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
+import org.biomart._80.martservicesoap.Mart;
+import org.gitools.biomart.BiomartCentralPortalService;
 
-import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.IBiomartService;
+/*import org.gitools.biomart.cxf.Mart;
+import org.gitools.biomart.IBiomartService;*/
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -31,11 +33,12 @@ public class BiomartDatabasePage extends FilteredListPage {
 		}
 	}
 
-	private IBiomartService biomartService;
+	//private IBiomartService biomartService;
+	private BiomartCentralPortalService biomartService;
 	
 	private boolean updated;
 	
-	public BiomartDatabasePage(IBiomartService biomartService) {
+	public BiomartDatabasePage(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
 		super();
 		
 		this.biomartService = biomartService;

@@ -30,8 +30,8 @@
 
 		<dependency>
             <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
+            <artifactId>dom4j-core</artifactId>
+            <version>1.4-dev-8</version>
             <type>jar</type>
         </dependency>
 
@@ -108,12 +108,12 @@
             <name>Java.net Maven 2 Repository</name>
             <url>http://download.java.net/maven/2</url>
         </repository>
-        <repository>
+        <!-- <repository>
             <id>maven-repository.dev.java.net</id>
             <name>Java.net Maven 1 Repository (legacy)</name>
             <url>http://download.java.net/maven/1</url>
             <layout>legacy</layout>
-        </repository>
+        </repository> -->
     </repositories>
 
     <pluginRepositories>
@@ -122,12 +122,12 @@
             <name>Java.net Maven 2 Repository</name>
             <url>http://download.java.net/maven/2</url>
         </pluginRepository>
-        <pluginRepository>
+        <!-- <pluginRepository>
             <id>maven-repository.dev.java.net</id>
             <name>Java.net Maven 1 Repository (legacy)</name>
             <url>http://download.java.net/maven/1</url>
             <layout>legacy</layout>
-        </pluginRepository>
+        </pluginRepository> -->
     </pluginRepositories>
 
     
@@ -217,7 +217,6 @@
             </plugin>
 
             <!-- Plugin to add source path to build cycle -->
-<!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -236,7 +235,7 @@
                     </execution>
                 </executions>
             </plugin>
--->
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

@@ -29,12 +29,18 @@ public class IconUtils {
 	}
 
 	public static ImageIcon getImageIconResourceScaledByHeight(String name, int height) {
+		System.out.println("getImageIconResourceScaledByHeight(" + name + ", " + height + ")");
+
 		ImageIcon icon = getImageIconResource(name);
 		int w = icon.getIconWidth();
 		int h = icon.getIconHeight();
 		double ratio = (double) height / (double) h;
 		int width = (int) Math.floor(w * ratio);
-		return new ImageIcon(iconToImage(icon, width, height));
+		ImageIcon image = new ImageIcon(iconToImage(icon, width, height));
+
+		System.out.println("Done.");
+		
+		return image;
 	}
 
 	public static Image iconToImage(Icon icon) {
@@ -42,6 +48,8 @@ public class IconUtils {
 	}
 
 	public static Image iconToImage(Icon icon, int width, int height) {
+		System.out.println("\ticonToImage(" + width + ", " + height + ")");
+		
 		int w = icon.getIconWidth();
 		int h = icon.getIconHeight();
 		boolean sameSize = w == width && h == height;
@@ -52,7 +60,7 @@ public class IconUtils {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice gd = ge.getDefaultScreenDevice();
 			GraphicsConfiguration gc = gd.getDefaultConfiguration();
-			BufferedImage image = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+			BufferedImage image = gc.createCompatibleImage(w, h, Transparency.BITMASK /*TRANSLUCENT*/);
 			Graphics2D g = image.createGraphics();
 			icon.paintIcon(null, g, 0, 0);
 			g.dispose();

@@ -32,8 +32,10 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.biomart.cxf.AttributeInfo;
-import org.gitools.biomart.cxf.AttributePage;
+/*import org.gitools.biomart.cxf.AttributeInfo;
+import org.gitools.biomart.cxf.AttributePage;*/import org.biomart._80.martservicesoap.AttributeInfo;
+import org.biomart._80.martservicesoap.AttributePage;
+
 import org.gitools.ui.biomart.dialog.BiomartAttributeDialog;
 import org.gitools.ui.platform.AppFrame;
 

@@ -242,7 +242,7 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 			}
 		}
 		filePath.setText(selPath.getAbsolutePath());
-		Settings.getDefault().setLastMapPath(selPath.getAbsolutePath());
+		Settings.getDefault().setLastMapPath(selPath.getParentFile().getAbsolutePath());
 	}
 }//GEN-LAST:event_fileBrowseBtnActionPerformed
 
