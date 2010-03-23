@@ -46,11 +46,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class BiomartGenericServiceTest {
+public class BiomartSoapServiceTest {
 
 	private String source;
 	private BiomartSoapService bs;
-	private static final Logger log = Logger.getLogger(BiomartGenericServiceTest.class.getName());
+	private static final Logger log = Logger.getLogger(BiomartSoapServiceTest.class.getName());
 
 	@Before
 	public void before() {
@@ -100,7 +100,7 @@ public class BiomartGenericServiceTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void getDatasets() {
 		try {
 
@@ -122,7 +122,7 @@ public class BiomartGenericServiceTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void getAttributes() {
 		try {
 
@@ -153,11 +153,11 @@ public class BiomartGenericServiceTest {
 			log.info("Num Att Pages: " + latt.size());
 
 		} catch (BiomartServiceException ex) {
-			Logger.getLogger(BiomartGenericServiceTest.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(BiomartSoapServiceTest.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
-	//@Test
+	@Test
 	public void getFilters() {
 		try {
 
@@ -194,7 +194,7 @@ public class BiomartGenericServiceTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void QueryAsStream() {
 		try {
 			InputStream in = null;
@@ -278,7 +278,7 @@ public class BiomartGenericServiceTest {
 		return query;
 	}
 
-	//@Test
+	@Test
 	public void queryModule() {
 
 		try {
@@ -314,7 +314,7 @@ public class BiomartGenericServiceTest {
 
 	}
 
-	//@Test
+	@Test
 	public void queryTable() {
 		try {
 			final File file = new File(System.getProperty("user.home", ".") + File.separator + "testQuery.test");
@@ -345,7 +345,7 @@ public class BiomartGenericServiceTest {
 		}
 	}
 
-	//@Test
+	@Test
 	public void getDatasetConfig() throws IOException, JAXBException {
 
 		try {

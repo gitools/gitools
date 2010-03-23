@@ -30,15 +30,7 @@ class RadioListBiomartFilterPanel implements IBiomartFilterPanel {
 	public RadioListBiomartFilterPanel(FilterCollection fc) {
 	}
 
-	@Override
-	public String getFilterName() {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
 
-	@Override
-	public String getFilterValue() {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
 
 	@Override
 	public List<Filter> getFilters() {
@@ -47,6 +39,16 @@ class RadioListBiomartFilterPanel implements IBiomartFilterPanel {
 
 	@Override
 	public void setFilterValue(String val) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public List<String> getFilterNames() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String getFilterValue(String name) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

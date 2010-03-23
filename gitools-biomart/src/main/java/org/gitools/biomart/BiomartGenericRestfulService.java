@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -33,6 +34,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 
 import javax.xml.bind.Unmarshaller;
@@ -60,39 +62,31 @@ import org.gitools.biomart.restful.model.Query;
 public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 	private static Logger log = LoggerFactory.getLogger(BiomartGenericRestfulService.class.getName());
-
 	public static final String FORMAT_TSV = "TSV";
 	public static final String FORMAT_TSV_GZ = "GZ";
-
 	public static final String SERVICE_PORT_NAME = "BioMartSoapPort";
 	public static final String SERVICE_NAME = "BioMartSoapService";
 	public static final String NAMESPACE = "MartServiceSoap";
-
 	private FileFormat[] supportedFormats = new FileFormat[]{
 		new FileFormat("Tab Separated Fields (tsv)", "tsv", FORMAT_TSV),
 		new FileFormat("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz", FORMAT_TSV_GZ)
 	};
-
 	protected BiomartSource source;
-		
 	protected String restUrl;
 
 	public BiomartGenericRestfulService(BiomartSource source) throws BiomartServiceException {
-			this.source = source;
+		this.source = source;
 
-			restUrl = composeUrl(source.getHost(), "", source.getRestPath());
+		restUrl = composeUrl(source.getHost(), "", source.getRestPath());
 	}
 
-	// Estudiate bien las llamadas REST de biomart, veras que hay 2 tipos,
-	// las que retornan XML y las que retornan texto tabulado
-	public <T> T getServiceResp(String urlString, Class<T> c) throws JAXBException {
+	public <T> T getServiceRespXML(String urlString, Class<T> c) throws JAXBException {
 		Object gr = null;
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.connect();
-			conn.getInputStream();
 			JAXBContext jc = JAXBContext.newInstance(c);
 			Unmarshaller u = jc.createUnmarshaller();
 			gr = u.unmarshal(conn.getInputStream());
@@ -120,7 +114,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		try {
 
-			ds = getServiceResp(urlString, DatasetConfig.class);
+			ds = getServiceRespXML(urlString, DatasetConfig.class);
 
 
 		} catch (JAXBException ex) {
@@ -132,37 +126,77 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 	@Override
 	public List<MartLocation> getRegistry() throws BiomartServiceException {
-		
+
 		MartRegistry reg = null;
-
+		final String urlString = restUrl + "?type=registry";
 		try {
-			final String urlString = restUrl + "?type=registry";
 
-			reg = getServiceResp(urlString, MartRegistry.class);
-		}
-		catch (JAXBException ex) {
+			reg = getServiceRespXML(urlString, MartRegistry.class);
+
+		} catch (JAXBException ex) {
 			log.error(ex.getMessage());
 		}
 
-		if (reg == null)
+		if (reg == null) {
 			return new ArrayList<MartLocation>(0);
+		}
 
 		return reg.getLocations();
 	}
 
 	@Override
 	public List<DatasetInfo> getDatasets(MartLocation mart) throws BiomartServiceException {
-		throw new UnsupportedOperationException("Unimplemented");
+		final String urlString = restUrl + "?type=datasets&mart=" + mart.getName();
+		List<DatasetInfo> ds = new ArrayList<DatasetInfo>();
+
+		try {
+			URL url = new URL(urlString);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.connect();
+			InputStream is = conn.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+			String s = null;
+			DatasetInfo d = null;
+			while ((s = reader.readLine()) != null) {
+				
+				if (!s.equals(" ") && !s.equals("\n")) {
+					String f[] = s.split("\t");
+					d = new DatasetInfo();
+					d.setType(f[0]);
+					d.setName(f[1]);
+					d.setDisplayName(f[2]);
+					d.setVisible(Integer.valueOf(f[3]));
+					d.setInterface(f[7]);
+					ds.add(d);
+				}
+			}
+
+
+		} catch (IOException ex) {
+			java.util.logging.Logger.getLogger(BiomartGenericRestfulService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		if (ds == null) {
+			return new ArrayList<DatasetInfo>(0);
+		}
+		return ds;
 	}
 
 	@Override
 	public List<AttributePage> getAttributes(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException {
-		throw new UnsupportedOperationException("Unimplemented");
+
+		DatasetConfig dc = getConfiguration(dataset);
+		return dc.getAttributePages();
+
 	}
 
 	@Override
 	public List<FilterPage> getFilters(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException {
-		throw new UnsupportedOperationException("Unimplemented");
+
+		DatasetConfig dc = getConfiguration(dataset);
+		return dc.getFilterPages();
+
 	}
 
 	//FIXME Use JAXB !!!
@@ -392,14 +426,17 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		StringBuilder sb = new StringBuilder();
 
-		if (host != null && !host.isEmpty())
+		if (host != null && !host.isEmpty()) {
 			sb.append("http://").append(host);
+		}
 
-		if (port != null && !port.isEmpty())
+		if (port != null && !port.isEmpty()) {
 			sb.append(':').append(port);
+		}
 
-		if (destPath != null && !destPath.isEmpty())
+		if (destPath != null && !destPath.isEmpty()) {
 			sb.append('/').append(destPath);
+		}
 
 		return sb.toString();
 	}

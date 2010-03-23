@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.gitools.biomart.restful.BiomartRestfulService;
 
 /**
  *Factory of BiomartService
@@ -55,6 +56,15 @@ public class BiomartServiceFactory {
 	}
 
 	private BiomartServiceFactory() {
+	}
+	/**
+	 * Creates a Biomart service from a Biomart source
+	 * @param source
+	 * @return biomart service
+	 */
+	public static BiomartRestfulService createRestfulService(BiomartSource source) throws BiomartServiceException {
+		BiomartRestfulService bs = new BiomartGenericRestfulService(source);
+		return bs;
 	}
 
 	/**
@@ -80,89 +90,7 @@ public class BiomartServiceFactory {
 		return createSoapService(bs);
 	}
 
-	static public void QueryAsStream() {
-
-		Logger log = Logger.getLogger(BiomartServiceFactory.class.getName());
-		try {
-			InputStream in = null;
-			BufferedReader br = null;
-
-			BiomartSoapService bs;
-
-			bs = BiomartCentralPortalSoapService.getDefault();
-			List<Mart> lMart = bs.getRegistry();
-
-			Mart mart = lMart.get(0);
-			List<DatasetInfo> lDs = bs.getDatasets(mart);
-
-			DatasetInfo d = lDs.get(0);
-
-			log.info("MART: "
-					+ mart.getDisplayName() + "DS: " + d.getDisplayName());
-
-			List<FilterPage> lf = bs.getFilters(mart, d);
-			List<AttributePage> dsattrs = bs.getAttributes(mart, d);
-
-			Query query = createSimpleQuery(lf, dsattrs, mart, d);
-
-			JAXBContext context = JAXBContext.newInstance(Query.class.getPackage().getName());
-			Marshaller m = context.createMarshaller();
-			m.marshal(query, System.out);
-			System.out.println();
-
-			in = bs.queryAsStream(query, "TSV");
-
-			br = new BufferedReader(new InputStreamReader(in));
-
-
-			String res = null;
-			Integer rows = 0;
-			while ((res = br.readLine()) != null) {
-				rows++;
-			}
-			log.info(
-					"NumRows: " + rows);
-
-		} catch (JAXBException ex) {
-		Logger.getLogger(BiomartServiceFactory.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			log.severe(ex.getMessage());
-		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
-		}
-
-	}
-
-	private static Query createSimpleQuery(List<FilterPage> lf, List<AttributePage> dsattrs, Mart mart, DatasetInfo d) throws BiomartServiceException {
-
-		Attribute a = new Attribute();
-		a.setName(dsattrs.get(0).getAttributeGroup().get(0).getAttributeCollection().get(0).getAttributeInfo().get(0).getName());
-
-		Attribute a1 = new Attribute();
-		a1.setName(dsattrs.get(0).getAttributeGroup().get(0).getAttributeCollection().get(0).getAttributeInfo().get(1).getName());
-
-		Filter f = new Filter();
-		f.setName(lf.get(0).getFilterGroup().get(0).getFilterCollection().get(0).getFilterInfo().get(0).getName());
-		f.setValue("1");
-
-
-		Dataset ds = new Dataset();
-		ds.setName(d.getName());
-		ds.getFilter().add(f);
-		ds.getAttribute().add(a);
-		ds.getAttribute().add(a1);
-
-		Query query = new Query();
-		query.setVirtualSchemaName(mart.getServerVirtualSchema());
-		query.setHeader(1);
-		query.setCount(0);
-		query.setUniqueRows(1);
-		query.getDataset().add(ds);
-
-		return query;
-	}
-
-/*
+	/*
 	public static void main(String[] args) throws IOException {
 
 		BiomartSource b = BiomartSourceManager.getDefault().getSources().get(0);

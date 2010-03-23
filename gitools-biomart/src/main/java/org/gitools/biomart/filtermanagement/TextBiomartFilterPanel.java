@@ -17,10 +17,11 @@
 package org.gitools.biomart.filtermanagement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.gitools.biomart.soap.model.Filter;
 import org.gitools.biomart.restful.model.FilterCollection;
-
+import org.gitools.biomart.restful.model.FilterDescription;
 
 /**
  *
@@ -32,19 +33,25 @@ public class TextBiomartFilterPanel extends BiomartFilterPanel implements IBioma
 	private final Integer textArearows = 4;
 	private final Integer fileFieldSize = 16;
 	private String labelPanel;
-	private String nameCompo;
+	private HashMap<String, String> textCompos;
 	private String valueCompo;
 	private Boolean isTextArea;
 
 	TextBiomartFilterPanel(FilterCollection fc) {
 
-		isTextArea = fc.getFilterDescriptions().get(0).getMultipleValues().equals("1");
 		labelPanel = fc.getDisplayName();
-		nameCompo = fc.getFilterDescriptions().get(0).getInternalName();
+		isTextArea = fc.getFilterDescriptions().get(0).getMultipleValues().equals("1");
+		textCompos = new HashMap<String, String>();
+
+		for (FilterDescription d : fc.getFilterDescriptions()) {
+			textCompos.put(d.getInternalName(), "");
+		}
+
+
 
 	}
 
-	public Boolean isTextArea(){
+	public Boolean isTextArea() {
 		return isTextArea;
 	}
 
@@ -54,25 +61,29 @@ public class TextBiomartFilterPanel extends BiomartFilterPanel implements IBioma
 	}
 
 	@Override
-	public String getFilterName() {
-		return nameCompo;
+	public List<String> getFilterNames() {
+		return new ArrayList(textCompos.keySet());
 	}
+
 
 	@Override
 	//Coma separated list
-	public String getFilterValue() {
+	public String getFilterValue(String name) {
 
-		return valueCompo.replace(" ", ",");
+		return textCompos.get(name);
 
 	}
 
 	@Override
 	public List<Filter> getFilters() {
 		List<Filter> lf = new ArrayList<Filter>();
-		Filter f = new Filter();
-		f.setName(nameCompo);
-		f.setValue(valueCompo);
-		lf.add(f);
+		Filter f = null;
+		for (String k : textCompos.keySet()) {
+			f = new Filter();
+			f.setName(k);
+			f.setValue(textCompos.get(k));
+			lf.add(f);
+		}
 		return lf;
 	}
 }

@@ -26,8 +26,8 @@ import org.gitools.biomart.soap.model.Filter;
  */
 public interface IBiomartFilterPanel {
 
-	public String getFilterName();
-	public String getFilterValue();
+	public List<String> getFilterNames();
+	public String getFilterValue(String name);
 	public void setFilterValue(String val);
 	public List<Filter> getFilters();
 

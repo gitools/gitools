@@ -64,18 +64,6 @@ public class SelectBiomartFilterPanel implements IBiomartFilterPanel {
 		valueCompo = val;
 	}
 
-	@Override
-	public String getFilterName() {
-		return nameCompo;
-	}
-
-	@Override
-	//Coma separated list
-	public String getFilterValue() {
-
-		return valueCompo.replace(" ", ",");
-
-	}
 
 	@Override
 	public List<Filter> getFilters() {
@@ -94,5 +82,15 @@ public class SelectBiomartFilterPanel implements IBiomartFilterPanel {
 
 	public void setOptionsLblName(Map<String, String> optionsLblName) {
 		this.optionsLblName = optionsLblName;
+	}
+
+	@Override
+	public List<String> getFilterNames() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String getFilterValue(String name) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }
