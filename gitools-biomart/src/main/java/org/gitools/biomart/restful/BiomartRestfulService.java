@@ -18,42 +18,39 @@ package org.gitools.biomart.restful;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.List;
-import javax.xml.bind.JAXBException;
 import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.soap.model.DatasetInfo;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetConfig;
+import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.FilterPage;
-import org.gitools.biomart.restful.model.Mart;
+import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import org.gitools.persistence.FileFormat;
 
 public interface BiomartRestfulService {
 
-	List<AttributePage> getAttributes(Mart mart, DatasetInfo dataset) throws BiomartServiceException;
+	List<MartLocation> getRegistry() throws BiomartServiceException;
 
-	List<DatasetInfo> getDatasets(Mart mart) throws BiomartServiceException;
+	List<DatasetInfo> getDatasets(MartLocation mart) throws BiomartServiceException;
 
-	List<Mart> getRegistry() throws BiomartServiceException;
+	DatasetConfig getConfiguration(DatasetInfo d) throws BiomartServiceException;
 
+	List<AttributePage> getAttributes(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException;
+
+	List<FilterPage> getFilters(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException;
+	
 	InputStream queryAsStream(Query query, String format) throws BiomartServiceException;
 
 	void queryModule(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException;
 
 	void queryModule(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException;
 
-    public DatasetConfig getDatasetConfig(DatasetInfo d) throws MalformedURLException, IOException, JAXBException;
- 
-	FileFormat[] getSupportedFormats();
-
-	void queryTable(Query query, File file, String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, IProgressMonitor monitor) throws BiomartServiceException;
+    void queryTable(Query query, File file, String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, IProgressMonitor monitor) throws BiomartServiceException;
 
 	void queryTable(Query query, SequentialTableWriter writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, IProgressMonitor monitor) throws BiomartServiceException;
 
-	public List<FilterPage> getFilters(Mart mart, DatasetInfo dataset) throws BiomartServiceException;
+	FileFormat[] getSupportedFormats();
 }

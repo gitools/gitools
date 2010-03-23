@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Published by Syed Haider -->
+<!-- Modified by Christian Perez -->
+
+<!-- ... -->
+
 <xs:schema version="1.0"
 	targetNamespace="http://www.biomart.org:80/MartServiceSoap"
 	xmlns:tns="http://www.biomart.org:80/MartServiceSoap"
@@ -148,7 +152,7 @@
 		<xs:sequence>
 			<xs:element name="name" type="xs:string"/>
 			<xs:element name="displayName" type="xs:string"/>
-			<xs:element minOccurs="0" maxOccurs="1" name="filterGroup" type="tns:filterGroup"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="filterGroup" type="tns:filterGroup"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="filterGroup">
@@ -211,7 +215,7 @@
 	<xs:element name="queryResponse">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element minOccurs="0" maxOccurs="unbounded" name="resultsRow" type="tns:resultsRow"/>
+				<xs:element minOccurs="0" maxOccurs="1" name="resultsRow" type="tns:resultsRow"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

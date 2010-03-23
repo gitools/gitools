@@ -20,7 +20,7 @@ package org.gitools.biomart.test;
 import java.util.List;
 import org.gitools.biomart.BiomartGenericRestfulService;
 import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.restful.model.Mart;
+import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.junit.Before;
@@ -66,7 +66,7 @@ public class BiomartRestServiceTest {
 	public void getRegistry() {
 		try {
 
-			List<Mart> lMart = bs.getRegistry();
+			List<MartLocation> lMart = bs.getRegistry();
 
 			assertNotNull(lMart);
 			assertTrue(lMart.size() > 0);

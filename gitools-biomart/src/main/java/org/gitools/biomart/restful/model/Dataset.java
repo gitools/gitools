@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -20,8 +19,10 @@ public class Dataset {
 
     @XmlAttribute(required = true)
     protected String name;
+
     @XmlAttribute(name = "Filter")
     protected List<Filter> filter;
+
     @XmlAttribute(name = "Attribute", required = true)
     protected List<Attribute> attribute;
 

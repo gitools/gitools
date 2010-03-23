@@ -1,71 +1,45 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 package org.gitools.biomart.restful.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import org.gitools.biomart.soap.model.Mart;
 
-
-/**
- * <p>Java class for anonymous complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType>
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="mart" type="{http://www.biomart.org:80/MartServiceSoap}mart" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "mart"
-})
 @XmlRootElement(name = "MartRegistry")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MartRegistry {
 
 	@XmlElement(name = "MartURLLocation")
-    protected List<Mart> mart;
+	protected List<MartLocation> locations;
 
-    /**
-     * Gets the value of the mart property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the mart property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getMart().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Mart }
-     * 
-     * 
-     */
-    public List<Mart> getMart() {
-        if (mart == null) {
-            mart = new ArrayList<Mart>();
-        }
-        return this.mart;
-    }
+	public MartRegistry() {
+		this.locations = new ArrayList<MartLocation>();
+	}
 
+	public MartRegistry(MartLocation[] locations) {
+		this.locations = new ArrayList<MartLocation>(Arrays.asList(locations));
+	}
+
+	public MartRegistry(List<Mart> marts) {
+		this.locations = new ArrayList<MartLocation>(marts.size());
+		for (Mart mart : marts)
+			locations.add(new MartLocation(mart));
+	}
+
+	public List<MartLocation> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(List<MartLocation> locations) {
+		this.locations = locations;
+	}
 }
