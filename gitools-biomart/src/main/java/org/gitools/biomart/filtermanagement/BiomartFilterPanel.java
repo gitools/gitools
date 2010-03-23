@@ -14,24 +14,19 @@
  *  limitations under the License.
  *  under the License.
  */
-package org.gitools.biomart.settings;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+package org.gitools.biomart.filtermanagement;
 
-@XmlRootElement(name = "mart-registry")
-public class BiomartSources {
+import java.awt.Component;
+import java.util.HashMap;
+import javax.swing.JComponent;
 
-    @XmlElement(name = "mart")
-    private List<BiomartSource> src = new ArrayList<BiomartSource>();
+/**
+ *
+ * @author xavier
+ */
+public abstract class BiomartFilterPanel extends JComponent{
 
-    public List<BiomartSource> getSources() {
-        return src;
-    }
 
-    public void setSources(List<BiomartSource> src) {
-        this.src = src;
-    }
+
 }

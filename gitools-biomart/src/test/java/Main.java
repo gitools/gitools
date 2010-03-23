@@ -4,14 +4,14 @@
 //import java.net.URL;
 import java.util.List;
 
-import org.gitools.biomart.cxf.AttributeCollection;
-import org.gitools.biomart.cxf.AttributeGroup;
-import org.gitools.biomart.cxf.AttributeInfo;
-import org.gitools.biomart.cxf.AttributePage;
-import org.gitools.biomart.cxf.BioMartSoapService;
-import org.gitools.biomart.cxf.DatasetInfo;
-import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.cxf.MartServiceSoap;
+import org.gitools.biomart.soap.model.AttributeCollection;
+import org.gitools.biomart.soap.model.AttributeGroup;
+import org.gitools.biomart.soap.model.AttributeInfo;
+import org.gitools.biomart.soap.model.AttributePage;
+import org.gitools.biomart.soap.model.BioMartSoapService;
+import org.gitools.biomart.soap.model.DatasetInfo;
+import org.gitools.biomart.soap.model.Mart;
+import org.gitools.biomart.soap.model.MartServiceSoap;
 
 /*import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;

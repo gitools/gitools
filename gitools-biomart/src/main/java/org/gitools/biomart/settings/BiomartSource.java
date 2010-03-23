@@ -25,18 +25,29 @@ public class BiomartSource {
 	private String name;
 	private String description;
 	private String version;
-	private String restUrl;
-	public String wsdlUrl;
-	public String namespace;
-	public String portName;
-	public String serviceName;
+	private String host;
+	private String port;
+	private String restPath;
+	private String wsdlPath;
 
-	public String getName() {
-		return name;
+	public BiomartSource() {
 	}
 
-	public void setName(String name) {
-		this.name = name;
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	public String getDescription() {
@@ -47,6 +58,22 @@ public class BiomartSource {
 		this.description = description;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getRestPath() {
+		return restPath;
+	}
+
+	public void setRestPath(String restPath) {
+		this.restPath = restPath;
+	}
+
 	public String getVersion() {
 		return version;
 	}
@@ -55,43 +82,11 @@ public class BiomartSource {
 		this.version = version;
 	}
 
-	public String getRestUrl() {
-		return restUrl;
+	public String getWsdlPath() {
+		return wsdlPath;
 	}
 
-	public void setRestUrl(String serviceRest) {
-		this.restUrl = serviceRest;
-	}
-	
-	public String getWsdlUrl() {
-		return wsdlUrl;
-	}
-
-	public void setWsdlUrl(String wsdlUrl) {
-		this.wsdlUrl = wsdlUrl;
-	}
-
-	public String getNamespace() {
-		return namespace;
-	}
-
-	public void setNamespace(String namespace) {
-		this.namespace = namespace;
-	}
-
-	public String getPortName() {
-		return portName;
-	}
-
-	public void setPortName(String portName) {
-		this.portName = portName;
-	}
-
-	public String getServiceName() {
-		return serviceName;
-	}
-
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+	public void setWsdlPath(String wsdlPath) {
+		this.wsdlPath = wsdlPath;
 	}
 }

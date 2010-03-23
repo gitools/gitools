@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mart-registry>
+	<mart>
+		<name>BioMart Central Portal</name>
+		<description>BioMart Central Portal</description>
+		<version>0.7</version>
+		<host>www.biomart.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+</mart-registry>

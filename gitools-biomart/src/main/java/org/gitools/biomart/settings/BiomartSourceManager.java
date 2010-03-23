@@ -2,58 +2,72 @@ package org.gitools.biomart.settings;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BiomartSourceManager {
 
+	private static Logger logger = LoggerFactory.getLogger(BiomartSourceManager.class);
 	private static final String userPath = System.getProperty("user.home", ".");
 	private static final String configPath = userPath + File.separator + ".gitools";
 	private static final String configFileName = "biomart-sources.xml";
 	private static final String configFile = configPath + File.separator + configFileName;
-
 	private static BiomartSourceManager instance;
 	private static BiomartSources biomartSources = new BiomartSources();
 
 	public static BiomartSourceManager getDefault() {
 		if (instance == null) {
-			//Reader reader = new FileReader(configFile);
+
+			Reader reader;
 			try {
-				InputStream in = BiomartSourceManager.class.getResourceAsStream("biomart-sources.xml");
-				Reader reader = new InputStreamReader(in);
+				File file = new File(configFile);
+
+				reader = file.exists() ? new FileReader(configFile)
+						: new InputStreamReader(BiomartSourceManager.class.getResourceAsStream("/biomart-sources.xml"));
+
 				instance = load(reader);
 				reader.close();
-			}
-			catch (Exception ex) {
-				BiomartSource src = new BiomartSource();
-				src.setName("Biomart Central Portal");
-				src.setDescription("BioMart Central Portal");
-				src.setVersion("0.7");
-				src.setRestUrl("http://www.biomart.org/biomart/martservice");
-				src.setWsdlUrl("http://www.biomart.org:80/biomart/martwsdl");
-				src.setNamespace("http://www.biomart.org:80/MartServiceSoap");
-				src.setPortName("BioMartSoapPort");
-				src.setServiceName("BioMartSoapService");
-				instance = new BiomartSourceManager();
-				instance.addSource(src);
+
+			} catch (Exception ex) {
+				logger.error("Error in biomart user configuration file");
+			} finally {
+				if (instance == null || instance.getSources().size() == 0) {
+					logger.error("Instance not initialised. Loading default configuration");
+					BiomartSource src = new BiomartSource();
+					src.setName("Biomart Central Portal");
+					src.setDescription("BioMart Central Portal");
+					src.setVersion("0.7");
+					src.setRestPath("/biomart/martservice");
+					src.setWsdlPath("/biomart/martwsdl");
+					src.setHost("www.biomart.org");
+					src.setPort("80");
+
+					instance = new BiomartSourceManager();
+					instance.addSource(src);
+				}
 			}
 		}
 		return instance;
 	}
 
 	private static BiomartSourceManager load(Reader reader) {
-		BiomartSourceManager settings = null;
+		BiomartSourceManager settings = new BiomartSourceManager();
 		try {
 			JAXBContext context = JAXBContext.newInstance(BiomartSources.class);
 			Unmarshaller u = context.createUnmarshaller();
-			biomartSources = (BiomartSources) u.unmarshal(reader);
+			settings.addSources((BiomartSources) u.unmarshal(reader));
 			reader.close();
+
 		} catch (FileNotFoundException e) {
 			System.err.println("Biomart settings file doesn't exist: " + configFile);
 			System.err.println("Created one with defaults.");
@@ -100,4 +114,9 @@ public class BiomartSourceManager {
 	private void addSource(BiomartSource source) {
 		biomartSources.getSources().add(source);
 	}
+
+	private void addSources(BiomartSources sources) {
+		biomartSources.getSources().addAll(sources.getSources());
+	}
+
 }
