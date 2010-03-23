@@ -16,17 +16,22 @@
  */
 package org.gitools.biomart.restful.model;
 
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-
-@XmlAccessorType(XmlAccessType.FIELD)
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @XmlRootElement(name = "DatasetConfig")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DatasetConfig {
 	@XmlAttribute
 	private String dataset;
@@ -112,6 +117,18 @@ public class DatasetConfig {
 	@XmlElement(name = "AttributePage")
 	private List<AttributePage> attributePages = new ArrayList<AttributePage>();
 
+	public static DatasetConfig load(Reader reader) {
+		DatasetConfig config = null;
+		try {
+			JAXBContext context = JAXBContext.newInstance(DatasetConfig.class);
+			Unmarshaller u = context.createUnmarshaller();
+			config = (DatasetConfig) u.unmarshal(reader);
+		} catch (JAXBException ex) {
+			LoggerFactory.getLogger(DatasetConfig.class).error("Error loading DatasetConfig", ex);
+		}
+		return config;
+	}
+	
 	public DatasetConfig() {
 	}
 

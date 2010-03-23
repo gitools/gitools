@@ -17,18 +17,14 @@
 
 package org.gitools.biomart.restful.model;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-
 
 @XmlAccessorType(XmlAccessType.FIELD)
-
 public class FilterPage {
 
 	@XmlAttribute
@@ -47,7 +43,7 @@ public class FilterPage {
 	private String hideDisplay;
 
 	@XmlElement(name = "FilterGroup")
-	private List<FilterGroup> filterGroups;
+	private List<FilterGroup> filterGroups = new ArrayList<FilterGroup>();
 
 	public String getDescription() {
 		return description;

@@ -16,18 +16,17 @@
  */
 package org.gitools.biomart.restful.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class AttributeCollection {
-
 
 	@XmlAttribute
 	private String hidden;
@@ -36,7 +35,7 @@ public class AttributeCollection {
 	private String hideDisplay;
 
 	@XmlAttribute
-	private String maxSelect;
+	private int maxSelect;
 
 	@XmlAttribute
 	protected String enableSelectAll;
@@ -51,7 +50,7 @@ public class AttributeCollection {
 	private String description;
 
 	@XmlElement(name = "AttributeDescription")
-	private List<AttributeDescription> attributeDescriptions;
+	private List<AttributeDescription> attributeDescriptions = new ArrayList<AttributeDescription>();
 
 	public List<AttributeDescription> getAttributeDescriptions() {
 		return attributeDescriptions;
@@ -109,11 +108,11 @@ public class AttributeCollection {
 		this.internalName = internalName;
 	}
 
-	public String getMaxSelect() {
+	public int getMaxSelect() {
 		return maxSelect;
 	}
 
-	public void setMaxSelect(String maxSelect) {
+	public void setMaxSelect(int maxSelect) {
 		this.maxSelect = maxSelect;
 	}
 }
