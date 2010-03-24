@@ -39,7 +39,7 @@ import org.gitools.biomart.cxf.DatasetInfo;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.MartServiceSoap;*/import org.biomart._80.martservicesoap.MartServiceSoap;
 
-import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.BiomartCentralPortalSoapService;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePanel;
 
@@ -120,7 +120,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 	private void loadingThread() {
 		try {
 			final List<AttributePage> pages =
-					BiomartCentralPortalService.getDefault().getAttributes(mart, dataset);
+					BiomartCentralPortalSoapService.getDefault().getAttributes(mart, dataset);
 
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override public void run() {

@@ -10,7 +10,7 @@ import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.cxf.Dataset;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.IBiomartService;*/import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.IBiomartService;*/import org.gitools.biomart.BiomartCentralPortalSoapService;
 
 
 import org.gitools.persistence.FileFormat;
@@ -32,9 +32,9 @@ public class BiomartModulesWizard extends AbstractWizard {
 	private SaveFilePage saveFilePage;
 
 	//private IBiomartService biomartService;
-	private BiomartCentralPortalService biomartService;
+	private BiomartCentralPortalSoapService biomartService;
 
-	public BiomartModulesWizard(BiomartCentralPortalService biomartService/*IBiomartService biomartService*/) {
+	public BiomartModulesWizard(BiomartCentralPortalSoapService biomartService/*IBiomartService biomartService*/) {
 		this.biomartService = biomartService;
 		
 		setTitle("Import modules...");

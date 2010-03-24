@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 import org.biomart._80.martservicesoap.Mart;
-import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.BiomartCentralPortalSoapService;
 
 /*import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.IBiomartService;*/
@@ -34,11 +34,11 @@ public class BiomartDatabasePage extends FilteredListPage {
 	}
 
 	//private IBiomartService biomartService;
-	private BiomartCentralPortalService biomartService;
+	private BiomartCentralPortalSoapService biomartService;
 	
 	private boolean updated;
 	
-	public BiomartDatabasePage(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
+	public BiomartDatabasePage(BiomartCentralPortalSoapService biomartService /*IBiomartService biomartService*/) {
 		super();
 		
 		this.biomartService = biomartService;

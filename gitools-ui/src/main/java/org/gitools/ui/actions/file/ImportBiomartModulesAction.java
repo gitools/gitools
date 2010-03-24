@@ -4,7 +4,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import org.biomart._80.martservicesoap.Query;
-import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.BiomartCentralPortalSoapService;
 import org.gitools.biomart.BiomartServiceException;
 /*import org.gitools.biomart.cxf.Query;
 import org.gitools.biomart.BiomartServiceFactory;
@@ -33,7 +33,7 @@ public class ImportBiomartModulesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		final BiomartCentralPortalService service = BiomartCentralPortalService.getDefault();
+		final BiomartCentralPortalSoapService service = BiomartCentralPortalSoapService.getDefault();
 		final BiomartModulesWizard wizard = new BiomartModulesWizard(service);
 		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
 		wdlg.open();

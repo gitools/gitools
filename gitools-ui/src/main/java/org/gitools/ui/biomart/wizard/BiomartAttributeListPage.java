@@ -28,7 +28,7 @@ import org.gitools.biomart.cxf.AttributePage;
 import org.gitools.biomart.cxf.DatasetInfo;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.IBiomartService;*/import org.biomart._80.martservicesoap.Mart;
-import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.BiomartCentralPortalSoapService;
 
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -44,9 +44,9 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 	private BiomartAttributeListPanel panel;
 	
 	//private final IBiomartService biomartService;
-	private BiomartCentralPortalService biomartService;
+	private BiomartCentralPortalSoapService biomartService;
 
-	public BiomartAttributeListPage(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
+	public BiomartAttributeListPage(BiomartCentralPortalSoapService biomartService /*IBiomartService biomartService*/) {
 		this.biomartService = biomartService;
 	}
 

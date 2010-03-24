@@ -50,6 +50,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>colt</groupId>
+			<artifactId>colt</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>cobra</groupId>
 			<artifactId>cobra</artifactId>
 		</dependency>

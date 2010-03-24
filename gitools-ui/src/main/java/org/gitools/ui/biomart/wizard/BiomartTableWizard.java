@@ -1,12 +1,12 @@
 /*
  *  Copyright 2009 chris.
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,12 +25,13 @@ import org.gitools.biomart.cxf.AttributeInfo;
 import org.gitools.biomart.cxf.Dataset;
 import org.gitools.biomart.cxf.Mart;
 import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.IBiomartService;*/import org.biomart._80.martservicesoap.AttributeInfo;
+import org.gitools.biomart.IBiomartService;*/
+import org.biomart._80.martservicesoap.AttributeInfo;
 import org.biomart._80.martservicesoap.Dataset;
 import org.biomart._80.martservicesoap.Mart;
 import org.biomart._80.martservicesoap.Query;
 
-import org.gitools.biomart.BiomartCentralPortalService;
+import org.gitools.biomart.BiomartCentralPortalSoapService;
 
 import org.gitools.persistence.FileFormat;
 import org.gitools.ui.IconNames;
@@ -49,25 +50,25 @@ public class BiomartTableWizard extends AbstractWizard {
 	private BiomartTableFilteringPage filteringPage;
 
 	//private IBiomartService biomartService;
-	private BiomartCentralPortalService biomartService;
+	private BiomartCentralPortalSoapService biomartService;
 
-	public BiomartTableWizard(BiomartCentralPortalService biomartService /*IBiomartService biomartService*/) {
+	public BiomartTableWizard(BiomartCentralPortalSoapService biomartService /*IBiomartService biomartService*/) {
 		this.biomartService = biomartService;
-		
+
 		setTitle("Import table ...");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
 	}
-	
+
 	@Override
 	public void addPages() {
-		
+
 		// Destination
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastDataPath());
 		saveFilePage.setFormats(biomartService.getSupportedFormats());
 		addPage(saveFilePage);
-		
+
 		// Database
 		databasePage = new BiomartDatabasePage(biomartService);
 		addPage(databasePage);
@@ -96,7 +97,7 @@ public class BiomartTableWizard extends AbstractWizard {
 			attrListPage.setSource(
 					databasePage.getMart(),
 					datasetPage.getDataset());
-	
+
 		return nextPage;
 	}
 
