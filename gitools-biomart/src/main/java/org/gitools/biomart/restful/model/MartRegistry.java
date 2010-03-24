@@ -29,11 +29,15 @@ public class MartRegistry {
 		this.locations = new ArrayList<MartLocation>(Arrays.asList(locations));
 	}
 
-	public MartRegistry(List<Mart> marts) {
+	public MartRegistry(List<MartLocation> locations) {
+		this.locations = locations;
+	}
+
+	/*public MartRegistry(List<Mart> marts) {
 		this.locations = new ArrayList<MartLocation>(marts.size());
 		for (Mart mart : marts)
 			locations.add(new MartLocation(mart));
-	}
+	}*/
 
 	public List<MartLocation> getLocations() {
 		return locations;
