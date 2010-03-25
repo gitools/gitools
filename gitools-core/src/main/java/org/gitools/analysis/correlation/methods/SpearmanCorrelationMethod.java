@@ -18,10 +18,8 @@
 package org.gitools.analysis.correlation.methods;
 
 import java.util.Properties;
-import org.apache.commons.math.MathException;
 import org.apache.commons.math.linear.Array2DRowRealMatrix;
 import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math.stat.correlation.SpearmansCorrelation;
 import org.gitools.analysis.AbstractMethod;
 import org.gitools.analysis.MethodException;
@@ -45,15 +43,15 @@ public class SpearmanCorrelationMethod extends AbstractMethod implements Correla
 	}
 
 	@Override
-	public CorrelationResult correlation(double[] x, double[] y) throws MethodException {
-		RealMatrix data = new Array2DRowRealMatrix(new double[][] {x, y});
+	public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
+		/*RealMatrix data = new Array2DRowRealMatrix(new double[][] {x, y});
 
 		CorrelationResult result = new CorrelationResult();
 
 		SpearmansCorrelation correlation = new SpearmansCorrelation(data);
 		result.setScore(correlation.correlation(x, y));
 
-		/*PearsonsCorrelation pcor = correlation.getRankCorrelation();
+		PearsonsCorrelation pcor = correlation.getRankCorrelation();
 		try {
 			RealMatrix pvalues = pcor.getCorrelationPValues();
 			result.setPvalue(pvalues.getEntry(0, 1));
@@ -65,7 +63,7 @@ public class SpearmanCorrelationMethod extends AbstractMethod implements Correla
 			throw new MethodException(ex);
 		}*/
 
-		return result;
+		return null;
 	}
 
 }

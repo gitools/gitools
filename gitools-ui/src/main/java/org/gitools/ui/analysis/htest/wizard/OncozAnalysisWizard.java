@@ -1,5 +1,6 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
 
 import javax.swing.JFileChooser;

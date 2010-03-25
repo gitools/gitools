@@ -19,19 +19,20 @@ package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
-import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.analysis.correlation.wizard.CorrelationWizard;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -39,6 +40,7 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.WizardDialog;
 
 public class CorrelationAction extends BaseAction {
 
@@ -64,14 +66,35 @@ public class CorrelationAction extends BaseAction {
 		if (matrixView == null)
 			return;
 
-		//FIXME depends on user selection: columns or rows
-		if (matrixView.getSelectedColumns().length > 0) {
-			MatrixView mv = new MatrixView(matrixView);
-			mv.visibleColumnsFromSelection();
-			matrixView = mv;
+		List<IElementAttribute> attributes = matrixView.getCellAttributes();
+		String[] attributeNames = new String[attributes.size()];
+		for (int i = 0; i < attributes.size(); i++)
+			attributeNames[i] = attributes.get(i).getName();
+
+		CorrelationWizard wiz = new CorrelationWizard(attributeNames);
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
+		dlg.setVisible(true);
+
+		if (dlg.isCancelled())
+			return;
+
+		final CorrelationAnalysis analysis = wiz.getAnalysis();
+
+		if (!analysis.isTransposeData()) {
+			if (matrixView.getSelectedColumns().length > 0) {
+				MatrixView mv = new MatrixView(matrixView);
+				mv.visibleColumnsFromSelection();
+				matrixView = mv;
+			}
+		}
+		else {
+			if (matrixView.getSelectedRows().length > 0) {
+				MatrixView mv = new MatrixView(matrixView);
+				mv.visibleRowsFromSelection();
+				matrixView = mv;
+			}
 		}
 
-		final CorrelationAnalysis analysis = new CorrelationAnalysis();
 		analysis.setData(matrixView);
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
@@ -80,20 +103,17 @@ public class CorrelationAction extends BaseAction {
 				try {
 					new CorrelationProcessor(analysis).run(monitor);
 				}
-				catch (AnalysisException ex) {
+				catch (Throwable ex) {
 					monitor.exception(ex);
 				}
 			}
 		});
 
-		/*Heatmap heatmap = HeatmapUtil.createFromMatrixView(
-				new MatrixView(analysis.getResults()));*/
-
 		IMatrixView results = new MatrixView(analysis.getResults());
 		Heatmap heatmap = new Heatmap(results);
 		IElementAdapter cellAdapter = results.getCellAdapter();
 		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
-		int valueIndex = cellAdapter.getPropertyIndex("Score");
+		int valueIndex = cellAdapter.getPropertyIndex("score");
 		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
 		dec.setMinValue(-1);
 		dec.setMaxValue(1);

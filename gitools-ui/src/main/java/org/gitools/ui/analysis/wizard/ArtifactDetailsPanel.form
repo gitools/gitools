@@ -103,6 +103,9 @@
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -124,16 +127,19 @@
     <Component class="javax.swing.JButton" name="attrAddBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="attrRemoveBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remove"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="attrEditBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>

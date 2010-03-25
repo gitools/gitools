@@ -17,23 +17,26 @@
 
 package org.gitools.analysis.correlation;
 
+import org.gitools.matrix.model.element.AttributeDef;
+
 
 public class CorrelationResult {
 
 	protected int n;
 	protected double score;
-	/*protected double pvalue;
-	protected double standardError;*/
+	protected double pvalue;
+	protected double standardError;
 
 	public CorrelationResult() {
 	}
 
-	public CorrelationResult(int n, double score/*, double pvalue, double standardError*/) {
+	public CorrelationResult(int n, double score, double pvalue, double standardError) {
 		this.score = score;
-		/*this.pvalue = pvalue;
-		this.standardError = standardError;*/
+		this.pvalue = pvalue;
+		this.standardError = standardError;
 	}
 
+	@AttributeDef(id = "n", name = "Observations", description = "Number of observations")
 	public int getN() {
 		return n;
 	}
@@ -41,7 +44,8 @@ public class CorrelationResult {
 	public void setN(int n) {
 		this.n = n;
 	}
-	
+
+	@AttributeDef(id = "score", name = "Correlation", description = "Correlation score")
 	public double getScore() {
 		return score;
 	}
@@ -50,7 +54,8 @@ public class CorrelationResult {
 		this.score = score;
 	}
 
-	/*public double getPvalue() {
+	@AttributeDef(id = "p-value", name = "P-Value", description = "P-Value for two-tail null hipothesis")
+	public double getPvalue() {
 		return pvalue;
 	}
 
@@ -58,11 +63,12 @@ public class CorrelationResult {
 		this.pvalue = pvalue;
 	}
 
+	@AttributeDef(id = "se", name = "Standard Error", description = "Standard Error")
 	public double getStandardError() {
 		return standardError;
 	}
 
 	public void setStandardError(double standardError) {
 		this.standardError = standardError;
-	}*/
+	}
 }

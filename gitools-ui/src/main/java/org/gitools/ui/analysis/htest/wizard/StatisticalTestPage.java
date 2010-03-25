@@ -41,7 +41,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
 
 		setTitle("Select statistical test");
 
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_STATISTICAL_TEST, 96));
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
 		setComplete(true);
 

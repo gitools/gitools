@@ -4,7 +4,7 @@
  * Created on September 4, 2009, 12:31 PM
  */
 
-package org.gitools.ui.panels;
+package org.gitools.ui.analysis.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +51,8 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Attributes");
 
+        jScrollPane2.setEnabled(false);
+
         attrTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -70,10 +72,13 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(attrTable);
 
         attrAddBtn.setText("Add");
+        attrAddBtn.setEnabled(false);
 
         attrRemoveBtn.setText("Remove");
+        attrRemoveBtn.setEnabled(false);
 
         attrEditBtn.setText("Edit");
+        attrEditBtn.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

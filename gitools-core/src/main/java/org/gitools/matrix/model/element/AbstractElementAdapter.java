@@ -72,7 +72,8 @@ public abstract class AbstractElementAdapter
 	public int getPropertyIndex(String id) {
 		Integer index = propIdToIndexMap.get(id);
 		if (index == null)
-			throw new RuntimeException("There isn't any property with id: " + id);
+			return -1;
+			//throw new RuntimeException("There isn't any property with id: " + id);
 		
 		return index.intValue();
 	}

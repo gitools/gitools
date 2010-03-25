@@ -42,28 +42,37 @@ public class PearsonCorrelationMethod extends AbstractMethod implements Correlat
 	}
 
 	@Override
-	public CorrelationResult correlation(double[] x, double[] y) throws MethodException {
-		RealMatrix data = new Array2DRowRealMatrix(new double[][] {x, y});
-
+	public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
 		CorrelationResult result = new CorrelationResult();
 
-		//PearsonsCorrelation correlation = new PearsonsCorrelation(data);
-		PearsonsCorrelation correlation = new PearsonsCorrelation();
-		//RealMatrix corr = correlation.computeCorrelationMatrix(data);
-		//result.setScore(corr.getEntry(0, 1));
-		result.setScore(correlation.correlation(x, y));
-		result.setN(x.length);
-		
-		/*try {
-			RealMatrix pvalues = correlation.getCorrelationPValues();
-			result.setPvalue(pvalues.getEntry(0, 1));
+		double sumxy = 0;
+		double sumx = 0;
+		double sumx2 = 0;
+		double sumy = 0;
+		double sumy2 = 0;
+		double n = indicesLength;
 
-			RealMatrix se = correlation.getCorrelationStandardErrors();
-			result.setStandardError(se.getEntry(0, 1));
+		for (int k = 0; k < indicesLength; k++) {
+			int i = indices[k];
+			double xi = x[i];
+			double yi = y[i];
+			sumxy += xi * yi;
+			sumx += xi;
+			sumx2 += xi * xi;
+			sumy += yi;
+			sumy2 += yi * yi;
 		}
-		catch (MathException ex) {
-			throw new MethodException(ex);
-		}*/
+
+		double r = (sumxy - (sumx * sumy / n))
+				/ Math.sqrt(
+					(sumx2 - (sumx * sumx / n))
+					* (sumy2 - (sumy * sumy / n)));
+
+		double se = Math.sqrt((1 - (r * r)) / (n - 2));
+
+		result.setN(indicesLength);
+		result.setScore(r);
+		result.setStandardError(se);
 
 		return result;
 	}

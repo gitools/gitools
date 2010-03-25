@@ -88,13 +88,19 @@ public class IconNames {
 	
 	public static final String LOGO_ENRICHMENT = "/img/logos/Enrichment.png";
 
+	public static final String LOGO_CORRELATION = "/img/logos/Correlation.png";
+
+	public static final String LOGO_COMBINATION = "/img/logos/Combination.png";
+
+	public static final String LOGO_ONCODRIVER = "/img/logos/Oncodriver.png";
+
 	public static final String LOGO_SAVE = "/img/logos/Save.png";
 
 	public static final String LOGO_DATA = "/img/logos/Data.png";
 
 	public static final String LOGO_MODULES = "/img/logos/Modules.png";
 
-	public static final String LOGO_STATISTICAL_TEST = "/img/logos/StatisticalTest.png";
+	public static final String LOGO_METHOD = "/img/logos/Method.png";
 
 	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
 }

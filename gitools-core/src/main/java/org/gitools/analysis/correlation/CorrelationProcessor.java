@@ -72,30 +72,43 @@ public class CorrelationProcessor {
 		
 		double[] x = new double[numRows];
 		double[] y = new double[numRows];
+		int[] indices = new int[numRows];
 
 		boolean replaceNanValues = analysis.isReplaceNanValues();
 		double nanValue = analysis.getNanValue();
 
 		for (int i = 0; i < numColumns; i++) {
+			for (int row = 0; row < numRows; row++) {
+				double v = MatrixUtils.doubleValue(data.getCellValue(row, i, attributeIndex));
+				if (replaceNanValues && Double.isNaN(v))
+					v = nanValue;
+				x[row] = v;
+			}
+
 			for (int j = i + 1; j < numColumns; j++) {
 				monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
 				
-				int numPairs = gatherValues(
-						data, numRows, i, j, x, y,
-						attributeIndex, replaceNanValues, nanValue);
+				int numPairs = 0;
+				for (int row = 0; row < numRows; row++) {
+					double v0 = x[row];
 
-				double[] x2 = x;
-				double[] y2 = y;
+					double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
+					if (replaceNanValues && Double.isNaN(v0))
+						v0 = nanValue;
 
-				if (numPairs != numRows) {
-					x2 = new double[numPairs];
-					y2 = new double[numPairs];
+					if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
+						y[row] = v1;
 
-					System.arraycopy(x, 0, x2, 0, numPairs);
-					System.arraycopy(y, 0, y2, 0, numPairs);
+						indices[numPairs++] = row;
+					}
 				}
 				
-				calculateCorr(method, x2, y2, results, i, j);
+				try {
+					results.setCell(i, j,
+							method.correlation(x, y, indices, numPairs));
+				} catch (MethodException ex) {
+					throw new AnalysisException(ex);
+				}
 
 				monitor.worked(1);
 
@@ -105,35 +118,6 @@ public class CorrelationProcessor {
 		}
 
 		monitor.end();
-	}
-
-	private void calculateCorr(CorrelationMethod method, double[] x2, double[] y2, final ObjectMatrix results, int i, int j) throws AnalysisException {
-		try {
-			CorrelationResult result = method.correlation(x2, y2);
-			results.setCell(i, j, result);
-		} catch (MethodException ex) {
-			throw new AnalysisException(ex);
-		}
-	}
-
-	private int gatherValues(IMatrix data, int numRows, int i, int j, double[] x, double[] y, int attributeIndex, boolean replaceNanValues, double nanValue) {
-		int numPairs = 0;
-		for (int row = 0; row < numRows; row++) {
-			double v0 = MatrixUtils.doubleValue(data.getCellValue(row, i, attributeIndex));
-			if (replaceNanValues && Double.isNaN(v0)) {
-				v0 = nanValue;
-			}
-			double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
-			if (replaceNanValues && Double.isNaN(v0)) {
-				v0 = nanValue;
-			}
-			x[numPairs] = v0;
-			y[numPairs] = v1;
-			if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
-				numPairs++;
-			}
-		}
-		return numPairs;
 	}
 
 	private CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException {

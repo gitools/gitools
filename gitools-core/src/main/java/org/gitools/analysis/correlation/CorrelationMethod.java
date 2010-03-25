@@ -25,5 +25,5 @@ public interface CorrelationMethod extends Method {
 	/** Calculate the correlation between the two vectors
 	 * x should be the same length than y
 	 */
-	CorrelationResult correlation(double[] x, double[] y) throws MethodException;
+	CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException;
 }

@@ -1,5 +1,6 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 
@@ -23,7 +24,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	public EnrichmentAnalysisWizard() {
 		super();
 		
-		setTitle("New enrichment analysis");
+		setTitle("Enrichment analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ENRICHMENT, 96));
 	}
 	
@@ -113,6 +114,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
 		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
 		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+		
 		analysis.setBinaryCutoffEnabled(dataPage.isComplete());
 		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
 		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());

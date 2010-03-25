@@ -1,6 +1,5 @@
-package org.gitools.ui.analysis.htest.wizard;
+package org.gitools.ui.analysis.wizard;
 
-import org.gitools.ui.panels.ArtifactDetailsPanel;
 import java.util.List;
 import javax.swing.JComponent;
 import org.gitools.model.Attribute;
