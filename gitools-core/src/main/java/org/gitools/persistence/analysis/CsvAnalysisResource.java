@@ -116,7 +116,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					File res = new File(basePath, fields[1]);
 					DoubleMatrixTextPersistence per = new DoubleMatrixTextPersistence();
 					DoubleMatrix doubleMatrix = per.read(res, monitor.subtask());
-					analysis.setDataMatrix(doubleMatrix);
+					analysis.setData(doubleMatrix);
 				}
 				else if (tag.equals(tagModules) && fields.length >= 2) {
 					path = new File(basePath, fields[1]);
@@ -128,18 +128,18 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 					File res = new File(basePath, fields[1]);
 					ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 					ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
-					analysis.setResultsMatrix(resultsMatrix);
+					analysis.setResults(resultsMatrix);
 				}
 				
 				/*else if (tag.equals(tagUserName) && line.length >= 2)
 					userName = line[1];*/
 			}
 	
-			if (version == null && analysis.getResultsMatrix() == null) { // old version
+			if (version == null && analysis.getResults() == null) { // old version
 				File res = new File(basePath, "results.csv");
 				ObjectMatrixTextPersistence per = new ObjectMatrixTextPersistence();
 				ObjectMatrix resultsMatrix = per.read(res, monitor.subtask());
-				analysis.setResultsMatrix(resultsMatrix);
+				analysis.setResults(resultsMatrix);
 			}
 		}
 		catch (Exception e) {
@@ -166,7 +166,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			
 			Test test = testFactory.create(); //FIXME?
 
-			IMatrix dataMatrix = analysis.getDataMatrix();
+			IMatrix dataMatrix = analysis.getData();
 			if (!(dataMatrix instanceof DoubleMatrix))
 				throw new RuntimeException("This processor only works with DoubleMatrix data. "
 						+ dataMatrix.getClass().getSimpleName() + " found instead.");
@@ -185,7 +185,7 @@ public class CsvAnalysisResource extends AnalysisPersistence {
 			
 			new ObjectMatrixTextPersistence().write(
 					new File(workDirFile, resultsFileNamePrefix + ".cells.csv"),
-					analysis.getResultsMatrix(),
+					analysis.getResults(),
 					resultsOrderByCond, monitor);
 		}
 		catch (Exception e) {

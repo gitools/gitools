@@ -16,14 +16,11 @@ import org.gitools.threads.ThreadSlot;
 import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.analysis.htest.AbstractProcessor;
+import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTCFactory;
 
@@ -31,7 +28,7 @@ import org.gitools.stats.mtc.MTCFactory;
  * 'cond' is an abbreviation for condition.
  */
 
-public class EnrichmentProcessor extends AbstractProcessor {
+public class EnrichmentProcessor extends HtestProcessor {
 	
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
@@ -68,7 +65,7 @@ public class EnrichmentProcessor extends AbstractProcessor {
 		//String[] paramNames = testFactory.create().getResultNames();
 		//final int numParams = paramNames.length;
 
-		IMatrix dataMatrix = analysis.getDataMatrix();
+		IMatrix dataMatrix = analysis.getData();
 		/*if (!(dataMatrix instanceof BaseMatrix))
 			throw new RuntimeException("This processor only works with BaseMatrix data. "
 					+ dataMatrix.getClass().getSimpleName() + " found instead.");*/
@@ -189,7 +186,7 @@ public class EnrichmentProcessor extends AbstractProcessor {
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 		
-		analysis.setResultsMatrix(resultsMatrix);
+		analysis.setResults(resultsMatrix);
 		
 		monitor.end();
 	}

@@ -8,7 +8,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public class AbstractProcessor {
+public class HtestProcessor {
 
 	protected void multipleTestCorrection(
 			ObjectMatrix res,

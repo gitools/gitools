@@ -6,10 +6,10 @@ import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.TestFactory;
 
-import org.gitools.commands.Command;
+import org.gitools.analysis.AnalysisCommand;
 import org.gitools.datafilters.BinaryCutoffTranslator;
 
-public abstract class HtestCommand implements Command {
+public abstract class HtestCommand implements AnalysisCommand {
 
 	protected static final char defaultSep = '\t';
 	protected static final char defaultQuote = '"';

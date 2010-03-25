@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncozAnalysis;
@@ -57,14 +56,14 @@ public class HtestAnalysis extends Analysis {
 
 	/** Data */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix dataMatrix;
+	protected IMatrix data;
 
 	/** Multiple test correction */
 	protected String mtc;
 
 	/** Results */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected ObjectMatrix resultsMatrix;
+	protected ObjectMatrix results; //FIXME Should it be a BaseMatrix or IMatrix instead ?
 
 	public HtestAnalysis() {
 	}
@@ -101,21 +100,13 @@ public class HtestAnalysis extends Analysis {
 		this.testConfig = testConfig;
 	}
 
-	public IMatrix getDataMatrix() {
-		return dataMatrix;
+	public IMatrix getData() {
+		return data;
 	}
 
-	public void setDataMatrix(IMatrix dataTable) {
-		this.dataMatrix = dataTable;
+	public void setData(IMatrix data) {
+		this.data = data;
 	}
-
-	/*public DoubleMatrix getDataTable() {
-		return dataTable;
-	}
-
-	public void setDataTable(DoubleMatrix dataTable) {
-		this.dataTable = dataTable;
-	}*/
 
 	public String getMtc() {
 		return mtc;
@@ -125,11 +116,11 @@ public class HtestAnalysis extends Analysis {
 		this.mtc = mtc;
 	}
 
-	public ObjectMatrix getResultsMatrix() {
-		return resultsMatrix;
+	public ObjectMatrix getResults() {
+		return results;
 	}
 
-	public void setResultsMatrix(ObjectMatrix resultsMatrix) {
-		this.resultsMatrix = resultsMatrix;
+	public void setResults(ObjectMatrix results) {
+		this.results = results;
 	}
 }

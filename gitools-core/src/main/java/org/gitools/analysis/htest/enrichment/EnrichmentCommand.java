@@ -64,7 +64,7 @@ public class EnrichmentCommand extends HtestCommand {
 				enrichAnalysis,
 				monitor.subtask());
 
-		enrichAnalysis.setDataMatrix((IMatrix) ret[0]);
+		enrichAnalysis.setData((IMatrix) ret[0]);
 		enrichAnalysis.setModuleMap((ModuleMap) ret[1]);
 		
 		monitor.end();

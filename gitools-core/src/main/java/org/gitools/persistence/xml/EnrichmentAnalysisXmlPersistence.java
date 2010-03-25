@@ -51,13 +51,13 @@ public class EnrichmentAnalysisXmlPersistence
 
 		//context.setMimeType(entity.getDataTable(), MimeTypes.DOUBLE_MATRIX);
 		//String dataExt = MimeTypeManager.getDefault().fromClass(entity.getDataMatrix().getClass());
-		context.setEntityContext(entity.getDataMatrix(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-data.tsv.gz").getAbsolutePath(), false));
 
 		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
 
-		context.setEntityContext(entity.getResultsMatrix(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-results.tsv.gz").getAbsolutePath()));
 	}
 }
