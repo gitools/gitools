@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.MatrixUtils;
@@ -46,36 +47,40 @@ public class EnrichmentCommand extends HtestCommand {
 	}
 	
 	@Override
-	public void run(IProgressMonitor monitor) 
-			throws PersistenceException, InterruptedException {
-		
-		final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
-		
-		// Load data and modules
-		
-		monitor.begin("Loading ...", 1);
-		monitor.info("Data: " + dataPath);
-		monitor.info("Modules: " + modulesPath);
-		
-		Object[] ret = loadDataAndModules(
-				dataMime, dataPath,
-				populationPath,
-				modulesMime, modulesPath,
-				enrichAnalysis,
-				monitor.subtask());
+	public void run(IProgressMonitor monitor) throws AnalysisException {
 
-		enrichAnalysis.setData((IMatrix) ret[0]);
-		enrichAnalysis.setModuleMap((ModuleMap) ret[1]);
-		
-		monitor.end();
-		
-		// Create and process analysis
-		
-		EnrichmentProcessor processor = new EnrichmentProcessor(enrichAnalysis);
-		
-		processor.run(monitor);
+		try {
+			final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
 
-		save(enrichAnalysis, monitor);
+			// Load data and modules
+
+			monitor.begin("Loading ...", 1);
+			monitor.info("Data: " + dataPath);
+			monitor.info("Modules: " + modulesPath);
+
+			Object[] ret = loadDataAndModules(
+					dataMime, dataPath,
+					populationPath,
+					modulesMime, modulesPath,
+					enrichAnalysis,
+					monitor.subtask());
+
+			enrichAnalysis.setData((IMatrix) ret[0]);
+			enrichAnalysis.setModuleMap((ModuleMap) ret[1]);
+
+			monitor.end();
+
+			// Create and process analysis
+
+			EnrichmentProcessor processor = new EnrichmentProcessor(enrichAnalysis);
+
+			processor.run(monitor);
+
+			save(enrichAnalysis, monitor);
+		}
+		catch (Exception ex) {
+			throw new AnalysisException(ex);
+		}
 	}
 
 	private void save(final EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {

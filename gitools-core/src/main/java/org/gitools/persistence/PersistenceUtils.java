@@ -152,7 +152,7 @@ public class PersistenceUtils {
 	/** Returns only the extension from the last point */
 	public static String getExtension(String path) {
 		int dot = path.lastIndexOf('.');
-		return path.substring(dot + 1);
+		return dot != -1 ? path.substring(dot + 1) : "";
 	}
 
 	/** Return whether is or not an absolute path */

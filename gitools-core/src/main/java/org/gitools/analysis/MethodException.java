@@ -18,7 +18,7 @@
 package org.gitools.analysis;
 
 
-public class MethodException extends Throwable {
+public class MethodException extends Exception {
 
 	public MethodException(String msg) {
 		super(msg);

@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
-import org.biomart._80.martservicesoap.DatasetInfo;
-import org.biomart._80.martservicesoap.Mart;
 import org.gitools.biomart.BiomartCentralPortalSoapService;
 
-/*import org.gitools.biomart.cxf.DatasetInfo;
-import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.IBiomartService;*/
+import org.gitools.biomart.soap.model.DatasetInfo;
+import org.gitools.biomart.soap.model.Mart;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredListPage;
 

@@ -20,4 +20,49 @@ package org.gitools.analysis.correlation;
 
 public class CorrelationResult {
 
+	protected int n;
+	protected double score;
+	/*protected double pvalue;
+	protected double standardError;*/
+
+	public CorrelationResult() {
+	}
+
+	public CorrelationResult(int n, double score/*, double pvalue, double standardError*/) {
+		this.score = score;
+		/*this.pvalue = pvalue;
+		this.standardError = standardError;*/
+	}
+
+	public int getN() {
+		return n;
+	}
+
+	public void setN(int n) {
+		this.n = n;
+	}
+	
+	public double getScore() {
+		return score;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
+	}
+
+	/*public double getPvalue() {
+		return pvalue;
+	}
+
+	public void setPvalue(double pvalue) {
+		this.pvalue = pvalue;
+	}
+
+	public double getStandardError() {
+		return standardError;
+	}
+
+	public void setStandardError(double standardError) {
+		this.standardError = standardError;
+	}*/
 }

@@ -27,6 +27,8 @@ public interface Method {
 
 	String getDescription();
 
+	Class<?> getResultClass();
+
 	Properties getProperties();
 
 	void setProperties(Properties properties);

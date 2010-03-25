@@ -56,7 +56,9 @@
 		<module>gitools-ui</module>
 
 		<!-- <module>ztools-report</module> -->
-	</modules>
+    <module>gitools-analysis</module>
+    <module>gitools-persistence</module>
+  </modules>
 
 	<repositories>
 		<repository>
@@ -84,6 +86,12 @@
 						<artifactId>concurrent</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-math</artifactId>
+				<version>2.0</version>
 			</dependency>
 
 			<dependency>
@@ -181,7 +189,7 @@
 						<archive>
 							<manifest>
 								<addClasspath>true</addClasspath>
-								<classpathPrefix />
+								<classpathPrefix/>
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							</manifest>

@@ -1,11 +1,7 @@
 package org.gitools.ui;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UIManager;
 import org.gitools.biomart.BiomartCentralPortalSoapService;
-import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.BiomartServiceFactory;
 
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;

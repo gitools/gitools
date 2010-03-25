@@ -21,6 +21,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 
@@ -28,10 +29,26 @@ public class MatrixViewTransposition implements IMatrixView {
 
 	private IMatrixView mv;
 
+	public MatrixViewTransposition() {
+	}
+
 	public MatrixViewTransposition(IMatrixView mv) {
 		this.mv = mv;
 	}
 
+	/*public IMatrixView getMatrixView() {
+		return mv;
+	}
+
+	public void setMatrixView(IMatrixView mv) {
+		this.mv = mv;
+	}*/
+
+	public void setMatrix(IMatrix matrix) {
+		this.mv = matrix instanceof IMatrixView ?
+			(IMatrixView) matrix : new MatrixView(matrix);
+	}
+	
 	@Override
 	public IMatrix getContents() {
 		return mv.getContents();

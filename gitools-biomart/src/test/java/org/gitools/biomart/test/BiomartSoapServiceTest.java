@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import org.gitools.biomart.BiomartCentralPortalSoapService;
 import org.gitools.biomart.BiomartServiceException;
@@ -44,13 +42,16 @@ import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 
 public class BiomartSoapServiceTest {
 
+	private static final Logger log = LoggerFactory.getLogger(BiomartSoapServiceTest.class);
+
 	private String source;
 	private BiomartSoapService bs;
-	private static final Logger log = Logger.getLogger(BiomartSoapServiceTest.class.getName());
 
 	@Before
 	public void before() {
@@ -79,7 +80,7 @@ public class BiomartSoapServiceTest {
 
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 
 		return srv;
@@ -96,7 +97,7 @@ public class BiomartSoapServiceTest {
 			assertTrue(lMart.size() > 0);
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 	}
 
@@ -118,7 +119,7 @@ public class BiomartSoapServiceTest {
 			log.info("num DS: " + ds.size());
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 	}
 
@@ -153,7 +154,7 @@ public class BiomartSoapServiceTest {
 			log.info("Num Att Pages: " + latt.size());
 
 		} catch (BiomartServiceException ex) {
-			Logger.getLogger(BiomartSoapServiceTest.class.getName()).log(Level.SEVERE, null, ex);
+			log.error(null, ex);
 		}
 	}
 
@@ -190,7 +191,7 @@ public class BiomartSoapServiceTest {
 
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 	}
 
@@ -240,9 +241,9 @@ public class BiomartSoapServiceTest {
 
 
 		}  catch (IOException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 
 	}
@@ -309,7 +310,7 @@ public class BiomartSoapServiceTest {
 			file.delete();
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 
 	}
@@ -341,7 +342,7 @@ public class BiomartSoapServiceTest {
 
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 	}
 
@@ -365,7 +366,7 @@ public class BiomartSoapServiceTest {
 			assertTrue(conf.getAttributePages().get(0).getAttributeGroups().get(0).getAttributeCollections().size() > 0);
 
 		} catch (BiomartServiceException ex) {
-			log.severe(ex.getMessage());
+			log.error(ex.getMessage());
 		}
 
 	}

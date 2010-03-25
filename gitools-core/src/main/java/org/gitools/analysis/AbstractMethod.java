@@ -24,12 +24,16 @@ public class AbstractMethod implements Method {
 	protected String id;
 	protected String name;
 	protected String desc;
+	protected Class<?> resultClass;
 	protected Properties properties;
 
-	public AbstractMethod(String id, String name, String desc, Properties properties) {
+	public AbstractMethod(String id, String name, String desc,
+			Class<?> resultClass, Properties properties) {
+
 		this.id = id;
 		this.name = name;
 		this.desc = desc;
+		this.resultClass = resultClass;
 		this.properties = properties;
 	}
 
@@ -54,6 +58,15 @@ public class AbstractMethod implements Method {
 
 	protected void setDescription(String desc) {
 		this.desc = desc;
+	}
+
+	@Override
+	public Class<?> getResultClass() {
+		return resultClass;
+	}
+
+	public void setResultClass(Class<?> resultClass) {
+		this.resultClass = resultClass;
 	}
 
 	@Override

@@ -96,8 +96,8 @@ public class IntogenService {
 			nameMap.put("oncomodules.csv", prefix + ".annotations.tsv.gz");
 
 			nameMap.put("data.tsv", prefix + ".cdm.gz");
-			nameMap.put("row.annotations", prefix + ".rows.tsv.gz");
-			nameMap.put("column.annotations", prefix + ".columns.tsv.gz");
+			nameMap.put("row.annotations.tsv", prefix + ".rows.tsv.gz");
+			nameMap.put("column.annotations.tsv", prefix + ".columns.tsv.gz");
 
 			monitor.begin("Downloading data ...", 1);
 

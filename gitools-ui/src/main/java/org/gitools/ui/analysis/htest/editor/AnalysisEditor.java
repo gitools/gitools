@@ -38,8 +38,8 @@ public class AnalysisEditor extends MultiEditor {
 		
 		// create data view
 		
-		if (analysis.getDataMatrix() != null) {
-			IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
+		if (analysis.getData() != null) {
+			IMatrixView dataTable = new MatrixView(analysis.getData());
 			
 			ElementDecorator dataRowDecorator = 
 				ElementDecoratorFactory.create(
@@ -55,7 +55,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		// create results view
 		
-		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
+		IMatrixView resultsTable = new MatrixView(analysis.getResults());
 		
 		ElementDecorator resultsRowDecorator = 
 			ElementDecoratorFactory.create(

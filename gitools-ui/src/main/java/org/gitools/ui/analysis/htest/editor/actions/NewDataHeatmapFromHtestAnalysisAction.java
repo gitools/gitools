@@ -54,12 +54,12 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
-		if (analysis.getDataMatrix() == null) {
+		if (analysis.getData() == null) {
 			AppFrame.instance().setStatusText("Analysis doesn't contains data.");
 			return;
 		}
 		
-		IMatrixView dataTable = new MatrixView(analysis.getDataMatrix());
+		IMatrixView dataTable = new MatrixView(analysis.getData());
 
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 		heatmap.setTitle(analysis.getTitle() + " (data)");

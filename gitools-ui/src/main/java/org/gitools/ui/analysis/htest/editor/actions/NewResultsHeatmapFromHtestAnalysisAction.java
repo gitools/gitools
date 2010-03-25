@@ -61,7 +61,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
-		IMatrixView resultsTable = new MatrixView(analysis.getResultsMatrix());
+		IMatrixView resultsTable = new MatrixView(analysis.getResults());
 
 		ElementDecorator resultsRowDecorator =
 			ElementDecoratorFactory.create(
@@ -74,7 +74,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 			actions.add(BaseAction.separator);
 			actions.add(new ViewAnnotatedElementsHeatmapAction(
 					a.getTitle(),
-					a.getDataMatrix(),
+					a.getData(),
 					a.getModuleMap()));
 		}
 

@@ -20,14 +20,10 @@ package org.gitools.ui.biomart.wizard;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import org.biomart._80.martservicesoap.AttributeInfo;
-import org.biomart._80.martservicesoap.AttributePage;
-import org.biomart._80.martservicesoap.DatasetInfo;
-/*import org.gitools.biomart.cxf.AttributeInfo;
-import org.gitools.biomart.cxf.AttributePage;
-import org.gitools.biomart.cxf.DatasetInfo;
-import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.IBiomartService;*/import org.biomart._80.martservicesoap.Mart;
+import org.gitools.biomart.soap.model.AttributeInfo;
+import org.gitools.biomart.soap.model.AttributePage;
+import org.gitools.biomart.soap.model.DatasetInfo;
+import org.gitools.biomart.soap.model.Mart;
 import org.gitools.biomart.BiomartCentralPortalSoapService;
 
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;

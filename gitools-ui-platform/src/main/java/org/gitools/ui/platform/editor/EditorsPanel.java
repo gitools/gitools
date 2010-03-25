@@ -125,8 +125,10 @@ public class EditorsPanel extends JTabbedPane {
 	}
 
 	public String deriveName(String name, String removeExtension, String prefixAdd, String newExtension) {
-		if (name.endsWith(removeExtension))
-			name = name.substring(0, name.length() - removeExtension.length() - 1);
+		if (!removeExtension.isEmpty() && name.endsWith(removeExtension)) {
+			int endIndex = name.length() - removeExtension.length() - 1;
+			name = endIndex >= 0 ? name.substring(0, endIndex) : "";
+		}
 		
 		int i = name.length() - 1;
 		while (i >= 0 && Character.isDigit(name.charAt(i))) i--;

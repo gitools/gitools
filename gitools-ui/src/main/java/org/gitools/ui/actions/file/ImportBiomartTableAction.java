@@ -3,12 +3,8 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import org.biomart._80.martservicesoap.Query;
 import org.gitools.biomart.BiomartCentralPortalSoapService;
-/*import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.IBiomartService;
-import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.BiomartServiceFactory;*/
+import org.gitools.biomart.soap.model.Query;
 import org.gitools.ui.IconNames;
 
 import org.gitools.ui.platform.actions.BaseAction;

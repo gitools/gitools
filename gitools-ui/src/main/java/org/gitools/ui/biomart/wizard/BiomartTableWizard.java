@@ -19,17 +19,11 @@ package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
 import java.util.List;
-import org.biomart._80.martservicesoap.Attribute;
-/*import org.gitools.biomart.cxf.Attribute;
-import org.gitools.biomart.cxf.AttributeInfo;
-import org.gitools.biomart.cxf.Dataset;
-import org.gitools.biomart.cxf.Mart;
-import org.gitools.biomart.cxf.Query;
-import org.gitools.biomart.IBiomartService;*/
-import org.biomart._80.martservicesoap.AttributeInfo;
-import org.biomart._80.martservicesoap.Dataset;
-import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.Query;
+import org.gitools.biomart.soap.model.Attribute;
+import org.gitools.biomart.soap.model.AttributeInfo;
+import org.gitools.biomart.soap.model.Dataset;
+import org.gitools.biomart.soap.model.Mart;
+import org.gitools.biomart.soap.model.Query;
 
 import org.gitools.biomart.BiomartCentralPortalSoapService;
 

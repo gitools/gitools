@@ -1,4 +1,4 @@
-package org.gitools.ui.actions.data;
+package org.gitools.ui.actions.analysis;
 
 import java.awt.event.ActionEvent;
 

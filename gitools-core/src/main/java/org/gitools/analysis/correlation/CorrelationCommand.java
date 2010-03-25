@@ -19,11 +19,12 @@ package org.gitools.analysis.correlation;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisCommand;
+import org.gitools.analysis.AnalysisException;
 
 public class CorrelationCommand implements AnalysisCommand {
 
 	@Override
-	public void run(IProgressMonitor monitor) throws Exception {
+	public void run(IProgressMonitor monitor) throws AnalysisException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

@@ -68,7 +68,7 @@ public class HeatmapDemoEditor extends HeatmapEditor {
 				new ArrayElementAdapter(new String[] {"p-value", "corrected-p-value"}));
 		
 		HtestAnalysis analysis = new HtestAnalysis();
-		analysis.setResultsMatrix(resultsMatrix);
+		analysis.setResults(resultsMatrix);
 		
 		return new MatrixView(resultsMatrix);
 	}

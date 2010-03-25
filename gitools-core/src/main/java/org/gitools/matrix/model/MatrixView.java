@@ -68,20 +68,42 @@ public class MatrixView
 	}
 	
 	public MatrixView(IMatrix contents) {
+		initFromMatrix(contents);
+	}
+
+	public MatrixView(IMatrixView matrixView) {
+		if (matrixView instanceof MatrixView) {
+			this.contents = matrixView.getContents();
+			this.visibleRows = matrixView.getVisibleRows();
+			this.visibleColumns = matrixView.getVisibleColumns();
+			this.selectedRows = matrixView.getSelectedRows();
+			this.selectedColumns = matrixView.getSelectedColumns();
+			this.selectionLeadRow = matrixView.getLeadSelectionRow();
+			this.selectionLeadColumn = matrixView.getLeadSelectionColumn();
+			this.selectedPropertyIndex = matrixView.getSelectedPropertyIndex();
+		}
+		else
+			initFromMatrix(matrixView.getContents());
+
+		selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
+		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
+	}
+
+	private void initFromMatrix(IMatrix contents) {
 		this.contents = contents;
-		
+
 		// initialize visible rows and columns
-		
+
 		visibleRows = new int[contents.getRowCount()];
 		for (int i = 0; i < contents.getRowCount(); i++)
 			visibleRows[i] = i;
-		
+
 		visibleColumns = new int[contents.getColumnCount()];
 		for (int i = 0; i < contents.getColumnCount(); i++)
 			visibleColumns[i] = i;
-		
+
 		// initialize selection
-		
+
 		selectedRows = new int[0];
 		selectedColumns = new int[0];
 
@@ -89,9 +111,9 @@ public class MatrixView
 		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
 
 		selectionLeadRow = selectionLeadColumn = -1;
-		
+
 		// selected property
-		
+
 		int i = 0;
 		for (IElementAttribute attr : contents.getCellAttributes()) {
 			if ("right-p-value".equals(attr.getId())
@@ -102,21 +124,6 @@ public class MatrixView
 			i++;
 		}
 	}
-
-	public MatrixView(IMatrixView matrixView) {
-		this.contents = matrixView.getContents();
-		this.visibleRows = matrixView.getVisibleRows();
-		this.visibleColumns = matrixView.getVisibleColumns();
-		this.selectedRows = matrixView.getSelectedRows();
-		this.selectedColumns = matrixView.getSelectedColumns();
-		this.selectionLeadRow = matrixView.getLeadSelectionRow();
-		this.selectionLeadColumn = matrixView.getLeadSelectionColumn();
-		this.selectedPropertyIndex = matrixView.getSelectedPropertyIndex();
-
-		selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
-		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
-	}
-
 
 	/* visibility */
 	
@@ -490,72 +497,25 @@ public class MatrixView
 		return (bitmap[bindex] & bit) != 0;
 	}
 
-	// FIXME:
-	// 	this must be common to MatrixView and TableView
+	public void visibleColumnsFromSelection() {
+		int[] sel = getSelectedColumns();
+		int[] view = getVisibleColumns();
+		int[] newview = new int[sel.length];
 
-	// Marshal and unMarshall methods
-	// Marshalling
-	/*public void beforeMarshal(Marshaller u) {
-		boolean naturalOrder = true;
-		int rows = visibleRows.length;
-		int columns = visibleColumns.length;
-		int maxSize = rows > columns ? rows : columns;
+		for (int i = 0; i < newview.length; i++)
+			newview[i] = view[sel[i]];
 
-		int i = 0;
-		while (i < maxSize && naturalOrder) {
-			if (i < columns)
-				naturalOrder = i == visibleColumns[i];
-			if (i < rows)
-				naturalOrder = (i == visibleRows[i] && naturalOrder);
-			i++;
-		}
-
-		if (naturalOrder) {
-			visibleColumns = null;
-			visibleRows = null;
-		}
+		setVisibleColumns(newview);
 	}
 
-	public void afterMarshal(Marshaller u) {
-		if (visibleColumns == null && visibleRows == null) {
-			
-			int count = contents.getRowCount();
-			int[] rows = new int[count];
+	public void visibleRowsFromSelection() {
+		int[] sel = getSelectedRows();
+		int[] view = getVisibleRows();
+		int[] newview = new int[sel.length];
 
-			for (int i = 0; i < count; i++)
-				rows[i] = i;
-			setVisibleRows(rows);
+		for (int i = 0; i < newview.length; i++)
+			newview[i] = view[sel[i]];
 
-			count = contents.getColumnCount();
-			int[] columns = new int[count];
-
-			for (int i = 0; i < count; i++)
-				columns[i] = i;
-			setVisibleColumns(columns);
-		}
+		setVisibleRows(newview);
 	}
-
-	// UnMarshalling
-	void afterUnmarshal(Unmarshaller u, Object parent) {
-		int count = 0;
-		int[] rows;
-		int[] columns;
-
-		if (visibleRows.length == 0) {
-			count = contents.getRowCount();
-			rows = new int[count];
-
-			for (int i = 0; i < count; i++)
-				rows[i] = i;
-			setVisibleRows(rows);
-		}
-		if (visibleColumns.length == 0) {
-			count = contents.getColumnCount();
-			columns = new int[count];
-
-			for (int i = 0; i < count; i++)
-				columns[i] = i;
-			setVisibleColumns(columns);
-		}
-	}*/
 }

@@ -85,12 +85,16 @@ public class MenuActionSet extends ActionSet {
 					DataActions.hideSelectedRowsAction,
 					DataActions.showAllColumnsAction,
 					DataActions.hideSelectedColumnsAction
-				}),
-				new ActionSet("MTC", new BaseAction[] {
-					MtcActions.mtcBonferroniAction,
-					MtcActions.mtcBenjaminiHochbergFdrAction,
-					MtcActions.mtcBenjaminiYekutieliFdrAction
 				})
+			}),
+			new ActionSet("Analysis", new BaseAction[] {
+				AnalysisActions.correlation,
+				AnalysisActions.combinations,
+				new ActionSet("MTC", new BaseAction[] {
+					AnalysisActions.mtcBonferroniAction,
+					AnalysisActions.mtcBenjaminiHochbergFdrAction,
+					AnalysisActions.mtcBenjaminiYekutieliFdrAction
+				}),
 			}),
 			new ActionSet("Help", new BaseAction[] {
 				HelpActions.welcomeAction,

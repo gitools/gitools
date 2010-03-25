@@ -10,6 +10,7 @@ import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextSimplePersistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
@@ -46,41 +47,45 @@ public class OncozCommand extends HtestCommand {
 	}
 
 	@Override
-	public void run(IProgressMonitor monitor) 
-			throws PersistenceException, InterruptedException {
-		
-		final OncozAnalysis oncozAnalysis = (OncozAnalysis) analysis;
-		
-		// Load data and modules
-		
-		monitor.begin("Loading ...", 1);
-		monitor.info("Data: " + dataPath);
-		monitor.info("Sets: " + setsFile);
-		
-		DoubleMatrix doubleMatrix = new DoubleMatrix();
-		ModuleMap setsMap = new ModuleMap();
+	public void run(IProgressMonitor monitor) throws AnalysisException {
 
-		loadDataAndModules(
-				doubleMatrix, setsMap,
-				dataMime, dataPath,
-				createValueTranslator(analysis),
-				setsFile,
-				oncozAnalysis.getMinSetSize(),
-				oncozAnalysis.getMaxSetSize(),
-				true, monitor.subtask());
+		try {
+			final OncozAnalysis oncozAnalysis = (OncozAnalysis) analysis;
 
-		oncozAnalysis.setData(doubleMatrix);
-		oncozAnalysis.setSetsMap(setsMap);
+			// Load data and modules
 
-		monitor.end();
-		
-		OncozProcessor processor = new OncozProcessor(oncozAnalysis);
-		
-		processor.run(monitor);
-		
-		// Save analysis
-		
-		save(oncozAnalysis, monitor);
+			monitor.begin("Loading ...", 1);
+			monitor.info("Data: " + dataPath);
+			monitor.info("Sets: " + setsFile);
+
+			DoubleMatrix doubleMatrix = new DoubleMatrix();
+			ModuleMap setsMap = new ModuleMap();
+
+			loadDataAndModules(
+					doubleMatrix, setsMap,
+					dataMime, dataPath,
+					createValueTranslator(analysis),
+					setsFile,
+					oncozAnalysis.getMinSetSize(),
+					oncozAnalysis.getMaxSetSize(),
+					true, monitor.subtask());
+
+			oncozAnalysis.setData(doubleMatrix);
+			oncozAnalysis.setSetsMap(setsMap);
+
+			monitor.end();
+
+			OncozProcessor processor = new OncozProcessor(oncozAnalysis);
+
+			processor.run(monitor);
+
+			// Save analysis
+
+			save(oncozAnalysis, monitor);
+		}
+		catch (Exception ex) {
+			throw new AnalysisException(ex);
+		}
 	}
 
 	private void loadDataAndModules(
