@@ -11,10 +11,11 @@ import org.gitools.ui.settings.Settings;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
@@ -23,6 +24,31 @@ import org.gitools.ui.utils.FileChooserUtils;
 public class OpenEnrichmentAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -6528634034161710370L;
+
+	//FIXME remove this class
+	private static class FF extends FileFilter {
+		private String description;
+		private String mime;
+
+		public FF(String description, String mime) {
+			this.description = description;
+			this.mime = mime;
+		}
+
+		@Override
+		public boolean accept(File f) {
+			return true;
+		}
+
+		@Override
+		public String getDescription() {
+			return description;
+		}
+
+		public String getMime() {
+			return mime;
+		}
+	}
 
 	public OpenEnrichmentAnalysisAction() {
 		super("Enrichment analysis ...");
@@ -35,11 +61,22 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final File file = FileChooserUtils.selectFile(
+		//FIXME
+		FileFilter[] filters = new FileFilter[] {
+			new FF("Enrichment analysis", MimeTypes.ENRICHMENT_ANALYSIS) {
+				@Override public boolean accept(File f) {
+					return f.getName().endsWith("." + FileSuffixes.ENRICHMENT); }
+			}
+		};
+
+		Object[] ret = FileChooserUtils.selectFile(
 				"Select the analysis file",
 				Settings.getDefault().getLastPath(),
-				FileChooserUtils.MODE_OPEN);
-		
+				FileChooserUtils.MODE_OPEN,
+				filters);
+
+		final File file = (File) ret[0];
+
 		if (file != null) {
 			Settings.getDefault().setLastPath(file.getParent());
 			Settings.getDefault().save();

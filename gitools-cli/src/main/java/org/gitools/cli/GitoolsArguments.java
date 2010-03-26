@@ -19,7 +19,9 @@ public class GitoolsArguments extends BaseArguments {
 	@Option(name = "-debug", usage = "Print debug level information.")
 	public boolean debug = false;
 	
-	@Option(name = "-p", aliases = "-max-procs", usage = "Maximum number of parallel processors allowed\n(default: all available processors).", metaVar = "<n>")
+	@Option(name = "-p", aliases = "-max-procs",
+		usage = "Maximum number of parallel processors allowed.\n" +
+		"(default: all available processors).", metaVar = "<n>")
 	public int maxProcs = ThreadManager.getAvailableProcessors();
 	
 }

@@ -19,6 +19,11 @@ import org.gitools.threads.ThreadManager;
 public class OncozTool extends HtestTool {
 
 	public static class OncozArguments extends HtestArguments {
+		@Option(name = "-sm", aliases = "-sets-mime", metaVar = "<MIME>",
+				usage = "Sets file format (MIME). (default: " +
+				MimeTypes.MODULES_2C_MAP + ")")
+		public String setsMime = MimeTypes.MODULES_2C_MAP;
+
 		@Option(name = "-s", aliases = {"-sets"}, metaVar = "<file>",
 				usage = "File with mappings between columns and sets.")
 		public String setsFile;
@@ -65,8 +70,8 @@ public class OncozTool extends HtestTool {
 		OncozCommand cmd = new OncozCommand(
         		analysis, args.dataMime, args.dataFile,
 				args.populationFile,
-				MimeTypes.MODULES_2C_MAP, args.setsFile,
-				args.workdir, args.analysisName + "." + FileSuffixes.ONCOZ_ANALYSIS);
+				args.setsMime, args.setsFile,
+				args.workdir, args.analysisName + "." + FileSuffixes.ONCODRIVER);
         
         IProgressMonitor monitor = !args.quiet ?
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

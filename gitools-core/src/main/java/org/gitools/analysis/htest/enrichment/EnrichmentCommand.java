@@ -14,9 +14,7 @@ import java.util.Set;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
@@ -149,14 +147,7 @@ public class EnrichmentCommand extends HtestCommand {
 		if (populationLabels != null)
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 
-		Object dataObj = PersistenceManager.getDefault()
-				.load(dataFile, dataFileMime, dataProps, monitor);
-
-		BaseMatrix dataMatrix = null;
-		if (dataObj instanceof BaseMatrix)
-			dataMatrix = (BaseMatrix) dataObj;
-		else if (dataObj instanceof ModuleMap)
-			dataMatrix = moduleMapToMatrix((ModuleMap) dataObj);
+		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
 
 		// Load modules
 
@@ -168,14 +159,7 @@ public class EnrichmentCommand extends HtestCommand {
 		modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinModuleSize());
 		modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
 
-		Object modObj = (ModuleMap) PersistenceManager.getDefault()
-				.load(file, modulesFileMime, modProps, monitor);
-
-		ModuleMap moduleMap = null;
-		if (modObj instanceof BaseMatrix)
-			moduleMap = matrixToModuleMap((BaseMatrix) modObj);
-		else if (modObj instanceof ModuleMap)
-			moduleMap = (ModuleMap) modObj;
+		ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
 
 		// Filter rows if DiscardNonMappedRows is enabled
 
@@ -215,50 +199,5 @@ public class EnrichmentCommand extends HtestCommand {
 		}
 
 		return new Object[] { dataMatrix, moduleMap };
-	}
-
-	private BaseMatrix moduleMapToMatrix(ModuleMap mmap) {
-		DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
-		String[] columns = mmap.getModuleNames();
-		String[] rows = mmap.getItemNames();
-		matrix.setColumns(columns);
-		matrix.setRows(rows);
-		matrix.makeCells(rows.length, columns.length);
-		for (int col = 0; col < mmap.getModuleCount(); col++)
-			for (int row : mmap.getItemIndices(col))
-				matrix.setCellValue(row, col, 0, 1.0);
-		return matrix;
-	}
-
-	private ModuleMap matrixToModuleMap(IMatrix matrix) {
-		String[] itemNames = new String[matrix.getRowCount()];
-		for (int i = 0; i < matrix.getRowCount(); i++)
-			itemNames[i] = matrix.getRowLabel(i);
-
-		String[] modNames = new String[matrix.getColumnCount()];
-		for (int i = 0; i < matrix.getColumnCount(); i++)
-			modNames[i] = matrix.getColumnLabel(i);
-
-		ModuleMap map = new ModuleMap();
-		map.setItemNames(itemNames);
-		map.setModuleNames(modNames);
-
-		int[][] mapIndices = new int[matrix.getColumnCount()][];
-		for (int col = 0; col < matrix.getColumnCount(); col++) {
-			List<Integer> indexList = new ArrayList<Integer>();
-			for (int row = 0; row < matrix.getRowCount(); row++) {
-				double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
-				if (value == 1.0)
-					indexList.add(row);
-			}
-			int[] indexArray = new int[indexList.size()];
-			for (int i = 0; i < indexList.size(); i++)
-				indexArray[i] = indexList.get(i);
-			mapIndices[col] = indexArray;
-		}
-
-		map.setAllItemIndices(mapIndices);
-
-		return map;
 	}
 }

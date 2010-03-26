@@ -1,5 +1,7 @@
 package edu.upf.bg.tools.impl;
 
+import edu.upf.bg.tools.ToolDescriptor;
+import java.io.PrintStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +12,7 @@ import edu.upf.bg.tools.exception.ToolUsageException;
 import edu.upf.bg.tools.exception.ToolValidationException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.kohsuke.args4j.CmdLineParser;
 
 public abstract class AbstractTool implements ToolLifeCycle {
 
@@ -58,5 +61,20 @@ public abstract class AbstractTool implements ToolLifeCycle {
 
 	@Override
 	public void uninitialize() throws ToolException {
+	}
+
+	@Override
+	public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+		outputStream.print(
+        		toolDesc.getName() + " usage:\n\t" +
+        		appName + " " + toolDesc.getName());
+
+        parser.printSingleLineUsage(outputStream);
+
+        outputStream.println("\n");
+
+        parser.printUsage(outputStream);
+		
+        outputStream.println();
 	}
 }

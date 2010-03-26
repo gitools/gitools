@@ -9,7 +9,7 @@ import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.datafilters.BinaryCutoffTranslator;
 
-public abstract class HtestCommand implements AnalysisCommand {
+public abstract class HtestCommand extends AnalysisCommand {
 
 	protected static final char defaultSep = '\t';
 	protected static final char defaultQuote = '"';

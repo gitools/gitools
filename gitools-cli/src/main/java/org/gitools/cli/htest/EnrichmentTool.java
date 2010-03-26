@@ -18,6 +18,11 @@ import org.gitools.threads.ThreadManager;
 public class EnrichmentTool extends HtestTool {
 
 	public static class EnrichmentArguments extends HtestArguments {
+		@Option(name = "-mm", aliases = "-modules-mime", metaVar = "<MIME>",
+				usage = "Modules file format (MIME). (default: " +
+				MimeTypes.MODULES_2C_MAP + ")")
+		public String modulesMime = MimeTypes.MODULES_2C_MAP;
+
 		@Option(name = "-m", aliases = "-modules", metaVar = "<file>",
 				usage = "File with mappings between items and modules.")
 		public String modulesFile;
@@ -74,7 +79,7 @@ public class EnrichmentTool extends HtestTool {
 		EnrichmentCommand cmd = new EnrichmentCommand(
         		analysis, args.dataMime, args.dataFile,
 				args.populationFile,
-				MimeTypes.MODULES_2C_MAP, args.modulesFile, //FIXME modulesMime
+				args.modulesMime, args.modulesFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT);
         
         IProgressMonitor monitor = !args.quiet ? 

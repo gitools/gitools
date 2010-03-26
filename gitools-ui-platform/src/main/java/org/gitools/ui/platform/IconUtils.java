@@ -29,7 +29,7 @@ public class IconUtils {
 	}
 
 	public static ImageIcon getImageIconResourceScaledByHeight(String name, int height) {
-		System.out.println("getImageIconResourceScaledByHeight(" + name + ", " + height + ")");
+		//System.out.println("getImageIconResourceScaledByHeight(" + name + ", " + height + ")");
 
 		ImageIcon icon = getImageIconResource(name);
 		int w = icon.getIconWidth();
@@ -38,7 +38,7 @@ public class IconUtils {
 		int width = (int) Math.floor(w * ratio);
 		ImageIcon image = new ImageIcon(iconToImage(icon, width, height));
 
-		System.out.println("Done.");
+		//System.out.println("Done.");
 		
 		return image;
 	}
@@ -48,7 +48,7 @@ public class IconUtils {
 	}
 
 	public static Image iconToImage(Icon icon, int width, int height) {
-		System.out.println("\ticonToImage(" + width + ", " + height + ")");
+		//System.out.println("\ticonToImage(" + width + ", " + height + ")");
 		
 		int w = icon.getIconWidth();
 		int h = icon.getIconHeight();

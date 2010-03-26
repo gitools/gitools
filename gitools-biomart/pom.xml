@@ -68,7 +68,7 @@
                                 <wsdlOption>
                                     <wsdl>${basedir}/src/main/resources/wsdl/mart.wsdl</wsdl>
 									<packagenames>
-										<packagename>org.gitools.biomart.soap.model.wsdl</packagename>
+										<packagename>org.gitools.biomart.soap.model</packagename>
 									</packagenames>
 									<defaultNamespacePackageMapping>false</defaultNamespacePackageMapping>
                                 </wsdlOption>

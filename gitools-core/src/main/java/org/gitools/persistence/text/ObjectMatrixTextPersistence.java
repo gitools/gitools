@@ -34,6 +34,7 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
 		extends AbstractEntityPersistence<ObjectMatrix> {
@@ -107,6 +108,8 @@ public class ObjectMatrixTextPersistence
 			Reader reader = PersistenceUtils.openReader(file);
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+
+			// TODO read metadata from comments like #?
 			
 			String[] line = parser.getLine();
 			
@@ -292,16 +295,20 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
-		
-		RawCsvWriter out = new RawCsvWriter(writer, 
+
+		RawCsvWriter out = new RawCsvWriter(writer,
 				CSVStrategies.TSV.getDelimiter(),
 				CSVStrategies.TSV.getEncapsulator());
 		
+		IElementAdapter cellAdapter = resultsMatrix.getCellAdapter();
+
+		out.write("#? class: " + cellAdapter.getElementClass().getCanonicalName() + "\n");
+
 		out.writeQuotedValue("column");
 		out.writeSeparator();
 		out.writeQuotedValue("row");
 		
-		for (IElementAttribute prop : resultsMatrix.getCellAdapter().getProperties()) {
+		for (IElementAttribute prop : cellAdapter.getProperties()) {
 			out.writeSeparator();
 			out.writeQuotedValue(prop.getId());
 		}
@@ -341,18 +348,23 @@ public class ObjectMatrixTextPersistence
 		IElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
 		
 		int numProperties = cellsFacade.getPropertyCount();
-		
+
+		DoubleTranslator doubleTrans = new DoubleTranslator();
+
 		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
 			out.writeSeparator();
 			
 			Object value = cellsFacade.getValue(element, propIndex);
 			if (value instanceof Double) {
 				Double v = (Double) value;
-				if (Double.isNaN(v))
+				out.write(doubleTrans.valueToString(v));
+				/*if (Double.isNaN(v))
 					out.writeValue("-");
 				else
-					out.writeValue(v.toString());
+					out.writeValue(v.toString());*/
 			}
+			else if (value instanceof Integer)
+				out.writeValue(value.toString());
 			else
 				out.writeQuotedValue(value.toString());
 		}

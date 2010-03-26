@@ -89,15 +89,15 @@ public class IntogenService {
 			monitor.end();
 
 			Map<String, String> nameMap = new HashMap<String, String>();
-			nameMap.put("modulemap.tsv", prefix + ".oncomodules.tcm.gz");
-			nameMap.put("oncomodules.tsv", prefix + ".annotations.tsv.gz");
+			nameMap.put("modulemap.tsv", prefix + "-oncomodules.tcm.gz");
+			nameMap.put("oncomodules.tsv", prefix + "-annotations.tsv.gz");
 			
-			nameMap.put("modulemap.csv", prefix + ".oncomodules.tcm.gz");
-			nameMap.put("oncomodules.csv", prefix + ".annotations.tsv.gz");
+			nameMap.put("modulemap.csv", prefix + "-oncomodules.tcm.gz");
+			nameMap.put("oncomodules.csv", prefix + "-annotations.tsv.gz");
 
 			nameMap.put("data.tsv", prefix + ".cdm.gz");
-			nameMap.put("row.annotations.tsv", prefix + ".rows.tsv.gz");
-			nameMap.put("column.annotations.tsv", prefix + ".columns.tsv.gz");
+			nameMap.put("row.annotations.tsv", prefix + "-rows.tsv.gz");
+			nameMap.put("column.annotations.tsv", prefix + "-columns.tsv.gz");
 
 			monitor.begin("Downloading data ...", 1);
 

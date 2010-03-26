@@ -16,7 +16,8 @@ public class FileSuffixes {
 	public static final String CONTENT = "contents.xml";
 	
 	public static final String ENRICHMENT = "enrichment";
-	public static final String ONCOZ_ANALYSIS = "oncodriver";
+	public static final String ONCODRIVER = "oncodriver";
+	public static final String CORRELATION = "correlation";
 	
 	public static final String HEATMAP = "heatmap";
 	public static final String TABLE_FIGURE = "table";

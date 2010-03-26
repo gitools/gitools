@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 /** Annotation for items, adds a dynamic attribute to the desired item **/
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Attribute implements Serializable{ 
+public class Attribute implements Serializable {
 
 	private static final long serialVersionUID = -391476933832883165L;
 
@@ -42,7 +42,7 @@ public class Attribute implements Serializable{
 		this.value = value;
 	}
 
-	public void setNameValue(String name, String value) {
+	public void setNameAndValue(String name, String value) {
 		setName(name);
 		setValue(value);
 	}

@@ -55,16 +55,16 @@ public class BiomartModulesWizard extends AbstractWizard {
 		datasetPage = new BiomartDatasetPage(biomartService);
 		addPage(datasetPage);
 		
-		// Modules attribute
+		// FIXME Modules attribute
 		modulesAttributePage = new BiomartAttributePage(biomartService);
 		modulesAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "1");
-		modulesAttributePage.setTitle("Select attribute for modules");
+		modulesAttributePage.setTitle("Select attribute for items");
 		addPage(modulesAttributePage);
 		
-		// Data attribute
+		// FIXME Data attribute
 		dataAttributePage = new BiomartAttributePage(biomartService);
 		dataAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "2");
-		dataAttributePage.setTitle("Select attribute for data");
+		dataAttributePage.setTitle("Select attribute for modules");
 		addPage(dataAttributePage);
 	}
 

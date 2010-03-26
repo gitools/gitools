@@ -1,52 +1,34 @@
 package org.gitools.cli.htest;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
+import edu.upf.bg.tools.ToolDescriptor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
-import edu.upf.bg.tools.impl.AbstractTool;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.cli.AnalysisArguments;
+import org.gitools.cli.AnalysisTool;
 
-import org.gitools.cli.GitoolsArguments;
-import org.gitools.model.Attribute;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.MimeTypes;
+import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
-public abstract class HtestTool extends AbstractTool {
+public abstract class HtestTool extends AnalysisTool {
 
-	public static class HtestArguments extends GitoolsArguments {
-		@Option(name = "-N", aliases = "-name", metaVar = "<name>",
-				usage = "Analysis name. A folder with this name will be created\n" +
-				"in the workdir. (default: unnamed).")
-		public String analysisName = "unnamed";
-
-		@Option(name = "-T", aliases="-title", metaVar = "<title>",
-				usage = "Set the analysis title. (default: analysis name).")
-		public String analysisTitle;
-
-		@Option(name = "-notes", metaVar = "<notes>",
-				usage = "Set analysis description and notes.")
-		public String analysisNotes;
-
-		@Option(name = "-A", aliases="-attribute", metaVar = "<name=value>",
-				usage = "Define an analysis attribute.")
-		public List<String> analysisAttributes = new ArrayList<String>(0);
+	public static class HtestArguments extends AnalysisArguments {
 
 		@Option(name = "-t", aliases = "-test", metaVar = "<name>",
-				usage = "Statistical test to use:\nzscore-mean, zscore-median,\n" +
-				"binomial, binomial-exact, binomial-normal,\n" +
-				"binomial-poisson, fisher, hypergeom, chi-sqr\n" +
-				"(default: zscore-mean).")
+				usage = "Statistical test to use.")
 		public String testName;
 
 		@Option(name = "-tc", aliases = "-test-conf", metaVar = "<param=value>",
-				usage = "Define the value for a test configuration parameter." +
-				" This allows to configure the behaviour of the test.\n" +
-				" Available configuration parameters:")
+				usage = "Define a test configuration parameter." +
+				" This allows to configure the behaviour of the test.")
 		public List<String> testConf = new ArrayList<String>(0);
 	
 		@Option(name = "-mtc", metaVar = "<name>",
@@ -54,12 +36,9 @@ public abstract class HtestTool extends AbstractTool {
 				"Available: bonferroni, bh. (default: bh)")
 		public String mtc = "bh";
 
-		@Option(name = "-dm", aliases = "-data-mime", metaVar = "<file>",
-				usage = "Data file format (MIME). Available formats:\n" +
-				MimeTypes.DOUBLE_MATRIX + "\n" +
-				MimeTypes.DOUBLE_BINARY_MATRIX + "\n" +
-				MimeTypes.GENE_MATRIX + "\n" +
-				MimeTypes.GENE_MATRIX_TRANSPOSED)
+		@Option(name = "-dm", aliases = "-data-mime", metaVar = "<MIME>",
+				usage = "Data file format (MIME). (default: " +
+				MimeTypes.DOUBLE_MATRIX + ")")
 		public String dataMime = MimeTypes.DOUBLE_MATRIX;
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",
@@ -69,14 +48,6 @@ public abstract class HtestTool extends AbstractTool {
 		@Option(name = "-P", aliases = "-population", metaVar = "<file>",
 				usage = "File with background population elements.")
 		public String populationFile;
-
-		@Option(name = "-w", aliases = "-workdir", metaVar = "<dir>",
-				usage = "Working directory (default: current dir).")
-		public String workdir = System.getProperty("user.dir");
-
-		/*@Option(name = "-f", aliases = "-fmt", metaVar = "<format>",
-				usage = "Output format:\ncsv, rexml (default: csv).")
-		public String outputFormat = "csv";*/
 
 		@Option(name = "-b", aliases = "-bin-cutoff-filt",
 				usage = "Binary cutoff filter. Available conditions:\n" +
@@ -91,8 +62,6 @@ public abstract class HtestTool extends AbstractTool {
 	}
 
 	//protected BinaryCutoffParser binaryCutoffParser;
-	
-	protected List<Attribute> analysisAttributes = new ArrayList<Attribute>(0);
 
 	protected boolean binaryCutoffEnabled = false;
 	protected CutoffCmp binaryCutoffCmp;
@@ -108,19 +77,10 @@ public abstract class HtestTool extends AbstractTool {
 		
 		HtestArguments args = (HtestArguments) argsObject;
 
-		if (args.analysisTitle == null)
-			args.analysisTitle = args.analysisName;
-
-		for (String attr : args.analysisAttributes) {
-			final String[] a = attr.split("=", 2);
-			if (a.length != 2)
-				throw new ToolValidationException("Malformed analysis attribute: " + attr);
-			analysisAttributes.add(new Attribute(a[0], a[1]));
-		}
-
 		if (args.testName == null)
         	throw new ToolValidationException("Test name has to be specified.");
 
+		//FIXME use testConfigParams = parseConfiguration(args.testConf);
 		for (String conf : args.testConf) {
 			final String[] c = conf.split("=", 2);
 			if (c.length != 2)
@@ -150,9 +110,7 @@ public abstract class HtestTool extends AbstractTool {
 	}
 
 	protected void prepareAnalysis(HtestAnalysis analysis, HtestArguments args) {
-		analysis.setTitle(args.analysisTitle);
-		analysis.setDescription(args.analysisNotes);
-		analysis.setAttributes(analysisAttributes);
+		prepareGeneralAnalysisAttributes(analysis, args);
 
 		analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
 		analysis.setBinaryCutoffCmp(binaryCutoffCmp);
@@ -164,5 +122,29 @@ public abstract class HtestTool extends AbstractTool {
 		analysis.setTestConfig(testConfig);
 
 		analysis.setMtc(args.mtc);
+	}
+
+	@Override
+	public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+		super.printUsage(outputStream, appName, toolDesc, parser);
+
+		outputStream.println();
+
+		printTests(outputStream);
+		outputStream.println();
+
+		printDataFormats(outputStream);
+		outputStream.println();
+
+		printModulesFormats(outputStream);
+		outputStream.println();
+	}
+
+	private void printTests(PrintStream o) {
+		o.println("Available tests:");
+		o.println(String.format(LIST_S_FMT, "zscore", "Z-score test"));
+		o.println(String.format(LIST_S_FMT, "binomial", "Binomial test"));
+		o.println(String.format(LIST_S_FMT, "fisher", "Fisher's exact test"));
+		//o.println(String.format(LIST_FMT, "chi-square", "Chi Square test"));
 	}
 }

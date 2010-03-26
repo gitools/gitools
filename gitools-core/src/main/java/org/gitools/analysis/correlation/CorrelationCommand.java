@@ -18,14 +18,56 @@
 package org.gitools.analysis.correlation;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.File;
+import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
+import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.persistence.PersistenceManager;
 
-public class CorrelationCommand implements AnalysisCommand {
+public class CorrelationCommand extends AnalysisCommand {
+
+	protected CorrelationAnalysis analysis;
+	protected String dataMime;
+	protected String dataPath;
+	protected String workdir;
+	protected String fileName;
+
+	public CorrelationCommand(
+			CorrelationAnalysis analysis,
+			String dataMime, String dataPath,
+			String workdir, String fileName) {
+
+		this.analysis = analysis;
+		this.dataMime = dataMime;
+		this.dataPath = dataPath;
+		this.workdir = workdir;
+		this.fileName = fileName;
+	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws AnalysisException {
-		throw new UnsupportedOperationException("Not supported yet.");
+
+		try {
+			BaseMatrix data = loadDataMatrix(
+					new File(dataPath), dataMime, new Properties(), monitor);
+
+			analysis.setData(data);
+
+			CorrelationProcessor proc = new CorrelationProcessor(analysis);
+
+			proc.run(monitor);
+
+			File workdirFile = new File(workdir);
+			if (!workdirFile.exists())
+				workdirFile.mkdirs();
+
+			File file = new File(workdirFile, fileName);
+			PersistenceManager.getDefault().store(file, analysis.getResults(), monitor);
+		}
+		catch (Throwable cause) {
+			throw new AnalysisException(cause);
+		}
 	}
 
 }

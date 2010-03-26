@@ -63,6 +63,10 @@ public class RawCsvWriter {
 		out.print(separator);
 	}
 
+	public void write(String raw) {
+		out.print(raw);
+	}
+	
 	public void close() {
 		out.close();
 	}

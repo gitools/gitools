@@ -35,18 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-/*
-import org.biomart._80.martservicesoap.Attribute;
-import org.biomart._80.martservicesoap.AttributePage;
-import org.biomart._80.martservicesoap.BioMartException_Exception;
-import org.biomart._80.martservicesoap.BioMartSoapService;
-import org.biomart._80.martservicesoap.Dataset;
-import org.biomart._80.martservicesoap.DatasetInfo;
-import org.biomart._80.martservicesoap.Mart;
-import org.biomart._80.martservicesoap.MartServiceSoap;
-import org.biomart._80.martservicesoap.Query;
 
- */
 import org.gitools.biomart.soap.model.Attribute;
 import org.gitools.biomart.soap.model.AttributePage;
 import org.gitools.biomart.soap.model.BioMartException_Exception;
@@ -69,26 +58,30 @@ import org.gitools.persistence.FileFormat;
 public class BiomartCentralPortalSoapService implements BiomartSoapService {
 
 	private static final Logger log = Logger.getLogger(BiomartCentralPortalSoapService.class.getName());
+
 	public static final String FORMAT_TSV = "TSV";
 	public static final String FORMAT_TSV_GZ = "GZ";
+
 	private FileFormat[] supportedFormats = new FileFormat[]{
 		new FileFormat("Tab Separated Fields (tsv)", "tsv", FORMAT_TSV),
 		new FileFormat("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz", FORMAT_TSV_GZ),};
+
 	private static final String defaultRestUrl = "http://www.biomart.org/biomart/martservice";
 	public static final String defaultWsdlUrl = "/wsdl/mart.wsdl";
+
 	//public static final String defaultWsdlUrl = "http://www.biomart.org/biomart/martwsdl";
 	private static BiomartCentralPortalSoapService instance;
 	private MartServiceSoap port;
 	private final BiomartSource source;
 
-	protected String fullWsdlUrl;
-	protected String fullRestUrl;
+	protected String wsdlUrl;
+	protected String restUrl;
 
 	protected BiomartCentralPortalSoapService(BiomartSource src) {
 		this.source = src;
 
-		fullWsdlUrl = createFullURL(source.getHost(), source.getPort(), source.getWsdlPath());
-		fullRestUrl = createFullURL(source.getHost(),"",source.getRestPath());
+		wsdlUrl = createFullURL(source.getHost(), source.getPort(), source.getWsdlPath());
+		restUrl = createFullURL(source.getHost(),"",source.getRestPath());
 
 	}
 
@@ -113,7 +106,12 @@ public class BiomartCentralPortalSoapService implements BiomartSoapService {
 
 	private MartServiceSoap getMartPort() {
 		if (port == null) {
-			port = createPort(this.getClass().getResource(fullWsdlUrl));
+			try {
+				port = createPort(new URL(wsdlUrl));
+			}
+			catch (MalformedURLException ex) {
+				ex.printStackTrace(); //FIXME
+			}
 		}
 
 		return port;
@@ -166,7 +164,7 @@ public class BiomartCentralPortalSoapService implements BiomartSoapService {
 	@Override
 	public InputStream queryAsStream(Query query, String format) throws BiomartServiceException {
 		final String queryString = createQueryXml(query, format, true);
-		final String urlString = fullRestUrl + "?query=" + queryString;
+		final String urlString = restUrl + "?query=" + queryString;
 
 		try {
 			URL url = new URL(urlString);
@@ -372,7 +370,7 @@ public class BiomartCentralPortalSoapService implements BiomartSoapService {
 	@Override
 	public DatasetConfig getDatasetConfig(DatasetInfo d) throws MalformedURLException, IOException, JAXBException {
 
-		final String urlString = fullRestUrl + "?type=configuration&dataset=" + d.getName();
+		final String urlString = restUrl + "?type=configuration&dataset=" + d.getName();
 
 		URL url = new URL(urlString);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();

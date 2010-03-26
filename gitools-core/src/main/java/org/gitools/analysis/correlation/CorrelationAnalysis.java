@@ -28,18 +28,16 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 @XmlRootElement
 public class CorrelationAnalysis extends Analysis {
 
-	protected String methodId;
+	protected String method;
 
 	protected Properties methodProperties;
 
-	protected boolean replaceNanValues;
-
-	protected double nanValue;
+	protected Double replaceNanValue;
 
 	protected boolean transposeData;
 
 	protected int attributeIndex;
-	
+
 	/** Data */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected IMatrix data;
@@ -49,19 +47,19 @@ public class CorrelationAnalysis extends Analysis {
 	protected IMatrix results;
 
 	public CorrelationAnalysis() {
-		this.methodId = PearsonCorrelationMethod.ID;
+		this.method = PearsonCorrelationMethod.ID;
 		this.methodProperties = new Properties();
-		this.replaceNanValues = false;
+		this.replaceNanValue = null;
 		this.transposeData = false;
 		this.attributeIndex = 0;
 	}
 	
-	public String getMethodId() {
-		return methodId;
+	public String getMethod() {
+		return method;
 	}
 
-	public void setMethodId(String methodId) {
-		this.methodId = methodId;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public Properties getMethodProperties() {
@@ -73,19 +71,15 @@ public class CorrelationAnalysis extends Analysis {
 	}
 
 	public boolean isReplaceNanValues() {
-		return replaceNanValues;
+		return replaceNanValue != null && !Double.isNaN(replaceNanValue);
 	}
 
-	public void setReplaceNanValues(boolean replaceNanValues) {
-		this.replaceNanValues = replaceNanValues;
+	public Double getReplaceNanValue() {
+		return replaceNanValue;
 	}
 
-	public double getNanValue() {
-		return nanValue;
-	}
-
-	public void setNanValue(double nanValue) {
-		this.nanValue = nanValue;
+	public void setReplaceNanValue(Double value) {
+		this.replaceNanValue = value;
 	}
 
 	public boolean isTransposeData() {

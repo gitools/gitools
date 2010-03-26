@@ -17,9 +17,16 @@
     </tool>
 
 	<tool>
-    	<name>oncoz</name>
+    	<name>oncodriver</name>
         <description>Run a driver alterations identification analysis</description>
         <argumentsClass>org.gitools.cli.htest.OncozTool$OncozArguments</argumentsClass>
         <lifeCycleClass>org.gitools.cli.htest.OncozTool</lifeCycleClass>
+    </tool>
+
+	<tool>
+    	<name>correlation</name>
+        <description>Run a correlation analysis</description>
+        <argumentsClass>org.gitools.cli.correlation.CorrelationTool$CorrelationArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.correlation.CorrelationTool</lifeCycleClass>
     </tool>
 </tools>

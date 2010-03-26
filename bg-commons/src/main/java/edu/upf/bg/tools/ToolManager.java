@@ -102,7 +102,7 @@ public class ToolManager {
 				return 0;
 			}
 			
-			usage(args[1], appName);
+			printToolUsage(args[1], appName);
 			return 0;
 		}
 		
@@ -174,7 +174,7 @@ public class ToolManager {
         if (argsObject instanceof BaseArguments) {
         	final BaseArguments bargs = (BaseArguments) argsObject;
         	if (bargs.help) {
-        		usage(name, appName);
+        		tool.printUsage(outputStream, appName, toolDesc, parser);
     			System.exit(0);
         	}
         	if (bargs.errorLog != null)
@@ -287,43 +287,36 @@ public class ToolManager {
 		return sb.toString();
 	}
 
-	public void usage(String name, String appName) throws ToolException {
-		
+	public void printToolUsage(String name, String appName) throws ToolException {
+
 		ToolDescriptor toolDesc = getToolDescriptorFromName(name);
 		if (toolDesc == null)
 			throw new ToolException("There isn't any tool named '" + name + "'");
-		
+
 		ToolLifeCycle tool;
 		try {
 			tool = (ToolLifeCycle) toolDesc.getLifeCycleClass().newInstance();
 		} catch (Exception e) {
 			throw new ToolException(e);
 		}
-		
+
 		tool.initialize();
-		
+
 		final Class<?> argsClass = toolDesc.getArgumentsClass();
 		if (argsClass == null)
 			throw new ToolException("Tool '" + name + "' doesn't define an arguments class");
-		
+
 		Object argsObject;
 		try {
 			argsObject = argsClass.newInstance();
 		} catch (Exception e) {
 			throw new ToolException(e);
 		}
-		
+
 		CmdLineParser parser = new CmdLineParser(argsObject);
         parser.setUsageWidth(usageWidth);
-        
-        outputStream.print(
-        		toolDesc.getName() + " usage:\n\t" + 
-        		appName + " " + toolDesc.getName());
-        
-        parser.printSingleLineUsage(outputStream);
-        outputStream.println("\n");
-        parser.printUsage(outputStream);
-        outputStream.println();
+
+		tool.printUsage(outputStream, appName, toolDesc, parser);
 	}
 
 	private void printUsage(PrintStream out) {

@@ -40,7 +40,7 @@ public class CorrelationProcessor {
 	public void run(IProgressMonitor monitor) throws AnalysisException {
 
 		CorrelationMethod method = createMethod(
-				analysis.getMethodId(), analysis.getMethodProperties());
+				analysis.getMethod(), analysis.getMethodProperties());
 
 		IMatrix data = analysis.getData();
 		int attributeIndex = analysis.getAttributeIndex();
@@ -74,14 +74,16 @@ public class CorrelationProcessor {
 		double[] y = new double[numRows];
 		int[] indices = new int[numRows];
 
-		boolean replaceNanValues = analysis.isReplaceNanValues();
-		double nanValue = analysis.getNanValue();
+		//boolean replaceNanValues = analysis.isReplaceNanValues();
+		Double replaceNanValue = analysis.getReplaceNanValue();
+		if (replaceNanValue == null)
+			replaceNanValue = Double.NaN;
 
 		for (int i = 0; i < numColumns; i++) {
 			for (int row = 0; row < numRows; row++) {
 				double v = MatrixUtils.doubleValue(data.getCellValue(row, i, attributeIndex));
-				if (replaceNanValues && Double.isNaN(v))
-					v = nanValue;
+				if (Double.isNaN(v))
+					v = replaceNanValue;
 				x[row] = v;
 			}
 
@@ -93,8 +95,8 @@ public class CorrelationProcessor {
 					double v0 = x[row];
 
 					double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
-					if (replaceNanValues && Double.isNaN(v0))
-						v0 = nanValue;
+					if (Double.isNaN(v1))
+						v1 = replaceNanValue;
 
 					if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
 						y[row] = v1;

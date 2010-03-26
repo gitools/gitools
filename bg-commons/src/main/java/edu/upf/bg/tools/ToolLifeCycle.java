@@ -1,6 +1,8 @@
 package edu.upf.bg.tools;
 
 import edu.upf.bg.tools.exception.ToolException;
+import java.io.PrintStream;
+import org.kohsuke.args4j.CmdLineParser;
 
 /**
  * Interface implemented by each tool.
@@ -37,4 +39,13 @@ public interface ToolLifeCycle {
 	 * @throws ToolException
 	 */
 	void uninitialize() throws ToolException;
+
+	/**
+	 * Print tool usage
+	 * 
+	 * @param appName command line name
+	 * @param toolDesc tool description
+	 * @param parser command line parser
+	 */
+	public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser);
 }

@@ -70,8 +70,8 @@ public class CorrelationWizard extends AbstractWizard {
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
 		a.setAttributeIndex(corrPage.getAttributeIndex());
-		a.setReplaceNanValues(corrPage.isReplaceNanValuesEnabled());
-		a.setNanValue(corrPage.getReplaceNanValue());
+		a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
+				corrPage.getReplaceNanValue() : null);
 		a.setTransposeData(corrPage.isTransposeEnabled());
 		
 		return a;

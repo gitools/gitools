@@ -20,7 +20,6 @@ package org.gitools.ui.actions.analysis;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.model.Heatmap;
