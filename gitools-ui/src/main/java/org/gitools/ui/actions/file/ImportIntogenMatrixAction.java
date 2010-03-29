@@ -12,7 +12,7 @@ public class ImportIntogenMatrixAction extends BaseAction {
 	private static final long serialVersionUID = 668140963768246841L;
 
 	public ImportIntogenMatrixAction() {
-		super("Data ...");
+		super("Matrix ...");
 		setLargeIconFromResource(IconNames.intogen24);
 		setSmallIconFromResource(IconNames.intogen16);
 		setDefaultEnabled(true);
