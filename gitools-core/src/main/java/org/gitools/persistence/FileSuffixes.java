@@ -46,8 +46,8 @@ public class FileSuffixes {
 		suffixesMap.put(AnnotationMatrix.class, FileSuffixes.ANNOTATION_MATRIX);
 	}
 
-	@Deprecated
+	/*@Deprecated
 	public static String getEntityExtension(Class<?> entityClass) {
 		return (String) suffixesMap.get(entityClass);
-	}
+	}*/
 }

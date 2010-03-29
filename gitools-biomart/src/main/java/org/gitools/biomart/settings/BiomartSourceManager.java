@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -18,10 +16,12 @@ import org.slf4j.LoggerFactory;
 public class BiomartSourceManager {
 
 	private static Logger logger = LoggerFactory.getLogger(BiomartSourceManager.class);
+	
 	private static final String userPath = System.getProperty("user.home", ".");
 	private static final String configPath = userPath + File.separator + ".gitools";
 	private static final String configFileName = "biomart-sources.xml";
 	private static final String configFile = configPath + File.separator + configFileName;
+
 	private static BiomartSourceManager instance;
 	private static BiomartSources biomartSources = new BiomartSources();
 
@@ -37,10 +37,11 @@ public class BiomartSourceManager {
 
 				instance = load(reader);
 				reader.close();
-
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				logger.error("Error in biomart user configuration file");
-			} finally {
+			}
+			finally {
 				if (instance == null || instance.getSources().size() == 0) {
 					logger.error("Instance not initialised. Loading default configuration");
 					BiomartSource src = new BiomartSource();

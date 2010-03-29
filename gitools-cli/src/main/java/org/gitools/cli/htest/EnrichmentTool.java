@@ -49,7 +49,7 @@ public class EnrichmentTool extends HtestTool {
 		EnrichmentArguments args = (EnrichmentArguments) argsObject;
 
 		testConfig = TestFactory.createToolConfig(
-				ToolConfig.ZETCALC, args.testName);
+				ToolConfig.ENRICHMENT, args.testName);
 
 		if (testConfig == null)
 			throw new ToolValidationException("Unknown test: " + args.testName);

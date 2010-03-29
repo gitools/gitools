@@ -45,7 +45,7 @@ public class OncozTool extends HtestTool {
 		OncozArguments args = (OncozArguments) argsObject;
 
 		testConfig = TestFactory.createToolConfig(
-				ToolConfig.ZETCALC, args.testName);
+				ToolConfig.ONCODRIVER, args.testName);
 
 		if (testConfig == null)
 			throw new ToolValidationException("Unknown test: " + args.testName);

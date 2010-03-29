@@ -155,7 +155,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 	public ToolConfig getTestConfig() {
-		ToolConfig config = new ToolConfig(ToolConfig.ZETCALC);
+		ToolConfig config = new ToolConfig(ToolConfig.ENRICHMENT);
 
 		switch (testCbox.getSelectedIndex()) {
 		case 0:

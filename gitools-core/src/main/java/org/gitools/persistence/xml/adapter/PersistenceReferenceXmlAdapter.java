@@ -20,7 +20,6 @@ package org.gitools.persistence.xml.adapter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.gitools.persistence.MimeTypeManager;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;
 import org.gitools.persistence.PersistenceManager;
@@ -50,7 +49,7 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		String mimeType = v.getMime();
 		if (mimeType == null)
-			mimeType = MimeTypeManager.getDefault().fromFile(file);
+			mimeType = PersistenceManager.getDefault().getMimeFromFile(file.getName());
 
 		IProgressMonitor monitor = context.getMonitor();
 
@@ -71,7 +70,7 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		String mimeType = entityContext.getMimeType();
 		if (mimeType == null)
-			mimeType = MimeTypeManager.getDefault().fromClass(v.getClass());
+			mimeType = PersistenceManager.getDefault().getMimeFromEntity(v.getClass());
 
 		File baseFile = new File(context.getBasePath());
 		

@@ -1,8 +1,10 @@
-package org.gitools.persistence;
+package org.gitools._DEPRECATED.persistence.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.persistence.PersistenceException;
 
+@Deprecated
 public abstract class AnalysisPersistence {// extends FileResource {
 
 	private static final long serialVersionUID = -5243387650958406472L;

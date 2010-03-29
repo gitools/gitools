@@ -6,7 +6,8 @@ public class MimeTypes {
 	public static final String CONTENT = "application/gitools-contents";
 	
 	public static final String ENRICHMENT_ANALYSIS = "application/gitools-analysis-enrichment";
-	public static final String ONCOZ_ANALYSIS = "application/gitools-analysis-oncodriver";
+	public static final String ONCODRIVER_ANALYSIS = "application/gitools-analysis-oncodriver";
+	public static final String CORRELATION_ANALYSIS = "application/gitools-analysis-correlation";
 	
 	public static final String HEATMAP_FIGURE = "application/gitools-figure-heatmap";
 	public static final String TABLE_FIGURE = "application/gitools-figure-table";
@@ -22,6 +23,6 @@ public class MimeTypes {
 	public static final String GENE_MATRIX_TRANSPOSED = "application/gitools-gmt";
 	
 	public static final String MODULES_INDEXED_MAP = "application/gitools-modules-indexed";
-	public static final String MODULES_2C_MAP = "application/gitools-modules-2c-map";
+	public static final String MODULES_2C_MAP = "application/gitools-modules-2c";
 
 }

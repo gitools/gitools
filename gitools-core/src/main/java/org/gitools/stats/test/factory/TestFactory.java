@@ -44,7 +44,7 @@ public abstract class TestFactory {
 		testAliases.put("zscore", TestConfigEnum.zscoreMean);
 		testAliases.put("zscore-mean", TestConfigEnum.zscoreMean);
 		testAliases.put("zscore-median", TestConfigEnum.zscoreMedian);
-		testAliases.put("binomial", TestConfigEnum.binomial);
+		testAliases.put("binomial", TestConfigEnum.binomialExact);
 		testAliases.put("binomial-exact", TestConfigEnum.binomialExact);
 		testAliases.put("binomial-normal", TestConfigEnum.binomialNormal);
 		testAliases.put("binomial-poisson", TestConfigEnum.binomialPoisson);
@@ -113,11 +113,6 @@ public abstract class TestFactory {
 					ZscoreTestFactory.MEDIAN_ESTIMATOR);
 			break;
 		case binomial:
-			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-			config.put(
-					BinomialTestFactory.APROXIMATION_PROPERTY, 
-					BinomialTestFactory.AUTOMATIC_APROX);
-			break;
 		case binomialExact:
 			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
 			config.put(

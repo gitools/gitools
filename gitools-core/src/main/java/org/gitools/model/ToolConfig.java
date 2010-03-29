@@ -13,8 +13,8 @@ import org.gitools.model.xml.ConfigurationXmlAdapter;
 public class ToolConfig {
 
 	//FIXME This shouldn't be here
-	public static final String ZETCALC = "zetcalc";
-	public static final String ONCOZET = "oncozet";
+	public static final String ENRICHMENT = "enrichment";
+	public static final String ONCODRIVER = "oncodriver";
 	
 	protected String name;
 

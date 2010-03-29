@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.cli.GitoolsArguments;
-import org.gitools.persistence.MimeTypeManager;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
@@ -63,8 +62,8 @@ public class ConvertTool extends AbstractTool {
 			throw new ToolValidationException("An input file is required.");
 
 		if (args.inputFileMime == null) {
-			args.inputFileMime = MimeTypeManager.getDefault()
-					.fromFile(new File(args.inputFileName));
+			args.inputFileMime = PersistenceManager.getDefault()
+					.getMimeFromFile(args.inputFileName);
 
 			if (args.inputFileMime == null)
 				throw new ToolValidationException("Unknown input file type, a mime type is required.\n" +
@@ -75,8 +74,8 @@ public class ConvertTool extends AbstractTool {
 			throw new ToolValidationException("An output file is required.");
 
 		if (args.outputFileMime == null) {
-			args.outputFileMime = MimeTypeManager.getDefault()
-					.fromFile(new File(args.outputFileName));
+			args.outputFileMime = PersistenceManager.getDefault()
+					.getMimeFromFile(args.outputFileName);
 
 			if (args.outputFileMime == null)
 				throw new ToolValidationException("Unknown output file type, a mime type is required.\n" +

@@ -6,23 +6,8 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
-import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.persistence.text.ModuleMapTextIndicesPersistence;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
-import org.gitools.persistence.xml.ContainerXmlPersistence;
-import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
-import org.gitools.persistence.xml.HeatmapXmlPersistence;
-import org.gitools.persistence.xml.ProjectXmlPersistence;
-import org.gitools.persistence.xml.TableFigureXmlPersistence;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
-import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
-import org.gitools.persistence.text.GeneMatrixPersistence;
-import org.gitools.persistence.text.GeneMatrixTransposedPersistence;
-import org.gitools.persistence.text.GeneSetPersistence;
-import org.gitools.persistence.text.ModuleMapText2CPersistence;
 
 public class PersistenceManager implements Serializable {
 
@@ -84,9 +69,18 @@ public class PersistenceManager implements Serializable {
 	}
 	
 	private static PersistenceManager defaultManager;
-	
-	private final Map<String, Class<? extends IEntityPersistence<?>>> persistenceMap =
+
+	// Maps PersistenceClass <-> Mime <-> EntityClass <-> Extension <-> Mime
+
+	private final Map<String, Class<? extends IEntityPersistence<?>>> mimeToPClass =
 		new HashMap<String, Class<? extends IEntityPersistence<?>>>();
+
+	private final Map<String, String> mimeToExt = new HashMap<String, String>();
+
+	private final Map<String, String> extToMime = new HashMap<String, String>();
+
+	private final Map<Class<?>, String> eclassToMime = new HashMap<Class<?>, String>();
+	
 
 	private final Map<FileRef, Object> entityCache = new HashMap<FileRef, Object>();
 	private final Map<Object, FileRef> entityFileRefMap = new HashMap<Object, FileRef>();
@@ -98,32 +92,50 @@ public class PersistenceManager implements Serializable {
 	}
 	
 	public PersistenceManager() {
-		persistenceMap.put(MimeTypes.PROJECT, ProjectXmlPersistence.class);
-		persistenceMap.put(MimeTypes.CONTENT, ContainerXmlPersistence.class);
-		persistenceMap.put(MimeTypes.TABLE_FIGURE, TableFigureXmlPersistence.class);
-
-		persistenceMap.put(MimeTypes.ENRICHMENT_ANALYSIS, EnrichmentAnalysisXmlPersistence.class);
-
-		persistenceMap.put(MimeTypes.HEATMAP_FIGURE, HeatmapXmlPersistence.class);
-		
-		persistenceMap.put(MimeTypes.GENE_SET, GeneSetPersistence.class);
-		
-		persistenceMap.put(MimeTypes.GENE_MATRIX, GeneMatrixPersistence.class);
-		persistenceMap.put(MimeTypes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
-		persistenceMap.put(MimeTypes.OBJECT_MATRIX, ObjectMatrixTextPersistence.class);
-		persistenceMap.put(MimeTypes.DOUBLE_MATRIX, DoubleMatrixTextPersistence.class);
-		persistenceMap.put(MimeTypes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrixTextPersistence.class);
-
-		persistenceMap.put(MimeTypes.ANNOTATION_MATRIX, AnnotationMatrixTextPersistence.class);
-		persistenceMap.put(MimeTypes.MODULES_2C_MAP, ModuleMapText2CPersistence.class);
-		persistenceMap.put(MimeTypes.MODULES_INDEXED_MAP, ModuleMapTextIndicesPersistence.class);
 	}
-	
+
+	public void registerFormat(String mime, String extension,
+			Class<? extends IEntityPersistence<?>> pclass) {
+		registerFormat(mime, extension, null, pclass);
+	}
+
+	public void registerFormat(String mime, String extension,
+			Class<?> eclass, Class<? extends IEntityPersistence<?>> pclass) {
+
+		mimeToPClass.put(mime, pclass);
+		mimeToExt.put(mime, extension);
+
+		if (eclass != null)
+			eclassToMime.put(eclass, mime);
+
+		registerExtension(extension, mime);
+	}
+
+	public void registerExtension(String extension, String mime) {
+		extToMime.put(extension, mime);
+		extToMime.put(extension + ".gz", mime);
+	}
+
+	public String getMimeFromFile(String fileName) {
+		for (Map.Entry<String, String> entry : extToMime.entrySet())
+			if (fileName.endsWith(entry.getKey()))
+				return entry.getValue();
+		return null;
+	}
+
+	public String getMimeFromEntity(Class<?> entityClass) {
+		return eclassToMime.get(entityClass);
+	}
+
+	public String getExtensionFromMime(String mime) {
+		return mimeToExt.get(mime);
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> IEntityPersistence<T> createEntityPersistence(
 			String mimeType, Properties properties) {
 
-		Class<?> persistenceClass = persistenceMap.get(mimeType);
+		Class<?> persistenceClass = mimeToPClass.get(mimeType);
 		
 		try {
 			Constructor<?> c = persistenceClass.getConstructor();
@@ -170,7 +182,7 @@ public class PersistenceManager implements Serializable {
 			return entityCache.get(fileKey);
 
 		if (mimeType == null)
-			mimeType = MimeTypeManager.getDefault().fromFile(file);
+			mimeType = getMimeFromFile(file.getName());
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(mimeType, properties);
@@ -191,7 +203,7 @@ public class PersistenceManager implements Serializable {
 			IProgressMonitor monitor)
 			throws PersistenceException {
 
-		String mimeType = MimeTypeManager.getDefault().fromClass(entity.getClass());
+		String mimeType = getMimeFromEntity(entity.getClass());
 
 		store(file, mimeType, entity, new Properties(), monitor);
 	}

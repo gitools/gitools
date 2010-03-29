@@ -20,6 +20,10 @@ public class FileFormat {
 		return title;
 	}
 
+	public String getTitleWithExtension() {
+		return title + " (" + extension + ", " + extension + ".gz)";
+	}
+
 	public String getExtension() {
 		return extension;
 	}
@@ -28,8 +32,14 @@ public class FileFormat {
 		return mime;
 	}
 
+	public boolean checkExtension(String fileName) {
+		fileName = fileName.toLowerCase();
+		String ext = extension.toLowerCase();
+		return fileName.endsWith(ext) || fileName.endsWith(ext + ".gz");
+	}
+
 	@Override
 	public String toString() {
-		return title;
+		return getTitleWithExtension();
 	}
 }

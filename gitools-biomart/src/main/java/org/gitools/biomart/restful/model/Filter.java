@@ -10,61 +10,41 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Filter", propOrder = {
     "name",
-    "value"
+    "value",
+	"excluded"
 })
 public class Filter {
 
     @XmlAttribute(required = true)
     protected String name;
-    @XmlAttribute(required = true)
+
+    @XmlAttribute
     protected String value;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
+	@XmlAttribute
+    protected int excluded;
+
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
     public void setName(String value) {
         this.name = value;
     }
 
-    /**
-     * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
     public String getValue() {
         return value;
     }
 
-    /**
-     * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
     public void setValue(String value) {
         this.value = value;
     }
 
+	public int getExcluded() {
+		return excluded;
+	}
+
+	public void setExcluded(int excluded) {
+		this.excluded = excluded;
+	}
 }
