@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileFilter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -65,7 +66,7 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 		FileFilter[] filters = new FileFilter[] {
 			new FF("Enrichment analysis", MimeTypes.ENRICHMENT_ANALYSIS) {
 				@Override public boolean accept(File f) {
-					return f.getName().endsWith("." + FileSuffixes.ENRICHMENT); }
+					return f.isDirectory() || f.getName().endsWith("." + FileSuffixes.ENRICHMENT); }
 			}
 		};
 

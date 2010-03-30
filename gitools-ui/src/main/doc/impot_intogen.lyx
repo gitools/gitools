@@ -438,6 +438,41 @@ IntOGen oncomodules import window
 \end_layout
 
 \begin_layout Standard
+The next step consists on filtering the data by condition, topography, morpholog
+y, platform and authors if 
+\emph on
+Onco Experiments
+\emph default
+ was selected (see figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:IntOGen-import-concomodules-experiments"
+
+\end_inset
+
+), or condition, topography and morphology if 
+\emph on
+Onco Combinations
+\emph default
+ was selected (see figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:IntOGen-import-concomodules-combinations"
+
+\end_inset
+
+).
+ It is possible to select many options for each filter.
+ To do this maintain the CTRL key (or 
+\begin_inset Graphics
+	filename images/mac_ctrl.png
+
+\end_inset
+
+ in Mac) and select different options.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false

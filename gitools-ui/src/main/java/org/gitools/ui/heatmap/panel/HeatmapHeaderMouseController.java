@@ -153,6 +153,11 @@ public class HeatmapHeaderMouseController
 		position = headerPanel.getDrawer().getPosition(point);
 
 		int index = horizontal ? position.column : position.row;
+		int limit = horizontal ? heatmap.getMatrixView().getColumnCount()
+				: heatmap.getMatrixView().getRowCount();
+		if (index < 0 || index >= limit)
+			return;
+
 		boolean indexChanged = (selLast != index);
 		selLast = index;
 

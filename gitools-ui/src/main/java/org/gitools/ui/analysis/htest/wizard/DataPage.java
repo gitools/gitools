@@ -180,7 +180,7 @@ public class DataPage extends AbstractWizardPage {
             }
         });
 
-        cutoffEnabledCheck.setText("Transform to 1.0 cells with value");
+        cutoffEnabledCheck.setText("Transform to 1 (0 otherwise) cells with value");
         cutoffEnabledCheck.setEnabled(false);
 
         cutoffCmpCb.setEnabled(false);
@@ -209,7 +209,7 @@ public class DataPage extends AbstractWizardPage {
             }
         });
 
-        bgFromModuleAnnotationsCheck.setText("Filter out rows without module annotations");
+        bgFromModuleAnnotationsCheck.setText("Filter out rows for which no information appears in the module");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -248,7 +248,7 @@ public class DataPage extends AbstractWizardPage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cutoffEnabledCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cutoffCmpCb, 0, 299, Short.MAX_VALUE)
+                        .addComponent(cutoffCmpCb, 0, 224, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(bgFromModuleAnnotationsCheck))

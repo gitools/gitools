@@ -115,10 +115,17 @@ public class JobThread implements JobRunnable {
         thread = new Thread() {
             @Override
             public void run() {
-				setMonitor(new JobProgressMonitor(
-						getDlg(), System.out, true, false));
+				JobProgressMonitor m = new JobProgressMonitor(
+						getDlg(), System.out, true, false);
 
-                runnable.run(monitor);
+				setMonitor(m);
+
+				try {
+					runnable.run(monitor);
+				}
+				catch (Throwable cause) {
+					m.exception(cause);
+				}
 
 				done();
 

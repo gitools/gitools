@@ -55,11 +55,15 @@ Enrichment analysis consists in a quantitative measure to infer if the values
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
 \begin_layout Section
 How is this calculated ?
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Currently there are three different methods for enrichment analysis implemented
  in Gitools.
  
@@ -79,7 +83,7 @@ Talk about only one method with different statistical tests.
 Binomial (Bernoulli) test
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Note Greyedout
 status open
 
@@ -96,7 +100,7 @@ This part of the documentation is still missing.
 Fisher's exact test
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Note Greyedout
 status open
 
@@ -113,7 +117,7 @@ This part of the documentation is still missing.
 Z-score test
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Note Note
 status open
 
@@ -126,20 +130,20 @@ Elaborate more on this.
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The Z-score test is used to see if there is a significant deviation from
  random expectation for an estimator value (mean or median) of each module
  in each of the conditions:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Formula $Z_{i}=\frac{(X-\mu_{i})}{\sigma_{i}}$
 \end_inset
 
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 where 
 \begin_inset Formula $\mu_{i}$
 \end_inset
@@ -152,17 +156,59 @@ where
  condition i.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 How to run an enrichment analysis
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-This part of the documentation is still missing.
+Before running an enrichment analysis you should have this data prepared
+ in files:
 \end_layout
+
+\begin_layout Itemize
+A matrix with the data resulting of your experiment (i.e.
+ an expression matrix) or a list or lists of elements (i.e.
+ genes or probesets) that has been found significant after other analysis
+ (i.e.
+ after differential expression you get lists of genes over and under expressed).
+\end_layout
+
+\begin_layout Itemize
+A list of all elements (i.e.
+ probesets or genes) that conform the background population of your analysis.
+ For example, in the case of an affymetrix microarray the population would
+ be all the probesets of the microarray.
+ This is not necessary if you have a matrix with data for the whole population.
+\end_layout
+
+\begin_layout Itemize
+Modules (i.e.
+ gene sets related by Gene Ontology biological process) to analyze enrichment
+ for.
+\end_layout
+
+\begin_layout Standard
+To start the enrichment wizard go to the menu 
+\emph on
+File > New > Analysis > Enrichment analysis ...
+
+\emph default
+ 
+\end_layout
+
+\begin_layout Subsection
+Selection of the destination file
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/analysis_enrichment_destination_file.png
+	lyxscale 50
 
 \end_inset
 
@@ -170,13 +216,115 @@ This part of the documentation is still missing.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Explain each of the wizard pages and its options.
- Put screenshots.
+The first wizard page allows to specify the prefix name for the files generated
+ during the analysis and the folder where they will be created.
+ The text in 
+\emph on
+name
+\emph default
+ and 
+\emph on
+folder
+\emph default
+ can be freely edited but it is also possible to navigate through system
+ folders in order to select one pressing the button 
+\emph on
+[Browse]
+\emph default
+.
 \end_layout
+
+\begin_layout Subsection
+Selection of the data
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/analysis_enrichment_data.png
+	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Data format & Data file
+\end_layout
+
+\begin_layout Standard
+A file containing the data can be selected pressing the button [Browse...]
+ and selecting a file.
+ The format of the file will be automatically detected if the file extension
+ matches any of the known file formats, otherwise a warning will appear
+ and it should be the user who selects the appropiate format.
+\end_layout
+
+\begin_layout Subsubsection*
+Population file
+\end_layout
+
+\begin_layout Standard
+This field can be left blank if the data file contains data for all background
+ elements, otherwise a file containing
+\end_layout
+
+\begin_layout Subsubsection*
+Filter rows by label
+\end_layout
+
+\begin_layout Subsubsection*
+Transform to 1 / 0
+\end_layout
+
+\begin_layout Subsubsection*
+Filter out rows for which no information appears in the module
+\end_layout
+
+\begin_layout Subsection
+Selection of the modules
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/analysis_enrichment_modules.png
+	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+File format & File
+\end_layout
+
+\begin_layout Subsubsection*
+Modules filtering
+\end_layout
+
+\begin_layout Subsection
+Selection of the test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/analysis_enrichment_test.png
+	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Analysis details
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/analysis_enrichment_details.png
+	lyxscale 50
 
 \end_inset
 

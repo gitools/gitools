@@ -3,15 +3,12 @@ package org.gitools.ui.actions.data;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.Comparator;
 import org.gitools.aggregation.MultAggregator;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.matrix.MatrixUtils;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.MatrixViewSorter;
