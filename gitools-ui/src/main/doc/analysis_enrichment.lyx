@@ -266,11 +266,40 @@ Population file
 
 \begin_layout Standard
 This field can be left blank if the data file contains data for all background
- elements, otherwise a file containing
+ elements, otherwise a file with the elements of the background population
+ should be selected.
+ The format of this file is a simple text file with one element per line.
+ For example the list of all the protein coding genes, each one in a different
+ row.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reference formats section
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
 Filter rows by label
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This feature is not yet implemented but will allow to select a subset of
+ rows of the data file using a list of labels from another file.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
