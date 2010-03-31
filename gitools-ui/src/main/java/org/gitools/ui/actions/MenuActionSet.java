@@ -44,8 +44,8 @@ public class MenuActionSet extends ActionSet {
 					}),
 					new ActionSet("BioMart", IconUtils.getImageIconResource(IconNames.biomart16), new BaseAction[] {
 						FileActions.importBioMartTableAction,
-						FileActions.importBioMartModulesAction,
-						FileActions.importBioMartMatrixAction
+						FileActions.importBioMartModulesAction
+						//FileActions.importBioMartMatrixAction
 					})
 				}),
 				//FileActionSet.exportWizardAction,

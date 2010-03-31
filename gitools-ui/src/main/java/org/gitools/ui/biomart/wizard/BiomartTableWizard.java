@@ -53,12 +53,13 @@ public class BiomartTableWizard extends AbstractWizard {
 
 	private DatasetInfo Dataset;
 
-	private FileFormat[] supportedFormats = new FileFormat[]{
-		new FileFormat("Tab Separated Fields (tsv)", "tsv", FORMAT_TSV),
-		new FileFormat("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz", FORMAT_TSV_GZ)
-	};
 	public static final String FORMAT_TSV = "TSV";
 	public static final String FORMAT_TSV_GZ = "GZ";
+
+	private FileFormat[] supportedFormats = new FileFormat[] {
+		new FileFormat("Tab Separated Fields", "tsv", FORMAT_TSV, true, false),
+		new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", FORMAT_TSV_GZ, true, false)
+	};
 
 	public BiomartTableWizard() { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
 
