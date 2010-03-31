@@ -6,16 +6,16 @@
 </head>
 <body>
     <table>
-		#section( "Condition" )
-		#nameRow( $columnElement )
+		#section( "Column" )
+		#nameRow( $columnLabel )
 		
-		#section( "Module" )
-		#nameRow( $rowElement )
+		#section( "Row" )
+		#nameRow( $rowLabel )
 		
 		#section( "Parameters" )
 		#foreach($key in $cell.keySet())
     	<tr>
-    		<td class="label">$key:</td>
+    		<td class="label">$attr.get($key).name:</td>
         </tr>
 		<tr>
     		<td class="value">$fmt.format($cell.get($key))</td>

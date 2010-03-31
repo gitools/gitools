@@ -27,7 +27,8 @@ public class SaveAction extends BaseAction {
 
 	@Override
 	public boolean isEnabledByEditor(IEditor editor) {
-		return editor != null && editor.isDirty();
+		return false;
+		//return editor != null && editor.isDirty();
 	}
 	
 	@Override

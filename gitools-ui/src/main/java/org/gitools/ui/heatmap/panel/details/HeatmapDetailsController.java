@@ -49,6 +49,7 @@ public class HeatmapDetailsController implements EntityController {
 
 	private static final String defaultTemplateName = "/vm/details/noselection.vm";
 	private static final String headerTemplateName = "/vm/details/header.vm";
+	private static final String heatmapTemplateName = "/vm/details/heatmap.vm";
 	
 	private TemplatePane templatePanel;
 
@@ -79,10 +80,12 @@ public class HeatmapDetailsController implements EntityController {
 
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 			//final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
-			final Object columnElement = matrixView.getColumnLabel(column);
+			final Object columnId = matrixView.getColumnLabel(column);
+			final Object columnLabel = heatmap.getColumnLabel(column);
 
 			//final IElementAdapter rowAdapter = matrixView.getRowAdapter();
-			final Object rowElement = matrixView.getRowLabel(row);
+			final Object rowId = matrixView.getRowLabel(row);
+			final Object rowLabel = heatmap.getRowLabel(row);
 
 			final IElementAdapter cellAdapter = matrixView.getCellAdapter();
 			final Object cellElement = matrixView.getCell(row, column);
@@ -94,10 +97,14 @@ public class HeatmapDetailsController implements EntityController {
 				context.put("pvalueScale", new PValueColorScale()); //FIXME
 
 				//context.put("columnAdapter", columnAdapter);
-				context.put("columnElement", columnElement);
+				context.put("columnId", columnId);
+				context.put("columnLabel", columnLabel);
+				context.put("columnElement", columnLabel); //FIXME deprecated
 
 				//context.put("rowAdapter", rowAdapter);
-				context.put("rowElement", rowElement);
+				context.put("rowId", rowId);
+				context.put("rowLabel", rowLabel);
+				context.put("rowElement", rowLabel); //FIXME deprecated
 
 				context.put("cellAdapter", cellAdapter);
 				context.put("cellElement", cellElement);
@@ -105,17 +112,30 @@ public class HeatmapDetailsController implements EntityController {
 				final List<IElementAttribute> properties =
 					cellAdapter.getProperties();
 
-				final Map<String, Object> cellMap =
-					new HashMap<String, Object>();
+				final Map<String, Object> cellMap =	new HashMap<String, Object>();
+
+				final Map<String, IElementAttribute> attrMap =
+						new HashMap<String, IElementAttribute>();
 
 				for (int index = 0; index < properties.size(); index++) {
 					final IElementAttribute prop = properties.get(index);
 					cellMap.put(prop.getId(),
 							cellAdapter.getValue(cellElement, index));
+
+					attrMap.put(prop.getId(), prop);
 				}
 
 				context.put("cell", cellMap);
+				context.put("attr", attrMap);
 			}
+		}
+		else if (column == -1 && row == -1) {
+			templateName = heatmapTemplateName;
+			context.put("title", heatmap.getTitle());
+			context.put("notes", heatmap.getDescription());
+			context.put("attributes", heatmap.getAttributes());
+			context.put("numColumns", matrixView.getColumnCount());
+			context.put("numRows", matrixView.getRowCount());
 		}
 		else if (column == -1 || row == -1) {
 			String name = "";

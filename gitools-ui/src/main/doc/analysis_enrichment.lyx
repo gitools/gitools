@@ -1,4 +1,4 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -258,6 +258,17 @@ A file containing the data can be selected pressing the button [Browse...]
  The format of the file will be automatically detected if the file extension
  matches any of the known file formats, otherwise a warning will appear
  and it should be the user who selects the appropiate format.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reference formats section
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
@@ -306,8 +317,36 @@ This feature is not yet implemented but will allow to select a subset of
 Transform to 1 / 0
 \end_layout
 
+\begin_layout Standard
+Some statistical tests are designed to work with discrete events (as Binomial
+ or Fisher's exact tests), this option allows to transform a matrix with
+ real values into a binary matrix containing only 1's and 0's for the analysis.
+ All the values which satisfy the condition will be transformed to 1 and
+ the rest to 0.
+ For example, if the data file is an expression matrix with log
+\begin_inset Formula $_{2}$
+\end_inset
+
+ ratios it can be transformed to a binary matrix having a 1 for all the
+ log
+\begin_inset Formula $_{2}$
+\end_inset
+
+ ratios greater than 1.5.
+ Other possible application is when the matrix have p-values, if a significance
+ of 0.05 is considered, all values less than 0.05 could be transformed to
+ 1's.
+\end_layout
+
 \begin_layout Subsubsection*
 Filter out rows for which no information appears in the module
+\end_layout
+
+\begin_layout Standard
+Sometimes is conveniento to restrict the background population to only those
+ elements belonging to any module, for example, the data file could have
+ information for all the genes of a microarray but only the genes with GO
+ biological process annotations should be considered for the background.
 \end_layout
 
 \begin_layout Subsection
@@ -328,8 +367,36 @@ Selection of the modules
 File format & File
 \end_layout
 
+\begin_layout Standard
+A file containing the modules information can be selected pressing the button
+ [Browse...] and selecting a file.
+ The format of the file will be automatically detected if the file extension
+ matches any of the known file formats, otherwise a warning will appear
+ and it should be the user who selects the appropiate format.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reference formats section
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection*
 Modules filtering
+\end_layout
+
+\begin_layout Standard
+If the number of elements of one module is too low some tests could not
+ generate reliable results (i.e.
+ zscore or bionamial tests), on the other hand there are tests best suited
+ for small modules like fisher's exact test.
+ It is possible to discard the modules with less or more than a certain
+ quantity using this filters.
 \end_layout
 
 \begin_layout Subsection
@@ -340,6 +407,38 @@ Selection of the test
 \begin_inset Graphics
 	filename images/analysis_enrichment_test.png
 	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are different kind of statistical tests that can be used, in this
+ page the user can select the one that he/she wants to use.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reference to tests explanation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+We are preparing some detailed information about the implemented tests but
+ it is not ready yet.
+ Meanwhile you can search in the wikipedia for the tests to have an overall
+ idea.
+\end_layout
 
 \end_inset
 
@@ -358,6 +457,18 @@ Analysis details
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+This step is optional but recommended as it allows to give some details
+ about the analysis for better organization and annotation of the results
+ for future reviews.
+\end_layout
+
+\begin_layout Standard
+It will be possible to specify free attributes for the analysis as Organization,
+ Operator, Platform and so forth but it is not finished yet.
+ Note that this option is already available through command line interface.
 \end_layout
 
 \end_body

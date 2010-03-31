@@ -11,6 +11,7 @@ import org.gitools.ui.actions.file.ExportTableAction;
 import org.gitools.ui.actions.file.ExportMatrixAction;
 import org.gitools.ui.actions.file.ExportPdfReportAction;
 import org.gitools.ui.actions.file.ExportScaleImageAction;
+import org.gitools.ui.actions.file.ImportBiomartMatrixAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
@@ -65,6 +66,7 @@ public class FileActions {
 	
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
 	public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
+	public static final BaseAction importBioMartMatrixAction = new ImportBiomartMatrixAction();
 	
 	// Export
 	

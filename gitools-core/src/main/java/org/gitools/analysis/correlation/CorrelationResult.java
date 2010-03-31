@@ -54,10 +54,10 @@ public class CorrelationResult {
 		this.score = score;
 	}
 
-	@AttributeDef(id = "p-value", name = "P-Value", description = "P-Value for two-tail null hipothesis")
+	/*@AttributeDef(id = "p-value", name = "P-Value", description = "P-Value for two-tail null hipothesis")
 	public double getPvalue() {
 		return pvalue;
-	}
+	}*/
 
 	public void setPvalue(double pvalue) {
 		this.pvalue = pvalue;

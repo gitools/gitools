@@ -10,6 +10,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
@@ -115,6 +117,12 @@ public class HeatmapPanel extends JPanel {
 		});
 
 		new HeatmapKeyboardController(this);
+
+		addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				heatmap.getMatrixView().setLeadSelection(-1, -1);
+			}
+		});
 	}
 
 	private void updateScrolls() {

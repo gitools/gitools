@@ -1,4 +1,4 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -76,7 +76,6 @@ status open
 \begin_inset Graphics
 	filename images/summary_workflow.png
 	lyxscale 20
-	scale 80
 
 \end_inset
 
@@ -187,7 +186,6 @@ GiTools is being developed under the grants of the Ministry of Science of
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/HFSP.png
-	scale 800
 
 \end_inset
 

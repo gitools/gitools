@@ -35,9 +35,7 @@ public class EditorTabComponent extends JPanel {
 
 		editor.addEditorListener(new AbstractEditor.EditorListener() {
 			@Override public void dirtyChanged(IEditor editor) {
-				updateLabel();
-				System.out.println(editor.getName() + (editor.isDirty() ? " -> dirty" : ""));
-			}
+				updateLabel(); }
 
 			@Override public void nameChanged(IEditor editor) {
 				updateLabel(); }

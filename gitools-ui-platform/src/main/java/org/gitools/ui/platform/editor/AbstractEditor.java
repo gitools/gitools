@@ -53,7 +53,8 @@ public abstract class AbstractEditor
 	}
 	
 	protected void setDirty(boolean dirty) {
-		if (this.dirty != dirty) {
+		// FIXME dirty disabled
+		if (false && this.dirty != dirty) {
 			this.dirty = dirty;
 			for (EditorListener l : listeners) l.dirtyChanged(this);
 			ActionManager.getDefault().updateEnabledByEditor(this);

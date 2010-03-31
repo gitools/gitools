@@ -18,6 +18,7 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
@@ -112,6 +113,9 @@ public class CorrelationAction extends BaseAction {
 		Heatmap heatmap = new Heatmap(results);
 		IElementAdapter cellAdapter = results.getCellAdapter();
 		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
+		dec.setMinColor(Color.GREEN);
+		dec.setMidColor(Color.WHITE);
+		dec.setMaxColor(new Color(255, 0, 255));
 		int valueIndex = cellAdapter.getPropertyIndex("score");
 		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
 		dec.setMinValue(-1);
