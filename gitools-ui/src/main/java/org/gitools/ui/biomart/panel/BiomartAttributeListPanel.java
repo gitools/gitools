@@ -32,8 +32,8 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.biomart.soap.model.AttributeInfo;
-import org.gitools.biomart.soap.model.AttributePage;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributePage;
 
 import org.gitools.ui.biomart.dialog.BiomartAttributeDialog;
 import org.gitools.ui.platform.AppFrame;
@@ -45,15 +45,15 @@ public class BiomartAttributeListPanel extends JPanel {
 	}
 
 	private static class AttributeInfoWrapper {
-		private AttributeInfo attr;
+		private AttributeDescription attr;
 		private String label;
 
-		public AttributeInfoWrapper(AttributeInfo attr, String label) {
+		public AttributeInfoWrapper(AttributeDescription attr, String label) {
 			this.attr = attr;
 			this.label = label;
 		}
 
-		public AttributeInfo getAttribute() {
+		public AttributeDescription getAttribute() {
 			return attr;
 		}
 
@@ -135,10 +135,10 @@ public class BiomartAttributeListPanel extends JPanel {
 		return attrList.getModel().getSize();
 	}
 
-	public List<AttributeInfo> getAttributeList() {
+	public List<AttributeDescription> getAttributeList() {
 		DefaultListModel model = (DefaultListModel) attrList.getModel();
 		Enumeration<?> e = model.elements();
-		List<AttributeInfo> list = new ArrayList<AttributeInfo>(model.getSize());
+		List<AttributeDescription> list = new ArrayList<AttributeDescription>(model.getSize());
 		while (e.hasMoreElements())
 			list.add(((AttributeInfoWrapper) e.nextElement()).getAttribute());
 		return list;
@@ -252,7 +252,7 @@ public class BiomartAttributeListPanel extends JPanel {
 		dlg.open();
 
 		if (!dlg.isCancelled()) {
-			List<AttributeInfo> attributes = dlg.getSelectedAttributes();
+			List<AttributeDescription> attributes = dlg.getSelectedAttributes();
 			List<String> names = dlg.getSelectedAttributeNames();
 
 			if (attributes != null && attributes.size() > 0) {

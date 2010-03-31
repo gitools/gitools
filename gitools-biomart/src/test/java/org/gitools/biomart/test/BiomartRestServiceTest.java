@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 xavier.
+ *  Copyright 2010 
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import javax.xml.bind.JAXBException;
-import org.gitools.biomart.BiomartGenericRestfulService;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;

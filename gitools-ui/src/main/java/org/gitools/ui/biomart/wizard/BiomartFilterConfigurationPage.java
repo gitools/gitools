@@ -20,41 +20,35 @@ package org.gitools.ui.biomart.wizard;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-
-import org.gitools.biomart.restful.model.AttributePage;
+import org.gitools.biomart.restful.model.DatasetConfig;
+import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.BiomartRestfulService;
-import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.ui.biomart.filter.FilterConfigurationPanel;
 
-import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class BiomartAttributeListPage extends AbstractWizardPage {
+public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 	private MartLocation mart;
-	
 	private DatasetInfo dataset;
 
-	private List<AttributePage> attrPages;
-
-	private BiomartAttributeListPanel panel;
-
-	private BiomartRestfulService biomartService;
+	private DatasetConfig dsConfiguration;
+	private FilterConfigurationPanel panel;
+	private final BiomartRestfulService biomartService;
 	
-	public BiomartAttributeListPage(){/*BiomartRestfulService biomartService*/ /*IBiomartService biomartService*/
-		
+	//private final IBiomartService biomartService;
+	//private BiomartSoapService biomartService;
+
+	public BiomartFilterConfigurationPage(BiomartRestfulService biomartService /*IBiomartService biomartService*/) {
+		this.biomartService = biomartService;
 	}
 
 	@Override
 	public JComponent createControls() {
-		panel = new BiomartAttributeListPanel();
-		panel.addAttributeListChangeListener(new BiomartAttributeListPanel.AttributeListChangeListener() {
-			@Override public void listChanged() {
-				setComplete(panel.getAttributeListSize() > 0);
-			}
-		});
+		panel = new FilterConfigurationPanel();
 
 		return panel;
 	}
@@ -62,12 +56,12 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 	@Override
 	public void updateControls() {
 		//panel.setAddBtnEnabled(false);
-		panel.setAttributePages(null);
+		panel.setDatasetConfiguration(null);
 
 		setStatus(MessageStatus.PROGRESS);
-		setMessage("Retrieving available attributes ...");
+		setMessage("Retrieving available filters ...");
 
-		if (panel.getAttributePages() == null) {
+		if (panel.getDatasetConfiguration() == null) {
 			new Thread(new Runnable() {
 				@Override public void run() {
 					updateControlsThread();
@@ -78,17 +72,18 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 
 	private void updateControlsThread() {
 		try {
-			if (attrPages == null) {
-				attrPages = biomartService.getAttributes(mart, dataset);
+			if (dsConfiguration == null) {
+				dsConfiguration = biomartService.getConfiguration(dataset);
 			}
 
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override public void run() {
 					//panel.setAddBtnEnabled(true);
-					panel.setAttributePages(attrPages);
-
+					panel.setDatasetConfiguration(dsConfiguration);                                        
 					setStatus(MessageStatus.WARN);
-					setMessage("Press [Add...] button to select attributes");
+					setComplete(true); //Just for test cases
+
+					setMessage("Fill values for different filters ");
 				}
 			});
 		} catch (Exception ex) {
@@ -102,14 +97,12 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		panel.setAttributePages(attrPages);
 	}*/
 
-	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo dataset) {
-		this.biomartService = biomartService;
+	public void setSource(MartLocation mart, DatasetInfo dataset) {
 		this.mart = mart;
 		this.dataset = dataset;
-
 	}
 
-	public List<AttributeDescription> getAttributeList() {
-		return panel.getAttributeList();
+	public List<AttributeDescription> getFilterList() {
+		return panel.getFilterList();
 	}
 }

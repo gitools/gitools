@@ -29,25 +29,27 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import org.gitools.biomart.soap.model.AttributeInfo;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.MartServiceSoap;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributePage;
+import org.gitools.biomart.restful.model.DatasetInfo;
 
-import org.gitools.biomart.BiomartCentralPortalSoapService;
+import org.gitools.biomart.BiomartServiceFactory;
+import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.biomart.settings.BiomartSource;
+import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePanel extends FilteredTreePanel {
 
-	private MartServiceSoap port;
-	private Mart mart;
+	private BiomartRestfulService port;
+	private MartLocation mart;
 	private DatasetInfo dataset;
 
 	private List<AttributePage> attrPages;
 
-	private List<AttributeInfo> selectedAttr;
+	private List<AttributeDescription> selectedAttr;
 	private List<String> selectedAttrNames;
 	private Set<String> selectedAttrNamesSet;
 
@@ -66,7 +68,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 		this.dataset = null;
 		this.attrPages = null;
 
-		this.selectedAttr = new ArrayList<AttributeInfo>();
+		this.selectedAttr = new ArrayList<AttributeDescription>();
 		this.selectedAttrNames = new ArrayList<String>();
 		this.selectedAttrNamesSet = new HashSet<String>();
 
@@ -77,10 +79,10 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 			}
 		});
 	}
-
+/*
 	public void setBiomartParameters(
 			MartServiceSoap port,
-			Mart mart,
+			MartLocation mart,
 			DatasetInfo dataset) {
 
 		this.port = port;
@@ -89,6 +91,19 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 
 		loadAttributePages();
 	}
+	*/
+	public void setBiomartParameters(
+			BiomartRestfulService port,
+			MartLocation mart,
+			DatasetInfo dataset) {
+
+		this.port = port;
+		this.mart = mart;
+		this.dataset = dataset;
+
+		loadAttributePages();
+	}
+
 
 	private void loadAttributePages() {
 		setControlsEnabled(false);
@@ -105,7 +120,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 		}).start();
 	}
 
-	public List<AttributeInfo> getSelectedAttributes() {
+	public List<AttributeDescription> getSelectedAttributes() {
 		return selectedAttr;
 	}
 
@@ -115,8 +130,13 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 
 	private void loadingThread() {
 		try {
-			final List<AttributePage> pages =
-					BiomartCentralPortalSoapService.getDefault().getAttributes(mart, dataset);
+
+			List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
+			BiomartSource bsrc = lBs.get(0);
+			BiomartRestfulService service = BiomartServiceFactory.createRestfulService(bsrc);
+
+			final List<AttributePage> pages = service.getAttributes(mart, dataset);
+					//BiomartCentralPortalSoapService.getDefault().getAttributes(mart, dataset);
 
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override public void run() {
@@ -146,13 +166,13 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 					(DefaultMutableTreeNode) sel.getLastPathComponent();
 			AttributeWrapper attrw =
 					(AttributeWrapper) node.getUserObject();
-			AttributeInfo attribute =
+			AttributeDescription attribute =
 					attrw.getType() == AttributeWrapper.NodeType.ATTRIBUTE
-					? (AttributeInfo) attrw.getObject() : null;
+					? (AttributeDescription) attrw.getObject() : null;
 
 			if (e.isAddedPath(sel)) {
 				if (attribute != null) {
-					if (!selectedAttrNamesSet.contains(attribute.getName())) {
+					if (!selectedAttrNamesSet.contains(attribute.getInternalName())) { // xrp: check if internal name instead
 						sb.setLength(0);
 
 						Object[] opath = sel.getPath();
@@ -164,7 +184,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 
 						selectedAttr.add(attribute);
 						selectedAttrNames.add(sb.toString());
-						selectedAttrNamesSet.add(attribute.getName());
+						selectedAttrNamesSet.add(attribute.getInternalName()); // xrp: check if internal name instead
 
 						for (AttributeSelectionListener l : attributeSelectionListeners)
 							l.selectionChanged();
@@ -177,7 +197,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 				int i = selectedAttr.indexOf(attribute);
 				selectedAttr.remove(i);
 				selectedAttrNames.remove(i);
-				selectedAttrNamesSet.remove(attribute.getName());
+				selectedAttrNamesSet.remove(attribute.getInternalName());// xrp: check if internal name instead
 
 				for (AttributeSelectionListener l : attributeSelectionListeners)
 					l.selectionChanged();

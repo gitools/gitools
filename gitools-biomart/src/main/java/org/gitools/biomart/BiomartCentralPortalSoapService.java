@@ -18,7 +18,7 @@ package org.gitools.biomart;
 
 import org.gitools.biomart.soap.BiomartSoapService;
 import javax.xml.bind.JAXBException;
-import org.gitools.biomart.soap.model.FilterPage;
+import org.gitools.biomart.soap.model.BACKUP.FilterPage;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import edu.upf.bg.benchmark.TimeCounter;
@@ -36,15 +36,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
-import org.gitools.biomart.soap.model.Attribute;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.BioMartException_Exception;
-import org.gitools.biomart.soap.model.BioMartSoapService;
-import org.gitools.biomart.soap.model.Dataset;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.MartServiceSoap;
-import org.gitools.biomart.soap.model.Query;
+import org.gitools.biomart.soap.model.BACKUP.Attribute;
+import org.gitools.biomart.soap.model.BACKUP.AttributePage;
+import org.gitools.biomart.soap.model.BACKUP.BioMartException_Exception;
+import org.gitools.biomart.soap.model.BACKUP.BioMartSoapService;
+import org.gitools.biomart.soap.model.BACKUP.Dataset;
+import org.gitools.biomart.soap.model.BACKUP.DatasetInfo;
+import org.gitools.biomart.soap.model.BACKUP.Mart;
+import org.gitools.biomart.soap.model.BACKUP.MartServiceSoap;
+import org.gitools.biomart.soap.model.BACKUP.Query;
 
 import org.gitools.biomart.utils.tablewriter.TsvTableWriter;
 import java.util.logging.Logger;

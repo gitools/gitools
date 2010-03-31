@@ -29,14 +29,14 @@ import org.gitools.biomart.BiomartCentralPortalSoapService;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.soap.BiomartSoapService;
-import org.gitools.biomart.soap.model.Attribute;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.Dataset;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Filter;
-import org.gitools.biomart.soap.model.FilterPage;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.Query;
+import org.gitools.biomart.soap.model.BACKUP.Attribute;
+import org.gitools.biomart.soap.model.BACKUP.AttributePage;
+import org.gitools.biomart.soap.model.BACKUP.Dataset;
+import org.gitools.biomart.soap.model.BACKUP.DatasetInfo;
+import org.gitools.biomart.soap.model.BACKUP.Filter;
+import org.gitools.biomart.soap.model.BACKUP.FilterPage;
+import org.gitools.biomart.soap.model.BACKUP.Mart;
+import org.gitools.biomart.soap.model.BACKUP.Query;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
@@ -57,7 +57,7 @@ public class BiomartSoapServiceTest {
 	public void before() {
 		source = "biomart";
 
-		//bs = BiomartCentralPortalService.getDefault();
+		//bs = BiomartCentralPortalSoapService.getDefault();
 
 		bs = defaultConnexionTest();
 
@@ -86,6 +86,31 @@ public class BiomartSoapServiceTest {
 		return srv;
 	}
 
+	@Test
+	public void getDatasetConfig() throws IOException, JAXBException {
+
+		try {
+
+			List<Mart> lMart = bs.getRegistry();
+			assertNotNull(lMart);
+			assertTrue(lMart.size() > 0);
+			Mart mart = lMart.get(0);
+			List<DatasetInfo> lDs = bs.getDatasets(mart);
+			assertNotNull(lDs);
+			assertTrue(lDs.size() > 0);
+			DatasetInfo d = lDs.get(0);
+			DatasetConfig conf = bs.getDatasetConfig(d);
+			assertNotNull(conf);
+			assertTrue(conf.getAttributePages().size() > 0);
+			assertTrue(conf.getAttributePages().get(0).getAttributeGroups().size() > 0);
+			assertTrue(conf.getAttributePages().get(0).getAttributeGroups().get(0).getAttributeCollections().size() > 0);
+
+		} catch (BiomartServiceException ex) {
+			log.error(ex.getMessage());
+		}
+
+	}
+	
 	@Test
 	public void getRegistry() {
 		try {
@@ -346,28 +371,4 @@ public class BiomartSoapServiceTest {
 		}
 	}
 
-	@Test
-	public void getDatasetConfig() throws IOException, JAXBException {
-
-		try {
-
-			List<Mart> lMart = bs.getRegistry();
-			assertNotNull(lMart);
-			assertTrue(lMart.size() > 0);
-			Mart mart = lMart.get(0);
-			List<DatasetInfo> lDs = bs.getDatasets(mart);
-			assertNotNull(lDs);
-			assertTrue(lDs.size() > 0);
-			DatasetInfo d = lDs.get(0);
-			DatasetConfig conf = bs.getDatasetConfig(d);
-			assertNotNull(conf);
-			assertTrue(conf.getAttributePages().size() > 0);
-			assertTrue(conf.getAttributePages().get(0).getAttributeGroups().size() > 0);
-			assertTrue(conf.getAttributePages().get(0).getAttributeGroups().get(0).getAttributeCollections().size() > 0);
-
-		} catch (BiomartServiceException ex) {
-			log.error(ex.getMessage());
-		}
-
-	}
 }

@@ -14,18 +14,18 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
 import java.util.List;
-import org.gitools.biomart.soap.model.Attribute;
-import org.gitools.biomart.soap.model.AttributeInfo;
-import org.gitools.biomart.soap.model.Dataset;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.Query;
+import org.gitools.biomart.restful.model.Attribute;
+import org.gitools.biomart.restful.model.Dataset;
+import org.gitools.biomart.restful.model.Query;
 
-import org.gitools.biomart.BiomartCentralPortalSoapService;
+import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.persistence.FileFormat;
 import org.gitools.ui.IconNames;
@@ -38,16 +38,29 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class BiomartTableWizard extends AbstractWizard {
 
 	private SaveFilePage saveFilePage;
-	private BiomartDatabasePage databasePage;
-	private BiomartDatasetPage datasetPage;
+
+	private BiomartRestfulService biomartService;
+
 	private BiomartAttributeListPage attrListPage;
+
 	private BiomartTableFilteringPage filteringPage;
 
-	//private IBiomartService biomartService;
-	private BiomartCentralPortalSoapService biomartService;
+	private BiomartFilterConfigurationPage filterListPage;
 
-	public BiomartTableWizard(BiomartCentralPortalSoapService biomartService /*IBiomartService biomartService*/) {
-		this.biomartService = biomartService;
+	private BiomartSourcePage sourcePage;
+
+	private MartLocation Database;
+
+	private DatasetInfo Dataset;
+
+	private FileFormat[] supportedFormats = new FileFormat[]{
+		new FileFormat("Tab Separated Fields (tsv)", "tsv", FORMAT_TSV),
+		new FileFormat("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz", FORMAT_TSV_GZ)
+	};
+	public static final String FORMAT_TSV = "TSV";
+	public static final String FORMAT_TSV_GZ = "GZ";
+
+	public BiomartTableWizard() { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
 
 		setTitle("Import table ...");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
@@ -60,21 +73,24 @@ public class BiomartTableWizard extends AbstractWizard {
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastDataPath());
-		saveFilePage.setFormats(biomartService.getSupportedFormats());
+		saveFilePage.setFormats(supportedFormats);
 		addPage(saveFilePage);
 
-		// Database
-		databasePage = new BiomartDatabasePage(biomartService);
-		addPage(databasePage);
-
-		// Dataset
-		datasetPage = new BiomartDatasetPage(biomartService);
-		addPage(datasetPage);
+		// Source
+		sourcePage = new BiomartSourcePage();
+		addPage(sourcePage);
 
 		// Attribute list
-		attrListPage = new BiomartAttributeListPage(biomartService);
+		attrListPage = new BiomartAttributeListPage();
 		attrListPage.setTitle("Select attributes");
 		addPage(attrListPage);
+
+		/*
+		// Advance filtering
+		filterListPage = new BiomartFilterConfigurationPage(biomartService);
+		filterListPage.setTitle("Select filters");
+		addPage(filterListPage);
+		 */
 
 		// Filtering
 		filteringPage = new BiomartTableFilteringPage();
@@ -85,13 +101,25 @@ public class BiomartTableWizard extends AbstractWizard {
 	public IWizardPage getNextPage(IWizardPage page) {
 		IWizardPage nextPage = super.getNextPage(page);
 
-		if (nextPage == datasetPage)
-			datasetPage.setMart(databasePage.getMart());
-		else if (nextPage == attrListPage)
-			attrListPage.setSource(
-					databasePage.getMart(),
-					datasetPage.getDataset());
+		if (nextPage == attrListPage) {
 
+			biomartService = sourcePage.getService();
+			Database = sourcePage.getDataBase();
+			Dataset = sourcePage.getDataset();
+
+			attrListPage.setSource(
+					biomartService,
+					Database,
+					Dataset);
+		}
+
+		/*
+		else if (nextPage == filterListPage) {
+		filterListPage.setSource(
+		databasePage.getMart(),
+		datasetPage.getDataset());
+		}
+		 */
 		return nextPage;
 	}
 
@@ -118,20 +146,20 @@ public class BiomartTableWizard extends AbstractWizard {
 		return saveFilePage.getFile();
 	}
 
-	public List<AttributeInfo> getAttributeList() {
+	public List<AttributeDescription> getAttributeList() {
 		return attrListPage.getAttributeList();
 	}
 
 	public Query getQuery() {
-		Mart mart = databasePage.getMart();
+		MartLocation mart = getDatabase();
 
 		Dataset ds = new Dataset();
-		ds.setName(datasetPage.getDataset().getName());
+		ds.setName(getDataset().getName());
 
 		List<Attribute> dsattrs = ds.getAttribute();
-		for (AttributeInfo attrInfo : attrListPage.getAttributeList()) {
+		for (AttributeDescription attrInfo : attrListPage.getAttributeList()) {
 			Attribute attr = new Attribute();
-			attr.setName(attrInfo.getName());
+			attr.setName(attrInfo.getInternalName());
 			dsattrs.add(attr);
 		}
 
@@ -155,5 +183,17 @@ public class BiomartTableWizard extends AbstractWizard {
 
 	public String emptyValuesReplacement() {
 		return filteringPage.emptyValuesReplacement();
+	}
+
+	public MartLocation getDatabase() {
+		return Database;
+	}
+
+	public DatasetInfo getDataset() {
+		return Dataset;
+	}
+
+	public BiomartRestfulService getService() {
+		return biomartService;
 	}
 }

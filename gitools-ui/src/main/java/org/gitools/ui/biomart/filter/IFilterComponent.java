@@ -14,19 +14,21 @@
  *  limitations under the License.
  *  under the License.
  */
+package org.gitools.ui.biomart.filter;
 
-package org.gitools.biomart.filtermanagement;
+import org.gitools.biomart.restful.model.Filter;
 
-import java.awt.Component;
-import java.util.HashMap;
-import javax.swing.JComponent;
+interface IFilterComponent {
 
-/**
- *
- * @author xavier
- */
-public abstract class BiomartFilterPanel extends JComponent{
+    public Filter getFilter();
 
+    public Boolean hasChanged();
 
+    public FilterDescriptionPanel getDescriptionPanel();
 
+    public IFilterComponent getChildComponent();
+
+    public void addChildComponent(IFilterComponent child);
+
+    public Boolean hasChild();
 }

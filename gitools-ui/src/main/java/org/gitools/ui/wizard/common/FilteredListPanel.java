@@ -6,17 +6,26 @@
 
 package org.gitools.ui.wizard.common;
 
-/**
- *
- * @author  chris
- */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import org.gitools.ui.utils.DocumentChangeListener;
+
 public class FilteredListPanel extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = -513470999308628358L;
 
+	private String lastFilterText = "";
+	private Object[] listData;
+
 	/** Creates new form BiomartFilterListPanel */
     public FilteredListPanel() {
         initComponents();
+		initEvents();
     }
 
     /** This method is called from within the constructor to
@@ -46,7 +55,7 @@ public class FilteredListPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                        .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearBtn)))
                 .addContainerGap())
@@ -72,4 +81,84 @@ public class FilteredListPanel extends javax.swing.JPanel {
     public javax.swing.JList list;
     // End of variables declaration//GEN-END:variables
 
+	private void initEvents() {
+		filterField.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
+				updateFilter(); }
+		});
+
+		clearBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				filterField.setText("");
+				filterField.requestFocusInWindow();
+			}
+		});
+
+		list.addListSelectionListener(new ListSelectionListener() {
+			@Override public void valueChanged(ListSelectionEvent e) {
+				selectionChanged();
+			}
+		});
+
+	}
+
+	private void updateFilter() {
+		final String filterText = getFilterText();
+
+		clearBtn.setEnabled(!filterText.isEmpty());
+
+		if (!filterText.equalsIgnoreCase(lastFilterText)) {
+			lastFilterText = filterText;
+			list.setModel(
+					createListModel(listData, getFilterText()));
+		}
+	}
+
+	public String getFilterText() {
+		return filterField.getText();
+	}
+
+	public void resetFilterText() {
+		filterField.setText("");
+		filterField.requestFocusInWindow();
+	}
+
+	private ListModel createListModel(Object[] listData, String filterText) {
+		final DefaultListModel model = new DefaultListModel();
+
+		if (filterText != null && !filterText.isEmpty()) {
+			final String filter = filterText.toLowerCase();
+			for (Object dataObject : listData) {
+				String dataText = dataObject.toString().toLowerCase();
+				if (dataText.contains(filter))
+					model.addElement(dataObject);
+			}
+		}
+		else {
+			for (Object dataObject : listData)
+				model.addElement(dataObject);
+		}
+
+		return model;
+	}
+	
+	protected void selectionChanged() { }
+
+	public void setListData(Object[] listData) {
+		this.listData = listData;
+		ListModel model = createListModel(listData, getFilterText());
+
+		list.setModel(model);
+		selectionChanged();
+
+		filterField.requestFocusInWindow();
+	}
+
+	public Object getSelectedValue() {
+		return list.getSelectedValue();
+	}
+
+	public Object[] getSelectedValues() {
+		return list.getSelectedValues();
+	}
 }

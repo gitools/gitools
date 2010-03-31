@@ -159,7 +159,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			String s = null;
 			DatasetInfo d = null;
 			while ((s = reader.readLine()) != null) {
-				
+
 				if (!s.equals(" ") && !s.equals("\n")) {
 					String f[] = s.split("\t");
 					d = new DatasetInfo();
@@ -200,6 +200,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 	}
 
 	//FIXME Use JAXB !!!
+	//FIXME review filter xml parsing
 	private String createQueryXml(Query query, String format, boolean encoded) {
 		/*JAXBContext context = JAXBContext.newInstance(Query.class);
 		Marshaller m = context.createMarshaller();
@@ -227,11 +228,16 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			}
 
 			for (Filter flt : ds.getFilter()) {
-				sw.append("<Filter name=\"").append(flt.getName()).append("\" ");
-				if (flt.getValue() != null) {
-					sw.append("value=\"").append(flt.getValue()).append("\"");
+				if (flt.getValue() != null && !flt.getValue().equals("")) {
+
+					sw.append("<Filter name=\"").append(flt.getName()).append("\" ");
+
+					if (flt.getRadio())
+						sw.append("excluded=\"").append(flt.getValue()).append("\"");
+					else
+						sw.append("value=\"").append(flt.getValue()).append("\"");
+					sw.append(" />");
 				}
-				sw.append(" />");
 			}
 
 			sw.append("</Dataset>");

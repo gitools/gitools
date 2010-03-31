@@ -24,11 +24,11 @@
 package org.gitools.ui.biomart.dialog;
 
 import java.util.List;
-import org.gitools.biomart.soap.model.AttributeInfo;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.MartServiceSoap;
+import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributePage;
+import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.ui.biomart.panel.BiomartAttributePanel.AttributeSelectionListener;
 
@@ -65,7 +65,7 @@ public class BiomartAttributeDialog extends javax.swing.JDialog {
 		return cancelled;
 	}
 
-	public List<AttributeInfo> getSelectedAttributes() {
+	public List<AttributeDescription> getSelectedAttributes() {
 		return biomartAttrPanel.getSelectedAttributes();
 	}
 
@@ -77,12 +77,20 @@ public class BiomartAttributeDialog extends javax.swing.JDialog {
 		acceptBtn.setEnabled(
 				biomartAttrPanel.getSelectedAttributes().size() > 0);
 	}
-
+/*
 	public void setBiomartParameters(
 			MartServiceSoap port,
 			Mart mart,
 			DatasetInfo dataset) {
 		
+		biomartAttrPanel.setBiomartParameters(port, mart, dataset);
+	}
+*/
+	public void setBiomartParameters(
+			BiomartRestfulService port,
+			MartLocation mart,
+			DatasetInfo dataset) {
+
 		biomartAttrPanel.setBiomartParameters(port, mart, dataset);
 	}
 

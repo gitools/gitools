@@ -31,12 +31,18 @@ public class NamespaceFilter extends XMLFilterImpl {
 	private boolean addNamespace;
 	//State variable
 	private boolean addedNamespace = false;
+        private static String OS = null;
+
 
 	public NamespaceFilter(String namespaceUri, boolean addNamespace) {
 		super();
+                
+                if(OS == null) { OS = System.getProperty("os.name");}
 
 		if (addNamespace) {
-			this.usedNamespaceUri = namespaceUri + "\"";
+			this.usedNamespaceUri = namespaceUri;
+                        if (! OS.startsWith("Windows"))
+                            this.usedNamespaceUri += "\"";
 		} else {
 			this.usedNamespaceUri = "";
 		}

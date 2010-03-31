@@ -28,7 +28,7 @@ public class BiomartSource {
 	private String host;
 	private String port;
 	private String restPath;
-	private String wsdlPath;
+	private String wsdlPath; 
 
 	public BiomartSource() {
 	}

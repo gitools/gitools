@@ -23,6 +23,19 @@ public class Filter {
 
 	@XmlAttribute
     protected int excluded;
+	
+	// Only in case of radio components since
+	// a query in xml with this type of components is different 
+    protected Boolean radio=false;
+
+    /**
+     * Gets the value of the name property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
 
     public String getName() {
         return name;
@@ -39,6 +52,31 @@ public class Filter {
     public void setValue(String value) {
         this.value = value;
     }
+	
+    /**
+     * Gets the value of the value property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+	public Boolean getRadio() {
+		return radio;
+	}
+
+
+    /**
+     * Sets the value of the value property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+	public void setRadio(Boolean radio) {
+		this.radio = radio;
+	}
 
 	public int getExcluded() {
 		return excluded;
@@ -47,4 +85,5 @@ public class Filter {
 	public void setExcluded(int excluded) {
 		this.excluded = excluded;
 	}
+
 }

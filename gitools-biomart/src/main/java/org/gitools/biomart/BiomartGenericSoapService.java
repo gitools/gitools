@@ -52,26 +52,26 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
-import org.gitools.biomart.soap.model.Attribute;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.Dataset;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.GetAttributes;
-import org.gitools.biomart.soap.model.GetAttributesResponse;
-import org.gitools.biomart.soap.model.GetDatasets;
-import org.gitools.biomart.soap.model.GetDatasetsResponse;
-import org.gitools.biomart.soap.model.GetRegistry;
+import org.gitools.biomart.soap.model.BACKUP.Attribute;
+import org.gitools.biomart.soap.model.BACKUP.AttributePage;
+import org.gitools.biomart.soap.model.BACKUP.Dataset;
+import org.gitools.biomart.soap.model.BACKUP.DatasetInfo;
+import org.gitools.biomart.soap.model.BACKUP.GetAttributes;
+import org.gitools.biomart.soap.model.BACKUP.GetAttributesResponse;
+import org.gitools.biomart.soap.model.BACKUP.GetDatasets;
+import org.gitools.biomart.soap.model.BACKUP.GetDatasetsResponse;
+import org.gitools.biomart.soap.model.BACKUP.GetRegistry;
 
-import org.gitools.biomart.soap.model.GetRegistryResponse;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.Query;
+import org.gitools.biomart.soap.model.BACKUP.GetRegistryResponse;
+import org.gitools.biomart.soap.model.BACKUP.Mart;
+import org.gitools.biomart.soap.model.BACKUP.Query;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
-import org.gitools.biomart.soap.model.Filter;
-import org.gitools.biomart.soap.model.FilterPage;
-import org.gitools.biomart.soap.model.GetFilters;
-import org.gitools.biomart.soap.model.GetFiltersResponse;
+import org.gitools.biomart.soap.model.BACKUP.Filter;
+import org.gitools.biomart.soap.model.BACKUP.FilterPage;
+import org.gitools.biomart.soap.model.BACKUP.GetFilters;
+import org.gitools.biomart.soap.model.BACKUP.GetFiltersResponse;
 
 import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import org.gitools.biomart.utils.tablewriter.TsvTableWriter;
@@ -79,6 +79,7 @@ import org.gitools.persistence.FileFormat;
 
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
+
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.settings.BiomartSource;
 

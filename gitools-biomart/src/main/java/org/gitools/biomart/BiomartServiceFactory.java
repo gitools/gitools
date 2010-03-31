@@ -17,26 +17,8 @@
 package org.gitools.biomart;
 
 import org.gitools.biomart.soap.BiomartSoapService;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-import org.gitools.biomart.soap.model.Attribute;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.Dataset;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Filter;
-import org.gitools.biomart.soap.model.FilterPage;
-import org.gitools.biomart.soap.model.Mart;
-import org.gitools.biomart.soap.model.Query;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.gitools.biomart.restful.BiomartRestfulService;
 
 /**

@@ -17,18 +17,12 @@
 
 package org.gitools.biomart.filtermanagement;
 
-import java.util.List;
-import org.gitools.biomart.soap.model.Filter;
+import org.gitools.biomart.restful.model.Filter;
 
-/**
- *
- * @author xavier
- */
-public interface IBiomartFilterPanel {
 
-	public List<String> getFilterNames();
-	public String getFilterValue(String name);
-	public void setFilterValue(String val);
-	public List<Filter> getFilters();
+interface IFilterComponent {
 
+	public Filter getFilter();
+	public Boolean hasChanged();
+	public FilterCollectionPanel getParentCollection();
 }

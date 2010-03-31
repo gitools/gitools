@@ -10,11 +10,11 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 
-import org.gitools.biomart.soap.model.AttributeInfo;
-import org.gitools.biomart.soap.model.AttributePage;
-import org.gitools.biomart.soap.model.DatasetInfo;
-import org.gitools.biomart.soap.model.Mart;
- import org.gitools.biomart.BiomartCentralPortalSoapService;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributePage;
+import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.biomart.restful.BiomartRestfulService;
 
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
@@ -26,22 +26,20 @@ import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
-	//private IBiomartService biomartService;
-	private BiomartCentralPortalSoapService biomartService;
+	private MartLocation mart;
 
-	private Mart mart;
 	private DatasetInfo dataset;
 	
 	private List<AttributePage> attrPages;
 
-	private AttributeInfo attribute;
+	private AttributeDescription attribute;
 	
 	private boolean updated;
 	
-	public BiomartAttributePage(BiomartCentralPortalSoapService biomartService /*IBiomartService biomartService*/) {
-		super();
+	private BiomartRestfulService biomartService;
 	
-		this.biomartService = biomartService;
+	public BiomartAttributePage(){/*BiomartRestfulService biomartService /*IBiomartService biomartService*/
+		super();
 		
 		this.mart = null;
 		this.dataset = null;
@@ -118,17 +116,17 @@ public class BiomartAttributePage extends FilteredTreePage {
 			AttributeWrapper aw = (AttributeWrapper) node.getUserObject();
 			complete = aw.getType() == AttributeWrapper.NodeType.ATTRIBUTE;
 			if (complete)
-				attribute = (AttributeInfo) aw.getObject();
+				attribute = (AttributeDescription) aw.getObject();
 		}
 		
 		setComplete(complete);
 	}
 	
-	public void setSource(Mart mart, DatasetInfo dataset) {
+	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo dataset) {
+		this.biomartService = biomartService;
 		this.mart = mart;
 		this.dataset = dataset;
-		attrPages = null;
-		updated = false;
+
 	}
 
 	public synchronized void setAttributePages(List<AttributePage> attrPages) {
@@ -140,7 +138,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 		return attrPages;
 	}
 
-	public AttributeInfo getAttribute() {
+	public AttributeDescription getAttribute() {
 		return attribute;
 	}
 

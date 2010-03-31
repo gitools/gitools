@@ -9,4 +9,58 @@
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
 	</mart>
+	<mart>
+		<name>Ensembl Portal</name>
+		<description>Ensembl Central Portal</description>
+		<version>0.6</version>
+		<host>www.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>sep2009 Archive Ensembl Portal</name>
+		<description>September 2009 Archive Ensembl Portal</description>
+		<version>0.6</version>
+		<host>sep2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>jul2009 Archive Ensembl Portal</name>
+		<description>July 2009 Archive Ensembl Portal</description>
+		<version>0.6</version>
+		<host>jul2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>May2009 Archive Ensembl Portal</name>
+		<description>May 2009 Archive Ensembl Portal</description>
+		<version>0.6</version>
+		<host>may2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>Mar2009 Archive Ensembl Portal</name>
+		<description>March 2009 Archive Ensembl Portal</description>
+		<version>0.7</version>
+		<host>mar2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>Dec2008 Archive Ensembl Portal</name>
+		<description>December 2008 Archive Ensembl Portal</description>
+		<version>0.6</version>
+		<host>dec2008.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
 </mart-registry>
