@@ -195,7 +195,7 @@ public class AppFrame extends JFrame {
 
 	public void start() {
 		createWelcomeView();
-		createDemoView();
+		//createDemoView();
 		editorsPanel.setSelectedIndex(0);
 		
 		setLocationByPlatform(true);
