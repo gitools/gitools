@@ -1,5 +1,7 @@
 package org.gitools.analysis.htest.enrichment;
 
+import cern.colt.function.DoubleDoubleFunction;
+import cern.colt.function.DoubleFunction;
 import java.util.Date;
 import org.gitools.matrix.model.IMatrix;
 
@@ -18,7 +20,9 @@ import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
+import cern.jet.math.Functions;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.ModuleMap;
@@ -56,7 +60,7 @@ public class EnrichmentProcessor extends HtestProcessor {
 		this.analysis = analysis;
 	}
 	
-	public void run(IProgressMonitor monitor) throws InterruptedException {
+	public void run(IProgressMonitor monitor) throws AnalysisException, InterruptedException {
 		
 		Date startTime = new Date();
 		
@@ -117,6 +121,9 @@ public class EnrichmentProcessor extends HtestProcessor {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
 
+		final int minModuleSize = analysis.getMinModuleSize();
+		final int maxModuleSize = analysis.getMaxModuleSize();
+
 		/* Test analysis */
 		
 		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
@@ -157,11 +164,31 @@ public class EnrichmentProcessor extends HtestProcessor {
 				
 				slot.execute(new Runnable() {
 					@Override public void run() {
-						CommonResult result = slot.test.processTest(
-								condName, condItems,
-								moduleName, itemIndices);
-						
-						resultsMatrix.setCell(moduleIdx, condIdx, result);
+						CommonResult result = null;
+						try {
+							int moduleSize = (int) condItems
+									.viewSelection(itemIndices)
+									.aggregate(
+										Functions.plus,
+										new DoubleFunction() {
+											@Override public double apply(double d) {
+												return Double.isNaN(d) ? 0 : 1; } });
+
+							if (moduleSize >= minModuleSize	&& moduleSize <= maxModuleSize)
+								result = slot.test.processTest(
+										condName, condItems,
+										moduleName, itemIndices);
+						}
+						catch (Throwable cause) {
+							cause.printStackTrace();
+						}
+
+						try {
+							resultsMatrix.setCell(moduleIdx, condIdx, result);
+						}
+						catch (Throwable cause) {
+							cause.printStackTrace();
+						}
 					}
 				});
 				

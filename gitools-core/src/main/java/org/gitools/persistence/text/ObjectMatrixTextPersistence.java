@@ -335,26 +335,28 @@ public class ObjectMatrixTextPersistence
 			ObjectMatrix resultsMatrix,
 			int colIndex, int rowIndex,
 			IProgressMonitor monitor) {
-		
-		final String colName = resultsMatrix.getColumn(colIndex).toString();
-		final String rowName = resultsMatrix.getRow(rowIndex).toString();
+
+		Object element = resultsMatrix.getCell(rowIndex, colIndex);
+		if (element == null)
+			return;
+
+		final String colName = resultsMatrix.getColumnLabel(colIndex);
+		final String rowName = resultsMatrix.getRowLabel(rowIndex);
 		
 		out.writeQuotedValue(colName);
 		out.writeSeparator();
 		out.writeQuotedValue(rowName);
 		
-		Object element = resultsMatrix.getCell(rowIndex, colIndex);
+		IElementAdapter cellsAdapter = resultsMatrix.getCellAdapter();
 		
-		IElementAdapter cellsFacade = resultsMatrix.getCellAdapter();
-		
-		int numProperties = cellsFacade.getPropertyCount();
+		int numProperties = cellsAdapter.getPropertyCount();
 
 		DoubleTranslator doubleTrans = new DoubleTranslator();
 
 		for (int propIndex = 0; propIndex < numProperties; propIndex++) {
 			out.writeSeparator();
 			
-			Object value = cellsFacade.getValue(element, propIndex);
+			Object value = cellsAdapter.getValue(element, propIndex);
 			if (value instanceof Double) {
 				Double v = (Double) value;
 				out.write(doubleTrans.valueToString(v));

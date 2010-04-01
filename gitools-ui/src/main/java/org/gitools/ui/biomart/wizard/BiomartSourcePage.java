@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -109,6 +110,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
 
 	private BiomartRestfulService service;
+
 	private boolean updated;
 	private FilteredListPanel datasetPanel;
 	private MartLocation lastMartSelected;
@@ -137,13 +139,14 @@ public class BiomartSourcePage extends AbstractWizardPage {
 				setComplete(value != null);
 			}
 		};
+		datasetPanel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		dataFilterPanel.setLayout(new BorderLayout());
 		dataFilterPanel.add(datasetPanel, BorderLayout.CENTER);
 
 		updated = false;
 
-		setTitle("Select biomart source");
+		setTitle("Select dataset");
 	}
 
 	/** This method is called from within the constructor to
@@ -169,6 +172,8 @@ public class BiomartSourcePage extends AbstractWizardPage {
         jLabel1.setText("Portal");
 
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        databaseList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(databaseList);
 
         jLabel2.setText("Databases");
@@ -179,7 +184,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
         dataFilterPanel.setLayout(dataFilterPanelLayout);
         dataFilterPanelLayout.setHorizontalGroup(
             dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 382, Short.MAX_VALUE)
+            .addGap(0, 386, Short.MAX_VALUE)
         );
         dataFilterPanelLayout.setVerticalGroup(
             dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

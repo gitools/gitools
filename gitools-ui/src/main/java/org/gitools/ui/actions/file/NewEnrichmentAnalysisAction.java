@@ -80,7 +80,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 					AppFrame.instance().setStatusText("Done.");
 				}
-				catch (Exception ex) {
+				catch (Throwable ex) {
 					monitor.exception(ex);
 				}
 			}

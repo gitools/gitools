@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import org.dom4j.dtd.AttributeDecl;
 
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeGroup;
@@ -18,9 +17,9 @@ public class AttributesTreeModel extends DefaultTreeModel {
 	public static class AttributeWrapper {
 
 		public enum NodeType {
-
 			ROOT, PAGE, GROUP, COLLECTION, ATTRIBUTE
 		}
+
 		private Object object;
 		private NodeType type;
 		private String name;
@@ -31,7 +30,6 @@ public class AttributesTreeModel extends DefaultTreeModel {
 			name = nodeName(object, type);
 			if (name.endsWith(":"))
 				name = name.substring(0, name.length() - 1);
-
 		}
 
 		private NodeType nodeType(Object o) {
@@ -48,20 +46,54 @@ public class AttributesTreeModel extends DefaultTreeModel {
 		}
 
 		private String nodeName(Object o, NodeType type) {
+			String nodeName = "unknown type";
 			switch (type) {
 				case ROOT:
 					return "root";
+
 				case PAGE:
-					return ((AttributePage) object).getDisplayName();
+					AttributePage page = ((AttributePage) object);
+					nodeName = page.getDisplayName();
+					if (nodeName == null)
+						nodeName = page.getDescription();
+					if (nodeName == null)
+						nodeName = "Attribute page without name";
+				break;
+
 				case GROUP:
-					return ((AttributeGroup) object).getDisplayName();
+					AttributeGroup group = ((AttributeGroup) object);
+					nodeName = group.getDisplayName();
+					if (nodeName == null)
+						nodeName = group.getDescription();
+					if (nodeName == null)
+						nodeName = group.getInternalName();
+					if (nodeName == null)
+						nodeName = "Attribute group without name";
+				break;
+
 				case COLLECTION:
-					return ((AttributeCollection) object).getDisplayName();
+					AttributeCollection coll = ((AttributeCollection) object);
+					nodeName = coll.getDisplayName();
+					if (nodeName == null)
+						nodeName = coll.getDescription();
+					if (nodeName == null)
+						nodeName = coll.getInternalName();
+					if (nodeName == null)
+						nodeName = "Attribute collection without name";
+				break;
+
 				case ATTRIBUTE:
-					return ((AttributeDescription) object).getDisplayName();
-				default:
-					return "unknown type";
+					AttributeDescription desc = ((AttributeDescription) object);
+					nodeName = desc.getDisplayName();
+					if (nodeName == null)
+						nodeName = desc.getDescription();
+					if (nodeName == null)
+						nodeName = desc.getInternalName();
+					if (nodeName == null)
+						nodeName = "Attribute group without name";
+				break;
 			}
+			return nodeName;
 		}
 
 		public String getName() {

@@ -189,17 +189,18 @@ public class HeatmapDetailsController implements EntityController {
 
 	private String getTemplateNameFromObject(Object object) {
 		String templateName = "default.vm";
-		if (object instanceof BinomialResult)
-			templateName = "binomial.vm";
-		else if (object instanceof FisherResult)
-			templateName = "fisher.vm";
-		else if (object instanceof ZScoreResult)
-			templateName = "zscore.vm";
-		else if (object instanceof CombinationResult)
-			templateName = "combination.vm";
-		else if (object instanceof CommonResult)
-			templateName = "common.vm";
-
+		if (object != null) {
+			if (object instanceof BinomialResult)
+				templateName = "binomial.vm";
+			else if (object instanceof FisherResult)
+				templateName = "fisher.vm";
+			else if (object instanceof ZScoreResult)
+				templateName = "zscore.vm";
+			else if (object instanceof CombinationResult)
+				templateName = "combination.vm";
+			else if (object instanceof CommonResult)
+				templateName = "common.vm";
+		}
 		return "/vm/details/" + templateName;
 	}
 }

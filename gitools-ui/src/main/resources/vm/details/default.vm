@@ -11,15 +11,20 @@
 		
 		#section( "Row" )
 		#nameRow( $rowLabel )
-		
+
 		#section( "Parameters" )
-		#foreach($key in $cell.keySet())
-    	<tr>
-    		<td class="label">$attr.get($key).name:</td>
-        </tr>
-		<tr>
-    		<td class="value">$fmt.format($cell.get($key))</td>
-    	</tr>
+		#if( $cellElement )
+			#foreach($key in $cell.keySet())
+				#valueRow( $attr.get($key).name $fmt.format($cell.get($key)) )
+				<!-- <tr>
+					<td class="label">$attr.get($key).name:</td>
+				</tr>
+				<tr>
+					<td class="value">$fmt.format($cell.get($key))</td>
+				</tr> -->
+			#end
+		#else
+			#nameRow( "Empty cell" )
 		#end
     </table>
 </body>

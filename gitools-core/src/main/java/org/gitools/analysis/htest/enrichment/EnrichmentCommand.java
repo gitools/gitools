@@ -76,7 +76,7 @@ public class EnrichmentCommand extends HtestCommand {
 
 			save(enrichAnalysis, monitor);
 		}
-		catch (Exception ex) {
+		catch (Throwable ex) {
 			throw new AnalysisException(ex);
 		}
 	}

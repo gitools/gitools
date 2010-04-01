@@ -23,10 +23,6 @@
 
 package org.gitools.ui.welcome;
 
-/**
- *
- * @author cperez
- */
 public class BiomartTypeDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
@@ -42,6 +38,8 @@ public class BiomartTypeDialog extends javax.swing.JDialog {
 		setModal(true);
 		
         initComponents();
+
+		okButton.requestFocusInWindow();
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -76,7 +74,7 @@ public class BiomartTypeDialog extends javax.swing.JDialog {
             }
         });
 
-        okButton.setText("OK");
+        okButton.setText("Next >");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
@@ -84,6 +82,7 @@ public class BiomartTypeDialog extends javax.swing.JDialog {
         });
 
         cancelButton.setText("Cancel");
+        cancelButton.setDefaultCapable(false);
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);

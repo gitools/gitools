@@ -28,6 +28,8 @@ import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
@@ -43,8 +45,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 
 	private BiomartRestfulService biomartService;
 	
-	public BiomartAttributeListPage(){/*BiomartRestfulService biomartService*/ /*IBiomartService biomartService*/
-		
+	public BiomartAttributeListPage() {
 	}
 
 	@Override
@@ -78,9 +79,8 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 
 	private void updateControlsThread() {
 		try {
-			if (attrPages == null) {
+			if (attrPages == null)
 				attrPages = biomartService.getAttributes(mart, dataset);
-			}
 
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override public void run() {
@@ -91,10 +91,16 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 					setMessage("Press [Add...] button to select attributes");
 				}
 			});
-		} catch (Exception ex) {
-			setStatus(MessageStatus.ERROR);
-			setMessage(ex.getMessage());
-			ex.printStackTrace();
+		}
+		catch (final Throwable cause) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override public void run() {
+					setStatus(MessageStatus.ERROR);
+					setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
+					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), cause);
+					dlg.setVisible(true);
+				}
+			});
 		}
 	}
 
@@ -106,7 +112,6 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		this.biomartService = biomartService;
 		this.mart = mart;
 		this.dataset = dataset;
-
 	}
 
 	public List<AttributeDescription> getAttributeList() {

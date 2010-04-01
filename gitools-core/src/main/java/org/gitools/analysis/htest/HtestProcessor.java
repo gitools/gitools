@@ -1,5 +1,6 @@
 package org.gitools.analysis.htest;
 
+import cern.colt.function.DoubleProcedure;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.results.CommonResult;
@@ -9,6 +10,11 @@ import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public class HtestProcessor {
+
+	protected static final DoubleProcedure notNaNProc =
+		new DoubleProcedure() {
+			@Override public boolean apply(double element) {
+					return !Double.isNaN(element); } };
 
 	protected void multipleTestCorrection(
 			ObjectMatrix res,
@@ -21,20 +27,22 @@ public class HtestProcessor {
 		for (int condIdx = 0; condIdx < res.getColumnCount(); condIdx++) {
 			for (int moduleIdx = 0; moduleIdx < res.getRowCount(); moduleIdx++) {
 				CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
-				adjpvalues.setQuick(0, moduleIdx, r.getLeftPvalue());
-				adjpvalues.setQuick(1, moduleIdx, r.getRightPvalue());
-				adjpvalues.setQuick(2, moduleIdx, r.getTwoTailPvalue());
+				adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
+				adjpvalues.setQuick(1, moduleIdx, r != null ? r.getRightPvalue() : Double.NaN);
+				adjpvalues.setQuick(2, moduleIdx, r != null ? r.getTwoTailPvalue() : Double.NaN);
 			}
 			
-			mtc.correct(adjpvalues.viewRow(0));
-			mtc.correct(adjpvalues.viewRow(1));
-			mtc.correct(adjpvalues.viewRow(2));
+			mtc.correct(adjpvalues.viewRow(0).viewSelection(notNaNProc));
+			mtc.correct(adjpvalues.viewRow(1).viewSelection(notNaNProc));
+			mtc.correct(adjpvalues.viewRow(2).viewSelection(notNaNProc));
 			
 			for (int moduleIdx = 0; moduleIdx < res.getRowCount(); moduleIdx++) {
 				CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
-				r.corrLeftPvalue = adjpvalues.getQuick(0, moduleIdx);
-				r.corrRightPvalue = adjpvalues.getQuick(1, moduleIdx);
-				r.corrTwoTailPvalue = adjpvalues.getQuick(2, moduleIdx);
+				if (r != null) {
+					r.setCorrLeftPvalue(adjpvalues.getQuick(0, moduleIdx));
+					r.setCorrRightPvalue(adjpvalues.getQuick(1, moduleIdx));
+					r.setCorrTwoTailPvalue(adjpvalues.getQuick(2, moduleIdx));
+				}
 			}
 		}
 		

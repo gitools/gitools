@@ -19,7 +19,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="376" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="379" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="filterField" pref="328" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>

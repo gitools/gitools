@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -34,7 +33,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 
 import javax.xml.bind.Unmarshaller;
@@ -62,15 +60,18 @@ import org.gitools.biomart.restful.model.Query;
 public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 	private static Logger log = LoggerFactory.getLogger(BiomartGenericRestfulService.class.getName());
+
 	public static final String FORMAT_TSV = "TSV";
 	public static final String FORMAT_TSV_GZ = "GZ";
 	public static final String SERVICE_PORT_NAME = "BioMartSoapPort";
 	public static final String SERVICE_NAME = "BioMartSoapService";
 	public static final String NAMESPACE = "MartServiceSoap";
+
 	private FileFormat[] supportedFormats = new FileFormat[]{
-		new FileFormat("Tab Separated Fields (tsv)", "tsv", FORMAT_TSV),
-		new FileFormat("Tab Separated Fields GZip compressed (tsv.gz)", "tsv.gz", FORMAT_TSV_GZ)
+		new FileFormat("Tab Separated Fields", "tsv", FORMAT_TSV, true, false),
+		new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", FORMAT_TSV_GZ, true, false)
 	};
+
 	protected BiomartSource source;
 	protected String restUrl;
 
@@ -80,20 +81,15 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		restUrl = composeUrl(source.getHost(), "", source.getRestPath());
 	}
 
-	public <T> T getServiceRespXML(String urlString, Class<T> c) throws JAXBException {
+	public <T> T getServiceRespXML(String urlString, Class<T> c) throws IOException, JAXBException {
 		Object gr = null;
-		try {
-			URL url = new URL(urlString);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			JAXBContext jc = JAXBContext.newInstance(c);
-			Unmarshaller u = jc.createUnmarshaller();
-			gr = u.unmarshal(conn.getInputStream());
-
-		} catch (IOException ex) {
-			log.error(ex.getMessage());
-		}
+		URL url = new URL(urlString);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+		JAXBContext jc = JAXBContext.newInstance(c);
+		Unmarshaller u = jc.createUnmarshaller();
+		gr = u.unmarshal(conn.getInputStream());
 		return (T) gr;
 	}
 
@@ -113,12 +109,10 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		DatasetConfig ds = null;
 
 		try {
-
 			ds = getServiceRespXML(urlString, DatasetConfig.class);
-
-
-		} catch (JAXBException ex) {
-			log.error(ex.getMessage());
+		}
+		catch (Throwable cause) {
+			throw new BiomartServiceException(cause);
 		}
 
 		return ds;
@@ -129,23 +123,23 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		MartRegistry reg = null;
 		final String urlString = restUrl + "?type=registry";
+
 		try {
-
 			reg = getServiceRespXML(urlString, MartRegistry.class);
-
-		} catch (JAXBException ex) {
-			log.error(ex.getMessage());
+		}
+		catch (Throwable cause) {
+			throw new BiomartServiceException(cause);
 		}
 
-		if (reg == null) {
+		if (reg == null)
 			return new ArrayList<MartLocation>(0);
-		}
 
 		return reg.getLocations();
 	}
 
 	@Override
 	public List<DatasetInfo> getDatasets(MartLocation mart) throws BiomartServiceException {
+
 		final String urlString = restUrl + "?type=datasets&mart=" + mart.getName();
 		List<DatasetInfo> ds = new ArrayList<DatasetInfo>();
 
@@ -159,7 +153,6 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			String s = null;
 			DatasetInfo d = null;
 			while ((s = reader.readLine()) != null) {
-
 				if (!s.equals(" ") && !s.equals("\n")) {
 					String f[] = s.split("\t");
 					d = new DatasetInfo();
@@ -171,15 +164,14 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 					ds.add(d);
 				}
 			}
-
-
-		} catch (IOException ex) {
-			java.util.logging.Logger.getLogger(BiomartGenericRestfulService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		catch (Throwable cause) {
+			throw new BiomartServiceException(cause);
 		}
 
-		if (ds == null) {
+		if (ds == null)
 			return new ArrayList<DatasetInfo>(0);
-		}
+
 		return ds;
 	}
 
@@ -188,7 +180,6 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		DatasetConfig dc = getConfiguration(dataset);
 		return dc.getAttributePages();
-
 	}
 
 	@Override
@@ -196,7 +187,6 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		DatasetConfig dc = getConfiguration(dataset);
 		return dc.getFilterPages();
-
 	}
 
 	//FIXME Use JAXB !!!
@@ -223,9 +213,8 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			sw.append("<Dataset");
 			sw.append(" name=\"").append(ds.getName()).append('"');
 			sw.append(" interface=\"default\">");
-			for (Attribute attr : ds.getAttribute()) {
+			for (Attribute attr : ds.getAttribute())
 				sw.append("<Attribute name=\"").append(attr.getName()).append("\" />");
-			}
 
 			for (Filter flt : ds.getFilter()) {
 				if (flt.getValue() != null && !flt.getValue().equals("")) {
@@ -248,11 +237,11 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			try {
 				return URLEncoder.encode(sw.toString(), "UTF-8");
 			} catch (UnsupportedEncodingException ex) {
-				return null;
+				return sw.toString();
 			}
-		} else {
-			return sw.toString();
 		}
+		else
+			return sw.toString();
 	}
 
 	@Override
@@ -274,25 +263,21 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 	@Override
 	public void queryModule(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
 		SequentialTableWriter tableWriter = null;
-		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
-			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
-		}
 
-		if (tableWriter == null) {
+		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
+			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
+
+		if (tableWriter == null)
 			throw new BiomartServiceException("Unrecognized format: " + format);
-		}
 
 		queryModule(query, tableWriter, monitor);
 
-		if (monitor.isCancelled()) {
+		if (monitor.isCancelled())
 			file.delete();
-		}
 	}
 
 	@Override
 	public void queryModule(Query query, SequentialTableWriter writer, IProgressMonitor monitor) throws BiomartServiceException {
-		TimeCounter time = new TimeCounter();
-
 		InputStream in = queryAsStream(query, FORMAT_TSV);
 		/*try {
 		in = new GZIPInputStream(in);
@@ -309,28 +294,37 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			throw new BiomartServiceException(ex);
 		}
 
-		int count = 0;
+		TimeCounter speedTimer = new TimeCounter();
+		long speedBytes = 0;
+
 		try {
 			String next = null;
 			while ((next = br.readLine()) != null && !monitor.isCancelled()) {
 				String[] fields = next.split("\t");
 				if (fields.length == 2
 						&& !fields[0].isEmpty()
-						&& !fields[0].isEmpty()) {
+						&& !fields[1].isEmpty()) {
 					writer.write(fields);
 				}
 
-				if ((++count % 1000) == 0) {
-					monitor.info(count + " rows read");
+				speedBytes += next.length();
+				double seconds = speedTimer.getElapsedSeconds();
+				if (seconds >= 1.0) {
+					double speed = (speedBytes / 1024.0) / seconds;
+					monitor.info(String.format("%.1f Kb/s", speed));
+					speedBytes = 0;
+					speedTimer.reset();
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new BiomartServiceException("Error parsing Biomart query results.", ex);
-		} finally {
+		}
+		finally {
 			writer.close();
 		}
 
-		log.info("queryModule: elapsed time " + time.toString());
+		//log.info("queryModule: elapsed time " + time.toString());
 	}
 
 	@Override
@@ -353,21 +347,19 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			boolean skipRowsWithEmptyValues,
 			String emptyValuesReplacement,
 			IProgressMonitor monitor) throws BiomartServiceException {
-		SequentialTableWriter tableWriter = null;
-		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
-			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
-		}
 
-		if (tableWriter == null) {
+		SequentialTableWriter tableWriter = null;
+		if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
+			tableWriter = new TsvTableWriter(file, format.equals(FORMAT_TSV_GZ));
+
+		if (tableWriter == null)
 			throw new BiomartServiceException("Unrecognized format: " + format);
-		}
 
 		queryTable(query, tableWriter,
 				skipRowsWithEmptyValues, emptyValuesReplacement, monitor);
 
-		if (monitor.isCancelled()) {
+		if (monitor.isCancelled())
 			file.delete();
-		}
 	}
 
 	@Override
@@ -375,6 +367,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			boolean skipRowsWithEmptyValues,
 			String emptyValuesReplacement,
 			IProgressMonitor monitor) throws BiomartServiceException {
+
 		TimeCounter time = new TimeCounter();
 
 		InputStream in = queryAsStream(query, FORMAT_TSV);
@@ -393,7 +386,9 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 			throw new BiomartServiceException(ex);
 		}
 
-		int count = 0;
+		TimeCounter speedTimer = new TimeCounter();
+		long speedBytes = 0;
+
 		try {
 			String next = null;
 			while ((next = br.readLine()) != null && !monitor.isCancelled()) {
@@ -407,23 +402,24 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 					}
 				}
 
-				if (!(skipRowsWithEmptyValues && hasEmptyValues)) {
-					writer.write(fields);
-					if ((++count % 1000) == 0) {
-						monitor.info(count + " rows read");
-					}
+				speedBytes += next.length();
+				double seconds = speedTimer.getElapsedSeconds();
+				if (seconds >= 1.0) {
+					double speed = (speedBytes / 1024.0) / seconds;
+					monitor.info(String.format("%.1f Kb/s", speed));
+					speedBytes = 0;
+					speedTimer.reset();
 				}
+				
+				if (!(skipRowsWithEmptyValues && hasEmptyValues))
+					writer.write(fields);
 			}
-		} catch (Exception ex) {
-			throw new BiomartServiceException("Error parsing Biomart query results.", ex);
-		} finally {
-			writer.close();
 		}
-
-		if (monitor.isCancelled()) {
-			log.info("queryModule: cancelled with " + count + " rows");
-		} else {
-			log.info("queryModule: " + count + " rows in " + time.toString());
+		catch (Exception ex) {
+			throw new BiomartServiceException("Error parsing Biomart query results.", ex);
+		}
+		finally {
+			writer.close();
 		}
 	}
 
@@ -432,17 +428,14 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 
 		StringBuilder sb = new StringBuilder();
 
-		if (host != null && !host.isEmpty()) {
+		if (host != null && !host.isEmpty())
 			sb.append("http://").append(host);
-		}
 
-		if (port != null && !port.isEmpty()) {
+		if (port != null && !port.isEmpty())
 			sb.append(':').append(port);
-		}
 
-		if (destPath != null && !destPath.isEmpty()) {
+		if (destPath != null && !destPath.isEmpty())
 			sb.append('/').append(destPath);
-		}
 
 		return sb.toString();
 	}

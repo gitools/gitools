@@ -154,6 +154,30 @@ public class FilteredListPanel extends javax.swing.JPanel {
 		filterField.requestFocusInWindow();
 	}
 
+	/* Set list selection mode.
+	 * 
+	 * The following list describes the accepted selection modes:
+     * <ul>
+     * <li>{@code ListSelectionModel.SINGLE_SELECTION} -
+     *   Only one list index can be selected at a time. In this mode,
+     *   {@code setSelectionInterval} and {@code addSelectionInterval} are
+     *   equivalent, both replacing the current selection with the index
+     *   represented by the second argument (the "lead").
+     * <li>{@code ListSelectionModel.SINGLE_INTERVAL_SELECTION} -
+     *   Only one contiguous interval can be selected at a time.
+     *   In this mode, {@code addSelectionInterval} behaves like
+     *   {@code setSelectionInterval} (replacing the current selection},
+     *   unless the given interval is immediately adjacent to or overlaps
+     *   the existing selection, and can be used to grow the selection.
+     * <li>{@code ListSelectionModel.MULTIPLE_INTERVAL_SELECTION} -
+     *   In this mode, there's no restriction on what can be selected.
+     *   This mode is the default.
+     * </ul>
+	 */
+	public void setSelectionMode(int mode) {
+		list.setSelectionMode(mode);
+	}
+	
 	public Object getSelectedValue() {
 		return list.getSelectedValue();
 	}

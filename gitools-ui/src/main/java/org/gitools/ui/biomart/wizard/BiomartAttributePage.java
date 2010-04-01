@@ -9,6 +9,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributePage;
@@ -38,7 +39,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 	
 	private BiomartRestfulService biomartService;
 	
-	public BiomartAttributePage(){/*BiomartRestfulService biomartService /*IBiomartService biomartService*/
+	public BiomartAttributePage() {
 		super();
 		
 		this.mart = null;
@@ -52,6 +53,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 	public JComponent createControls() {
 		JComponent component = super.createControls();
 		panel.tree.setRootVisible(false);
+		panel.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		
 		panel.tree.addTreeSelectionListener(new TreeSelectionListener() {	
 			@Override public void valueChanged(TreeSelectionEvent e) {
@@ -96,11 +98,15 @@ public class BiomartAttributePage extends FilteredTreePage {
 					
 					updated = true;
 				}
-				catch (Exception e) {
-					setStatus(MessageStatus.ERROR);
-					setMessage(e.getClass().getSimpleName() + ": " + e.getMessage());
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), e);
-					dlg.setVisible(true);
+				catch (final Throwable cause) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override public void run() {
+							setStatus(MessageStatus.ERROR);
+							setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
+							ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), cause);
+							dlg.setVisible(true);
+						}
+					});
 				}
 			}
 		}).start();

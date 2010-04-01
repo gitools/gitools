@@ -16,12 +16,17 @@ public class MedianStatistic implements Statistic {
 		
 		final int size = values.size();
 		
+		if (size == 0)
+			return Double.NaN;
+		else if (size == 1)
+			return values.getQuick(0);
+		
 		double[] tmp = new double[size];
 
 		values.toArray(tmp);
 		
 		Arrays.sort(tmp);
-		
+
 		final int middle = size / 2;
 		double median = tmp[middle];
 		

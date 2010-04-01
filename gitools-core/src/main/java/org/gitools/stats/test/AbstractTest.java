@@ -6,8 +6,7 @@ public abstract class AbstractTest implements Test {
 
 	protected static final DoubleProcedure notNaNProc = 
 		new DoubleProcedure() {
-			public boolean apply(double element) {
-				return !Double.isNaN(element);
-			}
+		@Override public boolean apply(double element) {
+				return !Double.isNaN(element); }
 		};
 }

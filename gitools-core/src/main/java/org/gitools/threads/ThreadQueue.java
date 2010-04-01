@@ -17,7 +17,7 @@ public class ThreadQueue {
 		queue.put(threadSlot);
 	}
 	
-	public ThreadSlot take() throws InterruptedException {
+	public ThreadSlot take() throws InterruptedException {		
 		return queue.take();
 	}
 	

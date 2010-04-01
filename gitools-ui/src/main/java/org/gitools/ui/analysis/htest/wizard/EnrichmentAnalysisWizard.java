@@ -115,7 +115,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
 		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 		
-		analysis.setBinaryCutoffEnabled(dataPage.isComplete());
+		analysis.setBinaryCutoffEnabled(dataPage.isBinaryCutoffEnabled());
 		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
 		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());
 		analysis.setDiscardNonMappedRows(dataPage.isDiscardNonMappedRows());

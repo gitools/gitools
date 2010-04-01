@@ -51,6 +51,8 @@ public class DataHelpDialog extends javax.swing.JDialog {
 		URL url = getClass().getResource("/html/help_data.html");
 		if (url != null)
 			rcontext.navigate(url, "_this");
+
+		okButton.requestFocusInWindow();
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -77,7 +79,7 @@ public class DataHelpDialog extends javax.swing.JDialog {
             }
         });
 
-        okButton.setText("OK");
+        okButton.setText("Close");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);

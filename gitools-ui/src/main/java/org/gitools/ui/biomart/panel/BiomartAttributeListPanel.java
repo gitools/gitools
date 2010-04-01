@@ -44,11 +44,11 @@ public class BiomartAttributeListPanel extends JPanel {
 		void listChanged();
 	}
 
-	private static class AttributeInfoWrapper {
+	private static class AttributeDescWrapper {
 		private AttributeDescription attr;
 		private String label;
 
-		public AttributeInfoWrapper(AttributeDescription attr, String label) {
+		public AttributeDescWrapper(AttributeDescription attr, String label) {
 			this.attr = attr;
 			this.label = label;
 		}
@@ -140,7 +140,7 @@ public class BiomartAttributeListPanel extends JPanel {
 		Enumeration<?> e = model.elements();
 		List<AttributeDescription> list = new ArrayList<AttributeDescription>(model.getSize());
 		while (e.hasMoreElements())
-			list.add(((AttributeInfoWrapper) e.nextElement()).getAttribute());
+			list.add(((AttributeDescWrapper) e.nextElement()).getAttribute());
 		return list;
 	}
 
@@ -258,7 +258,7 @@ public class BiomartAttributeListPanel extends JPanel {
 			if (attributes != null && attributes.size() > 0) {
 				DefaultListModel model = (DefaultListModel) attrList.getModel();
 				for (int i = 0; i < attributes.size(); i++) {
-					model.addElement(new AttributeInfoWrapper(
+					model.addElement(new AttributeDescWrapper(
 							attributes.get(i), names.get(i)));
 				}
 			}

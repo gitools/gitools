@@ -128,6 +128,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 		return selectedAttrNames;
 	}
 
+	//FIXME
 	private void loadingThread() {
 		try {
 
