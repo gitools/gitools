@@ -7,8 +7,13 @@ import org.gitools.matrix.model.element.IElementAttribute;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
+import java.io.Serializable;
+import org.gitools.model.Artifact;
 
-public abstract class BaseMatrix extends Matrix {
+public abstract class BaseMatrix
+		extends Artifact
+		implements IMatrix, Serializable {
+		// extends Matrix {
 
 	private static final long serialVersionUID = 4021765485781500318L;
 
@@ -39,7 +44,13 @@ public abstract class BaseMatrix extends Matrix {
 		this.cellAdapter = cellAdapter;
 	}
 
-	public abstract void makeCells(int rows, int columns);
+	public void make(int numRows, int numColumns) {
+		rows = ObjectFactory1D.dense.make(numRows);
+		columns = ObjectFactory1D.dense.make(numColumns);
+		makeCells(numRows, numColumns);
+	}
+
+	public abstract void makeCells(int numRows, int numColumns);
 
 	// rows
 	

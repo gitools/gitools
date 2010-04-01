@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.gitools.model.Artifact;
 
+@Deprecated
 @XmlSeeAlso({BaseMatrix.class})	
 public abstract class Matrix
 		extends Artifact

@@ -175,18 +175,21 @@ public class EnrichmentCommand extends HtestCommand {
 			List<Integer> rows = new ArrayList<Integer>();
 
 			String[] names = moduleMap.getItemNames();
-			Set<String> nameSet = new HashSet<String>();
+			Set<String> backgroundNames = new HashSet<String>();
 			for (String name : names)
-				nameSet.add(name);
+				backgroundNames.add(name);
 
 			for (int i = 0; i < dataMatrix.getRowCount(); i++)
-				if (nameSet.contains(dataMatrix.getRowLabel(i)))
+				if (backgroundNames.contains(dataMatrix.getRowLabel(i)))
 					rows.add(i);
 
-			fmatrix.makeCells(rows.size(), dataMatrix.getColumnCount());
-			
+			int numRows = rows.size();
 			int numColumns = dataMatrix.getColumnCount();
-			for (int ri = 0; ri < rows.size(); ri++) {
+
+			fmatrix.make(numRows, numColumns);
+			fmatrix.setColumns(dataMatrix.getColumns());
+			
+			for (int ri = 0; ri < numRows; ri++) {
 				int srcRow = rows.get(ri);
 				fmatrix.setRow(ri, dataMatrix.getRowLabel(srcRow));
 				for (int ci = 0; ci < numColumns; ci++) {
