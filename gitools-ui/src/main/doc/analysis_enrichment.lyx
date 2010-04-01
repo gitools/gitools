@@ -55,113 +55,7 @@ Enrichment analysis consists in a quantitative measure to infer if the values
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status open
-
-\begin_layout Section
-How is this calculated ?
-\end_layout
-
-\begin_layout Plain Layout
-Currently there are three different methods for enrichment analysis implemented
- in Gitools.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Talk about only one method with different statistical tests.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
-Binomial (Bernoulli) test
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-This part of the documentation is still missing.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Fisher's exact test
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-This part of the documentation is still missing.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Z-score test
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Elaborate more on this.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-The Z-score test is used to see if there is a significant deviation from
- random expectation for an estimator value (mean or median) of each module
- in each of the conditions:
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Formula $Z_{i}=\frac{(X-\mu_{i})}{\sigma_{i}}$
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Plain Layout
-where 
-\begin_inset Formula $\mu_{i}$
-\end_inset
-
- is the mean and 
-\begin_inset Formula $\sigma_{i}$
-\end_inset
-
- is the standard deviation of the estimator for different permutations for
- condition i.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 How to run an enrichment analysis
 \end_layout
 
@@ -201,7 +95,7 @@ File > New > Analysis > Enrichment analysis ...
  
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection*
 Selection of the destination file
 \end_layout
 
@@ -234,7 +128,7 @@ folder
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection*
 Selection of the data
 \end_layout
 
@@ -248,7 +142,7 @@ Selection of the data
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Data format & Data file
 \end_layout
 
@@ -271,7 +165,7 @@ Reference formats section
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Population file
 \end_layout
 
@@ -295,7 +189,7 @@ Reference formats section
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Filter rows by label
 \end_layout
 
@@ -313,7 +207,7 @@ This feature is not yet implemented but will allow to select a subset of
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Transform to 1 / 0
 \end_layout
 
@@ -338,7 +232,7 @@ Some statistical tests are designed to work with discrete events (as Binomial
  1's.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Filter out rows for which no information appears in the module
 \end_layout
 
@@ -349,7 +243,7 @@ Sometimes is conveniento to restrict the background population to only those
  biological process annotations should be considered for the background.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection*
 Selection of the modules
 \end_layout
 
@@ -363,7 +257,7 @@ Selection of the modules
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 File format & File
 \end_layout
 
@@ -386,7 +280,7 @@ Reference formats section
 
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Paragraph
 Modules filtering
 \end_layout
 
@@ -399,7 +293,7 @@ If the number of elements of one module is too low some tests could not
  quantity using this filters.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection*
 Selection of the test
 \end_layout
 
@@ -416,36 +310,17 @@ Selection of the test
 \begin_layout Standard
 There are different kind of statistical tests that can be used, in this
  page the user can select the one that he/she wants to use.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Reference to tests explanation.
-\end_layout
+ See section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:statistical-tests"
 
 \end_inset
 
-
+ for more details.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-We are preparing some detailed information about the implemented tests but
- it is not ready yet.
- Meanwhile you can search in the wikipedia for the tests to have an overall
- idea.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
+\begin_layout Subsubsection*
 Analysis details
 \end_layout
 
@@ -469,6 +344,114 @@ This step is optional but recommended as it allows to give some details
 It will be possible to specify free attributes for the analysis as Organization,
  Operator, Platform and so forth but it is not finished yet.
  Note that this option is already available through command line interface.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:statistical-tests"
+
+\end_inset
+
+How is this calculated ?
+\end_layout
+
+\begin_layout Standard
+Currently there are three different statistical tests implemented for enrichment
+ analysis in Gitools.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+We are preparing some detailed information about the implemented tests but
+ it is not ready yet.
+ Meanwhile you can search in the wikipedia for the tests to have an overall
+ idea.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Binomial (Bernoulli) test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Fisher's exact test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Z-score test
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Elaborate more on this.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Z-score test is used to see if there is a significant deviation from
+ random expectation for an estimator value (mean or median) of each module
+ in each of the conditions:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $Z_{i}=\frac{(X-\mu_{i})}{\sigma_{i}}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\mu_{i}$
+\end_inset
+
+ is the mean and 
+\begin_inset Formula $\sigma_{i}$
+\end_inset
+
+ is the standard deviation of the estimator for different permutations for
+ condition i.
 \end_layout
 
 \end_body

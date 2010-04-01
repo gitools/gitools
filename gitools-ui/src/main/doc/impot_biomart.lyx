@@ -43,6 +43,10 @@
 \begin_body
 
 \begin_layout Section
+Biomart
+\end_layout
+
+\begin_layout Subsection
 What is Biomart ?
 \end_layout
 
@@ -65,7 +69,7 @@ target "http://www.biomart.org"
 .
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Import from BioMart
 \end_layout
 
@@ -74,8 +78,8 @@ You can import tables, modules and matrices directly from Biomart using
  Gitools.
 \end_layout
 
-\begin_layout Subsection
-Importing tables
+\begin_layout Subsubsection*
+Tables
 \end_layout
 
 \begin_layout Standard
@@ -91,8 +95,8 @@ This part of the documentation is still missing.
 
 \end_layout
 
-\begin_layout Subsection
-Importing modules
+\begin_layout Subsubsection*
+Modules
 \end_layout
 
 \begin_layout Standard
@@ -108,8 +112,8 @@ This part of the documentation is still missing.
 
 \end_layout
 
-\begin_layout Subsection
-Importing matrices
+\begin_layout Subsubsection*
+Matrices
 \end_layout
 
 \begin_layout Standard
