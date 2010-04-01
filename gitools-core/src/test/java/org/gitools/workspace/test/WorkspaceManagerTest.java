@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 
 public class WorkspaceManagerTest extends TestCase {
 
-	@Test
+	//@Test
 	public void testWorkspaceOpen() {
 		File xmlPath = openResourceFile("workspace/" + FileSuffixes.WORKSPACE);
 		WorkspaceManager wm = WorkspaceManager.createManager(xmlPath);
@@ -30,7 +30,7 @@ public class WorkspaceManagerTest extends TestCase {
 		assertNotNull(ws);
 	}
 	
-	@Test
+	//@Test
 	public void testProjectCreate() throws IOException, PersistenceException {
 		// Create temporary workspace
 		File basePath = File.createTempFile("gitools-workspace-", "");
