@@ -100,10 +100,13 @@ public class DataPage extends AbstractWizardPage {
 
 		String path = dataFilePath.getText().trim().toLowerCase();
 		if (!path.isEmpty()) {
-			String ext = getFileFormat().getExtension().toLowerCase();
+			if (!getFileFormat().checkExtension(path))
+				setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
+
+			/*String ext = getFileFormat().getExtension().toLowerCase();
 			if (!path.endsWith(ext) &&
 					!path.endsWith(ext + ".gz"))
-				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");
+				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");*/
 		}
 
 		boolean c = !dataFilePath.getText().isEmpty();
@@ -302,8 +305,7 @@ public class DataPage extends AbstractWizardPage {
 		if (selPath != null) {
 			String fileName = selPath.getName().toLowerCase();
 			for (FileFormat ff : formats) {
-				String ext = ff.getExtension().toLowerCase();
-				if (fileName.endsWith(ext)) {
+				if (ff.checkExtension(fileName)) {
 					dataContentsCb.setSelectedItem(ff);
 					break;
 				}

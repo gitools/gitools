@@ -46,6 +46,10 @@ public class ModulesPage extends AbstractWizardPage {
         initComponents();
 
 		fileFormatCb.setModel(new DefaultComboBoxModel(formats));
+		fileFormatCb.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				updateState(); }
+		});
 
 		filePath.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
@@ -102,10 +106,13 @@ public class ModulesPage extends AbstractWizardPage {
 
 		String path = filePath.getText().trim().toLowerCase();
 		if (!path.isEmpty()) {
-			String ext = getFileFormat().getExtension().toLowerCase();
+			if (!getFileFormat().checkExtension(path))
+				setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
+
+			/*String ext = getFileFormat().getExtension().toLowerCase();
 			if (!path.endsWith(ext) &&
 					!path.endsWith(ext + ".gz"))
-				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");
+				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");*/
 		}
 
 		setComplete(completed);
@@ -235,8 +242,7 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 	if (selPath != null) {
 		String fileName = selPath.getName().toLowerCase();
 		for (FileFormat ff : formats) {
-			String ext = ff.getExtension().toLowerCase();
-			if (fileName.endsWith(ext)) {
+			if (ff.checkExtension(fileName)) {
 				fileFormatCb.setSelectedItem(ff);
 				break;
 			}

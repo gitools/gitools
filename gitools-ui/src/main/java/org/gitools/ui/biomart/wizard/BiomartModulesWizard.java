@@ -11,6 +11,7 @@ import org.gitools.biomart.restful.model.MartLocation;
 
 
 import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.settings.Settings;
@@ -36,12 +37,12 @@ public class BiomartModulesWizard extends AbstractWizard {
 
 	private DatasetInfo Dataset;
 	
-	public static final String FORMAT_TSV = "TSV";
-	public static final String FORMAT_TSV_GZ = "GZ";
+	public static final String FORMAT_PLAIN = "TSV";
+	public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
 	private FileFormat[] supportedFormats = new FileFormat[] {
-		new FileFormat("Tab Separated Fields", "tsv", FORMAT_TSV, true, false),
-		new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", FORMAT_TSV_GZ, true, false)
+		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), FORMAT_PLAIN, true, false),
+		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", FORMAT_COMPRESSED_GZ, true, false)
 	};
 	
 	public BiomartModulesWizard() {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/

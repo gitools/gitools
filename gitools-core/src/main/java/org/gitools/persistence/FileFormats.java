@@ -38,11 +38,11 @@ public class FileFormats {
 			"Two columns mappings", FileSuffixes.MODULES_2C_MAP, MimeTypes.MODULES_2C_MAP);
 
 	public static final FileFormat PNG = new FileFormat(
-			"PNG", "png", "image/png");
+			"PNG", "png", "image/png", true, false);
 
 	public static final FileFormat JPG = new FileFormat(
-			"JPEG", "jpg", "image/jpeg");
+			"JPEG", "jpg", "image/jpeg", true, false);
 
 	public static final FileFormat PDF = new FileFormat(
-			"PDF", "pdf", "application/pdf");
+			"PDF", "pdf", "application/pdf", true, false);
 }
