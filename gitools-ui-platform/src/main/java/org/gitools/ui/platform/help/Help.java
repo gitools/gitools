@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.gitools.ui.platform.PropertiesExpansion;
 
 public abstract class Help {
 
@@ -51,7 +52,7 @@ public abstract class Help {
 		}
 	}
 
-	protected Properties properties;
+	protected PropertiesExpansion properties;
 	protected List<UrlMap> urlMap;
 
 	public Help() {
@@ -59,7 +60,7 @@ public abstract class Help {
 	}
 
 	protected Help(Properties properties, List<UrlMap> urlMap) {
-		this.properties = properties;
+		this.properties = new PropertiesExpansion(properties);
 		this.urlMap = urlMap;
 	}
 

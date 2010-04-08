@@ -61,13 +61,13 @@ public class HideSelectionAction extends BaseAction {
 		
 		switch (type) {
 		case ROWS:
-			msg = "Selected rows hided.";
+			msg = "Selected rows hidden.";
 			matrixView.setVisibleRows(arrayRemove(
 					matrixView.getVisibleRows(), 
 					matrixView.getSelectedRows()));
 			break;
 		case COLUMNS:
-			msg = "Selected columns hided.";
+			msg = "Selected columns hidden.";
 			matrixView.setVisibleColumns(arrayRemove(
 					matrixView.getVisibleColumns(), 
 					matrixView.getSelectedColumns()));
