@@ -1,12 +1,14 @@
 package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
+import java.util.List;
 
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.MartLocation;
 
 
@@ -78,13 +80,12 @@ public class BiomartModulesWizard extends AbstractWizard {
 		dataAttributePage.setTitle("Select attribute for modules");
 		addPage(dataAttributePage);
 
-		/*
+
 		// Advance filtering
-		filterListPage = new BiomartFilterConfigurationPage(biomartService);
+		filterListPage = new BiomartFilterConfigurationPage();
 		filterListPage.setTitle("Select filters");
 		addPage(filterListPage);
-		 * 
-		 */
+
 	}
 
 	@Override
@@ -106,17 +107,16 @@ public class BiomartModulesWizard extends AbstractWizard {
 					biomartService,
 					Database,
 					Dataset);
+			
 		} else if (page == modulesAttributePage) {
 
 			dataAttributePage.setAttributePages(
 					modulesAttributePage.getAttributePages());
 		}
 
-		/*else if (page == filterListPage)
-		filterListPage.setSource(
-		databasePage.getMart(),
-		datasetPage.getDataset());
-		 */
+		else if (page == dataAttributePage)
+			filterListPage.setSource(biomartService, Dataset);
+		 
 		return super.getNextPage(page);
 	}
 
@@ -142,6 +142,10 @@ public class BiomartModulesWizard extends AbstractWizard {
 
 		ds.getAttribute().add(moduleAttr);
 		ds.getAttribute().add(dataAttr);
+
+		//Add filters into dataset
+		List<Filter> dsFilters = ds.getFilter();
+		dsFilters.addAll(filterListPage.getFilters());
 
 		Query query = new Query();
 		query.setVirtualSchemaName(mart.getServerVirtualSchema());

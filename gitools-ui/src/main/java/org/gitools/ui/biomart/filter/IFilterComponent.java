@@ -16,6 +16,7 @@
  */
 package org.gitools.ui.biomart.filter;
 
+
 import org.gitools.biomart.restful.model.Filter;
 
 interface IFilterComponent {
@@ -26,9 +27,11 @@ interface IFilterComponent {
 
     public FilterDescriptionPanel getDescriptionPanel();
 
-    public IFilterComponent getChildComponent();
+    public FilterComponent getChildComponent();
 
-    public void addChildComponent(IFilterComponent child);
+    public void addChildComponent(FilterComponent child);
 
     public Boolean hasChild();
+
+	public Integer getCurrentHeight();
 }

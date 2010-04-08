@@ -6,27 +6,34 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+/*@XmlType(name = "", propOrder = {
     "virtualSchemaName",
     "header",
     "count",
     "uniqueRows",
-    "dataset"
+ *  "dataset"
 })
+ */
+
 @XmlRootElement(name = "query")
+@XmlAccessorType(XmlAccessType.FIELD)
+
 public class Query {
 
     @XmlAttribute(required = true)
     protected String virtualSchemaName;
+	@XmlAttribute
     protected int header;
+	@XmlAttribute
     protected int count;
+	@XmlAttribute
     protected int uniqueRows;
-    @XmlAttribute(name = "Dataset", required = true)
+	
+    @XmlElement(name = "Dataset", required = true)
     protected List<Dataset> dataset;
 
     /**

@@ -18,6 +18,7 @@ package org.gitools.ui.biomart.wizard;
 
 import java.io.File;
 import java.util.List;
+
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
@@ -25,6 +26,7 @@ import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.persistence.FileFormat;
@@ -86,13 +88,11 @@ public class BiomartTableWizard extends AbstractWizard {
 		attrListPage.setTitle("Select attributes");
 		addPage(attrListPage);
 
-		/*
 		// Advance filtering
-		filterListPage = new BiomartFilterConfigurationPage(biomartService);
+		filterListPage = new BiomartFilterConfigurationPage();
 		filterListPage.setTitle("Select filters");
 		addPage(filterListPage);
-		 */
-
+		
 		// Filtering
 		filteringPage = new BiomartTableFilteringPage();
 		addPage(filteringPage);
@@ -103,7 +103,6 @@ public class BiomartTableWizard extends AbstractWizard {
 		IWizardPage nextPage = super.getNextPage(page);
 
 		if (nextPage == attrListPage) {
-
 			biomartService = sourcePage.getService();
 			Database = sourcePage.getDataBase();
 			Dataset = sourcePage.getDataset();
@@ -114,13 +113,13 @@ public class BiomartTableWizard extends AbstractWizard {
 					Dataset);
 		}
 
-		/*
+		
 		else if (nextPage == filterListPage) {
-		filterListPage.setSource(
-		databasePage.getMart(),
-		datasetPage.getDataset());
+			filterListPage.setSource(
+						biomartService,
+						Dataset);
 		}
-		 */
+		
 		return nextPage;
 	}
 
@@ -152,24 +151,26 @@ public class BiomartTableWizard extends AbstractWizard {
 	}
 
 	public Query getQuery() {
-		MartLocation mart = getDatabase();
 
-		Dataset ds = new Dataset();
-		ds.setName(getDataset().getName());
+			MartLocation mart = getDatabase();
+			Dataset ds = new Dataset();
+			ds.setName(getDataset().getName());
+			List<Attribute> dsattrs = ds.getAttribute();
+			for (AttributeDescription attrInfo : attrListPage.getAttributeList()) {
+				Attribute attr = new Attribute();
+				attr.setName(attrInfo.getInternalName());
+				dsattrs.add(attr);
+			}
+			//Add filters into dataset
+			List<Filter> dsFilters = ds.getFilter();
+			dsFilters.addAll(filterListPage.getFilters());
 
-		List<Attribute> dsattrs = ds.getAttribute();
-		for (AttributeDescription attrInfo : attrListPage.getAttributeList()) {
-			Attribute attr = new Attribute();
-			attr.setName(attrInfo.getInternalName());
-			dsattrs.add(attr);
-		}
-
-		Query query = new Query();
-		query.setVirtualSchemaName(mart.getServerVirtualSchema());
-		query.setHeader(1);
-		query.setCount(0);
-		query.setUniqueRows(1);
-		query.getDataset().add(ds);
+			Query query = new Query();
+			query.setVirtualSchemaName(mart.getServerVirtualSchema());
+			query.setHeader(1);
+			query.setCount(0);
+			query.setUniqueRows(1);
+			query.getDataset().add(ds);
 
 		return query;
 	}

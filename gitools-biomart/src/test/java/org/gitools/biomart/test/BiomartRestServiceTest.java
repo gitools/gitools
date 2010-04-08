@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;
@@ -190,7 +192,7 @@ public class BiomartRestServiceTest {
 	}
 
 	@Test
-	public void QueryAsStream() {
+	public void QueryAsStream() throws JAXBException {
 		try {
 			InputStream in = null;
 			BufferedReader br = null;

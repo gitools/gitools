@@ -16,27 +16,29 @@
  */
 package org.gitools.ui.biomart.filter;
 
+import javax.swing.JPanel;
 import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.biomart.restful.model.Option;
 
-abstract class FilterComponent implements IFilterComponent {
+public abstract class FilterComponent extends JPanel implements IFilterComponent {
 
-    protected IFilterComponent childComponent;
-    protected IFilterComponent parentComponent;
+    protected FilterComponent childComponent;
     protected FilterDescriptionPanel parentPanel;
     protected FilterDescription filterDescription;
-    protected Option filterOptions;
+    protected Option filterOptions; 
+	protected Integer currentHeight;
 
     FilterComponent(FilterDescription d, FilterDescriptionPanel parent) {
         filterDescription = d;
         parentPanel = parent;
+        filterOptions = null;
     }
 
-    FilterComponent(Option o, IFilterComponent c) {
+    FilterComponent(Option option) {
         filterDescription = null;
         parentPanel = null;
-        filterOptions = o;
-        parentComponent = c;
+        filterOptions = option;
+
     }
 
 
@@ -46,12 +48,12 @@ abstract class FilterComponent implements IFilterComponent {
     }
 
     @Override
-    public IFilterComponent getChildComponent() {
+    public FilterComponent getChildComponent() {
         return childComponent;
     }
 
     @Override
-    public void addChildComponent(IFilterComponent childComponent) {
+    public void addChildComponent(FilterComponent childComponent) {
         this.childComponent = childComponent;
     }
 
@@ -59,4 +61,9 @@ abstract class FilterComponent implements IFilterComponent {
     public FilterDescriptionPanel getDescriptionPanel() {
         return parentPanel;
     }
+	
+	@Override
+	public Integer getCurrentHeight() {
+		return currentHeight;
+	}
 }

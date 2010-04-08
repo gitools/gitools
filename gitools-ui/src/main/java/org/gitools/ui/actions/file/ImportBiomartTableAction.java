@@ -50,7 +50,7 @@ public class ImportBiomartTableAction extends BaseAction {
 			}
 			final File file = wizard.getSelectedFile();
 			JobThread.execute(AppFrame.instance(), new JobRunnable() {
-
+ 
 				@Override
 				public void run(IProgressMonitor monitor) {
 					monitor.begin("Downloading data...", 1);

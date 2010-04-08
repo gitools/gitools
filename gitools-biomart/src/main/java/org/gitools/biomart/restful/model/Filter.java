@@ -4,6 +4,7 @@ package org.gitools.biomart.restful.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -25,7 +26,8 @@ public class Filter {
     protected int excluded;
 	
 	// Only in case of radio components since
-	// a query in xml with this type of components is different 
+	// a query in xml with this type of components is different
+	@XmlTransient
     protected Boolean radio=false;
 
     /**
