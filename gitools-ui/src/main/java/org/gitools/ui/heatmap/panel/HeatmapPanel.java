@@ -21,6 +21,7 @@ import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
 
 public class HeatmapPanel extends JPanel {
 
@@ -49,9 +50,9 @@ public class HeatmapPanel extends JPanel {
 			}
 		};
 
-		heatmapChanged(null);
-
 		createComponents();
+
+		heatmapChanged(null);
 
 		setFocusable(true);
 	}
@@ -257,17 +258,28 @@ public class HeatmapPanel extends JPanel {
 		String pname = evt.getPropertyName();
 
 		//FIXME imatrixview only when visibility or lead changed
-		if (
-				(evt.getSource().equals(heatmap)
-					&& (Heatmap.CELL_SIZE_CHANGED.equals(pname)
-						|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)))
-				|| evt.getSource().equals(heatmap.getMatrixView())) {
-
-			updateScrolls();
-			revalidate();
+		if (evt.getSource().equals(heatmap)) {
+			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
+					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)) {
+				updateScrolls();
+				revalidate();
+				repaint();
+			}
 		}
+		else if (evt.getSource().equals(heatmap.getMatrixView())) {
+			if (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
+					|| MatrixView.VISIBLE_ROWS_CHANGED.equals(pname)
+					|| MatrixView.SELECTED_LEAD_CHANGED.equals(pname)) {
 
-		repaint();
+				bodyPanel.updateSize();
+				rowHeaderPanel.updateSize();
+				columnHeaderPanel.updateSize();
+				
+				updateScrolls();
+				revalidate();
+				repaint();
+			}
+		}
 	}
 
     @Override

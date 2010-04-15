@@ -32,6 +32,10 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		// Clear background
+		g.setColor(Color.WHITE);
+		g.fillRect(clip.x, clip.y, clip.width, clip.height);
+
 		// Draw borders
 		if (heatmap.isShowBorders()) {
 			int borderSize = getBorderSize();
@@ -116,7 +120,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 			if (lead) {
 				g.setColor(ColorUtils.invert(bgColor));
-				g.drawRect(x, y, width, height - gridSize);
+				g.drawRect(x, y, width, height - gridSize - 1);
 			}
 
 			if (fontHeight <= height - gridSize) {

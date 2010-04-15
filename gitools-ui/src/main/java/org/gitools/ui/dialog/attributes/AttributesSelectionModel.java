@@ -117,6 +117,36 @@ public class AttributesSelectionModel<T> implements ListModel {
 		fireChange();
 	}
 
+	public void moveUp(List<Integer> indices) {
+
+		for (Integer index : indices) {
+			int i = selectedAttributes.indexOf(index);
+
+			if (i >= 0) {
+				Integer tmp = selectedAttributes.get(i);
+				selectedAttributes.set(i, selectedAttributes.get(i - 1));
+				selectedAttributes.set(i - 1, tmp);
+			}
+		}
+		
+		fireChange();
+	}
+
+	public void moveDown(List<Integer> indices) {
+
+		for (Integer index : indices) {
+			int i = selectedAttributes.indexOf(index);
+
+			if (i >= 0) {
+				Integer tmp = selectedAttributes.get(i);
+				selectedAttributes.set(i, selectedAttributes.get(i + 1));
+				selectedAttributes.set(i + 1, tmp);
+			}
+		}
+
+		fireChange();
+	}
+
 	private void fireChange() {
 		int size = selectedAttributes.size();
 

@@ -152,7 +152,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 		query.setHeader(header);
 		query.setCount(count);
 		query.setUniqueRows(uniqueRows);
-		query.getDataset().add(ds);
+		query.getDatasets().add(ds);
 
 		/*try {
 		List<ResultsRow> resultRows = port.query(

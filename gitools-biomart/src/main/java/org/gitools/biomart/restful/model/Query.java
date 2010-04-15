@@ -8,33 +8,29 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-/*@XmlType(name = "", propOrder = {
-    "virtualSchemaName",
-    "header",
-    "count",
-    "uniqueRows",
- *  "dataset"
-})
- */
-
-@XmlRootElement(name = "query")
+@XmlRootElement(name = "Query")
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class Query {
 
     @XmlAttribute(required = true)
     protected String virtualSchemaName;
+
 	@XmlAttribute
     protected int header;
+
 	@XmlAttribute
     protected int count;
+
 	@XmlAttribute
     protected int uniqueRows;
+
+	@XmlAttribute
+	protected String formatter;
 	
     @XmlElement(name = "Dataset", required = true)
-    protected List<Dataset> dataset;
+    protected List<Dataset> datasets;
 
     /**
      * Gets the value of the virtualSchemaName property.
@@ -108,6 +104,20 @@ public class Query {
         this.uniqueRows = value;
     }
 
+	/**
+	 * Get the formatter (TSV, ...)
+	 */
+	public String getFormatter() {
+		return formatter;
+	}
+
+	/**
+	 * Set the formatter (TSV, ...)
+	 */
+	public void setFormatter(String formatter) {
+		this.formatter = formatter;
+	}
+
     /**
      * Gets the value of the dataset property.
      * 
@@ -130,11 +140,11 @@ public class Query {
      * 
      * 
      */
-    public List<Dataset> getDataset() {
-        if (dataset == null) {
-            dataset = new ArrayList<Dataset>();
+    public List<Dataset> getDatasets() {
+        if (datasets == null) {
+            datasets = new ArrayList<Dataset>();
         }
-        return this.dataset;
+        return this.datasets;
     }
 
 }

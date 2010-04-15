@@ -170,7 +170,7 @@ public class BiomartTableWizard extends AbstractWizard {
 			query.setHeader(1);
 			query.setCount(0);
 			query.setUniqueRows(1);
-			query.getDataset().add(ds);
+			query.getDatasets().add(ds);
 
 		return query;
 	}

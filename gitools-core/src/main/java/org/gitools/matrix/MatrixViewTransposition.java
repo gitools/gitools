@@ -36,14 +36,6 @@ public class MatrixViewTransposition implements IMatrixView {
 		this.mv = mv;
 	}
 
-	/*public IMatrixView getMatrixView() {
-		return mv;
-	}
-
-	public void setMatrixView(IMatrixView mv) {
-		this.mv = mv;
-	}*/
-
 	public void setMatrix(IMatrix matrix) {
 		this.mv = matrix instanceof IMatrixView ?
 			(IMatrixView) matrix : new MatrixView(matrix);
@@ -92,6 +84,16 @@ public class MatrixViewTransposition implements IMatrixView {
 	@Override
 	public void moveColumnsRight(int[] indices) {
 		mv.moveRowsDown(indices);
+	}
+
+	@Override
+	public void hideRows(int[] indices) {
+		mv.hideColumns(indices);
+	}
+
+	@Override
+	public void hideColumns(int[] indices) {
+		mv.hideRows(indices);
 	}
 
 	@Override

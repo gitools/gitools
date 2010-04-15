@@ -145,8 +145,6 @@ public class MatrixView
 		int nextLeadRow = -1;
 		final int leadRow = selectionLeadRow >= 0 ? visibleRows[selectionLeadRow] : -1;
 
-		int leadColumn = selectionLeadColumn >= 0 ? visibleColumns[selectionLeadColumn] : -1;
-
 		for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
 			if (indices[i] == leadRow)
 				nextLeadRow = i;
@@ -236,6 +234,88 @@ public class MatrixView
 		arrayMoveRight(visibleColumns, indices, selectedColumns);
 		firePropertyChange(VISIBLE_COLUMNS_CHANGED);
 		firePropertyChange(SELECTION_CHANGED);
+	}
+
+	@Override
+	public void hideRows(int[] indices) {
+		int[] rows = getVisibleRows();
+
+		int[] sel = indices;
+		if (sel == null || sel.length == 0) {
+			if (selectionLeadRow != -1)
+				sel = new int[] { selectionLeadRow };
+			else
+				sel = new int[0];
+		}
+		else
+			Arrays.sort(sel);
+
+		int nextLead = sel.length > 0 ? sel[0] : -1;
+
+		int[] vrows = new int[rows.length - sel.length];
+
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		while (i < rows.length && j < sel.length) {
+			if (i != sel[j])
+				vrows[k++] = rows[i];
+			else
+				j++;
+
+			i++;
+		}
+
+		while (i < rows.length)
+			vrows[k++] = rows[i++];
+
+		setVisibleRows(vrows);
+
+		if (nextLead > getRowCount() - 1)
+			nextLead = getRowCount() - 1;
+
+		setLeadSelection(nextLead, getLeadSelectionColumn());
+	}
+
+	@Override
+	public void hideColumns(int[] indices) {
+		int[] columns = getVisibleColumns();
+
+		int[] sel = indices;
+		if (sel == null || sel.length == 0) {
+			if (selectionLeadColumn != -1)
+				sel = new int[] { selectionLeadColumn };
+			else
+				sel = new int[0];
+		}
+		else
+			Arrays.sort(sel);
+
+		int nextLead = sel.length > 0 ? sel[0] : -1;
+
+		int[] vcolumns = new int[columns.length - sel.length];
+
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		while (i < columns.length && j < sel.length) {
+			if (i != sel[j])
+				vcolumns[k++] = columns[i];
+			else
+				j++;
+
+			i++;
+		}
+
+		while (i < columns.length)
+			vcolumns[k++] = columns[i++];
+
+		setVisibleColumns(vcolumns);
+
+		if (nextLead > getColumnCount() - 1)
+			nextLead = getColumnCount() - 1;
+
+		setLeadSelection(getLeadSelectionRow(), nextLead);
 	}
 	
 	/* selection */

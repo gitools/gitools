@@ -34,6 +34,9 @@ public interface IMatrixView extends IModel, IMatrix {
 	void moveRowsDown(int[] indices);
 	void moveColumnsLeft(int[] indices);
 	void moveColumnsRight(int[] indices);
+
+	void hideRows(int[] indices);
+	void hideColumns(int[] indices);
 	
 	// selection
 	

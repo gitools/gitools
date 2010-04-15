@@ -116,21 +116,20 @@ public class AbstractHeatmapPanel extends JPanel {
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
 					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)
 					|| Heatmap.COLUMN_HEADER_SIZE_CHANGED.equals(pname)
-					|| Heatmap.ROW_HEADER_SIZE_CHANGED.equals(pname)) {
-				
-				setPreferredSize(drawer.getSize());
-				revalidate();
-			}
+					|| Heatmap.ROW_HEADER_SIZE_CHANGED.equals(pname))
+				updateSize();
 		}
 		else if (evt.getSource().equals(heatmap.getMatrixView())) {
 			if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
-					|| IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname)) {
-
-				setPreferredSize(drawer.getSize());
-				revalidate();
-			}
+					|| IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
+				updateSize();
 		}
 
 		repaint();
+	}
+
+	public void updateSize() {
+		setPreferredSize(drawer.getSize());
+		revalidate();
 	}
 }

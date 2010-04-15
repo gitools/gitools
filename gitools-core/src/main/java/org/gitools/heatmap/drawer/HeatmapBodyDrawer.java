@@ -13,21 +13,11 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
-	
-	//private ElementDecorator decorator;
 
 	public HeatmapBodyDrawer(Heatmap heatmap) {
 		super(heatmap);
 	}
 
-	/*public ElementDecorator getDecorator() {
-		return decorator;
-	}
-
-	public void setDecorator(ElementDecorator decorator) {
-		this.decorator = decorator;
-	}
-	*/
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
@@ -35,9 +25,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		int rowsGridSize = getRowsGridSize();
 		int columnsGridSize = getColumnsGridSize();
 		
-		// Clear background to grid color
-		/*g.setColor(heatmap.getRowsGridColor());
-		g.fillRect(clip.x, clip.y, clip.width, clip.height);*/
+		// Clear background
+		g.setColor(Color.WHITE);
+		g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
 		// Draw borders and grid background
 		if (heatmap.isShowBorders()) {
@@ -85,7 +75,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
 				g.setColor(heatmap.getColumnsGridColor());
 
-				g.fillRect(x + cellHeight - rowsGridSize, y, columnsGridSize, cellHeight - rowsGridSize);
+				g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
 				if (!pictureMode && row == leadRow && col == leadColumn) {
 					g.setColor(ColorUtils.invert(color));

@@ -62,22 +62,21 @@ public class HideSelectionAction extends BaseAction {
 		switch (type) {
 		case ROWS:
 			msg = "Selected rows hidden.";
-			matrixView.setVisibleRows(arrayRemove(
+			matrixView.hideRows(matrixView.getSelectedRows());
+			/*matrixView.setVisibleRows(arrayRemove(
 					matrixView.getVisibleRows(), 
-					matrixView.getSelectedRows()));
+					matrixView.getSelectedRows()));*/
 			break;
 		case COLUMNS:
 			msg = "Selected columns hidden.";
-			matrixView.setVisibleColumns(arrayRemove(
+			matrixView.hideColumns(matrixView.getSelectedColumns());
+			/*matrixView.setVisibleColumns(arrayRemove(
 					matrixView.getVisibleColumns(), 
-					matrixView.getSelectedColumns()));
+					matrixView.getSelectedColumns()));*/
 			break;
 		}
 		
-		matrixView.clearSelection();
-		
-		AppFrame.instance()
-			.setStatusText(msg);
+		AppFrame.instance().setStatusText(msg);
 	}
 	
 	private int[] arrayRemove(int[] array, int[] indices) {

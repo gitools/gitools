@@ -51,7 +51,9 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		boolean altDown = ((modifiers & InputEvent.ALT_MASK) != 0);
 
 		if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP
-				|| key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
+				|| key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT
+				|| key == KeyEvent.VK_HOME || key == KeyEvent.VK_END
+				|| key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN) {
 
 			if (!shiftDown && !ctrlDown && !altDown)
 				changeLead(e, true);
@@ -82,33 +84,68 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		IMatrixView mv = hm.getMatrixView();
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
-		
+
+		final int rowPageSize = 10; //FIXME should depend on screen size
+		final int colPageSize = 10; //FIXME should depend on screen size
+
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-				if (row < mv.getRowCount() - 1) {
+				if (row < mv.getRowCount() - 1)
 					row++;
-				}
 				break;
 			case KeyEvent.VK_UP:
-				if (row > 0) {
+				if (row > 0)
 					row--;
-				} else if (col != -1) {
+				else if (col != -1)
 					row = -1;
-				}
 				break;
 			case KeyEvent.VK_RIGHT:
-				if (col >= 0 && col < mv.getColumnCount() - 1) {
+				if (col >= 0 && col < mv.getColumnCount() - 1)
 					col++;
-				} else if (row != -1) {
+				else if (row != -1)
 					col = -1;
-				}
 				break;
 			case KeyEvent.VK_LEFT:
-				if (col > 0) {
+				if (col > 0)
 					col--;
-				} else if (col == -1) {
+				else if (col == -1)
 					col = mv.getColumnCount() - 1;
+				break;
+			case KeyEvent.VK_PAGE_UP:
+				if (row != -1) {
+					row -= rowPageSize;
+					if (row < 0)
+						row = 0;
 				}
+				else if (row == -1 && col != -1) {
+					col -= colPageSize;
+					if (col < 0)
+						col = 0;
+				}
+				break;
+			case KeyEvent.VK_PAGE_DOWN:
+				if (row != -1) {
+					row += rowPageSize;
+					if (row >= mv.getRowCount())
+						row = mv.getRowCount() - 1;
+				}
+				else if (row == -1 && col != -1) {
+					col += colPageSize;
+					if (col >= mv.getColumnCount())
+						col = mv.getColumnCount() - 1;
+				}
+				break;
+			case KeyEvent.VK_HOME:
+				if (row != -1)
+					row = 0;
+				else if (row == -1 && col != -1)
+					col = 0;
+				break;
+			case KeyEvent.VK_END:
+				if (row != -1)
+					row = mv.getRowCount() - 1;
+				else if (row == -1 && col != -1)
+					col = mv.getColumnCount() - 1;
 				break;
 		}
 
@@ -124,29 +161,11 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
 
-		if (row != -1) {
-			int[] rows = mv.getVisibleRows();
-			int[] vrows = new int[rows.length - 1];
-			System.arraycopy(rows, 0, vrows, 0, row);
-			System.arraycopy(rows, row + 1, vrows, row, rows.length - row - 1);
-			mv.setVisibleRows(vrows);
+		if (row != -1)
+			mv.hideRows(mv.getSelectedRows());
 
-			if (row > mv.getRowCount() - 1)
-				row = mv.getRowCount() - 1;
-		}
-
-		if (col != -1) {
-			int[] cols = mv.getVisibleColumns();
-			int[] vcols = new int[cols.length - 1];
-			System.arraycopy(cols, 0, vcols, 0, col);
-			System.arraycopy(cols, col + 1, vcols, col, cols.length - col - 1);
-			mv.setVisibleColumns(vcols);
-
-			if (col > mv.getColumnCount() - 1)
-				col = mv.getColumnCount() - 1;
-		}
-
-		mv.setLeadSelection(row, col);
+		if (col != -1)
+			mv.hideColumns(mv.getSelectedColumns());
 	}
 
 	private void moveLead(KeyEvent e) {

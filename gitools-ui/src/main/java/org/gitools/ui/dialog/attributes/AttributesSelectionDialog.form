@@ -36,7 +36,7 @@
                       <Component id="cancelButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane1" pref="321" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="329" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="downBtn" alignment="1" max="32767" attributes="1"/>
@@ -140,12 +140,18 @@
         <Property name="text" type="java.lang.String" value="Move up"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="upBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="downBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Move down"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="downBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="loadBtn">
       <Properties>

@@ -80,6 +80,16 @@ public class HeatmapMatrixViewAdapter implements IMatrixView {
 	}
 
 	@Override
+	public void hideRows(int[] indices) {
+		mv.hideRows(indices);
+	}
+
+	@Override
+	public void hideColumns(int[] indices) {
+		mv.hideColumns(indices);
+	}
+
+	@Override
 	public int[] getSelectedRows() {
 		return mv.getSelectedRows();
 	}

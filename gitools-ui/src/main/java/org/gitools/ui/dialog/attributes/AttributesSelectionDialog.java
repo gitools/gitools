@@ -30,6 +30,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,9 +169,19 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
 
         upBtn.setText("Move up");
         upBtn.setEnabled(false);
+        upBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                upBtnActionPerformed(evt);
+            }
+        });
 
         downBtn.setText("Move down");
         downBtn.setEnabled(false);
+        downBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downBtnActionPerformed(evt);
+            }
+        });
 
         loadBtn.setText("Load...");
         loadBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -199,7 +210,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(downBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -348,6 +359,38 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
 			edlg.setVisible(true);
 		}
 	}//GEN-LAST:event_saveBtnActionPerformed
+
+	private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
+		int[] listIndices = list.getSelectedIndices();
+		List<Integer> selIndices = listModel.getSelectedIndices();
+		List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
+
+		for (int i : listIndices)
+			moveIndices.add(selIndices.get(i));
+
+		listModel.moveUp(moveIndices);
+		
+		for (int i = 0; i < listIndices.length; i++)
+			listIndices[i]--;
+
+		list.setSelectedIndices(listIndices);
+	}//GEN-LAST:event_upBtnActionPerformed
+
+	private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
+		int[] listIndices = list.getSelectedIndices();
+		List<Integer> selIndices = listModel.getSelectedIndices();
+		List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
+
+		for (int i : listIndices)
+			moveIndices.add(selIndices.get(i));
+
+		listModel.moveDown(moveIndices);
+
+		for (int i = 0; i < listIndices.length; i++)
+			listIndices[i]++;
+
+		list.setSelectedIndices(listIndices);
+	}//GEN-LAST:event_downBtnActionPerformed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;

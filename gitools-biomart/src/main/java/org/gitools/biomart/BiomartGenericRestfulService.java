@@ -209,7 +209,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		sw.append(" formatter=\"").append(format).append('"');
 		sw.append(" datasetConfigVersion=\"0.7\">");
 
-		for (Dataset ds : query.getDataset()) {
+		for (Dataset ds : query.getDatasets()) {
 			sw.append("<Dataset");
 			sw.append(" name=\"").append(ds.getName()).append('"');
 			sw.append(" interface=\"default\">");
