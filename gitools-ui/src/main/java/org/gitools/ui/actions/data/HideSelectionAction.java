@@ -79,7 +79,7 @@ public class HideSelectionAction extends BaseAction {
 		AppFrame.instance().setStatusText(msg);
 	}
 	
-	private int[] arrayRemove(int[] array, int[] indices) {
+	/*private int[] arrayRemove(int[] array, int[] indices) {
 		int j = 0;
 		int lastIndex = 0;
 		int[] newIndices = new int[array.length - indices.length];
@@ -94,5 +94,5 @@ public class HideSelectionAction extends BaseAction {
 		System.arraycopy(array, lastIndex, newIndices, j, array.length - lastIndex);
 		
 		return newIndices;
-	}
+	}*/
 }
