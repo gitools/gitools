@@ -37,6 +37,9 @@ public class FileFormats {
 	public static final FileFormat MODULES_2C_MAP = new FileFormat(
 			"Two columns mappings", FileSuffixes.MODULES_2C_MAP, MimeTypes.MODULES_2C_MAP);
 
+	public static final FileFormat RESULTS_MATRIX = new FileFormat(
+			"Multivalue data matrix", FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
+
 	public static final FileFormat PNG = new FileFormat(
 			"PNG", "png", "image/png", true, false);
 

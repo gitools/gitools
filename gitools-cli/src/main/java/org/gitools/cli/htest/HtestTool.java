@@ -14,7 +14,6 @@ import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
 
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.MimeTypes;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -36,10 +35,9 @@ public abstract class HtestTool extends AnalysisTool {
 				"Available: bonferroni, bh. (default: bh)")
 		public String mtc = "bh";
 
-		@Option(name = "-dm", aliases = "-data-mime", metaVar = "<MIME>",
-				usage = "Data file format (MIME). (default: " +
-				MimeTypes.DOUBLE_MATRIX + ")")
-		public String dataMime = MimeTypes.DOUBLE_MATRIX;
+		@Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
+				usage = "Data file format (MIME type or file extension).")
+		public String dataMime;
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",
 				usage = "File with data to be processed.")

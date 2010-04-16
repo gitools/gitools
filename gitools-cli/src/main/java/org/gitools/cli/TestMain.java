@@ -31,8 +31,9 @@ public class TestMain {
 		String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
 				" -d " + stuff + "/d1.tsv" +
-				" -dm " + MimeTypes.DOUBLE_BINARY_MATRIX + 
+				" -df " + MimeTypes.DOUBLE_BINARY_MATRIX +
 				" -m " + stuff + "/m1.tsv" +
+				" -mf " + MimeTypes.MODULES_2C_MAP +
 				" -min 0" +
 				" -w "+ temp + "/test -N test" +
 				" -title 'Test Analysis'" +
@@ -42,15 +43,22 @@ public class TestMain {
 
 		cmd = "enrichment -t binomial-exact" +
 				" -d " + stuff + "/real/data.tsv" +
-				" -dm " + MimeTypes.DOUBLE_MATRIX +
+				" -df " + MimeTypes.DOUBLE_MATRIX +
 				" -b lt,0.05" +
 				" -m " + stuff + "/real/modules.tsv" +
+				" -mf tcm" + //MimeTypes.MODULES_2C_MAP +
 				" -min 100" +
 				" -w "+ temp + "/test -N test" +
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
 				" -verbose -debug -err-log -";
+
+		/*cmd = "correlation" +
+				" -d " + stuff + "/real/data.tsv" +
+				" -dm " + MimeTypes.DOUBLE_MATRIX +
+				" -w "+ temp + "/test -N test_cor" +
+				" -verbose -debug -err-log -";*/
 
 		/*String cmd = "convert" +
 				" -i data.tsv" +

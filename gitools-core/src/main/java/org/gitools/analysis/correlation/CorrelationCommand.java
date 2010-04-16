@@ -63,7 +63,7 @@ public class CorrelationCommand extends AnalysisCommand {
 				workdirFile.mkdirs();
 
 			File file = new File(workdirFile, fileName);
-			PersistenceManager.getDefault().store(file, analysis.getResults(), monitor);
+			PersistenceManager.getDefault().store(file, analysis, monitor);
 		}
 		catch (Throwable cause) {
 			throw new AnalysisException(cause);

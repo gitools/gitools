@@ -131,6 +131,10 @@ public class PersistenceManager implements Serializable {
 		return mimeToExt.get(mime);
 	}
 
+	public String getExtensionFromEntity(Class<?> entityClass) {
+		return getExtensionFromMime(getMimeFromEntity(entityClass));
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> IEntityPersistence<T> createEntityPersistence(
 			String mimeType, Properties properties) {
@@ -142,6 +146,7 @@ public class PersistenceManager implements Serializable {
 			IEntityPersistence<T> entityPersistence =
 				(IEntityPersistence<T>) c.newInstance();
 
+			entityPersistence.setPersistenceManager(this);
 			entityPersistence.setProperties(properties);
 
 			return entityPersistence;

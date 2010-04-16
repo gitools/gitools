@@ -23,6 +23,8 @@ import java.util.Map;
 
 public class PersistenceContext extends HashMap<Object, Object> {
 
+	//TODO private PersistenceManager manager;
+
 	private IProgressMonitor monitor;
 
 	private String basePath;
@@ -34,6 +36,16 @@ public class PersistenceContext extends HashMap<Object, Object> {
 
 	public PersistenceContext() {
 	}
+
+	/*
+	public PersistenceManager getPersistenceManager() {
+		return manager;
+	}
+
+	public void setPersistenceManager(PersistenceManager manager) {
+		this.manager = manager;
+	}
+	 */
 
 	public IProgressMonitor getMonitor() {
 		return monitor;

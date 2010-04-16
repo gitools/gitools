@@ -11,7 +11,8 @@ public interface IEntityPersistence<T> {
 		throws PersistenceException;
 	
 	void write(File file, T entity, IProgressMonitor monitor)
-		throws PersistenceException;;
+		throws PersistenceException;
 
+	public void setPersistenceManager(PersistenceManager manager);
 	public void setProperties(Properties properties);
 }

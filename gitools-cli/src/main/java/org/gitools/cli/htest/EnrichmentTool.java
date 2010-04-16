@@ -12,16 +12,16 @@ import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 
 public class EnrichmentTool extends HtestTool {
 
 	public static class EnrichmentArguments extends HtestArguments {
-		@Option(name = "-mm", aliases = "-modules-mime", metaVar = "<MIME>",
-				usage = "Modules file format (MIME). (default: " +
-				MimeTypes.MODULES_2C_MAP + ")")
-		public String modulesMime = MimeTypes.MODULES_2C_MAP;
+		@Option(name = "-mf", aliases = "-modules-format", metaVar = "<format>",
+				usage = "Modules file format (MIME type or file extension).")
+		public String modulesMime;
 
 		@Option(name = "-m", aliases = "-modules", metaVar = "<file>",
 				usage = "File with mappings between items and modules.")
@@ -75,11 +75,16 @@ public class EnrichmentTool extends HtestTool {
 		analysis.setMaxModuleSize(args.maxModuleSize);
 
 		analysis.setDiscardNonMappedRows(args.discardNonMappedRows);
-        
+
+		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+		
+		String modulesMime = mimeFromFormat(args.modulesMime, args.modulesFile, MimeTypes.MODULES_2C_MAP);
+
 		EnrichmentCommand cmd = new EnrichmentCommand(
-        		analysis, args.dataMime, args.dataFile,
+        		analysis,
+				dataMime, args.dataFile,
 				args.populationFile,
-				args.modulesMime, args.modulesFile,
+				modulesMime, args.modulesFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT);
         
         IProgressMonitor monitor = !args.quiet ? 

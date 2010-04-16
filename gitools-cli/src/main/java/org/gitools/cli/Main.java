@@ -9,6 +9,7 @@ import edu.upf.bg.tools.ToolManager;
 import edu.upf.bg.tools.ToolSet;
 import edu.upf.bg.tools.XmlToolSetResource;
 import java.io.InputStreamReader;
+import org.gitools.persistence.PersistenceInitialization;
 
 public class Main {
 
@@ -19,6 +20,9 @@ public class Main {
 		Main.class.getPackage().getImplementationVersion();
 	
 	public static void main(String[] args) throws ToolException {
+
+		// Initialize file formats
+		PersistenceInitialization.registerFormats();
 		
 		final ToolSet toolSet = XmlToolSetResource.load(
 				new InputStreamReader(Main.class.getClassLoader()

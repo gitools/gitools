@@ -30,7 +30,6 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
-import javax.xml.bind.annotation.XmlElement;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
@@ -57,7 +56,7 @@ public class HtestAnalysis extends Analysis {
 
 	/** Data */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	@XmlElement(name = "dataMatrix")
+	//@XmlElement(name = "dataMatrix")
 	protected IMatrix data;
 
 	/** Multiple test correction */
@@ -65,7 +64,7 @@ public class HtestAnalysis extends Analysis {
 
 	/** Results */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	@XmlElement(name = "resultsMatrix")
+	//@XmlElement(name = "resultsMatrix")
 	protected ObjectMatrix results; //FIXME Should it be a BaseMatrix or IMatrix instead ?
 
 	public HtestAnalysis() {

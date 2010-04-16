@@ -1,6 +1,5 @@
 package org.gitools.analysis.htest.enrichment;
 
-import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.function.DoubleFunction;
 import java.util.Date;
 import org.gitools.matrix.model.IMatrix;
@@ -34,13 +33,13 @@ import org.gitools.stats.mtc.MTCFactory;
 
 public class EnrichmentProcessor extends HtestProcessor {
 	
-	protected static final DoubleProcedure notNaNProc = 
+	/*protected static final DoubleProcedure notNaNProc =
 		new DoubleProcedure() {
 			@Override
 			public boolean apply(double element) {
 				return !Double.isNaN(element);
 			}
-		};
+		};*/
 
 	private class RunSlot extends ThreadSlot {
 		public DoubleMatrix1D population;
@@ -126,7 +125,7 @@ public class EnrichmentProcessor extends HtestProcessor {
 
 		/* Test analysis */
 		
-		for (int condIndex = 0; condIndex < numConditions; condIndex++) {
+		for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++) {
 			
 			//final String condName = conditions.getQuick(condIndex).toString();
 			final String condName = dataMatrix.getColumnLabel(condIndex);
@@ -146,7 +145,7 @@ public class EnrichmentProcessor extends HtestProcessor {
 			
 			condMonitor.begin("Condition " + condName + "...", numModules);
 			
-			for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
+			for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
 
 				final String moduleName = modules.getQuick(moduleIndex).toString();
 				final int[] itemIndices = moduleItemIndices[moduleIndex];
@@ -200,6 +199,9 @@ public class EnrichmentProcessor extends HtestProcessor {
 		}
 		
 		ThreadManager.shutdown(monitor);
+
+		if (monitor.isCancelled())
+			return;
 
 		/* Multiple test correction */
 		

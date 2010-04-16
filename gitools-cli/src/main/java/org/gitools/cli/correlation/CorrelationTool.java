@@ -25,9 +25,9 @@ import org.kohsuke.args4j.CmdLineParser;
 public class CorrelationTool extends AnalysisTool {
 
 	public static class CorrelationArguments extends AnalysisArguments {
-		@Option(name = "-dm", aliases = "-data-mime", metaVar = "<MIME>",
-				usage = "Data file format. (default: " + MimeTypes.DOUBLE_MATRIX + ")")
-		public String dataMime = MimeTypes.DOUBLE_MATRIX;
+		@Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
+				usage = "Data file format (MIME type or file extension).")
+		public String dataMime;
 
 		@Option(name = "-d", aliases = "-data", metaVar = "<file>",
 				usage = "File with data to be processed.")
@@ -84,15 +84,18 @@ public class CorrelationTool extends AnalysisTool {
 		
 		CorrelationArguments args = (CorrelationArguments) argsObject;
 
-		CorrelationAnalysis a = new CorrelationAnalysis();
-		prepareGeneralAnalysisAttributes(a, args);
-		a.setMethod(args.method);
-		a.setMethodProperties(methodProperties);
-		a.setTransposeData(args.applyToRows);
-		a.setReplaceNanValue(args.replaceValue);
+		CorrelationAnalysis analysis = new CorrelationAnalysis();
+		prepareGeneralAnalysisAttributes(analysis, args);
+		analysis.setMethod(args.method);
+		analysis.setMethodProperties(methodProperties);
+		analysis.setTransposeData(args.applyToRows);
+		analysis.setReplaceNanValue(args.replaceValue);
+
+		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
 
 		CorrelationCommand cmd = new CorrelationCommand(
-        		a, args.dataMime, args.dataFile,
+        		analysis,
+				dataMime, args.dataFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.CORRELATION);
         
         IProgressMonitor monitor = !args.quiet ? 

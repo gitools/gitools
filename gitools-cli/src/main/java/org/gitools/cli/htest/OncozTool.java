@@ -12,17 +12,15 @@ import org.gitools.analysis.htest.oncozet.OncozAnalysis;
 import org.gitools.analysis.htest.oncozet.OncozCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 
 public class OncozTool extends HtestTool {
 
 	public static class OncozArguments extends HtestArguments {
-		@Option(name = "-sm", aliases = "-sets-mime", metaVar = "<MIME>",
-				usage = "Sets file format (MIME). (default: " +
-				MimeTypes.MODULES_2C_MAP + ")")
-		public String setsMime = MimeTypes.MODULES_2C_MAP;
+		@Option(name = "-sf", aliases = "-sets-format", metaVar = "<format>",
+				usage = "Sets file format (MIME type or file extension).")
+		public String setsMime;
 
 		@Option(name = "-s", aliases = {"-sets"}, metaVar = "<file>",
 				usage = "File with mappings between columns and sets.")

@@ -18,11 +18,10 @@
 package org.gitools.analysis.correlation;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Properties;
+import java.util.Date;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.MethodException;
-import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
-import org.gitools.analysis.correlation.methods.SpearmanCorrelationMethod;
+import org.gitools.analysis.correlation.methods.CorrelationMethodFactory;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.MatrixViewTransposition;
 import org.gitools.matrix.model.IMatrix;
@@ -39,7 +38,9 @@ public class CorrelationProcessor {
 
 	public void run(IProgressMonitor monitor) throws AnalysisException {
 
-		CorrelationMethod method = createMethod(
+		Date startTime = new Date();
+
+		CorrelationMethod method = CorrelationMethodFactory.createMethod(
 				analysis.getMethod(), analysis.getMethodProperties());
 
 		IMatrix data = analysis.getData();
@@ -79,7 +80,7 @@ public class CorrelationProcessor {
 		if (replaceNanValue == null)
 			replaceNanValue = Double.NaN;
 
-		for (int i = 0; i < numColumns; i++) {
+		for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
 			for (int row = 0; row < numRows; row++) {
 				double v = MatrixUtils.doubleValue(data.getCellValue(row, i, attributeIndex));
 				if (Double.isNaN(v))
@@ -87,47 +88,41 @@ public class CorrelationProcessor {
 				x[row] = v;
 			}
 
-			for (int j = i + 1; j < numColumns; j++) {
+			for (int j = i + 1; j < numColumns && !monitor.isCancelled(); j++) {
 				monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
-				
-				int numPairs = 0;
-				for (int row = 0; row < numRows; row++) {
-					double v0 = x[row];
 
-					double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
-					if (Double.isNaN(v1))
-						v1 = replaceNanValue;
+				//TODO Parallelize
+				{
+					int numPairs = 0;
+					for (int row = 0; row < numRows; row++) {
+						double v0 = x[row];
 
-					if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
-						y[row] = v1;
+						double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
+						if (Double.isNaN(v1))
+							v1 = replaceNanValue;
 
-						indices[numPairs++] = row;
+						if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
+							y[row] = v1;
+
+							indices[numPairs++] = row;
+						}
 					}
-				}
-				
-				try {
-					results.setCell(i, j,
-							method.correlation(x, y, indices, numPairs));
-				} catch (MethodException ex) {
-					throw new AnalysisException(ex);
+
+					try {
+						results.setCell(i, j,
+								method.correlation(x, y, indices, numPairs));
+					} catch (MethodException ex) {
+						throw new AnalysisException(ex);
+					}
 				}
 
 				monitor.worked(1);
-
-				if (monitor.isCancelled())
-					return;
 			}
 		}
 
+		analysis.setStartTime(startTime);
+		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+		
 		monitor.end();
-	}
-
-	private CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException {
-		if (PearsonCorrelationMethod.ID.equalsIgnoreCase(methodId))
-			return new PearsonCorrelationMethod(methodProperties);
-		else if (SpearmanCorrelationMethod.ID.equalsIgnoreCase(methodId))
-			return new PearsonCorrelationMethod(methodProperties);
-		else
-			throw new AnalysisException("Unknown correlation method: " + methodId);
 	}
 }

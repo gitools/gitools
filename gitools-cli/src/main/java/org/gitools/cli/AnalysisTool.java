@@ -29,6 +29,7 @@ import org.gitools.model.Attribute;
 import org.gitools.model.KeyValue;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.PersistenceManager;
 
 public class AnalysisTool extends AbstractTool {
 
@@ -52,6 +53,21 @@ public class AnalysisTool extends AbstractTool {
 				throw new ToolValidationException("Malformed analysis attribute: " + attr);
 			analysisAttributes.add(new Attribute(a[0], a[1]));
 		}
+	}
+
+	protected String mimeFromFormat(String format, String fileName, String defaultMime) {
+		String mime = null;
+		if (format != null) {
+			// Try with file extension first
+			mime = PersistenceManager.getDefault().getMimeFromFile("fake." + format);
+			if (mime == null)
+				mime = format; // it should be mime type then
+			//TODO check valid mime
+		}
+		else
+			mime = PersistenceManager.getDefault().getMimeFromFile(fileName);
+
+		return mime != null ? mime : defaultMime;
 	}
 
 	protected List<KeyValue> parseConfiguration(List<String> config) throws ToolValidationException {
@@ -93,7 +109,7 @@ public class AnalysisTool extends AbstractTool {
 		};
 
 		for (FileFormat f : formats)
-			out.println(String.format(LIST_L_FMT, f.getMime(), f.getTitle()));
+			out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
 	}
 
 	protected void printModulesFormats(PrintStream out) {
@@ -107,6 +123,6 @@ public class AnalysisTool extends AbstractTool {
 		};
 
 		for (FileFormat f : formats)
-			out.println(String.format(LIST_L_FMT, f.getMime(), f.getTitle()));
+			out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
 	}
 }

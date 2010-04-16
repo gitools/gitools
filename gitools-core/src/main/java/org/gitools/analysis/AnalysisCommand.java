@@ -29,6 +29,8 @@ public abstract class AnalysisCommand {
 			matrix = (BaseMatrix) obj;
 		else if (obj instanceof ModuleMap)
 			matrix = moduleMapToMatrix((ModuleMap) obj);
+		else
+			throw new PersistenceException("Invalid MIME type for data: " + mime);
 
 		return matrix;
 	}
@@ -45,6 +47,8 @@ public abstract class AnalysisCommand {
 			moduleMap = matrixToModuleMap((BaseMatrix) obj);
 		else if (obj instanceof ModuleMap)
 			moduleMap = (ModuleMap) obj;
+		else
+			throw new PersistenceException("Invalid MIME type for modules: " + mime);
 
 		return moduleMap;
 	}
