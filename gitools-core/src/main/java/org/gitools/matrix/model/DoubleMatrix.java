@@ -6,7 +6,7 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 
-public final class DoubleMatrix extends BaseMatrix	{			
+public class DoubleMatrix extends BaseMatrix	{			
 
 	private static final long serialVersionUID = -710485141066995079L;
 
