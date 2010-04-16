@@ -16,6 +16,7 @@
  */
 package org.gitools.ui.biomart.filter;
 
+import java.util.List;
 import javax.swing.JPanel;
 import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.biomart.restful.model.Option;
@@ -23,10 +24,15 @@ import org.gitools.biomart.restful.model.Option;
 public abstract class FilterComponent extends JPanel implements IFilterComponent {
 
     protected FilterComponent childComponent;
-    protected FilterDescriptionPanel parentPanel;
-    protected FilterDescription filterDescription;
+
+	protected FilterDescriptionPanel parentPanel;
+
+	protected FilterDescription filterDescription;
+
     protected Option filterOptions; 
+
 	protected Integer currentHeight;
+
 
     FilterComponent(FilterDescription d, FilterDescriptionPanel parent) {
         filterDescription = d;
@@ -66,4 +72,15 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
 	public Integer getCurrentHeight() {
 		return currentHeight;
 	}
+
+	public FilterDescription getFilterDescription() {
+		return filterDescription;
+	}
+
+	/**
+	 * Set options model of a comboBox component.
+	 * This operation is used for implement the PushAction
+	 * mechanism
+	 */
+	public abstract void setListOptions(List<Option> optionList);
 }

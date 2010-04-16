@@ -18,7 +18,9 @@
 
 package org.gitools.ui.biomart.filter;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JRadioButton;
 import org.gitools.biomart.restful.model.Filter;
@@ -100,9 +102,12 @@ public class FilterRadioComponent extends FilterComponent {
 
 	@Override
 	// FIXME : Check if get filter from radio value/s is correct
-	public Filter getFilter() {
+	public List<Filter> getFilters() {
+
+		List<Filter> filters = new ArrayList<Filter>();
 
 		Filter f = new Filter();
+
 		JRadioButton r = null;
 
 		// Could happen filterDescription null, if this component is a child (belongs to a container component)
@@ -129,7 +134,9 @@ public class FilterRadioComponent extends FilterComponent {
 			}
 		}
 
-		return f;
+		filters.add(f);
+
+		return filters;
 
 	}
 
@@ -164,6 +171,11 @@ public class FilterRadioComponent extends FilterComponent {
 			}
 		}
 		return res;
+	}
+
+	@Override
+	public void setListOptions(List<Option> optionList) {
+		return;
 	}
 	
 }

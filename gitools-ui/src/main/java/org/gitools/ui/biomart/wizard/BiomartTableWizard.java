@@ -25,6 +25,7 @@ import org.gitools.biomart.restful.model.Query;
 
 import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.MartLocation;
@@ -42,6 +43,8 @@ public class BiomartTableWizard extends AbstractWizard {
 	private SaveFilePage saveFilePage;
 
 	private BiomartRestfulService biomartService;
+
+	private DatasetConfig biomartConfig;
 
 	private BiomartAttributeListPage attrListPage;
 
@@ -103,7 +106,7 @@ public class BiomartTableWizard extends AbstractWizard {
 		IWizardPage nextPage = super.getNextPage(page);
 
 		if (nextPage == attrListPage) {
-			biomartService = sourcePage.getService();
+			biomartService = sourcePage.getBiomartService();
 			Database = sourcePage.getDataBase();
 			Dataset = sourcePage.getDataset();
 
@@ -111,13 +114,10 @@ public class BiomartTableWizard extends AbstractWizard {
 					biomartService,
 					Database,
 					Dataset);
-		}
-
-		
+		}	
 		else if (nextPage == filterListPage) {
-			filterListPage.setSource(
-						biomartService,
-						Dataset);
+			biomartConfig = attrListPage.getBiomartConfig();
+			filterListPage.setSource(biomartService,biomartConfig);
 		}
 		
 		return nextPage;

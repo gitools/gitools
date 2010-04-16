@@ -79,6 +79,10 @@ public class FilterCollectionPanel extends JPanel {
 		validate();
 	}
 
+	public JPanel getDescriptionsPanel() {
+		return descriptionsPanel;
+	}
+
 	/**
 	 * Render Label descriptions when more than 1 descriptions per collection
 	 * @param fc
@@ -111,7 +115,35 @@ public class FilterCollectionPanel extends JPanel {
 		return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
 	}
 
+	public List<Filter> getFilters(){
 
+
+		List<Filter> filters = new ArrayList<Filter>();
+		List<Filter> filtersAux = null;
+
+		if (collectionCheckBox.isSelected())
+		{
+			// Obtain the filters involved for this event
+			for (Component compo :  descriptionsPanel.getComponents()) {
+
+				filtersAux = ((FilterDescriptionPanel) compo).getFilters();
+
+				for (Filter f : filtersAux)
+
+					if ((f.getName() != null)&& (f.getValue() != null) && (!f.getValue().equals("")))
+						
+							filters.add(f);
+
+				}
+		}
+		return filters;
+	}
+
+	public BiomartFilterConfigurationPage getFilterConfigurationPage() {
+		return filterConfigurationPage;
+	}
+
+	
 	/** This method is called from within the constructor to
 	 * initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is
@@ -176,28 +208,5 @@ public class FilterCollectionPanel extends JPanel {
     // End of variables declaration//GEN-END:variables
 
 
-	public List<Filter> getFilters(){
-
-
-		Filter f = null;
-		List<Filter> filters = new ArrayList<Filter>();
-
-		if (collectionCheckBox.isSelected())
-		{
-			// Obtain the filters involved for this event
-			for (Component compo :  descriptionsPanel.getComponents()) {
-
-				f = ((FilterDescriptionPanel) compo).getFilter();
-				if ((f.getName() != null)&& (f.getValue() != null) && (!f.getValue().equals("")))
-						filters.add(f);
-
-				}
-		}
-		return filters;
-	}
-	
-	public BiomartFilterConfigurationPage getFilterConfigurationPage() {
-		return filterConfigurationPage;
-	}
 	
 }

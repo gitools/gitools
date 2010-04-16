@@ -16,6 +16,7 @@ import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.DatasetConfig;
 
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
@@ -35,9 +36,11 @@ public class BiomartAttributePage extends FilteredTreePage {
 
 	private AttributeDescription attribute;
 	
-	private boolean updated;
-	
 	private BiomartRestfulService biomartService;
+
+	private DatasetConfig biomartConfig;
+
+	private Boolean reloadData; //determine whether update panel data
 	
 	public BiomartAttributePage() {
 		super();
@@ -45,8 +48,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 		this.mart = null;
 		this.dataset = null;
 		this.attrPages = null;
-		
-		updated = false;
+
 	}
 	
 	@Override
@@ -66,11 +68,6 @@ public class BiomartAttributePage extends FilteredTreePage {
 	
 	@Override
 	public void updateControls() {
-		if (updated)
-			return;
-
-		setStatus(MessageStatus.PROGRESS);
-		setMessage("Retrieving available attributes ...");
 		
 		setComplete(false);
 
@@ -79,10 +76,13 @@ public class BiomartAttributePage extends FilteredTreePage {
 		new Thread(new Runnable() {
 			@Override public void run() {
 				try {
-					if (attrPages == null) {
-						attrPages = biomartService.getAttributes(mart, dataset);
+					if (attrPages == null || reloadData) {
+						setStatus(MessageStatus.PROGRESS);
+						setMessage("Retrieving available attributes ...");
 						
-						setAttributePages(attrPages);
+						biomartConfig = biomartService.getConfiguration(dataset);
+						attrPages = biomartConfig.getAttributePages();
+
 					}
 					
 					final AttributesTreeModel model = new AttributesTreeModel(attrPages);
@@ -96,7 +96,6 @@ public class BiomartAttributePage extends FilteredTreePage {
 						}
 					});
 					
-					updated = true;
 				}
 				catch (final Throwable cause) {
 					SwingUtilities.invokeLater(new Runnable() {
@@ -129,15 +128,20 @@ public class BiomartAttributePage extends FilteredTreePage {
 	}
 	
 	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo dataset) {
+
+		if (this.dataset != null && this.dataset.getName().equals(dataset.getName()))
+			reloadData = false;
+		else
+			reloadData = true;
+
 		this.biomartService = biomartService;
 		this.mart = mart;
 		this.dataset = dataset;
-
 	}
 
 	public synchronized void setAttributePages(List<AttributePage> attrPages) {
 		this.attrPages = attrPages;
-		updated = false;
+		reloadData = false;
 	}
 	
 	public synchronized List<AttributePage> getAttributePages() {
@@ -151,5 +155,9 @@ public class BiomartAttributePage extends FilteredTreePage {
 	@Override
 	protected TreeModel createModel(String filterText) {
 		return new AttributesTreeModel(attrPages, filterText);
+	}
+
+	public DatasetConfig getBiomartConfig() {
+		return biomartConfig;
 	}
 }

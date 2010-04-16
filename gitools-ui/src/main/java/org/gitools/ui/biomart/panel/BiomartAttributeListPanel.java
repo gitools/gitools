@@ -272,6 +272,16 @@ public class BiomartAttributeListPanel extends JPanel {
 			model.removeElement(o);
 	}//GEN-LAST:event_removeBtnActionPerformed
 
+	public void removeAllListAttributes(){
+
+		if (attrList.getModel() == null) return;
+
+		DefaultListModel model = (DefaultListModel) attrList.getModel();
+
+		if (model != null) model.removeAllElements();
+	
+
+	}
 	private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
 		DefaultListModel model = (DefaultListModel) attrList.getModel();
 		int[] indices = attrList.getSelectedIndices();

@@ -21,6 +21,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.biomart.restful.model.Filter;
@@ -48,8 +50,8 @@ public class FilterTextComponent extends FilterComponent {
 	FilterTextComponent(Option o) {
 
 		super(o);
-		initComponents();
 
+		initComponents();
 
 		buildComponent();
 
@@ -142,8 +144,21 @@ public class FilterTextComponent extends FilterComponent {
 				"Select file", folder.getText(), FileChooserUtils.MODE_OPEN);
 
 		if (selPath != null) {
+			
 			folder.setText(selPath.getAbsolutePath());
+
+			try {
+				
+				txtArea.setText(readFileAsString(folder.getText()));
+
+			} catch (IOException ex) {
+				ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
+				dlg.setVisible(true);
+			}
+
+
 		}
+		
 
 	}//GEN-LAST:event_selectFileAction
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -166,12 +181,13 @@ public class FilterTextComponent extends FilterComponent {
 
 		if (parentPanel != null && parentPanel.getRenderLabel())
 			nameDescription.setVisible(true);
-		else	
+		else
 			nameDescription.setVisible(false);		
 
 		if (filterDescription != null)
 		{
 			txt = filterDescription.getDefaultValue() != null ? filterDescription.getDefaultValue() : "";
+
 			if (filterDescription.getMultipleValues() == null || !filterDescription.getMultipleValues().equals("1"))
 				component = "Field";
 			else
@@ -182,6 +198,7 @@ public class FilterTextComponent extends FilterComponent {
 			if (filterOptions != null)
 			{
 				txt = filterOptions.getDefaultValue() != null ? filterOptions.getDefaultValue() : "";
+
 				if (filterOptions.getMultipleValues() == null || !filterOptions.getMultipleValues().equals("1"))
 					component = "Field";
 				else
@@ -193,13 +210,16 @@ public class FilterTextComponent extends FilterComponent {
 		if (component.equals("Field"))
 		{
 			txtField.setAlignmentY(TOP_ALIGNMENT);
+
 			txtField.setText(txt);
+
 			txtField.setVisible(true);
 
 			jScrollPane1.setVisible(false);
-			txtArea.setVisible(false);
-			browsePanel.setVisible(false);
 
+			txtArea.setVisible(false);
+
+			browsePanel.setVisible(false);
 
 			currentHeight = FIELD_HEIGHT;
 		} 
@@ -208,25 +228,34 @@ public class FilterTextComponent extends FilterComponent {
 			component = "TextArea";
 						
 			jScrollPane1.setAlignmentY(TOP_ALIGNMENT);
+
 			jScrollPane1.setVisible(true);
+
 			txtArea.setAlignmentY(TOP_ALIGNMENT);
+
 			txtArea.setVisible(true);
+
 			txtArea.setText("");
+
 			browsePanel.setVisible(true);
 
 			txtField.setVisible(false);
+
 			txtField.setAlignmentY(BOTTOM_ALIGNMENT);
 
 			currentHeight = TEXTAREA_HEIGHT;
 		}
 
 	if (filterDescription!= null && filterDescription.getDisplayName() != null)
+
 			nameDescription.setText(filterDescription.getDisplayName());
 
 	}
 
 	@Override
-	public Filter getFilter() {
+	public List<Filter> getFilters() {
+
+		List<Filter> filters = new ArrayList<Filter>();
 
 		Filter f = new Filter();
 
@@ -235,28 +264,23 @@ public class FilterTextComponent extends FilterComponent {
 		if (filterDescription != null && filterDescription.getInternalName() != null)
 			f.setName(filterDescription.getInternalName());
 
-		if (component.equals("Field")) {
+		if (component.equals("Field")) 
 			f.setValue(txtField.getText());
-		} else {
-			if (folder.getText() == null || folder.getText().equals(""))
-				f.setValue(txtArea.getText().replace("\n", ","));
-			else
-			{
-				try {
-					
-					f.setValue(readFileAsString(folder.getText()).replace("\n", ","));
-					f.setValue(f.getValue().replace("\\", "\\\\"));
-					f.setValue(f.getValue().replace("\"", "\\\""));
-					while (f.getValue().startsWith(",")) f.setValue(f.getValue().substring(1));
 
-				} catch (IOException ex) {
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-					dlg.setVisible(true);
-				}
-			}
-		}
-		
-		return f;
+		else 
+			f.setValue(txtArea.getText().replace("\n", ","));
+						
+		f.setValue(f.getValue().replace("\\", "\\\\"));
+
+		f.setValue(f.getValue().replace("\"", "\\\""));
+
+		while (f.getValue().startsWith(",")) f.setValue(f.getValue().substring(1));
+		while (f.getValue().endsWith(","))
+			f.setValue(f.getValue().substring(0,f.getValue().length()-1));
+
+		filters.add(f);
+
+		return filters;
 	}
 
 	@Override
@@ -286,4 +310,8 @@ public class FilterTextComponent extends FilterComponent {
 		return new String(buffer);
 	}
 
+	@Override
+	public void setListOptions(List<Option> optionList) {
+		return;
+	}
 }

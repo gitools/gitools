@@ -109,7 +109,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 	}
 
 
-	private BiomartRestfulService service;
+	private BiomartRestfulService biomartService;
 
 	private boolean updated;
 	private FilteredListPanel datasetPanel;
@@ -320,8 +320,8 @@ public class BiomartSourcePage extends AbstractWizardPage {
 			return;
 
 		try {
-			service = null;
-			service = BiomartServiceFactory.createRestfulService(bs);
+			biomartService = null;
+			biomartService = BiomartServiceFactory.createRestfulService(bs);
 		} catch (BiomartServiceException ex) {
 			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
 			dlg.setVisible(true);
@@ -330,13 +330,13 @@ public class BiomartSourcePage extends AbstractWizardPage {
 			// TODO close the wizard or throw up the exception (RuntimeException)
 		}
 
-		if (service == null)
+		if (biomartService == null)
 			return;
 
 		new Thread(new Runnable() {
 			@Override public void run() {
 				try {
-					List<MartLocation> registry = service.getRegistry();
+					List<MartLocation> registry = biomartService.getRegistry();
 					DefaultListModel model = new DefaultListModel();
 					for (MartLocation mart : registry)
 						if (mart.getVisible() != 0)
@@ -379,7 +379,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 				try {
 					lastMartSelected = getDataBase();
 					
-					List<DatasetInfo> datasets = service.getDatasets(lastMartSelected);
+					List<DatasetInfo> datasets = biomartService.getDatasets(lastMartSelected);
 
 					List<Object> model = new ArrayList();
 
@@ -427,7 +427,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 			: null;
 	}
 
-	public BiomartRestfulService getService() {
-		return service;
+	public BiomartRestfulService getBiomartService() {
+		return biomartService;
 	}
 }

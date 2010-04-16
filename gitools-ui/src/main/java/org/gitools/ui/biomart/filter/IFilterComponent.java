@@ -17,11 +17,12 @@
 package org.gitools.ui.biomart.filter;
 
 
+import java.util.List;
 import org.gitools.biomart.restful.model.Filter;
 
 interface IFilterComponent {
 
-    public Filter getFilter();
+    public List<Filter> getFilters();
 
     public Boolean hasChanged();
 

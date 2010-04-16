@@ -25,6 +25,7 @@ import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.ui.biomart.panel.BiomartAttributeListPanel;
@@ -44,6 +45,10 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 	private BiomartAttributeListPanel panel;
 
 	private BiomartRestfulService biomartService;
+
+	private DatasetConfig biomartConfig;
+
+	private Boolean reloadData; //determine whether update panel data
 	
 	public BiomartAttributeListPage() {
 	}
@@ -63,24 +68,34 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 	@Override
 	public void updateControls() {
 		//panel.setAddBtnEnabled(false);
-		panel.setAttributePages(null);
 
-		setStatus(MessageStatus.PROGRESS);
-		setMessage("Retrieving available attributes ...");
+		if (panel != null && reloadData)
+			panel.removeAllListAttributes();
+
+		panel.setAttributePages(null);
 
 		if (panel.getAttributePages() == null) {
 			new Thread(new Runnable() {
 				@Override public void run() {
+
 					updateControlsThread();
+					reloadData = false; //To avoid reload data when back button
+					
 				}
 			}).start();
 		}
+
+		
 	}
 
 	private void updateControlsThread() {
 		try {
-			if (attrPages == null)
-				attrPages = biomartService.getAttributes(mart, dataset);
+			if (attrPages == null || reloadData){
+				setStatus(MessageStatus.PROGRESS);
+				setMessage("Retrieving available attributes ...");
+				biomartConfig = biomartService.getConfiguration(dataset);
+				attrPages = biomartConfig.getAttributePages();
+			}
 
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override public void run() {
@@ -108,13 +123,23 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		panel.setAttributePages(attrPages);
 	}*/
 
-	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo dataset) {
+	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo ds) {
+
+		if (this.dataset != null && this.dataset.getName().equals(ds.getName()))
+			reloadData = false;
+		else
+			reloadData = true;
+
 		this.biomartService = biomartService;
 		this.mart = mart;
-		this.dataset = dataset;
+		this.dataset = ds;
 	}
 
 	public List<AttributeDescription> getAttributeList() {
 		return panel.getAttributeList();
+	}
+
+	public DatasetConfig getBiomartConfig() {
+		return biomartConfig;
 	}
 }

@@ -18,6 +18,8 @@
 
 package org.gitools.ui.biomart.filter;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JCheckBox;
 import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.FilterDescription;
@@ -90,7 +92,9 @@ public class FilterCheckBoxComponent extends FilterComponent {
 
 	@Override
 	// FIXME : Check if get filter from check value/s is correct
-	public Filter getFilter() {
+	public List<Filter> getFilters() {
+
+		List<Filter> filters = new ArrayList<Filter>();
 
 		Filter f = new Filter();		
 
@@ -102,7 +106,10 @@ public class FilterCheckBoxComponent extends FilterComponent {
 			if (checkBox.isSelected()) 
 				f.setValue(checkBox.getText());											
 
-		return f;
+
+		filters.add(f);
+
+		return filters;
 
 	}
 
@@ -137,6 +144,11 @@ public class FilterCheckBoxComponent extends FilterComponent {
 			}
 		}
 		return res;
+	}
+
+	@Override
+	public void setListOptions(List<Option> optionList) {
+		return;
 	}
 	
 }
