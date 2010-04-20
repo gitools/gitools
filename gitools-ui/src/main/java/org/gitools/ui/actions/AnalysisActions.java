@@ -8,14 +8,17 @@ import org.gitools.ui.actions.analysis.MtcAction;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.Bonferroni;
 import org.gitools.ui.actions.analysis.CombinationsAction;
-import org.gitools.ui.actions.analysis.CorrelationAction;
+import org.gitools.ui.actions.analysis.CorrelationsAction;
+import org.gitools.ui.actions.analysis.HierarchicalClusteringAction;
 import org.gitools.ui.platform.AppFrame;
 
 public class AnalysisActions {
 
 	public static final BaseAction combinations = new CombinationsAction();
 	
-	public static final BaseAction correlation = new CorrelationAction();
+	public static final BaseAction correlations = new CorrelationsAction();
+
+	public static final BaseAction clusteringHierarchicalAction = new HierarchicalClusteringAction();
 	
 	public static final BaseAction mtcBonferroniAction = new MtcAction(new Bonferroni());
 	

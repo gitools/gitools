@@ -42,11 +42,11 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
-public class CorrelationAction extends BaseAction {
+public class CorrelationsAction extends BaseAction {
 
-	public CorrelationAction() {
-		super("Correlation");
-		setDesc("Correlation analysis");
+	public CorrelationsAction() {
+		super("Correlations");
+		setDesc("Correlations analysis");
 	}
 
 	@Override

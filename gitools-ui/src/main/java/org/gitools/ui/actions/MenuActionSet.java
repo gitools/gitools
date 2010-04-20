@@ -89,8 +89,11 @@ public class MenuActionSet extends ActionSet {
 				})
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
-				AnalysisActions.correlation,
+				AnalysisActions.correlations,
 				AnalysisActions.combinations,
+				new ActionSet("Clustering", new BaseAction[] {
+					AnalysisActions.clusteringHierarchicalAction
+				}),
 				new ActionSet("MTC", new BaseAction[] {
 					AnalysisActions.mtcBonferroniAction,
 					AnalysisActions.mtcBenjaminiHochbergFdrAction,
