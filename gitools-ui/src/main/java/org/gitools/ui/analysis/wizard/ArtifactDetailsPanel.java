@@ -8,15 +8,115 @@ package org.gitools.ui.analysis.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 import org.gitools.model.Attribute;
 
 public class ArtifactDetailsPanel extends javax.swing.JPanel {
 
 	private static final long serialVersionUID = -6310021084299136899L;
-	
+
+	private static class AttributesModel implements TableModel {
+
+		private List<Attribute> attrs;
+		private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+
+		public AttributesModel() {
+			attrs = new ArrayList<Attribute>();
+		}
+
+		public AttributesModel(List<Attribute> attrs) {
+			this.attrs = attrs;
+		}
+
+		@Override public int getRowCount() {
+			return attrs.size();
+		}
+
+		@Override public int getColumnCount() {
+			return 2;
+		}
+
+		@Override public String getColumnName(int columnIndex) {
+			return columnIndex == 0 ? "Name" : "Value";
+		}
+
+		@Override public Class<?> getColumnClass(int columnIndex) {
+			return String.class;
+		}
+
+		@Override public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
+
+		@Override public Object getValueAt(int rowIndex, int columnIndex) {
+			Attribute attr = attrs.get(rowIndex);
+			return columnIndex == 0 ? attr.getName() : attr.getValue();
+		}
+
+		@Override public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override public void addTableModelListener(TableModelListener l) {
+			listeners.add(l);
+		}
+
+		@Override public void removeTableModelListener(TableModelListener l) {
+			listeners.remove(l);
+		}
+
+		public List<Attribute> getAttributes() {
+			return attrs;
+		}
+		
+		public Attribute getAttribute(int index) {
+			return attrs.get(index);
+		}
+
+		public void addAttribute(Attribute attr) {
+			attrs.add(attr);
+			for (TableModelListener l : listeners)
+				l.tableChanged(new TableModelEvent(this));
+		}
+
+		private void modifyAttribute(int index, Attribute attribute) {
+			Attribute attr = getAttribute(index);
+			attr.setName(attribute.getName());
+			attr.setValue(attribute.getValue());
+			for (TableModelListener l : listeners)
+				l.tableChanged(new TableModelEvent(this));
+		}
+
+		public void removeAttribute(int index) {
+			attrs.remove(index);
+			for (TableModelListener l : listeners)
+				l.tableChanged(new TableModelEvent(this));
+		}
+	}
+
+	private AttributesModel attrModel;
+
 	/** Creates new form AnalysisDetailsPanel */
     public ArtifactDetailsPanel() {
         initComponents();
+
+		attrTable.setModel(attrModel = new AttributesModel());
+		attrTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		attrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int row = attrTable.getSelectedRow();
+				attrEditBtn.setEnabled(row != -1);
+				attrRemoveBtn.setEnabled(row != -1);
+			}
+		});
     }
 
     /** This method is called from within the constructor to
@@ -72,13 +172,27 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(attrTable);
 
         attrAddBtn.setText("Add");
-        attrAddBtn.setEnabled(false);
+        attrAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attrAddBtnActionPerformed(evt);
+            }
+        });
 
         attrRemoveBtn.setText("Remove");
         attrRemoveBtn.setEnabled(false);
+        attrRemoveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attrRemoveBtnActionPerformed(evt);
+            }
+        });
 
         attrEditBtn.setText("Edit");
         attrEditBtn.setEnabled(false);
+        attrEditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attrEditBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -87,18 +201,18 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                    .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(attrRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(attrEditBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(attrAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -127,6 +241,37 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+	private void attrAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrAddBtnActionPerformed
+		AttributeDialog dlg = new AttributeDialog(null);
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		attrModel.addAttribute(dlg.getAttribute());
+	}//GEN-LAST:event_attrAddBtnActionPerformed
+
+	private void attrEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrEditBtnActionPerformed
+		int row = attrTable.getSelectedRow();
+		if (row == -1)
+			return;
+
+		AttributeDialog dlg = new AttributeDialog(null);
+		dlg.setAttribute(attrModel.getAttribute(row));
+		dlg.setVisible(true);
+		if (dlg.isCancelled())
+			return;
+
+		attrModel.modifyAttribute(row, dlg.getAttribute());
+	}//GEN-LAST:event_attrEditBtnActionPerformed
+
+	private void attrRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrRemoveBtnActionPerformed
+		int row = attrTable.getSelectedRow();
+		if (row == -1)
+			return;
+
+		attrModel.removeAttribute(row);
+	}//GEN-LAST:event_attrRemoveBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton attrAddBtn;
@@ -151,7 +296,6 @@ public class ArtifactDetailsPanel extends javax.swing.JPanel {
 	}
 
 	public List<Attribute> getArtifactAttributes() {
-		//TODO...
-		return new ArrayList<Attribute>(0);
+		return attrModel.getAttributes();
 	}
 }

@@ -19,12 +19,12 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="376" max="32767" attributes="0"/>
-                  <Component id="titleField" alignment="0" pref="376" max="32767" attributes="0"/>
-                  <Component id="jLabel1" alignment="0" pref="376" max="32767" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" pref="376" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" pref="559" max="32767" attributes="0"/>
+                  <Component id="titleField" alignment="0" pref="559" max="32767" attributes="0"/>
+                  <Component id="jLabel1" alignment="0" pref="559" max="32767" attributes="0"/>
+                  <Component id="jLabel2" alignment="0" pref="559" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane2" pref="268" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="451" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="attrRemoveBtn" max="32767" attributes="1"/>
@@ -32,7 +32,7 @@
                           <Component id="attrAddBtn" alignment="1" pref="96" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Component id="jLabel3" alignment="0" pref="376" max="32767" attributes="0"/>
+                  <Component id="jLabel3" alignment="0" pref="559" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -127,20 +127,28 @@
     <Component class="javax.swing.JButton" name="attrAddBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="attrAddBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="attrRemoveBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remove"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="attrRemoveBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="attrEditBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="attrEditBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
