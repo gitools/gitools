@@ -142,9 +142,13 @@ public class PersistenceUtils {
 		return path.substring(sep + 1);
 	}
 
-	/** Returns the file name without extension */
+	/** Returns the file name without extension.
+	 * It takes into account composed extension for .gz */
 	public static String getFileName(String path) {
 		int dot = path.lastIndexOf('.');
+		if (dot > 0 && path.substring(dot).equalsIgnoreCase(".gz"))
+			dot = path.substring(0, dot - 1).lastIndexOf('.');
+		
 		int sep = path.lastIndexOf(File.separatorChar);
 		return dot != -1 ? path.substring(sep + 1, dot) : path.substring(sep + 1);
 	}

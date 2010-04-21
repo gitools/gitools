@@ -17,7 +17,6 @@
 
 package edu.upf.bg.colorscale.drawer;
 
-import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Dimension;
 import java.awt.Graphics;

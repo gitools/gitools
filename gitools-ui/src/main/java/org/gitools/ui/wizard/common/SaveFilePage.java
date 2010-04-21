@@ -30,6 +30,7 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
+import javax.swing.filechooser.FileFilter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -161,22 +162,23 @@ public class SaveFilePage extends AbstractWizardPage {
 
         jLabel1 = new javax.swing.JLabel();
         fileName = new javax.swing.JTextField();
-        browseBtn = new javax.swing.JButton();
+        browseFolderBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         folder = new javax.swing.JTextField();
         formatLabel = new javax.swing.JLabel();
         format = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         path = new javax.swing.JTextField();
+        browseFileBtn = new javax.swing.JButton();
 
         jLabel1.setText("Name");
 
         fileName.setFocusCycleRoot(true);
 
-        browseBtn.setText("Browse...");
-        browseBtn.addActionListener(new java.awt.event.ActionListener() {
+        browseFolderBtn.setText("Browse...");
+        browseFolderBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browseBtnActionPerformed(evt);
+                browseFolderBtnActionPerformed(evt);
             }
         });
 
@@ -187,6 +189,13 @@ public class SaveFilePage extends AbstractWizardPage {
         jLabel4.setText("Generated file");
 
         path.setEditable(false);
+
+        browseFileBtn.setText("Browse...");
+        browseFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseFileBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -202,15 +211,17 @@ public class SaveFilePage extends AbstractWizardPage {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(format, 0, 390, Short.MAX_VALUE)
-                            .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                            .addComponent(format, 0, 396, Short.MAX_VALUE)
+                            .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(browseBtn))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(browseFolderBtn)
+                            .addComponent(browseFileBtn)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)))
+                        .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -219,12 +230,13 @@ public class SaveFilePage extends AbstractWizardPage {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browseFileBtn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseBtn))
+                    .addComponent(browseFolderBtn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(formatLabel)
@@ -233,20 +245,62 @@ public class SaveFilePage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(241, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void browseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBtnActionPerformed
+	private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
 		File selPath = FileChooserUtils.selectPath(
 				"Select folder", folder.getText());
 
 		if (selPath != null)
 			folder.setText(selPath.getAbsolutePath());
-	}//GEN-LAST:event_browseBtnActionPerformed
+	}//GEN-LAST:event_browseFolderBtnActionPerformed
+
+	private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFileBtnActionPerformed
+		FileFilter ff = new FileFilter() {
+			@Override public boolean accept(File f) {
+				if (f.isDirectory())
+					return true;
+
+				for (FileFormat fmt : formats)
+					if (fmt.checkExtension(f.getName()))
+						return true;
+
+				return false;
+			}
+
+			@Override public String getDescription() {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Supported formats");
+				if (formats != null && formats.length > 0) {
+					sb.append(" (*.").append(formats[0].getExtension());
+					for (int i = 1; i < formats.length; i++)
+						sb.append(", *.").append(formats[i].getExtension());
+					sb.append(')');
+				}
+				return sb.toString();
+			}
+		};
+
+		Object[] sel = FileChooserUtils.selectFile(
+				"Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFilter[] {ff});
+
+		File selFile = (File) sel[0];
+
+		if (selFile != null) {
+			String fn = selFile.getName();
+			fileName.setText(fn);
+			folder.setText(selFile.getParentFile().getAbsolutePath());
+			for (FileFormat f : formats)
+				if (f.checkExtension(fn))
+					format.setSelectedItem(f);
+		}
+	}//GEN-LAST:event_browseFileBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton browseBtn;
+    private javax.swing.JButton browseFileBtn;
+    private javax.swing.JButton browseFolderBtn;
     private javax.swing.JTextField fileName;
     private javax.swing.JTextField folder;
     private javax.swing.JComboBox format;

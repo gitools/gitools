@@ -27,7 +27,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.scale.ScaleExportWizard;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class ExportScaleImageAction extends BaseAction {
@@ -56,25 +56,43 @@ public class ExportScaleImageAction extends BaseAction {
 		if (!(model instanceof Heatmap))
 			return;
 
-		SaveFileWizard saveWiz = SaveFileWizard.createSimple(
+		/*SaveFileWizard saveWiz = SaveFileWizard.createSimple(
 				"Export scale to image ...",
 				PersistenceUtils.getFileName(editor.getName()) + "-scale",
 				Settings.getDefault().getLastExportPath(),
 				new FileFormat[] {
 					FileFormats.PNG,
 					FileFormats.JPG
-				});
+				});*/
 
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), saveWiz);
+		Heatmap hm = (Heatmap) model;
+		ElementDecorator cd = hm.getCellDecorator();
+		final IColorScale scale = cd != null ? cd.getScale() : null;
+
+		if (scale == null)
+			return;
+
+		final ScaleExportWizard wz = new ScaleExportWizard();
+		wz.setTitle("Export scale to image ...");
+		wz.getSavePage().setFileName(PersistenceUtils.getFileName(editor.getName()) + "-scale");
+		wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
+		wz.getSavePage().setFormats(new FileFormat[] {
+					FileFormats.PNG,
+					FileFormats.JPG });
+		wz.setScale(scale);
+
+		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wz);
 		dlg.setVisible(true);
 		if (dlg.isCancelled())
 			return;
 
-		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+		Settings.getDefault().setLastExportPath(wz.getSavePage().getFolder());
 
-		final File file = saveWiz.getFile();
+		final File file = wz.getSavePage().getFile();
+		if (!file.getParentFile().exists())
+			file.getParentFile().mkdirs();
 
-		final String formatExtension = saveWiz.getFormat().getExtension();
+		final String formatExtension = wz.getSavePage().getFormat().getExtension();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override
@@ -83,29 +101,28 @@ public class ExportScaleImageAction extends BaseAction {
 					monitor.begin("Exporting scale to image ...", 1);
 					monitor.info("File: " + file.getName());
 
-					Heatmap hm = (Heatmap) model;
-					ElementDecorator cd = hm.getCellDecorator();
-					IColorScale scale = cd != null ? cd.getScale() : null;
-					if (scale != null) {
-						ColorScaleDrawer drawer = new ColorScaleDrawer(scale);
-						//drawer.setPictureMode(true);
-
-						Dimension size = drawer.getSize();
-						size.width = 1024;
-
-						BufferedImage bi = new BufferedImage(
-								size.width, size.height, BufferedImage.TYPE_INT_RGB);
-
-						Graphics2D g = bi.createGraphics();
-						g.setColor(Color.WHITE);
-						g.fillRect(0, 0, size.width, size.height);
-
-						drawer.draw(g,
-								new Rectangle(new Point(), size),
-								new Rectangle(new Point(), size));
-
-						ImageIO.write(bi, formatExtension, file);
+					ColorScaleDrawer drawer = new ColorScaleDrawer(scale);
+					if (wz.isPartialRange()) {
+						drawer.setZoomRangeMin(wz.getRangeMin());
+						drawer.setZoomRangeMax(wz.getRangeMax());
 					}
+					//drawer.setPictureMode(true);
+
+					Dimension size = drawer.getSize();
+					size.width = wz.getScaleSize();
+
+					BufferedImage bi = new BufferedImage(
+							size.width, size.height, BufferedImage.TYPE_INT_RGB);
+
+					Graphics2D g = bi.createGraphics();
+					g.setColor(Color.WHITE);
+					g.fillRect(0, 0, size.width, size.height);
+
+					drawer.draw(g,
+							new Rectangle(new Point(), size),
+							new Rectangle(new Point(), size));
+
+					ImageIO.write(bi, formatExtension, file);
 
 					monitor.end();
 				}
