@@ -24,30 +24,30 @@ public class HtestAnalysisEditor extends AbstractEditor {
 	});
 
 	private HtestAnalysis analysis;
-	
+
 	private TemplatePane templatePane;
 
 	public HtestAnalysisEditor(HtestAnalysis analysis) {
 		this.analysis = analysis;
-		
+
 		createComponents();
 	}
-	
+
 	private void createComponents() {
 		templatePane = new TemplatePane();
 		try {
 			templatePane.setTemplate("/vm/analysis/enrichment.vm");
-			
+
 			VelocityContext context = new VelocityContext();
 			context.put("fmt", new GenericFormatter());
 			context.put("analysis", analysis);
-			
+
 			templatePane.setContext(context);
 			templatePane.render();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		setLayout(new BorderLayout());
 		add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
 		add(templatePane, BorderLayout.CENTER);

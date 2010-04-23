@@ -91,9 +91,10 @@ public class MenuActionSet extends ActionSet {
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,
 				AnalysisActions.combinations,
-				new ActionSet("Clustering", new BaseAction[] {
-					AnalysisActions.clusteringHierarchicalAction
-				}),
+				AnalysisActions.clusteringAction,
+//				new ActionSet("Clustering", new BaseAction[] {
+//					AnalysisActions.clusteringAction
+//				}),
 				new ActionSet("MTC", new BaseAction[] {
 					AnalysisActions.mtcBonferroniAction,
 					AnalysisActions.mtcBenjaminiHochbergFdrAction,
