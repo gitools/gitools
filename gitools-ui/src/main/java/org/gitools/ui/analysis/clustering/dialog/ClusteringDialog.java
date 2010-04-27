@@ -110,7 +110,6 @@ public class ClusteringDialog extends javax.swing.JDialog {
         paramsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         rowsRadio = new javax.swing.JRadioButton();
-        jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         columnsRadio = new javax.swing.JRadioButton();
         algorithmTypeCombo = new javax.swing.JComboBox();
@@ -121,11 +120,11 @@ public class ClusteringDialog extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        rowsColumnsRadio = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setTitle("Clustering analysis");
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(442, 461));
+        setMinimumSize(new java.awt.Dimension(442, 472));
 
         javax.swing.GroupLayout paramsPanelLayout = new javax.swing.GroupLayout(paramsPanel);
         paramsPanel.setLayout(paramsPanelLayout);
@@ -135,7 +134,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
         );
         paramsPanelLayout.setVerticalGroup(
             paramsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 193, Short.MAX_VALUE)
+            .addGap(0, 201, Short.MAX_VALUE)
         );
 
         jLabel3.setText("Method :");
@@ -143,8 +142,6 @@ public class ClusteringDialog extends javax.swing.JDialog {
         applayGroup.add(rowsRadio);
         rowsRadio.setSelected(true);
         rowsRadio.setText("rows");
-
-        jLabel4.setText("Parameters :");
 
         jLabel2.setText("Clustering type :");
 
@@ -184,41 +181,36 @@ public class ClusteringDialog extends javax.swing.JDialog {
             }
         });
 
-        applayGroup.add(rowsColumnsRadio);
-        rowsColumnsRadio.setText("rows and columns");
+        jLabel4.setText("Parameters :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(paramsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(clusterTypeCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, 312, Short.MAX_VALUE)
-                            .addComponent(algorithmTypeCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, 312, Short.MAX_VALUE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rowsRadio)
                                 .addGap(18, 18, 18)
-                                .addComponent(columnsRadio)
-                                .addGap(18, 18, 18)
-                                .addComponent(rowsColumnsRadio))))
+                                .addComponent(columnsRadio))
+                            .addComponent(clusterTypeCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 288, Short.MAX_VALUE)
+                            .addComponent(algorithmTypeCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 288, Short.MAX_VALUE)
+                            .addComponent(dataClustCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 288, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataClustCombo, 0, 290, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
-                    .addComponent(paramsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -231,29 +223,29 @@ public class ClusteringDialog extends javax.swing.JDialog {
                     .addComponent(dataClustCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(rowsColumnsRadio)
-                    .addComponent(columnsRadio)
-                    .addComponent(rowsRadio))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clusterTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(algorithmTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(23, 23, 23)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(paramsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(12, 12, 12)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap())
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(columnsRadio)
+                        .addComponent(rowsRadio)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(paramsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 6, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -318,7 +310,6 @@ public class ClusteringDialog extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton okButton;
     private javax.swing.JPanel paramsPanel;
-    private javax.swing.JRadioButton rowsColumnsRadio;
     private javax.swing.JRadioButton rowsRadio;
     // End of variables declaration//GEN-END:variables
 
@@ -380,8 +371,6 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		a.setApplyToColumns(columnsRadio.isSelected());
 
 		a.setApplyToRows(rowsRadio.isSelected());
-
-		a.setApplyToRowsColumns(rowsColumnsRadio.isSelected());
 		
 		return a;
 	}

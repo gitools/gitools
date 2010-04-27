@@ -18,6 +18,7 @@
 package org.gitools.analysis.clustering.methods;
 
 import java.io.IOException;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrixView;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -61,16 +62,18 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 
 		if (type.equals("cols"))
 		{
-			//Adding columns name
-			for (int cols = 0; cols < matrixView.getColumnCount(); cols++)
-
-				attribNames.addElement(new Attribute(matrixView.getColumnLabel(cols)));
-		}
-		else{
-			//Adding rows name
+			//Adding attributes (rows name)
 			for (int rows = 0; rows < matrixView.getRowCount(); rows++)
 
 				attribNames.addElement(new Attribute(matrixView.getRowLabel(rows)));
+
+		}
+		else{
+			//Adding attributes (columns name)
+
+			for (int cols = 0; cols < matrixView.getColumnCount(); cols++)
+
+				attribNames.addElement(new Attribute(matrixView.getColumnLabel(cols)));
 
 		}
 
@@ -85,49 +88,25 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 		Instances dataSet = getStructure();
 
 		Instance current = null;
-		
-		if (type.equals("cols"))
-		{
 
-			if (matrixView.getVisibleRows().length < 1)  return null;
+		Integer auxCols = indexCols, auxRows = indexRows;
 
-			for (Integer auxRows = 0;auxRows < matrixView.getVisibleRows().length; auxRows++)
-			{
-				current = new Instance(matrixView.getColumnCount());
-				
-				for (int col = 0;col < current.numAttributes();col++)
-				{
-					current.setValue(col,
-						(Integer) matrixView.getCellValue(auxRows, col, indexValueMatrix));
-				}
-				dataSet.add(current);
-			}
+		indexCols = -1;
+		indexRows = -1;
 
+		while ((current = getNextInstance(dataSet)) != null){
+			dataSet.add(current);
 		}
-		else
-		{
-			
-			if (matrixView.getVisibleColumns().length < 1)  return null;
-
-			for (Integer auxCols = 0;auxCols < matrixView.getVisibleColumns().length; auxCols++)
-			{
-				current = new Instance(matrixView.getRowCount());
-				
-				for (int row = 0;row < current.numAttributes();row++)
-				{
-					current.setValue(row,
-						(Integer) matrixView.getCellValue(row,auxCols, indexValueMatrix));
-				}
-				dataSet.add(current);
-			}
-		}
+		indexCols = auxCols;
+		indexRows = auxRows;
 		return dataSet;
+
 	}
 
 
-
 	@Override
-	public Instance getNextInstance(Instances i) throws IOException
+	//Param ds it is not modified nor altered
+	public Instance getNextInstance(Instances ds) throws IOException
 	{		
 
 		Instance current = null;
@@ -135,20 +114,6 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 		if (type.equals("cols"))
 		{
 
-			current = new Instance(matrixView.getColumnCount());
-
-			if ((matrixView.getVisibleRows().length < 1) || (indexRows >= matrixView.getVisibleRows().length-1)) return null;
-
-			indexRows++;
-
-			for (int col = 0;col < current.numAttributes();col++)
-
-				current.setValue(col,
-					(Integer) matrixView.getCellValue(indexRows, col, indexValueMatrix));
-
-		}
-		else
-		{
 			current = new Instance(matrixView.getRowCount());
 
 			if ((matrixView.getVisibleColumns().length < 1) || (indexCols >= matrixView.getVisibleColumns().length-1)) return null;
@@ -156,9 +121,25 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 			indexCols++;
 
 			for (int row = 0;row < current.numAttributes();row++)
+			{				
+				current.setValue(row, MatrixUtils.doubleValue(
+						matrixView.getCellValue(row,indexCols, indexValueMatrix)));
+			}
 
-				current.setValue(row,
-					(Integer) matrixView.getCellValue(row,indexCols, indexValueMatrix));
+		}
+		else
+		{
+			current = new Instance(matrixView.getColumnCount());
+
+			if ((matrixView.getVisibleRows().length < 1) || (indexRows >= matrixView.getVisibleRows().length-1)) return null;
+
+			indexRows++;
+
+			for (int col = 0;col < current.numAttributes();col++)
+			{
+					current.setValue(col, MatrixUtils.doubleValue(
+						matrixView.getCellValue(indexRows, col, indexValueMatrix)));
+			}
 		}
 
 		Instances dataset = getStructure();

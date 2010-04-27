@@ -24,7 +24,7 @@ import org.gitools.matrix.model.IMatrixView;
 
 public interface ClusteringMethod extends Method{
 
-	ClusteringResult buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException;
+	void buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException;
 
 	void build(IMatrixView matrixView, String type) throws MethodException;
 

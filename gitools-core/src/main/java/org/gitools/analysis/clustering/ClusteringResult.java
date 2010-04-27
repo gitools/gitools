@@ -17,21 +17,19 @@
 
 package org.gitools.analysis.clustering;
 
-import java.util.List;
-
 public class ClusteringResult {
 
-	List<Integer> resultList;
+	Integer[] resultList;
 
-	public List<Integer> getResultList() {
+	public Integer[] getResultList() {
 		return resultList;
 	}
 
-	public void setResultList(List<Integer> resultList) {
+	public void setResultList(Integer[] resultList) {
 		this.resultList = resultList;
 	}
 
-	public ClusteringResult(List<Integer> resultList) {
+	public ClusteringResult(Integer[] resultList) {
 		this.resultList = resultList;
 	}
 

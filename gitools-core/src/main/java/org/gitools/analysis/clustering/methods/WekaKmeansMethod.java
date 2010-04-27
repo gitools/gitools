@@ -19,6 +19,7 @@ package org.gitools.analysis.clustering.methods;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
@@ -44,18 +45,26 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 	}
 
 	@Override
-	public ClusteringResult buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
+	public void buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
+
+		Instance instancia;
+
+		int cluster;
+
+		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return;
 
 		MatrixViewWekaLoader loader = new MatrixViewWekaLoader(matrixView, properties.getProperty("index"),type);
 
 		Instances structure = loader.getStructure();
 
-		System.out.println("Crear algoritmo de clustering ...");
+		System.out.println("Loading clustering algorithm ...");
 
 		SimpleKMeans clusterer = new SimpleKMeans();
 
 		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations")));
+
 		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k")));
+
 		clusterer.setSeed(Integer.valueOf(properties.getProperty("seed")));
 
 		if (properties.getProperty("distance").toLowerCase().equals("euclidean"))
@@ -64,37 +73,71 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		if (properties.getProperty("distance").toLowerCase().equals("manhattan"))
 			clusterer.setDistanceFunction(new ManhattanDistance());
 
-		System.out.println("Entrenar algoritmo de clustering ...");
+
+		System.out.println("Training clustering model...");
 
 		clusterer.buildClusterer(loader.getDataSet());
 
-		// Identificar el cluster de cada instancia
-		System.out.println("Asignación de instancias a clusters ...");
-
-		Instance instancia;
-
-		int cluster;
+		System.out.println("Setting instances into clusters ...");
 
 		Instances dataset = loader.getDataSet();
 
-		List<Integer> InstanceCLusterList = new ArrayList<Integer>();
+		//Cluster -> List instances 
+		HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
 
+		List<Integer> instancesCluster = null;
+				
 		for (int i=0; i < dataset.numInstances(); i++)  {
 
 			instancia = dataset.instance(i);
 
 			cluster = clusterer.clusterInstance(instancia);
 
-			//System.out.println("[Cluster "+cluster+"] Instancia: "+instancia.toString());
-			System.out.println(instancia.toString());
+			if (clusterResults.get(cluster) == null) instancesCluster = new ArrayList<Integer>();
 
-			InstanceCLusterList.add(cluster);
+			else instancesCluster = clusterResults.get(cluster);
+			
+			instancesCluster.add(i);
+
+			clusterResults.put(cluster, instancesCluster);
+
 		}
 
-		return new ClusteringResult(InstanceCLusterList);
+		rePaintHeatMap (type, matrixView, dataset.numInstances(), clusterResults);
+
 
 	}
 
+	private void rePaintHeatMap (String type, IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
+
+		int[] visibleData = null;
+
+		if (type.equals("rows"))
+			visibleData = matrixView.getVisibleRows();
+		else
+			visibleData = matrixView.getVisibleColumns();
+
+		final int[] sortedVisibleData = new int[numInstances];
+
+		int index = 0;
+
+		for (Integer i : clusterResults.keySet()){
+
+			for( Integer val : clusterResults.get(i)){
+
+				sortedVisibleData[index] = visibleData[val];
+
+				index++;
+			}
+
+		}
+
+		if (type.equals("rows"))
+			matrixView.setVisibleRows(sortedVisibleData);
+		else
+			matrixView.setVisibleColumns(sortedVisibleData);
+
+	}
 
 	@Override
 	public String getId() {

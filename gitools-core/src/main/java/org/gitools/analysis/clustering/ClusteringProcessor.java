@@ -36,12 +36,12 @@ public class ClusteringProcessor {
 
 			if (analysis.isApplyToRows()) 				
 
-					analysis.setResults(method.buildAndCluster(analysis.getData(),"rows"));			
+					method.buildAndCluster(analysis.getData(),"rows");			
 			else
 
 			if (analysis.isApplyToColumns())				
 
-					analysis.setResults(method.buildAndCluster(analysis.getData(),"cols"));
+					method.buildAndCluster(analysis.getData(),"cols");
 
 	}
 

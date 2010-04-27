@@ -19,6 +19,8 @@ package org.gitools.analysis.clustering.methods;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
@@ -42,7 +44,7 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 	}
 
 	@Override
-	public ClusteringResult buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
+	public void buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
 
 		MatrixViewWekaLoader loader = new MatrixViewWekaLoader(matrixView, properties.getProperty("index"),type);
 
@@ -79,7 +81,11 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 
 		Instances dataset = loader.getDataSet();
 
-		List<Integer> InstanceCLusterList = new ArrayList<Integer>();
+		//One cluster differnt instances
+
+		HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
+
+		List<Integer> instancesCluster = null;
 
 		for (int i=0; i < dataset.numInstances(); i++)  {
 
@@ -87,18 +93,56 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 
 			cluster = clusterer.clusterInstance(instancia);
 
-			//System.out.println("[Cluster "+cluster+"] Instancia: "+instancia.toString());
-			System.out.println(instancia.toString());
+			if (clusterResults.get(cluster) == null) instancesCluster = new ArrayList<Integer>();
 
-			InstanceCLusterList.add(cluster);
+			else instancesCluster = clusterResults.get(cluster);
+
+			instancesCluster.add(i);
+
+			clusterResults.put(cluster, instancesCluster);
+
 		}
 
-		System.out.println(clusterer.graph());
-
-		return new ClusteringResult(InstanceCLusterList);
+		repaintHeatMap(type,matrixView, dataset.numInstances(),clusterResults);		
 
 	}
 
+	private void repaintHeatMap (String type, IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
+
+		int[] visibleData = null;
+
+		if (type.equals("rows"))
+			visibleData = matrixView.getVisibleRows();
+		else 
+			visibleData = matrixView.getVisibleColumns();
+
+		final int[] sortedVisibleData = new int[numInstances];
+
+		int index = 0;
+		
+		//Integer[] clustersSorted = new Integer[clusterResults.keySet().size()];
+		//clustersSorted = (Integer[]) clusterResults.keySet().toArray();
+		Integer[] clustersSorted = (Integer[])clusterResults.keySet().toArray(new Integer[clusterResults.keySet().size()]);
+
+		Arrays.sort(clustersSorted);
+
+		for (Integer i : clustersSorted){
+
+			for( Integer val : clusterResults.get(i)){
+
+				sortedVisibleData[index] = visibleData[val];
+
+				index++;
+			}
+
+		}
+
+		if (type.equals("rows"))
+			matrixView.setVisibleRows(sortedVisibleData);
+		else
+			matrixView.setVisibleColumns(sortedVisibleData);
+
+	}
 
 	@Override
 	public String getId() {
