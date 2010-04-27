@@ -17,6 +17,7 @@
 
 package org.gitools.analysis.clustering.methods;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,16 +44,20 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 				ClusteringResult.class, properties);
 	}
 
+	//FIXME type shouldn't be an string
 	@Override
-	public void buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
+	public void buildAndCluster(IMatrixView matrixView, String type, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
 
-		MatrixViewWekaLoader loader = new MatrixViewWekaLoader(matrixView, properties.getProperty("index"),type);
+		// FIXME valueIndex should be an integer !!!
+		String valueIndex = properties.getProperty("index", "0");
+		MatrixViewWekaLoader loader =
+				new MatrixViewWekaLoader(matrixView, valueIndex, type);
 
 		Instances structure = loader.getStructure();
 
-		System.out.println("Crear algoritmo de clustering ...");
-
 		Cobweb clusterer = new Cobweb();
+
+		// FIXME consider empty values using getProperty(key, defaultValue)
 
 		clusterer.setAcuity(Float.valueOf(properties.getProperty("acuity")));
 		clusterer.setCutoff(Float.valueOf(properties.getProperty("cutoff")));
@@ -60,54 +65,53 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 
 		clusterer.buildClusterer(structure);
 
+		monitor.begin("Creating clustering model ...", structure.numInstances() + 1);
+
 		Instance current;
-
-		System.out.println("Entrenar algoritmo de clustering ...");
-
-		while ((current = loader.getNextInstance(structure)) != null)
-
+		
+		while ((current = loader.getNextInstance(structure)) != null
+				&& !monitor.isCancelled()) {
+			
 			clusterer.updateClusterer(current);
-
+			monitor.worked(1);
+		}
 
 		clusterer.updateFinished();
 
+		monitor.end();
 
 		// Identificar el cluster de cada instancia
-		System.out.println("Asignación de instancias a clusters ...");
+		Instances dataset = loader.getDataSet();
 
-		Instance instancia;
+		monitor.begin("Classifying instances ...", dataset.numInstances());
 
 		int cluster;
 
-		Instances dataset = loader.getDataSet();
-
 		//One cluster differnt instances
 
-		HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
+		HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
 
-		List<Integer> instancesCluster = null;
+		for (int i=0; i < dataset.numInstances() && !monitor.isCancelled(); i++)  {
 
-		for (int i=0; i < dataset.numInstances(); i++)  {
+			cluster = clusterer.clusterInstance(dataset.instance(i));
 
-			instancia = dataset.instance(i);
-
-			cluster = clusterer.clusterInstance(instancia);
-
-			if (clusterResults.get(cluster) == null) instancesCluster = new ArrayList<Integer>();
-
-			else instancesCluster = clusterResults.get(cluster);
+			List<Integer> instancesCluster = clusterResults.get(cluster);
+			if (instancesCluster == null) {
+				instancesCluster = new ArrayList<Integer>();
+				clusterResults.put(cluster, instancesCluster);
+			}
 
 			instancesCluster.add(i);
 
-			clusterResults.put(cluster, instancesCluster);
-
+			monitor.worked(1);
 		}
 
-		repaintHeatMap(type,matrixView, dataset.numInstances(),clusterResults);		
+		updateVisibility(type, matrixView, dataset.numInstances(), clusterResults);
 
+		monitor.end();
 	}
 
-	private void repaintHeatMap (String type, IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
+	private void updateVisibility(String type, IMatrixView matrixView, Integer numInstances, HashMap<Integer, List<Integer>> clusterResults) {
 
 		int[] visibleData = null;
 
@@ -122,20 +126,14 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 		
 		//Integer[] clustersSorted = new Integer[clusterResults.keySet().size()];
 		//clustersSorted = (Integer[]) clusterResults.keySet().toArray();
-		Integer[] clustersSorted = (Integer[])clusterResults.keySet().toArray(new Integer[clusterResults.keySet().size()]);
+		Integer[] clustersSorted = (Integer[]) clusterResults.keySet().toArray(
+				new Integer[clusterResults.keySet().size()]);
 
 		Arrays.sort(clustersSorted);
 
-		for (Integer i : clustersSorted){
-
-			for( Integer val : clusterResults.get(i)){
-
-				sortedVisibleData[index] = visibleData[val];
-
-				index++;
-			}
-
-		}
+		for (Integer i : clustersSorted)
+			for( Integer val : clusterResults.get(i))
+				sortedVisibleData[index++] = visibleData[val];
 
 		if (type.equals("rows"))
 			matrixView.setVisibleRows(sortedVisibleData);
@@ -151,7 +149,7 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 
 
 	@Override
-	public void build(IMatrixView matrixView, String type) throws MethodException {
+	public void build(IMatrixView matrixView, String type, IProgressMonitor monitor) throws MethodException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

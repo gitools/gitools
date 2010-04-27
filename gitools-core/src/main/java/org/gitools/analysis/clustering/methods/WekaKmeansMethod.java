@@ -17,6 +17,7 @@
 
 package org.gitools.analysis.clustering.methods;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 	}
 
 	@Override
-	public void buildAndCluster(IMatrixView matrixView, String type) throws Exception, IOException, NumberFormatException {
+	public void buildAndCluster(IMatrixView matrixView, String type, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
 
 		Instance instancia;
 
@@ -146,7 +147,7 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 
 	@Override
-	public void build(IMatrixView matrixView, String type) throws MethodException {
+	public void build(IMatrixView matrixView, String type, IProgressMonitor monitor) throws MethodException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

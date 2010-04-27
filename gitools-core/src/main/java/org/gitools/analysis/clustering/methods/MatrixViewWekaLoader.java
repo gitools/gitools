@@ -26,12 +26,17 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.AbstractLoader;
 
+// FIXME This code is very inefficient !!! check getNextInstance and getStructure
+
 public class MatrixViewWekaLoader  extends AbstractLoader {
 
 	private IMatrixView matrixView;
 
 	private String indexValueMatrix;
 
+	//FIXME very inefficient, use integer or enum instead,
+	// or better use inheritance properly
+	// or even better use MatrixViewTransposed
 	private String type;
 
 	private int indexRows;
@@ -50,7 +55,9 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 		indexRows = indexCols = -1;
 
 	}
-	
+
+	// FIXME structure should be constructed ONCE in the constructor
+	// and returned here whenever it is needed
 	@Override
 	public Instances getStructure() throws IOException {
 
@@ -155,7 +162,4 @@ public class MatrixViewWekaLoader  extends AbstractLoader {
 		throw new UnsupportedOperationException("Not supported yet.");
 		
 	}
-
-
-
 }

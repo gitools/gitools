@@ -34,15 +34,11 @@ public class ClusteringProcessor {
 
 			ClusteringMethod method = ClusteringMethodFactory.createMethod(analysis.getParams());
 
-			if (analysis.isApplyToRows()) 				
+			if (analysis.isApplyToRows())
+					method.buildAndCluster(analysis.getData(), "rows", monitor);
 
-					method.buildAndCluster(analysis.getData(),"rows");			
-			else
-
-			if (analysis.isApplyToColumns())				
-
-					method.buildAndCluster(analysis.getData(),"cols");
-
+			if (analysis.isApplyToColumns())
+					method.buildAndCluster(analysis.getData(), "cols", monitor);
 	}
 
 

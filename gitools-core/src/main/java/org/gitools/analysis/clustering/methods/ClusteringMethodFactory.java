@@ -24,15 +24,13 @@ import org.gitools.analysis.AnalysisException;
 
 public class ClusteringMethodFactory {
 
-	public static ClusteringMethod createMethod(Properties params) throws AnalysisException {
-		String methodId =params.getProperty("method");
+	public static ClusteringMethod createMethod(Properties properties) throws AnalysisException {
+		String methodId =properties.getProperty("method");
 		if (WekaCobWebMethod.ID.equalsIgnoreCase(methodId))
-			return new WekaCobWebMethod(params);
+			return new WekaCobWebMethod(properties);
+		else if (WekaKmeansMethod.ID.equalsIgnoreCase(methodId))
+			return new WekaKmeansMethod(properties);
 		else
-			if (WekaKmeansMethod.ID.equalsIgnoreCase(methodId))
-				return new WekaKmeansMethod(params);
-			else
-			throw new AnalysisException("Unknown correlation method: " + methodId);
-
+			throw new AnalysisException("Unknown clustering method: " + methodId);
 	}
 }
