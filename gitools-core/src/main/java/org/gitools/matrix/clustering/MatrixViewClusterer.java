@@ -25,7 +25,7 @@ import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixViewClusterer {
 
-	public static void cluster (IMatrixView matrixView, Properties clusterParameters, IProgressMonitor monitor) throws AnalysisException, Exception {
+	public static void cluster (IMatrixView matrixView, Properties clusterParameters, IProgressMonitor monitor) throws Exception {
 
 		ClusteringMethod method = ClusteringMethodFactory.createMethod(clusterParameters);
 

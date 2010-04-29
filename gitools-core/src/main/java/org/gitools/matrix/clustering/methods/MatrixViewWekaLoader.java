@@ -56,8 +56,6 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 
 	}
 
-	// FIXME structure should be constructed ONCE in the constructor
-	// and returned here whenever it is needed
 	@Override
 	public Instances getStructure() throws IOException {
 

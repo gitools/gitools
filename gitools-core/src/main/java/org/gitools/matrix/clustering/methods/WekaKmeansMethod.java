@@ -48,7 +48,6 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 	public void buildAndCluster(IMatrixView matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
 
 		Instance instancia;
-
 		int cluster;
 
 		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return;
@@ -71,9 +70,7 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		Instances dataset = loader.getDataSet();
 
 		monitor.begin("Creating clustering model ...", 1);
-
 		clusterer.buildClusterer(dataset);
-
 		monitor.end();
 
 		monitor.begin("Clustering instances ...", dataset.numInstances());
@@ -86,23 +83,20 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		for (int i=0; i < dataset.numInstances(); i++)  {
 
 			instancia = dataset.instance(i);
-
 			cluster = clusterer.clusterInstance(instancia);
 
-			if (clusterResults.get(cluster) == null) instancesCluster = new ArrayList<Integer>();
-
-			else instancesCluster = clusterResults.get(cluster);
+			if (clusterResults.get(cluster) == null)
+				instancesCluster = new ArrayList<Integer>();
+			else
+				instancesCluster = clusterResults.get(cluster);
 			
 			instancesCluster.add(i);
-
 			clusterResults.put(cluster, instancesCluster);
-
 			monitor.worked(1);
 
 		}
 
 		updateVisibility (matrixView, dataset.numInstances(), clusterResults);
-
 		monitor.end();
 
 	}

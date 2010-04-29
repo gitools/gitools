@@ -24,13 +24,12 @@ import org.gitools.analysis.AnalysisException;
 
 public class ClusteringMethodFactory {
 
-	public static ClusteringMethod createMethod(Properties properties) throws AnalysisException {
+	public static ClusteringMethod createMethod(Properties properties) {
 		String methodId =properties.getProperty("method");
 		if (methodId.toLowerCase().contains(WekaCobWebMethod.ID))
 			return new WekaCobWebMethod(properties);
-		else if (WekaKmeansMethod.ID.equalsIgnoreCase(methodId))
+		else 
 			return new WekaKmeansMethod(properties);
-		else
-			throw new AnalysisException("Unknown clustering method: " + methodId);
+
 	}
 }
