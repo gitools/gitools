@@ -253,7 +253,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
 		clusterParams.put("method", algorithmTypeCombo.getSelectedItem().toString().toLowerCase());
 		clusterParams.put("index", dataClustCombo.getSelectedItem());
-		clusterParams.put("transpose", rowsRadio.isSelected());
+		clusterParams.put("transpose", rowsRadio.isSelected()+"");
 
 		if (algorithmTypeCombo.getSelectedItem().toString().toLowerCase().equals("k-means")) {
 
