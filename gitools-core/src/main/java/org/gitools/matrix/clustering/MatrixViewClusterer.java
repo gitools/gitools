@@ -29,7 +29,7 @@ public class MatrixViewClusterer {
 
 		ClusteringMethod method = ClusteringMethodFactory.createMethod(clusterParameters);
 
-		if (Boolean.valueOf(clusterParameters.getProperty("transpose", "false"))) {
+		if (Boolean.valueOf(clusterParameters.getProperty("transpose", "true"))) {
 			
 			MatrixViewTransposition mt = new MatrixViewTransposition();
 			mt.setMatrix(matrixView);
