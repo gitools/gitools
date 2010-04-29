@@ -15,20 +15,15 @@
  *  under the License.
  */
 
-package org.gitools.analysis.clustering;
+package org.gitools.matrix.clustering;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import org.gitools.analysis.Method;
-import org.gitools.analysis.MethodException;
 import org.gitools.matrix.model.IMatrixView;
 
 public interface ClusteringMethod extends Method{
 
-	void buildAndCluster(IMatrixView matrixView, String type, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException;
-
-	void build(IMatrixView matrixView, String type, IProgressMonitor monitor) throws MethodException;
-
-	ClusteringResult cluster() throws MethodException;
+	void buildAndCluster(IMatrixView matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException;
 
 }

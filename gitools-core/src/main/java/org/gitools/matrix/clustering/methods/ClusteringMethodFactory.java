@@ -15,10 +15,10 @@
  *  under the License.
  */
 
-package org.gitools.analysis.clustering.methods;
+package org.gitools.matrix.clustering.methods;
 
-import java.util.Properties;
-import org.gitools.analysis.clustering.ClusteringMethod;
+import java.util.Properties; 
+import org.gitools.matrix.clustering.ClusteringMethod;
 import org.gitools.analysis.AnalysisException;
 
 
@@ -26,7 +26,7 @@ public class ClusteringMethodFactory {
 
 	public static ClusteringMethod createMethod(Properties properties) throws AnalysisException {
 		String methodId =properties.getProperty("method");
-		if (WekaCobWebMethod.ID.equalsIgnoreCase(methodId))
+		if (methodId.toLowerCase().contains(WekaCobWebMethod.ID))
 			return new WekaCobWebMethod(properties);
 		else if (WekaKmeansMethod.ID.equalsIgnoreCase(methodId))
 			return new WekaKmeansMethod(properties);

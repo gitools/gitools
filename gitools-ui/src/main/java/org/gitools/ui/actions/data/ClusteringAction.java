@@ -15,19 +15,16 @@
  *  under the License.
  */
 
-package org.gitools.ui.actions.analysis;
+package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
-import java.util.List;
-import org.gitools.analysis.clustering.ClusteringAnalysis;
-import org.gitools.analysis.clustering.ClusteringProcessor;
+import java.util.Properties;
+import org.gitools.matrix.clustering.MatrixViewClusterer;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.analysis.clustering.dialog.ClusteringDialog;
+import org.gitools.ui.dialog.clustering.ClusteringDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -48,26 +45,22 @@ public class ClusteringAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final IMatrixView matrixView = ActionUtils.getMatrixView();
 
+		final IMatrixView matrixView = ActionUtils.getMatrixView();
 
 		if (matrixView == null)
 			return;
-
-		
 
 		ClusteringDialog dlg = new ClusteringDialog(AppFrame.instance());
 		dlg.setAttributes(matrixView.getContents().getCellAttributes());
 		dlg.setVisible(true);
 
 		if (dlg.getReturnStatus() != ClusteringDialog.RET_OK) {
-			AppFrame.instance().setStatusText("Filter cancelled.");
+			AppFrame.instance().setStatusText("Clustering cancelled.");
 			return;
 		}
 
-		final ClusteringAnalysis analysis = dlg.getAnalysis();
-
-		analysis.setData(matrixView);
+		final Properties clusterParameters = dlg.getClusterParameters();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override public void run(IProgressMonitor monitor) {
@@ -75,10 +68,9 @@ public class ClusteringAction extends BaseAction {
 				try {
 
 					monitor.begin("Clustering  ...", 1);
-
-					new ClusteringProcessor(analysis).run(monitor);
-					
+					MatrixViewClusterer.cluster(matrixView, clusterParameters, monitor);
 					monitor.end();
+					
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);

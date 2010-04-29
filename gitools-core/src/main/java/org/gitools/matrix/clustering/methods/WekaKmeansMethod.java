@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.analysis.clustering.methods;
+package org.gitools.matrix.clustering.methods;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
@@ -24,9 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
-import org.gitools.analysis.MethodException;
-import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResult;
+import org.gitools.matrix.clustering.ClusteringMethod;
 import org.gitools.matrix.model.IMatrixView;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
@@ -42,11 +40,12 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		super(ID,
 				"K-Means clustering",
 				"K-Means Weka clustering",
-				ClusteringResult.class, properties);
+				null, properties);
 	}
 
+
 	@Override
-	public void buildAndCluster(IMatrixView matrixView, String type, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
+	public void buildAndCluster(IMatrixView matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
 
 		Instance instancia;
 
@@ -54,34 +53,30 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return;
 
-		MatrixViewWekaLoader loader = new MatrixViewWekaLoader(matrixView, properties.getProperty("index"),type);
-
-		Instances structure = loader.getStructure();
-
-		System.out.println("Loading clustering algorithm ...");
+		Integer valueIndex = Integer.valueOf(properties.getProperty("index", "0"));
+		MatrixViewWekaLoader loader =
+				new MatrixViewWekaLoader(matrixView, valueIndex);
 
 		SimpleKMeans clusterer = new SimpleKMeans();
 
-		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations")));
+		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations","500")));
+		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k","2")));
+		clusterer.setSeed(Integer.valueOf(properties.getProperty("seed","10")));
 
-		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k")));
-
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seed")));
-
-		if (properties.getProperty("distance").toLowerCase().equals("euclidean"))
+		if (properties.getProperty("distance","euclidean").toLowerCase().equals("euclidean"))
 			clusterer.setDistanceFunction(new EuclideanDistance());
 		else
-		if (properties.getProperty("distance").toLowerCase().equals("manhattan"))
 			clusterer.setDistanceFunction(new ManhattanDistance());
 
-
-		System.out.println("Training clustering model...");
-
-		clusterer.buildClusterer(loader.getDataSet());
-
-		System.out.println("Setting instances into clusters ...");
-
 		Instances dataset = loader.getDataSet();
+
+		monitor.begin("Creating clustering model ...", 1);
+
+		clusterer.buildClusterer(dataset);
+
+		monitor.end();
+
+		monitor.begin("Clustering instances ...", dataset.numInstances());
 
 		//Cluster -> List instances 
 		HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
@@ -102,41 +97,32 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 			clusterResults.put(cluster, instancesCluster);
 
+			monitor.worked(1);
+
 		}
 
-		rePaintHeatMap (type, matrixView, dataset.numInstances(), clusterResults);
+		updateVisibility (matrixView, dataset.numInstances(), clusterResults);
 
+		monitor.end();
 
 	}
 
-	private void rePaintHeatMap (String type, IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
-
-		int[] visibleData = null;
-
-		if (type.equals("rows"))
-			visibleData = matrixView.getVisibleRows();
-		else
-			visibleData = matrixView.getVisibleColumns();
-
-		final int[] sortedVisibleData = new int[numInstances];
+	private void updateVisibility (IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
 
 		int index = 0;
+		int[] visibleData = null;
+		final int[] sortedVisibleData = new int[numInstances];
 
-		for (Integer i : clusterResults.keySet()){
+		visibleData = matrixView.getVisibleColumns();
 
+		for (Integer i : clusterResults.keySet())
 			for( Integer val : clusterResults.get(i)){
 
 				sortedVisibleData[index] = visibleData[val];
-
 				index++;
 			}
 
-		}
-
-		if (type.equals("rows"))
-			matrixView.setVisibleRows(sortedVisibleData);
-		else
-			matrixView.setVisibleColumns(sortedVisibleData);
+		matrixView.setVisibleColumns(sortedVisibleData);
 
 	}
 
@@ -145,16 +131,6 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		return ID;
 	}
 
-
-	@Override
-	public void build(IMatrixView matrixView, String type, IProgressMonitor monitor) throws MethodException {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public ClusteringResult cluster() throws MethodException {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
 
 
 

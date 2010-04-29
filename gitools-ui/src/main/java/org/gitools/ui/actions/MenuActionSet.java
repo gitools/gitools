@@ -86,12 +86,12 @@ public class MenuActionSet extends ActionSet {
 					DataActions.hideSelectedRowsAction,
 					DataActions.showAllColumnsAction,
 					DataActions.hideSelectedColumnsAction
-				})
+				}),
+				DataActions.clusteringAction
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,
 				AnalysisActions.combinations,
-				AnalysisActions.clusteringAction,
 //				new ActionSet("Clustering", new BaseAction[] {
 //					AnalysisActions.clusteringAction
 //				}),

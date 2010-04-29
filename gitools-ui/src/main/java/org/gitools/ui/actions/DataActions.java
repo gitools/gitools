@@ -1,5 +1,6 @@
 package org.gitools.ui.actions;
 
+import org.gitools.ui.actions.data.ClusteringAction;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.data.FastSortRowsAction;
 import org.gitools.ui.actions.data.FilterByLabelAction;
@@ -39,4 +40,7 @@ public final class DataActions {
 	public static final BaseAction moveColsLeftAction = new MoveSelectionAction(MoveDirection.COL_LEFT);
 	
 	public static final BaseAction moveColsRightAction = new MoveSelectionAction(MoveDirection.COL_RIGHT);
+
+	public static final BaseAction clusteringAction = new ClusteringAction();
+
 }
