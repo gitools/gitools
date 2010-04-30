@@ -5,7 +5,7 @@
     <Property name="title" type="java.lang.String" value="K-means parameters"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[297, 245]"/>
+      <Dimension value="[297, 255]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -38,10 +38,10 @@
                       </Group>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="distAlgCombo" alignment="0" pref="142" max="32767" attributes="1"/>
-                          <Component id="seedField" alignment="0" pref="142" max="32767" attributes="1"/>
-                          <Component id="iterField" alignment="0" pref="142" max="32767" attributes="1"/>
-                          <Component id="kField" alignment="1" pref="142" max="32767" attributes="1"/>
+                          <Component id="distAlgCombo" alignment="0" pref="146" max="32767" attributes="1"/>
+                          <Component id="seedField" alignment="0" pref="146" max="32767" attributes="1"/>
+                          <Component id="iterField" alignment="0" pref="146" max="32767" attributes="1"/>
+                          <Component id="kField" alignment="1" pref="146" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                   <Component id="jSeparator1" alignment="0" pref="273" max="32767" attributes="0"/>
@@ -93,7 +93,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Num. Clusters : "/>
+        <Property name="text" type="java.lang.String" value="Num. Clusters: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="kField">
@@ -103,7 +103,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Max Iterations : "/>
+        <Property name="text" type="java.lang.String" value="Max Iterations: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="iterField">
@@ -113,7 +113,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Seed : "/>
+        <Property name="text" type="java.lang.String" value="Seed: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="seedField">
@@ -123,7 +123,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Distance algorithm : "/>
+        <Property name="text" type="java.lang.String" value="Distance algorithm: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="distAlgCombo">

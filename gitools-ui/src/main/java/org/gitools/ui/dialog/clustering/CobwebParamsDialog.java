@@ -63,17 +63,17 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
 
         setTitle("Hierarchical parameters");
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(243, 200));
+        setMinimumSize(new java.awt.Dimension(243, 210));
 
-        jLabel1.setText("Acuity : ");
+        jLabel1.setText("Acuity: ");
 
         acuityField.setText("1.0");
 
-        jLabel2.setText("Cutoff : ");
+        jLabel2.setText("Cutoff: ");
 
         cutOffField.setText("0.0028");
 
-        jLabel3.setText("Seed : ");
+        jLabel3.setText("Seed: ");
 
         seedField.setText("42");
 
@@ -106,9 +106,9 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)))
+                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)

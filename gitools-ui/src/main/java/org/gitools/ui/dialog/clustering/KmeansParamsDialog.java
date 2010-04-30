@@ -62,21 +62,21 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
 
         setTitle("K-means parameters");
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(297, 245));
+        setMinimumSize(new java.awt.Dimension(297, 255));
 
-        jLabel1.setText("Num. Clusters : ");
+        jLabel1.setText("Num. Clusters: ");
 
         kField.setText("2");
 
-        jLabel2.setText("Max Iterations : ");
+        jLabel2.setText("Max Iterations: ");
 
         iterField.setText("500");
 
-        jLabel3.setText("Seed : ");
+        jLabel3.setText("Seed: ");
 
         seedField.setText("10");
 
-        jLabel7.setText("Distance algorithm : ");
+        jLabel7.setText("Distance algorithm: ");
 
         distAlgCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Manhattan" }));
 
@@ -110,10 +110,10 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
                             .addComponent(jLabel3))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(distAlgCombo, 0, 142, Short.MAX_VALUE)
-                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                            .addComponent(iterField, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                            .addComponent(kField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)))
+                            .addComponent(distAlgCombo, 0, 146, Short.MAX_VALUE)
+                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                            .addComponent(iterField, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                            .addComponent(kField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)

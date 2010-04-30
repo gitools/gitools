@@ -5,7 +5,7 @@
     <Property name="title" type="java.lang.String" value="Hierarchical parameters"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[243, 200]"/>
+      <Dimension value="[243, 210]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -37,9 +37,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="seedField" pref="171" max="32767" attributes="1"/>
-                          <Component id="cutOffField" alignment="1" pref="171" max="32767" attributes="1"/>
-                          <Component id="acuityField" alignment="1" pref="171" max="32767" attributes="1"/>
+                          <Component id="seedField" pref="175" max="32767" attributes="1"/>
+                          <Component id="cutOffField" alignment="1" pref="175" max="32767" attributes="1"/>
+                          <Component id="acuityField" alignment="1" pref="175" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                   <Component id="jSeparator1" alignment="0" pref="229" max="32767" attributes="0"/>
@@ -86,7 +86,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Acuity : "/>
+        <Property name="text" type="java.lang.String" value="Acuity: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="acuityField">
@@ -96,7 +96,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cutoff : "/>
+        <Property name="text" type="java.lang.String" value="Cutoff: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="cutOffField">
@@ -106,7 +106,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Seed : "/>
+        <Property name="text" type="java.lang.String" value="Seed: "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="seedField">

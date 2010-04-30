@@ -9,7 +9,7 @@
     <Property name="title" type="java.lang.String" value="Clustering analysis"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[397, 248]"/>
+      <Dimension value="[397, 255]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -44,12 +44,12 @@
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="algorithmTypeCombo" min="-2" pref="202" max="-2" attributes="2"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton1" max="32767" attributes="0"/>
+                      <Component id="jButton1" pref="68" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="dataClustCombo" pref="284" max="32767" attributes="3"/>
+                      <Component id="dataClustCombo" pref="288" max="32767" attributes="3"/>
                   </Group>
                   <Component id="rowsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="columnsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -94,7 +94,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Method :"/>
+        <Property name="text" type="java.lang.String" value="Method:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rowsRadio">
@@ -129,12 +129,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Apply to :"/>
+        <Property name="text" type="java.lang.String" value="Apply to:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Values from :"/>
+        <Property name="text" type="java.lang.String" value="Values from:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="dataClustCombo">

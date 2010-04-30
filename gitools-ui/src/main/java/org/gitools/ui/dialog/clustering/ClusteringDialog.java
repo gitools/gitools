@@ -99,9 +99,9 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
         setTitle("Clustering analysis");
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(397, 248));
+        setMinimumSize(new java.awt.Dimension(397, 255));
 
-        jLabel3.setText("Method :");
+        jLabel3.setText("Method:");
 
         applayGroup.add(rowsRadio);
         rowsRadio.setText("rows");
@@ -117,9 +117,9 @@ public class ClusteringDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel5.setText("Apply to :");
+        jLabel5.setText("Apply to:");
 
-        jLabel6.setText("Values from :");
+        jLabel6.setText("Values from:");
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -160,11 +160,11 @@ public class ClusteringDialog extends javax.swing.JDialog {
                         .addGap(40, 40, 40)
                         .addComponent(algorithmTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataClustCombo, 0, 284, Short.MAX_VALUE))
+                        .addComponent(dataClustCombo, 0, 288, Short.MAX_VALUE))
                     .addComponent(rowsRadio)
                     .addComponent(columnsRadio)
                     .addComponent(jLabel5))
