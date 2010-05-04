@@ -11,7 +11,6 @@ public interface IMatrix {
 	
 	int getRowCount();
 	String getRowLabel(int index);
-	
 	//IElementAdapter getRowAdapter();
 	
 	// columns

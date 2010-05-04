@@ -65,13 +65,8 @@ public class EnrichmentProcessor extends HtestProcessor {
 		
 		TestFactory testFactory = 
 			TestFactory.createFactory(analysis.getTestConfig());
-		//String[] paramNames = testFactory.create().getResultNames();
-		//final int numParams = paramNames.length;
 
 		IMatrix dataMatrix = analysis.getData();
-		/*if (!(dataMatrix instanceof BaseMatrix))
-			throw new RuntimeException("This processor only works with BaseMatrix data. "
-					+ dataMatrix.getClass().getSimpleName() + " found instead.");*/
 
 		final int numConditions = dataMatrix.getColumnCount();
 		final int numRows = dataMatrix.getRowCount();

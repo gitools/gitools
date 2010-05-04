@@ -56,15 +56,12 @@ public class EnrichmentCommand extends HtestCommand {
 			monitor.info("Data: " + dataPath);
 			monitor.info("Modules: " + modulesPath);
 
-			Object[] ret = loadDataAndModules(
+			loadDataAndModules(
 					dataMime, dataPath,
 					populationPath,
 					modulesMime, modulesPath,
 					enrichAnalysis,
 					monitor.subtask());
-
-			enrichAnalysis.setData((IMatrix) ret[0]);
-			enrichAnalysis.setModuleMap((ModuleMap) ret[1]);
 
 			monitor.end();
 
@@ -93,14 +90,6 @@ public class EnrichmentCommand extends HtestCommand {
 		p.write(file, analysis, monitor);
 	}
 
-	public String getModulesFile() {
-		return modulesPath;
-	}
-
-	public void setModulesFile(String modulesFile) {
-		this.modulesPath = modulesFile;
-	}
-
 	/** Loads data and modules taking into account filtering
 	 *
 	 * @param dataFileMime
@@ -109,10 +98,9 @@ public class EnrichmentCommand extends HtestCommand {
 	 * @param modulesFileName
 	 * @param analysis
 	 * @param monitor
-	 * @return [0] = IMatrix with the data, [1] = ModuleMap with the modules
 	 * @throws PersistenceException
 	 */
-	private Object[] loadDataAndModules(
+	private void loadDataAndModules(
 			String dataFileMime,
 			String dataFileName,
 			String populationFileName,
@@ -201,6 +189,7 @@ public class EnrichmentCommand extends HtestCommand {
 			dataMatrix = fmatrix;
 		}
 
-		return new Object[] { dataMatrix, moduleMap };
+		analysis.setData(dataMatrix);
+		analysis.setModuleMap(moduleMap);
 	}
 }

@@ -2,15 +2,15 @@ package org.gitools.persistence.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.analysis.htest.oncozet.OncozAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 
 public class OncozAnalysisXmlPersistence
-		extends AbstractXmlPersistence<OncozAnalysis> {
+		extends AbstractXmlPersistence<OncodriveAnalysis> {
 
 	public OncozAnalysisXmlPersistence() {
-		super(OncozAnalysis.class);
+		super(OncodriveAnalysis.class);
 	}
 	
 	@Override

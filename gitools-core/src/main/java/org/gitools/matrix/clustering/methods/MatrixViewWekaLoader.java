@@ -16,10 +16,8 @@
  */
 package org.gitools.matrix.clustering.methods;
 
-import cern.colt.matrix.DoubleMatrix2D;
 import java.io.IOException;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -27,14 +25,13 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.AbstractLoader;
 
-// FIXME This code is very inefficient !!! check getNextInstance and getStructure
 public class MatrixViewWekaLoader extends AbstractLoader {
 
 	private IMatrixView matrixView;
 	private Integer indexValueMatrix;
 	private int indexRows;
 	private int indexCols;
-	private Instances dataSet;
+	private Instances structure;
 	private FastVector attribNames;
 
 	public MatrixViewWekaLoader(IMatrixView matrixView, Integer index) {
@@ -48,19 +45,16 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 		attribNames = new FastVector();
 
 		//Adding attributes (rows name)
-		for (int rows = 0; rows < matrixView.getRowCount(); rows++) {
+		for (int rows = 0; rows < matrixView.getRowCount(); rows++)
 			attribNames.addElement(new Attribute(matrixView.getRowLabel(rows)));
-		}
 
-		dataSet = new Instances("matrixToCluster", attribNames, 0);
+		structure = new Instances("matrixToCluster", attribNames, 0);
 
 	}
 
 	@Override
 	public Instances getStructure() throws IOException {
-
-		return dataSet;
-
+		return structure;
 	}
 
 	@Override
@@ -68,29 +62,28 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 
 		Instance current = null;
 
+		Instances dataSet = new Instances("matrixToCluster", attribNames, 0);
+
 		Integer auxCols = indexCols, auxRows = indexRows;
 
 		indexCols = -1;
 		indexRows = -1;
 
-		while ((current = getNextInstance(dataSet)) != null) {
+		while ((current = getNextInstance(dataSet)) != null)
 			dataSet.add(current);
-		}
 
 		indexCols = auxCols;
 		indexRows = auxRows;
 
 		return dataSet;
-
 	}
 
 	@Override
-	//Param ds it is not modified nor altered
+	//Param ds is not modified nor altered
 	public Instance getNextInstance(Instances ds) throws IOException {
 
-		if (indexCols >= matrixView.getVisibleColumns().length - 1) {
+		if (indexCols >= matrixView.getColumnCount() - 1)
 			return null;
-		}
 
 		indexCols++;
 
@@ -101,21 +94,20 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 			values[row] = MatrixUtils.doubleValue(
 					matrixView.getCellValue(row, indexCols, indexValueMatrix));
 		}
+
 		//Instance is created once data in array values. This improves time performance
 		Instance current = new Instance(1, values);
 
 		Instances dataset = new Instances("matrixToCluster", attribNames, 0);
 		dataset.add(current);
-		current.setDataset(dataset);
+		current.setDataset(structure);
 
 		return current;
 	}
 
 	@Override
 	public String getRevision() {
-
 		throw new UnsupportedOperationException("Not supported yet.");
-
 	}
 
 	/**
@@ -124,9 +116,8 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 	 */
 	public Instance get(Integer index) {
 
-		if (index >= matrixView.getVisibleColumns().length - 1) {
+		if (index >= matrixView.getVisibleColumns().length - 1)
 			return null;
-		}
 
 		double[] values = new double[matrixView.getRowCount()];
 

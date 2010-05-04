@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.oncozet.OncozAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
@@ -36,7 +36,7 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlSeeAlso({
 	EnrichmentAnalysis.class,
-	OncozAnalysis.class})
+	OncodriveAnalysis.class})
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HtestAnalysis extends Analysis {

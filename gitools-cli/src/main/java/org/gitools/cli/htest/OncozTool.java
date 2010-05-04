@@ -7,9 +7,9 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
-import org.gitools.analysis.htest.oncozet.OncozAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 
-import org.gitools.analysis.htest.oncozet.OncozCommand;
+import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.stats.test.factory.TestFactory;
@@ -19,19 +19,19 @@ public class OncozTool extends HtestTool {
 
 	public static class OncozArguments extends HtestArguments {
 		@Option(name = "-sf", aliases = "-sets-format", metaVar = "<format>",
-				usage = "Sets file format (MIME type or file extension).")
+				usage = "Column sets file format (MIME type or file extension).")
 		public String setsMime;
 
 		@Option(name = "-s", aliases = {"-sets"}, metaVar = "<file>",
-				usage = "File with mappings between columns and sets.")
+				usage = "File with mappings for column sets.")
 		public String setsFile;
 
 		@Option(name = "-min", aliases = "-min-set-size", metaVar = "<min>",
-				usage = "Discard all sets that have\nless columns than <min> (default: 20)")
+				usage = "Discard all column sets that have\nless columns than <min> (default: 20)")
 		private int minSetSize = 20;
 
 		@Option(name = "-max", aliases = "-max-set-size", metaVar = "<max>",
-			usage = "Discard all sets that have\nmore columns than <max> (default: no limit)")
+			usage = "Discard all column sets that have\nmore columns than <max> (default: no limit)")
 		private int maxSetSize = Integer.MAX_VALUE;
 	}
 
@@ -59,13 +59,13 @@ public class OncozTool extends HtestTool {
 		
 		OncozArguments args = (OncozArguments) argsObject;
 
-		OncozAnalysis analysis = new OncozAnalysis();
+		OncodriveAnalysis analysis = new OncodriveAnalysis();
 		prepareAnalysis(analysis, args);
 
-		analysis.setMinSetSize(args.minSetSize);
-		analysis.setMaxSetSize(args.maxSetSize);
+		analysis.setMinColumnsSize(args.minSetSize);
+		analysis.setMaxColumnsSize(args.maxSetSize);
 
-		OncozCommand cmd = new OncozCommand(
+		OncodriveCommand cmd = new OncodriveCommand(
         		analysis, args.dataMime, args.dataFile,
 				args.populationFile,
 				args.setsMime, args.setsFile,

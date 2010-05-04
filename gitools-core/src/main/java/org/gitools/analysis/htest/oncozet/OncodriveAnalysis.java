@@ -28,42 +28,42 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
-public class OncozAnalysis extends HtestAnalysis implements Serializable {
+public class OncodriveAnalysis extends HtestAnalysis implements Serializable {
 
 	/** Modules */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected ModuleMap setsMap;
+	protected ModuleMap columnsMap;
 
-	/** Minimum set size */
-	protected int minSetSize;
+	/** Minimum columns size */
+	protected int minColumnsSize;
 
-	/** Maximum set size */
-	protected int maxSetSize;
+	/** Maximum columns size */
+	protected int maxColumnsSize;
 
-	public OncozAnalysis() {
+	public OncodriveAnalysis() {
 	}
 
-	public ModuleMap getSetsMap() {
-		return setsMap;
+	public ModuleMap getColumnsMap() {
+		return columnsMap;
 	}
 
-	public void setSetsMap(ModuleMap setsMap) {
-		this.setsMap = setsMap;
+	public void setColumnsMap(ModuleMap map) {
+		this.columnsMap = map;
 	}
 
-	public int getMinSetSize() {
-		return minSetSize;
+	public int getMinColumnsSize() {
+		return minColumnsSize;
 	}
 
-	public void setMinSetSize(int minSetSize) {
-		this.minSetSize = minSetSize;
+	public void setMinColumnsSize(int minSize) {
+		this.minColumnsSize = minSize;
 	}
 
-	public int getMaxSetSize() {
-		return maxSetSize;
+	public int getMaxColumnsSize() {
+		return maxColumnsSize;
 	}
 
-	public void setMaxSetSize(int maxSetSize) {
-		this.maxSetSize = maxSetSize;
+	public void setMaxColumnsSize(int maxSize) {
+		this.maxColumnsSize = maxSize;
 	}
 }
