@@ -54,7 +54,9 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 
 	@Override
 	public Instances getStructure() throws IOException {
+
 		return structure;
+
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 
 		indexCols = -1;
 		indexRows = -1;
+
 
 		while ((current = getNextInstance(dataSet)) != null)
 			dataSet.add(current);
@@ -116,8 +119,7 @@ public class MatrixViewWekaLoader extends AbstractLoader {
 	 */
 	public Instance get(Integer index) {
 
-		if (index >= matrixView.getVisibleColumns().length - 1)
-			return null;
+		if (index > matrixView.getVisibleColumns().length - 1) 	return null;
 
 		double[] values = new double[matrixView.getRowCount()];
 

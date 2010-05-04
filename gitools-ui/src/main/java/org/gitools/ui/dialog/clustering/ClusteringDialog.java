@@ -92,6 +92,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         cancelButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         okButton = new javax.swing.JButton();
@@ -142,8 +143,10 @@ public class ClusteringDialog extends javax.swing.JDialog {
             }
         });
 
+        buttonGroup1.add(rowsRadio);
         rowsRadio.setText("rows");
 
+        buttonGroup1.add(columnsRadio);
         columnsRadio.setSelected(true);
         columnsRadio.setText("columns");
 
@@ -230,6 +233,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algorithmTypeCombo;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelButton;
     private javax.swing.JRadioButton columnsRadio;
     private javax.swing.JComboBox dataClustCombo;

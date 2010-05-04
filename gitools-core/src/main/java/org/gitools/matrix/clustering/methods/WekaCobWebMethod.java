@@ -72,38 +72,43 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 			j++;
 		}
 
-		clusterer.updateFinished();
+		if (!monitor.isCancelled())
+		{
+			clusterer.updateFinished();
 
-		monitor.end();
+			monitor.end();
 
-		// Identificar el cluster de cada instancia				
+			// Identificar el cluster de cada instancia
 
-		monitor.begin("Clustering instances ...", matrixView.getVisibleColumns().length);
+			monitor.begin("Clustering instances ...", matrixView.getVisibleColumns().length);
 
-		int cluster;
+			int cluster;
 
-		//One cluster different instances
-		HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
+			//One cluster different instances
+			HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
 
-		for (int i=0; i < matrixView.getVisibleColumns().length && !monitor.isCancelled(); i++)  {
+			for (int i=0; i < matrixView.getVisibleColumns().length && !monitor.isCancelled(); i++)  {
 
-			if ((current = loader.get(i)) != null) {
-				
-				cluster = clusterer.clusterInstance(current);
+				if ((current = loader.get(i)) != null) {
 
-				List<Integer> instancesCluster = clusterResults.get(cluster);
-				if (instancesCluster == null) {
-					instancesCluster = new ArrayList<Integer>();
-					clusterResults.put(cluster, instancesCluster);
+					cluster = clusterer.clusterInstance(current);
+
+					List<Integer> instancesCluster = clusterResults.get(cluster);
+					if (instancesCluster == null) {
+						instancesCluster = new ArrayList<Integer>();
+						clusterResults.put(cluster, instancesCluster);
+					}
+
+					instancesCluster.add(i);
 				}
-
-				instancesCluster.add(i);
+				else
+					System.out.println("ERROR Loading instance: "+i);
+				monitor.worked(1);
 			}
-			monitor.worked(1);
+
+			if (!monitor.isCancelled()) updateVisibility(matrixView, clusterResults);
 		}
-
-		updateVisibility(matrixView, clusterResults);
-
+		
 		monitor.end();
 	}
 
