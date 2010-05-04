@@ -15,8 +15,14 @@
  *  under the License.
  */
 
+/*
+ * CobwebParamsDialog2.java
+ *
+ * Created on May 4, 2010, 3:01:12 PM
+ */
 
 package org.gitools.ui.dialog.clustering;
+
 
 import java.util.Properties;
 
@@ -41,7 +47,6 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
 		this.parent = parent;
 
     }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -51,21 +56,36 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        seedField = new javax.swing.JTextField();
         acuityField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         cutOffField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        seedField = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
-        okButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Hierarchical parameters");
         setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(243, 210));
 
-        jLabel1.setText("Acuity: ");
+        cancelButton.setText("Cancel");
+        cancelButton.setDefaultCapable(false);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        seedField.setText("42");
 
         acuityField.setText("1.0");
 
@@ -75,22 +95,7 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
 
         jLabel3.setText("Seed: ");
 
-        seedField.setText("42");
-
-        okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-
-        cancelButton.setText("Cancel");
-        cancelButton.setDefaultCapable(false);
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Acuity: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,10 +111,10 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -139,7 +144,13 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+		doClose(RET_CANCEL);
+}//GEN-LAST:event_cancelButtonActionPerformed
 
 	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 		Properties params =  new Properties();
@@ -151,9 +162,6 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
 		doClose(RET_OK);
 }//GEN-LAST:event_okButtonActionPerformed
 
-	private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-		doClose(RET_CANCEL);
-}//GEN-LAST:event_cancelButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -167,7 +175,6 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
     private javax.swing.JButton okButton;
     private javax.swing.JTextField seedField;
     // End of variables declaration//GEN-END:variables
-
 
 
 	private void doClose(int retStatus) {
