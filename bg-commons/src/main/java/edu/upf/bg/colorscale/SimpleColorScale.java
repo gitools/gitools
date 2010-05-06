@@ -86,6 +86,17 @@ public abstract class SimpleColorScale extends AbstractColorScale {
 		return null;
 	}
 
+	public Color simpleLimitsColor(double value) {
+		if (Double.isNaN(value))
+			return notANumberColor;
+		else if (value == Double.POSITIVE_INFINITY)
+			return posInfinityColor;
+		else if (value == Double.NEGATIVE_INFINITY)
+			return negInfinityColor;
+
+		return null;
+	}
+
 	public Color getNotANumberColor() {
 		return notANumberColor;
 	}

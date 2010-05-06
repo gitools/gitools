@@ -41,12 +41,12 @@ public abstract class CutoffCmp implements Serializable {
 	
 	public static final CutoffCmp ABS_LT = new CutoffCmp("alt", "abs <", "absolute less than") {
 		@Override public boolean compare(double value, double cutoff) {
-			return value < cutoff; }
+			return Math.abs(value) < cutoff; }
 	};
 	
 	public static final CutoffCmp ABS_LE = new CutoffCmp("ale", "abs <=", "absolute less or equal") {
 		@Override public boolean compare(double value, double cutoff) {
-			return value <= cutoff; }
+			return Math.abs(value) <= cutoff; }
 	};
 	
 	public static final CutoffCmp ABS_EQ = new CutoffCmp("aeq", "abs =", "absolute equal") {
@@ -79,20 +79,7 @@ public abstract class CutoffCmp implements Serializable {
 	public static final Map<String, CutoffCmp> longNameMap = new HashMap<String, CutoffCmp>();
 	public static final Map<String, CutoffCmp> nameMap = new HashMap<String, CutoffCmp>();
 	
-	static {
-		/*abbreviatedNameMap.put("lt", CutoffCmp.LT);
-		abbreviatedNameMap.put("le", CutoffCmp.LE);
-		abbreviatedNameMap.put("gt", CutoffCmp.GT);
-		abbreviatedNameMap.put("ge", CutoffCmp.GE);
-		abbreviatedNameMap.put("eq", CutoffCmp.EQ);
-		abbreviatedNameMap.put("ne", CutoffCmp.NE);
-		abbreviatedNameMap.put("alt", CutoffCmp.ABS_LT);
-		abbreviatedNameMap.put("ale", CutoffCmp.ABS_LE);
-		abbreviatedNameMap.put("agt", CutoffCmp.ABS_GT);
-		abbreviatedNameMap.put("age", CutoffCmp.ABS_GE);
-		abbreviatedNameMap.put("aeq", CutoffCmp.ABS_EQ);
-		abbreviatedNameMap.put("ane", CutoffCmp.ABS_NE);*/
-		
+	static {		
 		for (CutoffCmp cmp : comparators) {
 			abbreviatedNameMap.put(cmp.getAbbreviation(), cmp);
 			shortNameMap.put(cmp.getShortName(), cmp);
@@ -104,10 +91,6 @@ public abstract class CutoffCmp implements Serializable {
 	}
 
 	public static CutoffCmp getFromName(String name) {
-		/*CutoffCmp cmp = abbreviatedNameMap.get(name);
-		if (cmp != null)
-			return cmp;*/
-
 		return nameMap.get(name);
 	}
 

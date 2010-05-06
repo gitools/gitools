@@ -103,7 +103,7 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		cellDecoratorListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
-				colorScalePanel.repaint();
+				colorScalePanel.update();
 				setDirty(true);
 			}
 		};

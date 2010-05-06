@@ -139,21 +139,28 @@ public class MatrixView
 
 	@Override
 	public void setVisibleRows(int[] indices) {
+		setVisibleRows(indices, true);
+	}
+
+	public void setVisibleRows(int[] indices, boolean updateLead) {
 		// update selection according to new visibility
 		int[] selection = selectionFromVisible(selectedRowsBitmap, indices);
 		
 		int nextLeadRow = -1;
 		final int leadRow = selectionLeadRow >= 0 ? visibleRows[selectionLeadRow] : -1;
 
-		for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
-			if (indices[i] == leadRow)
-				nextLeadRow = i;
+		if (updateLead)
+			for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
+				if (indices[i] == leadRow)
+					nextLeadRow = i;
 
 		this.visibleRows = indices;
 		firePropertyChange(VISIBLE_ROWS_CHANGED);
 
 		setSelectedRows(selection);
-		setLeadSelection(nextLeadRow, selectionLeadColumn);
+
+		if (updateLead)
+			setLeadSelection(nextLeadRow, selectionLeadColumn);
 	}
 
 	@Override
@@ -163,21 +170,28 @@ public class MatrixView
 
 	@Override
 	public void setVisibleColumns(int[] indices) {
+		setVisibleColumns(indices, true);
+	}
+
+	public void setVisibleColumns(int[] indices, boolean updateLead) {
 		// update selection according to new visibility
 		int[] selection = selectionFromVisible(selectedColumnsBitmap, indices);
 
 		int nextLeadColumn = -1;
 		final int leadColumn = selectionLeadColumn >= 0 ? visibleColumns[selectionLeadColumn] : -1;
 
-		for (int i = 0; i < indices.length && nextLeadColumn == -1; i++)
-			if (indices[i] == leadColumn)
-				nextLeadColumn = i;
+		if (updateLead)
+			for (int i = 0; i < indices.length && nextLeadColumn == -1; i++)
+				if (indices[i] == leadColumn)
+					nextLeadColumn = i;
 
 		this.visibleColumns = indices;
 		firePropertyChange(VISIBLE_COLUMNS_CHANGED);
 
 		setSelectedColumns(selection);
-		setLeadSelection(selectionLeadRow, nextLeadColumn);
+
+		if (updateLead)
+			setLeadSelection(selectionLeadRow, nextLeadColumn);
 	}
 	
 	@Override
@@ -269,12 +283,15 @@ public class MatrixView
 		while (i < rows.length)
 			vrows[k++] = rows[i++];
 
-		setVisibleRows(vrows);
+		int count = vrows.length - 1;
+		if (nextLead > count)
+			nextLead = count;
 
-		if (nextLead > getRowCount() - 1)
-			nextLead = getRowCount() - 1;
-
-		setLeadSelection(nextLead, getLeadSelectionColumn());
+		this.selectionLeadRow = nextLead;
+		
+		setVisibleRows(vrows, false);
+		
+		firePropertyChange(SELECTED_LEAD_CHANGED);
 	}
 
 	@Override
@@ -310,12 +327,15 @@ public class MatrixView
 		while (i < columns.length)
 			vcolumns[k++] = columns[i++];
 
-		setVisibleColumns(vcolumns);
+		int count = vcolumns.length - 1;
+		if (nextLead > count)
+			nextLead = count;
 
-		if (nextLead > getColumnCount() - 1)
-			nextLead = getColumnCount() - 1;
+		this.selectionLeadColumn = nextLead;
 
-		setLeadSelection(getLeadSelectionRow(), nextLead);
+		setVisibleColumns(vcolumns, false);
+
+		firePropertyChange(SELECTED_LEAD_CHANGED);
 	}
 	
 	/* selection */
@@ -402,9 +422,13 @@ public class MatrixView
 	
 	@Override
 	public void setLeadSelection(int row, int column) {
+		boolean changed = this.selectionLeadRow != row
+				|| this.selectionLeadColumn != column;
+		
 		this.selectionLeadRow = row;
 		this.selectionLeadColumn = column;
-		firePropertyChange(SELECTED_LEAD_CHANGED);
+		if (changed)
+			firePropertyChange(SELECTED_LEAD_CHANGED);
 	}
 
 	@Override

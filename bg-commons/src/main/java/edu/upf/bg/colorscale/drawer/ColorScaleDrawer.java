@@ -79,7 +79,11 @@ public class ColorScaleDrawer {
 	public void setScale(IColorScale scale) {
 		this.scale = scale;
 
-		ColorScaleRange range = scale.getRange();
+		resetZoom();
+	}
+
+	public void resetZoom() {
+		final ColorScaleRange range = scale.getRange();
 		zoomRangeMin = range.getMin();
 		zoomRangeMax = range.getMax();
 	}

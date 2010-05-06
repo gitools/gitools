@@ -46,6 +46,13 @@ public class ColorScalePanel extends JPanel {
 		repaint();
 	}
 
+	public void update() {
+		drawer.resetZoom();
+		
+		setPreferredSize(drawer.getSize());
+		repaint();
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

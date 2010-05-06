@@ -43,7 +43,7 @@ public class BinaryColorScale extends SimpleColorScale {
 
 	@Override
 	public Color valueColor(double value) {
-		Color color = limitsColor(value);
+		Color color = simpleLimitsColor(value);
 		if (color != null)
 			return color;
 

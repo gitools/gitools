@@ -83,6 +83,11 @@ public class BinaryElementDecorator extends ElementDecorator {
 	public void setCutoff(double cutoff) {
 		double old = scale.getCutoff().getValue();
 		this.scale.getCutoff().setValue(cutoff);
+		double v = Math.abs(cutoff) * 1.5;
+		if (v < 0.5)
+			v = 0.5;
+		this.scale.getMin().setValue(-v);
+		this.scale.getMax().setValue(v);
 		firePropertyChange(PROPERTY_CHANGED, old, cutoff);
 	}
 	
