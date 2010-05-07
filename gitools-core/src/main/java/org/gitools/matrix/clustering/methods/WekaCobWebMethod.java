@@ -54,7 +54,7 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 
 		clusterer.setAcuity(Float.valueOf(properties.getProperty("acuity","1.0")));
 		clusterer.setCutoff(Float.valueOf(properties.getProperty("cutoff","0.0028")));
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seed","42")));
+		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedCobweb","42")));
 
 		clusterer.buildClusterer(structure);
 

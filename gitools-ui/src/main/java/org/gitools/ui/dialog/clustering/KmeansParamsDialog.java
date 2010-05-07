@@ -23,6 +23,7 @@
 
 package org.gitools.ui.dialog.clustering;
 import java.util.Properties;
+import org.gitools.ui.platform.dialog.MessageStatus;
 
 public class KmeansParamsDialog extends javax.swing.JDialog {
 
@@ -36,13 +37,30 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
 	private ClusteringDialog parent;
 
 	/** Creates new form cobwebParamsPanel */
-	public KmeansParamsDialog(ClusteringDialog parent) {
+	public KmeansParamsDialog(ClusteringDialog parent,Properties values) {
 
 		super(parent);
 		setModal(true);
-		initComponents();
 
+		initComponents();
+		
+		headerCompo.setTitle("K-means parameters");
+		headerCompo.setMessage("");
 		this.parent = parent;
+
+		validate();
+
+		if (values != null) setValuesParameters(values);
+
+    }
+
+	private void setValuesParameters(Properties values){
+
+		iterField.setText(values.getProperty("iterations"));
+		seedField.setText(values.getProperty("seedKmeans"));
+		kField.setText(values.getProperty("k"));
+		distAlgCombo.setSelectedItem(values.getProperty("distance"));
+
 	}
 
     /** This method is called from within the constructor to
@@ -65,18 +83,21 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         kField = new javax.swing.JTextField();
+        headerCompo = new org.gitools.ui.platform.dialog.DialogHeaderPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("K-means parameters");
+        setTitle("Parameters");
         setLocationByPlatform(true);
 
         iterField.setText("500");
 
         jLabel3.setText("Seed: ");
+        jLabel3.setToolTipText("Set a random value used to start clustering method");
 
         seedField.setText("10");
 
         jLabel7.setText("Distance algorithm: ");
+        jLabel7.setToolTipText("The distance function to use for instances comparison");
 
         distAlgCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Euclidean", "Manhattan" }));
 
@@ -96,8 +117,10 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
         });
 
         jLabel1.setText("Num. Clusters: ");
+        jLabel1.setToolTipText("Set number of clusters");
 
         jLabel2.setText("Max Iterations: ");
+        jLabel2.setToolTipText("Set maximum number of iterations\nValue must be > 0");
 
         kField.setText("2");
 
@@ -105,23 +128,25 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
+            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(distAlgCombo, 0, 190, Short.MAX_VALUE)
-                            .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(iterField, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(kField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(distAlgCombo, 0, 311, Short.MAX_VALUE)
+                    .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(iterField, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(kField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -130,9 +155,9 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 245, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(headerCompo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(distAlgCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -153,7 +178,7 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -167,13 +192,32 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
 	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
 		Properties params =  new Properties();
-		if (iterField.getText() != null && !iterField.getText().equals(""))	params.put("iterations", iterField.getText());
-		if (seedField.getText() != null && !seedField.getText().equals(""))	params.put("seed", seedField.getText());
-		if (kField.getText() != null && !kField.getText().equals("")) params.put("k", kField.getText());
-		if (distAlgCombo.getSelectedItem() != null && !distAlgCombo.getSelectedItem().toString().equals("")) params.put("distance", distAlgCombo.getSelectedItem().toString());
-		parent.setParams(params);
 
-		doClose(RET_OK);
+		if (isValidInteger(iterField.getText()) && iterField.getText() != null && !iterField.getText().equals("")){
+			if (isValidInteger(seedField.getText()) && seedField.getText() != null && !seedField.getText().equals("")){
+				if (isValidInteger(kField.getText()) && kField.getText() != null && !kField.getText().equals(""))	{
+
+					params.put("iterations", iterField.getText());
+					params.put("seedKmeans",seedField.getText());
+					params.put("k", kField.getText());
+					params.put("distance", distAlgCombo.getSelectedItem().toString());
+
+					parent.setParams(params);
+
+					doClose(RET_OK);
+				}else{
+
+				headerCompo.setMessageStatus(MessageStatus.ERROR);
+				headerCompo.setMessage("Invalid num value, it should be a integer number");}
+			}else{
+
+				headerCompo.setMessageStatus(MessageStatus.ERROR);
+				headerCompo.setMessage("Invalid seed values, it should be an integer number");}
+		}else{
+
+			headerCompo.setMessageStatus(MessageStatus.ERROR);
+			headerCompo.setMessage("Invalid iterations value, it should be a integer number");
+		}
 }//GEN-LAST:event_okButtonActionPerformed
 
 
@@ -181,6 +225,7 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JComboBox distAlgCombo;
+    private org.gitools.ui.platform.dialog.DialogHeaderPanel headerCompo;
     private javax.swing.JTextField iterField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -201,4 +246,28 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
 		setVisible(false);
 		dispose();
 	}
+
+	public int getReturnStatus() {
+		return returnStatus;
+	}
+
+	private boolean isValidNumber(String text) {
+		try {
+			Double.parseDouble(text);
+		}
+		catch (NumberFormatException ex) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isValidInteger(String text) {
+		try {
+			Integer.parseInt(text);
+		} catch (NumberFormatException ex) {
+			return false;
+		}
+		return true;
+	}
+
 }

@@ -60,7 +60,7 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations","500")));
 		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k","2")));
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seed","10")));
+		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedKmeans","10")));
 
 		if (properties.getProperty("distance","euclidean").toLowerCase().equals("euclidean"))
 			clusterer.setDistanceFunction(new EuclideanDistance());
@@ -71,32 +71,38 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 		monitor.begin("Creating clustering model ...", 1);
 		clusterer.buildClusterer(dataset);
-		monitor.end();
 
-		monitor.begin("Clustering instances ...", dataset.numInstances());
+		if (!monitor.isCancelled())
+		{
 
-		//Cluster -> List instances 
-		HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
-
-		List<Integer> instancesCluster = null;
-				
-		for (int i=0; i < dataset.numInstances(); i++)  {
-
-			instancia = dataset.instance(i);
-			cluster = clusterer.clusterInstance(instancia);
-
-			if (clusterResults.get(cluster) == null)
-				instancesCluster = new ArrayList<Integer>();
-			else
-				instancesCluster = clusterResults.get(cluster);
+			monitor.end();
 			
-			instancesCluster.add(i);
-			clusterResults.put(cluster, instancesCluster);
-			monitor.worked(1);
+			monitor.begin("Clustering instances ...", dataset.numInstances());
 
+			//Cluster -> List instances
+			HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
+
+			List<Integer> instancesCluster = null;
+
+			for (int i=0; i < dataset.numInstances(); i++)  {
+
+				instancia = dataset.instance(i);
+				cluster = clusterer.clusterInstance(instancia);
+
+				if (clusterResults.get(cluster) == null)
+					instancesCluster = new ArrayList<Integer>();
+				else
+					instancesCluster = clusterResults.get(cluster);
+
+				instancesCluster.add(i);
+				clusterResults.put(cluster, instancesCluster);
+				monitor.worked(1);
+
+			}
+
+			updateVisibility (matrixView, dataset.numInstances(), clusterResults);
 		}
 
-		updateVisibility (matrixView, dataset.numInstances(), clusterResults);
 		monitor.end();
 
 	}
