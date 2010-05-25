@@ -12,12 +12,13 @@ import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 
-public class OncozTool extends HtestTool {
+public class OncodriveTool extends HtestTool {
 
-	public static class OncozArguments extends HtestArguments {
+	public static class OncodriveArguments extends HtestArguments {
 		@Option(name = "-sf", aliases = "-sets-format", metaVar = "<format>",
 				usage = "Column sets file format (MIME type or file extension).")
 		public String setsMime;
@@ -40,10 +41,10 @@ public class OncozTool extends HtestTool {
 		
 		super.validate(argsObject);
 		
-		OncozArguments args = (OncozArguments) argsObject;
+		OncodriveArguments args = (OncodriveArguments) argsObject;
 
 		testConfig = TestFactory.createToolConfig(
-				ToolConfig.ONCODRIVER, args.testName);
+				ToolConfig.ONCODRIVE, args.testName);
 
 		if (testConfig == null)
 			throw new ToolValidationException("Unknown test: " + args.testName);
@@ -57,7 +58,7 @@ public class OncozTool extends HtestTool {
 	@Override
 	public void run(Object argsObject) throws ToolException {
 		
-		OncozArguments args = (OncozArguments) argsObject;
+		OncodriveArguments args = (OncodriveArguments) argsObject;
 
 		OncodriveAnalysis analysis = new OncodriveAnalysis();
 		prepareAnalysis(analysis, args);
@@ -65,11 +66,15 @@ public class OncozTool extends HtestTool {
 		analysis.setMinColumnsSize(args.minSetSize);
 		analysis.setMaxColumnsSize(args.maxSetSize);
 
+		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+
+		String setsMime = mimeFromFormat(args.setsMime, args.setsFile, MimeTypes.MODULES_2C_MAP);
+
 		OncodriveCommand cmd = new OncodriveCommand(
-        		analysis, args.dataMime, args.dataFile,
+        		analysis, dataMime, args.dataFile,
 				args.populationFile,
-				args.setsMime, args.setsFile,
-				args.workdir, args.analysisName + "." + FileSuffixes.ONCODRIVER);
+				setsMime, args.setsFile,
+				args.workdir, args.analysisName + "." + FileSuffixes.ONCODRIVE);
         
         IProgressMonitor monitor = !args.quiet ?
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

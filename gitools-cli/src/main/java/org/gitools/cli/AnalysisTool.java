@@ -57,6 +57,9 @@ public class AnalysisTool extends AbstractTool {
 
 	protected String mimeFromFormat(String format, String fileName, String defaultMime) {
 		String mime = null;
+		if (fileName == null)
+			return null;
+		
 		if (format != null) {
 			// Try with file extension first
 			mime = PersistenceManager.getDefault().getMimeFromFile("fake." + format);

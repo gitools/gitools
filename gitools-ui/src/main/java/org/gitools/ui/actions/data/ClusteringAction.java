@@ -79,6 +79,6 @@ public class ClusteringAction extends BaseAction {
 		});
 
 
-		AppFrame.instance().setStatusText("New heatmap created.");
+		AppFrame.instance().setStatusText("Done.");
 	}
 }

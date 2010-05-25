@@ -18,14 +18,14 @@ import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
-public class NewOncozAnalysisAction extends BaseAction {
+public class NewOncodriveAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8592231961109105958L;
 
-	public NewOncozAnalysisAction() {
-		super("OncoDriver analysis ...");
+	public NewOncodriveAnalysisAction() {
+		super("OncoDrive analysis ...");
 
-		setDesc("Run an oncodriver analysis");
+		setDesc("Run an oncodrive analysis");
 		setMnemonic(KeyEvent.VK_O);
 		
 		setDefaultEnabled(true);
@@ -34,8 +34,8 @@ public class NewOncozAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		//UnimplementedDialog.show(AppFrame.instance());
-		//if (true) return;
+		UnimplementedDialog.show(AppFrame.instance());
+		if (true) return;
 
 		final OncodriverAnalysisWizard wizard = new OncodriverAnalysisWizard();
 

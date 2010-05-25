@@ -17,10 +17,10 @@
     </tool>
 
 	<tool>
-    	<name>oncodriver</name>
+    	<name>oncodrive</name>
         <description>Run a driver alterations identification analysis</description>
-        <argumentsClass>org.gitools.cli.htest.OncozTool$OncozArguments</argumentsClass>
-        <lifeCycleClass>org.gitools.cli.htest.OncozTool</lifeCycleClass>
+        <argumentsClass>org.gitools.cli.htest.OncodriveTool$OncodriveArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.htest.OncodriveTool</lifeCycleClass>
     </tool>
 
 	<tool>

@@ -38,6 +38,8 @@ public class DataPage extends AbstractWizardPage {
 			FileFormats.MODULES_INDEXED_MAP
 	};
 
+	private boolean filterNonMappedItemsEnabled;
+
 	/** Creates new form DataSourcePanel */
     public DataPage() {
 		setTitle("Select data source");
@@ -45,6 +47,8 @@ public class DataPage extends AbstractWizardPage {
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_DATA, 96));
 		
         initComponents();
+
+		filterNonMappedItemsEnabled = true;
 
 		dataContentsCb.setModel(new DefaultComboBoxModel(formats));
 		dataContentsCb.addActionListener(new ActionListener() {

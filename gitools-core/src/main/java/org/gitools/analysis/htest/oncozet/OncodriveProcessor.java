@@ -16,9 +16,9 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.Arrays;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTCFactory;
@@ -51,18 +51,28 @@ public class OncodriveProcessor extends HtestProcessor {
 			TestFactory.createFactory(analysis.getTestConfig());
 
 		IMatrix dataMatrix = analysis.getData();
-		if (!(dataMatrix instanceof DoubleMatrix))
+		/*if (!(dataMatrix instanceof DoubleMatrix))
 			throw new RuntimeException("This processor only works with DoubleMatrix data. "
-					+ dataMatrix.getClass().getSimpleName() + " found instead.");
+					+ dataMatrix.getClass().getSimpleName() + " found instead.");*/
 
 		String[] labels = new String[dataMatrix.getColumnCount()];
 		for (int i = 0; i < labels.length; i++)
 			labels[i] = dataMatrix.getColumnLabel(i);
 
 		ModuleMap smap = analysis.getColumnsMap();
-		smap = smap.remap(labels,
-				analysis.getMinColumnsSize(),
-				analysis.getMaxColumnsSize());
+		if (smap != null)
+			smap = smap.remap(labels,
+					analysis.getMinColumnsSize(),
+					analysis.getMaxColumnsSize());
+		else {
+			smap = new ModuleMap();
+			smap.setModuleNames(new String[] {"all columns"});
+			smap.setItemNames(labels);
+			int[] indices = new int[dataMatrix.getColumnCount()];
+			for (int i = 0; i < indices.length; i++)
+				indices[i] = i;
+			smap.setAllItemIndices(new int[][] {indices});
+		}
 
 		final int numRows = dataMatrix.getRowCount();
 		ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);
