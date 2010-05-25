@@ -20,7 +20,7 @@ import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
-import org.gitools.ui.actions.file.NewOncozAnalysisAction;
+import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
 import org.gitools.ui.actions.file.NewProjectAction;
 import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.OpenHeatmapAction;
@@ -35,7 +35,7 @@ public class FileActions {
 	public static final BaseAction newProjectAction = new NewProjectAction();
 	
 	public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
-	public static final BaseAction newOncozAnalysisAction = new NewOncozAnalysisAction();
+	public static final BaseAction newOncozAnalysisAction = new NewOncodriveAnalysisAction();
 	public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
 	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
 

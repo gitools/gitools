@@ -37,8 +37,8 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
 		saveFilePage.setFormats(new FileFormat[] {
 			new FileFormat("Oncodrive analysis (*."
-					+ FileSuffixes.ONCODRIVER + ")",
-					FileSuffixes.ONCODRIVER) });
+					+ FileSuffixes.ONCODRIVE + ")",
+					FileSuffixes.ONCODRIVE) });
 		saveFilePage.setFormatsVisible(false);
 		addPage(saveFilePage);
 

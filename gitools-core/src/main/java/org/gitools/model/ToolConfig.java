@@ -14,7 +14,7 @@ public class ToolConfig {
 
 	//FIXME This shouldn't be here
 	public static final String ENRICHMENT = "enrichment";
-	public static final String ONCODRIVER = "oncodriver";
+	public static final String ONCODRIVE = "oncodrive";
 	
 	protected String name;
 

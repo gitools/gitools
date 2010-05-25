@@ -1,13 +1,5 @@
 package org.gitools.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.matrix.model.StringMatrix;
-
 public class FileSuffixes {
 
 	public static final String WORKSPACE = "workspace.xml";
@@ -16,7 +8,7 @@ public class FileSuffixes {
 	public static final String CONTENT = "contents.xml";
 	
 	public static final String ENRICHMENT = "enrichment";
-	public static final String ONCODRIVER = "oncodriver";
+	public static final String ONCODRIVE = "oncodrive";
 	public static final String CORRELATION = "correlation";
 	
 	public static final String HEATMAP = "heatmap";

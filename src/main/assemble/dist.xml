@@ -39,12 +39,20 @@
 			<outputDirectory>lib/ext</outputDirectory>
 		</fileSet> -->
 
-		<fileSet>
+		<!-- <fileSet>
 			<directory>templates</directory>
 			<includes>
 				<include>**/*</include>
 			</includes>
 			<outputDirectory>templates</outputDirectory>
+		</fileSet> -->
+
+		<fileSet>
+			<directory>examples</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<outputDirectory>examples</outputDirectory>
 		</fileSet>
 
 		<fileSet>

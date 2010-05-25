@@ -17,7 +17,7 @@ import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
-import org.gitools.persistence.xml.OncozAnalysisXmlPersistence;
+import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
 
 public class OncodriveCommand extends HtestCommand {
 
@@ -111,20 +111,23 @@ public class OncodriveCommand extends HtestCommand {
 
 		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
 
+		analysis.setData(dataMatrix);
+
 		// Load modules
 
-		File file = new File(modulesFileName);
+		if (modulesFileName != null) {
+			File file = new File(modulesFileName);
 
-		Properties modProps = new Properties();
-		modProps.put(ModuleMapPersistence.ITEM_NAMES_FILTER_ENABLED, true);
-		modProps.put(ModuleMapPersistence.ITEM_NAMES, dataMatrix.getColumnStrings());
-		modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinColumnsSize());
-		modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxColumnsSize());
+			Properties modProps = new Properties();
+			modProps.put(ModuleMapPersistence.ITEM_NAMES_FILTER_ENABLED, true);
+			modProps.put(ModuleMapPersistence.ITEM_NAMES, dataMatrix.getColumnStrings());
+			modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinColumnsSize());
+			modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxColumnsSize());
 
-		ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
-
-		analysis.setData(dataMatrix);
-		analysis.setColumnsMap(moduleMap);
+			ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
+			
+			analysis.setColumnsMap(moduleMap);
+		}
 	}
 	
 	private void save(final OncodriveAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
@@ -134,7 +137,7 @@ public class OncodriveCommand extends HtestCommand {
 			workdirFile.mkdirs();
 
 		File file = new File(workdirFile, fileName);
-		OncozAnalysisXmlPersistence p = new OncozAnalysisXmlPersistence();
+		OncodriveAnalysisXmlPersistence p = new OncodriveAnalysisXmlPersistence();
 		p.setRecursivePersistence(true);
 		p.write(file, analysis, monitor);
 	}

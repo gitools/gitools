@@ -26,7 +26,7 @@ public class TestMain {
 
 	public static void main(String[] unusedArgs) throws ToolException {
 		String stuff = "/home/cperez/temp/gitools-stuff";
-		String temp = "/home/cperez/temp/gitools-stuff";
+		String temp = "/home/cperez/temp/gitools";
 		
 		String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
@@ -44,15 +44,21 @@ public class TestMain {
 		cmd = "enrichment -t binomial-exact" +
 				" -d " + stuff + "/real/data.tsv" +
 				" -df " + MimeTypes.DOUBLE_MATRIX +
-				" -b lt,0.05" +
+				" -b gt,0.05" +
 				" -m " + stuff + "/real/modules.tsv" +
 				" -mf tcm" + //MimeTypes.MODULES_2C_MAP +
 				" -min 100" +
-				" -w "+ temp + "/test -N test" +
+				" -w "+ temp + "/test -N test_gt" +
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
 				" -verbose -debug -err-log -";
+
+		/*cmd = "oncodrive" +
+				" -d " + stuff + "/GAFtargets_upDownGeneslog5.bdm" +
+				" -min 0" +
+				" -w " + temp +
+				" -t binomial";*/
 
 		/*cmd = "correlation" +
 				" -d " + stuff + "/real/data.tsv" +

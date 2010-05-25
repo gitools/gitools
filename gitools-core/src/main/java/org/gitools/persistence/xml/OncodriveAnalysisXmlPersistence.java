@@ -4,7 +4,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;
@@ -12,13 +12,13 @@ import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.PersistenceUtils;
 
-public class EnrichmentAnalysisXmlPersistence
-		extends AbstractXmlPersistence<EnrichmentAnalysis> {
+public class OncodriveAnalysisXmlPersistence
+		extends AbstractXmlPersistence<OncodriveAnalysis> {
 
-	public EnrichmentAnalysisXmlPersistence() {
-		super(EnrichmentAnalysis.class);
+	public OncodriveAnalysisXmlPersistence() {
+		super(OncodriveAnalysis.class);
 
-		setPersistenceTitle("enrichment analysis");
+		setPersistenceTitle("oncodrive analysis");
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class EnrichmentAnalysisXmlPersistence
 	}
 
 	@Override
-	protected void beforeWrite(File file, EnrichmentAnalysis entity,
+	protected void beforeWrite(File file, OncodriveAnalysis entity,
 			IProgressMonitor monitor) throws PersistenceException {
 
 		File baseFile = file.getParentFile();
@@ -55,7 +55,7 @@ public class EnrichmentAnalysisXmlPersistence
 		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getColumnsMap(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
 
 		String resultsExt = pm.getExtensionFromEntity(entity.getResults().getClass());
