@@ -67,6 +67,16 @@
 		</repository>
 	</repositories>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jfrog-plugins-dist</id>
+			<url>http://repo.jfrog.org/artifactory/plugins-releases-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -201,6 +211,33 @@
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>1.1</version>
 				</plugin>
+
+				<plugin>
+					<groupId>org.jfrog.maven.plugins</groupId>
+					<artifactId>jfrog-jnlp-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>jnlp</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<templateFileName>template.jnlp.vm</templateFileName>
+						<targetFile>launcher.jnlp</targetFile>
+						<useMavenLayout>true</useMavenLayout>
+						<attach>true</attach>
+						<additionalParameters>
+							<j2seVersion>1.6+</j2seVersion>
+							<allPermissions>true</allPermissions>
+							<codebase>file:///home/cperez/NetBeansProjects/GiTools/target/gitools-1.5.3-SNAPSHOT-bin.dir/gitools-1.5.3-SNAPSHOT/lib</codebase>
+							<iconRef>LogoMini.png</iconRef>
+						</additionalParameters>
+						<excludes>
+							<exclude>log4j</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -214,6 +251,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -224,6 +262,7 @@
 					</descriptors>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -231,7 +270,7 @@
 				<configuration>
 					<username>${ztools.scm.username}</username>
 					<password>${ztools.scm.password}</password>
-					<tagBase>https://bg.imim.es/svn/ztools/tags</tagBase>
+					<tagBase>https://bg.upf.edu/svn/ztools/tags</tagBase>
 				</configuration>
 			</plugin>
 		</plugins>

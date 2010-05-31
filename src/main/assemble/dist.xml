@@ -48,6 +48,14 @@
 		</fileSet> -->
 
 		<fileSet>
+			<directory>gitools-ui/target/jnlp</directory>
+			<includes>
+				<include>launcher.jnlp</include>
+			</includes>
+			<outputDirectory>lib</outputDirectory>
+		</fileSet>
+
+		<fileSet>
 			<directory>examples</directory>
 			<includes>
 				<include>**/*</include>

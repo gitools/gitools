@@ -38,7 +38,7 @@ public class DataPage extends AbstractWizardPage {
 			FileFormats.MODULES_INDEXED_MAP
 	};
 
-	private boolean filterNonMappedItemsEnabled;
+	private boolean discardNonMappedRowsVisible;
 
 	/** Creates new form DataSourcePanel */
     public DataPage() {
@@ -48,7 +48,7 @@ public class DataPage extends AbstractWizardPage {
 		
         initComponents();
 
-		filterNonMappedItemsEnabled = true;
+		discardNonMappedRowsVisible = true;
 
 		dataContentsCb.setModel(new DefaultComboBoxModel(formats));
 		dataContentsCb.addActionListener(new ActionListener() {
@@ -66,7 +66,7 @@ public class DataPage extends AbstractWizardPage {
 				updateState(); }
 		};
 
-		bgFromModuleAnnotationsCheck.addItemListener(itemListener);
+		discardNonMappedRowsCheck.addItemListener(itemListener);
 
 		dataFilePath.getDocument().addDocumentListener(docCompleteListener);
 		populationFilePath.getDocument().addDocumentListener(docCompleteListener);
@@ -85,6 +85,8 @@ public class DataPage extends AbstractWizardPage {
 
 		cutoffValue.getDocument().addDocumentListener(docCompleteListener);
 		cutoffValue.setText("1.5");
+
+		discardNonMappedRowsCheck.setVisible(discardNonMappedRowsVisible);
     }
 
 	private void updateState() {
@@ -162,7 +164,7 @@ public class DataPage extends AbstractWizardPage {
         populationFilePath = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         populationFileBrowserBtn = new javax.swing.JButton();
-        bgFromModuleAnnotationsCheck = new javax.swing.JCheckBox();
+        discardNonMappedRowsCheck = new javax.swing.JCheckBox();
 
         jLabel1.setText("Data contents");
 
@@ -216,7 +218,7 @@ public class DataPage extends AbstractWizardPage {
             }
         });
 
-        bgFromModuleAnnotationsCheck.setText("Filter out rows for which no information appears in the module");
+        discardNonMappedRowsCheck.setText("Filter out rows for which no information appears in the module");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -258,7 +260,7 @@ public class DataPage extends AbstractWizardPage {
                         .addComponent(cutoffCmpCb, 0, 224, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(bgFromModuleAnnotationsCheck))
+                    .addComponent(discardNonMappedRowsCheck))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -295,7 +297,7 @@ public class DataPage extends AbstractWizardPage {
                     .addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(bgFromModuleAnnotationsCheck)
+                .addComponent(discardNonMappedRowsCheck)
                 .addContainerGap(238, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -346,7 +348,6 @@ public class DataPage extends AbstractWizardPage {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox bgFromModuleAnnotationsCheck;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox cutoffCmpCb;
@@ -355,6 +356,7 @@ public class DataPage extends AbstractWizardPage {
     private javax.swing.JComboBox dataContentsCb;
     private javax.swing.JButton dataFileBrowseBtn;
     private javax.swing.JTextField dataFilePath;
+    private javax.swing.JCheckBox discardNonMappedRowsCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -372,7 +374,8 @@ public class DataPage extends AbstractWizardPage {
 	}
 
 	public File getDataFile() {
-		return new File(dataFilePath.getText());
+		String path = dataFilePath.getText();
+		return path.isEmpty() ? null : new File(path);
 	}
 
 	public File getPopulationFile() {
@@ -393,6 +396,15 @@ public class DataPage extends AbstractWizardPage {
 	}
 
 	public boolean isDiscardNonMappedRows() {
-		return bgFromModuleAnnotationsCheck.isSelected();
+		return discardNonMappedRowsCheck.isSelected();
+	}
+
+	public boolean isDiscardNonMappedRowsVisible() {
+		return discardNonMappedRowsVisible;
+	}
+
+	void setDiscardNonMappedRowsVisible(boolean visible) {
+		discardNonMappedRowsVisible = visible;
+		discardNonMappedRowsCheck.setVisible(discardNonMappedRowsVisible);
 	}
 }

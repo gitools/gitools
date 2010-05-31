@@ -37,6 +37,8 @@ public class ModulesPage extends AbstractWizardPage {
 			FileFormats.MODULES_INDEXED_MAP
 	};
 
+	private boolean emptyFileAllowed;
+
 	/** Creates new form ModuleFilteringPanel */
     public ModulesPage() {
 		setTitle("Select modules");
@@ -44,6 +46,8 @@ public class ModulesPage extends AbstractWizardPage {
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_MODULES, 96));
 
         initComponents();
+
+		emptyFileAllowed = false;
 
 		fileFormatCb.setModel(new DefaultComboBoxModel(formats));
 		fileFormatCb.addActionListener(new ActionListener() {
@@ -82,7 +86,7 @@ public class ModulesPage extends AbstractWizardPage {
 		minSizeValueCb.setEnabled(minSizeEnableChk.isSelected());
 		maxSizeValueCb.setEnabled(maxSizeEnableChk.isSelected());
 
-		boolean completed = !filePath.getText().isEmpty();
+		boolean completed = emptyFileAllowed || !filePath.getText().isEmpty();
 
 		setMessage(MessageStatus.INFO, "");
 
@@ -275,7 +279,8 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 	}
 
 	public File getSelectedFile() {
-		return new File(filePath.getText());
+		String path = filePath.getText();
+		return path.isEmpty() ? null : new File(path);
 	}
 
 	public int getMinSize() {
@@ -283,8 +288,23 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		return minSizeEnableChk.isSelected() ? value : 0;
 	}
 
+	public void setMinSize(int size) {
+		minSizeValueCb.setSelectedItem(String.valueOf(size));
+		minSizeEnableChk.setSelected(size != 0);
+	}
+
 	public int getMaxSize() {
 		int value = Integer.parseInt(((String) maxSizeValueCb.getSelectedItem()));
 		return maxSizeEnableChk.isSelected() ? value : Integer.MAX_VALUE;
+	}
+
+	public void setMaxSize(int size) {
+		maxSizeValueCb.setSelectedItem(String.valueOf(size));
+		maxSizeEnableChk.setSelected(size != 0);
+	}
+
+	void setEmptyFileAllowed(boolean allowed) {
+		emptyFileAllowed = allowed;
+		updateState();
 	}
 }

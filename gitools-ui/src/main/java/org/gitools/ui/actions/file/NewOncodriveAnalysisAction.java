@@ -34,8 +34,8 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		UnimplementedDialog.show(AppFrame.instance());
-		if (true) return;
+		//UnimplementedDialog.show(AppFrame.instance());
+		//if (true) return;
 
 		final OncodriverAnalysisWizard wizard = new OncodriverAnalysisWizard();
 
@@ -49,6 +49,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 		final OncodriveAnalysis analysis = wizard.getAnalysis();
 
 		File populationFile = wizard.getPopulationFile();
+		File modulesFile = wizard.getModulesFile();
 
 		final OncodriveCommand cmd = new OncodriveCommand(
 				analysis,
@@ -56,7 +57,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 				wizard.getDataFile().getAbsolutePath(),
 				populationFile != null ? populationFile.getAbsolutePath() : null,
 				wizard.getModulesFileMime(),
-				wizard.getModulesFile().getAbsolutePath(),
+				modulesFile != null ? modulesFile.getAbsolutePath() : null,
 				wizard.getWorkdir(),
 				wizard.getFileName());
 

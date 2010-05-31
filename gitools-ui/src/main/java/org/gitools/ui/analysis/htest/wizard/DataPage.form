@@ -67,7 +67,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cutoffValue" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="bgFromModuleAnnotationsCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="discardNonMappedRowsCheck" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -114,7 +114,7 @@
                   <Component id="cutoffValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="bgFromModuleAnnotationsCheck" min="-2" max="-2" attributes="0"/>
+              <Component id="discardNonMappedRowsCheck" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="238" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -225,7 +225,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="populationFileBrowserBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="bgFromModuleAnnotationsCheck">
+    <Component class="javax.swing.JCheckBox" name="discardNonMappedRowsCheck">
       <Properties>
         <Property name="text" type="java.lang.String" value="Filter out rows for which no information appears in the module"/>
       </Properties>

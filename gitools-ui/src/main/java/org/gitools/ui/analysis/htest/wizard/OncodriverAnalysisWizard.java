@@ -8,6 +8,7 @@ import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
 
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -44,10 +45,15 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 
 		// Data
 		dataPage = new DataPage();
+		dataPage.setDiscardNonMappedRowsVisible(false);
 		addPage(dataPage);
 
 		// Modules
 		modulesPage = new ModulesPage();
+		modulesPage.setEmptyFileAllowed(true);
+		modulesPage.setTitle("Select sets of columns to be analysed independently");
+		modulesPage.setMessage(MessageStatus.INFO, "If no file is selected then all data columns will be analysed as one set");
+		modulesPage.setMinSize(0);
 		addPage(modulesPage);
 
 		// Statistical test
