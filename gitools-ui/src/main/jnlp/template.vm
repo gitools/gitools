@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-  codebase="http://www.gitools.org/webstart" href="$outputFile">
+  codebase="$project.Properties.wsCodebase" href="$outputFile">
 	<information>
 		<title>Gitools</title>
 		<vendor>Biomedical Genomics</vendor>
-		<homepage href="http://www.gitools.org"/>
+		<homepage href="$project.Properties.wsHomepage"/>
 		<description>Analysis and visualization of genomic data</description>
 		<offline-allowed/>
 	</information>

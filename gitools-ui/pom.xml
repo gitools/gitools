@@ -13,6 +13,8 @@
 
 	<properties>
 		<mainClass>org.gitools.ui.Main</mainClass>
+		<wsCodebase>http://webstart.gitools.org</wsCodebase>
+		<wsHomepage>http://www.gitools.org</wsHomepage>
 	</properties>
 
 	<dependencies>
@@ -104,14 +106,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>org.jfrog.maven.plugins</groupId>
-				<artifactId>jfrog-jnlp-plugin</artifactId>
-				<configuration>
-					<mainClass>${mainClass}</mainClass>
-				</configuration>
-			</plugin> -->
-
 			<plugin>
 				<groupId>org.codehaus.mojo.webstart</groupId>
 				<artifactId>webstart-maven-plugin</artifactId>
@@ -177,7 +171,7 @@
 					<gzip>true</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
 
 					<!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
-					<outputJarVersions>true</outputJarVersions>
+					<outputJarVersions>false</outputJarVersions>
 
 					<!--install>false</install--> <!-- not yet supported -->
 					<verbose>true</verbose>
