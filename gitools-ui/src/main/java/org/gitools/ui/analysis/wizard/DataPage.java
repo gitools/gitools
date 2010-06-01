@@ -4,7 +4,7 @@
  * Created on September 4, 2009, 1:58 PM
  */
 
-package org.gitools.ui.analysis.htest.wizard;
+package org.gitools.ui.analysis.wizard;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.event.ActionEvent;
@@ -403,7 +403,7 @@ public class DataPage extends AbstractWizardPage {
 		return discardNonMappedRowsVisible;
 	}
 
-	void setDiscardNonMappedRowsVisible(boolean visible) {
+	public void setDiscardNonMappedRowsVisible(boolean visible) {
 		discardNonMappedRowsVisible = visible;
 		discardNonMappedRowsCheck.setVisible(discardNonMappedRowsVisible);
 	}

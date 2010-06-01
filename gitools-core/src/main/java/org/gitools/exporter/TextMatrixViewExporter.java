@@ -47,7 +47,7 @@ public class TextMatrixViewExporter {
 		
 		// header
 
-		pw.print("row\tcolumn");
+		pw.print("column\trow");
 		for (int i = 0; i < propIndices.length; i++) {
 			IElementAttribute attr = attributes.get(propIndices[i]);
 			pw.print("\t" + attr.getId());
@@ -60,8 +60,8 @@ public class TextMatrixViewExporter {
 			final int r = i / colCount;
 			final int c = i % colCount;
 			
-			pw.print(matrixView.getRowLabel(r));
-			pw.print("\t" + matrixView.getColumnLabel(c));
+			pw.print(matrixView.getColumnLabel(c));
+			pw.print("\t" + matrixView.getRowLabel(r));
 			for (int p = 0; p < propCount; p++)
 				pw.print("\t" + matrixView.getCellValue(r, c, propIndices[p]).toString());
 			pw.println();

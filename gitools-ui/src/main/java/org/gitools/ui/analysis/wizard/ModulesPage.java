@@ -4,7 +4,7 @@
  * Created on September 3, 2009, 6:30 PM
  */
 
-package org.gitools.ui.analysis.htest.wizard;
+package org.gitools.ui.analysis.wizard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -303,7 +303,7 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 		maxSizeEnableChk.setSelected(size != 0);
 	}
 
-	void setEmptyFileAllowed(boolean allowed) {
+	public void setEmptyFileAllowed(boolean allowed) {
 		emptyFileAllowed = allowed;
 		updateState();
 	}

@@ -1,5 +1,7 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.analysis.wizard.ModulesPage;
+import org.gitools.ui.analysis.wizard.DataPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
 
