@@ -9,7 +9,11 @@ import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePane;
 
 import edu.upf.bg.formatter.GenericFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -22,6 +26,12 @@ public class HtestAnalysisEditor extends AbstractEditor {
 		new NewDataHeatmapFromHtestAnalysisAction(),
 		new NewResultsHeatmapFromHtestAnalysisAction()
 	});
+
+	private static Map<Class<? extends HtestAnalysis>, String> templateMap = new HashMap<Class<? extends HtestAnalysis>, String>();
+	static {
+		templateMap.put(EnrichmentAnalysis.class, "/vm/analysis/enrichment.vm");
+		templateMap.put(OncodriveAnalysis.class, "/vm/analysis/oncodrive.vm");
+	}
 
 	private HtestAnalysis analysis;
 
@@ -36,7 +46,8 @@ public class HtestAnalysisEditor extends AbstractEditor {
 	private void createComponents() {
 		templatePane = new TemplatePane();
 		try {
-			templatePane.setTemplate("/vm/analysis/enrichment.vm");
+			templatePane.setTemplate(
+					templateMap.get(analysis.getClass()));
 
 			VelocityContext context = new VelocityContext();
 			context.put("fmt", new GenericFormatter());

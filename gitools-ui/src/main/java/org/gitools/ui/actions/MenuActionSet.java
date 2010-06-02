@@ -21,8 +21,8 @@ public class MenuActionSet extends ActionSet {
 					new ActionSet("Analysis", new BaseAction[] {
 						FileActions.newEnrichmentAnalysisAction,
 						FileActions.newOncozAnalysisAction,
-						FileActions.newCombinationAnalysisAction,
-						FileActions.newCorrelationAnalysisAction
+						FileActions.newCorrelationAnalysisAction,
+						FileActions.newCombinationAnalysisAction
 					})
 				}),
 				new ActionSet("Open", new BaseAction[] {

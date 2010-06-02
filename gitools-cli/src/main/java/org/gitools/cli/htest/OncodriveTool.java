@@ -63,8 +63,8 @@ public class OncodriveTool extends HtestTool {
 		OncodriveAnalysis analysis = new OncodriveAnalysis();
 		prepareAnalysis(analysis, args);
 
-		analysis.setMinColumnsSize(args.minSetSize);
-		analysis.setMaxColumnsSize(args.maxSetSize);
+		analysis.setMinModuleSize(args.minSetSize);
+		analysis.setMaxModuleSize(args.maxSetSize);
 
 		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
 

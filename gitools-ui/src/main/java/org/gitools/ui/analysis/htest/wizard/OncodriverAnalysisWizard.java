@@ -34,6 +34,23 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	
 	@Override
 	public void addPages() {
+		// Data
+		dataPage = new DataPage();
+		dataPage.setDiscardNonMappedRowsVisible(false);
+		addPage(dataPage);
+
+		// Modules
+		modulesPage = new ModulesPage();
+		modulesPage.setMinSize(0);
+		modulesPage.setEmptyFileAllowed(true);
+		modulesPage.setTitle("Select sets of columns to be analysed independently");
+		modulesPage.setMessage(MessageStatus.INFO, "If no file is selected then all data columns will be analysed as one set");
+		addPage(modulesPage);
+
+		// Statistical test
+		statisticalTestPage = new StatisticalTestPage();
+		addPage(statisticalTestPage);
+
 		// Destination
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
@@ -44,23 +61,6 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 					FileSuffixes.ONCODRIVE) });
 		saveFilePage.setFormatsVisible(false);
 		addPage(saveFilePage);
-
-		// Data
-		dataPage = new DataPage();
-		dataPage.setDiscardNonMappedRowsVisible(false);
-		addPage(dataPage);
-
-		// Modules
-		modulesPage = new ModulesPage();
-		modulesPage.setEmptyFileAllowed(true);
-		modulesPage.setTitle("Select sets of columns to be analysed independently");
-		modulesPage.setMessage(MessageStatus.INFO, "If no file is selected then all data columns will be analysed as one set");
-		modulesPage.setMinSize(0);
-		addPage(modulesPage);
-
-		// Statistical test
-		statisticalTestPage = new StatisticalTestPage();
-		addPage(statisticalTestPage);
 
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
@@ -73,7 +73,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 
 		IWizardPage page = getCurrentPage();
 
-		canFinish |= page == statisticalTestPage && page.isComplete();
+		canFinish |= page == saveFilePage && page.isComplete();
 
 		return canFinish;
 	}
@@ -126,8 +126,8 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		analysis.setBinaryCutoffEnabled(dataPage.isBinaryCutoffEnabled());
 		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
 		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());
-		analysis.setMinColumnsSize(modulesPage.getMinSize());
-		analysis.setMaxColumnsSize(modulesPage.getMaxSize());
+		analysis.setMinModuleSize(modulesPage.getMinSize());
+		analysis.setMaxModuleSize(modulesPage.getMaxSize());
 		analysis.setTestConfig(statisticalTestPage.getTestConfig());
 		analysis.setMtc(statisticalTestPage.getMtc());
 

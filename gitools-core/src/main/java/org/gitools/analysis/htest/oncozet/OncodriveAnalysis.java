@@ -32,38 +32,38 @@ public class OncodriveAnalysis extends HtestAnalysis implements Serializable {
 
 	/** Modules */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected ModuleMap columnsMap;
+	protected ModuleMap moduleMap;
 
 	/** Minimum columns size */
-	protected int minColumnsSize;
+	protected int minModuleSize;
 
 	/** Maximum columns size */
-	protected int maxColumnsSize;
+	protected int maxModuleSize;
 
 	public OncodriveAnalysis() {
 	}
 
-	public ModuleMap getColumnsMap() {
-		return columnsMap;
+	public ModuleMap getModuleMap() {
+		return moduleMap;
 	}
 
-	public void setColumnsMap(ModuleMap map) {
-		this.columnsMap = map;
+	public void setModuleMap(ModuleMap map) {
+		this.moduleMap = map;
 	}
 
-	public int getMinColumnsSize() {
-		return minColumnsSize;
+	public int getMinModuleSize() {
+		return minModuleSize;
 	}
 
-	public void setMinColumnsSize(int minSize) {
-		this.minColumnsSize = minSize;
+	public void setMinModuleSize(int minSize) {
+		this.minModuleSize = minSize;
 	}
 
-	public int getMaxColumnsSize() {
-		return maxColumnsSize;
+	public int getMaxModuleSize() {
+		return maxModuleSize;
 	}
 
-	public void setMaxColumnsSize(int maxSize) {
-		this.maxColumnsSize = maxSize;
+	public void setMaxModuleSize(int maxSize) {
+		this.maxModuleSize = maxSize;
 	}
 }

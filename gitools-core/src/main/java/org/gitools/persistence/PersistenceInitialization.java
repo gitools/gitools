@@ -19,6 +19,7 @@ package org.gitools.persistence;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
@@ -41,6 +42,7 @@ import org.gitools.persistence.xml.ContainerXmlPersistence;
 import org.gitools.persistence.xml.CorrelationAnalysisXmlPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 import org.gitools.persistence.xml.HeatmapXmlPersistence;
+import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
 import org.gitools.persistence.xml.ProjectXmlPersistence;
 import org.gitools.persistence.xml.TableFigureXmlPersistence;
 import org.gitools.table.model.TableFigure;
@@ -56,12 +58,13 @@ public class PersistenceInitialization {
 		
 		pm.registerFormat(MimeTypes.PROJECT, FileSuffixes.PROJECT, Project.class, ProjectXmlPersistence.class);
 		pm.registerFormat(MimeTypes.CONTENT, FileSuffixes.CONTENT, Container.class, ContainerXmlPersistence.class);
-		pm.registerFormat(MimeTypes.TABLE_FIGURE, FileSuffixes.TABLE_FIGURE, TableFigure.class, TableFigureXmlPersistence.class);
+		pm.registerFormat(MimeTypes.TABLE, FileSuffixes.TABLE_FIGURE, TableFigure.class, TableFigureXmlPersistence.class);
 
 		pm.registerFormat(MimeTypes.ENRICHMENT_ANALYSIS, FileSuffixes.ENRICHMENT, EnrichmentAnalysis.class, EnrichmentAnalysisXmlPersistence.class);
-		pm.registerFormat(MimeTypes.CORRELATION_ANALYSIS, FileSuffixes.CORRELATION, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
+		pm.registerFormat(MimeTypes.ONCODRIVE_ANALYSIS, FileSuffixes.ONCODRIVE, OncodriveAnalysis.class, OncodriveAnalysisXmlPersistence.class);
+		pm.registerFormat(MimeTypes.CORRELATIONS_ANALYSIS, FileSuffixes.CORRELATIONS, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
 
-		pm.registerFormat(MimeTypes.HEATMAP_FIGURE, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
+		pm.registerFormat(MimeTypes.HEATMAP, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
 
 		pm.registerFormat(MimeTypes.GENE_SET, FileSuffixes.GENE_SET, GeneSetPersistence.class);
 

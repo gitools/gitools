@@ -1,0 +1,152 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		
+		.sectionHeader {
+			background-color: rgb(250, 210, 150);
+			font-weight: bold;
+			margin: 1px;
+			text-align: left;
+		}
+
+		.attrTable {
+			margin: 0px 4px;
+			width: 90%;
+		}
+
+		.propTable {
+			margin: 1px;
+			width: 90%;
+		}
+		
+		.propName {
+			margin: 1px;
+			text-align: left;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+		
+		.propValue {
+			margin: 1px;
+			padding-left: 4px;
+			text-align: left;
+			width: 100%;
+		}
+    </style>
+</head>
+<body>
+    <table>
+    	<tr>
+    		<td class="sectionHeader">Details</td>
+    	</tr>
+    	<tr>
+    		<table class="propTable">
+    			<tr>
+    				<td class="propName">Name</td>
+    				<td class="propValue">$analysis.title</td>
+    			</tr>
+				<tr>
+    				<td class="propName">Notes</td>
+    				<td class="propValue">$analysis.description</td>
+    			</tr>
+			</table>
+			#if( $analysis.attributes.size() )
+			<table>
+				<tr><td class="propName">Attributes</td><tr>
+				<tr><td class="propValue">
+    				<table class="attrTable" border="0" cellspacing="0">
+						#foreach($attr in $analysis.attributes)
+							#if ($attr.name)
+							<tr>
+								<td class="propName">$attr.name</td>
+								<td class="propValue">$attr.value</td>
+							</tr>
+							#end
+						#end
+					</table>
+    			</td></tr>
+			</table>
+			#end
+			<table class="propTable">
+    			<tr>
+    				<td class="propName">Created</td>
+    				<td class="propValue">$fmt.format($analysis.startTime)</td>
+    			</tr>
+    			<tr>
+    				<td class="propName">Elapsed time</td>
+    				<td class="propValue">$fmt.elapsedTime($analysis.elapsedTime)</td>
+    			</tr>
+    		</table>
+    	</tr>
+
+		<tr>
+    		<td class="sectionHeader">Data</td>
+    	</tr>
+		<tr>
+			<table>
+				<tr>
+    				<td class="propName">Filter</td>
+    				<td class="propValue">
+						#if ( $analysis.binaryCutoffEnabled )
+							Binary cutoff filter for values $analysis.binaryCutoffCmp.longName $analysis.binaryCutoffValue
+						#else
+							Disabled
+						#end
+					</td>
+    			</tr>
+			</table>
+		</tr>
+
+		<tr>
+    		<td class="sectionHeader">Modules</td>
+    	</tr>
+		<tr>
+			<table class="propTable">
+				<tr>
+    				<td class="propName">Minimum number of samples</td>
+					<td class="propValue">
+					#if ($analysis.minModuleSize != 0)
+						$analysis.minModuleSize
+					#else
+						No limit
+					#end
+					</td>
+    			</tr>
+				<tr>
+    				<td class="propName">Maximum number of samples</td>
+					<td class="propValue">
+					#if ($analysis.maxModuleSize != 2147483647)
+						$analysis.maxModuleSize
+					#else
+						No limit
+					#end
+					</td>
+    			</tr>
+			</table>
+		</tr>
+
+		<tr>
+    		<td class="sectionHeader">Results</td>
+    	</tr>
+		<tr>
+			<table>
+				<tr><td class="propName">Test configuration</td></tr>
+			</table>
+
+			<table class="propTable">
+    			<tr>
+    				<td class="propName">Multiple test correction</td>
+					#set( $mtc = "" )
+					#if( $analysis.mtc == "bh" )
+						#set( $mtc = "Benjamini Hochberg FDR" )
+					#elseif( $analysis.mtc == "bonferroni" )
+						#set( $mtc = "Bonferroni" )
+					#end
+    				<td class="propValue">$mtc</td>
+    			</tr>
+			</table>
+		</tr>
+    </table>
+</body>
+</html>

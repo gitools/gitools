@@ -96,7 +96,7 @@ public class CorrelationTool extends AnalysisTool {
 		CorrelationCommand cmd = new CorrelationCommand(
         		analysis,
 				dataMime, args.dataFile,
-				args.workdir, args.analysisName + "." + FileSuffixes.CORRELATION);
+				args.workdir, args.analysisName + "." + FileSuffixes.CORRELATIONS);
         
         IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

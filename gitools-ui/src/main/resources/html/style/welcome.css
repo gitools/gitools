@@ -1,0 +1,14 @@
+ul {
+
+}
+
+li {
+	padding-bottom: 10px;
+}
+
+a {
+	/* font-weight: bold; */
+	/* color: red; */
+	font-family:arial,sans-serif;
+	text-decoration: none;
+}

@@ -104,8 +104,20 @@ public class Html4Editor extends AbstractEditor {
 			int pos = href.indexOf('?');
 			if (pos >= 0) {
 				name = href.substring(0, pos);
-				// TODO implement params parsing...
+				String p1 = pos < href.length() ? href.substring(pos + 1) : "";
+				if (!p1.isEmpty()) {
+					String[] p2 = p1.split("\\&");
+					for (String p3 : p2) {
+						pos = p3.indexOf('=');
+						if (pos > 0) {
+							String id = p3.substring(0, pos);
+							String value = pos < p3.length() ? p3.substring(pos + 1) : "";
+							params.put(id, value);
+						}
+					}
+				}
 			}
+			
 			performUrlAction(name, params);
 			throw new LinkVetoException();
 		}

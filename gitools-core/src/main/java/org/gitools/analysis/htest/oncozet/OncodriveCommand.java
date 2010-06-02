@@ -121,12 +121,12 @@ public class OncodriveCommand extends HtestCommand {
 			Properties modProps = new Properties();
 			modProps.put(ModuleMapPersistence.ITEM_NAMES_FILTER_ENABLED, true);
 			modProps.put(ModuleMapPersistence.ITEM_NAMES, dataMatrix.getColumnStrings());
-			modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinColumnsSize());
-			modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxColumnsSize());
+			modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinModuleSize());
+			modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
 
 			ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
 			
-			analysis.setColumnsMap(moduleMap);
+			analysis.setModuleMap(moduleMap);
 		}
 	}
 	

@@ -133,6 +133,6 @@ public class CorrelationsAction extends BaseAction {
 
 		editorPanel.addEditor(editor);
 
-		AppFrame.instance().setStatusText("New heatmap created.");
+		AppFrame.instance().setStatusText("Done.");
 	}
 }

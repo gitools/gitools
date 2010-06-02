@@ -6,11 +6,12 @@ public class MimeTypes {
 	public static final String CONTENT = "application/gitools-contents";
 	
 	public static final String ENRICHMENT_ANALYSIS = "application/gitools-analysis-enrichment";
-	public static final String ONCODRIVER_ANALYSIS = "application/gitools-analysis-oncodriver";
-	public static final String CORRELATION_ANALYSIS = "application/gitools-analysis-correlation";
+	public static final String ONCODRIVE_ANALYSIS = "application/gitools-analysis-oncodrive";
+	public static final String CORRELATIONS_ANALYSIS = "application/gitools-analysis-correlations";
+	public static final String COMBINATIONS_ANALYSIS = "application/gitools-analysis-combinations";
 	
-	public static final String HEATMAP_FIGURE = "application/gitools-figure-heatmap";
-	public static final String TABLE_FIGURE = "application/gitools-figure-table";
+	public static final String HEATMAP = "application/gitools-heatmap";
+	public static final String TABLE = "application/gitools-table";
 	
 	public static final String OBJECT_MATRIX = "application/gitools-matrix-object";
 	public static final String DOUBLE_MATRIX = "application/gitools-matrix-double";

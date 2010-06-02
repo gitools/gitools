@@ -71,6 +71,13 @@ public class DataPage extends AbstractWizardPage {
 		dataFilePath.getDocument().addDocumentListener(docCompleteListener);
 		populationFilePath.getDocument().addDocumentListener(docCompleteListener);
 
+		// TODO
+		rowFilterEnabledCheck.setVisible(false);
+		rowFilterFilePath.setVisible(false);
+		rowFilterFileBrowseBtn.setVisible(false);
+		rowFilterIncludeRb.setVisible(false);
+		rowFilterExcludeRb.setVisible(false);
+
 		rowFilterEnabledCheck.addItemListener(itemListener);
 		rowFilterFilePath.getDocument().addDocumentListener(docCompleteListener);
 		rowFilterIncludeRb.addItemListener(itemListener);

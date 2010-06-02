@@ -4,17 +4,23 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
+import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
+import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
 
-import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
+import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.Html4Editor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class WelcomeEditor extends Html4Editor {
@@ -41,10 +47,6 @@ public class WelcomeEditor extends Html4Editor {
 			catch (Exception ex) {
 				ex.printStackTrace();
 			}
-		}
-		if (name.equals("openAnalysis")) {
-			new OpenEnrichmentAnalysisAction()
-				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("importBiomart")) {
 			BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.instance());
@@ -80,15 +82,50 @@ public class WelcomeEditor extends Html4Editor {
 				}
 			}
 		}
-		if (name.equals("analysisEnrichment")) {
-			new NewEnrichmentAnalysisAction()
-				.actionPerformed(new ActionEvent(this, 0, name));
+
+		if (name.equals("analysis")) {
+			Map<String, Class<? extends BaseAction>> actions = new HashMap<String, Class<? extends BaseAction>>();
+			actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
+			actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
+			actions.put("Correlations", NewCorrelationAnalysisAction.class);
+			
+			String ref = params.get("ref");
+			Class<? extends BaseAction> actionClass = actions.get(ref);
+			if (actionClass != null) {
+				try {
+					ActionEvent event = new ActionEvent(this, 0, name);
+					actionClass.newInstance().actionPerformed(event);
+				} catch (Exception ex) {
+					LoggerFactory.getLogger(WelcomeEditor.class).debug(null, ex);
+				}
+			}
+			else {
+				UnimplementedDialog dlg = new UnimplementedDialog(AppFrame.instance());
+				dlg.setVisible(true);
+			}
 		}
-		else if (name.equals("analysisAlterations")
-				|| name.equals("analysisCombinations")
-				|| name.equals("analysisCorrelations")) {
-			UnimplementedDialog dlg = new UnimplementedDialog(AppFrame.instance());
-			dlg.setVisible(true);
+		else if (name.equals("example")) {
+			LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
+		}
+		else if (name.equals("help")) {
+			final Map<String, String> urls = new HashMap<String, String>();
+			urls.put("Introduction", "http://www.gitools.org/guide/master_users_guidech1.html");
+			urls.put("Data", "http://www.gitools.org/guide/master_users_guidech2.html");
+			urls.put("Import", "http://www.gitools.org/guide/master_users_guidech3.html");
+			urls.put("Analysis", "http://www.gitools.org/guide/master_users_guidech4.html");
+			urls.put("Visualization", "http://www.gitools.org/guide/master_users_guidech5.html");
+			urls.put("Export", "http://www.gitools.org/guide/master_users_guidech6.html");
+			try {
+				String ref = params.get("ref");
+				Desktop.getDesktop().browse(new URI(urls.get(ref)));
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		if (name.equals("openAnalysis")) {
+			new OpenAnalysisAction()
+				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("dataMatrices")
 				|| name.equals("dataModules")

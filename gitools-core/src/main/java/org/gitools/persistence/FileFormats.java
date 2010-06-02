@@ -19,6 +19,19 @@ package org.gitools.persistence;
 
 public class FileFormats {
 
+	// Analyses
+
+	public static final FileFormat ENRICHMENT = new FileFormat(
+			"Enrichment analysis", FileSuffixes.ENRICHMENT, MimeTypes.ENRICHMENT_ANALYSIS);
+
+	public static final FileFormat ONCODRIVE = new FileFormat(
+			"Oncodrive analysis", FileSuffixes.ONCODRIVE, MimeTypes.ONCODRIVE_ANALYSIS);
+
+	public static final FileFormat CORRELATIONS = new FileFormat(
+			"Correlations analysis", FileSuffixes.CORRELATIONS, MimeTypes.CORRELATIONS_ANALYSIS);
+
+	// Data
+
 	public static final FileFormat GENE_MATRIX = new FileFormat(
 			"Gene Matrix", FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX);
 
@@ -39,6 +52,13 @@ public class FileFormats {
 
 	public static final FileFormat RESULTS_MATRIX = new FileFormat(
 			"Multivalue data matrix", FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
+
+	// Heatmap
+
+	public static final FileFormat HEATMAP = new FileFormat(
+			"Heatmap", FileSuffixes.HEATMAP, MimeTypes.HEATMAP);
+
+	// Image
 
 	public static final FileFormat PNG = new FileFormat(
 			"PNG", "png", "image/png", true, false);

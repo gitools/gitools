@@ -55,7 +55,7 @@ public class OncodriveAnalysisXmlPersistence
 		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		context.setEntityContext(entity.getColumnsMap(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
 
 		String resultsExt = pm.getExtensionFromEntity(entity.getResults().getClass());

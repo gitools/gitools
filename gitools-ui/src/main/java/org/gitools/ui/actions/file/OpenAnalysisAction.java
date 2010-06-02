@@ -1,5 +1,8 @@
 package org.gitools.ui.actions.file;
 
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.ui.utils.FileFormatFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -12,48 +15,24 @@ import org.gitools.ui.settings.Settings;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.model.Analysis;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.analysis.correlation.editor.CorrelationEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class OpenEnrichmentAnalysisAction extends BaseAction {
+public class OpenAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -6528634034161710370L;
 
-	//FIXME remove this class
-	private static class FF extends FileFilter {
-		private String description;
-		private String mime;
-
-		public FF(String description, String mime) {
-			this.description = description;
-			this.mime = mime;
-		}
-
-		@Override
-		public boolean accept(File f) {
-			return true;
-		}
-
-		@Override
-		public String getDescription() {
-			return description;
-		}
-
-		public String getMime() {
-			return mime;
-		}
-	}
-
-	public OpenEnrichmentAnalysisAction() {
-		super("Enrichment analysis ...");
-		setDesc("Open an enrichment analysis from the file system");
+	public OpenAnalysisAction() {
+		super("Analysis ...");
+		setDesc("Open an analysis from the file system");
 		setSmallIconFromResource(IconNames.openAnalysis16);
 		setLargeIconFromResource(IconNames.openAnalysis24);
 		setMnemonic(KeyEvent.VK_A);
@@ -62,12 +41,10 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//FIXME
 		FileFilter[] filters = new FileFilter[] {
-			new FF("Enrichment analysis", MimeTypes.ENRICHMENT_ANALYSIS) {
-				@Override public boolean accept(File f) {
-					return f.isDirectory() || f.getName().endsWith("." + FileSuffixes.ENRICHMENT); }
-			}
+			new FileFormatFilter(FileFormats.ENRICHMENT),
+			new FileFormatFilter(FileFormats.ONCODRIVE),
+			new FileFormatFilter(FileFormats.CORRELATIONS)
 		};
 
 		Object[] ret = FileChooserUtils.selectFile(
@@ -77,6 +54,7 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 				filters);
 
 		final File file = (File) ret[0];
+		final FileFormatFilter filter = (FileFormatFilter) ret[1];
 
 		if (file != null) {
 			Settings.getDefault().setLastPath(file.getParent());
@@ -86,23 +64,28 @@ public class OpenEnrichmentAnalysisAction extends BaseAction {
 				@Override
 				public void run(IProgressMonitor monitor) {
 					try {
-						EnrichmentAnalysis analysis =
-								(EnrichmentAnalysis) PersistenceManager.getDefault().load(
-									file,
-									MimeTypes.ENRICHMENT_ANALYSIS,
-									monitor);
+						AbstractEditor editor = null;
+
+						Analysis analysis =	(Analysis) PersistenceManager.getDefault()
+								.load(file, filter.getMime(), monitor);
 
 						if (monitor.isCancelled())
 							return;
 
-						final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
+						if (filter.getMime().equals(MimeTypes.ENRICHMENT_ANALYSIS))
+							editor = new HtestAnalysisEditor((HtestAnalysis) analysis);
+						else if (filter.getMime().equals(MimeTypes.ONCODRIVE_ANALYSIS))
+							editor = new HtestAnalysisEditor((HtestAnalysis) analysis);
+						else if (filter.getMime().equals(MimeTypes.CORRELATIONS_ANALYSIS))
+							editor = new CorrelationEditor((CorrelationAnalysis) analysis);
 
 						editor.setName(file.getName());
 
+						final AbstractEditor newEditor = editor;
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								AppFrame.instance().getEditorsPanel().addEditor(editor);
+								AppFrame.instance().getEditorsPanel().addEditor(newEditor);
 								AppFrame.instance().refresh();
 							}
 						});

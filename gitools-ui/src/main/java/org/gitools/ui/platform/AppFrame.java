@@ -97,7 +97,7 @@ public class AppFrame extends JFrame {
 		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(900, 650));
+		setPreferredSize(new Dimension(980, 680));
 		pack();
 	}
 

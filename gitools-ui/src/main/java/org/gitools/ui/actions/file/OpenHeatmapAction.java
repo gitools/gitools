@@ -17,6 +17,7 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
@@ -25,34 +26,11 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.FileFormatFilter;
 
 public class OpenHeatmapAction extends BaseAction {
 
 	private static final long serialVersionUID = -6528634034161710370L;
-
-	private static class FF extends FileFilter {
-		private String description;
-		private String mime;
-
-		public FF(String description, String mime) {
-			this.description = description;
-			this.mime = mime;
-		}
-
-		@Override
-		public boolean accept(File f) {
-			return true;
-		}
-
-		@Override
-		public String getDescription() {
-			return description;
-		}
-
-		public String getMime() {
-			return mime;
-		}
-	}
 
 	public OpenHeatmapAction() {
 		super("Heatmap ...");
@@ -66,9 +44,14 @@ public class OpenHeatmapAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		FileFilter[] filters = new FileFilter[] {
-			new FF("Results file", MimeTypes.OBJECT_MATRIX),
-			new FF("Matrix file", MimeTypes.DOUBLE_MATRIX),
-			new FF("Binary matrix file", MimeTypes.DOUBLE_BINARY_MATRIX)
+			// TODO new FileFormatFilter(FileFormats.HEATMAP),
+			new FileFormatFilter(FileFormats.RESULTS_MATRIX),
+			new FileFormatFilter(FileFormats.RESULTS_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
+			new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
+			new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)", MimeTypes.DOUBLE_MATRIX),
+			new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
+			new FileFormatFilter(FileFormats.GENE_MATRIX),
+			new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED)
 		};
 
 		final Object[] ret = FileChooserUtils.selectFile(
@@ -79,7 +62,7 @@ public class OpenHeatmapAction extends BaseAction {
 		if (file == null)
 			return;
 
-		final FF ff = (FF) ret[1];
+		final FileFormatFilter ff = (FileFormatFilter) ret[1];
 
 		Settings.getDefault().setLastPath(file.getParent());
 		Settings.getDefault().save();

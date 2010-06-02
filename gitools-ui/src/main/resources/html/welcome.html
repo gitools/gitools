@@ -4,34 +4,41 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Welcome</title>
 	<link rel="stylesheet" href="style/default.css" />
+	<link rel="stylesheet" href="style/welcome.css" />
 </head>
 <body>
 	<div><a rel="action" href="goHome"><img src="img/logo.png" /></a></div>
 
-	<table>	
+	<table>
 	<tr>
-		<td>
+		<td valign="top">
 			<h1>Import data</h1>
 			<a rel="action" href="importBiomart"><img src="img/import_biomart.png" /></a>
 			<a rel="action" href="importIntogen"><img src="img/import_intogen.png" /></a>
-		</td>
-		<td>
-			<h1>Data types</h1>
-			<a rel="action" href="dataMatrices"><img src="img/matrices.png" /></a>
-			<a rel="action" href="dataModules"><img src="img/modules.png" /></a>
-			<a rel="action" href="dataTables"><img src="img/tables.png" /></a>
-		</td>
-	</tr>
-	</table>
-	
-	<table>
-	<tr>
-		<td>
+
 			<h1>Start an analysis</h1>
-			<a rel="action" href="analysisEnrichment"><img src="img/enrich_analysis.png" /></a>
-			<a rel="action" href="analysisAlterations"><img src="img/driver_alterations.png" /></a>
-			<a rel="action" href="analysisCombinations"><img src="img/combinations.png" /></a>
-			<a rel="action" href="analysisCorrelations"><img src="img/correlations.png" /></a>
+			<a rel="action" href="analysis?ref=Enrichment"><img src="img/enrich_analysis.png" /></a>
+			<a rel="action" href="analysis?ref=Oncodrive"><img src="img/driver_alterations.png" /></a>
+			<a rel="action" href="analysis?ref=Correlations"><img src="img/correlations.png" /></a>
+			<a rel="action" href="analysis?ref=Combinations"><img src="img/combinations.png" /></a>
+
+			<h1>Open some examples</h1>
+			<ul>
+				<li><a rel="action" href="example?ref=data">Intogen gain driver alteration p-values for tumor types</a></li>
+				<li><a rel="action" href="example?ref=enrichment">Enrichment analysis for Gene Ontology biological processes from Intogen data</a></li>
+				<li><a rel="action" href="example?ref=heatmap">Heatmap with enriched biological processes in cancer</a></li>
+			</ul>
+		</td>
+		<td valign="top" width="90px">
+			<h1>Help</h1>
+			<ul>
+				<li><a rel="action" href="help?ref=Introduction">Introduction</a></li>
+				<li><a rel="action" href="help?ref=Data">Data types<br/>and file formats</a></li>
+				<li><a rel="action" href="help?ref=Import">Importing data</a></li>
+				<li><a rel="action" href="help?ref=Analysis">Analysis of data</a></li>
+				<li><a rel="action" href="help?ref=Visualization">Visualization of<br/>data and results</a></li>
+				<li><a rel="action" href="help?ref=Export">Generation of figures<br/>and reports</a></li>
+			</ul>
 		</td>
 	</tr>
 	</table>

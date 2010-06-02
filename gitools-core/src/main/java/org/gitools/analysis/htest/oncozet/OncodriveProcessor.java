@@ -59,11 +59,11 @@ public class OncodriveProcessor extends HtestProcessor {
 		for (int i = 0; i < labels.length; i++)
 			labels[i] = dataMatrix.getColumnLabel(i);
 
-		ModuleMap smap = analysis.getColumnsMap();
+		ModuleMap smap = analysis.getModuleMap();
 		if (smap != null)
 			smap = smap.remap(labels,
-					analysis.getMinColumnsSize(),
-					analysis.getMaxColumnsSize());
+					analysis.getMinModuleSize(),
+					analysis.getMaxModuleSize());
 		else {
 			smap = new ModuleMap();
 			smap.setModuleNames(new String[] {"all columns"});
@@ -109,8 +109,8 @@ public class OncodriveProcessor extends HtestProcessor {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
 
-		final int minModuleSize = analysis.getMinColumnsSize();
-		final int maxModuleSize = analysis.getMaxColumnsSize();
+		final int minModuleSize = analysis.getMinModuleSize();
+		final int maxModuleSize = analysis.getMaxModuleSize();
 
 		/* Test analysis */
 

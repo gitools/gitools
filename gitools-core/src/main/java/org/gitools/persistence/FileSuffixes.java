@@ -9,7 +9,7 @@ public class FileSuffixes {
 	
 	public static final String ENRICHMENT = "enrichment";
 	public static final String ONCODRIVE = "oncodrive";
-	public static final String CORRELATION = "correlation";
+	public static final String CORRELATIONS = "correlations";
 	
 	public static final String HEATMAP = "heatmap";
 	public static final String TABLE_FIGURE = "table";

@@ -22,7 +22,7 @@ import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
 import org.gitools.ui.actions.file.NewProjectAction;
-import org.gitools.ui.actions.file.OpenEnrichmentAnalysisAction;
+import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.actions.file.OpenHeatmapAction;
 import org.gitools.ui.actions.file.OpenProjectAction;
 import org.gitools.ui.actions.file.SaveAction;
@@ -42,7 +42,7 @@ public class FileActions {
 	// Open
 
 	public static final BaseAction openProjectAction = new OpenProjectAction();
-	public static final BaseAction openEnrichmentAnalysisAction = new OpenEnrichmentAnalysisAction();
+	public static final BaseAction openEnrichmentAnalysisAction = new OpenAnalysisAction();
 	public static final BaseAction openHeatmapFromMatrixAction = new OpenHeatmapAction();
 
 	// Save

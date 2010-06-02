@@ -32,18 +32,6 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	
 	@Override
 	public void addPages() {
-		
-		// Destination
-		saveFilePage = new SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-		saveFilePage.setFormats(new FileFormat[] {
-			new FileFormat("Enrichment analysis (*." 
-					+ FileSuffixes.ENRICHMENT + ")",
-					FileSuffixes.ENRICHMENT) });
-		saveFilePage.setFormatsVisible(false);
-		addPage(saveFilePage);
-
 		// Data
 		dataPage = new DataPage();
 		addPage(dataPage);
@@ -55,7 +43,18 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		// Statistical test
 		statisticalTestPage = new StatisticalTestPage();
 		addPage(statisticalTestPage);
-		
+
+		// Destination
+		saveFilePage = new SaveFilePage();
+		saveFilePage.setTitle("Select destination file");
+		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+		saveFilePage.setFormats(new FileFormat[] {
+			new FileFormat("Enrichment analysis (*."
+					+ FileSuffixes.ENRICHMENT + ")",
+					FileSuffixes.ENRICHMENT) });
+		saveFilePage.setFormatsVisible(false);
+		addPage(saveFilePage);
+
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
 		addPage(analysisDetailsPage);
@@ -67,7 +66,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		
 		IWizardPage page = getCurrentPage();
 		
-		canFinish |= page == statisticalTestPage && page.isComplete();
+		canFinish |= page == saveFilePage && page.isComplete();
 		
 		return canFinish;
 	}
