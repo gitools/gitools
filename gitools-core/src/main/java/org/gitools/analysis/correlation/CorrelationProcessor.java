@@ -88,7 +88,7 @@ public class CorrelationProcessor {
 				x[row] = v;
 			}
 
-			for (int j = i + 1; j < numColumns && !monitor.isCancelled(); j++) {
+			for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
 				monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
 
 				//TODO Parallelize

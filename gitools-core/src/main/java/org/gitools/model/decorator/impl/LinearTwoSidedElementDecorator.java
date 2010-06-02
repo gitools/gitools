@@ -151,7 +151,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 		decoration.reset();
 		
 		if (element == null) {
-			decoration.setBgColor(ColorConstants.emptyColor);
+			decoration.setBgColor(scale.getEmptyColor());
 			decoration.setToolTip("Empty cell");
 			return;
 		}
