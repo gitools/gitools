@@ -6,6 +6,8 @@
 		<vendor>Biomedical Genomics</vendor>
 		<homepage href="$project.Properties.wsHomepage"/>
 		<description>Analysis and visualization of genomic data</description>
+		<icon href="icon.png"/>
+		<icon kind="splash" href="splash.png"/> 
 		<offline-allowed/>
 	</information>
 
