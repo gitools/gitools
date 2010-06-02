@@ -32,7 +32,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel5" max="32767" attributes="1"/>
+                          <Component id="populationFileLabel" max="32767" attributes="1"/>
                           <Component id="jLabel2" alignment="0" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -93,7 +93,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="populationFilePath" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="populationFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="populationFileBrowserBtn" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -212,7 +212,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="populationFilePath">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
+    <Component class="javax.swing.JLabel" name="populationFileLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Population file"/>
       </Properties>

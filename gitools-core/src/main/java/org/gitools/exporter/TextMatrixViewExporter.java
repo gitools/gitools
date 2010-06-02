@@ -59,12 +59,14 @@ public class TextMatrixViewExporter {
 		for (int i = 0; i < rowCount * colCount; i++) {
 			final int r = i / colCount;
 			final int c = i % colCount;
-			
-			pw.print(matrixView.getColumnLabel(c));
-			pw.print("\t" + matrixView.getRowLabel(r));
-			for (int p = 0; p < propCount; p++)
-				pw.print("\t" + matrixView.getCellValue(r, c, propIndices[p]).toString());
-			pw.println();
+
+			if (matrixView.getCell(r, c) != null) {
+				pw.print(matrixView.getColumnLabel(c));
+				pw.print("\t" + matrixView.getRowLabel(r));
+				for (int p = 0; p < propCount; p++)
+					pw.print("\t" + matrixView.getCellValue(r, c, propIndices[p]).toString());
+				pw.println();
+			}
 		}
 		
 		pw.close();

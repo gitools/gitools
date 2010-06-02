@@ -48,6 +48,7 @@ public class CorrelationAnalysisWizard extends AbstractWizard {
 	public void addPages() {
 		// Data
 		dataPage = new DataPage();
+		dataPage.setPopulationFileVisible(false);
 		dataPage.setDiscardNonMappedRowsVisible(false);
 		addPage(dataPage);
 

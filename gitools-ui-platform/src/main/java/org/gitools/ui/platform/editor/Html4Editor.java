@@ -18,6 +18,8 @@
 package org.gitools.ui.platform.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +69,27 @@ public class Html4Editor extends AbstractEditor {
 	private void createComponents() {
 		panel = new HtmlPanel();
 		rcontext = new SimpleHtmlRendererContext(panel, new SimpleUserAgentContext()) {
+
+			@Override
+			public void onMouseOver(HTMLElement element, MouseEvent event) {
+				super.onMouseOver(element, event);
+
+				Cursor cursor = null;
+				if ("a".equalsIgnoreCase(element.getTagName()))
+					cursor = new Cursor(Cursor.HAND_CURSOR);
+				else
+					cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+
+				setCursor(cursor);
+			}
+
+			@Override
+			public void onMouseOut(HTMLElement element, MouseEvent event) {
+				super.onMouseOut(element, event);
+				Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+				setCursor(cursor);
+			}
+
 			@Override
 			public void linkClicked(HTMLElement linkNode, URL url, String target) {
 				try {

@@ -39,6 +39,7 @@ public class DataPage extends AbstractWizardPage {
 	};
 
 	private boolean discardNonMappedRowsVisible;
+	private boolean populationFileVisible;
 
 	/** Creates new form DataSourcePanel */
     public DataPage() {
@@ -49,6 +50,7 @@ public class DataPage extends AbstractWizardPage {
         initComponents();
 
 		discardNonMappedRowsVisible = true;
+		populationFileVisible = true;
 
 		dataContentsCb.setModel(new DefaultComboBoxModel(formats));
 		dataContentsCb.addActionListener(new ActionListener() {
@@ -169,7 +171,7 @@ public class DataPage extends AbstractWizardPage {
         rowFilterIncludeRb = new javax.swing.JRadioButton();
         rowFilterExcludeRb = new javax.swing.JRadioButton();
         populationFilePath = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        populationFileLabel = new javax.swing.JLabel();
         populationFileBrowserBtn = new javax.swing.JButton();
         discardNonMappedRowsCheck = new javax.swing.JCheckBox();
 
@@ -216,7 +218,7 @@ public class DataPage extends AbstractWizardPage {
         rowFilterExcludeRb.setText("Exclude rows which labels are in the file");
         rowFilterExcludeRb.setEnabled(false);
 
-        jLabel5.setText("Population file");
+        populationFileLabel.setText("Population file");
 
         populationFileBrowserBtn.setText("Browse...");
         populationFileBrowserBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -240,7 +242,7 @@ public class DataPage extends AbstractWizardPage {
                         .addComponent(dataContentsCb, 0, 525, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(populationFileLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +289,7 @@ public class DataPage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(populationFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5))
+                        .addComponent(populationFileLabel))
                     .addComponent(populationFileBrowserBtn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -366,8 +368,8 @@ public class DataPage extends AbstractWizardPage {
     private javax.swing.JCheckBox discardNonMappedRowsCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JButton populationFileBrowserBtn;
+    private javax.swing.JLabel populationFileLabel;
     private javax.swing.JTextField populationFilePath;
     private javax.swing.JCheckBox rowFilterEnabledCheck;
     private javax.swing.JRadioButton rowFilterExcludeRb;
@@ -406,12 +408,18 @@ public class DataPage extends AbstractWizardPage {
 		return discardNonMappedRowsCheck.isSelected();
 	}
 
-	public boolean isDiscardNonMappedRowsVisible() {
+	/*public boolean isDiscardNonMappedRowsVisible() {
 		return discardNonMappedRowsVisible;
-	}
+	}*/
 
 	public void setDiscardNonMappedRowsVisible(boolean visible) {
 		discardNonMappedRowsVisible = visible;
 		discardNonMappedRowsCheck.setVisible(discardNonMappedRowsVisible);
+	}
+
+	public void setPopulationFileVisible(boolean visible) {
+		populationFileLabel.setVisible(visible);
+		populationFilePath.setVisible(visible);
+		populationFileBrowserBtn.setVisible(visible);
 	}
 }
