@@ -16,6 +16,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import org.gitools.model.Analysis;
+import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
@@ -42,6 +43,11 @@ public class OpenAnalysisAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		FileFilter[] filters = new FileFilter[] {
+			new FileFormatFilter("Any analysis", null, new FileFormat[] {
+				FileFormats.ENRICHMENT,
+				FileFormats.ONCODRIVE,
+				FileFormats.CORRELATIONS
+			}),
 			new FileFormatFilter(FileFormats.ENRICHMENT),
 			new FileFormatFilter(FileFormats.ONCODRIVE),
 			new FileFormatFilter(FileFormats.CORRELATIONS)
@@ -66,17 +72,21 @@ public class OpenAnalysisAction extends BaseAction {
 					try {
 						AbstractEditor editor = null;
 
+						String mime = filter.getMime();
+						if (mime == null)
+							mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
+						
 						Analysis analysis =	(Analysis) PersistenceManager.getDefault()
-								.load(file, filter.getMime(), monitor);
+								.load(file, mime, monitor);
 
 						if (monitor.isCancelled())
 							return;
 
-						if (filter.getMime().equals(MimeTypes.ENRICHMENT_ANALYSIS))
+						if (mime.equals(MimeTypes.ENRICHMENT_ANALYSIS))
 							editor = new HtestAnalysisEditor((HtestAnalysis) analysis);
-						else if (filter.getMime().equals(MimeTypes.ONCODRIVE_ANALYSIS))
+						else if (mime.equals(MimeTypes.ONCODRIVE_ANALYSIS))
 							editor = new HtestAnalysisEditor((HtestAnalysis) analysis);
-						else if (filter.getMime().equals(MimeTypes.CORRELATIONS_ANALYSIS))
+						else if (mime.equals(MimeTypes.CORRELATIONS_ANALYSIS))
 							editor = new CorrelationEditor((CorrelationAnalysis) analysis);
 
 						editor.setName(file.getName());

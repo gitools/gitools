@@ -17,6 +17,7 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
@@ -45,6 +46,13 @@ public class OpenHeatmapAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		FileFilter[] filters = new FileFilter[] {
 			// TODO new FileFormatFilter(FileFormats.HEATMAP),
+			new FileFormatFilter("Any known format", null, new FileFormat[] {
+				FileFormats.RESULTS_MATRIX,
+				FileFormats.DOUBLE_MATRIX,
+				FileFormats.DOUBLE_BINARY_MATRIX,
+				FileFormats.GENE_MATRIX,
+				FileFormats.GENE_MATRIX_TRANSPOSED
+			}),
 			new FileFormatFilter(FileFormats.RESULTS_MATRIX),
 			new FileFormatFilter(FileFormats.RESULTS_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
@@ -74,8 +82,12 @@ public class OpenHeatmapAction extends BaseAction {
 					monitor.begin("Loading ...", 1);
 					monitor.info("File: " + file.getName());
 
+					String mime = ff.getMime();
+					if (mime == null)
+						mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
+
 					final IMatrix matrix = (IMatrix) PersistenceManager.getDefault()
-							.load(file, ff.getMime(), monitor);
+							.load(file, mime, monitor);
 
 					final IMatrixView matrixView = new MatrixView(matrix);
 
