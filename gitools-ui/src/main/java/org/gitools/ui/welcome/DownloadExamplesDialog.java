@@ -23,8 +23,10 @@
 
 package org.gitools.ui.welcome;
 
+import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.utils.DocumentChangeListener;
 
 public class DownloadExamplesDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
@@ -43,7 +45,19 @@ public class DownloadExamplesDialog extends javax.swing.JDialog {
 		headerPanel.setLeftLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.DOWNLOAD, 96));
 
 		setLocationByPlatform(true);
+
+		path.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
+				updateState();
+			}
+		});
+
+		updateState();
     }
+
+	private void updateState() {
+		okButton.setEnabled(!path.getText().isEmpty());
+	}
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
     public int getReturnStatus() {
@@ -175,5 +189,6 @@ public class DownloadExamplesDialog extends javax.swing.JDialog {
 
 	public void setPath(String path) {
 		this.path.setText(path);
+		updateState();
 	}
 }

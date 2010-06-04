@@ -1,11 +1,18 @@
 package org.gitools.ui.welcome;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
@@ -18,7 +25,11 @@ import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.Html4Editor;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.settings.Settings;
 import org.slf4j.LoggerFactory;
 
 
@@ -107,7 +118,9 @@ public class WelcomeEditor extends Html4Editor {
 		}
 		else if (name.equals("downloadExamples")) {
 			DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.instance());
+			dlg.setPath(Settings.getDefault().getLastWorkPath());
 			dlg.setVisible(true);
+			downloadExamples(dlg.getPath());
 		}
 		if (name.equals("openAnalysis")) {
 			new OpenAnalysisAction()
@@ -124,5 +137,65 @@ public class WelcomeEditor extends Html4Editor {
 	@Override
 	public void doVisible() {
 		AppFrame.instance().setLeftPanelVisible(false);
+	}
+
+	private void downloadExamples(final String path) {
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				try {
+					monitor.begin("Connecting ...", 1);
+
+					URL url = new URL("http://webstart.gitools.org/examples.zip");
+
+					ZipInputStream zin = new ZipInputStream(url.openStream());
+
+					File pathFile = new File(path);
+
+					monitor.end();
+					
+					monitor.begin("Downloading ...", 1);
+
+					ZipEntry ze;
+					while ((ze = zin.getNextEntry()) != null) {
+						IProgressMonitor mnt = monitor.subtask();
+
+						long totalKb = ze.getSize() / 1024;
+
+						String name = ze.getName();
+
+						mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
+
+						File outFile = new File(pathFile, name);
+						if (!outFile.getParentFile().exists())
+							outFile.getParentFile().mkdirs();
+
+						OutputStream fout = new FileOutputStream(outFile);
+
+						final int BUFFER_SIZE = 4 * 1024;
+						byte[] data = new byte[BUFFER_SIZE];
+						int partial = 0;
+						int count;
+						while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
+							fout.write(data, 0, count);
+							partial += count;
+							mnt.info((partial / 1024) + " Kb read");
+							mnt.worked(count);
+						}
+
+						zin.closeEntry();
+						fout.close();
+
+						mnt.end();
+					}
+
+					zin.close();
+					
+					monitor.end();
+				}
+				catch (Exception ex) {
+					monitor.exception(ex);
+				}
+			}
+		});
 	}
 }

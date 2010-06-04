@@ -17,6 +17,11 @@ public class ExceptionDialog extends javax.swing.JDialog {
 
     private Throwable cause;
 
+	public static void show(Window parent, Throwable cause) {
+		ExceptionDialog dlg = new ExceptionDialog(parent, cause);
+		dlg.setVisible(true);
+	}
+	
     /** Creates new form ExceptionDialog */
     public ExceptionDialog(Window parent, Throwable cause) {
         super(parent);

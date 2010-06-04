@@ -4,6 +4,7 @@ ul {
 
 li {
 	padding-bottom: 10px;
+	list-style-image: url(img/bullet.png);
 }
 
 a {
@@ -16,4 +17,10 @@ a {
 .download {
 	font-size: 16pt;
 	font-weight: bold;
+}
+
+.details {
+	font-size: 8pt;
+	padding: 0 0 0 0;
+	text-align: right;
 }
