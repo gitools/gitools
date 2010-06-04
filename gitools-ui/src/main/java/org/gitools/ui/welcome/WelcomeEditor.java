@@ -81,8 +81,7 @@ public class WelcomeEditor extends Html4Editor {
 				}
 			}
 		}
-
-		if (name.equals("analysis")) {
+		else if (name.equals("analysis")) {
 			Map<String, Class<? extends BaseAction>> actions = new HashMap<String, Class<? extends BaseAction>>();
 			actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
 			actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
@@ -106,23 +105,9 @@ public class WelcomeEditor extends Html4Editor {
 		else if (name.equals("example")) {
 			LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
 		}
-		else if (name.equals("help")) {
-			final Map<String, String> urls = new HashMap<String, String>();
-			urls.put("Introduction", "http://www.gitools.org/guide/master_users_guidech1.html");
-			urls.put("Data", "http://www.gitools.org/guide/master_users_guidech2.html");
-			urls.put("Import", "http://www.gitools.org/guide/master_users_guidech3.html");
-			urls.put("Analysis", "http://www.gitools.org/guide/master_users_guidech4.html");
-			urls.put("Visualization", "http://www.gitools.org/guide/master_users_guidech5.html");
-			urls.put("Export", "http://www.gitools.org/guide/master_users_guidech6.html");
-			urls.put("Tutorials", "http://www.gitools.org/help.php");
-
-			try {
-				String ref = params.get("ref");
-				Desktop.getDesktop().browse(new URI(urls.get(ref)));
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		else if (name.equals("downloadExamples")) {
+			DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.instance());
+			dlg.setVisible(true);
 		}
 		if (name.equals("openAnalysis")) {
 			new OpenAnalysisAction()

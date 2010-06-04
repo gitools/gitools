@@ -1,5 +1,5 @@
 ul {
-
+	/* margin-left: 8px; */
 }
 
 li {
@@ -11,4 +11,9 @@ a {
 	/* color: red; */
 	font-family:arial,sans-serif;
 	text-decoration: none;
+}
+
+.download {
+	font-size: 16pt;
+	font-weight: bold;
 }
