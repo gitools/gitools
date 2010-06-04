@@ -72,7 +72,7 @@ public class BiomartFilterTest {
 
 		return srv;
 	}
-	@Test
+	//@Test
 	public void filterManagementTest(){
 
 

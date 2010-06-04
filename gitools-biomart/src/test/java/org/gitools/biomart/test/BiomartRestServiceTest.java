@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;
@@ -81,7 +79,7 @@ public class BiomartRestServiceTest {
 		return srv;
 	}
 
-	@Test
+	//@Test
 	public void getRegistry() {
 		try {
 
@@ -96,7 +94,7 @@ public class BiomartRestServiceTest {
 	}
 
 
-	@Test
+	//@Test
 	public void getDatasets() {
 		try {
 
@@ -119,7 +117,7 @@ public class BiomartRestServiceTest {
 	}
 
 
-	@Test
+	//@Test
 	public void getAttributes() {
 		try {
 
@@ -155,7 +153,7 @@ public class BiomartRestServiceTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void getFilters() {
 		try {
 
@@ -191,7 +189,7 @@ public class BiomartRestServiceTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void QueryAsStream() throws JAXBException {
 		try {
 			InputStream in = null;
@@ -275,7 +273,7 @@ public class BiomartRestServiceTest {
 		return query;
 	}
 
-	@Test
+	//@Test
 	public void queryModule() {
 
 		try {
@@ -311,7 +309,7 @@ public class BiomartRestServiceTest {
 
 	}
 
-	@Test
+	//@Test
 	public void queryTable() {
 		try {
 			final File file = new File(System.getProperty("user.home", ".") + File.separator + "testQuery.test");
@@ -342,7 +340,7 @@ public class BiomartRestServiceTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void getDatasetConfig() throws IOException, JAXBException {
 
 		try {
