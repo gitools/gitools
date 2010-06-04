@@ -46,7 +46,7 @@ public class OpenHeatmapAction extends BaseAction {
 	public void actionPerformed(ActionEvent e) {
 		FileFilter[] filters = new FileFilter[] {
 			// TODO new FileFormatFilter(FileFormats.HEATMAP),
-			new FileFormatFilter("Any known format", null, new FileFormat[] {
+			new FileFormatFilter("Known formats", null, new FileFormat[] {
 				FileFormats.RESULTS_MATRIX,
 				FileFormats.DOUBLE_MATRIX,
 				FileFormats.DOUBLE_BINARY_MATRIX,

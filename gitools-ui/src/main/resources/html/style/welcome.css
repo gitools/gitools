@@ -1,9 +1,10 @@
 ul {
-
+	/* margin-left: 8px; */
 }
 
 li {
 	padding-bottom: 10px;
+	list-style-image: url(img/bullet.png);
 }
 
 a {
@@ -11,4 +12,15 @@ a {
 	/* color: red; */
 	font-family:arial,sans-serif;
 	text-decoration: none;
+}
+
+.download {
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+.details {
+	font-size: 8pt;
+	padding: 0 0 0 0;
+	text-align: right;
 }
