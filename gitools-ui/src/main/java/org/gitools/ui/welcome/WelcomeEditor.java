@@ -19,7 +19,6 @@ import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.Html4Editor;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
@@ -115,6 +114,8 @@ public class WelcomeEditor extends Html4Editor {
 			urls.put("Analysis", "http://www.gitools.org/guide/master_users_guidech4.html");
 			urls.put("Visualization", "http://www.gitools.org/guide/master_users_guidech5.html");
 			urls.put("Export", "http://www.gitools.org/guide/master_users_guidech6.html");
+			urls.put("Tutorials", "http://www.gitools.org/help.php");
+
 			try {
 				String ref = params.get("ref");
 				Desktop.getDesktop().browse(new URI(urls.get(ref)));
