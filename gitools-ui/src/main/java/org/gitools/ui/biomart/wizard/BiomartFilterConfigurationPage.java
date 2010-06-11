@@ -335,23 +335,30 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 						defaultSelecComposData = new HashMap<String, List<Option>>();
 
 						initCollectionsCache();
-
 						updatePageFilterList();
 
-						lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
+						if (filterPageCombo.getSelectedItem() != null)						{							
+							lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
+							setMessage(MessageStatus.INFO, "");
 
-						setMessage(MessageStatus.INFO, "");
+						}else{
+							lastPageSelected = null;
+							setMessage(MessageStatus.INFO, " No filters are availables");
+						}						
 
 						reloadData = false;
 						
 					}
 					catch (final Exception ex) {
+
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override public void run() {
+								
 								setStatus(MessageStatus.ERROR);
 								setMessage(ex.getMessage());
 							}
 						});
+
 						ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
 						dlg.setVisible(true);
 						System.out.println(ex);
@@ -367,14 +374,17 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 
-		for (FilterPage p : biomartConfig.getFilterPages()) {
-			if (p.getHideDisplay() == null || !p.getHideDisplay().equals("true")) {
-				
-				model.addElement(new PageListWrapper(p));
+		if (biomartConfig.getFilterPages() != null)
+		{
+			for (FilterPage p : biomartConfig.getFilterPages()) {
 
-				updateGroupFilterList(p);
+				if ((p.getHideDisplay() == null || !p.getHideDisplay().equals("true")) && (p.getHidden() == null || !p.getHidden().equals("true"))) {
 
-			}
+					model.addElement(new PageListWrapper(p));
+					updateGroupFilterList(p);
+
+				}
+			}			
 		}
 
 		this.filterPageCombo.setModel(model);

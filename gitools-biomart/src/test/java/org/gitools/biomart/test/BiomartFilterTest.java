@@ -98,6 +98,30 @@ public class BiomartFilterTest {
 			DatasetConfig ds = bs.getConfiguration(ld.get(0));
 			ds.getDataset();
 
+			//Test all datasets from all marts have filters
+			/*
+			for (MartLocation mart : bs.getRegistry()){
+
+				for (DatasetInfo dataset : bs.getDatasets(mart)){
+
+					DatasetConfig config = bs.getConfiguration(dataset);
+					if (dataset.getVisible() == 1)
+					{
+						log.info("MART: " + mart.getName() + " DS: " + dataset.getName());
+						assertTrue(config.getFilterPages().size()>0);
+						
+						if (config.getFilterPages().size()>1)
+						{
+							assertTrue(config.getFilterPages().get(1).getFilterGroups().size()>0);
+
+							log.info("DS filter pages: " + config.getFilterPages().get(1).getFilterGroups().get(0).getDisplayName());
+							log.info("DS filter pages name : " + config.getFilterPages().get(0).getDisplayName());
+							log.info("DS filter pages name: " + config.getFilterPages().get(1).getDisplayName());
+						}
+					}
+				}
+			}
+			*/
 			/**
 			 * UNMARSHALL
 			jc = JAXBContext.newInstance(DatasetConfig.class.getPackage().getName());

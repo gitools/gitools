@@ -105,7 +105,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 	@Override
 	public DatasetConfig getConfiguration(DatasetInfo d) throws BiomartServiceException {
 
-		final String urlString = restUrl + "?type=configuration&dataset=" + d.getName();
+		final String urlString = restUrl + "?type=configuration&dataset=" + d.getName() +"&virtualSchema="+d.getInterface();
 		DatasetConfig ds = null;
 
 		try {
@@ -186,7 +186,11 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 	public List<FilterPage> getFilters(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException {
 
 		DatasetConfig dc = getConfiguration(dataset);
-		return dc.getFilterPages();
+
+		if (dc.getFilterPages() != null && dc.getFilterPages().size() > 0)
+			return dc.getFilterPages();
+		else
+			return new ArrayList<FilterPage>();
 	}
 
 	//FIXME Use JAXB !!!
