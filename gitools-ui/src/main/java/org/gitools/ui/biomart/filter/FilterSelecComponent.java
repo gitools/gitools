@@ -150,7 +150,7 @@ public class FilterSelecComponent extends FilterComponent  {
 
 		List<OptionListWrapper> options = InitListOptions();
 
-		if (filterDescription.getMultipleValues() == null || !filterDescription.getMultipleValues().equals("1")) {
+		if (filterDescription.getMultipleValues() == 0) {
 
 			component = "ComboBox"; 
 

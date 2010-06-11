@@ -188,7 +188,7 @@ public class FilterTextComponent extends FilterComponent {
 		{
 			txt = filterDescription.getDefaultValue() != null ? filterDescription.getDefaultValue() : "";
 
-			if (filterDescription.getMultipleValues() == null || !filterDescription.getMultipleValues().equals("1"))
+			if (filterDescription.getMultipleValues() == 0)
 				component = "Field";
 			else
 				component = "TextArea";
@@ -199,7 +199,7 @@ public class FilterTextComponent extends FilterComponent {
 			{
 				txt = filterOptions.getDefaultValue() != null ? filterOptions.getDefaultValue() : "";
 
-				if (filterOptions.getMultipleValues() == null || !filterOptions.getMultipleValues().equals("1"))
+				if (filterOptions.getMultipleValues() == 0)
 					component = "Field";
 				else
 					component = "TextArea";

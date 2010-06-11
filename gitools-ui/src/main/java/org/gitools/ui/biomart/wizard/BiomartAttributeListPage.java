@@ -20,6 +20,8 @@ package org.gitools.ui.biomart.wizard;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import org.gitools.biomart.restful.model.AttributeCollection;
+import org.gitools.biomart.restful.model.AttributeGroup;
 
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;

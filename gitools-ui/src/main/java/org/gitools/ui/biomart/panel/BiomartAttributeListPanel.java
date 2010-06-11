@@ -32,7 +32,9 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
 
 import org.gitools.ui.biomart.dialog.BiomartAttributeDialog;
@@ -101,6 +103,20 @@ public class BiomartAttributeListPanel extends JPanel {
 
 	public void setAttributePages(List<AttributePage> attrPages) {
 		this.attrPages = attrPages;
+
+		DefaultListModel model = (DefaultListModel) attrList.getModel();
+		if (model.size() == 0 && attrPages != null) {
+			for (AttributePage p : attrPages)
+				for (AttributeGroup g : p.getAttributeGroups())
+					for (AttributeCollection c : g.getAttributeCollections())
+						for (AttributeDescription d : c.getAttributeDescriptions())
+							if (!d.isHidden() && !d.isHideDisplay() && d.isDefault())
+								model.addElement(new AttributeDescWrapper(d,
+										p.getDisplayName() + " > " +
+										g.getDisplayName() + " > " +
+										c.getDisplayName() + " > " +
+										d.getDisplayName()));
+		}
 
 		updateButtons();
 	}

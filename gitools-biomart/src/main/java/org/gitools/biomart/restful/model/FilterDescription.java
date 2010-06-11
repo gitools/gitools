@@ -24,19 +24,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterDescription {
+public class FilterDescription extends AbstractDescription {
 
 	@XmlAttribute
-	private String field;
+	private String displayType;
 
 	@XmlAttribute
-	private String value;
-
-	@XmlAttribute
-	private String tableConstraint;
-
-	@XmlAttribute
-	private String key;
+	private int multipleValues;
 
 	@XmlAttribute
 	private String type;
@@ -48,10 +42,7 @@ public class FilterDescription {
 	private String legal_qualifiers;
 
 	@XmlAttribute
-	private String buttonURL;
-
-	@XmlAttribute
-	private String regexp;
+	private String value;
 
 	@XmlAttribute
 	private String defaultValue;
@@ -60,7 +51,16 @@ public class FilterDescription {
 	private String defaultOn;
 
 	@XmlAttribute
-	private String filterList;
+	private  String filterList;
+
+	@XmlAttribute
+	private String otherFilters;
+
+	@XmlAttribute
+	private String buttonURL;
+
+	@XmlAttribute
+	private String regexp;
 
 	@XmlAttribute
 	private String setAttributePage;
@@ -69,31 +69,13 @@ public class FilterDescription {
 	private String setAttribute;
 
 	@XmlAttribute
-	private String colForDisplay;
+	private  String colForDisplay;
 
 	@XmlAttribute
-	private String pointerDataset;
+	private  String graph;
 
 	@XmlAttribute
-	private String pointerInterface;
-
-	@XmlAttribute
-	private String pointerFilter;
-
-	@XmlAttribute
-	private String displayType;
-
-	@XmlAttribute
-	private String multipleValues;
-
-	@XmlAttribute
-	private String graph;
-
-	@XmlAttribute
-	private String style;
-
-	@XmlAttribute
-	private String autoCompletion;
+	private  String style;
 
 	@XmlAttribute
 	private String dependsOnType;
@@ -105,25 +87,22 @@ public class FilterDescription {
 	private String checkForNulls;
 
 	@XmlAttribute
-	private String internalName;
+	private String autoCompletion;
 
 	@XmlAttribute
-	private String displayName;
+	private  String pointerDataset;
 
 	@XmlAttribute
-	private String description;
+	private  String pointerInterface;
 
 	@XmlAttribute
-	private String hidden;
-
-	@XmlAttribute
-	private String hideDisplay;
-
-	@XmlAttribute
-	private String otherFilters;
+	private  String pointerFilter;
 
 	@XmlElement(name = "Option")
 	private List<Option> options = new ArrayList<Option>();
+
+	public FilterDescription() {
+	}
 
 	public String getAutoCompletion() {
 		return autoCompletion;
@@ -189,36 +168,12 @@ public class FilterDescription {
 		this.dependsOnType = dependsOnType;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
 	public String getDisplayType() {
 		return displayType;
 	}
 
 	public void setDisplayType(String displayType) {
 		this.displayType = displayType;
-	}
-
-	public String getField() {
-		return field;
-	}
-
-	public void setField(String field) {
-		this.field = field;
 	}
 
 	public String getFilterList() {
@@ -237,38 +192,6 @@ public class FilterDescription {
 		this.graph = graph;
 	}
 
-	public String getHidden() {
-		return hidden;
-	}
-
-	public void setHidden(String hidden) {
-		this.hidden = hidden;
-	}
-
-	public String getHideDisplay() {
-		return hideDisplay;
-	}
-
-	public void setHideDisplay(String hideDisplay) {
-		this.hideDisplay = hideDisplay;
-	}
-
-	public String getInternalName() {
-		return internalName;
-	}
-
-	public void setInternalName(String internalName) {
-		this.internalName = internalName;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
 	public String getLegal_qualifiers() {
 		return legal_qualifiers;
 	}
@@ -277,11 +200,11 @@ public class FilterDescription {
 		this.legal_qualifiers = legal_qualifiers;
 	}
 
-	public String getMultipleValues() {
+	public int getMultipleValues() {
 		return multipleValues;
 	}
 
-	public void setMultipleValues(String multipleValues) {
+	public void setMultipleValues(int multipleValues) {
 		this.multipleValues = multipleValues;
 	}
 
@@ -363,14 +286,6 @@ public class FilterDescription {
 
 	public void setStyle(String style) {
 		this.style = style;
-	}
-
-	public String getTableConstraint() {
-		return tableConstraint;
-	}
-
-	public void setTableConstraint(String tableConstraint) {
-		this.tableConstraint = tableConstraint;
 	}
 
 	public String getType() {

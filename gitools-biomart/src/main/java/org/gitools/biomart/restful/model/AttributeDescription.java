@@ -22,35 +22,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-
-public class AttributeDescription {
-
-	@XmlAttribute
-	private String internalName;
-
-	@XmlAttribute
-	private String displayName;
-
-	@XmlAttribute
-	private String description;
-
-	@XmlAttribute
-	private String hidden;
-
-	@XmlAttribute
-	private String hideDisplay;
+public class AttributeDescription extends AbstractDescription {
 
 	@XmlAttribute
 	private String datasetLink;
-
-	@XmlAttribute
-	private String field;
-
-	@XmlAttribute
-	private String tableConstraint;
-
-	@XmlAttribute
-	private String key;
 
 	@XmlAttribute
 	private String source;
@@ -102,46 +77,6 @@ public class AttributeDescription {
 		this.datasetLink = datasetLink;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getField() {
-		return field;
-	}
-
-	public void setField(String field) {
-		this.field = field;
-	}
-
-	public String getHidden() {
-		return hidden;
-	}
-
-	public void setHidden(String hidden) {
-		this.hidden = hidden;
-	}
-
-	public String getHideDisplay() {
-		return hideDisplay;
-	}
-
-	public void setHideDisplay(String hideDisplay) {
-		this.hideDisplay = hideDisplay;
-	}
-
 	public String getHomepageURL() {
 		return homepageURL;
 	}
@@ -156,22 +91,6 @@ public class AttributeDescription {
 
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
-	}
-
-	public String getInternalName() {
-		return internalName;
-	}
-
-	public void setInternalName(String internalName) {
-		this.internalName = internalName;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	public String getLinkoutURL() {
@@ -236,14 +155,6 @@ public class AttributeDescription {
 
 	public void setSource(String source) {
 		this.source = source;
-	}
-
-	public String getTableConstraint() {
-		return tableConstraint;
-	}
-
-	public void setTableConstraint(String tableConstraint) {
-		this.tableConstraint = tableConstraint;
 	}
 
 }

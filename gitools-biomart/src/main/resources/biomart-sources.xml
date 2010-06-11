@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mart-registry>
 	<mart>
+		<name>intogen</name>
+		<description>IntOGen</description>
+		<version>0.7</version>
+		<host>localhost</host>
+		<port>8080</port>
+		<restPath>/intogen-ws-biomart/resources/martservice</restPath>
+		<wsdlPath></wsdlPath>
+	</mart>
+	<mart>
 		<name>biomart_central</name>
 		<description>BioMart Central Portal</description>
 		<version>0.7</version>

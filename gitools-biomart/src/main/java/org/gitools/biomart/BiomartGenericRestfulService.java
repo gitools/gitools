@@ -78,7 +78,8 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 	public BiomartGenericRestfulService(BiomartSource source) throws BiomartServiceException {
 		this.source = source;
 
-		restUrl = composeUrl(source.getHost(), "", source.getRestPath());
+		restUrl = composeUrl(source.getHost(), source.getPort(), source.getRestPath());
+		System.out.println(">>>>> " + restUrl);
 	}
 
 	public <T> T getServiceRespXML(String urlString, Class<T> c) throws IOException, JAXBException {
@@ -253,6 +254,9 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		final String queryString = createQueryXml(query, format, true);
 		final String urlString = restUrl + "?query=" + queryString;
 
+		System.out.println(">>> " + urlString);
+		System.out.println(createQueryXml(query, format, false));
+		
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -438,8 +442,11 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		if (port != null && !port.isEmpty())
 			sb.append(':').append(port);
 
-		if (destPath != null && !destPath.isEmpty())
-			sb.append('/').append(destPath);
+		if (destPath != null && !destPath.isEmpty()) {
+			if (!destPath.startsWith("/"))
+				sb.append('/');
+			sb.append(destPath);
+		}
 
 		return sb.toString();
 	}

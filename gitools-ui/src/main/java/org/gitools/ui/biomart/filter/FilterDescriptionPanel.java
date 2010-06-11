@@ -141,7 +141,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 		String displayType = filterDescription.getDisplayType();
 
-		String multipleValues = filterDescription.getMultipleValues();
+		boolean multipleValues = filterDescription.getMultipleValues() == 1;
 
 		String style = filterDescription.getStyle();
 
@@ -153,7 +153,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 			String displayStyleOption = filterDescription.getOptions().get(0).getDisplayType();
 
-			String multipleValuesOption = filterDescription.getOptions().get(0).getMultipleValues();
+			int multipleValuesOption = filterDescription.getOptions().get(0).getMultipleValues();
 
 			FilterComponent componentParent = new FilterSelecComponent(filterDescription, this);
 
@@ -162,7 +162,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 			if (displayStyleOption.equals("list")) {
 
-				if (multipleValuesOption != null && multipleValuesOption.equals("1")) {
+				if (multipleValuesOption == 1) {
 
 					child = new FilterCheckBoxComponent(filterOptions);
 
@@ -196,7 +196,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 					filterComponent = new FilterTextComponent(filterDescription, this);
 
-				} else if (multipleValues != null && multipleValues.equals("1")) {
+				} else if (multipleValues) {
 
 					filterComponent = new FilterCheckBoxComponent(filterDescription, this);
 
