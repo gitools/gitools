@@ -28,7 +28,16 @@ public class Query {
 
 	@XmlAttribute
 	protected String formatter;
-	
+
+	@XmlAttribute
+	protected String limitStart;
+
+	@XmlAttribute
+	protected String limitSize;
+
+	@XmlAttribute
+	protected String requestId;
+
     @XmlElement(name = "Dataset", required = true)
     protected List<Dataset> datasets;
 
@@ -116,6 +125,14 @@ public class Query {
 	 */
 	public void setFormatter(String formatter) {
 		this.formatter = formatter;
+	}
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
 	}
 
     /**

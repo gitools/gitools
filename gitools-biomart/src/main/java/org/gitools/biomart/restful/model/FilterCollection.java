@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FilterCollection {
 	
-	@XmlElement
+	@XmlAttribute
 	private String internalName;
 
 	@XmlAttribute
