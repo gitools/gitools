@@ -30,10 +30,10 @@ public class Query {
 	protected String formatter;
 
 	@XmlAttribute
-	protected String limitStart;
+	protected Integer limitStart;
 
 	@XmlAttribute
-	protected String limitSize;
+	protected Integer limitSize;
 
 	@XmlAttribute
 	protected String requestId;
@@ -125,6 +125,22 @@ public class Query {
 	 */
 	public void setFormatter(String formatter) {
 		this.formatter = formatter;
+	}
+
+	public Integer getLimitStart() {
+		return limitStart;
+	}
+
+	public void setLimitStart(Integer limitStart) {
+		this.limitStart = limitStart;
+	}
+
+	public Integer getLimitSize() {
+		return limitSize;
+	}
+
+	public void setLimitSize(Integer limitSize) {
+		this.limitSize = limitSize;
 	}
 
 	public String getRequestId() {

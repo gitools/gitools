@@ -7,16 +7,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Dataset", propOrder = {
-    "name",
-    "_interface",
-	"filter",
-	"attribute"
-})
 public class Dataset {
 
     @XmlAttribute(required = true)
@@ -26,10 +19,13 @@ public class Dataset {
 	protected String _interface;
 
     @XmlElement(name = "Filter")
-    protected List<Filter> filter;
+    protected List<Filter> filter = new ArrayList<Filter>(0);
+
+	@XmlElement(name = "ValueFilter")
+    protected List<Filter> valueFilter = new ArrayList<Filter>(0);
 
     @XmlElement(name = "Attribute", required = true)
-    protected List<Attribute> attribute;
+    protected List<Attribute> attribute = new ArrayList<Attribute>(0);
 
     public String getName() {
         return name;
@@ -48,16 +44,14 @@ public class Dataset {
 	}
 
     public List<Filter> getFilter() {
-        if (filter == null) {
-            filter = new ArrayList<Filter>();
-        }
         return this.filter;
     }
 
+	public List<Filter> getValueFilter() {
+		return valueFilter;
+	}
+	
     public List<Attribute> getAttribute() {
-        if (attribute == null) {
-            attribute = new ArrayList<Attribute>();
-        }
         return this.attribute;
     }
 }
