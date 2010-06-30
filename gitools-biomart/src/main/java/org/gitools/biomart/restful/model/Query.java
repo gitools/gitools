@@ -1,6 +1,7 @@
 
 package org.gitools.biomart.restful.model;
 
+import org.gitools.biomart.restful.model.xml.IntegerXmlAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "Query")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -30,9 +32,11 @@ public class Query {
 	protected String formatter;
 
 	@XmlAttribute
+	@XmlJavaTypeAdapter(IntegerXmlAdapter.class)
 	protected Integer limitStart;
 
 	@XmlAttribute
+	@XmlJavaTypeAdapter(IntegerXmlAdapter.class)
 	protected Integer limitSize;
 
 	@XmlAttribute

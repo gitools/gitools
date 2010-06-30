@@ -40,7 +40,7 @@ public class DatasetConfig {
 	private String type;
 
 	@XmlAttribute
-	private String visible;
+	private int visible;
 
 	@XmlAttribute
 	private String visibleFilterPage;
@@ -340,11 +340,11 @@ public class DatasetConfig {
 		this.version = version;
 	}
 
-	public String getVisible() {
+	public int getVisible() {
 		return visible;
 	}
 
-	public void setVisible(String visible) {
+	public void setVisible(int visible) {
 		this.visible = visible;
 	}
 
