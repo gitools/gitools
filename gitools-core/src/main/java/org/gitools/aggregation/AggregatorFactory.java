@@ -20,6 +20,7 @@ public class AggregatorFactory {
 		put(new SumAggregator());
 		put(new MeanAggregator());
 		put(new LogSumAggregator());
+		put(new SumAbsAggregator());
 	}
 	
 	private static void put(IAggregator aggregator) {
