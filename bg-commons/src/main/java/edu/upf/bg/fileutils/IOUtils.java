@@ -1,5 +1,6 @@
-package org.gitools.utils;
+package edu.upf.bg.fileutils;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +17,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channel;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -26,38 +26,56 @@ import java.util.zip.GZIPOutputStream;
 
 public class IOUtils {
 
-	public static Reader openReader(File path) throws FileNotFoundException, IOException {
+	public static Reader openReader(File path) throws IOException {
 		if (path == null)
 			return null;
-		
+
 		if (path.getName().endsWith(".gz"))
 			return
 				new InputStreamReader(
 					new GZIPInputStream(
 							new FileInputStream(path)));
 		else
-			return 
+			return
 				new BufferedReader(
 					new FileReader(path));
 	}
-	
-	public static Writer openWriter(File path) throws FileNotFoundException, IOException {
+
+	public static Writer openWriter(File path) throws IOException {
 		return openWriter(path, false);
 	}
-	
-	public static Writer openWriter(File path, boolean append) throws FileNotFoundException, IOException {
+
+	public static Writer openWriter(File path, boolean append) throws IOException {
 		if (path == null)
 			return null;
-		
+
 		if (path.getName().endsWith(".gz"))
 			return
 				new OutputStreamWriter(
 					new GZIPOutputStream(
 							new FileOutputStream(path, append)));
 		else
-			return 
+			return
 				new BufferedWriter(
 					new FileWriter(path, append));
+	}
+
+	public static OutputStream openOutputStream(File path) throws IOException {
+		return openOutputStream(path, false);
+	}
+
+	public static OutputStream openOutputStream(File path, boolean append) throws IOException {
+		if (path == null)
+			return null;
+
+		if (path.getName().endsWith(".gz"))
+			return
+				new GZIPOutputStream(
+						new FileOutputStream(path, append));
+		else
+			return
+				new BufferedOutputStream(
+					new FileOutputStream(path, append));
 	}
 
 	public static void copyFile(File sourceFile, File destFile) throws IOException {

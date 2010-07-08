@@ -1,78 +1,33 @@
 package org.gitools.persistence;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import edu.upf.bg.fileutils.IOUtils;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public class PersistenceUtils {
 
 	public static Reader openReader(File path) throws IOException {
-		if (path == null)
-			return null;
-		
-		if (path == null)
-			return null;
-		
-		if (path.getName().endsWith(".gz"))
-			return
-				new InputStreamReader(
-					new GZIPInputStream(
-							new FileInputStream(path)));
-		else
-			return 
-				new BufferedReader(
-					new FileReader(path));
+		return IOUtils.openReader(path);
 	}
 	
 	public static Writer openWriter(File path) throws IOException {
-		return openWriter(path, false);
+		return IOUtils.openWriter(path);
 	}
 	
 	public static Writer openWriter(File path, boolean append) throws IOException {
-		if (path == null)
-			return null;
-		
-		if (path.getName().endsWith(".gz"))
-			return
-				new OutputStreamWriter(
-					new GZIPOutputStream(
-							new FileOutputStream(path, append)));
-		else
-			return 
-				new BufferedWriter(
-					new FileWriter(path, append));
+		return IOUtils.openWriter(path, append);
 	}
 
 	public static OutputStream openOutputStream(File path) throws IOException {
-		return openOutputStream(path, false);
+		return IOUtils.openOutputStream(path);
 	}
 
 	public static OutputStream openOutputStream(File path, boolean append) throws IOException {
-		if (path == null)
-			return null;
-
-		if (path.getName().endsWith(".gz"))
-			return
-				new GZIPOutputStream(
-						new FileOutputStream(path, append));
-		else
-			return
-				new BufferedOutputStream(
-					new FileOutputStream(path, append));
+		return IOUtils.openOutputStream(path, append);
 	}
 
 	// Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls

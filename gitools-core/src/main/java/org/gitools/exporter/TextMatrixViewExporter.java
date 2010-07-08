@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.utils.IOUtils;
+import edu.upf.bg.fileutils.IOUtils;
 
 public class TextMatrixViewExporter {
 

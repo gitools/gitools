@@ -45,9 +45,9 @@
 		</dependency>
 
 		<dependency>
-          <groupId>weka</groupId>
-          <artifactId>weka</artifactId>
-          <version>3.6.2</version>
+			<groupId>weka</groupId>
+			<artifactId>weka</artifactId>
+			<version>3.6.2</version>
 		</dependency>
 	</dependencies>
 
