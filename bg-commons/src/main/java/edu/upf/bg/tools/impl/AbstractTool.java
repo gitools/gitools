@@ -14,10 +14,17 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.CmdLineParser;
 
-public abstract class AbstractTool implements ToolLifeCycle {
+public abstract class AbstractTool<Context> implements ToolLifeCycle<Context> {
 
+	private Context context;
+
+	public Context getContext() {
+		return context;
+	}
+	
 	@Override
-	public void initialize() throws ToolException {
+	public void initialize(Context context) throws ToolException {
+		this.context = context;
 	}
 
 	@Override

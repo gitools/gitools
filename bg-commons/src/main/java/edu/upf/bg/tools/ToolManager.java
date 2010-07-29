@@ -82,9 +82,14 @@ public class ToolManager {
 	public void setErrorStream(PrintStream errorStream) {
 		this.errorStream = errorStream;
 	}
-	
+
 	/** Launches a tool from the raw java arguments.*/
 	public int launch(String[] args) throws ToolException {
+		return launch(args, null);
+	}
+	
+	/** Launches a tool from the raw java arguments.*/
+	public int launch(String[] args, Object context) throws ToolException {
 		if (args.length < 1) {
 			printUsage(errorStream);
 			return -1;
@@ -102,18 +107,18 @@ public class ToolManager {
 				return 0;
 			}
 			
-			printToolUsage(args[1], appName);
+			printToolUsage(args[1], appName, context);
 			return 0;
 		}
 		
 		final String[] toolArgs = new String[args.length - 1];
 		System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
 		
-		return launch(toolName, toolArgs);
+		return launch(toolName, toolArgs, context);
 	}
 	
 	/** Launches a tool from its name and the arguments passed to it */
-	public int launch(String name, String[] args) 
+	public int launch(String name, String[] args, Object context)
 			throws ToolException {
 		
 		// look for the tool
@@ -137,7 +142,7 @@ public class ToolManager {
 		
 		// initialize
 		
-		tool.initialize();
+		tool.initialize(context);
 		
 		// prepare arguments
 		
@@ -287,7 +292,7 @@ public class ToolManager {
 		return sb.toString();
 	}
 
-	public void printToolUsage(String name, String appName) throws ToolException {
+	public void printToolUsage(String name, String appName, Object context) throws ToolException {
 
 		ToolDescriptor toolDesc = getToolDescriptorFromName(name);
 		if (toolDesc == null)
@@ -300,7 +305,7 @@ public class ToolManager {
 			throw new ToolException(e);
 		}
 
-		tool.initialize();
+		tool.initialize(context);
 
 		final Class<?> argsClass = toolDesc.getArgumentsClass();
 		if (argsClass == null)

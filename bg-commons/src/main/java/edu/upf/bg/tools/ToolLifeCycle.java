@@ -7,14 +7,14 @@ import org.kohsuke.args4j.CmdLineParser;
 /**
  * Interface implemented by each tool.
  */
-public interface ToolLifeCycle {
+public interface ToolLifeCycle<Context> {
 	
 	/**
 	 * Initialize tool.
 	 * 
 	 * @throws ToolException
 	 */
-	void initialize() throws ToolException;
+	void initialize(Context context) throws ToolException;
 	
 	/**
 	 * Validate arguments. 
