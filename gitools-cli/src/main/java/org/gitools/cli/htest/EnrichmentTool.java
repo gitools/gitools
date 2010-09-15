@@ -12,7 +12,6 @@ import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceManager;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 

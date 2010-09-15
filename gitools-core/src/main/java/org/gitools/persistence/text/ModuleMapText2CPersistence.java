@@ -87,9 +87,13 @@ public class ModuleMapText2CPersistence
 		int maxSize = getMaxSize();
 
 		// create array of item names
+		monitor.debug("isItemNamesFilterEnabled() = " + isItemNamesFilterEnabled());
+		monitor.debug("itemNameToRowMapping.size() = " + itemNameToRowMapping.size());
 		String[] itemNames = new String[itemNameToRowMapping.size()];
-		for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet())
+		for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet()) {
+			monitor.debug(entry.getKey() + " --> " + entry.getValue());
 			itemNames[entry.getValue()] = entry.getKey();
+		}
 
 		// mask of used items
 		BitSet used = new BitSet(itemNames.length);

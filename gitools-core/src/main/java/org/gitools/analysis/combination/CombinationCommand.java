@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.analysis.correlation;
+package org.gitools.analysis.combination;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
@@ -23,36 +23,49 @@ import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceManager;
 
-public class CorrelationCommand extends AnalysisCommand {
 
-	protected CorrelationAnalysis analysis;
+public class CombinationCommand extends AnalysisCommand {
+
+	protected CombinationAnalysis analysis;
+
 	protected String dataMime;
 	protected String dataPath;
 
-	public CorrelationCommand(
-			CorrelationAnalysis analysis,
+	protected String columnsMime;
+	protected String columnsPath;
+
+	public CombinationCommand(
+			CombinationAnalysis analysis,
 			String dataMime, String dataPath,
+			String columnsMime, String columnsPath,
 			String workdir, String fileName) {
 
 		super(workdir, fileName);
-		
+
 		this.analysis = analysis;
 		this.dataMime = dataMime;
 		this.dataPath = dataPath;
+		this.columnsMime = columnsMime;
+		this.columnsPath = columnsPath;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws AnalysisException {
-
 		try {
 			BaseMatrix data = loadDataMatrix(
 					new File(dataPath), dataMime, new Properties(), monitor);
 
 			analysis.setData(data);
 
-			CorrelationProcessor proc = new CorrelationProcessor(analysis);
+			ModuleMap columnsMap = loadModuleMap(
+					new File(columnsPath), columnsMime, new Properties(), monitor);
+
+			analysis.setColumnsMap(columnsMap);
+
+			CombinationProcessor proc = new CombinationProcessor(analysis);
 
 			proc.run(monitor);
 

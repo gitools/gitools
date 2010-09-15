@@ -21,24 +21,18 @@ public abstract class HtestCommand extends AnalysisCommand {
 
 	protected String populationPath;
 
-	protected String workdir;
-
-	protected String fileName;
-
 	public HtestCommand(
 			HtestAnalysis analysis,
-			String dataMime,
-			String dataPath,
+			String dataMime, String dataPath,
 			String populationPath,
-			String workdir,
-			String fileName) {
+			String workdir, String fileName) {
+
+		super(workdir, fileName);
 
 		this.analysis = analysis;
 		this.dataMime = dataMime;
 		this.dataPath = dataPath;
 		this.populationPath = populationPath;
-		this.workdir = workdir;
-		this.fileName = fileName;
 	}
 
 	public HtestAnalysis getaAnalysis() {
@@ -71,22 +65,6 @@ public abstract class HtestCommand extends AnalysisCommand {
 
 	public void setPopulationPath(String populationPath) {
 		this.populationPath = populationPath;
-	}
-
-	public String getWorkdir() {
-		return workdir;
-	}
-
-	public void setWorkdir(String workdir) {
-		this.workdir = workdir;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	protected ValueTranslator createValueTranslator(HtestAnalysis analysis) {		

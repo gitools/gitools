@@ -15,6 +15,31 @@ import org.gitools.persistence.PersistenceManager;
 
 public abstract class AnalysisCommand {
 
+	protected String workdir;
+
+	protected String fileName;
+
+	public AnalysisCommand(String workdir, String fileName) {
+		this.workdir = workdir;
+		this.fileName = fileName;
+	}
+
+	public String getWorkdir() {
+		return workdir;
+	}
+
+	public void setWorkdir(String workdir) {
+		this.workdir = workdir;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
 	public abstract void run(IProgressMonitor monitor) throws AnalysisException;
 
 	protected BaseMatrix loadDataMatrix(
