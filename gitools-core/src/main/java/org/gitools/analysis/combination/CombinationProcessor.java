@@ -59,7 +59,7 @@ public class CombinationProcessor {
 		cmap = cmap.remap(labels, 1, Integer.MAX_VALUE);
 
 		// Prepare results matrix
-		final ObjectMatrix resultsMatrix = new ObjectMatrix();
+		final ObjectMatrix results = new ObjectMatrix();
 
 		String[] cclabels = cmap.getModuleNames();
 		cclabels = Arrays.copyOf(cclabels, cclabels.length);
@@ -67,11 +67,11 @@ public class CombinationProcessor {
 		for (int i = 0; i < numRows; i++)
 			rlabels[i] = data.getRowLabel(i);
 
-		resultsMatrix.setColumns(cclabels);
-		resultsMatrix.setRows(rlabels);
-		resultsMatrix.makeCells();
+		results.setColumns(cclabels);
+		results.setRows(rlabels);
+		results.makeCells();
 
-		resultsMatrix.setCellAdapter(
+		results.setCellAdapter(
 				new BeanElementAdapter(CombinationResults.class));
 
 		// Run combination
@@ -95,20 +95,26 @@ public class CombinationProcessor {
 		MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
 				data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
 
-		for (int cmi = 0; cmi < cmap.getModuleCount(); cmi++) {
+		int numCC = cmap.getModuleCount();
+
+		monitor.begin("Running combination analysis ...", numCC * numRows);
+
+		for (int cmi = 0; cmi < numCC; cmi++) {
 			int[] cindices = cmap.getItemIndices(cmi);
 			for (int ri = 0; ri < numRows; ri++) {
 				int n = 0;
 				double sumSizeZ = 0;
 				double sumSizeSqr = 0;
 
-				for (int ci = 0; ci < numCols; ci++) {
-					if (data.getCell(ri, ci) != null) {
+				for (int ci = 0; ci < cindices.length; ci++) {
+					int mci = cindices[ci];
+					
+					if (data.getCell(ri, mci) != null) {
 						double size = sizeCast.getDoubleValue(
-								data.getCellValue(ri, ci, sizeIndex));
+								data.getCellValue(ri, mci, sizeIndex));
 
 						double pvalue = pvalueCast.getDoubleValue(
-								data.getCellValue(ri, ci, pvalueIndex));
+								data.getCellValue(ri, mci, pvalueIndex));
 
 						double zscore = pvalueToZscore(pvalue);
 
@@ -127,6 +133,10 @@ public class CombinationProcessor {
 				r.setN(n);
 				r.setZscore(zcomb);
 				r.setPvalue(pvalue);
+
+				results.setCell(ri, cmi, r);
+
+				monitor.worked(1);
 			}
 		}
 
