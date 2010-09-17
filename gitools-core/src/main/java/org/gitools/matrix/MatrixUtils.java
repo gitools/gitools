@@ -5,6 +5,11 @@ import org.gitools.matrix.model.element.IElementAttribute;
 
 public class MatrixUtils {
 
+	public static interface DoubleCast {
+		double getDoubleValue(Object value);
+	}
+
+	@Deprecated // Better use createDoubleCast() when accessing multiple values
 	public static double doubleValue(Object value) {
 		double v = Double.NaN;
 		if (value != null) {
@@ -18,6 +23,24 @@ public class MatrixUtils {
 			}
 		}
 		return v;
+	}
+
+	public static DoubleCast createDoubleCast(Class cls) {
+		if (cls.equals(Integer.class))
+			return new DoubleCast() {
+				@Override public double getDoubleValue(Object value) {
+					return ((Integer) value).doubleValue(); }
+				};
+		else if (cls.equals(Double.class))
+			return new DoubleCast() {
+				@Override public double getDoubleValue(Object value) {
+					return ((Double) value).doubleValue(); }
+				};
+		
+		return new DoubleCast() {
+			@Override public double getDoubleValue(Object value) {
+				return Double.NaN; }
+			};
 	}
 	
 	public static int correctedValueIndex(IElementAdapter adapter, IElementAttribute prop) {

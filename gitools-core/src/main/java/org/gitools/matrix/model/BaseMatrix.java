@@ -57,7 +57,8 @@ public abstract class BaseMatrix
 	public ObjectMatrix1D getRows() {
 		return rows;
 	}
-	
+
+	@Deprecated
 	public String[] getRowStrings() {
 		String[] a = new String[rows.size()];
 		rows.toArray(a);
@@ -95,7 +96,8 @@ public abstract class BaseMatrix
 	public ObjectMatrix1D getColumns() {
 		return columns;
 	}
-	
+
+	@Deprecated
 	public String[] getColumnStrings() {
 		String[] a = new String[columns.size()];
 		columns.toArray(a);

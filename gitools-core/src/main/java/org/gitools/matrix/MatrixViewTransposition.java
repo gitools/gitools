@@ -36,7 +36,11 @@ public class MatrixViewTransposition implements IMatrixView {
 		this.mv = mv;
 	}
 
-	public void setMatrix(IMatrix matrix) {
+	public MatrixViewTransposition(IMatrix mv) {
+		setMatrix(mv);
+	}
+
+	public final void setMatrix(IMatrix matrix) {
 		this.mv = matrix instanceof IMatrixView ?
 			(IMatrixView) matrix : new MatrixView(matrix);
 	}

@@ -94,7 +94,7 @@ public class CombinationTool extends AnalysisTool {
 		CombinationAnalysis analysis = new CombinationAnalysis();
 		prepareGeneralAnalysisAttributes(analysis, args);
 		analysis.setTransposeData(args.applyToRows);
-		analysis.setWeightAttrName(args.weigthName);
+		analysis.setSizeAttrName(args.weigthName);
 		analysis.setPvalueAttrName(args.pvalueName);
 
 		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);

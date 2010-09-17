@@ -27,8 +27,8 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
 
-	protected String weightAttrName;
-	//protected int weightAttrIndex;
+	protected String sizeAttrName;
+	//protected int sizeAttrIndex;
 
 	protected String pvalueAttrName;
 	//protected int pvalueAttrIndex;
@@ -51,12 +51,12 @@ public class CombinationAnalysis extends Analysis {
 		this.transposeData = false;
 	}
 
-	public String getWeightAttrName() {
-		return weightAttrName;
+	public String getSizeAttrName() {
+		return sizeAttrName;
 	}
 
-	public void setWeightAttrName(String weightAttrName) {
-		this.weightAttrName = weightAttrName;
+	public void setSizeAttrName(String sizeAttrName) {
+		this.sizeAttrName = sizeAttrName;
 	}
 
 	public String getPvalueAttrName() {
