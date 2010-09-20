@@ -17,6 +17,7 @@
 
 package org.gitools.persistence;
 
+import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
@@ -38,6 +39,7 @@ import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
 import org.gitools.persistence.text.DoubleMatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapTextIndicesPersistence;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.xml.CombinationAnalysisXmlPersistence;
 import org.gitools.persistence.xml.ContainerXmlPersistence;
 import org.gitools.persistence.xml.CorrelationAnalysisXmlPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
@@ -63,6 +65,7 @@ public class PersistenceInitialization {
 		pm.registerFormat(MimeTypes.ENRICHMENT_ANALYSIS, FileSuffixes.ENRICHMENT, EnrichmentAnalysis.class, EnrichmentAnalysisXmlPersistence.class);
 		pm.registerFormat(MimeTypes.ONCODRIVE_ANALYSIS, FileSuffixes.ONCODRIVE, OncodriveAnalysis.class, OncodriveAnalysisXmlPersistence.class);
 		pm.registerFormat(MimeTypes.CORRELATIONS_ANALYSIS, FileSuffixes.CORRELATIONS, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
+		pm.registerFormat(MimeTypes.COMBINATION_ANALYSIS, FileSuffixes.COMBINATION, CombinationAnalysis.class, CombinationAnalysisXmlPersistence.class);
 
 		pm.registerFormat(MimeTypes.HEATMAP, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
 

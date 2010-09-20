@@ -37,7 +37,7 @@ public class CombinationAnalysis extends Analysis {
 
 	/** Modules */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected ModuleMap columnsMap;
+	protected ModuleMap groupsMap;
 
 	/** Data */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
@@ -75,12 +75,12 @@ public class CombinationAnalysis extends Analysis {
 		this.transposeData = transposeData;
 	}
 
-	public ModuleMap getColumnsMap() {
-		return columnsMap;
+	public ModuleMap getGroupsMap() {
+		return groupsMap;
 	}
 
-	public void setColumnsMap(ModuleMap columnsMap) {
-		this.columnsMap = columnsMap;
+	public void setGroupsMap(ModuleMap groupsMap) {
+		this.groupsMap = groupsMap;
 	}
 
 	public IMatrix getData() {

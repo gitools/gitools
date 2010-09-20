@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.gitools.ui.platform.view.AbstractView;
 
@@ -44,14 +45,22 @@ public abstract class EntityView extends AbstractView {
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
-	public void update(Object context) {
-		EntityController controller = controllerCache.get(context.getClass());
-		if (controller == null) {
-			controller = createController(context);
-			controllerCache.put(context.getClass(), controller);
+	public void updateContext(Object context) {
+		JComponent component = null;
+
+		if (context != null) {
+			EntityController controller = controllerCache.get(context.getClass());
+			if (controller == null) {
+				controller = createController(context);
+				controllerCache.put(context.getClass(), controller);
+			}
+			
+			component = controller.getComponent(context);
 		}
 
-		JComponent component = controller.getComponent(context);
+		if (component == null)
+			component = new JPanel();
+
 		component.setBorder(null);
 		scrollPane.setViewportView(component);
 	}

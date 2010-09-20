@@ -15,11 +15,13 @@ import org.gitools.ui.settings.Settings;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
+import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -46,11 +48,13 @@ public class OpenAnalysisAction extends BaseAction {
 			new FileFormatFilter("Any analysis", null, new FileFormat[] {
 				FileFormats.ENRICHMENT,
 				FileFormats.ONCODRIVE,
-				FileFormats.CORRELATIONS
+				FileFormats.CORRELATIONS,
+				FileFormats.COMBINATION
 			}),
 			new FileFormatFilter(FileFormats.ENRICHMENT),
 			new FileFormatFilter(FileFormats.ONCODRIVE),
-			new FileFormatFilter(FileFormats.CORRELATIONS)
+			new FileFormatFilter(FileFormats.CORRELATIONS),
+			new FileFormatFilter(FileFormats.COMBINATION)
 		};
 
 		Object[] ret = FileChooserUtils.selectFile(
@@ -88,6 +92,8 @@ public class OpenAnalysisAction extends BaseAction {
 							editor = new HtestAnalysisEditor((HtestAnalysis) analysis);
 						else if (mime.equals(MimeTypes.CORRELATIONS_ANALYSIS))
 							editor = new CorrelationEditor((CorrelationAnalysis) analysis);
+						else if (mime.equals(MimeTypes.COMBINATION_ANALYSIS))
+							editor = new CombinationAnalysisEditor((CombinationAnalysis) analysis);
 
 						editor.setName(file.getName());
 

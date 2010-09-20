@@ -60,10 +60,12 @@ public class CombinationCommand extends AnalysisCommand {
 
 			analysis.setData(data);
 
-			ModuleMap columnsMap = loadModuleMap(
+			if (columnsPath != null) {
+				ModuleMap columnsMap = loadModuleMap(
 					new File(columnsPath), columnsMime, new Properties(), monitor);
-
-			analysis.setColumnsMap(columnsMap);
+				
+				analysis.setGroupsMap(columnsMap);
+			}
 
 			CombinationProcessor proc = new CombinationProcessor(analysis);
 

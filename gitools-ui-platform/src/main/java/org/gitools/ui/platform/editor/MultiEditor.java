@@ -8,7 +8,6 @@ import javax.swing.event.ChangeListener;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.platform.actions.ActionManager;
-import org.gitools.ui.platform.editor.AbstractEditor;
 
 public class MultiEditor extends AbstractEditor {
 

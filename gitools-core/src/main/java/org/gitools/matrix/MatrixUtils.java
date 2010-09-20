@@ -26,15 +26,25 @@ public class MatrixUtils {
 	}
 
 	public static DoubleCast createDoubleCast(Class cls) {
-		if (cls.equals(Integer.class))
+		if (cls.equals(Double.class) || cls.equals(double.class))
+			return new DoubleCast() {
+				@Override public double getDoubleValue(Object value) {
+					return ((Double) value).doubleValue(); }
+				};
+		else if (cls.equals(Float.class) || cls.equals(float.class))
+			return new DoubleCast() {
+				@Override public double getDoubleValue(Object value) {
+					return ((Float) value).doubleValue(); }
+				};
+		else if (cls.equals(Integer.class) || cls.equals(int.class))
 			return new DoubleCast() {
 				@Override public double getDoubleValue(Object value) {
 					return ((Integer) value).doubleValue(); }
 				};
-		else if (cls.equals(Double.class))
+		else if (cls.equals(Long.class) || cls.equals(long.class))
 			return new DoubleCast() {
 				@Override public double getDoubleValue(Object value) {
-					return ((Double) value).doubleValue(); }
+					return ((Long) value).doubleValue(); }
 				};
 		
 		return new DoubleCast() {

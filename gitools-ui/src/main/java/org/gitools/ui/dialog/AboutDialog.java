@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import org.apache.velocity.VelocityContext;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.panel.TemplatePane;
+import org.gitools.ui.platform.panel.TemplatePanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 
@@ -28,7 +28,7 @@ public class AboutDialog extends JDialog {
 	private String appName;
 	private String appVersion;
 
-	private TemplatePane creditsPane;
+	private TemplatePanel creditsPane;
 	
 	public AboutDialog(JFrame owner) {
 		super(owner);
@@ -52,7 +52,7 @@ public class AboutDialog extends JDialog {
 		imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 0));
 		imageLabel.setVerticalAlignment(SwingConstants.TOP);
 
-		creditsPane = new TemplatePane();
+		creditsPane = new TemplatePanel();
 		creditsPane.setFocusable(false);
 		Dimension dim = new Dimension(550, 374);
 		creditsPane.setPreferredSize(dim);

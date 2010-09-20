@@ -6,7 +6,7 @@ import java.awt.BorderLayout;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.platform.panel.TemplatePane;
+import org.gitools.ui.platform.panel.TemplatePanel;
 
 import edu.upf.bg.formatter.GenericFormatter;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class HtestAnalysisEditor extends AbstractEditor {
 
 	private HtestAnalysis analysis;
 
-	private TemplatePane templatePane;
+	private TemplatePanel templatePane;
 
 	public HtestAnalysisEditor(HtestAnalysis analysis) {
 		this.analysis = analysis;
@@ -44,7 +44,7 @@ public class HtestAnalysisEditor extends AbstractEditor {
 	}
 
 	private void createComponents() {
-		templatePane = new TemplatePane();
+		templatePane = new TemplatePanel();
 		try {
 			templatePane.setTemplate(
 					templateMap.get(analysis.getClass()));

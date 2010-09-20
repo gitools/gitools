@@ -46,12 +46,14 @@
     				<td class="propName">Name</td>
     				<td class="propValue">$analysis.title</td>
     			</tr>
+				#if( $analysis.description )
 				<tr>
     				<td class="propName">Notes</td>
     				<td class="propValue">$analysis.description</td>
     			</tr>
+				#end
 			</table>
-			#if( $analysis.attributes.size() )
+			#if( $analysis.attributes.size() > 0 )
 			<table>
 				<tr><td class="propName">Attributes</td><tr>
 				<tr><td class="propValue">

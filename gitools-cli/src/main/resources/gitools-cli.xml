@@ -29,4 +29,11 @@
         <argumentsClass>org.gitools.cli.correlation.CorrelationTool$CorrelationArguments</argumentsClass>
         <lifeCycleClass>org.gitools.cli.correlation.CorrelationTool</lifeCycleClass>
     </tool>
+
+	<tool>
+    	<name>combination</name>
+        <description>Run a combination analysis</description>
+        <argumentsClass>org.gitools.cli.combination.CombinationTool$CombinationArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.combination.CombinationTool</lifeCycleClass>
+    </tool>
 </tools>

@@ -187,7 +187,7 @@ public class HeatmapEditor extends AbstractEditor {
 	}
 
 	private void refreshCellDetails() {
-		AppFrame.instance().getDetailsView().update(heatmap);
+		AppFrame.instance().getDetailsView().updateContext(heatmap);
 	}
 
 	private void createComponents() {
@@ -245,7 +245,7 @@ public class HeatmapEditor extends AbstractEditor {
 	@Override
 	public void doVisible() {
 		AppFrame.instance().setLeftPanelVisible(true);
-		AppFrame.instance().getPropertiesView().update(heatmap);
+		AppFrame.instance().getPropertiesView().updateContext(heatmap);
 		refreshCellDetails();
 		heatmapPanel.requestFocusInWindow();
 	}

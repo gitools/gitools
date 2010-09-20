@@ -2,7 +2,7 @@
 <head>
 	<style type="text/css">
 		#include("/vm/style/default.css")
-		
+
 		.sectionHeader {
 			background-color: rgb(250, 210, 150);
 			font-weight: bold;
@@ -19,18 +19,19 @@
 			margin: 1px;
 			width: 90%;
 		}
-		
+
 		.propName {
 			margin: 1px;
 			text-align: left;
 			font-weight: bold;
 			white-space: nowrap;
 		}
-		
+
 		.propValue {
 			margin: 1px;
 			padding-left: 4px;
 			text-align: left;
+			white-space: normal;
 			width: 100%;
 		}
     </style>
@@ -88,42 +89,28 @@
 		<tr>
 			<table>
 				<tr>
-    				<td class="propName">Filter</td>
-    				<td class="propValue">
-						#if ( $analysis.binaryCutoffEnabled )
-							Binary cutoff filter for values $analysis.binaryCutoffCmp.longName $analysis.binaryCutoffValue
-						#else
-							Disabled
-						#end
-					</td>
+    				<td class="propName">File</td>
+    				<td class="propValue">$dataFile</td>
+    			</tr>
+				<tr>
+    				<td class="propName">Size attribute</td>
+    				<td class="propValue">$sizeAttr</td>
+    			</tr>
+				<tr>
+    				<td class="propName">P-value attribute</td>
+    				<td class="propValue">$pvalueAttr</td>
     			</tr>
 			</table>
 		</tr>
 
 		<tr>
-    		<td class="sectionHeader">Modules</td>
+    		<td class="sectionHeader">Groups</td>
     	</tr>
 		<tr>
 			<table class="propTable">
 				<tr>
-    				<td class="propName">Minimum number of samples</td>
-					<td class="propValue">
-					#if ($analysis.minModuleSize != 0)
-						$analysis.minModuleSize
-					#else
-						No limit
-					#end
-					</td>
-    			</tr>
-				<tr>
-    				<td class="propName">Maximum number of samples</td>
-					<td class="propValue">
-					#if ($analysis.maxModuleSize != 2147483647)
-						$analysis.maxModuleSize
-					#else
-						No limit
-					#end
-					</td>
+    				<td class="propName">File</td>
+					<td class="propValue">$groupsFile</td>
     			</tr>
 			</table>
 		</tr>
@@ -132,20 +119,10 @@
     		<td class="sectionHeader">Results</td>
     	</tr>
 		<tr>
-			<table>
-				<tr><td class="propName">Test configuration</td></tr>
-			</table>
-
 			<table class="propTable">
     			<tr>
-    				<td class="propName">Multiple test correction</td>
-					#set( $mtc = "" )
-					#if( $analysis.mtc == "bh" )
-						#set( $mtc = "Benjamini Hochberg FDR" )
-					#elseif( $analysis.mtc == "bonferroni" )
-						#set( $mtc = "Bonferroni" )
-					#end
-    				<td class="propValue">$mtc</td>
+    				<td class="propName">Combination of</td>
+					<td class="propValue">$combinationOf</td>
     			</tr>
 			</table>
 		</tr>

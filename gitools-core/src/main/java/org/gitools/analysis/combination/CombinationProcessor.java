@@ -55,8 +55,18 @@ public class CombinationProcessor {
 			labels[i] = data.getColumnLabel(i);
 
 		// Prepare columns map
-		ModuleMap cmap = analysis.getColumnsMap();
-		cmap = cmap.remap(labels, 1, Integer.MAX_VALUE);
+		ModuleMap cmap = analysis.getGroupsMap();
+		if (cmap == null) {
+			cmap = new ModuleMap();
+			cmap.setModuleNames(new String[] {"Combination"});
+			cmap.setItemNames(labels);
+			int[] indices = new int[numCols];
+			for (int i = 0; i < numCols; i++)
+				indices[i] = i;
+			cmap.setItemIndices(0, indices);
+		}
+		else
+			cmap = cmap.remap(labels);
 
 		// Prepare results matrix
 		final ObjectMatrix results = new ObjectMatrix();
@@ -74,8 +84,10 @@ public class CombinationProcessor {
 		results.setCellAdapter(
 				new BeanElementAdapter(CombinationResults.class));
 
+		analysis.setResults(results);
+
 		// Run combination
-		int sizeIndex = 0;
+		int sizeIndex = -1;
 		String sizeAttrName = analysis.getSizeAttrName();
 		/*if (sizeAttrName == null || sizeAttrName.isEmpty())
 			sizeIndex = analysis.getSizeAttrIndex();*/
@@ -89,7 +101,10 @@ public class CombinationProcessor {
 		if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
 			pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
 
-		MatrixUtils.DoubleCast sizeCast = MatrixUtils.createDoubleCast(
+		MatrixUtils.DoubleCast sizeCast = null;
+
+		if (sizeIndex >= 0)
+			sizeCast = MatrixUtils.createDoubleCast(
 				data.getCellAdapter().getProperty(sizeIndex).getValueClass());
 
 		MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
@@ -110,8 +125,9 @@ public class CombinationProcessor {
 					int mci = cindices[ci];
 					
 					if (data.getCell(ri, mci) != null) {
-						double size = sizeCast.getDoubleValue(
-								data.getCellValue(ri, mci, sizeIndex));
+						double size = sizeIndex < 0 ? 1
+								: sizeCast.getDoubleValue(
+									data.getCellValue(ri, mci, sizeIndex));
 
 						double pvalue = pvalueCast.getDoubleValue(
 								data.getCellValue(ri, mci, pvalueIndex));
@@ -126,7 +142,7 @@ public class CombinationProcessor {
 					}
 				}
 
-				double zcomb = sumSizeZ / sumSizeSqr;
+				double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
 				double pvalue = zscoreToPvalue(zcomb);
 
 				CombinationResults r = new CombinationResults();

@@ -28,6 +28,8 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.threads.ThreadManager;
@@ -58,16 +60,16 @@ public class CombinationTool extends AnalysisTool {
 				usage = "Apply to rows, by default it is applied to columns.")
 		public boolean applyToRows = false;
 
-		@Option(name = "-pn", aliases = "-pvalue-name", metaVar = "<name>",
-				usage = "Attribute name having the weight.\nUse only one -wn or -wi, but not both.\n(default: use the first one)")
-		public String weigthName;
+		@Option(name = "-sn", aliases = "-size-name", metaVar = "<name>",
+				usage = "Attribute name for size.\n(default: if not specified a constant value of 1 will be used)")
+		public String sizeName;
 
 		/*@Option(name = "-pi", aliases = "-pvalue-index", metaVar = "<index>",
 				usage = "Attribute index having the pvalue. (default: 0)")
 		public int weightIndex = 0;*/
 
 		@Option(name = "-pn", aliases = "-pvalue-name", metaVar = "<name>",
-				usage = "Attribute name having the pvalue.\nUse only one -pn or -pi, but not both.\n(default: use the first one)")
+				usage = "Attribute name having the pvalue.\n(default: use the first one)")
 		public String pvalueName;
 
 		/*@Option(name = "-pi", aliases = "-pvalue-index", metaVar = "<index>",
@@ -94,7 +96,7 @@ public class CombinationTool extends AnalysisTool {
 		CombinationAnalysis analysis = new CombinationAnalysis();
 		prepareGeneralAnalysisAttributes(analysis, args);
 		analysis.setTransposeData(args.applyToRows);
-		analysis.setSizeAttrName(args.weigthName);
+		analysis.setSizeAttrName(args.sizeName);
 		analysis.setPvalueAttrName(args.pvalueName);
 
 		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
@@ -133,5 +135,21 @@ public class CombinationTool extends AnalysisTool {
 
 		printModulesFormats(outputStream);
 		outputStream.println();
+	}
+
+	@Override
+	protected void printDataFormats(PrintStream out) {
+		out.println("Supported data formats:");
+		FileFormat[] formats = new FileFormat[] {
+			FileFormats.RESULTS_MATRIX,
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.MODULES_2C_MAP
+		};
+
+		for (FileFormat f : formats)
+			out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
 	}
 }

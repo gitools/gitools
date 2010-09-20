@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ModuleMap;
-import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
@@ -111,6 +110,8 @@ public class OncodriveCommand extends HtestCommand {
 
 		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
 
+		PersistenceManager.getDefault().clearEntityCache(dataMatrix);
+
 		analysis.setData(dataMatrix);
 
 		// Load modules
@@ -125,6 +126,8 @@ public class OncodriveCommand extends HtestCommand {
 			modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
 
 			ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
+
+			PersistenceManager.getDefault().clearEntityCache(moduleMap);
 			
 			analysis.setModuleMap(moduleMap);
 		}

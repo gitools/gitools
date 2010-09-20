@@ -25,8 +25,8 @@ import org.gitools.persistence.MimeTypes;
 public class TestMain {
 
 	public static void main(String[] unusedArgs) throws ToolException {
-		String stuff = "/home/cperez/temp/gitools-stuff";
-		String temp = "/home/cperez/temp/gitools";
+		String stuff = "/home/chris/temp/gitools-stuff";
+		String temp = "/home/chris/temp/gitools";
 		
 		String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
@@ -65,6 +65,12 @@ public class TestMain {
 				" -dm " + MimeTypes.DOUBLE_MATRIX +
 				" -w "+ temp + "/test -N test_cor" +
 				" -verbose -debug -err-log -";*/
+
+		cmd = "combination" +
+				" -d " + stuff + "/brain-comb2.cdm.gz" +
+				" -df " + MimeTypes.DOUBLE_MATRIX +
+				" -w "+ temp + "/test-cmb -N test_comb" +
+				" -verbose -debug -err-log -";
 
 		/*String cmd = "convert" +
 				" -i data.tsv" +

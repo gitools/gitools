@@ -167,4 +167,12 @@ public abstract class BaseMatrix
 		
 		return index.intValue();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getColumnCount()).append(" columns, ");
+		sb.append(getRowCount()).append(" rows");
+		return sb.toString();
+	}
 }

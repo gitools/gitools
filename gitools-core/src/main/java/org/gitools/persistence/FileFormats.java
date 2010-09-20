@@ -30,6 +30,9 @@ public class FileFormats {
 	public static final FileFormat CORRELATIONS = new FileFormat(
 			"Correlations analysis", FileSuffixes.CORRELATIONS, MimeTypes.CORRELATIONS_ANALYSIS);
 
+	public static final FileFormat COMBINATION = new FileFormat(
+			"Combination analysis", FileSuffixes.COMBINATION, MimeTypes.COMBINATION_ANALYSIS);
+
 	// Data
 
 	public static final FileFormat GENE_MATRIX = new FileFormat(

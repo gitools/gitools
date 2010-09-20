@@ -8,7 +8,7 @@ public class MimeTypes {
 	public static final String ENRICHMENT_ANALYSIS = "application/gitools-analysis-enrichment";
 	public static final String ONCODRIVE_ANALYSIS = "application/gitools-analysis-oncodrive";
 	public static final String CORRELATIONS_ANALYSIS = "application/gitools-analysis-correlations";
-	public static final String COMBINATIONS_ANALYSIS = "application/gitools-analysis-combinations";
+	public static final String COMBINATION_ANALYSIS = "application/gitools-analysis-combination";
 	
 	public static final String HEATMAP = "application/gitools-heatmap";
 	public static final String TABLE = "application/gitools-table";

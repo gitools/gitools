@@ -1,6 +1,7 @@
 package org.gitools.analysis.htest.enrichment;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
@@ -136,6 +137,8 @@ public class EnrichmentCommand extends HtestCommand {
 
 		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
 
+		PersistenceManager.getDefault().clearEntityCache(dataMatrix);
+
 		// Load modules
 
 		File file = new File(modulesFileName);
@@ -147,6 +150,8 @@ public class EnrichmentCommand extends HtestCommand {
 		modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
 
 		ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
+
+		PersistenceManager.getDefault().clearEntityCache(moduleMap);
 
 		// Filter rows if DiscardNonMappedRows is enabled
 
@@ -163,8 +168,7 @@ public class EnrichmentCommand extends HtestCommand {
 
 			String[] names = moduleMap.getItemNames();
 			Set<String> backgroundNames = new HashSet<String>();
-			for (String name : names)
-				backgroundNames.add(name);
+			backgroundNames.addAll(Arrays.asList(names));
 
 			for (int i = 0; i < dataMatrix.getRowCount(); i++)
 				if (backgroundNames.contains(dataMatrix.getRowLabel(i)))

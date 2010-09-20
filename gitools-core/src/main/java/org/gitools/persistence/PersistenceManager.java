@@ -85,7 +85,7 @@ public class PersistenceManager implements Serializable {
 	private final Map<FileRef, Object> entityCache = new HashMap<FileRef, Object>();
 	private final Map<Object, FileRef> entityFileRefMap = new HashMap<Object, FileRef>();
 	
-	public static final PersistenceManager getDefault() {
+	public static PersistenceManager getDefault() {
 		if (defaultManager == null)
 			defaultManager = new PersistenceManager();
 		return defaultManager;
@@ -181,10 +181,10 @@ public class PersistenceManager implements Serializable {
 			IProgressMonitor monitor)
 				throws PersistenceException {
 		
-		FileRef fileKey = new FileRef(file, mimeType);
+		FileRef fileRef = new FileRef(file, mimeType);
 		
-		if (entityCache.containsKey(fileKey))
-			return entityCache.get(fileKey);
+		if (entityCache.containsKey(fileRef))
+			return entityCache.get(fileRef);
 
 		if (mimeType == null)
 			mimeType = getMimeFromFile(file.getName());
@@ -192,12 +192,10 @@ public class PersistenceManager implements Serializable {
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(mimeType, properties);
 
-	
-		//FIXME: heap problems with annotations..
 		Object entity = entityPersistence.read(file, monitor);
 
-		entityCache.put(fileKey, entity);
-		entityFileRefMap.put(entity, new FileRef(file, mimeType));
+		entityCache.put(fileRef, entity);
+		entityFileRefMap.put(entity, fileRef);
 
 		return entity;
 	}
@@ -235,9 +233,34 @@ public class PersistenceManager implements Serializable {
 			createEntityPersistence(mimeType, properties);
 
 		entityPersistence.write(file, entity, monitor);
-		
-		entityCache.put(new FileRef(file, mimeType), entity);
-		entityFileRefMap.put(entity, new FileRef(file, mimeType));
+
+		FileRef fileRef = new FileRef(file, mimeType);
+
+		entityCache.put(fileRef, entity);
+		entityFileRefMap.put(entity, fileRef);
+	}
+
+	public void clearEntityCache() {
+		entityCache.clear();
+		entityFileRefMap.clear();
+	}
+
+	public void clearEntityCache(Object entity) {
+		FileRef fileRef = entityFileRefMap.get(entity);
+		if (fileRef != null) {
+			entityFileRefMap.remove(entity);
+			entityCache.remove(fileRef);
+		}
+	}
+
+	public void clearEntityCache(File file, String mimeType) {
+		FileRef fileRef = new FileRef(file, mimeType);
+
+		if (entityCache.containsKey(fileRef)) {
+			Object entity = entityCache.get(fileRef);
+			entityFileRefMap.remove(entity);
+			entityCache.remove(fileRef);
+		}
 	}
 
 	@Deprecated // use getEntityFileRef() instead

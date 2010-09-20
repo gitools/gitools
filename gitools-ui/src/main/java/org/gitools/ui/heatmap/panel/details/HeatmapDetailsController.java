@@ -42,7 +42,7 @@ import org.gitools.stats.test.results.CombinationResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
-import org.gitools.ui.platform.panel.TemplatePane;
+import org.gitools.ui.platform.panel.TemplatePanel;
 import org.gitools.ui.view.entity.EntityController;
 
 public class HeatmapDetailsController implements EntityController {
@@ -51,20 +51,20 @@ public class HeatmapDetailsController implements EntityController {
 	private static final String headerTemplateName = "/vm/details/header.vm";
 	private static final String heatmapTemplateName = "/vm/details/heatmap.vm";
 	
-	private TemplatePane templatePanel;
+	private TemplatePanel templatePanel;
 
-	protected TemplatePane getTemplatePanel() {
+	protected TemplatePanel getTemplatePanel() {
 		if (templatePanel == null) {
 			Properties props = new Properties();
 			props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-			templatePanel = new TemplatePane(props);
+			templatePanel = new TemplatePanel(props);
 		}
 		return templatePanel;
 	}
 
 	@Override
 	public JComponent getComponent(Object ctx) {
-		TemplatePane panel = getTemplatePanel();
+		TemplatePanel panel = getTemplatePanel();
 
 		final Heatmap heatmap = (Heatmap) ctx;
 		final IMatrixView matrixView = heatmap.getMatrixView();

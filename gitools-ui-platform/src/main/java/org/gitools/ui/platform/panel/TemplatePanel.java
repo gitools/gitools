@@ -28,7 +28,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 
-public class TemplatePane extends JPanel {
+public class TemplatePanel extends JPanel {
 
 	private static final long serialVersionUID = 1939265225161205798L;
 	
@@ -42,11 +42,11 @@ public class TemplatePane extends JPanel {
 
 	private Window parent;
 
-	public TemplatePane(Properties props) {
+	public TemplatePanel(Properties props) {
 		this(null, props);
 	}
 
-	public TemplatePane(Window parent, Properties props) {
+	public TemplatePanel(Window parent, Properties props) {
 
 		this.parent = parent;
 
@@ -79,7 +79,7 @@ public class TemplatePane extends JPanel {
 		createComponents();
 	}
 	
-	public TemplatePane() {
+	public TemplatePanel() {
 		this(new Properties());
 	}
 

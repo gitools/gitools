@@ -19,13 +19,14 @@ public class ModuleMap extends Artifact {
 
 	protected int[][] itemIndices;
 
-	//protected int[] itemsOrder;
-	
 	protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
 	protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 	//protected BitMatrix map;
 
 	public ModuleMap() {
+		this.moduleNames = new String[0];
+		this.itemNames = new String[0];
+		this.itemIndices = new int[0][];
 	}
 
 	/*public ModuleMap(int numModules, int numItems) {
@@ -63,8 +64,11 @@ public class ModuleMap extends Artifact {
 	public void setModuleNames(String[] moduleNames) {
 		this.moduleNames = moduleNames;
 
+		moduleIndexMap.clear();
 		for (int i = 0; i < moduleNames.length; i++)
 			moduleIndexMap.put(moduleNames[i], i);
+
+		this.itemIndices = new int[moduleNames.length][];
 	}
 	
 	public int getModuleCount() {
@@ -94,6 +98,7 @@ public class ModuleMap extends Artifact {
 	public void setItemNames(String[] itemNames) {
 		this.itemNames = itemNames;
 
+		itemIndexMap.clear();
 		for (int i = 0; i < itemNames.length; i++)
 			itemIndexMap.put(itemNames[i], i);
 	}
@@ -128,6 +133,10 @@ public class ModuleMap extends Artifact {
 
 	public final void setAllItemIndices(int[][] itemIndices) {
 		this.itemIndices = itemIndices;
+	}
+
+	public final ModuleMap remap(String[] names) {
+		return remap(names, 1, Integer.MAX_VALUE);
 	}
 
 	public final ModuleMap remap(String[] names, int minSize, int maxSize) {
@@ -203,15 +212,13 @@ public class ModuleMap extends Artifact {
 		return map;
 	}
 
-	/*@Deprecated
-	public int[] getItemsOrder() {
-		return itemsOrder;
+	public int getModuleIndex(String modName) {
+		Integer modIndex = moduleIndexMap.get(modName);
+		if (modIndex == null)
+			return -1;
+		else
+			return modIndex;
 	}
-
-	@Deprecated
-	public void setItemsOrder(int[] itemsOrder) {
-		this.itemsOrder = itemsOrder;
-	}*/
 
 	public int[] getItemIndices(String modName) {
 		Integer modIndex = moduleIndexMap.get(modName);
@@ -219,6 +226,16 @@ public class ModuleMap extends Artifact {
 			return null;
 
 		return itemIndices[modIndex];
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int numMods = moduleNames != null ? moduleNames.length : 0;
+		sb.append(numMods).append(" modules, ");
+		int numItems = itemNames != null ? itemNames.length : 0;
+		sb.append(numItems).append(" items");
+		return sb.toString();
 	}
 
 	public void printItemCount() {
