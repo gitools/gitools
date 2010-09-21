@@ -8,21 +8,23 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.util.Dictionary;
 
-
-import org.gitools.heatmap.model.HeatmapHeaderDecoration;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
+public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 	
 	private boolean horizontal;
+	private int colorAnnSize = 0;
+	
 
-	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
+
+	public HeatmapColorAnnDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
 		this.horizontal = horizontal;
 	}
@@ -37,7 +39,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		// Clear background
 		g.setColor(Color.WHITE);
 		g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
+		
 		// Draw borders
 		if (heatmap.isShowBorders()) {
 			int borderSize = getBorderSize();
@@ -53,9 +55,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		IMatrixView data = heatmap.getMatrixView();
 
 		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-
-		final int colorAnnSize = hdr.isColorAnnEnabled() ? 40 : 0;
+		colorAnnSize = hdr.isColorAnnEnabled() ? 20 : 0;
 		
 		g.setFont(hdr.getFont());
 		
@@ -63,11 +63,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 		int gridSize = getGridSize();
 		
-		int maxWidth = (horizontal ? clip.height : clip.width);
-		int width = horizontal ? heatmap.getColumnHeaderSize() - colorAnnSize : heatmap.getRowHeaderSize();
+		int width = colorAnnSize;
 		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
 
-		width = width < maxWidth ? maxWidth : width;
 
 		int clipStart = horizontal ? clip.x - box.x : clip.y - box.y;
 		int clipEnd = horizontal ? clipStart + clip.width : clipStart + clip.height;
@@ -87,8 +85,6 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			g.transform(at);
 		}
 
-		int fontHeight = g.getFontMetrics().getHeight();
-		int fontOffset = ((fontHeight + height - gridSize) / 2) - 1;
 
 		int leadRow = data.getLeadSelectionRow();
 		int leadColumn = data.getLeadSelectionColumn();
@@ -96,21 +92,25 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		int x = box.x;
 		int y = box.y + start * height;
 		int padding = (horizontal ? 3 : 2);
+
+		Dictionary<String, Color> uniqueLabels = hdr.getColorAnn();
+
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
 				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
-			hdr.decorate(decoration, element);
 
-			Color bgColor = decoration.getBgColor();
-			Color fgColor = decoration.getFgColor();
+			Color annColor = uniqueLabels.get(element);
 
-			boolean selected = !pictureMode && (horizontal ?
+			Color bgColor = annColor;
+			Color fgColor = Color.WHITE;
+
+		/*	boolean selected = !pictureMode && (horizontal ?
 				data.isColumnSelected(index) : data.isRowSelected(index));
 
 			if (selected) {
 				bgColor = bgColor.darker();
 				fgColor = fgColor.darker();
-			}
+			}*/
 
 			boolean lead = !pictureMode && (horizontal ?
 				(leadColumn == index) /*&& (leadRow == -1)*/ :
@@ -127,11 +127,6 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				g.drawRect(x, y, width, height - gridSize - 1);
 			}
 
-			if (fontHeight <= height - gridSize) {
-				g.setColor(fgColor);
-				g.drawString(element, x + padding, y + fontOffset);
-			}
-
 			y += height;
 		}
 	}
@@ -141,19 +136,20 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		int gridSize = getGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
 
+		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
+		colorAnnSize = hdr.isColorAnnEnabled() ? 20 : 0;
+
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;
 			int columnCount = heatmap.getMatrixView().getColumnCount();
-			int headerSize = heatmap.getColumnHeaderSize();
 			return new Dimension(
-					cellWidth * columnCount + extBorder, headerSize);
+					cellWidth * columnCount + extBorder, colorAnnSize);
 		}
 		else {
 			int cellHeight = heatmap.getCellHeight() + gridSize;
 			int rowCount = heatmap.getMatrixView().getRowCount();
-			int headerSize = heatmap.getRowHeaderSize();
 			return new Dimension(
-					headerSize, cellHeight * rowCount + extBorder);
+					colorAnnSize, cellHeight * rowCount + extBorder);
 		}
 	}
 
@@ -207,5 +203,6 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	private int getGridSize() {
 		return horizontal ? getColumnsGridSize() : getRowsGridSize();
+
 	}
 }

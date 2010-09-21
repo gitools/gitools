@@ -20,27 +20,32 @@ import javax.swing.JScrollBar;
 import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 
 public class HeatmapPanel extends JPanel {
 
 	private static final long serialVersionUID = 5817479437770943868L;
-	
+
 	private Heatmap heatmap;
 	private final PropertyChangeListener heatmapListener;
 
 	private HeatmapBodyPanel bodyPanel;
+	private HeatmapColorAnnPanel columnColorAnnPanel;
+	private HeatmapColorAnnPanel rowColorAnnPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
 	private HeatmapHeaderPanel rowHeaderPanel;
 
 	private JViewport bodyVP;
+	private JViewport colColorAnnVP;
+	private JViewport rowColorAnnVP;
 	private JViewport colVP;
 	private JViewport rowVP;
 
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
-	
+
 	public HeatmapPanel(Heatmap heatmap) {
 		this.heatmap = heatmap;
 
@@ -56,30 +61,40 @@ public class HeatmapPanel extends JPanel {
 
 		setFocusable(true);
 	}
-	
+
 	public Heatmap getHeatmap() {
 		return heatmap;
 	}
-	
+
 	public void setHeatmap(Heatmap heatmap) {
 		Heatmap old = this.heatmap;
 		this.heatmap = heatmap;
 		bodyPanel.setHeatmap(heatmap);
+		columnColorAnnPanel.setHeatmap(heatmap);
+		rowColorAnnPanel.setHeatmap(heatmap);
 		columnHeaderPanel.setHeatmap(heatmap);
 		rowHeaderPanel.setHeatmap(heatmap);
 		heatmapChanged(old);
 	}
-	
+
 	private void createComponents() {
 		bodyPanel = new HeatmapBodyPanel(heatmap);
 		columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
 		rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
+		columnColorAnnPanel = new HeatmapColorAnnPanel(heatmap, true);
+		rowColorAnnPanel = new HeatmapColorAnnPanel(heatmap, false);
 
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
 		HeatmapBodyMouseController bodyController = new HeatmapBodyMouseController(this);
-		
+
+		colColorAnnVP = new JViewport();
+		colColorAnnVP.setView(columnColorAnnPanel);
+
+		rowColorAnnVP = new JViewport();
+		rowColorAnnVP.setView(rowColorAnnPanel);
+
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 
@@ -90,6 +105,8 @@ public class HeatmapPanel extends JPanel {
 
 		HeatmapHeaderMouseController rowController = new HeatmapHeaderMouseController(this, false);
 
+		//TODO add HeatmapColorAnnMouseController
+
 		colSB = new JScrollBar(JScrollBar.HORIZONTAL);
 		colSB.addAdjustmentListener(new AdjustmentListener() {
 			@Override public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -99,9 +116,11 @@ public class HeatmapPanel extends JPanel {
 			@Override public void adjustmentValueChanged(AdjustmentEvent e) {
 				updateViewPorts(); } });
 
-		setLayout(new HeatmapLayout());
+		setLayout(new HeatmapLayout2());
 		add(colVP);
 		add(rowVP);
+		add(colColorAnnVP);
+		add(rowColorAnnVP);
 		add(bodyVP);
 		add(colSB);
 		add(rowSB);
@@ -171,7 +190,7 @@ public class HeatmapPanel extends JPanel {
 			rowSB.setValue(leadPoint.y);
 		else if (leadPointYEnd > rowSB.getValue() + visibleSize.height)
 			rowSB.setValue(leadPointYEnd - visibleSize.height);
-		
+
 		rowSB.setVisibleAmount(visibleSize.height);
 		rowSB.setValueIsAdjusting(false);
 	}
@@ -182,6 +201,8 @@ public class HeatmapPanel extends JPanel {
 
 		colVP.setViewPosition(new Point(colValue, 0));
 		rowVP.setViewPosition(new Point(0, rowValue));
+		colColorAnnVP.setViewPosition(new Point(colValue, 0));
+		rowColorAnnVP.setViewPosition(new Point(0, rowValue));
 		bodyVP.setViewPosition(new Point(colValue, rowValue));
 	}
 
@@ -200,7 +221,7 @@ public class HeatmapPanel extends JPanel {
 	public HeatmapBodyPanel getBodyPanel() {
 		return bodyPanel;
 	}
-	
+
 	public HeatmapHeaderPanel getColumnPanel() {
 		return columnHeaderPanel;
 	}
@@ -252,6 +273,8 @@ public class HeatmapPanel extends JPanel {
 
 		heatmap.addPropertyChangeListener(heatmapListener);
 		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
+		heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
+		heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
 	}
 
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
@@ -274,7 +297,36 @@ public class HeatmapPanel extends JPanel {
 				bodyPanel.updateSize();
 				rowHeaderPanel.updateSize();
 				columnHeaderPanel.updateSize();
-				
+
+				updateScrolls();
+				revalidate();
+				repaint();
+			}
+		}
+		else if (evt.getSource().equals(heatmap.getColumnHeader())){
+			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
+
+				bodyPanel.updateSize();
+				rowHeaderPanel.updateSize();
+				columnHeaderPanel.updateSize();
+				rowColorAnnPanel.updateSize();
+				columnColorAnnPanel.updateSize();
+
+
+				updateScrolls();
+				revalidate();
+				repaint();
+			}
+		}
+		else if (evt.getSource().equals(heatmap.getRowHeader())){
+			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
+
+				bodyPanel.updateSize();
+				rowHeaderPanel.updateSize();
+				columnHeaderPanel.updateSize();
+				rowColorAnnPanel.updateSize();
+				columnColorAnnPanel.updateSize();
+
 				updateScrolls();
 				revalidate();
 				repaint();
