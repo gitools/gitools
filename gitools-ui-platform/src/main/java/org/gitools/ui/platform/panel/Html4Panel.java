@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.ui.platform.editor;
+package org.gitools.ui.platform.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -90,8 +90,8 @@ public class Html4Panel extends JPanel {
 
 	}
 
-	private HtmlPanel panel;
-	private SimpleHtmlRendererContext rcontext;
+	protected HtmlPanel panel;
+	protected SimpleHtmlRendererContext rcontext;
 
 	public Html4Panel() {
 		createComponents();
