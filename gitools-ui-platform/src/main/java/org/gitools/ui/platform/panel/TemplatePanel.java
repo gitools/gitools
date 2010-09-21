@@ -60,8 +60,12 @@ public class TemplatePanel extends JPanel {
 		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
 		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 
-		velocityEngine.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM_CLASS,
+		// TODO runtime.log.logsystem.class <-> org.apache.velocity.runtime.log.LogChute
+		
+		velocityEngine.setProperty("runtime.log.logsystem.log4j.logger",
 				"org.apache.velocity.runtime.log.Log4JLogChute" );
+		
+		velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
 		
 		//FIXME: external parameter
 		// velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
