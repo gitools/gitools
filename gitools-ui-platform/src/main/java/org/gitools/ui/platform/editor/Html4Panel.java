@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JPanel;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -33,8 +34,7 @@ import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
 import org.w3c.dom.html2.HTMLElement;
 
-//FIXME Use Html4Panel !!!
-public class Html4Editor extends AbstractEditor {
+public class Html4Panel extends JPanel {
 
 	public static class LinkVetoException extends Exception {
 		public LinkVetoException() {
@@ -70,7 +70,7 @@ public class Html4Editor extends AbstractEditor {
 		@Override
 		public void linkClicked(HTMLElement linkNode, URL url, String target) {
 			try {
-				Html4Editor.this.linkClicked(linkNode, url, target);
+				Html4Panel.this.linkClicked(linkNode, url, target);
 				super.linkClicked(linkNode, url, target);
 			}
 			catch (LinkVetoException ex) {
@@ -81,7 +81,7 @@ public class Html4Editor extends AbstractEditor {
 		public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
 			try {
 				//System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-				Html4Editor.this.submitForm(method, action, target, enctype, formInputs);
+				Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
 				super.submitForm(method, action, target, enctype, formInputs);
 			}
 			catch (LinkVetoException ex) {
@@ -90,32 +90,11 @@ public class Html4Editor extends AbstractEditor {
 
 	}
 
-	private String title;
 	private HtmlPanel panel;
 	private SimpleHtmlRendererContext rcontext;
 
-	public Html4Editor(String title) {
-		this.title = title;
-
+	public Html4Panel() {
 		createComponents();
-	}
-
-	@Override
-	public String getName() {
-		return title;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	@Override
-	public Object getModel() {
-		return null;
 	}
 
 	private void createComponents() {

@@ -87,7 +87,7 @@
     		<td class="sectionHeader">Data</td>
     	</tr>
 		<tr>
-			<table>
+			<table class="propTable">
 				<tr>
     				<td class="propName">File</td>
     				<td class="propValue">$dataFile</td>
@@ -100,6 +100,9 @@
     				<td class="propName">P-value attribute</td>
     				<td class="propValue">$pvalueAttr</td>
     			</tr>
+				<tr>
+					<td class="button"><a rel="action" href="NewDataHeatmap">Heatmap</a></td>
+				</tr>
 			</table>
 		</tr>
 
@@ -112,6 +115,11 @@
     				<td class="propName">File</td>
 					<td class="propValue">$groupsFile</td>
     			</tr>
+				#if($analysis.groupsMap)
+				<tr>
+					<td class="button"><a rel="action" href="ViewModuleMap">View</a></td>
+				</tr>
+				#end
 			</table>
 		</tr>
 
@@ -124,6 +132,9 @@
     				<td class="propName">Combination of</td>
 					<td class="propValue">$combinationOf</td>
     			</tr>
+				<tr>
+					<td class="button"><a rel="action" href="NewResultsHeatmap">Heatmap</a></td>
+				</tr>
 			</table>
 		</tr>
     </table>

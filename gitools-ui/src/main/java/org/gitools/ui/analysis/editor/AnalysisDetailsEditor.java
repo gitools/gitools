@@ -51,7 +51,9 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 	}
 
 	private void createComponents() {
-		templatePanel = new TemplatePanel();
+		templatePanel = new TemplatePanel() {
+
+		};
 		try {
 			templatePanel.setTemplate(template);
 

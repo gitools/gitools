@@ -24,10 +24,10 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 
+//TODO extends Html4Panel
 public class TemplatePanel extends JPanel {
 
 	private static final long serialVersionUID = 1939265225161205798L;
