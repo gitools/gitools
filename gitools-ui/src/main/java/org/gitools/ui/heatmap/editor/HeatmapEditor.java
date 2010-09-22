@@ -8,7 +8,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import org.gitools.persistence.FileFormat;
 
@@ -58,13 +60,11 @@ public class HeatmapEditor extends AbstractEditor {
 				HeatmapActions.cloneAction
 		});
 
-	private Heatmap heatmap;
+	protected Heatmap heatmap;
 
 	private HeatmapPanel heatmapPanel;
 
 	private ColorScalePanel colorScalePanel;
-
-	//private JTabbedPane tabbedPane;
 	
 	protected boolean blockSelectionUpdate;
 
@@ -77,13 +77,21 @@ public class HeatmapEditor extends AbstractEditor {
 
 	private PropertyChangeListener colDecoratorListener;
 
-	//private JSplitPane splitPane;
+	protected final JPanel embeddedContainer;
 
 	public HeatmapEditor(Heatmap heatmap) {
-		this(heatmap, null);
+		this(heatmap, null, false);
 	}
 
 	public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions) {
+		this(heatmap, externalToolbarActions, false);
+	}
+
+	public HeatmapEditor(Heatmap heatmap, boolean embedded) {
+		this(heatmap, null, embedded);
+	}
+
+	public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions, boolean embedded) {
 		
 		this.heatmap = heatmap;
 		this.externalToolbarActions = externalToolbarActions;
@@ -91,8 +99,9 @@ public class HeatmapEditor extends AbstractEditor {
 		final IMatrixView matrixView = heatmap.getMatrixView();
 	
 		this.blockSelectionUpdate = false;
-		
-		createComponents();
+
+		embeddedContainer = embedded ? new JPanel() : this;
+		createComponents(embeddedContainer);
 		
 		heatmapListener = new PropertyChangeListener() {
 			@Override
@@ -190,7 +199,7 @@ public class HeatmapEditor extends AbstractEditor {
 		AppFrame.instance().getDetailsView().updateContext(heatmap);
 	}
 
-	private void createComponents() {
+	private void createComponents(JComponent container) {
 		
 		//final IMatrixView matrixView = getMatrixView();
 
@@ -213,16 +222,18 @@ public class HeatmapEditor extends AbstractEditor {
 		splitPane.add(colorScalePanel);*/
 		
 		List<BaseAction> actions = new ArrayList<BaseAction>(toolBarAS.getActions());
-		if (externalToolbarActions != null)
+		if (externalToolbarActions != null) {
+			actions.add(BaseAction.separator);
 			actions.addAll(externalToolbarActions);
+		}
 		ActionSet as = new ActionSet(actions);
 		
 		JToolBar toolBar = ActionSetUtils.createToolBar(as);
 
-		setLayout(new BorderLayout());
-		add(toolBar, BorderLayout.NORTH);
-		add(heatmapPanel, BorderLayout.CENTER);
-		add(colorScalePanel, BorderLayout.SOUTH);
+		container.setLayout(new BorderLayout());
+		container.add(toolBar, BorderLayout.NORTH);
+		container.add(heatmapPanel, BorderLayout.CENTER);
+		container.add(colorScalePanel, BorderLayout.SOUTH);
 	}
 
 	public List<BaseAction> getExternalToolbarActions() {

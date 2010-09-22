@@ -2,6 +2,7 @@ package org.gitools.ui.platform.panel;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.Properties;
 import java.util.Map.Entry;
 
@@ -83,6 +84,8 @@ public class TemplatePanel extends Html4Panel {
 		final StringWriter sw = new StringWriter();
 		template.merge(context, sw);
 
-		panel.setHtml(sw.toString(), "class://" + templateName, rcontext);
+		URL url = getClass().getResource("/vm/analysis/combination.vm");
+		System.out.println(sw.toString());
+		panel.setHtml(sw.toString(), url.toString(), rcontext);
 	}
 }

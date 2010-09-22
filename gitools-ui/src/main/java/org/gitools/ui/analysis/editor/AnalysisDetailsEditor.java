@@ -21,12 +21,15 @@ import edu.upf.bg.formatter.GenericFormatter;
 import java.awt.BorderLayout;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
+import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePanel;
+import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +55,13 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
 	private void createComponents() {
 		templatePanel = new TemplatePanel() {
+			@Override protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+				AnalysisDetailsEditor.this.submitForm(method, action, target, enctype, formInputs);
+			}
 
+			@Override protected void performUrlAction(String name, Map<String, String> params) {
+				AnalysisDetailsEditor.this.performUrlAction(name, params);
+			}
 		};
 		try {
 			templatePanel.setTemplate(template);
@@ -96,5 +105,11 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 		AppFrame.instance().getPropertiesView().updateContext(null);
 		AppFrame.instance().getDetailsView().updateContext(null);
 		templatePanel.requestFocusInWindow();
+	}
+
+	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+	}
+
+	protected void performUrlAction(String name, Map<String, String> params) {
 	}
 }

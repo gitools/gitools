@@ -17,12 +17,23 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.util.HeatmapUtil;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.editor.IEditor;
 
 public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
 
@@ -41,12 +52,12 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 				.getEntityFileRef(analysis.getData());
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getAbsolutePath() : null);
+				fileRef != null ? fileRef.getFile().getName() : null);
 
 		fileRef = PersistenceManager.getDefault()
 				.getEntityFileRef(analysis.getGroupsMap());
 
-		String groupsFile = fileRef != null ? fileRef.getFile().getAbsolutePath()
+		String groupsFile = fileRef != null ? fileRef.getFile().getName()
 				: "Not specified. All " + combOf + " are combined";
 		context.put("groupsFile", groupsFile);
 
@@ -62,5 +73,68 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 				pvalueAttr = attrs.get(0).getName();
 		}
 		context.put("pvalueAttr", pvalueAttr);
+	}
+
+	@Override
+	protected void performUrlAction(String name, Map<String, String> params) {
+		if ("NewDataHeatmap".equals(name))
+			newDataHeatmap();
+		else if ("ViewModuleMap".equals(name))
+			viewModuleMap();
+		else if ("NewResultsHeatmap".equals(name))
+			newResultsHeatmap();
+	}
+
+	private void newDataHeatmap() {
+		if (analysis.getData() == null) {
+			AppFrame.instance().setStatusText("Analysis doesn't contain data.");
+			return;
+		}
+
+		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+
+		IMatrixView dataTable = new MatrixView(analysis.getData());
+
+		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+		heatmap.setTitle(analysis.getTitle() + " (data)");
+
+		HeatmapEditor editor = new HeatmapEditor(
+				heatmap/*, actions*/);
+
+		editor.setName(editorPanel.deriveName(
+				getName(), FileSuffixes.COMBINATION,
+				"-data", FileSuffixes.HEATMAP));
+
+		editorPanel.addEditor(editor);
+
+		AppFrame.instance().setStatusText("New heatmap created.");
+	}
+
+	private void viewModuleMap() {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
+	private void newResultsHeatmap() {
+		if (analysis.getData() == null) {
+			AppFrame.instance().setStatusText("Analysis doesn't contain results.");
+			return;
+		}
+
+		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+
+		IMatrixView dataTable = new MatrixView(analysis.getResults());
+
+		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+		heatmap.setTitle(analysis.getTitle() + " (results)");
+
+		CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
+
+		editor.setName(editorPanel.deriveName(
+				getName(), FileSuffixes.COMBINATION,
+				"-results", FileSuffixes.HEATMAP));
+
+		editorPanel.addEditor(editor);
+
+		AppFrame.instance().setStatusText("Heatmap for combination results created.");
 	}
 }

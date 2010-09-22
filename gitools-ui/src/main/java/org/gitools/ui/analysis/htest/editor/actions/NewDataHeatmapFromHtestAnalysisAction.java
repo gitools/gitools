@@ -55,7 +55,7 @@ public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
 		if (analysis.getData() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contains data.");
+			AppFrame.instance().setStatusText("Analysis doesn't contain data.");
 			return;
 		}
 		

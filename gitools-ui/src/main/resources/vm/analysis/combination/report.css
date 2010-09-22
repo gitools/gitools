@@ -1,0 +1,22 @@
+#elems {
+	margin: 10px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+#elems th {
+	background-color: #CCC;
+	vertical-align: middle;
+	border-bottom: 1px solid #CCC;
+	padding: 6px 8px;
+	text-align: left;
+}
+
+#elems tbody tr:hover {
+	background-color: #DDD;
+}
+
+#elems td {
+	border-bottom: 1px solid #CCC;
+	padding: 6px 8px;
+}
