@@ -36,6 +36,8 @@ public class Heatmap
 	public static final String CELL_SIZE_CHANGED = "cellSize";
 	public static final String ROW_HEADER_SIZE_CHANGED = "rowHeaderSize";
 	public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
+	public static final String ROW_CLUSTER_SETS_CHANGED = "rowClusterSets";
+	public static final String COLUMN_CLUSTER_SETS_CHANGED = "columnClusterSets";
 
 	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
 	private IMatrixView matrixView;
@@ -55,6 +57,14 @@ public class Heatmap
 
 	private HeatmapHeader columnHeader;
 	private int columnHeaderSize;
+
+	// Row cluster sets
+
+	private HeatmapClusterSet[] rowClusterSets;
+
+	// Column cluster sets
+
+	private HeatmapClusterSet[] columnClusterSets;
 
 	// Rows grid
 
@@ -110,6 +120,8 @@ public class Heatmap
 		this.cellDecorator = cellDecorator;
 		this.rowHeader = rowsDecorator;
 		this.columnHeader = columnsDecorator;
+		this.rowClusterSets = new HeatmapClusterSet[0];
+		this.columnClusterSets = new HeatmapClusterSet[0];
 		this.rowsGridEnabled = true;
 		this.rowsGridSize = 1;
 		this.rowsGridColor = Color.WHITE;
@@ -233,6 +245,28 @@ public class Heatmap
 		int old = this.columnHeaderSize;
 		this.columnHeaderSize = columnHeaderSize;
 		firePropertyChange(COLUMN_HEADER_SIZE_CHANGED, old, columnHeaderSize);
+	}
+
+	// Cluster sets
+
+	public HeatmapClusterSet[] getRowClusterSets() {
+		return rowClusterSets;
+	}
+
+	public void setRowClusterSets(HeatmapClusterSet[] rowClusterSets) {
+		HeatmapClusterSet[] old = this.rowClusterSets;
+		this.rowClusterSets = rowClusterSets;
+		firePropertyChange(ROW_CLUSTER_SETS_CHANGED, old, rowClusterSets);
+	}
+
+	public HeatmapClusterSet[] getColumnClusterSets() {
+		return columnClusterSets;
+	}
+
+	public void setColumnClusterSets(HeatmapClusterSet[] columnClusterSets) {
+		HeatmapClusterSet[] old = this.columnClusterSets;
+		this.columnClusterSets = columnClusterSets;
+		firePropertyChange(COLUMN_CLUSTER_SETS_CHANGED, old, columnClusterSets);
 	}
 
 	// Grid
