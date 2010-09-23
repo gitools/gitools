@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.util.Dictionary;
+import java.util.Map;
 
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
@@ -93,7 +93,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int y = box.y + start * height;
 		int padding = (horizontal ? 3 : 2);
 
-		Dictionary<String, Color> uniqueLabels = hdr.getColorAnn();
+		Map<String, Color> uniqueLabels = hdr.getColorAnn();
 
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?

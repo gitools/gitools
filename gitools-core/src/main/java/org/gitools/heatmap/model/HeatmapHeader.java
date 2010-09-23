@@ -16,8 +16,8 @@ import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.AnnotationMatrix;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
@@ -54,7 +54,7 @@ public class HeatmapHeader extends AbstractModel {
 	protected String linkPattern;
 
     protected boolean colorAnnEnabled;
-	private Dictionary<String, Color> uniqueLabels;
+	private Map<String, Color> uniqueLabels;
 
 	public HeatmapHeader() {
 		foregroundColor = Color.BLACK;
@@ -165,19 +165,21 @@ public class HeatmapHeader extends AbstractModel {
 		return decoration;
 	}
 
-	public Dictionary<String, Color> getColorAnn() {
+	public Map<String, Color> getColorAnn() {
 		return this.uniqueLabels;
 	}
 
-	public void setColorAnn(Dictionary<String, Color> colorAnn) {
+	public void setColorAnn(Map<String, Color> colorAnn) {
 		this.uniqueLabels = colorAnn;
 	}
 
-	public Dictionary<String, Color> generateColorAnnotation(Heatmap heatmap,
+	public Map<String, Color> generateColorAnnotation(Heatmap heatmap,
 															boolean horizontal) {
 
-		Dictionary<String, Color> uniqueLabels =
-				new Hashtable<String, Color>();
+		Map<String, Color> uniqueLabels =
+				new HashMap<String, Color>();
+
+		
 
 		IMatrix contents = heatmap.getMatrixView().getContents();
 
