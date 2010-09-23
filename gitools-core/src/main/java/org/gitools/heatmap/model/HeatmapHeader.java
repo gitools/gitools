@@ -1,9 +1,8 @@
 package org.gitools.heatmap.model;
 
-import edu.upf.bg.colorscale.util.HLSColorSpace;
+import edu.upf.bg.colorscale.util.ColorUtils;
 
 import java.awt.Color;
-import java.awt.color.ColorSpace;
 import java.awt.Font;
 import java.net.URLEncoder;
 
@@ -17,7 +16,9 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
@@ -176,8 +177,7 @@ public class HeatmapHeader extends AbstractModel {
 	public Map<String, Color> generateColorAnnotation(Heatmap heatmap,
 															boolean horizontal) {
 
-		Map<String, Color> uniqueLabels =
-				new HashMap<String, Color>();
+		Map<String, Color> uniqueLabels = new HashMap<String, Color>();
 
 		
 
@@ -200,46 +200,58 @@ public class HeatmapHeader extends AbstractModel {
 
 			if (uniqueLabels.get(element) == null) {
 				uniqueLabels.put(element,
-								getColorForIndex(uniqueLabels.size()));
+								ColorUtils.getColorForIndex(uniqueLabels.size()));
 			}
 		}
 		return uniqueLabels;
 	}
 
-	public Color getColorForIndex(int index) {
+	public Map<String, Color> generateColorClusterSet(Heatmap heatmap,
+															boolean horizontal) {
+
+		HeatmapClusterSet hcs = new HeatmapClusterSet();
+
+		hcs.setTitle("GET_LABEL_PATTERN");
+		hcs.setLabelRotated(horizontal);
+
+		IMatrix contents = heatmap.getMatrixView().getContents();
+
+		int count = horizontal ? contents.getColumnCount() : contents.getRowCount();
+		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+
+		HeatmapCluster[] clusters = new HeatmapCluster[0];
+		int[] clusterIndices = new int[count];
+		Map<String, Integer> clusterIndicesMap = new Hashtable<String, Integer>();
 
 
-		// calculate a color with the hsl color wheel
-		// imagine 10 equally distributed points on the color wheel
-		// with a given saturation and lightness. They will be
-		// generated 5 and 5 at a time, and after 10 colors
-		// saturation and lightness are adjusted
+		for (int index = 0; index < count; index++) {
+			if (horizontal) {
+				String header = contents.getColumnLabel(index);
+				heatmap.getColumnHeader().decorate(decoration, header);
+			}
+			else {
+				String header = contents.getRowLabel(index);
+				heatmap.getRowHeader().decorate(decoration, header);
+			}
+			
+		    String element = decoration.getText();
 
+			if (clusterIndicesMap.get(element) == null) {
+				int clusterIndex = clusters.length;
 
-		if (index >= 40)
-			return Color.WHITE;
+				HeatmapCluster hc = new HeatmapCluster();
+				hc.color = ColorUtils.getColorForIndex(clusterIndex);
+				hc.name = element;
 
-		float rotation1 =  ((int) (index / 5) % 2) * 0.1f;
-		float rotation2 = (float) ((index % 5) / 5.0f);
-		float hue = rotation1 + rotation2;
-
-		float[] saturations = new float[]{1.0f,0.5f,0.45f,0.35f};
-		float[] lightnesses = new float[]{0.5f,0.45f,0.4f,0.4f};
-		int step = index / 10;
-
-		float lightness =  lightnesses[step];
-		float saturation = saturations[step];
-
-
-
-		float[] hls = new float[]{hue, lightness, saturation};
-
-		ColorSpace csHLS = new HLSColorSpace();
-		float[] rgb = csHLS.toRGB(hls);
-		Color color = new Color(rgb[0],rgb[1],rgb[2]);
-
-		return color;
+				clusterIndicesMap.put(element, clusterIndex);
+				ArrayUtils.add(clusters, hc);
+			}
+			
+			clusterIndices[index] = clusterIndicesMap.get(element);
+		}
+		return uniqueLabels;
 	}
+
 
 	private String expandPattern(
 			AnnotationMatrix annotations,
