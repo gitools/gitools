@@ -1,4 +1,4 @@
-package org.gitools.ui.analysis.htest.editor;
+package org.gitools.ui.analysis.htest.editor._DEPRECATED;
 
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.model.decorator.ElementDecorator;

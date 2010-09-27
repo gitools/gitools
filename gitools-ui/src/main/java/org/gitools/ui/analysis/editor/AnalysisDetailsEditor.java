@@ -19,8 +19,6 @@ package org.gitools.ui.analysis.editor;
 
 import edu.upf.bg.formatter.GenericFormatter;
 import java.awt.BorderLayout;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
@@ -29,6 +27,7 @@ import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePanel;
+import org.gitools.ui.utils.LogUtils;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +63,8 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 			}
 		};
 		try {
-			templatePanel.setTemplate(template);
+			URL url = getClass().getResource(template);
+			templatePanel.setTemplate(template, url.toString());
 
 			VelocityContext context = new VelocityContext();
 			context.put("fmt", new GenericFormatter());
@@ -72,15 +72,10 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
 			prepareContext(context);
 
-			templatePanel.setContext(context);
-			templatePanel.render();
+			templatePanel.render(context);
 		}
 		catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			pw.close();
-			log.error(sw.toString());
+			LogUtils.logException(e, log);
 		}
 
 		setLayout(new BorderLayout());

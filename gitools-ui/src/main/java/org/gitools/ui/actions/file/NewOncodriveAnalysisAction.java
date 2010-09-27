@@ -8,7 +8,8 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
+import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -70,7 +71,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 					if (monitor.isCancelled())
 						return;
 
-					final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
+					final OncodriveAnalysisEditor editor = new OncodriveAnalysisEditor(analysis);
 
 					editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 

@@ -1,0 +1,65 @@
+body {
+	padding-top: 8px;
+}
+
+#section {
+	/*background-color: #a7b526;*/
+	background-color: #92a014;
+	border: 1px solid #92a014;
+	margin: 8px 2px 2px 2px;
+	white-space: normal;
+}
+
+#section_orange {
+	background-color: #ed8029;
+	border: 1px solid #df7826;
+	margin: 8px 2px 2px 2px;
+	white-space: normal;
+}
+
+#section_title {
+	padding: 2px 4px 2px 4px;
+	font-weight: bold;
+	color: white;
+}
+
+#section_body {
+	background-color: white;
+	padding: 4px 2px 2px 2px;
+}
+
+#attr_table {
+	width: auto;
+}
+
+#attr_table td {
+	vertical-align: text-top;
+}
+
+#attr_table .label {
+	font-weight: bold;
+	padding-bottom: 12px;
+}
+
+#attr_table .name {
+	font-weight: bold;
+	padding-right: 10px;
+	text-align: right;
+}
+
+.button_bar {
+	margin: 4px 2px;
+}
+
+.button {
+	/*padding: 2px 6px 2px 6px;*/
+	font-weight: bold;
+	color: black;
+	border: 1px solid #444;
+	background-color: #DDD;
+	text-decoration: none;
+}
+
+.button:hover {
+	background-color: #AAA;
+}

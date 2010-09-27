@@ -15,63 +15,57 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.combination.editor;
+package org.gitools.ui.analysis.htest.editor;
 
-import java.util.List;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
-import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
-import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
-public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
+public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis> {
 
-	public CombinationAnalysisEditor(CombinationAnalysis analysis) {
-		super(analysis, "/vm/analysis/combination/analysis_details.vm", null);
+	public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {
+		super(analysis, "/vm/analysis/enrichment/analysis_details.vm", null);
 	}
 
 	@Override
 	protected void prepareContext(VelocityContext context) {
-		String combOf = "columns";
-		if (analysis.isTransposeData())
-			combOf = "rows";
-		context.put("combinationOf", combOf);
 
 		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
 				.getEntityFileRef(analysis.getData());
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : null);
+				fileRef != null ? fileRef.getFile().getName() : "Unknown");
+
+		String filterDesc = "Binary cutoff filter for values "
+				+ analysis.getBinaryCutoffCmp().getLongName() + " "
+				+ analysis.getBinaryCutoffValue();
+		context.put("filterDesc", filterDesc);
 
 		fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getGroupsMap());
+				.getEntityFileRef(analysis.getModuleMap());
 
-		String groupsFile = fileRef != null ? fileRef.getFile().getName()
-				: "Not specified. All " + combOf + " are combined";
-		context.put("groupsFile", groupsFile);
+		context.put("modulesFile",
+				fileRef != null ? fileRef.getFile().getName() : "Unknown");
 
-		String sizeAttr = analysis.getSizeAttrName();
-		if (sizeAttr == null || sizeAttr.isEmpty())
-			sizeAttr = "Constant value of 1";
-		context.put("sizeAttr", sizeAttr);
+		context.put("moduleMinSize", analysis.getMinModuleSize());
+		int maxSize = analysis.getMaxModuleSize();
+		context.put("moduleMaxSize", maxSize != Integer.MAX_VALUE ? maxSize : "No limit");
 
-		String pvalueAttr = analysis.getPvalueAttrName();
-		if (pvalueAttr == null || pvalueAttr.isEmpty()) {
-			List<IElementAttribute> attrs = analysis.getData().getCellAttributes();
-			if (attrs.size() > 0)
-				pvalueAttr = attrs.get(0).getName();
-		}
-		context.put("pvalueAttr", pvalueAttr);
+		if (analysis.getMtc().equals("bh"))
+			context.put("mtc", "Benjamini Hochberg FDR");
+		else if (analysis.getMtc().equals("bonferroni"))
+			context.put("mtc", "Bonferroni");
 	}
 
 	@Override
@@ -101,7 +95,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 				heatmap/*, actions*/);
 
 		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.COMBINATION,
+				getName(), FileSuffixes.ENRICHMENT,
 				"-data", FileSuffixes.HEATMAP));
 
 		editorPanel.addEditor(editor);
@@ -126,14 +120,14 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
+		EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
 
 		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.COMBINATION,
+				getName(), FileSuffixes.ENRICHMENT,
 				"-results", FileSuffixes.HEATMAP));
 
 		editorPanel.addEditor(editor);
 
-		AppFrame.instance().setStatusText("Heatmap for combination results created.");
+		AppFrame.instance().setStatusText("Heatmap for enrichment results created.");
 	}
 }

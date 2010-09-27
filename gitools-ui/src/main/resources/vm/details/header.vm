@@ -2,33 +2,41 @@
 <head>
 	<style type="text/css">
 		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
     </style>
 </head>
 <body>
-    <table>
-		#section( "Name" )
-		#nameRow( $name )
+	<div id="section">
+		<div id="section_title">Condition</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td colspan="2" class="label">$name</td></tr>
+			</table>
+		</div>
+	</div>
 
-		#if( $annotations.size() > 0 )
-			#section( "Annotations" )
-			<tr>
-				<table>
-					#foreach($ann in $annotations)
-					<tr>
-						<td class="label">$ann.key</td>
-						<td class="value">$fmt.format($ann.value)</td>
-					</tr>
-					#end
-				</table>
-			</tr>
-		#end
+	#if( $annotations && $annotations.size() > 0 )
+	<div id="section">
+		<div id="section_title">Annotations</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#foreach($ann in $annotations)
+				<tr><td class="name">$ann.key</td><td>$fmt.format($ann.value)</td></tr>
+				#end
+			</table>
+		</div>
+	</div>
+	#end
 
-		#if( ! $linkName.isEmpty() )
-			#section( "Links" )
-			<tr>
-				<td><a href="$linkUrl">$linkName</a></td>
-			</tr>
-		#end
-    </table>
+	#if( ! $linkName.isEmpty() )
+	<div id="section">
+		<div id="section_title">Links</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td><a href="$linkUrl">$linkName</a></td>
+			</table>
+		</div>
+	</div>
+	#end
 </body>
 </html>

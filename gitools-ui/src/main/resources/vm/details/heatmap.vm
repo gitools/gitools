@@ -2,47 +2,45 @@
 <head>
 	<style type="text/css">
 		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
     </style>
 </head>
 <body>
-    <table>
-		#section( "Title" )
-		#if( $title )
-			#nameRow( $title )
-		#else
-			#nameRow( "" )
-		#end
+	#if( $title )
+	<div id="section">
+		<div id="section_title">Title</div>
+		<div id="section_body">$title</div>
+	</div>
+	#end
 
-		#section( "Notes" )
-		#if( $title )
-			#nameRow( $notes )
-		#else
-			#nameRow( "" )
-		#end
+	#if( $notes )
+	<div id="section">
+		<div id="section_title">Notes</div>
+		<div id="section_body">$notes</div>
+	</div>
+	#end
 
-		#if( $annotations.size() > 0 )
-			#section( "Annotations" )
-			<tr>
-				<table>
-					#foreach($ann in $annotations)
-					<tr>
-						<td class="label">$ann.name</td>
-						<td class="value">$fmt.format($ann.value)</td>
-					</tr>
-					#end
-				</table>
-			</tr>
-		#end
+	#if( $annotations && $annotations.size() > 0 )
+	<div id="section">
+		<div id="section_title">Annotations</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#foreach($ann in $annotations)
+				<tr><td class="name">$ann.key</td><td>$fmt.format($ann.value)</td></tr>
+				#end
+			</table>
+		</div>
+	</div>
+	#end
 
-		#section( "Size" )
-		<tr>
-			<td class="label">Columns</td>
-			<td class="value">$numColumns</td>
-		</tr>
-		<tr>
-			<td class="label">Rows</td>
-			<td class="value">$numRows</td>
-		</tr>
-    </table>
+	<div id="section">
+		<div id="section_title">Dimensions</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td class="name">Columns</td><td class="value">$numColumns</td></tr>
+				<tr><td class="name">Rows</td><td class="value">$numRows</td></tr>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

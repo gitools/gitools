@@ -24,12 +24,12 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 
-public class HeatmapMatrixViewAdapter implements IMatrixView {
+public class HeatmapAnnotatedMatrixView implements IMatrixView {
 
 	private final Heatmap hm;
 	private final IMatrixView mv;
 
-	public HeatmapMatrixViewAdapter(Heatmap hm) {
+	public HeatmapAnnotatedMatrixView(Heatmap hm) {
 		this.hm = hm;
 		this.mv = hm.getMatrixView();
 	}

@@ -14,7 +14,6 @@ import org.gitools.threads.ThreadManager;
 import org.gitools.threads.ThreadQueue;
 import org.gitools.threads.ThreadSlot;
 
-import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
@@ -32,14 +31,6 @@ import org.gitools.stats.mtc.MTCFactory;
  */
 
 public class EnrichmentProcessor extends HtestProcessor {
-	
-	/*protected static final DoubleProcedure notNaNProc =
-		new DoubleProcedure() {
-			@Override
-			public boolean apply(double element) {
-				return !Double.isNaN(element);
-			}
-		};*/
 
 	private class RunSlot extends ThreadSlot {
 		public DoubleMatrix1D population;

@@ -54,19 +54,16 @@ public class CombinationProcessor {
 		for (int i = 0; i < numCols; i++)
 			labels[i] = data.getColumnLabel(i);
 
+		String combOf = analysis.isTransposeData() ? "rows" : "columns";
+
 		// Prepare columns map
 		ModuleMap cmap = analysis.getGroupsMap();
-		if (cmap == null) {
-			cmap = new ModuleMap();
-			cmap.setModuleNames(new String[] {"Combination"});
-			cmap.setItemNames(labels);
-			int[] indices = new int[numCols];
-			for (int i = 0; i < numCols; i++)
-				indices[i] = i;
-			cmap.setItemIndices(0, indices);
-		}
-		else
+		if (cmap != null)
 			cmap = cmap.remap(labels);
+		else
+			cmap = new ModuleMap("All data " + combOf, labels);
+		
+		analysis.setGroupsMap(cmap);
 
 		// Prepare results matrix
 		final ObjectMatrix results = new ObjectMatrix();

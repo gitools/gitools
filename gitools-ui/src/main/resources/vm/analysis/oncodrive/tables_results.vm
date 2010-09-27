@@ -1,0 +1,54 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/analysis/tables.css")
+    </style>
+</head>
+
+<body>
+	#foreach( $section in $sections )
+		#foreach( $table in $section.tables )
+
+			#set( $nc = 1 + $table.vaCount + 4 )
+
+			#if( $table.name )
+				#set( $title = "$section.name &gt; $table.name" )
+			#else
+				#set( $title = "$section.name" )
+			#end
+
+			<table id="elems">
+				<thead>
+					<tr>
+						<th colspan="$nc">$title</th>
+					</tr>
+					<tr>
+						<th>Name</th>
+						<th colspan="2">P-value</th>
+						<th colspan="2">Corr-P-value</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					#foreach( $e in $table.elements )
+						<tr>
+							<td>$e.name</td>
+							<td class="cl" style="background-color: $e.pvalue_color">&nbsp;</td>
+							<td>$e.pvalue</td>
+							<td class="cl" style="background-color: $e.cpvalue_color">&nbsp;</td>
+							<td>$e.cpvalue</td>
+						</tr>
+					#end
+				</tbody>
+
+				<tfoot>
+					<tr>
+						<td colspan="$nc">$table.elements.size() rows</td>
+					</tr>
+				</tfoot>
+			</table>
+		#end
+	#end
+</body>
+</html>

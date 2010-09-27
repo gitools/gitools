@@ -15,35 +15,51 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.combination.editor;
+package org.gitools.ui.analysis.htest.editor;
 
+import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JSplitPane;
-import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.ui.analysis.htest.editor.actions.ViewAnnotatedElementsHeatmapAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.gitools.ui.platform.actions.BaseAction;
 
-public class CombinationResultsEditor extends HeatmapEditor {
+public class EnrichmentResultsEditor extends HeatmapEditor {
 
-	protected CombinationAnalysis analysis;
+	protected EnrichmentAnalysis analysis;
 
-	protected CombinationTablesPanel tablesPanel;
+	protected AbstractTablesPanel tablesPanel;
 
-	protected static Heatmap createHeatmap(CombinationAnalysis analysis) {
+	protected static Heatmap createHeatmap(EnrichmentAnalysis analysis) {
 		IMatrixView dataTable = new MatrixView(analysis.getResults());
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		return heatmap;
 	}
 
-	public CombinationResultsEditor(CombinationAnalysis analysis) {
-		super(createHeatmap(analysis), true);
+	protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis) {
+		ViewAnnotatedElementsHeatmapAction action =
+				new ViewAnnotatedElementsHeatmapAction(
+					analysis.getTitle(),
+					analysis.getData(),
+					analysis.getModuleMap());
+		List<BaseAction> tb = new ArrayList<BaseAction>();
+		tb.add(action);
+		return tb;
+	}
 
-		tablesPanel = new CombinationTablesPanel(analysis, heatmap);
+	public EnrichmentResultsEditor(EnrichmentAnalysis analysis) {
+		super(createHeatmap(analysis), createToolBar(analysis), true);
+
+		tablesPanel = new EnrichmentTablesPanel(analysis, heatmap);
 		tablesPanel.setMinimumSize(new Dimension(140, 140));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -56,5 +72,4 @@ public class CombinationResultsEditor extends HeatmapEditor {
 		setLayout(new BorderLayout());
 		add(splitPane);
 	}
-
 }

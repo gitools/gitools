@@ -16,7 +16,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Arrays;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
@@ -64,15 +63,10 @@ public class OncodriveProcessor extends HtestProcessor {
 			smap = smap.remap(labels,
 					analysis.getMinModuleSize(),
 					analysis.getMaxModuleSize());
-		else {
-			smap = new ModuleMap();
-			smap.setModuleNames(new String[] {"all columns"});
-			smap.setItemNames(labels);
-			int[] indices = new int[dataMatrix.getColumnCount()];
-			for (int i = 0; i < indices.length; i++)
-				indices[i] = i;
-			smap.setAllItemIndices(new int[][] {indices});
-		}
+		else
+			smap = new ModuleMap("All data columns", labels);
+
+		analysis.setModuleMap(smap);
 
 		final int numRows = dataMatrix.getRowCount();
 		ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);

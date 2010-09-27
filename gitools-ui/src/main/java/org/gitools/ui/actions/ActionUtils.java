@@ -18,12 +18,13 @@
 package org.gitools.ui.actions;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapMatrixViewAdapter;
+import org.gitools.heatmap.model.HeatmapAnnotatedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.IEditor;
 
+@Deprecated // TODO we should find a better place/way to do this
 public class ActionUtils {
 
 	public static AbstractEditor getSelectedEditor() {
@@ -53,7 +54,7 @@ public class ActionUtils {
 		IEditor editor = ActionUtils.getSelectedEditor();
 		Object model = editor.getModel();
 		if (model instanceof Heatmap)
-			matrixView = new HeatmapMatrixViewAdapter((Heatmap) model);
+			matrixView = new HeatmapAnnotatedMatrixView((Heatmap) model);
 		else
 			matrixView = getMatrixView();
 		return matrixView;

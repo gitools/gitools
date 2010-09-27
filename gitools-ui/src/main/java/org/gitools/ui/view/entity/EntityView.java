@@ -22,13 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import org.gitools.ui.platform.view.AbstractView;
 
 //TODO allow definition of a <Class, Controller> map from outside
 public abstract class EntityView extends AbstractView {
-
-	private JScrollPane scrollPane;
 
 	private Map<Class<?>, EntityController> controllerCache;
 
@@ -39,10 +36,7 @@ public abstract class EntityView extends AbstractView {
 	}
 
 	private void createComponents() {
-		scrollPane = new JScrollPane();
-
 		setLayout(new BorderLayout());
-		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	public void updateContext(Object context) {
@@ -62,7 +56,8 @@ public abstract class EntityView extends AbstractView {
 			component = new JPanel();
 
 		component.setBorder(null);
-		scrollPane.setViewportView(component);
+		removeAll();
+		add(component, BorderLayout.CENTER);
 	}
 
 	protected abstract EntityController createController(Object context);

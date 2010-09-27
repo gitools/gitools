@@ -1,7 +1,7 @@
-package org.gitools.ui.analysis.htest.editor;
+package org.gitools.ui.analysis.htest.editor._DEPRECATED;
 
-import org.gitools.ui.analysis.htest.editor.actions.NewDataHeatmapFromHtestAnalysisAction;
-import org.gitools.ui.analysis.htest.editor.actions.NewResultsHeatmapFromHtestAnalysisAction;
+import org.gitools.ui.analysis.htest.editor.actions._DEPRECATED.NewDataHeatmapFromHtestAnalysisAction;
+import org.gitools.ui.analysis.htest.editor.actions._DEPRECATED.NewResultsHeatmapFromHtestAnalysisAction;
 import java.awt.BorderLayout;
 
 import org.apache.velocity.VelocityContext;
@@ -12,12 +12,12 @@ import edu.upf.bg.formatter.GenericFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
 
+@Deprecated // See EnrichmentAnalysisEditor and OncozEnrichmentEditor
 public class HtestAnalysisEditor extends AbstractEditor {
 
 	private static final long serialVersionUID = 8258025724628410016L;
@@ -29,8 +29,7 @@ public class HtestAnalysisEditor extends AbstractEditor {
 
 	private static Map<Class<? extends HtestAnalysis>, String> templateMap = new HashMap<Class<? extends HtestAnalysis>, String>();
 	static {
-		templateMap.put(EnrichmentAnalysis.class, "/vm/analysis/enrichment.vm");
-		templateMap.put(OncodriveAnalysis.class, "/vm/analysis/oncodrive.vm");
+		templateMap.put(OncodriveAnalysis.class, "/vm/analysis/oncodrive/analysis_details.vm");
 	}
 
 	private HtestAnalysis analysis;

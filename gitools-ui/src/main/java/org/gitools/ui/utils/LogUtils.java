@@ -15,18 +15,19 @@
  *  under the License.
  */
 
-package org.gitools.analysis.htest.oncozet;
+package org.gitools.ui.utils;
 
-import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.gitools.analysis.htest.HtestAnalysis;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.slf4j.Logger;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement()
-public class OncodriveAnalysis extends HtestAnalysis implements Serializable {
+public class LogUtils {
 
-	public OncodriveAnalysis() {
+	public static void logException(Exception e, Logger logger) {
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		e.printStackTrace(pw);
+		pw.close();
+		logger.error(sw.toString());
 	}
 }

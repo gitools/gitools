@@ -15,44 +15,39 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.htest.editor.actions;
+package org.gitools.ui.analysis.htest.editor.actions._DEPRECATED;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.EnrichmentResultsEditor;
+import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 
-public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
+@Deprecated
+public class NewDataHeatmapFromHtestAnalysisAction extends BaseAction {
 
-	public NewResultsHeatmapFromHtestAnalysisAction() {
-		super("New heatmap from results");
+	public NewDataHeatmapFromHtestAnalysisAction() {
+		super("New heatmap from data");
 
-		setDesc("New heatmap from results");
-		setSmallIconFromResource(IconNames.newResultsHeatmap16);
-		setLargeIconFromResource(IconNames.newResultsHeatmap24);
+		setDesc("New heatmap from data");
+		setSmallIconFromResource(IconNames.newDataHeatmap16);
+		setLargeIconFromResource(IconNames.newDataHeatmap24);
 
 		setDefaultEnabled(true);
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
 		IEditor currentEditor = editorPanel.getSelectedEditor();
@@ -61,32 +56,29 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 
 		HtestAnalysis analysis = (HtestAnalysis) currentEditor.getModel();
 
-		IMatrixView resultsTable = new MatrixView(analysis.getResults());
+		if (analysis.getData() == null) {
+			AppFrame.instance().setStatusText("Analysis doesn't contain data.");
+			return;
+		}
+		
+		IMatrixView dataTable = new MatrixView(analysis.getData());
 
-		ElementDecorator resultsRowDecorator =
-			ElementDecoratorFactory.create(
-					ElementDecoratorNames.PVALUE,
-					resultsTable.getCellAdapter());
+		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+		heatmap.setTitle(analysis.getTitle() + " (data)");
 
-		List<BaseAction> actions = new ArrayList<BaseAction>();
+		/*List<BaseAction> actions = new ArrayList<BaseAction>();
 		if (analysis instanceof EnrichmentAnalysis) {
 			EnrichmentAnalysis a = (EnrichmentAnalysis) analysis;
 			actions.add(BaseAction.separator);
-			actions.add(new ViewAnnotatedElementsHeatmapAction(
-					a.getTitle(),
-					a.getData(),
-					a.getModuleMap()));
-		}
+			actions.add(new ViewAnnotatedElementsHeatmapAction(dataTable, a.getModuleMap()));
+		}*/
 
-		Heatmap heatmap = new Heatmap(resultsTable, resultsRowDecorator,
-						new HeatmapHeader(), new HeatmapHeader());
-		heatmap.setTitle(analysis.getTitle() + " (results)");
-
-		HeatmapEditor editor = new HeatmapEditor(heatmap, actions);
+		HeatmapEditor editor = new HeatmapEditor(
+				heatmap/*, actions*/);
 
 		editor.setName(editorPanel.deriveName(
 				currentEditor.getName(), FileSuffixes.ENRICHMENT,
-				"-results", FileSuffixes.HEATMAP));
+				"-data", FileSuffixes.HEATMAP));
 
 		editorPanel.addEditor(editor);
 

@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.persistence.PersistenceUtils;
+import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
@@ -15,7 +16,6 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.analysis.htest.editor.HtestAnalysisEditor;
 
 public class NewEnrichmentAnalysisAction extends BaseAction {
 
@@ -64,7 +64,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 					if (monitor.isCancelled())
 						return;
 
-					final HtestAnalysisEditor editor = new HtestAnalysisEditor(analysis);
+					final EnrichmentAnalysisEditor editor = new EnrichmentAnalysisEditor(analysis);
 
 					editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 
@@ -78,7 +78,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
 					monitor.end();
 
-					AppFrame.instance().setStatusText("Done.");
+					AppFrame.instance().setStatusText("Ok.");
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);

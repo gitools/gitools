@@ -56,12 +56,21 @@ public class ModuleMap extends Artifact {
 		this.itemIndices = itemIndices;
 		//this.itemsOrder = itemsOrder;
 	}
+
+	public ModuleMap(String moduleName, String[] itemNames) {
+		setModuleNames(new String[] { moduleName });
+		setItemNames(itemNames);
+		int[] indices = new int[itemNames.length];
+		for (int i = 0; i < indices.length; i++)
+			indices[i] = i;
+		setAllItemIndices(new int[][] { indices });
+	}
 	
 	public String[] getModuleNames() {
 		return moduleNames;
 	}
 	
-	public void setModuleNames(String[] moduleNames) {
+	public final void setModuleNames(String[] moduleNames) {
 		this.moduleNames = moduleNames;
 
 		moduleIndexMap.clear();
@@ -95,7 +104,7 @@ public class ModuleMap extends Artifact {
 		return itemNames;
 	}
 	
-	public void setItemNames(String[] itemNames) {
+	public final void setItemNames(String[] itemNames) {
 		this.itemNames = itemNames;
 
 		itemIndexMap.clear();

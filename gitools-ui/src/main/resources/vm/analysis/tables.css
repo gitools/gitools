@@ -1,5 +1,9 @@
+body {
+	margin-top: 10px;
+}
+
 #elems {
-	margin: 10px;
+	margin: 10px 10px 20px 10px;
 	border-collapse: collapse;
 	text-align: left;
 }
@@ -18,5 +22,20 @@
 
 #elems td {
 	border-bottom: 1px solid #CCC;
-	padding: 6px 8px;
+	padding: 2px 4px;
+}
+
+#elems tfoot tr {
+	background-color: #CCC;
+	font-weight: bold;
+}
+
+#elems tfoot tr td {
+	margin-top: 8px;
+}
+
+.cl {
+	width: 20px;
+	max-width: 20px;
+	margin: 2px;
 }

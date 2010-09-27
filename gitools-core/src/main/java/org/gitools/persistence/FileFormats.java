@@ -71,4 +71,9 @@ public class FileFormats {
 
 	public static final FileFormat PDF = new FileFormat(
 			"PDF", "pdf", "application/pdf", true, false);
+
+	// Html
+
+	public static final FileFormat HTML = new FileFormat(
+			"HTML", "html", "text/html", true, false);
 }

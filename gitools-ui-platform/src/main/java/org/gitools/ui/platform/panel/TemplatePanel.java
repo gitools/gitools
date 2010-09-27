@@ -2,6 +2,7 @@ package org.gitools.ui.platform.panel;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -20,6 +21,7 @@ public class TemplatePanel extends Html4Panel {
 	
 	private VelocityEngine velocityEngine;
 	private String templateName;
+	private String templateUrl;
 	private Template template;
 	private VelocityContext context;
 
@@ -63,15 +65,28 @@ public class TemplatePanel extends Html4Panel {
 		return template;
 	}
 	
-	public void setTemplate(String name) 
+	@Deprecated // specify a base url
+	public void setTemplate(String name)
+			throws ResourceNotFoundException, ParseErrorException, Exception {
+
+		setTemplate(name, "http://localhost");
+	}
+
+	public void setTemplate(String name, String url)
 			throws ResourceNotFoundException, ParseErrorException, Exception {
 		
 		if (template == null || !this.templateName.equals(name)) {
 			template = velocityEngine.getTemplate(name);
 			this.templateName = name;
 		}
+
+		this.templateUrl = url;
 	}
-	
+
+	public String getTemplateUrl() {
+		return templateUrl;
+	}
+
 	public VelocityContext getContext() {
 		return context;
 	}
@@ -79,13 +94,19 @@ public class TemplatePanel extends Html4Panel {
 	public void setContext(VelocityContext context) {
 		this.context = context;
 	}
-	
-	public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
+
+	public void render(VelocityContext context) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 		final StringWriter sw = new StringWriter();
 		template.merge(context, sw);
 
-		URL url = getClass().getResource("/vm/analysis/combination.vm");
-		System.out.println(sw.toString());
-		panel.setHtml(sw.toString(), url.toString(), rcontext);
+		panel.setHtml(sw.toString(), templateUrl, rcontext);
+	}
+
+	public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
+		render(context);
+	}
+
+	public void merge(VelocityContext context, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
+		template.merge(context, writer);
 	}
 }

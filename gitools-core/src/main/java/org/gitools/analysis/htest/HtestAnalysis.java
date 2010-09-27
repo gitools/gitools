@@ -30,6 +30,7 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
+import org.gitools.model.ModuleMap;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
@@ -53,6 +54,16 @@ public class HtestAnalysis extends Analysis {
 
 	/** Test name */
 	protected ToolConfig testConfig;
+
+	/** Modules */
+	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	protected ModuleMap moduleMap;
+
+	/** Minimum module size */
+	protected int minModuleSize;
+
+	/** Maximum module size */
+	protected int maxModuleSize;
 
 	/** Data */
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
@@ -100,6 +111,30 @@ public class HtestAnalysis extends Analysis {
 
 	public void setTestConfig(ToolConfig testConfig) {
 		this.testConfig = testConfig;
+	}
+
+	public ModuleMap getModuleMap() {
+		return moduleMap;
+	}
+
+	public void setModuleMap(ModuleMap moduleMap) {
+		this.moduleMap = moduleMap;
+	}
+
+	public int getMinModuleSize() {
+		return minModuleSize;
+	}
+
+	public void setMinModuleSize(int minModuleSize) {
+		this.minModuleSize = minModuleSize;
+	}
+
+	public int getMaxModuleSize() {
+		return maxModuleSize;
+	}
+
+	public void setMaxModuleSize(int maxModuleSize) {
+		this.maxModuleSize = maxModuleSize;
 	}
 
 	public IMatrix getData() {

@@ -16,8 +16,18 @@ public abstract class BaseAction extends AbstractAction {
 	public static final BaseAction separator = new SeparatorAction();
 
 	private boolean defaultEnabled;
+
+	/* whether this is a normal action or a radio/check action */
+	private boolean checkMode;
+
+	/* whether if this action is checked/selected */
+	private boolean selected;
+
+	/* When checkMode enabled, if actionGroup is defined then
+	 * it is a radio action otherwise it is a check action */
+	private String actionGroup;
 	
-	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
+	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
 		super(name, icon);
 		
 		this.defaultEnabled = false;
@@ -27,16 +37,32 @@ public abstract class BaseAction extends AbstractAction {
 		
 		if (mnemonic != null)
 			putValue(MNEMONIC_KEY, mnemonic);
+
+		this.checkMode = checkMode;
+		this.selected = selected;
+		this.actionGroup = actionGroup;
 	}
-	
+
+	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
+		this(name, icon, desc, mnemonic, false, false, null);
+	}
+
+	public BaseAction(String name, ImageIcon icon, boolean checkMode, boolean checked, String actionGroup) {
+		this(name, icon, null, null, checkMode, checked, actionGroup);
+	}
+
+	public BaseAction(String name, boolean checkMode, boolean checked, String actionGroup) {
+		this(name, null, null, null, checkMode, checked, actionGroup);
+	}
+
 	public BaseAction(String name, ImageIcon icon, String desc) {
 		this(name, icon, desc, null);
 	}
-	
+
 	public BaseAction(String name, ImageIcon icon) {
 		this(name, icon, null, null);
 	}
-	
+
 	public BaseAction(String name) {
 		this(name, null, null, null);
 	}
@@ -130,5 +156,29 @@ public abstract class BaseAction extends AbstractAction {
 	
 	protected boolean isEnabledByModel(Object model) {
 		return defaultEnabled;
+	}
+
+	public boolean isCheckMode() {
+		return checkMode;
+	}
+
+	public void setCheckMode(boolean checkMode) {
+		this.checkMode = checkMode;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public String getActionGroup() {
+		return actionGroup;
+	}
+
+	public void setActionGroup(String actionGroup) {
+		this.actionGroup = actionGroup;
 	}
 }
