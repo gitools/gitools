@@ -16,7 +16,6 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.matrix.model.IMatrix;
@@ -55,7 +54,6 @@ public class HeatmapHeader extends AbstractModel {
 	protected String linkPattern;
 
     protected boolean colorAnnEnabled;
-	private Map<String, Color> uniqueLabels;
 
 	public HeatmapHeader() {
 		foregroundColor = Color.BLACK;
@@ -166,53 +164,8 @@ public class HeatmapHeader extends AbstractModel {
 		return decoration;
 	}
 
-	public Map<String, Color> getColorAnn() {
-		return this.uniqueLabels;
-	}
 
-	public void setColorAnn(Map<String, Color> colorAnn) {
-		this.uniqueLabels = colorAnn;
-	}
-
-	public Map<String, Color> generateColorAnnotation(Heatmap heatmap,
-															boolean horizontal) {
-
-		Map<String, Color> uniqueLabels = new HashMap<String, Color>();
-
-		
-
-		IMatrix contents = heatmap.getMatrixView().getContents();
-
-		int count = horizontal ? contents.getColumnCount() : contents.getRowCount();
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-
-		for (int index = 0; index < count; index++) {
-			if (horizontal) {
-				String header = contents.getColumnLabel(index);
-				heatmap.getColumnHeader().decorate(decoration, header);
-			}
-			else {
-				String header = contents.getRowLabel(index);
-				heatmap.getRowHeader().decorate(decoration, header);
-			}
-
-		    String element = decoration.getText();
-
-			if (uniqueLabels.get(element) == null) {
-				uniqueLabels.put(element,
-								ColorUtils.getColorForIndex(uniqueLabels.size()));
-			}
-		}
-		return uniqueLabels;
-	}
-
-	public Map<String, Color> generateColorClusterSet(Heatmap heatmap,
-															boolean horizontal) {
-
-		HeatmapClusterSet hcs = new HeatmapClusterSet();
-
-		hcs.setTitle("GET_LABEL_PATTERN");
-		hcs.setLabelRotated(horizontal);
+	public void generateColorClusterSet(Heatmap heatmap, boolean horizontal) {
 
 		IMatrix contents = heatmap.getMatrixView().getContents();
 
@@ -221,7 +174,7 @@ public class HeatmapHeader extends AbstractModel {
 
 		HeatmapCluster[] clusters = new HeatmapCluster[0];
 		int[] clusterIndices = new int[count];
-		Map<String, Integer> clusterIndicesMap = new Hashtable<String, Integer>();
+		Map<String, Integer> clusterIndicesMap = new HashMap<String, Integer>();
 
 
 		for (int index = 0; index < count; index++) {
@@ -237,19 +190,35 @@ public class HeatmapHeader extends AbstractModel {
 		    String element = decoration.getText();
 
 			if (clusterIndicesMap.get(element) == null) {
-				int clusterIndex = clusters.length;
+				int clusterIndex = clusterIndicesMap.size();
 
 				HeatmapCluster hc = new HeatmapCluster();
 				hc.color = ColorUtils.getColorForIndex(clusterIndex);
 				hc.name = element;
 
 				clusterIndicesMap.put(element, clusterIndex);
-				ArrayUtils.add(clusters, hc);
+				clusters = (HeatmapCluster[]) ArrayUtils.add(clusters, hc);
 			}
 			
 			clusterIndices[index] = clusterIndicesMap.get(element);
 		}
-		return uniqueLabels;
+
+		HeatmapClusterSet[] hcs = horizontal ? heatmap.getColumnClusterSets() : heatmap.getRowClusterSets();
+
+		//TODO: allow to add various ClusterSets and remove the following line
+		hcs = new HeatmapClusterSet[0];
+
+		int hcsIndex = hcs.length;
+		hcs = (HeatmapClusterSet[]) ArrayUtils.add(hcs, new HeatmapClusterSet());
+		hcs[hcsIndex].setTitle(this.getLabelPattern());
+		hcs[hcsIndex].setLabelRotated(horizontal);
+		hcs[hcsIndex].setClusters(clusters);
+		hcs[hcsIndex].setClusterIndices(clusterIndices);
+
+		if (horizontal)
+			heatmap.setColumnClusterSets(hcs);
+		else
+			heatmap.setRowClusterSets(hcs);
 	}
 
 

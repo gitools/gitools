@@ -8,10 +8,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.util.Map;
 
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapCluster;
+import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.matrix.model.IMatrixView;
 
 
@@ -93,15 +94,19 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int y = box.y + start * height;
 		int padding = (horizontal ? 3 : 2);
 
-		Map<String, Color> uniqueLabels = hdr.getColorAnn();
+		int[] visibleElements = horizontal ? data.getVisibleColumns() : data.getVisibleRows();
+
+		HeatmapClusterSet[] clusterSet = horizontal ? heatmap.getColumnClusterSets() : heatmap.getRowClusterSets();
+		int[] clusterIndices = clusterSet[0].getClusterIndices();
+		HeatmapCluster[] clusters = clusterSet[0].getClusters();
 
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
 				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
 
-			Color annColor = uniqueLabels.get(element);
-
-			Color bgColor = annColor;
+			//Color annColor = uniqueLabels.get(element);
+			
+			Color bgColor = clusters[clusterIndices[visibleElements[index]]].getColor();
 			Color fgColor = Color.WHITE;
 
 		/*	boolean selected = !pictureMode && (horizontal ?

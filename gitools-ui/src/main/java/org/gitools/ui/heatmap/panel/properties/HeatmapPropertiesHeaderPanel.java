@@ -193,7 +193,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private void updateColorAnnotations() {
 		HeatmapHeader hdr = getHeader();
-		hdr.setColorAnn(hdr.generateColorAnnotation(hm, !rowMode));
+		hdr.generateColorClusterSet(hm, !rowMode);
+		//hdr.setColorAnn(hdr.generateColorAnnotation(hm, !rowMode));
 	}
 
 	private void setAnnotationControlsEnabled(boolean enabled) {
