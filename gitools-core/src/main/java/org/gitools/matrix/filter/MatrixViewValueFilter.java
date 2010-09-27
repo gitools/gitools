@@ -20,7 +20,7 @@ package org.gitools.matrix.filter;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.MatrixViewTransposition;
+import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixViewValueFilter {
@@ -106,7 +106,7 @@ public class MatrixViewValueFilter {
 			boolean invertCriteria
 			) {
 
-		final IMatrixView mv = new MatrixViewTransposition(matrixView);
+		final IMatrixView mv = new TransposedMatrixView(matrixView);
 		filterRows(mv, selection, criteriaList, allCriteria, allElements, invertCriteria);
 	}
 }

@@ -24,8 +24,6 @@ import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.stats.test.results.BinomialResult;
-import org.gitools.stats.test.results.CombinationResult;
-import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
 import org.gitools.utils.CSVStrategies;
@@ -34,6 +32,8 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.combination.CombinationResult;
+import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
@@ -44,14 +44,14 @@ public class ObjectMatrixTextPersistence
 	/* This information will be used to infer the element class
 	 * to use when loading an old tabulated file 
 	 * using only its headers */
-	private static Map<String, Class<?>> elementClasses = new HashMap<String, Class<?>>();
+	private static final Map<String, Class<?>> elementClasses = new HashMap<String, Class<?>>();
 	static {
 		Class<?>[] classes = new Class<?>[] {
 			ZScoreResult.class,
 			BinomialResult.class,
 			FisherResult.class,
-			CombinationResult.class,
-			CommonResult.class
+			CorrelationResult.class,
+			CombinationResult.class
 		};
 		
 		for (Class<?> elementClass : classes) {

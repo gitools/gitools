@@ -279,9 +279,9 @@ public class HeatmapPanel extends JPanel {
 
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
+		Object src = evt.getSource();
 
-		//FIXME imatrixview only when visibility or lead changed
-		if (evt.getSource().equals(heatmap)) {
+		if (src.equals(heatmap)) {
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
 					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)) {
 				updateScrolls();
@@ -289,7 +289,7 @@ public class HeatmapPanel extends JPanel {
 				repaint();
 			}
 		}
-		else if (evt.getSource().equals(heatmap.getMatrixView())) {
+		else if (src.equals(heatmap.getMatrixView())) {
 			if (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
 					|| MatrixView.VISIBLE_ROWS_CHANGED.equals(pname)
 					|| MatrixView.SELECTED_LEAD_CHANGED.equals(pname)) {
@@ -303,7 +303,7 @@ public class HeatmapPanel extends JPanel {
 				repaint();
 			}
 		}
-		else if (evt.getSource().equals(heatmap.getColumnHeader())){
+		else if (src.equals(heatmap.getColumnHeader())){
 			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
 
 				bodyPanel.updateSize();
@@ -318,7 +318,7 @@ public class HeatmapPanel extends JPanel {
 				repaint();
 			}
 		}
-		else if (evt.getSource().equals(heatmap.getRowHeader())){
+		else if (src.equals(heatmap.getRowHeader())){
 			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
 
 				bodyPanel.updateSize();

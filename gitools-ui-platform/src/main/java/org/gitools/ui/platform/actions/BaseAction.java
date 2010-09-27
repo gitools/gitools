@@ -12,7 +12,10 @@ import org.gitools.ui.platform.IconUtils;
 public abstract class BaseAction extends AbstractAction {
 
 	private static final long serialVersionUID = 8312774908067146251L;
-	
+
+	private static final String CHECK_MODE_PROP = "checkMode";
+	private static final String SELECTED_PROP = "selected";
+
 	public static final BaseAction separator = new SeparatorAction();
 
 	private boolean defaultEnabled;
@@ -163,7 +166,9 @@ public abstract class BaseAction extends AbstractAction {
 	}
 
 	public void setCheckMode(boolean checkMode) {
+		boolean old = this.checkMode;
 		this.checkMode = checkMode;
+		firePropertyChange(CHECK_MODE_PROP, old, checkMode);
 	}
 
 	public boolean isSelected() {
@@ -171,7 +176,9 @@ public abstract class BaseAction extends AbstractAction {
 	}
 
 	public void setSelected(boolean selected) {
+		boolean old = this.selected;
 		this.selected = selected;
+		firePropertyChange(SELECTED_PROP, old, selected);
 	}
 
 	public String getActionGroup() {

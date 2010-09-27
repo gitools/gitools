@@ -29,6 +29,14 @@ public class HeatmapKeyboardController extends KeyAdapter {
 	private HeatmapPanel panel;
 	private Heatmap hm;
 
+	private int startLeadRow;
+	private int endLeadRow;
+	private int lastLeadRow;
+
+	private int startLeadCol;
+	private int endLeadCol;
+	private int lastLeadCol;
+
 	HeatmapKeyboardController(HeatmapPanel panel) {
 		this.panel = panel;
 		this.hm = panel.getHeatmap();
@@ -59,6 +67,8 @@ public class HeatmapKeyboardController extends KeyAdapter {
 				changeLead(e, true);
 			else if (!shiftDown && ctrlDown && !altDown)
 				changeLead(e, false);
+			else if (shiftDown && !ctrlDown && !altDown)
+				changeLead(e, false);
 			else if (shiftDown && ctrlDown && !altDown)
 				moveLead(e);
 			else if (!shiftDown && !ctrlDown && altDown)
@@ -84,6 +94,19 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		IMatrixView mv = hm.getMatrixView();
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
+
+		int[] selRow = null;
+		int[] selCol = null;
+		
+		if (clearSelection) {
+			startLeadRow = endLeadRow = row;
+			startLeadCol = endLeadCol = col;
+			selRow = new int[0];
+			selCol = new int[0];
+		}
+
+		lastLeadRow = row;
+		lastLeadCol = col;
 
 		final int rowPageSize = 10; //FIXME should depend on screen size
 		final int colPageSize = 10; //FIXME should depend on screen size
@@ -150,9 +173,27 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		}
 
 		mv.setLeadSelection(row, col);
-		if (clearSelection) {
-			mv.setSelectedRows(new int[0]);
-			mv.setSelectedColumns(new int[0]);
+		if (clearSelection)
+			mv.clearSelection();
+		else {
+			endLeadRow = row;
+			endLeadCol = col;
+
+			int startRow = startLeadRow <= endLeadRow ? startLeadRow : endLeadRow;
+			int endRow = startLeadRow <= endLeadRow ? endLeadRow : startLeadRow;
+
+			int sizeRow = endRow - startRow + 1;
+			selRow = new int[sizeRow];
+			for (int i = startRow; i <= endRow; i++)
+				selRow[i - startRow] = i;
+
+			int startCol = startLeadCol <= endLeadCol ? startLeadCol : endLeadCol;
+			int endCol = startLeadCol <= endLeadCol ? endLeadCol : startLeadCol;
+
+			int sizeCol = endCol - startCol + 1;
+			selCol = new int[sizeCol];
+			for (int i = startCol; i <= endCol; i++)
+				selCol[i - startCol] = i;
 		}
 	}
 

@@ -1,0 +1,41 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
+    </style>
+</head>
+<body>
+	<div id="section">
+		<div id="section_title">Position</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $columnElement )
+					<tr><td style="padding-bottom: 3px">Column</td><td>$columnIndex</td></tr>
+					<tr><td colspan="2" class="label">$columnElement</td></tr>
+				#end
+				#if( $rowElement )
+					<tr><td style="padding-bottom: 3px">Row</td><td>$rowIndex</td></tr>
+					<tr><td colspan="2" class="label">$rowElement</td></tr>
+				#end
+			</table>
+		</div>
+	</div>
+
+	#if( $cellElement )
+	<div id="section">
+		<div id="section_title">Parameters</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#foreach($key in $cell.keySet())
+				<tr>
+					<td class="name">$attr.get($key).name</td>
+					<td>$fmt.format($cell.get($key))</td>
+				</tr>
+				#end
+			</table>
+		</div>
+	</div>
+	#end
+</body>
+</html>

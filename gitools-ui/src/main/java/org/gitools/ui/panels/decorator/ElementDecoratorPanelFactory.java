@@ -9,6 +9,7 @@ import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 
 public class ElementDecoratorPanelFactory {
 
@@ -21,6 +22,8 @@ public class ElementDecoratorPanelFactory {
 		else if (BinaryElementDecorator.class.equals(decoratorClass))
 			return new BinaryElementDecoratorPanel(model);
 		else if (LinearTwoSidedElementDecorator.class.equals(decoratorClass))
+			return new LinearTwoSidedElementDecoratorPanel(model);
+		else if (CorrelationElementDecorator.class.equals(decoratorClass))
 			return new LinearTwoSidedElementDecoratorPanel(model);
 		
 		return new JPanel();

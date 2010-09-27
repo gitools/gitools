@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 
 
 public class ElementDecoratorFactory {
 
-	private static List<ElementDecoratorDescriptor> descriptors
+	private static final List<ElementDecoratorDescriptor> descriptors
 			= new ArrayList<ElementDecoratorDescriptor>();
 	
 	static {
@@ -28,7 +28,10 @@ public class ElementDecoratorFactory {
 		
 		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
-		
+
+		descriptors.add(new ElementDecoratorDescriptor(
+				ElementDecoratorNames.CORRELATION, CorrelationElementDecorator.class));
+
 		/*descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.FORMATTED_TEXT, FormattedTextElementDecorator.class));*/
 	

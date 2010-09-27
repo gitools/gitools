@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 public abstract class AbstractModel 
 		implements IModel, Serializable, Cloneable {
@@ -26,12 +25,14 @@ public abstract class AbstractModel
 	
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		getListeners().add(listener);
+		if (listener != null)
+			getListeners().add(listener);
 	}
 	
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		getListeners().remove(listener);
+		if (listener != null)
+			getListeners().remove(listener);
 	}
 	
 	protected void firePropertyChange(String propName) {

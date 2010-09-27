@@ -23,7 +23,7 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.MethodException;
 import org.gitools.analysis.correlation.methods.CorrelationMethodFactory;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.MatrixViewTransposition;
+import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
@@ -47,7 +47,7 @@ public class CorrelationProcessor {
 		int attributeIndex = analysis.getAttributeIndex();
 
 		if (analysis.isTransposeData()) {
-			MatrixViewTransposition mt = new MatrixViewTransposition();
+			TransposedMatrixView mt = new TransposedMatrixView();
 			mt.setMatrix(data);
 			data = mt;
 		}

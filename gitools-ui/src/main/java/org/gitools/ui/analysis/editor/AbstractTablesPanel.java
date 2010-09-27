@@ -54,6 +54,8 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 	private static Logger log = LoggerFactory.getLogger(AbstractTablesPanel.class);
 
+	protected static final boolean DEFAULT_AUTOMATIC_UPDATE = false;
+
 	protected static final int DATA_VIEW_MODE = 1;
 	protected static final int RESULTS_VIEW_MODE = 2;
 
@@ -81,7 +83,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 	private static abstract class AutomaticUpdateAction extends BaseAction {
 		public AutomaticUpdateAction() {
-			super("Automatic update", true, true, null);
+			super("Automatic update", true, DEFAULT_AUTOMATIC_UPDATE, null);
 
 			setDesc("The tables are automatically updated when heatmap cursor changes");
 			//setLargeIconFromResource(IconNames.save24);
@@ -91,9 +93,9 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 	private static abstract class ForceUpdateAction extends BaseAction {
 		public ForceUpdateAction() {
-			super("Force update");
+			super("Update");
 
-			setDesc("Force update of the tables");
+			setDesc("Update tables");
 			//setLargeIconFromResource(IconNames.save24);
 			//setSmallIconFromResource(IconNames.save16);
 		}
@@ -116,12 +118,10 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 		this.viewMode = DATA_VIEW_MODE;
 
-		this.automaticUpdate = true;
+		this.automaticUpdate = DEFAULT_AUTOMATIC_UPDATE;
 		this.forceUpdate = false;
 
 		createComponents();
-
-		updateContents();
 
 		heatmap.getMatrixView().addPropertyChangeListener(new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {

@@ -17,7 +17,9 @@
 
 package org.gitools.matrix;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
@@ -25,26 +27,45 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 
-public class MatrixViewTransposition implements IMatrixView {
+public class DiagonalMatrixView implements IMatrixView {
 
 	private IMatrixView mv;
 
-	public MatrixViewTransposition() {
+	private PropertyChangeListener listener;
+
+	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+
+	public DiagonalMatrixView(IMatrix m) {
+		listener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				DiagonalMatrixView.this.propertyChange(evt); } };
+
+		setMatrix(m);
 	}
 
-	public MatrixViewTransposition(IMatrixView mv) {
-		this.mv = mv;
-	}
+	public DiagonalMatrixView(IMatrixView mv) {
+		listener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				DiagonalMatrixView.this.propertyChange(evt); } };
 
-	public MatrixViewTransposition(IMatrix mv) {
-		setMatrix(mv);
+		setMatrixView(mv);
 	}
 
 	public final void setMatrix(IMatrix matrix) {
-		this.mv = matrix instanceof IMatrixView ?
+		IMatrixView mview = matrix instanceof IMatrixView ?
 			(IMatrixView) matrix : new MatrixView(matrix);
+		setMatrixView(mview);
 	}
-	
+
+	private void setMatrixView(IMatrixView mv) {
+		if (this.mv != null)
+			this.mv.removePropertyChangeListener(listener);
+
+		this.mv = new MatrixView(new DiagonalMatrix(mv.getContents()));
+
+		this.mv.addPropertyChangeListener(listener);
+	}
+
 	@Override
 	public IMatrix getContents() {
 		return mv.getContents();
@@ -52,11 +73,12 @@ public class MatrixViewTransposition implements IMatrixView {
 
 	@Override
 	public int[] getVisibleRows() {
-		return mv.getVisibleColumns();
+		return mv.getVisibleRows();
 	}
 
 	@Override
 	public void setVisibleRows(int[] indices) {
+		mv.setVisibleRows(indices);
 		mv.setVisibleColumns(indices);
 	}
 
@@ -67,72 +89,75 @@ public class MatrixViewTransposition implements IMatrixView {
 
 	@Override
 	public void setVisibleColumns(int[] indices) {
-		mv.setVisibleRows(indices);
+		setVisibleRows(indices);
 	}
 
 	@Override
 	public void moveRowsUp(int[] indices) {
+		mv.moveRowsUp(indices);
 		mv.moveColumnsLeft(indices);
 	}
 
 	@Override
 	public void moveRowsDown(int[] indices) {
+		mv.moveRowsDown(indices);
 		mv.moveColumnsRight(indices);
 	}
 
 	@Override
 	public void moveColumnsLeft(int[] indices) {
-		mv.moveRowsUp(indices);
+		moveRowsUp(indices);
 	}
 
 	@Override
 	public void moveColumnsRight(int[] indices) {
-		mv.moveRowsDown(indices);
+		moveRowsDown(indices);
 	}
 
 	@Override
 	public void hideRows(int[] indices) {
+		mv.hideRows(indices);
 		mv.hideColumns(indices);
 	}
 
 	@Override
 	public void hideColumns(int[] indices) {
-		mv.hideRows(indices);
+		hideRows(indices);
 	}
 
 	@Override
 	public int[] getSelectedRows() {
-		return mv.getSelectedColumns();
-	}
-
-	@Override
-	public void setSelectedRows(int[] indices) {
-		mv.setSelectedColumns(indices);
-	}
-
-	@Override
-	public boolean isRowSelected(int index) {
-		return mv.isColumnSelected(index);
-	}
-
-	@Override
-	public int[] getSelectedColumns() {
 		return mv.getSelectedRows();
 	}
 
 	@Override
-	public void setSelectedColumns(int[] indices) {
+	public void setSelectedRows(int[] indices) {
 		mv.setSelectedRows(indices);
 	}
 
 	@Override
-	public boolean isColumnSelected(int index) {
+	public boolean isRowSelected(int index) {
 		return mv.isRowSelected(index);
 	}
 
 	@Override
+	public int[] getSelectedColumns() {
+		return mv.getSelectedColumns();
+	}
+
+	@Override
+	public void setSelectedColumns(int[] indices) {
+		mv.setSelectedColumns(indices);
+	}
+
+	@Override
+	public boolean isColumnSelected(int index) {
+		return mv.isColumnSelected(index);
+	}
+
+	@Override
 	public void selectAll() {
-		mv.selectAll(); //FIXME by columns
+		mv.selectAll();
 	}
 
 	@Override
@@ -147,17 +172,17 @@ public class MatrixViewTransposition implements IMatrixView {
 
 	@Override
 	public int getLeadSelectionRow() {
-		return mv.getLeadSelectionColumn();
-	}
-
-	@Override
-	public int getLeadSelectionColumn() {
 		return mv.getLeadSelectionRow();
 	}
 
 	@Override
+	public int getLeadSelectionColumn() {
+		return mv.getLeadSelectionColumn();
+	}
+
+	@Override
 	public void setLeadSelection(int row, int column) {
-		mv.setLeadSelection(column, row);
+		mv.setLeadSelection(row, column);
 	}
 
 	@Override
@@ -171,58 +196,48 @@ public class MatrixViewTransposition implements IMatrixView {
 	}
 
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		mv.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		removePropertyChangeListener(listener);
-	}
-
-	@Override
 	public int getRowCount() {
-		return mv.getColumnCount();
-	}
-
-	@Override
-	public int getColumnCount() {
 		return mv.getRowCount();
 	}
 
 	@Override
 	public String getRowLabel(int index) {
-		return mv.getColumnLabel(index);
-	}
-
-	@Override
-	public String getColumnLabel(int index) {
 		return mv.getRowLabel(index);
 	}
 
 	@Override
+	public int getColumnCount() {
+		return mv.getColumnCount();
+	}
+
+	@Override
+	public String getColumnLabel(int index) {
+		return mv.getColumnLabel(index);
+	}
+
+	@Override
 	public Object getCell(int row, int column) {
-		return mv.getCell(column, row);
+		return column >= row ? mv.getCell(row, column) : null;
 	}
 
 	@Override
 	public Object getCellValue(int row, int column, int index) {
-		return mv.getCellValue(column, row, index);
+		return column >= row ? mv.getCellValue(row, column, index) : null;
 	}
 
 	@Override
 	public Object getCellValue(int row, int column, String id) {
-		return mv.getCellValue(column, row, id);
+		return column >= row ? mv.getCellValue(row, column, id) : null;
 	}
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		mv.setCellValue(column, row, index, value);
+		mv.setCellValue(row, column, index, value);
 	}
 
 	@Override
 	public void setCellValue(int row, int column, String id, Object value) {
-		mv.setCellValue(column, row, id, value);
+		mv.setCellValue(row, column, id, value);
 	}
 
 	@Override
@@ -233,6 +248,26 @@ public class MatrixViewTransposition implements IMatrixView {
 	@Override
 	public List<IElementAttribute> getCellAttributes() {
 		return mv.getCellAttributes();
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		if (listener != null)
+			listeners.add(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		if (listener != null)
+			listeners.remove(listener);
+	}
+
+	private void propertyChange(PropertyChangeEvent evt) {
+		PropertyChangeEvent evt2 = new PropertyChangeEvent(this,
+				evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+		
+		for (PropertyChangeListener l : listeners)
+			l.propertyChange(evt2);
 	}
 
 }

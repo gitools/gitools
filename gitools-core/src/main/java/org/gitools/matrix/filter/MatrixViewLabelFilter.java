@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import org.gitools.matrix.MatrixViewTransposition;
+import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixViewLabelFilter {
@@ -51,7 +51,7 @@ public class MatrixViewLabelFilter {
 	}
 
 	public static void filterColumns(IMatrixView matrixView, List<String> values, boolean useRegex) {
-		IMatrixView mv = new MatrixViewTransposition(matrixView);
+		IMatrixView mv = new TransposedMatrixView(matrixView);
 		filterRows(mv, values, useRegex);
 	}
 

@@ -20,7 +20,7 @@ package org.gitools.analysis.combination;
 import org.gitools.matrix.model.element.AttributeDef;
 
 
-public class CombinationResults {
+public class CombinationResult {
 
 	protected int n;
 
@@ -28,7 +28,7 @@ public class CombinationResults {
 
 	protected double pvalue;
 
-	@AttributeDef(id = "n", name = "N", description = "Number of pvalues combined")
+	@AttributeDef(id = "N", name = "N", description = "Number of pvalues combined")
 	public int getN() {
 		return n;
 	}

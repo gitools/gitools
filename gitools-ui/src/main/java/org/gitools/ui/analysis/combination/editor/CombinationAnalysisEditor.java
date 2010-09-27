@@ -51,7 +51,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 				.getEntityFileRef(analysis.getData());
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : null);
+				fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
 		fileRef = PersistenceManager.getDefault()
 				.getEntityFileRef(analysis.getGroupsMap());

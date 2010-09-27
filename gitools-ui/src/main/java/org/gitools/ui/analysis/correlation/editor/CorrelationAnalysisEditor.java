@@ -15,11 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.htest.editor;
+package org.gitools.ui.analysis.correlation.editor;
 
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
@@ -27,15 +27,14 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
-public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis> {
+public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis> {
 
-	public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {
-		super(analysis, "/vm/analysis/enrichment/analysis_details.vm", null);
+	public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {
+		super(analysis, "/vm/analysis/correlation/analysis_details.vm", null);
 	}
 
 	@Override
@@ -47,33 +46,17 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 		context.put("dataFile",
 				fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
-		String filterDesc = "Binary cutoff filter for values "
-				+ analysis.getBinaryCutoffCmp().getLongName() + " "
-				+ analysis.getBinaryCutoffValue();
-		context.put("filterDesc", filterDesc);
+		String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
+		context.put("appliedTo", appliedTo);
 
-		fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getModuleMap());
-
-		context.put("modulesFile",
-				fileRef != null ? fileRef.getFile().getName() : "Unknown");
-
-		context.put("moduleMinSize", analysis.getMinModuleSize());
-		int maxSize = analysis.getMaxModuleSize();
-		context.put("moduleMaxSize", maxSize != Integer.MAX_VALUE ? maxSize : "No limit");
-
-		if (analysis.getMtc().equals("bh"))
-			context.put("mtc", "Benjamini Hochberg FDR");
-		else if (analysis.getMtc().equals("bonferroni"))
-			context.put("mtc", "Bonferroni");
+		if (analysis.getMethod().equals("pearson"))
+			context.put("method", "Pearson's correlation");
 	}
 
 	@Override
 	protected void performUrlAction(String name, Map<String, String> params) {
 		if ("NewDataHeatmap".equals(name))
 			newDataHeatmap();
-		else if ("ViewModuleMap".equals(name))
-			viewModuleMap();
 		else if ("NewResultsHeatmap".equals(name))
 			newResultsHeatmap();
 	}
@@ -95,16 +78,12 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 				heatmap/*, actions*/);
 
 		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.ENRICHMENT,
+				getName(), FileSuffixes.CORRELATIONS,
 				"-data", FileSuffixes.HEATMAP));
 
 		editorPanel.addEditor(editor);
 
 		AppFrame.instance().setStatusText("New heatmap created.");
-	}
-
-	private void viewModuleMap() {
-		UnimplementedDialog.show(AppFrame.instance());
 	}
 
 	private void newResultsHeatmap() {
@@ -120,14 +99,14 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
+		CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
 
 		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.ENRICHMENT,
+				getName(), FileSuffixes.CORRELATIONS,
 				"-results", FileSuffixes.HEATMAP));
 
 		editorPanel.addEditor(editor);
 
-		AppFrame.instance().setStatusText("Heatmap for enrichment results created.");
+		AppFrame.instance().setStatusText("Heatmap for correlation results created.");
 	}
 }

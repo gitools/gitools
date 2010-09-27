@@ -77,9 +77,25 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
 				g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
-				if (!pictureMode && row == leadRow && col == leadColumn) {
-					g.setColor(ColorUtils.invert(color));
-					g.drawRect(x, y, cellWidth - columnsGridSize - 1, cellHeight - rowsGridSize - 1);
+				if (!pictureMode) {
+					if (row == leadRow && col == leadColumn) {
+						g.setColor(ColorUtils.invert(color));
+						g.drawRect(x, y, cellWidth - columnsGridSize - 1, cellHeight - rowsGridSize - 1);
+					}
+					else if (row == leadRow && col != leadColumn) {
+						g.setColor(ColorUtils.invert(color));
+						int x2 = x + cellWidth - columnsGridSize - 1;
+						int y2 = y + cellHeight - rowsGridSize - 1;
+						g.drawLine(x, y, x2, y);
+						g.drawLine(x, y2, x2, y2);
+					}
+					else if (row != leadRow && col == leadColumn) {
+						g.setColor(ColorUtils.invert(color));
+						int x2 = x + cellWidth - columnsGridSize - 1;
+						int y2 = y + cellHeight - rowsGridSize - 1;
+						g.drawLine(x, y, x, y2);
+						g.drawLine(x2, y, x2, y2);
+					}
 				}
 
 				x += cellWidth;

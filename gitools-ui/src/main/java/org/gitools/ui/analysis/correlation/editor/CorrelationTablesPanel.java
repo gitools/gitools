@@ -15,12 +15,14 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.htest.editor;
+package org.gitools.ui.analysis.correlation.editor;
 
 import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.PValueColorScale;
+import edu.upf.bg.colorscale.impl.CorrelationColorScale;
+import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.colorscale.util.ColorUtils;
 import edu.upf.bg.formatter.GenericFormatter;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,74 +30,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.ModuleMap;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis> {
+public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnalysis> {
 
-	private static Logger log = LoggerFactory.getLogger(EnrichmentTablesPanel.class);
+	private static Logger log = LoggerFactory.getLogger(CorrelationTablesPanel.class);
 
-	private static final String DATA_TEMPLATE = "/vm/analysis/oncodrive/tables_data.vm";
-	private static final String RESULTS_TEMPLATE = "/vm/analysis/oncodrive/tables_results.vm";
+	private static final String DATA_TEMPLATE = "/vm/analysis/correlation/tables_data.vm";
+	private static final String RESULTS_TEMPLATE = "/vm/analysis/correlation/tables_results.vm";
 
-	protected final int dataValueIndex = 0;
-
-	protected Map<String, Integer> dataRowIndices;
 	protected Map<String, Integer> dataColIndices;
-
-	protected ModuleMap mmap;
 
 	protected IColorScale dataScale;
 
-	public OncodriveTablesPanel(OncodriveAnalysis analysis, Heatmap heatmap) {
+	public CorrelationTablesPanel(CorrelationAnalysis analysis, Heatmap heatmap) {
 		super(analysis, heatmap);
 
+		// TODO transpose ???
 		IMatrix data = analysis.getData();
 		final int numRows = data.getRowCount();
 		final int numCols = data.getColumnCount();
 
 		// index data labels
 
-		dataRowIndices = new HashMap<String, Integer>();
-		for (int i = 0; i < numRows; i++)
-			dataRowIndices.put(data.getRowLabel(i), i);
 		dataColIndices = new HashMap<String, Integer>();
 		for (int i = 0; i < numCols; i++)
 			dataColIndices.put(data.getColumnLabel(i), i);
-
-		// remap module map to the data
-
-		String[] labels = new String[numCols];
-		for (int i = 0; i < labels.length; i++)
-			labels[i] = data.getColumnLabel(i);
-
-		mmap = analysis.getModuleMap();
-		if (mmap != null)
-			mmap = mmap.remap(labels);
-		else {
-			IMatrixView mv = heatmap.getMatrixView();
-			String[] groups = new String[mv.getColumnCount()];
-			for (int i = 0; i < groups.length; i++)
-				groups[i] = mv.getColumnLabel(i);
-
-			mmap = new ModuleMap();
-			mmap.setModuleNames(groups);
-			mmap.setItemNames(labels);
-
-			int[] indices = new int[numCols];
-			for (int i = 0; i < indices.length; i++)
-				indices[i] = i;
-
-			for (int i = 0; i < groups.length; i++)
-				mmap.setItemIndices(i, indices);
-		}
 
 		// Guess what kind of color scale to use
 
@@ -118,13 +85,13 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 				template = DATA_TEMPLATE;
 
 				if (row != -1 && col != -1) // cell
-					createDataCellModel(context, mv, row, col, data, mmap);
+					createDataCellModel(context, mv, row, col, data);
 				else if (row == -1 && col != -1) // column
-					createDataColumnModel(context, mv, col, data, mmap);
+					createDataColumnModel(context, mv, col, data);
 				else if (row != -1 && col == -1) // row
-					createDataRowModel(context, mv, row, data, mmap);
+					createDataRowModel(context, mv, row, data);
 				else
-					createDataAllModel(context, mv, data, mmap);
+					createDataAllModel(context, mv, data);
 
 				break;
 
@@ -147,45 +114,66 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		return context;
 	}
 
-	private List<VelocityContext> createDataElements(
-			IMatrixView mv, int row, int col, final IMatrix data, ModuleMap mmap) {
+	private List<VelocityContext> createDataCellElements(
+			IMatrixView mv, int row, int col, final IMatrix data) {
 
+		final int valueIndex = 0;
 		final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-				data.getCellAdapter().getProperty(dataValueIndex).getValueClass());
+				data.getCellAdapter().getProperty(valueIndex).getValueClass());
 
 		List<VelocityContext> elements = new ArrayList<VelocityContext>();
 
-		String mname = mv.getColumnLabel(col);
-		int[] indices = mmap.getItemIndices(mname);
+		final int dcol1 = dataColIndices.get(mv.getColumnLabel(col));
+		final int dcol2 = dataColIndices.get(mv.getColumnLabel(row));
 
-		final int drow = dataRowIndices.get(mv.getRowLabel(row));
-
-		Integer[] iix = new Integer[indices.length];
-		for (int i = 0; i < indices.length; i++)
-			iix[i] = Integer.valueOf(indices[i]);
+		Integer[] iix = new Integer[data.getRowCount()];
+		for (int i = 0; i < iix.length; i++)
+			iix[i] = i;
 
 		Arrays.sort(iix, new Comparator<Integer>() {
 			@Override public int compare(Integer o1, Integer o2) {
-				double v1 = valueCast.getDoubleValue(
-						data.getCellValue(drow, o1, dataValueIndex));
-				double v2 = valueCast.getDoubleValue(
-						data.getCellValue(drow, o2, dataValueIndex));
-				return (int) Math.signum(v2 - v1);
+				double v11 = valueCast.getDoubleValue(
+						data.getCellValue(o1, dcol1, valueIndex));
+				double v12 = valueCast.getDoubleValue(
+						data.getCellValue(o2, dcol1, valueIndex));
+				double v21 = valueCast.getDoubleValue(
+						data.getCellValue(o1, dcol2, valueIndex));
+				double v22 = valueCast.getDoubleValue(
+						data.getCellValue(o2, dcol2, valueIndex));
+				return (int) Math.signum((v21 + v22) - (v11 + v12));
 			}
 		});
 
 		GenericFormatter fmt = new GenericFormatter();
 
-		for (int ci = 0; ci < iix.length; ci++) {
-			int mci = iix[ci];
-			if (data.getCell(drow, mci) != null) {
-				double value = valueCast.getDoubleValue(
-						data.getCellValue(drow, mci, dataValueIndex));
+		for (int ri = 0; ri < iix.length; ri++) {
+			int mri = iix[ri];
 
+			double v1 = Double.NaN;
+			Color c1 = ColorConstants.emptyColor;
+
+			if (data.getCell(mri, dcol1) != null) {
+				v1 = valueCast.getDoubleValue(
+						data.getCellValue(mri, dcol1, valueIndex));
+				c1 = dataScale.valueColor(v1);
+			}
+
+			double v2 = Double.NaN;
+			Color c2 = ColorConstants.emptyColor;
+
+			if (data.getCell(mri, dcol2) != null) {
+				v2 = valueCast.getDoubleValue(
+						data.getCellValue(mri, dcol2, valueIndex));
+				c2 = dataScale.valueColor(v2);
+			}
+
+			if (!Double.isNaN(v1) && !Double.isNaN(v2)) {
 				VelocityContext e = new VelocityContext();
-				e.put("name", data.getColumnLabel(mci));
-				e.put("value", fmt.format(value));
-				e.put("color", ColorUtils.colorToRGBHtml(dataScale.valueColor(value)));
+				e.put("name", data.getRowLabel(mri));
+				e.put("value1", fmt.format(v1));
+				e.put("color1", ColorUtils.colorToRGBHtml(c1));
+				e.put("value2", fmt.format(v2));
+				e.put("color2", ColorUtils.colorToRGBHtml(c2));
 				elements.add(e);
 			}
 		}
@@ -193,27 +181,73 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		return elements;
 	}
 
-	private VelocityContext createDataTableElements(IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap) {
+	private List<VelocityContext> createDataColumnElements(
+			IMatrixView mv, String colName, final IMatrix data) {
 
-		List<VelocityContext> elements =
-				createDataElements(mv, row, col, data, mmap);
+		final int valueIndex = 0;
+		final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
+				data.getCellAdapter().getProperty(valueIndex).getValueClass());
 
-		VelocityContext table = new VelocityContext();
-		table.put("name", mv.getRowLabel(row));
-		table.put("elements", elements);
+		List<VelocityContext> elements = new ArrayList<VelocityContext>();
 
-		return table;
+		final int dcol = dataColIndices.get(colName);
+
+		Integer[] iix = new Integer[data.getRowCount()];
+		for (int i = 0; i < iix.length; i++)
+			iix[i] = i;
+
+		Arrays.sort(iix, new Comparator<Integer>() {
+			@Override public int compare(Integer o1, Integer o2) {
+				double v1 = valueCast.getDoubleValue(
+						data.getCellValue(o1, dcol, valueIndex));
+				double v2 = valueCast.getDoubleValue(
+						data.getCellValue(o2, dcol, valueIndex));
+				return (int) Math.signum(v2 - v1);
+			}
+		});
+
+		GenericFormatter fmt = new GenericFormatter();
+
+		for (int ri = 0; ri < iix.length; ri++) {
+			int mri = iix[ri];
+
+			double v1 = Double.NaN;
+			Color c1 = ColorConstants.emptyColor;
+
+			if (data.getCell(mri, dcol) != null) {
+				v1 = valueCast.getDoubleValue(
+						data.getCellValue(mri, dcol, valueIndex));
+				c1 = dataScale.valueColor(v1);
+			}
+
+			if (!Double.isNaN(v1)) {
+				VelocityContext e = new VelocityContext();
+				e.put("name", data.getRowLabel(mri));
+				e.put("value1", fmt.format(v1));
+				e.put("color1", ColorUtils.colorToRGBHtml(c1));
+				elements.add(e);
+			}
+		}
+
+		return elements;
 	}
 
 	private VelocityContext createDataCellModel(VelocityContext context,
-			IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap) {
+			IMatrixView mv, int row, int col, IMatrix data) {
 
-		VelocityContext table = createDataTableElements(mv, row, col, data, mmap);
+		List<VelocityContext> elements =
+				createDataCellElements(mv, row, col, data);
+
+		VelocityContext table = new VelocityContext();
+		table.put("column1", truncateString(mv.getColumnLabel(col), 20));
+		table.put("column2", truncateString(mv.getRowLabel(row), 20));
+		table.put("elements", elements);
+
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
 		tables.add(table);
 
 		VelocityContext section = new VelocityContext();
-		section.put("name", mv.getColumnLabel(col));
+		section.put("name", mv.getColumnLabel(col) + " &lt;--&gt; " + mv.getRowLabel(row));
 		section.put("tables", tables);
 
 		List<VelocityContext> sections = new ArrayList<VelocityContext>();
@@ -224,23 +258,14 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 	}
 
 	private VelocityContext createDataColumnModel(VelocityContext context,
-			IMatrixView mv, int col, IMatrix data, ModuleMap mmap) {
+			IMatrixView mv, int col, IMatrix data) {
 
-		List<VelocityContext> elements = new ArrayList<VelocityContext>();
-
-		String mname = mv.getColumnLabel(col);
-		int[] iix = mmap.getItemIndices(mname);
-
-		for (int ci = 0; ci < iix.length; ci++) {
-			int mci = iix[ci];
-
-			VelocityContext e = new VelocityContext();
-			e.put("name", data.getColumnLabel(mci));
-			elements.add(e);
-		}
+		List<VelocityContext> elements =
+				createDataColumnElements(mv, mv.getColumnLabel(col), data);
 
 		VelocityContext table = new VelocityContext();
-		table.put("hideValues", true);
+		table.put("column1", truncateString(mv.getColumnLabel(col), 20));
+		table.put("hideColumn2", true);
 		table.put("elements", elements);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
@@ -258,30 +283,17 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 	}
 
 	private VelocityContext createDataRowModel(VelocityContext context,
-			IMatrixView mv, int row, IMatrix data, ModuleMap mmap) {
+			IMatrixView mv, int row, IMatrix data) {
+
+		List<VelocityContext> elements =
+				createDataColumnElements(mv, mv.getColumnLabel(row), data);
+
+		VelocityContext table = new VelocityContext();
+		table.put("hideColumn2", true);
+		table.put("elements", elements);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
-
-		for (int col = 0; col < mv.getColumnCount(); col++) {
-			List<VelocityContext> elements = new ArrayList<VelocityContext>();
-
-			String mname = mv.getColumnLabel(col);
-			int[] iix = mmap.getItemIndices(mname);
-
-			for (int ci = 0; ci < iix.length; ci++) {
-				int mci = iix[ci];
-
-				VelocityContext e = new VelocityContext();
-				e.put("name", data.getColumnLabel(mci));
-				elements.add(e);
-			}
-
-			VelocityContext table = new VelocityContext();
-			table.put("hideValues", true);
-			table.put("elements", elements);
-
-			tables.add(table);
-		}
+		tables.add(table);
 
 		VelocityContext section = new VelocityContext();
 		section.put("name", mv.getRowLabel(row));
@@ -295,7 +307,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 	}
 
 	private VelocityContext createDataAllModel(VelocityContext context,
-			IMatrixView mv, IMatrix data, ModuleMap mmap) {
+			IMatrixView mv, IMatrix data) {
 
 		return context;
 	}
@@ -304,23 +316,24 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 
 		GenericFormatter fmt = new GenericFormatter();
 
-		String pvalueAttrName = "right-p-value";
-		String cpvalueAttrName = "corrected-right-p-value";
+		if (col < row) {
+			int tmp = col;
+			col = row;
+			row = tmp;
+		}
 
-		int pvalueIndex = mv.getCellAdapter().getPropertyIndex(pvalueAttrName);
-		double pvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, pvalueIndex));
+		int n = MatrixUtils.intValue(mv.getCellValue(row, col, "n"));
+		double score = MatrixUtils.doubleValue(mv.getCellValue(row, col, "score"));
+		double se = MatrixUtils.doubleValue(mv.getCellValue(row, col, "se"));
 
-		int cpvalueIndex = mv.getCellAdapter().getPropertyIndex(cpvalueAttrName);
-		double cpvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, cpvalueIndex));
-
-		PValueColorScale pscale = new PValueColorScale();
+		CorrelationColorScale scale = new CorrelationColorScale();
 
 		VelocityContext e = new VelocityContext();
 
-		e.put("pvalue", fmt.pvalue(pvalue));
-		e.put("pvalue_color", ColorUtils.colorToRGBHtml(pscale.valueColor(pvalue)));
-		e.put("cpvalue", fmt.pvalue(cpvalue));
-		e.put("cpvalue_color", ColorUtils.colorToRGBHtml(pscale.valueColor(cpvalue)));
+		e.put("n", n);
+		e.put("score", fmt.format(score));
+		e.put("score_color", ColorUtils.colorToRGBHtml(scale.valueColor(score)));
+		e.put("se", fmt.format(se));
 
 		return e;
 	}
@@ -333,15 +346,13 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		elements.add(e);
 
 		VelocityContext table = new VelocityContext();
-		table.put("name", mv.getRowLabel(row));
-		table.put("vaCount", 0);
 		table.put("elements", elements);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
 		tables.add(table);
 
 		VelocityContext section = new VelocityContext();
-		section.put("name", mv.getColumnLabel(col));
+		section.put("name", mv.getColumnLabel(col) + " &lt;--&gt; " + mv.getRowLabel(row));
 		section.put("tables", tables);
 
 		List<VelocityContext> sections = new ArrayList<VelocityContext>();
@@ -361,7 +372,6 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		}
 
 		VelocityContext table = new VelocityContext();
-		table.put("vaCount", 0);
 		table.put("elements", elements);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
@@ -387,7 +397,6 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		}
 
 		VelocityContext table = new VelocityContext();
-		table.put("vaCount", 0);
 		table.put("elements", elements);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
@@ -408,4 +417,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 		return context;
 	}
 
+	private String truncateString(String s, int len) {
+		return s.substring(0, Math.min(s.length(), len));
+	}
 }

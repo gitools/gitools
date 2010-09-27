@@ -3,15 +3,13 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationCommand;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.ui.analysis.correlation.editor.CorrelationEditor;
+import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisWizard;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -63,7 +61,7 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 					if (monitor.isCancelled())
 						return;
 
-					final CorrelationEditor editor = new CorrelationEditor(analysis);
+					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
 					editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + FileSuffixes.HEATMAP);
 

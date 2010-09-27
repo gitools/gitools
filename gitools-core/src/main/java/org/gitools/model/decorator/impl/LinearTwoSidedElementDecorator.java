@@ -1,8 +1,6 @@
 package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,7 +14,6 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
-import edu.upf.bg.colorscale.util.ColorConstants;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -34,22 +31,20 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	
 	
 	public LinearTwoSidedElementDecorator() {
-		
-		valueIndex = getPropertyIndex(new String[] {
-				"value", "log2ratio" });
-		
-		scale = new LinearTwoSidedColorScale();
-
-		fmt = new GenericFormatter("<");
+		this(null, new LinearTwoSidedColorScale());
 	}
 
 	public LinearTwoSidedElementDecorator(IElementAdapter adapter) {
+		this(adapter, new LinearTwoSidedColorScale());
+	}
+
+	public LinearTwoSidedElementDecorator(IElementAdapter adapter, LinearTwoSidedColorScale scale) {
 		super(adapter);
 		
 		valueIndex = getPropertyIndex(new String[] {
-				"value", "log2ratio" });
+				"value", "log2ratio", "score" });
 		
-		scale = new LinearTwoSidedColorScale();
+		this.scale = scale;
 
 		fmt = new GenericFormatter("<");
 	}

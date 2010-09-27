@@ -24,11 +24,10 @@ import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
-import org.gitools.ui.analysis.correlation.editor.CorrelationEditor;
+import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
@@ -95,7 +94,7 @@ public class OpenAnalysisAction extends BaseAction {
 						else if (mime.equals(MimeTypes.ONCODRIVE_ANALYSIS))
 							editor = new OncodriveAnalysisEditor((OncodriveAnalysis) analysis);
 						else if (mime.equals(MimeTypes.CORRELATIONS_ANALYSIS))
-							editor = new CorrelationEditor((CorrelationAnalysis) analysis);
+							editor = new CorrelationAnalysisEditor((CorrelationAnalysis) analysis);
 						else if (mime.equals(MimeTypes.COMBINATION_ANALYSIS))
 							editor = new CombinationAnalysisEditor((CombinationAnalysis) analysis);
 

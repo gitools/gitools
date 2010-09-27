@@ -76,8 +76,23 @@ public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnal
 		gmap = analysis.getGroupsMap();
 		if (gmap != null)
 			gmap = gmap.remap(labels);
-		else
-			gmap = new ModuleMap("All data " + combOf, labels); //FIXME the name of the module depends on the name of the matrix view columns, may be the module map should be saved
+		else {
+			IMatrixView mv = heatmap.getMatrixView();
+			String[] groups = new String[mv.getColumnCount()];
+			for (int i = 0; i < groups.length; i++)
+				groups[i] = mv.getColumnLabel(i);
+
+			gmap = new ModuleMap();
+			gmap.setModuleNames(groups);
+			gmap.setItemNames(labels);
+			
+			int[] indices = new int[numCols];
+			for (int i = 0; i < indices.length; i++)
+				indices[i] = i;
+			
+			for (int i = 0; i < groups.length; i++)
+				gmap.setItemIndices(i, indices);
+		}
 	}
 
 	@Override

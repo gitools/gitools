@@ -31,6 +31,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.gitools.analysis.combination.CombinationResult;
+import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -38,8 +40,6 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.stats.test.results.BinomialResult;
-import org.gitools.stats.test.results.CombinationResult;
-import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
 import org.gitools.ui.platform.panel.TemplatePanel;
@@ -56,7 +56,7 @@ public class HeatmapDetailsController implements EntityController {
 	protected TemplatePanel getTemplatePanel() {
 		if (templatePanel == null) {
 			Properties props = new Properties();
-			props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+			//props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
 			templatePanel = new TemplatePanel(props);
 		}
 		return templatePanel;
@@ -77,6 +77,9 @@ public class HeatmapDetailsController implements EntityController {
 		context.put("fmt", new GenericFormatter());
 		
 		String templateName = defaultTemplateName;
+
+		context.put("rowIndex", row + 1);
+		context.put("columnIndex", column + 1);
 
 		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 			//final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
@@ -188,7 +191,7 @@ public class HeatmapDetailsController implements EntityController {
 	}
 
 	private String getTemplateNameFromObject(Object object) {
-		String templateName = "default.vm";
+		String templateName = "generic.vm";
 		if (object != null) {
 			if (object instanceof BinomialResult)
 				templateName = "binomial.vm";
@@ -196,10 +199,10 @@ public class HeatmapDetailsController implements EntityController {
 				templateName = "fisher.vm";
 			else if (object instanceof ZScoreResult)
 				templateName = "zscore.vm";
+			else if (object instanceof CorrelationResult)
+				templateName = "correlation.vm";
 			else if (object instanceof CombinationResult)
 				templateName = "combination.vm";
-			else if (object instanceof CommonResult)
-				templateName = "common.vm";
 		}
 		return "/vm/details/" + templateName;
 	}

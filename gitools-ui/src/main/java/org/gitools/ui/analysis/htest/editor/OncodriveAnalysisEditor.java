@@ -45,7 +45,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 				.getEntityFileRef(analysis.getData());
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Unknown");
+				fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
 		String filterDesc = "Binary cutoff filter for values "
 				+ analysis.getBinaryCutoffCmp().getLongName() + " "

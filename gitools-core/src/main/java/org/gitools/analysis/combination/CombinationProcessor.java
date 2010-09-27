@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Date;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.MatrixViewTransposition;
+import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
@@ -45,7 +45,7 @@ public class CombinationProcessor {
 		// Prepare data
 		IMatrix data = analysis.getData();
 		if (analysis.isTransposeData())
-			data = new MatrixViewTransposition(data);
+			data = new TransposedMatrixView(data);
 
 		final int numCols = data.getColumnCount();
 		final int numRows = data.getRowCount();
@@ -79,7 +79,7 @@ public class CombinationProcessor {
 		results.makeCells();
 
 		results.setCellAdapter(
-				new BeanElementAdapter(CombinationResults.class));
+				new BeanElementAdapter(CombinationResult.class));
 
 		analysis.setResults(results);
 
@@ -142,7 +142,7 @@ public class CombinationProcessor {
 				double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
 				double pvalue = zscoreToPvalue(zcomb);
 
-				CombinationResults r = new CombinationResults();
+				CombinationResult r = new CombinationResult();
 				r.setN(n);
 				r.setZscore(zcomb);
 				r.setPvalue(pvalue);

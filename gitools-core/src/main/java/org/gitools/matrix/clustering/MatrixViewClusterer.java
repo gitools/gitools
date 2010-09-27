@@ -19,7 +19,7 @@ package org.gitools.matrix.clustering;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
 import org.gitools.matrix.clustering.methods.ClusteringMethodFactory;
-import org.gitools.matrix.MatrixViewTransposition;
+import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 
 public class MatrixViewClusterer {
@@ -30,7 +30,7 @@ public class MatrixViewClusterer {
 
 		if (Boolean.valueOf(clusterParameters.getProperty("transpose"))) {
 			
-			MatrixViewTransposition mt = new MatrixViewTransposition();
+			TransposedMatrixView mt = new TransposedMatrixView();
 			mt.setMatrix(matrixView);
 			matrixView = mt;
 		}
