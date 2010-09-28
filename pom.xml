@@ -58,6 +58,7 @@
 		<!-- <module>ztools-report</module> -->
     <module>gitools-analysis</module>
     <module>gitools-persistence</module>
+    <module>gitools-kegg</module>
   </modules>
 
 	<repositories>
@@ -188,7 +189,7 @@
 						<archive>
 							<manifest>
 								<addClasspath>true</addClasspath>
-								<classpathPrefix />
+								<classpathPrefix/>
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 							</manifest>
