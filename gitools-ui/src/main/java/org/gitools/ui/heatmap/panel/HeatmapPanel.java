@@ -141,6 +141,7 @@ public class HeatmapPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				heatmap.getMatrixView().setLeadSelection(-1, -1);
+				heatmap.getMatrixView().clearSelection();
 			}
 		});
 	}

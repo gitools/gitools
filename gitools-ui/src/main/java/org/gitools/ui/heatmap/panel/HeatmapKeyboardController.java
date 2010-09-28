@@ -29,18 +29,16 @@ public class HeatmapKeyboardController extends KeyAdapter {
 	private HeatmapPanel panel;
 	private Heatmap hm;
 
-	private int startLeadRow;
-	private int endLeadRow;
-	private int lastLeadRow;
-
-	private int startLeadCol;
-	private int endLeadCol;
-	private int lastLeadCol;
+	private int selStart;
+	private int selEnd;
+	private int selLast;
 
 	HeatmapKeyboardController(HeatmapPanel panel) {
 		this.panel = panel;
 		this.hm = panel.getHeatmap();
 
+		selStart = selEnd = selLast = -1;
+		
 		panel.addKeyListener(this);
 	}
 
@@ -63,12 +61,10 @@ public class HeatmapKeyboardController extends KeyAdapter {
 				|| key == KeyEvent.VK_HOME || key == KeyEvent.VK_END
 				|| key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN) {
 
-			if (!shiftDown && !ctrlDown && !altDown)
-				changeLead(e, true);
-			else if (!shiftDown && ctrlDown && !altDown)
-				changeLead(e, false);
-			else if (shiftDown && !ctrlDown && !altDown)
-				changeLead(e, false);
+			if (((!shiftDown && !ctrlDown)
+					|| (shiftDown && !ctrlDown)
+					|| (!shiftDown && ctrlDown)) && !altDown)
+				changeLead(e);
 			else if (shiftDown && ctrlDown && !altDown)
 				moveLead(e);
 			else if (!shiftDown && !ctrlDown && altDown)
@@ -90,23 +86,19 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		}
 	}
 
-	private void changeLead(KeyEvent e, boolean clearSelection) {
+	//TODO shift selection
+	private void changeLead(KeyEvent e) {
+
+		int modifiers = e.getModifiers();
+		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
+		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+
 		IMatrixView mv = hm.getMatrixView();
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
 
-		int[] selRow = null;
-		int[] selCol = null;
-		
-		if (clearSelection) {
-			startLeadRow = endLeadRow = row;
-			startLeadCol = endLeadCol = col;
-			selRow = new int[0];
-			selCol = new int[0];
-		}
-
-		lastLeadRow = row;
-		lastLeadCol = col;
+		int prevRow = row;
+		int prevCol = col;
 
 		final int rowPageSize = 10; //FIXME should depend on screen size
 		final int colPageSize = 10; //FIXME should depend on screen size
@@ -172,28 +164,46 @@ public class HeatmapKeyboardController extends KeyAdapter {
 				break;
 		}
 
+		// update selection
+
+		boolean clearSelection = true;
+
+		boolean onRow = row != -1 && col == -1;
+		boolean onBody = row != -1 && col != -1;
+		
+		int[] sel = null;
+
+		if (onBody || (!shiftDown && !ctrlDown))
+			selStart = selEnd = -1;
+		else if (!onBody && (shiftDown && !ctrlDown)) {
+			selEnd = onRow ? row : col;
+			if (selStart == -1)
+				selStart = selLast != -1 ? selLast : selEnd;
+
+			int start = selStart <= selEnd ? selStart : selEnd;
+			int end = selStart <= selEnd ? selEnd : selStart;
+
+			int size = end - start + 1;
+			sel = new int[size];
+			for (int i = start; i <= end; i++)
+				sel[i - start] = i;
+
+			clearSelection = false;
+		}
+		else if (!shiftDown && ctrlDown)
+			clearSelection = false;
+
+		selLast = !onBody ? (onRow ? row : col) : -1;
+		
 		mv.setLeadSelection(row, col);
+
 		if (clearSelection)
 			mv.clearSelection();
-		else {
-			endLeadRow = row;
-			endLeadCol = col;
-
-			int startRow = startLeadRow <= endLeadRow ? startLeadRow : endLeadRow;
-			int endRow = startLeadRow <= endLeadRow ? endLeadRow : startLeadRow;
-
-			int sizeRow = endRow - startRow + 1;
-			selRow = new int[sizeRow];
-			for (int i = startRow; i <= endRow; i++)
-				selRow[i - startRow] = i;
-
-			int startCol = startLeadCol <= endLeadCol ? startLeadCol : endLeadCol;
-			int endCol = startLeadCol <= endLeadCol ? endLeadCol : startLeadCol;
-
-			int sizeCol = endCol - startCol + 1;
-			selCol = new int[sizeCol];
-			for (int i = startCol; i <= endCol; i++)
-				selCol[i - startCol] = i;
+		else if (!onBody && sel != null) {
+			if (onRow)
+				mv.setSelectedRows(sel);
+			else
+				mv.setSelectedColumns(sel);
 		}
 	}
 
