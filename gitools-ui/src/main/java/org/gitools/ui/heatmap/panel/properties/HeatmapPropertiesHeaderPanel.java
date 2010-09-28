@@ -45,12 +45,15 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.dialog.ListDialog;
+import org.gitools.ui.dialog.clustering.color.ColorClusterDialog;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.AppFrame;
@@ -193,8 +196,10 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private void updateColorAnnotations() {
 		HeatmapHeader hdr = getHeader();
-		hdr.generateColorClusterSet(hm, !rowMode);
-		//hdr.setColorAnn(hdr.generateColorAnnotation(hm, !rowMode));
+		/*HeatmapClusterSet[] hcs =
+				HeatmapUtil.generateColorClusterSet(getHeader());*/
+		
+
 	}
 
 	private void setAnnotationControlsEnabled(boolean enabled) {
@@ -692,7 +697,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         private void colorAnnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnActionPerformed
 				if(!updatingControls) {
-					getHeader().setColorAnnEnabled(colorAnn.isSelected());
+					//getHeader().setColorAnnEnabled(colorAnn.isSelected());
+					ColorClusterDialog ccd = new ColorClusterDialog(null, hm, !rowMode);
+					ccd.setVisible(true);
 			}
         }//GEN-LAST:event_colorAnnActionPerformed
 
