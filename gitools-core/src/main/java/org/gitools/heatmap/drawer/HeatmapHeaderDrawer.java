@@ -59,7 +59,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		
 		g.setFont(hdr.getFont());
 		
-		final Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
+		Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
 
 		int gridSize = getGridSize();
 		
@@ -103,6 +103,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 			Color bgColor = decoration.getBgColor();
 			Color fgColor = decoration.getFgColor();
+			Color gColor = gridColor;
 
 			boolean selected = !pictureMode && (horizontal ?
 				data.isColumnSelected(index) : data.isRowSelected(index));
@@ -110,13 +111,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			if (selected) {
 				bgColor = bgColor.darker();
 				fgColor = fgColor.darker();
+				gColor = gridColor.darker();
 			}
 
 			boolean lead = !pictureMode && (horizontal ?
 				(leadColumn == index) /*&& (leadRow == -1)*/ :
 				(leadRow == index) /*&& (leadColumn == -1)*/);
 
-			g.setColor(gridColor);
+			g.setColor(gColor);
 			g.fillRect(x, y + height - gridSize, width, gridSize);
 			
 			g.setColor(bgColor);

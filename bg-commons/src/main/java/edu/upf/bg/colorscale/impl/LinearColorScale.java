@@ -29,11 +29,9 @@ public class LinearColorScale extends SimpleColorScale {
 		
 		double range = max.getValue() - min.getValue();
 		
-		double f = value / range;
+		double f = (value - min.getValue()) / range;
 
-		return f <= 0 ? 
-				ColorUtils.mix(min.getRightColor(), max.getLeftColor(), -f)
-				: ColorUtils.mix(max.getLeftColor(), min.getRightColor(), f);
+		return ColorUtils.mix(max.getLeftColor(), min.getRightColor(), f);
 	}
 
 }

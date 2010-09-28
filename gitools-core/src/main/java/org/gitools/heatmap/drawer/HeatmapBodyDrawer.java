@@ -60,20 +60,33 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		int y = box.y + rowStart * cellHeight;
 		for (int row = rowStart; row < rowEnd; row++) {
 			int x = box.x + colStart * cellWidth;
+			boolean rowSelected = data.isRowSelected(row);
 			for (int col = colStart; col < colEnd; col++) {
 				Object element = data.getCell(row, col);
 				deco.decorate(decoration, element);
 				
 				Color color = decoration.getBgColor();
+				Color rowsGridColor = heatmap.getRowsGridColor();
+				Color columnsGridColor = heatmap.getColumnsGridColor();
+
+				boolean selected = !pictureMode
+						&& (rowSelected || data.isColumnSelected(col));
+
+				if (selected) {
+					color = color.darker();
+					rowsGridColor = rowsGridColor.darker();
+					columnsGridColor = columnsGridColor.darker();
+				}
+
 				g.setColor(color);
 
 				g.fillRect(x, y, cellWidth - columnsGridSize, cellHeight - rowsGridSize);
 
-				g.setColor(heatmap.getRowsGridColor());
+				g.setColor(rowsGridColor);
 
 				g.fillRect(x, y + cellHeight - rowsGridSize, cellWidth, rowsGridSize);
 
-				g.setColor(heatmap.getColumnsGridColor());
+				g.setColor(columnsGridColor);
 
 				g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
