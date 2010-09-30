@@ -99,7 +99,6 @@ public class FilteredListPanel extends javax.swing.JPanel {
 				selectionChanged();
 			}
 		});
-
 	}
 
 	private void updateFilter() {

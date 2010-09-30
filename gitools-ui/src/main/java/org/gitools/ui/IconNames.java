@@ -80,6 +80,12 @@ public class IconNames {
 	public static final String intogen16 = "/img/Intogen16.png";
 	public static final String intogen24 = "/img/Intogen24.png";
 
+	public static final String KEGG16 = "/img/Kegg16.png";
+	public static final String KEGG24 = "/img/Kegg24.png";
+
+	public static final String GO16 = "/img/GO16.png";
+	public static final String GO24 = "/img/GO24.png";
+
 	public static final String DOWNLOAD = "/img/Download.png";
 
 	public static final String LOGO_INTOGEN = "/img/intogen/IntOGenWebLogo.png";
@@ -87,7 +93,11 @@ public class IconNames {
 	public static final String LOGO_INTOGEN_IMPORT = "/img/logos/IntogenImport.png";
 	
 	public static final String LOGO_BIOMART_IMPORT = "/img/logos/BiomartImport.png";
-	
+
+	public static final String LOGO_KEGG = "/img/Kegg128.png";
+
+	public static final String LOGO_GO = "/img/GO128.png";
+
 	public static final String LOGO_ENRICHMENT = "/img/logos/Enrichment.png";
 
 	public static final String LOGO_CORRELATION = "/img/logos/Correlation.png";

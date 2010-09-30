@@ -17,30 +17,51 @@
 
 	<dependencies>
 		<dependency>
-		  <groupId>axis</groupId>
-		  <artifactId>axis</artifactId>
-		  <version>1.4</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-biomart</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
-		  <groupId>axis</groupId>
-		  <artifactId>axis-jaxrpc</artifactId>
-		  <version>1.4</version>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis-jaxrpc</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
-		  <groupId>axis</groupId>
-		  <artifactId>axis-wsdl4j</artifactId>
-		  <version>1.5.1</version>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis-saaj</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
-		  <groupId>axis</groupId>
-		  <artifactId>axis-saaj</artifactId>
-		  <version>1.4</version>
+			<groupId>axis</groupId>
+			<artifactId>axis-wsdl4j</artifactId>
+			<version>1.5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.4</version>
+		</dependency>
+
 		<!--<dependency>
-		  <groupId>log4j</groupId>
-		  <artifactId>log4j</artifactId>
-		  <version>1.2.14</version>
-		</dependency>-->
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -50,7 +71,7 @@
 				<artifactId>axistools-maven-plugin</artifactId>
 				<version>1.4</version>
 				<configuration>
-					<sourceDirectory>${basedir}/src/main/resources/wsdl</sourceDirectory>
+					<sourceDirectory>${basedir}/src/main/wsdl</sourceDirectory>
 					<wsdlFiles>
 						<wsdlFile>KEGG.wsdl</wsdlFile>
 					</wsdlFiles>
@@ -70,31 +91,27 @@
 				</executions>
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>2.2.6</version>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>generate-sources</id>
-						<configuration>
-							<wsdlOptions>
-								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/wsdl/KEGG.wsdl</wsdl>
-									<packagenames>
-										<packagename>org.gitools.kegg.soap</packagename>
-									</packagenames>
-									<defaultNamespacePackageMapping>false</defaultNamespacePackageMapping>
-								</wsdlOption>
-							</wsdlOptions>
-							<targetNameSpace />
-						</configuration>
-						<goals>
-							<goal>wsdl2java</goal>
+						<id>axisfix</id>
+						<phase>process-sources</phase>
+            			<goals>
+							<goal>exec</goal>
 						</goals>
+						<configuration>
+							<executable>perl</executable>
+								<workingDirectory>${basedir}</workingDirectory>
+								<arguments>
+									<argument>src/main/wsdl/axisfix.pl</argument>
+									<argument>target/generated-sources/axistools/org/gitools/kegg/soap/KEGGBindingStub.java</argument>
+								</arguments>
+						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
 	</build>
 </project>

@@ -59,17 +59,9 @@ public class BiomartModulesWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 
-		// Destination
-		saveFilePage = new SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
-		saveFilePage.setFormats(supportedFormats);
-		addPage(saveFilePage);
-
 		// Source
 		sourcePage = new BiomartSourcePage();
 		addPage(sourcePage);
-
 
 		// FIXME Modules attribute
 		modulesAttributePage = new BiomartAttributePage();
@@ -83,12 +75,17 @@ public class BiomartModulesWizard extends AbstractWizard {
 		dataAttributePage.setTitle("Select attribute for modules");
 		addPage(dataAttributePage);
 
-
 		// Advance filtering
 		filterListPage = new BiomartFilterConfigurationPage();
 		filterListPage.setTitle("Select filters");
 		addPage(filterListPage);
 
+		// Destination
+		saveFilePage = new SaveFilePage();
+		saveFilePage.setTitle("Select destination file");
+		saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
+		saveFilePage.setFormats(supportedFormats);
+		addPage(saveFilePage);
 	}
 
 	@Override

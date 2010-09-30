@@ -21,6 +21,8 @@ public interface IWizardPage {
 	
 	void updateControls();
 
+	public void updateModel();
+
 	String getTitle();
 
 	Icon getLogo();

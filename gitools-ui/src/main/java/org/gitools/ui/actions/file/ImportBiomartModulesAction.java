@@ -3,15 +3,8 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.Query;
-import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.biomart.settings.BiomartSourceManager;
 
 import org.gitools.ui.IconNames;
 
@@ -27,7 +20,7 @@ public class ImportBiomartModulesAction extends BaseAction {
 	private static final long serialVersionUID = 668140963768246841L;
 
 	public ImportBiomartModulesAction() {
-		super("Modules ...");
+		super("Biomart Modules (advanced users) ...");
 		setLargeIconFromResource(IconNames.biomart24);
 		setSmallIconFromResource(IconNames.biomart16);
 		setDefaultEnabled(true);

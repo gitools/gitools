@@ -12,7 +12,7 @@ public class ImportBiomartMatrixAction extends BaseAction {
 	private static final long serialVersionUID = 4381993756203388654L;
 
 	public ImportBiomartMatrixAction() {
-		super("Matrix ...");
+		super("Biomart Matrix ...");
 		setLargeIconFromResource(IconNames.biomart24);
 		setSmallIconFromResource(IconNames.biomart16);
 		setDefaultEnabled(true);

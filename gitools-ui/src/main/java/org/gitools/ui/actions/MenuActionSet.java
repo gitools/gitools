@@ -37,7 +37,17 @@ public class MenuActionSet extends ActionSet {
 				FileActions.closeAction,
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
-					new ActionSet("IntOGen", IconUtils.getImageIconResource(IconNames.intogen16), new BaseAction[] {
+					new ActionSet("Data", new BaseAction[] {
+						FileActions.importIntogenTableAction,
+						FileActions.importBioMartTableAction,
+					}),
+					new ActionSet("Modules", new BaseAction[] {
+						FileActions.importIntogenOncomodulesAction,
+						FileActions.importKeggModulesAction,
+						FileActions.importGoModulesAction,
+						FileActions.importBioMartModulesAction
+					})
+					/*new ActionSet("IntOGen", IconUtils.getImageIconResource(IconNames.intogen16), new BaseAction[] {
 						FileActions.importIntogenTableAction,
 						FileActions.importIntogenOncomodulesAction,
 						//FileActions.importIntogenHeatmapAction
@@ -46,7 +56,7 @@ public class MenuActionSet extends ActionSet {
 						FileActions.importBioMartTableAction,
 						FileActions.importBioMartModulesAction
 						//FileActions.importBioMartMatrixAction
-					})
+					})*/
 				}),
 				//FileActionSet.exportWizardAction,
 				new ActionSet("Export", new BaseAction[] {

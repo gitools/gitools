@@ -1,6 +1,7 @@
 package org.gitools.ui.platform.wizard;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
@@ -64,9 +65,19 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 		this.pageComplete = complete;
 		updateDialog();
 	}
+
+	@Override
+	public JComponent createControls() {
+		return this;
+	}
 	
 	@Override
 	public void updateControls() {
+		// do nothing
+	}
+
+	@Override
+	public void updateModel() {
 		// do nothing
 	}
 	

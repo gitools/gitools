@@ -70,13 +70,17 @@ public class WizardDialog extends AbstractDialog {
 		return currentPage;
 	}
 	
-	protected void setCurrentPage(IWizardPage page) {
+	protected final void setCurrentPage(IWizardPage page) {
 		setCurrentPage(page, true);
 	}
 	
-	protected void setCurrentPage(IWizardPage page, boolean updateHistory) {
-		if (currentPage != null && updateHistory)
-			pageHistory.push(currentPage);
+	protected final void setCurrentPage(IWizardPage page, boolean updateHistory) {
+		if (currentPage != null) {
+			if (updateHistory)
+				pageHistory.push(currentPage);
+			
+			currentPage.updateModel();
+		}
 		
 		currentPage = page;
 		
@@ -203,8 +207,10 @@ public class WizardDialog extends AbstractDialog {
 	}
 
 	private void finishActionPerformed() {
-		if (currentPage != null)
+		if (currentPage != null) {
+			currentPage.updateModel();
 			currentPage.getWizard().performFinish();
+		}
 
 		cancelled = false;
 		

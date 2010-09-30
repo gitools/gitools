@@ -14,9 +14,11 @@ import org.gitools.ui.actions.file.ExportScaleImageAction;
 import org.gitools.ui.actions.file.ImportBiomartMatrixAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
+import org.gitools.ui.actions.file.ImportGoModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
 import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
+import org.gitools.ui.actions.file.ImportKeggModulesAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
@@ -67,7 +69,10 @@ public class FileActions {
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
 	public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
 	public static final BaseAction importBioMartMatrixAction = new ImportBiomartMatrixAction();
-	
+
+	public static final BaseAction importKeggModulesAction = new ImportKeggModulesAction();
+	public static final BaseAction importGoModulesAction = new ImportGoModulesAction();
+
 	// Export
 	
 	public static final BaseAction exportWizardAction = new ExportAction();

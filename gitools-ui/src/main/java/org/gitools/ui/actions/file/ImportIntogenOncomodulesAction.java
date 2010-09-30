@@ -12,7 +12,7 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 	private static final long serialVersionUID = 668140963768246841L;
 
 	public ImportIntogenOncomodulesAction() {
-		super("Oncomodules ...");
+		super("IntOGen Oncomodules ...");
 		setLargeIconFromResource(IconNames.intogen24);
 		setSmallIconFromResource(IconNames.intogen16);
 		setDefaultEnabled(true);
