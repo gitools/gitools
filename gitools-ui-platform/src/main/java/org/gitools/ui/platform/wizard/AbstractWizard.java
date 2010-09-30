@@ -7,10 +7,8 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
-public abstract class AbstractWizard implements IWizard {
+public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
-	private WizardDialog dialog;
-	
 	private String title;
 	
 	private Icon logo;
@@ -20,6 +18,8 @@ public abstract class AbstractWizard implements IWizard {
 	private List<IWizardPage> pages = new ArrayList<IWizardPage>();
 	
 	private Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
+
+	private List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
 	
 	public AbstractWizard() {
 	}
@@ -37,6 +37,8 @@ public abstract class AbstractWizard implements IWizard {
 		page.setWizard(this);
 		pages.add(page);
 		pageIdMap.put(id, page);
+
+		page.addPageUpdateListener(this);
 	}
 	
 	@Override
@@ -91,22 +93,13 @@ public abstract class AbstractWizard implements IWizard {
 	}
 	
 	@Override
-	public WizardDialog getDialog() {
-		return dialog;
-	}
-	
-	@Override
-	public void setDialog(WizardDialog dialog) {
-		this.dialog = dialog;
-	}
-	
-	@Override
 	public String getTitle() {
 		return title;
 	}
 	
 	public void setTitle(String title) {
 		this.title = title;
+		fireWizardUpdate();
 	}
 	
 	@Override
@@ -116,6 +109,7 @@ public abstract class AbstractWizard implements IWizard {
 	
 	public void setLogo(Icon icon) {
 		this.logo = icon;
+		fireWizardUpdate();
 	}
 	
 	@Override
@@ -131,5 +125,26 @@ public abstract class AbstractWizard implements IWizard {
 	@Override
 	public void performCancel() {
 		// do nothing
+	}
+
+	@Override
+	public void addWizardUpdateListener(IWizardUpdateListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeWizardUpdateListener(IWizardUpdateListener listener) {
+		listeners.remove(listener);
+	}
+
+	@Override
+	public void pageUpdated(IWizardPage page) {
+		for (IWizardUpdateListener l : listeners)
+			l.pageUpdated(page);
+	}
+
+	private void fireWizardUpdate() {
+		for (IWizardUpdateListener l : listeners)
+			l.wizardUpdated(this);
 	}
 }

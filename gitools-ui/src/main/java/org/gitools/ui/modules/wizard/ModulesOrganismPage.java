@@ -26,7 +26,7 @@ import org.gitools.kegg.modules.Version;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.wizard.common.FilteredListPage;
+import org.gitools.ui.common.wizard.FilteredListPage;
 
 public class ModulesOrganismPage extends FilteredListPage {
 

@@ -15,7 +15,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.wizard.common.SaveFilePage;
+import org.gitools.ui.common.wizard.SaveFilePage;
 
 public class OncodriverAnalysisWizard extends AbstractWizard {
 

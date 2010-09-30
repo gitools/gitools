@@ -13,7 +13,7 @@ import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.wizard.common.FilteredListPanel;
+import org.gitools.ui.common.wizard.FilteredListPanel;
 
 public class BiomartDatasetPage extends AbstractWizardPage {
 

@@ -39,7 +39,7 @@ import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
-import org.gitools.ui.wizard.common.FilteredTreePanel;
+import org.gitools.ui.common.wizard.FilteredTreePanel;
 
 public class BiomartAttributePanel extends FilteredTreePanel {
 

@@ -4,7 +4,7 @@ import javax.swing.JFileChooser;
 
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.wizard.common.FileChooserPage;
+import org.gitools.ui.common.wizard.FileChooserPage;
 import org.gitools.ui.wizard.intogen.IntogenColumnsPage;
 
 public class IntogenDataWizard extends AbstractWizard {

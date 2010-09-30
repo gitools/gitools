@@ -37,7 +37,7 @@ public class ImportKeggModulesAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(
 				EnsemblKeggModulesImporter.KEGG_MODULE_CATEGORIES);
 

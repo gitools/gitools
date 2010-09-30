@@ -54,7 +54,14 @@ public class WizardDialog extends AbstractDialog {
 		pageControlsMap = new HashMap<String, JComponent>();
 		pageHistory = new Stack<IWizardPage>();
 		
-		wizard.setDialog(this);
+		wizard.addWizardUpdateListener(new IWizardUpdateListener() {
+			@Override public void pageUpdated(IWizardPage page) {
+				updateState(); }
+
+			@Override public void wizardUpdated(IWizard wizard) {
+				updateState(); }
+		});
+
 		wizard.addPages();
 
 		setCurrentPage(wizard.getStartingPage());

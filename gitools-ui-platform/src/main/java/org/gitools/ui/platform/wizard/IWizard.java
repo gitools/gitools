@@ -30,11 +30,11 @@ public interface IWizard {
 	
 	void performCancel();
 	
-	WizardDialog getDialog();
-	
-	void setDialog(WizardDialog dialog);
-	
 	String getTitle();
 	
 	Icon getLogo();
+
+	void addWizardUpdateListener(IWizardUpdateListener listener);
+
+	void removeWizardUpdateListener(IWizardUpdateListener listener);
 }

@@ -26,7 +26,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.wizard.common.SaveFileWizard;
+import org.gitools.ui.common.wizard.SaveFileWizard;
 
 public class ExportHeatmapImageAction extends BaseAction {
 

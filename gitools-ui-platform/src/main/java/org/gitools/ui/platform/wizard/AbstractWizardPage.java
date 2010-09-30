@@ -1,5 +1,7 @@
 package org.gitools.ui.platform.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -26,6 +28,8 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
 	private HelpContext helpContext;
 
+	private List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
+	
 	public AbstractWizardPage() {
 		this(null);
 	}
@@ -63,7 +67,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	
 	public void setComplete(boolean complete) {
 		this.pageComplete = complete;
-		updateDialog();
+		fireUpdated();
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	
 	public void setTitle(String title) {
 		this.title = title;
-		updateDialog();
+		fireUpdated();
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
 	public void setStatus(MessageStatus status) {
 		this.status = status;
-		updateDialog();
+		fireUpdated();
 	}
 
 	@Override
@@ -117,12 +121,22 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	
 	public void setMessage(String message) {
 		this.message = message;
-		updateDialog();
+		fireUpdated();
 	}
 
 	@Override
 	public HelpContext getHelpContext() {
 		return helpContext;
+	}
+
+	@Override
+	public void addPageUpdateListener(IWizardPageUpdateListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removePageUpdateListener(IWizardPageUpdateListener listener) {
+		listeners.remove(listener);
 	}
 
 	public void setHelpContext(HelpContext helpContext) {
@@ -132,18 +146,11 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	public void setMessage(MessageStatus status, String message) {
 		this.status = status;
 		this.message = message;
-		updateDialog();
+		fireUpdated();
 	}
 
-	protected void updateDialog() {
-		IWizard wz = getWizard();
-		if (wz == null)
-			return;
-		
-		WizardDialog dialog = wz.getDialog();
-		if (dialog == null)
-			return;
-		
-		dialog.updateState();
+	protected void fireUpdated() {
+		for (IWizardPageUpdateListener l : listeners)
+			l.pageUpdated(this);
 	}
 }

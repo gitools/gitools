@@ -32,4 +32,8 @@ public interface IWizardPage {
 	String getMessage();
 
 	HelpContext getHelpContext();
+
+	void addPageUpdateListener(IWizardPageUpdateListener listener);
+
+	void removePageUpdateListener(IWizardPageUpdateListener listener);
 }

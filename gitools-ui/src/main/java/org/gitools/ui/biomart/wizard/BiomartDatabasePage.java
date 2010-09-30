@@ -14,7 +14,7 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.wizard.common.FilteredListPanel;
+import org.gitools.ui.common.wizard.FilteredListPanel;
 
 public class BiomartDatabasePage extends AbstractWizardPage {
 

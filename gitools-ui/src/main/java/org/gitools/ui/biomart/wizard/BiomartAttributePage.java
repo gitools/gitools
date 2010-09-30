@@ -23,8 +23,8 @@ import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.wizard.common.FilteredTreePage;
-import org.gitools.ui.wizard.common.FilteredTreePanel;
+import org.gitools.ui.common.wizard.FilteredTreePage;
+import org.gitools.ui.common.wizard.FilteredTreePanel;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
