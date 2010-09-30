@@ -159,8 +159,8 @@ public class HeatmapHeader extends AbstractModel {
 		return decoration;
 	}
 
-
-	private String expandPattern(
+	//TODO: move this function out of here!
+	public String expandPattern(
 			AnnotationMatrix annotations,
 			String id,
 			String pattern) {
