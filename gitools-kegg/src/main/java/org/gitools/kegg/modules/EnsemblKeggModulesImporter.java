@@ -18,15 +18,21 @@
 package org.gitools.kegg.modules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.xml.rpc.ServiceException;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.AttributeCollection;
+import org.gitools.biomart.restful.model.AttributeDescription;
+import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
@@ -223,7 +229,31 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 
 			List<AttributePage> attrs = bs.getAttributes(mart, dataset);
 
-			// TODO select biomart attributes
+			Set<String> ids = new HashSet<String>(Arrays.asList(new String[] {
+				/**
+		<Attribute name = "ensembl_gene_id" />
+		<Attribute name = "ensembl_transcript_id" />
+		<Attribute name = "ensembl_peptide_id" />
+		<Attribute name = "ucsc" />
+		<Attribute name = "pdb" />
+		<Attribute name = "embl" />
+		<Attribute name = "entrezgene" />
+		<Attribute name = "hgnc_symbol" />
+		<Attribute name = "mirbase_id" />
+		<Attribute name = "refseq_dna" />
+		<Attribute name = "uniprot_swissprot_accession" />
+		<Attribute name = "protein_id" />
+		<Attribute name = "refseq_peptide" />
+		<Attribute name = "unigene" />
+				 */
+			}));
+
+			for (AttributePage p : attrs)
+				for (AttributeGroup g : p.getAttributeGroups())
+					for (AttributeCollection c : g.getAttributeCollections())
+						for (AttributeDescription a : c.getAttributeDescriptions()) {
+
+						}
 
 		}
 		catch (Exception ex) {
