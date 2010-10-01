@@ -47,7 +47,11 @@ public class FilteredListPage extends AbstractWizardPage {
 		panel.setListData(listData);
 	}
 	
-	public Object getSelection() {
+	public Object getSelectedValue() {
 		return panel.getSelectedValue();
+	}
+
+	public void setSelectedValue(Object o) {
+		panel.setSElectedValue(o);
 	}
 }

@@ -62,6 +62,9 @@ public class ModulesOrganismPage extends FilteredListPage {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override public void run() {
 								setListData(organisms);
+								for (Organism o : organisms)
+									if (o.getName().equals("Homo sapiens"))
+										setSelectedValue(o);
 								loaded = true;
 							}
 						});
@@ -82,6 +85,6 @@ public class ModulesOrganismPage extends FilteredListPage {
 	}
 
 	private Organism getOrganism() {
-		return (Organism) getSelection();
+		return (Organism) getSelectedValue();
 	}
 }

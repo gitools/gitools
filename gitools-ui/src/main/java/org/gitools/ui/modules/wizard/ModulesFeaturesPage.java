@@ -74,6 +74,6 @@ public class ModulesFeaturesPage extends FilteredListPage {
 	}
 
 	private FeatureCategory getFeatureCategory() {
-		return (FeatureCategory) getSelection();
+		return (FeatureCategory) getSelectedValue();
 	}
 }

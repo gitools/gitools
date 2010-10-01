@@ -181,6 +181,10 @@ public class FilteredListPanel extends javax.swing.JPanel {
 		return list.getSelectedValue();
 	}
 
+	public void setSElectedValue(Object o) {
+		list.setSelectedValue(o, true);
+	}
+
 	public Object[] getSelectedValues() {
 		return list.getSelectedValues();
 	}

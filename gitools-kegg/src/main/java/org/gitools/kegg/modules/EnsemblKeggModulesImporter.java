@@ -17,6 +17,7 @@
 
 package org.gitools.kegg.modules;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,17 +31,22 @@ import javax.xml.rpc.ServiceException;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
+import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
+import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import org.gitools.kegg.soap.Definition;
 import org.gitools.kegg.soap.KEGGLocator;
 import org.gitools.kegg.soap.KEGGPortType;
+import org.gitools.model.ModuleMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,8 +64,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 		new EnsemblKeggModuleCategory(KEGG_DB, KEGG_PATHWAYS_ID, "KEGG Pathways")
 	};
 
-	public static FeatureCategory[] KEGG_FEATURE_CATEGORIES = new EnsemblKeggFeatureCategory[] {
-		new EnsemblKeggFeatureCategory(KEGG_DB, KEGG_GENE_ID, "KEGG Genes")
+	public static EnsemblKeggFeatureCategory[] KEGG_FEATURE_CATEGORIES = new EnsemblKeggFeatureCategory[] {
+		new EnsemblKeggFeatureCategory(KEGG_DB, KEGG_GENE_ID, "KEGG Genes", "KEGG")
 	};
 
 	// Gene Ontology
@@ -213,13 +219,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 		if (modCategory == null)
 			throw new RuntimeException("Module category not defined.");
 
-		if (modCategory.getDb().equals(KEGG_DB))
-			return KEGG_FEATURE_CATEGORIES;
-
-		if (!modCategory.getDb().equals(ENSEMBL_DB))
-			throw new RuntimeException("Unexpected module category data source.");
-
 		List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
+
+		if (modCategory.getDb().equals(KEGG_DB))
+			feats.addAll(Arrays.asList(KEGG_FEATURE_CATEGORIES));
 
 		try {
 			BiomartRestfulService bs = getBiomartService();
@@ -229,30 +232,29 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 
 			List<AttributePage> attrs = bs.getAttributes(mart, dataset);
 
-			Set<String> ids = new HashSet<String>(Arrays.asList(new String[] {
-				/**
-		<Attribute name = "ensembl_gene_id" />
-		<Attribute name = "ensembl_transcript_id" />
-		<Attribute name = "ensembl_peptide_id" />
-		<Attribute name = "ucsc" />
-		<Attribute name = "pdb" />
-		<Attribute name = "embl" />
-		<Attribute name = "entrezgene" />
-		<Attribute name = "hgnc_symbol" />
-		<Attribute name = "mirbase_id" />
-		<Attribute name = "refseq_dna" />
-		<Attribute name = "uniprot_swissprot_accession" />
-		<Attribute name = "protein_id" />
-		<Attribute name = "refseq_peptide" />
-		<Attribute name = "unigene" />
-				 */
-			}));
+			Map<String, String> ids = new HashMap<String, String>();
+			ids.put("ensembl_gene_id", "Ensembl");
+			ids.put("ensembl_transcript_id", "Ensembl");
+			ids.put("ensembl_peptide_id", "Ensembl");
+			ids.put("ucsc", "Genes");
+			ids.put("pdb", "Proteins");
+			ids.put("embl", "Genes");
+			ids.put("entrezgene", "Genes");
+			ids.put("hgnc_symbol", "Genes");
+			ids.put("refseq_dna", "Genes");
+			ids.put("uniprot_swissprot_accession", "Proteins");
+			ids.put("protein_id", "Proteins");
+			ids.put("refseq_peptide", "Proteins");
+			ids.put("unigene", "Genes");
 
 			for (AttributePage p : attrs)
 				for (AttributeGroup g : p.getAttributeGroups())
 					for (AttributeCollection c : g.getAttributeCollections())
 						for (AttributeDescription a : c.getAttributeDescriptions()) {
-
+							String section = ids.get(a.getInternalName());
+							if (section != null)
+								feats.add(new EnsemblKeggFeatureCategory(
+										ENSEMBL_DB, a.getInternalName(), a.getDisplayName(), section));
 						}
 
 		}
@@ -312,5 +314,47 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 	@Override
 	public void setFeatCategory(FeatureCategory featCategory) {
 		this.featCategory = (EnsemblKeggFeatureCategory) featCategory;
+	}
+
+	// Import
+
+	public ModuleMap importMap(IProgressMonitor monitor) throws ModulesImporterException {
+		ModuleMap mmap = new ModuleMap();
+
+		try {
+			if (featCategory.getDb().equals(ENSEMBL_DB)) {
+				Map<String, String> map1 = new HashMap<String, String>();
+				
+				Query query = new Query();
+				Dataset ds = new Dataset();
+				ds.setInterface(organism.getDataset().getInterface());
+				ds.setName(organism.getDataset().getName());
+				query.getDatasets().add(ds);
+
+				Attribute attr = new Attribute();
+				attr.setName(featCategory.getId());
+				ds.getAttribute().add(attr);
+				if (!featCategory.getId().equals("entrezgene")) {
+					attr = new Attribute();
+					attr.setName("entrezgene");
+					ds.getAttribute().add(attr);
+				}
+
+				biomartService.queryModule(query, new SequentialTableWriter() {
+					@Override public void open() throws Exception { }
+
+					@Override public void close() { }
+
+					@Override public void write(String[] rowFields) throws Exception {
+						
+					}
+				}, monitor);
+			}
+		}
+		catch (Exception ex) {
+			throw new ModulesImporterException(ex);
+		}
+
+		return mmap;
 	}
 }
