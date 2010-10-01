@@ -45,15 +45,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.actions.data.ColorClusterGenerateAction;
 import org.gitools.ui.dialog.ListDialog;
-import org.gitools.ui.dialog.clustering.color.ColorClusterDialog;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.AppFrame;
@@ -109,7 +107,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 					x = true;
 					getHeader().setLabelPattern(labelPattern.getText());
 					x = false;
-					updateColorAnnotations();
 				}
 			}
 		});
@@ -194,13 +191,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	}
 
-	private void updateColorAnnotations() {
-		HeatmapHeader hdr = getHeader();
-		/*HeatmapClusterSet[] hcs =
-				HeatmapUtil.generateColorClusterSet(getHeader());*/
-		
 
-	}
 
 	private void setAnnotationControlsEnabled(boolean enabled) {
 		JComponent[] components = new JComponent[] {
@@ -239,8 +230,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			else if (HeatmapHeader.LABEL_PATTERN_CHANGED.equals(pname) && !x) {
 				labelPattern.setText(hdr.getLabelPattern());
 			}
-			else if (HeatmapHeader.COLOR_ANN_CHANGED.equals(pname))
-				updateColorAnnotations();
+
 
 			/*else if (HeatmapHeader.LINK_NAME_CHANGED.equals(pname))
 				linkName.setText(hdr.getLinkName());
@@ -302,7 +292,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         jLabel11 = new javax.swing.JLabel();
         attributePatternBtn = new javax.swing.JButton();
         labelPattern = new javax.swing.JTextField();
-        colorAnn = new javax.swing.JCheckBox();
+        colorAnnButton = new javax.swing.JButton();
         linksPanel = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -458,10 +448,10 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             }
         });
 
-        colorAnn.setText("Annotating Color");
-        colorAnn.addActionListener(new java.awt.event.ActionListener() {
+        colorAnnButton.setText("Annotate with Color");
+        colorAnnButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorAnnActionPerformed(evt);
+                colorAnnButtonActionPerformed(evt);
             }
         });
 
@@ -472,12 +462,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             .addGroup(labelsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(colorAnn)
                     .addComponent(jLabel11)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, labelsPanelLayout.createSequentialGroup()
                         .addComponent(labelPattern, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributePatternBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(attributePatternBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(colorAnnButton))
                 .addContainerGap())
         );
         labelsPanelLayout.setVerticalGroup(
@@ -489,9 +479,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(attributePatternBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(colorAnn)
-                .addGap(22, 22, 22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(colorAnnButton)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         linksPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Links"));
@@ -553,7 +543,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(linksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -695,13 +685,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 	}//GEN-LAST:event_attributePatternBtnActionPerformed
 
-        private void colorAnnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnActionPerformed
-				if(!updatingControls) {
-					//getHeader().setColorAnnEnabled(colorAnn.isSelected());
-					ColorClusterDialog ccd = new ColorClusterDialog(null, hm, !rowMode);
-					ccd.setVisible(true);
-			}
-        }//GEN-LAST:event_colorAnnActionPerformed
+	private void colorAnnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnButtonActionPerformed
+		if(!updatingControls) {
+			ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
+			ccga.actionPerformed(evt);
+		}
+	}//GEN-LAST:event_colorAnnButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton annClear;
@@ -710,7 +699,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     private javax.swing.JButton annOpen;
     private javax.swing.JButton attributePatternBtn;
     private org.gitools.ui.platform.component.ColorChooserLabel bgColor;
-    private javax.swing.JCheckBox colorAnn;
+    private javax.swing.JButton colorAnnButton;
     private org.gitools.ui.platform.component.ColorChooserLabel fgColor;
     private javax.swing.JButton fontSelect;
     private javax.swing.JTextField fontTitle;

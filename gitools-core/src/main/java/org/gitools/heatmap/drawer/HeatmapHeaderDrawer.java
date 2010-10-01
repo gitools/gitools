@@ -55,7 +55,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
 		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
 
-		final int colorAnnSize = hdr.isColorAnnEnabled() ? 40 : 0;
+		final int colorAnnSize = horizontal ? heatmap.getColumnClusterSets().length * 40 : 0;
 		
 		g.setFont(hdr.getFont());
 		

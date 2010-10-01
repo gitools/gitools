@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class HeatmapCluster {
 
 	protected String name;
+	final static String NO_NAME = "N/A";
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color color;
@@ -46,7 +47,10 @@ public class HeatmapCluster {
 
 	@Override
 	public String toString() {
-		return getName();
+		if (!getName().isEmpty())
+			return getName();
+		else
+			return NO_NAME;
 	}
 
 }

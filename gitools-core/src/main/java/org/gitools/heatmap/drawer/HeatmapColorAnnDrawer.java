@@ -56,7 +56,9 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		IMatrixView data = heatmap.getMatrixView();
 
 		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
-		colorAnnSize = hdr.isColorAnnEnabled() ? 20 : 0;
+		colorAnnSize = horizontal ?
+			heatmap.getColumnClusterSets().length * 20
+			: heatmap.getRowClusterSets().length * 20;
 		
 		g.setFont(hdr.getFont());
 		
@@ -141,8 +143,9 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int gridSize = getGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
 
-		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
-		colorAnnSize = hdr.isColorAnnEnabled() ? 20 : 0;
+		colorAnnSize = horizontal ?
+			heatmap.getColumnClusterSets().length * 20
+			: heatmap.getRowClusterSets().length * 20;
 
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;

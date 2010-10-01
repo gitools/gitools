@@ -289,6 +289,19 @@ public class HeatmapPanel extends JPanel {
 				revalidate();
 				repaint();
 			}
+
+			if(Heatmap.ROW_CLUSTER_SETS_CHANGED.equals(pname)
+					|| Heatmap.COLUMN_CLUSTER_SETS_CHANGED.equals(pname)) {
+				bodyPanel.updateSize();
+				rowHeaderPanel.updateSize();
+				columnHeaderPanel.updateSize();
+				rowColorAnnPanel.updateSize();
+				columnColorAnnPanel.updateSize();
+
+				updateScrolls();
+				revalidate();
+				repaint();
+			}
 		}
 		else if (src.equals(heatmap.getMatrixView())) {
 			if (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
@@ -298,35 +311,6 @@ public class HeatmapPanel extends JPanel {
 				bodyPanel.updateSize();
 				rowHeaderPanel.updateSize();
 				columnHeaderPanel.updateSize();
-
-				updateScrolls();
-				revalidate();
-				repaint();
-			}
-		}
-		else if (src.equals(heatmap.getColumnHeader())){
-			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
-
-				bodyPanel.updateSize();
-				rowHeaderPanel.updateSize();
-				columnHeaderPanel.updateSize();
-				rowColorAnnPanel.updateSize();
-				columnColorAnnPanel.updateSize();
-
-
-				updateScrolls();
-				revalidate();
-				repaint();
-			}
-		}
-		else if (src.equals(heatmap.getRowHeader())){
-			if(HeatmapHeader.COLOR_ANN_CHANGED.equals(pname)){
-
-				bodyPanel.updateSize();
-				rowHeaderPanel.updateSize();
-				columnHeaderPanel.updateSize();
-				rowColorAnnPanel.updateSize();
-				columnColorAnnPanel.updateSize();
 
 				updateScrolls();
 				revalidate();

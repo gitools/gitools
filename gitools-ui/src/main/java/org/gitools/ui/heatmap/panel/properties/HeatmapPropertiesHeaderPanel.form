@@ -29,7 +29,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="labelsPanel" min="-2" pref="122" max="-2" attributes="0"/>
+              <Component id="labelsPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="linksPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -258,16 +258,16 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="colorAnn" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="labelPattern" pref="214" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="attributePatternBtn" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="colorAnnButton" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -283,9 +283,9 @@
                       <Component id="labelPattern" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="attributePatternBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="colorAnn" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="colorAnnButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="16" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -307,12 +307,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="labelPattern">
         </Component>
-        <Component class="javax.swing.JCheckBox" name="colorAnn">
+        <Component class="javax.swing.JButton" name="colorAnnButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Annotating Color"/>
+            <Property name="text" type="java.lang.String" value="Annotate with Color"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorAnnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorAnnButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
