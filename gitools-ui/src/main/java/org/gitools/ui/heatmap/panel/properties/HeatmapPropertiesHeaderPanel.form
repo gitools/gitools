@@ -267,7 +267,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="attributePatternBtn" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="colorAnnButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="colorAnnButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="colorAnnEditBtn" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -284,7 +288,10 @@
                       <Component id="attributePatternBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="colorAnnButton" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="colorAnnButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="colorAnnEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -313,6 +320,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorAnnButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="colorAnnEditBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit Color Cluster"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorAnnEditBtnActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

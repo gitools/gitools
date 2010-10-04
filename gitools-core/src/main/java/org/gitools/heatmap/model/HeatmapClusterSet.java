@@ -49,6 +49,9 @@ public class HeatmapClusterSet extends AbstractModel {
 	/** The height/width of the color band */
 	protected int size;
 
+	/** Wether the cluster set is visible */
+	protected boolean visible;
+
 	/** Whether to show labels of each cluster */
 	protected boolean labelVisible;
 
@@ -125,6 +128,15 @@ public class HeatmapClusterSet extends AbstractModel {
 		int old = this.size;
 		this.size = size;
 		firePropertyChange(SIZE_CHANGED, old, size);
+	}
+
+	/** Wether the cluster set is visible */
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	/** Whether to show labels of each cluster */

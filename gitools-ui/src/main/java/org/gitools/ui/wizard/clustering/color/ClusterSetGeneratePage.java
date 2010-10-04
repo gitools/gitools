@@ -195,7 +195,7 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 			clusterIndices[index] = clusterIndicesMap.get(element);
 		}
 
-
+		clusterSet.setVisible(true);
 		clusterSet.setTitle(pattern);
 		clusterSet.setLabelRotated(!rowMode);
 		clusterSet.setClusters(clusters);

@@ -45,6 +45,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
@@ -57,6 +58,7 @@ import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.clustering.color.ClusterSetEditorDialog;
 
 public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel {
 
@@ -293,6 +295,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         attributePatternBtn = new javax.swing.JButton();
         labelPattern = new javax.swing.JTextField();
         colorAnnButton = new javax.swing.JButton();
+        colorAnnEditBtn = new javax.swing.JButton();
         linksPanel = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -455,6 +458,13 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             }
         });
 
+        colorAnnEditBtn.setText("Edit Color Cluster");
+        colorAnnEditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorAnnEditBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout labelsPanelLayout = new javax.swing.GroupLayout(labelsPanel);
         labelsPanel.setLayout(labelsPanelLayout);
         labelsPanelLayout.setHorizontalGroup(
@@ -467,7 +477,10 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                         .addComponent(labelPattern, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(attributePatternBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(colorAnnButton))
+                    .addGroup(labelsPanelLayout.createSequentialGroup()
+                        .addComponent(colorAnnButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(colorAnnEditBtn)))
                 .addContainerGap())
         );
         labelsPanelLayout.setVerticalGroup(
@@ -480,7 +493,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addComponent(labelPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(attributePatternBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(colorAnnButton)
+                .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(colorAnnButton)
+                    .addComponent(colorAnnEditBtn))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -692,6 +707,17 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 	}//GEN-LAST:event_colorAnnButtonActionPerformed
 
+	private void colorAnnEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnEditBtnActionPerformed
+		if(!updatingControls) {
+			ClusterSetEditorDialog csed = new ClusterSetEditorDialog(AppFrame.instance(), getHeatmap(), rowMode);
+			HeatmapClusterSet[] clusterSets = csed.getClusterSets();
+			if (rowMode)
+				getHeatmap().setRowClusterSets(clusterSets);
+			else
+				getHeatmap().setColumnClusterSets(clusterSets);
+		}
+	}//GEN-LAST:event_colorAnnEditBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton annClear;
     private javax.swing.JTextField annFile;
@@ -700,6 +726,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     private javax.swing.JButton attributePatternBtn;
     private org.gitools.ui.platform.component.ColorChooserLabel bgColor;
     private javax.swing.JButton colorAnnButton;
+    private javax.swing.JButton colorAnnEditBtn;
     private org.gitools.ui.platform.component.ColorChooserLabel fgColor;
     private javax.swing.JButton fontSelect;
     private javax.swing.JTextField fontTitle;

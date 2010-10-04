@@ -56,10 +56,11 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		IMatrixView data = heatmap.getMatrixView();
 
 		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
-		colorAnnSize = horizontal ?
-			heatmap.getColumnClusterSets().length * 20
-			: heatmap.getRowClusterSets().length * 20;
+		colorAnnSize = horizontal ? 
+			calcClusterSizes(heatmap.getColumnClusterSets())	:
+			calcClusterSizes(heatmap.getRowClusterSets());
 		
+
 		g.setFont(hdr.getFont());
 		
 		final Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
@@ -144,8 +145,8 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int extBorder = /*2 * 1 - 1*/ 0;
 
 		colorAnnSize = horizontal ?
-			heatmap.getColumnClusterSets().length * 20
-			: heatmap.getRowClusterSets().length * 20;
+			calcClusterSizes(heatmap.getColumnClusterSets())	:
+			calcClusterSizes(heatmap.getRowClusterSets());
 
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;
@@ -212,5 +213,17 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 	private int getGridSize() {
 		return horizontal ? getColumnsGridSize() : getRowsGridSize();
 
+	}
+
+	private int calcClusterSizes(HeatmapClusterSet[] clusterSets) {
+		int size = 0;
+		for (HeatmapClusterSet hcs : clusterSets) {
+			if (hcs.isVisible()) {
+				size += hcs.getSize();
+				if (hcs.isLabelVisible())
+					size += hcs.getFont().getSize();
+			}
+		}
+		return size;
 	}
 }
