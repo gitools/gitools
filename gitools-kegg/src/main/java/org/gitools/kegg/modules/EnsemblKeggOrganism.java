@@ -1,5 +1,7 @@
 package org.gitools.kegg.modules;
 
+import org.gitools.modules.importer.Organism;
+import org.gitools.modules.importer.RefImpl;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.kegg.soap.Definition;
 

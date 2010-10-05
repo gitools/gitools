@@ -15,22 +15,17 @@
  *  under the License.
  */
 
-package org.gitools.kegg.idmapper;
+package org.gitools.idmapper;
 
-import org.gitools.idmapper.AbstractMapper;
-import org.gitools.kegg.soap.KEGGPortType;
+public interface Ids {
 
-public abstract class AbstractKeggMapper extends AbstractMapper {
+	public static final String GENEBANK = "genebank:genes";
+	public static final String UNIGENE = "unigene:genes";
+	public static final String ENTREZ = "entrez:genes";
+	public static final String PDB = "pdb:proteins";
+	public static final String UNIPROT = "uniprot:proteins";
 
-	protected KEGGPortType service;
-	protected String organismId;
-
-	public AbstractKeggMapper(String name, boolean bidirectional, boolean generator,
-			KEGGPortType service, String organismId) {
-
-		super(name, bidirectional, generator);
-		
-		this.service = service;
-		this.organismId = organismId;
-	}
+	public static final String GO_BP = "go:bp";
+	public static final String GO_MF = "go:mf";
+	public static final String GO_CL = "go:cl";
 }

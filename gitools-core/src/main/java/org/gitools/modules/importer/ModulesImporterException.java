@@ -15,8 +15,16 @@
  *  under the License.
  */
 
-package org.gitools.kegg.modules;
+package org.gitools.modules.importer;
 
-public interface Version extends Ref {
+public class ModulesImporterException extends Exception {
+
+	public ModulesImporterException(String msg) {
+		super(msg);
+	}
+
+	public ModulesImporterException(Throwable cause) {
+		super(cause);
+	}
 
 }

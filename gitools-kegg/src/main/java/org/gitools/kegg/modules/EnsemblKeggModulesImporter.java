@@ -17,12 +17,17 @@
 
 package org.gitools.kegg.modules;
 
+import org.gitools.modules.importer.Organism;
+import org.gitools.modules.importer.ModulesImporter;
+import org.gitools.modules.importer.ModuleCategory;
+import org.gitools.modules.importer.FeatureCategory;
+import org.gitools.modules.importer.ModulesImporterException;
+import org.gitools.modules.importer.Version;
 import org.gitools.kegg.idmapper.KeggGenesMapper;
 import org.gitools.kegg.idmapper.KeggPathwaysMapper;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,21 +38,19 @@ import java.util.Set;
 import javax.xml.rpc.ServiceException;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
+import org.gitools.biomart.idmapper.EnsemblMapper;
 import org.gitools.biomart.restful.BiomartRestfulService;
-import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
-import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
-import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
-import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingEngine;
+import org.gitools.kegg.idmapper.AllIds;
 import org.gitools.kegg.soap.Definition;
 import org.gitools.kegg.soap.KEGGLocator;
 import org.gitools.kegg.soap.KEGGPortType;
@@ -55,40 +58,40 @@ import org.gitools.model.ModuleMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EnsemblKeggModulesImporter implements ModulesImporter {
+public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 
 	private static Logger logger = LoggerFactory.getLogger(EnsemblKeggModulesImporter.class);
 
 	// KEGG
 
 	public static final EnsemblKeggModuleCategory[] KEGG_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[] {
-		new EnsemblKeggModuleCategory("KEGG", "kegg:pathways", "KEGG Pathways")
+		new EnsemblKeggModuleCategory("KEGG", KEGG_PATHWAYS, "KEGG Pathways")
 	};
 
 	private static final EnsemblKeggFeatureCategory[] KEGG_FEATURES = new EnsemblKeggFeatureCategory[] {
-		new EnsemblKeggFeatureCategory("Genes", "kegg:genes", "KEGG Genes"),
-		new EnsemblKeggFeatureCategory("Genes", "entrez:genes", "Entrez Genes"),
-		new EnsemblKeggFeatureCategory("Protein", "pdb:proteins", "PDB"),
-		new EnsemblKeggFeatureCategory("Protein", "uniprot:proteins", "UniProt")
+		new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
+		new EnsemblKeggFeatureCategory("Genes", ENTREZ, "Entrez Genes"),
+		new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"),
+		new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt")
 	};
 
 	// Gene Ontology
 
 	public static final EnsemblKeggModuleCategory[] GO_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[] {
-		new EnsemblKeggModuleCategory("Ensembl", "go:bp", "GO Biological Processes"),
-		new EnsemblKeggModuleCategory("Ensembl", "go:mf", "GO Molecular functions"),
-		new EnsemblKeggModuleCategory("Ensembl", "go:cl", "GO Cellular locations")
+		new EnsemblKeggModuleCategory("Ensembl", GO_BP, "GO Biological Processes"),
+		new EnsemblKeggModuleCategory("Ensembl", GO_MF, "GO Molecular functions"),
+		new EnsemblKeggModuleCategory("Ensembl", GO_CL, "GO Cellular locations")
 	};
 
 	private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[] {
-		new EnsemblKeggFeatureCategory("Genes", "kegg:genes", "KEGG Genes"),
-		new EnsemblKeggFeatureCategory("Genes", "entrez:genes", "Entrez Genes"),
-		new EnsemblKeggFeatureCategory("Genes", "ensembl:genes", "Ensembl Genes"),
-		new EnsemblKeggFeatureCategory("Genes", "ensembl:transcripts", "Ensembl Transcripts"),
-		new EnsemblKeggFeatureCategory("Genes", "entrez:genes", "Entrez Genes"),
-		new EnsemblKeggFeatureCategory("Protein", "pdb:proteins", "PDB"),
-		new EnsemblKeggFeatureCategory("Protein", "uniprot:proteins", "UniProt"),
-		new EnsemblKeggFeatureCategory("Protein", "ensembl:proteins", "Ensembl Proteins")
+		new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
+		new EnsemblKeggFeatureCategory("Genes", ENTREZ, "Entrez Genes"),
+		new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
+		new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts"),
+		new EnsemblKeggFeatureCategory("Genes", ENTREZ, "Entrez Genes"),
+		new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"),
+		new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt"),
+		new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")
 	};
 
 	private static final Map<String, EnsemblKeggFeatureCategory> COMMON_FEATURES_MAP = new HashMap<String, EnsemblKeggFeatureCategory>();
@@ -267,8 +270,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 			feats.addAll(Arrays.asList(KEGG_FEATURES));
 
 		feats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[] {
-			new EnsemblKeggFeatureCategory("Genes", "ensembl:genes", "Ensembl Genes"),
-			new EnsemblKeggFeatureCategory("Genes", "ensembl:transcripts", "Ensembl Transcripts")
+			new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
+			new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts")
 		}));
 		
 		try {
@@ -280,11 +283,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 			List<AttributePage> attrs = bs.getAttributes(mart, dataset);
 
 			Map<String, String> idmap = new HashMap<String, String>();
-			idmap.put("ensembl_gene_id", "ensembl:genes");
-			idmap.put("ensembl_transcript_id", "ensembl:transcripts");
-			idmap.put("pdb", "pdb:proteins");
-			idmap.put("entrezgene", "entrez:genes");
-			idmap.put("uniprot_swissprot_accession", "uniprot:proteins");
+			idmap.put("ensembl_gene_id", ENSEMBL_GENES);
+			idmap.put("ensembl_transcript_id", ENSEMBL_TRANSCRIPTS);
+			idmap.put("pdb", PDB);
+			idmap.put("entrezgene", ENTREZ);
+			idmap.put("uniprot_swissprot_accession", UNIPROT);
 			//ids.put("unigene", "unigene:genes");
 
 			Set<String> idremove = new HashSet<String>(Arrays.asList(new String[] {
@@ -405,6 +408,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 
 		MappingEngine mapping = new MappingEngine();
 
+		// Build KEGG network
 		if (organism.getKeggDef() != null) {
 
 			String keggorg = organism.getKeggDef().getEntry_id();
@@ -417,20 +421,50 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 				throw new ModulesImporterException(ex);
 			}
 
-			mapping.addMapper("kegg:pathways", "kegg:genes",
+			mapping.addMapper(KEGG_PATHWAYS, KEGG_GENES,
 					new KeggPathwaysMapper(ks, keggorg));
 
-			mapping.addMapper("kegg:genes", "ensembl:genes",
+			mapping.addMapper(KEGG_GENES, ENSEMBL_GENES,
 					new KeggGenesMapper(ks, keggorg));
 
-			mapping.addMapper("kegg:genes", "pdb:proteins",
+			mapping.addMapper(KEGG_GENES, PDB,
 					new KeggGenesMapper(ks, keggorg));
 
-			mapping.addMapper("kegg:genes", "uniprot:proteins",
+			mapping.addMapper(KEGG_GENES, UNIPROT,
 					new KeggGenesMapper(ks, keggorg));
 
-			mapping.addMapper("kegg:genes", "entrez:genes",
+			mapping.addMapper(KEGG_GENES, ENTREZ,
 					new KeggGenesMapper(ks, keggorg));
+		}
+
+		// Build Ensembl network
+		if (organism.getEnsemblDataset() != null) {
+			Set<String> sinks = new HashSet<String>();
+			try {
+				for (FeatureCategory f : getFeatureCategories()) {
+					String id = f.getRef();
+					if (id.startsWith("ensembl") && !id.equals(ENSEMBL_GENES))
+						sinks.add(id);
+				}
+
+				BiomartRestfulService bs = getBiomartService();
+				String dsName = organism.getEnsemblDataset().getName();
+
+				for (String id : sinks) {
+					mapping.addMapper(ENSEMBL_GENES, id, new EnsemblMapper(bs, dsName));
+
+					mapping.addMapper(GO_BP, id, new EnsemblMapper(bs, dsName));
+					mapping.addMapper(GO_MF, id, new EnsemblMapper(bs, dsName));
+					mapping.addMapper(GO_CL, id, new EnsemblMapper(bs, dsName));
+				}
+
+				mapping.addMapper(GO_BP, ENSEMBL_GENES, new EnsemblMapper(bs, dsName));
+				mapping.addMapper(GO_MF, ENSEMBL_GENES, new EnsemblMapper(bs, dsName));
+				mapping.addMapper(GO_CL, ENSEMBL_GENES, new EnsemblMapper(bs, dsName));
+			}
+			catch (Exception ex) {
+				throw new ModulesImporterException(ex);
+			}
 		}
 
 		try {
@@ -448,7 +482,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter {
 			}
 		}
 		catch (Exception ex) {
-			monitor.exception(new ModulesImporterException(ex));
+			throw new ModulesImporterException(ex);
 		}
 
 		return mmap;

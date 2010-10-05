@@ -19,10 +19,10 @@ package org.gitools.ui.modules.wizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
-import org.gitools.kegg.modules.ModuleCategory;
-import org.gitools.kegg.modules.ModulesImporter;
-import org.gitools.kegg.modules.Organism;
-import org.gitools.kegg.modules.Version;
+import org.gitools.modules.importer.ModuleCategory;
+import org.gitools.modules.importer.ModulesImporter;
+import org.gitools.modules.importer.Organism;
+import org.gitools.modules.importer.Version;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;

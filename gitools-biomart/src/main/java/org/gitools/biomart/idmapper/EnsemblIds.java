@@ -15,22 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.kegg.idmapper;
+package org.gitools.biomart.idmapper;
 
-import org.gitools.idmapper.AbstractMapper;
-import org.gitools.kegg.soap.KEGGPortType;
+public interface EnsemblIds {
 
-public abstract class AbstractKeggMapper extends AbstractMapper {
-
-	protected KEGGPortType service;
-	protected String organismId;
-
-	public AbstractKeggMapper(String name, boolean bidirectional, boolean generator,
-			KEGGPortType service, String organismId) {
-
-		super(name, bidirectional, generator);
-		
-		this.service = service;
-		this.organismId = organismId;
-	}
+	public static final String ENSEMBL_GENES = "ensembl:genes";
+	public static final String ENSEMBL_TRANSCRIPTS = "ensembl:transcripts";
+	public static final String ENSEMBL_PROTEINS = "ensembl:proteins";
 }

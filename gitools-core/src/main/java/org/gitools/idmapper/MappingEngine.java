@@ -232,7 +232,8 @@ public class MappingEngine {
 		while (paths.size() > 0) {
 			Path path = paths.poll();
 			MappingNode snode = path.getLastNode();
-			List<Step> steps = getSteps(snode);
+			boolean generatorRequired = path.getLength() == 0;
+			List<Step> steps = getSteps(snode, generatorRequired);
 			for (Step step : steps) {
 				if (step.getNode().equals(dstNode)) {
 					path.addStep(step);
@@ -246,12 +247,22 @@ public class MappingEngine {
 		return bestPath;
 	}
 
-	private List<Step> getSteps(MappingNode snode) {
+	private List<Step> getSteps(MappingNode snode, boolean generatorRequired) {
 		List<Step> steps = new ArrayList<Step>();
 
-		for (Edge edge : edges)
-			if (edge.getSrc().equals(snode))
-				steps.add(new Step(edge.getDst(), edge.getMapper()));
+		for (Edge edge : edges) {
+			MappingNode src = edge.getSrc();
+			MappingNode dst = edge.getDst();
+			Mapper mapper = edge.getMapper();
+			
+			if (generatorRequired && !mapper.isGenerator())
+				continue;
+
+			if (src.equals(snode))
+				steps.add(new Step(dst, mapper));
+			else if (mapper.isBidirectional() && dst.equals(snode))
+				steps.add(new Step(src, mapper));
+		}
 
 		return steps;
 	}

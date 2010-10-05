@@ -32,18 +32,20 @@ import org.gitools.idmapper.MappingException;
 import org.gitools.idmapper.MappingNode;
 import org.gitools.kegg.soap.KEGGPortType;
 
-public class KeggGenesMapper extends AbstractKeggMapper {
+public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
+
+	private static final String FTP_BASE_URL = "ftp://ftp.genome.jp/pub/kegg/genes/organisms/";
 
 	private static final Map<String, String> fileKey = new HashMap<String, String>();
 	static {
-		fileKey.put("entrez:genes", "ncbi-geneid");
-		fileKey.put("uniprot:proteins", "uniprot");
-		fileKey.put("pdb:proteins", "pdb");
-		fileKey.put("ensembl:genes", "ensembl");
+		fileKey.put(ENTREZ, "ncbi-geneid");
+		fileKey.put(UNIPROT, "uniprot");
+		fileKey.put(PDB, "pdb");
+		fileKey.put(ENSEMBL_GENES, "ensembl");
 	}
 
 	public KeggGenesMapper(KEGGPortType service, String organismId) {
-		super("KeggGenes", service, organismId);
+		super("KeggGenes", false, false, service, organismId);
 	}
 
 	@Override
@@ -60,13 +62,13 @@ public class KeggGenesMapper extends AbstractKeggMapper {
 		// Get map from the FTP
 		try {
 			String prefix = fileKey.get(dst.getId());
-			if (!src.getId().equals("kegg:genes") || prefix == null)
+			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
 				throw new MappingException("Unsupported mapping from " + src + " to " + dst);
 
 			if (prefix.equals("ensembl"))
 				prefix = prefix + "-" + organismId;
 
-			URL url = new URL("ftp://ftp.genome.jp/pub/kegg/genes/organisms/"
+			URL url = new URL(FTP_BASE_URL
 					+ organismId + "/" + organismId + "_" + prefix + ".list");
 
 			monitor.info(url.toString());
@@ -88,24 +90,16 @@ public class KeggGenesMapper extends AbstractKeggMapper {
 			}
 		}
 		catch (Exception ex) {
-			monitor.exception(ex);
+			throw new MappingException(ex);
 		}
 
 		monitor.end();
 
-		Set<Entry<String, Set<String>>> eset = data.getMap().entrySet();
-		monitor.begin("Mapping KEGG genes ...", eset.size());
+		monitor.begin("Mapping KEGG genes ...", 1);
 
-		// Do mapping
-		for (Map.Entry<String, Set<String>> e : eset) {
-			Set<String> dset = new HashSet<String>();
-			for (String sname : e.getValue()) {
-				Set<String> dnames = map.get(sname);
-				if (dnames != null)
-					dset.addAll(dnames);
-			}
-			data.set(e.getKey(), dset);
-		}
+		data.map(map);
+
+		monitor.end();
 		
 		return data;
 	}

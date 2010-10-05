@@ -15,16 +15,12 @@
  *  under the License.
  */
 
-package org.gitools.kegg.modules;
+package org.gitools.kegg.idmapper;
 
-public class ModulesImporterException extends Exception {
+public interface KeggIds {
 
-	public ModulesImporterException(String msg) {
-		super(msg);
-	}
-
-	public ModulesImporterException(Throwable cause) {
-		super(cause);
-	}
-
+	public static final String KEGG_GENES = "kegg:genes";
+	public static final String KEGG_PATHWAYS = "kegg:pathways";
+	public static final String KEGG_ENZYMES = "kegg:enzymes";
+	public static final String KEGG_DRUGS = "kegg:drugs";
 }

@@ -21,14 +21,32 @@ package org.gitools.idmapper;
 public abstract class AbstractMapper implements Mapper {
 
 	private String name;
+	private boolean bidirectional;
+	private boolean generator;
+
+	public AbstractMapper(String name, boolean bidirectional, boolean generator) {
+		this.name = name;
+		this.bidirectional = bidirectional;
+		this.generator = generator;
+	}
 
 	public AbstractMapper(String name) {
-		this.name = name;
+		this(name, false, false);
 	}
 
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public boolean isBidirectional() {
+		return bidirectional;
+	}
+
+	@Override
+	public boolean isGenerator() {
+		return generator;
 	}
 
 	@Override

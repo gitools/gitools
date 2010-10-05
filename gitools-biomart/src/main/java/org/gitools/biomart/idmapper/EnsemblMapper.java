@@ -18,16 +18,16 @@
 package org.gitools.biomart.idmapper;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import org.gitools.biomart.BiomartServiceException;
-import org.gitools.biomart.BiomartServiceFactory;
+import java.util.Set;
 import org.gitools.biomart.restful.BiomartRestfulService;
-import org.gitools.biomart.restful.model.MartLocation;
-import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.biomart.settings.BiomartSourceManager;
+import org.gitools.biomart.restful.model.Attribute;
+import org.gitools.biomart.restful.model.Dataset;
+import org.gitools.biomart.restful.model.Query;
+import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
 import org.gitools.idmapper.AbstractMapper;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
@@ -35,101 +35,117 @@ import org.gitools.idmapper.MappingException;
 import org.gitools.idmapper.MappingNode;
 
 
-public class EnsemblMapper extends AbstractMapper {
+public class EnsemblMapper extends AbstractMapper implements AllIds {
 
-	public static final String BIOMART_SOURCE_ID = "ensembl.biomart.source.id";
-
-	private BiomartSource source;
 	private BiomartRestfulService service;
-	private MartLocation mart;
+	private String dataset;
 
+	public EnsemblMapper(BiomartRestfulService service, String dataset) {
+		super("Ensembl", true, true);
 
-	public EnsemblMapper(String organismDataset) {
-		super("Ensembl");
-	}
-
-	public BiomartSource[] getEnsemblSources() {
-		LinkedList<BiomartSource> sources = new LinkedList<BiomartSource>();
-
-		BiomartSource latestVersion = null;
-		for (BiomartSource src : BiomartSourceManager.getDefault().getSources()) {
-			if (src.getName().matches(".*ensembl.*")) {
-				if (src.getName().matches(".*last.*"))
-					latestVersion = src;
-				else
-					sources.add(src);
-			}
-		}
-
-		if (latestVersion != null)
-			sources.add(0, latestVersion);
-
-		return sources.toArray(new BiomartSource[sources.size()]);
+		this.service = service;
+		this.dataset = dataset;
 	}
 
 	@Override
 	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		String sourceId = context.getString(BIOMART_SOURCE_ID);
-		if (sourceId == null)
-			throw new MappingException("Context property " + BIOMART_SOURCE_ID + " not defined.");
+	}
 
-		source = getEnsemblSource(sourceId);
+	@Override
+	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
+		String srcInternalName = getInternalName(src.getId());
+		String dstInternalName = getInternalName(dst.getId());
+		if (srcInternalName == null || dstInternalName == null)
+			throw new MappingException("Unsupported mapping from " + src + " to " + dst);
 
+		monitor.begin("Getting mappings from Ensembl ...", 1);
+
+		final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+
+		Query q = createQuery(dataset, srcInternalName, dstInternalName);
 		try {
-			MartLocation mart = getMartLocation();
+			service.queryModule(q, new SequentialTableWriter() {
+				@Override public void open() throws Exception { }
+				@Override public void close() { }
 
-			
+				@Override public void write(String[] rowFields) throws Exception {
+					String srcf = rowFields[0];
+					String dstf = rowFields[1];
+					Set<String> items = map.get(srcf);
+					if (items == null) {
+						items = new HashSet<String>();
+						map.put(srcf, items);
+					}
+					items.add(dstf);
+				}
+			}, monitor);
 		}
 		catch (Exception ex) {
 			throw new MappingException(ex);
 		}
 
+		monitor.end();
 
-	}
+		monitor.begin("Mapping ...", 1);
 
-	private BiomartRestfulService getService() throws BiomartServiceException {
-		if (service != null)
-			return service;
+		if (data.isEmpty())
+			data.identity(map.keySet());
 
-		return service = BiomartServiceFactory.createRestfulService(source);
-	}
+		data.map(map);
 
-	private MartLocation getMartLocation() throws BiomartServiceException, MappingException {
-		if (mart != null)
-			return mart;
+		monitor.end();
 
-		BiomartRestfulService bs = getService();
-		List<MartLocation> registry = bs.getRegistry();
-		Iterator<MartLocation> it = registry.iterator();
-
-		while (mart == null && it.hasNext()) {
-			MartLocation m = it.next();
-			if (m.getName().equals("ENSEMBL_MART_ENSEMBL"))
-				mart = m;
-		}
-
-		if (mart == null)
-			throw new MappingException("Ensembl Genes database not found in the registry.");
-
-		return mart;
-	}
-
-	private BiomartSource getEnsemblSource(String id) {
-		for (BiomartSource src : BiomartSourceManager.getDefault().getSources()) {
-			if (src.getName().equals(id))
-				return src;
-		}
-		return null;
-	}
-
-	@Override
-	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
-		throw new UnsupportedOperationException("Not supported yet.");
+		return data;
 	}
 
 	@Override
 	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		throw new UnsupportedOperationException("Not supported yet.");
+		//throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	private static final Map<String, String> inameMap = new HashMap<String, String>();
+	static {
+		inameMap.put(PDB, "pdb");
+		inameMap.put(GENEBANK, "embl");
+		inameMap.put(ENTREZ, "entrezgene");
+		inameMap.put(UNIGENE, "unigene");
+		inameMap.put(UNIPROT, "uniprot_swissprot_accession");
+		inameMap.put(GO_BP, "go_biological_process_id");
+		inameMap.put(GO_MF, "go_molecular_function_id");
+		inameMap.put(GO_CL, "go_cellular_component_id");
+	}
+
+	private String getInternalName(String id) {
+		if (id.startsWith("ensembl:")) {
+			id = id.substring(8);
+			if ("genes".equals(id))
+				return "ensembl_gene_id";
+			else if ("transcripts".equals(id))
+				return "ensembl_transcript_id";
+			else if ("proteins".equals(id))
+				return "ensembl_protein_id";
+			else
+				return id;
+		}
+		else
+			return inameMap.get(id);
+	}
+
+	private Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
+		Query q = new Query();
+		Dataset ds = new Dataset();
+		ds.setName(dataset);
+		List<Attribute> attrs = ds.getAttribute();
+		Attribute srcAttr = new Attribute();
+		srcAttr.setName(srcInternalName);
+		attrs.add(srcAttr);
+		Attribute dstAttr = new Attribute();
+		dstAttr.setName(dstInternalName);
+		attrs.add(dstAttr);
+
+		q.getDatasets().add(ds);
+
+		return q;
 	}
 }
 /*biomartService.queryModule(query, new SequentialTableWriter() {

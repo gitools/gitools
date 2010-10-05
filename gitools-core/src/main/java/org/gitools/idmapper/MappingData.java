@@ -88,4 +88,34 @@ public class MappingData {
 		return map;
 	}
 
+	public void map(Map<String, Set<String>> dstmap) {
+		clearDstIds();
+		
+		for (Map.Entry<String, Set<String>> e : map.entrySet()) {
+			Set<String> dset = new HashSet<String>();
+			for (String sname : e.getValue()) {
+				Set<String> dnames = dstmap.get(sname);
+				if (dnames != null)
+					dset.addAll(dnames);
+			}
+			set(e.getKey(), dset);
+		}
+	}
+
+	public void clear() {
+		dstIds.clear();
+		map.clear();
+	}
+
+	public boolean isEmpty() {
+		return map.keySet().isEmpty();
+	}
+
+	public void identity(Set<String> set) {
+		clear();
+
+		for (String id : set)
+			put(id, id);
+	}
+
 }

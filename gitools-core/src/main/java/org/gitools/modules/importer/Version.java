@@ -15,30 +15,8 @@
  *  under the License.
  */
 
-package org.gitools.kegg.modules;
+package org.gitools.modules.importer;
 
-public interface ModulesImporter {
-
-	ModuleCategory[] getModuleCategories();
-
-	Version[] getVersions();
-
-	Organism[] getOrganisms() throws ModulesImporterException;
-
-	FeatureCategory[] getFeatureCategories() throws ModulesImporterException;
-
-	// Importer state
-
-	ModuleCategory getModuleCategory();
-	void setModuleCategory(ModuleCategory category);
-
-	Version getVersion();
-	void setVersion(Version version);
-
-	Organism getOrganism();
-	void setOrganism(Organism organism);
-
-	FeatureCategory getFeatureCategory();
-	void setFeatCategory(FeatureCategory category);
+public interface Version extends Ref {
 
 }

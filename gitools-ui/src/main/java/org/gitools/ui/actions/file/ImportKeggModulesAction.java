@@ -68,9 +68,6 @@ public class ImportKeggModulesAction extends BaseAction {
 				}
 			}
 		});
-
-
-
 	}
 
 }

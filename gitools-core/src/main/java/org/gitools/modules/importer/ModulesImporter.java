@@ -15,22 +15,30 @@
  *  under the License.
  */
 
-package org.gitools.kegg.idmapper;
+package org.gitools.modules.importer;
 
-import org.gitools.idmapper.AbstractMapper;
-import org.gitools.kegg.soap.KEGGPortType;
+public interface ModulesImporter {
 
-public abstract class AbstractKeggMapper extends AbstractMapper {
+	ModuleCategory[] getModuleCategories();
 
-	protected KEGGPortType service;
-	protected String organismId;
+	Version[] getVersions();
 
-	public AbstractKeggMapper(String name, boolean bidirectional, boolean generator,
-			KEGGPortType service, String organismId) {
+	Organism[] getOrganisms() throws ModulesImporterException;
 
-		super(name, bidirectional, generator);
-		
-		this.service = service;
-		this.organismId = organismId;
-	}
+	FeatureCategory[] getFeatureCategories() throws ModulesImporterException;
+
+	// Importer state
+
+	ModuleCategory getModuleCategory();
+	void setModuleCategory(ModuleCategory category);
+
+	Version getVersion();
+	void setVersion(Version version);
+
+	Organism getOrganism();
+	void setOrganism(Organism organism);
+
+	FeatureCategory getFeatureCategory();
+	void setFeatCategory(FeatureCategory category);
+
 }

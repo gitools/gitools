@@ -32,10 +32,10 @@ import org.gitools.idmapper.MappingNode;
 import org.gitools.kegg.soap.Definition;
 import org.gitools.kegg.soap.KEGGPortType;
 
-public class KeggPathwaysMapper extends AbstractKeggMapper {
+public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 
 	public KeggPathwaysMapper(KEGGPortType service, String organismId) {
-		super("KeggPathways", service, organismId);
+		super("KeggPathways", false, true, service, organismId);
 	}
 
 	@Override
@@ -45,7 +45,10 @@ public class KeggPathwaysMapper extends AbstractKeggMapper {
 
 	@Override
 	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
-		if (data.getSrcIds().isEmpty()) {
+		if (!KEGG_PATHWAYS.equals(src.getId()))
+			throw new MappingException("Unsupported mapping from " + src + " to " + dst);
+		
+		if (data.isEmpty()) {
 			monitor.begin("Getting KEGG pathways ...", 1);
 			try {
 				Definition[] pathwaysDefs = service.list_pathways(organismId);

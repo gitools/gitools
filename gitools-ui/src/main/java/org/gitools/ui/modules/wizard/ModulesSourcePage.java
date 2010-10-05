@@ -24,9 +24,9 @@
 package org.gitools.ui.modules.wizard;
 
 import javax.swing.DefaultComboBoxModel;
-import org.gitools.kegg.modules.ModuleCategory;
-import org.gitools.kegg.modules.ModulesImporter;
-import org.gitools.kegg.modules.Version;
+import org.gitools.modules.importer.ModuleCategory;
+import org.gitools.modules.importer.ModulesImporter;
+import org.gitools.modules.importer.Version;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 

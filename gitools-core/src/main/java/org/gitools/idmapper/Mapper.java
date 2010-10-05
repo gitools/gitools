@@ -22,6 +22,10 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 public interface Mapper {
 
 	String getName();
+
+	boolean isBidirectional();
+
+	boolean isGenerator();
 	
 	void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException;
 
