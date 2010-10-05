@@ -197,8 +197,16 @@ public class HeatmapPanel extends JPanel {
 	}
 
 	private void updateViewPorts() {
+		Dimension totalSize = bodyVP.getViewSize();
+		Dimension visibleSize = bodyVP.getSize();
+
 		int colValue = colSB.getValue();
+		if (colValue + visibleSize.width > totalSize.width)
+			colValue = totalSize.width - visibleSize.width;
+		
 		int rowValue = rowSB.getValue();
+		if (rowValue + visibleSize.height > totalSize.height)
+			rowValue = totalSize.height -visibleSize.height;
 
 		colVP.setViewPosition(new Point(colValue, 0));
 		rowVP.setViewPosition(new Point(0, rowValue));

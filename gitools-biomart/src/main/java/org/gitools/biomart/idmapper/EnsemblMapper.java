@@ -41,7 +41,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 	private String dataset;
 
 	public EnsemblMapper(BiomartRestfulService service, String dataset) {
-		super("Ensembl", true, true);
+		super("Ensembl", false, true);
 
 		this.service = service;
 		this.dataset = dataset;
