@@ -1,11 +1,13 @@
 package org.gitools.model;
 
+import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import cern.colt.bitvector.BitMatrix;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +66,41 @@ public class ModuleMap extends Artifact {
 		for (int i = 0; i < indices.length; i++)
 			indices[i] = i;
 		setAllItemIndices(new int[][] { indices });
+	}
+
+	public ModuleMap(Map<String, Set<String>> map) {
+		int modCount = map.keySet().size();
+
+		String[] mnames = map.keySet().toArray(new String[modCount]);
+		int[][] indices = new int[modCount][];
+
+		Map<String, Integer> itemMap = new HashMap<String, Integer>();
+
+		int i = 0;
+		for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+			mnames[i] = entry.getKey();
+
+			int[] ii = new int[entry.getValue().size()];
+			int j = 0;
+			for (String iname : entry.getValue()) {
+				Integer idx = itemMap.get(iname);
+				if (idx == null) {
+					idx = itemMap.size();
+					itemMap.put(iname, itemMap.size());
+				}
+				ii[j++] = idx;
+			}
+			indices[i] = ii;
+			i++;
+		}
+
+		String[] inames = new String[itemMap.keySet().size()];
+		for (Map.Entry<String, Integer> entry : itemMap.entrySet())
+			inames[entry.getValue()] = entry.getKey();
+
+		setModuleNames(mnames);
+		setItemNames(inames);
+		this.itemIndices = indices;
 	}
 	
 	public String[] getModuleNames() {

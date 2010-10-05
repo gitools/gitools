@@ -18,16 +18,9 @@
 package org.gitools.idmapper;
 
 
-public abstract class AbstractMappingProcessor implements IdMappingProcessor {
+public interface MappingNode {
 
-	private String name;
-
-	public AbstractMappingProcessor(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
+	String getId();
+	
+	String getName();
 }

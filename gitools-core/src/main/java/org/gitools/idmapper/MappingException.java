@@ -18,9 +18,13 @@
 package org.gitools.idmapper;
 
 
-public interface IdMappingNode {
+public class MappingException extends Exception {
 
-	String getId();
-	
-	String getName();
+	public MappingException(String msg) {
+		super(msg);
+	}
+
+	public MappingException(Throwable cause) {
+		super(cause);
+	}
 }

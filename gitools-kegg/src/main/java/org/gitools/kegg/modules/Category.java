@@ -2,19 +2,19 @@ package org.gitools.kegg.modules;
 
 public abstract class Category extends RefImpl {
 
-	private String db;
+	private String section;
 
-	public Category(String db, String id, String name) {
+	public Category(String section, String id, String name) {
 		super(id, name);
-		this.db = db;
+		this.section = section;
 	}
 
-	public String getDb() {
-		return db;
+	public String getSection() {
+		return section;
 	}
 
 	@Override
 	public String getRef() {
-		return db + ":" + super.getRef();
+		return section + ":" + super.getRef();
 	}
 }

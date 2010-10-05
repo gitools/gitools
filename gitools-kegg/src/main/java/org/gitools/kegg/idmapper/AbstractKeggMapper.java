@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 cperez.
+ *  Copyright 2010 chris.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,19 @@
  *  under the License.
  */
 
-package org.gitools.idmapper;
+package org.gitools.kegg.idmapper;
 
-import java.util.Map;
+import org.gitools.idmapper.AbstractMapper;
+import org.gitools.kegg.soap.KEGGPortType;
 
-public interface IdMappingProcessor {
+public abstract class AbstractKeggMapper extends AbstractMapper {
 
-	String getName();
-	
-	void initialize(IdMappingContext context) throws IdMappingException;
+	protected KEGGPortType service;
+	protected String organismId;
 
-	Map<String, String> map(
-			IdMappingContext context,
-			Map<String, String> input,
-			IdMappingNode src,
-			IdMappingNode dst) throws IdMappingException;
-
-	void finalize(IdMappingContext context) throws IdMappingException;
+	public AbstractKeggMapper(String name, KEGGPortType service, String organismId) {
+		super(name);
+		this.service = service;
+		this.organismId = organismId;
+	}
 }

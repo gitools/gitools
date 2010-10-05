@@ -54,6 +54,9 @@ public class ModulesFeaturesPage extends FilteredListPage {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override public void run() {
 								setListData(features);
+								for (FeatureCategory f : features)
+									if (f.getRef().equals("ensembl:genes"))
+										setSelectedValue(f);
 								loaded = true;
 							}
 						});

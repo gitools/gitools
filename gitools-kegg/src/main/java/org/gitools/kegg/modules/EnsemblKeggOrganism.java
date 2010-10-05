@@ -1,38 +1,50 @@
 package org.gitools.kegg.modules;
 
 import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.kegg.soap.Definition;
 
 public class EnsemblKeggOrganism extends RefImpl implements Organism {
 
-	private MartLocation mart;
-	private DatasetInfo dataset;
-	private String keggId;
+	private DatasetInfo ensemblDataset;
+	private Definition keggDef;
 
-	public EnsemblKeggOrganism(String id, String name, MartLocation mart, DatasetInfo dataset) {
+	public EnsemblKeggOrganism(String id, String name, DatasetInfo dataset) {
 		super(id, name);
-		this.mart = mart;
-		this.dataset = dataset;
+		this.ensemblDataset = dataset;
 	}
 
-	public MartLocation getMart() {
-		return mart;
+	public EnsemblKeggOrganism(String id, String name, Definition def) {
+		super(id, name);
+		this.keggDef = def;
 	}
 
-	public DatasetInfo getDataset() {
-		return dataset;
+	public DatasetInfo getEnsemblDataset() {
+		return ensemblDataset;
 	}
 
-	public String getKeggId() {
-		return keggId;
+	public void setEnsemblDataset(DatasetInfo ensemblDataset) {
+		this.ensemblDataset = ensemblDataset;
 	}
 
-	public void setKeggId(String keggId) {
-		this.keggId = keggId;
+	public Definition getKeggDef() {
+		return keggDef;
+	}
+
+	public void setKeggDef(Definition keggDef) {
+		this.keggDef = keggDef;
 	}
 
 	@Override
 	public String getRef() {
-		return mart.getName() + ":" + dataset.getName() + ":" + super.getRef();
+		StringBuilder sb = new StringBuilder();
+		sb.append(super.getRef()).append("[");
+		if (ensemblDataset != null)
+			sb.append("ENSEMBL");
+		if (ensemblDataset != null && keggDef != null)
+			sb.append(", ");
+		if (keggDef != null)
+			sb.append("KEGG");
+		sb.append("]");
+		return sb.toString();
 	}
 }

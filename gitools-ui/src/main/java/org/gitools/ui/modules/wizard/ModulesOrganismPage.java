@@ -63,7 +63,7 @@ public class ModulesOrganismPage extends FilteredListPage {
 							@Override public void run() {
 								setListData(organisms);
 								for (Organism o : organisms)
-									if (o.getName().equals("Homo sapiens"))
+									if (o.getName().equals("homo sapiens"))
 										setSelectedValue(o);
 								loaded = true;
 							}

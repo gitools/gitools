@@ -18,16 +18,20 @@
 package org.gitools.idmapper;
 
 
-public class StringIdMappingNode implements IdMappingNode {
+public class StringMappingNode implements MappingNode {
 
 	private String id;
 	private String name;
 
-	public StringIdMappingNode(String id, String name) {
+	public StringMappingNode(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
+	public StringMappingNode(String id) {
+		this(id, id);
+	}
+	
 	@Override
 	public String getId() {
 		return id;
@@ -40,10 +44,10 @@ public class StringIdMappingNode implements IdMappingNode {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof IdMappingNode))
+		if (obj == null || !(obj instanceof MappingNode))
 			return false;
 
-		IdMappingNode other = (IdMappingNode) obj;
+		MappingNode other = (MappingNode) obj;
 
 		return id.equals(other.getId());
 	}

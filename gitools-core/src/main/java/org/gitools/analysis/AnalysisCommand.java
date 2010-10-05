@@ -64,7 +64,7 @@ public abstract class AnalysisCommand {
 			File file, String mime,
 			Properties props, IProgressMonitor monitor) throws PersistenceException {
 
-		Object obj = (ModuleMap) PersistenceManager.getDefault()
+		Object obj = PersistenceManager.getDefault()
 				.load(file, mime, props, monitor);
 
 		ModuleMap moduleMap = null;

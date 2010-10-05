@@ -18,13 +18,21 @@
 package org.gitools.idmapper;
 
 
-public class IdMappingException extends Exception {
+public abstract class AbstractMapper implements Mapper {
 
-	public IdMappingException(String msg) {
-		super(msg);
+	private String name;
+
+	public AbstractMapper(String name) {
+		this.name = name;
 	}
 
-	public IdMappingException(Throwable cause) {
-		super(cause);
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

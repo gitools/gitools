@@ -20,7 +20,7 @@ package org.gitools.idmapper;
 import java.util.HashMap;
 
 
-public class IdMappingContext extends HashMap<String, Object> {
+public class MappingContext extends HashMap<String, Object> {
 
 	public String getString(String key) {
 		return (String) get(key);

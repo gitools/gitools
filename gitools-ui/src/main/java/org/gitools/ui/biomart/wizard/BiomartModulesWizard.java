@@ -75,7 +75,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 		dataAttributePage.setTitle("Select attribute for modules");
 		addPage(dataAttributePage);
 
-		// Advance filtering
+		// Advanced filtering
 		filterListPage = new BiomartFilterConfigurationPage();
 		filterListPage.setTitle("Select filters");
 		addPage(filterListPage);

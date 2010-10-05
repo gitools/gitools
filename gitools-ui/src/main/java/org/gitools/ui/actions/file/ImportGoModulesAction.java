@@ -37,8 +37,7 @@ public class ImportGoModulesAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(
-				EnsemblKeggModulesImporter.GO_MODULE_CATEGORIES);
+		EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(false, true);
 
 		ModulesImportWizard wz = new ModulesImportWizard(importer);
 		wz.setTitle("Import Gene Ontology modules...");

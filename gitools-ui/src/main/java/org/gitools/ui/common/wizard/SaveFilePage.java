@@ -92,6 +92,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		return this;
 	}
 
+	/** Return only the file name */
 	public String getFileName() {
 		return fileName.getText();
 	}
@@ -99,7 +100,8 @@ public class SaveFilePage extends AbstractWizardPage {
 	public void setFileName(String name) {
 		fileName.setText(name);
 	}
-	
+
+	/** Return only the folder */
 	public String getFolder() {
 		return folder.getText();
 	}
@@ -126,6 +128,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		format.setVisible(visible);
 	}
 
+	/** Returns the full path: folder + file */
 	public String getFilePath() {
 		StringBuilder sb = new StringBuilder();
 		String name = getFileName();
@@ -143,6 +146,7 @@ public class SaveFilePage extends AbstractWizardPage {
 		return sb.toString();
 	}
 
+	/** Returns a file of the full path */
 	public File getFile() {
 		String folderName = folder.getText();
 		if (folderName.isEmpty())

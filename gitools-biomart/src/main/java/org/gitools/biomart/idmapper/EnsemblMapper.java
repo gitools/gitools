@@ -17,6 +17,7 @@
 
 package org.gitools.biomart.idmapper;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,13 +28,14 @@ import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
-import org.gitools.idmapper.AbstractMappingProcessor;
-import org.gitools.idmapper.IdMappingContext;
-import org.gitools.idmapper.IdMappingException;
-import org.gitools.idmapper.IdMappingNode;
+import org.gitools.idmapper.AbstractMapper;
+import org.gitools.idmapper.MappingContext;
+import org.gitools.idmapper.MappingData;
+import org.gitools.idmapper.MappingException;
+import org.gitools.idmapper.MappingNode;
 
 
-public class EnsemblMappingProcessor extends AbstractMappingProcessor {
+public class EnsemblMapper extends AbstractMapper {
 
 	public static final String BIOMART_SOURCE_ID = "ensembl.biomart.source.id";
 
@@ -42,7 +44,7 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 	private MartLocation mart;
 
 
-	public EnsemblMappingProcessor() {
+	public EnsemblMapper(String organismDataset) {
 		super("Ensembl");
 	}
 
@@ -66,10 +68,10 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 	}
 
 	@Override
-	public void initialize(IdMappingContext context) throws IdMappingException {
+	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
 		String sourceId = context.getString(BIOMART_SOURCE_ID);
 		if (sourceId == null)
-			throw new IdMappingException("Context property " + BIOMART_SOURCE_ID + " not defined.");
+			throw new MappingException("Context property " + BIOMART_SOURCE_ID + " not defined.");
 
 		source = getEnsemblSource(sourceId);
 
@@ -79,7 +81,7 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 			
 		}
 		catch (Exception ex) {
-			throw new IdMappingException(ex);
+			throw new MappingException(ex);
 		}
 
 
@@ -92,7 +94,7 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 		return service = BiomartServiceFactory.createRestfulService(source);
 	}
 
-	private MartLocation getMartLocation() throws BiomartServiceException, IdMappingException {
+	private MartLocation getMartLocation() throws BiomartServiceException, MappingException {
 		if (mart != null)
 			return mart;
 
@@ -107,7 +109,7 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 		}
 
 		if (mart == null)
-			throw new IdMappingException("Ensembl Genes database not found in the registry.");
+			throw new MappingException("Ensembl Genes database not found in the registry.");
 
 		return mart;
 	}
@@ -121,12 +123,21 @@ public class EnsemblMappingProcessor extends AbstractMappingProcessor {
 	}
 
 	@Override
-	public Map<String, String> map(IdMappingContext context, Map<String, String> input, IdMappingNode src, IdMappingNode dst) throws IdMappingException {
+	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public void finalize(IdMappingContext context) throws IdMappingException {
+	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }
+/*biomartService.queryModule(query, new SequentialTableWriter() {
+					@Override public void open() throws Exception { }
+
+					@Override public void close() { }
+
+					@Override public void write(String[] rowFields) throws Exception {
+
+					}
+				}, monitor);*/

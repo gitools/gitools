@@ -17,13 +17,18 @@
 
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 public class ImportKeggModulesAction extends BaseAction {
@@ -38,10 +43,10 @@ public class ImportKeggModulesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(
-				EnsemblKeggModulesImporter.KEGG_MODULE_CATEGORIES);
+		final EnsemblKeggModulesImporter importer =
+				new EnsemblKeggModulesImporter(true, false);
 
-		ModulesImportWizard wz = new ModulesImportWizard(importer);
+		final ModulesImportWizard wz = new ModulesImportWizard(importer);
 		wz.setTitle("Import KEGG modules...");
 		wz.setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_KEGG, 96));
 
@@ -51,7 +56,21 @@ public class ImportKeggModulesAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
-		
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				try {
+					ModuleMap mmap = importer.importMap(monitor);
+					if (!monitor.isCancelled())
+						PersistenceManager.getDefault().store(wz.getFile(), mmap, monitor);
+				}
+				catch (Throwable ex) {
+					monitor.exception(ex);
+				}
+			}
+		});
+
+
+
 	}
 
 }
