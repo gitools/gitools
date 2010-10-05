@@ -65,7 +65,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		
 		final Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
 
-		int gridSize = getGridSize();
+		int gridSize = getGridSize(horizontal);
 		
 		int width = colorAnnSize;
 		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
@@ -93,7 +93,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int leadRow = data.getLeadSelectionRow();
 		int leadColumn = data.getLeadSelectionColumn();
 
-		int x = box.x;
+		int x = box.x + getGridSize(!horizontal);
 		int y = box.y + start * height;
 		int padding = (horizontal ? 3 : 2);
 
@@ -103,13 +103,16 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int[] clusterIndices = clusterSet[0].getClusterIndices();
 		HeatmapCluster[] clusters = clusterSet[0].getClusters();
 
+		int clusterIndexPrevious = -1;
+
 		for (int index = start; index < end; index++) {
 			String element = horizontal ?
 				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
 
 			//Color annColor = uniqueLabels.get(element);
-			
-			Color bgColor = clusters[clusterIndices[visibleElements[index]]].getColor();
+
+			int clusterIndex = clusterIndices[visibleElements[index]];
+			Color bgColor = clusters[clusterIndex].getColor();
 			Color fgColor = Color.WHITE;
 
 		/*	boolean selected = !pictureMode && (horizontal ?
@@ -126,9 +129,15 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 
 			g.setColor(gridColor);
 			g.fillRect(x, y + height - gridSize, width, gridSize);
+
+		/*	Correction if two elements are in the same cluster set */
+			int sameClusterCorrection = 0;
+			if (clusterIndex == clusterIndexPrevious)
+				sameClusterCorrection = getGridSize(horizontal);
+			
 			
 			g.setColor(bgColor);
-			g.fillRect(x, y, width, height - gridSize);
+			g.fillRect(x, y - sameClusterCorrection, width, height - gridSize + sameClusterCorrection);
 
 			if (lead) {
 				g.setColor(ColorUtils.invert(bgColor));
@@ -136,12 +145,14 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 			}
 
 			y += height;
+
+			clusterIndexPrevious = clusterIndex;
 		}
 	}
 
 	@Override
 	public Dimension getSize() {
-		int gridSize = getGridSize();
+		int gridSize = getGridSize(horizontal);
 		int extBorder = /*2 * 1 - 1*/ 0;
 
 		colorAnnSize = horizontal ?
@@ -164,7 +175,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public HeatmapPosition getPosition(Point p) {
-		int gridSize = getGridSize();
+		int gridSize = getGridSize(horizontal);
 
 		int row = -1;
 		int col = -1;
@@ -187,7 +198,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public Point getPoint(HeatmapPosition p) {
-		int gridSize = getGridSize();
+		int gridSize = getGridSize(horizontal);
 
 		int x = 0;
 		int y = 0;
@@ -210,8 +221,11 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		return new Point(x, y);
 	}
 
-	private int getGridSize() {
-		return horizontal ? getColumnsGridSize() : getRowsGridSize();
+	private int getGridSize(boolean horizontalGrid) {
+			if (horizontalGrid)
+				return getColumnsGridSize();
+			else
+				return getRowsGridSize();
 
 	}
 
@@ -219,6 +233,7 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int size = 0;
 		for (HeatmapClusterSet hcs : clusterSets) {
 			if (hcs.isVisible()) {
+				size += getGridSize(!horizontal);
 				size += hcs.getSize();
 				if (hcs.isLabelVisible())
 					size += hcs.getFont().getSize();

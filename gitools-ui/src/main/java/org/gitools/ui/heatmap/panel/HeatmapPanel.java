@@ -285,6 +285,11 @@ public class HeatmapPanel extends JPanel {
 		if (src.equals(heatmap)) {
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
 					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)) {
+				bodyPanel.updateSize();
+				rowHeaderPanel.updateSize();
+				columnHeaderPanel.updateSize();
+				rowColorAnnPanel.updateSize();
+				columnColorAnnPanel.updateSize();
 				updateScrolls();
 				revalidate();
 				repaint();
