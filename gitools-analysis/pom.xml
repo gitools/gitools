@@ -20,10 +20,10 @@
 			<scope>compile</scope>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>colt</groupId>

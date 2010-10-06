@@ -15,6 +15,6 @@ public abstract class Category extends RefImpl {
 
 	@Override
 	public String getRef() {
-		return section + ":" + super.getRef();
+		return super.getRef();
 	}
 }

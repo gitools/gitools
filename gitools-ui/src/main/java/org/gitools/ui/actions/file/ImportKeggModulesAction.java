@@ -19,8 +19,11 @@ package org.gitools.ui.actions.file;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -60,8 +63,18 @@ public class ImportKeggModulesAction extends BaseAction {
 			@Override public void run(IProgressMonitor monitor) {
 				try {
 					ModuleMap mmap = importer.importMap(monitor);
-					if (!monitor.isCancelled())
-						PersistenceManager.getDefault().store(wz.getFile(), mmap, monitor);
+					if (!monitor.isCancelled()) {
+						String mime = wz.getSaveFilePage().getFormat().getMime();
+						File file = wz.getSaveFilePage().getFile();
+						if (MimeTypes.GENE_MATRIX.equals(mime)
+								|| MimeTypes.GENE_MATRIX_TRANSPOSED.equals(mime)) {
+
+							BaseMatrix mat = null; //TODO convert from mmap
+							PersistenceManager.getDefault().store(file, mime, mat, monitor);
+						}
+						else
+							PersistenceManager.getDefault().store(file, mime, mmap, monitor);
+					}
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);
@@ -69,5 +82,4 @@ public class ImportKeggModulesAction extends BaseAction {
 			}
 		});
 	}
-
 }

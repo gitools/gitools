@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
@@ -59,7 +58,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
 		monitor.begin("Getting mapping information from KEGG FTP ...", 1);
 
-		// Get map from the FTP
+		// Get map from the FTP --- TODO Filter out items not in data
 		try {
 			String prefix = fileKey.get(dst.getId());
 			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
@@ -76,6 +75,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(url.openStream()));
 
+			int plen = prefix.length() + 1;
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				String[] fields = line.split("\\t");
@@ -86,7 +86,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 					b = new HashSet<String>();
 					map.put(fields[0], b);
 				}
-				b.add(fields[1].substring(prefix.length()));
+				b.add(fields[1].substring(plen));
 			}
 		}
 		catch (Exception ex) {

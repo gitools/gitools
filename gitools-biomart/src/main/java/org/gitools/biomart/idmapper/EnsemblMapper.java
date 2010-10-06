@@ -86,7 +86,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 
 		monitor.end();
 
-		monitor.begin("Mapping ...", 1);
+		monitor.begin("Mapping Ensembl IDs...", 1);
 
 		if (data.isEmpty())
 			data.identity(map.keySet());
@@ -133,6 +133,8 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 
 	private Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
 		Query q = new Query();
+		q.setVirtualSchemaName("default");
+		q.setUniqueRows(1);
 		Dataset ds = new Dataset();
 		ds.setName(dataset);
 		List<Attribute> attrs = ds.getAttribute();

@@ -4,6 +4,10 @@ import javax.swing.Icon;
 
 public interface IWizard {
 
+	String getTitle();
+
+	Icon getLogo();
+
 	void addPages();
 
 	IWizardPage getStartingPage();
@@ -23,16 +27,16 @@ public interface IWizard {
 	IWizardPage[] getPages();
 	
 	int getPageCount();
+
+	public void pageLeft(IWizardPage currentPage);
+
+	public void pageEntered(IWizardPage page);
 	
 	boolean canFinish();
 	
 	void performFinish();
 	
 	void performCancel();
-	
-	String getTitle();
-	
-	Icon getLogo();
 
 	void addWizardUpdateListener(IWizardUpdateListener listener);
 

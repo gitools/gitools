@@ -79,7 +79,7 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		this.source = source;
 
 		restUrl = composeUrl(source.getHost(), source.getPort(), source.getRestPath());
-		System.out.println(">>>>> " + restUrl);
+		//System.out.println(">>>>> " + restUrl);
 	}
 
 	public <T> T getServiceRespXML(String urlString, Class<T> c) throws IOException, JAXBException {
@@ -254,8 +254,8 @@ public class BiomartGenericRestfulService implements BiomartRestfulService {
 		final String queryString = createQueryXml(query, format, true);
 		final String urlString = restUrl + "?query=" + queryString;
 
-		System.out.println(">>> " + urlString);
-		System.out.println(createQueryXml(query, format, false));
+		//System.out.println(">>> " + urlString);
+		//System.out.println(createQueryXml(query, format, false));
 		
 		try {
 			URL url = new URL(urlString);

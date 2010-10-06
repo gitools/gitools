@@ -18,9 +18,9 @@
 package org.gitools.analysis.correlation.methods;
 
 import java.util.Properties;
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.stat.correlation.SpearmansCorrelation;
+//import org.apache.commons.math.linear.Array2DRowRealMatrix;
+//import org.apache.commons.math.linear.RealMatrix;
+//import org.apache.commons.math.stat.correlation.SpearmansCorrelation;
 import org.gitools.analysis.AbstractMethod;
 import org.gitools.analysis.MethodException;
 import org.gitools.analysis.correlation.CorrelationMethod;

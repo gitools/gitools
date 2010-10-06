@@ -87,11 +87,11 @@ public class ModuleMapText2CPersistence
 		int maxSize = getMaxSize();
 
 		// create array of item names
-		monitor.debug("isItemNamesFilterEnabled() = " + isItemNamesFilterEnabled());
-		monitor.debug("itemNameToRowMapping.size() = " + itemNameToRowMapping.size());
+		//monitor.debug("isItemNamesFilterEnabled() = " + isItemNamesFilterEnabled());
+		//monitor.debug("itemNameToRowMapping.size() = " + itemNameToRowMapping.size());
 		String[] itemNames = new String[itemNameToRowMapping.size()];
 		for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet()) {
-			monitor.debug(entry.getKey() + " --> " + entry.getValue());
+			//monitor.debug(entry.getKey() + " --> " + entry.getValue());
 			itemNames[entry.getValue()] = entry.getKey();
 		}
 
@@ -196,7 +196,7 @@ public class ModuleMapText2CPersistence
 
 		int numModules = moduleNames.length;
 
-		monitor.begin("Saving modules...", numModules + 1);
+		monitor.begin("Saving modules...", numModules);
 
 		try {
 			Writer writer = PersistenceUtils.openWriter(file);
@@ -205,30 +205,13 @@ public class ModuleMapText2CPersistence
 
 			final String[] itemNames = moduleMap.getItemNames();
 
-			if (itemNames.length > 0) {
-				pw.print(itemNames[0]);
-
-				for (int i = 1; i < itemNames.length; i++) {
-					pw.print("\t\"");
-					pw.print(itemNames[i]);
-					pw.print('"');
-				}
-			}
-			
-			pw.print('\n');
-
-			monitor.worked(1);
-
 			final int[][] indices = moduleMap.getAllItemIndices();
 
 			for (int i = 0; i < numModules; i++) {
-				pw.print('"');
-				pw.print(moduleNames[i]);
-				pw.print('"');
-
 				for (int index : indices[i]) {
+					pw.print(itemNames[index]);
 					pw.print('\t');
-					pw.print(index);
+					pw.print(moduleNames[i]);
 				}
 
 				pw.print('\n');

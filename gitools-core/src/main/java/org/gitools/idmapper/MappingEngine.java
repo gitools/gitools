@@ -181,7 +181,7 @@ public class MappingEngine {
 	}
 
 	public MappingData run(String src, String dst, IProgressMonitor monitor) throws MappingException {
-		monitor.begin("Mapping ...", 4);
+		monitor.begin("Mapping from " + src + " to " + dst + " ...", 4);
 
 		monitor.info("Searching mapping path ...");
 		MappingData data = new MappingData(src, src);
@@ -192,7 +192,6 @@ public class MappingEngine {
 		LinkedList<Step> steps = path.getSteps();
 		Iterator<Step> it = steps.iterator();
 
-		monitor.info("Initializing mappers ...");
 		Set<Mapper> initializedMappers = new HashSet<Mapper>();
 		it.next();
 		while (it.hasNext()) {
@@ -209,13 +208,18 @@ public class MappingEngine {
 		MappingNode lastNode = it.next().getNode();
 		while (it.hasNext()) {
 			Step step = it.next();
-			data = step.getMapper().map(context, data, lastNode, step.getNode(), monitor.subtask());
+			IProgressMonitor m = monitor.subtask();
+			m.begin("Mapping from " + lastNode + " to " + step.getNode() + " ...", 1);
+			
+			data = step.getMapper().map(context, data, lastNode, step.getNode(), m.subtask());
 			lastNode = step.getNode();
 			data.setDstNode(lastNode);
+			data.removeEmptyKeys();
+
+			m.end();
 		}
 		monitor.worked(1);
 
-		monitor.info("Finalizing mappers ...");
 		for (Mapper m : initializedMappers)
 			m.finalize(context, monitor);
 		
@@ -227,18 +231,24 @@ public class MappingEngine {
 	private Path findPath(String src, String dst, IProgressMonitor monitor) {
 		StringMappingNode dstNode = new StringMappingNode(dst);
 		Path bestPath = null;
+		int bestLength = Integer.MAX_VALUE;
 		LinkedList<Path> paths = new LinkedList<Path>();
 		paths.offer(new Path(new StringMappingNode(src)));
 		while (paths.size() > 0) {
 			Path path = paths.poll();
+			if (path.getLength() >= bestLength)
+				continue;
+
 			MappingNode snode = path.getLastNode();
 			boolean generatorRequired = path.getLength() == 0;
 			List<Step> steps = getSteps(snode, generatorRequired);
 			for (Step step : steps) {
 				if (step.getNode().equals(dstNode)) {
-					path.addStep(step);
-					if (bestPath == null || path.getLength() < bestPath.getLength())
-						bestPath = path;
+					if (bestPath == null) {
+						bestPath = new Path(path, step);
+						bestLength = bestPath.getLength();
+						break;
+					}
 				}
 				else if (!path.visited(step.getNode()))
 					paths.add(new Path(path, step));

@@ -87,6 +87,7 @@ public class WizardDialog extends AbstractDialog {
 				pageHistory.push(currentPage);
 			
 			currentPage.updateModel();
+			getWizard().pageLeft(currentPage);
 		}
 		
 		currentPage = page;
@@ -104,6 +105,8 @@ public class WizardDialog extends AbstractDialog {
 		updateState();
 		
 		page.updateControls();
+
+		getWizard().pageEntered(page);
 	}
 
 	private void updateButtons() {

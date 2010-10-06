@@ -242,6 +242,16 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 					else
 						o.setKeggDef(def);
 				}
+
+				// Remove organism of Ensembl not in KEGG
+				Iterator<EnsemblKeggOrganism> it = orgs.iterator();
+				while (it.hasNext()) {
+					EnsemblKeggOrganism o = it.next();
+					if (o.getKeggDef() == null) {
+						it.remove();
+						orgsMap.remove(o.getId());
+					}
+				}
 			}
 		}
 		catch (Exception ex) {
@@ -266,74 +276,78 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 
 		List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
 
+		// TODO check by FTP which mapping files are available
 		if (keggEnabled && organism.getKeggDef() != null)
 			feats.addAll(Arrays.asList(KEGG_FEATURES));
-
-		feats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[] {
-			new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
-			new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts")
-		}));
 		
-		try {
-			BiomartRestfulService bs = getBiomartService();
-
-			MartLocation mart = getMart();
-			DatasetInfo dataset = organism.getEnsemblDataset();
-
-			List<AttributePage> attrs = bs.getAttributes(mart, dataset);
-
-			Map<String, String> idmap = new HashMap<String, String>();
-			idmap.put("ensembl_gene_id", ENSEMBL_GENES);
-			idmap.put("ensembl_transcript_id", ENSEMBL_TRANSCRIPTS);
-			idmap.put("pdb", PDB);
-			idmap.put("entrezgene", ENTREZ);
-			idmap.put("uniprot_swissprot_accession", UNIPROT);
-			//ids.put("unigene", "unigene:genes");
-
-			Set<String> idremove = new HashSet<String>(Arrays.asList(new String[] {
-				"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name",
-				"clone_based_vega_gene_name", "clone_based_vega_transcript_name",
-				"ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg",
-				"shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt",
-				"HGNC_mb001", "uniprot_sptrembl", "wikigene_description",
-				"dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"
+		if (organism.getEnsemblDataset() != null) {
+			feats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[] {
+				new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
+				new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts"),
+				new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")
 			}));
+		
+			try {
+				BiomartRestfulService bs = getBiomartService();
 
-			for (AttributePage p : attrs)
-				for (AttributeGroup g : p.getAttributeGroups())
-					for (AttributeCollection c : g.getAttributeCollections()) {
-						boolean isMicroarray = c.getInternalName().equals("microarray");
-						if (c.getInternalName().equals("xrefs") || isMicroarray) {
+				MartLocation mart = getMart();
+				DatasetInfo dataset = organism.getEnsemblDataset();
 
-							logger.debug("Collection: " + c.getDisplayName() + " [" + c.getInternalName() + "]");
+				List<AttributePage> attrs = bs.getAttributes(mart, dataset);
 
-							for (AttributeDescription a : c.getAttributeDescriptions()) {
-								String dname = a.getDisplayName();
-								if (a.isHidden() || dname == null || dname.isEmpty())
-									continue;
-								
-								String iname = a.getInternalName();
-								if (idremove.contains(iname))
-									continue;
+				Map<String, String> idmap = new HashMap<String, String>();
+				idmap.put("ensembl_gene_id", ENSEMBL_GENES);
+				idmap.put("ensembl_transcript_id", ENSEMBL_TRANSCRIPTS);
+				idmap.put("pdb", PDB);
+				idmap.put("entrezgene", ENTREZ);
+				idmap.put("uniprot_swissprot_accession", UNIPROT);
+				//ids.put("unigene", "unigene:genes");
 
-								String id = idmap.get(iname);
-								if (id == null)
-									id = "ensembl:" + iname;
+				Set<String> idremove = new HashSet<String>(Arrays.asList(new String[] {
+					"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name",
+					"clone_based_vega_gene_name", "clone_based_vega_transcript_name",
+					"ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg",
+					"shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt",
+					"HGNC_mb001", "uniprot_sptrembl", "wikigene_description",
+					"dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"
+				}));
 
-								EnsemblKeggFeatureCategory feat = COMMON_FEATURES_MAP.get(id);
-								if (feat == null) {
-									String section = isMicroarray ? "Microarrays" : "Others";
-									feat = new EnsemblKeggFeatureCategory(section, id, dname);
+				for (AttributePage p : attrs)
+					for (AttributeGroup g : p.getAttributeGroups())
+						for (AttributeCollection c : g.getAttributeCollections()) {
+							boolean isMicroarray = c.getInternalName().equals("microarray");
+							if (c.getInternalName().equals("xrefs") || isMicroarray) {
+
+								logger.debug("Collection: " + c.getDisplayName() + " [" + c.getInternalName() + "]");
+
+								for (AttributeDescription a : c.getAttributeDescriptions()) {
+									String dname = a.getDisplayName();
+									if (a.isHidden() || dname == null || dname.isEmpty())
+										continue;
+
+									String iname = a.getInternalName();
+									if (idremove.contains(iname))
+										continue;
+
+									String id = idmap.get(iname);
+									if (id == null)
+										id = "ensembl:" + iname;
+
+									EnsemblKeggFeatureCategory feat = COMMON_FEATURES_MAP.get(id);
+									if (feat == null) {
+										String section = isMicroarray ? "Microarrays" : "Others";
+										feat = new EnsemblKeggFeatureCategory(section, id, dname);
+									}
+									feats.add(feat);
+
+									logger.debug("\t" + dname + " [" + iname + "] --> " + feat.getId());
 								}
-								feats.add(feat);
-
-								logger.debug("\t" + dname + " [" + iname + "] --> " + feat.getId());
 							}
 						}
-					}
-		}
-		catch (Exception ex) {
-			throw new ModulesImporterException(ex);
+			}
+			catch (Exception ex) {
+				throw new ModulesImporterException(ex);
+			}
 		}
 
 		// remove duplicated features
@@ -421,6 +435,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 				throw new ModulesImporterException(ex);
 			}
 
+			// TODO check by FTP which mapping files are available
+
 			mapping.addMapper(KEGG_PATHWAYS, KEGG_GENES,
 					new KeggPathwaysMapper(ks, keggorg));
 
@@ -443,9 +459,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 			try {
 				for (FeatureCategory f : getFeatureCategories()) {
 					String id = f.getRef();
-					if (id.startsWith("ensembl") && !id.equals(ENSEMBL_GENES))
+					if (id.startsWith("ensembl:") && !id.equals(ENSEMBL_GENES))
 						sinks.add(id);
 				}
+
+				sinks.addAll(Arrays.asList(new String[] {PDB, UNIPROT, ENTREZ}));
 
 				BiomartRestfulService bs = getBiomartService();
 				String dsName = organism.getEnsemblDataset().getName();

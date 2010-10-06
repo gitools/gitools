@@ -68,10 +68,14 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 		Set<String> dstIds = data.getDstIds();
 		monitor.begin("Getting KEGG genes ...", dstIds.size());
 		try {
+			int count = 0;
 			for (String dstId : dstIds) {
 				monitor.info(dstId);
 				if (monitor.isCancelled())
 					return null;
+
+				if (count++ > 10)
+					break;
 
 				String[] genes = service.get_genes_by_pathway(dstId);
 				pathwaysMap.put(dstId, new HashSet<String>(Arrays.asList(genes)));

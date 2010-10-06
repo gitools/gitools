@@ -17,13 +17,19 @@
 
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 public class ImportGoModulesAction extends BaseAction {
@@ -37,9 +43,9 @@ public class ImportGoModulesAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(false, true);
+		final EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(false, true);
 
-		ModulesImportWizard wz = new ModulesImportWizard(importer);
+		final ModulesImportWizard wz = new ModulesImportWizard(importer);
 		wz.setTitle("Import Gene Ontology modules...");
 		wz.setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_GO, 96));
 
@@ -49,7 +55,21 @@ public class ImportGoModulesAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
-
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				try {
+					ModuleMap mmap = importer.importMap(monitor);
+					if (!monitor.isCancelled()) {
+						String mime = wz.getSaveFilePage().getFormat().getMime();
+						File file = wz.getSaveFilePage().getFile();
+						PersistenceManager.getDefault().store(file, mime, mmap, monitor);
+					}
+				}
+				catch (Throwable ex) {
+					monitor.exception(ex);
+				}
+			}
+		});
 	}
 
 }

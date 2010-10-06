@@ -24,17 +24,16 @@ import org.gitools.persistence.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.common.wizard.SaveFilePage;
 
 public class ModulesImportWizard extends AbstractWizard {
 
-	public static final String FORMAT_PLAIN = "TSV";
-	public static final String FORMAT_COMPRESSED_GZ = "GZ";
-
 	private FileFormat[] supportedFormats = new FileFormat[] {
-		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), FORMAT_PLAIN, true, false),
-		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", FORMAT_COMPRESSED_GZ, true, false)
+		FileFormats.MODULES_2C_MAP,
+		FileFormats.GENE_MATRIX,
+		FileFormats.GENE_MATRIX_TRANSPOSED,
 	};
 
 	private ModulesImporter importer;
@@ -74,7 +73,24 @@ public class ModulesImportWizard extends AbstractWizard {
 		addPage(saveFilePage);
 	}
 
-	public File getFile() {
-		return saveFilePage.getFile();
+	@Override
+	public void pageEntered(IWizardPage page) {
+		if (saveFilePage.equals(page))
+			if (saveFilePage.getFileName().isEmpty())
+				saveFilePage.setFileName(automaticFileName(importer));
+	}
+
+	private String automaticFileName(ModulesImporter importer) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(importer.getOrganism().getName().replace(' ', '_'));
+		sb.append("__");
+		sb.append(importer.getModuleCategory().getRef().replace(':', '_'));
+		sb.append("__");
+		sb.append(importer.getFeatureCategory().getRef().replace(':', '_'));
+		return sb.toString();
+	}
+
+	public SaveFilePage getSaveFilePage() {
+		return saveFilePage;
 	}
 }

@@ -17,8 +17,11 @@
 
 package org.gitools.idmapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -79,9 +82,9 @@ public class MappingData {
 		dstIds.clear();
 	}
 
-	public void set(String srcId, Set<String> dstIds) {
-		map.put(srcId, dstIds);
-		dstIds.addAll(dstIds);
+	public void set(String srcId, Set<String> dids) {
+		map.put(srcId, dids);
+		dstIds.addAll(dids);
 	}
 
 	public Map<String, Set<String>> getMap() {
@@ -118,4 +121,22 @@ public class MappingData {
 			put(id, id);
 	}
 
+	public void removeEmptyKeys() {
+		List<String> rm = new ArrayList<String>();
+		for (Map.Entry<String, Set<String>> e : map.entrySet())
+			if (e.getValue().isEmpty())
+				rm.add(e.getKey());
+
+		for (String k : rm)
+			map.remove(k);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(map.size()).append(" keys, ");
+		sb.append(dstIds.size()).append(" distinct values. ");
+		sb.append(map.toString());
+		return sb.toString();
+	}
 }

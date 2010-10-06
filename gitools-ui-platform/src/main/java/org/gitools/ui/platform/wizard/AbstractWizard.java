@@ -23,7 +23,27 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 	
 	public AbstractWizard() {
 	}
-	
+
+	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		fireWizardUpdate();
+	}
+
+	@Override
+	public Icon getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Icon icon) {
+		this.logo = icon;
+		fireWizardUpdate();
+	}
+
 	public void addPage(IWizardPage page) {
 		String id = page.getId();
 		if (id == null)
@@ -91,25 +111,13 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 	public int getPageCount() {
 		return pages.size();
 	}
-	
+
 	@Override
-	public String getTitle() {
-		return title;
+	public void pageLeft(IWizardPage currentPage) {
 	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-		fireWizardUpdate();
-	}
-	
+
 	@Override
-	public Icon getLogo() {
-		return logo;
-	}
-	
-	public void setLogo(Icon icon) {
-		this.logo = icon;
-		fireWizardUpdate();
+	public void pageEntered(IWizardPage page) {
 	}
 	
 	@Override

@@ -53,6 +53,9 @@ public class FileFormats {
 	public static final FileFormat MODULES_2C_MAP = new FileFormat(
 			"Two columns mappings", FileSuffixes.MODULES_2C_MAP, MimeTypes.MODULES_2C_MAP);
 
+	public static final FileFormat MODULES_2C_MAP_COMPRESSED = new FileFormat(
+			FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", MimeTypes.MODULES_2C_MAP, true, false);
+
 	public static final FileFormat RESULTS_MATRIX = new FileFormat(
 			"Multivalue data matrix", FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX);
 
