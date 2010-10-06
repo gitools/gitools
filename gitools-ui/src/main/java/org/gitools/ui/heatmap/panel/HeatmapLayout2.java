@@ -16,7 +16,6 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -101,7 +100,7 @@ public class HeatmapLayout2 implements LayoutManager {
 		}
 
 		int y0 = insets.top;
-		int y1 = y0 + colPsz.height - colAnnColorPsz.height;
+		int y1 = y0 + colPsz.height;
 		int y2 = y1 + colAnnColorPsz.height;
 		int y4 = size.height - insets.bottom;
 		int y3 = y4 - clsPsz.height;

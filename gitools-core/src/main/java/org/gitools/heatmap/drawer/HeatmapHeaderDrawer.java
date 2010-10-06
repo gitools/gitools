@@ -13,6 +13,7 @@ import java.awt.geom.AffineTransform;
 import org.gitools.heatmap.model.HeatmapHeaderDecoration;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.matrix.model.IMatrixView;
 
 
@@ -55,14 +56,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		HeatmapHeader hdr = horizontal ? heatmap.getColumnHeader() : heatmap.getRowHeader();
 		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
 
-		final int colorAnnSize = horizontal ? heatmap.getColumnClusterSets().length * 40 : 0;
 		
 		g.setFont(hdr.getFont());
 		
 		Color gridColor = horizontal ? heatmap.getColumnsGridColor() : heatmap.getRowsGridColor();
 
 		int gridSize = getGridSize();
-		
+
+		int colorAnnSize = calcClusterSizes(heatmap.getColumnClusterSets());
 		int maxWidth = (horizontal ? clip.height : clip.width);
 		int width = horizontal ? heatmap.getColumnHeaderSize() - colorAnnSize : heatmap.getRowHeaderSize();
 		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
@@ -143,12 +144,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		int gridSize = getGridSize();
 		int extBorder = /*2 * 1 - 1*/ 0;
 
+
 		if (horizontal) {
+			int colorAnnSize = calcClusterSizes(heatmap.getColumnClusterSets());
 			int cellWidth = heatmap.getCellWidth() + gridSize;
 			int columnCount = heatmap.getMatrixView().getColumnCount();
 			int headerSize = heatmap.getColumnHeaderSize();
 			return new Dimension(
-					cellWidth * columnCount + extBorder, headerSize);
+					cellWidth * columnCount + extBorder, headerSize - colorAnnSize);
 		}
 		else {
 			int cellHeight = heatmap.getCellHeight() + gridSize;
@@ -209,5 +212,18 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	private int getGridSize() {
 		return horizontal ? getColumnsGridSize() : getRowsGridSize();
+	}
+
+	private int calcClusterSizes(HeatmapClusterSet[] clusterSets) {
+		int size = 0;
+		for (HeatmapClusterSet hcs : clusterSets) {
+			if (hcs.isVisible()) {
+				size += horizontal ? getRowsGridSize() : getColumnsGridSize();
+				size += hcs.getSize();
+				if (hcs.isLabelVisible())
+					size += hcs.getFont().getSize();
+			}
+		}
+		return size;
 	}
 }
