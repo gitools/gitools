@@ -167,10 +167,10 @@ public class ClusterSetEditorPage extends AbstractWizardPage {
 
         headerSizeLabel.setText("Width");
 
-        jLabel5.setFont(new java.awt.Font("DejaVu LGC Sans", 1, 11)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("DejaVu LGC Sans", 1, 11));
         jLabel5.setText("Cluster Set");
 
-        jLabel6.setFont(new java.awt.Font("DejaVu LGC Sans", 1, 11)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("DejaVu LGC Sans", 1, 11));
         jLabel6.setText("Cluster");
 
         visible.addActionListener(new java.awt.event.ActionListener() {

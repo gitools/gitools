@@ -46,6 +46,21 @@ public class ColorUtils {
 	public static Color getColorForIndex(int index) {
 
 
+		int[] seriesColors = { 0x4bb2c5, 0xEAA228, 0xc5b47f, 0x579575, 0x839557, 0x958c12, 0x953579, 0x4b5de4, 0xd8b83f, 0xff5800, 0x0085cc, 0xc747a3, 0xcddf54, 0xFBD178, 0x26B4E3, 0xbd70c7};
+        int[] negativeSeriesColors = { 0x498991, 0xC08840, 0x9F9274, 0x546D61, 0x646C4A, 0x6F6621, 0x6E3F5F, 0x4F64B0, 0xA89050, 0xC45923, 0x187399, 0x945381, 0x959E5C, 0xC7AF7B, 0x478396, 0x907294};
+
+
+		index = index % (seriesColors.length + negativeSeriesColors.length);
+
+
+		boolean pair = (index % 2) == 0;
+		int colorIndex = (int) index / 2;
+
+		int colorInt = pair ? seriesColors[colorIndex] : negativeSeriesColors[colorIndex];
+		return new Color(colorInt);
+
+
+		/*
 		// calculate a color with the hsl color wheel
 		// imagine 10 equally distributed points on the color wheel
 		// with a given saturation and lightness. They will be
@@ -75,7 +90,7 @@ public class ColorUtils {
 		float[] rgb = csHLS.toRGB(hls);
 		Color color = new Color(rgb[0],rgb[1],rgb[2]);
 
-		return color;
+		return color;*/
 	}
 
 

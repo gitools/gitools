@@ -146,7 +146,6 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 
 	private void generateColorClusterSet(HeatmapClusterSet clusterSet) {
 
-
 		HeatmapHeader heatmapHeader = rowMode ?
 			heatmap.getRowHeader() :
 			heatmap.getColumnHeader();

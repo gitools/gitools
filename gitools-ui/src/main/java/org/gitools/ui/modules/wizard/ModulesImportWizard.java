@@ -73,7 +73,6 @@ public class ModulesImportWizard extends AbstractWizard {
 		addPage(saveFilePage);
 	}
 
-	@Override
 	public void pageEntered(IWizardPage page) {
 		if (saveFilePage.equals(page))
 			if (saveFilePage.getFileName().isEmpty())
