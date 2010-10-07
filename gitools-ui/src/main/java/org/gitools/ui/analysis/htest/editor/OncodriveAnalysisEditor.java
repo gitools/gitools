@@ -17,6 +17,7 @@
 
 package org.gitools.ui.analysis.htest.editor;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
@@ -47,8 +48,11 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 		context.put("dataFile",
 				fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
-		String filterDesc = "Binary cutoff filter for values "
-				+ analysis.getBinaryCutoffCmp().getLongName() + " "
+		CutoffCmp cmp = analysis.getBinaryCutoffCmp();
+		String filterDesc = cmp == null ?
+			"Not filtered"
+			: "Binary cutoff filter for values "
+				+ cmp.getLongName() + " "
 				+ analysis.getBinaryCutoffValue();
 		context.put("filterDesc", filterDesc);
 
