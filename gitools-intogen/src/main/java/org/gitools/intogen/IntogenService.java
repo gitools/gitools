@@ -40,7 +40,7 @@ public class IntogenService {
 	private IntogenService() {
 	}
 
-	public static final IntogenService getDefault() {
+	public static IntogenService getDefault() {
 		if (service == null) {
 			service = new IntogenService();
 		}
@@ -84,7 +84,7 @@ public class IntogenService {
 			printout.flush();
 			printout.close();
 
-			System.out.println(content.toString());
+			//System.out.println(content.toString());
 
 			monitor.end();
 
@@ -106,7 +106,7 @@ public class IntogenService {
 
 			ZipEntry ze;
 			while ((ze = zin.getNextEntry()) != null) {
-				IProgressMonitor mnt = monitor.subtask();
+				IProgressMonitor mon = monitor.subtask();
 
 				long totalKb = ze.getSize() / 1024;
 
@@ -114,7 +114,7 @@ public class IntogenService {
 				if (name == null)
 					name = prefix + "." + ze.getName();
 
-				mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
+				mon.begin("Extracting " + name + " ...", (int) ze.getSize());
 
 				File outFile = new File(folder, name);
 				if (!outFile.getParentFile().exists())
@@ -129,13 +129,13 @@ public class IntogenService {
 				while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
 					fout.write(data, 0, count);
 					partial += count;
-					mnt.info((partial / 1024) + " Kb read");
-					mnt.worked(count);
+					mon.info((partial / 1024) + " Kb read");
+					mon.worked(count);
 				}
 				zin.closeEntry();
 				fout.close();
 
-				mnt.end();
+				mon.end();
 			}
 			
 			zin.close();

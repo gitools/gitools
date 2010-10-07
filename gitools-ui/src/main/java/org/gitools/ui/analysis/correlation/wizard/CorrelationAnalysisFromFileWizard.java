@@ -17,34 +17,54 @@
 
 package org.gitools.ui.analysis.correlation.wizard;
 
+import java.io.File;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
+import org.gitools.ui.analysis.wizard.DataPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.common.wizard.SaveFilePage;
 
-public class CorrelationWizard extends AbstractWizard {
+public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
-	protected String[] attributeNames;
-
-	protected CorrelationPage corrPage;
+	private DataPage dataPage;
+	protected CorrelationFromFilePage corrPage;
+	private SaveFilePage saveFilePage;
 	protected AnalysisDetailsPage analysisDetailsPage;
 
-	public CorrelationWizard(String[] attributeNames) {
+	public CorrelationAnalysisFromFileWizard() {
 		super();
 
 		setTitle("Correlation analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CORRELATION, 96));
-
-		this.attributeNames = attributeNames;
 	}
 
 	@Override
 	public void addPages() {
+		// Data
+		dataPage = new DataPage();
+		dataPage.setPopulationFileVisible(false);
+		dataPage.setDiscardNonMappedRowsVisible(false);
+		addPage(dataPage);
+
 		// Correlation method
-		corrPage = new CorrelationPage(attributeNames);
+		corrPage = new CorrelationFromFilePage();
 		addPage(corrPage);
+
+		// Destination
+		saveFilePage = new SaveFilePage();
+		saveFilePage.setTitle("Select destination file");
+		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+		saveFilePage.setFormats(new FileFormat[] {
+			FileFormats.CORRELATIONS });
+		saveFilePage.setFormatsVisible(false);
+		addPage(saveFilePage);
 
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
@@ -57,9 +77,34 @@ public class CorrelationWizard extends AbstractWizard {
 
 		IWizardPage page = getCurrentPage();
 
-		canFinish |= page.isComplete() && (page == corrPage);
+		canFinish |= page.isComplete() && (page == saveFilePage);
 
 		return canFinish;
+	}
+
+	@Override
+	public void performFinish() {
+		Settings.getDefault().setLastWorkPath(saveFilePage.getFolder());
+	}
+
+	public String getWorkdir() {
+		return saveFilePage.getFolder();
+	}
+
+	public String getFileName() {
+		return saveFilePage.getFilePath();
+	}
+
+	public String getDataFileMime() {
+		return dataPage.getFileFormat().getMime();
+	}
+
+	public File getDataFile() {
+		return dataPage.getDataFile();
+	}
+
+	public File getPopulationFile() {
+		return dataPage.getPopulationFile();
 	}
 
 	public CorrelationAnalysis getAnalysis() {
@@ -69,7 +114,7 @@ public class CorrelationWizard extends AbstractWizard {
 		a.setDescription(analysisDetailsPage.getAnalysisNotes());
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-		a.setAttributeIndex(corrPage.getAttributeIndex());
+		//a.setAttributeIndex(corrPage.getAttributeIndex());
 		a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
 				corrPage.getReplaceNanValue() : null);
 		a.setTransposeData(corrPage.isTransposeEnabled());

@@ -71,6 +71,7 @@ public class Settings {
 	private String lastWorkPath = userPath;
 	private String lastDataPath = userPath;
 	private String lastMapPath = userPath;
+	private String lastAnnotationPath = userPath;
 	private String lastFilterPath = userPath;
 	private String workspacePath = defaultWorkspacePath;
 	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
@@ -144,6 +145,14 @@ public class Settings {
 
 	public void setLastMapPath(String lastMapPath) {
 		this.lastMapPath = lastMapPath;
+	}
+
+	public String getLastAnnotationPath() {
+		return lastAnnotationPath;
+	}
+
+	public void setLastAnnotationPath(String lastAnnotationPath) {
+		this.lastAnnotationPath = lastAnnotationPath;
 	}
 
 	public String getLastFilterPath() {

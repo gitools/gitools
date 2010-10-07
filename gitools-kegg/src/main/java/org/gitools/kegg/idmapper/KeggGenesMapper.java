@@ -33,7 +33,10 @@ import org.gitools.kegg.soap.KEGGPortType;
 
 public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
-	private static final String FTP_BASE_URL = "ftp://ftp.genome.jp/pub/kegg/genes/organisms/";
+	public static final String FTP_HOST = "ftp.genome.jp";
+	public static final String FTP_PATH = "/pub/kegg/genes/organisms";
+
+	public static final String FTP_BASE_URL = "ftp://" + FTP_HOST + FTP_PATH + "/";
 
 	private static final Map<String, String> fileKey = new HashMap<String, String>();
 	static {

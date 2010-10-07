@@ -14,8 +14,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.gitools.ui.actions.file.ImportBiomartModulesAction;
 import org.gitools.ui.actions.file.ImportBiomartTableAction;
+import org.gitools.ui.actions.file.ImportGoModulesAction;
 import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
 import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
+import org.gitools.ui.actions.file.ImportKeggModulesAction;
+import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
@@ -56,23 +59,6 @@ public class WelcomeEditor extends Html4Editor {
 				ex.printStackTrace();
 			}
 		}
-		else if (name.equals("importBiomart")) {
-			BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.instance());
-			dlg.setVisible(true);
-			if (!dlg.isCancelled()) {
-				switch (dlg.getSelection()) {
-					case BiomartTypeDialog.TABLE:
-						new ImportBiomartTableAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
-
-					case BiomartTypeDialog.MODULES:
-						new ImportBiomartModulesAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
-				}
-			}
-		}
 		else if (name.equals("importIntogen")) {
 			IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.instance());
 			dlg.setVisible(true);
@@ -90,11 +76,39 @@ public class WelcomeEditor extends Html4Editor {
 				}
 			}
 		}
+		else if (name.equals("importGo")) {
+			new ImportGoModulesAction()
+					.actionPerformed(new ActionEvent(this, 0, name));
+		}
+		else if (name.equals("importKegg")) {
+			new ImportKeggModulesAction()
+					.actionPerformed(new ActionEvent(this, 0, name));
+		}
+		else if (name.equals("importBiomart")) {
+			BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.instance());
+			dlg.setVisible(true);
+			if (!dlg.isCancelled()) {
+				switch (dlg.getSelection()) {
+					case BiomartTypeDialog.TABLE:
+						new ImportBiomartTableAction()
+								.actionPerformed(new ActionEvent(this, 0, name));
+						break;
+
+					case BiomartTypeDialog.MODULES:
+						new ImportBiomartModulesAction()
+								.actionPerformed(new ActionEvent(this, 0, name));
+						break;
+				}
+			}
+		}
 		else if (name.equals("analysis")) {
-			Map<String, Class<? extends BaseAction>> actions = new HashMap<String, Class<? extends BaseAction>>();
+			final Map<String, Class<? extends BaseAction>> actions =
+					new HashMap<String, Class<? extends BaseAction>>();
+			
 			actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
 			actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
 			actions.put("Correlations", NewCorrelationAnalysisAction.class);
+			actions.put("Combination", NewCombinationAnalysisAction.class);
 			
 			String ref = params.get("ref");
 			Class<? extends BaseAction> actionClass = actions.get(ref);

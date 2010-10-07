@@ -186,6 +186,9 @@ public class MappingEngine {
 		monitor.info("Searching mapping path ...");
 		MappingData data = new MappingData(src, src);
 		Path path = findPath(src, dst, monitor);
+		if (path == null)
+			throw new MappingException("Unable to find a mapping path from " + src + " to " + dst);
+		
 		monitor.debug("Mapping path: " + path);
 		monitor.worked(1);
 

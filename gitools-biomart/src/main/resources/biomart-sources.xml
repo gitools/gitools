@@ -20,7 +20,7 @@
 	</mart>
 	<mart>
 		<name>ensembl_last</name>
-		<description>Ensembl Last release Portal</description>
+		<description>Ensembl Last release</description>
 		<version>0.6</version>
 		<host>www.ensembl.org</host>
 		<port>80</port>

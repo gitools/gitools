@@ -100,7 +100,7 @@
 			<dependency>
 				<groupId>commons-net</groupId>
 				<artifactId>commons-net</artifactId>
-				<version>2.1</version>
+				<version>2.0</version>
 			</dependency>
 
 			<dependency>
@@ -154,10 +154,17 @@
 	</dependencyManagement>
 
 	<distributionManagement>
-		<snapshotRepository>
+		<repository>
 			<id>gitools-repository</id>
 			<name>gitools repository</name>
-			<url>file://${basedir}/target/deploy</url>
+			<url>file:///home/chris/NetbeansProjects/Gitools/target/deploy</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>gitools-snapshot-repository</id>
+			<name>gitools snapshot repository</name>
+			<!-- <url>file://${basedir}/target/deploy-snapshot</url> -->
+			<url>file:///home/chris/NetbeansProjects/Gitools/target/deploy</url>
 		</snapshotRepository>
 	</distributionManagement>
 

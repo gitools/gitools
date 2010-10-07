@@ -25,6 +25,7 @@ package org.gitools.ui.analysis.correlation.wizard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;
@@ -33,9 +34,12 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class CorrelationPage2 extends AbstractWizardPage {
+public class CorrelationFromEditorPage extends AbstractWizardPage {
 
-    public CorrelationPage2() {
+	protected String[] attributeNames;
+
+    /** Creates new form CorrelationPage */
+    public CorrelationFromEditorPage(String[] attributeNames) {
 		super();
 
 		initComponents();
@@ -46,6 +50,10 @@ public class CorrelationPage2 extends AbstractWizardPage {
 
 		setComplete(true);
 		
+		this.attributeNames = attributeNames;
+
+		attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
+
 		replaceEmptyValuesCheck.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
@@ -78,11 +86,15 @@ public class CorrelationPage2 extends AbstractWizardPage {
     private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
+        jLabel1 = new javax.swing.JLabel();
+        attributeCb = new javax.swing.JComboBox();
         replaceEmptyValuesCheck = new javax.swing.JCheckBox();
         replaceValueField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         applyToColumnsRb = new javax.swing.JRadioButton();
         applyToRowsRb = new javax.swing.JRadioButton();
+
+        jLabel1.setText("Take values from");
 
         replaceEmptyValuesCheck.setText("Replace empty values by");
 
@@ -106,18 +118,26 @@ public class CorrelationPage2 extends AbstractWizardPage {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(replaceEmptyValuesCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
                     .addComponent(applyToColumnsRb)
                     .addComponent(applyToRowsRb))
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(replaceEmptyValuesCheck)
                     .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -127,7 +147,7 @@ public class CorrelationPage2 extends AbstractWizardPage {
                 .addComponent(applyToColumnsRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(applyToRowsRb)
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,10 +171,16 @@ public class CorrelationPage2 extends AbstractWizardPage {
     private javax.swing.ButtonGroup applyGroup;
     private javax.swing.JRadioButton applyToColumnsRb;
     private javax.swing.JRadioButton applyToRowsRb;
+    private javax.swing.JComboBox attributeCb;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JCheckBox replaceEmptyValuesCheck;
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
+
+	public int getAttributeIndex() {
+		return attributeCb.getSelectedIndex();
+	}
 
 	public boolean isReplaceNanValuesEnabled() {
 		return replaceEmptyValuesCheck.isSelected();

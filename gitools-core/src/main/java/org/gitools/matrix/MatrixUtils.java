@@ -5,9 +5,14 @@ import edu.upf.bg.colorscale.impl.BinaryColorScale;
 import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.ModuleMap;
 
 public class MatrixUtils {
 
@@ -126,5 +131,50 @@ public class MatrixUtils {
 				return i;
 		
 		return -1;
+	}
+
+	public static BaseMatrix moduleMapToMatrix(ModuleMap mmap) {
+		DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
+		String[] columns = mmap.getModuleNames();
+		String[] rows = mmap.getItemNames();
+		matrix.setColumns(columns);
+		matrix.setRows(rows);
+		matrix.makeCells(rows.length, columns.length);
+		for (int col = 0; col < mmap.getModuleCount(); col++)
+			for (int row : mmap.getItemIndices(col))
+				matrix.setCellValue(row, col, 0, 1.0);
+		return matrix;
+	}
+
+	public static ModuleMap matrixToModuleMap(IMatrix matrix) {
+		String[] itemNames = new String[matrix.getRowCount()];
+		for (int i = 0; i < matrix.getRowCount(); i++)
+			itemNames[i] = matrix.getRowLabel(i);
+
+		String[] modNames = new String[matrix.getColumnCount()];
+		for (int i = 0; i < matrix.getColumnCount(); i++)
+			modNames[i] = matrix.getColumnLabel(i);
+
+		ModuleMap map = new ModuleMap();
+		map.setItemNames(itemNames);
+		map.setModuleNames(modNames);
+
+		int[][] mapIndices = new int[matrix.getColumnCount()][];
+		for (int col = 0; col < matrix.getColumnCount(); col++) {
+			List<Integer> indexList = new ArrayList<Integer>();
+			for (int row = 0; row < matrix.getRowCount(); row++) {
+				double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
+				if (value == 1.0)
+					indexList.add(row);
+			}
+			int[] indexArray = new int[indexList.size()];
+			for (int i = 0; i < indexList.size(); i++)
+				indexArray[i] = indexList.get(i);
+			mapIndices[col] = indexArray;
+		}
+
+		map.setAllItemIndices(mapIndices);
+
+		return map;
 	}
 }

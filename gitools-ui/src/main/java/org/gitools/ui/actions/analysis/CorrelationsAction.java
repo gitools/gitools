@@ -32,7 +32,7 @@ import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.analysis.correlation.wizard.CorrelationWizard;
+import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -71,7 +71,7 @@ public class CorrelationsAction extends BaseAction {
 		for (int i = 0; i < attributes.size(); i++)
 			attributeNames[i] = attributes.get(i).getName();
 
-		CorrelationWizard wiz = new CorrelationWizard(attributeNames);
+		CorrelationAnalysisFromEditorWizard wiz = new CorrelationAnalysisFromEditorWizard(attributeNames);
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
 		dlg.setVisible(true);
 

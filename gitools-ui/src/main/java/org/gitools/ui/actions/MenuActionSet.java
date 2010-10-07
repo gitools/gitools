@@ -37,15 +37,17 @@ public class MenuActionSet extends ActionSet {
 				FileActions.closeAction,
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
-					new ActionSet("Data", new BaseAction[] {
-						FileActions.importIntogenTableAction,
-						FileActions.importBioMartTableAction,
+					new ActionSet("Matrix", new BaseAction[] {
+						FileActions.importIntogenTableAction
 					}),
 					new ActionSet("Modules", new BaseAction[] {
 						FileActions.importIntogenOncomodulesAction,
 						FileActions.importKeggModulesAction,
 						FileActions.importGoModulesAction,
 						FileActions.importBioMartModulesAction
+					}),
+					new ActionSet("Annotations", new BaseAction[] {
+						FileActions.importBioMartTableAction
 					})
 					/*new ActionSet("IntOGen", IconUtils.getImageIconResource(IconNames.intogen16), new BaseAction[] {
 						FileActions.importIntogenTableAction,

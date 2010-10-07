@@ -84,38 +84,4 @@ public abstract class HtestCommand extends AnalysisCommand {
 		
 		return testFactory;
 	}
-	
-/*	protected void save(HtestAnalysis analysis, IProgressMonitor monitor)
-			throws PersistenceException {
-
-		final String basePath = workdir; //+ File.separator + analysis.getTitle();
-		
-		monitor.begin("Saving project ...", 1);
-		monitor.info("Location: " + basePath);
-		
-		Set<String> formats = new HashSet<String>();
-		for (String format : outputFormat.split(","))
-			formats.add(format);
-		formats.add("csv"); // to mantain compatibility
-		
-		//saveProject(basePath, analysis, monitor);
-		
-		for (String format : formats) {
-			AnalysisPersistence ar = null;
-			
-			if ("csv".equalsIgnoreCase(format))
-				ar = new CsvAnalysisResource(basePath, resultsByCond);
-			else if ("rexml".equalsIgnoreCase(format) && analysis instanceof EnrichmentAnalysis) {
-				EnrichmentAnalysis ea = (EnrichmentAnalysis) analysis;
-				ar = new REXmlAnalysisResource(basePath,
-						ea.getMinModuleSize(),
-						ea.getMaxModuleSize());
-			}
-			
-			ar.save(analysis, monitor.subtask());
-		}
-		
-		monitor.end();
-	}
-*/
 }

@@ -21,6 +21,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.MimeTypes;
@@ -69,7 +70,7 @@ public class ImportKeggModulesAction extends BaseAction {
 						if (MimeTypes.GENE_MATRIX.equals(mime)
 								|| MimeTypes.GENE_MATRIX_TRANSPOSED.equals(mime)) {
 
-							BaseMatrix mat = null; //TODO convert from mmap
+							BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
 							PersistenceManager.getDefault().store(file, mime, mat, monitor);
 						}
 						else

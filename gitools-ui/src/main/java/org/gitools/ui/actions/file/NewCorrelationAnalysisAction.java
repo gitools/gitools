@@ -9,7 +9,7 @@ import org.gitools.analysis.correlation.CorrelationCommand;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
-import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisWizard;
+import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -32,9 +32,7 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//UnimplementedDialog.show(AppFrame.instance());
-
-		final CorrelationAnalysisWizard wizard = new CorrelationAnalysisWizard();
+		final CorrelationAnalysisFromFileWizard wizard = new CorrelationAnalysisFromFileWizard();
 
 		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 

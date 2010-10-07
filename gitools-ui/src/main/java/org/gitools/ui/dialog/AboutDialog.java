@@ -69,30 +69,7 @@ public class AboutDialog extends JDialog {
 			System.err.println("Unexpected error creating credits pane.");
 		}
 		
-		/*JTextPane infoPane = new JTextPane();
-		infoPane.setFocusable(false);
-		//infoPane.setBackground(Color.WHITE);
-		infoPane.setContentType("text/html");
-		//final JScrollPane scrollPane = new JScrollPane(infoPane);
-		//scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		//scrollPane.setBorder(
-		//		BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		
-		//FIXME: It should load this text from a resource
-		infoPane.setText("<h1>" + appName + "</h1>" +
-						"<p>Version " + appVersion + "</p>" +
-						"<p>Biomedical Genomics Laboratory at GRIB<br>" +
-						"Parc de Recerca Biomedica de Barcelona (PRBB)</p>" +
-						"<p>Authors:<ul>" +
-						"<li>Nuria Lopez-Bigas</li>" + 
-						"<li>Christian Perez-Llamas</li>" +
-						"<li>Michael Schroeder</li></ul></p>" +
-						"<p>Thanks to:<ul>" +
-						"<li>Sonja Haenzelmann</li>" +
-						"<li>Khademul Islam</li>" +
-						"<li>Gunnes Gundem</li></ul></p>");*/
-		
-		JButton acceptBtn = new JButton("Accept");
+		JButton acceptBtn = new JButton("Close");
 		acceptBtn.setMargin(new Insets(0, 30, 0, 30));
 		acceptBtn.addActionListener(new ActionListener() {
 			@Override

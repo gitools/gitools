@@ -252,15 +252,18 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private File getSelectedPath() {
 		JFileChooser fileChooser = new JFileChooser(
-				Settings.getDefault().getLastPath());
+				Settings.getDefault().getLastAnnotationPath());
 
 		fileChooser.setDialogTitle("Select file");
 		fileChooser.setMinimumSize(new Dimension(800,600));
 		fileChooser.setPreferredSize(new Dimension(800,600));
 
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION)
+		if (retval == JFileChooser.APPROVE_OPTION) {
+			Settings.getDefault().setLastAnnotationPath(
+					fileChooser.getSelectedFile().getParent());
 			return fileChooser.getSelectedFile();
+		}
 
 		return null;
 	}

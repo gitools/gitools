@@ -29,20 +29,14 @@ public class ImportBiomartModulesAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-			//final BiomartCentralPortalSoapService service = BiomartCentralPortalSoapService.getDefault();
-			//List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
-			//BiomartSource bsrc = lBs.get(0);
-			//final BiomartRestfulService service = BiomartServiceFactory.createRestfulService(bsrc);
-		
 			final BiomartModulesWizard wizard = new BiomartModulesWizard();
 			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
 			wdlg.open();
-			if (wdlg.isCancelled()) {
+			if (wdlg.isCancelled())
 				return;
-			}
+
 			final File file = wizard.getSelectedFile();
 			JobThread.execute(AppFrame.instance(), new JobRunnable() {
-
 				@Override
 				public void run(IProgressMonitor monitor) {
 					monitor.begin("Downloading data...", 1);
