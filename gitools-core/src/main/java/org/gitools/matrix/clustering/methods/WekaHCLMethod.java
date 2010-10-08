@@ -18,26 +18,22 @@
 package org.gitools.matrix.clustering.methods;
 
 import org.gitools.matrix.clustering.MatrixViewWeka;
-import org.gitools.matrix.clustering.clusterUtils;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
 import org.gitools.matrix.clustering.ClusteringMethod;
-import org.gitools.matrix.model.IMatrixView;
-import weka.clusterers.Cobweb;
-import weka.core.FastVector;
+import weka.clusterers.HierarchicalClusterer;
 import weka.core.Instance;
-import weka.core.Instances;
 
-public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod{
+
+public class WekaHCLMethod extends AbstractMethod implements ClusteringMethod{
+
 	public static final String ID = "hierarchical";
 
-	public WekaCobWebMethod(Properties properties) {
+	public WekaHCLMethod(Properties properties) {
 		super(ID,
 				"CobWeb's clustering",
 				"CobWeb's Weka clustering",null, properties);
@@ -50,43 +46,24 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 	@Override
 	public HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka data, IProgressMonitor monitor) throws Exception {
 
-		Instance current = null;
+		HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
 
-		HashMap<Integer, List<Integer>> clusterResults = null;
-
-		Cobweb clusterer = new Cobweb();
-
-		clusterer.setAcuity(Float.valueOf(properties.getProperty("acuity","0.5")));
-		clusterer.setCutoff(Float.valueOf(properties.getProperty("cutoff","0.0028")));
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedCobweb","42")));
-
-		clusterer.buildClusterer(data.getStructure());
-
-		monitor.begin("Creating clustering model ...",  data.getMatrixView().getVisibleColumns().length + 1);
-
-		int j = 0;
-		while ((j <  data.getMatrixView().getVisibleColumns().length ) && !monitor.isCancelled()) {
-
-			if ((current = data.get(j)) != null)
-				clusterer.updateClusterer(current);
-
-			monitor.worked(1);
-			j++;
-		}
+		HierarchicalClusterer clusterer = new HierarchicalClusterer();
+		
+		clusterer.buildClusterer(data);
 
 		if (!monitor.isCancelled())
 		{
-			clusterer.updateFinished();
-
+			//clusterer.updateFinished();
 			monitor.end();
 
-			monitor.begin("Clustering instances ...",  data.getMatrixView().getVisibleColumns().length);
+			// Identificar el cluster de cada instancia
+			monitor.begin("Clustering instances ...", data.getMatrixView().getVisibleColumns().length);
 
 			int cluster;
+			Instance current = null;
 
-			clusterResults = new HashMap<Integer, List<Integer>>();
-
-			for (int i=0; i <  data.getMatrixView().getVisibleColumns().length && !monitor.isCancelled(); i++)  {
+			for (int i=0; i < data.getMatrixView().getVisibleColumns().length && !monitor.isCancelled(); i++)  {
 
 				if ((current = data.get(i)) != null) {
 
@@ -103,18 +80,20 @@ public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod
 				else
 					System.out.println("ERROR Loading instance: "+i);
 				monitor.worked(1);
-			}
+			}			
 
 		}
 
 		return clusterResults;
-
+		
 	}
+
 
 	@Override
 	public String getId() {
 		return ID;
 	}
+
 
 
 }

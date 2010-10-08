@@ -17,10 +17,13 @@
 package org.gitools.matrix.clustering;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import org.gitools.matrix.clustering.methods.ClusteringMethodFactory;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
+import weka.core.Instances;
 
 public class MatrixViewClusterer {
 
@@ -35,7 +38,24 @@ public class MatrixViewClusterer {
 			matrixView = mt;
 		}
 
-		method.buildAndCluster(matrixView, monitor);
+		Instances str = clusterUtils.getInstance().matrix2Instances(matrixView, clusterParameters);
+
+		MatrixViewWeka data = new MatrixViewWeka(str);		
+
+		data.initialize(matrixView, clusterParameters);
+
+		if (Boolean.valueOf(clusterParameters.getProperty("preprocessing")))
+			clusterUtils.getInstance().dataReductionProcess(data, monitor);		
+		
+		HashMap<Integer, List<Integer>> clusterResults = method.buildAndCluster(data, monitor);
+
+		if (!monitor.isCancelled())
+			clusterUtils.getInstance().updateVisibility(data.getMatrixView(), clusterResults);
+
+		monitor.end();
 
 	}
+
+
+
 }

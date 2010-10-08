@@ -19,7 +19,6 @@ package org.gitools.matrix.clustering.methods;
 
 import java.util.Properties; 
 import org.gitools.matrix.clustering.ClusteringMethod;
-import org.gitools.analysis.AnalysisException;
 
 
 public class ClusteringMethodFactory {

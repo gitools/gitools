@@ -17,8 +17,8 @@
 
 package org.gitools.matrix.clustering.methods;
 
+import org.gitools.matrix.clustering.MatrixViewWeka;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,6 @@ import org.gitools.matrix.model.IMatrixView;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
 import weka.core.Instance;
-import weka.core.Instances;
 import weka.core.ManhattanDistance;
 
 public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod{
@@ -43,18 +42,20 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 				null, properties);
 	}
 
-
+/*
+ * Build the model and cluster the dataset
+ * Hashmap with all Cluster and the instances wich belong to
+ */
 	@Override
-	public void buildAndCluster(IMatrixView matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException {
+	public HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka data, IProgressMonitor monitor) throws Exception {
 
 		Instance instancia;
+		
 		int cluster;
 
-		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return;
+		HashMap<Integer, List<Integer>> clusterResults = null;
 
-		Integer valueIndex = Integer.valueOf(properties.getProperty("index", "0"));
-		MatrixViewWekaLoader loader =
-				new MatrixViewWekaLoader(matrixView, valueIndex);
+		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return null;
 
 		SimpleKMeans clusterer = new SimpleKMeans();
 
@@ -67,26 +68,25 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 		else
 			clusterer.setDistanceFunction(new ManhattanDistance());
 
-		Instances dataset = loader.getDataSet();
-
 		monitor.begin("Creating clustering model ...", 1);
-		clusterer.buildClusterer(dataset);
+
+		clusterer.buildClusterer(data);
 
 		if (!monitor.isCancelled())
 		{
 
 			monitor.end();
 			
-			monitor.begin("Clustering instances ...", dataset.numInstances());
+			monitor.begin("Clustering instances ...", data.numInstances());
 
 			//Cluster -> List instances
-			HashMap<Integer,List<Integer>> clusterResults = new HashMap<Integer,List<Integer>>();
+			clusterResults = new HashMap<Integer,List<Integer>>();
 
 			List<Integer> instancesCluster = null;
 
-			for (int i=0; i < dataset.numInstances(); i++)  {
+			for (int i=0; i < data.numInstances(); i++)  {
 
-				instancia = dataset.instance(i);
+				instancia = data.instance(i);
 				cluster = clusterer.clusterInstance(instancia);
 
 				if (clusterResults.get(cluster) == null)
@@ -100,10 +100,9 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
 
 			}
 
-			updateVisibility (matrixView, dataset.numInstances(), clusterResults);
 		}
 
-		monitor.end();
+		return clusterResults;
 
 	}
 

@@ -19,11 +19,12 @@ package org.gitools.matrix.clustering;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import org.gitools.analysis.Method;
-import org.gitools.matrix.model.IMatrixView;
 
 public interface ClusteringMethod extends Method{
 
-	void buildAndCluster(IMatrixView matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException;
+	HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka matrixView, IProgressMonitor monitor) throws Exception, IOException, NumberFormatException;
 
 }
