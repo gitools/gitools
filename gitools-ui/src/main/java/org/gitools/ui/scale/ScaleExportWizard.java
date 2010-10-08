@@ -19,7 +19,7 @@ package org.gitools.ui.scale;
 
 import edu.upf.bg.colorscale.IColorScale;
 import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class ScaleExportWizard extends AbstractWizard {
 

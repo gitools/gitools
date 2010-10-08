@@ -26,7 +26,7 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class ModulesImportWizard extends AbstractWizard {
 
@@ -66,13 +66,13 @@ public class ModulesImportWizard extends AbstractWizard {
 		saveFilePage = new SaveFilePage() {
 			@Override public void updateModel() {
 				Settings.getDefault().setLastMapPath(getFolder()); } };
-
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
 		saveFilePage.setFormats(supportedFormats);
 		addPage(saveFilePage);
 	}
 
+	@Override
 	public void pageEntered(IWizardPage page) {
 		if (saveFilePage.equals(page))
 			if (saveFilePage.getFileName().isEmpty())

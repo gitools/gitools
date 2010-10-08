@@ -20,12 +20,10 @@ package org.gitools.ui.biomart.wizard;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import org.gitools.biomart.restful.model.AttributeCollection;
-import org.gitools.biomart.restful.model.AttributeGroup;
 
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.MartLocation;
@@ -46,7 +44,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 
 	private BiomartAttributeListPanel panel;
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private DatasetConfig biomartConfig;
 
@@ -125,7 +123,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
 		panel.setAttributePages(attrPages);
 	}*/
 
-	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo ds) {
+	public void setSource(BiomartService biomartService, MartLocation mart, DatasetInfo ds) {
 
 		if (this.dataset != null && this.dataset.getName().equals(ds.getName()))
 			reloadData = false;

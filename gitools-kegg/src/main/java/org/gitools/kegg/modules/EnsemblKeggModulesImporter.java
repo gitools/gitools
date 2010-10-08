@@ -44,7 +44,7 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.idmapper.EnsemblMapper;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
@@ -130,7 +130,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 
 	// internal state
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private MartLocation martLocation;
 
@@ -160,7 +160,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		moduleCategories = mc.toArray(new ModuleCategory[mc.size()]);
 	}
 
-	private BiomartRestfulService getBiomartService() throws BiomartServiceException, ModulesImporterException {
+	private BiomartService getBiomartService() throws BiomartServiceException, ModulesImporterException {
 		if (biomartService != null)
 			return biomartService;
 
@@ -168,11 +168,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 			throw new ModulesImporterException("Ensembl biomart source not defined.");
 		
 		return biomartService =
-				BiomartServiceFactory.createRestfulService(version.getSource());
+				BiomartServiceFactory.createService(version.getSource());
 	}
 
 	private MartLocation getMart() throws BiomartServiceException, ModulesImporterException {
-		BiomartRestfulService bs = getBiomartService();
+		BiomartService bs = getBiomartService();
 		List<MartLocation> registry = bs.getRegistry();
 		Iterator<MartLocation> it = registry.iterator();
 
@@ -225,7 +225,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		try {
 			// Ensembl organisms
 
-			BiomartRestfulService bs = getBiomartService();
+			BiomartService bs = getBiomartService();
 			MartLocation mart = getMart();
 
 			List<DatasetInfo> datasets = bs.getDatasets(mart);
@@ -306,7 +306,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 				ftp.connect(KeggGenesMapper.FTP_HOST);
 				ftp.login("anonymous", "");
 				String path = KeggGenesMapper.FTP_PATH + "/" + orgId + "/";
-				System.out.println("ftp://" + KeggGenesMapper.FTP_HOST + "/" + path);
+				//System.out.println("ftp://" + KeggGenesMapper.FTP_HOST + path);
 				String[] files = ftp.listNames(path);
 				if (files == null)
 					throw new ModulesImporterException("Unable to connect to KEGG FTP: " + ftp.getReplyString());
@@ -343,7 +343,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 
 			List<AttributePage> attrs = null;
 			try {
-				BiomartRestfulService bs = getBiomartService();
+				BiomartService bs = getBiomartService();
 
 				MartLocation mart = getMart();
 				DatasetInfo dataset = organism.getEnsemblDataset();
@@ -505,7 +505,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 
 			monitor.info("Ensembl");
 
-			BiomartRestfulService bs = null;
+			BiomartService bs = null;
 			try {
 				bs = getBiomartService();
 			}

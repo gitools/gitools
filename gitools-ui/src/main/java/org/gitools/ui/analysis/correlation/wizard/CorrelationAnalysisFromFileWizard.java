@@ -21,19 +21,20 @@ import java.io.File;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.analysis.wizard.DataPage;
+import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
-	private DataPage dataPage;
+	private SelectFilePage dataPage;
+	private DataFilterPage dataFilterPage;
 	protected CorrelationFromFilePage corrPage;
 	private SaveFilePage saveFilePage;
 	protected AnalysisDetailsPage analysisDetailsPage;
@@ -48,10 +49,13 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Data
-		dataPage = new DataPage();
-		dataPage.setPopulationFileVisible(false);
-		dataPage.setDiscardNonMappedRowsVisible(false);
+		dataPage = new SelectFilePage();
 		addPage(dataPage);
+
+		// Data filters
+		dataFilterPage = new DataFilterPage();
+		dataFilterPage.setPopulationFileVisible(false);
+		addPage(dataFilterPage);
 
 		// Correlation method
 		corrPage = new CorrelationFromFilePage();
@@ -100,11 +104,11 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 	}
 
 	public File getDataFile() {
-		return dataPage.getDataFile();
+		return dataPage.getFile();
 	}
 
 	public File getPopulationFile() {
-		return dataPage.getPopulationFile();
+		return dataFilterPage.getPopulationFile();
 	}
 
 	public CorrelationAnalysis getAnalysis() {

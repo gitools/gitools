@@ -34,16 +34,16 @@ import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 
 import org.gitools.biomart.BiomartServiceFactory;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
-import org.gitools.ui.common.wizard.FilteredTreePanel;
+import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePanel extends FilteredTreePanel {
 
-	private BiomartRestfulService port;
+	private BiomartService port;
 	private MartLocation mart;
 	private DatasetInfo dataset;
 
@@ -93,7 +93,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 	}
 	*/
 	public void setBiomartParameters(
-			BiomartRestfulService port,
+			BiomartService port,
 			MartLocation mart,
 			DatasetInfo dataset) {
 
@@ -134,7 +134,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
 
 			List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
 			BiomartSource bsrc = lBs.get(0);
-			BiomartRestfulService service = BiomartServiceFactory.createRestfulService(bsrc);
+			BiomartService service = BiomartServiceFactory.createService(bsrc);
 
 			final List<AttributePage> pages = service.getAttributes(mart, dataset);
 					//BiomartCentralPortalSoapService.getDefault().getAttributes(mart, dataset);

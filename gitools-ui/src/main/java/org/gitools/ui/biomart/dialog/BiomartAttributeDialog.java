@@ -24,7 +24,7 @@
 package org.gitools.ui.biomart.dialog;
 
 import java.util.List;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
@@ -87,7 +87,7 @@ public class BiomartAttributeDialog extends javax.swing.JDialog {
 	}
 */
 	public void setBiomartParameters(
-			BiomartRestfulService port,
+			BiomartService port,
 			MartLocation mart,
 			DatasetInfo dataset) {
 

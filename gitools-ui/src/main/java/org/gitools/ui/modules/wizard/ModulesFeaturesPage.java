@@ -25,7 +25,7 @@ import org.gitools.modules.importer.Organism;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.common.wizard.FilteredListPage;
+import org.gitools.ui.wizard.common.FilteredListPage;
 
 public class ModulesFeaturesPage extends FilteredListPage {
 

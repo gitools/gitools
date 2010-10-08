@@ -31,7 +31,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.FilterGroup;
 import org.gitools.biomart.restful.model.FilterPage;
@@ -105,7 +105,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 	private DatasetConfig biomartConfig;
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private FilterGroup lastGroupSelected;
 
@@ -526,7 +526,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 	 * @param service
 	 * @param dataset
 	 */
-	public void setSource(BiomartRestfulService service, DatasetConfig config) {
+	public void setSource(BiomartService service, DatasetConfig config) {
 
 		if (this.biomartConfig != null && this.biomartConfig.getDataset().equals(config.getDataset()))
 
@@ -607,7 +607,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 	}
 	
-	public BiomartRestfulService getBiomartService(){
+	public BiomartService getBiomartService(){
 
 		return this.biomartService;
 	}

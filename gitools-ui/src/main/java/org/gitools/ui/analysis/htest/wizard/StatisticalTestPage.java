@@ -92,6 +92,8 @@ public class StatisticalTestPage extends AbstractWizardPage {
         samplingSizeCbox = new javax.swing.JComboBox();
         estimatorLabel = new javax.swing.JLabel();
         estimatorCbox = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        mtcCb = new javax.swing.JComboBox();
 
         testCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Binomial (Bernoulli)", "Fisher Exact", "Z-Score" }));
 
@@ -106,6 +108,11 @@ public class StatisticalTestPage extends AbstractWizardPage {
         estimatorLabel.setText("Estimator");
 
         estimatorCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "mean", "median" }));
+
+        jLabel1.setText("Multiple test correction");
+
+        mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bonferroni", "Benjamini Hochberg FDR" }));
+        mtcCb.setSelectedIndex(1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -123,7 +130,11 @@ public class StatisticalTestPage extends AbstractWizardPage {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(estimatorCbox, 0, 275, Short.MAX_VALUE)
-                            .addComponent(samplingSizeCbox, 0, 275, Short.MAX_VALUE))))
+                            .addComponent(samplingSizeCbox, 0, 275, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mtcCb, 0, 218, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,7 +152,11 @@ public class StatisticalTestPage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(estimatorCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(estimatorLabel))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -149,6 +164,8 @@ public class StatisticalTestPage extends AbstractWizardPage {
     public javax.swing.JLabel descLabel;
     public javax.swing.JComboBox estimatorCbox;
     public javax.swing.JLabel estimatorLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox mtcCb;
     public javax.swing.JComboBox samplingSizeCbox;
     public javax.swing.JLabel samplingSizeLabel;
     public javax.swing.JComboBox testCbox;
@@ -190,6 +207,10 @@ public class StatisticalTestPage extends AbstractWizardPage {
 	}
 
 	public String getMtc() {
-		return "bh"; // TODO getMtc() ...
+		switch (mtcCb.getSelectedIndex()) {
+			case 0: return "bonferroni";
+			case 1: return "bh";
+		}
+		return "bh";
 	}
 }

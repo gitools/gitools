@@ -39,11 +39,6 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 	}
 
 	@Override
-	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		//throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
 	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
 		if (!KEGG_PATHWAYS.equals(src.getId()))
 			throw new MappingException("Unsupported mapping from " + src + " to " + dst);
@@ -64,7 +59,7 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 		if (monitor.isCancelled())
 			return null;
 
-		Map<String, Set<String>> pathwaysMap = new HashMap<String, Set<String>>();
+		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 		Set<String> dstIds = data.getDstIds();
 		monitor.begin("Getting KEGG genes ...", dstIds.size());
 		try {
@@ -74,11 +69,11 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 				if (monitor.isCancelled())
 					return null;
 
-				if (count++ > 10)
+				if (count++ > 10) //FIXME 
 					break;
 
 				String[] genes = service.get_genes_by_pathway(dstId);
-				pathwaysMap.put(dstId, new HashSet<String>(Arrays.asList(genes)));
+				map.put(dstId, new HashSet<String>(Arrays.asList(genes)));
 				monitor.worked(1);
 			}
 		}
@@ -87,10 +82,13 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 		}
 		monitor.end();
 
-		data.clearDstIds();
+
 
 		monitor.begin("Mapping KEGG pathways to KEGG genes ...", dstIds.size());
-		for (String srcId : data.getSrcIds()) {
+
+		data.map(map);
+
+		/*for (String srcId : data.getSrcIds()) {
 			monitor.info(srcId);
 			if (monitor.isCancelled())
 				return null;
@@ -99,21 +97,17 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 			Set<String> genes = new HashSet<String>();
 			Iterator<String> it = pathways.iterator();
 			while (it.hasNext()) {
-				Set<String> pg = pathwaysMap.get(it.next());
+				Set<String> pg = map.get(it.next());
 				if (pg != null)
 					genes.addAll(pg);
 			}
 			data.set(srcId, genes);
 			monitor.worked(1);
-		}
+		}*/
+
 		monitor.end();
 
 		return data;
-	}
-
-	@Override
-	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		//throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 }

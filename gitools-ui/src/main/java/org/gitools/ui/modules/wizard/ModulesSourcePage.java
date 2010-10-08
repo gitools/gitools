@@ -79,44 +79,42 @@ public class ModulesSourcePage extends AbstractWizardPage {
         modCategoryCb = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         versionCb = new javax.swing.JComboBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        notesLabel2 = new javax.swing.JLabel();
+        notesLabel3 = new javax.swing.JLabel();
+        notesLabel1 = new javax.swing.JLabel();
 
         jLabel1.setText("Category");
 
         jLabel2.setText("Ensembl version");
 
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setFocusable(false);
-        jScrollPane1.setRequestFocusEnabled(false);
+        notesLabel2.setFont(notesLabel2.getFont().deriveFont(notesLabel2.getFont().getSize()-2f));
+        notesLabel2.setText("You can choose which Ensembl version to work with,");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("This importer uses data from the KEGG PATHWAYS and the Ensembl Genes databases.\n\nBy default the last version of the Ensembl database is used but you can also select a different one.");
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(null);
-        jTextArea1.setFocusable(false);
-        jTextArea1.setRequestFocusEnabled(false);
-        jScrollPane1.setViewportView(jTextArea1);
+        notesLabel3.setFont(notesLabel3.getFont().deriveFont(notesLabel3.getFont().getSize()-2f));
+        notesLabel3.setText("by default the most recent version is used.");
+
+        notesLabel1.setFont(notesLabel1.getFont().deriveFont(notesLabel1.getFont().getSize()-2f));
+        notesLabel1.setText("The Ensembl database is used to map between identifiers.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(modCategoryCb, 0, 390, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(modCategoryCb, 0, 570, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(versionCb, 0, 343, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(notesLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                            .addComponent(versionCb, 0, 523, Short.MAX_VALUE)
+                            .addComponent(notesLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                            .addComponent(notesLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -130,9 +128,13 @@ public class ModulesSourcePage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(versionCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(notesLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(notesLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(notesLabel3)
+                .addContainerGap(253, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -140,9 +142,10 @@ public class ModulesSourcePage extends AbstractWizardPage {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JComboBox modCategoryCb;
+    private javax.swing.JLabel notesLabel1;
+    private javax.swing.JLabel notesLabel2;
+    private javax.swing.JLabel notesLabel3;
     private javax.swing.JComboBox versionCb;
     // End of variables declaration//GEN-END:variables
 

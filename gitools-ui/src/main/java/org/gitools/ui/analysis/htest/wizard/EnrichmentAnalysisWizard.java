@@ -1,7 +1,8 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.analysis.wizard.DataFilterPage;
+import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.analysis.wizard.ModulesPage;
-import org.gitools.ui.analysis.wizard.DataPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
@@ -13,14 +14,15 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class EnrichmentAnalysisWizard extends AbstractWizard {
 	
-	private SaveFilePage saveFilePage;
-	private DataPage dataPage;
+	private SelectFilePage dataPage;
+	private DataFilterPage dataFilterPage;
 	private ModulesPage modulesPage;
 	private StatisticalTestPage statisticalTestPage;
+	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
 	
 	public EnrichmentAnalysisWizard() {
@@ -33,8 +35,13 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Data
-		dataPage = new DataPage();
+		dataPage = new SelectFilePage();
 		addPage(dataPage);
+
+		// Data filtering
+		dataFilterPage = new DataFilterPage();
+		dataFilterPage.setDiscardNonMappedRowsVisible(true);
+		addPage(dataFilterPage);
 		
 		// Modules
 		modulesPage = new ModulesPage();
@@ -94,11 +101,11 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 	
 	public File getDataFile() {
-		return dataPage.getDataFile();
+		return dataPage.getFile();
 	}
 
 	public File getPopulationFile() {
-		return dataPage.getPopulationFile();
+		return dataFilterPage.getPopulationFile();
 	}
 	
 	public String getModulesFileMime() {
@@ -116,10 +123,10 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
 		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 		
-		analysis.setBinaryCutoffEnabled(dataPage.isBinaryCutoffEnabled());
-		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
-		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());
-		analysis.setDiscardNonMappedRows(dataPage.isDiscardNonMappedRows());
+		analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
+		analysis.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
+		analysis.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
+		analysis.setDiscardNonMappedRows(dataFilterPage.isDiscardNonMappedRowsEnabled());
 		analysis.setMinModuleSize(modulesPage.getMinSize());
 		analysis.setMaxModuleSize(modulesPage.getMaxSize());
 		analysis.setTestConfig(statisticalTestPage.getTestConfig());

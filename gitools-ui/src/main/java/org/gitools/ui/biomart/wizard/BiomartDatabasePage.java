@@ -7,14 +7,14 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.MartLocation;
 
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.common.wizard.FilteredListPanel;
+import org.gitools.ui.wizard.common.FilteredListPanel;
 
 public class BiomartDatabasePage extends AbstractWizardPage {
 
@@ -36,13 +36,13 @@ public class BiomartDatabasePage extends AbstractWizardPage {
 		}
 	}
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private FilteredListPanel panelDataset;
 	
 	private boolean updated;
 	
-	public BiomartDatabasePage(BiomartRestfulService biomartService /*IBiomartService biomartService*/) {
+	public BiomartDatabasePage(BiomartService biomartService /*IBiomartService biomartService*/) {
 		super();
 		
 		this.biomartService = biomartService;

@@ -1,12 +1,14 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.ui.analysis.wizard.DataFilterPage;
+import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.analysis.wizard.ModulesPage;
-import org.gitools.ui.analysis.wizard.DataPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
@@ -15,14 +17,15 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class OncodriverAnalysisWizard extends AbstractWizard {
 
-	private SaveFilePage saveFilePage;
-	private DataPage dataPage;
+	private SelectFilePage dataPage;
+	private DataFilterPage dataFilterPage;
 	private ModulesPage modulesPage;
 	private StatisticalTestPage statisticalTestPage;
+	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
 
 	public OncodriverAnalysisWizard() {
@@ -35,9 +38,12 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Data
-		dataPage = new DataPage();
-		dataPage.setDiscardNonMappedRowsVisible(false);
+		dataPage = new SelectFilePage();
 		addPage(dataPage);
+
+		// Data filtering
+		dataFilterPage = new DataFilterPage();
+		addPage(dataFilterPage);
 
 		// Modules
 		modulesPage = new ModulesPage();
@@ -56,9 +62,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
 		saveFilePage.setFormats(new FileFormat[] {
-			new FileFormat("Oncodrive analysis (*."
-					+ FileSuffixes.ONCODRIVE + ")",
-					FileSuffixes.ONCODRIVE) });
+			FileFormats.ONCODRIVE });
 		saveFilePage.setFormatsVisible(false);
 		addPage(saveFilePage);
 
@@ -101,11 +105,11 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	}
 
 	public File getDataFile() {
-		return dataPage.getDataFile();
+		return dataPage.getFile();
 	}
 
 	public File getPopulationFile() {
-		return dataPage.getPopulationFile();
+		return dataFilterPage.getPopulationFile();
 	}
 
 	public String getModulesFileMime() {
@@ -123,9 +127,9 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
 		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-		analysis.setBinaryCutoffEnabled(dataPage.isBinaryCutoffEnabled());
-		analysis.setBinaryCutoffCmp(dataPage.getBinaryCutoffCmp());
-		analysis.setBinaryCutoffValue(dataPage.getBinaryCutoffValue());
+		analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
+		analysis.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
+		analysis.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
 		analysis.setMinModuleSize(modulesPage.getMinSize());
 		analysis.setMaxModuleSize(modulesPage.getMaxSize());
 		analysis.setTestConfig(statisticalTestPage.getTestConfig());

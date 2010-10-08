@@ -47,12 +47,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 	}
 
 	public KeggGenesMapper(KEGGPortType service, String organismId) {
-		super("KeggGenes", false, false, service, organismId);
-	}
-
-	@Override
-	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		//throw new UnsupportedOperationException("Not supported yet.");
+		super("KeggGenes", false, true, service, organismId);
 	}
 
 	@Override
@@ -61,7 +56,9 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
 		monitor.begin("Getting mapping information from KEGG FTP ...", 1);
 
-		// Get map from the FTP --- TODO Filter out items not in data
+		// TODO Filter out items not in data if data is not empty
+		
+		// Get map from the FTP
 		try {
 			String prefix = fileKey.get(dst.getId());
 			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
@@ -82,14 +79,16 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				String[] fields = line.split("\\t");
+				String sf = fields[0];
+				String df = fields[1];
 				if (fields.length != 2)
 					continue;
-				Set<String> b = map.get(fields[0]);
+				Set<String> b = map.get(sf);
 				if (b == null) {
 					b = new HashSet<String>();
-					map.put(fields[0], b);
+					map.put(sf, b);
 				}
-				b.add(fields[1].substring(plen));
+				b.add(df.substring(plen));
 			}
 		}
 		catch (Exception ex) {
@@ -100,15 +99,13 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
 		monitor.begin("Mapping KEGG genes ...", 1);
 
+		if (data.isEmpty())
+			data.identity(map.keySet());
+		
 		data.map(map);
 
 		monitor.end();
 		
 		return data;
-	}
-
-	@Override
-	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		//throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

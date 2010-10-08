@@ -6,7 +6,7 @@ import java.util.List;
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.Filter;
@@ -20,7 +20,7 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class BiomartModulesWizard extends AbstractWizard {
 
@@ -30,7 +30,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 
 	private SaveFilePage saveFilePage;
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private DatasetConfig biomartConfig;
 
@@ -186,7 +186,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 		return Dataset;
 	}
 
-	public BiomartRestfulService getService() {
+	public BiomartService getService() {
 		return biomartService;
 	}
 }

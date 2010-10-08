@@ -16,15 +16,9 @@
  */
 package org.gitools.biomart;
 
-import org.gitools.biomart.soap.BiomartSoapService;
-import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.settings.BiomartSource;
 
-/**
- *Factory of BiomartService
- * @author xrp02032010
- */
 public class BiomartServiceFactory {
 
 	private BiomartServiceFactory instance;
@@ -39,103 +33,14 @@ public class BiomartServiceFactory {
 
 	private BiomartServiceFactory() {
 	}
-	/**
-	 * Creates a Biomart service from a Biomart source
-	 * @param source
-	 * @return biomart service
-	 */
-	public static BiomartRestfulService createRestfulService(BiomartSource source) throws BiomartServiceException {
-		BiomartRestfulService bs = new BiomartGenericRestfulService(source);
-		return bs;
-	}
 
 	/**
 	 * Creates a Biomart service from a Biomart source
 	 * @param source
 	 * @return biomart service
 	 */
-	public static BiomartSoapService createSoapService(BiomartSource source) throws BiomartServiceException {
-		BiomartSoapService bs = new BiomartGenericSoapService(source);
+	public static BiomartService createService(BiomartSource source) throws BiomartServiceException {
+		BiomartService bs = new BiomartRestfulService(source);
 		return bs;
 	}
-
-
-	/**
-	 * Creates the default Biomart Service (currently through Biomart Central Portal)
-	 * @return biomart service
-	 */
-	public static BiomartSoapService createDefaultSoapService() throws BiomartServiceException {
-
-		BiomartSource bs = BiomartSourceManager.getDefault().getSources().get(0);
-
-
-		return createSoapService(bs);
-	}
-
-	/*
-	public static void main(String[] args) throws IOException {
-
-		BiomartSource b = BiomartSourceManager.getDefault().getSources().get(0);
-		try {
-			//Create Service connexion
-			IBiomartService r = BiomartServiceFactory.createDefaultservice();
-
-			// Retrieve lists of marts, dataset infos and filters
-			List<Mart> l = r.getRegistry();
-			System.out.println(l.get(0).getDatabase());
-
-			List<DatasetInfo> ld = r.getDatasets(l.get(0));
-			System.out.println(ld.get(0).getDisplayName());
-
-			//Retrieve config
-
-			InputStream in = null;
-			BufferedReader br = null;
-			String res = null;
-
-
-			List<FilterPage> lf = r.getFilters(l.get(0), ld.get(0));
-
-			System.out.println(lf.get(0).getFilterGroup().get(0).getFilterCollection().get(0).getFilterInfo().get(0).getName());
-			System.out.println(lf.get(0).getFilterGroup().get(0).getFilterCollection().get(0).getFilterInfo().get(0).getOptions());
-			System.out.println(lf.get(0).getFilterGroup().get(0).getFilterCollection().get(0).getFilterInfo().get(0).getQualifier());
-
-			//Preparing a QUERY with a Filter
-
-			Mart mart = l.get(0);
-			List<AttributePage> dsattrs = r.getAttributes(mart, ld.get(0));
-			Attribute a = new Attribute();
-			a.setName(dsattrs.get(0).getAttributeGroup().get(0).getAttributeCollection().get(0).getAttributeInfo().get(0).getName());
-
-			Filter f = new Filter();
-			f.setName(lf.get(0).getFilterGroup().get(0).getFilterCollection().get(0).getFilterInfo().get(0).getName());
-			f.setValue("STOP_GAINED");
-
-			Dataset ds = new Dataset();
-			ds.setName(ld.get(0).getName());
-			ds.getFilter().add(f);
-			ds.getAttribute().add(a);
-
-			Query query = new Query();
-			query.setVirtualSchemaName(mart.getServerVirtualSchema());
-			query.setHeader(1);
-			query.setCount(0);
-			query.setUniqueRows(1);
-			query.getDataset().add(ds);
-
-			//Execute QUERY
-			in = r.queryAsStream(query, "TSV");
-			br = new BufferedReader(new InputStreamReader(in));
-			res = null;
-			while ((res = br.readLine()) != null) {
-				System.out.println(res);
-			}
-			BiomartServiceFactory.QueryAsStream();
-
-		} catch (BiomartServiceException ex) {
-			System.out.println(ex);
-		}
-
-	}
-*/
 }

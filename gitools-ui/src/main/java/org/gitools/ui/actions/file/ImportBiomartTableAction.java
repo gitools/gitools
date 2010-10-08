@@ -3,7 +3,7 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.Query;
 import org.gitools.ui.IconNames;
 
@@ -49,7 +49,7 @@ public class ImportBiomartTableAction extends BaseAction {
 					monitor.begin("Downloading data...", 1);
 					Query query = wizard.getQuery();
 					String format = (String) wizard.getFormat().getMime();
-					BiomartRestfulService service = wizard.getService();
+					BiomartService service = wizard.getService();
 					try {
 						service.queryTable(query, file, format, wizard.isSkipRowsWithEmptyValuesEnabled(), wizard.emptyValuesReplacement(), monitor);
 					} catch (Exception ex) {

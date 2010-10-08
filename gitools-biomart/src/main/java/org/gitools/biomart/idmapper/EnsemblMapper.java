@@ -23,11 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
-import org.gitools.biomart.utils.tablewriter.SequentialTableWriter;
+import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.idmapper.AbstractMapper;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
@@ -37,18 +37,14 @@ import org.gitools.idmapper.MappingNode;
 
 public class EnsemblMapper extends AbstractMapper implements AllIds {
 
-	private BiomartRestfulService service;
+	private BiomartService service;
 	private String dataset;
 
-	public EnsemblMapper(BiomartRestfulService service, String dataset) {
+	public EnsemblMapper(BiomartService service, String dataset) {
 		super("Ensembl", false, true);
 
 		this.service = service;
 		this.dataset = dataset;
-	}
-
-	@Override
-	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
 	}
 
 	@Override
@@ -64,11 +60,11 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 
 		Query q = createQuery(dataset, srcInternalName, dstInternalName);
 		try {
-			service.queryModule(q, new SequentialTableWriter() {
-				@Override public void open() throws Exception { }
-				@Override public void close() { }
+			service.queryModule(q, new BiomartQueryHandler() {
+				@Override public void begin() throws Exception { }
+				@Override public void end() { }
 
-				@Override public void write(String[] rowFields) throws Exception {
+				@Override public void line(String[] rowFields) throws Exception {
 					String srcf = rowFields[0];
 					String dstf = rowFields[1];
 					Set<String> items = map.get(srcf);
@@ -96,11 +92,6 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 		monitor.end();
 
 		return data;
-	}
-
-	@Override
-	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
-		//throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	private static final Map<String, String> inameMap = new HashMap<String, String>();
@@ -150,12 +141,3 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 		return q;
 	}
 }
-/*biomartService.queryModule(query, new SequentialTableWriter() {
-					@Override public void open() throws Exception { }
-
-					@Override public void close() { }
-
-					@Override public void write(String[] rowFields) throws Exception {
-
-					}
-				}, monitor);*/

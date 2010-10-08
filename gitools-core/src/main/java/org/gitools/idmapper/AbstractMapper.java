@@ -17,6 +17,8 @@
 
 package org.gitools.idmapper;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+
 
 public abstract class AbstractMapper implements Mapper {
 
@@ -47,6 +49,14 @@ public abstract class AbstractMapper implements Mapper {
 	@Override
 	public boolean isGenerator() {
 		return generator;
+	}
+
+	@Override
+	public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
+	}
+
+	@Override
+	public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
 	}
 
 	@Override

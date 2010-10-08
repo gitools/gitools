@@ -36,7 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
@@ -45,7 +45,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.common.wizard.FilteredListPanel;
+import org.gitools.ui.wizard.common.FilteredListPanel;
 
 public class BiomartSourcePage extends AbstractWizardPage {
 
@@ -109,7 +109,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 	}
 
 
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private boolean updated;
 	private FilteredListPanel datasetPanel;
@@ -321,7 +321,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
 		try {
 			biomartService = null;
-			biomartService = BiomartServiceFactory.createRestfulService(bs);
+			biomartService = BiomartServiceFactory.createService(bs);
 		} catch (BiomartServiceException ex) {
 			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
 			dlg.setVisible(true);
@@ -427,7 +427,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 			: null;
 	}
 
-	public BiomartRestfulService getBiomartService() {
+	public BiomartService getBiomartService() {
 		return biomartService;
 	}
 }

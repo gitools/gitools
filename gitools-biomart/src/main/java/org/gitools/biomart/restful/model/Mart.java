@@ -1,7 +1,6 @@
 
 package org.gitools.biomart.restful.model;
- 
-import org.gitools.biomart.soap.model.BACKUP.*;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

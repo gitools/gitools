@@ -27,7 +27,7 @@ public class BiomartServiceException extends Exception {
 		super(msg, cause);
 	}
 
-	BiomartServiceException(Throwable cause) {
+	public BiomartServiceException(Throwable cause) {
 		super(cause);
 	}
 }

@@ -5,7 +5,7 @@ import org.gitools.modules.importer.ModuleCategory;
 
 public class EnsemblKeggModuleCategory extends Category implements ModuleCategory {
 
-	public EnsemblKeggModuleCategory(String db, String id, String name) {
-		super(db, id, name);
+	public EnsemblKeggModuleCategory(String section, String id, String name) {
+		super(section, id, name);
 	}
 }

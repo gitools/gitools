@@ -212,9 +212,8 @@ public class ModuleMapText2CPersistence
 					pw.print(itemNames[index]);
 					pw.print('\t');
 					pw.print(moduleNames[i]);
+					pw.print('\n');
 				}
-
-				pw.print('\n');
 
 				monitor.worked(1);
 			}

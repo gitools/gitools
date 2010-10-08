@@ -20,16 +20,18 @@ package org.gitools.ui.analysis.combination.wizard;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.analysis.wizard.DataPage;
-import org.gitools.ui.common.wizard.SaveFilePage;
+import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
 
-	private DataPage dataPage;
+	private SelectFilePage dataPage;
+	private DataFilterPage dataFilterPage;
 	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
 
@@ -43,15 +45,18 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Data
-		dataPage = new DataPage();
-		dataPage.setPopulationFileVisible(false);
-		dataPage.setDiscardNonMappedRowsVisible(false);
+		dataPage = new SelectFilePage();
 		addPage(dataPage);
+
+		// Data filters
+		dataFilterPage = new DataFilterPage();
+		dataFilterPage.setPopulationFileVisible(false);
+		addPage(dataFilterPage);
 
 		//TODO analysis parameters
 
 		// Destination
-		saveFilePage = new SaveFilePage();
+		saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
 		saveFilePage.setFormats(new FileFormat[] {

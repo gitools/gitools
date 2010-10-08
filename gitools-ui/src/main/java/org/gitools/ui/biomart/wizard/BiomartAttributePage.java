@@ -15,7 +15,7 @@ import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
-import org.gitools.biomart.restful.BiomartRestfulService;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.DatasetConfig;
 
 import org.gitools.ui.biomart.panel.AttributesTreeModel;
@@ -23,8 +23,8 @@ import org.gitools.ui.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.common.wizard.FilteredTreePage;
-import org.gitools.ui.common.wizard.FilteredTreePanel;
+import org.gitools.ui.wizard.common.FilteredTreePage;
+import org.gitools.ui.wizard.common.FilteredTreePanel;
 
 public class BiomartAttributePage extends FilteredTreePage {
 	
@@ -36,7 +36,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 
 	private AttributeDescription attribute;
 	
-	private BiomartRestfulService biomartService;
+	private BiomartService biomartService;
 
 	private DatasetConfig biomartConfig;
 
@@ -127,7 +127,7 @@ public class BiomartAttributePage extends FilteredTreePage {
 		setComplete(complete);
 	}
 	
-	public void setSource(BiomartRestfulService biomartService, MartLocation mart, DatasetInfo dataset) {
+	public void setSource(BiomartService biomartService, MartLocation mart, DatasetInfo dataset) {
 
 		if (this.dataset != null && this.dataset.getName().equals(dataset.getName()))
 			reloadData = false;

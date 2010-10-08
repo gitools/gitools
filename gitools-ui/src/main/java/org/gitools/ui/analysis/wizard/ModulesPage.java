@@ -172,7 +172,7 @@ public class ModulesPage extends AbstractWizardPage {
         maxSizeValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20", "30", "50", "100" }));
         maxSizeValueCb.setEnabled(false);
 
-        jLabel3.setText("Modules filtering options:");
+        jLabel3.setText("Filtering options:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -196,7 +196,7 @@ public class ModulesPage extends AbstractWizardPage {
                         .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addContainerGap(402, Short.MAX_VALUE))
+                        .addContainerGap(456, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(minSizeEnableChk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

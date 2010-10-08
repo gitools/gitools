@@ -35,7 +35,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.common.wizard.SaveFileWizard;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class HeatmapEditor extends AbstractEditor {
 
