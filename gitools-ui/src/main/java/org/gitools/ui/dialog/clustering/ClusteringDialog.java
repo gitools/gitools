@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 
 public class ClusteringDialog extends javax.swing.JDialog {
 
@@ -68,7 +70,8 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		initComponents();
 
 		headerCompo.setTitle("Data clustering");
-		headerCompo.setMessage("");
+		headerCompo.setLeftLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD,64));
+		headerCompo.setMessage("Perform a hierarchical or partitional clustering");
 		validate();
 
 		setDefaultParamsValue();
@@ -110,6 +113,9 @@ public class ClusteringDialog extends javax.swing.JDialog {
         rowsRadio = new javax.swing.JRadioButton();
         columnsRadio = new javax.swing.JRadioButton();
         headerCompo = new org.gitools.ui.platform.dialog.DialogHeaderPanel();
+        cbPreprocessing = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setTitle("Clustering");
         setLocationByPlatform(true);
@@ -156,11 +162,18 @@ public class ClusteringDialog extends javax.swing.JDialog {
         columnsRadio.setSelected(true);
         columnsRadio.setText("columns");
 
+        cbPreprocessing.setSelected(true);
+
+        jLabel1.setText("Dimensionality reduction preprocess :");
+
+        jLabel2.setFont(new java.awt.Font("DejaVu LGC Sans", 0, 10)); // NOI18N
+        jLabel2.setText("(Check it for faster clustering)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,11 +182,11 @@ public class ClusteringDialog extends javax.swing.JDialog {
                         .addGap(40, 40, 40)
                         .addComponent(algorithmTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataClustCombo, 0, 288, Short.MAX_VALUE))
+                        .addComponent(dataClustCombo, 0, 379, Short.MAX_VALUE))
                     .addComponent(rowsRadio)
                     .addComponent(columnsRadio)
                     .addComponent(jLabel5))
@@ -181,12 +194,22 @@ public class ClusteringDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbPreprocessing)
+                .addContainerGap(196, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(344, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,18 +225,25 @@ public class ClusteringDialog extends javax.swing.JDialog {
                     .addComponent(jLabel6)
                     .addComponent(dataClustCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(14, 14, 14)
-                .addComponent(columnsRadio)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(14, 14, 14)
+                        .addComponent(columnsRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rowsRadio)
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel1))
+                    .addComponent(cbPreprocessing))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rowsRadio)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -250,10 +280,13 @@ public class ClusteringDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox algorithmTypeCombo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox cbPreprocessing;
     private javax.swing.JRadioButton columnsRadio;
     private javax.swing.JComboBox dataClustCombo;
     private org.gitools.ui.platform.dialog.DialogHeaderPanel headerCompo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -278,6 +311,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		clusterParams.put("method", algorithmTypeCombo.getSelectedItem().toString().toLowerCase());
 		clusterParams.put("index", dataClustCombo.getSelectedItem());
 		clusterParams.put("transpose", rowsRadio.isSelected()+"");
+		clusterParams.put("preprocessing", cbPreprocessing.isSelected()+"");
 
 		if (algorithmTypeCombo.getSelectedItem().toString().toLowerCase().equals("k-means")) {
 
@@ -285,12 +319,14 @@ public class ClusteringDialog extends javax.swing.JDialog {
 			clusterParams.put("seedKmeans", params.getProperty("seedKmeans","10"));
 			clusterParams.put("k", params.getProperty("k","2"));
 			clusterParams.put("distance", params.getProperty("distance","euclidean"));
+			clusterParams.put("classIndex", params.getProperty("classIndex","-1"));
 
 		}else{
 
 			clusterParams.put("cutoff", params.getProperty("cutoff","0.0028"));
 			clusterParams.put("seedCobweb", params.getProperty("seedCobweb","42"));
-			clusterParams.put("acuity", params.getProperty("acuity","1.0"));
+			clusterParams.put("acuity", params.getProperty("acuity","0.5"));
+			clusterParams.put("classIndex", params.getProperty("classIndex","0")); //Per cobWeb ha de valdre 0
 		}
 
 		return clusterParams;
@@ -321,7 +357,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		params.setProperty("k","2");
 		params.setProperty("distance","euclidean");
 		params.setProperty("cutoff","0.0028");
-		params.setProperty("acuity","1.0");
+		params.setProperty("acuity","0.5");
 	}
 }
 

@@ -115,4 +115,5 @@ public class IconNames {
 	public static final String LOGO_METHOD = "/img/logos/Method.png";
 
 	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
+
 }

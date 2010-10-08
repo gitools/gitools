@@ -45,7 +45,7 @@ public class KmeansParamsDialog extends javax.swing.JDialog {
 		initComponents();
 		
 		headerCompo.setTitle("K-means parameters");
-		headerCompo.setMessage("");
+		headerCompo.setMessage("Modify default values to increase/reduce expected clusters");
 		this.parent = parent;
 
 		validate();
