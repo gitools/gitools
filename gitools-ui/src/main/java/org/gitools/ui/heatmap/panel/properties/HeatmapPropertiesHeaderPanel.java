@@ -351,7 +351,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fontTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                        .addComponent(fontTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fontSelect)))
                 .addContainerGap())
@@ -418,12 +418,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
+                        .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(annOpen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(annClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                         .addComponent(annFilter)))
                 .addContainerGap())
         );
@@ -462,6 +462,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         });
 
         colorAnnEditBtn.setText("Edit Color Cluster");
+        colorAnnEditBtn.setEnabled(false);
         colorAnnEditBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorAnnEditBtnActionPerformed(evt);
@@ -477,12 +478,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, labelsPanelLayout.createSequentialGroup()
-                        .addComponent(labelPattern, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                        .addComponent(labelPattern, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(attributePatternBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(labelsPanelLayout.createSequentialGroup()
                         .addComponent(colorAnnButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                         .addComponent(colorAnnEditBtn)))
                 .addContainerGap())
         );
@@ -526,9 +527,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addGroup(linksPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(linkName, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
+                        .addComponent(linkName, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
                     .addComponent(jLabel12)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
                 .addContainerGap())
         );
         linksPanelLayout.setVerticalGroup(
@@ -707,6 +708,14 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		if(!updatingControls) {
 			ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
 			ccga.actionPerformed(evt);
+
+			boolean enableEditBtn;
+			if (rowMode) 
+				enableEditBtn = getHeatmap().getRowClusterSets().length > 0 ? true : false;
+			else 
+				enableEditBtn = getHeatmap().getColumnClusterSets().length > 0 ? true : false;
+			colorAnnEditBtn.setEnabled(enableEditBtn);
+
 		}
 	}//GEN-LAST:event_colorAnnButtonActionPerformed
 

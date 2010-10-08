@@ -69,7 +69,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="fontTitle" pref="161" max="32767" attributes="0"/>
+                          <Component id="fontTitle" pref="170" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="fontSelect" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -172,13 +172,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="annFile" pref="238" max="32767" attributes="0"/>
+                          <Component id="annFile" pref="240" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="annOpen" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="annClear" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="113" max="32767" attributes="0"/>
+                          <EmptySpace pref="123" max="32767" attributes="0"/>
                           <Component id="annFilter" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -269,7 +269,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="colorAnnButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace pref="36" max="32767" attributes="0"/>
                           <Component id="colorAnnEditBtn" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -325,6 +325,7 @@
         <Component class="javax.swing.JButton" name="colorAnnEditBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit Color Cluster"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorAnnEditBtnActionPerformed"/>
@@ -350,7 +351,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="linkName" pref="220" max="32767" attributes="0"/>
+                          <Component id="linkName" pref="226" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" alignment="0" pref="271" max="32767" attributes="0"/>
