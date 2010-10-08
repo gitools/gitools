@@ -75,8 +75,9 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 		int clipEnd = horizontal ? clipStart + clip.width : clipStart + clip.height;
 		int count = horizontal ? data.getColumnCount() : data.getRowCount();
 
-		int start = (clipStart - height) / height;
-		int end = (clipEnd + height - 1) / height;
+		//add 2 to the start and end to not paint errors while scrolling..
+		int start = (clipStart - height) / height - 2;
+		int end = (clipEnd + height - 1) / height + 2;
 
 		start = start > 0 ? start : 0;
 		end = end < count ? end : count;
