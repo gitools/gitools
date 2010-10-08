@@ -23,8 +23,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 public class HeatmapCluster {
 
+	public static final String NO_NAME = "N/A";
+
 	protected String name;
-	final static String NO_NAME = "N/A";
 	
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color color;

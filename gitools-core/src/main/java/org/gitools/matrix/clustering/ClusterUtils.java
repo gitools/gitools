@@ -32,20 +32,20 @@ import weka.core.FastVector;
 import weka.core.Instances;
 
 
-public class clusterUtils {
+public class ClusterUtils {
 
-	private static clusterUtils instance = null;
+	private static ClusterUtils instance = null;
 	private static final Integer MAX_ATTR = 200;
 	private static final Integer MIN_ATTR = 10;
 	
-	public clusterUtils() {
+	public ClusterUtils() {
 
 	}
 
-	public static clusterUtils getInstance() {
+	public static ClusterUtils getInstance() {
 
 		if (instance == null)
-			instance = new clusterUtils();
+			instance = new ClusterUtils();
 
 		return instance;
 	}
@@ -152,7 +152,7 @@ public class clusterUtils {
 	 */
 	public Instances matrix2Instances(IMatrixView matrixView,Properties clusterParameters){
 
-		FastVector attr = clusterUtils.getInstance().addAttributes(matrixView.getRowCount());
+		FastVector attr = ClusterUtils.getInstance().addAttributes(matrixView.getRowCount());
 
 		return new Instances("matrixToCluster", attr, 0);
 

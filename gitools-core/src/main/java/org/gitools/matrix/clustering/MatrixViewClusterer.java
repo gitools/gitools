@@ -38,19 +38,19 @@ public class MatrixViewClusterer {
 			matrixView = mt;
 		}
 
-		Instances str = clusterUtils.getInstance().matrix2Instances(matrixView, clusterParameters);
+		Instances str = ClusterUtils.getInstance().matrix2Instances(matrixView, clusterParameters);
 
 		MatrixViewWeka data = new MatrixViewWeka(str);		
 
 		data.initialize(matrixView, clusterParameters);
 
 		if (Boolean.valueOf(clusterParameters.getProperty("preprocessing")))
-			clusterUtils.getInstance().dataReductionProcess(data, monitor);		
+			ClusterUtils.getInstance().dataReductionProcess(data, monitor);
 		
 		HashMap<Integer, List<Integer>> clusterResults = method.buildAndCluster(data, monitor);
 
 		if (!monitor.isCancelled())
-			clusterUtils.getInstance().updateVisibility(data.getMatrixView(), clusterResults);
+			ClusterUtils.getInstance().updateVisibility(data.getMatrixView(), clusterResults);
 
 		monitor.end();
 

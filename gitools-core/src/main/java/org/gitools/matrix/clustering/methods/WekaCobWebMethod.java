@@ -18,7 +18,7 @@
 package org.gitools.matrix.clustering.methods;
 
 import org.gitools.matrix.clustering.MatrixViewWeka;
-import org.gitools.matrix.clustering.clusterUtils;
+import org.gitools.matrix.clustering.ClusterUtils;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import java.util.ArrayList;

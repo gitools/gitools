@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
@@ -38,6 +39,10 @@ import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
 		extends AbstractEntityPersistence<ObjectMatrix> {
+
+	public static final String META_COLUMN_LABELS = "labels.columns";
+	public static final String META_ROW_LABELS = "labels.rows";
+	public static final String META_ATTRIBUTES = "attributes";
 
 	private static final long serialVersionUID = 3487889255829878181L;
 
@@ -82,6 +87,61 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	public ObjectMatrixTextPersistence() {
+	}
+
+	@Override
+	public String[] getMetadataKeys() {
+		return new String[] {
+			META_ATTRIBUTES
+		};
+	}
+
+	@Override
+	public Map<String, Object> readMetadata(File file, String[] keys, IProgressMonitor monitor) throws PersistenceException {
+		Map<String, Object> meta = new HashMap<String, Object>();
+
+		for (String key : keys) {
+			if (META_ATTRIBUTES.equals(key)) {
+				meta.put(META_ATTRIBUTES, readMetaAttributes(file, monitor));
+			}
+		}
+
+		return meta;
+	}
+
+	private List<IElementAttribute> readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
+		IElementAdapter elementAdapter = null;
+		try {
+			Reader reader = PersistenceUtils.openReader(file);
+
+			// TODO read metadata from comments like #?
+
+			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+
+			String[] line = parser.getLine();
+
+			// read header
+			if (line.length < 3)
+				throw new DataFormatException("Almost 3 columns expected.");
+
+			int numParams = line.length - 2;
+			String[] paramNames = new String[numParams];
+			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
+
+			// infer element class and create corresponding adapter and factory
+			Class<?> elementClass = elementClasses.get(
+					getElementClassId(paramNames));
+
+			if (elementClass == null)
+				elementAdapter = new ArrayElementAdapter(paramNames);
+			else
+				elementAdapter = new BeanElementAdapter(elementClass);
+		}
+		catch (Exception ex) {
+			throw new PersistenceException(ex);
+		}
+
+		return elementAdapter.getProperties();
 	}
 
 	@Override

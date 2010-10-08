@@ -35,8 +35,11 @@ public class SelectFilePage extends AbstractWizardPage {
 			FileFormats.MODULES_INDEXED_MAP
 	};
 
-	/** Creates new form DataSourcePanel */
-    public SelectFilePage() {
+	public SelectFilePage() {
+		this(formats);
+	}
+
+    public SelectFilePage(FileFormat[] formats) {
 		setTitle("Select data source");
 
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_DATA, 96));
