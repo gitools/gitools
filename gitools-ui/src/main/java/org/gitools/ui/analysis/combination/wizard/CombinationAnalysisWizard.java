@@ -44,7 +44,7 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class CombinationAnalysisWizard extends AbstractWizard {
 
 	private static final FileFormat[] formats = new FileFormat[] {
-			//FileFormats.OBJECT_MATRIX,
+			FileFormats.RESULTS_MATRIX,
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
 			FileFormats.DOUBLE_MATRIX,
@@ -72,13 +72,13 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Data
-		dataPage = new SelectFilePage();
+		dataPage = new SelectFilePage(formats);
 		addPage(dataPage);
 
 		// Data filters
-		dataFilterPage = new DataFilterPage();
+		/*dataFilterPage = new DataFilterPage();
 		dataFilterPage.setPopulationFileVisible(false);
-		addPage(dataFilterPage);
+		addPage(dataFilterPage);*/
 
 		// Combination parameters
 		combParamsPage = new CombinationAnalysisParamsPage();
