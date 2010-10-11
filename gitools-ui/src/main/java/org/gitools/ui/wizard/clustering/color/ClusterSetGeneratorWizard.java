@@ -20,12 +20,10 @@ public class ClusterSetGeneratorWizard extends AbstractWizard {
 	public void addPages() {
 		ClusterSetGeneratePage clusterSetGenerator = new ClusterSetGeneratePage(heatmap, clusterSet, rowMode);
 		clusterSetGenerator.setTitle("Generate Cluster Set");
-		clusterSetGenerator.setMessage("Choose a cluster criteria and click next");
 		addPage(clusterSetGenerator);
 
 		ClusterSetEditorPage clusterSetEditorPage = new ClusterSetEditorPage(clusterSet);
 		clusterSetEditorPage.setTitle("Generate Cluster Set");
-		clusterSetEditorPage.setMessage("Edit the generated cluster set");
 		addPage(clusterSetEditorPage);
 
 	}

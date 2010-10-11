@@ -44,6 +44,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.ui.dialog.ListDialog;
 import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesHeaderPanel;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
@@ -79,6 +80,15 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 		validateLabelPattern();
     }
 
+	@Override
+	public void updateControls() {
+		int clusterSetNb = rowMode ? heatmap.getRowClusterSets().length :
+								heatmap.getColumnClusterSets().length;
+		if (clusterSetNb > 0)
+			setMessage(MessageStatus.WARN, "You will overwrite the existing cluster set!");
+		else
+			setMessage(MessageStatus.INFO, "Choose a cluster criteria and click next");
+	}
 
 	@Override
 	public void updateModel() {

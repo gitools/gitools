@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionListener;
 import org.gitools.heatmap.model.HeatmapCluster;
 import org.gitools.heatmap.model.HeatmapClusterSet;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
@@ -120,6 +121,12 @@ public class ClusterSetEditorPage extends AbstractWizardPage {
 
 		for (int x = 0; x < clusters.length; x++)
 			model.addElement(clusters[x]);
+
+		if (clusterSet.getClusters().length > 44)
+			setMessage(MessageStatus.WARN, "Colors may repeat as there are more than 44 different clusters!"
+					+ " Edit the colors and names of the generated clusters and the cluster set");
+		else
+			setMessage(MessageStatus.INFO, "Edit the colors and names of the generated clusters and the cluster set");
 	}
 
 
