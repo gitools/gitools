@@ -36,6 +36,9 @@ public class App implements FTPFileEntryParser {
 			ftp.login("anonymous", "anonymous");
 			FTPListParseEngine e = ftp.initiateListParsing(App.class.getCanonicalName(), "/pub");
 			FTPFile[] files = e.getFiles();
+			if (files != null)
+				for (FTPFile file : files)
+					System.out.println(file.getName());
 			ftp.disconnect();
 		} catch (IOException ex) {
 			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,16 +51,18 @@ public class App implements FTPFileEntryParser {
 	public FTPFile parseFTPEntry(String string) {
 		System.out.println("parseEntry: " + string);
 		FTPFile f = new FTPFile();
-		f.setName("" + count++);
+		f.setName(string);
 		return f;
 	}
 
 	@Override
 	public String readNextEntry(BufferedReader reader) throws IOException {
 		String line = null;
-		while ((line = reader.readLine()) != null)
-			System.out.println(line);
-		return count == 0 ? "entry" : null;
+		if (count == 0) {
+			while ((line = reader.readLine()) != null)
+				System.out.println(line);
+		}
+		return count++ < 10 ? "entry" + count : null;
 	}
 
 	@Override
