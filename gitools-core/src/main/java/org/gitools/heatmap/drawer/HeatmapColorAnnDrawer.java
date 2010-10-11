@@ -37,6 +37,10 @@ public class HeatmapColorAnnDrawer extends AbstractHeatmapDrawer {
 				RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+		if (horizontal ? heatmap.getColumnClusterSets().length == 0 :
+			heatmap.getRowClusterSets().length == 0)
+			return;
+
 		// Clear background
 		g.setColor(Color.WHITE);
 		g.fillRect(clip.x, clip.y, clip.width, clip.height);
