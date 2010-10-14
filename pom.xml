@@ -57,7 +57,7 @@
 		<module>gitools-analysis</module>
 		<module>gitools-persistence</module>
 		<module>gitools-kegg</module>
-		<!-- <module>gitools-examples</module> -->
+		<module>gitools-examples</module>
   </modules>
 
 	<properties>
