@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.examples.ExamplesManager;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
@@ -51,7 +51,7 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class CombinationAnalysisWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.COMBINATION;
-	private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_experiments_upreg_genes_annot.cdm.gz";
+	private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
 	private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
 	private static final FileFormat[] dataFormats = new FileFormat[] {
@@ -197,6 +197,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									columnSetsPage.setFile(new File(basePath, EXAMPLE_COLUM_SETS_FILE));
+									saveFilePage.setFileName("example");
 								}
 							});
 						}

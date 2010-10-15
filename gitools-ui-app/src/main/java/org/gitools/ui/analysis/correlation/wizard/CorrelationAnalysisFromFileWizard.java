@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.Properties;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.examples.ExamplesManager;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
@@ -45,7 +45,7 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.CORRELATIONS;
-	private static final String EXAMPLE_DATA_FILE = "14_kidney_brain_subtypes_downreg_annot.cdm.gz";
+	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
@@ -76,7 +76,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
 		// Data filters
 		dataFilterPage = new DataFilterPage();
-		dataFilterPage.setPopulationFileVisible(false);
+		dataFilterPage.setRowsFilterFileVisible(false);
 		addPage(dataFilterPage);
 
 		// Correlation method
@@ -126,6 +126,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 									setAnalysis(a);
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+									saveFilePage.setFileName("example");
 								}
 							});
 
@@ -173,7 +174,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 	}
 
 	public File getPopulationFile() {
-		return dataFilterPage.getPopulationFile();
+		return dataFilterPage.getRowsFilterFile();
 	}
 
 	public CorrelationAnalysis getAnalysis() {

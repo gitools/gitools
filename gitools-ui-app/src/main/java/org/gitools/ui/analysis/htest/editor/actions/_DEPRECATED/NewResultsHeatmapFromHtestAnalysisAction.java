@@ -32,7 +32,7 @@ import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
-import org.gitools.ui.analysis.htest.editor.actions.ViewAnnotatedElementsHeatmapAction;
+import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -74,7 +74,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		if (analysis instanceof EnrichmentAnalysis) {
 			EnrichmentAnalysis a = (EnrichmentAnalysis) analysis;
 			actions.add(BaseAction.separator);
-			actions.add(new ViewAnnotatedElementsHeatmapAction(
+			actions.add(new ViewRelatedDataFromRowAction(
 					a.getTitle(),
 					a.getData(),
 					a.getModuleMap()));

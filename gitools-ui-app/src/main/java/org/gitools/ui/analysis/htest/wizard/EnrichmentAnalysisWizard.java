@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Properties;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.examples.ExamplesManager;
+import org.gitools.ui.examples.ExamplesManager;
 
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileSuffixes;
@@ -29,8 +29,8 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.ENRICHMENT;
-	private static final String EXAMPLE_DATA_FILE = "20_all_tumor_types_upreg_tumor_annotations.cdm.gz";
-	private static final String EXAMPLE_MODULES_FILE = "";
+	private static final String EXAMPLE_DATA_FILE = "20_tumor_types_upreg_annot.cdm.gz";
+	private static final String EXAMPLE_MODULES_FILE = "KEGG_pathways_descr__ensembl_gene.tcm";
 
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
@@ -119,6 +119,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									modulesPage.setSelectedFile(new File(basePath, EXAMPLE_MODULES_FILE));
+									saveFilePage.setFileName("example");
 								}
 							});
 
@@ -170,7 +171,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 
 	public File getPopulationFile() {
-		return dataFilterPage.getPopulationFile();
+		return dataFilterPage.getRowsFilterFile();
 	}
 	
 	public String getModulesFileMime() {
@@ -204,6 +205,9 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		analysisDetailsPage.setAnalysisTitle(a.getTitle());
 		analysisDetailsPage.setAnalysisNotes(a.getDescription());
 		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+		dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
+		dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
+		dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
 		modulesPage.setMinSize(a.getMinModuleSize());
 		modulesPage.setMaxSize(a.getMaxModuleSize());
 		statisticalTestPage.setTestConfig(a.getTestConfig());

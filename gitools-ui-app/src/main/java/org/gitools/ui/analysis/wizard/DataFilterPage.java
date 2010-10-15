@@ -223,7 +223,14 @@ public class DataFilterPage extends AbstractWizardPage {
     private javax.swing.JLabel rowsFilterNote;
     // End of variables declaration//GEN-END:variables
 
-	public File getPopulationFile() {
+	public void setRowsFilterFileVisible(boolean visible) {
+		rowsFilterCheck.setVisible(visible);
+		rowsFilterFilePath.setVisible(visible);
+		rowsFilterFileBrowserBtn.setVisible(visible);
+		rowsFilterNote.setVisible(visible);
+	}
+
+	public File getRowsFilterFile() {
 		String text = rowsFilterFilePath.getText();
 		return rowsFilterCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
 	}
@@ -232,16 +239,32 @@ public class DataFilterPage extends AbstractWizardPage {
 		return cutoffEnabledCheck.isSelected();
 	}
 
+	public void setBinaryCutoffEnabled(boolean enabled) {
+		cutoffEnabledCheck.setSelected(enabled);
+	}
+
 	public CutoffCmp getBinaryCutoffCmp() {
 		return CutoffCmp.getFromName((String) cutoffCmpCb.getSelectedItem());
+	}
+
+	public void setBinaryCutoffCmp(CutoffCmp cmp) {
+		cutoffCmpCb.setSelectedItem(cmp.getLongName());
 	}
 
 	public double getBinaryCutoffValue() {
 		return Double.parseDouble(cutoffValue.getText());
 	}
 
+	public void setBinaryCutoffValue(double value) {
+		cutoffValue.setText(Double.toString(value));
+	}
+
 	public boolean isDiscardNonMappedRowsEnabled() {
 		return discardNonMappedRowsCheck.isSelected();
+	}
+
+	public void setDiscardNonMappedRowsEnabled(boolean enabled) {
+		discardNonMappedRowsCheck.setSelected(enabled);
 	}
 
 	public boolean isDiscardNonMappedRowsVisible() {
@@ -250,12 +273,5 @@ public class DataFilterPage extends AbstractWizardPage {
 
 	public void setDiscardNonMappedRowsVisible(boolean visible) {
 		discardNonMappedRowsCheck.setVisible(visible);
-	}
-
-	public void setPopulationFileVisible(boolean visible) {
-		rowsFilterCheck.setVisible(visible);
-		rowsFilterFilePath.setVisible(visible);
-		rowsFilterFileBrowserBtn.setVisible(visible);
-		rowsFilterNote.setVisible(visible);
 	}
 }

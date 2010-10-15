@@ -10,7 +10,7 @@ import java.util.Properties;
 import javax.swing.SwingUtilities;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.examples.ExamplesManager;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
@@ -32,8 +32,8 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 public class OncodriverAnalysisWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.ONCODRIVE;
-	private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_sorted_annotated_cdm.gz";
-	private static final String EXAMPLE_COLUMN_SETS_FILE = "TCGA_gbm_samples_to_subtypes.tcm";
+	private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_annot.cdm.gz";
+	private static final String EXAMPLE_COLUMN_SETS_FILE = "TCGA_gbm_sample_subtypes.tcm";
 
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
@@ -123,6 +123,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									modulesPage.setSelectedFile(new File(basePath, EXAMPLE_COLUMN_SETS_FILE));
+									saveFilePage.setFileName("example");
 								}
 							});
 
@@ -174,7 +175,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	}
 
 	public File getPopulationFile() {
-		return dataFilterPage.getPopulationFile();
+		return dataFilterPage.getRowsFilterFile();
 	}
 
 	public String getModulesFileMime() {
@@ -207,6 +208,9 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		analysisDetailsPage.setAnalysisTitle(a.getTitle());
 		analysisDetailsPage.setAnalysisNotes(a.getDescription());
 		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+		dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
+		dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
+		dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
 		modulesPage.setMinSize(a.getMinModuleSize());
 		modulesPage.setMaxSize(a.getMaxModuleSize());
 		statisticalTestPage.setTestConfig(a.getTestConfig());

@@ -7,8 +7,8 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>gitools-ui</artifactId>
-	<name>gitools-ui</name>
+	<artifactId>gitools-ui-app</artifactId>
+	<name>gitools-ui-app</name>
 	<description>gitools graphical user interface</description>
 
 	<properties>

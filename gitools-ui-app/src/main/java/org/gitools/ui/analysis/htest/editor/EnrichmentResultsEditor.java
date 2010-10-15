@@ -28,7 +28,7 @@ import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.analysis.htest.editor.actions.ViewAnnotatedElementsHeatmapAction;
+import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 
@@ -46,8 +46,8 @@ public class EnrichmentResultsEditor extends HeatmapEditor {
 	}
 
 	protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis) {
-		ViewAnnotatedElementsHeatmapAction action =
-				new ViewAnnotatedElementsHeatmapAction(
+		ViewRelatedDataFromRowAction action =
+				new ViewRelatedDataFromRowAction(
 					analysis.getTitle(),
 					analysis.getData(),
 					analysis.getModuleMap());

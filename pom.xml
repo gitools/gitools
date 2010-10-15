@@ -52,12 +52,9 @@
 		<module>gitools-cli</module>
 		<module>gitools-biomart</module>
 		<module>gitools-intogen</module>
-		<module>gitools-ui-platform</module>
-		<module>gitools-ui</module>
-		<module>gitools-analysis</module>
-		<module>gitools-persistence</module>
 		<module>gitools-kegg</module>
-		<module>gitools-examples</module>
+		<module>gitools-ui-platform</module>
+		<module>gitools-ui-app</module>
   </modules>
 
 	<properties>

@@ -38,13 +38,13 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 
 
-public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
+public class ViewRelatedDataFromColumnAction extends BaseAction {
 
 	protected String title;
 	protected IMatrix matrix;
 	protected ModuleMap map;
 
-	public ViewAnnotatedElementsHeatmapAction(
+	public ViewRelatedDataFromColumnAction(
 			String title, IMatrix matrix, ModuleMap map) {
 		super("View annotated elements");
 
@@ -67,30 +67,30 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 		Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
 		IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
 		IMatrix srcMatrix = srcMatrixView.getContents();
-		int[] selRows = srcMatrixView.getSelectedRows();
-		int leadRow = srcMatrixView.getLeadSelectionRow();
-		if ((selRows == null || selRows.length == 0) && leadRow != -1)
-			selRows = new int[] {leadRow};
-		else if (leadRow == -1) {
+		int[] selColumns = srcMatrixView.getSelectedColumns();
+		int leadColumn = srcMatrixView.getLeadSelectionColumn();
+		if ((selColumns == null || selColumns.length == 0) && leadColumn != -1)
+			selColumns = new int[] {leadColumn};
+		else if (leadColumn == -1) {
 			JOptionPane.showMessageDialog(AppFrame.instance(),
-				"You must select some rows before.",
+				"You must select some columns before.",
 				"Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		// Retrieve elements
-		int[] view = srcMatrixView.getVisibleRows();
+		int[] view = srcMatrixView.getVisibleColumns();
 
 		Set<Integer> elements = new HashSet<Integer>();
 
 		Map<String, Integer> itemNameMap = new HashMap<String, Integer>();
-		for (int i = 0; i < matrix.getRowCount(); i++)
-			itemNameMap.put(matrix.getRowLabel(i), i);
+		for (int i = 0; i < matrix.getColumnCount(); i++)
+			itemNameMap.put(matrix.getColumnLabel(i), i);
 
 		StringBuilder moduleNames = new StringBuilder();
 
-		for (int i = 0; i < selRows.length; i++) {
-			String modName = srcMatrix.getRowLabel(view[selRows[i]]);
+		for (int i = 0; i < selColumns.length; i++) {
+			String modName = srcMatrix.getColumnLabel(view[selColumns[i]]);
 			if (i != 0)
 				moduleNames.append(", ");
 			moduleNames.append(modName);
@@ -112,7 +112,7 @@ public class ViewAnnotatedElementsHeatmapAction extends BaseAction {
 
 		// Create heatmap
 		final IMatrixView matrixView = new MatrixView(matrix);
-		matrixView.setVisibleRows(newView);
+		matrixView.setVisibleColumns(newView);
 
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
 		heatmap.setTitle(title);

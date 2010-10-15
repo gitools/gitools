@@ -304,7 +304,7 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
 	public void setMaxSize(int size) {
 		maxSizeValueCb.setSelectedItem(String.valueOf(size));
-		maxSizeEnableChk.setSelected(size != 0);
+		maxSizeEnableChk.setSelected(size != 0 && size != Integer.MAX_VALUE);
 	}
 
 	public void setEmptyFileAllowed(boolean allowed) {

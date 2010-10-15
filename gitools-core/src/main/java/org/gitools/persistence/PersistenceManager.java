@@ -168,14 +168,14 @@ public class PersistenceManager implements Serializable {
 			Properties properties,
 			IProgressMonitor monitor)
 				throws PersistenceException {
-		
+
+		if (mimeType == null)
+			mimeType = getMimeFromFile(file.getName());
+
 		FileRef fileRef = new FileRef(file, mimeType);
 		
 		if (entityCache.containsKey(fileRef))
 			return entityCache.get(fileRef);
-
-		if (mimeType == null)
-			mimeType = getMimeFromFile(file.getName());
 		
 		IEntityPersistence<Object> entityPersistence = (IEntityPersistence<Object>) 
 			createEntityPersistence(mimeType, properties);

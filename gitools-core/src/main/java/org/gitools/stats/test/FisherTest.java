@@ -48,7 +48,10 @@ public class FisherTest extends AbstractTest {
 		
 		return new FisherResult(
 				N,
-				fisher.getLeftPValue(), fisher.getRightPValue(), fisher.getTwoTailPValue(), ctable[0], 
+				fisher.getLeftPValue(),
+				fisher.getRightPValue(),
+				fisher.getTwoTailPValue(),
+				ctable[0],
 				ctable[1],
 				ctable[2], 
 				ctable[3]);
@@ -77,7 +80,6 @@ public class FisherTest extends AbstractTest {
 		// Initialize the contingency table with zeros
 		for (int i = 0; i < 4; i++)
 			ctable[i] = 0;
-		
 
 		//sort group item indices
 		Arrays.sort(groupItems); //FIXME this is redundant for diferent conditions

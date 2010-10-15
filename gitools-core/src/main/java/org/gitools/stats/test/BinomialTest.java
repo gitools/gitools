@@ -152,7 +152,7 @@ public class BinomialTest extends AbstractTest {
 		double rightPvalue;
 		double twoTailPvalue;
 		
-		//FIXME: May be it's better return null ???
+		//FIXME: May be it's better to return null ???
 		if (n == 0)
 			leftPvalue = rightPvalue = twoTailPvalue = 1.0;
 		else {

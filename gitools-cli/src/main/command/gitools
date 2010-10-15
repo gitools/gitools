@@ -4,4 +4,4 @@ BINDIR=$(dirname "$0")
 
 source $BINDIR/common.sh
 
-$javacmd -jar $LIBDIR/gitools-ui-${project.version}.jar $*
+$javacmd -jar $LIBDIR/gitools-ui-app-${project.version}.jar $*

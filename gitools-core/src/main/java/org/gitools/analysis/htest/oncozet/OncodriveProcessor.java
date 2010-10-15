@@ -50,42 +50,39 @@ public class OncodriveProcessor extends HtestProcessor {
 			TestFactory.createFactory(analysis.getTestConfig());
 
 		IMatrix dataMatrix = analysis.getData();
-		/*if (!(dataMatrix instanceof DoubleMatrix))
-			throw new RuntimeException("This processor only works with DoubleMatrix data. "
-					+ dataMatrix.getClass().getSimpleName() + " found instead.");*/
 
 		String[] labels = new String[dataMatrix.getColumnCount()];
 		for (int i = 0; i < labels.length; i++)
 			labels[i] = dataMatrix.getColumnLabel(i);
 
-		ModuleMap smap = analysis.getModuleMap();
-		if (smap != null)
-			smap = smap.remap(labels,
+		ModuleMap csmap = analysis.getModuleMap();
+		if (csmap != null)
+			csmap = csmap.remap(labels,
 					analysis.getMinModuleSize(),
 					analysis.getMaxModuleSize());
 		else
-			smap = new ModuleMap("All data columns", labels);
+			csmap = new ModuleMap("All data columns", labels);
 
-		analysis.setModuleMap(smap);
+		analysis.setModuleMap(csmap);
 
 		final int numRows = dataMatrix.getRowCount();
 		ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);
 		for (int i = 0; i < numRows; i++)
 			rowLabels.setQuick(i, dataMatrix.getRowLabel(i));
 		
-		ObjectMatrix1D moduleLabels = ObjectFactory1D.dense.make(smap.getModuleNames());
+		ObjectMatrix1D csetLabels = ObjectFactory1D.dense.make(csmap.getModuleNames());
 		
-		int[][] moduleColumnIndices = smap.getAllItemIndices();
+		int[][] moduleColumnIndices = csmap.getAllItemIndices();
 
-		final int numModules = moduleLabels.size();
+		final int numCsets = csetLabels.size();
 		
-		monitor.begin("Running oncodrive analysis...", numRows * numModules);
+		monitor.begin("Running oncodrive analysis...", numRows * numCsets);
 	
 		Test test = testFactory.create();
 		
 		final ObjectMatrix resultsMatrix = new ObjectMatrix();
 		
-		resultsMatrix.setColumns(moduleLabels);
+		resultsMatrix.setColumns(csetLabels);
 		resultsMatrix.setRows(rowLabels);
 		resultsMatrix.makeCells();
 		
@@ -103,26 +100,26 @@ public class OncodriveProcessor extends HtestProcessor {
 				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
 			}
 
-		final int minModuleSize = analysis.getMinModuleSize();
-		final int maxModuleSize = analysis.getMaxModuleSize();
+		final int minCsetSize = analysis.getMinModuleSize();
+		final int maxCsetSize = analysis.getMaxModuleSize();
 
 		/* Test analysis */
 
-		for (int moduleIndex = 0; moduleIndex < numModules; moduleIndex++) {
+		for (int csetIndex = 0; csetIndex < numCsets; csetIndex++) {
 		
-			final int moduleIdx = moduleIndex;
+			final int csetIdx = csetIndex;
 			
-			final String moduleName = moduleLabels.getQuick(moduleIndex).toString();
+			final String csetName = csetLabels.getQuick(csetIndex).toString();
 			
-			final int[] columnIndices = moduleColumnIndices[moduleIndex];
+			final int[] columnIndices = moduleColumnIndices[csetIndex];
 			
 			final IProgressMonitor condMonitor = monitor.subtask();
 			
 			final int numColumns = columnIndices.length;
 
-			if (numColumns >= minModuleSize && numColumns <= maxModuleSize) {
+			if (numColumns >= minCsetSize && numColumns <= maxCsetSize) {
 
-				condMonitor.begin("Module " + moduleName + "...", numRows);
+				condMonitor.begin("Column set " + csetName + "...", numRows);
 
 				DoubleMatrix1D population = DoubleFactory1D.dense.make(numColumns * numRows);
 
@@ -135,7 +132,12 @@ public class OncodriveProcessor extends HtestProcessor {
 
 				population = population.viewSelection(notNaNProc);
 
-				final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
+				final DoubleMatrix1D itemValues =
+						DoubleFactory1D.dense.make(numColumns);
+
+				final int[] cindices = new int[numColumns];
+				for (int i = 0; i < numColumns; i++)
+					cindices[i] = i;
 
 				for (int itemIndex = 0; itemIndex < numRows; itemIndex++) {
 
@@ -143,23 +145,17 @@ public class OncodriveProcessor extends HtestProcessor {
 
 					final String itemName = rowLabels.getQuick(itemIndex).toString();
 
-					/* TODO This is inefficient, it is being used all the matrix row
-					 * because of the way the test.processTest() works, but only some
-					 * columns are being processed. We should take only the values
-					 * corresponding to the selected columns for this module.
-					 */
-
-					for (int j = 0; j < dataMatrix.getColumnCount(); j++)
+					for (int j = 0; j < numColumns; j++)
 						itemValues.setQuick(j,
 								MatrixUtils.doubleValue(
-									dataMatrix.getCellValue(itemIndex, j, 0)));
+									dataMatrix.getCellValue(itemIndex, columnIndices[j], 0)));
 
 					final RunSlot slot = (RunSlot) threadQueue.take();
 
 					if (slot.population != population) {
 						slot.population = population;
 						slot.test = testFactory.create();
-						slot.test.processPopulation(moduleName, population);
+						slot.test.processPopulation(csetName, population);
 					}
 
 					slot.execute(new Runnable() {
@@ -167,15 +163,15 @@ public class OncodriveProcessor extends HtestProcessor {
 							CommonResult result = null;
 							try {
 								result = slot.test.processTest(
-										moduleName, itemValues,
-										itemName, columnIndices);
+										csetName, itemValues,
+										itemName, cindices);
 							}
 							catch (Throwable cause) {
 								cause.printStackTrace();
 							}
 
 							try {
-								resultsMatrix.setCell(itemIdx, moduleIdx, result);
+								resultsMatrix.setCell(itemIdx, csetIdx, result);
 							}
 							catch (Throwable cause) {
 								cause.printStackTrace();
@@ -187,7 +183,7 @@ public class OncodriveProcessor extends HtestProcessor {
 				}
 			}
 			else
-				condMonitor.begin("Module " + moduleName + " discarded.", 1);
+				condMonitor.begin("Column set " + csetName + " discarded.", 1);
 
 			condMonitor.end();
 
