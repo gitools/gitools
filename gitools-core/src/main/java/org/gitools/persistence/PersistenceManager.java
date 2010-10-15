@@ -13,27 +13,6 @@ public class PersistenceManager implements Serializable {
 
 	private static final long serialVersionUID = -1442103565401901838L;
 
-	/*private static class FileKey {
-		private File file;
-		public FileKey(File file) {
-			this.file = file;
-		}
-		@Override
-		public int hashCode() {			
-			return (int) (37 * file.hashCode() + file.lastModified());
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == null)
-				return false;
-			else if (!(obj instanceof FileKey))
-				return false;
-			FileKey f = (FileKey) obj;
-			return file.hashCode() == f.file.hashCode()
-				&& file.lastModified() == f.file.lastModified();
-		}
-	}*/
-
 	public static class FileRef {
 		private File file;
 		private String mime;
@@ -162,7 +141,7 @@ public class PersistenceManager implements Serializable {
 			IProgressMonitor monitor)
 				throws PersistenceException {
 
-		return load(file, null, monitor);
+		return load(file, null, new Properties(), monitor);
 	}
 
 	public Object load(
@@ -172,6 +151,15 @@ public class PersistenceManager implements Serializable {
 				throws PersistenceException {
 
 		return load(file, mimeType, new Properties(), monitor);
+	}
+
+	public Object load(
+			File file,
+			Properties properties,
+			IProgressMonitor monitor)
+				throws PersistenceException {
+
+		return load(file, null, properties, monitor);
 	}
 
 	public Object load(

@@ -66,22 +66,42 @@ public class TemplatePanel extends Html4Panel {
 	}
 	
 	@Deprecated // specify a base url
-	public void setTemplate(String name)
+	public void setTemplateFromResource(String resource)
 			throws ResourceNotFoundException, ParseErrorException, Exception {
 
-		setTemplate(name, "http://localhost");
+		if (!resource.startsWith("/"))
+			resource = "/" + resource;
+		
+		//setTemplateFromResource(new URL("http://localhost" + path));
+		setTemplateFromResource(resource, "http://localhost");
 	}
 
-	public void setTemplate(String name, String url)
-			throws ResourceNotFoundException, ParseErrorException, Exception {
+	//@Deprecated // use setTemplateFromResource(URL url)
+	public void setTemplateFromResource(String resource, String baseUrl) throws Exception {
 		
-		if (template == null || !this.templateName.equals(name)) {
-			template = velocityEngine.getTemplate(name);
-			this.templateName = name;
+		setTemplateFromResource(resource, new URL(baseUrl));
+	}
+
+	public void setTemplateFromResource(String resource, URL baseUrl) throws Exception {
+		if (template == null || !this.templateName.equals(resource)) {
+			template = velocityEngine.getTemplate(resource);
+			this.templateName = resource;
 		}
 
-		this.templateUrl = url;
+		this.templateUrl = baseUrl.toString();
 	}
+
+	/*public void setTemplateFromResource(URL url) throws Exception {
+		String basePath = getClass().getResource("/").getPath();
+		String path = url.getPath();
+
+		if (template == null || !this.templateName.equals(path)) {
+			template = velocityEngine.getTemplate(path);
+			this.templateName = path;
+		}
+
+		this.templateUrl = url.toString();
+	}*/
 
 	public String getTemplateUrl() {
 		return templateUrl;

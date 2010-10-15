@@ -32,9 +32,12 @@ public class PersistenceContext extends HashMap<Object, Object> {
 	private Map<Object, PersistenceEntityContext> entityContext =
 			new HashMap<Object, PersistenceEntityContext>();
 
+	private boolean loadReferences;
+
 	//private Map<Object, String> filePath = new HashMap<Object, String>();
 
 	public PersistenceContext() {
+		loadReferences = true;
 	}
 
 	/*
@@ -83,5 +86,13 @@ public class PersistenceContext extends HashMap<Object, Object> {
 
 	public String getString(Object key) {
 		return (String) get(key);
+	}
+
+	public boolean isLoadReferences() {
+		return loadReferences;
+	}
+
+	public void setLoadReferences(boolean loadReferences) {
+		this.loadReferences = loadReferences;
 	}
 }

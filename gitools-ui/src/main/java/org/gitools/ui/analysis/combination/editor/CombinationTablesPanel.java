@@ -228,7 +228,7 @@ public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnal
 		List<VelocityContext> elements =
 				createDataElements(mv, row, col, data, gmap);
 
-		int n = MatrixUtils.intValue(mv.getCellValue(row, col, "n"));
+		int n = MatrixUtils.intValue(mv.getCellValue(row, col, "N"));
 		double pvalue = MatrixUtils.doubleValue(
 				mv.getCellValue(row, col, "p-value"));
 

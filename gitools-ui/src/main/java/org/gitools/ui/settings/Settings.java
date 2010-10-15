@@ -65,6 +65,8 @@ public class Settings {
         return settings;
     }
 
+	private String version;
+	
 	private String lastPath = userPath;
 	private String lastImportPath = userPath;
 	private String lastExportPath = userPath;
@@ -76,6 +78,11 @@ public class Settings {
 	private String workspacePath = defaultWorkspacePath;
 	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
 	private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
+
+	private boolean showEnrichmentExamplePage = true;
+	private boolean showOncodriveExamplePage = true;
+	private boolean showCorrelationExamplePage = true;
+	private boolean showCombinationExamplePage = true;
 
 	private Settings() {
 	}
@@ -98,6 +105,14 @@ public class Settings {
                 e.printStackTrace();
         }
     }
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	public String getLastPath() {
 		return lastPath;
@@ -186,4 +201,37 @@ public class Settings {
 	public void setIntogenDataUrl(String intogenDataUrl) {
 		this.intogenDataUrl = intogenDataUrl;
 	}
+
+	public boolean isShowEnrichmentExamplePage() {
+		return showEnrichmentExamplePage;
+	}
+
+	public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
+		this.showEnrichmentExamplePage = showEnrichmentExamplePage;
+	}
+
+	public boolean isShowOncodriveExamplePage() {
+		return showOncodriveExamplePage;
+	}
+
+	public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
+		this.showOncodriveExamplePage = showOncodriveExamplePage;
+	}
+
+	public boolean isShowCorrelationExamplePage() {
+		return showCorrelationExamplePage;
+	}
+
+	public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
+		this.showCorrelationExamplePage = showCorrelationExamplePage;
+	}
+
+	public boolean isShowCombinationExamplePage() {
+		return showCombinationExamplePage;
+	}
+
+	public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
+		this.showCombinationExamplePage = showCombinationExamplePage;
+	}
+
 }

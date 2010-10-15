@@ -58,7 +58,7 @@ public class AboutDialog extends JDialog {
 		creditsPane.setPreferredSize(dim);
 		creditsPane.setMaximumSize(dim);
 		try {
-			creditsPane.setTemplate("/vm/about.vm");
+			creditsPane.setTemplateFromResource("/vm/about.vm");
 			VelocityContext context = new VelocityContext();
 			context.put("appName", appName);
 			context.put("appVersion", appVersion);

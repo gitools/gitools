@@ -34,6 +34,7 @@ public class App implements FTPFileEntryParser {
 			FTPClient ftp = new FTPClient();
 			ftp.connect("ftp.genome.jp");
 			ftp.login("anonymous", "anonymous");
+			ftp.enterLocalPassiveMode();
 			FTPListParseEngine e = ftp.initiateListParsing(App.class.getCanonicalName(), "/pub");
 			FTPFile[] files = e.getFiles();
 			if (files != null)

@@ -17,15 +17,26 @@
 
 package org.gitools.ui.analysis.correlation.wizard;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
+import java.util.Properties;
+import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.analysis.wizard.SelectFilePage;
+import org.gitools.ui.analysis.wizard.DataFilePage;
+import org.gitools.ui.analysis.wizard.ExamplePage;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
@@ -33,7 +44,11 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
-	private SelectFilePage dataPage;
+	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.CORRELATIONS;
+	private static final String EXAMPLE_DATA_FILE = "14_kidney_brain_subtypes_downreg_annot.cdm.gz";
+
+	private ExamplePage examplePage;
+	private DataFilePage dataPage;
 	private DataFilterPage dataFilterPage;
 	protected CorrelationFromFilePage corrPage;
 	private SaveFilePage saveFilePage;
@@ -48,8 +63,15 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
 	@Override
 	public void addPages() {
+		// Example
+		if (Settings.getDefault().isShowCombinationExamplePage()) {
+			examplePage = new ExamplePage("a correlation analysis");
+			examplePage.setTitle("Correlation analysis");
+			addPage(examplePage);
+		}
+
 		// Data
-		dataPage = new SelectFilePage();
+		dataPage = new DataFilePage();
 		addPage(dataPage);
 
 		// Data filters
@@ -73,6 +95,49 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
 		addPage(analysisDetailsPage);
+	}
+
+	@Override
+	public void pageLeft(IWizardPage currentPage) {
+		if (currentPage == examplePage) {
+			Settings.getDefault().setShowCombinationExamplePage(
+					examplePage.isShowAgain());
+
+			if (examplePage.isExampleEnabled()) {
+				JobThread.execute(AppFrame.instance(), new JobRunnable() {
+					@Override public void run(IProgressMonitor monitor) {
+
+						final File basePath = ExamplesManager.getDefault().resolvePath("correlations", monitor);
+
+						if (basePath == null)
+							throw new RuntimeException("Unexpected error: There are no examples available");
+
+						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
+						Properties props = new Properties();
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "true");
+						try {
+							monitor.begin("Loading example parameters ...", 1);
+
+							final CorrelationAnalysis a = (CorrelationAnalysis) PersistenceManager.getDefault()
+									.load(analysisFile, props, monitor);
+
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override public void run() {
+									setAnalysis(a);
+
+									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+								}
+							});
+
+							monitor.end();
+						}
+						catch (Exception ex) {
+							monitor.exception(ex);
+						}
+					}
+				});
+			}
+		}
 	}
 
 	@Override
@@ -124,5 +189,15 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 		a.setTransposeData(corrPage.isTransposeEnabled());
 		
 		return a;
+	}
+
+	private void setAnalysis(CorrelationAnalysis a) {
+		analysisDetailsPage.setAnalysisTitle(a.getTitle());
+		analysisDetailsPage.setAnalysisNotes(a.getDescription());
+		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+		corrPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
+		if (a.getReplaceNanValue() != null)
+			corrPage.setReplaceNanValue(a.getReplaceNanValue());
+		corrPage.setTransposeEnabled(a.isTransposeData());
 	}
 }

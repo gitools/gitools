@@ -244,14 +244,7 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 			FileChooserUtils.MODE_OPEN);
 
 	if (selPath != null) {
-		String fileName = selPath.getName().toLowerCase();
-		for (FileFormat ff : formats) {
-			if (ff.checkExtension(fileName)) {
-				fileFormatCb.setSelectedItem(ff);
-				break;
-			}
-		}
-		filePath.setText(selPath.getAbsolutePath());
+		setSelectedFile(selPath);
 		Settings.getDefault().setLastMapPath(selPath.getParentFile().getAbsolutePath());
 	}
 }//GEN-LAST:event_fileBrowseBtnActionPerformed
@@ -281,6 +274,17 @@ private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 	public File getSelectedFile() {
 		String path = filePath.getText();
 		return path.isEmpty() ? null : new File(path);
+	}
+
+	public void setSelectedFile(File file) {
+		String fileName = file.getName();
+		for (FileFormat ff : formats) {
+			if (ff.checkExtension(fileName)) {
+				fileFormatCb.setSelectedItem(ff);
+				break;
+			}
+		}
+		filePath.setText(file.getAbsolutePath());
 	}
 
 	public int getMinSize() {

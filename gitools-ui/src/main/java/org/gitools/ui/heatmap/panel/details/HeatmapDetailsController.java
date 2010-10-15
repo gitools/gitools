@@ -175,7 +175,7 @@ public class HeatmapDetailsController implements EntityController {
 		}
 
 		try {
-			panel.setTemplate(templateName);
+			panel.setTemplateFromResource(templateName);
 			panel.setContext(context);
 			panel.render();
 		}

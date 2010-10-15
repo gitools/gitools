@@ -4,9 +4,9 @@
 		<name>intogen</name>
 		<description>IntOGen</description>
 		<version>0.7</version>
-		<host>localhost</host>
-		<port>8080</port>
-		<restPath>/intogen-ws-biomart/resources/martservice</restPath>
+		<host>biomart.intogen.org</host>
+		<port>80</port>
+		<restPath>/martservice</restPath>
 		<wsdlPath></wsdlPath>
 	</mart>
 	<mart>

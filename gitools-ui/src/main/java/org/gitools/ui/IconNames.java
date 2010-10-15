@@ -88,6 +88,8 @@ public class IconNames {
 
 	public static final String DOWNLOAD = "/img/Download.png";
 
+	public static final String LOGO_SELECT_FILE = "/img/logos/SelectFile.png";
+
 	public static final String LOGO_INTOGEN = "/img/intogen/IntOGenWebLogo.png";
 
 	public static final String LOGO_INTOGEN_IMPORT = "/img/logos/IntogenImport.png";

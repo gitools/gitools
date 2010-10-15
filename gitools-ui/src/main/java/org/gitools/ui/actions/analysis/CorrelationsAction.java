@@ -18,22 +18,20 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
-import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -57,9 +55,9 @@ public class CorrelationsAction extends BaseAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IEditor currentEditor = editorPanel.getSelectedEditor();
+		final IEditor currentEditor = editorPanel.getSelectedEditor();
 
 		IMatrixView matrixView = ActionUtils.getMatrixView();
 
@@ -102,6 +100,26 @@ public class CorrelationsAction extends BaseAction {
 			public void run(IProgressMonitor monitor) {
 				try {
 					new CorrelationProcessor(analysis).run(monitor);
+
+					if (monitor.isCancelled())
+						return;
+
+					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
+
+					String ext = PersistenceUtils.getExtension(currentEditor.getName());
+					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.HEATMAP));
+
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							AppFrame.instance().getEditorsPanel().addEditor(editor);
+							AppFrame.instance().refresh();
+						}
+					});
+
+					monitor.end();
+
+					AppFrame.instance().setStatusText("Done.");
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);
@@ -109,7 +127,7 @@ public class CorrelationsAction extends BaseAction {
 			}
 		});
 
-		IMatrixView results = new MatrixView(analysis.getResults());
+		/*IMatrixView results = new MatrixView(analysis.getResults());
 		Heatmap heatmap = new Heatmap(results);
 		IElementAdapter cellAdapter = results.getCellAdapter();
 		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
@@ -133,6 +151,6 @@ public class CorrelationsAction extends BaseAction {
 
 		editorPanel.addEditor(editor);
 
-		AppFrame.instance().setStatusText("Done.");
+		AppFrame.instance().setStatusText("Done.");*/
 	}
 }

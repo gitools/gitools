@@ -53,10 +53,14 @@ public class PersistenceReferenceXmlAdapter<T>
 
 		IProgressMonitor monitor = context.getMonitor();
 
-		T entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
+		T entity = null;
 
-		context.setEntityContext(entity,
-				new PersistenceEntityContext(mimeType, file.getAbsolutePath()));
+		if (context.isLoadReferences()) {
+			entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
+
+			context.setEntityContext(entity,
+					new PersistenceEntityContext(mimeType, file.getAbsolutePath()));
+		}
 
 		return entity;
 	}

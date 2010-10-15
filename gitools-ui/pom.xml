@@ -59,6 +59,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-examples</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
 		</dependency>
@@ -77,6 +84,18 @@
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency> -->
+		<dependency>
+			<artifactId>gitools-kegg</artifactId>
+			<groupId>org.gitools</groupId>
+			<type>jar</type>
+			<version>1.5.4-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-net</artifactId>
+					<groupId>commons-net</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>

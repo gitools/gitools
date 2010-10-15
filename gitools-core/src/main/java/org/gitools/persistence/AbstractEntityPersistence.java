@@ -3,10 +3,8 @@ package org.gitools.persistence;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 public abstract class AbstractEntityPersistence<T> implements IEntityPersistence<T> {
 

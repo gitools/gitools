@@ -60,14 +60,14 @@ public class OpenAnalysisAction extends BaseAction {
 			new FileFormatFilter(FileFormats.COMBINATION)
 		};
 
-		Object[] ret = FileChooserUtils.selectFile(
+		FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
 				"Select the analysis file",
 				Settings.getDefault().getLastPath(),
 				FileChooserUtils.MODE_OPEN,
 				filters);
 
-		final File file = (File) ret[0];
-		final FileFormatFilter filter = (FileFormatFilter) ret[1];
+		final File file = ret.getFile();
+		final FileFormatFilter filter = (FileFormatFilter) ret.getFilter();
 
 		if (file != null) {
 			Settings.getDefault().setLastPath(file.getParent());

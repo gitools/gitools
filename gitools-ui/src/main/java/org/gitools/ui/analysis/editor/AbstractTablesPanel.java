@@ -179,7 +179,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 		try {
 			URL url = getClass().getResource(template);
-			templatePanel.setTemplate(template, url.toString());
+			templatePanel.setTemplateFromResource(template, url);
 			templatePanel.render(context);
 		}
 		catch (Exception ex) {
@@ -249,7 +249,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 					try {
 						URL url = getClass().getResource(template);
-						templatePanel.setTemplate(template, url.toString());
+						templatePanel.setTemplateFromResource(template, url);
 						templatePanel.render(context);
 					}
 					catch (Exception ex) {

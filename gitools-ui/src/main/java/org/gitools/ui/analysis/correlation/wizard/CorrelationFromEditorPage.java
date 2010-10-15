@@ -44,7 +44,7 @@ public class CorrelationFromEditorPage extends AbstractWizardPage {
 
 		initComponents();
 
-		setTitle("Correlation method");
+		setTitle("Configure correlation options");
 
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 

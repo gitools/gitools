@@ -27,6 +27,7 @@ import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.Html4Editor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -45,7 +46,7 @@ public class WelcomeEditor extends Html4Editor {
 			URL url = getClass().getResource("/html/welcome.html");
 			navigate(url);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ExceptionDialog.show(AppFrame.instance(), e);
 		}
 	}
 
@@ -56,7 +57,7 @@ public class WelcomeEditor extends Html4Editor {
 				Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
 			}
 			catch (Exception ex) {
-				ex.printStackTrace();
+				ExceptionDialog.show(AppFrame.instance(), ex);
 			}
 		}
 		else if (name.equals("importIntogen")) {
@@ -117,12 +118,11 @@ public class WelcomeEditor extends Html4Editor {
 					ActionEvent event = new ActionEvent(this, 0, name);
 					actionClass.newInstance().actionPerformed(event);
 				} catch (Exception ex) {
-					LoggerFactory.getLogger(WelcomeEditor.class).debug(null, ex);
+					ExceptionDialog.show(AppFrame.instance(), ex);
 				}
 			}
 			else {
-				UnimplementedDialog dlg = new UnimplementedDialog(AppFrame.instance());
-				dlg.setVisible(true);
+				UnimplementedDialog.show(AppFrame.instance());
 			}
 		}
 		else if (name.equals("example")) {

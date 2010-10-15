@@ -40,7 +40,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.rpc.ServiceException;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPClientConfig;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.idmapper.EnsemblMapper;
@@ -305,8 +304,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 				FTPClient ftp = new FTPClient();
 				ftp.connect(KeggGenesMapper.FTP_HOST);
 				ftp.login("anonymous", "");
+				ftp.enterLocalPassiveMode();
 				String path = KeggGenesMapper.FTP_PATH + "/" + orgId + "/";
-				//System.out.println("ftp://" + KeggGenesMapper.FTP_HOST + path);
+				
 				String[] files = ftp.listNames(path);
 				if (files == null)
 					throw new ModulesImporterException("Unable to connect to KEGG FTP: " + ftp.getReplyString());

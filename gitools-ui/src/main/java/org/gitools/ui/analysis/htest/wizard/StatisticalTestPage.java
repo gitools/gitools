@@ -8,6 +8,7 @@ package org.gitools.ui.analysis.htest.wizard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import org.gitools.model.ToolConfig;
@@ -206,11 +207,44 @@ public class StatisticalTestPage extends AbstractWizardPage {
 		return config;
 	}
 
+	public void setTestConfig(ToolConfig testConfig) {
+		Map<String, String> cfg = testConfig.getConfiguration();
+		String testName = cfg.get(TestFactory.TEST_NAME_PROPERTY);
+		int index = 0;
+		if (TestFactory.BINOMIAL_TEST.equals(testName)) {
+			index = 0;
+		}
+		else if (TestFactory.FISHER_EXACT_TEST.equals(testName)) {
+			index = 1;
+		}
+		else if (TestFactory.ZSCORE_TEST.equals(testName)) {
+			index = 2;
+			samplingSizeCbox.setSelectedItem(cfg.get(ZscoreTestFactory.NUM_SAMPLES_PROPERTY));
+			estimatorCbox.setSelectedItem(cfg.get(ZscoreTestFactory.ESTIMATOR_PROPERTY));
+		}
+		testCbox.setSelectedIndex(index);
+
+		boolean vis = index == 2;
+		samplingSizeLabel.setVisible(vis);
+		samplingSizeCbox.setVisible(vis);
+		estimatorLabel.setVisible(vis);
+		estimatorCbox.setVisible(vis);
+	}
+
+	// FIXME
 	public String getMtc() {
 		switch (mtcCb.getSelectedIndex()) {
 			case 0: return "bonferroni";
 			case 1: return "bh";
 		}
 		return "bh";
+	}
+
+	// FIXME
+	public void setMtc(String mtc) {
+		if (mtc.equals("bonferroni"))
+			mtcCb.setSelectedIndex(0);
+		else if (mtc.equals("bh"))
+			mtcCb.setSelectedIndex(1);
 	}
 }

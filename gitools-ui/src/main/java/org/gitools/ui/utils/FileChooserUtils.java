@@ -20,6 +20,7 @@ package org.gitools.ui.utils;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import org.gitools.persistence.FileFormat;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
@@ -35,6 +36,24 @@ public class FileChooserUtils {
     public final static String tif = "tif";
     public final static String png = "png";
 	public final static String pdf = "pdf";
+
+	public static class FileAndFilter {
+		private File file;
+		private FileFilter filter;
+
+		public FileAndFilter(File file, FileFilter filter) {
+			this.file = file;
+			this.filter = filter;
+		}
+
+		public File getFile() {
+			return file;
+		}
+
+		public FileFilter getFilter() {
+			return filter;
+		}
+	}
 
 	private static FileFilter imageFileFilter = new FileFilter() {
 		@Override
@@ -103,7 +122,7 @@ public class FileChooserUtils {
 		return null;
 	}
 
-	public static Object[] selectFile(String title, int mode, FileFilter[] filters) {
+	public static FileAndFilter selectFile(String title, int mode, FileFilter[] filters) {
 		return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
 	}
 
@@ -115,7 +134,7 @@ public class FileChooserUtils {
 	 * @param filters
 	 * @return {file, filter}
 	 */
-	public static Object[] selectFile(String title, String currentPath, int mode, FileFilter[] filters) {
+	public static FileAndFilter selectFile(String title, String currentPath, int mode, FileFilter[] filters) {
 		JFileChooser fileChooser = new JFileChooser(currentPath);
 
 		fileChooser.setDialogTitle(title);
@@ -137,12 +156,12 @@ public class FileChooserUtils {
 		else if (mode == FileChooserUtils.MODE_OPEN)
 			retval = fileChooser.showOpenDialog(AppFrame.instance());
 
-		File file = null;
-
 		if (retval == JFileChooser.APPROVE_OPTION)
-			file = fileChooser.getSelectedFile();
+			return new FileAndFilter(
+					fileChooser.getSelectedFile(),
+					fileChooser.getFileFilter());
 
-		return new Object[] {file, fileChooser.getFileFilter()};
+		return null;
 	}
 
 	public static File selectPath(String title) {

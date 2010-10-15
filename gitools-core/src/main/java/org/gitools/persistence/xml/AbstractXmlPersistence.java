@@ -3,6 +3,7 @@ package org.gitools.persistence.xml;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -19,7 +20,9 @@ import org.gitools.persistence.PersistenceContext;
 public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistence<T> {
 
 	private static final long serialVersionUID = -3625243178449832555L;
-	
+
+	public static final String LOAD_REFERENCES_PROP = "load_references";
+
 	private Class<T> entityClass;
 
 	private XmlAdapter<?, ?>[] adapters;
@@ -51,6 +54,15 @@ public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistenc
 
 	public void setPersistenceContext(PersistenceContext persistenceContext) {
 		this.persistenceContext = persistenceContext;
+	}
+
+	@Override
+	public void setProperties(Properties properties) {
+		super.setProperties(properties);
+
+		String lr = properties.getProperty(LOAD_REFERENCES_PROP, "true");
+		boolean loadReferences = lr == null || Boolean.parseBoolean(lr);
+		persistenceContext.setLoadReferences(loadReferences);
 	}
 	
 	/** Classes extending AbstractXmlPersistence should

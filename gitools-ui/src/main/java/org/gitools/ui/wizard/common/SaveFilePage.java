@@ -37,6 +37,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.utils.FileFormatFilter;
 
 public class SaveFilePage extends AbstractWizardPage {
 
@@ -287,12 +288,12 @@ public class SaveFilePage extends AbstractWizardPage {
 			}
 		};
 
-		Object[] sel = FileChooserUtils.selectFile(
+		FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile(
 				"Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFilter[] {ff});
 
-		File selFile = (File) sel[0];
-
-		if (selFile != null) {
+		if (sel != null) {
+			File selFile = sel.getFile();
+		
 			String fn = selFile.getName();
 			fileName.setText(fn);
 			folder.setText(selFile.getParentFile().getAbsolutePath());

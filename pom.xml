@@ -171,14 +171,14 @@
 		<repository>
 			<id>gitools-repository</id>
 			<name>gitools repository</name>
-			<url>file:///home/chris/NetbeansProjects/Gitools/target/deploy</url>
+			<url>file:///shared/gitools/releases</url>
 		</repository>
 
 		<snapshotRepository>
 			<id>gitools-snapshot-repository</id>
 			<name>gitools snapshot repository</name>
 			<!-- <url>file://${basedir}/target/deploy-snapshot</url> -->
-			<url>file:///home/chris/NetbeansProjects/Gitools/target/deploy</url>
+			<url>file:///shared/gitools/releases</url>
 		</snapshotRepository>
 	</distributionManagement>
 

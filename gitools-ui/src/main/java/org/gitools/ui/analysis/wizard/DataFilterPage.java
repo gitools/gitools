@@ -225,7 +225,7 @@ public class DataFilterPage extends AbstractWizardPage {
 
 	public File getPopulationFile() {
 		String text = rowsFilterFilePath.getText();
-		return !text.isEmpty() ? new File(text) : null;
+		return rowsFilterCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
 	}
 
 	public boolean isBinaryCutoffEnabled() {

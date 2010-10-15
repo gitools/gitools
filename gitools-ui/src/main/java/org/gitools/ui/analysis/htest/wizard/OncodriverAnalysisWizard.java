@@ -1,18 +1,28 @@
 package org.gitools.ui.analysis.htest.wizard;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.analysis.wizard.DataFilterPage;
-import org.gitools.ui.analysis.wizard.SelectFilePage;
+import org.gitools.ui.analysis.wizard.DataFilePage;
 import org.gitools.ui.analysis.wizard.ModulesPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import java.io.File;
+import java.util.Properties;
+import javax.swing.SwingUtilities;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.analysis.wizard.ExamplePage;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -21,7 +31,12 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class OncodriverAnalysisWizard extends AbstractWizard {
 
-	private SelectFilePage dataPage;
+	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.ONCODRIVE;
+	private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_sorted_annotated_cdm.gz";
+	private static final String EXAMPLE_COLUMN_SETS_FILE = "TCGA_gbm_samples_to_subtypes.tcm";
+
+	private ExamplePage examplePage;
+	private DataFilePage dataPage;
 	private DataFilterPage dataFilterPage;
 	private ModulesPage modulesPage;
 	private StatisticalTestPage statisticalTestPage;
@@ -37,8 +52,15 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	
 	@Override
 	public void addPages() {
+		// Example
+		if (Settings.getDefault().isShowCombinationExamplePage()) {
+			examplePage = new ExamplePage("an Oncodriver analysis");
+			examplePage.setTitle("Oncodriver analysis");
+			addPage(examplePage);
+		}
+
 		// Data
-		dataPage = new SelectFilePage();
+		dataPage = new DataFilePage();
 		addPage(dataPage);
 
 		// Data filtering
@@ -72,11 +94,54 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	}
 
 	@Override
-	public boolean canFinish() {
-		boolean canFinish = super.canFinish();
+	public void pageLeft(IWizardPage currentPage) {
+		if (currentPage == examplePage) {
+			Settings.getDefault().setShowCombinationExamplePage(
+					examplePage.isShowAgain());
 
+			if (examplePage.isExampleEnabled()) {
+				JobThread.execute(AppFrame.instance(), new JobRunnable() {
+					@Override public void run(IProgressMonitor monitor) {
+
+						final File basePath = ExamplesManager.getDefault().resolvePath("oncodrive", monitor);
+
+						if (basePath == null)
+							throw new RuntimeException("Unexpected error: There are no examples available");
+
+						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
+						Properties props = new Properties();
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "true");
+						try {
+							monitor.begin("Loading example parameters ...", 1);
+
+							final OncodriveAnalysis a = (OncodriveAnalysis) PersistenceManager.getDefault()
+									.load(analysisFile, props, monitor);
+
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override public void run() {
+									setAnalysis(a);
+
+									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+									modulesPage.setSelectedFile(new File(basePath, EXAMPLE_COLUMN_SETS_FILE));
+								}
+							});
+
+							monitor.end();
+						}
+						catch (Exception ex) {
+							monitor.exception(ex);
+						}
+					}
+				});
+			}
+		}
+	}
+
+	@Override
+	public boolean canFinish() {
 		IWizardPage page = getCurrentPage();
 
+		boolean canFinish = super.canFinish();
 		canFinish |= page == saveFilePage && page.isComplete();
 
 		return canFinish;
@@ -136,5 +201,15 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		analysis.setMtc(statisticalTestPage.getMtc());
 
 		return analysis;
+	}
+
+	private void setAnalysis(OncodriveAnalysis a) {
+		analysisDetailsPage.setAnalysisTitle(a.getTitle());
+		analysisDetailsPage.setAnalysisNotes(a.getDescription());
+		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+		modulesPage.setMinSize(a.getMinModuleSize());
+		modulesPage.setMaxSize(a.getMaxModuleSize());
+		statisticalTestPage.setTestConfig(a.getTestConfig());
+		statisticalTestPage.setMtc(a.getMtc());
 	}
 }

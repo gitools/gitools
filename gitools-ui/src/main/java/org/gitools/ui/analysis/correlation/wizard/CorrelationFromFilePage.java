@@ -40,7 +40,7 @@ public class CorrelationFromFilePage extends AbstractWizardPage {
 
 		initComponents();
 
-		setTitle("Correlation method");
+		setTitle("Configure correlation options");
 
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
@@ -160,11 +160,23 @@ public class CorrelationFromFilePage extends AbstractWizardPage {
 		return replaceEmptyValuesCheck.isSelected();
 	}
 
+	public void setReplaceNanValuesEnabled(boolean enabled) {
+		replaceEmptyValuesCheck.setSelected(enabled);
+	}
+
 	public double getReplaceNanValue() {
 		return Double.parseDouble(replaceValueField.getText());
 	}
 
+	public void setReplaceNanValue(double value) {
+		replaceValueField.setText(Double.toString(value));
+	}
+
 	public boolean isTransposeEnabled() {
 		return applyToRowsRb.isSelected();
+	}
+
+	public void setTransposeEnabled(boolean enabled) {
+		applyToRowsRb.setSelected(enabled);
 	}
 }

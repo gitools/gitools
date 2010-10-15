@@ -26,6 +26,8 @@ package org.gitools.ui.analysis.combination.wizard;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class CombinationAnalysisParamsPage extends AbstractWizardPage {
@@ -54,44 +56,64 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 		}
 	}
 
+	private String preferredSizeAttr;
+	private String preferredPvalueAttr;
+
     public CombinationAnalysisParamsPage() {
         initComponents();
+
+		dissableAttrCb();
+
+		setTitle("Configure combination options");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
+
+		setComplete(true);
     }
+
+	private void dissableAttrCb() {
+		sizeAttrCb.setModel(new DefaultComboBoxModel());
+		sizeAttrLabel.setEnabled(false);
+		sizeAttrCb.setEnabled(false);
+		pvalueAttrCb.setModel(new DefaultComboBoxModel());
+		pvalueAttrLabel.setEnabled(false);
+		pvalueAttrCb.setEnabled(false);
+	}
 
 	public void setAttributes(List<IElementAttribute> attrs) {
 		this.attrs = attrs;
 
-		if (attrs == null) {
-			sizeAttrCb.setModel(new DefaultComboBoxModel());
-			sizeAttrLabel.setEnabled(false);
-			sizeAttrCb.setEnabled(false);
-			pvalueAttrCb.setModel(new DefaultComboBoxModel());
-			pvalueAttrLabel.setEnabled(false);
-			pvalueAttrCb.setEnabled(false);
-		}
-		else {
+		if (attrs != null) {
 			AttrOption[] sizeAttrs = new AttrOption[attrs.size() + 1];
 			sizeAttrs[0] = new AttrOption("All columns with the same weight");
 			for (int i = 0; i < attrs.size(); i++)
 				sizeAttrs[i + 1] = new AttrOption(attrs.get(i));
 			sizeAttrCb.setModel(new DefaultComboBoxModel(sizeAttrs));
 
-			Object[] attrsArray = attrs.toArray();
-			pvalueAttrCb.setModel(new DefaultComboBoxModel(attrsArray));
+			AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
+			for (int i = 0; i < attrs.size(); i++)
+				pvalueAttrs[i] = new AttrOption(attrs.get(i));
+			pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
 
 			int sizeIndex = -1;
 			int pvalueIndex = -1;
 			int i = 0;
 			for (IElementAttribute a : attrs) {
-				if (sizeIndex == -1 && a.getId().matches("n|N"))
+				String aid = a.getId();
+				if (sizeIndex == -1
+						&& (aid.equals(preferredSizeAttr)
+							|| aid.matches("^(n|N)$")))
 					sizeIndex = i;
-				if (pvalueIndex == -1 && a.getId().matches("p-value"))
+
+				if (pvalueIndex == -1
+						&& (aid.equals(preferredPvalueAttr)
+							|| aid.matches("^(right-|.*)p-value$")))
 					pvalueIndex = i;
+				
 				i++;
 			}
 
-			sizeIndex = sizeIndex == -1 ? 0 : sizeIndex;
-			pvalueIndex = pvalueIndex == -1 ? 0 : pvalueIndex;
+			sizeIndex = sizeIndex == -1 ? 0 : sizeIndex + 1;
+			pvalueIndex = pvalueIndex == -1 ? 0 : pvalueIndex + 1;
 			sizeAttrCb.setSelectedIndex(sizeIndex);
 			pvalueAttrCb.setSelectedIndex(pvalueIndex);
 			sizeAttrLabel.setEnabled(true);
@@ -99,14 +121,34 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 			pvalueAttrLabel.setEnabled(true);
 			pvalueAttrCb.setEnabled(true);
 		}
+		else
+			dissableAttrCb();
+	}
+
+	public void setPreferredSizeAttr(String preferredSizeAttr) {
+		this.preferredSizeAttr = preferredSizeAttr;
+	}
+
+	public void setPreferredPvalueAttr(String preferredPvalueAttr) {
+		this.preferredPvalueAttr = preferredPvalueAttr;
 	}
 
 	public IElementAttribute getSizeAttribute() {
-		return ((AttrOption) sizeAttrCb.getSelectedItem()).getAttr();
+		AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
+		return option != null ? option.getAttr() : null;
 	}
 
 	public IElementAttribute getPvalueAttribute() {
-		return (IElementAttribute) pvalueAttrCb.getSelectedItem();
+		AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
+		return option != null ? option.getAttr() : null;
+	}
+
+	public boolean isTransposeEnabled() {
+		return applyToRowsRb.isSelected();
+	}
+
+	public void setTransposeEnabled(boolean transpose) {
+		applyToColumnsRb.setSelected(!transpose);
 	}
 
     /** This method is called from within the constructor to

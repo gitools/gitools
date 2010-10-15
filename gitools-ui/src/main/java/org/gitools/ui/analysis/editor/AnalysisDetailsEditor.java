@@ -64,7 +64,7 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 		};
 		try {
 			URL url = getClass().getResource(template);
-			templatePanel.setTemplate(template, url.toString());
+			templatePanel.setTemplateFromResource(template, url);
 
 			VelocityContext context = new VelocityContext();
 			context.put("fmt", new GenericFormatter());

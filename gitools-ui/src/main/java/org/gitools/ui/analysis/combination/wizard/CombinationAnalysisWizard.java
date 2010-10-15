@@ -22,18 +22,25 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.swing.SwingUtilities;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.examples.ExamplesManager;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.IEntityPersistence;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
+import org.gitools.ui.analysis.wizard.DataFilePage;
+import org.gitools.ui.analysis.wizard.ExamplePage;
 import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -43,7 +50,11 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
 
-	private static final FileFormat[] formats = new FileFormat[] {
+	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.COMBINATION;
+	private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_experiments_upreg_genes_annot.cdm.gz";
+	private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
+
+	private static final FileFormat[] dataFormats = new FileFormat[] {
 			FileFormats.RESULTS_MATRIX,
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
@@ -52,15 +63,24 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 			FileFormats.MODULES_2C_MAP,
 			FileFormats.MODULES_INDEXED_MAP
 	};
-	
-	private SelectFilePage dataPage;
-	private DataFilterPage dataFilterPage;
+
+	private static final FileFormat[] columnSetsFormats = new FileFormat[] {
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.MODULES_2C_MAP,
+			FileFormats.MODULES_INDEXED_MAP
+	};
+
+	private ExamplePage examplePage;
+	private DataFilePage dataPage;
 	private CombinationAnalysisParamsPage combParamsPage;
+	private SelectFilePage columnSetsPage;
 	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
 
 	private File dataFile;
-	private List<IElementAttribute> attrs;
 
 	public CombinationAnalysisWizard() {
 		super();
@@ -71,18 +91,33 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 	@Override
 	public void addPages() {
+		// Example
+		if (Settings.getDefault().isShowCombinationExamplePage()) {
+			examplePage = new ExamplePage("a combination analysis");
+			examplePage.setTitle("Combination analysis");
+			addPage(examplePage);
+		}
+		
 		// Data
-		dataPage = new SelectFilePage(formats);
+		dataPage = new DataFilePage(dataFormats);
 		addPage(dataPage);
-
-		// Data filters
-		/*dataFilterPage = new DataFilterPage();
-		dataFilterPage.setPopulationFileVisible(false);
-		addPage(dataFilterPage);*/
 
 		// Combination parameters
 		combParamsPage = new CombinationAnalysisParamsPage();
 		addPage(combParamsPage);
+
+		// Set of columns
+		columnSetsPage = new SelectFilePage(columnSetsFormats) {
+			@Override protected String getLastPath() {
+				return Settings.getDefault().getLastMapPath(); }
+
+			@Override protected void setLastPath(String path) {
+				Settings.getDefault().setLastMapPath(path); }
+		};
+		columnSetsPage.setTitle("Select sets of columns/rows to combine");
+		columnSetsPage.setMessage(MessageStatus.INFO, "Leave blank to combine all the columns");
+		columnSetsPage.setBlankFileAllowed(true);
+		addPage(columnSetsPage);
 
 		// Destination
 		saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
@@ -112,7 +147,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 								.createEntityPersistence(mimeType, new Properties());
 						Map<String, Object> meta = null;
 						try {
-							meta = ep.readMetadata(dataFile, new String[] {
+							meta = ep.readMetadata(dataPage.getFile(), new String[] {
 								ObjectMatrixTextPersistence.META_ATTRIBUTES }, monitor);
 
 							if (meta != null) {
@@ -131,5 +166,97 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 				});
 			}
 		}
+	}
+
+	@Override
+	public void pageLeft(IWizardPage currentPage) {
+		if (currentPage == examplePage) {
+			Settings.getDefault().setShowCombinationExamplePage(
+					examplePage.isShowAgain());
+
+			if (examplePage.isExampleEnabled()) {
+				
+				JobThread.execute(AppFrame.instance(), new JobRunnable() {
+					@Override public void run(IProgressMonitor monitor) {
+
+						final File basePath = ExamplesManager.getDefault().resolvePath("combination", monitor);
+
+						if (basePath == null)
+							throw new RuntimeException("Unexpected error: There are no examples available");
+
+						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
+						Properties props = new Properties();
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "true");
+						try {
+							final CombinationAnalysis a = (CombinationAnalysis) PersistenceManager.getDefault()
+									.load(analysisFile, props, monitor);
+						
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override public void run() {
+									setAnalysis(a);
+
+									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+									columnSetsPage.setFile(new File(basePath, EXAMPLE_COLUM_SETS_FILE));
+								}
+							});
+						}
+						catch (Exception ex) {
+							monitor.exception(ex);
+						}
+					}
+				});				
+			}
+		}
+	}
+
+	@Override
+	public boolean canFinish() {
+		IWizardPage page = getCurrentPage();
+
+		boolean canFinish = super.canFinish();
+		canFinish |= page == saveFilePage && page.isComplete();
+
+		return canFinish;
+	}
+
+	public CombinationAnalysis getAnalysis() {
+		CombinationAnalysis a = new CombinationAnalysis();
+
+		a.setTitle(analysisDetailsPage.getAnalysisTitle());
+		a.setDescription(analysisDetailsPage.getAnalysisNotes());
+		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+
+		IElementAttribute attr = combParamsPage.getSizeAttribute();
+		String sizeAttrName = attr != null ? attr.getId() : null;
+		a.setSizeAttrName(sizeAttrName);
+
+		attr = combParamsPage.getPvalueAttribute();
+		String pvalueAttrName = attr != null ? attr.getId() : null;
+		a.setPvalueAttrName(pvalueAttrName);
+
+		a.setTransposeData(combParamsPage.isTransposeEnabled());
+
+		return a;
+	}
+
+	private void setAnalysis(CombinationAnalysis a) {
+		analysisDetailsPage.setAnalysisTitle(a.getTitle());
+		analysisDetailsPage.setAnalysisNotes(a.getDescription());
+		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+		combParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
+		combParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
+		combParamsPage.setTransposeEnabled(a.isTransposeData());
+	}
+
+	public DataFilePage getDataFilePage() {
+		return dataPage;
+	}
+
+	public SelectFilePage getColumnSetsPage() {
+		return columnSetsPage;
+	}
+
+	public SaveFilePage getSaveFilePage() {
+		return saveFilePage;
 	}
 }

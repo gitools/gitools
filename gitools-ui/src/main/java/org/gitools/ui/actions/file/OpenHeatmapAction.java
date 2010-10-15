@@ -62,15 +62,15 @@ public class OpenHeatmapAction extends BaseAction {
 			new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED)
 		};
 
-		final Object[] ret = FileChooserUtils.selectFile(
+		final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
 				"Select file", FileChooserUtils.MODE_OPEN, filters);
 
-		final File file = (File) ret[0];
+		final File file = ret.getFile();
 		
 		if (file == null)
 			return;
 
-		final FileFormatFilter ff = (FileFormatFilter) ret[1];
+		final FileFormatFilter ff = (FileFormatFilter) ret.getFilter();
 
 		Settings.getDefault().setLastPath(file.getParent());
 		Settings.getDefault().save();

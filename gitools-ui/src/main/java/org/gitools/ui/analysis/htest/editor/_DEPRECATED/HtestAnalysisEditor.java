@@ -45,7 +45,7 @@ public class HtestAnalysisEditor extends AbstractEditor {
 	private void createComponents() {
 		templatePane = new TemplatePanel();
 		try {
-			templatePane.setTemplate(
+			templatePane.setTemplateFromResource(
 					templateMap.get(analysis.getClass()));
 
 			VelocityContext context = new VelocityContext();
