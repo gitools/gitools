@@ -59,13 +59,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>gitools-examples</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
 		</dependency>
