@@ -30,7 +30,6 @@ import java.util.Properties;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.heatmap.model.HeatmapHeader;

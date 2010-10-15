@@ -19,6 +19,7 @@ package org.gitools.ui.analysis.htest.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JSplitPane;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
@@ -27,6 +28,7 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
+import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromColumnAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 
@@ -44,7 +46,14 @@ public class OncodriveResultsEditor extends HeatmapEditor {
 	}
 
 	protected static List<BaseAction> createToolBar(OncodriveAnalysis analysis) {
-		return null;
+		ViewRelatedDataFromColumnAction action =
+				new ViewRelatedDataFromColumnAction(
+					analysis.getTitle(),
+					analysis.getData(),
+					analysis.getModuleMap());
+		List<BaseAction> tb = new ArrayList<BaseAction>();
+		tb.add(action);
+		return tb;
 	}
 
 	public OncodriveResultsEditor(OncodriveAnalysis analysis) {

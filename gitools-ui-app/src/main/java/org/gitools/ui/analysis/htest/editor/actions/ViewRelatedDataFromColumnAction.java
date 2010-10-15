@@ -116,7 +116,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction {
 
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
 		heatmap.setTitle(title);
-		heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
+		heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());
 
 		// Create editor
 		HeatmapEditor editor = new HeatmapEditor(heatmap);
