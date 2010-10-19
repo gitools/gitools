@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
@@ -33,6 +32,7 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.csv.RawCsvWriter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.BufferedReader;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.datafilters.DoubleTranslator;
@@ -44,7 +44,18 @@ public class ObjectMatrixTextPersistence
 	public static final String META_ROW_LABELS = "labels.rows";
 	public static final String META_ATTRIBUTES = "attributes";
 
-	private static final long serialVersionUID = 3487889255829878181L;
+	private static final String META_TAG = "#?";
+
+	private static final String TYPE_TAG = "type";
+
+	private static final Map<String, Class<?>> typeToClass = new HashMap<String, Class<?>>();
+	static {
+		typeToClass.put("zscore-test", ZScoreResult.class);
+		typeToClass.put("binomial-test", BinomialResult.class);
+		typeToClass.put("fisher-test", FisherResult.class);
+		typeToClass.put("correlation", CorrelationResult.class);
+		typeToClass.put("combination", CombinationResult.class);
+	}
 
 	/* This information will be used to infer the element class
 	 * to use when loading an old tabulated file 
@@ -111,10 +122,11 @@ public class ObjectMatrixTextPersistence
 
 	private List<IElementAttribute> readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
 		IElementAdapter elementAdapter = null;
+
+		Map<String, String> meta = readHeaderMeta(file, monitor);
+
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
-
-			// TODO read metadata from comments like #?
 
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 
@@ -128,14 +140,24 @@ public class ObjectMatrixTextPersistence
 			String[] paramNames = new String[numParams];
 			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
 
-			// infer element class and create corresponding adapter and factory
-			Class<?> elementClass = elementClasses.get(
+			Class<?> elementClass = null;
+
+			if (meta.containsKey(TYPE_TAG)) {
+				elementClass = typeToClass.get(meta.get(TYPE_TAG));
+			}
+
+			if (elementClass == null) {
+				// infer element class and create corresponding adapter and factory
+				elementClass = elementClasses.get(
 					getElementClassId(paramNames));
+			}
 
 			if (elementClass == null)
 				elementAdapter = new ArrayElementAdapter(paramNames);
 			else
 				elementAdapter = new BeanElementAdapter(elementClass);
+
+			reader.close();
 		}
 		catch (Exception ex) {
 			throw new PersistenceException(ex);
@@ -362,7 +384,7 @@ public class ObjectMatrixTextPersistence
 		
 		IElementAdapter cellAdapter = resultsMatrix.getCellAdapter();
 
-		out.write("#? class: " + cellAdapter.getElementClass().getCanonicalName() + "\n");
+		out.write(META_TAG + " class: " + cellAdapter.getElementClass().getCanonicalName() + "\n");
 
 		out.writeQuotedValue("column");
 		out.writeSeparator();
@@ -434,5 +456,32 @@ public class ObjectMatrixTextPersistence
 		out.writeNewLine();
 
 		monitor.worked(1);
+	}
+
+	private Map<String, String> readHeaderMeta(File file, IProgressMonitor monitor) throws PersistenceException {
+		Map<String, String> meta = new HashMap<String, String>();
+		try {
+			BufferedReader r = new BufferedReader(PersistenceUtils.openReader(file));
+			boolean done = false;
+			String cl = null;
+			while (!done && (cl = r.readLine()) != null) {
+				if (cl.startsWith(META_TAG)) {
+					cl = cl.substring(META_TAG.length()).trim();
+					int pos = cl.indexOf(':');
+					if (pos > 0 && pos < cl.length() - 1) {
+						String key = cl.substring(0, pos);
+						String value = cl.substring(pos + 1);
+						meta.put(key, value);
+					}
+				}
+				else
+					done = true;
+			}
+			r.close();
+		}
+		catch (Exception ex) {
+			throw new PersistenceException(ex);
+		}
+		return meta;
 	}
 }

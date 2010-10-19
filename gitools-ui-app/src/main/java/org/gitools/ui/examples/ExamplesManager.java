@@ -48,25 +48,40 @@ public class ExamplesManager {
 			return null; // TODO download
 
 		String locPath = loc.getPath();
+		if (locPath.endsWith(".jar")) {
+			int pos = locPath.lastIndexOf(File.separatorChar);
+			if (pos >= 0)
+				locPath = locPath.substring(0, pos);
+		}
+		
+		System.out.println("locPath = " + locPath);
 
-		file = new File(locPath, "examples");
-		if (!file.exists()) {
-			file = new File(locPath, "../../../examples");
-			if (!file.exists())
-				return null; // TODO download
+		String[] paths = new String[] {
+			"examples",
+			"../examples",
+			"../../examples",
+			"../../../examples"
+		};
+
+		for (String path : paths) {
+			file = new File(locPath, path);
+			System.out.println(file.getAbsoluteFile());
+			
+			if (file.exists()) {
+				file = new File(file, exampleId);
+				if (!file.exists())
+					continue;
+
+				try {
+					file = file.getCanonicalFile();
+					return file;
+				}
+				catch (Exception ex) {
+					file = null;
+				}
+			}
 		}
 
-		file = new File(file, exampleId);
-		if (!file.exists())
-			return null;
-
-		try {
-			file = file.getCanonicalFile();
-		}
-		catch (Exception ex) {
-			file = null;
-		}
-
-		return file;
+		return null;
 	}
 }

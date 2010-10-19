@@ -24,7 +24,7 @@ public class JobThread implements JobRunnable {
 
 	private JobProgressMonitor monitor;
 
-	public static final void execute(Window parent, JobRunnable runnable) {
+	public static void execute(Window parent, JobRunnable runnable) {
 		new JobThread(parent, runnable).execute();
 	}
     
@@ -82,7 +82,7 @@ public class JobThread implements JobRunnable {
         Timer timer = new Timer("JobThread.cancelJob");
         timer.schedule(new TimerTask() {
             @Override public void run() {
-                synchronized(this) {
+                synchronized(JobThread.this) {
                     Thread jobThread = getThread();
                     if (jobThread != null && jobThread.isAlive())
                         jobThread.interrupt();
