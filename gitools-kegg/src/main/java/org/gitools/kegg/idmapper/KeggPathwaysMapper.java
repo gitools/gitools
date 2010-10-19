@@ -87,23 +87,6 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 
 		data.map(map);
 
-		/*for (String srcId : data.getSrcIds()) {
-			monitor.info(srcId);
-			if (monitor.isCancelled())
-				return null;
-			
-			Set<String> pathways = data.get(srcId);
-			Set<String> genes = new HashSet<String>();
-			Iterator<String> it = pathways.iterator();
-			while (it.hasNext()) {
-				Set<String> pg = map.get(it.next());
-				if (pg != null)
-					genes.addAll(pg);
-			}
-			data.set(srcId, genes);
-			monitor.worked(1);
-		}*/
-
 		monitor.end();
 
 		return data;

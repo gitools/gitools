@@ -17,6 +17,8 @@
 
 package org.gitools.ui;
 
+import edu.upf.bg.textpatt.BeanResolver;
+import edu.upf.bg.textpatt.TextPattern;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +31,30 @@ import org.apache.commons.net.ftp.FTPListParseEngine;
 
 public class App implements FTPFileEntryParser {
 
+	public static class Entity {
+		private String name;
+		public Entity(String name) {
+			this.name = name;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+
 	public static void main(String[] args) {
+		TextPattern pat = TextPattern.compile("Hello ${name} !");
+		BeanResolver res = new BeanResolver(Entity.class);
+		Entity[] entities = new Entity[] {
+			new Entity("Ramón"),
+			new Entity("Pepito")
+		};
+
+		for (Entity e : entities) {
+			res.setBeanInstance(e);
+			String str = pat.generate(res);
+			System.out.println(str);
+		}
+
 		try {
 			FTPClient ftp = new FTPClient();
 			ftp.connect("ftp.genome.jp");

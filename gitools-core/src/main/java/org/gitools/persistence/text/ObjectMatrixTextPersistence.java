@@ -49,12 +49,16 @@ public class ObjectMatrixTextPersistence
 	private static final String TYPE_TAG = "type";
 
 	private static final Map<String, Class<?>> typeToClass = new HashMap<String, Class<?>>();
+	private static final Map<Class<?>, String> classToType = new HashMap<Class<?>, String>();
 	static {
 		typeToClass.put("zscore-test", ZScoreResult.class);
 		typeToClass.put("binomial-test", BinomialResult.class);
 		typeToClass.put("fisher-test", FisherResult.class);
 		typeToClass.put("correlation", CorrelationResult.class);
 		typeToClass.put("combination", CombinationResult.class);
+
+		for (Map.Entry<String, Class<?>> e : typeToClass.entrySet())
+			classToType.put(e.getValue(), e.getKey());
 	}
 
 	/* This information will be used to infer the element class
@@ -123,7 +127,7 @@ public class ObjectMatrixTextPersistence
 	private List<IElementAttribute> readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
 		IElementAdapter elementAdapter = null;
 
-		Map<String, String> meta = readHeaderMeta(file, monitor);
+		Map<String, String> meta = readFormatAttributes(file, monitor);
 
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
@@ -142,9 +146,8 @@ public class ObjectMatrixTextPersistence
 
 			Class<?> elementClass = null;
 
-			if (meta.containsKey(TYPE_TAG)) {
+			if (meta.containsKey(TYPE_TAG))
 				elementClass = typeToClass.get(meta.get(TYPE_TAG));
-			}
 
 			if (elementClass == null) {
 				// infer element class and create corresponding adapter and factory
@@ -185,14 +188,14 @@ public class ObjectMatrixTextPersistence
 		
 		monitor.begin("Loading results ...", 1);
 		monitor.info("File: " + file.getAbsolutePath());
-		
+
+		Map<String, String> meta = readFormatAttributes(file, monitor);
+
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 
-			// TODO read metadata from comments like #?
-			
 			String[] line = parser.getLine();
 			
 			// read header
@@ -207,8 +210,16 @@ public class ObjectMatrixTextPersistence
 			System.arraycopy(line, 2, ids, 0, line.length - 2);
 			
 			// infer element class and create corresponding adapter and factory
-			Class<?> elementClass = elementClasses.get(
-					getElementClassId(ids));
+			Class<?> elementClass = null;
+
+			if (meta.containsKey(TYPE_TAG))
+				elementClass = typeToClass.get(meta.get(TYPE_TAG));
+
+			if (elementClass == null) {
+				// infer element class and create corresponding adapter and factory
+				elementClass = elementClasses.get(
+					getElementClassId(paramNames));
+			}
 			
 			IElementAdapter elementAdapter = null;
 			IElementFactory elementFactory = null;
@@ -284,7 +295,7 @@ public class ObjectMatrixTextPersistence
 				final int columnIndex = coord[0];
 				final int rowIndex = coord[1];
 				
-				Object element = result[1];			
+				Object element = result[1];
 				resultsMatrix.setCell(rowIndex, columnIndex, element);
 			}
 		}
@@ -364,6 +375,14 @@ public class ObjectMatrixTextPersistence
 
 		try {
 			Writer writer = PersistenceUtils.openWriter(file);
+
+			IElementAdapter cellAdapter = results.getCellAdapter();
+
+			Class<?> elementClass = cellAdapter.getElementClass();
+			String typeName = classToType.get(elementClass);
+			if (typeName != null)
+				writer.write(META_TAG + " " + TYPE_TAG + ": " + typeName + "\n");
+
 			//String cellsPath = new File(basePath, prefix + ".cells.tsv.gz").getAbsolutePath();
 			writeCells(writer, results, orderByColumn, monitor);
 			writer.close();
@@ -383,8 +402,6 @@ public class ObjectMatrixTextPersistence
 				CSVStrategies.TSV.getEncapsulator());
 		
 		IElementAdapter cellAdapter = resultsMatrix.getCellAdapter();
-
-		out.write(META_TAG + " class: " + cellAdapter.getElementClass().getCanonicalName() + "\n");
 
 		out.writeQuotedValue("column");
 		out.writeSeparator();
@@ -458,7 +475,7 @@ public class ObjectMatrixTextPersistence
 		monitor.worked(1);
 	}
 
-	private Map<String, String> readHeaderMeta(File file, IProgressMonitor monitor) throws PersistenceException {
+	private Map<String, String> readFormatAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
 		Map<String, String> meta = new HashMap<String, String>();
 		try {
 			BufferedReader r = new BufferedReader(PersistenceUtils.openReader(file));
