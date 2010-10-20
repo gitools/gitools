@@ -332,7 +332,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		return clusterParams;
 	}
 
-	public void setAttributes(List<IElementAttribute> cellAttributes) {
+	public void setAttributes(List<IElementAttribute> cellAttributes, int index) {
 
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 		MatrixAttributeWrapper attrWrapper = null;
@@ -342,6 +342,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 		}
 
 		dataClustCombo.setModel(model);
+		dataClustCombo.setSelectedIndex(index);
 
 	}
 

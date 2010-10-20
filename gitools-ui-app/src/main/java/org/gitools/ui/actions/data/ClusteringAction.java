@@ -52,7 +52,7 @@ public class ClusteringAction extends BaseAction {
 			return;
 
 		ClusteringDialog dlg = new ClusteringDialog(AppFrame.instance());
-		dlg.setAttributes(matrixView.getContents().getCellAttributes());
+		dlg.setAttributes(matrixView.getContents().getCellAttributes(),matrixView.getSelectedPropertyIndex());
 		dlg.setVisible(true);
 
 		if (dlg.getReturnStatus() != ClusteringDialog.RET_OK) {
