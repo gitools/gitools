@@ -18,21 +18,15 @@
 package org.gitools.matrix.clustering.methods;
 
 import org.gitools.matrix.clustering.MatrixViewWeka;
-import org.gitools.matrix.clustering.ClusterUtils;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
 import org.gitools.matrix.clustering.ClusteringMethod;
-import org.gitools.matrix.model.IMatrixView;
 import weka.clusterers.Cobweb;
-import weka.core.FastVector;
 import weka.core.Instance;
-import weka.core.Instances;
 
 public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod{
 	public static final String ID = "hierarchical";

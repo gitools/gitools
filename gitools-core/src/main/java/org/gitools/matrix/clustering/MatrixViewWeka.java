@@ -35,7 +35,7 @@ public class MatrixViewWeka extends Instances{
 	private IMatrixView matrixView;
 	private Instances structure;
 	private int[] indexes; //selected attributes from preprocessing
-	private int dimMatrix;
+	private int dimMatrix;//the dimension of the matrix for obtaining the value
 	private int initClassIndex;
 
 	public MatrixViewWeka(Instances ds) {
@@ -45,7 +45,7 @@ public class MatrixViewWeka extends Instances{
 
 	public void initialize(IMatrixView matrix, Properties params){//Integer dMatrix, Integer classIndex) {
 
-		dimMatrix = new Integer(params.getProperty("index", "0")); //In case we know the resulting class
+		dimMatrix = new Integer (params.getProperty("index", "0")); 
 
 		initClassIndex = m_ClassIndex = new Integer(params.getProperty("classIndex", "-1"));
 
@@ -110,17 +110,25 @@ public class MatrixViewWeka extends Instances{
 			values = new double[matrixView.getRowCount()];
 
 			for (row = 0; row < matrixView.getRowCount(); row++) {
-				values[row] = valueCast.getDoubleValue(
-						matrixView.getCellValue(row, index, dimMatrix));
+				try {
+					values[row] = valueCast.getDoubleValue(
+							matrixView.getCellValue(row, index, dimMatrix));
+				} catch (Exception e) {
+					values[row] = Double.NaN;
+				}
 			}
 		}else
 		{
 			values = new double[indexes.length];
 
 			for (int i = 0; i < indexes.length; i++) {
-				row = indexes[i];
-				values[i] = valueCast.getDoubleValue(
-						matrixView.getCellValue(row, index, dimMatrix));
+				try{
+					row = indexes[i];
+					values[i] = valueCast.getDoubleValue(
+							matrixView.getCellValue(row, index, dimMatrix));
+				} catch (Exception e) {
+					values[i] = Double.NaN;
+				}
 			}
 		}
 
