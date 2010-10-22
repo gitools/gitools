@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import cern.colt.bitvector.BitMatrix;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,38 +15,26 @@ public class ModuleMap extends Artifact {
 
 	private static final long serialVersionUID = 6463084331984782264L;
 
+	protected String organism;
+	protected String moduleCategory;
+	protected String itemCategory;
+
 	protected String[] moduleNames;
+	protected String[] moduleDescriptions;
 	protected String[] itemNames;
 
 	protected int[][] itemIndices;
 
 	protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
 	protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
-	//protected BitMatrix map;
-
+	
 	public ModuleMap() {
 		this.moduleNames = new String[0];
+		this.moduleDescriptions = new String[0];
 		this.itemNames = new String[0];
 		this.itemIndices = new int[0][];
 	}
 
-	/*public ModuleMap(int numModules, int numItems) {
-		moduleNames = new String[numModules];
-		Arrays.fill(moduleNames, "");
-		
-		itemNames = new String[numItems];
-		Arrays.fill(itemNames, "");
-		
-		map = new BitMatrix(numModules, numItems);
-	}*/
-	
-	/*public ModuleMap(String[] moduleNames, String[] itemNames) {
-		this.moduleNames = moduleNames;		
-		this.itemNames = itemNames;
-		
-		map = new BitMatrix(moduleNames.length, itemNames.length);
-	}*/
-	
 	//@Deprecated
 	public ModuleMap(String[] moduleNames, String[] itemNames,
 			int[][] itemIndices/*, int[] itemsOrder*/) {
@@ -69,16 +56,24 @@ public class ModuleMap extends Artifact {
 	}
 
 	public ModuleMap(Map<String, Set<String>> map) {
+		this(map, new HashMap<String, String>());
+	}
+
+	public ModuleMap(Map<String, Set<String>> map, Map<String, String> desc) {
 		int modCount = map.keySet().size();
 
-		String[] mnames = map.keySet().toArray(new String[modCount]);
+		String[] mname = map.keySet().toArray(new String[modCount]);
+		String[] mdesc = new String[modCount];
 		int[][] indices = new int[modCount][];
 
 		Map<String, Integer> itemMap = new HashMap<String, Integer>();
 
 		int i = 0;
 		for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
-			mnames[i] = entry.getKey();
+			mname[i] = entry.getKey();
+			mdesc[i] = desc.get(mname[i]);
+			if (mdesc[i] == null)
+				mdesc[i] = "";
 
 			int[] ii = new int[entry.getValue().size()];
 			int j = 0;
@@ -98,11 +93,36 @@ public class ModuleMap extends Artifact {
 		for (Map.Entry<String, Integer> entry : itemMap.entrySet())
 			inames[entry.getValue()] = entry.getKey();
 
-		setModuleNames(mnames);
+		setModuleNames(mname);
+		setModuleDescriptions(mdesc);
 		setItemNames(inames);
 		this.itemIndices = indices;
 	}
-	
+
+	public String getOrganism() {
+		return organism;
+	}
+
+	public void setOrganism(String organism) {
+		this.organism = organism;
+	}
+
+	public String getModuleCategory() {
+		return moduleCategory;
+	}
+
+	public void setModuleCategory(String moduleCategory) {
+		this.moduleCategory = moduleCategory;
+	}
+
+	public String getItemCategory() {
+		return itemCategory;
+	}
+
+	public void setItemCategory(String itemCategory) {
+		this.itemCategory = itemCategory;
+	}
+
 	public String[] getModuleNames() {
 		return moduleNames;
 	}
@@ -116,7 +136,15 @@ public class ModuleMap extends Artifact {
 
 		this.itemIndices = new int[moduleNames.length][];
 	}
-	
+
+	public String[] getModuleDescriptions() {
+		return moduleDescriptions;
+	}
+
+	public final void setModuleDescriptions(String[] descriptions) {
+		this.moduleDescriptions = descriptions;
+	}
+
 	public int getModuleCount() {
 		return moduleNames.length;
 	}
@@ -131,6 +159,14 @@ public class ModuleMap extends Artifact {
 		moduleIndexMap.clear();
 		for (int i = 0; i < moduleNames.length; i++)
 			moduleIndexMap.put(moduleNames[i], i);
+	}
+
+	public String getModuleDescription(int index) {
+		return moduleDescriptions[index];
+	}
+
+	public void setModuleDescription(int index, String desc) {
+		moduleDescriptions[index] = desc;
 	}
 
 	public int getModuleItemCount(int index) {

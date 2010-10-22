@@ -113,7 +113,7 @@ public class HeatmapHeader extends AbstractModel {
 	}
 
 	public void setLabelPattern(String pattern) {
-		System.out.println(this + " : " + this.labelPattern + " -> " + pattern);
+		//System.out.println("SetLabelPattern: " + this + " " + this.labelPattern + " -> " + pattern);
 		String old = this.labelPattern;
 		this.labelPattern = pattern;
 		firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);

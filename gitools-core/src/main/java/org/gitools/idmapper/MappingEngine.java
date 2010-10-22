@@ -19,6 +19,7 @@ package org.gitools.idmapper;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -180,15 +181,18 @@ public class MappingEngine {
 		edges.add(new Edge(src, dst, proc));
 	}
 
-	public MappingData run(String src, String dst, IProgressMonitor monitor) throws MappingException {
+	public MappingData run(String[] ids, String src, String dst, IProgressMonitor monitor) throws MappingException {
 		monitor.begin("Mapping from " + src + " to " + dst + " ...", 4);
 
-		monitor.info("Searching mapping path ...");
 		MappingData data = new MappingData(src, src);
+		if (ids != null)
+			data.identity(new HashSet<String>(Arrays.asList(ids)));
+
+		monitor.info("Searching mapping path ...");
 		Path path = findPath(src, dst, monitor);
 		if (path == null)
 			throw new MappingException("Unable to find a mapping path from " + src + " to " + dst);
-		
+
 		monitor.debug("Mapping path: " + path);
 		monitor.worked(1);
 
@@ -213,7 +217,7 @@ public class MappingEngine {
 			Step step = it.next();
 			IProgressMonitor m = monitor.subtask();
 			m.begin("Mapping from " + lastNode + " to " + step.getNode() + " ...", 1);
-			
+
 			data = step.getMapper().map(context, data, lastNode, step.getNode(), m.subtask());
 			lastNode = step.getNode();
 			data.setDstNode(lastNode);
@@ -225,10 +229,14 @@ public class MappingEngine {
 
 		for (Mapper m : initializedMappers)
 			m.finalize(context, monitor);
-		
+
 		monitor.end();
 
 		return data;
+	}
+
+	public MappingData run(String src, String dst, IProgressMonitor monitor) throws MappingException {
+		return run(null, src, dst, monitor);
 	}
 
 	private Path findPath(String src, String dst, IProgressMonitor monitor) {

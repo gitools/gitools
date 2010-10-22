@@ -18,7 +18,9 @@
 package org.gitools.ui.analysis.htest.editor;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
@@ -32,6 +34,8 @@ import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis> {
 
@@ -88,23 +92,31 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getData());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from data ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (data)");
+				IMatrixView dataTable = new MatrixView(analysis.getData());
 
-		HeatmapEditor editor = new HeatmapEditor(
-				heatmap/*, actions*/);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (data)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.ENRICHMENT,
-				"-data", FileSuffixes.HEATMAP));
+				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.ENRICHMENT,
+						"-data", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("New heatmap created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("New heatmap created.");
+					}
+				});
+			}
+		});
 	}
 
 	private void viewModuleMap() {
@@ -117,21 +129,30 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getResults());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from results ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
+				IMatrixView dataTable = new MatrixView(analysis.getResults());
 
-		EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.ENRICHMENT,
-				"-results", FileSuffixes.HEATMAP));
+				final EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.ENRICHMENT,
+						"-results", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("Heatmap for enrichment results created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("Heatmap for enrichment results created.");
+					}
+				});
+			}
+		});
 	}
 }

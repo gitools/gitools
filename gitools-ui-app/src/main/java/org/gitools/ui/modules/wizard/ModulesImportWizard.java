@@ -17,7 +17,6 @@
 
 package org.gitools.ui.modules.wizard;
 
-import java.io.File;
 import org.gitools.modules.importer.ModulesImporter;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;

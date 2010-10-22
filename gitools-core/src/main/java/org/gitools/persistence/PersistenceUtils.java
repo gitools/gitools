@@ -108,10 +108,17 @@ public class PersistenceUtils {
 		return dot != -1 ? path.substring(sep + 1, dot) : path.substring(sep + 1);
 	}
 
-	/** Returns only the extension from the last point */
+	/** Returns only the extension of the file.
+	 * It takes into account composed extension for .gz */
 	public static String getExtension(String path) {
 		int dot = path.lastIndexOf('.');
-		return dot != -1 ? path.substring(dot + 1) : "";
+		String ext = dot != -1 ? path.substring(dot + 1) : "";
+		if (ext.equalsIgnoreCase("gz")) {
+			String[] e = path.split("[.]");
+			if (e.length >= 2)
+				ext = e[e.length - 2] + "." + e[e.length - 1];
+		}
+		return ext;
 	}
 
 	/** Return whether is or not an absolute path */

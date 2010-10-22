@@ -48,12 +48,14 @@ import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.idmapper.EnsemblMapper;
 import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
+import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.idmapper.MappingData;
@@ -83,6 +85,15 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		new EnsemblKeggModuleCategory("Ensembl", GO_MF, "GO Molecular functions"),
 		new EnsemblKeggModuleCategory("Ensembl", GO_CL, "GO Cellular locations")
 	};
+
+	private static final Map<String, String> goDescId = new HashMap<String, String>();
+	static {
+		goDescId.put(GO_BP, "name_1006");
+		goDescId.put(GO_MF, "go_molecular_function__dm_name_1006");
+		goDescId.put(GO_CL, "go_cellular_component__dm_name_1006");
+	}
+
+	// Features
 
 	private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[] {
 		new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
@@ -549,10 +560,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		}
 
 		try {
-			MappingData data = mapping.run(
-					modCategory.getId(),
-					featCategory.getId(),
-					monitor);
+			String src = modCategory.getId();
+
+			Map<String, String> modDesc = retrieveModules(src, monitor.subtask());
+			String[] ids = modDesc.keySet().toArray(new String[modDesc.size()]);
+
+			MappingData data = mapping.run(ids, src, featCategory.getId(), monitor);
 
 			if (!monitor.isCancelled()) {
 				if (!modCategory.getId().equals(data.getSrcNode().getId())
@@ -564,10 +577,13 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 						|| modCategory.getId().equals(GO_MF)
 						|| modCategory.getId().equals(GO_CL))) {
 
-					//TODO data = expandGo(data, monitor);
+					// TODO data = plainGo(data, monitor);
 				}
 
-				mmap = new ModuleMap(data.getMap());
+				mmap = new ModuleMap(data.getMap(), modDesc);
+				mmap.setOrganism(organism.getId());
+				mmap.setModuleCategory(modCategory.getId());
+				mmap.setItemCategory(featCategory.getId());
 			}
 		}
 		catch (Exception ex) {
@@ -577,12 +593,72 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		return mmap;
 	}
 
-	private MappingData expandGo(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
+	private Map<String, String> retrieveModules(String src, IProgressMonitor monitor) throws ModulesImporterException {
+		final Map<String, String> desc = new HashMap<String, String>();
+
+		if (isCategory(src, GO_MODULE_CATEGORIES)) {
+			monitor.begin("Getting Gene Ontology names ...", 1);
+			BiomartService bs = null;
+			try {
+				bs = getBiomartService();
+
+				Query q = EnsemblMapper.createQuery(
+						organism.getEnsemblDataset().getName(),
+						EnsemblMapper.getInternalName(src),
+						goDescId.get(src));
+
+				bs.queryTable(q, new BiomartQueryHandler() {
+					@Override public void begin() throws Exception { }
+
+					@Override public void line(String[] fields) throws Exception {
+						if (fields.length == 2)
+							desc.put(fields[0], fields[1]);
+					}
+
+					@Override public void end() { }
+				}, true, "", monitor.subtask());
+			}
+			catch (BiomartServiceException ex) {
+				throw new ModulesImporterException(ex);
+			}
+			monitor.end();
+		}
+		else if (isCategory(src, KEGG_MODULE_CATEGORIES)) {
+			monitor.begin("Getting KEGG pathways ...", 1);
+			try {
+				String keggorg = organism.getKeggDef().getEntry_id();
+
+				KEGGPortType ks = getKeggService();
+
+				Definition[] pathwaysDefs = ks.list_pathways(keggorg);
+				for (Definition d : pathwaysDefs)
+					desc.put(d.getEntry_id(), d.getDefinition());
+			}
+			catch (Exception ex) {
+				throw new ModulesImporterException(ex);
+			}
+			monitor.end();
+		}
+		else
+			throw new ModulesImporterException("Unknown category id: " + src);
+
+		return desc;
+	}
+
+	private boolean isCategory(String src, EnsemblKeggModuleCategory[] categories) {
+		for (EnsemblKeggModuleCategory c : categories)
+			if (c.getId().equals(src))
+				return true;
+
+		return false;
+	}
+
+	private MappingData plainGo(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
 		monitor.begin("Downloading Gene Ontology ...", 1);
 
 		URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
 		Reader reader =new InputStreamReader(url.openStream());
-		
+
 
 		monitor.end();
 

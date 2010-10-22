@@ -24,6 +24,7 @@ import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
 
 import org.gitools.ui.actions.file.OpenAnalysisAction;
+import org.gitools.ui.actions.file.OpenHeatmapAction;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -125,6 +126,13 @@ public class WelcomeEditor extends Html4Editor {
 				UnimplementedDialog.show(AppFrame.instance());
 			}
 		}
+		else if (name.equals("open")) {
+			String ref = params.get("ref");
+			if (ref.equals("Analysis"))
+				new OpenAnalysisAction().actionPerformed(new ActionEvent(this, 0, name));
+			else if (ref.equals("DataHeatmap"))
+				new OpenHeatmapAction().actionPerformed(new ActionEvent(this, 0, name));
+		}
 		else if (name.equals("example")) {
 			LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
 		}
@@ -133,10 +141,6 @@ public class WelcomeEditor extends Html4Editor {
 			dlg.setPath(Settings.getDefault().getLastWorkPath());
 			dlg.setVisible(true);
 			downloadExamples(dlg.getPath());
-		}
-		if (name.equals("openAnalysis")) {
-			new OpenAnalysisAction()
-				.actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("dataMatrices")
 				|| name.equals("dataModules")

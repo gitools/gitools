@@ -17,8 +17,10 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.List;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
@@ -33,6 +35,8 @@ import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
 
@@ -90,23 +94,31 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getData());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from data ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (data)");
+				IMatrixView dataTable = new MatrixView(analysis.getData());
 
-		HeatmapEditor editor = new HeatmapEditor(
-				heatmap/*, actions*/);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (data)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.COMBINATION,
-				"-data", FileSuffixes.HEATMAP));
+				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.COMBINATION,
+						"-data", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("New heatmap created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("New heatmap created.");
+					}
+				});
+			}
+		});
 	}
 
 	private void viewModuleMap() {
@@ -119,21 +131,30 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getResults());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from results ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
+				IMatrixView dataTable = new MatrixView(analysis.getResults());
 
-		CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.COMBINATION,
-				"-results", FileSuffixes.HEATMAP));
+				final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.COMBINATION,
+						"-results", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("Heatmap for combination results created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("Heatmap for combination results created.");
+					}
+				});
+			}
+		});
 	}
 }

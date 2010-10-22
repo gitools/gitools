@@ -17,7 +17,9 @@
 
 package org.gitools.ui.analysis.correlation.editor;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.model.Heatmap;
@@ -30,6 +32,8 @@ import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis> {
 
@@ -67,23 +71,31 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getData());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from data ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (data)");
+				IMatrixView dataTable = new MatrixView(analysis.getData());
 
-		HeatmapEditor editor = new HeatmapEditor(
-				heatmap/*, actions*/);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (data)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.CORRELATIONS,
-				"-data", FileSuffixes.HEATMAP));
+				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.CORRELATIONS,
+						"-data", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("New heatmap created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("New heatmap created.");
+					}
+				});
+			}
+		});
 	}
 
 	private void newResultsHeatmap() {
@@ -92,21 +104,30 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 			return;
 		}
 
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IMatrixView dataTable = new MatrixView(analysis.getResults());
+		JobThread.execute(AppFrame.instance(), new JobRunnable() {
+			@Override public void run(IProgressMonitor monitor) {
+				monitor.begin("Creating new heatmap from results ...", 1);
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
+				IMatrixView dataTable = new MatrixView(analysis.getResults());
 
-		CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
+				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+				heatmap.setTitle(analysis.getTitle() + " (results)");
 
-		editor.setName(editorPanel.deriveName(
-				getName(), FileSuffixes.CORRELATIONS,
-				"-results", FileSuffixes.HEATMAP));
+				final CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
 
-		editorPanel.addEditor(editor);
+				editor.setName(editorPanel.deriveName(
+						getName(), FileSuffixes.CORRELATIONS,
+						"-results", FileSuffixes.HEATMAP));
 
-		AppFrame.instance().setStatusText("Heatmap for correlation results created.");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override public void run() {
+						editorPanel.addEditor(editor);
+						AppFrame.instance().setStatusText("Heatmap for correlation results created.");
+					}
+				});
+			}
+		});
 	}
 }

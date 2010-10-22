@@ -106,7 +106,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 		inameMap.put(GO_CL, "go_cellular_component_id");
 	}
 
-	private String getInternalName(String id) {
+	public static String getInternalName(String id) {
 		if (id.startsWith("ensembl:")) {
 			id = id.substring(8);
 			if ("genes".equals(id))
@@ -122,7 +122,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 			return inameMap.get(id);
 	}
 
-	private Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
+	public static Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
 		Query q = new Query();
 		q.setVirtualSchemaName("default");
 		q.setUniqueRows(1);

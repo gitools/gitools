@@ -40,6 +40,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -74,6 +75,10 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		this.rowMode = rowMode;
 		
         initComponents();
+
+		// TODO activate in the next version:
+		colorAnnButton.setVisible(false);
+		colorAnnEditBtn.setVisible(false);
     }
 
 	@Override
@@ -106,13 +111,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		labelPattern.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
 				if (!updatingControls) {
-					x = true;
-					getHeader().setLabelPattern(labelPattern.getText());
-					x = false;
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override public void run() {
+							getHeader().setLabelPattern(labelPattern.getText());
+						}
+					});
 				}
 			}
 		});
-			
+
 
 		linkName.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
@@ -185,10 +192,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			setAnnotationControlsEnabled(false);
 		}
 
-		String patt = labelPattern.getText();
-
-		//System.out.println(getHeatmap() + ": " + patt);
-
+		String patt = getHeader().getLabelPattern();
 		if (patt == null || patt.isEmpty())
 			patt = "${id}";
 
@@ -221,6 +225,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 					hm.getRowHeaderSize() : hm.getColumnHeaderSize());
 		}
 		else if (source.equals(hdr)) {
+			updatingControls = true;
 			if (HeatmapHeader.FG_COLOR_CHANGED.equals(pname))
 				fgColor.setColor(hdr.getForegroundColor());
 			else if (HeatmapHeader.BG_COLOR_CHANGED.equals(pname))
@@ -231,15 +236,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 				updateAnnotations();
 				//updateColorAnnotations();
 			}
-			else if (HeatmapHeader.LABEL_PATTERN_CHANGED.equals(pname) && !x) {
-				labelPattern.setText(hdr.getLabelPattern());
-			}
-
+			else if (HeatmapHeader.LABEL_PATTERN_CHANGED.equals(pname))
+				updateAnnotations();
 
 			/*else if (HeatmapHeader.LINK_NAME_CHANGED.equals(pname))
 				linkName.setText(hdr.getLinkName());
 			else if (HeatmapHeader.LINK_PATTERN_CHANGED.equals(pname))
 				linkPattern.setText(hdr.getLinkPattern());*/
+
+			updatingControls = false;
 		}
 	}
 

@@ -20,16 +20,19 @@ package org.gitools.ui.actions.file;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.PrintWriter;
+import javax.swing.SwingUtilities;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.kegg.wizard.KeggModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -50,10 +53,8 @@ public class ImportKeggModulesAction extends BaseAction {
 		final EnsemblKeggModulesImporter importer =
 				new EnsemblKeggModulesImporter(true, false);
 
-		final ModulesImportWizard wz = new ModulesImportWizard(importer);
-		wz.setTitle("Import KEGG modules...");
-		wz.setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_KEGG, 96));
-
+		final ModulesImportWizard wz = new KeggModulesImportWizard(importer);
+		
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wz);
 		dlg.setVisible(true);
 
@@ -75,11 +76,38 @@ public class ImportKeggModulesAction extends BaseAction {
 						}
 						else
 							PersistenceManager.getDefault().store(file, mime, mmap, monitor);
+
+						// FIXME Put this in other place !!!
+						String prefix = PersistenceUtils.getFileName(file.getName());
+						String ext = PersistenceUtils.getExtension(file.getName());
+						file = new File(file.getParentFile(), prefix + "_annotations" + ext);
+						monitor.begin("Saving module annotations ...", mmap.getModuleCount());
+						PrintWriter pw = new PrintWriter(file);
+						for (int i = 0; i < mmap.getModuleCount(); i++) {
+							pw.print(mmap.getModuleName(i));
+							pw.print('\t');
+							pw.println(mmap.getModuleDescription(i));
+							monitor.worked(1);
+						}
+						pw.close();
+						monitor.end();
+						
+						setStatus("Ok");
 					}
+					else
+						setStatus("Operation cancelled");
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);
 				}
+			}
+		});
+	}
+
+	private void setStatus(final String msg) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override public void run() {
+				AppFrame.instance().setStatusText(msg);
 			}
 		});
 	}

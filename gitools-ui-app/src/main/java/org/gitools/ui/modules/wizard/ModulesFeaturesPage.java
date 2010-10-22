@@ -37,7 +37,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
 	public ModulesFeaturesPage(ModulesImporter importer) {
 		this.importer = importer;
 
-		setTitle("Select IDs");
+		setTitle("Select Identifiers");
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
 				@Override
 				public void run(IProgressMonitor monitor) {
 					try {
-						monitor.begin("Getting available IDs ...", 1);
+						monitor.begin("Getting available identifiers ...", 1);
 
 						organism = importer.getOrganism();
 						final FeatureCategory[] features = importer.getFeatureCategories();

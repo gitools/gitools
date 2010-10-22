@@ -53,12 +53,11 @@ public abstract class AbstractModel
 		if ((oldValue != null && !oldValue.equals(newValue)) ||
 				(oldValue == null && newValue != null)) {
 
-			//System.out.println("PropertyChange: " + propName + ", " + oldValue + ", " + newValue);
-			System.out.println(">>> " + this);
+			//System.out.println("\nPropertyChange: " + propName + " " + oldValue + " -> " + newValue + " Class: " + this);
 			for (PropertyChangeListener l : getListeners()) {
 				PropertyChangeEvent evt =
 					new PropertyChangeEvent(this, propName, oldValue, newValue);
-				System.out.println(propName + " -> " + l);
+				//System.out.println("  >>> " + l);
 				l.propertyChange(evt);
 			}
 		}

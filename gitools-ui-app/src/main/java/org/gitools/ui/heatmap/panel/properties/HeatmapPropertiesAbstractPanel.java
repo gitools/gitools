@@ -44,8 +44,12 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 		if (this.hm == heatmap)
 			return;
 		
-		if (heatmap != null)
+		if (heatmap != null) {
 			heatmap.removePropertyChangeListener(heatmapListener);
+			heatmap.getColumnHeader().removePropertyChangeListener(heatmapListener);
+			heatmap.getRowHeader().removePropertyChangeListener(heatmapListener);
+			heatmap.getMatrixView().removePropertyChangeListener(heatmapListener);
+		}
 
 		this.hm = heatmap;
 
