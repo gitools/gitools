@@ -17,6 +17,7 @@
 
 package org.gitools.kegg.modules;
 
+import java.net.MalformedURLException;
 import org.gitools.modules.importer.Organism;
 import org.gitools.modules.importer.ModulesImporter;
 import org.gitools.modules.importer.ModuleCategory;
@@ -27,6 +28,9 @@ import org.gitools.kegg.idmapper.KeggGenesMapper;
 import org.gitools.kegg.idmapper.KeggPathwaysMapper;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,13 +76,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		new EnsemblKeggModuleCategory("KEGG", KEGG_PATHWAYS, "KEGG Pathways")
 	};
 
-	/*private static final EnsemblKeggFeatureCategory[] KEGG_FEATURES = new EnsemblKeggFeatureCategory[] {
-		new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
-		new EnsemblKeggFeatureCategory("Genes", ENTREZ, "Entrez Genes"),
-		new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"),
-		new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt")
-	};*/
-
 	// Gene Ontology
 
 	public static final EnsemblKeggModuleCategory[] GO_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[] {
@@ -97,18 +94,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")
 	};
 
-	/*private static final Map<String, EnsemblKeggFeatureCategory> COMMON_FEATURES_MAP = new HashMap<String, EnsemblKeggFeatureCategory>();
-	static {
-		for (EnsemblKeggFeatureCategory f : COMMON_FEATURES)
-			COMMON_FEATURES_MAP.put(f.getId(), f);
-	}*/
-
 	private static final Map<String, EnsemblKeggFeatureCategory> featMap =
 			new HashMap<String, EnsemblKeggFeatureCategory>();
 	static {
-		/*for (EnsemblKeggFeatureCategory f : KEGG_FEATURES)
-			featMap.put(f.getId(), f);*/
-
 		for (EnsemblKeggFeatureCategory f : COMMON_FEATURES)
 			featMap.put(f.getId(), f);
 	}
@@ -571,6 +559,14 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 						|| !featCategory.getId().equals(data.getDstNode().getId()))
 					monitor.exception(new ModulesImporterException("There was an unexpected mapping error."));
 
+				if (goEnabled && (
+						modCategory.getId().equals(GO_BP)
+						|| modCategory.getId().equals(GO_MF)
+						|| modCategory.getId().equals(GO_CL))) {
+
+					//TODO data = expandGo(data, monitor);
+				}
+
 				mmap = new ModuleMap(data.getMap());
 			}
 		}
@@ -579,5 +575,17 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 		}
 
 		return mmap;
+	}
+
+	private MappingData expandGo(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
+		monitor.begin("Downloading Gene Ontology ...", 1);
+
+		URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
+		Reader reader =new InputStreamReader(url.openStream());
+		
+
+		monitor.end();
+
+		return data;
 	}
 }

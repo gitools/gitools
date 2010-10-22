@@ -17,6 +17,7 @@
 
 package org.gitools.ui.utils;
 
+import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -106,6 +107,7 @@ public class FileChooserUtils {
 
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setPreferredSize(new Dimension(640, 480));
 
 		int retval = JFileChooser.CANCEL_OPTION;
 
@@ -139,6 +141,7 @@ public class FileChooserUtils {
 
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setPreferredSize(new Dimension(640, 480));
 
 		if (filters != null) {
 			fileChooser.setAcceptAllFileFilterUsed(false);
@@ -173,6 +176,7 @@ public class FileChooserUtils {
 
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setPreferredSize(new Dimension(640, 480));
 
 		int retval = fileChooser.showOpenDialog(AppFrame.instance());
 		if (retval == JFileChooser.APPROVE_OPTION) {
@@ -189,6 +193,7 @@ public class FileChooserUtils {
 		fileChooser.setDialogTitle(title);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.addChoosableFileFilter(imageFileFilter);
+		fileChooser.setPreferredSize(new Dimension(640, 480));
 
 		int retval = JFileChooser.CANCEL_OPTION;
 

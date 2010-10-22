@@ -186,11 +186,13 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 
 		String patt = labelPattern.getText();
-		if (patt == null || patt.isEmpty())
-			labelPattern.setText("${id}");
-		else
-			labelPattern.setText(patt);
 
+		//System.out.println(getHeatmap() + ": " + patt);
+
+		if (patt == null || patt.isEmpty())
+			patt = "${id}";
+
+		labelPattern.setText(patt);
 	}
 
 

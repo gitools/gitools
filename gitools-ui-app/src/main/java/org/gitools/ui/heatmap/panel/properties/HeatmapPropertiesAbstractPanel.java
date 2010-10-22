@@ -41,6 +41,9 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 	}
 
 	public void setHeatmap(Heatmap heatmap) {
+		if (this.hm == heatmap)
+			return;
+		
 		if (heatmap != null)
 			heatmap.removePropertyChangeListener(heatmapListener);
 

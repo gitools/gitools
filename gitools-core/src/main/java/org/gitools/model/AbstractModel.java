@@ -54,10 +54,11 @@ public abstract class AbstractModel
 				(oldValue == null && newValue != null)) {
 
 			//System.out.println("PropertyChange: " + propName + ", " + oldValue + ", " + newValue);
-
+			System.out.println(">>> " + this);
 			for (PropertyChangeListener l : getListeners()) {
 				PropertyChangeEvent evt =
 					new PropertyChangeEvent(this, propName, oldValue, newValue);
+				System.out.println(propName + " -> " + l);
 				l.propertyChange(evt);
 			}
 		}
