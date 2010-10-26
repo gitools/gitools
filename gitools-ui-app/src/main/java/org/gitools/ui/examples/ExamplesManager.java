@@ -41,11 +41,11 @@ public class ExamplesManager {
 
 		CodeSource sc = getClass().getProtectionDomain().getCodeSource();
 		if (sc == null)
-			return null; // TODO download
+			return resolveDownloadedPath(exampleId, monitor);
 
 		URL loc = sc.getLocation();
 		if (!loc.getProtocol().equals("file"))
-			return null; // TODO download
+			return resolveDownloadedPath(exampleId, monitor);
 
 		String locPath = loc.getPath();
 		if (locPath.endsWith(".jar")) {
@@ -82,6 +82,10 @@ public class ExamplesManager {
 			}
 		}
 
-		return null;
+		return resolveDownloadedPath(exampleId, monitor);
+	}
+
+	private File resolveDownloadedPath(String exampleId, IProgressMonitor monitor) {
+		throw new UnsupportedOperationException("Not yet implemented");
 	}
 }

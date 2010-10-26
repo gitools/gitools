@@ -68,7 +68,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	private boolean updatingControls = false;
 
 	//TODO: CHANGE NAME OF X
-	private boolean x = false;
+	private boolean updatingModel = false;
 
     /** Creates new form HeatmapPropertiesHeaderPanel */
     public HeatmapPropertiesHeaderPanel(boolean rowMode) {
@@ -113,7 +113,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 				if (!updatingControls) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override public void run() {
+							updatingModel = true;
 							getHeader().setLabelPattern(labelPattern.getText());
+							updatingModel = false;
 						}
 					});
 				}
@@ -213,6 +215,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	@Override
 	protected void heatmapPropertyChange(PropertyChangeEvent evt) {
+		if (updatingModel)
+			return;
+		
 		final HeatmapHeader hdr = getHeader();
 
 		final Object source = evt.getSource();
