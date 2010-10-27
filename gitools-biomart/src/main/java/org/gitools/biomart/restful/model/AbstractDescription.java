@@ -77,11 +77,6 @@ public abstract class AbstractDescription {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	@Deprecated
-	public String getHidden() {
-		return "" + hidden;
-	}
 	
 	public boolean isHidden() {
 		return hidden;
@@ -89,11 +84,6 @@ public abstract class AbstractDescription {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
-	}
-
-	@Deprecated
-	public String getHideDisplay() {
-		return "" + hideDisplay;
 	}
 
 	public boolean isHideDisplay() {

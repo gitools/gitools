@@ -29,12 +29,6 @@ import javax.xml.bind.annotation.XmlElement;
 public class AttributeCollection {
 
 	@XmlAttribute
-	private String hidden;
-
-	@XmlAttribute
-	private String hideDisplay;
-
-	@XmlAttribute
 	private int maxSelect;
 
 	@XmlAttribute
@@ -49,6 +43,12 @@ public class AttributeCollection {
 	@XmlAttribute
 	private String description;
 
+	@XmlAttribute
+	private boolean hidden;
+
+	@XmlAttribute
+	private boolean hideDisplay;
+	
 	@XmlElement(name = "AttributeDescription")
 	private List<AttributeDescription> attributeDescriptions = new ArrayList<AttributeDescription>();
 
@@ -84,19 +84,19 @@ public class AttributeCollection {
 		this.enableSelectAll = enableSelectAll;
 	}
 
-	public String getHidden() {
+	public boolean isHidden() {
 		return hidden;
 	}
 
-	public void setHidden(String hidden) {
+	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
-	public String getHideDisplay() {
+	public boolean isHideDisplay() {
 		return hideDisplay;
 	}
 
-	public void setHideDisplay(String hideDisplay) {
+	public void setHideDisplay(boolean hideDisplay) {
 		this.hideDisplay = hideDisplay;
 	}
 

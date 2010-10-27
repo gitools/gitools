@@ -43,10 +43,10 @@ public class AttributePage {
 	private String description;
 
 	@XmlAttribute
-	private String hidden;
+	private boolean hidden;
 
 	@XmlAttribute
-	private String hideDisplay;
+	private boolean hideDisplay;
 
 	@XmlElement(name = "AttributeGroup")
 	private List<AttributeGroup> attributeGroups = new ArrayList<AttributeGroup>();
@@ -75,19 +75,19 @@ public class AttributePage {
 		this.displayName = displayName;
 	}
 
-	public String getHidden() {
+	public boolean isHidden() {
 		return hidden;
 	}
 
-	public void setHidden(String hidden) {
+	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
-	public String getHideDisplay() {
+	public boolean isHideDisplay() {
 		return hideDisplay;
 	}
 
-	public void setHideDisplay(String hideDisplay) {
+	public void setHideDisplay(boolean hideDisplay) {
 		this.hideDisplay = hideDisplay;
 	}
 

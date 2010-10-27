@@ -32,8 +32,6 @@ import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.biomart.restful.model.FilterGroup;
 import org.gitools.biomart.restful.model.FilterPage;
 import org.gitools.biomart.restful.model.Option;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 public class FilterDescriptionPanel extends javax.swing.JPanel {
 
@@ -81,15 +79,11 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 				return;
 			}
-
-
-
-		} else  this.renderPanel = false;
-		
-
+		}
+		else  this.renderPanel = false;
 	}
 
-/**
+	/**
 	 * BuildPointer elements with default options if it is the case
 	 * @param configuration
 	 * @param DefaultOptions
@@ -98,18 +92,18 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 		for (FilterPage page : configuration.getFilterPages())
 
-			if (page.getHideDisplay() == null || !page.getHideDisplay().equals("true"))
+			if (!page.isHidden() && !page.isHideDisplay())
 
 				for (FilterGroup group : page.getFilterGroups())
 
-					if (group.getHideDisplay() == null || !group.getHideDisplay().equals("true"))
+					if (!group.isHidden() && !group.isHideDisplay())
 
 						for (FilterCollection collection : group.getFilterCollections())
 
 							for (FilterDescription desc : collection.getFilterDescriptions())
 
 								if ((desc.getInternalName().equals(filterDescription.getPointerFilter()))
-								&& (desc.getHideDisplay() == null || !desc.getHideDisplay().equals("true"))) {
+									&& (!desc.isHideDisplay())) {
 
 									this.renderPanel = true;
 
@@ -124,13 +118,11 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 										desc.setStyle("menu");
 
 										desc.setDisplayType("list");
-
 									}
 
 									filterDescription = desc;
 
 									buildComponent();
-
 								}
 	}
 
@@ -188,29 +180,21 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 					FilterSelecComponent selecComponent = new FilterSelecComponent(filterDescription, this);
 
 					//Retrieve PushAction Data from default option
-					parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(selecComponent.getPushActionData_defaultOption());
+					parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(
+							selecComponent.getPushActionData_defaultOption());
 
 					filterComponent =selecComponent;
-
-				} else if (style.equals("menu") && graph != null && graph.equals("1")) {
-
-					filterComponent = new FilterTextComponent(filterDescription, this);
-
-				} else if (multipleValues) {
-
-					filterComponent = new FilterCheckBoxComponent(filterDescription, this);
-
-				} else {
-
-					filterComponent = new FilterRadioComponent(filterDescription, this);
 				}
-
-			} else if (displayType.equals("text")) {
-
-				filterComponent = new FilterTextComponent(filterDescription, this);
+				else if (style.equals("menu") && graph != null && graph.equals("1"))
+					filterComponent = new FilterTextComponent(filterDescription, this);
+				else if (multipleValues)
+					filterComponent = new FilterCheckBoxComponent(filterDescription, this);
+				else
+					filterComponent = new FilterRadioComponent(filterDescription, this);
 			}
-			else
-			{
+			else if (displayType.equals("text"))
+				filterComponent = new FilterTextComponent(filterDescription, this);
+			else {
 				System.out.println("Component "+ filterDescription.getInternalName() +"has not been builded");
 				return;
 			}
@@ -265,7 +249,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 		return filterDescription;
 	}
 
-	public FilterCollectionPanel getParentCollection() {
+	public final FilterCollectionPanel getParentCollection() {
 		return parentCollection;
 	}
 

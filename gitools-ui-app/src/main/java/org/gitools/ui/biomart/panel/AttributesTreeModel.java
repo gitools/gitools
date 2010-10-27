@@ -125,15 +125,13 @@ public class AttributesTreeModel extends DefaultTreeModel {
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) getRoot();
 		for (AttributePage page : pages) {
-			if (page.getHideDisplay()==null || (! page.getHideDisplay().equals("true")))
-			{
+			if (!page.isHidden() && !page.isHideDisplay()) {
 				if (page.getOutFormats().toLowerCase().contains("tsv")) {
 					DefaultMutableTreeNode pageNode =
 							new DefaultMutableTreeNode(new AttributeWrapper(page));
 
-					if (populatePage(pageNode, page.getAttributeGroups(), filterText) > 0) {
+					if (populatePage(pageNode, page.getAttributeGroups(), filterText) > 0)
 						node.add(pageNode);
-					}
 				}
 			}
 		}

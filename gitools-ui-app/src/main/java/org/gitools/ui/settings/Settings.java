@@ -23,16 +23,16 @@ public class Settings {
 	private static final String userPath = 
 		System.getProperty("user.home", ".");
 	
-	private static final String configPath =
+	public static final String CONFIG_PATH =
 		userPath + File.separator + ".gitools";
 	
 	private static final String configFileName = "ui.xml";
 	
 	private static final String configFile = 
-		configPath + File.separator + configFileName;
+		CONFIG_PATH + File.separator + configFileName;
 	
 	private static final String defaultWorkspacePath =
-		configPath + File.separator + "workspace";
+		CONFIG_PATH + File.separator + "workspace";
 
 	private static Settings instance;
 	
@@ -88,7 +88,7 @@ public class Settings {
 	}
 	
 	public void save() {
-        File path = new File(configPath);
+        File path = new File(CONFIG_PATH);
         if (!path.exists())
             path.mkdirs();
 

@@ -35,10 +35,10 @@ public class AttributeGroup {
 	private String description;
 
 	@XmlAttribute
-	private String hidden;
+	private boolean hidden;
 
 	@XmlAttribute
-	private String hideDisplay;
+	private boolean hideDisplay;
 
 	@XmlAttribute
 	private int maxSelect;
@@ -70,19 +70,19 @@ public class AttributeGroup {
 		this.displayName = displayName;
 	}
 
-	public String getHidden() {
+	public boolean isHidden() {
 		return hidden;
 	}
 
-	public void setHidden(String hidden) {
+	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
-	public String getHideDisplay() {
+	public boolean isHideDisplay() {
 		return hideDisplay;
 	}
 
-	public void setHideDisplay(String hideDisplay) {
+	public void setHideDisplay(boolean hideDisplay) {
 		this.hideDisplay = hideDisplay;
 	}
 

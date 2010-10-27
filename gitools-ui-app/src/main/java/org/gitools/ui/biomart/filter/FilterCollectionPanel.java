@@ -65,7 +65,7 @@ public class FilterCollectionPanel extends JPanel {
 
 		for (FilterDescription d : fc.getFilterDescriptions()) {
 			
-			if (d.getHideDisplay() == null || !d.getHideDisplay().equals("true")) {
+			if (!d.isHideDisplay()) {
 
 				description = new FilterDescriptionPanel(d, this, doLblDescription);
 
@@ -93,7 +93,7 @@ public class FilterCollectionPanel extends JPanel {
 		Integer components = 0;
 
 		for (FilterDescription d : fc.getFilterDescriptions())
-			if (d.getHideDisplay() == null || !d.getHideDisplay().equals("true"))
+			if (!d.isHideDisplay())
 				components ++;
 
 		return components > 1;

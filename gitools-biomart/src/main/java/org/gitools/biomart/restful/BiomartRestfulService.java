@@ -263,6 +263,8 @@ public class BiomartRestfulService implements BiomartService {
 		}
 		sw.append("</Query>");
 
+		//System.out.println(sw.toString());
+
 		if (encoded) {
 			try {
 				return URLEncoder.encode(sw.toString(), "UTF-8");
@@ -279,8 +281,8 @@ public class BiomartRestfulService implements BiomartService {
 		final String queryString = createQueryXml(query, format, true);
 		final String urlString = restUrl + "?query=" + queryString;
 
-		//System.out.println(">>> " + urlString);
-		//System.out.println(createQueryXml(query, format, false));
+		System.out.println(">>> " + urlString);
+		System.out.println(createQueryXml(query, format, false));
 		
 		try {
 			URL url = new URL(urlString);

@@ -79,8 +79,7 @@ public class ImportKeggModulesAction extends BaseAction {
 
 						// FIXME Put this in other place !!!
 						String prefix = PersistenceUtils.getFileName(file.getName());
-						String ext = PersistenceUtils.getExtension(file.getName());
-						file = new File(file.getParentFile(), prefix + "_annotations" + ext);
+						file = new File(file.getParentFile(), prefix + "_annotations.tsv");
 						monitor.begin("Saving module annotations ...", mmap.getModuleCount());
 						PrintWriter pw = new PrintWriter(file);
 						for (int i = 0; i < mmap.getModuleCount(); i++) {

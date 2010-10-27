@@ -370,25 +370,18 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 	}
 	
 	public void updatePageFilterList() {
-
-
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 
-		if (biomartConfig.getFilterPages() != null)
-		{
+		if (biomartConfig.getFilterPages() != null) {
 			for (FilterPage p : biomartConfig.getFilterPages()) {
-
-				if ((p.getHideDisplay() == null || !p.getHideDisplay().equals("true")) && (p.getHidden() == null || !p.getHidden().equals("true"))) {
-
+				if (!p.isHidden() && !p.isHideDisplay()) {
 					model.addElement(new PageListWrapper(p));
 					updateGroupFilterList(p);
-
 				}
 			}			
 		}
 
 		this.filterPageCombo.setModel(model);
-
 	}
 
 	private void updateGroupFilterList(FilterPage page) {
@@ -410,18 +403,15 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 		DefaultListModel model = new DefaultListModel();
 
 		for (FilterGroup group : page.getFilterGroups()) {
-
-			if (group.getHideDisplay() == null || !group.getHideDisplay().equals("true")) {
+			if (!group.isHidden() && !group.isHideDisplay()) {
 
 				model.addElement(new GroupListWrapper(group));
 
 				updateCollectionsCache(page,group);
-
 			}
 		}
 
 		this.filterGroupList.setModel(model);
-
 	}
 
 	/**
@@ -437,21 +427,17 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 		List<FilterCollectionPanel> listCollections = new ArrayList<FilterCollectionPanel>();
 
 		for (FilterCollection collection : group.getFilterCollections()) {
-
-			collectionPanel = new FilterCollectionPanel(collection, this);
-
-			if (collectionPanel.isPanelRendered()) {
-				//add collectionPanel in list
-				listCollections.add(collectionPanel);
-
-				}
-
+			if (!collection.isHidden() && !collection.isHideDisplay()) {
+				collectionPanel = new FilterCollectionPanel(collection, this);
+				if (collectionPanel.isPanelRendered())
+					listCollections.add(collectionPanel); //add collectionPanel in list
+			}
 		}
 
 		//add collectionPanel list in cache
 		collectionsCache.get(page).collections.put(group, listCollections);
-
 	}
+
 	/**
 	 * Shows in the screen all collections panels which belongs to the group selected
 	 * @param page
@@ -486,20 +472,14 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 			collectionPanelHeight += col.getCurrentHeigh();
 		}
 		
-
 		Dimension d = new Dimension(collectionsPanel.getWidth(), collectionPanelHeight);
 
 		collectionsPanel.setPreferredSize(d);
-
 		collectionsPanel.repaint();
-		
 		scrollPanel.validate();
 
 		validate();
-
 	}
-
-
 	
 	/**
 	 * Loop through all groups and their collections.
@@ -529,30 +509,20 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 	public void setSource(BiomartService service, DatasetConfig config) {
 
 		if (this.biomartConfig != null && this.biomartConfig.getDataset().equals(config.getDataset()))
-
 			reloadData = false;
-
-		else
-		{
+		else {
 			reloadData = true;
-
 			filterPageCombo.setModel(new DefaultComboBoxModel());
-
 			filterGroupList.setModel(new DefaultListModel());
-			
 			collectionsPanel.removeAll();
-
 			collectionsPanel.repaint();
-
 			scrollPanel.validate();
 
 			validate();
 		}
 
 		this.biomartService = service;
-
 		this.biomartConfig = config;
-		
 	}
 
 	/**
@@ -564,11 +534,9 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 		else collectionsCache.clear();
 
-		for (FilterPage page : biomartConfig.getFilterPages())
-		{
+		for (FilterPage page : biomartConfig.getFilterPages()) {
 
-			if (page.getHideDisplay() == null || !page.getHideDisplay().equals("true"))
-			{
+			if (!page.isHidden() && !page.isHideDisplay()) {
 
 			collectionsCache.put(page, null);
 
@@ -585,45 +553,36 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 	}
 
 	public void setFilter(String name, Filter f) {
-
 		filters.put(name,f);
 	}
 
 	public void setFilters(HashMap<String,Filter> filters) {
-
 		filters.putAll(filters);
 	}
 
 	public void deleteFilter(String name) {
-
 			filters.remove(name);
 	}
 
 	public void deleteFilters(HashMap<String,Filter> delFilters) {
 
 		for (String name : delFilters.keySet())
-
 			filters.remove(name);
-
 	}
 	
-	public BiomartService getBiomartService(){
-
+	public BiomartService getBiomartService() {
 		return this.biomartService;
 	}
 
-	public DatasetConfig getDatasetConfig(){
-
+	public DatasetConfig getDatasetConfig() {
 		return this.biomartConfig;
 	}
 	
 	public HashMap<FilterPage, CollectionsPanelsCache> getCollectionsCache() {
-
 		return collectionsCache;
 	}
 
 	public void setCollectionsCache(HashMap<FilterPage, CollectionsPanelsCache> collectionsCache) {
-
 		this.collectionsCache = collectionsCache;
 	}
 
@@ -635,11 +594,8 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 	public void storeSelecComponentsDefaultData(HashMap<String, List<Option>> data) {
 
 		if (data.size()>0)
-		{
 			for (String key : data.keySet())
 				this.defaultSelecComposData.put(key, data.get(key));
-		}
-
 	}
 	
 	/*

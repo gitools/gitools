@@ -37,10 +37,10 @@ public class FilterPage {
 	private String description;
 
 	@XmlAttribute
-	private String hidden;
+	private boolean hidden;
 
 	@XmlAttribute
-	private String hideDisplay;
+	private boolean hideDisplay;
 
 	@XmlElement(name = "FilterGroup")
 	private List<FilterGroup> filterGroups = new ArrayList<FilterGroup>();
@@ -69,19 +69,19 @@ public class FilterPage {
 		this.filterGroups = filterGroups;
 	}
 
-	public String getHidden() {
+	public boolean isHidden() {
 		return hidden;
 	}
 
-	public void setHidden(String hidden) {
+	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
-	public String getHideDisplay() {
+	public boolean isHideDisplay() {
 		return hideDisplay;
 	}
 
-	public void setHideDisplay(String hideDisplay) {
+	public void setHideDisplay(boolean hideDisplay) {
 		this.hideDisplay = hideDisplay;
 	}
 
@@ -92,7 +92,5 @@ public class FilterPage {
 	public void setInternalName(String internalName) {
 		this.internalName = internalName;
 	}
-
-
 
 }

@@ -4,12 +4,19 @@
 
 set +e
 
+if [ -z "$1" ]; then
+	echo "Usage: $(basename $0) <version>"
+	exit -1
+fi
+
+VERSION=$1
+
 echo "Compiling ..."
 echo
 
 cd gitools-ui-app
-#mvn clean package
-#mvn webstart:jnlp
+mvn clean package
+mvn webstart:jnlp
 mkdir -p target/jnlp/examples
 
 echo "Creating examples zip's ..."
@@ -19,9 +26,9 @@ cd ../examples
 EXAMPLES=$(find . -maxdepth 1 -type d -printf "%f\n" | grep -v "\.svn" | grep -v "\.")
 for example in $EXAMPLES; do
 	dest_prefix="../gitools-ui-app/target/jnlp/examples/$example"
-	echo "Example $example into $dest ..."
+	echo "Example $example into $dest_prefix.zip ..."
 	echo $(date +%Y%m%d%H%M%S) > $dest_prefix.timestamp
-	zip -x "*/*.svn/*" -r $dest_prefix.zip $example
+	zip -r $dest_prefix.zip $example -x "*/*.svn/*"
 done
 
 echo "Deploying files ..."
@@ -44,10 +51,13 @@ cat > target/jnlp/index.html <<EOF
 </html>
 EOF
 
-exit -1
-
-rsync -nav --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:/usr/local/gitools/webstart/
+DST_DIR="/usr/local/gitools/webstart/$VERSION"
+echo "These files will be synchronized to $DST_DIR ..."
+echo
+rsync -nav --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:$DST_DIR
+echo
 echo "Press any key to continue or Ctrl-C to abort ..."
-rsync -av --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:/usr/local/gitools/webstart/
+read
+rsync -av --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:$DST_DIR
 
 set -e
