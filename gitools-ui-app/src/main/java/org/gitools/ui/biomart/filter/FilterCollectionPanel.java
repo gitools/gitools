@@ -110,30 +110,23 @@ public class FilterCollectionPanel extends JPanel {
 		initComponents();
 	}
 
-	public Integer getCurrentHeigh() {
-		
+	public Integer getCurrentHeigh() {		
 		return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
 	}
 
 	public List<Filter> getFilters(){
 
-
 		List<Filter> filters = new ArrayList<Filter>();
 		List<Filter> filtersAux = null;
 
-		if (collectionCheckBox.isSelected())
-		{
+		if (collectionCheckBox.isSelected()) {
 			// Obtain the filters involved for this event
-			for (Component compo :  descriptionsPanel.getComponents()) {
-
+			for (Component compo : descriptionsPanel.getComponents()) {
 				filtersAux = ((FilterDescriptionPanel) compo).getFilters();
 
 				for (Filter f : filtersAux)
-
-					if ((f.getName() != null)&& (f.getValue() != null) && (!f.getValue().equals("")))
-						
-							filters.add(f);
-
+					if (f.getName() != null && f.getValue() != null && !f.getValue().isEmpty())
+						filters.add(f);
 				}
 		}
 		return filters;

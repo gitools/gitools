@@ -147,7 +147,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 			int multipleValuesOption = filterDescription.getOptions().get(0).getMultipleValues();
 
-			FilterComponent componentParent = new FilterSelecComponent(filterDescription, this);
+			FilterComponent componentParent = new FilterSelectComponent(filterDescription, this);
 
 			Option filterOptions = filterDescription.getOptions().get(0);
 
@@ -177,7 +177,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel {
 
 				if (style.equals("menu") && (graph == null || !graph.equals("1"))) {
 
-					FilterSelecComponent selecComponent = new FilterSelecComponent(filterDescription, this);
+					FilterSelectComponent selecComponent = new FilterSelectComponent(filterDescription, this);
 
 					//Retrieve PushAction Data from default option
 					parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(

@@ -28,6 +28,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -39,7 +40,7 @@ import org.gitools.biomart.restful.model.Option;
 import org.gitools.biomart.restful.model.PushAction;
 import org.gitools.ui.biomart.wizard.BiomartFilterConfigurationPage.CollectionsPanelsCache;
 
-public class FilterSelecComponent extends FilterComponent  {
+public class FilterSelectComponent extends FilterComponent  {
 
 	// Biomart Configuration Wrappers
 	private static class OptionListWrapper {
@@ -76,7 +77,7 @@ public class FilterSelecComponent extends FilterComponent  {
 	private HashMap <Option,HashMap<String,List<Option>>> pushActions; // N options, each one with its list of components and options to show
 
 
-    public FilterSelecComponent(FilterDescription d,FilterDescriptionPanel collectionParent) {
+    public FilterSelectComponent(FilterDescription d,FilterDescriptionPanel collectionParent) {
 
 		super(d,collectionParent);
 
@@ -166,7 +167,8 @@ public class FilterSelecComponent extends FilterComponent  {
 			
 			DefaultComboBoxModel m =  new DefaultComboBoxModel();
 
-			for (OptionListWrapper o : options) m.addElement(o);
+			for (OptionListWrapper o : options)
+				m.addElement(o);
 
 			comboComponent.setModel(m);
 
@@ -182,8 +184,9 @@ public class FilterSelecComponent extends FilterComponent  {
 			listComponent.setVisible(true);
 			listComponent.setAlignmentY(TOP_ALIGNMENT);
 
-			DefaultListModel m =  new DefaultListModel();
-			for (OptionListWrapper o : options) m.addElement(o);
+			DefaultListModel m = new DefaultListModel();
+			for (OptionListWrapper o : options)
+				m.addElement(o);
 			listComponent.setModel(m);
 
 			comboComponent.setVisible(false);
@@ -342,31 +345,23 @@ public class FilterSelecComponent extends FilterComponent  {
 
 			f.setName(filterDescription.getInternalName());
 
-			if (component.equals("ComboBox"))
-			{
+			if (component.equals("ComboBox")) {
 				if (comboComponent.getSelectedItem() != null)
-
 					f.setValue(comboComponent.getSelectedItem().toString());
 			}
 			else {
-				
-				String selStr = "";
-
-				if (listComponent.getSelectedValues() !=null && listComponent.getSelectedValues().length>0)
-				{
+				if (listComponent.getSelectedValues() !=null && listComponent.getSelectedValues().length > 0) {
 					String res = null;
 
-					for (int k = 0; k < listComponent.getSelectedValues().length; k++ )
-					{
-						res = ((OptionListWrapper) listComponent.getSelectedValues()[k]).toString();
-						//String[] stringArray = Arrays.copyOf(listComponent.getSelectedValues(), listComponent.getSelectedValues().length, String[].class);
-					
-						//for	(String res : stringArray)
-						selStr = selStr + "," + res;
+					StringBuilder sb = new StringBuilder();
+					OptionListWrapper[] list = (OptionListWrapper[]) listComponent.getSelectedValues();
+					if (list.length > 0) {
+						sb.append(list[0].getOption().getValue());
+						for (int i = 1; i < list.length; i++)
+							sb.append(", ").append(list[i].getOption().getValue());
 					}
 					
-					f.setValue(selStr.substring(1));
-					
+					f.setValue(sb.toString());
 				}
 			}
 			filters.add(f);
@@ -378,7 +373,6 @@ public class FilterSelecComponent extends FilterComponent  {
 	//Always render filter from select component filter
 	public Boolean hasChanged() {
 		return true;
-
 	}
 
 	@Override
