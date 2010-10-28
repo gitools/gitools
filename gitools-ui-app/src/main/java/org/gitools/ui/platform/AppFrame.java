@@ -38,8 +38,8 @@ public class AppFrame extends JFrame {
 	private static String appVersion;
 	
 	static {
-		appName = AppFrame.class.getPackage().getImplementationTitle();
-		if (appName == null)
+		/*appName = AppFrame.class.getPackage().getImplementationTitle();
+		if (appName == null)*/
 			appName = "GiTools";
 		
 		appVersion = AppFrame.class.getPackage().getImplementationVersion();

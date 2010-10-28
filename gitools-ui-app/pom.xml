@@ -13,7 +13,7 @@
 
 	<properties>
 		<mainClass>org.gitools.ui.Main</mainClass>
-		<wsCodebase>http://webstart.gitools.org</wsCodebase>
+		<wsCodebase>http://webstart.gitools.org/${version}</wsCodebase>
 		<wsHomepage>http://www.gitools.org</wsHomepage>
 	</properties>
 

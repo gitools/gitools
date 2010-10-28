@@ -8,8 +8,8 @@ import java.util.List;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import edu.upf.bg.fileutils.IOUtils;
-import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
+import org.gitools.datafilters.ValueTranslatorFactory;
 
 public class TextMatrixViewExporter {
 
@@ -29,15 +29,7 @@ public class TextMatrixViewExporter {
 		
 		IElementAttribute attr = matrixView.getContents().getCellAttributes().get(propIndex);
 
-		ValueTranslator vt = null;
-		
-		if (Double.class.equals(attr.getValueClass()))
-			vt = new DoubleTranslator();
-		else
-			vt = new ValueTranslator() {
-				@Override public Object stringToValue(String str) { return null; }
-				@Override public String valueToString(Object value) {
-					return value.toString(); } };
+		ValueTranslator vt = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
 		for (int r = 0; r < rowCount; r++) {
 			pw.print(matrixView.getRowLabel(r).toString());
@@ -70,13 +62,7 @@ public class TextMatrixViewExporter {
 		for (int i = 0; i < propIndices.length; i++) {
 			IElementAttribute attr = attributes.get(propIndices[i]);
 
-			if (Double.class.equals(attr.getValueClass()))
-				vt[i] = new DoubleTranslator();
-			else
-				vt[i] = new ValueTranslator() {
-					@Override public Object stringToValue(String str) { return null; }
-					@Override public String valueToString(Object value) {
-						return value.toString(); } };
+			vt[i] = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
 			pw.print("\t" + attr.getId());
 		}

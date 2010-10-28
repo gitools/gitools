@@ -37,6 +37,8 @@ public class CombinationCommand extends AnalysisCommand {
 	protected String columnsMime;
 	protected String columnsPath;
 
+	protected boolean storeAnalysis;
+
 	public CombinationCommand(
 			CombinationAnalysis analysis,
 			String dataMime, String dataPath,
@@ -50,15 +52,19 @@ public class CombinationCommand extends AnalysisCommand {
 		this.dataPath = dataPath;
 		this.columnsMime = columnsMime;
 		this.columnsPath = columnsPath;
+
+		this.storeAnalysis = true;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws AnalysisException {
 		try {
-			BaseMatrix data = loadDataMatrix(
-					new File(dataPath), dataMime, new Properties(), monitor);
+			if (analysis.getData() == null) {
+				BaseMatrix data = loadDataMatrix(
+						new File(dataPath), dataMime, new Properties(), monitor);
 
-			analysis.setData(data);
+				analysis.setData(data);
+			}
 
 			if (columnsPath != null) {
 				ModuleMap columnsMap = loadModuleMap(
@@ -71,16 +77,25 @@ public class CombinationCommand extends AnalysisCommand {
 
 			proc.run(monitor);
 
-			File workdirFile = new File(workdir);
-			if (!workdirFile.exists())
-				workdirFile.mkdirs();
+			if (storeAnalysis) {
+				File workdirFile = new File(workdir);
+				if (!workdirFile.exists())
+					workdirFile.mkdirs();
 
-			File file = new File(workdirFile, fileName);
-			PersistenceManager.getDefault().store(file, analysis, monitor);
+				File file = new File(workdirFile, fileName);
+				PersistenceManager.getDefault().store(file, analysis, monitor);
+			}
 		}
 		catch (Throwable cause) {
 			throw new AnalysisException(cause);
 		}
 	}
 
+	public boolean isStoreAnalysis() {
+		return storeAnalysis;
+	}
+
+	public void setStoreAnalysis(boolean storeAnalysis) {
+		this.storeAnalysis = storeAnalysis;
+	}
 }

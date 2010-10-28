@@ -65,7 +65,8 @@ public class DoubleMatrix extends BaseMatrix	{
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		cells.set(row, column, (Double) value);
+		// FIXME null and NaN are different things
+		cells.set(row, column, value != null ? (Double) value : Double.NaN);
 	}
 
 	@Override

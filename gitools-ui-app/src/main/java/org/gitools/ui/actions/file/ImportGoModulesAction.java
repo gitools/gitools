@@ -80,6 +80,7 @@ public class ImportGoModulesAction extends BaseAction {
 						file = new File(file.getParentFile(), prefix + "_annotations.tsv");
 						monitor.begin("Saving module annotations ...", mmap.getModuleCount());
 						PrintWriter pw = new PrintWriter(file);
+						pw.println("id\tname");
 						for (int i = 0; i < mmap.getModuleCount(); i++) {
 							pw.print(mmap.getModuleName(i));
 							pw.print('\t');

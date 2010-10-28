@@ -51,7 +51,10 @@ cat > target/jnlp/index.html <<EOF
 </html>
 EOF
 
-DST_DIR="/usr/local/gitools/webstart/$VERSION"
+REMOTE_WEBSTART_DIR="/usr/local/gitools/webstart"
+
+DST_DIR="$REMOTE_WEBSTART_DIR/$VERSION"
+
 echo "These files will be synchronized to $DST_DIR ..."
 echo
 rsync -nav --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:$DST_DIR
@@ -59,5 +62,12 @@ echo
 echo "Press any key to continue or Ctrl-C to abort ..."
 read
 rsync -av --delete --exclude="gitools.jks" target/jnlp/ bgadmin@ankara:$DST_DIR
+
+echo
+echo "Linking default webstart to $VERSION ..."
+echo "Press any key to continue or Ctrl-C to abort ..."
+read
+
+ssh bgadmin@ankara "cd ${REMOTE_WEBSTART_DIR}; rm -f default; ln -s $VERSION default"
 
 set -e

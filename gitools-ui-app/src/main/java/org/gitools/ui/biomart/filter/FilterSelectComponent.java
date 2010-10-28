@@ -28,7 +28,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -351,14 +350,12 @@ public class FilterSelectComponent extends FilterComponent  {
 			}
 			else {
 				if (listComponent.getSelectedValues() !=null && listComponent.getSelectedValues().length > 0) {
-					String res = null;
-
 					StringBuilder sb = new StringBuilder();
-					OptionListWrapper[] list = (OptionListWrapper[]) listComponent.getSelectedValues();
+					Object[] list = listComponent.getSelectedValues();
 					if (list.length > 0) {
-						sb.append(list[0].getOption().getValue());
+						sb.append(((OptionListWrapper) list[0]).getOption().getValue());
 						for (int i = 1; i < list.length; i++)
-							sb.append(", ").append(list[i].getOption().getValue());
+							sb.append(", ").append(((OptionListWrapper) list[i]).getOption().getValue());
 					}
 					
 					f.setValue(sb.toString());

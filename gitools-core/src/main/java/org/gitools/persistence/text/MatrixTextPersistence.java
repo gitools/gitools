@@ -210,6 +210,8 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 						int colidx = columnsOrder != null ? columnsOrder[col] : col;
 
 						Double value = (Double) valueTranslator.stringToValue(fields[col + 1]);
+						if (value == null)
+							System.out.println();
 
 						matrix.setCellValue(rowidx, colidx, 0, value);
 						col++;

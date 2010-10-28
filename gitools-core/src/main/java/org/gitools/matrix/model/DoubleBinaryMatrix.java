@@ -80,8 +80,12 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 
 	@Override
 	public void setCellValue(int row, int column, int index, Object value) {
-		cells.putQuick(column, row, ((Double) value) == 1.0);
-		cellsNan.putQuick(column, row, Double.isNaN((Double) value));
+		if (value != null) {
+			cells.putQuick(column, row, ((Double) value) == 1.0);
+			cellsNan.putQuick(column, row, Double.isNaN((Double) value));
+		}
+		else // FIXME null and NaN are different things
+			cellsNan.putQuick(column, row, true);
 	}
 
 	@Override

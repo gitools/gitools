@@ -47,9 +47,6 @@ public class ExamplesManager {
 	}
 
 	public File resolvePath(String exampleId, IProgressMonitor monitor) {
-		if (true)
-			return resolveDownloadedPath(exampleId, monitor);
-		
 		File file = null;
 
 		CodeSource sc = getClass().getProtectionDomain().getCodeSource();
@@ -98,8 +95,7 @@ public class ExamplesManager {
 		return resolveDownloadedPath(exampleId, monitor);
 	}
 
-	private static final String EXAMPLES_BASE_URL = "http://webstart.gitools.org/1.5.4/examples";
-	//private static final String EXAMPLES_BASE_URL = "file:///home/cperez/NetBeansProjects/GiTools/gitools-ui-app/target/jnlp/examples";
+	private static final String EXAMPLES_BASE_URL = "http://webstart.gitools.org/default/examples";
 
 	private File resolveDownloadedPath(String exampleId, IProgressMonitor monitor) {
 		File dstBasePath = new File(Settings.CONFIG_PATH + File.separator + "examples");

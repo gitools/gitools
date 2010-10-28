@@ -75,15 +75,24 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
-	private CombinationAnalysisParamsPage combParamsPage;
+	private CombinationAnalysisParamsPage combinationParamsPage;
 	private SelectFilePage columnSetsPage;
 	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
+
+	private boolean examplePageEnabled;
+	private boolean dataFromMemory;
+	private List<IElementAttribute> attributes;
+	private boolean saveFilePageEnabled;
 
 	private File dataFile;
 
 	public CombinationAnalysisWizard() {
 		super();
+
+		examplePageEnabled = true;
+		dataFromMemory = false;
+		saveFilePageEnabled = true;
 
 		setTitle("Combination analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_COMBINATION, 96));
@@ -92,19 +101,22 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		// Example
-		if (Settings.getDefault().isShowCombinationExamplePage()) {
+		if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
 			examplePage = new ExamplePage("a combination analysis");
 			examplePage.setTitle("Combination analysis");
 			addPage(examplePage);
 		}
 		
 		// Data
-		dataPage = new DataFilePage(dataFormats);
-		addPage(dataPage);
+		if (!dataFromMemory) {
+			dataPage = new DataFilePage(dataFormats);
+			addPage(dataPage);
+		}
 
 		// Combination parameters
-		combParamsPage = new CombinationAnalysisParamsPage();
-		addPage(combParamsPage);
+		combinationParamsPage = new CombinationAnalysisParamsPage();
+		combinationParamsPage.setAttributes(attributes);
+		addPage(combinationParamsPage);
 
 		// Set of columns
 		columnSetsPage = new SelectFilePage(columnSetsFormats) {
@@ -120,13 +132,15 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 		addPage(columnSetsPage);
 
 		// Destination
-		saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-		saveFilePage.setFormats(new FileFormat[] {
-			FileFormats.COMBINATION });
-		saveFilePage.setFormatsVisible(false);
-		addPage(saveFilePage);
+		if (saveFilePageEnabled) {
+			saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
+			saveFilePage.setTitle("Select destination file");
+			saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+			saveFilePage.setFormats(new FileFormat[] {
+				FileFormats.COMBINATION });
+			saveFilePage.setFormatsVisible(false);
+			addPage(saveFilePage);
+		}
 
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
@@ -135,8 +149,8 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 	@Override
 	public void pageEntered(IWizardPage page) {
-		if (combParamsPage.equals(page)) {
-			if (dataFile == null || !dataPage.getFile().equals(dataFile)) {
+		if (combinationParamsPage.equals(page)) {
+			if (!dataFromMemory && (dataFile == null || !dataPage.getFile().equals(dataFile))) {
 				JobThread.execute(AppFrame.instance(), new JobRunnable() {
 					@Override
 					public void run(IProgressMonitor monitor) {
@@ -151,8 +165,9 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 								ObjectMatrixTextPersistence.META_ATTRIBUTES }, monitor);
 
 							if (meta != null) {
-								combParamsPage.setAttributes((List<IElementAttribute>)
-										meta.get(ObjectMatrixTextPersistence.META_ATTRIBUTES));
+								attributes = (List<IElementAttribute>)
+										meta.get(ObjectMatrixTextPersistence.META_ATTRIBUTES);
+								combinationParamsPage.setAttributes(attributes);
 								
 								dataFile = dataPage.getFile();
 							}
@@ -175,7 +190,6 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 					examplePage.isShowAgain());
 
 			if (examplePage.isExampleEnabled()) {
-				
 				JobThread.execute(AppFrame.instance(), new JobRunnable() {
 					@Override public void run(IProgressMonitor monitor) {
 
@@ -186,7 +200,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
 						Properties props = new Properties();
-						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "true");
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
 						try {
 							final CombinationAnalysis a = (CombinationAnalysis) PersistenceManager.getDefault()
 									.load(analysisFile, props, monitor);
@@ -220,6 +234,38 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 		return canFinish;
 	}
 
+	public boolean isExamplePageEnabled() {
+		return examplePageEnabled;
+	}
+
+	public void setExamplePageEnabled(boolean examplePageEnabled) {
+		this.examplePageEnabled = examplePageEnabled;
+	}
+
+	public boolean isDataFromMemory() {
+		return dataFromMemory;
+	}
+
+	public void setDataFromMemory(boolean dataFromMemory) {
+		this.dataFromMemory = dataFromMemory;
+	}
+
+	public List<IElementAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<IElementAttribute> attributes) {
+		this.attributes = attributes;
+	}
+
+	public boolean isSaveFilePageEnabled() {
+		return saveFilePageEnabled;
+	}
+
+	public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
+		this.saveFilePageEnabled = saveFilePageEnabled;
+	}
+
 	public CombinationAnalysis getAnalysis() {
 		CombinationAnalysis a = new CombinationAnalysis();
 
@@ -227,15 +273,15 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 		a.setDescription(analysisDetailsPage.getAnalysisNotes());
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-		IElementAttribute attr = combParamsPage.getSizeAttribute();
+		IElementAttribute attr = combinationParamsPage.getSizeAttribute();
 		String sizeAttrName = attr != null ? attr.getId() : null;
 		a.setSizeAttrName(sizeAttrName);
 
-		attr = combParamsPage.getPvalueAttribute();
+		attr = combinationParamsPage.getPvalueAttribute();
 		String pvalueAttrName = attr != null ? attr.getId() : null;
 		a.setPvalueAttrName(pvalueAttrName);
 
-		a.setTransposeData(combParamsPage.isTransposeEnabled());
+		a.setTransposeData(combinationParamsPage.isTransposeEnabled());
 
 		return a;
 	}
@@ -244,13 +290,17 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 		analysisDetailsPage.setAnalysisTitle(a.getTitle());
 		analysisDetailsPage.setAnalysisNotes(a.getDescription());
 		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
-		combParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
-		combParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
-		combParamsPage.setTransposeEnabled(a.isTransposeData());
+		combinationParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
+		combinationParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
+		combinationParamsPage.setTransposeEnabled(a.isTransposeData());
 	}
 
 	public DataFilePage getDataFilePage() {
 		return dataPage;
+	}
+
+	public CombinationAnalysisParamsPage getCombinationParamsPage() {
+		return combinationParamsPage;
 	}
 
 	public SelectFilePage getColumnSetsPage() {

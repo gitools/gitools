@@ -106,7 +106,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
 						Properties props = new Properties();
-						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "true");
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
 						try {
 							monitor.begin("Loading example parameters ...", 1);
 

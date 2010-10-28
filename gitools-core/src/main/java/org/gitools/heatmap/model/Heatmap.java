@@ -130,8 +130,8 @@ public class Heatmap
 		this.columnsGridColor = Color.WHITE;
 		this.cellWidth = 14;
 		this.cellHeight = 14;
-		this.rowHeaderSize = 300;
-		this.columnHeaderSize = 200;
+		this.rowHeaderSize = 220;
+		this.columnHeaderSize = 130;
 		this.showBorders = false;
 	}
 	

@@ -4,6 +4,9 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
 	@Override
 	public Double stringToValue(String str) {
+		if (str == null || str.isEmpty())
+			return null;
+		
 		double value = Double.NaN;
 		try {
 			value = Double.parseDouble(str);
@@ -14,6 +17,9 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
 	@Override
 	public String valueToString(Double value) {
+		if (value == null)
+			return "";
+		
 		if (Double.isNaN(value))
 			return "-";
 
