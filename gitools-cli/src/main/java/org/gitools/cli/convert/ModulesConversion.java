@@ -20,7 +20,7 @@ package org.gitools.cli.convert;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 
-public class ModuleConversion implements ConversionDelegate {
+public class ModulesConversion implements ConversionDelegate {
 
 	@Override
 	public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception {

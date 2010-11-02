@@ -2,7 +2,7 @@ package org.gitools.cli.convert;
 
 import cern.jet.stat.Probability;
 
-public class ModuleSetConvertCliTool {
+public class TestProbabilitiesTool {
 
 	public static void main(String[] args) {
 		System.out.println("k"+"\t" +"n"+ "\t" +"p"+ "\t" +"lpv"+ "\t" +"rpv"+ "\t" +"rppv"+ "\t" +"tpv"+ "\tRl\tRr\tRt");

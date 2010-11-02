@@ -91,39 +91,7 @@ public class ConvertTool extends AbstractTool {
 
 		List<Conversion> vc = new ArrayList<Conversion>();
 
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_2C_MAP, null));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_INDEXED_MAP, null));
-
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_2C_MAP, null));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, null));
-
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_2C_MAP, null));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, null));
-
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_2C_MAP, null));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_INDEXED_MAP, null));
-
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.MODULES_INDEXED_MAP, new ModuleConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, null));
-
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.MODULES_2C_MAP, new ModuleConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, null));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, null));
+		initConversionList(vc);
 
 		Conversion targetConv = new Conversion(args.inputFileMime, args.outputFileMime);
 		int convIndex = vc.indexOf(targetConv);
@@ -158,8 +126,8 @@ public class ConvertTool extends AbstractTool {
 
 		Object dstObject = null;
 		try {
-			dstObject = targetConv.delegate
-					.convert(args.inputFileMime, srcObject, args.outputFileMime, monitor);
+			dstObject = targetConv.delegate.convert(
+					args.inputFileMime, srcObject, args.outputFileMime, monitor);
 		}
 		catch (Exception ex) {
 			monitor.exception(ex);
@@ -179,5 +147,41 @@ public class ConvertTool extends AbstractTool {
 		}
 
 		monitor.end();
+	}
+
+	private void initConversionList(List<Conversion> vc) {
+		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+
+		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+
+		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.MODULES_INDEXED_MAP, new ModulesConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+
+		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.MODULES_2C_MAP, new ModulesConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
+		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
 	}
 }
