@@ -1,0 +1,50 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/analysis/tables.css")
+    </style>
+</head>
+
+<body>
+	#foreach( $column in $columns )
+		#foreach( $combination in $column.combinations )
+
+			<table id="elems">
+				<thead>
+					<tr>
+						<th colspan="5">$column.name &gt; $combination.name</th>
+					</tr>
+					<tr>
+						<th>Name</th>
+						<th>N</th>
+						<th>Weight</th>
+						<th>P-Value</th>
+						<th style="max-width: 20px">&nbsp;</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					#foreach( $e in $combination.elements )
+						<tr>
+							<td>$e.name</td>
+							<td>$e.n</td>
+							<td>$e.weight</td>
+							<td>$e.pvalue</td>
+							<td style="background-color: $e.pvalue_color">&nbsp;</td>
+						</tr>
+					#end
+				</tbody>
+
+				<tfoot>
+					<tr>
+						<td colspan="3">$combination.n p-values combined</td>
+						<td>$combination.pvalue</td>
+						<td style="background-color: $combination.pvalue_color">&nbsp;</td>
+					</tr>
+				</tfoot>
+			</table>
+		#end
+	#end
+</body>
+</html>

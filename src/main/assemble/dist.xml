@@ -1,0 +1,82 @@
+<assembly>
+	<id>bin</id>
+
+	<formats>
+		<!--
+		<format>tar.bz2</format>
+		<format>tar.gz</format>
+		<format>zip</format>-->
+		<format>dir</format>
+	</formats>
+
+	<includeSiteDirectory>false</includeSiteDirectory>
+
+	<fileSets>
+		<!-- <fileSet>
+			<directory>src/main/command</directory>
+			<includes>
+				<include>*</include>
+			</includes>
+			<outputDirectory>bin</outputDirectory>
+			<fileMode>0770</fileMode>
+			<filtered>true</filtered>
+		</fileSet>-->
+		<fileSet>
+			<directory>gitools-cli/src/main/command</directory>
+			<includes>
+				<include>*</include>
+			</includes>
+			<outputDirectory>bin</outputDirectory>
+			<fileMode>0770</fileMode>
+			<filtered>true</filtered>
+		</fileSet>
+
+		<!-- <fileSet>
+			<directory>ext</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<outputDirectory>lib/ext</outputDirectory>
+		</fileSet> -->
+
+		<!-- <fileSet>
+			<directory>templates</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<outputDirectory>templates</outputDirectory>
+		</fileSet> -->
+
+		<fileSet>
+			<directory>examples</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<outputDirectory>examples</outputDirectory>
+		</fileSet>
+
+		<fileSet>
+			<directory>gitools-ui/src/main/resources/img</directory>
+			<includes>
+				<include>LogoMini.png</include>
+			</includes>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+
+		<fileSet>
+			<includes>
+				<include>LICENSE-2.0.txt</include>
+			</includes>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+	</fileSets>
+
+	<moduleSets>
+		<moduleSet>
+			<binaries>
+				<outputDirectory>lib</outputDirectory>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+	</moduleSets>
+</assembly>

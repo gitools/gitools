@@ -1,0 +1,84 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
+		
+		.ctHeader {
+			background-color: rgb(192, 192, 192);
+			margin: 1px;
+		}
+		
+		.ctValue {
+			background-color: rgb(252, 252, 252);
+			margin: 1px;
+			text-align: right;
+		}
+    </style>
+</head>
+<body>
+	<div id="section">
+		<div id="section_title">Condition</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $columnElement ) <tr><td class="label">$columnElement</td></tr> #end
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">Module</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $rowElement ) <tr><td colspan="2" class="label">$rowElement</td></tr> #end
+				<tr><td class="name">N</td><td>$cell.N</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">Contingency table</div>
+		<div id="section_body">
+			<table>
+				<tr>
+					<td></td>
+					<td class="ctHeader">1</td>
+					<td class="ctHeader">0</td>
+				</tr>
+				<tr>
+					<td class="ctHeader">belong</td>
+					<td class="ctValue">$cell.a</td>
+					<td class="ctValue">$cell.b</td>
+				</tr>
+				<tr>
+					<td class="ctHeader">don&acute;t belong</td>
+					<td class="ctValue">$cell.c</td>
+					<td class="ctValue">$cell.d</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">P-Values</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.left-p-value )</td></tr>
+				<tr><td class="name">Right</td><td>$fmt.pvalue( $cell.right-p-value )</td></tr>
+				<tr><td class="name">Two-tail</td><td>$fmt.pvalue( $cell.two-tail-p-value )</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">Multiple test correction</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.corrected-left-p-value )</td></tr>
+				<tr><td class="name">Right</td><td>$fmt.pvalue( $cell.corrected-right-p-value )</td></tr>
+				<tr><td class="name">Two-tail</td><td>$fmt.pvalue( $cell.corrected-two-tail-p-value )</td></tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

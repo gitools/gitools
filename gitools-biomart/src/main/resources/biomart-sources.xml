@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mart-registry>
+	<mart>
+		<name>biomart_central</name>
+		<description>BioMart Central Portal</description>
+		<version>0.7</version>
+		<host>www.biomart.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>intogen</name>
+		<description>IntOGen</description>
+		<version>0.7</version>
+		<host>biomart.intogen.org</host>
+		<port>80</port>
+		<restPath>/martservice</restPath>
+		<wsdlPath></wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_last</name>
+		<description>Ensembl Last release</description>
+		<version>0.6</version>
+		<host>www.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_58</name>
+		<description>Ensembl 58 (May 2010)</description>
+		<version>0.6</version>
+		<host>may2010.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_57</name>
+		<description>Ensembl 57 (March 2010)</description>
+		<version>0.6</version>
+		<host>mar2010.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_56</name>
+		<description>Ensembl 56 (September 2009)</description>
+		<version>0.6</version>
+		<host>sep2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_55</name>
+		<description>Ensembl 55 (July 2009)</description>
+		<version>0.6</version>
+		<host>jul2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_54</name>
+		<description>Ensembl 54 (May 2009)</description>
+		<version>0.6</version>
+		<host>may2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_53</name>
+		<description>Ensembl 53 (March 2009)</description>
+		<version>0.7</version>
+		<host>mar2009.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_52</name>
+		<description>Ensembl 52 (December 2008)</description>
+		<version>0.6</version>
+		<host>dec2008.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_51</name>
+		<description>Ensembl 51 (November 2008)</description>
+		<version>0.6</version>
+		<host>nov2008.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_50</name>
+		<description>Ensembl 50 (July 2008)</description>
+		<version>0.6</version>
+		<host>jul2008.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+</mart-registry>

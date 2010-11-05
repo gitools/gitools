@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				background-color: #ffffff;
+				font-family: sans-serif;
+				padding: 8px;
+				margin: 0px;
+			}
+
+			A:link, A:visited {
+				text-decoration: none;
+			}
+
+			A:hover {
+				color: #f43a01;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>$appName</h1>
+		<p>Version $appVersion</p>
+		<p>Biomedical Genomics Laboratory<br>
+		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
+
+		<p><b>Authors:</b></p>
+		<ul>
+			<li>Nuria Lopez-Bigas</li>
+			<li>Christian Perez-Llamas</li>
+		</ul>
+
+		<p><b>Collaborators:</b></p>
+		<ul>
+			<li>Xavier Rafael-Pons</li>
+			<li>Jordi Deu-Pons</li>
+			<li>Michael Schroeder</li>
+		</ul>
+
+		<p><b>Bug reporting and suggestions:</b></p>
+		<ul>
+			<li>Sonja Haenzelmann</li>
+			<li>Khademul Islam</li>
+			<li>Gunes Gundem</li>
+			<li>Alba Jene</li>
+			<li>Sophia Derdak</li>
+		</ul>
+	</body>
+</html>

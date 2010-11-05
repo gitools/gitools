@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+  codebase="$project.Properties.wsCodebase" href="$outputFile">
+	<information>
+		<title>Gitools</title>
+		<vendor>Biomedical Genomics</vendor>
+		<homepage href="$project.Properties.wsHomepage"/>
+		<description>Analysis and visualization of genomic data</description>
+		<icon href="icon.png"/>
+		<icon kind="splash" href="splash.png"/> 
+		<offline-allowed/>
+	</information>
+
+	<security>
+		<all-permissions/>
+	</security>
+	
+	<resources>
+		<j2se version="1.6+"/>
+		$dependencies
+	</resources>
+
+	<application-desc main-class="$mainClass"/>
+</jnlp>

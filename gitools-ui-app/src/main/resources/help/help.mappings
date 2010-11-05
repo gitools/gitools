@@ -1,0 +1,11 @@
+import_intogen	${user_guide}/IntOGen
+import_kegg	${user_guide}/KEGG
+import_gene_ontology	${user_guide}/GeneOntology
+import_biomart	${user_guide}/Biomart
+
+analysis_enrichment	${user_guide}/Enrichment
+analysis_oncodrive	${user_guide}/Oncodrive
+analysis_correlation	${user_guide}/Correlations
+analysis_combination	${user_guide}/Combinations
+
+.*	${user_guide}/

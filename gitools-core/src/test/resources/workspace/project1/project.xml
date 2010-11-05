@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project>
+    <title>Test project 2</title>
+    <description>This project has been created to serve as a test project</description>
+    <attributes>
+        <attribute>
+            <name>attr1</name>
+            <value>value1</value>
+        </attribute>
+        <attribute>
+            <name>attr2</name>
+            <value>value2</value>
+        </attribute>
+    </attributes>
+    <publications>
+        <publication>
+            <title>Publication 1</title>
+            <authors>Fu Lee, X</authors>
+            <abstr>This paper analyzes...</abstr>
+            <journal>Super Journal</journal>
+            <pubmed>000001</pubmed>
+            <url>http://papers.com/000001.pdf</url>
+        </publication>
+        <publication>
+            <title>Publication 2</title>
+            <authors>Fu Lee, X et all</authors>
+            <abstr>This paper reveals...</abstr>
+            <journal>Super Journal</journal>
+            <pubmed>000002</pubmed>
+            <url>http://papers.com/000002.pdf</url>
+        </publication>
+    </publications>
+    <laboratories>
+        <laboratory>
+            <name>Lab1</name>
+            <url>http://www.lab1.com</url>
+        </laboratory>
+        <laboratory>
+            <name>Lab2</name>
+            <url>http://www.lab2.com</url>
+        </laboratory>
+    </laboratories>
+</project>

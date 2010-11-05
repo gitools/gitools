@@ -1,0 +1,32 @@
+body {
+	background-color: #ffffff;
+	font-family: sans-serif;
+	margin: 10px 20px;
+}
+
+table {
+	width: 100%;
+	border: 0px;
+}
+
+td {
+	padding: 5px 10px;
+}
+
+img {
+	border: 0px;
+}
+
+h1 {
+	border-bottom:1px solid #f29128;
+	color:#f29128;
+	font-size:18px;
+	font-family:arial,sans-serif;
+}
+
+h2 {
+	border-bottom:1px solid #f29128;
+	color:#f29128;
+	font-size:14px;
+	font-family:arial,sans-serif;
+}

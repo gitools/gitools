@@ -1,0 +1,344 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Downloading
+\end_layout
+
+\begin_layout Standard
+You can download the last version of Gitools from:
+\end_layout
+
+\begin_layout LyX-Code
+http://www.gitools.org/download.php
+\end_layout
+
+\begin_layout Standard
+You will get a zip file that can be installed and executed in any of the
+ Windows, Linux and Mac OS X operating systems.
+\end_layout
+
+\begin_layout Section
+Installation
+\end_layout
+
+\begin_layout Standard
+The first thing to do is to uncompress the zip file into some folder.
+ Use your preferred application for this, usually doing click or double
+ click over it will start the application that will allow you to uncompress
+ it.
+\end_layout
+
+\begin_layout Standard
+Once uncompressed you will get a folder like 
+\emph on
+gitools-1.5.0-bin
+\emph default
+ (the version number could be different depending on which version you downloade
+d).
+\end_layout
+
+\begin_layout Standard
+That's all, you have already installed Gitools in your computer if you only
+ want to work with the graphical interface.
+\end_layout
+
+\begin_layout Standard
+To run Gitools graphical interface go inside its folder and you will see
+ that there is another folder called 
+\emph on
+bin
+\emph default
+, open it and you will see some files inside, depending on your operating
+ system you will have to click or double click this file:
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Windows
+\noun default
+: gitools.bat
+\end_layout
+
+\begin_layout Itemize
+
+\noun on
+Linux
+\noun default
+ & 
+\noun on
+Mac OS X
+\noun default
+: gitools
+\end_layout
+
+\begin_layout Standard
+If you want to be able to execute Gitools commands from the terminal you
+ will need to configure the way your operating system finds commands from
+ the terminal (usually it is an enviroment variable called 
+\emph on
+PATH
+\emph default
+):
+\end_layout
+
+\begin_layout Subsection*
+Windows
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing, we need Windows users that
+ explain us how to do that and give us some screenshots.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Linux
+\end_layout
+
+\begin_layout Standard
+Imagine that you have uncompressed the zip file into 
+\emph on
+/opt/gitools-1.5.0-bin
+\emph default
+, then you can define the 
+\emph on
+PATH
+\emph default
+ variable in the 
+\emph on
+~/.bashrc
+\emph default
+ file adding a line like this:
+\end_layout
+
+\begin_layout LyX-Code
+export PATH=/opt/gitools-1.5.0-bin/bin:$PATH
+\end_layout
+
+\begin_layout Standard
+Start a new terminal and you should be able to run Gitools graphical interface
+ typing:
+\end_layout
+
+\begin_layout LyX-Code
+$ gitools
+\end_layout
+
+\begin_layout Subsection*
+Mac OS X
+\end_layout
+
+\begin_layout Standard
+Imagine that you have uncompressed the zip file into 
+\emph on
+/opt/gitools-1.5.0-bin
+\emph default
+, then you can define the 
+\emph on
+PATH
+\emph default
+ variable in the 
+\emph on
+~/.profile
+\emph default
+ file adding a line like this:
+\end_layout
+
+\begin_layout LyX-Code
+export PATH=/opt/gitools-1.5.0-bin/bin:$PATH
+\end_layout
+
+\begin_layout Standard
+Start a new terminal and you should be able to run Gitools graphical interface
+ typing:
+\end_layout
+
+\begin_layout LyX-Code
+$ gitools
+\end_layout
+
+\begin_layout Section
+Memory configuration
+\end_layout
+
+\begin_layout Standard
+Gitools is a Java application, and by default it starts with the default
+ memory requirements stablished by most of the Java applications (usually
+ 256 Megabytes).
+ But most probably you will need more than the default, you will realize
+ this when you obtain an exception like this:
+\end_layout
+
+\begin_layout LyX-Code
+java.lang.OutOfMemoryException
+\end_layout
+
+\begin_layout Standard
+There is a way to configure the memory limits for Gitools the same way that
+ Java does, using the option 
+\emph on
+-Xmx
+\emph default
+.
+ But this configuration should be specified through an enviroment variable
+ called 
+\emph on
+GITOOLS_JAVA_OPTS
+\emph default
+.
+ Let's see some examples of how to do this with different operating systems:
+\end_layout
+
+\begin_layout Subsection*
+Windows
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This part of the documentation is still missing, we need Windows users that
+ explain us how to do that and give us some screenshots.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Linux
+\end_layout
+
+\begin_layout Standard
+Imagine that you want to use 1024 megabytes of memory for Gitools, then
+ edit the 
+\emph on
+~/.bashrc
+\emph default
+ file adding a line like this:
+\end_layout
+
+\begin_layout LyX-Code
+export GITOOLS_JAVA_OPTS=
+\begin_inset Quotes erd
+\end_inset
+
+-Xmx1024m
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also specify 2 gigabytes like this:
+\end_layout
+
+\begin_layout LyX-Code
+export GITOOLS_JAVA_OPTS=
+\begin_inset Quotes erd
+\end_inset
+
+-Xmx2g
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Mac OS X
+\end_layout
+
+\begin_layout Standard
+Imagine that you want to use 1024 megabytes of memory for Gitools, then
+ edit the 
+\emph on
+~/.profile
+\emph default
+ file adding a line like this:
+\end_layout
+
+\begin_layout LyX-Code
+export GITOOLS_JAVA_OPTS=
+\begin_inset Quotes erd
+\end_inset
+
+-Xmx1024m
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also specify 2 gigabytes like this:
+\end_layout
+
+\begin_layout LyX-Code
+export GITOOLS_JAVA_OPTS=
+\begin_inset Quotes erd
+\end_inset
+
+-Xmx2g
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.gitools</groupId>
+	<artifactId>gitools</artifactId>
+	<packaging>pom</packaging>
+	<version>1.5.4</version>
+	<name>gitools</name>
+	<description>Gitools</description>
+	<url>https://bg.upf.edu/trac/bg/ztools</url>
+
+	<organization>
+		<name>Biomedical Genomics Lab</name>
+		<url>http://bg.upf.edu</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>christian</id>
+			<name>Christian Pérez Llamas</name>
+			<email>christian.perez@upf.edu</email>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>Trac</system>
+		<url>https://bg.upf.edu/trac/bg</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://bg.upf.edu/svn/ztools/tags/gitools-1.5.4/trunk</connection>
+		<developerConnection>scm:svn:https://bg.upf.edu/svn/ztools/tags/gitools-1.5.4/trunk</developerConnection>
+		<url>https://bg.upf.edu/svn/ztools/tags/gitools-1.5.4/trunk</url>
+	</scm>
+
+	<modules>
+		<module>bg-commons</module>
+		<module>gitools-core</module>
+		<module>gitools-cli</module>
+		<module>gitools-biomart</module>
+		<module>gitools-intogen</module>
+		<module>gitools-kegg</module>
+		<module>gitools-ui-platform</module>
+		<module>gitools-ui-app</module>
+  </modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>java.net</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>edu.upf.bg</groupId>
+				<artifactId>bg-commons</artifactId>
+				<version>0.1.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>colt</groupId>
+				<artifactId>colt</artifactId>
+				<version>1.2.0</version>
+				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>concurrent</groupId>
+						<artifactId>concurrent</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- <dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-math</artifactId>
+				<version>2.0</version>
+			</dependency> -->
+
+			<dependency>
+				<groupId>commons-csv</groupId>
+				<artifactId>commons-csv</artifactId>
+				<version>20070823</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-net</groupId>
+				<artifactId>commons-net</artifactId>
+				<version>2.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>args4j</groupId>
+				<artifactId>args4j</artifactId>
+				<version>2.0.16</version>
+				<scope>compile</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.velocity</groupId>
+				<artifactId>velocity</artifactId>
+				<version>1.6.4</version> <!-- 1.6.1 -->
+			</dependency>
+
+			<!-- <dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
+			</dependency> -->
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.14</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cobra</groupId>
+				<artifactId>cobra</artifactId>
+				<version>0.98.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>rhino</groupId>
+				<artifactId>js</artifactId>
+				<version>1.7R2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>weka</groupId>
+				<artifactId>weka</artifactId>
+				<version>3.6.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>gitools-repository</id>
+			<name>gitools repository</name>
+			<url>file:///shared/gitools/releases</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>gitools-snapshot-repository</id>
+			<name>gitools snapshot repository</name>
+			<!-- <url>file://${basedir}/target/deploy-snapshot</url> -->
+			<url>file:///shared/gitools/releases</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!--<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/command</directory>
+				<includes>
+					<include>zcalc</include>
+				</includes>
+				<targetPath>${basedir}/bin</targetPath>
+			</resource>
+		</resources>-->
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<classpathPrefix />
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-2</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assemble/dist.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<username>${ztools.scm.username}</username>
+					<password>${ztools.scm.password}</password>
+					<tagBase>https://bg.upf.edu/svn/ztools/tags</tagBase>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.1.2</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependencies</report>
+							<report>project-team</report>
+							<report>cim</report>
+							<!--  <report>issue-tracker</report> -->
+							<report>javadoc</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

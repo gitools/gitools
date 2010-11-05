@@ -1,0 +1,54 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
+    </style>
+</head>
+<body>
+	<div id="section">
+		<div id="section_title">Condition</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $columnElement ) <tr><td colspan="2" class="label">$columnElement</td></tr> #end
+				<tr><td class="name">Probability</td><td>$fmt.format("%.3g", $cell.probability)</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">Module</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $rowElement ) <tr><td colspan="2" class="label">$rowElement</td></tr> #end
+				<tr><td class="name">N</td><td>$cell.N</td></tr>
+				<tr><td class="name">Observed</td><td>$cell.observed</td></tr>
+				<tr><td class="name">Expected-Mean</td><td>$fmt.format($cell.expected-mean)</td></tr>
+				<tr><td class="name">Expected-StDev</td><td>$fmt.format("%.3g", $cell.expected-stdev)</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">P-Values</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.left-p-value )</td></tr>
+				<tr><td class="name">Right</td><td>$fmt.pvalue( $cell.right-p-value )</td></tr>
+				<tr><td class="name">Two-tail</td><td>$fmt.pvalue( $cell.two-tail-p-value )</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="section">
+		<div id="section_title">Multiple test correction</div>
+		<div id="section_body">
+			<table id="attr_table">
+				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.corrected-left-p-value )</td></tr>
+				<tr><td class="name">Right</td><td>$fmt.pvalue( $cell.corrected-right-p-value )</td></tr>
+				<tr><td class="name">Two-tail</td><td>$fmt.pvalue( $cell.corrected-two-tail-p-value )</td></tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,1774 @@
+<?xml version="1.0"?>
+<definitions
+    name="KEGG_v6.2"
+    xmlns:typens="SOAP/KEGG"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="SOAP/KEGG">
+
+  <types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="SOAP/KEGG">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+<!-- common variable -->
+      <xsd:complexType name="ArrayOfint">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:int[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfstring">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:string[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- SSDB -->
+      <xsd:complexType name="SSDBRelation">
+        <xsd:all>
+          <xsd:element name="genes_id1" type="xsd:string"/>
+          <xsd:element name="genes_id2" type="xsd:string"/>
+          <xsd:element name="sw_score" type="xsd:int"/>
+          <xsd:element name="bit_score" type="xsd:float"/>
+          <xsd:element name="identity" type="xsd:float"/>
+          <xsd:element name="overlap" type="xsd:int"/>
+          <xsd:element name="start_position1" type="xsd:int"/>
+          <xsd:element name="end_position1" type="xsd:int"/>
+          <xsd:element name="start_position2" type="xsd:int"/>
+          <xsd:element name="end_position2" type="xsd:int"/>
+          <xsd:element name="best_flag_1to2" type="xsd:boolean"/>
+          <xsd:element name="best_flag_2to1" type="xsd:boolean"/>
+          <xsd:element name="definition1" type="xsd:string"/>
+          <xsd:element name="definition2" type="xsd:string"/>
+          <xsd:element name="length1" type="xsd:int"/>
+          <xsd:element name="length2" type="xsd:int"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSSDBRelation">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:SSDBRelation[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- MOTIF -->
+      <xsd:complexType name="MotifResult">
+        <xsd:all>
+          <xsd:element name="motif_id" type="xsd:string"/>
+          <xsd:element name="definition" type="xsd:string"/>
+          <xsd:element name="genes_id" type="xsd:string"/>
+          <xsd:element name="start_position" type="xsd:int"/>
+          <xsd:element name="end_position" type="xsd:int"/>
+          <xsd:element name="score" type="xsd:float"/>
+          <xsd:element name="evalue" type="xsd:double"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMotifResult">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:MotifResult[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- DEFINITION -->
+      <xsd:complexType name="Definition">
+        <xsd:all>
+          <xsd:element name="entry_id" type="xsd:string"/>
+          <xsd:element name="definition" type="xsd:string"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfDefinition">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:Definition[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- LinkDB -->
+      <xsd:complexType name="LinkDBRelation">
+        <xsd:all>
+          <xsd:element name="entry_id1" type="xsd:string"/>
+          <xsd:element name="entry_id2" type="xsd:string"/>
+          <xsd:element name="type" type="xsd:string"/>
+          <xsd:element name="path" type="xsd:string"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLinkDBRelation">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:LinkDBRelation[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- Pathway -->
+      <xsd:complexType name="PathwayElement">
+        <xsd:all>
+          <xsd:element name="element_id" type="xsd:int"/>
+          <xsd:element name="type" type="xsd:string"/>
+          <xsd:element name="names" type="typens:ArrayOfstring"/>
+          <xsd:element name="components" type="typens:ArrayOfint"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPathwayElement">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:PathwayElement[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="PathwayElementRelation">
+        <xsd:all>
+          <xsd:element name="element_id1" type="xsd:int"/>
+          <xsd:element name="element_id2" type="xsd:int"/>
+          <xsd:element name="type" type="xsd:string"/>
+          <!--xsd:element name="name" type="xsd:string"/-->
+          <xsd:element name="subtypes" type="typens:ArrayOfSubtype"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfPathwayElementRelation">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:PathwayElementRelation[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Subtype">
+        <xsd:all>
+          <xsd:element name="relation" type="xsd:string"/>
+          <xsd:element name="element_id" type="xsd:int"/>
+          <xsd:element name="type" type="xsd:string"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSubtype">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:Subtype[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+<!-- v6.0 -->
+      <xsd:complexType name="StructureAlignment">
+        <xsd:all>
+          <xsd:element name="target_id" type="xsd:string"/>
+          <xsd:element name="score" type="xsd:float"/>
+          <xsd:element name="query_nodes" type="typens:ArrayOfint"/>
+          <xsd:element name="target_nodes" type="typens:ArrayOfint"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStructureAlignment">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:StructureAlignment[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+    </xsd:schema>
+  </types>
+<!-- KEGG information -->
+<!-- list_databases -->
+  <message name="list_databasesRequest"/>
+  <message name="list_databasesResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- list_organisms -->
+  <message name="list_organismsRequest"/>
+  <message name="list_organismsResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- list_pathways -->
+  <message name="list_pathwaysRequest">
+    <part name="org" type="xsd:string"/>
+  </message>
+  <message name="list_pathwaysResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- list_ko_classes -->
+  <message name="list_ko_classesRequest">
+    <part name="class_id" type="xsd:string"/>
+  </message>
+  <message name="list_ko_classesResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- DBGET -->
+<!-- binfo -->
+  <message name="binfoRequest">
+    <part name="db" type="xsd:string"/>
+  </message>
+  <message name="binfoResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- bget -->
+  <message name="bgetRequest">
+    <part name="string" type="xsd:string"/>
+  </message>
+  <message name="bgetResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- bfind -->
+  <message name="bfindRequest">
+    <part name="string" type="xsd:string"/>
+  </message>
+  <message name="bfindResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- btit -->
+  <message name="btitRequest">
+    <part name="string" type="xsd:string"/>
+  </message>
+  <message name="btitResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- bconv -->
+  <message name="bconvRequest">
+    <part name="string" type="xsd:string"/>
+  </message>
+  <message name="bconvResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- LinkDB -->
+  <message name="get_linkdb_by_entryRequest">
+    <part name="entry_id" type="xsd:string"/>
+    <part name="db" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_linkdb_by_entryResponse">
+    <part name="return" type="typens:ArrayOfLinkDBRelation"/>
+  </message>
+<!-- SSDB -->
+<!-- get_best_neighbors_by_gene -->
+  <message name="get_best_neighbors_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_best_neighbors_by_geneResponse">
+    <part name="return" type="typens:ArrayOfSSDBRelation"/>
+  </message>
+<!-- get_best_best_neighbors_by_gene -->
+  <message name="get_best_best_neighbors_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_best_best_neighbors_by_geneResponse">
+    <part name="return" type="typens:ArrayOfSSDBRelation"/>
+  </message>
+<!-- get_reverse_best_neighbors_by_gene -->
+  <message name="get_reverse_best_neighbors_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_reverse_best_neighbors_by_geneResponse">
+    <part name="return" type="typens:ArrayOfSSDBRelation"/>
+  </message>
+<!-- get_paralogs_by_geneRequest -->
+  <message name="get_paralogs_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_paralogs_by_geneResponse">
+    <part name="return" type="typens:ArrayOfSSDBRelation"/>
+  </message>
+<!-- MOTIF -->
+<!-- get_motifs_by_gene -->
+  <message name="get_motifs_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="db" type="xsd:string"/>
+  </message>
+  <message name="get_motifs_by_geneResponse">
+    <part name="return" type="typens:ArrayOfMotifResult"/>
+  </message>
+<!-- get_genes_by_motifs -->
+  <message name="get_genes_by_motifsRequest">
+    <part name="motif_id_list" type="typens:ArrayOfstring"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_genes_by_motifsResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- KO,OC,PC -->
+<!-- get_ko_by_gene -->
+  <message name="get_ko_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+  </message>
+  <message name="get_ko_by_geneResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_ko_by_ko_class -->
+  <message name="get_ko_by_ko_classRequest">
+    <part name="class_id" type="xsd:string"/>
+  </message>
+  <message name="get_ko_by_ko_classResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- get_genes_by_ko -->
+  <message name="get_genes_by_koRequest">
+    <part name="ko_id" type="xsd:string"/>
+    <part name="org" type="xsd:string"/>
+  </message>
+  <message name="get_genes_by_koResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- get_genes_by_ko_class -->
+  <message name="get_genes_by_ko_classRequest">
+    <part name="class_id" type="xsd:string"/>
+    <part name="org" type="xsd:string"/>
+	<part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_genes_by_ko_classResponse">
+    <part name="return" type="typens:ArrayOfDefinition"/>
+  </message>
+<!-- get_oc_members_by_gene -->
+<!--
+  <message name="get_oc_members_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_oc_members_by_geneResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+-->
+<!-- get_pc_members_by_gene -->
+<!--
+  <message name="get_pc_members_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_pc_members_by_geneResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+-->
+<!-- PATHWAY -->
+<!-- Coloring pathways -->
+<!-- mark_pathway_by_objects -->
+  <message name="get_elements_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_elements_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfPathwayElement"/>
+  </message>
+  <message name="get_element_relations_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_element_relations_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfPathwayElementRelation"/>
+  </message>
+  <message name="color_pathway_by_elementsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="element_list" type="typens:ArrayOfint"/>
+    <part name="fg_color_list" type="typens:ArrayOfstring"/>
+    <part name="bg_color_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="color_pathway_by_elementsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+  <message name="get_html_of_colored_pathway_by_elementsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="element_list" type="typens:ArrayOfint"/>
+    <part name="fg_color_list" type="typens:ArrayOfstring"/>
+    <part name="bg_color_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_html_of_colored_pathway_by_elementsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+
+  <message name="mark_pathway_by_objectsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="object_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="mark_pathway_by_objectsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- color_pathway_by_objects -->
+  <message name="color_pathway_by_objectsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="object_id_list" type="typens:ArrayOfstring"/>
+    <part name="fg_color_list" type="typens:ArrayOfstring"/>
+    <part name="bg_color_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="color_pathway_by_objectsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- get_html_org_marked_pathway_by_objects -->
+  <message name="get_html_of_marked_pathway_by_objectsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="object_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_html_of_marked_pathway_by_objectsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- get_html_of_colored_pathway_by_objects -->
+  <message name="get_html_of_colored_pathway_by_objectsRequest">
+    <part name="pathway_id" type="xsd:string"/>
+    <part name="object_id_list" type="typens:ArrayOfstring"/>
+    <part name="fg_color_list" type="typens:ArrayOfstring"/>
+    <part name="bg_color_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_html_of_colored_pathway_by_objectsResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+<!-- Objects on the pathway -->
+<!-- get_genes_by_pathway -->
+  <message name="get_genes_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_genes_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_enzymes_by_pathway -->
+  <message name="get_enzymes_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_enzymes_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_reactions_by_pathway -->
+  <message name="get_reactions_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_reactions_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- Pathways by objects -->
+<!-- get_pathways_by_genes -->
+  <message name="get_pathways_by_genesRequest">
+    <part name="genes_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_genesResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_pathways_by_enzymes  -->
+  <message name="get_pathways_by_enzymesRequest">
+    <part name="enzyme_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_enzymesResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_pathways_by_reactions -->
+  <message name="get_pathways_by_reactionsRequest">
+    <part name="reaction_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_reactionsResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- Mutual transformation of objects -->
+<!-- Relation among pathways -->
+<!-- get_linked_pathways -->
+  <message name="get_linked_pathwaysRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_linked_pathwaysResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- Relation among genes and enzymes -->
+<!-- get_genes_by_enzyme -->
+  <message name="get_genes_by_enzymeRequest">
+    <part name="enzyme_id" type="xsd:string"/>
+    <part name="org" type="xsd:string"/>
+  </message>
+  <message name="get_genes_by_enzymeResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_enzymes_by_gene -->
+  <message name="get_enzymes_by_geneRequest">
+    <part name="genes_id" type="xsd:string"/>
+  </message>
+  <message name="get_enzymes_by_geneResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- Relation among enzymes, compounds and reactions -->
+<!-- get_enzymes_by_reaction -->
+  <message name="get_enzymes_by_reactionRequest">
+    <part name="reaction_id" type="xsd:string"/>
+  </message>
+  <message name="get_enzymes_by_reactionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- get_reactions_by_enzyme -->
+  <message name="get_reactions_by_enzymeRequest">
+    <part name="enzyme_id" type="xsd:string"/>
+  </message>
+  <message name="get_reactions_by_enzymeResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- GENES -->
+<!-- get_genes_by_organism -->
+  <message name="get_genes_by_organismRequest">
+    <part name="org" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_genes_by_organismResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+<!-- GENOME -->
+<!-- get_number_of_genes_by_organism -->
+  <message name="get_number_of_genes_by_organismRequest">
+    <part name="abbr" type="xsd:string"/>
+  </message>
+  <message name="get_number_of_genes_by_organismResponse">
+    <part name="return" type="xsd:int"/>
+  </message>
+<!-- LIGAND -->
+  <message name="get_reactions_by_glycanRequest">
+    <part name="glycan_id" type="xsd:string"/>
+  </message>
+  <message name="get_reactions_by_glycanResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_reactions_by_compoundRequest">
+    <part name="compound_id" type="xsd:string"/>
+  </message>
+  <message name="get_reactions_by_compoundResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_enzymes_by_glycanRequest">
+    <part name="glycan_id" type="xsd:string"/>
+  </message>
+  <message name="get_enzymes_by_glycanResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_enzymes_by_compoundRequest">
+    <part name="compound_id" type="xsd:string"/>
+  </message>
+  <message name="get_enzymes_by_compoundResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_compoundsRequest">
+    <part name="compound_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_compoundsResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_glycansRequest">
+    <part name="glycan_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_glycansResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_compounds_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_compounds_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_compounds_by_enzymeRequest">
+    <part name="enzyme_id" type="xsd:string"/>
+  </message>
+  <message name="get_compounds_by_enzymeResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_glycans_by_enzymeRequest">
+    <part name="enzyme_id" type="xsd:string"/>
+  </message>
+  <message name="get_glycans_by_enzymeResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_glycans_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_glycans_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_compounds_by_reactionRequest">
+    <part name="reaction_id" type="xsd:string"/>
+  </message>
+  <message name="get_compounds_by_reactionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_glycans_by_reactionRequest">
+    <part name="reaction_id" type="xsd:string"/>
+  </message>
+  <message name="get_glycans_by_reactionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="convert_mol_to_kcfRequest">
+    <part name="mol_text" type="xsd:string"/>
+  </message>
+  <message name="convert_mol_to_kcfResponse">
+    <part name="return" type="xsd:string"/>
+  </message>
+  <message name="get_kos_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_kos_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_kosRequest">
+    <part name="ko_id_list" type="typens:ArrayOfstring"/>
+    <part name="org" type="xsd:string"/>
+  </message>
+  <message name="get_pathways_by_kosResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+<!-- v6.0 -->
+  <message name="search_compounds_by_nameRequest">
+    <part name="name" type="xsd:string"/>
+  </message>
+  <message name="search_compounds_by_nameResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_glycans_by_nameRequest">
+    <part name="name" type="xsd:string"/>
+  </message>
+  <message name="search_glycans_by_nameResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_compounds_by_compositionRequest">
+    <part name="composition" type="xsd:string"/>
+  </message>
+  <message name="search_compounds_by_compositionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_compounds_by_massRequest">
+    <part name="mass" type="xsd:float"/>
+    <part name="range" type="xsd:float"/>
+  </message>
+  <message name="search_compounds_by_massResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_glycans_by_massRequest">
+    <part name="mass" type="xsd:float"/>
+    <part name="range" type="xsd:float"/>
+  </message>
+  <message name="search_glycans_by_massResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_glycans_by_compositionRequest">
+    <part name="composition" type="xsd:string"/>
+  </message>
+  <message name="search_glycans_by_compositionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_compounds_by_subcompRequest">
+    <part name="mol" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="search_compounds_by_subcompResponse">
+    <part name="return" type="typens:ArrayOfStructureAlignment"/>
+  </message>
+
+  <message name="search_glycans_by_kcamRequest">
+    <part name="kcf" type="xsd:string"/>
+    <part name="program" type="xsd:string"/>
+    <part name="option" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="search_glycans_by_kcamResponse">
+    <part name="return" type="typens:ArrayOfStructureAlignment"/>
+  </message>
+
+  <message name="get_linkdb_between_databasesRequest">
+    <part name="from_db" type="xsd:string"/>
+    <part name="to_db" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="get_linkdb_between_databasesResponse">
+    <part name="return" type="typens:ArrayOfLinkDBRelation"/>
+  </message>
+
+<!-- v6.1 -->
+  <message name="search_drugs_by_nameRequest">
+    <part name="name" type="xsd:string"/>
+  </message>
+  <message name="search_drugs_by_nameResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_drugs_by_compositionRequest">
+    <part name="composition" type="xsd:string"/>
+  </message>
+  <message name="search_drugs_by_compositionResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_drugs_by_massRequest">
+    <part name="mass" type="xsd:float"/>
+    <part name="range" type="xsd:float"/>
+  </message>
+  <message name="search_drugs_by_massResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <message name="search_drugs_by_subcompRequest">
+    <part name="mol" type="xsd:string"/>
+    <part name="offset" type="xsd:int"/>
+    <part name="limit" type="xsd:int"/>
+  </message>
+  <message name="search_drugs_by_subcompResponse">
+    <part name="return" type="typens:ArrayOfStructureAlignment"/>
+  </message>
+
+<!-- v6.2 -->
+  <message name="get_references_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_references_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfint"/>
+  </message>
+  <message name="get_drugs_by_pathwayRequest">
+    <part name="pathway_id" type="xsd:string"/>
+  </message>
+  <message name="get_drugs_by_pathwayResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_drugsRequest">
+    <part name="drug_id_list" type="typens:ArrayOfstring"/>
+  </message>
+  <message name="get_pathways_by_drugsResponse">
+    <part name="return" type="typens:ArrayOfstring"/>
+  </message>
+
+  <portType name="KEGGPortType">
+<!-- KEGG information -->
+    <operation name="list_databases">
+      <input message="typens:list_databasesRequest"/>
+      <output message="typens:list_databasesResponse"/>
+    </operation>
+    <operation name="list_organisms">
+      <input message="typens:list_organismsRequest"/>
+      <output message="typens:list_organismsResponse"/>
+    </operation>
+    <operation name="list_pathways">
+      <input message="typens:list_pathwaysRequest"/>
+      <output message="typens:list_pathwaysResponse"/>
+    </operation>
+    <operation name="list_ko_classes">
+      <input message="typens:list_ko_classesRequest"/>
+      <output message="typens:list_ko_classesResponse"/>
+    </operation>
+<!-- DBGET -->
+    <operation name="binfo">
+      <input message="typens:binfoRequest"/>
+      <output message="typens:binfoResponse"/>
+    </operation>
+    <operation name="bget">
+      <input message="typens:bgetRequest"/>
+      <output message="typens:bgetResponse"/>
+    </operation>
+    <operation name="bfind">
+      <input message="typens:bfindRequest"/>
+      <output message="typens:bfindResponse"/>
+    </operation>
+    <operation name="btit">
+      <input message="typens:btitRequest"/>
+      <output message="typens:btitResponse"/>
+    </operation>
+    <operation name="bconv">
+      <input message="typens:bconvRequest"/>
+      <output message="typens:bconvResponse"/>
+    </operation>
+<!-- LinkDB -->
+    <operation name="get_linkdb_by_entry">
+      <input message="typens:get_linkdb_by_entryRequest"/>
+      <output message="typens:get_linkdb_by_entryResponse"/>
+    </operation>
+<!-- SSDB -->
+    <operation name="get_best_neighbors_by_gene">
+      <input message="typens:get_best_neighbors_by_geneRequest"/>
+      <output message="typens:get_best_neighbors_by_geneResponse"/>
+    </operation>
+    <operation name="get_best_best_neighbors_by_gene">
+      <input message="typens:get_best_best_neighbors_by_geneRequest"/>
+      <output message="typens:get_best_best_neighbors_by_geneResponse"/>
+    </operation>
+    <operation name="get_reverse_best_neighbors_by_gene">
+      <input message="typens:get_reverse_best_neighbors_by_geneRequest"/>
+      <output message="typens:get_reverse_best_neighbors_by_geneResponse"/>
+    </operation>
+    <operation name="get_paralogs_by_gene">
+      <input message="typens:get_paralogs_by_geneRequest"/>
+      <output message="typens:get_paralogs_by_geneResponse"/>
+    </operation>
+<!-- MOTIF -->
+    <operation name="get_motifs_by_gene">
+      <input message="typens:get_motifs_by_geneRequest"/>
+      <output message="typens:get_motifs_by_geneResponse"/>
+    </operation>
+    <operation name="get_genes_by_motifs">
+      <input message="typens:get_genes_by_motifsRequest"/>
+      <output message="typens:get_genes_by_motifsResponse"/>
+    </operation>
+<!-- KO,OC,PC -->
+    <operation name="get_ko_by_gene">
+      <input message="typens:get_ko_by_geneRequest"/>
+      <output message="typens:get_ko_by_geneResponse"/>
+    </operation>
+    <operation name="get_ko_by_ko_class">
+      <input message="typens:get_ko_by_ko_classRequest"/>
+      <output message="typens:get_ko_by_ko_classResponse"/>
+    </operation>
+    <operation name="get_genes_by_ko">
+      <input message="typens:get_genes_by_koRequest"/>
+      <output message="typens:get_genes_by_koResponse"/>
+    </operation>
+    <operation name="get_genes_by_ko_class">
+      <input message="typens:get_genes_by_ko_classRequest"/>
+      <output message="typens:get_genes_by_ko_classResponse"/>
+    </operation>
+<!--
+    <operation name="get_oc_members_by_gene">
+      <input message="typens:get_oc_members_by_geneRequest"/>
+      <output message="typens:get_oc_members_by_geneResponse"/>
+    </operation>
+-->
+<!--
+    <operation name="get_pc_members_by_gene">
+      <input message="typens:get_pc_members_by_geneRequest"/>
+      <output message="typens:get_pc_members_by_geneResponse"/>
+    </operation>
+-->
+<!-- PATHWAY -->
+<!-- Coloring pathways -->
+    <operation name="get_elements_by_pathway">
+      <input message="typens:get_elements_by_pathwayRequest"/>
+      <output message="typens:get_elements_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_element_relations_by_pathway">
+      <input message="typens:get_element_relations_by_pathwayRequest"/>
+      <output message="typens:get_element_relations_by_pathwayResponse"/>
+    </operation>
+    <operation name="color_pathway_by_elements">
+      <input message="typens:color_pathway_by_elementsRequest"/>
+      <output message="typens:color_pathway_by_elementsResponse"/>
+    </operation>
+    <operation name="get_html_of_colored_pathway_by_elements">
+      <input message="typens:get_html_of_colored_pathway_by_elementsRequest"/>
+      <output message="typens:get_html_of_colored_pathway_by_elementsResponse"/>
+    </operation>
+
+    <operation name="mark_pathway_by_objects">
+      <input message="typens:mark_pathway_by_objectsRequest"/>
+      <output message="typens:mark_pathway_by_objectsResponse"/>
+    </operation>
+    <operation name="color_pathway_by_objects">
+      <input message="typens:color_pathway_by_objectsRequest"/>
+      <output message="typens:color_pathway_by_objectsResponse"/>
+    </operation>
+    <operation name="get_html_of_marked_pathway_by_objects">
+      <input message="typens:get_html_of_marked_pathway_by_objectsRequest"/>
+      <output message="typens:get_html_of_marked_pathway_by_objectsResponse"/>
+    </operation>
+    <operation name="get_html_of_colored_pathway_by_objects">
+      <input message="typens:get_html_of_colored_pathway_by_objectsRequest"/>
+      <output message="typens:get_html_of_colored_pathway_by_objectsResponse"/>
+    </operation>
+<!-- Objects on the pathway -->
+    <operation name="get_genes_by_pathway">
+      <input message="typens:get_genes_by_pathwayRequest"/>
+      <output message="typens:get_genes_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_enzymes_by_pathway">
+      <input message="typens:get_enzymes_by_pathwayRequest"/>
+      <output message="typens:get_enzymes_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_reactions_by_pathway">
+      <input message="typens:get_reactions_by_pathwayRequest"/>
+      <output message="typens:get_reactions_by_pathwayResponse"/>
+    </operation>
+<!-- Pathways by objects -->
+    <operation name="get_pathways_by_genes">
+      <input message="typens:get_pathways_by_genesRequest"/>
+      <output message="typens:get_pathways_by_genesResponse"/>
+    </operation>
+    <operation name="get_pathways_by_enzymes">
+      <input message="typens:get_pathways_by_enzymesRequest"/>
+      <output message="typens:get_pathways_by_enzymesResponse"/>
+    </operation>
+    <operation name="get_pathways_by_reactions">
+      <input message="typens:get_pathways_by_reactionsRequest"/>
+      <output message="typens:get_pathways_by_reactionsResponse"/>
+    </operation>
+<!-- Mutual transformation of objects -->
+<!-- Realtion among pathways -->
+    <operation name="get_linked_pathways">
+      <input message="typens:get_linked_pathwaysRequest"/>
+      <output message="typens:get_linked_pathwaysResponse"/>
+    </operation>
+<!-- Realtion among genes and enzymes -->
+    <operation name="get_genes_by_enzyme">
+      <input message="typens:get_genes_by_enzymeRequest"/>
+      <output message="typens:get_genes_by_enzymeResponse"/>
+    </operation>
+    <operation name="get_enzymes_by_gene">
+      <input message="typens:get_enzymes_by_geneRequest"/>
+      <output message="typens:get_enzymes_by_geneResponse"/>
+    </operation>
+<!-- Realtion among enzymes, compounds and reactions -->
+    <operation name="get_enzymes_by_reaction">
+      <input message="typens:get_enzymes_by_reactionRequest"/>
+      <output message="typens:get_enzymes_by_reactionResponse"/>
+    </operation>
+    <operation name="get_reactions_by_enzyme">
+      <input message="typens:get_reactions_by_enzymeRequest"/>
+      <output message="typens:get_reactions_by_enzymeResponse"/>
+    </operation>
+<!-- GENES -->
+    <operation name="get_genes_by_organism">
+      <input message="typens:get_genes_by_organismRequest"/>
+      <output message="typens:get_genes_by_organismResponse"/>
+    </operation>
+<!-- GENOME -->
+    <operation name="get_number_of_genes_by_organism">
+      <input message="typens:get_number_of_genes_by_organismRequest"/>
+      <output message="typens:get_number_of_genes_by_organismResponse"/>
+    </operation>
+<!-- LIGAND -->
+    <operation name="get_reactions_by_glycan">
+      <input message="typens:get_reactions_by_glycanRequest"/>
+      <output message="typens:get_reactions_by_glycanResponse"/>
+    </operation>
+    <operation name="get_reactions_by_compound">
+      <input message="typens:get_reactions_by_compoundRequest"/>
+      <output message="typens:get_reactions_by_compoundResponse"/>
+    </operation>
+    <operation name="get_enzymes_by_glycan">
+      <input message="typens:get_enzymes_by_glycanRequest"/>
+      <output message="typens:get_enzymes_by_glycanResponse"/>
+    </operation>
+    <operation name="get_enzymes_by_compound">
+      <input message="typens:get_enzymes_by_compoundRequest"/>
+      <output message="typens:get_enzymes_by_compoundResponse"/>
+    </operation>
+    <operation name="get_pathways_by_compounds">
+      <input message="typens:get_pathways_by_compoundsRequest"/>
+      <output message="typens:get_pathways_by_compoundsResponse"/>
+    </operation>
+    <operation name="get_pathways_by_glycans">
+      <input message="typens:get_pathways_by_glycansRequest"/>
+      <output message="typens:get_pathways_by_glycansResponse"/>
+    </operation>
+    <operation name="get_compounds_by_pathway">
+      <input message="typens:get_compounds_by_pathwayRequest"/>
+      <output message="typens:get_compounds_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_glycans_by_pathway">
+      <input message="typens:get_glycans_by_pathwayRequest"/>
+      <output message="typens:get_glycans_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_compounds_by_reaction">
+      <input message="typens:get_compounds_by_reactionRequest"/>
+      <output message="typens:get_compounds_by_reactionResponse"/>
+    </operation>
+    <operation name="get_glycans_by_reaction">
+      <input message="typens:get_glycans_by_reactionRequest"/>
+      <output message="typens:get_glycans_by_reactionResponse"/>
+    </operation>
+    <operation name="get_compounds_by_enzyme">
+      <input message="typens:get_compounds_by_enzymeRequest"/>
+      <output message="typens:get_compounds_by_enzymeResponse"/>
+    </operation>
+    <operation name="get_glycans_by_enzyme">
+      <input message="typens:get_glycans_by_enzymeRequest"/>
+      <output message="typens:get_glycans_by_enzymeResponse"/>
+    </operation>
+    <operation name="convert_mol_to_kcf">
+      <input message="typens:convert_mol_to_kcfRequest"/>
+      <output message="typens:convert_mol_to_kcfResponse"/>
+    </operation>
+    <operation name="get_kos_by_pathway">
+      <input message="typens:get_kos_by_pathwayRequest"/>
+      <output message="typens:get_kos_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_pathways_by_kos">
+      <input message="typens:get_pathways_by_kosRequest"/>
+      <output message="typens:get_pathways_by_kosResponse"/>
+    </operation>
+<!-- v6.0 -->
+    <operation name="search_compounds_by_name">
+      <input message="typens:search_compounds_by_nameRequest"/>
+      <output message="typens:search_compounds_by_nameResponse"/>
+    </operation>
+    <operation name="search_glycans_by_name">
+      <input message="typens:search_glycans_by_nameRequest"/>
+      <output message="typens:search_glycans_by_nameResponse"/>
+    </operation>
+    <operation name="search_compounds_by_composition">
+      <input message="typens:search_compounds_by_compositionRequest"/>
+      <output message="typens:search_compounds_by_compositionResponse"/>
+    </operation>
+    <operation name="search_compounds_by_mass">
+      <input message="typens:search_compounds_by_massRequest"/>
+      <output message="typens:search_compounds_by_massResponse"/>
+    </operation>
+    <operation name="search_glycans_by_mass">
+      <input message="typens:search_glycans_by_massRequest"/>
+      <output message="typens:search_glycans_by_massResponse"/>
+    </operation>
+    <operation name="search_glycans_by_composition">
+      <input message="typens:search_glycans_by_compositionRequest"/>
+      <output message="typens:search_glycans_by_compositionResponse"/>
+    </operation>
+    <operation name="search_compounds_by_subcomp">
+      <input message="typens:search_compounds_by_subcompRequest"/>
+      <output message="typens:search_compounds_by_subcompResponse"/>
+    </operation>
+    <operation name="search_glycans_by_kcam">
+      <input message="typens:search_glycans_by_kcamRequest"/>
+      <output message="typens:search_glycans_by_kcamResponse"/>
+    </operation>
+    <operation name="get_linkdb_between_databases">
+      <input message="typens:get_linkdb_between_databasesRequest"/>
+      <output message="typens:get_linkdb_between_databasesResponse"/>
+    </operation>
+
+<!-- v6.1 -->
+    <operation name="search_drugs_by_name">
+      <input message="typens:search_drugs_by_nameRequest"/>
+      <output message="typens:search_drugs_by_nameResponse"/>
+    </operation>
+    <operation name="search_drugs_by_composition">
+      <input message="typens:search_drugs_by_compositionRequest"/>
+      <output message="typens:search_drugs_by_compositionResponse"/>
+    </operation>
+    <operation name="search_drugs_by_mass">
+      <input message="typens:search_drugs_by_massRequest"/>
+      <output message="typens:search_drugs_by_massResponse"/>
+    </operation>
+    <operation name="search_drugs_by_subcomp">
+      <input message="typens:search_drugs_by_subcompRequest"/>
+      <output message="typens:search_drugs_by_subcompResponse"/>
+    </operation>
+
+<!-- v6.2 -->
+    <operation name="get_references_by_pathway">
+      <input message="typens:get_references_by_pathwayRequest"/>
+      <output message="typens:get_references_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_drugs_by_pathway">
+      <input message="typens:get_drugs_by_pathwayRequest"/>
+      <output message="typens:get_drugs_by_pathwayResponse"/>
+    </operation>
+    <operation name="get_pathways_by_drugs">
+      <input message="typens:get_pathways_by_drugsRequest"/>
+      <output message="typens:get_pathways_by_drugsResponse"/>
+    </operation>
+
+  </portType>
+
+
+  <binding name="KEGGBinding" type="typens:KEGGPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<!-- KEGG information -->
+    <operation name="list_databases">
+      <soap:operation soapAction="SOAP/KEGG#list_databases"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="list_organisms">
+      <soap:operation soapAction="SOAP/KEGG#list_organisms"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="list_pathways">
+      <soap:operation soapAction="SOAP/KEGG#list_pathways"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="list_ko_classes">
+      <soap:operation soapAction="SOAP/KEGG#list_ko_classes"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- DBGET -->
+    <operation name="binfo">
+      <soap:operation soapAction="SOAP/KEGG#binfo"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="bget">
+      <soap:operation soapAction="SOAP/KEGG#bget"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="bfind">
+      <soap:operation soapAction="SOAP/KEGG#bfind"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="btit">
+      <soap:operation soapAction="SOAP/KEGG#btit"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="bconv">
+      <soap:operation soapAction="SOAP/KEGG#bconv"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- LinkDB -->
+    <operation name="get_linkdb_by_entry">
+      <soap:operation soapAction="SOAP/KEGG#get_linkdb_by_entry"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- SSDB -->
+    <operation name="get_best_neighbors_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_best_neighbors_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_best_best_neighbors_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_best_best_neighbors_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_reverse_best_neighbors_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_reverse_best_neighbors_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_paralogs_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_paralogs_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- MOTIF -->
+    <operation name="get_motifs_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_motifs_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_genes_by_motifs">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_motifs"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- KO,OC,PC -->
+    <operation name="get_ko_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_ko_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_ko_by_ko_class">
+      <soap:operation soapAction="SOAP/KEGG#get_ko_by_ko_class"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_genes_by_ko">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_ko"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_genes_by_ko_class">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_ko_class"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!--
+    <operation name="get_oc_members_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_oc_members_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+-->
+<!--
+    <operation name="get_pc_members_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_pc_members_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+-->
+<!-- PATHWAY -->
+<!-- Coloring pathways -->
+    <operation name="get_elements_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_elements_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_element_relations_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_element_relations_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="color_pathway_by_elements">
+      <soap:operation soapAction="SOAP/KEGG#color_pathway_by_elements"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_html_of_colored_pathway_by_elements">
+      <soap:operation soapAction="SOAP/KEGG#get_html_of_colored_pathway_by_elements"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+    <operation name="mark_pathway_by_objects">
+      <soap:operation soapAction="SOAP/KEGG#mark_pathway_by_objects"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="color_pathway_by_objects">
+      <soap:operation soapAction="SOAP/KEGG#color_pathway_by_objects"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_html_of_marked_pathway_by_objects">
+      <soap:operation soapAction="SOAP/KEGG#get_html_of_marked_pathway_by_objects"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_html_of_colored_pathway_by_objects">
+      <soap:operation soapAction="SOAP/KEGG#get_html_of_colored_pathway_by_objects"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- Objects on the pathway -->
+    <operation name="get_genes_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_enzymes_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_enzymes_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_reactions_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_reactions_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- Pathways by object -->
+    <operation name="get_pathways_by_genes">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_genes"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_enzymes">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_enzymes"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_reactions">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_reactions"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- Mutual transformation of objects -->
+    <operation name="get_linked_pathways">
+      <soap:operation soapAction="SOAP/KEGG#get_linked_pathways"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_genes_by_enzyme">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_enzyme"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_enzymes_by_gene">
+      <soap:operation soapAction="SOAP/KEGG#get_enzymes_by_gene"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_enzymes_by_reaction">
+      <soap:operation soapAction="SOAP/KEGG#get_enzymes_by_reaction"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_reactions_by_enzyme">
+      <soap:operation soapAction="SOAP/KEGG#get_reactions_by_enzyme"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- GENES -->
+    <operation name="get_genes_by_organism">
+      <soap:operation soapAction="SOAP/KEGG#get_genes_by_organism"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- GENOME -->
+    <operation name="get_number_of_genes_by_organism">
+      <soap:operation soapAction="SOAP/KEGG#get_number_of_genes_by_organism"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+<!-- LIGAND -->
+    <operation name="get_reactions_by_glycan">
+      <soap:operation soapAction="SOAP/KEGG#get_reactions_by_glycan"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_reactions_by_compound">
+      <soap:operation soapAction="SOAP/KEGG#get_reactions_by_compound"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_enzymes_by_glycan">
+      <soap:operation soapAction="SOAP/KEGG#get_enzymes_by_glycan"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_enzymes_by_compound">
+      <soap:operation soapAction="SOAP/KEGG#get_enzymes_by_compound"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_compounds">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_compounds"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_glycans">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_glycans"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_compounds_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_compounds_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_glycans_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_glycans_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_compounds_by_reaction">
+      <soap:operation soapAction="SOAP/KEGG#get_compounds_by_reaction"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_glycans_by_reaction">
+      <soap:operation soapAction="SOAP/KEGG#get_glycans_by_reaction"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_compounds_by_enzyme">
+      <soap:operation soapAction="SOAP/KEGG#get_compounds_by_enzyme"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_glycans_by_enzyme">
+      <soap:operation soapAction="SOAP/KEGG#get_glycans_by_enzyme"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="convert_mol_to_kcf">
+      <soap:operation soapAction="SOAP/KEGG#convert_mol_to_kcf"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_kos_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_kos_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_kos">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_kos"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+<!-- v6.0 -->
+    <operation name="search_compounds_by_name">
+      <soap:operation soapAction="SOAP/KEGG#search_compounds_by_name"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_glycans_by_name">
+      <soap:operation soapAction="SOAP/KEGG#search_glycans_by_name"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_compounds_by_composition">
+      <soap:operation soapAction="SOAP/KEGG#search_compounds_by_composition"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_compounds_by_mass">
+      <soap:operation soapAction="SOAP/KEGG#search_compounds_by_mass"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_glycans_by_mass">
+      <soap:operation soapAction="SOAP/KEGG#search_glycans_by_mass"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_glycans_by_composition">
+      <soap:operation soapAction="SOAP/KEGG#search_glycans_by_composition"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_compounds_by_subcomp">
+      <soap:operation soapAction="SOAP/KEGG#search_compounds_by_subcomp"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_glycans_by_kcam">
+      <soap:operation soapAction="SOAP/KEGG#search_glycans_by_kcam"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_linkdb_between_databases">
+      <soap:operation soapAction="SOAP/KEGG#get_linkdb_between_databases"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+<!-- v6.1 -->
+    <operation name="search_drugs_by_name">
+      <soap:operation soapAction="SOAP/KEGG#search_drugs_by_name"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_drugs_by_composition">
+      <soap:operation soapAction="SOAP/KEGG#search_drugs_by_composition"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_drugs_by_mass">
+      <soap:operation soapAction="SOAP/KEGG#search_drugs_by_mass"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="search_drugs_by_subcomp">
+      <soap:operation soapAction="SOAP/KEGG#search_drugs_by_subcomp"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+<!-- v6.2 -->
+    <operation name="get_references_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_references_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_drugs_by_pathway">
+      <soap:operation soapAction="SOAP/KEGG#get_drugs_by_pathway"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+    <operation name="get_pathways_by_drugs">
+      <soap:operation soapAction="SOAP/KEGG#get_pathways_by_drugs"/>
+      <input>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="SOAP/KEGG" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+  </binding>
+
+  <service name="KEGG">
+    <port name="KEGGPort" binding="typens:KEGGBinding">
+      <soap:address location="http://soap.genome.jp/keggapi/request_v6.2.cgi"/>
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>org.gitools</groupId>
+		<artifactId>gitools</artifactId>
+		<version>1.5.4</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>gitools-ui-app</artifactId>
+	<name>gitools-ui-app</name>
+	<description>gitools graphical user interface</description>
+
+	<properties>
+		<mainClass>org.gitools.ui.Main</mainClass>
+		<wsCodebase>http://webstart.gitools.org/${version}</wsCodebase>
+		<wsHomepage>http://www.gitools.org</wsHomepage>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>edu.upf.bg</groupId>
+			<artifactId>bg-commons</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-biomart</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-kegg</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-intogen</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-ui-platform</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>colt</groupId>
+			<artifactId>colt</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>cobra</groupId>
+			<artifactId>cobra</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+		</dependency> -->
+		<dependency>
+			<artifactId>gitools-kegg</artifactId>
+			<groupId>org.gitools</groupId>
+			<type>jar</type>
+			<version>1.5.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-net</artifactId>
+					<groupId>commons-net</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>${mainClass}</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Title>GiTools</Implementation-Title>
+							<Specification-Title>GiTools</Specification-Title>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase />
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>${mainClass}</mainClass>
+				</configuration>
+			</plugin>
+
+			<!-- http://mojo.codehaus.org/webstart/webstart-maven-plugin/ -->
+			<plugin>
+				<groupId>org.codehaus.mojo.webstart</groupId>
+				<artifactId>webstart-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jnlp</goal> <!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- The path where the libraries are stored within the jnlp structure. not required. by default the libraries are within the working directory -->
+					<!-- libPath>lib</libPath -->
+
+					<!-- JNLP generation -->
+					<jnlp>
+						<!-- default values -->
+						<!--inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath-->
+						<!--inputTemplate>src/main/jnlp/template.vm</inputTemplate--> <!-- relative to inputTemplateResourcePath -->
+						<outputFile>gitools.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+
+						<mainClass>${mainClass}</mainClass>
+					</jnlp>
+
+
+					<!-- SIGNING -->
+					<!-- defining this will automatically sign the jar and its dependencies, if necessary -->
+					<sign>
+						<keystore>gitools.jks</keystore>
+						<storepass>gitools</storepass>
+						<storetype>jks</storetype>
+						<keypass>gitools</keypass>
+						<alias>gitools</alias>
+
+						<!-- only required for generating the keystore -->
+						<dnameCn>Gitools</dnameCn>
+						<dnameOu>UPF</dnameOu>
+						<dnameO>Biomedical Genomics</dnameO>
+						<dnameL>Barcelona</dnameL>
+						<dnameSt>Catalunya</dnameSt>
+						<dnameC>ES</dnameC>
+						<validity>365</validity>
+
+						<verify>true</verify>
+
+						<!-- KEYSTORE MANAGEMENT -->
+						<keystoreConfig>
+							<delete>false</delete> <!-- delete the keystore -->
+							<gen>false</gen>       <!-- optional shortcut to generate the store. -->
+						</keystoreConfig>
+					</sign>
+
+					<!-- BUILDING PROCESS -->
+
+					<pack200>true</pack200>
+					<gzip>true</gzip> <!-- default force when pack200 false, true when pack200 selected ?? -->
+
+					<!-- causes a version attribute to be output in each jar resource element, optional, default is false -->
+					<outputJarVersions>false</outputJarVersions>
+
+					<verbose>false</verbose>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

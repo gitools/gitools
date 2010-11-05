@@ -1,0 +1,59 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/analysis/tables.css")
+    </style>
+</head>
+
+<body>
+	#foreach( $section in $sections )
+		#foreach( $table in $section.tables )
+
+			#if( !$table.hideValues )
+				#set( $cs = 3 )
+			#else
+				#set( $cs = 1 )
+			#end
+
+			#if( $table.name )
+				#set( $title = "$section.name &gt; $table.name" )
+			#else
+				#set( $title = "$section.name" )
+			#end
+
+			<table id="elems">
+				<thead>
+					<tr>
+						<th colspan="$cs">$title</th>
+					</tr>
+					<tr>
+						<th>Name</th>
+						#if( !$table.hideValues )
+							<th colspan="2">Value</th>
+						#end
+					</tr>
+				</thead>
+
+				<tbody>
+					#foreach( $e in $table.elements )
+						<tr>
+							<td>$e.name</td>
+							#if( !$table.hideValues )
+								<td class="cl" style="background-color: $e.color">&nbsp;</td>
+								<td>$e.value</td>
+							#end
+						</tr>
+					#end
+				</tbody>
+
+				<tfoot>
+					<tr>
+						<td colspan="$cs">$table.elements.size() elements</td>
+					</tr>
+				</tfoot>
+			</table>
+		#end
+	#end
+</body>
+</html>

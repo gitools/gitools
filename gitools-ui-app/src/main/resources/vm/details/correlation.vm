@@ -1,0 +1,22 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/details/default.css")
+    </style>
+</head>
+<body>
+	<div id="section">
+		<div id="section_title">Correlation</div>
+		<div id="section_body">
+			<table id="attr_table">
+				#if( $columnElement ) <tr><td colspan="2" class="label">$columnElement</td></tr> #end
+				#if( $rowElement ) <tr><td colspan="2" class="label">$rowElement</td></tr> #end
+				<tr><td class="name">N</td><td>$cell.n</td></tr>
+				<tr><td class="name">Score</td><td>$fmt.format($cell.score)</td></tr>
+				<tr><td class="name">Std-Error</td><td>$fmt.format($cell.se)</td></tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
