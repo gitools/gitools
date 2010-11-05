@@ -48,6 +48,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 		
 		setTitle("Oncodriver analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ONCODRIVER, 96));
+		setHelpContext("analysis_oncodrive");
 	}
 	
 	@Override
@@ -176,6 +177,10 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 
 	public File getPopulationFile() {
 		return dataFilterPage.getRowsFilterFile();
+	}
+
+	public Double getPopulationDefaultValue() {
+		return dataFilterPage.getPopulationDefaultValue();
 	}
 
 	public String getModulesFileMime() {

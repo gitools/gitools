@@ -71,7 +71,7 @@
 	</div>
 
 	<div id="section">
-		<div id="section_title">Corrected P-Values</div>
+		<div id="section_title">Multiple test correction</div>
 		<div id="section_body">
 			<table id="attr_table">
 				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.corrected-left-p-value )</td></tr>

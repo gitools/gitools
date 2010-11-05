@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
+import org.gitools.ui.platform.help.HelpContext;
 
 public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
 	private String title;
 	
 	private Icon logo;
+
+	private HelpContext helpContext;
 	
 	protected IWizardPage currentPage;
 	
@@ -42,6 +45,19 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 	public void setLogo(Icon icon) {
 		this.logo = icon;
 		fireWizardUpdate();
+	}
+
+	@Override
+	public HelpContext getHelpContext() {
+		return helpContext;
+	}
+
+	public void setHelpContext(HelpContext helpContext) {
+		this.helpContext = helpContext;
+	}
+
+	public void setHelpContext(String helpContextId) {
+		this.helpContext = new HelpContext(helpContextId);
 	}
 
 	public void addPage(IWizardPage page) {

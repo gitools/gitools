@@ -8,14 +8,12 @@ import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.OncodriverAnalysisWizard;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -57,6 +55,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 				wizard.getDataFileMime(),
 				wizard.getDataFile().getAbsolutePath(),
 				populationFile != null ? populationFile.getAbsolutePath() : null,
+				wizard.getPopulationDefaultValue(),
 				wizard.getModulesFileMime(),
 				modulesFile != null ? modulesFile.getAbsolutePath() : null,
 				wizard.getWorkdir(),

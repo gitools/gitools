@@ -20,11 +20,13 @@ public abstract class HtestCommand extends AnalysisCommand {
 	protected String dataPath;
 
 	protected String populationPath;
+	protected Double populationDefaultValue;
 
 	public HtestCommand(
 			HtestAnalysis analysis,
 			String dataMime, String dataPath,
 			String populationPath,
+			Double populationDefaultValue,
 			String workdir, String fileName) {
 
 		super(workdir, fileName);
@@ -33,6 +35,7 @@ public abstract class HtestCommand extends AnalysisCommand {
 		this.dataMime = dataMime;
 		this.dataPath = dataPath;
 		this.populationPath = populationPath;
+		this.populationDefaultValue = populationDefaultValue;
 	}
 
 	public HtestAnalysis getaAnalysis() {

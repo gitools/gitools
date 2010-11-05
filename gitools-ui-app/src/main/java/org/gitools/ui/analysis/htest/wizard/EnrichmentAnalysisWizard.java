@@ -45,6 +45,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 		
 		setTitle("Enrichment analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ENRICHMENT, 96));
+		setHelpContext("analysis_enrichment");
 	}
 	
 	@Override
@@ -172,6 +173,10 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 	public File getPopulationFile() {
 		return dataFilterPage.getRowsFilterFile();
+	}
+
+	public Double getPopulationDefaultValue() {
+		return dataFilterPage.getPopulationDefaultValue();
 	}
 	
 	public String getModulesFileMime() {

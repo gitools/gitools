@@ -11,6 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;
@@ -43,8 +44,8 @@ public class DataFilterPage extends AbstractWizardPage {
 				updateState(); }
 		};
 
-		rowsFilterCheck.addItemListener(itemListener);
-		rowsFilterFilePath.getDocument().addDocumentListener(docCompleteListener);
+		populationCheck.addItemListener(itemListener);
+		populationFilePath.getDocument().addDocumentListener(docCompleteListener);
 
 		cutoffEnabledCheck.addItemListener(itemListener);
 		String[] cmpNames = new String[CutoffCmp.comparators.length];
@@ -84,7 +85,7 @@ public class DataFilterPage extends AbstractWizardPage {
 			complete = !fail && !cutoffValue.getText().isEmpty();
 		}
 
-		String rowsFilterPath = rowsFilterFilePath.getText();
+		String rowsFilterPath = populationFilePath.getText();
 		if (!rowsFilterPath.isEmpty()) {
 			File rowsFilterFile = new File(rowsFilterPath);
 			if (!rowsFilterFile.exists()) {
@@ -93,10 +94,14 @@ public class DataFilterPage extends AbstractWizardPage {
 			}
 		}
 
-		boolean rowsFilterChecked = rowsFilterCheck.isSelected();
-		rowsFilterFilePath.setEnabled(rowsFilterChecked);
-		rowsFilterFileBrowserBtn.setEnabled(rowsFilterChecked);
-		if (rowsFilterChecked && rowsFilterFilePath.getDocument().getLength() == 0) {
+		boolean populationChecked = populationCheck.isSelected();
+		populationFilePath.setEnabled(populationChecked);
+		populationFileBrowserBtn.setEnabled(populationChecked);
+		populationNote.setEnabled(populationChecked);
+		populationDefaultValueLabel.setEnabled(populationChecked);
+		populationDefaultValueCb.setEnabled(populationChecked);
+		
+		if (populationChecked && populationFilePath.getDocument().getLength() == 0) {
 			complete = false;
 			setMessage(MessageStatus.ERROR, "Select a file containing rows");
 		}
@@ -122,11 +127,13 @@ public class DataFilterPage extends AbstractWizardPage {
         cutoffEnabledCheck = new javax.swing.JCheckBox();
         cutoffCmpCb = new javax.swing.JComboBox();
         cutoffValue = new javax.swing.JTextField();
-        rowsFilterFilePath = new javax.swing.JTextField();
-        rowsFilterFileBrowserBtn = new javax.swing.JButton();
+        populationFilePath = new javax.swing.JTextField();
+        populationFileBrowserBtn = new javax.swing.JButton();
         discardNonMappedRowsCheck = new javax.swing.JCheckBox();
-        rowsFilterCheck = new javax.swing.JCheckBox();
-        rowsFilterNote = new javax.swing.JLabel();
+        populationCheck = new javax.swing.JCheckBox();
+        populationNote = new javax.swing.JLabel();
+        populationDefaultValueLabel = new javax.swing.JLabel();
+        populationDefaultValueCb = new javax.swing.JComboBox();
 
         cutoffEnabledCheck.setText("Transform to 1 (0 otherwise) cells with value");
         cutoffEnabledCheck.setEnabled(false);
@@ -136,19 +143,24 @@ public class DataFilterPage extends AbstractWizardPage {
         cutoffValue.setColumns(6);
         cutoffValue.setEnabled(false);
 
-        rowsFilterFileBrowserBtn.setText("Browse...");
-        rowsFilterFileBrowserBtn.addActionListener(new java.awt.event.ActionListener() {
+        populationFileBrowserBtn.setText("Browse...");
+        populationFileBrowserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rowsFilterFileBrowserBtnActionPerformed(evt);
+                populationFileBrowserBtnActionPerformed(evt);
             }
         });
 
         discardNonMappedRowsCheck.setText("Filter out rows for which no information appears in the modules");
 
-        rowsFilterCheck.setText("Filter out rows which name doesn't appear in this file:");
+        populationCheck.setText("Population / Background elements:");
 
-        rowsFilterNote.setFont(rowsFilterNote.getFont().deriveFont(rowsFilterNote.getFont().getSize()-2f));
-        rowsFilterNote.setText("This should be a file containing one row id per line.");
+        populationNote.setFont(populationNote.getFont().deriveFont(populationNote.getFont().getSize()-2f));
+        populationNote.setText("This should be a file containing one row id per line.");
+
+        populationDefaultValueLabel.setText("Default value to use when a row doesn't exist in the data");
+
+        populationDefaultValueCb.setEditable(true);
+        populationDefaultValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "Empty" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -157,15 +169,19 @@ public class DataFilterPage extends AbstractWizardPage {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rowsFilterCheck)
+                    .addComponent(populationCheck)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rowsFilterNote)
+                            .addComponent(populationNote)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(rowsFilterFilePath, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                                .addComponent(populationFilePath, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rowsFilterFileBrowserBtn))))
+                                .addComponent(populationFileBrowserBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(populationDefaultValueLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cutoffEnabledCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -179,35 +195,39 @@ public class DataFilterPage extends AbstractWizardPage {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rowsFilterCheck)
+                .addComponent(populationCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rowsFilterFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rowsFilterFileBrowserBtn))
+                    .addComponent(populationFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(populationFileBrowserBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rowsFilterNote)
-                .addGap(40, 40, 40)
+                .addComponent(populationNote)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(populationDefaultValueLabel)
+                    .addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cutoffEnabledCheck)
                     .addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(discardNonMappedRowsCheck)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void rowsFilterFileBrowserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rowsFilterFileBrowserBtnActionPerformed
+	private void populationFileBrowserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populationFileBrowserBtnActionPerformed
 		File selPath = FileChooserUtils.selectFile(
 				"Select file",
 				Settings.getDefault().getLastDataPath(),
 				FileChooserUtils.MODE_OPEN);
 
 		if (selPath != null) {
-			rowsFilterFilePath.setText(selPath.getAbsolutePath());
+			populationFilePath.setText(selPath.getAbsolutePath());
 			Settings.getDefault().setLastDataPath(selPath.getAbsolutePath());
 		}
-	}//GEN-LAST:event_rowsFilterFileBrowserBtnActionPerformed
+	}//GEN-LAST:event_populationFileBrowserBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,22 +237,24 @@ public class DataFilterPage extends AbstractWizardPage {
     private javax.swing.JCheckBox cutoffEnabledCheck;
     private javax.swing.JTextField cutoffValue;
     private javax.swing.JCheckBox discardNonMappedRowsCheck;
-    private javax.swing.JCheckBox rowsFilterCheck;
-    private javax.swing.JButton rowsFilterFileBrowserBtn;
-    private javax.swing.JTextField rowsFilterFilePath;
-    private javax.swing.JLabel rowsFilterNote;
+    private javax.swing.JCheckBox populationCheck;
+    private javax.swing.JComboBox populationDefaultValueCb;
+    private javax.swing.JLabel populationDefaultValueLabel;
+    private javax.swing.JButton populationFileBrowserBtn;
+    private javax.swing.JTextField populationFilePath;
+    private javax.swing.JLabel populationNote;
     // End of variables declaration//GEN-END:variables
 
 	public void setRowsFilterFileVisible(boolean visible) {
-		rowsFilterCheck.setVisible(visible);
-		rowsFilterFilePath.setVisible(visible);
-		rowsFilterFileBrowserBtn.setVisible(visible);
-		rowsFilterNote.setVisible(visible);
+		populationCheck.setVisible(visible);
+		populationFilePath.setVisible(visible);
+		populationFileBrowserBtn.setVisible(visible);
+		populationNote.setVisible(visible);
 	}
 
 	public File getRowsFilterFile() {
-		String text = rowsFilterFilePath.getText();
-		return rowsFilterCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
+		String text = populationFilePath.getText();
+		return populationCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
 	}
 
 	public boolean isBinaryCutoffEnabled() {
@@ -274,4 +296,16 @@ public class DataFilterPage extends AbstractWizardPage {
 	public void setDiscardNonMappedRowsVisible(boolean visible) {
 		discardNonMappedRowsCheck.setVisible(visible);
 	}
+
+	public Double getPopulationDefaultValue() {
+		String value = (String) populationDefaultValueCb.getSelectedItem();
+		Double v = Double.NaN;
+		try {
+			v = Double.parseDouble(value);
+		}
+		catch (NumberFormatException ex) {}
+		return v;
+	}
+
+
 }

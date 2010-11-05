@@ -106,7 +106,7 @@ public abstract class Help {
 				for (int i = 0; i < matcher.groupCount(); i++)
 					p.setProperty("" + i, matcher.group(i));
 				urlStr = expandPattern(properties, map.getUrl());
-				System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
+				//System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
 				break;
 			}
 		}

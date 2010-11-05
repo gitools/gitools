@@ -83,6 +83,7 @@ public class EnrichmentTool extends HtestTool {
         		analysis,
 				dataMime, args.dataFile,
 				args.populationFile,
+				populationDefaultValue,
 				modulesMime, args.modulesFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT);
         

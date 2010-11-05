@@ -88,7 +88,7 @@ public class HeatmapDetailsController implements EntityController {
 			//final IElementAdapter rowAdapter = matrixView.getRowAdapter();
 			final Object rowId = matrixView.getRowLabel(row);
 			final Object rowLabel = heatmap.getRowLabel(row);
-
+			
 			final IElementAdapter cellAdapter = matrixView.getCellAdapter();
 			final Object cellElement = matrixView.getCell(row, column);
 

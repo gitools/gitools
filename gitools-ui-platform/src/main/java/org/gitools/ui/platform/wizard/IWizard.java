@@ -1,6 +1,7 @@
 package org.gitools.ui.platform.wizard;
 
 import javax.swing.Icon;
+import org.gitools.ui.platform.help.HelpContext;
 
 public interface IWizard {
 
@@ -41,4 +42,6 @@ public interface IWizard {
 	void addWizardUpdateListener(IWizardUpdateListener listener);
 
 	void removeWizardUpdateListener(IWizardUpdateListener listener);
+
+	public HelpContext getHelpContext();
 }

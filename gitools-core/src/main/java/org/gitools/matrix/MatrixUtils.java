@@ -17,7 +17,7 @@ import org.gitools.model.ModuleMap;
 public class MatrixUtils {
 
 	public static interface DoubleCast {
-		double getDoubleValue(Object value);
+		Double getDoubleValue(Object value);
 	}
 
 	public static int intValue(Object value) {
@@ -37,45 +37,48 @@ public class MatrixUtils {
 
 	@Deprecated // Better use createDoubleCast() when accessing multiple values
 	public static double doubleValue(Object value) {
+		if (value == null)
+			return Double.NaN; //TODO null;
+		
 		double v = Double.NaN;
-		if (value != null) {
-			try { v = ((Double) value).doubleValue(); }
-			catch (Exception e1) {
-				try { v = ((Integer) value).doubleValue(); }
-				catch (Exception e2) {
-					/*try { v = Double.parseDouble((String) value); }
-					catch (Exception e3) { }*/
-				}
+		
+		try { v = ((Double) value).doubleValue(); }
+		catch (Exception e1) {
+			try { v = ((Integer) value).doubleValue(); }
+			catch (Exception e2) {
+				/*try { v = Double.parseDouble((String) value); }
+				catch (Exception e3) { }*/
 			}
 		}
+		
 		return v;
 	}
 
 	public static DoubleCast createDoubleCast(Class cls) {
 		if (cls.equals(Double.class) || cls.equals(double.class))
 			return new DoubleCast() {
-				@Override public double getDoubleValue(Object value) {
-					return ((Double) value).doubleValue(); }
+				@Override public Double getDoubleValue(Object value) {
+					return value != null ? ((Double) value).doubleValue() : null; }
 				};
 		else if (cls.equals(Float.class) || cls.equals(float.class))
 			return new DoubleCast() {
-				@Override public double getDoubleValue(Object value) {
-					return ((Float) value).doubleValue(); }
+				@Override public Double getDoubleValue(Object value) {
+					return value != null ? ((Float) value).doubleValue() : null; }
 				};
 		else if (cls.equals(Integer.class) || cls.equals(int.class))
 			return new DoubleCast() {
-				@Override public double getDoubleValue(Object value) {
-					return ((Integer) value).doubleValue(); }
+				@Override public Double getDoubleValue(Object value) {
+					return value != null ? ((Integer) value).doubleValue() : null; }
 				};
 		else if (cls.equals(Long.class) || cls.equals(long.class))
 			return new DoubleCast() {
-				@Override public double getDoubleValue(Object value) {
-					return ((Long) value).doubleValue(); }
+				@Override public Double getDoubleValue(Object value) {
+					return value != null ? ((Long) value).doubleValue() : null; }
 				};
 		
 		return new DoubleCast() {
-			@Override public double getDoubleValue(Object value) {
-				return Double.NaN; }
+			@Override public Double getDoubleValue(Object value) {
+				return value != null ? Double.NaN : null; }
 			};
 	}
 
@@ -92,10 +95,12 @@ public class MatrixUtils {
 
 		for (int ri = 0; ri < numRows; ri++) {
 			for (int ci = 0; ci < numCols; ci++) {
-				double v = valueCast.getDoubleValue(data.getCellValue(ri, ci, valueIndex));
-				min = v < min ? v : min;
-				max = v > max ? v : max;
-				binary &= (Double.isNaN(v) || v == 0 || v == 1);
+				Double v = valueCast.getDoubleValue(data.getCellValue(ri, ci, valueIndex));
+				if (v != null) {
+					min = v < min ? v : min;
+					max = v > max ? v : max;
+					binary &= (Double.isNaN(v) || v == 0 || v == 1);
+				}
 			}
 		}
 

@@ -29,5 +29,6 @@ public class GoModulesImportWizard extends ModulesImportWizard {
 
 		setTitle("Import Gene Ontology modules...");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_GO, 96));
+		setHelpContext("import_gene_ontology");
 	}
 }

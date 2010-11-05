@@ -47,6 +47,11 @@ public abstract class HtestTool extends AnalysisTool {
 				usage = "File with background population elements.")
 		public String populationFile;
 
+		@Option(name = "-Pv", aliases = "-population-default-value", metaVar = "<value>",
+				usage = "Default value to use when a population element"
+				+ "\ndoesn't exist in the data.\nIt can be a number, 'empty' or 'nan'. (default: 0)")
+		public String populationDefaultValue = "0.0";
+
 		@Option(name = "-b", aliases = "-bin-cutoff-filt",
 				usage = "Binary cutoff filter. Available conditions:\n" +
 						"lt (less than), le (less equal than),\n" +
@@ -64,6 +69,8 @@ public abstract class HtestTool extends AnalysisTool {
 	protected boolean binaryCutoffEnabled = false;
 	protected CutoffCmp binaryCutoffCmp;
 	protected double binaryCutoffValue;
+
+	protected Double populationDefaultValue;
 
 	protected ToolConfig testConfig;
 	protected List<String[]> testConfigParams = new ArrayList<String[]>(0);
@@ -103,6 +110,20 @@ public abstract class HtestTool extends AnalysisTool {
 			}
 			catch (NumberFormatException e) {
 				throw new ToolValidationException("Invalid cutoff: " + mat.group(2));
+			}
+		}
+
+		if (args.populationDefaultValue.equalsIgnoreCase("empty"))
+			populationDefaultValue = null;
+		else if (args.populationDefaultValue.equalsIgnoreCase("nan"))
+			populationDefaultValue = Double.NaN;
+		else {
+			try {
+				populationDefaultValue =
+						Double.parseDouble(args.populationDefaultValue);
+			}
+			catch (NumberFormatException ex) {
+				throw new ToolValidationException("Population default value should be a number, 'empty' or 'nan");
 			}
 		}
 	}

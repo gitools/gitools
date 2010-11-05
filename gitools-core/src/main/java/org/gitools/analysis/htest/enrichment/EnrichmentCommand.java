@@ -32,13 +32,15 @@ public class EnrichmentCommand extends HtestCommand {
 			String dataMime,
 			String dataFile,
 			String populationPath,
+			Double populationDefaultValue,
 			String modulesMime,
 			String modulesFile,
 			String workdir,
 			String fileName) {
 		
 		super(analysis, dataMime, dataFile,
-				populationPath, workdir, fileName);
+				populationPath, populationDefaultValue,
+				workdir, fileName);
 
 		this.modulesMime = modulesMime;
 		this.modulesPath = modulesFile;
@@ -132,8 +134,10 @@ public class EnrichmentCommand extends HtestCommand {
 		Properties dataProps = new Properties();
 		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
 		dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
-		if (populationLabels != null)
+		if (populationLabels != null) {
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
+			dataProps.put(MatrixTextPersistence.BACKGROUND_VALUE, populationDefaultValue);
+		}
 
 		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
 

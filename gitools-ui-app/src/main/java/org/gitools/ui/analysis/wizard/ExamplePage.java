@@ -45,7 +45,6 @@ public class ExamplePage extends AbstractWizardPage {
 			textPanel.add(panel, BorderLayout.CENTER);
 		}
 		catch (Exception ex) {
-			
 		}
 		
 		setComplete(true);

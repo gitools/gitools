@@ -46,7 +46,7 @@ public class GenericFormatter implements Serializable {
 	
 	public String pvalue(double value) {
 		if (value < 1e-16)
-			return ltString + " 1.0e-16";
+			return ltString + "1.0e-16";
 		
 		sb.setLength(0);
 		fmt.format("%.3g", value);

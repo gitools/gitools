@@ -64,7 +64,7 @@ public class ExamplesManager {
 				locPath = locPath.substring(0, pos);
 		}
 		
-		System.out.println("locPath = " + locPath);
+		//System.out.println("locPath = " + locPath);
 
 		String[] paths = new String[] {
 			"examples",
@@ -75,7 +75,7 @@ public class ExamplesManager {
 
 		for (String path : paths) {
 			file = new File(locPath, path);
-			System.out.println(file.getAbsoluteFile());
+			//System.out.println(file.getAbsoluteFile());
 			
 			if (file.exists()) {
 				file = new File(file, exampleId);

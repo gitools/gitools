@@ -29,5 +29,6 @@ public class KeggModulesImportWizard extends ModulesImportWizard {
 
 		setTitle("Import KEGG modules...");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_KEGG, 96));
+		setHelpContext("import_kegg");
 	}
 }

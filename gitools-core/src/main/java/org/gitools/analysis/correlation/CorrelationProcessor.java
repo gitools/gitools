@@ -80,10 +80,14 @@ public class CorrelationProcessor {
 		if (replaceNanValue == null)
 			replaceNanValue = Double.NaN;
 
+		Class<?> valueClass = data.getCellAttributes().get(attributeIndex).getValueClass();
+		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+
 		for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
 			for (int row = 0; row < numRows; row++) {
-				double v = MatrixUtils.doubleValue(data.getCellValue(row, i, attributeIndex));
-				if (Double.isNaN(v))
+				Object value = data.getCellValue(row, i, attributeIndex);
+				Double v = cast.getDoubleValue(value);
+				if (v == null || Double.isNaN(v))
 					v = replaceNanValue;
 				x[row] = v;
 			}
@@ -97,8 +101,10 @@ public class CorrelationProcessor {
 					for (int row = 0; row < numRows; row++) {
 						double v0 = x[row];
 
-						double v1 = MatrixUtils.doubleValue(data.getCellValue(row, j, attributeIndex));
-						if (Double.isNaN(v1))
+						Object value = data.getCellValue(row, j, attributeIndex);
+
+						Double v1 = cast.getDoubleValue(value);
+						if (v1 == null || Double.isNaN(v1))
 							v1 = replaceNanValue;
 
 						if (!Double.isNaN(v0) && !Double.isNaN(v1)) {

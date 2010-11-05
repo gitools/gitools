@@ -52,6 +52,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceManager.FileRef;
 import org.gitools.ui.actions.data.ColorClusterGenerateAction;
 import org.gitools.ui.dialog.ListDialog;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -59,15 +60,16 @@ import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.clustering.color.ClusterSetEditorDialog;
+import org.slf4j.LoggerFactory;
 
 public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel {
 
 	private boolean rowMode;
 
-	private boolean updatingControls = false;
+	//private boolean updatingControls = false;
 
-	//TODO: CHANGE NAME OF X
 	private boolean updatingModel = false;
 
     /** Creates new form HeatmapPropertiesHeaderPanel */
@@ -183,9 +185,11 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		AnnotationMatrix annMatrix = hdr.getAnnotations();
 		
 		if (annMatrix != null) {
-			File file = PersistenceManager.getDefault().getEntityFileRef(annMatrix).getFile();
+			//FIXME what if cache is disabled ?
+			/*FileRef fileRef = PersistenceManager.getDefault().getEntityFileRef(annMatrix);
+			File file = fileRef != null ? fileRef.getFile() : null;
 			if (file != null)
-				annFile.setText(file.getName());
+				annFile.setText(file.getName());*/
 
 			setAnnotationControlsEnabled(true);
 		}
@@ -231,6 +235,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 		else if (source.equals(hdr)) {
 			updatingControls = true;
+
 			if (HeatmapHeader.FG_COLOR_CHANGED.equals(pname))
 				fgColor.setColor(hdr.getForegroundColor());
 			else if (HeatmapHeader.BG_COLOR_CHANGED.equals(pname))
@@ -256,10 +261,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	private HeatmapHeader getHeader() {
 		return rowMode ?
 			hm.getRowHeader() : hm.getColumnHeader();
-	}
-
-	private Font selectFont(Font font) {
-		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	private File getSelectedPath() {
@@ -585,16 +586,20 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		try {
 			File file = getSelectedPath();
 
-			AnnotationMatrix annMatrix =
-					(AnnotationMatrix) PersistenceManager.getDefault().load(
-						file, MimeTypes.ANNOTATION_MATRIX,
-						new NullProgressMonitor());
+			if (file != null) {
+				AnnotationMatrix annMatrix =
+						(AnnotationMatrix) PersistenceManager.getDefault().load(
+							file, MimeTypes.ANNOTATION_MATRIX,
+							new NullProgressMonitor());
 
-			HeatmapHeader decorator = getHeader();
-			decorator.setAnnotations(annMatrix);
+				HeatmapHeader hdr = getHeader();
+				hdr.setAnnotations(annMatrix);
+
+				annFile.setText(file.getName());
+			}
 		}
 		catch (Exception ex) {
-			ex.printStackTrace(); //FIXME
+			LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
 		}
 	}//GEN-LAST:event_annOpenActionPerformed
 

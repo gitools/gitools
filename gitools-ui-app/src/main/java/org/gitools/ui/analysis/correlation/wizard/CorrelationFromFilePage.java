@@ -30,6 +30,7 @@ import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
@@ -41,8 +42,8 @@ public class CorrelationFromFilePage extends AbstractWizardPage {
 		initComponents();
 
 		setTitle("Configure correlation options");
-
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
+		setHelpContext(new HelpContext("analysis_correlation"));
 
 		setComplete(true);
 		

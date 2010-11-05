@@ -2,13 +2,9 @@ package org.gitools.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;

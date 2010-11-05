@@ -192,7 +192,14 @@ public class WizardDialog extends AbstractDialog {
 	}
 
 	private void helpActionPerformed() {
+		final IWizard wizard = currentPage.getWizard();
 		HelpContext context = currentPage.getHelpContext();
+		if (context == null)
+			context = wizard.getHelpContext();
+
+		if (context == null)
+			context = new HelpContext("__default__"); //FIXME
+
 		if (context != null) {
 			try {
 				Help.getDefault().showHelp(context);

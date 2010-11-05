@@ -93,10 +93,12 @@ public class ObjectMatrixTextPersistence
 	}
 	
 	private static String getElementClassId(String[] ids) {
-		Arrays.sort(ids);
+		String[] ids2 = new String[ids.length];
+		System.arraycopy(ids, 0, ids2, 0, ids.length);
+		Arrays.sort(ids2);
 		
 		StringBuilder sb = new StringBuilder();
-		for (String id : ids)
+		for (String id : ids2)
 			sb.append(':').append(id);
 		return sb.toString();
 	}
@@ -204,10 +206,7 @@ public class ObjectMatrixTextPersistence
 			
 			int numParams = line.length - 2;
 			String[] paramNames = new String[numParams];
-			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
-			
-			String[] ids = new String[numParams];
-			System.arraycopy(line, 2, ids, 0, line.length - 2);
+			System.arraycopy(line, 2, paramNames, 0, numParams);
 			
 			// infer element class and create corresponding adapter and factory
 			Class<?> elementClass = null;
@@ -486,8 +485,8 @@ public class ObjectMatrixTextPersistence
 					cl = cl.substring(META_TAG.length()).trim();
 					int pos = cl.indexOf(':');
 					if (pos > 0 && pos < cl.length() - 1) {
-						String key = cl.substring(0, pos);
-						String value = cl.substring(pos + 1);
+						String key = cl.substring(0, pos).trim();
+						String value = cl.substring(pos + 1).trim();
 						meta.put(key, value);
 					}
 				}

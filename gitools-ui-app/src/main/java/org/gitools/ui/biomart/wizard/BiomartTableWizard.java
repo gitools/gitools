@@ -70,6 +70,7 @@ public class BiomartTableWizard extends AbstractWizard {
 
 		setTitle("Import table ...");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
+		setHelpContext("import_biomart");
 	}
 
 	@Override

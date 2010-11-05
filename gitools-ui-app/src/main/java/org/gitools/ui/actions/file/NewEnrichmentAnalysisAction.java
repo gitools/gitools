@@ -50,6 +50,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 				wizard.getDataFileMime(),
 				wizard.getDataFile().getAbsolutePath(),
 				populationFile != null ? populationFile.getAbsolutePath() : null,
+				wizard.getPopulationDefaultValue(),
 				wizard.getModulesFileMime(),
 				wizard.getModulesFile().getAbsolutePath(),
 				wizard.getWorkdir(),

@@ -25,15 +25,20 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="rowsFilterCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="12" pref="12" max="12" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="rowsFilterNote" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="populationNote" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="rowsFilterFilePath" pref="540" max="32767" attributes="0"/>
+                              <Component id="populationFilePath" pref="540" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="rowsFilterFileBrowserBtn" min="-2" max="-2" attributes="0"/>
+                              <Component id="populationFileBrowserBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="populationDefaultValueLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="populationDefaultValueCb" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -54,15 +59,20 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="rowsFilterCheck" min="-2" max="-2" attributes="0"/>
+              <Component id="populationCheck" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="rowsFilterFilePath" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="rowsFilterFileBrowserBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationFilePath" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationFileBrowserBtn" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="rowsFilterNote" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <Component id="populationNote" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="populationDefaultValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="populationDefaultValueCb" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cutoffEnabledCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cutoffCmpCb" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -70,7 +80,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="discardNonMappedRowsCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="192" max="32767" attributes="0"/>
+              <EmptySpace pref="141" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,14 +106,14 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="rowsFilterFilePath">
+    <Component class="javax.swing.JTextField" name="populationFilePath">
     </Component>
-    <Component class="javax.swing.JButton" name="rowsFilterFileBrowserBtn">
+    <Component class="javax.swing.JButton" name="populationFileBrowserBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Browse..."/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rowsFilterFileBrowserBtnActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="populationFileBrowserBtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="discardNonMappedRowsCheck">
@@ -111,19 +121,35 @@
         <Property name="text" type="java.lang.String" value="Filter out rows for which no information appears in the modules"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="rowsFilterCheck">
+    <Component class="javax.swing.JCheckBox" name="populationCheck">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Filter out rows which name doesn&apos;t appear in this file:"/>
+        <Property name="text" type="java.lang.String" value="Population / Background elements:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="rowsFilterNote">
+    <Component class="javax.swing.JLabel" name="populationNote">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
           <FontInfo relative="true">
-            <Font component="rowsFilterNote" property="font" relativeSize="true" size="-2"/>
+            <Font component="populationNote" property="font" relativeSize="true" size="-2"/>
           </FontInfo>
         </Property>
         <Property name="text" type="java.lang.String" value="This should be a file containing one row id per line."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="populationDefaultValueLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Default value to use when a row doesn&apos;t exist in the data"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="populationDefaultValueCb">
+      <Properties>
+        <Property name="editable" type="boolean" value="true"/>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="0"/>
+            <StringItem index="1" value="Empty"/>
+          </StringArray>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>

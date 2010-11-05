@@ -182,8 +182,8 @@ public class PersistenceManager implements Serializable {
 
 		Object entity = entityPersistence.read(file, monitor);
 
-		entityCache.put(fileRef, entity);
-		entityFileRefMap.put(entity, fileRef);
+		//DISABLED: entityCache.put(fileRef, entity);
+		//DISABLED: entityFileRefMap.put(entity, fileRef);
 
 		return entity;
 	}
@@ -224,8 +224,8 @@ public class PersistenceManager implements Serializable {
 
 		FileRef fileRef = new FileRef(file, mimeType);
 
-		entityCache.put(fileRef, entity);
-		entityFileRefMap.put(entity, fileRef);
+		//DISABLED: entityCache.put(fileRef, entity);
+		//DISABLED: entityFileRefMap.put(entity, fileRef);
 	}
 
 	public void clearEntityCache() {

@@ -23,6 +23,8 @@
 				#if( $rowElement ) <tr><td colspan="2" class="label">$rowElement</td></tr> #end
 				<tr><td class="name">N</td><td>$cell.N</td></tr>
 				<tr><td class="name">Observed</td><td>$cell.observed</td></tr>
+				<tr><td class="name">Expected-Mean</td><td>$fmt.format($cell.expected-mean)</td></tr>
+				<tr><td class="name">Expected-StDev</td><td>$fmt.format("%.3g", $cell.expected-stdev)</td></tr>
 			</table>
 		</div>
 	</div>
@@ -39,7 +41,7 @@
 	</div>
 
 	<div id="section">
-		<div id="section_title">Corrected P-Values</div>
+		<div id="section_title">Multiple test correction</div>
 		<div id="section_body">
 			<table id="attr_table">
 				<tr><td class="name">Left</td><td>$fmt.pvalue( $cell.corrected-left-p-value )</td></tr>

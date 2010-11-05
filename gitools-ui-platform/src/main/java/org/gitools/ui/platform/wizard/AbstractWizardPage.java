@@ -37,7 +37,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 	public AbstractWizardPage(String id) {
 		this.id = id != null ? id : this.getClass().getCanonicalName();
 		this.pageComplete = false;
-		this.helpContext = new HelpContext(this.getClass());
+		//this.helpContext = new HelpContext(this.getClass());
 	}
 	
 	@Override
@@ -139,6 +139,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 		listeners.remove(listener);
 	}
 
+	@Override
 	public void setHelpContext(HelpContext helpContext) {
 		this.helpContext = helpContext;
 	}

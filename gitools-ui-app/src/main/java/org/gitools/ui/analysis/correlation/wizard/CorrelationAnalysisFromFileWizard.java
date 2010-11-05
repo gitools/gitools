@@ -59,6 +59,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
 		setTitle("Correlation analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CORRELATION, 96));
+		setHelpContext("analysis_correlation");
 	}
 
 	@Override

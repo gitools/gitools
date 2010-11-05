@@ -71,10 +71,12 @@ public class CompositeColorScale extends SimpleColorScale {
 		if (color != null)
 			return color;
 
-		for (ColorScaleFragment range : fragments)
-			if (range.min.getValue() <= value
-					&& value <= range.max.getValue())
+		for (ColorScaleFragment range : fragments) {
+			double rmin = range.min.getValue();
+			double rmax = range.max.getValue();
+			if (rmin <= value && value <= rmax)
 				return range.scale.valueColor(value);
+		}
 		
 		return undefinedColor;
 	}

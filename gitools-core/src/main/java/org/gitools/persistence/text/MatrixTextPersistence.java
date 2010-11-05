@@ -210,8 +210,6 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 						int colidx = columnsOrder != null ? columnsOrder[col] : col;
 
 						Double value = (Double) valueTranslator.stringToValue(fields[col + 1]);
-						if (value == null)
-							System.out.println();
 
 						matrix.setCellValue(rowidx, colidx, 0, value);
 						col++;
@@ -229,7 +227,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 			// Fill the rest of population rows with background value
 
-			double backgroundValue = getBackgroundValue();
+			Double backgroundValue = getBackgroundValue();
 			while (row < numRows) {
 				for (int col = 0; col < numColumns; col++)
 					matrix.setCellValue(row, col, 0, backgroundValue);
