@@ -160,7 +160,8 @@ public abstract class BaseMatrix
 		return cellAdapter.getProperties();
 	}
 	
-	private int getCellAttributeIndex(String id) {
+	@Override
+	public int getCellAttributeIndex(String id) {
 		Integer index = cellAdapter.getPropertyIndex(id);
 		if (index == null)
 			throw new RuntimeException("There isn't any property with id: " + id);

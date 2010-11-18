@@ -52,7 +52,6 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.PersistenceManager.FileRef;
 import org.gitools.ui.actions.data.ColorClusterGenerateAction;
 import org.gitools.ui.dialog.ListDialog;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -79,8 +78,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         initComponents();
 
 		// TODO activate in the next version:
-		colorAnnButton.setVisible(false);
-		colorAnnEditBtn.setVisible(false);
+		//colorAnnButton.setVisible(false);
+		//colorAnnEditBtn.setVisible(false);
     }
 
 	@Override

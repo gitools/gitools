@@ -22,6 +22,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Arrays;
 import java.util.Date;
 import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
@@ -30,7 +31,7 @@ import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
 
 
-public class CombinationProcessor {
+public class CombinationProcessor implements AnalysisProcessor {
 
 	private CombinationAnalysis analysis;
 
@@ -38,6 +39,7 @@ public class CombinationProcessor {
 		this.analysis = analysis;
 	}
 	
+	@Override
 	public void run(IProgressMonitor monitor) throws AnalysisException {
 
 		Date startTime = new Date();

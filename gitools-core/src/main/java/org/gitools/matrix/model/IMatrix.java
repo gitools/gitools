@@ -31,4 +31,5 @@ public interface IMatrix {
 	IElementAdapter getCellAdapter();
 	
 	List<IElementAttribute> getCellAttributes();
+	int getCellAttributeIndex(String id);
 }

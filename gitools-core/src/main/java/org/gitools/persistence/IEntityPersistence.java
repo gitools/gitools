@@ -12,7 +12,7 @@ public interface IEntityPersistence<T> {
 	public void setProperties(Properties properties);
 
 	String[] getMetadataKeys();
-	Map<String, Object> readMetadata(File file, String[] keys, IProgressMonitor monitor) throws PersistenceException;;
+	Map<String, Object> readMetadata(File file, String[] keys, IProgressMonitor monitor) throws PersistenceException;
 	
 	T read(File file, IProgressMonitor monitor) throws PersistenceException;
 	

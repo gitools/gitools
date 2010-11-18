@@ -50,7 +50,8 @@ public class EnrichmentProcessor extends HtestProcessor {
 		this.analysis = analysis;
 	}
 	
-	public void run(IProgressMonitor monitor) throws AnalysisException, InterruptedException {
+	@Override
+	public void run(IProgressMonitor monitor) throws AnalysisException {
 		
 		Date startTime = new Date();
 		
@@ -136,7 +137,12 @@ public class EnrichmentProcessor extends HtestProcessor {
 				final String moduleName = modules.getQuick(moduleIndex).toString();
 				final int[] itemIndices = moduleItemIndices[moduleIndex];
 				
-				final RunSlot slot = (RunSlot) threadQueue.take();
+				final RunSlot slot;
+				try {
+					slot = (RunSlot) threadQueue.take();
+				} catch (InterruptedException ex) {
+					throw new AnalysisException(ex);
+				}
 				
 				if (slot.population != population) {
 					slot.population = population;

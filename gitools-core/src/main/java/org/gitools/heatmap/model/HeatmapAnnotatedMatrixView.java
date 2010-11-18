@@ -223,4 +223,9 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView {
 	public List<IElementAttribute> getCellAttributes() {
 		return mv.getCellAttributes();
 	}
+
+	@Override
+	public int getCellAttributeIndex(String id) {
+		return mv.getCellAttributeIndex(id);
+	}
 }

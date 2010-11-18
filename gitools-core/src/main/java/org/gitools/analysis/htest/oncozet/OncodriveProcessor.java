@@ -16,6 +16,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
@@ -42,7 +43,8 @@ public class OncodriveProcessor extends HtestProcessor {
 		this.analysis = analysis;
 	}
 	
-	public void run(IProgressMonitor monitor) throws InterruptedException {
+	@Override
+	public void run(IProgressMonitor monitor) throws AnalysisException {
 		
 		Date startTime = new Date();
 	
@@ -150,7 +152,12 @@ public class OncodriveProcessor extends HtestProcessor {
 								MatrixUtils.doubleValue(
 									dataMatrix.getCellValue(itemIndex, columnIndices[j], 0)));
 
-					final RunSlot slot = (RunSlot) threadQueue.take();
+					final RunSlot slot;
+					try {
+						slot = (RunSlot) threadQueue.take();
+					} catch (InterruptedException ex) {
+						throw new AnalysisException(ex);
+					}
 
 					if (slot.population != population) {
 						slot.population = population;

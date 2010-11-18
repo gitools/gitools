@@ -251,6 +251,11 @@ public class DiagonalMatrixView implements IMatrixView {
 	}
 
 	@Override
+	public int getCellAttributeIndex(String id) {
+		return mv.getCellAttributeIndex(id);
+	}
+
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		if (listener != null)
 			listeners.add(listener);

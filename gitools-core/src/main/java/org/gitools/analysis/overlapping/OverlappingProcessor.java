@@ -15,38 +15,37 @@
  *  under the License.
  */
 
-package org.gitools.analysis.correlation;
+package org.gitools.analysis.overlapping;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Date;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
-import org.gitools.analysis.MethodException;
-import org.gitools.analysis.correlation.methods.CorrelationMethodFactory;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 
-public class CorrelationProcessor implements AnalysisProcessor {
 
-	protected CorrelationAnalysis analysis;
+public class OverlappingProcessor implements AnalysisProcessor {
 
-	public CorrelationProcessor(CorrelationAnalysis analysis) {
+	private OverlappingAnalysis analysis;
+
+	public OverlappingProcessor(OverlappingAnalysis analysis) {
 		this.analysis = analysis;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws AnalysisException {
-
 		Date startTime = new Date();
 
-		CorrelationMethod method = CorrelationMethodFactory.createMethod(
-				analysis.getMethod(), analysis.getMethodProperties());
-
 		IMatrix data = analysis.getData();
-		int attributeIndex = analysis.getAttributeIndex();
+
+		int attrIndex = -1;
+		String attrName = analysis.getAttributeName();
+		if (attrName != null && !attrName.isEmpty())
+			attrIndex = data.getCellAttributeIndex(attrName);
 
 		if (analysis.isTransposeData()) {
 			TransposedMatrixView mt = new TransposedMatrixView();
@@ -57,7 +56,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
 		int numRows = data.getRowCount();
 		int numColumns = data.getColumnCount();
 
-		monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
+		monitor.begin("Running Overlapping analysis ...", numColumns * (numColumns - 1) / 2);
 
 		String[] labels = new String[numColumns];
 		for (int i = 0; i < numColumns; i++)
@@ -71,23 +70,22 @@ public class CorrelationProcessor implements AnalysisProcessor {
 		results.makeCells();
 
 		results.setCellAdapter(
-				new BeanElementAdapter(method.getResultClass()));
-		
+				new BeanElementAdapter(OverlappingResult.class));
+
 		double[] x = new double[numRows];
 		double[] y = new double[numRows];
 		int[] indices = new int[numRows];
 
-		//boolean replaceNanValues = analysis.isReplaceNanValues();
 		Double replaceNanValue = analysis.getReplaceNanValue();
 		if (replaceNanValue == null)
 			replaceNanValue = Double.NaN;
 
-		Class<?> valueClass = data.getCellAttributes().get(attributeIndex).getValueClass();
+		Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
 		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
 		for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
 			for (int row = 0; row < numRows; row++) {
-				Object value = data.getCellValue(row, i, attributeIndex);
+				Object value = data.getCellValue(row, i, attrIndex);
 				Double v = cast.getDoubleValue(value);
 				if (v == null || Double.isNaN(v))
 					v = replaceNanValue;
@@ -95,7 +93,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
 			}
 
 			for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
-				monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
+				monitor.info("Overlapping " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
 
 				//TODO Parallelize
 				{
@@ -103,7 +101,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
 					for (int row = 0; row < numRows; row++) {
 						double v0 = x[row];
 
-						Object value = data.getCellValue(row, j, attributeIndex);
+						Object value = data.getCellValue(row, j, attrIndex);
 
 						Double v1 = cast.getDoubleValue(value);
 						if (v1 == null || Double.isNaN(v1))
@@ -116,12 +114,12 @@ public class CorrelationProcessor implements AnalysisProcessor {
 						}
 					}
 
-					try {
+					/*try {
 						results.setCell(i, j,
-								method.correlation(x, y, indices, numPairs));
+								method.Overlapping(x, y, indices, numPairs));
 					} catch (MethodException ex) {
 						throw new AnalysisException(ex);
-					}
+					}*/
 				}
 
 				monitor.worked(1);
@@ -130,7 +128,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
 
 		analysis.setStartTime(startTime);
 		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-		
+
 		monitor.end();
 	}
 }

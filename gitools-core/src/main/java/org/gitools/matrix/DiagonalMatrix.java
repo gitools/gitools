@@ -111,4 +111,9 @@ public class DiagonalMatrix implements IMatrix {
 		return m.getCellAttributes();
 	}
 
+	@Override
+	public int getCellAttributeIndex(String id) {
+		return m.getCellAttributeIndex(id);
+	}
+
 }

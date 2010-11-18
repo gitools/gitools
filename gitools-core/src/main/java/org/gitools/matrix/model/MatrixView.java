@@ -509,6 +509,11 @@ public class MatrixView
 	public List<IElementAttribute> getCellAttributes() {
 		return contents.getCellAttributes();
 	}
+
+	@Override
+	public int getCellAttributeIndex(String id) {
+		return contents.getCellAttributeIndex(id);
+	}
 	
 	// internal operations
 	

@@ -235,4 +235,9 @@ public class TransposedMatrixView implements IMatrixView {
 		return mv.getCellAttributes();
 	}
 
+	@Override
+	public int getCellAttributeIndex(String id) {
+		return mv.getCellAttributeIndex(id);
+	}
+
 }
