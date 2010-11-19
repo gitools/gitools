@@ -123,6 +123,6 @@ public class PersistenceUtils {
 
 	/** Return whether is or not an absolute path */
 	public static boolean isAbsolute(String path) {
-		return path.matches("^(\\/|[a-zA-Z]\\:\\\\)");
+		return path.matches("^(\\/.*|[a-zA-Z]\\:\\\\)");
 	}
 }

@@ -25,8 +25,9 @@ import org.gitools.persistence.MimeTypes;
 public class TestMain {
 
 	public static void main(String[] unusedArgs) throws ToolException {
-		String stuff = "/home/chris/temp/gitools-stuff";
-		String temp = "/home/chris/temp/gitools";
+		String home = System.getProperty("user.home");
+		String stuff = home + "/temp/gitools-stuff";
+		String temp = home + "/temp/gitools";
 		
 		String cmd = "enrichment -t binomial-exact" +
 				" -tc sample-size=100 -tc aproximation=none" +
@@ -41,7 +42,7 @@ public class TestMain {
 				" -A author=Christian" +
 				" -verbose -debug -err-log -";
 
-		cmd = "enrichment -t binomial-exact" +
+		/*cmd = "enrichment -t binomial-exact" +
 				" -d " + stuff + "/real/data.tsv" +
 				" -df " + MimeTypes.DOUBLE_MATRIX +
 				" -b gt,0.05" +
@@ -52,7 +53,7 @@ public class TestMain {
 				" -title 'Test Analysis'" +
 				" -notes 'Testing...'" +
 				" -A author=Christian" +
-				" -verbose -debug -err-log -";
+				" -verbose -debug -err-log -";*/
 
 		/*cmd = "oncodrive" +
 				" -d " + stuff + "/GAFtargets_upDownGeneslog5.bdm" +
@@ -66,25 +67,32 @@ public class TestMain {
 				" -w "+ temp + "/test -N test_cor" +
 				" -verbose -debug -err-log -";*/
 
-		cmd = "combination" +
+		/*cmd = "combination" +
 				" -d " + stuff + "/brain-comb2.cdm.gz" +
 				" -df " + MimeTypes.DOUBLE_MATRIX +
 				" -w "+ temp + "/test-cmb -N test_comb" +
-				" -verbose -debug -err-log -";
+				" -verbose -debug -err-log -";*/
 
 		/*String cmd = "convert" +
 				" -i data.tsv" +
 				" -im application/gitools-matrix-double" +
 				" -o pru.txt" +
 				" -om application/gitools-element-lists" +
-				" -verbose -debug -err-log -";
+				" -verbose -debug -err-log -";*/
 
-		cmd = "convert" +
+		/*cmd = "convert" +
 				" -o " + stuff + "/d2.tsv" +
 				" -om " + MimeTypes.DOUBLE_BINARY_MATRIX +
 				" -i " + stuff + "/data.gmx" +
 				" -im " + MimeTypes.GENE_MATRIX +
 				" -verbose -debug -err-log -";*/
+
+		cmd = "overlapping" +
+				" -d " + temp + "/test/data.cdm.gz" +
+				" -df " + MimeTypes.DOUBLE_MATRIX +
+				" -b lt,0.05" +
+				" -w "+ temp + "/test -N test_ovl" +
+				" -verbose -debug -err-log -";
 
 		String[] args = cmdLineSplit(cmd);
 

@@ -19,12 +19,19 @@ package org.gitools.analysis.overlapping;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.model.ResourceRef;
+import org.gitools.persistence.xml.adapter.ResourceRefXmlAdapter;
 
-
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OverlappingAnalysis extends Analysis {
 
 	/** If different from null then replace NaN values by a number */
@@ -46,13 +53,30 @@ public class OverlappingAnalysis extends Analysis {
 	/** Data binary cutoff value */
 	protected Double binaryCutoffValue;
 
+	/** Data source file */
+	@XmlElement(name = "sourceData")
+	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
+	protected ResourceRef sourceDataResource;
+
+	/** Filtered data file */
+	@XmlElement(name = "filteredData")
+	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
+	protected ResourceRef filteredDataResource;
+
 	/** Data */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	@XmlTransient
 	protected IMatrix data;
 
+	/** Cell Results file */
+	@XmlElement(name = "cellResults")
+	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
+	protected ResourceRef cellResultsResource;
+
 	/** Results */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix results;
+	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+	@XmlTransient
+	protected IMatrix cellResults;
 
 	public OverlappingAnalysis() {
 		this.transposeData = false;
@@ -106,6 +130,22 @@ public class OverlappingAnalysis extends Analysis {
 		this.binaryCutoffValue = binaryCutoffValue;
 	}
 
+	public ResourceRef getSourceDataResource() {
+		return sourceDataResource;
+	}
+
+	public void setSourceDataResource(ResourceRef sourceDataResource) {
+		this.sourceDataResource = sourceDataResource;
+	}
+
+	public ResourceRef getFilteredDataResource() {
+		return filteredDataResource;
+	}
+
+	public void setFilteredDataResource(ResourceRef filteredDataResource) {
+		this.filteredDataResource = filteredDataResource;
+	}
+
 	public IMatrix getData() {
 		return data;
 	}
@@ -114,11 +154,19 @@ public class OverlappingAnalysis extends Analysis {
 		this.data = data;
 	}
 
-	public IMatrix getResults() {
-		return results;
+	public ResourceRef getCellResultsResource() {
+		return cellResultsResource;
 	}
 
-	public void setResults(IMatrix results) {
-		this.results = results;
+	public void setCellResultsResource(ResourceRef cellResultsResource) {
+		this.cellResultsResource = cellResultsResource;
+	}
+
+	public IMatrix getCellResults() {
+		return cellResults;
+	}
+
+	public void setCellResults(IMatrix results) {
+		this.cellResults = results;
 	}
 }

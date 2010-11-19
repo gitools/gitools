@@ -1,4 +1,4 @@
-package org.gitools.model;
+package org.gitools._DEPRECATED.model;
 
 import java.io.File;
 import java.io.Serializable;

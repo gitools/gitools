@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
+import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -202,6 +203,8 @@ public class HeatmapDetailsController implements EntityController {
 				templateName = "correlation.vm";
 			else if (object instanceof CombinationResult)
 				templateName = "combination.vm";
+			else if (object instanceof OverlappingResult)
+				templateName = "overlapping.vm";
 		}
 		return "/vm/details/" + templateName;
 	}

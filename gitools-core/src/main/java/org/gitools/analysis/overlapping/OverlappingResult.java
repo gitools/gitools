@@ -22,89 +22,111 @@ import org.gitools.matrix.model.element.AttributeDef;
 
 public class OverlappingResult {
 
-	private int ColumnPositiveCount;
+	private int columnCount;
 
-	private int RowPositiveCount;
+	private int rowCount;
 
-	private int BothPositiveCount;
+	private int bothCount;
 
-	private double ColumnOnlyProp;
-	private double RowOnlyProp;
+	private double columnOnlyProp;
+	private double rowOnlyProp;
 
-	private double ColumnSharedProp;
-	private double RowSharedProp;
+	private double columnSharedProp;
+	private double rowSharedProp;
 
-	private double SharedProp;
+	private double sharedProp;
 
-	@AttributeDef(id = "column-count", name = "Column count", description = "Number of positive events in column condintion")
-	public int getColumnPositiveCount() {
-		return ColumnPositiveCount;
+	public OverlappingResult() {
 	}
 
-	public void setColumnPositiveCount(int ColumnPositiveCount) {
-		this.ColumnPositiveCount = ColumnPositiveCount;
+	public OverlappingResult(int columnCount, int rowCount, int bothCount) {
+		this.columnCount = columnCount;
+		this.rowCount = rowCount;
+		this.bothCount = bothCount;
+		calculateProportions();
+	}
+
+	@AttributeDef(id = "column-count", name = "Column count", description = "Number of positive events in column condintion")
+	public int getColumnCount() {
+		return columnCount;
+	}
+
+	public void setColumnCount(int ColumnPositiveCount) {
+		this.columnCount = ColumnPositiveCount;
 	}
 
 	@AttributeDef(id = "row-count", name = "Row count", description = "Number of positive events in row condintion")
-	public int getRowPositiveCount() {
-		return RowPositiveCount;
+	public int getRowCount() {
+		return rowCount;
 	}
 
-	public void setRowPositiveCount(int RowPositiveCount) {
-		this.RowPositiveCount = RowPositiveCount;
+	public void setRowCount(int RowPositiveCount) {
+		this.rowCount = RowPositiveCount;
 	}
 
 	@AttributeDef(id = "both-count", name = "Both count", description = "Number of positive events in both condintions")
-	public int getBothPositiveCount() {
-		return BothPositiveCount;
+	public int getBothCount() {
+		return bothCount;
 	}
 
-	public void setBothPositiveCount(int BothPositiveCount) {
-		this.BothPositiveCount = BothPositiveCount;
+	public void setBothCount(int BothPositiveCount) {
+		this.bothCount = BothPositiveCount;
 	}
 
 	@AttributeDef(id = "column-only-prop", name = "Column only proportion", description = "Proportion of events only in column condition")
 	public double getColumnOnlyProp() {
-		return ColumnOnlyProp;
+		return columnOnlyProp;
 	}
 
 	public void setColumnOnlyProp(double ColumnOnlyProp) {
-		this.ColumnOnlyProp = ColumnOnlyProp;
+		this.columnOnlyProp = ColumnOnlyProp;
 	}
 
 	@AttributeDef(id = "row-only-prop", name = "Row only proportion", description = "Proportion of events only in row condition")
 	public double getRowOnlyProp() {
-		return RowOnlyProp;
+		return rowOnlyProp;
 	}
 
 	public void setRowOnlyProp(double RowOnlyProp) {
-		this.RowOnlyProp = RowOnlyProp;
+		this.rowOnlyProp = RowOnlyProp;
 	}
 
 	@AttributeDef(id = "column-shared-prop", name = "Column shared proportion", description = "Proportion of shared events in column condition")
 	public double getColumnSharedProp() {
-		return ColumnSharedProp;
+		return columnSharedProp;
 	}
 
 	public void setColumnSharedProp(double ColumnSharedProp) {
-		this.ColumnSharedProp = ColumnSharedProp;
+		this.columnSharedProp = ColumnSharedProp;
 	}
 
 	@AttributeDef(id = "row-shared-prop", name = "Row shared proportion", description = "Proportion of shared events in row condition")
 	public double getRowSharedProp() {
-		return RowSharedProp;
+		return rowSharedProp;
 	}
 
 	public void setRowSharedProp(double RowSharedProp) {
-		this.RowSharedProp = RowSharedProp;
+		this.rowSharedProp = RowSharedProp;
 	}
 
 	@AttributeDef(id = "shared-prop", name = "Shared proportion", description = "Proportion of shared events in both conditions")
 	public double getSharedProp() {
-		return SharedProp;
+		return sharedProp;
 	}
 
 	public void setSharedProp(double SharedProp) {
-		this.SharedProp = SharedProp;
+		this.sharedProp = SharedProp;
+	}
+	
+	public final void calculateProportions() {
+		double union = columnCount + rowCount - bothCount;
+
+		columnOnlyProp = columnCount / union;
+		rowOnlyProp = rowCount / union;
+
+		columnSharedProp = bothCount / (double) columnCount;
+		rowSharedProp = bothCount / (double) rowCount;
+
+		sharedProp = bothCount / union;
 	}
 }

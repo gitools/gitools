@@ -1,5 +1,6 @@
 package org.gitools.model;
 
+import org.gitools._DEPRECATED.model.ResourceReference;
 import java.util.ArrayList;
 import java.util.List;
 

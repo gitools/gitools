@@ -11,6 +11,7 @@ public class FileSuffixes {
 	public static final String ONCODRIVE = "oncodrive";
 	public static final String CORRELATIONS = "correlations";
 	public static final String COMBINATION = "combination";
+	public static final String OVERLAPPING = "overlapping";
 	
 	public static final String HEATMAP = "heatmap";
 	public static final String TABLE_FIGURE = "table";

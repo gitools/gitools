@@ -37,8 +37,6 @@ public class CombinationCommand extends AnalysisCommand {
 	protected String columnsMime;
 	protected String columnsPath;
 
-	protected boolean storeAnalysis;
-
 	public CombinationCommand(
 			CombinationAnalysis analysis,
 			String dataMime, String dataPath,
@@ -89,13 +87,5 @@ public class CombinationCommand extends AnalysisCommand {
 		catch (Throwable cause) {
 			throw new AnalysisException(cause);
 		}
-	}
-
-	public boolean isStoreAnalysis() {
-		return storeAnalysis;
-	}
-
-	public void setStoreAnalysis(boolean storeAnalysis) {
-		this.storeAnalysis = storeAnalysis;
 	}
 }

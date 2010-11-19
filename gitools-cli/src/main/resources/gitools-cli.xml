@@ -36,4 +36,11 @@
         <argumentsClass>org.gitools.cli.combination.CombinationTool$CombinationArguments</argumentsClass>
         <lifeCycleClass>org.gitools.cli.combination.CombinationTool</lifeCycleClass>
     </tool>
+
+	<tool>
+    	<name>overlapping</name>
+        <description>Run an overlapping analysis</description>
+        <argumentsClass>org.gitools.cli.overlapping.OverlappingTool$OverlappingArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.overlapping.OverlappingTool</lifeCycleClass>
+    </tool>
 </tools>

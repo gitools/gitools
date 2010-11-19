@@ -35,6 +35,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.BufferedReader;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
+import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
@@ -56,6 +57,7 @@ public class ObjectMatrixTextPersistence
 		typeToClass.put("fisher-test", FisherResult.class);
 		typeToClass.put("correlation", CorrelationResult.class);
 		typeToClass.put("combination", CombinationResult.class);
+		typeToClass.put("overlapping", OverlappingResult.class);
 
 		for (Map.Entry<String, Class<?>> e : typeToClass.entrySet())
 			classToType.put(e.getValue(), e.getKey());
@@ -71,7 +73,8 @@ public class ObjectMatrixTextPersistence
 			BinomialResult.class,
 			FisherResult.class,
 			CorrelationResult.class,
-			CombinationResult.class
+			CombinationResult.class,
+			OverlappingResult.class
 		};
 		
 		for (Class<?> elementClass : classes) {

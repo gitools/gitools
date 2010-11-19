@@ -33,6 +33,9 @@ public class FileFormats {
 	public static final FileFormat COMBINATION = new FileFormat(
 			"Combination analysis", FileSuffixes.COMBINATION, MimeTypes.COMBINATION_ANALYSIS);
 
+	public static final FileFormat OVERLAPPING = new FileFormat(
+			"Overlapping analysis", FileSuffixes.OVERLAPPING, MimeTypes.OVERLAPPING_ANALYSIS);
+
 	// Data
 
 	public static final FileFormat GENE_MATRIX = new FileFormat(

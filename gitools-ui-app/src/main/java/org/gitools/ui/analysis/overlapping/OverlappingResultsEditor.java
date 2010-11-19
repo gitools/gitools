@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 chris.
+ *  Copyright 2010 cperez.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,35 +15,36 @@
  *  under the License.
  */
 
-package org.gitools.ui.analysis.correlation.editor;
+package org.gitools.ui.analysis.overlapping;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JSplitPane;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.impl.CorrelationElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public class CorrelationResultsEditor extends HeatmapEditor {
 
-	protected CorrelationAnalysis analysis;
+public class OverlappingResultsEditor extends HeatmapEditor {
+
+	private OverlappingAnalysis analysis;
 
 	protected AbstractTablesPanel tablesPanel;
 
-	protected static Heatmap createHeatmap(CorrelationAnalysis analysis) {
-		IMatrixView results = new DiagonalMatrixView(analysis.getResults());
+	protected static Heatmap createHeatmap(OverlappingAnalysis analysis) {
+		IMatrixView results = new DiagonalMatrixView(analysis.getCellResults());
 		Heatmap heatmap = new Heatmap(results);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		IElementAdapter cellAdapter = results.getCellAdapter();
-		CorrelationElementDecorator dec = new CorrelationElementDecorator(cellAdapter);
-		int valueIndex = cellAdapter.getPropertyIndex("score");
+		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
+		int valueIndex = cellAdapter.getPropertyIndex("shared-prop");
 		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
 		heatmap.setCellDecorator(dec);
 
@@ -52,14 +53,14 @@ public class CorrelationResultsEditor extends HeatmapEditor {
 		return heatmap;
 	}
 
-	protected static List<BaseAction> createToolBar(CorrelationAnalysis analysis) {
+	protected static List<BaseAction> createToolBar(OverlappingAnalysis analysis) {
 		return null;
 	}
 
-	public CorrelationResultsEditor(CorrelationAnalysis analysis) {
+	public OverlappingResultsEditor(OverlappingAnalysis analysis) {
 		super(createHeatmap(analysis), createToolBar(analysis), true);
 
-		tablesPanel = new CorrelationTablesPanel(analysis, heatmap);
+		tablesPanel = new OverlappingTablesPanel(analysis, heatmap);
 		tablesPanel.setMinimumSize(new Dimension(140, 140));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -72,4 +73,6 @@ public class CorrelationResultsEditor extends HeatmapEditor {
 		setLayout(new BorderLayout());
 		add(splitPane);
 	}
+
+
 }

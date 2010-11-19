@@ -21,6 +21,7 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
@@ -45,6 +46,7 @@ import org.gitools.persistence.xml.CorrelationAnalysisXmlPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 import org.gitools.persistence.xml.HeatmapXmlPersistence;
 import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
+import org.gitools.persistence.xml.OverlappingAnalysisXmlPersistence;
 import org.gitools.persistence.xml.ProjectXmlPersistence;
 import org.gitools.persistence.xml.TableFigureXmlPersistence;
 import org.gitools.table.model.TableFigure;
@@ -66,6 +68,7 @@ public class PersistenceInitialization {
 		pm.registerFormat(MimeTypes.ONCODRIVE_ANALYSIS, FileSuffixes.ONCODRIVE, OncodriveAnalysis.class, OncodriveAnalysisXmlPersistence.class);
 		pm.registerFormat(MimeTypes.CORRELATIONS_ANALYSIS, FileSuffixes.CORRELATIONS, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
 		pm.registerFormat(MimeTypes.COMBINATION_ANALYSIS, FileSuffixes.COMBINATION, CombinationAnalysis.class, CombinationAnalysisXmlPersistence.class);
+		pm.registerFormat(MimeTypes.OVERLAPPING_ANALYSIS, FileSuffixes.OVERLAPPING, OverlappingAnalysis.class, OverlappingAnalysisXmlPersistence.class);
 
 		pm.registerFormat(MimeTypes.HEATMAP, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
 

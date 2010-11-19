@@ -15,9 +15,12 @@ public abstract class AnalysisCommand {
 
 	protected String fileName;
 
+	protected boolean storeAnalysis;
+	
 	public AnalysisCommand(String workdir, String fileName) {
 		this.workdir = workdir;
 		this.fileName = fileName;
+		this.storeAnalysis = true;
 	}
 
 	public String getWorkdir() {
@@ -35,7 +38,15 @@ public abstract class AnalysisCommand {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
+	public boolean isStoreAnalysis() {
+		return storeAnalysis;
+	}
+
+	public void setStoreAnalysis(boolean storeAnalysis) {
+		this.storeAnalysis = storeAnalysis;
+	}
+
 	public abstract void run(IProgressMonitor monitor) throws AnalysisException;
 
 	protected BaseMatrix loadDataMatrix(

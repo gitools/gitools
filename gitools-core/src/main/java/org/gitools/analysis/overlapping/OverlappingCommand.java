@@ -17,7 +17,54 @@
 
 package org.gitools.analysis.overlapping;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.File;
+import java.util.Properties;
+import org.gitools.analysis.AnalysisCommand;
+import org.gitools.analysis.AnalysisException;
+import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.model.ResourceRef;
+import org.gitools.persistence.PersistenceManager;
 
-public class OverlappingCommand {
 
+public class OverlappingCommand extends AnalysisCommand {
+
+	private OverlappingAnalysis analysis;
+
+	public OverlappingCommand(OverlappingAnalysis analysis, String workdir, String fileName) {
+		super(workdir, fileName);
+
+		this.analysis = analysis;
+	}
+
+	@Override
+	public void run(IProgressMonitor monitor) throws AnalysisException {
+		try {
+			if (analysis.getData() == null) {
+				ResourceRef res = analysis.getSourceDataResource();
+				String dataPath = res.getPath();
+				String dataMime = res.getMime();
+				BaseMatrix data = loadDataMatrix(
+						new File(dataPath), dataMime, new Properties(), monitor);
+
+				analysis.setData(data);
+			}
+
+			OverlappingProcessor proc = new OverlappingProcessor(analysis);
+
+			proc.run(monitor);
+
+			if (storeAnalysis) {
+				File workdirFile = new File(workdir);
+				if (!workdirFile.exists())
+					workdirFile.mkdirs();
+
+				File file = new File(workdirFile, fileName);
+				PersistenceManager.getDefault().store(file, analysis, monitor);
+			}
+		}
+		catch (Throwable cause) {
+			throw new AnalysisException(cause);
+		}
+	}
 }

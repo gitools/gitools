@@ -52,6 +52,10 @@ public class GenericFormatter implements Serializable {
 		fmt.format("%.3g", value);
 		return sb.toString();
 	}
+
+	public String percentage(double value) {
+		return format("%.2g%%", value * 100.0);
+	}
 	
 	public String elapsedTime(Long elapsedTime) {
 		/*long us = elapsedTime / oneMicrosecond;

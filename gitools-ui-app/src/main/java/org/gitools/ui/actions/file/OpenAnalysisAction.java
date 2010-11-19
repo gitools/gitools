@@ -1,7 +1,6 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.ui.utils.FileFormatFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -18,6 +17,7 @@ import javax.swing.filechooser.FileFilter;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
@@ -29,6 +29,7 @@ import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
+import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
@@ -52,12 +53,14 @@ public class OpenAnalysisAction extends BaseAction {
 				FileFormats.ENRICHMENT,
 				FileFormats.ONCODRIVE,
 				FileFormats.CORRELATIONS,
-				FileFormats.COMBINATION
+				FileFormats.COMBINATION,
+				FileFormats.OVERLAPPING
 			}),
 			new FileFormatFilter(FileFormats.ENRICHMENT),
 			new FileFormatFilter(FileFormats.ONCODRIVE),
 			new FileFormatFilter(FileFormats.CORRELATIONS),
-			new FileFormatFilter(FileFormats.COMBINATION)
+			new FileFormatFilter(FileFormats.COMBINATION),
+			new FileFormatFilter(FileFormats.OVERLAPPING)
 		};
 
 		FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
@@ -97,6 +100,8 @@ public class OpenAnalysisAction extends BaseAction {
 							editor = new CorrelationAnalysisEditor((CorrelationAnalysis) analysis);
 						else if (mime.equals(MimeTypes.COMBINATION_ANALYSIS))
 							editor = new CombinationAnalysisEditor((CombinationAnalysis) analysis);
+						else if (mime.equals(MimeTypes.OVERLAPPING_ANALYSIS))
+							editor = new OverlappingAnalysisEditor((OverlappingAnalysis) analysis);
 
 						editor.setName(file.getName());
 
