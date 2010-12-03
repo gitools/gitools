@@ -31,15 +31,17 @@ public class OverlappingResult {
 	private double columnOnlyProp;
 	private double rowOnlyProp;
 
-	private double columnSharedProp;
-	private double rowSharedProp;
+	private double columnIntersectionProp;
+	private double rowIntersectionProp;
 
-	private double sharedProp;
+	private double jaccardIndex;
+
+	private double maxIntersectionProp;
 
 	public OverlappingResult() {
 	}
 
-	public OverlappingResult(int columnCount, int rowCount, int bothCount) {
+	public OverlappingResult(int rowCount, int columnCount, int bothCount) {
 		this.columnCount = columnCount;
 		this.rowCount = rowCount;
 		this.bothCount = bothCount;
@@ -51,8 +53,8 @@ public class OverlappingResult {
 		return columnCount;
 	}
 
-	public void setColumnCount(int ColumnPositiveCount) {
-		this.columnCount = ColumnPositiveCount;
+	public void setColumnCount(int columnPositiveCount) {
+		this.columnCount = columnPositiveCount;
 	}
 
 	@AttributeDef(id = "row-count", name = "Row count", description = "Number of positive events in row condintion")
@@ -60,8 +62,8 @@ public class OverlappingResult {
 		return rowCount;
 	}
 
-	public void setRowCount(int RowPositiveCount) {
-		this.rowCount = RowPositiveCount;
+	public void setRowCount(int rowPositiveCount) {
+		this.rowCount = rowPositiveCount;
 	}
 
 	@AttributeDef(id = "both-count", name = "Both count", description = "Number of positive events in both condintions")
@@ -69,64 +71,77 @@ public class OverlappingResult {
 		return bothCount;
 	}
 
-	public void setBothCount(int BothPositiveCount) {
-		this.bothCount = BothPositiveCount;
+	public void setBothCount(int bothPositiveCount) {
+		this.bothCount = bothPositiveCount;
 	}
 
-	@AttributeDef(id = "column-only-prop", name = "Column only proportion", description = "Proportion of events only in column condition")
+	@AttributeDef(id = "column-only-prop", name = "Column only proportion", description = "Proportion of events only in column condition out of the union")
 	public double getColumnOnlyProp() {
 		return columnOnlyProp;
 	}
 
-	public void setColumnOnlyProp(double ColumnOnlyProp) {
-		this.columnOnlyProp = ColumnOnlyProp;
+	public void setColumnOnlyProp(double columnOnlyProp) {
+		this.columnOnlyProp = columnOnlyProp;
 	}
 
-	@AttributeDef(id = "row-only-prop", name = "Row only proportion", description = "Proportion of events only in row condition")
+	@AttributeDef(id = "row-only-prop", name = "Row only proportion", description = "Proportion of events only in row condition out of the union")
 	public double getRowOnlyProp() {
 		return rowOnlyProp;
 	}
 
-	public void setRowOnlyProp(double RowOnlyProp) {
-		this.rowOnlyProp = RowOnlyProp;
+	public void setRowOnlyProp(double rowOnlyProp) {
+		this.rowOnlyProp = rowOnlyProp;
 	}
 
-	@AttributeDef(id = "column-shared-prop", name = "Column shared proportion", description = "Proportion of shared events in column condition")
-	public double getColumnSharedProp() {
-		return columnSharedProp;
+	@AttributeDef(id = "column-intersection-prop", name = "Column intersection proportion", description = "Proportion of shared events in column condition")
+	public double getColumnIntersectionProp() {
+		return columnIntersectionProp;
 	}
 
-	public void setColumnSharedProp(double ColumnSharedProp) {
-		this.columnSharedProp = ColumnSharedProp;
+	public void setColumnIntersectionProp(double columnIntersectionProp) {
+		this.columnIntersectionProp = columnIntersectionProp;
 	}
 
-	@AttributeDef(id = "row-shared-prop", name = "Row shared proportion", description = "Proportion of shared events in row condition")
-	public double getRowSharedProp() {
-		return rowSharedProp;
+	@AttributeDef(id = "row-intersection-prop", name = "Row intersection proportion", description = "Proportion of shared events in row condition")
+	public double getRowIntersectionProp() {
+		return rowIntersectionProp;
 	}
 
-	public void setRowSharedProp(double RowSharedProp) {
-		this.rowSharedProp = RowSharedProp;
+	public void setRowIntersectionProp(double rowIntersectionProp) {
+		this.rowIntersectionProp = rowIntersectionProp;
 	}
 
-	@AttributeDef(id = "shared-prop", name = "Shared proportion", description = "Proportion of shared events in both conditions")
-	public double getSharedProp() {
-		return sharedProp;
+	@AttributeDef(id = "max-intersection-prop", name = "Maximum intersection proportion", description = "Maximum proportion of shared events")
+	public double getMaxIntersectionProp() {
+		return maxIntersectionProp;
 	}
 
-	public void setSharedProp(double SharedProp) {
-		this.sharedProp = SharedProp;
+	public void setMaxIntersectionProp(double maxIntersectionProp) {
+		this.maxIntersectionProp = maxIntersectionProp;
 	}
-	
+
+	@AttributeDef(id = "jaccard-index", name = "Jaccard index", description = "Proportion of shared events in both conditions")
+	public double getJaccardIndex() {
+		return jaccardIndex;
+	}
+
+	public void setJaccardIndex(double jaccardIndex) {
+		this.jaccardIndex = jaccardIndex;
+	}
+
 	public final void calculateProportions() {
 		double union = columnCount + rowCount - bothCount;
+
+		double minCount = (double) Math.min(columnCount, rowCount);
 
 		columnOnlyProp = columnCount / union;
 		rowOnlyProp = rowCount / union;
 
-		columnSharedProp = bothCount / (double) columnCount;
-		rowSharedProp = bothCount / (double) rowCount;
+		columnIntersectionProp = columnCount != 0 ? bothCount / (double) columnCount : 0.0;
+		rowIntersectionProp = rowCount != 0 ? bothCount / (double) rowCount : 0.0;
+		
+		maxIntersectionProp = minCount != 0 ? bothCount / minCount : 0.0;
 
-		sharedProp = bothCount / union;
+		jaccardIndex = union != 0 ? bothCount / union : 0.0;
 	}
 }

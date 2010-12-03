@@ -65,6 +65,9 @@ public class OpenHeatmapAction extends BaseAction {
 		final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
 				"Select file", FileChooserUtils.MODE_OPEN, filters);
 
+		if (ret == null)
+			return;
+		
 		final File file = ret.getFile();
 		
 		if (file == null)

@@ -263,12 +263,14 @@ public class ObjectMatrixTextPersistence
 				Object element = elementFactory.create();
 	
 				for (int i = 2; i < line.length; i++) {
-					final int pix = attrIdmap.get(paramNames[i - 2]);
-					
-					Object value = parsePropertyValue(
-							elementAdapter.getProperty(pix), line[i]);
-	
-					elementAdapter.setValue(element, pix, value);
+					final Integer pix = attrIdmap.get(paramNames[i - 2]);
+
+					if (pix != null) {
+						Object value = parsePropertyValue(
+								elementAdapter.getProperty(pix), line[i]);
+
+						elementAdapter.setValue(element, pix, value);
+					}
 				}
 				
 				list.add(new Object[] {

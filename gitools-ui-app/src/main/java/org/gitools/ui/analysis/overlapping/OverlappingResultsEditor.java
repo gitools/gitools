@@ -18,6 +18,7 @@
 package org.gitools.ui.analysis.overlapping;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JSplitPane;
@@ -44,8 +45,16 @@ public class OverlappingResultsEditor extends HeatmapEditor {
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		IElementAdapter cellAdapter = results.getCellAdapter();
 		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
-		int valueIndex = cellAdapter.getPropertyIndex("shared-prop");
+		int valueIndex = cellAdapter.getPropertyIndex("jaccard-index");
+		Color minColor = new Color(0x63, 0xdc, 0xfe);
+		Color maxColor = new Color(0xff, 0x00, 0x5f);
 		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
+		dec.setMinValue(0.0);
+		dec.setMinColor(minColor);
+		dec.setMidValue(0.0);
+		dec.setMidColor(minColor);
+		dec.setMaxValue(1.0);
+		dec.setMaxColor(maxColor);
 		heatmap.setCellDecorator(dec);
 
 		heatmap.setTitle(analysis.getTitle());

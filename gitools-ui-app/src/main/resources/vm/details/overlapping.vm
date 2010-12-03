@@ -31,11 +31,12 @@
 		<div id="section_title">Proportions</div>
 		<div id="section_body">
 			<table id="attr_table">
-				<tr><td class="name">Only-column</td><td>$fmt.percentage($cell.column-only-prop)</td></tr>
-				<tr><td class="name">Only-row</td><td>$fmt.percentage($cell.row-only-prop)</td></tr>
-				<tr><td class="name">Shared-column</td><td>$fmt.percentage($cell.column-shared-prop)</td></tr>
-				<tr><td class="name">Shared-row</td><td>$fmt.percentage($cell.row-shared-prop)</td></tr>
-				<tr><td class="name">Both</td><td>$fmt.percentage($cell.shared-prop)</td></tr>
+				<tr><td class="name">Column-Only</td><td>$fmt.percentage($cell.column-only-prop)</td></tr>
+				<tr><td class="name">Row-Only</td><td>$fmt.percentage($cell.row-only-prop)</td></tr>
+				<tr><td class="name">Column-Intersection</td><td>$fmt.percentage($cell.column-intersection-prop)</td></tr>
+				<tr><td class="name">Row-Intersection</td><td>$fmt.percentage($cell.row-intersection-prop)</td></tr>
+				<tr><td class="name">Max-Intersection</td><td>$fmt.percentage($cell.max-intersection-prop)</td></tr>
+				<tr><td class="name">Jaccard-Index</td><td>$fmt.percentage($cell.jaccard-index)</td></tr>
 			</table>
 		</div>
 	</div>

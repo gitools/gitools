@@ -89,14 +89,14 @@ public class OverlappingProcessor implements AnalysisProcessor {
 		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
 		for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
-			int columnCount = 0;
+			int rowCount = 0;
 
 			for (int row = 0; row < numRows; row++) {
 				Object value = data.getCellValue(row, i, attrIndex);
 				Double v = cast.getDoubleValue(value);
 				v = transformValue(v, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, i);
 				if (v == 1.0)
-					columnCount++;
+					rowCount++;
 
 				x.set(row, v == 1.0);
 				xna.set(row, Double.isNaN(v));
@@ -107,24 +107,24 @@ public class OverlappingProcessor implements AnalysisProcessor {
 
 				//TODO Parallelize
 				{
-					int rowCount = 0;
+					int columnCount = 0;
 					int bothCount = 0;
 
 					for (int row = 0; row < numRows; row++) {
-						double v0 = xna.get(row) ? Double.NaN : x.get(row) ? 1.0 : 0.0;
+						double v0 = xna.get(row) ? Double.NaN : (x.get(row) ? 1.0 : 0.0);
 
 						Object value = data.getCellValue(row, j, attrIndex);
 						Double v1 = cast.getDoubleValue(value);
 						v1 = transformValue(v1, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, j);
 
 						if (v1 == 1.0)
-							rowCount++;
+							columnCount++;
 						if (v0 == 1.0 && v1 == 1.0)
 							bothCount++;
 					}
 
 					results.setCell(i, j,
-							new OverlappingResult(columnCount, rowCount, bothCount));
+							new OverlappingResult(rowCount, columnCount, bothCount));
 				}
 
 				monitor.worked(1);

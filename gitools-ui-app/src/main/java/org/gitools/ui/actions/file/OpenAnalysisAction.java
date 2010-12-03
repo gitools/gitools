@@ -69,6 +69,9 @@ public class OpenAnalysisAction extends BaseAction {
 				FileChooserUtils.MODE_OPEN,
 				filters);
 
+		if (ret == null)
+			return;
+		
 		final File file = ret.getFile();
 		final FileFormatFilter filter = (FileFormatFilter) ret.getFilter();
 
