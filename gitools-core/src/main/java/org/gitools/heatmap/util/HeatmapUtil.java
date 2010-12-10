@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 cperez.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,16 +17,8 @@
 
 package org.gitools.heatmap.util;
 
-import edu.upf.bg.colorscale.util.ColorUtils;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapCluster;
-import org.gitools.heatmap.model.HeatmapClusterSet;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.HeatmapHeaderDecoration;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;

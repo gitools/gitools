@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 cperez.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
-
+//FIXME On development
 public class OBOStreamReader {
 
 	private static class Source {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
@@ -34,7 +34,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="acuityField" alignment="0" pref="374" max="32767" attributes="2"/>
+                          <Component id="acuityField" alignment="0" pref="377" max="32767" attributes="2"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -43,7 +43,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cutOffField" alignment="0" pref="374" max="32767" attributes="2"/>
+                          <Component id="cutOffField" alignment="0" pref="378" max="32767" attributes="2"/>
                       </Group>
                   </Group>
                   <Component id="jSeparator1" alignment="0" pref="444" max="32767" attributes="2"/>
@@ -51,10 +51,10 @@
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                      <Component id="seedField" pref="374" max="32767" attributes="2"/>
+                      <Component id="seedField" pref="378" max="32767" attributes="2"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="312" max="-2" attributes="0"/>
+                      <EmptySpace pref="316" max="-2" attributes="0"/>
                       <Component id="okButton" min="-2" pref="67" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>

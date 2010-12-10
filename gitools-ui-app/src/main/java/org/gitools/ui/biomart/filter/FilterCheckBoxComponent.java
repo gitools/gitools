@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 xavier.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  *  under the License.
  */
 
-
 package org.gitools.ui.biomart.filter;
+
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;

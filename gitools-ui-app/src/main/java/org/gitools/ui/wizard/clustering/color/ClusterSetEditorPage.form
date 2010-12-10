@@ -45,18 +45,18 @@
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel3" pref="42" max="32767" attributes="0"/>
+                              <Component id="jLabel3" pref="46" max="32767" attributes="0"/>
                               <EmptySpace min="247" pref="247" max="247" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="fgColor" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="265" max="32767" attributes="1"/>
+                              <EmptySpace pref="269" max="32767" attributes="1"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" pref="45" max="32767" attributes="0"/>
+                              <Component id="jLabel1" pref="49" max="32767" attributes="0"/>
                               <EmptySpace min="244" pref="244" max="244" attributes="0"/>
                           </Group>
-                          <Component id="clusterName" alignment="0" pref="289" max="32767" attributes="0"/>
+                          <Component id="clusterName" alignment="0" pref="293" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>

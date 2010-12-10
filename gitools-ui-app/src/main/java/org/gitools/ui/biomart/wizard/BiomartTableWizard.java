@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 chris.
+ *  Copyright 2009 Universitat Pompeu Fabra.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  *  limitations under the License.
  *  under the License.
  */
+
 package org.gitools.ui.biomart.wizard;
 
 import java.io.File;

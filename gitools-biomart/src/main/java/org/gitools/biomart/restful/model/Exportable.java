@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 xavier.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  *  limitations under the License.
  *  under the License.
  */
+
 package org.gitools.biomart.restful.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Exportable {

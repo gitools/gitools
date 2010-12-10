@@ -1,7 +1,5 @@
-package org.gitools.biomart.restful;
-
 /*
- *  Copyright 2010 Xavi.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +14,9 @@ package org.gitools.biomart.restful;
  *  limitations under the License.
  *  under the License.
  */
+
+package org.gitools.biomart.restful;
+
 import edu.upf.bg.benchmark.TimeCounter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.BufferedReader;

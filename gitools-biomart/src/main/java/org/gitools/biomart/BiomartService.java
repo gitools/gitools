@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 xavier.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  *  limitations under the License.
  *  under the License.
  */
+
 package org.gitools.biomart;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
-import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetConfig;
 import org.gitools.biomart.restful.model.DatasetInfo;
