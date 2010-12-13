@@ -17,7 +17,6 @@
 
 package org.gitools.obo;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
@@ -28,53 +27,26 @@ import java.util.regex.Pattern;
 //FIXME On development
 public class OBOStreamReader {
 
-	private static class Source {
-		private BufferedReader reader;
-		private URL baseUrl;
-
-		public Source(BufferedReader reader, URL baseUrl) {
-			this.reader = reader;
-			this.baseUrl = baseUrl;
-		}
-
-		public BufferedReader getReader() {
-			return reader;
-		}
-
-		public URL getBaseUrl() {
-			return baseUrl;
-		}
-	}
-
-	@Deprecated
-	private static class UnknownToken extends OBOEvent {
-
-		public UnknownToken(String line) {
-			super(OBOStreamReader.UNKNOWN);
-			this.line = line;
-		}
-	}
-
 	private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[.*\\]$");
+	private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\!.*$");
 
 	private static final int UNKNOWN = -1;
 	private static final int COMMENT = 1;
 	private static final int DOCUMENT_START = 10;
-	private static final int DOCUMENT_END = 11;
+	private static final int DOCUMENT_END = 19;
 	private static final int HEADER_START = 20;
-	private static final int HEADER_END = 21;
+	private static final int HEADER_END = 29;
 	private static final int STANZA_START = 30;
-	private static final int STANZA_END = 31;
+	private static final int STANZA_END = 39;
 	private static final int TAG_START = 40;
-	//private static final int TAG_VALUE_FIELD = 41;
-	private static final int TAG_TRAILING_MODIFIER = 42;
-	private static final int TAG_END = 43;
+	private static final int TAG_END = 49;
+
 	/*private static final int DBXREF_START = 50;
 	private static final int DBXREF_START = 51;
 	private static final int DBXREF_END = 52;*/
 
-	private Source currentSource;
-	private Stack<Source> sourceStack;
+	private OBOStream stream;
+	private Stack<OBOStream> streamStack;
 
 	private LinkedList<OBOEvent> tokens;
 
@@ -83,15 +55,14 @@ public class OBOStreamReader {
 
 	private String stanzaName;
 	private String tagName;
-	private String tagValue;
-	private String tagTrailingModifiers;
-	private String tagFieldText;
 
 	public OBOStreamReader(Reader reader, URL baseUrl) {
-		currentSource = new Source(new BufferedReader(reader), baseUrl);
-		sourceStack = new Stack<Source>();
+		stream = new OBOStream(baseUrl);
+		streamStack = new Stack<OBOStream>();
 
 		tokens = new LinkedList<OBOEvent>();
+		tokens.offer(new OBOEvent(DOCUMENT_START, 0));
+
 		headerStarted = false;
 		headerEnded = false;
 		stanzaName = null;
@@ -102,87 +73,54 @@ public class OBOStreamReader {
 			return tokens.poll();
 
 		while (tokens.size() == 0) {
-			String line = nextLine();
+			String line = stream.nextLine();
+			int pos = stream.getLinePos();
 
 			if (line == null) {
-				tokens.offer(new OBOEvent(DOCUMENT_END));
+				tokens.offer(new OBOEvent(DOCUMENT_END, pos));
 				break;
 			}
 
 			if (STANZA_NAME_PATTERN.matcher(line).matches()) {
 				if (stanzaName == null) {
 					if (!headerStarted) {
-						tokens.offer(new OBOEvent(HEADER_START));
+						tokens.offer(new OBOEvent(HEADER_START, pos));
 						headerStarted = true;
 					}
 					if (!headerEnded) {
-						tokens.offer(new OBOEvent(HEADER_END));
+						tokens.offer(new OBOEvent(HEADER_END, pos));
 						headerEnded = true;
 					}
 				}
 				String stzName = line.substring(1, line.length() - 1);
-				tokens.offer(new OBOEvent(STANZA_START, stzName));
+				tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
 				stanzaName = stzName;
 			}
-			else { // it is a tag
-				OBOEvent tag = parseTag(line);
-				tokens.offer(tag);
+			else if (LINE_COMMENT_PATTERN.matcher(line).matches()) {
+				tokens.offer(new OBOEvent(COMMENT, pos));
 			}
+			else
+				nextTag(line, pos);
 		}
 
 		return tokens.poll();
 	}
 
-	/** parses a tag and returns the token representing it */
-	// TODO Return a Tag object
-	private OBOEvent parseTag(String line) {
+	private void nextTag(String line, int linepos) {
 		int pos = line.indexOf(':');
-		if (pos < 0)
-			return new UnknownToken(line);
-
-		String name = line.substring(0, pos);
-		String[] value = parseValue(line.substring(pos + 1));
-
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	private String[] parseValue(String value) {
-		throw new UnsupportedOperationException("Not yet implemented");
-	}
-
-	/** returns a non empty line or null if EOF */
-	private String nextLine() throws IOException {
-		String line = readLine();
-		while (line != null && isEmptyLine(line))
-			line = readLine();
-		return line;
-	}
-
-	/** returns the next line or null if EOF */
-	// TODO comments and escape characters shouldn't be removed yet here
-	private String readLine() throws IOException {
-		BufferedReader reader = currentSource.getReader();
-		StringBuilder completeLine = new StringBuilder();
-
-		String line = reader.readLine();
-		if (line != null)
-			line = line.trim();
-
-		while (line != null && line.endsWith("\\")) {
-			line = line.substring(0, line.length() - 1);
-			escapeCharsAndRemoveComments(line, completeLine);
-			line = reader.readLine();
-			if (line != null)
-				line = line.trim();
+		if (pos < 0) {
+			tokens.offer(new OBOEvent(UNKNOWN, linepos));
+			return;
 		}
 
-		if (line != null)
-			escapeCharsAndRemoveComments(line, completeLine);
+		String name = line.substring(0, pos);
+		String content = line.substring(pos + 1);
+		StringBuilder sb = new StringBuilder();
 
-		if (line == null && completeLine.length() == 0)
-			return null;
-
-		return completeLine.toString();
+		//TODO parse contents and generate events
+		escapeCharsAndRemoveComments(content, sb);
+		tokens.offer(new OBOEvent(TAG_START, linepos, stanzaName, name, sb.toString()));
+		tokens.offer(new OBOEvent(TAG_END, linepos, stanzaName, name, sb.toString()));
 	}
 
 	/** replace escape characters and remove comments */
@@ -215,9 +153,5 @@ public class OBOStreamReader {
 				}
 			}
 		}
-	}
-
-	private boolean isEmptyLine(String line) {
-		return line.replaceAll("\\s", "").isEmpty();
 	}
 }

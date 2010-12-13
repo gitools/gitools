@@ -20,31 +20,44 @@ package org.gitools.obo;
 //FIXME On development
 public class OBOEvent {
 
-	private int id; //TODO rename to type
-	private String stanzaName; //TODO remove from here
-	private String tagName; //TODO remove from here
+	private int type;
+	private String stanzaName;
+	private String tagName;
+	private String tagValue;
+
 	//TODO file line and column
 	protected String line;
 
-	public OBOEvent(int id) {
-		this.id = id;
+	public OBOEvent(int type, int line) {
+		this.type = type;
 	}
 
-	public OBOEvent(int id, String stanzaName) {
-		this.id = id;
+	public OBOEvent(int type, int line, String stanzaName) {
+		this.type = type;
 		this.stanzaName = stanzaName;
 	}
 
-	public OBOEvent(int id, String stanzaName, String tagName) {
-		this.id = id;
+	public OBOEvent(int type, int line, String stanzaName, String tagName) {
+		this.type = type;
 		this.stanzaName = stanzaName;
 		this.tagName = tagName;
 	}
 
-	public int getId() {
-		return id;
+	public OBOEvent(int type, int line, String stanzaName, String tagName, String tagValue) {
+		this.type = type;
+		this.stanzaName = stanzaName;
+		this.tagName = tagName;
+		this.tagValue = tagValue;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public String getLine() {
+		return line;
+	}
+	
 	public String getStanzaName() {
 		return stanzaName;
 	}
@@ -53,7 +66,7 @@ public class OBOEvent {
 		return tagName;
 	}
 
-	public String getLine() {
-		return line;
+	public String getTagValue() {
+		return tagValue;
 	}
 }
