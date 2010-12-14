@@ -17,19 +17,22 @@
 
 package org.gitools.ui;
 
-import edu.upf.bg.textpatt.BeanResolver;
-import edu.upf.bg.textpatt.TextPattern;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPFileEntryParser;
-import org.apache.commons.net.ftp.FTPListParseEngine;
+import org.gitools.obo.OBOEvent;
+import org.gitools.obo.OBOEventTypes;
+import org.gitools.obo.OBOStreamReader;
 
-public class App implements FTPFileEntryParser {
+public class App implements FTPFileEntryParser, OBOEventTypes {
 
 	public static class Entity {
 		private String name;
@@ -42,29 +45,29 @@ public class App implements FTPFileEntryParser {
 	}
 
 	public static void main(String[] args) {
-		TextPattern pat = TextPattern.compile("Hello ${name} !");
-		BeanResolver res = new BeanResolver(Entity.class);
-		Entity[] entities = new Entity[] {
-			new Entity("Ramón"),
-			new Entity("Pepito")
-		};
-
-		for (Entity e : entities) {
-			res.setBeanInstance(e);
-			String str = pat.generate(res);
-			System.out.println(str);
-		}
-
 		try {
+			URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
 			FTPClient ftp = new FTPClient();
-			ftp.connect("ftp.genome.jp");
-			ftp.login("anonymous", "anonymous");
+			ftp.connect("ftp.geneontology.org");
+			ftp.login("anonymous", "");
 			ftp.enterLocalPassiveMode();
-			FTPListParseEngine e = ftp.initiateListParsing(App.class.getCanonicalName(), "/pub");
-			FTPFile[] files = e.getFiles();
-			if (files != null)
-				for (FTPFile file : files)
-					System.out.println(file.getName());
+			InputStream is = ftp.retrieveFileStream("/pub/go/ontology/gene_ontology.obo");
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			OBOStreamReader oboReader = new OBOStreamReader(r);
+
+			char state = '0';
+
+			OBOEvent evt = oboReader.nextEvent();
+			while (evt != null) {
+				switch (state) {
+					case '0':
+						while (evt != null && evt.getType() != STANZA_START)
+							evt = oboReader.nextEvent();
+
+						// TODO ...
+				}
+			}
+			r.close();
 			ftp.disconnect();
 		} catch (IOException ex) {
 			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);

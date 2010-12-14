@@ -76,10 +76,6 @@ public class OBOStreamReader implements OBOEventTypes {
 
 			if (STANZA_NAME_PATTERN.matcher(line).matches()) {
 				if (stanzaName == null) {
-					if (!headerStarted) {
-						tokens.offer(new OBOEvent(HEADER_START, pos));
-						headerStarted = true;
-					}
 					if (!headerEnded) {
 						tokens.offer(new OBOEvent(HEADER_END, pos));
 						headerEnded = true;
@@ -92,8 +88,14 @@ public class OBOStreamReader implements OBOEventTypes {
 			else if (LINE_COMMENT_PATTERN.matcher(line).matches()) {
 				tokens.offer(new OBOEvent(COMMENT, pos));
 			}
-			else
+			else {
+				if (stanzaName == null && !headerStarted) {
+					tokens.offer(new OBOEvent(HEADER_START, pos));
+					headerStarted = true;
+				}
+
 				nextTag(line, pos);
+			}
 		}
 
 		return tokens.poll();

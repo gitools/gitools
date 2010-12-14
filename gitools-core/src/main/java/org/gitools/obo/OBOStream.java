@@ -57,6 +57,7 @@ class OBOStream {
 
 		while (line != null && line.endsWith("\\")) {
 			line = line.substring(0, line.length() - 1);
+			completeLine.append(line);
 			//escapeCharsAndRemoveComments(line, completeLine);
 			line = reader.readLine();
 			linePos++;
@@ -64,8 +65,9 @@ class OBOStream {
 				line = line.trim();
 		}
 
-		/*if (line != null)
-			escapeCharsAndRemoveComments(line, completeLine);*/
+		if (line != null)
+			completeLine.append(line);
+			//escapeCharsAndRemoveComments(line, completeLine);
 
 		if (line == null && completeLine.length() == 0)
 			return null;
