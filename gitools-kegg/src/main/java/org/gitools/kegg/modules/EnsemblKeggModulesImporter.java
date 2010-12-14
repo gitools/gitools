@@ -28,8 +28,6 @@ import org.gitools.kegg.idmapper.KeggGenesMapper;
 import org.gitools.kegg.idmapper.KeggPathwaysMapper;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,10 +63,13 @@ import org.gitools.kegg.soap.Definition;
 import org.gitools.kegg.soap.KEGGLocator;
 import org.gitools.kegg.soap.KEGGPortType;
 import org.gitools.model.ModuleMap;
+import org.gitools.obo.OBOEvent;
+import org.gitools.obo.OBOEventTypes;
+import org.gitools.obo.OBOStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
+public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes {
 
 	private static Logger logger = LoggerFactory.getLogger(EnsemblKeggModulesImporter.class);
 
@@ -577,7 +578,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 						|| modCategory.getId().equals(GO_MF)
 						|| modCategory.getId().equals(GO_CL))) {
 
-					// TODO data = plainGo(data, monitor);
+					//TODO data = plainGo(data, monitor);
 				}
 
 				mmap = new ModuleMap(data.getMap(), modDesc);
@@ -654,11 +655,23 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds {
 	}
 
 	private MappingData plainGo(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
-		monitor.begin("Downloading Gene Ontology ...", 1);
+		monitor.begin("Reading Gene Ontology graph ...", 1);
 
 		URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
-		Reader reader =new InputStreamReader(url.openStream());
+		OBOStreamReader oboReader = new OBOStreamReader(url);
 
+		char state = '0';
+
+		OBOEvent evt = oboReader.nextEvent();
+		while (evt != null) {
+			switch (state) {
+				case '0':
+					while (evt != null && evt.getType() != STANZA_START)
+						evt = oboReader.nextEvent();
+
+					// TODO ...
+			}
+		}
 
 		monitor.end();
 

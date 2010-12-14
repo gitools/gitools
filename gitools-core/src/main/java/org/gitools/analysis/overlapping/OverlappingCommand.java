@@ -22,9 +22,11 @@ import java.io.File;
 import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.text.MatrixTextPersistence;
 
 
 public class OverlappingCommand extends AnalysisCommand {
@@ -44,8 +46,18 @@ public class OverlappingCommand extends AnalysisCommand {
 				ResourceRef res = analysis.getSourceDataResource();
 				String dataPath = res.getPath();
 				String dataMime = res.getMime();
+				
+				ValueTranslator valueTranslator = createValueTranslator(
+					analysis.isBinaryCutoffEnabled(),
+					analysis.getBinaryCutoffCmp(),
+					analysis.getBinaryCutoffValue());
+
+				Properties dataProps = new Properties();
+				dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
+				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
+
 				BaseMatrix data = loadDataMatrix(
-						new File(dataPath), dataMime, new Properties(), monitor);
+						new File(dataPath), dataMime, dataProps, monitor);
 
 				analysis.setData(data);
 			}

@@ -17,9 +17,14 @@
 
 package org.gitools.analysis;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.util.Properties;
+import org.gitools.datafilters.BinaryCutoff;
+import org.gitools.datafilters.BinaryCutoffTranslator;
+import org.gitools.datafilters.DoubleTranslator;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
@@ -100,5 +105,13 @@ public abstract class AnalysisCommand {
 			throw new PersistenceException("Invalid MIME type for modules: " + mime);
 
 		return moduleMap;
+	}
+
+	protected ValueTranslator createValueTranslator(
+			boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue) {
+		
+		return binaryCutoffEnabled ?
+			new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) :
+			new DoubleTranslator();
 	}
 }

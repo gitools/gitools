@@ -17,14 +17,10 @@
 
 package org.gitools.analysis.htest;
 
-import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.datafilters.DoubleTranslator;
-import org.gitools.datafilters.ValueTranslator;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.TestFactory;
 
 import org.gitools.analysis.AnalysisCommand;
-import org.gitools.datafilters.BinaryCutoffTranslator;
 
 public abstract class HtestCommand extends AnalysisCommand {
 
@@ -85,14 +81,6 @@ public abstract class HtestCommand extends AnalysisCommand {
 
 	public void setPopulationPath(String populationPath) {
 		this.populationPath = populationPath;
-	}
-
-	protected ValueTranslator createValueTranslator(HtestAnalysis analysis) {		
-		return analysis.isBinaryCutoffEnabled() ?
-			new BinaryCutoffTranslator(new BinaryCutoff(
-				analysis.getBinaryCutoffCmp(),
-				analysis.getBinaryCutoffValue())) :
-			new DoubleTranslator();
 	}
 	
 	protected TestFactory createTestFactory(String toolName, String configName) {		

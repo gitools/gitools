@@ -2,6 +2,7 @@ package org.gitools.obo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 class OBOStream {
@@ -12,9 +13,14 @@ class OBOStream {
 
 	private int linePos;
 
-	public OBOStream(URL baseUrl) {
+	public OBOStream(BufferedReader reader) {
+		this.reader = reader;
+		this.linePos = 0;
+	}
+
+	public OBOStream(URL baseUrl) throws IOException {
 		this.baseUrl = baseUrl;
-		this.reader = new BufferedReader(reader);
+		this.reader = new BufferedReader(new InputStreamReader(baseUrl.openStream()));
 		this.linePos = 0;
 	}
 

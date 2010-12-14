@@ -17,7 +17,6 @@
 
 package org.gitools.obo;
 
-//FIXME On development
 public class OBOEvent {
 
 	private int type;
@@ -25,26 +24,29 @@ public class OBOEvent {
 	private String tagName;
 	private String tagValue;
 
-	//TODO file line and column
-	protected String line;
+	protected int line;
 
 	public OBOEvent(int type, int line) {
 		this.type = type;
+		this.line = line;
 	}
 
 	public OBOEvent(int type, int line, String stanzaName) {
 		this.type = type;
+		this.line = line;
 		this.stanzaName = stanzaName;
 	}
 
 	public OBOEvent(int type, int line, String stanzaName, String tagName) {
 		this.type = type;
+		this.line = line;
 		this.stanzaName = stanzaName;
 		this.tagName = tagName;
 	}
 
 	public OBOEvent(int type, int line, String stanzaName, String tagName, String tagValue) {
 		this.type = type;
+		this.line = line;
 		this.stanzaName = stanzaName;
 		this.tagName = tagName;
 		this.tagValue = tagValue;
@@ -54,7 +56,7 @@ public class OBOEvent {
 		return type;
 	}
 
-	public String getLine() {
+	public int getLine() {
 		return line;
 	}
 	

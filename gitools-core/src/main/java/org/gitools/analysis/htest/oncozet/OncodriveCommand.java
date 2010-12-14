@@ -119,7 +119,10 @@ public class OncodriveCommand extends HtestCommand {
 
 		File dataFile = new File(dataFileName);
 
-		ValueTranslator valueTranslator = createValueTranslator(analysis);
+		ValueTranslator valueTranslator = createValueTranslator(
+				analysis.isBinaryCutoffEnabled(),
+				analysis.getBinaryCutoffCmp(),
+				analysis.getBinaryCutoffValue());
 
 		Properties dataProps = new Properties();
 		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());

@@ -17,6 +17,7 @@
 
 package org.gitools.obo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
@@ -24,26 +25,10 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
-//FIXME On development
-public class OBOStreamReader {
+public class OBOStreamReader implements OBOEventTypes {
 
 	private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[.*\\]$");
 	private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\!.*$");
-
-	private static final int UNKNOWN = -1;
-	private static final int COMMENT = 1;
-	private static final int DOCUMENT_START = 10;
-	private static final int DOCUMENT_END = 19;
-	private static final int HEADER_START = 20;
-	private static final int HEADER_END = 29;
-	private static final int STANZA_START = 30;
-	private static final int STANZA_END = 39;
-	private static final int TAG_START = 40;
-	private static final int TAG_END = 49;
-
-	/*private static final int DBXREF_START = 50;
-	private static final int DBXREF_START = 51;
-	private static final int DBXREF_END = 52;*/
 
 	private OBOStream stream;
 	private Stack<OBOStream> streamStack;
@@ -56,8 +41,16 @@ public class OBOStreamReader {
 	private String stanzaName;
 	private String tagName;
 
-	public OBOStreamReader(Reader reader, URL baseUrl) {
-		stream = new OBOStream(baseUrl);
+	public OBOStreamReader(Reader reader) {
+		this(new OBOStream(new BufferedReader(reader)));
+	}
+
+	public OBOStreamReader(URL baseUrl) throws IOException {
+		this(new OBOStream(baseUrl));
+	}
+
+	private OBOStreamReader(OBOStream stream) {
+		this.stream = stream;
 		streamStack = new Stack<OBOStream>();
 
 		tokens = new LinkedList<OBOEvent>();
@@ -68,7 +61,7 @@ public class OBOStreamReader {
 		stanzaName = null;
 	}
 
-	public OBOEvent nextToken() throws IOException {
+	public OBOEvent nextEvent() throws IOException {
 		if (tokens.size() > 0)
 			return tokens.poll();
 
@@ -113,14 +106,14 @@ public class OBOStreamReader {
 			return;
 		}
 
-		String name = line.substring(0, pos);
+		tagName = line.substring(0, pos);
 		String content = line.substring(pos + 1);
 		StringBuilder sb = new StringBuilder();
 
 		//TODO parse contents and generate events
 		escapeCharsAndRemoveComments(content, sb);
-		tokens.offer(new OBOEvent(TAG_START, linepos, stanzaName, name, sb.toString()));
-		tokens.offer(new OBOEvent(TAG_END, linepos, stanzaName, name, sb.toString()));
+		tokens.offer(new OBOEvent(TAG_START, linepos, stanzaName, tagName, sb.toString()));
+		tokens.offer(new OBOEvent(TAG_END, linepos, stanzaName, tagName, sb.toString()));
 	}
 
 	/** replace escape characters and remove comments */
