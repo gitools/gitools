@@ -293,6 +293,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
 
 		if (keggEnabled && organism.getKeggDef() != null) {
+
+			keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
+			keggFeatMap.put(KEGG_GENES, featMap.get(KEGG_GENES));
+			feats.add(featMap.get(KEGG_GENES));
+
 			String orgId = organism.getKeggDef().getEntry_id();
 			Map<String, String> idMap = new HashMap<String, String>();
 			idMap.put("ensembl-" + orgId, ENSEMBL_GENES);
@@ -312,7 +317,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 					throw new ModulesImporterException("Unable to connect to KEGG FTP: " + ftp.getReplyString());
 
 				ftp.disconnect();
-				keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
 				Pattern pat = Pattern.compile("^" + path + orgId + "_" + "(.+)" + "[.]list$");
 				for (String file : files) {
 					Matcher m = pat.matcher(file);
