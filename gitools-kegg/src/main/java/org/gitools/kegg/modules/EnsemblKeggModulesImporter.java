@@ -578,7 +578,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 						|| modCategory.getId().equals(GO_MF)
 						|| modCategory.getId().equals(GO_CL))) {
 
-					//TODO data = plainGo(data, monitor);
+					data = plainGoData(data, monitor); //FIXME
 				}
 
 				mmap = new ModuleMap(data.getMap(), modDesc);
@@ -654,27 +654,116 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return false;
 	}
 
-	private MappingData plainGo(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
+	private MappingData plainGoData(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
 		monitor.begin("Reading Gene Ontology graph ...", 1);
 
 		URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
 		OBOStreamReader oboReader = new OBOStreamReader(url);
 
-		char state = '0';
+		Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
 
 		OBOEvent evt = oboReader.nextEvent();
 		while (evt != null) {
-			switch (state) {
-				case '0':
-					while (evt != null && evt.getType() != STANZA_START)
-						evt = oboReader.nextEvent();
+			while (evt != null && evt.getType() != STANZA_START)
+				evt = oboReader.nextEvent();
 
-					// TODO ...
+			if (evt != null && evt.getStanzaName().equalsIgnoreCase("term")) {
+				evt = oboReader.nextEvent();
+
+				String id = null;
+				Set<String> isA = new HashSet<String>();
+				boolean obsolete = false;
+
+				while (evt != null && evt.getType() != STANZA_START) {
+
+					if (evt != null && evt.getType() == TAG_START) {
+						String tagName = evt.getTagName();
+						if (tagName.equalsIgnoreCase("id"))
+							id = evt.getTagContents();
+						else if (tagName.equalsIgnoreCase("is_a"))
+							isA.add(evt.getTagContents());
+						else if (tagName.equalsIgnoreCase("is_obsolete"))
+							obsolete = evt.getTagContents().equalsIgnoreCase("true");
+
+						evt = oboReader.nextEvent();
+					}
+
+					while (evt != null &&
+							evt.getType() != STANZA_START &&
+							evt.getType() != TAG_START)
+						evt = oboReader.nextEvent();
+				}
+
+				if (id != null && !obsolete) {
+					for (String parent : isA) {
+						Set<String> set = tree.get(parent);
+						if (set == null) {
+							set = new HashSet<String>();
+							tree.put(parent, set);
+						}
+						set.add(id);
+					}
+				}
 			}
+			else if (evt != null)
+				evt = oboReader.nextEvent();
+		}
+		/*System.out.println();
+		for (String key : tree.keySet()) {
+		System.out.print(key + " --> ");
+		for (String v : tree.get(key))
+		System.out.print(v + ", ");
+		System.out.println();
+		}*/
+		
+		/*Map<String, Set<String>> m = data.getMap();
+		for (String key : m.keySet()) {
+			System.out.print(key + " --> ");
+			for (String v : m.get(key))
+				System.out.print(v + ", ");
+			System.out.println();
+		}*/
+
+		//Map<String, Set<String>> plainData = new HashMap<String, Set<String>>();
+		MappingData plainData = new MappingData(
+				data.getSrcNode().getId(),
+				data.getDstNode().getId());
+
+		for (String id : data.getSrcIds()) {
+			Set<String> dstIds = new HashSet<String>(data.get(id));
+
+			plainGoTerm(id, new HashSet<String>(), dstIds, data.getMap(), tree);
+
+			plainData.set(id, dstIds);
 		}
 
 		monitor.end();
 
-		return data;
+		return plainData;
+	}
+
+	private void plainGoTerm(String id,
+			Set<String> path,
+			Set<String> dstIds,
+			Map<String, Set<String>> map,
+			Map<String, Set<String>> childrenTree) {
+
+		if (path.contains(id))
+			throw new RuntimeException("Circular reference in path " + path + " for term " + id);
+		
+		Set<String> childrenList = childrenTree.get(id);
+		if (childrenList == null)
+			return;
+
+		for (String child : childrenList) {
+			Set<String> ids = map.get(child);
+			if (ids == null)
+				continue;
+			
+			dstIds.addAll(ids);
+			Set<String> childPath = new HashSet<String>(path);
+			childPath.add(id);
+			plainGoTerm(child, childPath, dstIds, map, childrenTree);
+		}
 	}
 }

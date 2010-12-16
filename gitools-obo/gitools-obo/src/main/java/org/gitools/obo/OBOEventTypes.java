@@ -15,10 +15,22 @@
  *  under the License.
  */
 
-package org.gitools.ui;
+package org.gitools.obo;
 
-public class App {
+public interface OBOEventTypes {
 
-	public static void main(String[] args) {
-	}
+	static final int UNKNOWN = -1;
+	static final int COMMENT = 1;
+	static final int DOCUMENT_START = 10;
+	static final int DOCUMENT_END = 19;
+	static final int HEADER_START = 20;
+	static final int HEADER_END = 29;
+	static final int STANZA_START = 30;
+	static final int STANZA_END = 39;
+	static final int TAG_START = 40;
+	static final int TAG_END = 49;
+
+	/*static final int DBXREF_START = 50;
+	static final int DBXREF_START = 51;
+	static final int DBXREF_END = 52;*/
 }

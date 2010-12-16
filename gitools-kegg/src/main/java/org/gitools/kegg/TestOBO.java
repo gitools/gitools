@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.net.ftp.FTPClient;
 import org.gitools.obo.OBOEvent;
 import org.gitools.obo.OBOEventTypes;
@@ -31,27 +33,39 @@ import org.gitools.obo.OBOStreamReader;
 public class TestOBO implements OBOEventTypes {
 
     public static void main(String[] args) throws MalformedURLException, IOException {
-        URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
-		FTPClient ftp = new FTPClient();
-		ftp.connect("ftp.geneontology.org");
-		ftp.login("anonymous", "");
-		ftp.enterLocalPassiveMode();
-		InputStream is = ftp.retrieveFileStream("/pub/go/ontology/gene_ontology.obo");
-		new BufferedReader(new InputStreamReader(is));
+        try {
+			URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
+			FTPClient ftp = new FTPClient();
+			ftp.connect("ftp.geneontology.org");
+			ftp.login("anonymous", "");
+			ftp.enterLocalPassiveMode();
+			InputStream is = ftp.retrieveFileStream("/pub/go/ontology/gene_ontology.obo");
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			OBOStreamReader oboReader = new OBOStreamReader(r);
 
-		OBOStreamReader oboReader = new OBOStreamReader(url);
+			char nextState = '0';
+			char state = '0';
 
-		char state = '0';
+			OBOEvent evt = oboReader.nextEvent();
+			while (evt != null) {
+				switch (state) {
+					case '0': // Searching for a Term stanza
+						while (evt != null && evt.getType() != STANZA_START)
+							evt = oboReader.nextEvent();
 
-		OBOEvent evt = oboReader.nextEvent();
-		while (evt != null) {
-			switch (state) {
-				case '0':
-					while (evt != null && evt.getType() != STANZA_START)
-						evt = oboReader.nextEvent();
+						if (evt.getStanzaName().equalsIgnoreCase("term"))
+							nextState = 'T';
+					break;
 
-					// TODO ...
+					case 'T': // Exploring term tags
+
+						break;
+				}
 			}
+			r.close();
+			ftp.disconnect();
+		} catch (IOException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
 		}
     }
 
