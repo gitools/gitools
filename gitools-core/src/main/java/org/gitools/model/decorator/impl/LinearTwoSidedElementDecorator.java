@@ -161,16 +161,16 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
 		decoration.reset();
-		
-		if (element == null) {
+
+		Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+
+		double v = MatrixUtils.doubleValue(value);
+
+		if (element == null || Double.isNaN(v)) {
 			decoration.setBgColor(scale.getEmptyColor());
 			decoration.setToolTip("Empty cell");
 			return;
 		}
-		
-		Object value = adapter.getValue(element, valueIndex);
-		
-		double v = MatrixUtils.doubleValue(value);
 
 		final Color color = scale.valueColor(v);
 		

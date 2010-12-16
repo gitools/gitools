@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import cern.colt.bitvector.BitMatrix;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class ModuleMap extends Artifact {
 
 	protected int[][] itemIndices;
 
+	protected int[][] moduleTreeIndices;
+
 	protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
 	protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 	
@@ -50,17 +53,16 @@ public class ModuleMap extends Artifact {
 		this.moduleDescriptions = new String[0];
 		this.itemNames = new String[0];
 		this.itemIndices = new int[0][];
+		this.moduleTreeIndices = new int[0][];
 	}
 
-	//@Deprecated
 	public ModuleMap(String[] moduleNames, String[] itemNames,
-			int[][] itemIndices/*, int[] itemsOrder*/) {
+			int[][] itemIndices) {
 
 		setModuleNames(moduleNames);
 		setItemNames(itemNames);
 
 		this.itemIndices = itemIndices;
-		//this.itemsOrder = itemsOrder;
 	}
 
 	public ModuleMap(String moduleName, String[] itemNames) {
@@ -77,17 +79,29 @@ public class ModuleMap extends Artifact {
 	}
 
 	public ModuleMap(Map<String, Set<String>> map, Map<String, String> desc) {
+		this(map, desc, new HashMap<String, Set<String>>());
+	}
+
+	public ModuleMap(
+			Map<String, Set<String>> map,
+			Map<String, String> desc,
+			Map<String, Set<String>> tree) {
+
 		int modCount = map.keySet().size();
 
 		String[] mname = map.keySet().toArray(new String[modCount]);
 		String[] mdesc = new String[modCount];
-		int[][] indices = new int[modCount][];
+		int[][] mapIndices = new int[modCount][];
+		int[][] treeIndices = new int[modCount][];
 
 		Map<String, Integer> itemMap = new HashMap<String, Integer>();
+		Map<String, Integer> modMap = new HashMap<String, Integer>();
 
 		int i = 0;
 		for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
 			mname[i] = entry.getKey();
+			modMap.put(mname[i], i);
+
 			mdesc[i] = desc.get(mname[i]);
 			if (mdesc[i] == null)
 				mdesc[i] = "";
@@ -102,8 +116,34 @@ public class ModuleMap extends Artifact {
 				}
 				ii[j++] = idx;
 			}
-			indices[i] = ii;
+			mapIndices[i] = ii;
 			i++;
+		}
+
+		final Set<String> emptyChildren = new HashSet<String>(0);
+
+		for (int j = 0; j < modCount; j++) {
+			Set<String> children = tree.get(mname[j]);
+			if (children == null)
+				children = emptyChildren;
+
+			int[] mi = new int[children.size()];
+
+			int k = 0;
+			for (String child : children) {
+				Integer idx = modMap.get(child);
+				if (idx != null) {
+					mi[k++] = idx;
+				}
+			}
+
+			if (k < mi.length) {
+				int[] tmp = new int[k];
+				System.arraycopy(mi, 0, tmp, 0, k);
+				mi = tmp;
+			}
+
+			treeIndices[j] = mi;
 		}
 
 		String[] inames = new String[itemMap.keySet().size()];
@@ -113,7 +153,8 @@ public class ModuleMap extends Artifact {
 		setModuleNames(mname);
 		setModuleDescriptions(mdesc);
 		setItemNames(inames);
-		this.itemIndices = indices;
+		this.itemIndices = mapIndices;
+		this.moduleTreeIndices = treeIndices;
 	}
 
 	public String getOrganism() {
@@ -186,6 +227,14 @@ public class ModuleMap extends Artifact {
 		moduleDescriptions[index] = desc;
 	}
 
+	public String getModuleDescription(String name) {
+		return getModuleDescription(getModuleIndex(name));
+	}
+
+	public void setModuleDescription(String name, String description) {
+		setModuleDescription(getModuleIndex(name), description);
+	}
+
 	public int getModuleItemCount(int index) {
 		return itemIndices[index].length;
 	}
@@ -232,6 +281,10 @@ public class ModuleMap extends Artifact {
 
 	public final void setAllItemIndices(int[][] itemIndices) {
 		this.itemIndices = itemIndices;
+	}
+
+	private void setModuleTreeIndices(int[][] moduleTreeIndices) {
+		this.moduleTreeIndices = moduleTreeIndices;
 	}
 
 	public final ModuleMap remap(String[] names) {
@@ -291,10 +344,97 @@ public class ModuleMap extends Artifact {
 		mmap.setItemNames(names);
 		mmap.setModuleNames(modNames.toArray(new String[modNames.size()]));
 		mmap.setAllItemIndices(modIndices.toArray(new int[modIndices.size()][]));
+		mmap.setModuleTreeIndices(moduleTreeIndices);
 		return mmap;
 	}
 
-	public BitMatrix getMap() {
+	public Map<String, Set<String>> getMap() {
+		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+
+		int modCount = getModuleCount();
+
+		for (int i = 0; i < modCount; i++) {
+			int[] indices = itemIndices[i];
+
+			Set<String> names = new HashSet<String>(indices.length);
+			for (int j = 0; j < indices.length; j++)
+				names.add(itemNames[indices[j]]);
+
+			map.put(moduleNames[i], names);
+		}
+
+		return map;
+	}
+
+	public Map<String, Set<String>> getTree() {
+		Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
+
+		int modCount = getModuleCount();
+
+		for (int i = 0; i < modCount; i++) {
+			int[] indices = moduleTreeIndices[i];
+
+			Set<String> names = new HashSet<String>(indices.length);
+			for (int j = 0; j < indices.length; j++)
+				names.add(moduleNames[indices[j]]);
+
+			tree.put(moduleNames[i], names);
+		}
+
+		return tree;
+	}
+
+	public ModuleMap plain() {
+		Map<String, Set<String>> map = getMap();
+		Map<String, Set<String>> tree = getTree();
+
+		Map<String, Set<String>> plainMap = new HashMap<String, Set<String>>();
+
+		Map<String, String> desc = new HashMap<String, String>();
+
+		for (String id : moduleNames) {
+			Set<String> dstIds = new HashSet<String>(map.get(id));
+
+			plainModule(id, new HashSet<String>(), dstIds, map, tree);
+
+			plainMap.put(id, dstIds);
+			desc.put(id, getModuleDescription(id));
+		}
+
+		ModuleMap mmap = new ModuleMap(plainMap, desc);
+		mmap.setOrganism(organism);
+		mmap.setModuleCategory(moduleCategory);
+		mmap.setItemCategory(itemCategory);
+
+		return mmap;
+	}
+
+	private void plainModule(String id,
+			Set<String> path,
+			Set<String> dstIds,
+			Map<String, Set<String>> map,
+			Map<String, Set<String>> childrenTree) {
+
+		if (path.contains(id))
+			throw new RuntimeException("Circular reference in path " + path + " for module " + id);
+
+		Set<String> childrenList = childrenTree.get(id);
+		if (childrenList == null)
+			return;
+
+		for (String child : childrenList) {
+			Set<String> ids = map.get(child);
+			if (ids == null)
+				continue;
+
+			dstIds.addAll(ids);
+			Set<String> childPath = new HashSet<String>(path);
+			childPath.add(id);
+			plainModule(child, childPath, dstIds, map, childrenTree);
+		}
+	}
+
+	public BitMatrix createBitMatrix() {
 		int mc = getModuleCount();
 		int ic = getItemCount();
 		

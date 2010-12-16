@@ -573,18 +573,27 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 						|| !featCategory.getId().equals(data.getDstNode().getId()))
 					monitor.exception(new ModulesImporterException("There was an unexpected mapping error."));
 
-				if (goEnabled && (
+				Map<String, Set<String>> tree = null;
+
+				boolean plainGo = goEnabled && (
 						modCategory.getId().equals(GO_BP)
 						|| modCategory.getId().equals(GO_MF)
-						|| modCategory.getId().equals(GO_CL))) {
+						|| modCategory.getId().equals(GO_CL));
 
-					data = plainGoData(data, monitor); //FIXME
+				if (plainGo) {
+					data = plainGoData(data, monitor);
+					tree = retrieveGoTree(monitor);
 				}
+				else
+					tree = new HashMap<String, Set<String>>();
 
-				mmap = new ModuleMap(data.getMap(), modDesc);
+				mmap = new ModuleMap(data.getMap(), modDesc, tree);
 				mmap.setOrganism(organism.getId());
 				mmap.setModuleCategory(modCategory.getId());
 				mmap.setItemCategory(featCategory.getId());
+
+				//if (plainGo)
+					//mmap = mmap.plain();
 			}
 		}
 		catch (Exception ex) {
@@ -654,7 +663,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return false;
 	}
 
-	private MappingData plainGoData(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
+	private Map<String, Set<String>> retrieveGoTree(IProgressMonitor monitor) throws MalformedURLException, IOException {
 		monitor.begin("Reading Gene Ontology graph ...", 1);
 
 		URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
@@ -708,6 +717,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			else if (evt != null)
 				evt = oboReader.nextEvent();
 		}
+
+		monitor.end();
+
 		/*System.out.println();
 		for (String key : tree.keySet()) {
 		System.out.print(key + " --> ");
@@ -715,6 +727,14 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		System.out.print(v + ", ");
 		System.out.println();
 		}*/
+		
+		return tree;
+	}
+
+	private MappingData plainGoData(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
+		monitor.begin("Reading Gene Ontology graph ...", 1);
+
+		Map<String, Set<String>> tree = retrieveGoTree(monitor.subtask());
 		
 		/*Map<String, Set<String>> m = data.getMap();
 		for (String key : m.keySet()) {
@@ -724,7 +744,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			System.out.println();
 		}*/
 
-		//Map<String, Set<String>> plainData = new HashMap<String, Set<String>>();
 		MappingData plainData = new MappingData(
 				data.getSrcNode().getId(),
 				data.getDstNode().getId());
