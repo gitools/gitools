@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.gitools</groupId>
 		<artifactId>gitools</artifactId>
-		<version>1.5.5</version>
+		<version>1.5.6-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -81,7 +81,7 @@
 			<artifactId>gitools-kegg</artifactId>
 			<groupId>org.gitools</groupId>
 			<type>jar</type>
-			<version>1.5.5</version>
+			<version>1.5.6-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-net</artifactId>
