@@ -85,7 +85,7 @@ public abstract class CutoffCmp implements Serializable {
 		@Override public boolean compare(double value, double cutoff) {
 			return Math.abs(value) >= cutoff; }
 	};
-	
+
 	public static final CutoffCmp[] comparators = new CutoffCmp[] {
 		LT, LE, GT, GE, EQ, NE,
 		ABS_LT, ABS_LE, ABS_GT, ABS_GE, ABS_EQ, ABS_NE

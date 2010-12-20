@@ -21,6 +21,7 @@ import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.formatter.GenericFormatter;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -44,12 +45,20 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 
 	private static Logger log = LoggerFactory.getLogger(OverlappingTablesPanel.class);
 
+	private static final CutoffCmp PASS_CMP = new CutoffCmp("true", "true", "true") {
+		@Override public boolean compare(double value, double cutoff) {
+			return true; }
+	};
+
 	private static final String DATA_TEMPLATE = "/vm/analysis/overlapping/tables_data.vm";
 	private static final String RESULTS_TEMPLATE = "/vm/analysis/overlapping/tables_results.vm";
 
 	protected Map<String, Integer> dataColIndices;
 
 	protected IColorScale dataScale;
+
+	protected CutoffCmp cutoffCmp;
+	protected double cutoffValue;
 	
 	public OverlappingTablesPanel(OverlappingAnalysis analysis, Heatmap heatmap) {
 		super(analysis, heatmap);
@@ -68,6 +77,13 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 		// Guess what kind of color scale to use
 
 		dataScale = MatrixUtils.inferScale(data, 0);
+
+		if (analysis.isBinaryCutoffEnabled()) {
+			cutoffCmp = analysis.getBinaryCutoffCmp();
+			cutoffValue = analysis.getBinaryCutoffValue();
+		}
+		else
+			cutoffCmp = PASS_CMP;
 	}
 
 	@Override
@@ -151,24 +167,28 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 			int mri = iix[ri];
 
 			double v1 = Double.NaN;
+			boolean f1 = false;
 			Color c1 = ColorConstants.emptyColor;
 
 			if (data.getCell(mri, dcol1) != null) {
 				v1 = valueCast.getDoubleValue(
 						data.getCellValue(mri, dcol1, valueIndex));
+				f1 = cutoffCmp.compare(v1, cutoffValue);
 				c1 = dataScale.valueColor(v1);
 			}
 
 			double v2 = Double.NaN;
+			boolean f2 = false;
 			Color c2 = ColorConstants.emptyColor;
 
 			if (data.getCell(mri, dcol2) != null) {
 				v2 = valueCast.getDoubleValue(
 						data.getCellValue(mri, dcol2, valueIndex));
+				f2 = cutoffCmp.compare(v2, cutoffValue);
 				c2 = dataScale.valueColor(v2);
 			}
 
-			if (!Double.isNaN(v1) && !Double.isNaN(v2)) {
+			if (!Double.isNaN(v1) && f1 && !Double.isNaN(v2) && f2) {
 				VelocityContext e = new VelocityContext();
 				e.put("name", data.getRowLabel(mri));
 				e.put("value1", fmt.format(v1));
@@ -213,15 +233,17 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 			int mri = iix[ri];
 
 			double v1 = Double.NaN;
+			boolean f1 = false;
 			Color c1 = ColorConstants.emptyColor;
 
 			if (data.getCell(mri, dcol) != null) {
 				v1 = valueCast.getDoubleValue(
 						data.getCellValue(mri, dcol, valueIndex));
+				f1 = cutoffCmp.compare(v1, cutoffValue);
 				c1 = dataScale.valueColor(v1);
 			}
 
-			if (!Double.isNaN(v1)) {
+			if (!Double.isNaN(v1) && f1) {
 				VelocityContext e = new VelocityContext();
 				e.put("name", data.getRowLabel(mri));
 				e.put("value1", fmt.format(v1));
