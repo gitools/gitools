@@ -47,17 +47,17 @@ public class OverlappingCommand extends AnalysisCommand {
 				String dataPath = res.getPath();
 				String dataMime = res.getMime();
 				
-				ValueTranslator valueTranslator = createValueTranslator(
+				/*ValueTranslator valueTranslator = createValueTranslator(
 					analysis.isBinaryCutoffEnabled(),
 					analysis.getBinaryCutoffCmp(),
 					analysis.getBinaryCutoffValue());
 
 				Properties dataProps = new Properties();
 				dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
+				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);*/
 
 				BaseMatrix data = loadDataMatrix(
-						new File(dataPath), dataMime, dataProps, monitor);
+						new File(dataPath), dataMime, new Properties(), monitor);
 
 				analysis.setData(data);
 			}
