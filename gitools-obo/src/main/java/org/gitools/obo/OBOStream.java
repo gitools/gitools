@@ -62,8 +62,18 @@ class OBOStream {
 		return line;
 	}
 
+	public void close() throws IOException {
+		if (reader != null) {
+			reader.close();
+			reader = null;
+		}
+	}
+
 	/** returns the next line or null if EOF */
 	private String readLine() throws IOException {
+		if (reader == null)
+			return null;
+		
 		StringBuilder completeLine = new StringBuilder();
 
 		String line = reader.readLine();

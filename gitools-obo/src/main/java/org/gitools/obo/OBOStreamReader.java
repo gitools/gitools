@@ -94,8 +94,8 @@ public class OBOStreamReader implements OBOEventTypes {
 					}
 				}
 
-				String s = stanzaMatcher.group(1);
-				String stzName = line.substring(1, line.length() - 1);
+				String stzName = stanzaMatcher.group(1);
+				//String stzName = line.substring(1, line.length() - 1);
 				tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
 				stanzaName = stzName;
 			}
@@ -113,6 +113,11 @@ public class OBOStreamReader implements OBOEventTypes {
 		}
 
 		return tokens.poll();
+	}
+
+	public void close() throws IOException {
+		stream.close();
+		// TODO streamStack
 	}
 
 	private void nextTag(String line, int linepos) {

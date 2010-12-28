@@ -50,7 +50,7 @@
 		<module>bg-commons</module>
 		<module>gitools-core</module>
 		<module>gitools-cli</module>
-	<!--	<module>gitools-obo</module> -->
+		<module>gitools-obo</module>
 		<module>gitools-biomart</module>
 		<module>gitools-intogen</module>
 		<module>gitools-kegg</module>
