@@ -35,7 +35,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 public class OverlappingResultsEditor extends HeatmapEditor {
 
-	private OverlappingAnalysis analysis;
+	//private OverlappingAnalysis analysis;
 
 	protected AbstractTablesPanel tablesPanel;
 
@@ -55,6 +55,7 @@ public class OverlappingResultsEditor extends HeatmapEditor {
 		dec.setMidColor(minColor);
 		dec.setMaxValue(1.0);
 		dec.setMaxColor(maxColor);
+		dec.setEmptyColor(Color.WHITE);
 		heatmap.setCellDecorator(dec);
 
 		heatmap.setTitle(analysis.getTitle());
