@@ -15,218 +15,266 @@
  *  under the License.
  */
 
-/*
- * OverlappingPage.java
- *
- * Created on 25-mar-2010, 17:40:59
- */
-
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.event.DocumentEvent;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import javax.swing.SwingUtilities;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.ui.examples.ExamplesManager;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.IEntityPersistence;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
+import org.gitools.ui.analysis.wizard.DataFilePage;
+import org.gitools.ui.analysis.wizard.DataFilterPage;
+import org.gitools.ui.analysis.wizard.ExamplePage;
+import org.gitools.ui.analysis.wizard.SelectFilePage;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.utils.DocumentChangeListener;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
-public class OverlappingAnalysisWizard extends AbstractWizardPage {
+public class OverlappingAnalysisWizard extends AbstractWizard {
 
-	protected String[] attributeNames;
+	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
+	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
-    public OverlappingAnalysisWizard() {
+
+	private static final FileFormat[] dataFormats = new FileFormat[] {
+			FileFormats.RESULTS_MATRIX,
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.MODULES_2C_MAP,
+			FileFormats.MODULES_INDEXED_MAP
+	};
+	
+	private ExamplePage examplePage;
+	private DataFilePage dataPage;
+	private DataFilterPage dataFilterPage;
+	protected OverlappingAnalysisWizardPage overlappingPage;
+	private SaveFilePage saveFilePage;
+	protected AnalysisDetailsPage analysisDetailsPage;
+
+	private SelectFilePage columnSetsPage;
+	private boolean examplePageEnabled;
+	private boolean dataFromMemory;
+	private List<IElementAttribute> attributes;
+	private boolean saveFilePageEnabled;
+
+
+	public OverlappingAnalysisWizard() {
 		super();
 
-		initialize(new String[0]);
+		examplePageEnabled = true;
+		dataFromMemory = false;
+		saveFilePageEnabled = true;
+
+		setTitle("Overlapping analysis");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
+		setHelpContext("analysis_overlapping");
 	}
-
-	/** Creates new form OverlappingPage */
-    public OverlappingAnalysisWizard(String[] attributeNames) {
-		super();
-
-		initialize(attributeNames);
-    }
-
-	private void initialize(String[] attributeNames) {
-
-		initComponents();
-
-		setTitle("Configure overlapping options");
-
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
-
-		setComplete(true);
-
-		this.attributeNames = attributeNames;
-
-		attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
-
-		attributeCb.setEnabled(attributeNames.length > 0);
-
-		replaceEmptyValuesCheck.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
-			}
-		});
-		replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
-
-			@Override
-			protected void update(DocumentEvent e) {
-
-				boolean valid = isValidNumber(replaceValueField.getText());
-
-				boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
-
-				setComplete(completed);
-
-				if (!valid) {
-
-					setStatus(MessageStatus.ERROR);
-
-					setMessage("Invalid replacement for empty values, it should be a real number");
-
-				} else
-
-					setMessage(MessageStatus.INFO, "");
-
-			}
-		});
-	}
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        applyGroup = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
-        attributeCb = new javax.swing.JComboBox();
-        replaceEmptyValuesCheck = new javax.swing.JCheckBox();
-        replaceValueField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        applyToColumnsRb = new javax.swing.JRadioButton();
-        applyToRowsRb = new javax.swing.JRadioButton();
-
-        jLabel1.setText("Take values from");
-
-        replaceEmptyValuesCheck.setText("Replace empty values by");
-
-        replaceValueField.setText("0");
-        replaceValueField.setEnabled(false);
-
-        jLabel2.setText("Apply to:");
-
-        applyGroup.add(applyToColumnsRb);
-        applyToColumnsRb.setSelected(true);
-        applyToColumnsRb.setText("Columns");
-
-        applyGroup.add(applyToRowsRb);
-        applyToRowsRb.setText("Rows");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(replaceEmptyValuesCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2)
-                    .addComponent(applyToColumnsRb)
-                    .addComponent(applyToRowsRb))
-                .addContainerGap(100, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(replaceEmptyValuesCheck)
-                    .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(applyToColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applyToRowsRb)
-                .addContainerGap(116, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
 
 	@Override
-	public JComponent createControls() {
-		return this;
-	}
-
-	private boolean isValidNumber(String text) {
-		try {
-			Double.parseDouble(text);
+	public void addPages() {
+		// Example
+		if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
+			examplePage = new ExamplePage("an overlapping analysis");
+			examplePage.setTitle("Overlapping analysis");
+			addPage(examplePage);
 		}
-		catch (NumberFormatException ex) {
-			return false;
+
+		// Data filters
+		dataFilterPage = new DataFilterPage();
+		dataFilterPage.setRowsFilterFileVisible(false);
+		addPage(dataFilterPage);
+		
+		// Data
+		if (!dataFromMemory) {
+			dataPage = new DataFilePage(dataFormats);
+			addPage(dataPage);
 		}
-		return true;
+
+		// Overlapping parameters
+		overlappingPage = new OverlappingAnalysisWizardPage();
+		overlappingPage.setAttributes(attributes);
+		addPage(overlappingPage);
+
+		// Destination
+		if (saveFilePageEnabled) {
+			saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
+			saveFilePage.setTitle("Select destination file");
+			saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+			saveFilePage.setFormats(new FileFormat[] {
+				FileFormats.OVERLAPPING });
+			saveFilePage.setFormatsVisible(false);
+			addPage(saveFilePage);
+		}
+
+		// Analysis details
+		analysisDetailsPage = new AnalysisDetailsPage();
+		addPage(analysisDetailsPage);
 	}
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup applyGroup;
-    private javax.swing.JRadioButton applyToColumnsRb;
-    private javax.swing.JRadioButton applyToRowsRb;
-    private javax.swing.JComboBox attributeCb;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JCheckBox replaceEmptyValuesCheck;
-    private javax.swing.JTextField replaceValueField;
-    // End of variables declaration//GEN-END:variables
+	@Override
+	public void pageLeft(IWizardPage currentPage) {
+		if (currentPage == examplePage) {
+			Settings.getDefault().setShowCombinationExamplePage(
+					examplePage.isShowAgain());
 
-	public int getAttributeIndex() {
-		return attributeCb.getSelectedIndex();
+			if (examplePage.isExampleEnabled()) {
+				JobThread.execute(AppFrame.instance(), new JobRunnable() {
+					@Override public void run(IProgressMonitor monitor) {
+
+						final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
+
+						if (basePath == null)
+							throw new RuntimeException("Unexpected error: There are no examples available");
+
+						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
+						Properties props = new Properties();
+						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
+						try {
+							monitor.begin("Loading example parameters ...", 1);
+
+							final OverlappingAnalysis a = (OverlappingAnalysis) PersistenceManager.getDefault()
+									.load(analysisFile, props, monitor);
+
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override public void run() {
+									setAnalysis(a);
+
+									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+									saveFilePage.setFileName("example");
+								}
+							});
+
+							monitor.end();
+						}
+						catch (Exception ex) {
+							monitor.exception(ex);
+						}
+					}
+				});
+			}
+		}
 	}
 
-	public boolean isReplaceNanValuesEnabled() {
-		return replaceEmptyValuesCheck.isSelected();
+	@Override
+	public boolean canFinish() {
+		IWizardPage page = getCurrentPage();
+
+		boolean canFinish = super.canFinish();
+		canFinish |= page == saveFilePage && page.isComplete();
+
+		return canFinish;
 	}
 
-	public double getReplaceNanValue() {
-		return Double.parseDouble(replaceValueField.getText());
+	public boolean isExamplePageEnabled() {
+		return examplePageEnabled;
 	}
 
-	public boolean isTransposeEnabled() {
-		return applyToRowsRb.isSelected();
+	public void setExamplePageEnabled(boolean examplePageEnabled) {
+		this.examplePageEnabled = examplePageEnabled;
 	}
 
-	public void setReplaceNanValue(double value) {
-		replaceValueField.setText(Double.toString(value));
+	public boolean isDataFromMemory() {
+		return dataFromMemory;
 	}
 
-	public void setTransposeEnabled(boolean enabled) {
-		applyToRowsRb.setSelected(enabled);
-	}
-	
-	public void setReplaceNanValuesEnabled(boolean enabled) {
-		replaceEmptyValuesCheck.setSelected(enabled);
+	public void setDataFromMemory(boolean dataFromMemory) {
+		this.dataFromMemory = dataFromMemory;
 	}
 
+	public List<IElementAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<IElementAttribute> attributes) {
+		this.attributes = attributes;
+	}
+
+	public boolean isSaveFilePageEnabled() {
+		return saveFilePageEnabled;
+	}
+
+	public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
+		this.saveFilePageEnabled = saveFilePageEnabled;
+	}
+
+	public OverlappingAnalysis getAnalysis() {
+		OverlappingAnalysis a = new OverlappingAnalysis();
+
+		a.setTitle(analysisDetailsPage.getAnalysisTitle());
+		a.setDescription(analysisDetailsPage.getAnalysisNotes());
+		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+
+		//FIXME overlapping: verify
+		//a.setAttributeIndex(overlappingPage.getAttributeIndex());
+		a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ?
+				overlappingPage.getReplaceNanValue() : null);
+		a.setTransposeData(overlappingPage.isTransposeEnabled());
+
+		return a;
+	}
+
+	private void setAnalysis(OverlappingAnalysis a) {
+		analysisDetailsPage.setAnalysisTitle(a.getTitle());
+		analysisDetailsPage.setAnalysisNotes(a.getDescription());
+		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+
+		overlappingPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
+		if (a.getReplaceNanValue() != null)
+			overlappingPage.setReplaceNanValue(a.getReplaceNanValue());
+
+		overlappingPage.setTransposeEnabled(a.isTransposeData());
+	}
+
+	public DataFilePage getDataFilePage() {
+		return dataPage;
+	}
+
+	public SelectFilePage getColumnSetsPage() {
+		return columnSetsPage;
+	}
+
+	public SaveFilePage getSaveFilePage() {
+		return saveFilePage;
+	}
+	public String getWorkdir() {
+		return saveFilePage.getFolder();
+	}
+
+	public String getFileName() {
+		return saveFilePage.getFilePath();
+	}
+
+	public String getDataFileMime() {
+		return dataPage.getFileFormat().getMime();
+	}
+
+	public File getDataFile() {
+		return dataPage.getFile();
+	}
+
+	public File getPopulationFile() {
+		return dataFilterPage.getRowsFilterFile();
+	}
 }

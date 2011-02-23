@@ -26,7 +26,7 @@ import org.gitools.analysis.overlapping.OverlappingCommand;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
-import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisFromFileWizard;
+import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -42,14 +42,14 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 		super("Overlapping analysis ...");
 		
 		setDesc("Run an overlapping analysis");
-		setMnemonic(KeyEvent.VK_C);
+		setMnemonic(KeyEvent.VK_L); // FIXME : search a better option
 
 		setDefaultEnabled(true);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final OverlappingAnalysisFromFileWizard wizard = new OverlappingAnalysisFromFileWizard();
+		final OverlappingAnalysisWizard wizard = new OverlappingAnalysisWizard();
 
 		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 
@@ -96,5 +96,4 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 			}
 		});
 	}
-
 }

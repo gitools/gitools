@@ -19,19 +19,17 @@ package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingProcessor;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
-import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisFromEditorWizard;
+import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -64,15 +62,15 @@ public class OverlappingsAction extends BaseAction {
 		if (matrixView == null)
 			return;
 
-		List<IElementAttribute> attributes = matrixView.getCellAttributes();
-		String[] attributeNames = new String[attributes.size()];
-		for (int i = 0; i < attributes.size(); i++)
-			attributeNames[i] = attributes.get(i).getName();
-
-		OverlappingAnalysisFromEditorWizard wiz = new OverlappingAnalysisFromEditorWizard(attributeNames);
+		final OverlappingAnalysisWizard wiz = new OverlappingAnalysisWizard();
+		wiz.setExamplePageEnabled(false);
+		wiz.setDataFromMemory(true);
+		wiz.setAttributes(matrixView.getCellAttributes());
+		wiz.setSaveFilePageEnabled(false);
 
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
+
+		dlg.open();
 
 		if (dlg.isCancelled())
 			return;
@@ -110,7 +108,7 @@ public class OverlappingsAction extends BaseAction {
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
 					
 					// FIXME: OVERLAPPING
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.HEATMAP));
+					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-overlapping", FileSuffixes.HEATMAP));
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
