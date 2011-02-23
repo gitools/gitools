@@ -46,7 +46,7 @@ import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
-import org.gitools.ui.analysis.overlap.OverlapAnalysisEditor;
+import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 
@@ -121,7 +121,7 @@ public class OpenAnalysisAction extends BaseAction {
 						else if (mime.equals(MimeTypes.COMBINATION_ANALYSIS))
 							editor = new CombinationAnalysisEditor((CombinationAnalysis) analysis);
 						else if (mime.equals(MimeTypes.OVERLAPPING_ANALYSIS))
-							editor = new OverlapAnalysisEditor((OverlappingAnalysis) analysis);
+							editor = new OverlappingAnalysisEditor((OverlappingAnalysis) analysis);
 
 						editor.setName(file.getName());
 

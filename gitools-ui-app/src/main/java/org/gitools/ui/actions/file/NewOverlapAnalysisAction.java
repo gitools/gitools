@@ -27,7 +27,7 @@ import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
-import org.gitools.ui.analysis.overlap.wizard.OverlapAnalysisFromFileWizard;
+import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -50,7 +50,7 @@ public class NewOverlapAnalysisAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final OverlapAnalysisFromFileWizard wizard = new OverlapAnalysisFromFileWizard();
+		final OverlappingAnalysisFromFileWizard wizard = new OverlappingAnalysisFromFileWizard();
 
 		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 
