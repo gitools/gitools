@@ -16,7 +16,7 @@
  */
 
 /*
- * CorrelationPage.java
+ * OverlappingPage.java
  *
  * Created on 25-mar-2010, 17:40:59
  */
@@ -34,47 +34,70 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class OverlappingFromEditorPage extends AbstractWizardPage {
+public class OverlappingAnalysisWizard extends AbstractWizardPage {
 
 	protected String[] attributeNames;
 
-    /** Creates new form CorrelationPage */
-    public OverlappingFromEditorPage(String[] attributeNames) {
+    public OverlappingAnalysisWizard() {
 		super();
+
+		initialize(new String[0]);
+	}
+
+	/** Creates new form OverlappingPage */
+    public OverlappingAnalysisWizard(String[] attributeNames) {
+		super();
+
+		initialize(attributeNames);
+    }
+
+	private void initialize(String[] attributeNames) {
 
 		initComponents();
 
-		setTitle("Configure correlation options");
+		setTitle("Configure overlapping options");
 
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
 		setComplete(true);
-		
+
 		this.attributeNames = attributeNames;
 
 		attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
 
+		attributeCb.setEnabled(attributeNames.length > 0);
+
 		replaceEmptyValuesCheck.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
 			}
 		});
-
 		replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
+
+			@Override
+			protected void update(DocumentEvent e) {
+
 				boolean valid = isValidNumber(replaceValueField.getText());
+
 				boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
+
 				setComplete(completed);
 
 				if (!valid) {
+
 					setStatus(MessageStatus.ERROR);
+
 					setMessage("Invalid replacement for empty values, it should be a real number");
-				}
-				else
+
+				} else
+
 					setMessage(MessageStatus.INFO, "");
+
 			}
 		});
-    }
+	}
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -193,4 +216,17 @@ public class OverlappingFromEditorPage extends AbstractWizardPage {
 	public boolean isTransposeEnabled() {
 		return applyToRowsRb.isSelected();
 	}
+
+	public void setReplaceNanValue(double value) {
+		replaceValueField.setText(Double.toString(value));
+	}
+
+	public void setTransposeEnabled(boolean enabled) {
+		applyToRowsRb.setSelected(enabled);
+	}
+	
+	public void setReplaceNanValuesEnabled(boolean enabled) {
+		replaceEmptyValuesCheck.setSelected(enabled);
+	}
+
 }

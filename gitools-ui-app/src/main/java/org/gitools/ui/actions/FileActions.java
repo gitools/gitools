@@ -40,7 +40,7 @@ import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
-import org.gitools.ui.actions.file.NewOverlapAnalysisAction;
+import org.gitools.ui.actions.file.NewOverlappingAnalysisAction;
 import org.gitools.ui.actions.file.NewProjectAction;
 import org.gitools.ui.actions.file.OpenAnalysisAction;
 import org.gitools.ui.actions.file.OpenHeatmapAction;
@@ -58,7 +58,7 @@ public class FileActions {
 	public static final BaseAction newOncozAnalysisAction = new NewOncodriveAnalysisAction();
 	public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
 	public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
-	public static final BaseAction newOverlapAnalysisAction = new NewOverlapAnalysisAction();
+	public static final BaseAction newOverlapAnalysisAction = new NewOverlappingAnalysisAction();
 
 	// Open
 

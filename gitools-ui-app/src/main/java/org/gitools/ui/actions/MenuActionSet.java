@@ -120,7 +120,7 @@ public class MenuActionSet extends ActionSet {
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,
 				AnalysisActions.combinations,
-				AnalysisActions.overlaps,
+				AnalysisActions.overlapping,
 //				new ActionSet("Clustering", new BaseAction[] {
 //					AnalysisActions.clusteringAction
 //				}),

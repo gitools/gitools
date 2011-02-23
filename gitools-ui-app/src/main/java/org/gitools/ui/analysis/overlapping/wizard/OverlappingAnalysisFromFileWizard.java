@@ -21,7 +21,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.util.Properties;
 import javax.swing.SwingUtilities;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
@@ -44,30 +44,31 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 
 public class OverlappingAnalysisFromFileWizard extends AbstractWizard {
 
-	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.CORRELATIONS;
+	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
 	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
 	private DataFilterPage dataFilterPage;
-	protected OverlappingFromFilePage corrPage;
+	protected OverlappingAnalysisWizard ovPage;
 	private SaveFilePage saveFilePage;
 	protected AnalysisDetailsPage analysisDetailsPage;
 
 	public OverlappingAnalysisFromFileWizard() {
 		super();
 
-		setTitle("Correlation analysis");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CORRELATION, 96));
-		setHelpContext("analysis_correlation");
+		setTitle("Overlapping analysis");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
+		// FIXME: overlapping
+		//setHelpContext("analysis_correlation");
 	}
 
 	@Override
 	public void addPages() {
 		// Example
 		if (Settings.getDefault().isShowCombinationExamplePage()) {
-			examplePage = new ExamplePage("a correlation analysis");
-			examplePage.setTitle("Correlation analysis");
+			examplePage = new ExamplePage("an overlapping analysis");
+			examplePage.setTitle("Overlapping analysis");
 			addPage(examplePage);
 		}
 
@@ -80,16 +81,16 @@ public class OverlappingAnalysisFromFileWizard extends AbstractWizard {
 		dataFilterPage.setRowsFilterFileVisible(false);
 		addPage(dataFilterPage);
 
-		// Correlation method
-		corrPage = new OverlappingFromFilePage();
-		addPage(corrPage);
+		// Overlapping method
+		ovPage = new OverlappingAnalysisWizard();
+		addPage(ovPage);
 
 		// Destination
 		saveFilePage = new SaveFilePage();
 		saveFilePage.setTitle("Select destination file");
 		saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
 		saveFilePage.setFormats(new FileFormat[] {
-			FileFormats.CORRELATIONS });
+			FileFormats.OVERLAPPING });
 		saveFilePage.setFormatsVisible(false);
 		addPage(saveFilePage);
 
@@ -108,7 +109,7 @@ public class OverlappingAnalysisFromFileWizard extends AbstractWizard {
 				JobThread.execute(AppFrame.instance(), new JobRunnable() {
 					@Override public void run(IProgressMonitor monitor) {
 
-						final File basePath = ExamplesManager.getDefault().resolvePath("correlations", monitor);
+						final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
 
 						if (basePath == null)
 							throw new RuntimeException("Unexpected error: There are no examples available");
@@ -119,7 +120,7 @@ public class OverlappingAnalysisFromFileWizard extends AbstractWizard {
 						try {
 							monitor.begin("Loading example parameters ...", 1);
 
-							final CorrelationAnalysis a = (CorrelationAnalysis) PersistenceManager.getDefault()
+							final OverlappingAnalysis a = (OverlappingAnalysis) PersistenceManager.getDefault()
 									.load(analysisFile, props, monitor);
 
 							SwingUtilities.invokeLater(new Runnable() {
@@ -178,28 +179,29 @@ public class OverlappingAnalysisFromFileWizard extends AbstractWizard {
 		return dataFilterPage.getRowsFilterFile();
 	}
 
-	public CorrelationAnalysis getAnalysis() {
-		CorrelationAnalysis a = new CorrelationAnalysis();
+	public OverlappingAnalysis getAnalysis() {
+		OverlappingAnalysis a = new OverlappingAnalysis();
 
 		a.setTitle(analysisDetailsPage.getAnalysisTitle());
 		a.setDescription(analysisDetailsPage.getAnalysisNotes());
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
+		//FIXME overlapping: verify
 		//a.setAttributeIndex(corrPage.getAttributeIndex());
-		a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
-				corrPage.getReplaceNanValue() : null);
-		a.setTransposeData(corrPage.isTransposeEnabled());
+		a.setReplaceNanValue(ovPage.isReplaceNanValuesEnabled() ?
+				ovPage.getReplaceNanValue() : null);
+		a.setTransposeData(ovPage.isTransposeEnabled());
 		
 		return a;
 	}
 
-	private void setAnalysis(CorrelationAnalysis a) {
+	private void setAnalysis(OverlappingAnalysis a) {
 		analysisDetailsPage.setAnalysisTitle(a.getTitle());
 		analysisDetailsPage.setAnalysisNotes(a.getDescription());
 		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
-		corrPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
+		ovPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
 		if (a.getReplaceNanValue() != null)
-			corrPage.setReplaceNanValue(a.getReplaceNanValue());
-		corrPage.setTransposeEnabled(a.isTransposeData());
+			ovPage.setReplaceNanValue(a.getReplaceNanValue());
+		ovPage.setTransposeEnabled(a.isTransposeData());
 	}
 }

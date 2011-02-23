@@ -21,12 +21,11 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.correlation.CorrelationCommand;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingCommand;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
-import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
+import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
 
@@ -35,14 +34,14 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
-public class NewOverlapAnalysisAction extends BaseAction {
+public class NewOverlappingAnalysisAction extends BaseAction {
 
 	private static final long serialVersionUID = -8917512377366424724L;
 
-	public NewOverlapAnalysisAction() {
-		super("Overlap analysis ...");
+	public NewOverlappingAnalysisAction() {
+		super("Overlapping analysis ...");
 		
-		setDesc("Run an overlap analysis");
+		setDesc("Run an overlapping analysis");
 		setMnemonic(KeyEvent.VK_C);
 
 		setDefaultEnabled(true);
@@ -59,12 +58,10 @@ public class NewOverlapAnalysisAction extends BaseAction {
 		if (wizDlg.isCancelled())
 			return;
 
-		final CorrelationAnalysis analysis = wizard.getAnalysis();
+		final OverlappingAnalysis analysis = wizard.getAnalysis();
 
-		final CorrelationCommand cmd = new CorrelationCommand(
+		final OverlappingCommand cmd = new OverlappingCommand(
 				analysis,
-				wizard.getDataFileMime(),
-				wizard.getDataFile().getAbsolutePath(),
 				wizard.getWorkdir(),
 				wizard.getFileName());
 
@@ -77,7 +74,7 @@ public class NewOverlapAnalysisAction extends BaseAction {
 					if (monitor.isCancelled())
 						return;
 
-					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
+					final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
 					editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + FileSuffixes.HEATMAP);
 

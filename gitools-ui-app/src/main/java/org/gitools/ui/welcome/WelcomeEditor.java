@@ -37,7 +37,7 @@ import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
 import org.gitools.ui.actions.file.ImportKeggModulesAction;
 import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
 import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
-import org.gitools.ui.actions.file.NewOverlapAnalysisAction;
+import org.gitools.ui.actions.file.NewOverlappingAnalysisAction;
 import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
 import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
 
@@ -128,7 +128,7 @@ public class WelcomeEditor extends Html4Editor {
 			actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
 			actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
 			actions.put("Correlations", NewCorrelationAnalysisAction.class);
-			actions.put("Overlaps", NewOverlapAnalysisAction.class);
+			actions.put("Overlapping", NewOverlappingAnalysisAction.class);
 			actions.put("Combination", NewCombinationAnalysisAction.class);
 			
 			String ref = params.get("ref");

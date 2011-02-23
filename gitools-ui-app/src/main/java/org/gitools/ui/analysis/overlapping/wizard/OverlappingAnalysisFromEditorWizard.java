@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
@@ -28,23 +28,31 @@ public class OverlappingAnalysisFromEditorWizard extends AbstractWizard {
 
 	protected String[] attributeNames;
 
-	protected OverlappingFromEditorPage corrPage;
+	protected OverlappingAnalysisWizard ovPage;
 	protected AnalysisDetailsPage analysisDetailsPage;
 
 	public OverlappingAnalysisFromEditorWizard(String[] attributeNames) {
 		super();
 
-		setTitle("Correlation analysis");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CORRELATION, 96));
+		setTitle("Overlapping analysis");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
 
 		this.attributeNames = attributeNames;
 	}
 
+	public OverlappingAnalysisFromEditorWizard() {
+		super();
+
+		setTitle("Overlapping analysis");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
+
+	}
+	
 	@Override
 	public void addPages() {
-		// Correlation method
-		corrPage = new OverlappingFromEditorPage(attributeNames);
-		addPage(corrPage);
+		// Overlapping method
+		ovPage = new OverlappingAnalysisWizard(attributeNames);
+		addPage(ovPage);
 
 		// Analysis details
 		analysisDetailsPage = new AnalysisDetailsPage();
@@ -57,22 +65,23 @@ public class OverlappingAnalysisFromEditorWizard extends AbstractWizard {
 
 		IWizardPage page = getCurrentPage();
 
-		canFinish |= page.isComplete() && (page == corrPage);
+		canFinish |= page.isComplete() && (page == ovPage);
 
 		return canFinish;
 	}
 
-	public CorrelationAnalysis getAnalysis() {
-		CorrelationAnalysis a = new CorrelationAnalysis();
+	public OverlappingAnalysis getAnalysis() {
+		OverlappingAnalysis a = new OverlappingAnalysis();
 
 		a.setTitle(analysisDetailsPage.getAnalysisTitle());
 		a.setDescription(analysisDetailsPage.getAnalysisNotes());
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-		a.setAttributeIndex(corrPage.getAttributeIndex());
-		a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
-				corrPage.getReplaceNanValue() : null);
-		a.setTransposeData(corrPage.isTransposeEnabled());
+		//FIXME overlapping: verify
+		//a.setAttributeIndex(ovPage.getAttributeIndex());
+		a.setReplaceNanValue(ovPage.isReplaceNanValuesEnabled() ?
+				ovPage.getReplaceNanValue() : null);
+		a.setTransposeData(ovPage.isTransposeEnabled());
 		
 		return a;
 	}

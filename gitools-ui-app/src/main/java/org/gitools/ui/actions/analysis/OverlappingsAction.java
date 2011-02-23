@@ -21,8 +21,8 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.SwingUtilities;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.correlation.CorrelationProcessor;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingProcessor;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
@@ -30,8 +30,8 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
-import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
+import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
+import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisFromEditorWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -40,11 +40,11 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
-public class OverlapsAction extends BaseAction {
+public class OverlappingsAction extends BaseAction {
 
-	public OverlapsAction() {
-		super("Correlations");
-		setDesc("Correlations analysis");
+	public OverlappingsAction() {
+		super("Overlapping");
+		setDesc("Overlapping analysis");
 	}
 
 	@Override
@@ -69,14 +69,15 @@ public class OverlapsAction extends BaseAction {
 		for (int i = 0; i < attributes.size(); i++)
 			attributeNames[i] = attributes.get(i).getName();
 
-		CorrelationAnalysisFromEditorWizard wiz = new CorrelationAnalysisFromEditorWizard(attributeNames);
+		OverlappingAnalysisFromEditorWizard wiz = new OverlappingAnalysisFromEditorWizard(attributeNames);
+
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
 		dlg.setVisible(true);
 
 		if (dlg.isCancelled())
 			return;
 
-		final CorrelationAnalysis analysis = wiz.getAnalysis();
+		final OverlappingAnalysis analysis = wiz.getAnalysis();
 
 		if (!analysis.isTransposeData()) {
 			if (matrixView.getSelectedColumns().length > 0) {
@@ -99,14 +100,16 @@ public class OverlapsAction extends BaseAction {
 			@Override
 			public void run(IProgressMonitor monitor) {
 				try {
-					new CorrelationProcessor(analysis).run(monitor);
+					new OverlappingProcessor(analysis).run(monitor);
 
 					if (monitor.isCancelled())
 						return;
 
-					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
+					final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
+					
+					// FIXME: OVERLAPPING
 					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.HEATMAP));
 
 					SwingUtilities.invokeLater(new Runnable() {
