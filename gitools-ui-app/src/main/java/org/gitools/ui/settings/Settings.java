@@ -99,6 +99,7 @@ public class Settings {
 	private boolean showEnrichmentExamplePage = true;
 	private boolean showOncodriveExamplePage = true;
 	private boolean showCorrelationExamplePage = true;
+	private boolean showOverlapExamplePage = true;
 	private boolean showCombinationExamplePage = true;
 
 	private Settings() {
@@ -249,6 +250,14 @@ public class Settings {
 
 	public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
 		this.showCombinationExamplePage = showCombinationExamplePage;
+	}
+
+	public boolean isShowOverlapExamplePage() {
+		return showOverlapExamplePage;
+	}
+
+	public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
+		this.showOverlapExamplePage = showOverlapExamplePage;
 	}
 
 }

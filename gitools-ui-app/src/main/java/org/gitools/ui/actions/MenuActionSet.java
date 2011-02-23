@@ -37,6 +37,7 @@ public class MenuActionSet extends ActionSet {
 						FileActions.newEnrichmentAnalysisAction,
 						FileActions.newOncozAnalysisAction,
 						FileActions.newCorrelationAnalysisAction,
+						FileActions.newOverlapAnalysisAction,
 						FileActions.newCombinationAnalysisAction
 					})
 				}),
@@ -119,6 +120,7 @@ public class MenuActionSet extends ActionSet {
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,
 				AnalysisActions.combinations,
+				AnalysisActions.overlaps,
 //				new ActionSet("Clustering", new BaseAction[] {
 //					AnalysisActions.clusteringAction
 //				}),
