@@ -19,11 +19,11 @@ package org.gitools.heatmap.model;
 
 import org.gitools.model.decorator.ElementDecoration;
 
-public class HeatmapHeaderDecoration extends ElementDecoration {
+public class HeatmapLabelsDecoration extends ElementDecoration {
 
 	protected String url;
 	
-	public HeatmapHeaderDecoration() {
+	public HeatmapLabelsDecoration() {
 	}
 	
 	public String getUrl() {

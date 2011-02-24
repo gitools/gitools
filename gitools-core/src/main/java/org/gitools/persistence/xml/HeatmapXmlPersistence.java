@@ -58,10 +58,10 @@ public class HeatmapXmlPersistence
 		context.setEntityContext(entity.getMatrixView().getContents(), new PersistenceEntityContext(
 				new File(baseFile, baseName + ".data.gz").getAbsolutePath()));
 
-		context.setEntityContext(entity.getRowHeader().getAnnotations(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getRowDim().getAnnotations(), new PersistenceEntityContext(
 				new File(baseFile, baseName + ".row.annotations.gz").getAbsolutePath()));
 
-		context.setEntityContext(entity.getColumnHeader().getAnnotations(), new PersistenceEntityContext(
+		context.setEntityContext(entity.getColumnDim().getAnnotations(), new PersistenceEntityContext(
 				new File(baseFile, baseName + ".column.annotations.gz").getAbsolutePath()));
 	}
 

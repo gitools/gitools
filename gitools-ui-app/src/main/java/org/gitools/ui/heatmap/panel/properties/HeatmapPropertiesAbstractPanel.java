@@ -31,9 +31,7 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 	public HeatmapPropertiesAbstractPanel() {
 		heatmapListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
-				heatmapPropertyChange(evt);
-			}
-		};
+				heatmapPropertyChange(evt); } };
 	}
 
 	public Heatmap getHeatmap() {
@@ -44,12 +42,8 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 		if (this.hm == heatmap)
 			return;
 		
-		if (heatmap != null) {
+		if (heatmap != null)
 			heatmap.removePropertyChangeListener(heatmapListener);
-			heatmap.getColumnHeader().removePropertyChangeListener(heatmapListener);
-			heatmap.getRowHeader().removePropertyChangeListener(heatmapListener);
-			heatmap.getMatrixView().removePropertyChangeListener(heatmapListener);
-		}
 
 		this.hm = heatmap;
 
@@ -57,9 +51,6 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel 
 		initControls();
 
 		heatmap.addPropertyChangeListener(heatmapListener);
-		heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
-		heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
-		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
 	}
 
 	protected void heatmapPropertyChange(PropertyChangeEvent evt) {}

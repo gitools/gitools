@@ -46,8 +46,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterSet;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.HeatmapClusterBand;
+import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
@@ -67,6 +68,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private boolean rowMode;
 
+	private HeatmapDim dim;
+
 	//private boolean updatingControls = false;
 
 	private boolean updatingModel = false;
@@ -74,13 +77,21 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     /** Creates new form HeatmapPropertiesHeaderPanel */
     public HeatmapPropertiesHeaderPanel(boolean rowMode) {
 		this.rowMode = rowMode;
-		
+
         initComponents();
 
 		// TODO activate in the next version:
 		//colorAnnButton.setVisible(false);
 		//colorAnnEditBtn.setVisible(false);
     }
+
+	@Override
+	public void setHeatmap(Heatmap heatmap) {
+		this.dim = rowMode ?
+			heatmap.getRowDim() : heatmap.getColumnDim();
+		
+		super.setHeatmap(heatmap);
+	}
 
 	@Override
 	protected void initControls() {
@@ -98,14 +109,14 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		fgColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				if (!updatingControls)
-					getHeader().setForegroundColor(color);
+					dim.getLabelsHeader().setForegroundColor(color);
 			}
 		});
 
 		bgColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				if (!updatingControls)
-					getHeader().setBackgroundColor(color);
+					dim.getLabelsHeader().setBackgroundColor(color);
 			}
 		});
 
@@ -115,7 +126,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override public void run() {
 							updatingModel = true;
-							getHeader().setLabelPattern(labelPattern.getText());
+							dim.getLabelsHeader().setLabelPattern(labelPattern.getText());
 							updatingModel = false;
 						}
 					});
@@ -127,34 +138,30 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		linkName.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				if (!updatingControls)
-					getHeader().setLinkName(linkName.getText());
+					dim.getLabelsHeader().setLinkName(linkName.getText());
 			}
 		});
 
 		linkPattern.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
 				if (!updatingControls)
-					getHeader().setLinkPattern(linkPattern.getText());
+					dim.getLabelsHeader().setLinkPattern(linkPattern.getText());
 			}
 		});
 	}
 
 	private void sizeChangePerformed() {
 		SpinnerNumberModel m = (SpinnerNumberModel) size.getModel();
-		if (rowMode)
-			hm.setRowHeaderSize(m.getNumber().intValue());
-		else
-			hm.setColumnHeaderSize(m.getNumber().intValue());
+		dim.getLabelsHeader().setSize(m.getNumber().intValue());
 	}
 	
 	@Override
 	protected void updateControls() {
 		updatingControls = true;
 
-		HeatmapHeader hdr = getHeader();
+		HeatmapLabelsHeader hdr = dim.getLabelsHeader();
 		
-		size.setValue(rowMode ?
-				hm.getRowHeaderSize() : hm.getColumnHeaderSize());
+		size.setValue(dim.getLabelsHeader().getSize());
 
 		fgColor.setColor(hdr.getForegroundColor());
 		bgColor.setColor(hdr.getBackgroundColor());
@@ -170,7 +177,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	}
 
 	private void updateFontTitle() {
-		HeatmapHeader hdr = getHeader();
+		HeatmapLabelsHeader hdr = dim.getLabelsHeader();
 		final Font font = hdr.getFont();
 		fontTitle.setFont(font);
 		StringBuilder sb = new StringBuilder();
@@ -180,8 +187,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	}
 
 	private void updateAnnotations() {
-		HeatmapHeader hdr = getHeader();
-		AnnotationMatrix annMatrix = hdr.getAnnotations();
+		AnnotationMatrix annMatrix = dim.getAnnotations();
 		
 		if (annMatrix != null) {
 			//FIXME what if cache is disabled ?
@@ -197,7 +203,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			setAnnotationControlsEnabled(false);
 		}
 
-		String patt = getHeader().getLabelPattern();
+		String patt = dim.getLabelsHeader().getLabelPattern();
 		if (patt == null || patt.isEmpty())
 			patt = "${id}";
 
@@ -220,46 +226,47 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	protected void heatmapPropertyChange(PropertyChangeEvent evt) {
 		if (updatingModel)
 			return;
-		
-		final HeatmapHeader hdr = getHeader();
+
+		final HeatmapLabelsHeader hdr = dim.getLabelsHeader();
 
 		final Object source = evt.getSource();
 		final String pname = evt.getPropertyName();
 
+		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
+
 		if (source.equals(hm)) {
-			if (Heatmap.COLUMN_HEADER_SIZE_CHANGED.equals(pname)
+			/*if (Heatmap.COLUMN_HEADER_SIZE_CHANGED.equals(pname)
 					|| Heatmap.ROW_HEADER_SIZE_CHANGED.equals(evt.getPropertyName()))
 				size.setValue(rowMode ?
-					hm.getRowHeaderSize() : hm.getColumnHeaderSize());
+					hm.getRowHeaderSize() : hm.getColumnHeaderSize());*/
 		}
 		else if (source.equals(hdr)) {
 			updatingControls = true;
 
-			if (HeatmapHeader.FG_COLOR_CHANGED.equals(pname))
+			if (HeatmapLabelsHeader.FG_COLOR_CHANGED.equals(pname))
 				fgColor.setColor(hdr.getForegroundColor());
-			else if (HeatmapHeader.BG_COLOR_CHANGED.equals(pname))
+			else if (HeatmapLabelsHeader.BG_COLOR_CHANGED.equals(pname))
 				bgColor.setColor(hdr.getBackgroundColor());
-			else if (HeatmapHeader.FONT_CHANGED.equals(pname))
+			else if (HeatmapLabelsHeader.FONT_CHANGED.equals(pname))
 				updateFontTitle();
-			else if (HeatmapHeader.ANNOTATIONS_CHANGED.equals(pname)) {
-				updateAnnotations();
-				//updateColorAnnotations();
-			}
-			else if (HeatmapHeader.LABEL_PATTERN_CHANGED.equals(pname))
+			else if (HeatmapLabelsHeader.LABEL_PATTERN_CHANGED.equals(pname))
 				updateAnnotations();
 
-			/*else if (HeatmapHeader.LINK_NAME_CHANGED.equals(pname))
+			/*else if (HeatmapLabelsHeader.LINK_NAME_CHANGED.equals(pname))
 				linkName.setText(hdr.getLinkName());
-			else if (HeatmapHeader.LINK_PATTERN_CHANGED.equals(pname))
+			else if (HeatmapLabelsHeader.LINK_PATTERN_CHANGED.equals(pname))
 				linkPattern.setText(hdr.getLinkPattern());*/
 
 			updatingControls = false;
 		}
-	}
-
-	private HeatmapHeader getHeader() {
-		return rowMode ?
-			hm.getRowHeader() : hm.getColumnHeader();
+		else if (source.equals(dim)) {
+			if (HeatmapDim.ANNOTATIONS_CHANGED.equals(pname)) {
+				updateAnnotations();
+				//updateColorAnnotations();
+			}
+			else if(HeatmapDim.HEADER_SIZE_CHANGED.equals(pname))
+				size.setValue(dim.getHeaderSize());
+		}
 	}
 
 	private File getSelectedPath() {
@@ -299,6 +306,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         jLabel8 = new javax.swing.JLabel();
         fontTitle = new javax.swing.JTextField();
         fontSelect = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        labelPattern = new javax.swing.JTextField();
+        attributePatternBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        linkName = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        linkPattern = new javax.swing.JTextArea();
+        selectUrlPattern = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         annFile = new javax.swing.JTextField();
@@ -306,19 +322,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         annClear = new javax.swing.JButton();
         annFilter = new javax.swing.JButton();
         labelsPanel = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        attributePatternBtn = new javax.swing.JButton();
-        labelPattern = new javax.swing.JTextField();
-        colorAnnButton = new javax.swing.JButton();
-        colorAnnEditBtn = new javax.swing.JButton();
-        linksPanel = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        linkPattern = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        linkName = new javax.swing.JTextField();
+        addCluster = new javax.swing.JButton();
+        clusterEdit = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        clusterList = new javax.swing.JList();
+        upCluster = new javax.swing.JButton();
+        downCluster = new javax.swing.JButton();
+        sortByCluster = new javax.swing.JButton();
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Size, Colors and Font"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Labels"));
 
         headerSizeLabel.setText("Width");
 
@@ -333,11 +345,42 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         fontTitle.setEditable(false);
         fontTitle.setFocusable(false);
 
-        fontSelect.setText("Select...");
+        fontSelect.setText("...");
+        fontSelect.setToolTipText("Select a font");
         fontSelect.setFocusable(false);
         fontSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fontSelectActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Label pattern");
+
+        attributePatternBtn.setText("...");
+        attributePatternBtn.setToolTipText("Select annotation fields to show in labels");
+        attributePatternBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attributePatternBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Url name");
+
+        linkName.setColumns(8);
+
+        jLabel12.setText("Url pattern");
+
+        linkPattern.setColumns(10);
+        linkPattern.setLineWrap(true);
+        linkPattern.setRows(3);
+        linkPattern.setTabSize(4);
+        jScrollPane3.setViewportView(linkPattern);
+
+        selectUrlPattern.setText("...");
+        selectUrlPattern.setToolTipText("Select from a predefined set of URL's");
+        selectUrlPattern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectUrlPatternActionPerformed(evt);
             }
         });
 
@@ -360,12 +403,23 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                         .addComponent(jLabel7)
                         .addGap(12, 12, 12)
                         .addComponent(bgColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel12)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(linkName, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                            .addComponent(labelPattern, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fontTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fontTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fontSelect)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(selectUrlPattern, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                            .addComponent(attributePatternBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                            .addComponent(fontSelect, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -386,6 +440,22 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addComponent(jLabel8)
                     .addComponent(fontTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fontSelect))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(attributePatternBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(linkName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectUrlPattern))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -413,6 +483,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         });
 
         annFilter.setText("Filter");
+        annFilter.setToolTipText("Filter out elements without annotations");
         annFilter.setFocusable(false);
         annFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,12 +501,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                        .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(annOpen)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(annClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                         .addComponent(annFilter)))
                 .addContainerGap())
         );
@@ -454,30 +525,45 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        labelsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Labels"));
+        labelsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Clusters"));
 
-        jLabel11.setText("Pattern");
-
-        attributePatternBtn.setText("...");
-        attributePatternBtn.setToolTipText("Select attribute pattern");
-        attributePatternBtn.addActionListener(new java.awt.event.ActionListener() {
+        addCluster.setText("Add");
+        addCluster.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                attributePatternBtnActionPerformed(evt);
+                addClusterActionPerformed(evt);
             }
         });
 
-        colorAnnButton.setText("Annotate with Color");
-        colorAnnButton.addActionListener(new java.awt.event.ActionListener() {
+        clusterEdit.setText("Edit");
+        clusterEdit.setEnabled(false);
+        clusterEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorAnnButtonActionPerformed(evt);
+                clusterEditActionPerformed(evt);
             }
         });
 
-        colorAnnEditBtn.setText("Edit Color Cluster");
-        colorAnnEditBtn.setEnabled(false);
-        colorAnnEditBtn.addActionListener(new java.awt.event.ActionListener() {
+        jScrollPane1.setViewportView(clusterList);
+
+        upCluster.setText("Up");
+        upCluster.setEnabled(false);
+        upCluster.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorAnnEditBtnActionPerformed(evt);
+                upClusterActionPerformed(evt);
+            }
+        });
+
+        downCluster.setText("Down");
+        downCluster.setEnabled(false);
+        downCluster.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downClusterActionPerformed(evt);
+            }
+        });
+
+        sortByCluster.setText("Sort");
+        sortByCluster.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortByClusterActionPerformed(evt);
             }
         });
 
@@ -488,97 +574,54 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             .addGroup(labelsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, labelsPanelLayout.createSequentialGroup()
-                        .addComponent(labelPattern, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributePatternBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
                     .addGroup(labelsPanelLayout.createSequentialGroup()
-                        .addComponent(colorAnnButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                        .addComponent(colorAnnEditBtn)))
+                        .addComponent(addCluster)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clusterEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(upCluster)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(downCluster)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addComponent(sortByCluster)))
                 .addContainerGap())
         );
         labelsPanelLayout.setVerticalGroup(
             labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(labelsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(attributePatternBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(labelsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colorAnnButton)
-                    .addComponent(colorAnnEditBtn))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-
-        linksPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Links"));
-
-        jLabel12.setText("Url pattern");
-
-        linkPattern.setColumns(10);
-        linkPattern.setLineWrap(true);
-        linkPattern.setRows(3);
-        linkPattern.setTabSize(4);
-        jScrollPane3.setViewportView(linkPattern);
-
-        jLabel1.setText("Name");
-
-        linkName.setColumns(8);
-
-        javax.swing.GroupLayout linksPanelLayout = new javax.swing.GroupLayout(linksPanel);
-        linksPanel.setLayout(linksPanelLayout);
-        linksPanelLayout.setHorizontalGroup(
-            linksPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(linksPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(linksPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(linksPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(linkName, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
-                    .addComponent(jLabel12)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        linksPanelLayout.setVerticalGroup(
-            linksPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(linksPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(linksPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(linkName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addCluster)
+                    .addComponent(clusterEdit)
+                    .addComponent(upCluster)
+                    .addComponent(downCluster)
+                    .addComponent(sortByCluster))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(linksPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(labelsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(linksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
+
+        jPanel3.getAccessibleContext().setAccessibleName("Labels");
     }// </editor-fold>//GEN-END:initComponents
 
 	private void annOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annOpenActionPerformed
@@ -591,8 +634,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 							file, MimeTypes.ANNOTATION_MATRIX,
 							new NullProgressMonitor());
 
-				HeatmapHeader hdr = getHeader();
-				hdr.setAnnotations(annMatrix);
+				dim.setAnnotations(annMatrix);
 
 				annFile.setText(file.getName());
 			}
@@ -603,7 +645,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	}//GEN-LAST:event_annOpenActionPerformed
 
 	private void fontSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontSelectActionPerformed
-		HeatmapHeader hdr = getHeader();
+		HeatmapLabelsHeader hdr = dim.getLabelsHeader();
 
 		FontChooserDialog dlg =
 				new FontChooserDialog(AppFrame.instance(), hdr.getFont());
@@ -619,9 +661,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		int count = rowMode ?
 				matrixView.getRowCount() : matrixView.getColumnCount();
 
-		HeatmapHeader decorator = getHeader();
-
-		AnnotationMatrix annotations = decorator.getAnnotations();
+		AnnotationMatrix annotations = dim.getAnnotations();
 
 		List<Integer> indices = new ArrayList<Integer>();
 
@@ -648,8 +688,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	}//GEN-LAST:event_annFilterActionPerformed
 
 	private void annClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annClearActionPerformed
-		HeatmapHeader hdr = getHeader();
-		hdr.setAnnotations(null);
+		dim.setAnnotations(null);
 	}//GEN-LAST:event_annClearActionPerformed
 
 	private static class AnnAttr {
@@ -691,8 +730,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 		Heatmap h = getHeatmap();
 		AnnotationMatrix annMatrix = rowMode ?
-			h.getRowHeader().getAnnotations() :
-			h.getColumnHeader().getAnnotations();
+			h.getRowDim().getAnnotations() :
+			h.getColumnDim().getAnnotations();
 
 		if (annMatrix != null) {
 			ObjectMatrix1D columns = annMatrix.getColumns();
@@ -720,41 +759,58 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 	}//GEN-LAST:event_attributePatternBtnActionPerformed
 
-	private void colorAnnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnButtonActionPerformed
+	private void addClusterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClusterActionPerformed
 		if(!updatingControls) {
 			ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
 			ccga.actionPerformed(evt);
 
 			boolean enableEditBtn;
 			if (rowMode) 
-				enableEditBtn = getHeatmap().getRowClusterSets().length > 0 ? true : false;
+				enableEditBtn = !getHeatmap().getRowDim().getClustersHeader().getClusterBands().isEmpty() ? true : false;
 			else 
-				enableEditBtn = getHeatmap().getColumnClusterSets().length > 0 ? true : false;
-			colorAnnEditBtn.setEnabled(enableEditBtn);
-
+				enableEditBtn = !getHeatmap().getColumnDim().getClustersHeader().getClusterBands().isEmpty() ? true : false;
+			clusterEdit.setEnabled(enableEditBtn);
 		}
-	}//GEN-LAST:event_colorAnnButtonActionPerformed
+	}//GEN-LAST:event_addClusterActionPerformed
 
-	private void colorAnnEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorAnnEditBtnActionPerformed
-		if(!updatingControls) {
+	private void clusterEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clusterEditActionPerformed
+		if (!updatingControls) {
 			ClusterSetEditorDialog csed = new ClusterSetEditorDialog(AppFrame.instance(), getHeatmap(), rowMode);
-			HeatmapClusterSet[] clusterSets = csed.getClusterSets();
+			List<HeatmapClusterBand> clusterSets = csed.getClusterSets();
 			if (rowMode)
-				getHeatmap().setRowClusterSets(clusterSets);
+				getHeatmap().getRowDim().getClustersHeader().setClusterBands(clusterSets);
 			else
-				getHeatmap().setColumnClusterSets(clusterSets);
+				getHeatmap().getColumnDim().getClustersHeader().setClusterBands(clusterSets);
 		}
-	}//GEN-LAST:event_colorAnnEditBtnActionPerformed
+	}//GEN-LAST:event_clusterEditActionPerformed
+
+	private void selectUrlPatternActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectUrlPatternActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_selectUrlPatternActionPerformed
+
+	private void upClusterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upClusterActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_upClusterActionPerformed
+
+	private void downClusterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downClusterActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_downClusterActionPerformed
+
+	private void sortByClusterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortByClusterActionPerformed
+		// TODO add your handling code here:
+	}//GEN-LAST:event_sortByClusterActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addCluster;
     private javax.swing.JButton annClear;
     private javax.swing.JTextField annFile;
     private javax.swing.JButton annFilter;
     private javax.swing.JButton annOpen;
     private javax.swing.JButton attributePatternBtn;
     private org.gitools.ui.platform.component.ColorChooserLabel bgColor;
-    private javax.swing.JButton colorAnnButton;
-    private javax.swing.JButton colorAnnEditBtn;
+    private javax.swing.JButton clusterEdit;
+    private javax.swing.JList clusterList;
+    private javax.swing.JButton downCluster;
     private org.gitools.ui.platform.component.ColorChooserLabel fgColor;
     private javax.swing.JButton fontSelect;
     private javax.swing.JTextField fontTitle;
@@ -768,13 +824,16 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField labelPattern;
     private javax.swing.JPanel labelsPanel;
     private javax.swing.JTextField linkName;
     private javax.swing.JTextArea linkPattern;
-    private javax.swing.JPanel linksPanel;
+    private javax.swing.JButton selectUrlPattern;
     private javax.swing.JSpinner size;
+    private javax.swing.JButton sortByCluster;
+    private javax.swing.JButton upCluster;
     // End of variables declaration//GEN-END:variables
 
 }

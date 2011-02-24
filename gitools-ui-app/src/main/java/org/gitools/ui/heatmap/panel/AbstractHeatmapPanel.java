@@ -25,9 +25,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 public class AbstractHeatmapPanel extends JPanel {
@@ -42,11 +41,8 @@ public class AbstractHeatmapPanel extends JPanel {
 		this.drawer = drawer;
 
 		heatmapListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				heatmapPropertyChanged(evt);
-			}
-		};
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				heatmapPropertyChanged(evt); } };
 
 		updateSubscriptions(null);
 
@@ -82,46 +78,38 @@ public class AbstractHeatmapPanel extends JPanel {
 	private void updateSubscriptions(Heatmap old) {
 		if (old != null) {
 			old.removePropertyChangeListener(heatmapListener);
-			old.getColumnHeader().removePropertyChangeListener(heatmapListener);
-			old.getRowHeader().removePropertyChangeListener(heatmapListener);
+			/*old.getColumnLabelsHeader().removePropertyChangeListener(heatmapListener);
+			old.getRowLabelsHeader().removePropertyChangeListener(heatmapListener);
 			old.getCellDecorator().removePropertyChangeListener(heatmapListener);
-			old.getMatrixView().removePropertyChangeListener(heatmapListener);
+			old.getMatrixView().removePropertyChangeListener(heatmapListener);*/
 		}
 
 		heatmap.addPropertyChangeListener(heatmapListener);
-		heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
-		heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
+		/*heatmap.getColumnLabelsHeader().addPropertyChangeListener(heatmapListener);
+		heatmap.getRowLabelsHeader().addPropertyChangeListener(heatmapListener);
 		heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
-		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
+		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);*/
 	}
 
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
+		
+		Object src = evt.getSource();
 
-		if (evt.getSource().equals(heatmap)) {
-			if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname)) {
-				((ElementDecorator) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-				heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
-			} else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(pname)) {
-				((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-				heatmap.getColumnHeader().addPropertyChangeListener(heatmapListener);
-			} else if (Heatmap.ROW_DECORATOR_CHANGED.equals(pname)) {
-				((HeatmapHeader) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-				heatmap.getRowHeader().addPropertyChangeListener(heatmapListener);
-			} else if (Heatmap.MATRIX_VIEW_CHANGED.equals(pname)) {
-				((IMatrixView) evt.getOldValue()).removePropertyChangeListener(heatmapListener);
-				heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
-			}
-
-			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)
-					|| Heatmap.GRID_PROPERTY_CHANGED.equals(pname)
-					|| Heatmap.COLUMN_HEADER_SIZE_CHANGED.equals(pname)
-					|| Heatmap.ROW_HEADER_SIZE_CHANGED.equals(pname))
+		if (src.equals(heatmap)) {
+			if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
 				updateSize();
 		}
-		else if (evt.getSource().equals(heatmap.getMatrixView())) {
+		else if (src.equals(heatmap.getMatrixView())) {
 			if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
 					|| IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
+				updateSize();
+		}
+		else if (src.equals(heatmap.getRowDim())
+				|| src.equals(heatmap.getColumnDim())) {
+			
+			if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)
+					|| HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
 				updateSize();
 		}
 

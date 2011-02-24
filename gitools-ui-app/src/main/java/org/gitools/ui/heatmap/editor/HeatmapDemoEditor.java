@@ -32,7 +32,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 
 public class HeatmapDemoEditor extends HeatmapEditor {
 
@@ -50,8 +50,8 @@ public class HeatmapDemoEditor extends HeatmapEditor {
 				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
 		return new Heatmap(matrixView, decorator,
-				new HeatmapHeader(),
-				new HeatmapHeader());
+				new HeatmapLabelsHeader(),
+				new HeatmapLabelsHeader());
 	}
 
 	private static MatrixView createTable(int rows, int cols) {		

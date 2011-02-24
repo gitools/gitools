@@ -23,7 +23,7 @@ import java.util.List;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.decorator.ElementDecorator;
@@ -81,7 +81,7 @@ public class NewResultsHeatmapFromHtestAnalysisAction extends BaseAction {
 		}
 
 		Heatmap heatmap = new Heatmap(resultsTable, resultsRowDecorator,
-						new HeatmapHeader(), new HeatmapHeader());
+						new HeatmapLabelsHeader(), new HeatmapLabelsHeader());
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 
 		HeatmapEditor editor = new HeatmapEditor(heatmap, actions);

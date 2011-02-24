@@ -33,8 +33,9 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.analysis.overlapping.OverlappingResult;
-import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
@@ -146,24 +147,26 @@ public class HeatmapDetailsController implements EntityController {
 			Map<String, String> links = new HashMap<String, String>();
 
 			if (column >= 0 && column < columnCount) {
-				context.put("linkName", heatmap.getColumnHeader().getLinkName());
+				HeatmapDim colDim = heatmap.getColumnDim();
+				HeatmapLabelsHeader hdr = colDim.getLabelsHeader();
+				context.put("linkName", hdr.getLinkName());
 				context.put("linkUrl", heatmap.getColumnLinkUrl(column));
 
 				name = heatmap.getColumnLabel(column);
 				String label = heatmap.getMatrixView().getColumnLabel(column);
-				HeatmapHeader hdr = heatmap.getColumnHeader();
-				AnnotationMatrix annMatrix = hdr.getAnnotations();
+				AnnotationMatrix annMatrix = colDim.getAnnotations();
 				if (annMatrix != null)
 					annotations = annMatrix.getAnnotations(label);
 			}
 			else if (row >= 0 && row < rowCount) {
-				context.put("linkName", heatmap.getRowHeader().getLinkName());
+				HeatmapDim rowDim = heatmap.getRowDim();
+				HeatmapLabelsHeader hdr = rowDim.getLabelsHeader();
+				context.put("linkName", hdr.getLinkName());
 				context.put("linkUrl", heatmap.getRowLinkUrl(row));
 
 				name = heatmap.getRowLabel(row);
 				String label = heatmap.getMatrixView().getRowLabel(row);
-				HeatmapHeader hdr = heatmap.getRowHeader();
-				AnnotationMatrix annMatrix = hdr.getAnnotations();
+				AnnotationMatrix annMatrix = rowDim.getAnnotations();
 				if (annMatrix != null)
 					annotations = annMatrix.getAnnotations(label);
 			}

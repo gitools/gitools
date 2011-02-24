@@ -37,9 +37,10 @@ import javax.swing.text.BadLocationException;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapCluster;
-import org.gitools.heatmap.model.HeatmapClusterSet;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.HeatmapHeaderDecoration;
+import org.gitools.heatmap.model.HeatmapClusterBand;
+import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.model.HeatmapLabelsDecoration;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.ui.dialog.ListDialog;
@@ -54,12 +55,12 @@ import org.gitools.ui.utils.DocumentChangeListener;
  */
 public class ClusterSetGeneratePage extends AbstractWizardPage {
 
-	private HeatmapClusterSet clusterSet;
+	private HeatmapClusterBand clusterSet;
 	private boolean rowMode;
 	private Heatmap heatmap;
 
     /** Creates new form ClusterSetGeneratePage */
-    public ClusterSetGeneratePage(Heatmap heatmap, HeatmapClusterSet clusterSet, boolean rowMode) {
+    public ClusterSetGeneratePage(Heatmap heatmap, HeatmapClusterBand clusterSet, boolean rowMode) {
         initComponents();
 		this.clusterSet = clusterSet;
 		this.rowMode = rowMode;
@@ -67,8 +68,8 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 
 
 		labelPattern.setText(
-				rowMode ? heatmap.getRowHeader().getLabelPattern() :
-					heatmap.getColumnHeader().getLabelPattern());
+				rowMode ? heatmap.getRowDim().getLabelsHeader().getLabelPattern() :
+					heatmap.getColumnDim().getLabelsHeader().getLabelPattern());
 		labelPattern.getDocument().addDocumentListener(new DocumentChangeListener() {
 
 			@Override
@@ -82,8 +83,8 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 
 	@Override
 	public void updateControls() {
-		int clusterSetNb = rowMode ? heatmap.getRowClusterSets().length :
-								heatmap.getColumnClusterSets().length;
+		int clusterSetNb = rowMode ? heatmap.getRowDim().getClustersHeader().getClusterBands().size() :
+								heatmap.getColumnDim().getClustersHeader().getClusterBands().size();
 		if (clusterSetNb > 0)
 			setMessage(MessageStatus.WARN, "You will overwrite the existing cluster set!");
 		else
@@ -154,18 +155,19 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 			setComplete(false);
 	}
 
-	private void generateColorClusterSet(HeatmapClusterSet clusterSet) {
+	private void generateColorClusterSet(HeatmapClusterBand clusterSet) {
 
-		HeatmapHeader heatmapHeader = rowMode ?
-			heatmap.getRowHeader() :
-			heatmap.getColumnHeader();
+		HeatmapDim dim = rowMode ? heatmap.getRowDim() : heatmap.getColumnDim();
+
+		HeatmapLabelsHeader heatmapHeader = dim.getLabelsHeader();
+
 		IMatrix contents = heatmap.getMatrixView().getContents();
 		String pattern = labelPattern.getText();
 
 		int count = rowMode ?
 			contents.getRowCount() :
 			contents.getColumnCount();
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
+		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 
 		HeatmapCluster[] clusters = new HeatmapCluster[0];
 		int[] clusterIndices = new int[count];
@@ -177,7 +179,7 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 				String label =
 						contents.getRowLabel(index);
 				element = heatmapHeader.expandPattern(
-						heatmapHeader.getAnnotations(),
+						dim.getAnnotations(),
 						label,
 						pattern);
 			}
@@ -185,7 +187,7 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 				String label =
 						contents.getColumnLabel(index);
 				element = heatmapHeader.expandPattern(
-						heatmapHeader.getAnnotations(),
+						dim.getAnnotations(),
 						label,
 						pattern);
 			}
@@ -243,11 +245,9 @@ public class ClusterSetGeneratePage extends AbstractWizardPage {
 		});
 
 
-		HeatmapHeader h = rowMode ?
-			heatmap.getRowHeader() :
-			heatmap.getColumnHeader();
-		
-		AnnotationMatrix annMatrix = h.getAnnotations();
+		HeatmapDim dim = rowMode ? heatmap.getRowDim() : heatmap.getColumnDim();
+
+		AnnotationMatrix annMatrix = dim.getAnnotations();
 
 		if (annMatrix != null) {
 			ObjectMatrix1D columns = annMatrix.getColumns();

@@ -22,22 +22,16 @@ import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import java.awt.Color;
 import java.awt.Font;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.gitools.model.AbstractModel;
 
-public class HeatmapClusterSet extends AbstractModel {
+public class HeatmapClusterBand extends HeatmapHeader {
 
-	public static final String TITLE_CHANGED = "title";
 	public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
-	public static final String SIZE_CHANGED = "size";
 	public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
 	public static final String LABEL_ROTATED_CHANGED = "labelRotated";
 	public static final String FOREGROUND_COLOR_CHANGED = "fgColor";
 	public static final String BACKGROUND_COLOR_CHANGED = "bgColor";
 	public static final String FONT_CHANGED = "font";
-
-	/** The title of the cluster set */
-	protected String title;
 
 	/** The list of clusters in this set */
 	protected HeatmapCluster[] clusters;
@@ -45,12 +39,6 @@ public class HeatmapClusterSet extends AbstractModel {
 	/** The row/column in IMatrix.getContent() at index i
 	 * is assigned to the HeatmapCluster clusters.get(clusterIndices[i]) */
 	protected int[] clusterIndices;
-
-	/** The height/width of the color band */
-	protected int size;
-
-	/** Wether the cluster set is visible */
-	protected boolean visible;
 
 	/** Whether to show labels of each cluster */
 	protected boolean labelVisible;
@@ -71,7 +59,7 @@ public class HeatmapClusterSet extends AbstractModel {
 	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
-	public HeatmapClusterSet() {
+	public HeatmapClusterBand() {
 		size = 20;
 		labelVisible = false;
 		labelRotated = false;
@@ -79,19 +67,7 @@ public class HeatmapClusterSet extends AbstractModel {
 		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
 	}
-
-	/** The title of the cluster set */
-	public String getTitle() {
-		return title;
-	}
-
-	/** The title of the cluster set */
-	public void setTitle(String title) {
-		String old = this.title;
-		this.title = title;
-		firePropertyChange(TITLE_CHANGED, old, title);
-	}
-
+	
 	/** The list of clusters in this set */
 	public HeatmapCluster[] getClusters() {
 		return clusters;
@@ -116,27 +92,6 @@ public class HeatmapClusterSet extends AbstractModel {
 		int[] old = this.clusterIndices;
 		this.clusterIndices = clusterIndices;
 		firePropertyChange(INDICES_CHANGED, old, clusterIndices);
-	}
-
-	/** The height/width of the color band */
-	public int getSize() {
-		return size;
-	}
-
-	/** The height/width of the color band */
-	public void setSize(int size) {
-		int old = this.size;
-		this.size = size;
-		firePropertyChange(SIZE_CHANGED, old, size);
-	}
-
-	/** Wether the cluster set is visible */
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
 	}
 
 	/** Whether to show labels of each cluster */

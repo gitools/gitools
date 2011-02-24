@@ -18,17 +18,14 @@
 package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterSet;
+import org.gitools.heatmap.model.HeatmapClusterBand;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.clustering.color.ClusterSetGeneratorWizard;
-
-/**
- *
- * @author mschroeder
- */
 
 public class ColorClusterGenerateAction extends BaseAction {
 
@@ -60,24 +57,19 @@ public class ColorClusterGenerateAction extends BaseAction {
 			return;
 
 
-		HeatmapClusterSet hcs = wiz.getClusterSet();
-		//FIXME: allow multiple HeatmapClusterSets to be stored
-		HeatmapClusterSet[] hcss = new HeatmapClusterSet[1];
-		hcss[0] = hcs;
+		HeatmapClusterBand hcs = wiz.getClusterSet();
+		//FIXME: allow multiple HeatmapClusterBands to be stored
+		List<HeatmapClusterBand> hcss = new ArrayList<HeatmapClusterBand>(1);
+		hcss.add(hcs);
 		if (rowMode) {
-			heatmap.setRowClusterSets(hcss);
-			heatmap.getRowHeader().setColorAnnEnabled(true);
+			heatmap.getRowDim().getClustersHeader().setClusterBands(hcss);
+			heatmap.getRowDim().getLabelsHeader().setColorAnnEnabled(true);
 		} else {
-			heatmap.setColumnClusterSets(hcss);
-			heatmap.getColumnHeader().setColorAnnEnabled(true);
+			heatmap.getColumnDim().getClustersHeader().setClusterBands(hcss);
+			heatmap.getColumnDim().getLabelsHeader().setColorAnnEnabled(true);
 		}
 
-
 		AppFrame.instance().setStatusText("Cluster Set \"" +
-				hcs.getTitle() +
-				"\" stored");
-	}
-
-
-	
+				hcs.getTitle() + "\" stored");
+	}	
 }

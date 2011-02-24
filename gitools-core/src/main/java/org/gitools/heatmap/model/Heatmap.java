@@ -18,7 +18,10 @@
 package org.gitools.heatmap.model;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,8 +38,11 @@ import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 
+/*TODO: Heatmap should implement IMatrixView
+ * and handle movement and visibility synchronized
+ * between annotations, clusters and so on.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
 public class Heatmap
@@ -46,15 +52,18 @@ public class Heatmap
 	private static final long serialVersionUID = 325437934312047512L;
 
 	public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
-	public static final String ROW_DECORATOR_CHANGED = "rowDecorator";
-	public static final String COLUMN_DECORATOR_CHANGED = "columnDecorator";
 	public static final String MATRIX_VIEW_CHANGED = "matrixView";
-	public static final String GRID_PROPERTY_CHANGED = "gridProperty";
 	public static final String CELL_SIZE_CHANGED = "cellSize";
-	public static final String ROW_HEADER_SIZE_CHANGED = "rowHeaderSize";
-	public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
-	public static final String ROW_CLUSTER_SETS_CHANGED = "rowClusterSets";
-	public static final String COLUMN_CLUSTER_SETS_CHANGED = "columnClusterSets";
+	public static final String ROW_DIMENSION_CHANGED = "rowDim";
+	public static final String COLUMN_DIMENSION_CHANGED = "columnDim";
+	
+	@Deprecated public static final String ROW_LABELS_HEADER_CHANGED = "rowDecorator";
+	@Deprecated public static final String COLUMN_LABELS_HEADER_CHANGED = "columnDecorator";
+	@Deprecated public static final String GRID_PROPERTY_CHANGED = "gridProperty";
+	//@Deprecated public static final String ROW_HEADER_SIZE_CHANGED = "rowHeaderSize";
+	//@Deprecated public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
+	@Deprecated public static final String ROW_CLUSTER_SETS_CHANGED = "rowClusterSets";
+	@Deprecated public static final String COLUMN_CLUSTER_SETS_CHANGED = "columnClusterSets";
 
 	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
 	private IMatrixView matrixView;
@@ -65,93 +74,63 @@ public class Heatmap
 	private int cellWidth;
 	private int cellHeight;
 
-	// Row headers
+	private HeatmapDim rowDim;
 
-	private HeatmapHeader rowHeader;
-	private int rowHeaderSize;
-
-	// Column headers
-
-	private HeatmapHeader columnHeader;
-	private int columnHeaderSize;
-
-	// Row cluster sets
-
-	private HeatmapClusterSet[] rowClusterSets;
-
-	// Column cluster sets
-
-	private HeatmapClusterSet[] columnClusterSets;
-
-	// Rows grid
-
-	private boolean rowsGridEnabled;
-	private int rowsGridSize;
-
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	private Color rowsGridColor;
-
-	// Columns grid
-
-	private boolean columnsGridEnabled;
-	private int columnsGridSize;
-
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	private Color columnsGridColor;
+	private HeatmapDim columnDim;
 
 	// Other
 
 	@XmlTransient
 	private boolean showBorders;
+
+	PropertyChangeListener propertyListener;
 	
 	public Heatmap() {
 		this(
 				null, null, //FIXME should it be null ?
-				new HeatmapHeader(),
-				new HeatmapHeader());
+				new HeatmapLabelsHeader(),
+				new HeatmapLabelsHeader());
 	}
-
-	/*public Heatmap(Heatmap hm) {
-		super(hm);
-
-		//this.cellDecorator = hm.getCellDecorator().clone();
-
-
-	}*/
 
 	public Heatmap(IMatrixView matrixView) {
 		this(
 				matrixView,
 				cellDecoratorFromMatrix(matrixView),
-				new HeatmapHeader(),
-				new HeatmapHeader());
+				new HeatmapLabelsHeader(),
+				new HeatmapLabelsHeader());
 	}
 	
 	public Heatmap(
 			IMatrixView matrixView,
 			ElementDecorator cellDecorator,
-			HeatmapHeader rowsDecorator,
-			HeatmapHeader columnsDecorator) {
-		
+			HeatmapLabelsHeader rowsLabelsHeader,
+			HeatmapLabelsHeader columnLabelsHeader) {
+
+		propertyListener = new PropertyChangeListener() {
+			@Override public void propertyChange(PropertyChangeEvent evt) {
+				firePropertyChange(evt); } };
+
 		this.matrixView = matrixView;
+		this.matrixView.addPropertyChangeListener(propertyListener);
+		
 		this.cellDecorator = cellDecorator;
-		this.rowHeader = rowsDecorator;
-		this.columnHeader = columnsDecorator;
-		this.rowClusterSets = new HeatmapClusterSet[0];
-		this.columnClusterSets = new HeatmapClusterSet[0];
-		this.rowsGridEnabled = true;
-		this.rowsGridSize = 1;
-		this.rowsGridColor = Color.WHITE;
-		this.columnsGridEnabled = true;
-		this.columnsGridSize = 1;
-		this.columnsGridColor = Color.WHITE;
+		this.cellDecorator.addPropertyChangeListener(propertyListener);
+
 		this.cellWidth = 14;
 		this.cellHeight = 14;
-		this.rowHeaderSize = 220;
-		this.columnHeaderSize = 130;
 		this.showBorders = false;
+				
+		this.rowDim = new HeatmapDim();
+		rowsLabelsHeader.setSize(220);
+		this.rowDim.setLabelsHeader(rowsLabelsHeader);
+		this.rowDim.addPropertyChangeListener(propertyListener);
+
+		this.columnDim = new HeatmapDim();
+		columnLabelsHeader.setSize(130);
+		this.columnDim.setLabelsHeader(columnLabelsHeader);
+		this.columnDim.addPropertyChangeListener(propertyListener);
 	}
-	
+
 	private static ElementDecorator cellDecoratorFromMatrix(
 			IMatrixView matrixView) {
 		
@@ -185,6 +164,8 @@ public class Heatmap
 	}
 
 	public final void setMatrixView(IMatrixView matrixView) {
+		this.matrixView.removePropertyChangeListener(propertyListener);
+		matrixView.addPropertyChangeListener(propertyListener);
 		final IMatrixView old = this.matrixView;
 		this.matrixView = matrixView;
 		firePropertyChange(MATRIX_VIEW_CHANGED, old, matrixView);
@@ -197,6 +178,8 @@ public class Heatmap
 	}
 	
 	public final void setCellDecorator(ElementDecorator decorator) {
+		this.cellDecorator.removePropertyChangeListener(propertyListener);
+		decorator.addPropertyChangeListener(propertyListener);
 		final ElementDecorator old = this.cellDecorator;	
 		this.cellDecorator = decorator;
 		firePropertyChange(CELL_DECORATOR_CHANGED, old, decorator);
@@ -222,137 +205,163 @@ public class Heatmap
 		firePropertyChange(CELL_SIZE_CHANGED, old, cellHeight);
 	}
 
+	// Dimensions
+
+	public HeatmapDim getRowDim() {
+		return rowDim;
+	}
+
+	public void setRowDim(HeatmapDim rowDim) {
+		this.rowDim.removePropertyChangeListener(propertyListener);
+		rowDim.addPropertyChangeListener(propertyListener);
+		HeatmapDim old = this.rowDim;
+		this.rowDim = rowDim;
+		firePropertyChange(ROW_DIMENSION_CHANGED, old, rowDim);
+	}
+
+	public HeatmapDim getColumnDim() {
+		return columnDim;
+	}
+
+	public void setColumnDim(HeatmapDim columnDim) {
+		this.columnDim.removePropertyChangeListener(propertyListener);
+		columnDim.addPropertyChangeListener(propertyListener);
+		HeatmapDim old = this.columnDim;
+		this.columnDim = columnDim;
+		firePropertyChange(COLUMN_DIMENSION_CHANGED, old, columnDim);
+	}
+
 	// Headers
 
-	public HeatmapHeader getRowHeader() {
-		return rowHeader;
-	}
-	
-	public void setRowHeader(HeatmapHeader rowDecorator) {
-		final HeatmapHeader old = this.rowHeader;
-		this.rowHeader = rowDecorator;
-		firePropertyChange(ROW_DECORATOR_CHANGED, old, rowDecorator);
-	}
-
+	@Deprecated
 	public int getRowHeaderSize() {
-		return rowHeaderSize;
+		return rowDim.getHeaderSize();
 	}
 
+	/*@Deprecated
 	public void setRowHeaderSize(int rowHeaderSize) {
-		int old = this.rowHeaderSize;
-		this.rowHeaderSize = rowHeaderSize;
+		int old = this.rowDim.getHeaderSize();
+		this.rowDim.setHeaderSize(rowHeaderSize);
 		firePropertyChange(ROW_HEADER_SIZE_CHANGED, old, rowHeaderSize);
 	}
 
-	public HeatmapHeader getColumnHeader() {
-		return columnHeader;
-	}
-	
-	public void setColumnHeader(HeatmapHeader columnDecorator) {
-		final HeatmapHeader old = this.columnHeader;
-		this.columnHeader = columnDecorator;
-		firePropertyChange(COLUMN_DECORATOR_CHANGED, old, columnDecorator);
-	}
-
+	@Deprecated
 	public int getColumnHeaderSize() {
-		return columnHeaderSize;
+		return columnDim.getHeaderSize();
 	}
 
+	@Deprecated
 	public void setColumnHeaderSize(int columnHeaderSize) {
-		int old = this.columnHeaderSize;
-		this.columnHeaderSize = columnHeaderSize;
+		int old = this.columnDim.getHeaderSize();
+		this.columnDim.setHeaderSize(columnHeaderSize);
 		firePropertyChange(COLUMN_HEADER_SIZE_CHANGED, old, columnHeaderSize);
+	}*/
+
+	// Labels
+
+	@Deprecated
+	public HeatmapLabelsHeader getRowLabelsHeader() {
+		return rowDim.getLabelsHeader();
 	}
 
-	// Cluster sets
-
-	public HeatmapClusterSet[] getRowClusterSets() {
-		return rowClusterSets;
+	@Deprecated
+	public void setRowLabelsHeader(HeatmapLabelsHeader rowDecorator) {
+		final HeatmapLabelsHeader old = this.rowDim.getLabelsHeader();
+		this.rowDim.setLabelsHeader(rowDecorator);
+		firePropertyChange(ROW_LABELS_HEADER_CHANGED, old, rowDecorator);
 	}
 
-	public void setRowClusterSets(HeatmapClusterSet[] rowClusterSets) {
-		HeatmapClusterSet[] old = this.rowClusterSets;
-		this.rowClusterSets = rowClusterSets;
-		firePropertyChange(ROW_CLUSTER_SETS_CHANGED, old, rowClusterSets);
+	@Deprecated
+	public HeatmapLabelsHeader getColumnLabelsHeader() {
+		return columnDim.getLabelsHeader();
 	}
 
-	public HeatmapClusterSet[] getColumnClusterSets() {
-		return columnClusterSets;
-	}
-
-	public void setColumnClusterSets(HeatmapClusterSet[] columnClusterSets) {
-		HeatmapClusterSet[] old = this.columnClusterSets;
-		this.columnClusterSets = columnClusterSets;
-		firePropertyChange(COLUMN_CLUSTER_SETS_CHANGED, old, columnClusterSets);
+	@Deprecated
+	public void setColumnLabelsHeader(HeatmapLabelsHeader columnDecorator) {
+		final HeatmapLabelsHeader old = this.columnDim.getLabelsHeader();
+		this.columnDim.setLabelsHeader(columnDecorator);
+		firePropertyChange(COLUMN_LABELS_HEADER_CHANGED, old, columnDecorator);
 	}
 
 	// Grid
 
 	/** Whether to show or not a grid between rows */
+	@Deprecated
 	public boolean isRowsGridEnabled() {
-		return rowsGridEnabled;
+		return rowDim.isGridEnabled();
 	}
 
 	/** Whether to show or not a grid between rows */
+	@Deprecated
 	public void setRowsGridEnabled(boolean enabled) {
-		boolean old = this.rowsGridEnabled;
-		this.rowsGridEnabled = enabled;
+		boolean old = this.rowDim.isGridEnabled();
+		this.rowDim.setGridEnabled(enabled);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, enabled);
 	}
 
+	@Deprecated
 	public int getRowsGridSize() {
-		return rowsGridSize;
+		return rowDim.getGridSize();
 	}
 
+	@Deprecated
 	public void setRowsGridSize(int size) {
-		int old = this.rowsGridSize;
-		this.rowsGridSize = size;
+		int old = this.rowDim.getGridSize();
+		this.rowDim.setGridSize(size);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, size);
 	}
 
 	/** Get color to use for rows and columns grid */
+	@Deprecated
 	public Color getRowsGridColor() {
-		return rowsGridColor;
+		return rowDim.getGridColor();
 	}
 
 	/** Set color to use for rows and columns grid */
+	@Deprecated
 	public void setRowsGridColor(Color gridColor) {
-		Color old = this.rowsGridColor;
-		this.rowsGridColor = gridColor;
+		Color old = this.rowDim.getGridColor();
+		this.rowDim.setGridColor(gridColor);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, gridColor);
 	}
 
 	/** Whether to show or not a grid between columns */
+	@Deprecated
 	public boolean isColumnsGridEnabled() {
-		return columnsGridEnabled;
+		return columnDim.isGridEnabled();
 	}
 
 	/** Whether to show or not a grid between columns */
+	@Deprecated
 	public void setColumnsGridEnabled(boolean enabled) {
-		boolean old = this.columnsGridEnabled;
-		this.columnsGridEnabled = enabled;
+		boolean old = this.columnDim.isGridEnabled();
+		this.columnDim.setGridEnabled(enabled);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, enabled);
 	}
 
+	@Deprecated
 	public int getColumnsGridSize() {
-		return columnsGridSize;
+		return columnDim.getGridSize();
 	}
 
+	@Deprecated
 	public void setColumnsGridSize(int size) {
-		int old = this.columnsGridSize;
-		this.columnsGridSize = size;
+		int old = this.columnDim.getGridSize();
+		this.columnDim.setGridSize(size);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, size);
 	}
 
 	/** Get color to use for rows and columns grid */
+	@Deprecated
 	public Color getColumnsGridColor() {
-		return columnsGridColor;
+		return columnDim.getGridColor();
 	}
 
 	/** Set color to use for rows and columns grid */
+	@Deprecated
 	public void setColumnsGridColor(Color gridColor) {
-		Color old = this.columnsGridColor;
-		this.columnsGridColor = gridColor;
+		Color old = this.columnDim.getGridColor();
+		this.columnDim.setGridColor(gridColor);
 		firePropertyChange(GRID_PROPERTY_CHANGED, old, gridColor);
 	}
 
@@ -370,29 +379,29 @@ public class Heatmap
 	
 	public String getColumnLabel(int index) {
 		String header = matrixView.getColumnLabel(index);
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-		columnHeader.decorate(decoration, header);
+		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		columnDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getText();
 	}
 
 	public String getRowLabel(int index) {
 		String header = matrixView.getRowLabel(index);
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-		rowHeader.decorate(decoration, header);
+		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		rowDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getText();
 	}
 
 	public String getColumnLinkUrl(int index) {
 		String header = matrixView.getColumnLabel(index);
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-		columnHeader.decorate(decoration, header);
+		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		columnDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getUrl();
 	}
 
 	public String getRowLinkUrl(int index) {
 		String header = matrixView.getRowLabel(index);
-		HeatmapHeaderDecoration decoration = new HeatmapHeaderDecoration();
-		rowHeader.decorate(decoration, header);
+		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		rowDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getUrl();
 	}
 }

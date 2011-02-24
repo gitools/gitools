@@ -18,17 +18,17 @@
 package org.gitools.ui.wizard.clustering.color;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterSet;
+import org.gitools.heatmap.model.HeatmapClusterBand;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 public class ClusterSetGeneratorWizard extends AbstractWizard {
-	private HeatmapClusterSet clusterSet;
+	private HeatmapClusterBand clusterSet;
 	private boolean rowMode;
 	private Heatmap heatmap;
 
 	public ClusterSetGeneratorWizard(Heatmap heatmap, boolean rowMode) {
 		super();
-		this.clusterSet = new HeatmapClusterSet();
+		this.clusterSet = new HeatmapClusterBand();
 		this.rowMode = rowMode;
 		this.heatmap = heatmap;
 	}
@@ -51,7 +51,7 @@ public class ClusterSetGeneratorWizard extends AbstractWizard {
 		// TODO Auto-generated method stub
 	}
 
-	public HeatmapClusterSet getClusterSet() {
+	public HeatmapClusterBand getClusterSet() {
 		return this.clusterSet;
 	}
 

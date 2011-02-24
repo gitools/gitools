@@ -18,29 +18,27 @@
 package org.gitools.ui.wizard.clustering.color;
 
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterSet;
+import org.gitools.heatmap.model.HeatmapClusterBand;
 import org.gitools.ui.platform.wizard.PageDialog;
 
-/**
- *
- * @author mschroeder
- */
 public class ClusterSetEditorDialog {
 	
 	Heatmap heatmap;
 	boolean rowMode;
-	HeatmapClusterSet clusterSet;
-	HeatmapClusterSet[] clusterSets;
+	HeatmapClusterBand clusterSet;
+	List<HeatmapClusterBand> clusterSets;
 
 	public ClusterSetEditorDialog(Window owner, Heatmap heatmap, boolean rowMode, int clusterSetIndex) {
 
 		this.heatmap = heatmap;
 		this.rowMode = rowMode;
-		this.clusterSets = rowMode ?
-			this.heatmap.getRowClusterSets().clone() :
-			this.heatmap.getColumnClusterSets().clone() ;
-		this.clusterSet = this.clusterSets[clusterSetIndex];
+		this.clusterSets = new ArrayList<HeatmapClusterBand>(rowMode ?
+			this.heatmap.getRowDim().getClustersHeader().getClusterBands() :
+			this.heatmap.getColumnDim().getClustersHeader().getClusterBands());
+		this.clusterSet = this.clusterSets.get(clusterSetIndex);
 
 		ClusterSetEditorPage clusterSetEditorPage = new ClusterSetEditorPage(clusterSet);
 		clusterSetEditorPage.setTitle("Generate Cluster Set");
@@ -57,7 +55,7 @@ public class ClusterSetEditorDialog {
 		this(owner, heatmap, rowMode, 0);
 	}
 
-	public HeatmapClusterSet[] getClusterSets() {
+	public List<HeatmapClusterBand> getClusterSets() {
 		return this.clusterSets;
 	}
 

@@ -51,7 +51,14 @@ public abstract class AbstractModel
 		if (listener != null)
 			getListeners().remove(listener);
 	}
-	
+
+	protected void firePropertyChange(PropertyChangeEvent evt) {
+		//System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
+
+		for (PropertyChangeListener l : getListeners())
+			l.propertyChange(evt);
+	}
+
 	protected void firePropertyChange(String propName) {
 		//firePropertyChange(propName, null, null);
 

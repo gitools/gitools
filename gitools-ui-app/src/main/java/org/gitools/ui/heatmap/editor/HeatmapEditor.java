@@ -74,7 +74,8 @@ public class HeatmapEditor extends AbstractEditor {
 				BaseAction.separator,
 				DataActions.fastSortRowsAction,
 				BaseAction.separator,
-				HeatmapActions.cloneAction
+				HeatmapActions.cloneAction,
+				HeatmapActions.searchAction
 		});
 
 	protected Heatmap heatmap;
@@ -148,8 +149,8 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		heatmap.addPropertyChangeListener(heatmapListener);
 		heatmap.getCellDecorator().addPropertyChangeListener(cellDecoratorListener);
-		heatmap.getRowHeader().addPropertyChangeListener(rowDecoratorListener);
-		heatmap.getColumnHeader().addPropertyChangeListener(colDecoratorListener);
+		heatmap.getRowLabelsHeader().addPropertyChangeListener(rowDecoratorListener);
+		heatmap.getColumnLabelsHeader().addPropertyChangeListener(colDecoratorListener);
 		
 		matrixView.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
@@ -170,13 +171,13 @@ public class HeatmapEditor extends AbstractEditor {
 
 			colorScalePanel.setScale(nextDecorator.getScale());
 		}
-		else if (Heatmap.COLUMN_DECORATOR_CHANGED.equals(propertyName)) {
+		else if (Heatmap.COLUMN_LABELS_HEADER_CHANGED.equals(propertyName)) {
 			final HeatmapHeader prevDecorator = (HeatmapHeader) oldValue;
 			prevDecorator.removePropertyChangeListener(colDecoratorListener);
 			final HeatmapHeader nextDecorator = (HeatmapHeader) newValue;
 			nextDecorator.addPropertyChangeListener(colDecoratorListener);
 		}
-		else if (Heatmap.ROW_DECORATOR_CHANGED.equals(propertyName)) {
+		else if (Heatmap.ROW_LABELS_HEADER_CHANGED.equals(propertyName)) {
 			final HeatmapHeader prevDecorator = (HeatmapHeader) oldValue;
 			prevDecorator.removePropertyChangeListener(rowDecoratorListener);
 			final HeatmapHeader nextDecorator = (HeatmapHeader) newValue;

@@ -32,7 +32,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.heatmap.model.HeatmapCluster;
-import org.gitools.heatmap.model.HeatmapClusterSet;
+import org.gitools.heatmap.model.HeatmapClusterBand;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -44,10 +44,10 @@ import org.gitools.ui.utils.DocumentChangeListener;
  */
 public class ClusterSetEditorPage extends AbstractWizardPage {
 
-	HeatmapClusterSet clusterSet;
+	HeatmapClusterBand clusterSet;
 
     /** Creates new form ClusterSetEditorPage */
-    public ClusterSetEditorPage(final HeatmapClusterSet clusterSet) {
+    public ClusterSetEditorPage(final HeatmapClusterBand clusterSet) {
         initComponents();
 		this.clusterSet = clusterSet;
 		setComplete(true);

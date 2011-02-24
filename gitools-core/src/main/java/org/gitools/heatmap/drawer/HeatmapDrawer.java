@@ -28,19 +28,19 @@ import org.gitools.heatmap.model.Heatmap;
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
 	private HeatmapBodyDrawer body;
-	private HeatmapHeaderDrawer rows;
-	private HeatmapHeaderDrawer columns;
-	private HeatmapColorAnnDrawer rowsClusterSet;
-	private HeatmapColorAnnDrawer columnsClusterSet;
+	private HeatmapLabelsDrawer rows;
+	private HeatmapLabelsDrawer columns;
+	private HeatmapClusterDrawer rowsClusterSet;
+	private HeatmapClusterDrawer columnsClusterSet;
 
 	public HeatmapDrawer(Heatmap heatmap) {
 		super(heatmap);
 
 		body = new HeatmapBodyDrawer(heatmap);
-		rows = new HeatmapHeaderDrawer(heatmap, false);
-		columns = new HeatmapHeaderDrawer(heatmap, true);
-		rowsClusterSet = new HeatmapColorAnnDrawer(heatmap, false);
-		columnsClusterSet = new HeatmapColorAnnDrawer(heatmap, true);
+		rows = new HeatmapLabelsDrawer(heatmap, false);
+		columns = new HeatmapLabelsDrawer(heatmap, true);
+		rowsClusterSet = new HeatmapClusterDrawer(heatmap, false);
+		columnsClusterSet = new HeatmapClusterDrawer(heatmap, true);
 	}
 
 	@Override
