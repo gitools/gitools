@@ -114,7 +114,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
+        attributeLabel = new javax.swing.JLabel();
         attributeCb = new javax.swing.JComboBox();
         replaceEmptyValuesCheck = new javax.swing.JCheckBox();
         replaceValueField = new javax.swing.JTextField();
@@ -122,9 +122,10 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
         applyToColumnsRb = new javax.swing.JRadioButton();
         applyToRowsRb = new javax.swing.JRadioButton();
 
-        jLabel1.setText("Take values from");
+        attributeLabel.setText("Take values from");
 
         replaceEmptyValuesCheck.setText("Replace empty values by");
+        replaceEmptyValuesCheck.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         replaceValueField.setText("0");
         replaceValueField.setEnabled(false);
@@ -146,7 +147,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(attributeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -163,7 +164,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(attributeLabel)
                     .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -200,11 +201,15 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
 
 		if (attrs != null) {
 			AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
+
 			for (int i = 0; i < attrs.size(); i++)
 				pvalueAttrs[i] = new AttrOption(attrs.get(i));
+
 			attributeCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
 			attributeCb.setSelectedIndex(0);
 			attributeCb.setEnabled(true);
+			attributeCb.setVisible(true);
+			attributeLabel.setVisible(true);
 		}
 		else
 			dissableAttrCb();
@@ -213,6 +218,8 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
 	private void dissableAttrCb() {
 		attributeCb.setModel(new DefaultComboBoxModel());
 		attributeCb.setEnabled(false);
+		attributeCb.setVisible(false);
+		attributeLabel.setVisible(false);
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -220,7 +227,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     private javax.swing.JRadioButton applyToColumnsRb;
     private javax.swing.JRadioButton applyToRowsRb;
     private javax.swing.JComboBox attributeCb;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel attributeLabel;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JCheckBox replaceEmptyValuesCheck;
     private javax.swing.JTextField replaceValueField;

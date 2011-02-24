@@ -17,10 +17,10 @@
 
 package org.gitools.ui.analysis.overlapping.wizard;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
@@ -29,19 +29,15 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.IEntityPersistence;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
 import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.ExamplePage;
-import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -53,7 +49,6 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
 	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
-
 
 	private static final FileFormat[] dataFormats = new FileFormat[] {
 			FileFormats.RESULTS_MATRIX,
@@ -68,11 +63,10 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 	private ExamplePage examplePage;
 	private DataFilePage dataPage;
 	private DataFilterPage dataFilterPage;
-	protected OverlappingAnalysisWizardPage overlappingPage;
+	private OverlappingAnalysisWizardPage overlappingPage;
 	private SaveFilePage saveFilePage;
-	protected AnalysisDetailsPage analysisDetailsPage;
+	private AnalysisDetailsPage analysisDetailsPage;
 
-	private SelectFilePage columnSetsPage;
 	private boolean examplePageEnabled;
 	private boolean dataFromMemory;
 	private List<IElementAttribute> attributes;
@@ -99,17 +93,20 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 			examplePage.setTitle("Overlapping analysis");
 			addPage(examplePage);
 		}
-
-		// Data filters
-		dataFilterPage = new DataFilterPage();
-		dataFilterPage.setRowsFilterFileVisible(false);
-		addPage(dataFilterPage);
 		
 		// Data
 		if (!dataFromMemory) {
 			dataPage = new DataFilePage(dataFormats);
 			addPage(dataPage);
 		}
+		
+		// Data filters
+		dataFilterPage = new DataFilterPage();
+		dataFilterPage.setRowsFilterFileVisible(false);
+		dataFilterPage.setBinaryCutoffCmp(CutoffCmp.LT);
+		dataFilterPage.setBinaryCutoffValue(0.05);
+		dataFilterPage.setBinaryCutoffEnabled(true);
+		addPage(dataFilterPage);		
 
 		// Overlapping parameters
 		overlappingPage = new OverlappingAnalysisWizardPage();
@@ -226,8 +223,11 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 		a.setDescription(analysisDetailsPage.getAnalysisNotes());
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-		//FIXME overlapping: verify
-		//a.setAttributeIndex(overlappingPage.getAttributeIndex());
+		a.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
+		a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
+		a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
+
+		//Verify: a.setAttributeIndex(overlappingPage.getAttributeIndex());
 		a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ?
 				overlappingPage.getReplaceNanValue() : null);
 		a.setTransposeData(overlappingPage.isTransposeEnabled());
@@ -240,6 +240,10 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 		analysisDetailsPage.setAnalysisNotes(a.getDescription());
 		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
 
+		dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
+		dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
+		dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
+
 		overlappingPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
 		if (a.getReplaceNanValue() != null)
 			overlappingPage.setReplaceNanValue(a.getReplaceNanValue());
@@ -249,10 +253,6 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 
 	public DataFilePage getDataFilePage() {
 		return dataPage;
-	}
-
-	public SelectFilePage getColumnSetsPage() {
-		return columnSetsPage;
 	}
 
 	public SaveFilePage getSaveFilePage() {

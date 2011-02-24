@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingCommand;
+import org.gitools.model.ResourceRef;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
@@ -42,7 +43,7 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 		super("Overlapping analysis ...");
 		
 		setDesc("Run an overlapping analysis");
-		setMnemonic(KeyEvent.VK_L); // FIXME : search a better option
+		setMnemonic(KeyEvent.VK_L);
 
 		setDefaultEnabled(true);
 	}
@@ -59,6 +60,12 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 			return;
 
 		final OverlappingAnalysis analysis = wizard.getAnalysis();
+
+		ResourceRef sourceDataResource = new ResourceRef(
+				wizard.getDataFilePage().getFileFormat().getMime(),
+				wizard.getDataFilePage().getFile().getAbsolutePath());
+		
+		analysis.setSourceDataResource(sourceDataResource);
 
 		final OverlappingCommand cmd = new OverlappingCommand(
 				analysis,
