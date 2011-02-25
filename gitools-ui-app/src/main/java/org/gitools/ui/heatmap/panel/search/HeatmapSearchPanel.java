@@ -67,6 +67,9 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 		searchText.getDocument().addDocumentListener(new DocumentChangeListener() {
 			@Override protected void update(DocumentEvent e) {
 				updateSearch(); } });
+		searchText.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				searchNext(); } });
 
 		prevBtn.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
@@ -77,6 +80,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 				searchNext(); } });
 
 		matchCaseChk.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				updateSearch();	} });
+
+		anyWordChk.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				updateSearch();	} });
 
@@ -116,13 +123,17 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 	}
 
 	private void updateSearch() {
-		String[] tokens = searchText.getText().split(" ");
 		StringBuilder sb = new StringBuilder();
-		if (tokens.length > 0) {
-			sb.append(Pattern.quote(tokens[0].trim()));
-			for (int i = 1; i < tokens.length; i++)
-				sb.append("|").append(Pattern.quote(tokens[i].trim()));
+		if (anyWordChk.isSelected()) {
+			String[] tokens = searchText.getText().split(" ");
+			if (tokens.length > 0) {
+				sb.append(Pattern.quote(tokens[0].trim()));
+				for (int i = 1; i < tokens.length; i++)
+					sb.append("|").append(Pattern.quote(tokens[i].trim()));
+			}
 		}
+		else
+			sb.append(Pattern.quote(searchText.getText()));
 
 		if (matchCaseChk.isSelected())
 			searchPat = Pattern.compile(sb.toString());
@@ -253,6 +264,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         highlightAllChk = new javax.swing.JCheckBox();
         matchCaseChk = new javax.swing.JCheckBox();
         textNotFoundLabel = new javax.swing.JLabel();
+        anyWordChk = new javax.swing.JCheckBox();
 
         setFocusable(false);
         setRequestFocusEnabled(false);
@@ -286,6 +298,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         textNotFoundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchNotFound.png"))); // NOI18N
         textNotFoundLabel.setText("Text not found");
 
+        anyWordChk.setText("Any word");
+        anyWordChk.setFocusable(false);
+        anyWordChk.setRequestFocusEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -302,9 +318,11 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
                 .addComponent(textNotFoundLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(highlightAllChk)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(matchCaseChk)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(anyWordChk)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,8 +332,9 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
                 .addComponent(prevBtn)
                 .addComponent(nextBtn)
                 .addComponent(highlightAllChk)
+                .addComponent(textNotFoundLabel)
                 .addComponent(matchCaseChk)
-                .addComponent(textNotFoundLabel))
+                .addComponent(anyWordChk))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -324,6 +343,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 	}//GEN-LAST:event_closeBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox anyWordChk;
     private javax.swing.JButton closeBtn;
     private javax.swing.JCheckBox highlightAllChk;
     private javax.swing.JCheckBox matchCaseChk;

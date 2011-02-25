@@ -32,9 +32,11 @@
               <Component id="textNotFoundLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="highlightAllChk" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="matchCaseChk" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="155" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="anyWordChk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="67" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -46,8 +48,9 @@
               <Component id="prevBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               <Component id="nextBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               <Component id="highlightAllChk" alignment="3" min="-2" max="-2" attributes="0"/>
-              <Component id="matchCaseChk" alignment="3" min="-2" max="-2" attributes="0"/>
               <Component id="textNotFoundLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="matchCaseChk" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="anyWordChk" alignment="3" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -106,6 +109,13 @@
           <Image iconType="3" name="/img/SearchNotFound.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Text not found"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="anyWordChk">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Any word"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>
