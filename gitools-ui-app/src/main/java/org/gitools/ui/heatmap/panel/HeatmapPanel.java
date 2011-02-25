@@ -31,6 +31,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
@@ -62,6 +64,8 @@ public class HeatmapPanel extends JPanel {
 
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
+
+	private List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
 	public HeatmapPanel(Heatmap heatmap) {
 		this.heatmap = heatmap;
@@ -104,7 +108,19 @@ public class HeatmapPanel extends JPanel {
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
-		HeatmapBodyMouseController bodyController = new HeatmapBodyMouseController(this);
+		HeatmapMouseListener mouseListenerProxy = new HeatmapMouseListener() {
+			@Override public void mouseMoved(int row, int col, MouseEvent e) {
+				for (HeatmapMouseListener l : mouseListeners)
+					l.mouseMoved(row, col, e); }
+
+			@Override public void mouseClicked(int row, int col, MouseEvent e) {
+				for (HeatmapMouseListener l : mouseListeners)
+					l.mouseClicked(row, col, e); }
+		};
+
+		HeatmapBodyMouseController bodyController =
+				new HeatmapBodyMouseController(this);
+		bodyController.addHeatmapMouseListener(mouseListenerProxy);
 
 		//colColorAnnVP = new JViewport();
 		//colColorAnnVP.setView(columnColorAnnPanel);
@@ -115,12 +131,16 @@ public class HeatmapPanel extends JPanel {
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 
-		new HeatmapHeaderMouseController(this, true);
+		HeatmapHeaderMouseController colMouseCtrl =
+				new HeatmapHeaderMouseController(this, true);
+		colMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
 		rowVP = new JViewport();
 		rowVP.setView(rowHeaderPanel);
 
-		new HeatmapHeaderMouseController(this, false);
+		HeatmapHeaderMouseController rowMouseCtrl =
+				new HeatmapHeaderMouseController(this, false);
+		rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
 		//TODO add HeatmapColorAnnMouseController
 
@@ -349,5 +369,13 @@ public class HeatmapPanel extends JPanel {
 		Rectangle r = new Rectangle(new Point(0, 0), sz);
 		g.setColor(Color.WHITE);
 		g.fillRect(r.x, r.y, r.width, r.height);
+	}
+
+	public void addHeatmapMouseListener(HeatmapMouseListener listener) {
+		mouseListeners.add(listener);
+	}
+
+	public void removeHeatmapMouseListener(HeatmapMouseListener listener) {
+		mouseListeners.remove(listener);
 	}
 }

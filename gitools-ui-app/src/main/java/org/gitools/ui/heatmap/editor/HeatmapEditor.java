@@ -20,6 +20,7 @@ package org.gitools.ui.heatmap.editor;
 import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -29,12 +30,14 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormat;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
@@ -43,8 +46,10 @@ import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.actions.HeatmapActions;
+import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
+import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -83,7 +88,9 @@ public class HeatmapEditor extends AbstractEditor {
 	private HeatmapPanel heatmapPanel;
 
 	private ColorScalePanel colorScalePanel;
-	
+
+	private HeatmapSearchPanel searchPanel;
+
 	protected boolean blockSelectionUpdate;
 
 	protected List<BaseAction> externalToolbarActions;
@@ -229,6 +236,14 @@ public class HeatmapEditor extends AbstractEditor {
 
 		heatmapPanel = new HeatmapPanel(heatmap);
 		heatmapPanel.requestFocusInWindow();
+		heatmapPanel.addHeatmapMouseListener(new HeatmapMouseListener() {
+			@Override public void mouseMoved(int row, int col, MouseEvent e) {
+				HeatmapEditor.this.mouseMoved(row, col, e); }
+
+			@Override public void mouseClicked(int row, int col, MouseEvent e) {
+				HeatmapEditor.this.mouseClicked(row, col, e); }
+		});
+
 		// Main panel
 		/*splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setResizeWeight(1.0);
@@ -248,8 +263,15 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		JToolBar toolBar = ActionSetUtils.createToolBar(as);
 
+		searchPanel = new HeatmapSearchPanel(heatmap);
+		searchPanel.setVisible(false);
+
+		JPanel northPanel = new JPanel(new BorderLayout());
+		northPanel.add(toolBar, BorderLayout.NORTH);
+		northPanel.add(searchPanel, BorderLayout.SOUTH);
+
 		container.setLayout(new BorderLayout());
-		container.add(toolBar, BorderLayout.NORTH);
+		container.add(northPanel, BorderLayout.NORTH);
 		container.add(heatmapPanel, BorderLayout.CENTER);
 		container.add(colorScalePanel, BorderLayout.SOUTH);
 	}
@@ -351,5 +373,70 @@ public class HeatmapEditor extends AbstractEditor {
 		}
 
 		return true;
+	}
+
+	public void setSearchVisible(boolean b) {
+		searchPanel.setVisible(b);
+	}
+
+	protected void mouseMoved(int row, int col, MouseEvent e) {
+		IMatrixView mv = heatmap.getMatrixView();
+
+		StringBuilder sb = new StringBuilder();
+
+		if (row != -1 && col == -1) { // Row
+			String label = mv.getRowLabel(row);
+			sb.append(label);
+			AnnotationMatrix am = heatmap.getRowDim().getAnnotations();
+			if (am != null) {
+				int annRow = am.getRowIndex(label);
+				if (annRow != -1) {
+					int annCount = am.getColumnCount();
+					if (annCount > 0)
+					sb.append(": ").append(am.getColumnLabel(0))
+							.append(" = ").append(am.getCell(annRow, 0));
+					for (int annCol = 1; annCol < annCount; annCol++)
+						sb.append(", ").append(am.getColumnLabel(annCol))
+								.append(" = ").append(am.getCell(annRow, annCol));
+				}
+			}
+		}
+		else if (row == -1 && col != -1) { // Column
+			String label = mv.getColumnLabel(col);
+			sb.append(label);
+			AnnotationMatrix am = heatmap.getColumnDim().getAnnotations();
+			if (am != null) {
+				int annRow = am.getRowIndex(label);
+				if (annRow != -1) {
+					int annCount = am.getColumnCount();
+					if (annCount > 0)
+					sb.append(": ").append(am.getColumnLabel(0))
+							.append(" = ").append(am.getCell(annRow, 0));
+					for (int annCol = 1; annCol < annCount; annCol++)
+						sb.append(", ").append(am.getColumnLabel(annCol))
+								.append(" = ").append(am.getCell(annRow, annCol));
+				}
+			}
+		}
+		else if (row != -1 && col != -1) { // Cell
+			String rowLabel = mv.getRowLabel(row);
+			String colLabel = mv.getColumnLabel(col);
+			sb.append(colLabel).append(", ").append(rowLabel);
+			List<IElementAttribute> attrs = mv.getCellAttributes();
+			if (attrs.size() > 0) {
+				sb.append(": ").append(attrs.get(0).getName())
+						.append(" = ").append(mv.getCellValue(row, col, 0));
+				for (int i = 1; i < attrs.size(); i++)
+					sb.append(", ").append(attrs.get(i).getName())
+							.append(" = ").append(mv.getCellValue(row, col, i));
+			}
+		}
+
+		if (sb.length() > 0)
+			AppFrame.instance().setStatusText(sb.toString());
+	}
+
+	protected void mouseClicked(int row, int col, MouseEvent e) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

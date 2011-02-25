@@ -24,6 +24,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
@@ -47,6 +49,8 @@ public class HeatmapBodyMouseController
 
 	private Point startPoint;
 	private Point startScrollValue;
+
+	private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 	
 	public HeatmapBodyMouseController(HeatmapPanel panel) {
 		this.heatmap = panel.getHeatmap();
@@ -62,9 +66,25 @@ public class HeatmapBodyMouseController
 		this.mode = Mode.none;
 	}
 
+	public void addHeatmapMouseListener(HeatmapMouseListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeHeatmapMouseListener(HeatmapMouseListener listener) {
+		listeners.remove(listener);
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		panel.requestFocusInWindow();
+
+		point = e.getPoint();
+		Point viewPosition = viewPort.getViewPosition();
+		point.translate(viewPosition.x, viewPosition.y);
+		coord = bodyPanel.getDrawer().getPosition(point);
+
+		for (HeatmapMouseListener l : listeners)
+			l.mouseClicked(coord.row, coord.column, e);
 	}
 
 	@Override
@@ -109,6 +129,14 @@ public class HeatmapBodyMouseController
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		//System.out.println("moved");
+
+		point = e.getPoint();
+		Point viewPosition = viewPort.getViewPosition();
+		point.translate(viewPosition.x, viewPosition.y);
+		coord = bodyPanel.getDrawer().getPosition(point);
+
+		for (HeatmapMouseListener l : listeners)
+			l.mouseMoved(coord.row, coord.column, e);
 	}
 
 	@Override

@@ -18,6 +18,8 @@
 package org.gitools.ui.heatmap.editor;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -27,20 +29,24 @@ public class HeatmapSearchAction extends BaseAction {
 
 	public HeatmapSearchAction() {
 		super("Search");
+		setDesc("Search for a text in rows or columns");
+		setSmallIconFromResource(IconNames.SEARCH16);
+		setLargeIconFromResource(IconNames.SEARCH24);
+		setMnemonic(KeyEvent.VK_F);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		IEditor currEd = editorPanel.getSelectedEditor();
+		IEditor currentEditor = editorPanel.getSelectedEditor();
 
-		if (!(currEd instanceof HeatmapEditor))
+		if (!(currentEditor instanceof HeatmapEditor))
 			return;
 
-		HeatmapEditor currentEditor = (HeatmapEditor) currEd;
+		HeatmapEditor hmEditor = (HeatmapEditor) currentEditor;
 
-		
+		hmEditor.setSearchVisible(true);
 	}
 
 }
