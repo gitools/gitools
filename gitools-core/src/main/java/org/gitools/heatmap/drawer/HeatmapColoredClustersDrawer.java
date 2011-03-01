@@ -30,22 +30,25 @@ import java.util.List;
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapCluster;
-import org.gitools.heatmap.model.HeatmapClusterBand;
+import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapClusterDrawer extends AbstractHeatmapDrawer {
+public class HeatmapColoredClustersDrawer extends AbstractHeatmapDrawer {
 
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
+
+	private HeatmapColoredClustersHeader header;
 	
 	private boolean horizontal;
+
 	private int headerTotalSize = 0;
-	
 
-
-	public HeatmapClusterDrawer(Heatmap heatmap, boolean horizontal) {
+	public HeatmapColoredClustersDrawer(Heatmap heatmap, HeatmapColoredClustersHeader header, boolean horizontal) {
 		super(heatmap);
+
+		this.header = header;
 		this.horizontal = horizontal;
 	}
 
@@ -53,11 +56,6 @@ public class HeatmapClusterDrawer extends AbstractHeatmapDrawer {
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 		
 		HeatmapDim dim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
-
-		List<HeatmapClusterBand> clusterBands = dim.getClustersHeader().getClusterBands();
-
-		if (clusterBands.isEmpty())
-			return;
 
 		g.setRenderingHint(
 				RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -82,7 +80,7 @@ public class HeatmapClusterDrawer extends AbstractHeatmapDrawer {
 		IMatrixView data = heatmap.getMatrixView();
 
 		HeatmapLabelsHeader hdr = dim.getLabelsHeader();
-		headerTotalSize = dim.getClustersHeader().getSize();
+		headerTotalSize = header.getSize();
 
 		g.setFont(hdr.getFont());
 		
@@ -121,8 +119,8 @@ public class HeatmapClusterDrawer extends AbstractHeatmapDrawer {
 
 		int[] visibleElements = horizontal ? data.getVisibleColumns() : data.getVisibleRows();
 
-		int[] clusterIndices = clusterBands.get(0).getClusterIndices();
-		HeatmapCluster[] clusters = clusterBands.get(0).getClusters();
+		int[] clusterIndices = header.getClusterIndices();
+		HeatmapCluster[] clusters = header.getClusters();
 
 		int clusterIndexPrevious = -1;
 
@@ -177,7 +175,7 @@ public class HeatmapClusterDrawer extends AbstractHeatmapDrawer {
 		int extBorder = /*2 * 1 - 1*/ 0;
 
 		HeatmapDim dim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
-		headerTotalSize = dim.getClustersHeader().getSize();
+		headerTotalSize = header.getSize();
 
 		if (horizontal) {
 			int cellWidth = heatmap.getCellWidth() + gridSize;

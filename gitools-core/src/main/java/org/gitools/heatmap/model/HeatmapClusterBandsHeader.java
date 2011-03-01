@@ -22,26 +22,29 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeatmapClustersHeader extends HeatmapHeader {
+@Deprecated
+public class HeatmapClusterBandsHeader extends HeatmapHeader {
 
 	public static final String BANDS_CHANGED = "bands";
 
-	private List<HeatmapClusterBand> bands;
+	private List<HeatmapColoredClustersHeader> clusters;
 
 	private PropertyChangeListener propertyListener;
 
-	public HeatmapClustersHeader() {
+	public HeatmapClusterBandsHeader(HeatmapDim dim) {
+		super(dim);
+		
 		propertyListener = new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
 				propertyChange(evt); } };
 
-		bands = new ArrayList<HeatmapClusterBand>();
+		clusters = new ArrayList<HeatmapColoredClustersHeader>();
 	}
 	
 	@Override
 	public int getSize() {
 		int sz = 0;
-		for (HeatmapClusterBand h : bands)
+		for (HeatmapColoredClustersHeader h : clusters)
 			sz += h.getSize();
 		return sz;
 	}
@@ -50,23 +53,23 @@ public class HeatmapClustersHeader extends HeatmapHeader {
 	public void setHeatmapDim(HeatmapDim dim) {
 		super.setHeatmapDim(dim);
 
-		for (HeatmapClusterBand b : bands)
+		for (HeatmapColoredClustersHeader b : clusters)
 			b.setHeatmapDim(dim);
 	}
 
-	public List<HeatmapClusterBand> getClusterBands() {
-		return bands;
+	public List<HeatmapColoredClustersHeader> getClusters() {
+		return clusters;
 	}
 
-	public void setClusterBands(List<HeatmapClusterBand> bands) {
-		for (HeatmapClusterBand b : this.bands)
+	public void setClusters(List<HeatmapColoredClustersHeader> bands) {
+		for (HeatmapColoredClustersHeader b : this.clusters)
 			b.removePropertyChangeListener(propertyListener);
 
-		for (HeatmapClusterBand b : bands)
+		for (HeatmapColoredClustersHeader b : bands)
 			b.addPropertyChangeListener(propertyListener);
 
-		List<HeatmapClusterBand> old = this.bands;
-		this.bands = bands;
+		List<HeatmapColoredClustersHeader> old = this.clusters;
+		this.clusters = bands;
 		firePropertyChange(BANDS_CHANGED, old, bands);
 	}
 }

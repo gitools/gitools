@@ -115,7 +115,10 @@ public class MenuActionSet extends ActionSet {
 					DataActions.showAllColumnsAction,
 					DataActions.hideSelectedColumnsAction
 				}),
-				DataActions.clusteringAction
+				new ActionSet("Clustering", new BaseAction[] {
+					DataActions.clusteringByAnnotationsAction,
+					DataActions.clusteringByValueAction
+				})
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,

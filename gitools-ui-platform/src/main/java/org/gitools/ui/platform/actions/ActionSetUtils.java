@@ -71,7 +71,9 @@ public class ActionSetUtils {
 					a.getSmallIcon() != null || a.getLargeIcon() != null);
 			tool = btn;
 		}
-		
+
+		tool.setFocusable(false);
+		tool.setRequestFocusEnabled(false);
 		return tool;
 	}
 

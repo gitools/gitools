@@ -37,27 +37,27 @@ public class HeatmapLabelsHeader extends HeatmapHeader {
 	private static final long serialVersionUID = -2580139666999968074L;
 	
 	public static final String FG_COLOR_CHANGED = "fgColorChanged";
-	public static final String BG_COLOR_CHANGED = "bgColorChanged";
 	public static final String FONT_CHANGED = "fontChanged";
 	public static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
 	public static final String LINK_NAME_CHANGED = "linkNameChanged";
 	public static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
-	public static final String COLOR_ANN_CHANGED = "colorAnnChanged";
+
+	public enum LabelSource {
+		ID, ANNOTATION, PATTERN
+	}
 
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color foregroundColor;
-	
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	protected Color backgroundColor;
 
 	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
+	protected LabelSource labelSource;
+	protected String labelAnnotation;
 	protected String labelPattern;
+	
 	protected String linkName;
 	protected String linkPattern;
-
-    protected boolean colorAnnEnabled;
 
 	public HeatmapLabelsHeader() {
 		this(null);
@@ -65,15 +65,30 @@ public class HeatmapLabelsHeader extends HeatmapHeader {
 
 	public HeatmapLabelsHeader(HeatmapDim dim) {
 		super(dim);
-		
+
+		size = 120;
 		foregroundColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+		labelSource = LabelSource.ID;
+		labelAnnotation = "";
 		labelPattern = "${id}";
 		linkName = "Google";
 		linkPattern = "http://www.google.com/search?q=${url:id}";
 	}
-	
+
+	@Override
+	public String getTitle() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Label: ");
+		switch (labelSource) {
+			case ID: sb.append("ID"); break;
+			case ANNOTATION: sb.append(labelAnnotation); break;
+			case PATTERN: sb.append(labelPattern); break;
+		}
+		return sb.toString();
+	}
+
 	public Color getForegroundColor() {
 		return foregroundColor;
 	}
@@ -82,25 +97,6 @@ public class HeatmapLabelsHeader extends HeatmapHeader {
 		Color old = this.foregroundColor;
 		this.foregroundColor = color;
 		firePropertyChange(FG_COLOR_CHANGED, old, color);
-	}
-	
-	public Color getBackgroundColor() {
-		return backgroundColor;
-	}
-	
-	public void setBackgroundColor(Color color) {
-		Color old = this.backgroundColor;
-		this.backgroundColor = color;
-		firePropertyChange(BG_COLOR_CHANGED, old, color);
-	}
-
-	public boolean isColorAnnEnabled() {
-		return this.colorAnnEnabled;
-	}
-
-	public void setColorAnnEnabled(boolean bool) {
-		this.colorAnnEnabled = bool;
-		firePropertyChange(COLOR_ANN_CHANGED, !bool, bool);
 	}
 
 	public Font getFont() {
@@ -111,6 +107,22 @@ public class HeatmapLabelsHeader extends HeatmapHeader {
 		Font old = this.font;
 		this.font = font;
 		firePropertyChange(FONT_CHANGED, old, font);
+	}
+
+	public LabelSource getLabelSource() {
+		return labelSource;
+	}
+
+	public void setLabelSource(LabelSource labelSource) {
+		this.labelSource = labelSource;
+	}
+
+	public String getLabelAnnotation() {
+		return labelAnnotation;
+	}
+
+	public void setLabelAnnotation(String labelAnnotation) {
+		this.labelAnnotation = labelAnnotation;
 	}
 
 	public String getLabelPattern() {

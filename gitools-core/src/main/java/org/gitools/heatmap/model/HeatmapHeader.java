@@ -17,7 +17,10 @@
 
 package org.gitools.heatmap.model;
 
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import java.awt.Color;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.model.AbstractModel;
 
 public abstract class HeatmapHeader extends AbstractModel {
@@ -25,6 +28,7 @@ public abstract class HeatmapHeader extends AbstractModel {
 	public static final String TITLE_CHANGED = "title";
 	public static final String SIZE_CHANGED = "size";
 	public static final String VISIBLE_CHANGED = "visible";
+	public static final String BG_COLOR_CHANGED = "bgColor";
 
 	/** The title of the cluster set */
 	protected String title;
@@ -35,12 +39,16 @@ public abstract class HeatmapHeader extends AbstractModel {
 	/** Wether the cluster set is visible */
 	protected boolean visible;
 
-	public HeatmapHeader() {
-		this(null);
-	}
+	/* Background color*/
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
+	protected Color backgroundColor;
 
 	public HeatmapHeader(HeatmapDim dim) {
 		this.dim = dim;
+		this.title = "";
+		this.size = 100;
+		this.visible = true;
+		this.backgroundColor = Color.WHITE;
 	}
 
 	@XmlTransient
@@ -87,5 +95,15 @@ public abstract class HeatmapHeader extends AbstractModel {
 		boolean old = this.visible;
 		this.visible = visible;
 		firePropertyChange(VISIBLE_CHANGED, old, visible);
+	}
+
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(Color color) {
+		Color old = this.backgroundColor;
+		this.backgroundColor = color;
+		firePropertyChange(BG_COLOR_CHANGED, old, color);
 	}
 }

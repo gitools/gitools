@@ -21,7 +21,6 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -122,12 +121,12 @@ public class Heatmap
 				
 		this.rowDim = new HeatmapDim();
 		rowsLabelsHeader.setSize(220);
-		this.rowDim.setLabelsHeader(rowsLabelsHeader);
+		this.rowDim.addHeader(rowsLabelsHeader);
 		this.rowDim.addPropertyChangeListener(propertyListener);
 
 		this.columnDim = new HeatmapDim();
 		columnLabelsHeader.setSize(130);
-		this.columnDim.setLabelsHeader(columnLabelsHeader);
+		this.columnDim.addHeader(columnLabelsHeader);
 		this.columnDim.addPropertyChangeListener(propertyListener);
 	}
 
@@ -264,24 +263,24 @@ public class Heatmap
 		return rowDim.getLabelsHeader();
 	}
 
-	@Deprecated
+	/*@Deprecated
 	public void setRowLabelsHeader(HeatmapLabelsHeader rowDecorator) {
 		final HeatmapLabelsHeader old = this.rowDim.getLabelsHeader();
 		this.rowDim.setLabelsHeader(rowDecorator);
 		firePropertyChange(ROW_LABELS_HEADER_CHANGED, old, rowDecorator);
-	}
+	}*/
 
 	@Deprecated
 	public HeatmapLabelsHeader getColumnLabelsHeader() {
 		return columnDim.getLabelsHeader();
 	}
 
-	@Deprecated
+	/*@Deprecated
 	public void setColumnLabelsHeader(HeatmapLabelsHeader columnDecorator) {
 		final HeatmapLabelsHeader old = this.columnDim.getLabelsHeader();
 		this.columnDim.setLabelsHeader(columnDecorator);
 		firePropertyChange(COLUMN_LABELS_HEADER_CHANGED, old, columnDecorator);
-	}
+	}*/
 
 	// Grid
 
@@ -376,32 +375,40 @@ public class Heatmap
 	}
 
 	// Generated values
-	
+
+	@Deprecated //FIXME
 	public String getColumnLabel(int index) {
-		String header = matrixView.getColumnLabel(index);
-		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
-		columnDim.getLabelsHeader().decorate(decoration, header);
-		return decoration.getText();
+		String label = matrixView.getColumnLabel(index);
+		return label;
+		/*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		columnDim.getLabelsHeader().decorate(decoration, label);
+		return decoration.getText();*/
 	}
 
+	@Deprecated //FIXME
 	public String getRowLabel(int index) {
-		String header = matrixView.getRowLabel(index);
-		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
-		rowDim.getLabelsHeader().decorate(decoration, header);
-		return decoration.getText();
+		String label = matrixView.getRowLabel(index);
+		return label;
+		/*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		rowDim.getLabelsHeader().decorate(decoration, label);
+		return decoration.getText();*/
 	}
 
+	@Deprecated //FIXME
 	public String getColumnLinkUrl(int index) {
-		String header = matrixView.getColumnLabel(index);
+		return "";
+		/*String header = matrixView.getColumnLabel(index);
 		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		columnDim.getLabelsHeader().decorate(decoration, header);
-		return decoration.getUrl();
+		return decoration.getUrl();*/
 	}
 
+	@Deprecated //FIXME
 	public String getRowLinkUrl(int index) {
-		String header = matrixView.getRowLabel(index);
+		return "";
+		/*String header = matrixView.getRowLabel(index);
 		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		rowDim.getLabelsHeader().decorate(decoration, header);
-		return decoration.getUrl();
+		return decoration.getUrl();*/
 	}
 }

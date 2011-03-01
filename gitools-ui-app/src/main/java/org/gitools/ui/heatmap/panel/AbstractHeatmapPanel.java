@@ -91,10 +91,11 @@ public class AbstractHeatmapPanel extends JPanel {
 		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);*/
 	}
 
-	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
+	protected void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
-		
 		Object src = evt.getSource();
+
+		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
 		if (src.equals(heatmap)) {
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname))

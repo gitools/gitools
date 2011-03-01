@@ -16,435 +16,256 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
-          <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
-          <Component id="labelsPanel" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="12" pref="12" max="12" attributes="0"/>
+                      <Component id="annFile" pref="256" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="annOpen" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="annImport" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="annClear" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
+                      <Component id="annFilter" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Component id="jSeparator1" alignment="0" pref="280" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="214" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="256" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="headerAddBtn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="headerRemoveBtn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="headerEditBtn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
+              <Component id="headerUpBtn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="headerDownBtn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="headerSize" min="-2" pref="60" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="headerVisible" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="headerBgColor" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="44" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="labelsPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <Component id="annFile" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="annOpen" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="annImport" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="annClear" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="annFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="81" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="headerAddBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="headerRemoveBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="headerEditBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="headerDownBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="headerUpBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="headerSize" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="headerVisible" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="headerBgColor" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="420" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel3">
+    <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Labels"/>
-          </Border>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Annotations"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="annFile">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="annOpen">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Load..."/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annOpenActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="annImport">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Import..."/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annImportActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="annClear">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Clear"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annClearActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="annFilter">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Filter"/>
+        <Property name="toolTipText" type="java.lang.String" value="Filter out elements without annotations"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annFilterActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="headerSizeLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="size" min="-2" pref="60" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Component id="fgColor" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Component id="bgColor" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" alignment="0" pref="295" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="linkName" alignment="0" pref="254" max="32767" attributes="0"/>
-                              <Component id="labelPattern" alignment="1" pref="254" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="fontTitle" pref="214" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="selectUrlPattern" alignment="1" pref="35" max="32767" attributes="1"/>
-                              <Component id="attributePatternBtn" alignment="1" pref="35" max="32767" attributes="1"/>
-                              <Component id="fontSelect" alignment="1" max="32767" attributes="1"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="headerSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="size" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="fgColor" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="bgColor" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fontTitle" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="fontSelect" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="labelPattern" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="attributePatternBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="linkName" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="selectUrlPattern" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" min="-2" pref="68" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="headerSizeLabel">
+        <Component class="javax.swing.JList" name="headerList">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Width"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JSpinner" name="size">
-          <Properties>
-            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="0"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel6">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Fg"/>
-          </Properties>
-        </Component>
-        <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="fgColor">
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel7">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Bg"/>
-          </Properties>
-        </Component>
-        <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="bgColor">
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel8">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Font"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="fontTitle">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="fontSelect">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="..."/>
-            <Property name="toolTipText" type="java.lang.String" value="Select a font"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fontSelectActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel11">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Label pattern"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="labelPattern">
-        </Component>
-        <Component class="javax.swing.JButton" name="attributePatternBtn">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="..."/>
-            <Property name="toolTipText" type="java.lang.String" value="Select annotation fields to show in labels"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="attributePatternBtnActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Url name"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="linkName">
-          <Properties>
-            <Property name="columns" type="int" value="8"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Url pattern"/>
-          </Properties>
-        </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextArea" name="linkPattern">
-              <Properties>
-                <Property name="columns" type="int" value="10"/>
-                <Property name="lineWrap" type="boolean" value="true"/>
-                <Property name="rows" type="int" value="3"/>
-                <Property name="tabSize" type="int" value="4"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JButton" name="selectUrlPattern">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="..."/>
-            <Property name="toolTipText" type="java.lang.String" value="Select from a predefined set of URL&apos;s"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectUrlPatternActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel4">
+    <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Annotations"/>
-          </Border>
+        <Property name="text" type="java.lang.String" value="Headers"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="headerAddBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="headerAddBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="headerRemoveBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remove"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="headerRemoveBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="headerEditBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Edit"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="headerEditBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="headerUpBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Up"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="headerUpBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="headerDownBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Down"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="headerDownBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Size"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="headerSize">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="5" type="number"/>
         </Property>
       </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="annFile" pref="262" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="annOpen" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="annClear" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="137" max="32767" attributes="0"/>
-                          <Component id="annFilter" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="annFile" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="annOpen" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="annClear" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="annFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel9">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="annFile">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="annOpen">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Open..."/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annOpenActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="annClear">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Clear"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annClearActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="annFilter">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Filter"/>
-            <Property name="toolTipText" type="java.lang.String" value="Filter out elements without annotations"/>
-            <Property name="focusable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="annFilterActionPerformed"/>
-          </Events>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="labelsPanel">
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="headerVisible">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Clusters"/>
-          </Border>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Visible"/>
       </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="0" pref="295" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="addCluster" min="-2" max="-2" attributes="1"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="clusterEdit" min="-2" max="-2" attributes="1"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="upCluster" min="-2" max="-2" attributes="1"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="downCluster" min="-2" max="-2" attributes="1"/>
-                          <EmptySpace pref="88" max="32767" attributes="0"/>
-                          <Component id="sortByCluster" min="-2" max="-2" attributes="1"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="81" max="-2" attributes="1"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="addCluster" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="clusterEdit" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="upCluster" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="downCluster" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="sortByCluster" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="22" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JButton" name="addCluster">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Add"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addClusterActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="clusterEdit">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Edit"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clusterEditActionPerformed"/>
-          </Events>
-        </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JList" name="clusterList">
-              <Properties>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JButton" name="upCluster">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Up"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="upClusterActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="downCluster">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Down"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="downClusterActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="sortByCluster">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Sort"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sortByClusterActionPerformed"/>
-          </Events>
-        </Component>
-      </SubComponents>
-    </Container>
+    </Component>
+    <Component class="org.gitools.ui.platform.component.ColorChooserLabel" name="headerBgColor">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

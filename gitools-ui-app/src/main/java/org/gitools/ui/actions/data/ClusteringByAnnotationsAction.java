@@ -1,12 +1,12 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
+ *  Copyright 2011 chris.
+ * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ * 
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,35 +18,45 @@
 package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.clustering.annotations.ClusterSetGeneratorWizard;
 
-@Deprecated
-public class ColorClusterGenerateAction extends BaseAction {
+public class ClusteringByAnnotationsAction extends BaseAction {
 
-	boolean rowMode;
-	Heatmap heatmap;
-
-	public ColorClusterGenerateAction(Heatmap heatmap, boolean rowMode) {
-		super("Generate color cluster set");
-		setDesc("Generate color cluster set");
-		this.rowMode = rowMode;
-		this.heatmap = heatmap;
+	public ClusteringByAnnotationsAction() {
+		super("Cluster by annotations");
+		setDesc("Cluster by annotations");
 	}
 
+	@Override
+	public boolean isEnabledByModel(Object model) {
+		return model instanceof Heatmap
+			|| model instanceof IMatrixView;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		/*final HeatmapHeader header = rowMode ?
-			ActionUtils.getHeatmap().getRowHeader() :
-			ActionUtils.getHeatmap().getColumnHeader();
-		ColorClusterDialog dlg = new ColorClusterDialog(null, rowMode, contents, header);*/
+		IEditor currentEditor = editorPanel.getSelectedEditor();
 
+		Object model = currentEditor.getModel();
+
+		if (!(model instanceof Heatmap))
+			return;
+
+		Heatmap heatmap = (Heatmap) model;
+		boolean rowMode = true;
+		
 		ClusterSetGeneratorWizard wiz = new ClusterSetGeneratorWizard(heatmap, rowMode);
 		wiz.setTitle("Create and edit a new Cluster Set");
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
@@ -55,6 +65,7 @@ public class ColorClusterGenerateAction extends BaseAction {
 		if (dlg.isCancelled())
 			return;
 
+
 		HeatmapColoredClustersHeader hcs = wiz.getClusterSet();
 		if (rowMode)
 			heatmap.getRowDim().getHeaders().add(hcs);
@@ -62,5 +73,5 @@ public class ColorClusterGenerateAction extends BaseAction {
 			heatmap.getColumnDim().getHeaders().add(hcs);
 
 		AppFrame.instance().setStatusText("Clusters created");
-	}	
+	}
 }

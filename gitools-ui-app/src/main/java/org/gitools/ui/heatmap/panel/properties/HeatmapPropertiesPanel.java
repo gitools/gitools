@@ -66,7 +66,13 @@ public class HeatmapPropertiesPanel extends JPanel {
 
         tabs = new javax.swing.JTabbedPane();
 
+        setFocusable(false);
         setPreferredSize(new java.awt.Dimension(300, 646));
+        setRequestFocusEnabled(false);
+
+        tabs.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 1, 1, 1));
+        tabs.setFocusable(false);
+        tabs.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

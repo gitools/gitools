@@ -19,16 +19,21 @@ package org.gitools.cli.convert;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import edu.upf.bg.tools.ToolDescriptor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
 import edu.upf.bg.tools.impl.AbstractTool;
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.cli.GitoolsArguments;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
+import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 public class ConvertTool extends AbstractTool {
@@ -39,17 +44,17 @@ public class ConvertTool extends AbstractTool {
 				usage = "Input file.")
 		public String inputFileName;
 
-		@Option(name = "-im", aliases = "-input-mime", metaVar = "<MIME>",
-				usage = "Input file MIME type.")
-		public String inputFileMime;
+		@Option(name = "-if", aliases = "-input-format", metaVar = "<FORMAT>",
+				usage = "Input file format.")
+		public String inputFileFormat;
 
 		@Option(name = "-o", aliases = "-output", metaVar = "<path>",
 				usage = "Output file.")
 		public String outputFileName;
 
-		@Option(name = "-om", aliases = "-output-mime", metaVar = "<MIME>",
-				usage = "Output file MIME type.")
-		public String outputFileMime;
+		@Option(name = "-of", aliases = "-output-format", metaVar = "<FORMAT>",
+				usage = "Output file format.")
+		public String outputFileFormat;
 	}
 
 	@Override
@@ -61,25 +66,25 @@ public class ConvertTool extends AbstractTool {
 		if (args.inputFileName == null)
 			throw new ToolValidationException("An input file is required.");
 
-		if (args.inputFileMime == null) {
-			args.inputFileMime = PersistenceManager.getDefault()
+		if (args.inputFileFormat == null) {
+			args.inputFileFormat = PersistenceManager.getDefault()
 					.getMimeFromFile(args.inputFileName);
 
-			if (args.inputFileMime == null)
-				throw new ToolValidationException("Unknown input file type, a mime type is required.\n" +
-						"You can use the option -input-mime");
+			if (args.inputFileFormat == null)
+				throw new ToolValidationException("Unknown input file format.\n" +
+						"You can use the option -input-format");
 		}
 
 		if (args.outputFileName == null)
 			throw new ToolValidationException("An output file is required.");
 
-		if (args.outputFileMime == null) {
-			args.outputFileMime = PersistenceManager.getDefault()
+		if (args.outputFileFormat == null) {
+			args.outputFileFormat = PersistenceManager.getDefault()
 					.getMimeFromFile(args.outputFileName);
 
-			if (args.outputFileMime == null)
-				throw new ToolValidationException("Unknown output file type, a mime type is required.\n" +
-						"You can use the option -output-mime");
+			if (args.outputFileFormat == null)
+				throw new ToolValidationException("Unknown output file format.\n" +
+						"You can use the option -output-format");
 		}
 	}
 
@@ -93,16 +98,19 @@ public class ConvertTool extends AbstractTool {
 
 		initConversionList(vc);
 
-		Conversion targetConv = new Conversion(args.inputFileMime, args.outputFileMime);
+		String inputMime = mimeFromFormat(args.inputFileFormat, args.inputFileName);
+		String outputMime = mimeFromFormat(args.outputFileFormat, args.outputFileName);
+
+		Conversion targetConv = new Conversion(inputMime, outputMime);
 		int convIndex = vc.indexOf(targetConv);
 		if (convIndex < 0)
 			throw new ToolException("Unsupportted conversion from '"
-					+ args.inputFileMime + "' to '" + args.outputFileMime + "'");
+					+ args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
 
 		targetConv = vc.get(convIndex);
 		if (targetConv.delegate == null)
 			throw new ToolException("Unimplemented conversion from '"
-					+ args.inputFileMime + "' to '" + args.outputFileMime + "'");
+					+ args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
 
 		IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
 
@@ -113,7 +121,7 @@ public class ConvertTool extends AbstractTool {
 		Object srcObject = null;
 		try {
 			srcObject = PersistenceManager.getDefault()
-					.load(inputFile, args.inputFileMime, monitor.subtask());
+					.load(inputFile, inputMime, monitor.subtask());
 		} catch (PersistenceException ex) {
 			monitor.exception(ex);
 			throw new ToolException(ex);
@@ -127,7 +135,7 @@ public class ConvertTool extends AbstractTool {
 		Object dstObject = null;
 		try {
 			dstObject = targetConv.delegate.convert(
-					args.inputFileMime, srcObject, args.outputFileMime, monitor);
+					args.inputFileFormat, srcObject, args.outputFileFormat, monitor);
 		}
 		catch (Exception ex) {
 			monitor.exception(ex);
@@ -140,7 +148,7 @@ public class ConvertTool extends AbstractTool {
 
 		try {
 			PersistenceManager.getDefault()
-					.store(outputFile, args.outputFileMime, dstObject, monitor.subtask());
+					.store(outputFile, outputMime, dstObject, monitor.subtask());
 		} catch (PersistenceException ex) {
 			monitor.exception(ex);
 			throw new ToolException(ex);
@@ -183,5 +191,44 @@ public class ConvertTool extends AbstractTool {
 		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
 		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
 		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+	}
+
+	protected static final String LIST_L_FMT = "\t* %-48s%s";
+
+	protected String mimeFromFormat(String format, String fileName) {
+		String mime = null;
+		if (fileName == null)
+			return null;
+
+		if (format != null) {
+			// Try with file extension first
+			mime = PersistenceManager.getDefault().getMimeFromFile("fake." + format);
+			if (mime == null)
+				mime = format; // it should be mime type then
+			//TODO check valid mime
+		}
+		else
+			mime = PersistenceManager.getDefault().getMimeFromFile(fileName);
+
+		return mime;
+	}
+
+	@Override
+	public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+		super.printUsage(outputStream, appName, toolDesc, parser);
+
+		outputStream.println();
+
+		outputStream.println("Supported formats:");
+		FileFormat[] formats = new FileFormat[] {
+			FileFormats.DOUBLE_MATRIX,
+			FileFormats.DOUBLE_BINARY_MATRIX,
+			FileFormats.GENE_MATRIX,
+			FileFormats.GENE_MATRIX_TRANSPOSED,
+			FileFormats.MODULES_2C_MAP
+		};
+
+		for (FileFormat f : formats)
+			outputStream.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
 	}
 }

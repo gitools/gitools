@@ -28,7 +28,6 @@ import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class CombinationAnalysisParamsPage extends AbstractWizardPage {

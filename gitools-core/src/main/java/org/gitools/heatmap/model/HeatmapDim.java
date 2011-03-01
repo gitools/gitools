@@ -21,6 +21,9 @@ import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.model.AbstractModel;
@@ -32,14 +35,15 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 public class HeatmapDim extends AbstractModel {
 
 	public static final String LABELS_HEADER_CHANGED = "labelsHeader";
+	public static final String HEADERS_CHANGED = "headers";
 	public static final String HEADER_SIZE_CHANGED = "headerSize";
 	public static final String CLUSTER_SETS_CHANGED = "clusterSets";
 	public static final String GRID_PROPERTY_CHANGED = "gridProperty";
 	public static final String ANNOTATIONS_CHANGED = "annotations";
 
-	private HeatmapLabelsHeader labelsHeader;
+	@Deprecated protected HeatmapLabelsHeader labelsHeader;
 
-	private HeatmapClustersHeader clustersHeader;
+	protected List<HeatmapHeader> headers;
 
 	private boolean gridEnabled;
 
@@ -58,12 +62,12 @@ public class HeatmapDim extends AbstractModel {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
 				HeatmapDim.this.propertyChange(evt); } };
 
-		labelsHeader = new HeatmapLabelsHeader(this);
-		labelsHeader.addPropertyChangeListener(propertyListener);
-
-		clustersHeader = new HeatmapClustersHeader();
-		clustersHeader.addPropertyChangeListener(propertyListener);
+		headers = new ArrayList<HeatmapHeader>();
 		
+		/*labelsHeader = new HeatmapLabelsHeader(this);
+		labelsHeader.addPropertyChangeListener(propertyListener);
+		headers.add(labelsHeader);*/
+
 		gridEnabled = true;
 		gridSize = 1;
 		gridColor = Color.WHITE;
@@ -75,30 +79,77 @@ public class HeatmapDim extends AbstractModel {
 
 		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
-		if (src == labelsHeader || src == clustersHeader
-				&& HeatmapHeader.SIZE_CHANGED.equals(pname))
+		if (src instanceof HeatmapHeader
+				&& (HeatmapHeader.SIZE_CHANGED.equals(pname)
+						|| HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
 			firePropertyChange(HEADER_SIZE_CHANGED);
 		
 		firePropertyChange(evt);
 	}
 
+	public List<HeatmapHeader> getHeaders() {
+		return Collections.unmodifiableList(headers);
+	}
+
+	/*public void setHeaders(List<HeatmapHeader> headers) {
+		List<HeatmapHeader> old = this.headers;
+		this.headers = headers;
+		firePropertyChange(HEADERS_CHANGED, old, headers);
+	}*/
+
+	public void addHeader(HeatmapHeader header) {
+		headers.add(header);
+		header.addPropertyChangeListener(propertyListener);
+		firePropertyChange(HEADERS_CHANGED);
+	}
+
+	public void removeHeader(int index) {
+		if (index >= headers.size())
+			return;
+		HeatmapHeader header = headers.get(index);
+		header.removePropertyChangeListener(propertyListener);
+		headers.remove(header);
+		firePropertyChange(HEADERS_CHANGED);
+	}
+
+	public void upHeader(int index) {
+		if (index == 0 || index >= headers.size())
+			return;
+		HeatmapHeader header = headers.get(index);
+		headers.set(index, headers.get(index - 1));
+		headers.set(index - 1, header);
+		firePropertyChange(HEADERS_CHANGED);
+	}
+
+	public void downHeader(int index) {
+		if (index >= headers.size() - 1)
+			return;
+		HeatmapHeader header = headers.get(index);
+		headers.set(index, headers.get(index + 1));
+		headers.set(index + 1, header);
+		firePropertyChange(HEADERS_CHANGED);
+	}
+
 	public int getHeaderSize() {
-		int size = labelsHeader.getSize();
-		size += clustersHeader.getSize();
+		int size = 0;
+		for (HeatmapHeader h : headers)
+			size += h.getSize();
 		return size;
 	}
 
-	@Deprecated // Remove it
+	/*@Deprecated // Remove it
 	public void setHeaderSize(int headerSize) {
-		/*int old = this.headerSize;
+		int old = this.headerSize;
 		this.headerSize = headerSize;
-		firePropertyChange(HEADER_SIZE_CHANGED, old, headerSize);*/
-	}
+		firePropertyChange(HEADER_SIZE_CHANGED, old, headerSize);
+	}*/
 
+	@Deprecated
 	public HeatmapLabelsHeader getLabelsHeader() {
 		return labelsHeader;
 	}
 
+	/*@Deprecated
 	public void setLabelsHeader(HeatmapLabelsHeader labelsHeader) {
 		this.labelsHeader.removePropertyChangeListener(propertyListener);
 		labelsHeader.addPropertyChangeListener(propertyListener);
@@ -106,20 +157,7 @@ public class HeatmapDim extends AbstractModel {
 		this.labelsHeader = labelsHeader;
 		labelsHeader.setHeatmapDim(this);
 		firePropertyChange(LABELS_HEADER_CHANGED, old, labelsHeader);
-	}
-
-	public HeatmapClustersHeader getClustersHeader() {
-		return clustersHeader;
-	}
-
-	public void setClustersHeader(HeatmapClustersHeader clustersHeader) {
-		this.clustersHeader.removePropertyChangeListener(propertyListener);
-		clustersHeader.removePropertyChangeListener(propertyListener);
-		HeatmapClustersHeader old = this.clustersHeader;
-		this.clustersHeader = clustersHeader;
-		clustersHeader.setHeatmapDim(this);
-		firePropertyChange(CLUSTER_SETS_CHANGED, old, clustersHeader);
-	}
+	}*/
 
 	public boolean isGridEnabled() {
 		return gridEnabled;

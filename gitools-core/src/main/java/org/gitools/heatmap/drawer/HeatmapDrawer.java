@@ -28,63 +28,61 @@ import org.gitools.heatmap.model.Heatmap;
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
 	private HeatmapBodyDrawer body;
-	private HeatmapLabelsDrawer rows;
+	private final HeatmapHeaderDrawer rowsHeader;
+	private final HeatmapHeaderDrawer colsHeader;
+	/*private HeatmapLabelsDrawer rows;
 	private HeatmapLabelsDrawer columns;
-	private HeatmapClusterDrawer rowsClusterSet;
-	private HeatmapClusterDrawer columnsClusterSet;
+	private HeatmapColoredClustersDrawer rowsClusterSet;
+	private HeatmapColoredClustersDrawer columnsClusterSet;*/
 
 	public HeatmapDrawer(Heatmap heatmap) {
 		super(heatmap);
 
 		body = new HeatmapBodyDrawer(heatmap);
-		rows = new HeatmapLabelsDrawer(heatmap, false);
+		rowsHeader = new HeatmapHeaderDrawer(heatmap, false);
+		colsHeader = new HeatmapHeaderDrawer(heatmap, true);
+
+		/*rows = new HeatmapLabelsDrawer(heatmap, false);
 		columns = new HeatmapLabelsDrawer(heatmap, true);
-		rowsClusterSet = new HeatmapClusterDrawer(heatmap, false);
-		columnsClusterSet = new HeatmapClusterDrawer(heatmap, true);
+		rowsClusterSet = new HeatmapColoredClustersDrawer(heatmap, false);
+		columnsClusterSet = new HeatmapColoredClustersDrawer(heatmap, true);*/
 	}
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 		Dimension bodySize = body.getSize();
-		Dimension rowsSize = rows.getSize();
-		Dimension columnsSize = columns.getSize();
-		Dimension rowsCSSize = rowsClusterSet.getSize();
-		Dimension columnsCSSize = columnsClusterSet.getSize();
+		Dimension rowsSize = rowsHeader.getSize();
+		Dimension columnsSize = colsHeader.getSize();
+		/*Dimension rowsCSSize = rowsClusterSet.getSize();
+		Dimension columnsCSSize = columnsClusterSet.getSize();*/
 
 		Rectangle columnsBounds = new Rectangle(0, 0, columnsSize.width, columnsSize.height);
-		Rectangle columnsCSBounds = new Rectangle(0 - columnsSize.height, 0, columnsCSSize.width, columnsCSSize.height);
-		Rectangle bodyBounds = new Rectangle(0, columnsSize.height + columnsCSSize.height, bodySize.width, bodySize.height);
-		Rectangle rowsCSBounds = new Rectangle(bodySize.width, columnsSize.height + columnsCSSize.height, rowsCSSize.width, rowsCSSize.height);
-		Rectangle rowsBounds = new Rectangle(bodySize.width + rowsCSBounds.width, columnsSize.height + columnsCSSize.height , rowsSize.width, rowsSize.height);
+		//Rectangle columnsCSBounds = new Rectangle(0 - columnsSize.height, 0, columnsCSSize.width, columnsCSSize.height);
+		Rectangle bodyBounds = new Rectangle(0, columnsSize. height, bodySize.width, bodySize.height);
+		//Rectangle rowsCSBounds = new Rectangle(bodySize.width, columnsSize.height + columnsCSSize.height, rowsCSSize.width, rowsCSSize.height);
+		Rectangle rowsBounds = new Rectangle(bodySize.width, columnsSize.height, rowsSize.width, rowsSize.height);
 
 		AffineTransform at = new AffineTransform();
 
-		columns.draw(g, columnsBounds, columnsBounds);
-		at.setToIdentity();
-		g.setTransform(at);
-		columnsClusterSet.draw(g, columnsCSBounds, columnsCSBounds);
+		colsHeader.draw(g, columnsBounds, columnsBounds);
 		at.setToIdentity();
 		g.setTransform(at);
 		body.draw(g, bodyBounds, bodyBounds);
 		at.setToIdentity();
 		g.setTransform(at);
-		rowsClusterSet.draw(g, rowsCSBounds, rowsCSBounds);
+		rowsHeader.draw(g, rowsBounds, rowsBounds);
 		at.setToIdentity();
 		g.setTransform(at);
-		rows.draw(g, rowsBounds, rowsBounds);
-		at.setToIdentity();
-		g.setTransform(at);
-
 	}
 
 	@Override
 	public Dimension getSize() {
 		Dimension bodySize = body.getSize();
-		Dimension rowsSize = rows.getSize();
-		Dimension columnsSize = columns.getSize();
-		Dimension rowsCSSize = rowsClusterSet.getSize();
-		Dimension columnsCSSize = columnsClusterSet.getSize();
-		return new Dimension(bodySize.width + rowsCSSize.width + rowsSize.width, bodySize.height + columnsCSSize.height + columnsSize.height);
+		Dimension rowsSize = rowsHeader.getSize();
+		Dimension columnsSize = colsHeader.getSize();
+		//Dimension rowsCSSize = rowsClusterSet.getSize();
+		//Dimension columnsCSSize = columnsClusterSet.getSize();
+		return new Dimension(bodySize.width + rowsSize.width, bodySize.height + columnsSize.height);
 	}
 
 	@Override
@@ -101,10 +99,10 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 	public void setPictureMode(boolean pictureMode) {
 		super.setPictureMode(pictureMode);
 		body.setPictureMode(pictureMode);
-		rows.setPictureMode(pictureMode);
-		columns.setPictureMode(pictureMode);
-		rowsClusterSet.setPictureMode(pictureMode);
-		columnsClusterSet.setPictureMode(pictureMode);
+		rowsHeader.setPictureMode(pictureMode);
+		colsHeader.setPictureMode(pictureMode);
+		//rowsClusterSet.setPictureMode(pictureMode);
+		//columnsClusterSet.setPictureMode(pictureMode);
 	}
 
 }

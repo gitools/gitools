@@ -1,12 +1,12 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
+ *  Copyright 2011 chris.
+ * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ * 
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,25 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.panel;
+package org.gitools.heatmap.drawer;
 
-import org.gitools.heatmap.drawer.HeatmapClusterDrawer;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapHeader;
 
-public class HeatmapColorAnnPanel extends AbstractHeatmapPanel {
+public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
+	protected HT header;
+	protected boolean horizontal;
 
-	public HeatmapColorAnnPanel(Heatmap heatmap, boolean horizontal) {
-		super(heatmap, new HeatmapClusterDrawer(heatmap, horizontal));
+	public AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal) {
+		super(heatmap);
+
+		this.header = header;
+		this.horizontal = horizontal;
 	}
+
+	public HT getHeader() {
+		return header;
+	}
+
 }

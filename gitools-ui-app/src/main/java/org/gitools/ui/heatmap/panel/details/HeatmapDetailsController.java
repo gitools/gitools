@@ -149,8 +149,8 @@ public class HeatmapDetailsController implements EntityController {
 			if (column >= 0 && column < columnCount) {
 				HeatmapDim colDim = heatmap.getColumnDim();
 				HeatmapLabelsHeader hdr = colDim.getLabelsHeader();
-				context.put("linkName", hdr.getLinkName());
-				context.put("linkUrl", heatmap.getColumnLinkUrl(column));
+				//context.put("linkName", hdr.getLinkName());
+				//context.put("linkUrl", heatmap.getColumnLinkUrl(column));
 
 				name = heatmap.getColumnLabel(column);
 				String label = heatmap.getMatrixView().getColumnLabel(column);
@@ -161,8 +161,8 @@ public class HeatmapDetailsController implements EntityController {
 			else if (row >= 0 && row < rowCount) {
 				HeatmapDim rowDim = heatmap.getRowDim();
 				HeatmapLabelsHeader hdr = rowDim.getLabelsHeader();
-				context.put("linkName", hdr.getLinkName());
-				context.put("linkUrl", heatmap.getRowLinkUrl(row));
+				//context.put("linkName", hdr.getLinkName());
+				//context.put("linkUrl", heatmap.getRowLinkUrl(row));
 
 				name = heatmap.getRowLabel(row);
 				String label = heatmap.getMatrixView().getRowLabel(row);

@@ -30,11 +30,11 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
-public class ClusteringAction extends BaseAction { 
+public class ClusteringByValueAction extends BaseAction {
 
-	public ClusteringAction() {
-		super("Clustering");
-		setDesc("Clustering"); 
+	public ClusteringByValueAction() {
+		super("Cluster by values");
+		setDesc("Cluster by values");
 	}
 
 	@Override

@@ -156,8 +156,8 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		heatmap.addPropertyChangeListener(heatmapListener);
 		heatmap.getCellDecorator().addPropertyChangeListener(cellDecoratorListener);
-		heatmap.getRowLabelsHeader().addPropertyChangeListener(rowDecoratorListener);
-		heatmap.getColumnLabelsHeader().addPropertyChangeListener(colDecoratorListener);
+		//heatmap.getRowLabelsHeader().addPropertyChangeListener(rowDecoratorListener);
+		//heatmap.getColumnLabelsHeader().addPropertyChangeListener(colDecoratorListener);
 		
 		matrixView.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
@@ -437,6 +437,6 @@ public class HeatmapEditor extends AbstractEditor {
 	}
 
 	protected void mouseClicked(int row, int col, MouseEvent e) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		//throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

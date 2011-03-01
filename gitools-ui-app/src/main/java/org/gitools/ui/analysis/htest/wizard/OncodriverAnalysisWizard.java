@@ -63,7 +63,7 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	public OncodriverAnalysisWizard() {
 		super();
 		
-		setTitle("Oncodriver analysis");
+		setTitle("Oncodrive analysis");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ONCODRIVER, 96));
 		setHelpContext("analysis_oncodrive");
 	}

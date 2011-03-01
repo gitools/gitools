@@ -29,7 +29,7 @@ public class ActionManager {
 
 	private static ActionManager defaultActionManager;
 
-	public static final ActionManager getDefault() {
+	public static ActionManager getDefault() {
 		if (defaultActionManager != null)
 			return defaultActionManager;
 

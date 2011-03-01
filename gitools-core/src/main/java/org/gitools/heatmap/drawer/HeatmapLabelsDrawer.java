@@ -18,6 +18,7 @@
 package org.gitools.heatmap.drawer;
 
 import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.textpatt.TextPattern;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -26,35 +27,117 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
-
-import org.gitools.heatmap.model.HeatmapLabelsDecoration;
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapClusterBand;
 import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
+public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabelsHeader> {
 
 	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
-	
-	private boolean horizontal;
 
-	public HeatmapLabelsDrawer(Heatmap heatmap, boolean horizontal) {
-		super(heatmap);
-		this.horizontal = horizontal;
+	protected static interface LabelProvider {
+		String getLabel(int index);
+	}
+	
+	protected static abstract class MatrixLabelProvider implements LabelProvider {
+		protected IMatrixView mv;
+
+		public MatrixLabelProvider(IMatrixView mv) {
+			this.mv = mv;
+		}
+	}
+
+	protected static class AnnotationProvider implements LabelProvider {
+
+		private LabelProvider labelProvider;
+		private AnnotationMatrix am;
+		private String name;
+		private int column;
+
+		public AnnotationProvider(LabelProvider labelProvider, AnnotationMatrix am, String name) {
+			this.labelProvider = labelProvider;
+			this.am = am;
+			this.name = name;
+			if (am != null)
+				this.column = am.getColumnIndex(name);
+		}
+
+		@Override
+		public String getLabel(int index) {
+			if (am == null)
+				return name;
+
+			String label = labelProvider.getLabel(index);
+			int row = am.getRowIndex(label);
+			return am.getCell(row, column);
+		}
+	}
+
+	protected static class PatternProvider implements LabelProvider {
+
+		private TextPattern pat;
+		private AnnotationsResolver resolver;
+
+		public PatternProvider(LabelProvider labelProvider, AnnotationMatrix am, String pattern) {
+			this.pat = new TextPattern(pattern);
+			this.resolver = new AnnotationsResolver(labelProvider, am);
+		}
+
+		@Override
+		public String getLabel(int index) {
+			resolver.setIndex(index);
+			return pat.generate(resolver);
+		}
+
+	}
+
+	protected static class AnnotationsResolver implements TextPattern.VariableValueResolver {
+
+		private LabelProvider labelProvider;
+		private AnnotationMatrix am;
+		private int index;
+
+		public AnnotationsResolver(LabelProvider labelProvider, AnnotationMatrix am) {
+			this.labelProvider = labelProvider;
+			this.am = am;
+		}
+
+		public void setIndex(int index) {
+			this.index = index;
+		}
+		
+		@Override
+		public String resolveValue(String variableName) {
+			if (am == null)
+				return "${" + variableName + "}";
+
+			String label = labelProvider.getLabel(index);
+			if (variableName.equals("id"))
+				return label;
+			
+			int annRow = am.getRowIndex(label);
+			int annCol = am.getColumnIndex(variableName);
+			return am.getCell(annRow, annCol);
+		}
+	}
+
+	public HeatmapLabelsDrawer(Heatmap heatmap, HeatmapLabelsHeader header, boolean horizontal) {
+		super(heatmap, header, horizontal);
 	}
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
-		
+
 		g.setRenderingHint(
 				RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		// Clear background
-		g.setColor(Color.WHITE);
+		//g.setColor(Color.WHITE);
+		g.setColor(header.getBackgroundColor());
 		g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
 		// Draw borders
@@ -69,21 +152,19 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 			box.height -= borderSize * (horizontal ? 1 : 2);
 		}
 
-		HeatmapDim dim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+		final HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
 		IMatrixView data = heatmap.getMatrixView();
 
-		HeatmapLabelsHeader hdr = dim.getLabelsHeader();
-		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		//HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		
-		g.setFont(hdr.getFont());
+		g.setFont(header.getFont());
 		
-		Color gridColor = dim.getGridColor();
+		Color gridColor = hdim.getGridColor();
 
 		int gridSize = getGridSize();
 
 		int maxWidth = (horizontal ? clip.height : clip.width);
-		//int colorAnnSize = calcClusterSizes(heatmap.getColumnClusterSets());
-		int width = hdr.getSize();
+		int width = header.getSize();
 		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
 
 		width = width < maxWidth ? maxWidth : width;
@@ -100,6 +181,8 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 
 		final AffineTransform at = new AffineTransform();
 		if (horizontal) {
+			//at.setToIdentity();
+			//g.setTransform(at);
 			at.setToTranslation(0, width);
 			g.transform(at);
 			at.setToRotation(radianAngle90);
@@ -112,16 +195,48 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 		int leadRow = data.getLeadSelectionRow();
 		int leadColumn = data.getLeadSelectionColumn();
 
-		int x = box.x;
-		int y = box.y + start * height;
+		LabelProvider matrixLabelProvider = null;
+
+		if (horizontal)
+			matrixLabelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
+				@Override public String getLabel(int index) {
+					return mv.getColumnLabel(index); }
+			};
+		else
+			matrixLabelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
+				@Override public String getLabel(int index) {
+					return mv.getRowLabel(index); }
+			};
+
+		LabelProvider labelProvider = null;
+		switch (header.getLabelSource()) {
+			case ID:
+				labelProvider = matrixLabelProvider;
+				break;
+			case ANNOTATION:
+				labelProvider = new AnnotationProvider(
+						matrixLabelProvider,
+						hdim.getAnnotations(),
+						header.getLabelAnnotation());
+				break;
+			case PATTERN:
+				labelProvider = new PatternProvider(
+						matrixLabelProvider,
+						hdim.getAnnotations(),
+						header.getLabelPattern());
+				break;
+		}
+
+		int xoffs = horizontal ? box.y : box.x;
+		int yoffs = horizontal ? box.x : box.y;
+		int x = xoffs;
+		int y = yoffs + start * height;
 		int padding = (horizontal ? 3 : 2);
 		for (int index = start; index < end; index++) {
-			String element = horizontal ?
-				heatmap.getColumnLabel(index) : heatmap.getRowLabel(index);
-			hdr.decorate(decoration, element);
+			String label = labelProvider.getLabel(index);
 
-			Color bgColor = decoration.getBgColor();
-			Color fgColor = decoration.getFgColor();
+			Color bgColor = header.getBackgroundColor();
+			Color fgColor = header.getForegroundColor();
 			Color gColor = gridColor;
 
 			boolean selected = !pictureMode && (horizontal ?
@@ -150,7 +265,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 
 			if (fontHeight <= height - gridSize) {
 				g.setColor(fgColor);
-				g.drawString(element, x + padding, y + fontOffset);
+				g.drawString(label, x + padding, y + fontOffset);
 			}
 
 			y += height;
@@ -163,19 +278,16 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 		int extBorder = /*2 * 1 - 1*/ 0;
 
 		if (horizontal) {
-			HeatmapDim dim = heatmap.getColumnDim();
-			//int colorAnnSize = calcClusterSizes(heatmap.getColumnClusterSets());
 			int cellWidth = heatmap.getCellWidth() + gridSize;
 			int columnCount = heatmap.getMatrixView().getColumnCount();
-			int headerSize = dim.getHeaderSize();
+			int headerSize = header.getSize();
 			return new Dimension(
 					cellWidth * columnCount + extBorder, headerSize /*- colorAnnSize*/);
 		}
 		else {
-			HeatmapDim dim = heatmap.getRowDim();
 			int cellHeight = heatmap.getCellHeight() + gridSize;
 			int rowCount = heatmap.getMatrixView().getRowCount();
-			int headerSize = dim.getHeaderSize();
+			int headerSize = header.getSize();
 			return new Dimension(
 					headerSize, cellHeight * rowCount + extBorder);
 		}
@@ -232,17 +344,4 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapDrawer {
 	private int getGridSize() {
 		return horizontal ? getColumnsGridSize() : getRowsGridSize();
 	}
-
-	/*private int calcClusterSizes(HeatmapClusterHeader[] clusterSets) {
-		int size = 0;
-		for (HeatmapClusterHeader hcs : clusterSets) {
-			if (hcs.isVisible()) {
-				size += horizontal ? getRowsGridSize() : getColumnsGridSize();
-				size += hcs.getSize();
-				if (hcs.isLabelVisible())
-					size += hcs.getFont().getSize();
-			}
-		}
-		return size;
-	}*/
 }

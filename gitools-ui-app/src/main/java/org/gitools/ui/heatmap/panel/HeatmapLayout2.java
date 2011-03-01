@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 
+@Deprecated
 public class HeatmapLayout2 implements LayoutManager {
 
 	@Override

@@ -21,22 +21,40 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.model.HeatmapLabelsHeader;
 
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	private boolean horizontal;
-	//private HeatmapLabelsDrawer labelsDrawer;
-
-	private AbstractHeatmapDrawer[] drawers;
+	
+	private List<AbstractHeatmapDrawer> drawers;
 
 	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
 
 		this.horizontal = horizontal;
 
-		this.drawers = new AbstractHeatmapDrawer[] {
-			new HeatmapLabelsDrawer(heatmap, horizontal) };
+		updateDrawers();
+	}
+
+	public final void updateDrawers() {
+		List<HeatmapHeader> headers = horizontal ?
+			heatmap.getColumnDim().getHeaders()
+			: heatmap.getRowDim().getHeaders();
+
+		drawers = new ArrayList<AbstractHeatmapDrawer>(headers.size());
+		for (int i = 0; i < headers.size(); i++) {
+			HeatmapHeader h = headers.get(i);
+			if (h instanceof HeatmapLabelsHeader)
+				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapLabelsHeader) h, horizontal));
+			else if (h instanceof HeatmapColoredClustersHeader)
+				drawers.add(new HeatmapColoredClustersDrawer(heatmap, (HeatmapColoredClustersHeader) h, horizontal));
+		}
 	}
 
 	@Override
@@ -65,8 +83,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
-		int x = 0;
-		int y = 0;
+		int x = box.x;
+		int y = box.y;
 		if (horizontal) {
 			for (AbstractHeatmapDrawer d : drawers) {
 				Dimension sz = d.getSize();

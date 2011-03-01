@@ -132,27 +132,27 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         cellWidth = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         cellHeight = new javax.swing.JSpinner();
         cellSyncSize = new javax.swing.JToggleButton();
         rowsGridEnabled = new javax.swing.JCheckBox();
-        rowsGridColor = new org.gitools.ui.platform.component.ColorChooserLabel();
-        columnsGridEnabled = new javax.swing.JCheckBox();
-        columnsGridColor = new org.gitools.ui.platform.component.ColorChooserLabel();
         jLabel1 = new javax.swing.JLabel();
+        rowsGridColor = new org.gitools.ui.platform.component.ColorChooserLabel();
         jLabel5 = new javax.swing.JLabel();
         rowsGridSize = new javax.swing.JSpinner();
-        jLabel6 = new javax.swing.JLabel();
+        columnsGridEnabled = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
+        columnsGridColor = new org.gitools.ui.platform.component.ColorChooserLabel();
+        jLabel6 = new javax.swing.JLabel();
         columnsGridSize = new javax.swing.JSpinner();
-        jPanel1 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel7 = new javax.swing.JLabel();
         cellDecorator = new javax.swing.JComboBox();
         decoPanel = new javax.swing.JPanel();
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Size and Grid"));
+        setPreferredSize(new java.awt.Dimension(280, 651));
 
         jLabel3.setText("Width");
 
@@ -186,13 +186,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             }
         });
 
-        columnsGridEnabled.setText("Show columns grid");
-        columnsGridEnabled.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                columnsGridEnabledStateChanged(evt);
-            }
-        });
-
         jLabel1.setText("Color");
 
         jLabel5.setText("Size");
@@ -204,9 +197,16 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             }
         });
 
-        jLabel6.setText("Size");
+        columnsGridEnabled.setText("Show columns grid");
+        columnsGridEnabled.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                columnsGridEnabledStateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Color");
+
+        jLabel6.setText("Size");
 
         columnsGridSize.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         columnsGridSize.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -215,14 +215,21 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        jLabel7.setText("Scale");
+
+        decoPanel.setAutoscrolls(true);
+        decoPanel.setFocusable(false);
+        decoPanel.setRequestFocusEnabled(false);
+        decoPanel.setLayout(new javax.swing.BoxLayout(decoPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -231,7 +238,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,7 +249,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(rowsGridEnabled)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -252,15 +259,26 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(columnsGridEnabled))
-                .addContainerGap(17, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel7)
+                .addContainerGap(243, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cellDecorator, 0, 266, Short.MAX_VALUE)
+                    .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)
@@ -268,68 +286,32 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                 .addGap(20, 20, 20)
                 .addComponent(rowsGridEnabled)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel1)
                         .addComponent(rowsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(columnsGridEnabled)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
                         .addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addComponent(jLabel2))
                     .addComponent(columnsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Scale"));
-
-        decoPanel.setAutoscrolls(true);
-        decoPanel.setFocusable(false);
-        decoPanel.setLayout(new javax.swing.BoxLayout(decoPanel, javax.swing.BoxLayout.LINE_AXIS));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(decoPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cellDecorator, javax.swing.GroupLayout.Alignment.LEADING, 0, 271, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cellDecorator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(decoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(decoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -431,8 +413,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JSeparator jSeparator1;
     private org.gitools.ui.platform.component.ColorChooserLabel rowsGridColor;
     private javax.swing.JCheckBox rowsGridEnabled;
     private javax.swing.JSpinner rowsGridSize;

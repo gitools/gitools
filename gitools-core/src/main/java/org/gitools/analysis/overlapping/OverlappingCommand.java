@@ -22,11 +22,9 @@ import java.io.File;
 import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.text.MatrixTextPersistence;
 
 
 public class OverlappingCommand extends AnalysisCommand {

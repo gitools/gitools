@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-public class HeatmapClusterBand extends HeatmapHeader {
+public class HeatmapColoredClustersHeader extends HeatmapHeader {
 
 	public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
@@ -59,7 +59,9 @@ public class HeatmapClusterBand extends HeatmapHeader {
 	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
-	public HeatmapClusterBand() {
+	public HeatmapColoredClustersHeader(HeatmapDim dim) {
+		super(dim);
+		
 		size = 20;
 		labelVisible = false;
 		labelRotated = false;
