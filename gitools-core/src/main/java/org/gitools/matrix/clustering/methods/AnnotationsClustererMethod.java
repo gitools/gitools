@@ -17,6 +17,7 @@
 
 package org.gitools.matrix.clustering.methods;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.textpatt.TextPattern;
 import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import org.gitools.matrix.model.AnnotationMatrix;
 
-public class AnnotationsMethod {
+public class AnnotationsClustererMethod implements ProposedClusterMethod {
 
 	public static class AnnotationsClusterResults implements ProposedClusterResults {
 		private String[] clusterNames;
@@ -34,6 +35,11 @@ public class AnnotationsMethod {
 		public AnnotationsClusterResults(String[] clusterNames, Map<String, Integer> clusterIndices) {
 			this.clusterNames = clusterNames;
 			this.clusterIndices = clusterIndices;
+		}
+
+		@Override
+		public int getNumClusters() {
+			return clusterNames.length;
 		}
 
 		@Override
@@ -83,17 +89,20 @@ public class AnnotationsMethod {
 	private AnnotationMatrix am;
 	private String pattern;
 	
-	public AnnotationsMethod(AnnotationMatrix am, String pattern) {
+	public AnnotationsClustererMethod(AnnotationMatrix am, String pattern) {
 		this.resolver = new AnnotationResolver(am);
 		this.am = am;
 		this.pattern = pattern;
 	}
 
 	/** Execute the clustering and return the results */
-	public ProposedClusterResults cluster(ProposedClusterData data) {
+	@Override
+	public ProposedClusterResults cluster(ProposedClusterData data, IProgressMonitor monitor) {
+		monitor.begin("Clustering by annotations", data.getSize() + 1);
+
 		Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
 		TextPattern pat = new TextPattern(pattern);
-		for (int i = 0; i < data.getSize(); i++) {
+		for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
 			String label = data.getLabel(i);
 			int annRow = am.getRowIndex(label);
 			resolver.setState(label, annRow);
@@ -104,7 +113,12 @@ public class AnnotationsMethod {
 				clusters.put(label, indices);
 			}
 			indices.add(i);
+
+			monitor.worked(1);
 		}
+
+		if (monitor.isCancelled())
+			return null;
 
 		String[] clusterNames = new String[clusters.size()];
 		Map<String, Integer> clusterIndices = new HashMap<String, Integer>();
@@ -119,6 +133,8 @@ public class AnnotationsMethod {
 
 			clusterIndex++;
 		}
+
+		monitor.end();
 
 		return new AnnotationsClusterResults(clusterNames, clusterIndices);
 	}
