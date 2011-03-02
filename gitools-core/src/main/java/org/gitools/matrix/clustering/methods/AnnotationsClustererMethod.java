@@ -29,27 +29,61 @@ import org.gitools.matrix.model.AnnotationMatrix;
 public class AnnotationsClustererMethod implements ProposedClusterMethod {
 
 	public static class AnnotationsClusterResults implements ProposedClusterResults {
-		private String[] clusterNames;
-		private Map<String, Integer> clusterIndices;
+		private String[] clusterTitles;
+		private String[] dataLabels;
+		private Map<String, int[]> clusterDataIndices;
+		private Map<String, Integer> dataClusterIndices;
 
-		public AnnotationsClusterResults(String[] clusterNames, Map<String, Integer> clusterIndices) {
-			this.clusterNames = clusterNames;
-			this.clusterIndices = clusterIndices;
+		public AnnotationsClusterResults(String[] dataLabels, Map<String, int[]> clusterDataIndices) {
+			this.dataLabels = dataLabels;
+			this.clusterDataIndices = clusterDataIndices;
+
+			generateDataClusterIndices(dataLabels, clusterDataIndices);
+		}
+
+		private void generateDataClusterIndices(String[] dataLabels, Map<String, int[]> clusters) {
+			clusterTitles = new String[clusters.size()];
+			dataClusterIndices = new HashMap<String, Integer>();
+			int clusterIndex = 0;
+			for (Map.Entry<String, int[]> e : clusters.entrySet()) {
+				clusterTitles[clusterIndex] = e.getKey();
+				for (int i : e.getValue())
+					dataClusterIndices.put(dataLabels[i], clusterIndex);
+				clusterIndex++;
+			}
 		}
 
 		@Override
 		public int getNumClusters() {
-			return clusterNames.length;
+			return clusterTitles.length;
 		}
 
 		@Override
-		public String getClusterName(int index) {
-			return clusterNames[index];
+		public String[] getClusterTitles() {
+			return clusterTitles;
+		}
+
+		@Override
+		public String[] getDataLabels() {
+			return dataLabels;
+		}
+
+		@Override
+		public String[] getDataLabels(String clusterTitle) {
+			int[] dataIndices = clusterDataIndices.get(clusterTitle);
+			if (dataIndices == null)
+				return new String[0];
+
+			String[] labels = new String[dataIndices.length];
+			for (int i = 0; i < dataIndices.length; i++)
+				labels[i] = dataLabels[dataIndices[i]];
+
+			return labels;
 		}
 
 		@Override
 		public int getClusterIndex(String id) {
-			Integer index = clusterIndices.get(id);
+			Integer index = dataClusterIndices.get(id);
 			if (index == null)
 				return -1;
 			return index;
@@ -100,10 +134,12 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 	public ProposedClusterResults cluster(ProposedClusterData data, IProgressMonitor monitor) {
 		monitor.begin("Clustering by annotations", data.getSize() + 1);
 
+		String[] dataLabels = new String[data.getSize()];
 		Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
 		TextPattern pat = new TextPattern(pattern);
 		for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
 			String label = data.getLabel(i);
+			dataLabels[i] = label;
 			int annRow = am.getRowIndex(label);
 			resolver.setState(label, annRow);
 			String clusterName = pat.generate(resolver);
@@ -120,22 +156,17 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 		if (monitor.isCancelled())
 			return null;
 
-		String[] clusterNames = new String[clusters.size()];
-		Map<String, Integer> clusterIndices = new HashMap<String, Integer>();
-		int clusterIndex = 0;
+		Map<String, int[]> clusters2 = new HashMap<String, int[]>();
 		for (Map.Entry<String, List<Integer>> e : clusters.entrySet()) {
-			String clusterName = e.getKey();
-			List<Integer> indices = e.getValue();
-
-			clusterNames[clusterIndex] = clusterName;
-			for (Integer i : indices)
-				clusterIndices.put(data.getLabel(i), clusterIndex);
-
-			clusterIndex++;
+			List<Integer> indices1 = e.getValue();
+			int[] indices2 = new int[indices1.size()];
+			for (int i = 0; i < indices1.size(); i++)
+				indices2[i] = indices1.get(i);
+			clusters2.put(e.getKey(), indices2);
 		}
 
 		monitor.end();
 
-		return new AnnotationsClusterResults(clusterNames, clusterIndices);
+		return new AnnotationsClusterResults(dataLabels, clusters2);
 	}
 }

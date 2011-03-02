@@ -22,10 +22,16 @@ public interface ProposedClusterResults {
 	/** Returns the number of clusters */
 	int getNumClusters();
 
-	/** Return the cluster title by the index of the cluster */
-	String getClusterName(int index);
+	/** Return the cluster titles */
+	String[] getClusterTitles();
+
+	/** Get data labels for which there are cluster results */
+	String[] getDataLabels();
+
+	/** Returns the data labels for a given cluster */
+	String[] getDataLabels(String clusterTitle);
 
 	/** Returns the cluster index for a given row/column label in the matrix.
 	 * If there is not cluster associated then return -1. */
-	int getClusterIndex(String id);
+	int getClusterIndex(String label);
 }
