@@ -15,20 +15,16 @@
  *  under the License.
  */
 
-package org.gitools.matrix.clustering.methods;
+package org.gitools.matrix.clustering;
 
-import java.util.Properties; 
-import org.gitools.matrix.clustering.ClusteringMethod;
+public class ClusterException extends Exception {
 
-
-public class ClusteringMethodFactory {
-
-	public static ClusteringMethod createMethod(Properties properties) {
-		String methodId =properties.getProperty("method");
-		if (methodId.toLowerCase().contains(WekaCobWebMethod.ID))
-			return new WekaCobWebMethod(properties);
-		else 
-			return new WekaKmeansMethod(properties);
-
+	public ClusterException(String msg) {
+		super(msg);
 	}
+
+	public ClusterException(Throwable cause) {
+		super(cause);
+	}
+
 }

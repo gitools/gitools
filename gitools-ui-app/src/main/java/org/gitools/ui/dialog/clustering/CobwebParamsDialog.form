@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="headerCompo" alignment="0" pref="468" max="32767" attributes="0"/>
+          <Component id="headerCompo" alignment="0" pref="472" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -34,7 +34,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="acuityField" alignment="0" pref="377" max="32767" attributes="2"/>
+                          <Component id="acuityField" alignment="0" pref="378" max="32767" attributes="2"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -46,7 +46,7 @@
                           <Component id="cutOffField" alignment="0" pref="378" max="32767" attributes="2"/>
                       </Group>
                   </Group>
-                  <Component id="jSeparator1" alignment="0" pref="444" max="32767" attributes="2"/>
+                  <Component id="jSeparator1" alignment="0" pref="448" max="32767" attributes="2"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>

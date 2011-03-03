@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="headerCompo" alignment="0" pref="485" max="32767" attributes="0"/>
+          <Component id="headerCompo" alignment="0" pref="494" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -45,11 +45,11 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jSeparator1" pref="461" max="32767" attributes="0"/>
+              <Component id="jSeparator1" pref="470" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="346" max="32767" attributes="0"/>
+              <EmptySpace pref="351" max="32767" attributes="0"/>
               <Component id="okButton" min="-2" pref="67" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
@@ -122,7 +122,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Link type: "/>
-        <Property name="toolTipText" type="java.lang.String" value="Set number of clusters"/>
+        <Property name="toolTipText" type="java.lang.String" value="Sets the method used to measure the distance between two clusters."/>
       </Properties>
     </Component>
     <Component class="org.gitools.ui.platform.dialog.DialogHeaderPanel" name="headerCompo">
@@ -130,9 +130,15 @@
     <Component class="javax.swing.JComboBox" name="linkTypeCombo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
+          <StringArray count="8">
             <StringItem index="0" value="Single"/>
             <StringItem index="1" value="Complete"/>
+            <StringItem index="2" value="Average"/>
+            <StringItem index="3" value="Mean"/>
+            <StringItem index="4" value="Centroid"/>
+            <StringItem index="5" value="Ward"/>
+            <StringItem index="6" value="Adjcomplete"/>
+            <StringItem index="7" value="Neighbor_joining"/>
           </StringArray>
         </Property>
       </Properties>

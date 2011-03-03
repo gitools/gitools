@@ -17,26 +17,34 @@
 
 package org.gitools.matrix.clustering.methods;
 
+import java.io.IOException;
 import org.gitools.matrix.clustering.MatrixViewWeka;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 import org.gitools.analysis.AbstractMethod;
-import org.gitools.matrix.clustering.ClusteringMethod;
-import weka.clusterers.HierarchicalClusterer;
-import weka.core.Instance;
+import org.gitools.matrix.clustering.ClusterException;
+import uk.ac.vamsas.objects.utils.trees.BinaryNode;
+import uk.ac.vamsas.objects.utils.trees.NewickFile;
+import uk.ac.vamsas.objects.utils.trees.SequenceNode;
+import weka.core.EuclideanDistance;
+import weka.core.ManhattanDistance;
+import weka.core.SelectedTag;
 
 
-public class WekaHCLMethod extends AbstractMethod implements ClusteringMethod{
+public class WekaHCLMethod extends AbstractMethod implements ProposedClusterMethod {
 
 	public static final String ID = "hierarchical";
 
+
 	public WekaHCLMethod(Properties properties) {
 		super(ID,
-				"CobWeb's clustering",
-				"CobWeb's Weka clustering",null, properties);
+				"Agglomerative hierarchical clustering",
+				"Agglomerative hierarchical's Weka clustering",null, properties);
 	}
 
 /*
@@ -44,48 +52,40 @@ public class WekaHCLMethod extends AbstractMethod implements ClusteringMethod{
  * Hashmap with all Cluster and the instances wich belong to
  */
 	@Override
-	public HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka data, IProgressMonitor monitor) throws Exception {
+	public ProposedClusterResults cluster(ProposedClusterData dataToCluster, IProgressMonitor monitor) throws ClusterException {
+		try {
+			MatrixViewWeka data = (MatrixViewWeka) dataToCluster;
 
-		HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
+			ProposedHierarchicalClusterResults results = new ProposedHierarchicalClusterResults();
+			HashMap<Integer, List<Integer>> clusterResults = new HashMap<Integer, List<Integer>>();
+			List<Integer> instancesCluster = new ArrayList<Integer>();
 
-		HierarchicalClusterer clusterer = new HierarchicalClusterer();
-		
-		clusterer.buildClusterer(data);
+			WekaHierarchicalClusterer clusterer = new WekaHierarchicalClusterer();
 
-		if (!monitor.isCancelled())
-		{
-			//clusterer.updateFinished();
-			monitor.end();
+			configure(clusterer);
 
-			// Identificar el cluster de cada instancia
-			monitor.begin("Clustering instances ...", data.getMatrixView().getVisibleColumns().length);
+			clusterer.buildClusterer(data);
 
-			int cluster;
-			Instance current = null;
+			if (!monitor.isCancelled()) {
 
-			for (int i=0; i < data.getMatrixView().getVisibleColumns().length && !monitor.isCancelled(); i++)  {
+				monitor.end();
 
-				if ((current = data.get(i)) != null) {
+				// Identify cluster by instance
+				monitor.begin("Clustering instances ...", data.getMatrixView().getVisibleColumns().length);
 
-					cluster = clusterer.clusterInstance(current);
+				String newickTree = clusterer.graph();
 
-					List<Integer> instancesCluster = clusterResults.get(cluster);
-					if (instancesCluster == null) {
-						instancesCluster = new ArrayList<Integer>();
-						clusterResults.put(cluster, instancesCluster);
-					}
+				instancesCluster = getTreeLeaves(newickTree);
 
-					instancesCluster.add(i);
-				}
-				else
-					System.out.println("ERROR Loading instance: "+i);
-				monitor.worked(1);
-			}			
+				clusterResults.put(0, instancesCluster);
+			}
 
+			results.setClusteredData(clusterResults);
+			return results;
+
+		} catch (Exception ex) {
+			throw new ClusterException("Error in " + ID + " clustering method ");
 		}
-
-		return clusterResults;
-		
 	}
 
 
@@ -94,6 +94,42 @@ public class WekaHCLMethod extends AbstractMethod implements ClusteringMethod{
 		return ID;
 	}
 
+	private List<Integer> getTreeLeaves(String result) throws NumberFormatException, IOException {
 
+		List<Integer> instancesCluster = new ArrayList<Integer>();
 
+		Vector v = new Vector();
+
+		NewickFile newickTree = new NewickFile(result);
+
+		SequenceNode sequenceNodes = newickTree.getTree();
+
+		newickTree.findLeaves(sequenceNodes, v);
+
+		Enumeration lv = v.elements();
+
+		while (lv.hasMoreElements()) {
+			BinaryNode leave = (BinaryNode) lv.nextElement();
+			if (leave.getName() != null) {
+				instancesCluster.add(new Integer(leave.getName().substring(1)));
+			}
+		}
+		return instancesCluster;
+	}
+
+	private void configure(WekaHierarchicalClusterer clusterer) {
+
+		clusterer.setLinkType(
+				new SelectedTag(properties.getProperty("link").toUpperCase(), WekaHierarchicalClusterer.TAGS_LINK_TYPE));
+
+		clusterer.setDistanceIsBranchLength(false);
+		clusterer.setNumClusters(1);
+		clusterer.setPrintNewick(true);
+
+		if (properties.getProperty("distance").equalsIgnoreCase("euclidean"))
+			clusterer.setDistanceFunction(new EuclideanDistance());
+		else
+			clusterer.setDistanceFunction(new ManhattanDistance());
+
+	}
 }

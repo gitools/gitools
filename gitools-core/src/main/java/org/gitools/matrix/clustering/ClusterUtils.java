@@ -115,6 +115,7 @@ public class ClusterUtils {
 		return attr;
 	}
 
+
 	/**
 	 *  Update visibility of the matrixView
 	 *
@@ -151,11 +152,9 @@ public class ClusterUtils {
 	 * @return
 	 */
 	public Instances matrix2Instances(IMatrixView matrixView,Properties clusterParameters){
-
 		FastVector attr = ClusterUtils.getInstance().addAttributes(matrixView.getRowCount());
 
 		return new Instances("matrixToCluster", attr, 0);
-
 	}
 
 /*

@@ -27,21 +27,21 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="headerCompo" alignment="0" pref="502" max="32767" attributes="0"/>
+          <Component id="headerCompo" alignment="0" pref="522" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="algorithmTypeCombo" pref="294" max="32767" attributes="2"/>
+                      <Component id="algorithmTypeCombo" pref="308" max="32767" attributes="2"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" pref="80" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="dataClustCombo" pref="385" max="32767" attributes="3"/>
+                      <Component id="dataClustCombo" pref="400" max="32767" attributes="3"/>
                   </Group>
                   <Component id="rowsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="columnsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -52,7 +52,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jSeparator1" alignment="0" pref="478" max="32767" attributes="0"/>
+                  <Component id="jSeparator1" alignment="0" pref="498" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="okButton" min="-2" pref="67" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -71,7 +71,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="345" max="32767" attributes="0"/>
+              <EmptySpace pref="365" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -170,9 +170,10 @@
     <Component class="javax.swing.JComboBox" name="algorithmTypeCombo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Hierarchical clustering"/>
+          <StringArray count="3">
+            <StringItem index="0" value="Agglomerative hierarchical"/>
             <StringItem index="1" value="K-means"/>
+            <StringItem index="2" value="Cobweb"/>
           </StringArray>
         </Property>
       </Properties>

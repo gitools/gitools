@@ -104,15 +104,15 @@ public class HCLParamsDialog extends javax.swing.JDialog {
         });
 
         jLabel1.setText("Link type: ");
-        jLabel1.setToolTipText("Set number of clusters");
+        jLabel1.setToolTipText("Sets the method used to measure the distance between two clusters.");
 
-        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single", "Complete" }));
+        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single", "Complete", "Average", "Mean", "Centroid", "Ward", "Adjcomplete", "Neighbor_joining" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,10 +128,10 @@ public class HCLParamsDialog extends javax.swing.JDialog {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(346, Short.MAX_VALUE)
+                .addContainerGap(351, Short.MAX_VALUE)
                 .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton)

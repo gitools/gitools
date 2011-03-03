@@ -148,7 +148,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
         jLabel3.setText("Method:");
 
-        algorithmTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hierarchical clustering", "K-means" }));
+        algorithmTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Agglomerative hierarchical", "K-means", "Cobweb" }));
         algorithmTypeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 algorithmTypeComboActionPerformed(evt);
@@ -173,20 +173,20 @@ public class ClusteringDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(40, 40, 40)
-                        .addComponent(algorithmTypeCombo, 0, 294, Short.MAX_VALUE)
+                        .addComponent(algorithmTypeCombo, 0, 308, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataClustCombo, 0, 385, Short.MAX_VALUE))
+                        .addComponent(dataClustCombo, 0, 400, Short.MAX_VALUE))
                     .addComponent(rowsRadio)
                     .addComponent(columnsRadio)
                     .addComponent(jLabel5))
@@ -194,7 +194,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -209,7 +209,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,18 +259,18 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
 	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("agglomerative hierarchical")){
+			HCLParamsDialog dlg = new HCLParamsDialog(this,params);
+			dlg.setVisible(true);
+		}
+
 		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("k-means")){
 			KmeansParamsDialog dlg = new KmeansParamsDialog(this,params);
 			dlg.setVisible(true);
 		}
 
-		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("hierarchical clustering")){
+		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("Cobweb")){
 			CobwebParamsDialog dlg = new CobwebParamsDialog(this,params);
-			dlg.setVisible(true);
-		}
-
-		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("HCL")){
-			HCLParamsDialog dlg = new HCLParamsDialog(this,params);
 			dlg.setVisible(true);
 		}
 
@@ -328,7 +328,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 
 		}
 		
-		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("hierarchical clustering")){
+		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("cobweb")){
 
 			clusterParams.put("cutoff", params.getProperty("cutoff","0.0028"));
 			clusterParams.put("seedCobweb", params.getProperty("seedCobweb","42"));
@@ -336,10 +336,11 @@ public class ClusteringDialog extends javax.swing.JDialog {
 			clusterParams.put("classIndex", params.getProperty("classIndex","0")); //Per cobWeb ha de valdre 0
 		}
 
-		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("HCL")){
+		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("agglomerative hierarchical")){
 
 			clusterParams.put("distance", params.getProperty("distance","euclidean"));
 			clusterParams.put("link", params.getProperty("link","single"));
+			clusterParams.put("classIndex", params.getProperty("classIndex","-1"));
 		}
 
 		return clusterParams;

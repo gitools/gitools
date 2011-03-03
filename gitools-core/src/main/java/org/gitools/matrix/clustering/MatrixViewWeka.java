@@ -20,6 +20,7 @@ package org.gitools.matrix.clustering;
 import java.io.IOException;
 import java.util.Properties;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.clustering.methods.ProposedClusterData;
 import org.gitools.matrix.model.IMatrixView;
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -31,7 +32,7 @@ import weka.core.Instances;
  * and ImatrixView class
  *
  */
-public class MatrixViewWeka extends Instances{
+public class MatrixViewWeka extends Instances implements ProposedClusterData {
 
 	private IMatrixView matrixView;
 	private Instances structure;
@@ -39,12 +40,13 @@ public class MatrixViewWeka extends Instances{
 	private int dimMatrix;//the dimension of the matrix for obtaining the value
 	private int initClassIndex;
 
-	public MatrixViewWeka(Instances ds) {
-
+	public MatrixViewWeka(Instances ds, IMatrixView matrix, Properties params) {
 		super(ds);
-	}
 
-	public void initialize(IMatrixView matrix, Properties params){//Integer dMatrix, Integer classIndex) {
+		this.initialize(matrix, params);
+	}
+	
+	private void initialize(IMatrixView matrix, Properties params){//Integer dMatrix, Integer classIndex) {
 
 		dimMatrix = new Integer (params.getProperty("index", "0")); 
 
@@ -73,6 +75,10 @@ public class MatrixViewWeka extends Instances{
 	public Instances getStructure() throws IOException {
 
 		return structure;
+
+	}
+
+	public void setDataSet(Instances mergeInstances) {
 
 	}
 
@@ -203,5 +209,23 @@ public class MatrixViewWeka extends Instances{
 		return matrixView;
 	}
 
+	public void setClassIndex(int index) {
+		m_ClassIndex = index;
+	}
+
+	@Override
+	public int getSize() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String getLabel(int index) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public Object getValue(int index, int attrIndex) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }

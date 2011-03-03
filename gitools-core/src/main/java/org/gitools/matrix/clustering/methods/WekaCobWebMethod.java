@@ -24,91 +24,85 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
-import org.gitools.matrix.clustering.ClusteringMethod;
+import org.gitools.matrix.clustering.ClusterException;
 import weka.clusterers.Cobweb;
 import weka.core.Instance;
 
-public class WekaCobWebMethod extends AbstractMethod implements ClusteringMethod{
-	public static final String ID = "hierarchical";
+public class WekaCobWebMethod extends AbstractMethod implements ProposedClusterMethod {
+	public static final String ID = "cobweb";
 
 	public WekaCobWebMethod(Properties properties) {
 		super(ID,
 				"CobWeb's clustering",
 				"CobWeb's Weka clustering",null, properties);
+	} 
+
+	/**
+	 * Build the model and cluster the dataset
+	 * Hashmap with all Cluster and the instances wich belong to
+	 * @param data
+	 * @param monitor
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public ProposedClusterResults cluster(ProposedClusterData dataToCluster, IProgressMonitor monitor) throws ClusterException {
+		try {
+			MatrixViewWeka data = (MatrixViewWeka) dataToCluster;
+
+			HashMap<Integer, List<Integer>> clusterResults = null;
+			Cobweb clusterer = new Cobweb();
+
+			configure(clusterer);
+			clusterer.buildClusterer(data.getStructure());
+
+			monitor.begin("Creating clustering model ...", data.getMatrixView().getVisibleColumns().length + 1);
+			Instance current = null;
+			int j = 0;
+			while ((j < data.getMatrixView().getVisibleColumns().length) && !monitor.isCancelled()) {
+				if ((current = data.get(j)) != null) {
+					clusterer.updateClusterer(current);
+				}
+				monitor.worked(1);
+				j++;
+			}
+			if (!monitor.isCancelled()) {
+				clusterer.updateFinished();
+				monitor.end();
+				monitor.begin("Clustering instances ...", data.getMatrixView().getVisibleColumns().length);
+				int cluster;
+				clusterResults = new HashMap<Integer, List<Integer>>();
+				for (int i = 0; i < data.getMatrixView().getVisibleColumns().length && !monitor.isCancelled(); i++) {
+					if ((current = data.get(i)) != null) {
+						cluster = clusterer.clusterInstance(current);
+						List<Integer> instancesCluster = clusterResults.get(cluster);
+						if (instancesCluster == null) {
+							instancesCluster = new ArrayList<Integer>();
+							clusterResults.put(cluster, instancesCluster);
+						}
+						instancesCluster.add(i);
+					} 
+					monitor.worked(1);
+				}
+			}
+			
+			ProposedHierarchicalClusterResults results = new ProposedHierarchicalClusterResults();
+			results.setClusteredData(clusterResults);
+			return results;
+		} catch (Exception ex) {
+			throw new ClusterException("Error in " + ID + " clustering method ");
+		}
 	}
 
-/*
- * Build the model and cluster the dataset
- * Hashmap with all Cluster and the instances wich belong to
- */
-	@Override
-	public HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka data, IProgressMonitor monitor) throws Exception {
-
-		Instance current = null;
-
-		HashMap<Integer, List<Integer>> clusterResults = null;
-
-		Cobweb clusterer = new Cobweb();
-
-		clusterer.setAcuity(Float.valueOf(properties.getProperty("acuity","0.5")));
-		clusterer.setCutoff(Float.valueOf(properties.getProperty("cutoff","0.0028")));
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedCobweb","42")));
-
-		clusterer.buildClusterer(data.getStructure());
-
-		monitor.begin("Creating clustering model ...",  data.getMatrixView().getVisibleColumns().length + 1);
-
-		int j = 0;
-		while ((j <  data.getMatrixView().getVisibleColumns().length ) && !monitor.isCancelled()) {
-
-			if ((current = data.get(j)) != null)
-				clusterer.updateClusterer(current);
-
-			monitor.worked(1);
-			j++;
-		}
-
-		if (!monitor.isCancelled())
-		{
-			clusterer.updateFinished();
-
-			monitor.end();
-
-			monitor.begin("Clustering instances ...",  data.getMatrixView().getVisibleColumns().length);
-
-			int cluster;
-
-			clusterResults = new HashMap<Integer, List<Integer>>();
-
-			for (int i=0; i <  data.getMatrixView().getVisibleColumns().length && !monitor.isCancelled(); i++)  {
-
-				if ((current = data.get(i)) != null) {
-
-					cluster = clusterer.clusterInstance(current);
-
-					List<Integer> instancesCluster = clusterResults.get(cluster);
-					if (instancesCluster == null) {
-						instancesCluster = new ArrayList<Integer>();
-						clusterResults.put(cluster, instancesCluster);
-					}
-
-					instancesCluster.add(i);
-				}
-				else
-					System.out.println("ERROR Loading instance: "+i);
-				monitor.worked(1);
-			}
-
-		}
-
-		return clusterResults;
-
+	private void configure(Cobweb clusterer) throws NumberFormatException {
+		
+		clusterer.setAcuity(Float.valueOf(properties.getProperty("acuity", "0.5")));
+		clusterer.setCutoff(Float.valueOf(properties.getProperty("cutoff", "0.0028")));
+		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedCobweb", "42")));
 	}
 
 	@Override
 	public String getId() {
 		return ID;
 	}
-
-
 }

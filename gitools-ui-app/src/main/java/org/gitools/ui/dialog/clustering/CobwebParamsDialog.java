@@ -47,7 +47,7 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
 
         initComponents();
 
-		headerCompo.setTitle("Herarchical Clustering parameters");
+		headerCompo.setTitle("CobWeb clustering parameters");
 		headerCompo.setMessage("Modify default values to increase/reduce expected clusters");
 		this.parent = parent;
 
@@ -125,17 +125,17 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
         jLabel1.setText("Acuity: ");
         jLabel1.setToolTipText("Set the minimum standard deviation of a node of the tree with an only \ninstance.\n");
 
-        jLabel4.setFont(new java.awt.Font("DejaVu LGC Sans", 0, 10)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("DejaVu LGC Sans", 0, 10));
         jLabel4.setText("(Hint: decrease this value to obtain more clusters)");
 
-        jLabel5.setFont(new java.awt.Font("DejaVu LGC Sans", 0, 10)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("DejaVu LGC Sans", 0, 10));
         jLabel5.setText("(Hint: decrease this value to obtain more clusters)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+            .addComponent(headerCompo, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,22 +145,22 @@ public class CobwebParamsDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)))
+                            .addComponent(acuityField, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                            .addComponent(cutOffField, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel3)
                         .addGap(17, 17, 17)
-                        .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
+                        .addComponent(seedField, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton)))

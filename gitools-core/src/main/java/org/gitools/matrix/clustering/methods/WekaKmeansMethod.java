@@ -24,14 +24,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
-import org.gitools.matrix.clustering.ClusteringMethod;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.clustering.ClusterException;
 import weka.clusterers.SimpleKMeans;
 import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.ManhattanDistance;
 
-public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod{
+public class WekaKmeansMethod extends AbstractMethod implements ProposedClusterMethod{
 
 	public static final String ID = "k-means";
 
@@ -47,91 +46,84 @@ public class WekaKmeansMethod extends AbstractMethod implements ClusteringMethod
  * Hashmap with all Cluster and the instances wich belong to
  */
 	@Override
-	public HashMap<Integer, List<Integer>> buildAndCluster(MatrixViewWeka data, IProgressMonitor monitor) throws Exception {
+	public ProposedClusterResults cluster(ProposedClusterData dataToCluster, IProgressMonitor monitor) throws ClusterException {
+		try {
+			MatrixViewWeka data = (MatrixViewWeka) dataToCluster;
 
-		Instance instancia;
-		
-		int cluster;
+			Instance instancia;
 
-		HashMap<Integer, List<Integer>> clusterResults = null;
+			int cluster;
 
-		if ((Integer.valueOf(properties.getProperty("k"))) < 2) return null;
+			HashMap<Integer, List<Integer>> clusterResults = null;
 
-		SimpleKMeans clusterer = new SimpleKMeans();
+			if ((Integer.valueOf(properties.getProperty("k"))) < 2) {
+				return null;
+			}
 
-		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations","500")));
-		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k","2")));
-		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedKmeans","10")));
+			SimpleKMeans clusterer = new SimpleKMeans();
 
-		if (properties.getProperty("distance","euclidean").toLowerCase().equals("euclidean"))
-			clusterer.setDistanceFunction(new EuclideanDistance());
-		else
-			clusterer.setDistanceFunction(new ManhattanDistance());
+			configure(clusterer);
 
-		monitor.begin("Creating clustering model ...", 1);
+			monitor.begin("Creating clustering model ...", 1);
 
-		clusterer.buildClusterer(data);
+			clusterer.buildClusterer(data);
 
-		if (!monitor.isCancelled())
-		{
+			if (!monitor.isCancelled()) {
 
-			monitor.end();
-			
-			monitor.begin("Clustering instances ...", data.numInstances());
+				monitor.end();
 
-			//Cluster -> List instances
-			clusterResults = new HashMap<Integer,List<Integer>>();
+				monitor.begin("Clustering instances ...", data.numInstances());
 
-			List<Integer> instancesCluster = null;
+				//Cluster -> List instances
+				clusterResults = new HashMap<Integer, List<Integer>>();
 
-			for (int i=0; i < data.numInstances(); i++)  {
+				List<Integer> instancesCluster = null;
 
-				instancia = data.instance(i);
-				cluster = clusterer.clusterInstance(instancia);
+				for (int i = 0; i < data.numInstances(); i++) {
 
-				if (clusterResults.get(cluster) == null)
-					instancesCluster = new ArrayList<Integer>();
-				else
-					instancesCluster = clusterResults.get(cluster);
+					instancia = data.instance(i);
+					cluster = clusterer.clusterInstance(instancia);
 
-				instancesCluster.add(i);
-				clusterResults.put(cluster, instancesCluster);
-				monitor.worked(1);
+					if (clusterResults.get(cluster) == null) {
+						instancesCluster = new ArrayList<Integer>();
+					} else {
+						instancesCluster = clusterResults.get(cluster);
+					}
+
+					instancesCluster.add(i);
+					clusterResults.put(cluster, instancesCluster);
+					monitor.worked(1);
+
+				}
 
 			}
 
+			ProposedHierarchicalClusterResults results = new ProposedHierarchicalClusterResults();
+
+			results.setClusteredData(clusterResults);
+
+			return results;
+
+		} catch (Exception ex) {
+			throw new ClusterException("Error in " + ID + " clustering method ");
 		}
-
-		return clusterResults;
-
 	}
 
-	private void updateVisibility (IMatrixView matrixView, Integer numInstances, HashMap<Integer,List<Integer>> clusterResults){
+	private void configure(SimpleKMeans clusterer) throws Exception, NumberFormatException {
 
-		int index = 0;
-		int[] visibleData = null;
-		final int[] sortedVisibleData = new int[numInstances];
+		clusterer.setMaxIterations(Integer.valueOf(properties.getProperty("iterations", "500")));
+		clusterer.setNumClusters(Integer.valueOf(properties.getProperty("k", "2")));
+		clusterer.setSeed(Integer.valueOf(properties.getProperty("seedKmeans", "10")));
 
-		visibleData = matrixView.getVisibleColumns();
-
-		for (Integer i : clusterResults.keySet())
-			for( Integer val : clusterResults.get(i)){
-
-				sortedVisibleData[index] = visibleData[val];
-				index++;
-			}
-
-		matrixView.setVisibleColumns(sortedVisibleData);
-
+		if (properties.getProperty("distance", "euclidean").toLowerCase().equals("euclidean")) {
+			clusterer.setDistanceFunction(new EuclideanDistance());
+		} else {
+			clusterer.setDistanceFunction(new ManhattanDistance());
+		}
 	}
 
 	@Override
 	public String getId() {
 		return ID;
 	}
-
-
-
-
-
 }
