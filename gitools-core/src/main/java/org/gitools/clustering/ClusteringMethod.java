@@ -15,11 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.matrix.clustering.methods;
+package org.gitools.clustering;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
-public interface ProposedClusterMethod {
+public interface ClusteringMethod {
 
-	public ProposedClusterResults cluster(ProposedClusterData data, IProgressMonitor monitor);
+	public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor);
 }

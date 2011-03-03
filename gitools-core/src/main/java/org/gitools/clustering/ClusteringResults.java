@@ -15,17 +15,23 @@
  *  under the License.
  */
 
-package org.gitools.matrix.clustering.methods;
+package org.gitools.clustering;
 
-/** Generic data interface for clustering methods */
-public interface ProposedClusterData {
+public interface ClusteringResults {
 
-	/** Return the number of elements in the data */
-	int getSize();
+	/** Returns the number of clusters */
+	int getNumClusters();
 
-	/** Returns the label associated with the element at index <index> */
-	String getLabel(int index);
+	/** Return the cluster titles */
+	String[] getClusterTitles();
 
-	/** Returns the values associated with the element at index <index> for the attribute <attrIndex> */
-	Object getValue(int index, int attrIndex);
+	/** Get data labels for which there are cluster results */
+	String[] getDataLabels();
+
+	/** Returns the data labels for a given cluster */
+	String[] getDataLabels(String clusterTitle);
+
+	/** Returns the cluster index for a given row/column label in the matrix.
+	 * If there is not cluster associated then return -1. */
+	int getClusterIndex(String label);
 }

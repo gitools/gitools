@@ -15,8 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.matrix.clustering.methods;
+package org.gitools.clustering.method;
 
+import org.gitools.clustering.ClusteringData;
+import org.gitools.clustering.ClusteringMethod;
+import org.gitools.clustering.ClusteringResults;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.textpatt.TextPattern;
 import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
@@ -26,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 import org.gitools.matrix.model.AnnotationMatrix;
 
-public class AnnotationsClustererMethod implements ProposedClusterMethod {
+public class AnnotationsClusteringMethod implements ClusteringMethod {
 
-	public static class AnnotationsClusterResults implements ProposedClusterResults {
+	public static class AnnotationsClusterResults implements ClusteringResults {
 		private String[] clusterTitles;
 		private String[] dataLabels;
 		private Map<String, int[]> clusterDataIndices;
@@ -101,9 +104,11 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 			this.am = am;
 		}
 
-		public void setState(String label, int annRow) {
+		public void setLabel(String label) {
 			this.label = label;
-			this.annRow = annRow;
+
+			if (am != null)
+				annRow = am.getRowIndex(label);
 		}
 
 		@Override
@@ -111,7 +116,7 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 			if (variableName.equalsIgnoreCase("id"))
 				return label;
 
-			int annCol = am.getColumnIndex(variableName);
+			int annCol = am != null ? am.getColumnIndex(variableName) : -1;
 			if (annCol == -1)
 				return "${" + variableName + "}";
 
@@ -123,7 +128,7 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 	private AnnotationMatrix am;
 	private String pattern;
 	
-	public AnnotationsClustererMethod(AnnotationMatrix am, String pattern) {
+	public AnnotationsClusteringMethod(AnnotationMatrix am, String pattern) {
 		this.resolver = new AnnotationResolver(am);
 		this.am = am;
 		this.pattern = pattern;
@@ -131,7 +136,7 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 
 	/** Execute the clustering and return the results */
 	@Override
-	public ProposedClusterResults cluster(ProposedClusterData data, IProgressMonitor monitor) {
+	public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) {
 		monitor.begin("Clustering by annotations", data.getSize() + 1);
 
 		String[] dataLabels = new String[data.getSize()];
@@ -140,13 +145,12 @@ public class AnnotationsClustererMethod implements ProposedClusterMethod {
 		for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
 			String label = data.getLabel(i);
 			dataLabels[i] = label;
-			int annRow = am.getRowIndex(label);
-			resolver.setState(label, annRow);
+			resolver.setLabel(label);
 			String clusterName = pat.generate(resolver);
 			List<Integer> indices = clusters.get(clusterName);
 			if (indices == null) {
 				indices = new ArrayList<Integer>();
-				clusters.put(label, indices);
+				clusters.put(clusterName, indices);
 			}
 			indices.add(i);
 
