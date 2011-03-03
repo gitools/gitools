@@ -47,6 +47,10 @@ public class ClusteringMethodFactory {
 		return instance;
 	}
 
+	public List<ClusteringMethodDescriptor> getDescriptors() {
+		return descriptors;
+	}
+
 	public final void registerMethods(ClusteringMethodDescriptor[] descriptors) {
 		this.descriptors.addAll(Arrays.asList(descriptors));
 	}
