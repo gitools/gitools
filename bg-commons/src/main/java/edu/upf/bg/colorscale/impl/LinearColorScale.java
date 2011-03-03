@@ -21,7 +21,7 @@ import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.SimpleColorScale;
 import java.awt.Color;
 
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 
 public class LinearColorScale extends SimpleColorScale {
 

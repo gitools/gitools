@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package edu.upf.bg.colorscale.util;
+package edu.upf.bg.color.utils;
 
 import java.awt.color.ColorSpace;
 

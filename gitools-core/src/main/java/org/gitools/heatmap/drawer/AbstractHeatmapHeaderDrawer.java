@@ -19,8 +19,21 @@ package org.gitools.heatmap.drawer;
 
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.matrix.model.IMatrixView;
 
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
+
+	protected static interface LabelProvider {
+		String getLabel(int index);
+	}
+
+	protected static abstract class MatrixLabelProvider implements LabelProvider {
+		protected IMatrixView mv;
+
+		public MatrixLabelProvider(IMatrixView mv) {
+			this.mv = mv;
+		}
+	}
 
 	protected HT header;
 	protected boolean horizontal;

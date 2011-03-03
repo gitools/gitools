@@ -17,10 +17,12 @@
 
 package org.gitools.heatmap.drawer;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
@@ -81,19 +83,36 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		return new Dimension(w, h);
 	}
 
+	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
+
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
-		int x = box.x;
-		int y = box.y;
+		g.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
+		g.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		if (horizontal) {
+			int x = box.y;
+			int y = box.x;
+			int totalSize = box.height;
+			Rectangle clip2 = new Rectangle(clip.y, clip.x, clip.height, clip.width);
+			g.rotate(radianAngle90);
+			g.translate(-totalSize, 0);
+			g.fillRect(box.x, box.y, box.width, box.height);
 			for (AbstractHeatmapDrawer d : drawers) {
 				Dimension sz = d.getSize();
-				Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
-				d.draw(g, box2, clip.intersection(box2));
-				y += sz.height;
+				Rectangle box2 = new Rectangle(x, y, sz.height, sz.width);
+				d.draw(g, box2, clip2.intersection(box2));
+				x += box2.width;
 			}
 		}
 		else {
+			int x = box.x;
+			int y = box.y;
 			for (AbstractHeatmapDrawer d : drawers) {
 				Dimension sz = d.getSize();
 				Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);

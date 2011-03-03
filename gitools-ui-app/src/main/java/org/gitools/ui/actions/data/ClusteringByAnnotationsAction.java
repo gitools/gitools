@@ -18,8 +18,6 @@
 package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.matrix.model.IMatrixView;
@@ -28,7 +26,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.clustering.annotations.ClusterSetGeneratorWizard;
 
 public class ClusteringByAnnotationsAction extends BaseAction {
 
@@ -57,7 +54,7 @@ public class ClusteringByAnnotationsAction extends BaseAction {
 		Heatmap heatmap = (Heatmap) model;
 		boolean rowMode = true;
 		
-		ClusterSetGeneratorWizard wiz = new ClusterSetGeneratorWizard(heatmap, rowMode);
+		/*Colo wiz = new ClusterSetGeneratorWizard(heatmap, rowMode);
 		wiz.setTitle("Create and edit a new Cluster Set");
 		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
 		dlg.setVisible(true);
@@ -70,7 +67,7 @@ public class ClusteringByAnnotationsAction extends BaseAction {
 		if (rowMode)
 			heatmap.getRowDim().getHeaders().add(hcs);
 		else
-			heatmap.getColumnDim().getHeaders().add(hcs);
+			heatmap.getColumnDim().getHeaders().add(hcs);*/
 
 		AppFrame.instance().setStatusText("Clusters created");
 	}

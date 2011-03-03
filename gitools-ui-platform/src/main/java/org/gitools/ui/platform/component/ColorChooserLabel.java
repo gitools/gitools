@@ -93,8 +93,11 @@ public class ColorChooserLabel extends JLabel implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if (!isEnabled())
+			return;
+
 		Color c = JColorChooser.showDialog(
-				this, "Choose a color...", color);
+				this, "Color selection...", color);
 		
 		if (c != null)
 			setColor(c);

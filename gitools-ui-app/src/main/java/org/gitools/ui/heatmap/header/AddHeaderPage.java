@@ -21,7 +21,7 @@
  * Created on 25-feb-2011, 19:33:13
  */
 
-package org.gitools.ui.heatmap.panel.properties;
+package org.gitools.ui.heatmap.header;
 
 import javax.swing.DefaultListModel;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;

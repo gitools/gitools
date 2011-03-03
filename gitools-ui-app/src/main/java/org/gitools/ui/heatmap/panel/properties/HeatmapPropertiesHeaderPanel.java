@@ -23,6 +23,8 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
+import org.gitools.ui.heatmap.header.LabelHeaderPage;
+import org.gitools.ui.heatmap.header.AddHeaderPage;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,6 +38,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -48,9 +51,11 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.clustering.annotations.ColoredClustersWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.slf4j.LoggerFactory;
@@ -541,11 +546,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	}
 
 	private void headerAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerAddBtnActionPerformed
-		/*if (!updatingControls) {
-			ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
-			ccga.actionPerformed(evt);
-		}*/
-
 		AddHeaderPage headerPage = new AddHeaderPage();
 		PageDialog dlg = new PageDialog(AppFrame.instance(), headerPage);
 		dlg.setTitle("Header selection");
@@ -565,7 +565,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			hdim.addHeader(h);
 		}
 		else {
-			throw new UnsupportedOperationException("Unsupported header type");
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					ColoredClustersWizard wiz = new ColoredClustersWizard(hm, hdim, rowMode);
+					WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
+					wdlg.setVisible(true);
+				}
+			});
+			
 		}
 	}//GEN-LAST:event_headerAddBtnActionPerformed
 

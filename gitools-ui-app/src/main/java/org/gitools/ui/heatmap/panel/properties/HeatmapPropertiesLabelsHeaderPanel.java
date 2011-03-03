@@ -52,7 +52,6 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.actions.data.ColorClusterGenerateAction;
 import org.gitools.ui.dialog.ListDialog;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
@@ -757,8 +756,8 @@ public class HeatmapPropertiesLabelsHeaderPanel extends HeatmapPropertiesAbstrac
 
 	private void addClusterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClusterActionPerformed
 		if (!updatingControls) {
-			ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
-			ccga.actionPerformed(evt);
+			/*ColorClusterGenerateAction ccga = new ColorClusterGenerateAction(getHeatmap(), rowMode);
+			ccga.actionPerformed(evt);*/
 
 			/*boolean enableEditBtn;
 			if (rowMode) 

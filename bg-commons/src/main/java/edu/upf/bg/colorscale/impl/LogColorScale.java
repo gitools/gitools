@@ -22,7 +22,7 @@ import edu.upf.bg.colorscale.SimpleColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 import java.awt.Color;
 
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 
 public class LogColorScale extends SimpleColorScale {
 

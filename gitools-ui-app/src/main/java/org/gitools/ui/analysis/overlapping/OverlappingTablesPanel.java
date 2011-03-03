@@ -20,7 +20,7 @@ package org.gitools.ui.analysis.overlapping;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.formatter.GenericFormatter;
 import java.awt.Color;

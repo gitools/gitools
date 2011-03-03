@@ -1,0 +1,364 @@
+/*
+ *  Copyright 2011 chris.
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *  under the License.
+ */
+
+/*
+ * ColoredClustersConfigPage.java
+ *
+ * Created on 02-mar-2011, 8:27:23
+ */
+
+package org.gitools.ui.heatmap.header;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ListModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.heatmap.model.HeatmapColoredClustersHeader.Cluster;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.utils.DocumentChangeListener;
+
+public class ColoredClustersPage extends AbstractWizardPage {
+
+	private static class ClusterListModel implements ListModel {
+
+		private HeatmapColoredClustersHeader.Cluster[] clusters;
+
+		public ClusterListModel(Cluster[] clusters) {
+			this.clusters = clusters;
+		}
+
+		@Override
+		public int getSize() {
+			return clusters.length;
+		}
+
+		@Override
+		public Object getElementAt(int index) {
+			return clusters[index];
+		}
+
+		@Override
+		public void addListDataListener(ListDataListener l) {
+			//TODO
+		}
+
+		@Override
+		public void removeListDataListener(ListDataListener l) {
+			//TODO
+		}
+
+	}
+
+	private HeatmapColoredClustersHeader header;
+	private ClusterListModel clusterListModel;
+
+	private boolean updating = false;
+
+	public ColoredClustersPage() {
+		this(new HeatmapColoredClustersHeader(null));
+	}
+
+    /** Creates new form ColoredClustersConfigPage */
+    public ColoredClustersPage(HeatmapColoredClustersHeader header) {
+		super();
+
+		this.header = header;
+
+        initComponents();
+
+		labelVisibleChk.addChangeListener(new ChangeListener() {
+			@Override public void stateChanged(ChangeEvent e) {
+				labelVisibleChanged(); }
+		});
+
+		labelFontBtn.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				selectFont(); }
+		});
+
+		clusterList.addListSelectionListener(new ListSelectionListener() {
+			@Override public void valueChanged(ListSelectionEvent e) {
+				clusterSelectionChanged(); }
+		});
+
+		clusterName.getDocument().addDocumentListener(new DocumentChangeListener() {
+			@Override protected void update(DocumentEvent e) {
+				clusterNameChanged(); }
+		});
+
+		setTitle("Configuration");
+    }
+
+	@Override
+	public void updateControls() {
+		super.updateControls();
+
+		updating = true;
+
+		titleField.setText(header.getTitle());
+		thicknessSpin.setValue(header.getThickness());
+		marginSpin.setValue(header.getMargin());
+		separationGridChk.setSelected(header.isSeparationGrid());
+
+		labelVisibleChk.setSelected(header.isLabelVisible());
+		labelFontField.setText(fontText(header.getLabelFont()));
+		labelFontField.setFont(header.getLabelFont());
+		labelRotatedChk.setSelected(header.isLabelRotated());
+		labelColorDefinedChk.setSelected(header.isLabelColorDefined());
+		labelColor.setColor(header.getLabelColor());
+
+		clusterListModel = new ClusterListModel(header.getClusters());
+		clusterList.setModel(clusterListModel);
+		clusterSelectionChanged();
+
+		updating = false;
+	}
+
+	private void labelVisibleChanged() {
+		boolean e = labelVisibleChk.isSelected();
+		labelFontField.setEnabled(e);
+		labelFontBtn.setEnabled(e);
+		labelRotatedChk.setEnabled(e);
+		labelColorDefinedChk.setEnabled(e);
+		labelColor.setEnabled(labelColorDefinedChk.isSelected() && e);
+	}
+
+	private void selectFont() {
+		// TODO
+	}
+
+	private void clusterSelectionChanged() {
+		int index = clusterList.getSelectedIndex();
+		boolean sel = index != -1;
+		clusterName.setEnabled(sel);
+		clusterColor.setEnabled(sel);
+
+		if (sel) {
+			Cluster cluster = header.getClusters()[index];
+			clusterName.setText(cluster.getName());
+			clusterColor.setColor(cluster.getColor());
+		}
+	}
+	
+	private void clusterNameChanged() {
+		//TODO
+	}
+
+	private String fontText(Font font) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(font.getFontName());
+		sb.append(", ").append(font.getSize());
+		return sb.toString();
+	}
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        colorGroup = new javax.swing.ButtonGroup();
+        jLabel1 = new javax.swing.JLabel();
+        titleField = new javax.swing.JTextField();
+        labelVisibleChk = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        labelFontField = new javax.swing.JTextField();
+        labelFontBtn = new javax.swing.JButton();
+        clusterColor = new org.gitools.ui.platform.component.ColorChooserLabel();
+        labelRotatedChk = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        thicknessSpin = new javax.swing.JSpinner();
+        separationGridChk = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
+        marginSpin = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        clusterList = new javax.swing.JList();
+        jLabel6 = new javax.swing.JLabel();
+        clusterName = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        labelColor = new org.gitools.ui.platform.component.ColorChooserLabel();
+        labelColorDefinedChk = new javax.swing.JCheckBox();
+
+        jLabel1.setText("Title");
+
+        labelVisibleChk.setText("Show cluster names");
+
+        jLabel2.setText("Font");
+
+        labelFontBtn.setText("...");
+
+        clusterColor.setColor(new java.awt.Color(1, 1, 1));
+        clusterColor.setPreferredSize(new java.awt.Dimension(28, 28));
+
+        labelRotatedChk.setText("Rotated");
+
+        jLabel4.setText("Thickness");
+
+        thicknessSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(14), Integer.valueOf(0), null, Integer.valueOf(1)));
+
+        separationGridChk.setText("Grid between different clusters");
+
+        jLabel3.setText("Margin");
+
+        marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
+
+        jLabel5.setText("Clusters");
+
+        clusterList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(clusterList);
+
+        jLabel6.setText("Name");
+
+        jLabel7.setText("Color");
+
+        labelColor.setColor(new java.awt.Color(1, 1, 1));
+        labelColor.setPreferredSize(new java.awt.Dimension(28, 28));
+
+        labelColorDefinedChk.setText("All cluster names with the same color");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
+                    .addComponent(labelVisibleChk, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelFontField, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelFontBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelColorDefinedChk)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(labelRotatedChk))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(thicknessSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(separationGridChk))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clusterName, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clusterColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(thicknessSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separationGridChk))
+                .addGap(18, 18, 18)
+                .addComponent(labelVisibleChk)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(labelFontField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelRotatedChk)
+                    .addComponent(labelFontBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelColorDefinedChk)
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel5))
+                    .addComponent(labelColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(clusterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)))
+                    .addComponent(clusterColor, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.gitools.ui.platform.component.ColorChooserLabel clusterColor;
+    private javax.swing.JList clusterList;
+    private javax.swing.JTextField clusterName;
+    private javax.swing.ButtonGroup colorGroup;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private org.gitools.ui.platform.component.ColorChooserLabel labelColor;
+    private javax.swing.JCheckBox labelColorDefinedChk;
+    private javax.swing.JButton labelFontBtn;
+    private javax.swing.JTextField labelFontField;
+    private javax.swing.JCheckBox labelRotatedChk;
+    private javax.swing.JCheckBox labelVisibleChk;
+    private javax.swing.JSpinner marginSpin;
+    private javax.swing.JCheckBox separationGridChk;
+    private javax.swing.JSpinner thicknessSpin;
+    private javax.swing.JTextField titleField;
+    // End of variables declaration//GEN-END:variables
+
+
+}

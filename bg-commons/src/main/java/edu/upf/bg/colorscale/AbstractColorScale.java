@@ -20,7 +20,7 @@ package edu.upf.bg.colorscale;
 import java.awt.Color;
 import java.io.Serializable;
 
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

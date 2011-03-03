@@ -19,7 +19,7 @@ package org.gitools.ui.analysis.combination.editor;
 
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.formatter.GenericFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;

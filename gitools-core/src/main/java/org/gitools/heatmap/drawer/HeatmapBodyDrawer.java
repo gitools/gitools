@@ -17,7 +17,7 @@
 
 package org.gitools.heatmap.drawer;
 
-import edu.upf.bg.colorscale.util.ColorUtils;
+import edu.upf.bg.color.utils.ColorUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

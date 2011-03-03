@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.heatmap.model.Heatmap;
@@ -32,7 +34,21 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabelsHeader> {
+public class HeatmapLabelsDrawerOld extends AbstractHeatmapHeaderDrawer<HeatmapLabelsHeader> {
+
+	protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
+
+	protected static interface LabelProvider {
+		String getLabel(int index);
+	}
+	
+	protected static abstract class MatrixLabelProvider implements LabelProvider {
+		protected IMatrixView mv;
+
+		public MatrixLabelProvider(IMatrixView mv) {
+			this.mv = mv;
+		}
+	}
 
 	protected static class AnnotationProvider implements LabelProvider {
 
@@ -108,14 +124,23 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		}
 	}
 
-	public HeatmapLabelsDrawer(Heatmap heatmap, HeatmapLabelsHeader header, boolean horizontal) {
+	public HeatmapLabelsDrawerOld(Heatmap heatmap, HeatmapLabelsHeader header, boolean horizontal) {
 		super(heatmap, header, horizontal);
 	}
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
+		g.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+		g.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 		// Clear background
+		//g.setColor(Color.WHITE);
 		g.setColor(header.getBackgroundColor());
 		g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
@@ -134,20 +159,22 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		final HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
 		IMatrixView data = heatmap.getMatrixView();
 
+		//HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+		
 		g.setFont(header.getFont());
 		
 		Color gridColor = hdim.getGridColor();
 
 		int gridSize = getGridSize();
 
-		int maxWidth = clip.width;
+		int maxWidth = (horizontal ? clip.height : clip.width);
 		int width = header.getSize();
 		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
 
 		width = width < maxWidth ? maxWidth : width;
 
-		int clipStart = clip.y - box.y;
-		int clipEnd = clipStart + clip.height;
+		int clipStart = horizontal ? clip.x - box.x : clip.y - box.y;
+		int clipEnd = horizontal ? clipStart + clip.width : clipStart + clip.height;
 		int count = horizontal ? data.getColumnCount() : data.getRowCount();
 
 		int start = (clipStart - height) / height;
@@ -155,6 +182,16 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 
 		start = start > 0 ? start : 0;
 		end = end < count ? end : count;
+
+		final AffineTransform at = new AffineTransform();
+		if (horizontal) {
+			//at.setToIdentity();
+			//g.setTransform(at);
+			at.setToTranslation(0, width);
+			g.transform(at);
+			at.setToRotation(radianAngle90);
+			g.transform(at);
+		}
 
 		int fontHeight = g.getFontMetrics().getHeight();
 		int fontOffset = ((fontHeight + height - gridSize) / 2) - 1;
@@ -196,9 +233,9 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 
 		int xoffs = horizontal ? box.y : box.x;
 		int yoffs = horizontal ? box.x : box.y;
-		int x = box.x;
-		int y = box.y + start * height;
-		int padding = 2;
+		int x = xoffs;
+		int y = yoffs + start * height;
+		int padding = (horizontal ? 3 : 2);
 		for (int index = start; index < end; index++) {
 			String label = labelProvider.getLabel(index);
 

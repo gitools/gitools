@@ -17,83 +17,157 @@
 
 package org.gitools.heatmap.model;
 
+import edu.upf.bg.color.generator.ColorGenerator;
+import edu.upf.bg.color.generator.ColorGeneratorFactory;
+import edu.upf.bg.color.generator.PaletteColorGenerator;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.gitools.clustering.ClusteringResults;
 
 public class HeatmapColoredClustersHeader extends HeatmapHeader {
 
+	public static final String THICKNESS_CHANGED = "thickness";
+	public static final String MARGIN_CHANGED = "margin";
+	public static final String SEPARATION_GRID_CHANGED = "separationGrid";
+	public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
+	public static final String LABEL_FONT_CHANGED = "labelFont";
+	public static final String LABEL_ROTATED_CHANGED = "labelRotated";
+	public static final String LABEL_COLOR_DEFINED_CHANGED = "labelColorDefined";
+	public static final String LABEL_COLOR_CHANGED = "labelColor";
 	public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
-	public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
-	public static final String LABEL_ROTATED_CHANGED = "labelRotated";
-	public static final String FOREGROUND_COLOR_CHANGED = "fgColor";
-	public static final String BACKGROUND_COLOR_CHANGED = "bgColor";
-	public static final String FONT_CHANGED = "font";
 
-	/** The list of clusters in this set */
-	protected HeatmapCluster[] clusters;
+	public class Cluster {
 
-	/** The row/column in IMatrix.getContent() at index i
-	 * is assigned to the HeatmapCluster clusters.get(clusterIndices[i]) */
-	protected int[] clusterIndices;
+		protected String name;
+
+		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
+		protected Color color;
+
+		public Cluster() {
+			name = "";
+			color = Color.WHITE;
+		}
+
+		public Cluster(String name, Color color) {
+			this.name = name;
+			this.color = color;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Color getColor() {
+			return color;
+		}
+
+		public void setColor(Color color) {
+			this.color = color;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+	}
+	
+	/* The thickness of the color band */
+	protected int thickness;
+
+	/* Color band margin */
+	protected int margin;
+	
+	/* Separate different clusters with a grid */
+	protected boolean separationGrid;
 
 	/** Whether to show labels of each cluster */
 	protected boolean labelVisible;
-
-	/** If false the label is painted along the color band,
-	 * otherwise the label is perpendicular to the color band */
-	protected boolean labelRotated;
-
-	/** Label foreground color */
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	protected Color foregroundColor;
-
-	/** Label background color */
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	protected Color backgroundColor;
 
 	/** The font to use for labels */
 	@XmlJavaTypeAdapter(FontXmlAdapter.class)
 	protected Font font;
 
-	public HeatmapColoredClustersHeader(HeatmapDim dim) {
-		super(dim);
+	/** If false the label is painted along the color band,
+	 * otherwise the label is perpendicular to the color band */
+	protected boolean labelRotated;
+
+	/** Instead of use the same color as the cluster use a defined color */
+	protected boolean labelColorDefined;
+
+	/** Label foreground color */
+	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
+	protected Color labelColor;
+
+	/** The list of clusters in this set */
+	protected Cluster[] clusters;
+
+	/** Maps matrix row/column id to cluster index */
+	protected Map<String, Integer> dataClusterIndices;
+
+	//protected ProposedClusterResults clusterResults;
+
+	public HeatmapColoredClustersHeader(HeatmapDim hdim) {
+		super(hdim);
 		
 		size = 20;
+		thickness = 14;
+		margin = 1;
+		separationGrid = true;
+
 		labelVisible = false;
-		labelRotated = false;
-		foregroundColor = Color.BLACK;
-		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
-	}
-	
-	/** The list of clusters in this set */
-	public HeatmapCluster[] getClusters() {
-		return clusters;
+		labelRotated = false;
+		labelColorDefined = false;
+		labelColor = Color.BLACK;
+
+		clusters = new Cluster[0];
+		dataClusterIndices = new HashMap<String, Integer>();
 	}
 
-	/** The list of clusters in this set */
-	public void setClusters(HeatmapCluster[] clusters) {
-		HeatmapCluster[] old = this.clusters;
-		this.clusters = clusters;
-		firePropertyChange(CLUSTERS_CHANGED, old, clusters);
+	/* The thickness of the color band */
+	public int getThickness() {
+		return thickness;
 	}
 
-	/** The row/column in IMatrix.getContent() at index i
-	 * is assigned to the HeatmapCluster clusters.get(clusterIndices[i]) */
-	public int[] getClusterIndices() {
-		return clusterIndices;
+	/* The thickness of the color band */
+	public void setThickness(int thickness) {
+		int old = this.thickness;
+		this.thickness = thickness;
+		firePropertyChange(THICKNESS_CHANGED, old, thickness);
 	}
 
-	/** The row/column in IMatrix.getContent() at index i
-	 * is assigned to the HeatmapCluster clusters.get(clusterIndices[i]) */
-	public void setClusterIndices(int[] clusterIndices) {
-		int[] old = this.clusterIndices;
-		this.clusterIndices = clusterIndices;
-		firePropertyChange(INDICES_CHANGED, old, clusterIndices);
+	/* Color band margin */
+	public int getMargin() {
+		return margin;
+	}
+
+	/* Color band margin */
+	public void setMargin(int margin) {
+		int old = this.margin;
+		this.margin = margin;
+		firePropertyChange(MARGIN_CHANGED, old, margin);
+	}
+
+	/* Separate different clusters with a grid */
+	public boolean isSeparationGrid() {
+		return separationGrid;
+	}
+
+	/* Separate different clusters with a grid */
+	public void setSeparationGrid(boolean separationGrid) {
+		boolean old = this.separationGrid;
+		this.separationGrid = separationGrid;
+		firePropertyChange(SEPARATION_GRID_CHANGED, old, separationGrid);
 	}
 
 	/** Whether to show labels of each cluster */
@@ -106,6 +180,18 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 		boolean old = this.labelVisible;
 		this.labelVisible = labelVisible;
 		firePropertyChange(LABEL_VISIBLE_CHANGED, old, labelVisible);
+	}
+
+	/** The font to use for labels */
+	public Font getLabelFont() {
+		return font;
+	}
+
+	/** The font to use for labels */
+	public void setFont(Font font) {
+		Font old = this.font;
+		this.font = font;
+		firePropertyChange(LABEL_FONT_CHANGED, old, font);
 	}
 
 	/** If false the label is painted along the color band,
@@ -122,40 +208,81 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 		firePropertyChange(LABEL_ROTATED_CHANGED, old, labelRotated);
 	}
 
-	/** Label foreground color */
-	public Color getForegroundColor() {
-		return foregroundColor;
+	/** Instead of use the same color as the cluster use a defined color */
+	public boolean isLabelColorDefined() {
+		return labelColorDefined;
+	}
+
+	/** Instead of use the same color as the cluster use a defined color */
+	public void setLabelColorDefined(boolean labelColorDefined) {
+		boolean old = this.labelColorDefined;
+		this.labelColorDefined = labelColorDefined;
+		firePropertyChange(LABEL_COLOR_DEFINED_CHANGED, old, labelColorDefined);
 	}
 
 	/** Label foreground color */
-	public void setForegroundColor(Color foregroundColor) {
-		Color old = this.foregroundColor;
-		this.foregroundColor = foregroundColor;
-		firePropertyChange(FOREGROUND_COLOR_CHANGED, old, foregroundColor);
+	public Color getLabelColor() {
+		return labelColor;
 	}
 
-	/** Label background color */
-	public Color getBackgroundColor() {
-		return backgroundColor;
+	/** Label foreground color */
+	public void setLabelColor(Color labelColor) {
+		Color old = this.labelColor;
+		this.labelColor = labelColor;
+		firePropertyChange(LABEL_COLOR_CHANGED, old, labelColor);
 	}
 
-	/** Label background color */
-	public void setBackgroundColor(Color backgroundColor) {
-		Color old = this.backgroundColor;
-		this.backgroundColor = backgroundColor;
-		firePropertyChange(BACKGROUND_COLOR_CHANGED, old, backgroundColor);
+	/** The list of clusters in this set */
+	public Cluster[] getClusters() {
+		return clusters;
 	}
 
-	/** The font to use for labels */
-	public Font getFont() {
-		return font;
+	/** The list of clusters in this set */
+	public void setClusters(Cluster[] clusters) {
+		Cluster[] old = this.clusters;
+		this.clusters = clusters;
+		firePropertyChange(CLUSTERS_CHANGED, old, clusters);
 	}
 
-	/** The font to use for labels */
-	public void setFont(Font font) {
-		Font old = this.font;
-		this.font = font;
-		firePropertyChange(FONT_CHANGED, old, font);
+	/** Return the corresponding matrix row/column cluster. Null if there is not cluster assigned. */
+	public Cluster getAssignedCluster(String id) {
+		Integer index = dataClusterIndices.get(id);
+		if (index == null)
+			return null;
+		return clusters[index];
 	}
 
+	/** Set the corresponding matrix row/column cluster. -1 if there is not cluster assigned. */
+	public void setAssignedCluster(String id, int clusterIndex) {
+		Cluster old = getAssignedCluster(id);
+		if (old != null && clusterIndex == -1)
+			this.dataClusterIndices.remove(id);
+		else
+			this.dataClusterIndices.put(id, clusterIndex);
+		
+		Cluster newCluster = clusterIndex != -1 ? clusters[clusterIndex] : null;
+		firePropertyChange(INDICES_CHANGED, old, newCluster);
+	}
+
+	/** Clear all assigned clusters */
+	public void clearAssignedClusters() {
+		this.dataClusterIndices.clear();
+		firePropertyChange(INDICES_CHANGED);
+	}
+
+	public void updateClusterResults(ClusteringResults results) {
+		ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
+
+		String[] clusterTitles = results.getClusterTitles();
+		clusters = new Cluster[results.getNumClusters()];
+		for (int i = 0; i < results.getNumClusters(); i++) {
+			Cluster cluster = clusters[i] = new Cluster();
+			cluster.setName(clusterTitles[i]);
+			cluster.setColor(cg.next());
+		}
+
+		dataClusterIndices = new HashMap<String, Integer>();
+		for (String label : results.getDataLabels())
+			dataClusterIndices.put(label, results.getClusterIndex(label));
+	}
 }
