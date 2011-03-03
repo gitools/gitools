@@ -18,7 +18,6 @@
 package org.gitools.ui.clustering.annotations;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapDim;
@@ -29,6 +28,7 @@ import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.heatmap.header.ColoredClustersHeaderPage;
 import org.gitools.ui.heatmap.header.ColoredClustersPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -36,21 +36,24 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class ColoredClustersWizard extends AbstractWizard {
+public class AddColoredClustersHeaderWizard extends AbstractWizard {
 
 	private Heatmap heatmap;
 	private HeatmapDim hdim;
 	private boolean applyToRows;
 
+	private boolean editionMode;
+	
 	private String lastPattern;
 	private HeatmapColoredClustersHeader header;
 
 	private AnnPatClusteringMethod clusteringMethod;
 	
 	private ColoredClustersAnnotationsPage sourcePage;
-	private ColoredClustersPage configPage;
+	private ColoredClustersHeaderPage headerPage;
+	private ColoredClustersPage clustersPage;
 
-	public ColoredClustersWizard(Heatmap heatmap, HeatmapDim hdim, boolean applyToRows) {
+	public AddColoredClustersHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredClustersHeader h, boolean applyToRows) {
 		super();
 
 		this.heatmap = heatmap;
@@ -58,25 +61,30 @@ public class ColoredClustersWizard extends AbstractWizard {
 		this.applyToRows = applyToRows;
 
 		this.lastPattern = "";
-		this.header = new HeatmapColoredClustersHeader(hdim);
+		this.header = h;
 
 		clusteringMethod = new AnnPatClusteringMethod();
 	}
 
 	@Override
 	public void addPages() {
-		sourcePage = new ColoredClustersAnnotationsPage(hdim, clusteringMethod);
-		addPage(sourcePage);
+		if (!editionMode) {
+			sourcePage = new ColoredClustersAnnotationsPage(hdim, clusteringMethod);
+			addPage(sourcePage);
+		}
 
-		configPage = new ColoredClustersPage(header);
-		addPage(configPage);
+		headerPage = new ColoredClustersHeaderPage(header);
+		addPage(headerPage);
+
+		clustersPage = new ColoredClustersPage(header);
+		addPage(clustersPage);
 	}
 
 	@Override
 	public void pageLeft(IWizardPage currentPage) {
 		super.pageLeft(currentPage);
 
-		if (currentPage != sourcePage)
+		if (currentPage != sourcePage || editionMode)
 			return;
 
 		String pattern = sourcePage.getPattern();
@@ -90,7 +98,7 @@ public class ColoredClustersWizard extends AbstractWizard {
 				new AnnPatRowClusteringData(mv, am, pattern)
 				: new AnnPatColumnClusteringData(mv, am, pattern);
 
-		header.setTitle(sourcePage.getClusterTitle());
+		header.setTitle("Colors: " + sourcePage.getClusterTitle());
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override public void run(IProgressMonitor monitor) {
@@ -107,4 +115,11 @@ public class ColoredClustersWizard extends AbstractWizard {
 		});
 	}
 
+	public HeatmapColoredClustersHeader getHeader() {
+		return header;
+	}
+
+	public void setEditionMode(boolean editionMode) {
+		this.editionMode = editionMode;
+	}
 }

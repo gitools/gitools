@@ -19,7 +19,6 @@ package org.gitools.heatmap.model;
 
 import edu.upf.bg.color.generator.ColorGenerator;
 import edu.upf.bg.color.generator.ColorGeneratorFactory;
-import edu.upf.bg.color.generator.PaletteColorGenerator;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import java.awt.Color;
@@ -188,7 +187,7 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 	}
 
 	/** The font to use for labels */
-	public void setFont(Font font) {
+	public void setLabelFont(Font font) {
 		Font old = this.font;
 		this.font = font;
 		firePropertyChange(LABEL_FONT_CHANGED, old, font);

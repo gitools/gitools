@@ -15,9 +15,8 @@
  *  under the License.
  */
 
-package org.gitools.heatmap.drawer;
+package org.gitools.heatmap.drawer.header;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,6 +24,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapHeader;

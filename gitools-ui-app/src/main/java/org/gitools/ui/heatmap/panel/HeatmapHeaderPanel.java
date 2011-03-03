@@ -18,7 +18,7 @@
 package org.gitools.ui.heatmap.panel;
 
 import java.beans.PropertyChangeEvent;
-import org.gitools.heatmap.drawer.HeatmapHeaderDrawer;
+import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.heatmap.model.HeatmapHeader;

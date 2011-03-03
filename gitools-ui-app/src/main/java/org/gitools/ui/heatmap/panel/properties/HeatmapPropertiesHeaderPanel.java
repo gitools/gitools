@@ -23,7 +23,7 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
-import org.gitools.ui.heatmap.header.LabelHeaderPage;
+import org.gitools.ui.heatmap.header.LabelsHeaderPage;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.Color;
@@ -44,6 +44,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
@@ -51,7 +52,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.clustering.annotations.ColoredClustersWizard;
+import org.gitools.ui.clustering.annotations.AddColoredClustersHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -547,45 +548,55 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 	private void headerAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerAddBtnActionPerformed
 		AddHeaderPage headerPage = new AddHeaderPage();
-		PageDialog dlg = new PageDialog(AppFrame.instance(), headerPage);
-		dlg.setTitle("Header selection");
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
+		PageDialog tdlg = new PageDialog(AppFrame.instance(), headerPage);
+		tdlg.setTitle("Header type selection");
+		tdlg.setVisible(true);
+		if (tdlg.isCancelled())
 			return;
-		
+	
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
 		if (cls.equals(HeatmapLabelsHeader.class)) {
-			LabelHeaderPage labelPage = new LabelHeaderPage(hdim);
-			dlg = new PageDialog(AppFrame.instance(), labelPage);
-			dlg.setVisible(true);
 			HeatmapLabelsHeader h = new HeatmapLabelsHeader(hdim);
-			h.setLabelSource(labelPage.getLabelSource());
-			h.setLabelAnnotation(labelPage.getAnnotation());
-			h.setLabelPattern(labelPage.getPattern());
+			LabelsHeaderPage labelPage = new LabelsHeaderPage(hdim, h);
+			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
+			dlg.setVisible(true);
+			if (dlg.isCancelled())
+				return;
+
 			hdim.addHeader(h);
 		}
 		else {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					ColoredClustersWizard wiz = new ColoredClustersWizard(hm, hdim, rowMode);
-					WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
-					wdlg.setVisible(true);
-				}
-			});
-			
+			HeatmapColoredClustersHeader h = new HeatmapColoredClustersHeader(hdim);
+			AddColoredClustersHeaderWizard wiz =
+					new AddColoredClustersHeaderWizard(hm, hdim, h, rowMode);
+			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
+			wdlg.setTitle("Add header");
+			wdlg.setVisible(true);
+			if (wdlg.isCancelled())
+				return;
+
+			hdim.addHeader(h);
 		}
 	}//GEN-LAST:event_headerAddBtnActionPerformed
 
 	private void headerEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerEditBtnActionPerformed
-		/*if (!updatingControls) {
-			ColoredClustersDialog csed = new ColoredClustersDialog(AppFrame.instance(), getHeatmap(), rowMode);
-			List<HeatmapClusterBand> clusterSets = csed.getClusterSets();
-			if (rowMode)
-				getHeatmap().getRowDim().getClustersHeader().setClusterBands(clusterSets);
-			else
-				getHeatmap().getColumnDim().getClustersHeader().setClusterBands(clusterSets);
-		}*/
+		int index = headerList.getSelectedIndex();
+		HeatmapHeader h = hdim.getHeaders().get(index);
+		Class<? extends HeatmapHeader> cls = h.getClass();
+		if (cls.equals(HeatmapLabelsHeader.class)) {
+			LabelsHeaderPage labelPage = new LabelsHeaderPage(hdim, (HeatmapLabelsHeader) h);
+			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
+			dlg.setVisible(true);
+		}
+		else {
+			AddColoredClustersHeaderWizard wiz =
+					new AddColoredClustersHeaderWizard(
+						hm, hdim, (HeatmapColoredClustersHeader) h, rowMode);
+			wiz.setEditionMode(true);
+			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
+			wdlg.setTitle("Edit header");
+			wdlg.setVisible(true);
+		}
 	}//GEN-LAST:event_headerEditBtnActionPerformed
 
 	private void headerUpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerUpBtnActionPerformed

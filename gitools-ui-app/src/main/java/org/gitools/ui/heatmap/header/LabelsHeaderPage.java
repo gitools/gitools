@@ -31,12 +31,14 @@ import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class LabelHeaderPage extends AbstractWizardPage {
+public class LabelsHeaderPage extends AbstractWizardPage {
 
 	protected HeatmapDim hdim;
+	protected HeatmapLabelsHeader header;
 
-    public LabelHeaderPage(HeatmapDim hdim) {
+    public LabelsHeaderPage(HeatmapDim hdim, HeatmapLabelsHeader header) {
 		this.hdim = hdim;
+		this.header = header;
 		
         initComponents();
 
@@ -73,6 +75,15 @@ public class LabelHeaderPage extends AbstractWizardPage {
 
 		annList.setEnabled(annOpt.isSelected());
 		pattText.setEnabled(patOpt.isSelected());
+	}
+
+	@Override
+	public void updateModel() {
+		super.updateModel();
+
+		header.setLabelSource(getLabelSource());
+		header.setLabelAnnotation(getAnnotation());
+		header.setLabelPattern(getPattern());
 	}
 
 	public HeatmapLabelsHeader.LabelSource getLabelSource() {
@@ -131,17 +142,17 @@ public class LabelHeaderPage extends AbstractWizardPage {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(idOpt)
                             .addComponent(annOpt)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -158,12 +169,12 @@ public class LabelHeaderPage extends AbstractWizardPage {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(annOpt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(patOpt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

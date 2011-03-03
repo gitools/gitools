@@ -42,13 +42,13 @@ public abstract class AbstractHeatmapDrawer {
 		this.heatmap = heatmap;
 	}
 
-	protected int getRowsGridSize() {
+	/*protected int getRowsGridSize() {
 		return heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0;
 	}
 
 	protected int getColumnsGridSize() {
 		return heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0;
-	}
+	}*/
 
 	protected int getBorderSize() {
 		return heatmap.isShowBorders() ? 1 : 0;

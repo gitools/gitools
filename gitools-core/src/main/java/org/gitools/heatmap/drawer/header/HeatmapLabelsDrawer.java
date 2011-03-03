@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.heatmap.drawer;
+package org.gitools.heatmap.drawer.header;
 
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.textpatt.TextPattern;
@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.heatmap.drawer.HeatmapPosition;
 
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
 import org.gitools.heatmap.model.Heatmap;
@@ -138,7 +140,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		
 		Color gridColor = hdim.getGridColor();
 
-		int gridSize = getGridSize();
+		int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
 		int maxWidth = clip.width;
 		int width = header.getSize();
@@ -194,8 +196,6 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 				break;
 		}
 
-		int xoffs = horizontal ? box.y : box.x;
-		int yoffs = horizontal ? box.x : box.y;
 		int x = box.x;
 		int y = box.y + start * height;
 		int padding = 2;
@@ -241,7 +241,8 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 
 	@Override
 	public Dimension getSize() {
-		int gridSize = getGridSize();
+		HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+		int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 		int extBorder = /*2 * 1 - 1*/ 0;
 
 		if (horizontal) {
@@ -262,7 +263,8 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 
 	@Override
 	public HeatmapPosition getPosition(Point p) {
-		int gridSize = getGridSize();
+		HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+		int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
 		int row = -1;
 		int col = -1;
@@ -285,7 +287,8 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 
 	@Override
 	public Point getPoint(HeatmapPosition p) {
-		int gridSize = getGridSize();
+		HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+		int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
 		int x = 0;
 		int y = 0;
@@ -306,9 +309,5 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		}
 
 		return new Point(x, y);
-	}
-
-	private int getGridSize() {
-		return horizontal ? getColumnsGridSize() : getRowsGridSize();
 	}
 }
