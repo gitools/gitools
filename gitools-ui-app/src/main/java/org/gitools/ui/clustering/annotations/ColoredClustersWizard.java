@@ -136,8 +136,6 @@ public class ColoredClustersWizard extends AbstractWizard {
 				public ClusteringDataInstance getInstance(int index) {
 					throw new UnsupportedOperationException("Not supported yet.");
 				}
-
-
 			};
 
 		return data;

@@ -17,21 +17,46 @@
 
 package org.gitools.clustering;
 
+import java.util.Map;
+
 public interface ClusteringResults {
 
 	/** Returns the number of clusters */
 	int getNumClusters();
 
-	/** Return the cluster titles */
+	/** Returns the cluster titles */
 	String[] getClusterTitles();
 
-	/** Get data labels for which there are cluster results */
+	/** Returns the cluster index by its title */
+	int getClusterTitleIndex(String clusterTitle);
+
+	/** Returns the number of data labels */
+	int getNumDataLabels();
+
+	/** Returns data labels for which there are cluster results */
 	String[] getDataLabels();
 
+	/** Returns the data label index */
+	int getDataLabelIndex(String dataLabel);
+
+	/** Returns the data indicess for a given cluster */
+	int[] getDataIndices(int clusterIndex);
+	
+	int[] getDataIndices(String clusterTitle);
+	
 	/** Returns the data labels for a given cluster */
+	String[] getDataLabels(int clusterIndex);
+
 	String[] getDataLabels(String clusterTitle);
 
-	/** Returns the cluster index for a given row/column label in the matrix.
-	 * If there is not cluster associated then return -1. */
-	int getClusterIndex(String label);
+	/** Returns the cluster the data belongs to */
+	int getClusterIndex(int dataIndex);
+
+	int getClusterIndex(String dataLabel);
+
+	/** Returns a map from cluster title to an array of data indices included in the cluster */
+	Map<String, int[]> getDataIndicesByClusterTitle();
+
+	/** Returns a map from the data label to the cluster index the data belongs to */
+	Map<String, Integer> getClusterIndexByDataLabel();
 }

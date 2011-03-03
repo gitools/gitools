@@ -27,71 +27,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.gitools.clustering.GenericClusteringResults;
 import org.gitools.matrix.model.AnnotationMatrix;
 
 public class AnnotationsClusteringMethod implements ClusteringMethod {
-
-	public static class AnnotationsClusterResults implements ClusteringResults {
-		private String[] clusterTitles;
-		private String[] dataLabels;
-		private Map<String, int[]> clusterDataIndices;
-		private Map<String, Integer> dataClusterIndices;
-
-		public AnnotationsClusterResults(String[] dataLabels, Map<String, int[]> clusterDataIndices) {
-			this.dataLabels = dataLabels;
-			this.clusterDataIndices = clusterDataIndices;
-
-			generateDataClusterIndices(dataLabels, clusterDataIndices);
-		}
-
-		private void generateDataClusterIndices(String[] dataLabels, Map<String, int[]> clusters) {
-			clusterTitles = new String[clusters.size()];
-			dataClusterIndices = new HashMap<String, Integer>();
-			int clusterIndex = 0;
-			for (Map.Entry<String, int[]> e : clusters.entrySet()) {
-				clusterTitles[clusterIndex] = e.getKey();
-				for (int i : e.getValue())
-					dataClusterIndices.put(dataLabels[i], clusterIndex);
-				clusterIndex++;
-			}
-		}
-
-		@Override
-		public int getNumClusters() {
-			return clusterTitles.length;
-		}
-
-		@Override
-		public String[] getClusterTitles() {
-			return clusterTitles;
-		}
-
-		@Override
-		public String[] getDataLabels() {
-			return dataLabels;
-		}
-
-		@Override
-		public String[] getDataLabels(String clusterTitle) {
-			int[] dataIndices = clusterDataIndices.get(clusterTitle);
-			if (dataIndices == null)
-				return new String[0];
-
-			String[] labels = new String[dataIndices.length];
-			for (int i = 0; i < dataIndices.length; i++)
-				labels[i] = dataLabels[dataIndices[i]];
-
-			return labels;
-		}
-
-		@Override
-		public int getClusterIndex(String id) {
-			Integer index = dataClusterIndices.get(id);
-			if (index == null)
-				return -1;
-			return index;
-		}
-	}
 
 	private static class AnnotationResolver implements VariableValueResolver {
 
@@ -160,17 +99,8 @@ public class AnnotationsClusteringMethod implements ClusteringMethod {
 		if (monitor.isCancelled())
 			return null;
 
-		Map<String, int[]> clusters2 = new HashMap<String, int[]>();
-		for (Map.Entry<String, List<Integer>> e : clusters.entrySet()) {
-			List<Integer> indices1 = e.getValue();
-			int[] indices2 = new int[indices1.size()];
-			for (int i = 0; i < indices1.size(); i++)
-				indices2[i] = indices1.get(i);
-			clusters2.put(e.getKey(), indices2);
-		}
-
 		monitor.end();
 
-		return new AnnotationsClusterResults(dataLabels, clusters2);
+		return new GenericClusteringResults(dataLabels, clusters);
 	}
 }
