@@ -22,9 +22,12 @@ import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.clustering.method.AnnotationsClusteringMethod;
+import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
+import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.header.ColoredClustersPage;
 import org.gitools.ui.platform.AppFrame;
@@ -41,6 +44,8 @@ public class ColoredClustersWizard extends AbstractWizard {
 
 	private String lastPattern;
 	private HeatmapColoredClustersHeader header;
+
+	private AnnPatClusteringMethod clusteringMethod;
 	
 	private ColoredClustersAnnotationsPage sourcePage;
 	private ColoredClustersPage configPage;
@@ -54,11 +59,13 @@ public class ColoredClustersWizard extends AbstractWizard {
 
 		this.lastPattern = "";
 		this.header = new HeatmapColoredClustersHeader(hdim);
+
+		clusteringMethod = new AnnPatClusteringMethod();
 	}
 
 	@Override
 	public void addPages() {
-		sourcePage = new ColoredClustersAnnotationsPage(hdim);
+		sourcePage = new ColoredClustersAnnotationsPage(hdim, clusteringMethod);
 		addPage(sourcePage);
 
 		configPage = new ColoredClustersPage(header);
@@ -75,11 +82,13 @@ public class ColoredClustersWizard extends AbstractWizard {
 		String pattern = sourcePage.getPattern();
 		if (lastPattern.equals(pattern))
 			return;
-		
-		final AnnotationsClusteringMethod clusterer =
-				new AnnotationsClusteringMethod(hdim.getAnnotations(), pattern);
 
-		final ClusteringData data = getClusterData();
+		IMatrixView mv = heatmap.getMatrixView();
+		AnnotationMatrix am = hdim.getAnnotations();
+
+		final ClusteringData data = applyToRows ?
+				new AnnPatRowClusteringData(mv, am, pattern)
+				: new AnnPatColumnClusteringData(mv, am, pattern);
 
 		header.setTitle(sourcePage.getClusterTitle());
 
@@ -87,7 +96,7 @@ public class ColoredClustersWizard extends AbstractWizard {
 			@Override public void run(IProgressMonitor monitor) {
 				try {
 					final ClusteringResults results =
-							clusterer.cluster(data, monitor);
+							clusteringMethod.cluster(data, monitor);
 
 					header.updateClusterResults(results);
 				}
@@ -97,49 +106,5 @@ public class ColoredClustersWizard extends AbstractWizard {
 			}
 		});
 	}
-
-	private ClusteringData getClusterData() {
-		ClusteringData data = null;
-
-		final IMatrixView mv = heatmap.getMatrixView();
-
-		if (applyToRows)
-			data = new ClusteringData() {
-				@Override
-				public int getSize() {
-					return mv.getRowCount();
-				}
-
-				@Override
-				public String getLabel(int index) {
-					return mv.getRowLabel(index);
-				}
-
-				@Override
-				public ClusteringDataInstance getInstance(int index) {
-					throw new UnsupportedOperationException("Not supported yet.");
-				}
-			};
-		else
-			data = new ClusteringData() {
-				@Override
-				public int getSize() {
-					return mv.getColumnCount();
-				}
-
-				@Override
-				public String getLabel(int index) {
-					return mv.getColumnLabel(index);
-				}
-
-				@Override
-				public ClusteringDataInstance getInstance(int index) {
-					throw new UnsupportedOperationException("Not supported yet.");
-				}
-			};
-
-		return data;
-	}
-
 
 }

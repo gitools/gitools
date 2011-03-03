@@ -19,6 +19,10 @@ package org.gitools.clustering;
 
 public interface ClusteringDataInstance {
 
+	int getNumAttributes();
+
+	String getAttributeName(int attribute);
+
 	Class<?> getValueClass(int attribute);
 
 	Object getValue(int attribute);

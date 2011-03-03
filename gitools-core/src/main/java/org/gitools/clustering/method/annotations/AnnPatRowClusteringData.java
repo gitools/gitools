@@ -15,59 +15,63 @@
  *  under the License.
  */
 
-package org.gitools.matrix.clustering;
+package org.gitools.clustering.method.annotations;
 
+import edu.upf.bg.textpatt.TextPattern;
+import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
+import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.AnnotationResolver;
 import org.gitools.matrix.model.IMatrix;
 
-public class MatrixRowClusteringData implements ClusteringData {
+public class AnnPatRowClusteringData implements ClusteringData {
 
 	public class Instance implements ClusteringDataInstance {
 
-		protected int index;
+		private VariableValueResolver resolver;
 
-		public Instance(int index) {
-			this.index = index;
+		public Instance(VariableValueResolver resolver) {
+			this.resolver = resolver;
 		}
 
 		@Override
 		public int getNumAttributes() {
-			return matrix.getColumnCount();
+			return 1;
 		}
 
 		@Override
 		public String getAttributeName(int attribute) {
-			return matrix.getColumnLabel(attribute);
+			return "value";
 		}
 
 		@Override
 		public Class<?> getValueClass(int attribute) {
-			return attributeClass;
+			return String.class;
 		}
 
 		@Override
 		public Object getValue(int attribute) {
-			return matrix.getCellValue(index, attribute, matrixAttribute);
+			return pat.generate(resolver);
 		}
 
 		@Override
 		public <T> T getTypedValue(int attribute, Class<T> valueClass) {
-			if (!valueClass.equals(getValueClass(attribute)))
-				throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
+			if (!String.class.equals(valueClass))
+				throw new RuntimeException("Unsupported value class: " + valueClass.getName());
 
-			return (T) matrix.getCellValue(index, attribute, matrixAttribute);
+			return (T) getValue(attribute);
 		}
 	}
 
 	private IMatrix matrix;
-	private int matrixAttribute;
-	private Class<?> attributeClass;
+	private AnnotationMatrix am;
+	private TextPattern pat;
 
-	public MatrixRowClusteringData(IMatrix matrix, int matrixAttribute) {
+	public AnnPatRowClusteringData(IMatrix matrix, AnnotationMatrix am, String pattern) {
 		this.matrix = matrix;
-		this.matrixAttribute = matrixAttribute;
-		this.attributeClass = matrix.getCellAttributes().get(matrixAttribute).getValueClass();
+		this.am = am;
+		this.pat = new TextPattern(pattern);
 	}
 
 	@Override
@@ -82,7 +86,8 @@ public class MatrixRowClusteringData implements ClusteringData {
 
 	@Override
 	public ClusteringDataInstance getInstance(int index) {
-		return new Instance(index);
+		return new Instance(
+				new AnnotationResolver(
+					am, matrix.getRowLabel(index)));
 	}
-
 }

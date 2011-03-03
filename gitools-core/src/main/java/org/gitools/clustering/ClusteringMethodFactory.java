@@ -21,7 +21,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.gitools.clustering.method.AnnotationsClusteringMethod;
+import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 
 public class ClusteringMethodFactory {
 
@@ -29,7 +29,7 @@ public class ClusteringMethodFactory {
 		new ClusteringMethodDescriptor(
 				"Clustering from annotations",
 				"Cluster data instances according to a set of selected annotations",
-				AnnotationsClusteringMethod.class)
+				AnnPatClusteringMethod.class)
 	};
 
 	private static ClusteringMethodFactory instance;

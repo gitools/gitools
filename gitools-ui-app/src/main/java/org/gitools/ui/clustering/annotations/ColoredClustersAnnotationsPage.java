@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -38,9 +39,11 @@ import org.gitools.ui.utils.DocumentChangeListener;
 public class ColoredClustersAnnotationsPage extends AbstractWizardPage {
 
 	private HeatmapDim hdim;
+	private AnnPatClusteringMethod method;
 
-	public ColoredClustersAnnotationsPage(HeatmapDim hdim) {
+	public ColoredClustersAnnotationsPage(HeatmapDim hdim, AnnPatClusteringMethod method) {
 		this.hdim = hdim;
+		this.method = method;
 		
 		initComponents();
 
@@ -98,6 +101,13 @@ public class ColoredClustersAnnotationsPage extends AbstractWizardPage {
 		annSepLabel.setEnabled(annSel);
 		annSepCb.setEnabled(annSel);
 		patText.setEnabled(patOpt.isSelected());
+	}
+
+	@Override
+	public void updateModel() {
+		super.updateModel();
+
+		method.setPattern(getPattern());
 	}
 
 	public String getPattern() {

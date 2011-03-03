@@ -32,6 +32,16 @@ public class MatrixColumnClusteringData implements ClusteringData {
 		}
 
 		@Override
+		public int getNumAttributes() {
+			return matrix.getRowCount();
+		}
+
+		@Override
+		public String getAttributeName(int attribute) {
+			return matrix.getRowLabel(attribute);
+		}
+
+		@Override
 		public Class<?> getValueClass(int attribute) {
 			return attributeClass;
 		}

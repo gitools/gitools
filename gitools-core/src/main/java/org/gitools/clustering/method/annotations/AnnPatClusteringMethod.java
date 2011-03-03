@@ -15,61 +15,30 @@
  *  under the License.
  */
 
-package org.gitools.clustering.method;
+package org.gitools.clustering.method.annotations;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.textpatt.TextPattern;
-import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.gitools.clustering.GenericClusteringResults;
-import org.gitools.matrix.model.AnnotationMatrix;
 
-public class AnnotationsClusteringMethod implements ClusteringMethod {
+public class AnnPatClusteringMethod implements ClusteringMethod {
 
-	private static class AnnotationResolver implements VariableValueResolver {
+	private String pattern;
 
-		private AnnotationMatrix am;
-
-		private String label;
-		private int annRow;
-
-		public AnnotationResolver(AnnotationMatrix am) {
-			this.am = am;
-		}
-
-		public void setLabel(String label) {
-			this.label = label;
-
-			if (am != null)
-				annRow = am.getRowIndex(label);
-		}
-
-		@Override
-		public String resolveValue(String variableName) {
-			if (variableName.equalsIgnoreCase("id"))
-				return label;
-
-			int annCol = am != null ? am.getColumnIndex(variableName) : -1;
-			if (annCol == -1)
-				return "${" + variableName + "}";
-
-			return am.getCell(annRow, annCol);
-		}
+	public AnnPatClusteringMethod() {
 	}
 
-	private AnnotationResolver resolver;
-	private AnnotationMatrix am;
-	private String pattern;
-	
-	public AnnotationsClusteringMethod(AnnotationMatrix am, String pattern) {
-		this.resolver = new AnnotationResolver(am);
-		this.am = am;
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
 
@@ -80,12 +49,10 @@ public class AnnotationsClusteringMethod implements ClusteringMethod {
 
 		String[] dataLabels = new String[data.getSize()];
 		Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
-		TextPattern pat = new TextPattern(pattern);
 		for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
 			String label = data.getLabel(i);
 			dataLabels[i] = label;
-			resolver.setLabel(label);
-			String clusterName = pat.generate(resolver);
+			String clusterName = data.getInstance(i).getTypedValue(0, String.class);
 			List<Integer> indices = clusters.get(clusterName);
 			if (indices == null) {
 				indices = new ArrayList<Integer>();
