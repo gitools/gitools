@@ -1,12 +1,12 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
- *
+ *  Copyright 2011 chris.
+ * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ * 
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,15 +17,10 @@
 
 package org.gitools.clustering;
 
-/** Generic data interface for clustering methods */
-public interface ClusteringData {
+public interface ClusteringDataInstance {
 
-	/** Return the number of elements in the data */
-	int getSize();
+	Class<?> getValueClass(int attribute);
 
-	/** Returns the label associated with the instance at <index> */
-	String getLabel(int index);
-
-	/** Returns an instance of the data */
-	ClusteringDataInstance getInstance(int index);
+	Object getValue(int attribute);
+	<T> T getTypedValue(int attribute, Class<T> valueClass);
 }
