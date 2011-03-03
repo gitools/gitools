@@ -18,7 +18,7 @@
 package org.gitools.ui.clustering.annotations;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import javax.swing.SwingUtilities;
+import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
 import org.gitools.heatmap.model.HeatmapDim;
@@ -116,7 +116,7 @@ public class ColoredClustersWizard extends AbstractWizard {
 				}
 
 				@Override
-				public Object getValue(int index, int attrIndex) {
+				public ClusteringDataInstance getInstance(int index) {
 					throw new UnsupportedOperationException("Not supported yet.");
 				}
 			};
@@ -133,9 +133,11 @@ public class ColoredClustersWizard extends AbstractWizard {
 				}
 
 				@Override
-				public Object getValue(int index, int attrIndex) {
+				public ClusteringDataInstance getInstance(int index) {
 					throw new UnsupportedOperationException("Not supported yet.");
 				}
+
+
 			};
 
 		return data;
