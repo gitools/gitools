@@ -59,10 +59,6 @@ public class Heatmap
 	@Deprecated public static final String ROW_LABELS_HEADER_CHANGED = "rowDecorator";
 	@Deprecated public static final String COLUMN_LABELS_HEADER_CHANGED = "columnDecorator";
 	@Deprecated public static final String GRID_PROPERTY_CHANGED = "gridProperty";
-	//@Deprecated public static final String ROW_HEADER_SIZE_CHANGED = "rowHeaderSize";
-	//@Deprecated public static final String COLUMN_HEADER_SIZE_CHANGED = "columnHeaderSize";
-	@Deprecated public static final String ROW_CLUSTER_SETS_CHANGED = "rowClusterSets";
-	@Deprecated public static final String COLUMN_CLUSTER_SETS_CHANGED = "columnClusterSets";
 
 	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
 	private IMatrixView matrixView;
@@ -228,13 +224,6 @@ public class Heatmap
 		HeatmapDim old = this.columnDim;
 		this.columnDim = columnDim;
 		firePropertyChange(COLUMN_DIMENSION_CHANGED, old, columnDim);
-	}
-
-	// Headers
-
-	@Deprecated
-	public int getRowHeaderSize() {
-		return rowDim.getHeaderSize();
 	}
 
 	// Other
