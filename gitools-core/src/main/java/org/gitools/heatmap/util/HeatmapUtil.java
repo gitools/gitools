@@ -45,11 +45,11 @@ public class HeatmapUtil {
 			decorator.setCutoff(1.0);
 			decorator.setCutoffCmp(CutoffCmp.EQ);
 			figure.setCellDecorator(decorator);
-			figure.setRowsGridEnabled(false);
-			figure.setColumnsGridEnabled(false);
+			figure.getRowDim().setGridEnabled(false);
+			figure.getColumnDim().setGridEnabled(false);
 		} else if (matrix instanceof DoubleMatrix) {
-			figure.setRowsGridEnabled(false);
-			figure.setColumnsGridEnabled(false);
+			figure.getRowDim().setGridEnabled(false);
+			figure.getColumnDim().setGridEnabled(false);
 		}
 		else if (matrix instanceof ObjectMatrix) {
 			ElementDecorator decorator =

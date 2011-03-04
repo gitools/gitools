@@ -48,23 +48,8 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 
 		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
-		boolean repaintFlag = false;
-
 		if (src.equals(hdim) && HeatmapDim.HEADERS_CHANGED.equals(pname)
-				|| (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname))) {
+				|| (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
 				getHeaderDrawer().updateDrawers();
-				repaintFlag = true;
-		}
-		else if (src instanceof HeatmapHeader) {
-			/*if (HeatmapHeader.SIZE_CHANGED.equals(pname)
-					|| HeatmapHeader.BG_COLOR_CHANGED.equals(pname))*/
-				
-			repaintFlag = true;
-		}
-
-		/*if (repaintFlag) {
-			revalidate();
-			repaint();
-		}*/
 	}
 }

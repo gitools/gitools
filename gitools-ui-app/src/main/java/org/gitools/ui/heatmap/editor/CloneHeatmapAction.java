@@ -57,14 +57,6 @@ public class CloneHeatmapAction extends BaseAction {
 		clone.setFooter(hm.getFooter());
 		clone.setCellHeight(hm.getCellHeight());
 		clone.setCellWidth(hm.getCellWidth());
-		/*clone.setColumnHeaderSize(hm.getColumnHeaderSize());
-		clone.setRowHeaderSize(hm.getRowHeaderSize());
-		clone.setRowsGridColor(hm.getRowsGridColor());
-		clone.setRowsGridEnabled(hm.isRowsGridEnabled());
-		clone.setRowsGridSize(hm.getRowsGridSize());
-		clone.setColumnsGridColor(hm.getColumnsGridColor());
-		clone.setColumnsGridEnabled(hm.isColumnsGridEnabled());
-		clone.setColumnsGridSize(hm.getColumnsGridSize());*/
 		clone.setShowBorders(hm.isShowBorders());
 		clone.setCellDecorator(SerialClone.xclone(hm.getCellDecorator()));
 		clone.setColumnDim(SerialClone.xclone(hm.getColumnDim()));

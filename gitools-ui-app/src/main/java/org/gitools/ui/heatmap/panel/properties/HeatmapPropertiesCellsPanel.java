@@ -38,13 +38,14 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel {
 
-	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache
-			= new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
+	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache =
+			new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
 	
     /** Creates new form HeaderPropertiesCellsPanel */
     public HeatmapPropertiesCellsPanel() {
@@ -64,13 +65,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 		rowsGridColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				if (!updatingControls)
-					hm.setRowsGridColor(color); }
+					hm.getRowDim().setGridColor(color); }
 		});
 
 		columnsGridColor.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				if (!updatingControls)
-					hm.setColumnsGridColor(color); }
+					hm.getColumnDim().setGridColor(color); }
 		});
 
 		cellDecorator.addItemListener(new ItemListener() {
@@ -84,14 +85,17 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	protected void updateControls() {
 		updatingControls = true;
 
+		HeatmapDim rdim = hm.getRowDim();
+		HeatmapDim cdim = hm.getColumnDim();
+
 		cellWidth.setValue(hm.getCellWidth());
 		cellHeight.setValue(hm.getCellHeight());
-		rowsGridEnabled.setSelected(hm.isRowsGridEnabled());
-		rowsGridColor.setColor(hm.getRowsGridColor());
-		rowsGridSize.setValue(hm.getRowsGridSize());
-		columnsGridEnabled.setSelected(hm.isColumnsGridEnabled());
-		columnsGridColor.setColor(hm.getColumnsGridColor());
-		columnsGridSize.setValue(hm.getColumnsGridSize());
+		rowsGridEnabled.setSelected(rdim.isGridEnabled());
+		rowsGridColor.setColor(rdim.getGridColor());
+		rowsGridSize.setValue(rdim.getGridSize());
+		columnsGridEnabled.setSelected(cdim.isGridEnabled());
+		columnsGridColor.setColor(cdim.getGridColor());
+		columnsGridSize.setValue(cdim.getGridSize());
 
 		final List<ElementDecoratorDescriptor> descList =
 			ElementDecoratorFactory.getDescriptors();
@@ -339,21 +343,21 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	}//GEN-LAST:event_cellHeightStateChanged
 
 	private void rowsGridEnabledStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rowsGridEnabledStateChanged
-		hm.setRowsGridEnabled(rowsGridEnabled.isSelected());
+		hm.getRowDim().setGridEnabled(rowsGridEnabled.isSelected());
 	}//GEN-LAST:event_rowsGridEnabledStateChanged
 
 	private void columnsGridEnabledStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_columnsGridEnabledStateChanged
-		hm.setColumnsGridEnabled(columnsGridEnabled.isSelected());
+		hm.getColumnDim().setGridEnabled(columnsGridEnabled.isSelected());
 	}//GEN-LAST:event_columnsGridEnabledStateChanged
 
 	private void rowsGridSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rowsGridSizeStateChanged
 		int size = (Integer) rowsGridSize.getValue();
-		hm.setRowsGridSize(size);
+		hm.getRowDim().setGridSize(size);
 	}//GEN-LAST:event_rowsGridSizeStateChanged
 
 	private void columnsGridSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_columnsGridSizeStateChanged
 		int size = (Integer) columnsGridSize.getValue();
-		hm.setColumnsGridSize(size);
+		hm.getColumnDim().setGridSize(size);
 	}//GEN-LAST:event_columnsGridSizeStateChanged
 
 	private void cellDecoratorChanged(ItemEvent evt) {

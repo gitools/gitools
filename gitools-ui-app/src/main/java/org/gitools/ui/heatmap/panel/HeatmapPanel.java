@@ -330,7 +330,7 @@ public class HeatmapPanel extends JPanel {
 			repaint();
 		}
 
-		System.out.println(getClass().getSimpleName() + " " + src + " " + pname + " update: " + updateAll);
+		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname + " update: " + updateAll);
 	}
 
     @Override
