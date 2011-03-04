@@ -115,10 +115,11 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 		Enumeration lv = v.elements();
 
 		while (lv.hasMoreElements()) {
+
 			BinaryNode leave = (BinaryNode) lv.nextElement();
-			if (leave.getName() != null) {
+
+			if (leave.getName() != null)
 				instancesCluster.add(new Integer(leave.getName().substring(1)));
-			}
 		}
 		return instancesCluster;
 	}
@@ -164,10 +165,15 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 	}
 
 	private void configure(WekaHierarchicalClusterer clusterer) {
+		
 		clusterer.setDistanceFunction(distanceFunction);
+
 		clusterer.setPrintNewick(printNewick);
+
 		clusterer.setNumClusters(numClusters);
+
 		clusterer.setLinkType(linkType);
+
 		clusterer.setDistanceIsBranchLength(distanceIsBranchLength);
 	}
 

@@ -87,15 +87,18 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
 				for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++) {
 					if ((current = clusterWekaData.get(i)) != null) {
+
 						labels.add(clusterWekaData.getMatrixView().getLabel(i));
 
 						cluster = clusterer.clusterInstance(current);
 
 						List<Integer> instancesCluster = clusterResults.get(Integer.toString(cluster));
-						if (instancesCluster == null) {
+
+						if (instancesCluster == null) 
 							instancesCluster = new ArrayList<Integer>();
-						}
+						
 						instancesCluster.add(i);
+
 						clusterResults.put(Integer.toString(cluster), instancesCluster);
 					} 
 					monitor.worked(1);
@@ -135,8 +138,11 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 	}
 
 	private void configure(Cobweb clusterer) {
+		
 		clusterer.setAcuity(acuity);
+
 		clusterer.setCutoff(cutoff);
+		
 		clusterer.setSeed(seed);
 	}
 

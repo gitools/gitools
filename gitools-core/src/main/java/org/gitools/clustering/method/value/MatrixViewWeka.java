@@ -18,10 +18,8 @@
 package org.gitools.clustering.method.value;
 
 import java.io.IOException;
-import java.util.Properties;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.IMatrix;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -35,17 +33,24 @@ import weka.core.Instances;
 public class MatrixViewWeka extends Instances {
 
 	private ClusteringData matrixView;
+
 	private Instances structure;
+
 	private int[] indexes; //selected attributes from preprocessing
+
 	private int dimMatrix;//the dimension of the matrix for obtaining the value
+
 	private int initClassIndex;
 
 	public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex) {
 		super(ds);
 
 		initClassIndex = m_ClassIndex = classIndex;
+
 		structure = new Instances("matrixToCluster", m_Attributes, 0);
+
 		indexes = null;
+
 		matrixView = matrix;
 	}
 
@@ -54,9 +59,8 @@ public class MatrixViewWeka extends Instances {
 
 		FastVector attr = new FastVector();
 
-		for (int rows = 0; rows < numAttributes; rows ++) {
+		for (int rows = 0; rows < numAttributes; rows ++)
 			attr.addElement(new Attribute("a" + rows));
-		}
 
 		return attr;
 	}
@@ -64,28 +68,25 @@ public class MatrixViewWeka extends Instances {
 	public Instances getStructure() throws IOException {
 
 		return structure;
-
 	}
 
-	public void setDataSet(Instances mergeInstances) {
+	public void setDataSet(Instances mergeInstances) { }
 
-	}
-
-	public Instances getDataSet() throws IOException{
+	public Instances getDataSet() throws IOException {
 
 		Instance current = null;
+
 		Instances dataSet = new Instances("matrixToCluster", m_Attributes, 0);
+
 		try {
 			for (int i = 0; i < matrixView.getSize(); i++) {
-					current = get(i);
-					dataSet.add(current);
-
+				current = get(i);
+				dataSet.add(current);
 			}
 		} catch (Exception ex) {
 			throw new IOException("Error retrieving Weka dataset");
 		}
 		return dataSet;
-
 	}
 
 	/**
@@ -97,11 +98,14 @@ public class MatrixViewWeka extends Instances {
 		if (index > matrixView.getSize() - 1) 	return null;
 
 		double[] values = null;
+
 		int row;
+
 		final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
 				matrixView.getInstance(index).getValueClass(0));
 
 		if (indexes == null) {
+
 			values = new double[matrixView.getInstance(index).getNumAttributes()];
 
 			for (row = 0; row < matrixView.getInstance(index).getNumAttributes(); row++) {
@@ -112,7 +116,8 @@ public class MatrixViewWeka extends Instances {
 					values[row] = Double.NaN;
 				}
 			}
-		}else {
+		} else {
+
 			values = new double[indexes.length];
 
 			for (int i = 0; i < indexes.length; i++) {
@@ -131,6 +136,7 @@ public class MatrixViewWeka extends Instances {
 
 		//The dataset for the instance
 		Instances dataset = new Instances("matrixToCluster", m_Attributes, 0);
+
 		dataset.setClassIndex(m_ClassIndex);
 
 		current.setDataset(dataset);
@@ -143,28 +149,31 @@ public class MatrixViewWeka extends Instances {
 	void setFilteredAttributes(int[] selectedAttributes) {
 
 		indexes = selectedAttributes;
+
 		m_Attributes = addAttributes(selectedAttributes.length);
+
 		structure = new Instances("matrixToCluster", m_Attributes, 0);
+
 		m_ClassIndex = initClassIndex;
 	}
 
 	void resetFilteredAttributes(){
 
 		indexes = null;
+
 		m_Attributes = addAttributes(matrixView.getSize());
+
 		structure = new Instances("matrixToCluster", m_Attributes, 0);
 	}
 
 	@Override
-	public int numInstances(){
-		
+	public int numInstances(){		
 		return matrixView.getSize();
 	}
 
 	@Override
 	public Instance instance(int i) {
 		try {
-
 			return get(i);
 
 		} catch (Exception ex) {

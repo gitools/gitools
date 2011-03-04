@@ -136,9 +136,13 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 	}
 
 	private void configure(SimpleKMeans clusterer) throws Exception {
+
 		clusterer.setMaxIterations(iterations);
+
 		clusterer.setNumClusters(numClusters);
+
 		clusterer.setSeed(seed);
+		
 		clusterer.setDistanceFunction(distanceFunction);
 	}
 }
