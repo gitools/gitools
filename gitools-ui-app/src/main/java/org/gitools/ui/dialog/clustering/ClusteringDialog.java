@@ -269,7 +269,7 @@ public class ClusteringDialog extends javax.swing.JDialog {
 			dlg.setVisible(true);
 		}
 
-		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("Cobweb")){
+		if (algorithmTypeCombo.getSelectedItem().toString().equalsIgnoreCase("cobweb")){
 			CobwebParamsDialog dlg = new CobwebParamsDialog(this,params);
 			dlg.setVisible(true);
 		}

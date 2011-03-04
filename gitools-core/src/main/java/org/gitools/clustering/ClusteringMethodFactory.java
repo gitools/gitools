@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.clustering.method.value.WekaCobWebMethod;
+import org.gitools.clustering.method.value.WekaHCLMethod;
+import org.gitools.clustering.method.value.WekaKmeansMethod;
 
 public class ClusteringMethodFactory {
 
@@ -29,7 +32,19 @@ public class ClusteringMethodFactory {
 		new ClusteringMethodDescriptor(
 				"Clustering from annotations",
 				"Cluster data instances according to a set of selected annotations",
-				AnnPatClusteringMethod.class)
+				AnnPatClusteringMethod.class),
+		new ClusteringMethodDescriptor(
+				"Clustering from values",
+				"Cluster data instances according to cobweb clustering method",
+				WekaCobWebMethod.class),
+		new ClusteringMethodDescriptor(
+				"Clustering from values",
+				"Cluster data instances according to k-means clustering method",
+				WekaKmeansMethod.class),
+		new ClusteringMethodDescriptor(
+				"Clustering from values",
+				"Cluster data instances according to classic agglomerative hierarchical clustering method",
+				WekaHCLMethod.class)
 	};
 
 	private static ClusteringMethodFactory instance;
@@ -41,7 +56,7 @@ public class ClusteringMethodFactory {
 		registerMethods(DEFAULT_DESCRIPTORS);
 	}
 
-	public ClusteringMethodFactory getDefault() {
+	public static ClusteringMethodFactory getDefault() {
 		if (instance == null)
 			instance = new ClusteringMethodFactory();
 		return instance;

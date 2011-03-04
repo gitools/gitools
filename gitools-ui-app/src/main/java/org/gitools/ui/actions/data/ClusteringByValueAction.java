@@ -20,7 +20,7 @@ package org.gitools.ui.actions.data;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
-import org.gitools.matrix.clustering.Clusterer;
+import org.gitools.clustering.method.value.Clusterer;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
@@ -68,7 +68,7 @@ public class ClusteringByValueAction extends BaseAction {
 				try {
 
 					monitor.begin("Clustering  ...", 1);
-					Clusterer.matrixSortClustering(matrixView, clusterParameters, monitor);
+					Clusterer.matrixClustering(matrixView, clusterParameters, monitor, true);
 					monitor.end();
 					
 				}

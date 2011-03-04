@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 chris.
+ *  Copyright 2010 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,15 +17,14 @@
 
 package org.gitools.clustering;
 
-public interface ClusteringDataInstance {
+public class ClusteringException extends Exception {
 
-	int getNumAttributes();
+	public ClusteringException(String msg) {
+		super(msg);
+	}
 
-	String getAttributeName(int attribute);
+	public ClusteringException(Throwable cause) {
+		super(cause);
+	}
 
-	Class<?> getValueClass(int attribute);
-
-	Object getValue(int attribute);
-
-	<T> T getTypedValue(int attribute, Class<T> valueClass);
 }

@@ -21,5 +21,6 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 public interface ClusteringMethod {
 
-	public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor);
+	public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
+
 }
