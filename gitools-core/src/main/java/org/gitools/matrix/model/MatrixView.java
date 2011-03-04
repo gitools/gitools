@@ -393,13 +393,24 @@ public class MatrixView
 
 	@Override
 	public void selectAll() {
-		selectedRows = new int[getRowCount()];
-		for (int i = 0; i < getRowCount(); i++)
-			selectedRows[i] = i;
-		selectedColumns = new int[0];
+		if (selectionLeadRow == -1 && selectionLeadColumn != -1) {
+			selectedColumns = new int[getColumnCount()];
+			for (int i = 0; i < getColumnCount(); i++)
+				selectedColumns[i] = i;
+			selectedRows = new int[0];
 
-		Arrays.fill(selectedRowsBitmap, -1);
-		Arrays.fill(selectedColumnsBitmap, 0);
+			Arrays.fill(selectedRowsBitmap, 0);
+			Arrays.fill(selectedColumnsBitmap, -1);
+		}
+		else {
+			selectedRows = new int[getRowCount()];
+			for (int i = 0; i < getRowCount(); i++)
+				selectedRows[i] = i;
+			selectedColumns = new int[0];
+
+			Arrays.fill(selectedRowsBitmap, -1);
+			Arrays.fill(selectedColumnsBitmap, 0);
+		}
 
 		firePropertyChange(SELECTION_CHANGED);
 	}

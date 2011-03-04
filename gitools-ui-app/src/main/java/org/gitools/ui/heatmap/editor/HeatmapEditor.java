@@ -260,6 +260,7 @@ public class HeatmapEditor extends AbstractEditor {
 		ActionSet as = new ActionSet(actions);
 		
 		JToolBar toolBar = ActionSetUtils.createToolBar(as);
+		toolBar.setFloatable(false);
 
 		searchPanel = new HeatmapSearchPanel(heatmap);
 		searchPanel.setVisible(false);
