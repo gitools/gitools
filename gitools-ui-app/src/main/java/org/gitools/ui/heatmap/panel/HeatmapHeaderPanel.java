@@ -50,26 +50,21 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 
 		boolean repaintFlag = false;
 
-		if (src.equals(hdim)) {
-			if (HeatmapDim.HEADERS_CHANGED.equals(pname)) {
+		if (src.equals(hdim) && HeatmapDim.HEADERS_CHANGED.equals(pname)
+				|| (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname))) {
 				getHeaderDrawer().updateDrawers();
-			}
-			
-			/*else if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)
-					|| HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
-				updateSize();*/
-		}
-		else if (src instanceof HeatmapHeader) {
-			if (HeatmapHeader.SIZE_CHANGED.equals(pname)
-					|| HeatmapHeader.VISIBLE_CHANGED.equals(pname)
-					|| HeatmapHeader.BG_COLOR_CHANGED.equals(pname))
-				
 				repaintFlag = true;
 		}
+		else if (src instanceof HeatmapHeader) {
+			/*if (HeatmapHeader.SIZE_CHANGED.equals(pname)
+					|| HeatmapHeader.BG_COLOR_CHANGED.equals(pname))*/
+				
+			repaintFlag = true;
+		}
 
-		if (repaintFlag) {
+		/*if (repaintFlag) {
 			revalidate();
 			repaint();
-		}
+		}*/
 	}
 }

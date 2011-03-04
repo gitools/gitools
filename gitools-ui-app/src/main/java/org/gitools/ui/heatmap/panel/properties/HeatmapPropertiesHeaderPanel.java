@@ -52,7 +52,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.clustering.annotations.AddColoredClustersHeaderWizard;
+import org.gitools.ui.clustering.annotations.ColoredClustersHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -567,8 +567,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
 		else {
 			HeatmapColoredClustersHeader h = new HeatmapColoredClustersHeader(hdim);
-			AddColoredClustersHeaderWizard wiz =
-					new AddColoredClustersHeaderWizard(hm, hdim, h, rowMode);
+			ColoredClustersHeaderWizard wiz =
+					new ColoredClustersHeaderWizard(hm, hdim, h, rowMode);
 			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
 			wdlg.setTitle("Add header");
 			wdlg.setVisible(true);
@@ -577,6 +577,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 			hdim.addHeader(h);
 		}
+		updateHeaders();
 	}//GEN-LAST:event_headerAddBtnActionPerformed
 
 	private void headerEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerEditBtnActionPerformed
@@ -589,14 +590,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			dlg.setVisible(true);
 		}
 		else {
-			AddColoredClustersHeaderWizard wiz =
-					new AddColoredClustersHeaderWizard(
+			ColoredClustersHeaderWizard wiz =
+					new ColoredClustersHeaderWizard(
 						hm, hdim, (HeatmapColoredClustersHeader) h, rowMode);
 			wiz.setEditionMode(true);
 			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
 			wdlg.setTitle("Edit header");
 			wdlg.setVisible(true);
 		}
+		updateHeaders();
 	}//GEN-LAST:event_headerEditBtnActionPerformed
 
 	private void headerUpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerUpBtnActionPerformed

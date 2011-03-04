@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 chris.
+ *  Copyright 2011 Universitat Pompeu Fabra.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -53,6 +53,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		drawers = new ArrayList<AbstractHeatmapDrawer>(headers.size());
 		for (int i = 0; i < headers.size(); i++) {
 			HeatmapHeader h = headers.get(i);
+			if (!h.isVisible())
+				continue;
+			
 			if (h instanceof HeatmapLabelsHeader)
 				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapLabelsHeader) h, horizontal));
 			else if (h instanceof HeatmapColoredClustersHeader)

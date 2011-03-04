@@ -379,7 +379,16 @@ public class HeatmapEditor extends AbstractEditor {
 		searchPanel.setVisible(b);
 	}
 
+	private int lastMouseRow = -1;
+	private int lastMouseCol = -1;
+
 	protected void mouseMoved(int row, int col, MouseEvent e) {
+		if (lastMouseRow == row && lastMouseCol == col)
+			return;
+
+		lastMouseRow = row;
+		lastMouseCol = col;
+		
 		IMatrixView mv = heatmap.getMatrixView();
 
 		StringBuilder sb = new StringBuilder();

@@ -32,7 +32,6 @@ import org.gitools.heatmap.model.HeatmapColoredClustersHeader.Cluster;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
-
 public class HeatmapColoredClustersDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredClustersHeader> {
 	
 	private int headerTotalSize = 0;
@@ -121,7 +120,7 @@ public class HeatmapColoredClustersDrawer extends AbstractHeatmapHeaderDrawer<He
 
 			if (cluster != null) {
 				int sepSize = 0;
-				if (header.isSeparationGrid() && !cluster.equals(lastCluster))
+				if (header.isSeparationGrid() && lastCluster != null && !cluster.equals(lastCluster))
 					sepSize = header.getMargin();
 
 				//int thickness = header.getThickness();

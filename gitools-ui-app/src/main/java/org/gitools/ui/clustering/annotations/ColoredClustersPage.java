@@ -21,7 +21,7 @@
  * Created on 03-mar-2011, 18:51:34
  */
 
-package org.gitools.ui.heatmap.header;
+package org.gitools.ui.clustering.annotations;
 
 import java.awt.Color;
 import javax.swing.ListModel;

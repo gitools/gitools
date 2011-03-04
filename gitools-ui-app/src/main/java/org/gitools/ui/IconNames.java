@@ -121,11 +121,11 @@ public class IconNames {
 
 	public static final String LOGO_CORRELATION = "/img/logos/Correlation.png";
 
-	public static final String LOGO_OVERLAPPING = "/img/logos/Overlap.png";
+	public static final String LOGO_OVERLAPPING = "/img/logos/Overlapping.png";
 
 	public static final String LOGO_COMBINATION = "/img/logos/Combination.png";
 
-	public static final String LOGO_ONCODRIVER = "/img/logos/Oncodriver.png";
+	public static final String LOGO_ONCODRIVE = "/img/logos/Oncodrive.png";
 
 	public static final String LOGO_SAVE = "/img/logos/Save.png";
 

@@ -120,12 +120,12 @@ public class Heatmap
 		this.showBorders = false;
 				
 		this.rowDim = new HeatmapDim();
-		rowsLabelsHeader.setSize(220);
+		//rowsLabelsHeader.setSize(220);
 		this.rowDim.addHeader(rowsLabelsHeader);
 		this.rowDim.addPropertyChangeListener(propertyListener);
 
 		this.columnDim = new HeatmapDim();
-		columnLabelsHeader.setSize(130);
+		//columnLabelsHeader.setSize(130);
 		this.columnDim.addHeader(columnLabelsHeader);
 		this.columnDim.addPropertyChangeListener(propertyListener);
 	}

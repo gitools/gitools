@@ -28,15 +28,13 @@ import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.ui.heatmap.header.ColoredClustersHeaderPage;
-import org.gitools.ui.heatmap.header.ColoredClustersPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class AddColoredClustersHeaderWizard extends AbstractWizard {
+public class ColoredClustersHeaderWizard extends AbstractWizard {
 
 	private Heatmap heatmap;
 	private HeatmapDim hdim;
@@ -53,7 +51,7 @@ public class AddColoredClustersHeaderWizard extends AbstractWizard {
 	private ColoredClustersHeaderPage headerPage;
 	private ColoredClustersPage clustersPage;
 
-	public AddColoredClustersHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredClustersHeader h, boolean applyToRows) {
+	public ColoredClustersHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredClustersHeader h, boolean applyToRows) {
 		super();
 
 		this.heatmap = heatmap;
@@ -78,6 +76,11 @@ public class AddColoredClustersHeaderWizard extends AbstractWizard {
 
 		clustersPage = new ColoredClustersPage(header);
 		addPage(clustersPage);
+	}
+
+	@Override
+	public boolean canFinish() {
+		return currentPage != sourcePage;
 	}
 
 	@Override

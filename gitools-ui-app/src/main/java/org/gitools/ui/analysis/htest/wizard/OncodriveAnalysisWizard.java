@@ -46,7 +46,7 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.SaveFilePage;
 
-public class OncodriverAnalysisWizard extends AbstractWizard {
+public class OncodriveAnalysisWizard extends AbstractWizard {
 
 	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.ONCODRIVE;
 	private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_annot.cdm.gz";
@@ -60,11 +60,11 @@ public class OncodriverAnalysisWizard extends AbstractWizard {
 	private SaveFilePage saveFilePage;
 	private AnalysisDetailsPage analysisDetailsPage;
 
-	public OncodriverAnalysisWizard() {
+	public OncodriveAnalysisWizard() {
 		super();
 		
 		setTitle("Oncodrive analysis");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ONCODRIVER, 96));
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ONCODRIVE, 96));
 		setHelpContext("analysis_oncodrive");
 	}
 	

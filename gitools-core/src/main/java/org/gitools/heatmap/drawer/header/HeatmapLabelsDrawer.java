@@ -97,14 +97,14 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		
 		@Override
 		public String resolveValue(String variableName) {
-			if (am == null)
-				return "${" + variableName + "}";
-
 			String label = labelProvider.getLabel(index);
-			if (variableName.equals("id"))
+			if (variableName.equalsIgnoreCase("id"))
 				return label;
 			
-			int annRow = am.getRowIndex(label);
+			int annRow = am != null ? am.getRowIndex(label) : -1;
+			if (annRow == -1)
+				return "${" + variableName + "}";
+
 			int annCol = am.getColumnIndex(variableName);
 			return am.getCell(annRow, annCol);
 		}

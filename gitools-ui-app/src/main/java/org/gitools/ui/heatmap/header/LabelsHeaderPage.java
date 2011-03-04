@@ -44,26 +44,12 @@ public class LabelsHeaderPage extends AbstractWizardPage {
 
 		ActionListener optionListener = new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
-				updateControls(); } 
+				optionsChanged(); }
 		};
 		
 		idOpt.addActionListener(optionListener);
 		annOpt.addActionListener(optionListener);
 		patOpt.addActionListener(optionListener);
-
-		AnnotationMatrix am = hdim.getAnnotations();
-		if (am != null && am.getColumnCount() > 0) {
-			annOpt.setSelected(true);
-			DefaultListModel model = new DefaultListModel();
-			for (int i = 0; i < am.getColumnCount(); i++)
-				model.addElement(am.getColumnLabel(i));
-			annList.setModel(model);
-			annList.setSelectedIndex(0);
-		}
-		else {
-			idOpt.setSelected(true);
-			annOpt.setEnabled(false);
-		}
 
 		setTitle("Select the contents of the header");
 		setComplete(true);
@@ -73,8 +59,28 @@ public class LabelsHeaderPage extends AbstractWizardPage {
 	public void updateControls() {
 		super.updateControls();
 
-		annList.setEnabled(annOpt.isSelected());
-		pattText.setEnabled(patOpt.isSelected());
+		switch (header.getLabelSource()) {
+			case ID: idOpt.setSelected(true); break;
+			case ANNOTATION: annOpt.setSelected(true); break;
+			case PATTERN: patOpt.setSelected(true); break;
+		}
+
+		AnnotationMatrix am = hdim.getAnnotations();
+		if (am != null && am.getColumnCount() > 0) {
+			DefaultListModel model = new DefaultListModel();
+			for (int i = 0; i < am.getColumnCount(); i++)
+				model.addElement(am.getColumnLabel(i));
+			annList.setModel(model);
+		
+			String label = header.getLabelAnnotation();
+			int annIndex = am.getColumnIndex(label);
+			if (annIndex > 0)
+				annList.setSelectedIndex(0);
+		}
+
+		pattText.setText(header.getLabelPattern());
+
+		optionsChanged();
 	}
 
 	@Override
@@ -94,6 +100,11 @@ public class LabelsHeaderPage extends AbstractWizardPage {
 		else if (patOpt.isSelected())
 			return HeatmapLabelsHeader.LabelSource.PATTERN;
 		return HeatmapLabelsHeader.LabelSource.ID;
+	}
+
+	private void optionsChanged() {
+		annList.setEnabled(annOpt.isSelected());
+		pattText.setEnabled(patOpt.isSelected());
 	}
 
 	public String getAnnotation() {

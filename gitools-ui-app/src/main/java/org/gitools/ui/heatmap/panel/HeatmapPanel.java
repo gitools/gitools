@@ -40,6 +40,7 @@ import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
 import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 
@@ -51,14 +52,10 @@ public class HeatmapPanel extends JPanel {
 	private final PropertyChangeListener heatmapListener;
 
 	private HeatmapBodyPanel bodyPanel;
-	//private HeatmapColorAnnPanel columnColorAnnPanel;
-	//private HeatmapColorAnnPanel rowColorAnnPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
 	private HeatmapHeaderPanel rowHeaderPanel;
 
 	private JViewport bodyVP;
-	//private JViewport colColorAnnVP;
-	//private JViewport rowColorAnnVP;
 	private JViewport colVP;
 	private JViewport rowVP;
 
@@ -91,8 +88,6 @@ public class HeatmapPanel extends JPanel {
 		Heatmap old = this.heatmap;
 		this.heatmap = heatmap;
 		bodyPanel.setHeatmap(heatmap);
-		//columnColorAnnPanel.setHeatmap(heatmap);
-		//rowColorAnnPanel.setHeatmap(heatmap);
 		columnHeaderPanel.setHeatmap(heatmap);
 		rowHeaderPanel.setHeatmap(heatmap);
 		heatmapChanged(old);
@@ -102,9 +97,7 @@ public class HeatmapPanel extends JPanel {
 		bodyPanel = new HeatmapBodyPanel(heatmap);
 		columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
 		rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
-		//columnColorAnnPanel = new HeatmapColorAnnPanel(heatmap, true);
-		//rowColorAnnPanel = new HeatmapColorAnnPanel(heatmap, false);
-
+	
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
 
@@ -121,13 +114,7 @@ public class HeatmapPanel extends JPanel {
 		HeatmapBodyMouseController bodyController =
 				new HeatmapBodyMouseController(this);
 		bodyController.addHeatmapMouseListener(mouseListenerProxy);
-
-		//colColorAnnVP = new JViewport();
-		//colColorAnnVP.setView(columnColorAnnPanel);
-
-		//rowColorAnnVP = new JViewport();
-		//rowColorAnnVP.setView(rowColorAnnPanel);
-
+	
 		colVP = new JViewport();
 		colVP.setView(columnHeaderPanel);
 
@@ -142,8 +129,6 @@ public class HeatmapPanel extends JPanel {
 				new HeatmapHeaderMouseController(this, false);
 		rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
-		//TODO add HeatmapColorAnnMouseController
-
 		colSB = new JScrollBar(JScrollBar.HORIZONTAL);
 		colSB.addAdjustmentListener(new AdjustmentListener() {
 			@Override public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -156,8 +141,6 @@ public class HeatmapPanel extends JPanel {
 		setLayout(new HeatmapLayout());
 		add(colVP);
 		add(rowVP);
-		//add(colColorAnnVP);
-		//add(rowColorAnnVP);
 		add(bodyVP);
 		add(colSB);
 		add(rowSB);
@@ -197,10 +180,13 @@ public class HeatmapPanel extends JPanel {
 		Point leadPoint = bodyPanel.getDrawer()
 				.getPoint(new HeatmapPosition(row, col));
 
+		HeatmapDim rowDim = heatmap.getRowDim();
+		HeatmapDim colDim = heatmap.getColumnDim();
+
 		int leadPointXEnd = leadPoint.x + heatmap.getCellWidth()
-				+ (heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0);
+				+ (colDim.isGridEnabled() ? colDim.getGridSize() : 0);
 		int leadPointYEnd = leadPoint.y + heatmap.getCellHeight()
-				+ (heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0);
+				+ (rowDim.isGridEnabled() ? rowDim.getGridSize() : 0);
 
 		colSB.setValueIsAdjusting(true);
 		colSB.setMinimum(0);
@@ -247,8 +233,6 @@ public class HeatmapPanel extends JPanel {
 
 		colVP.setViewPosition(new Point(colValue, 0));
 		rowVP.setViewPosition(new Point(0, rowValue));
-		//colColorAnnVP.setViewPosition(new Point(colValue, 0));
-		//rowColorAnnVP.setViewPosition(new Point(0, rowValue));
 		bodyVP.setViewPosition(new Point(colValue, rowValue));
 	}
 
@@ -312,39 +296,26 @@ public class HeatmapPanel extends JPanel {
 
 	private void heatmapChanged(Heatmap old) {
 
-		if (old != null) {
+		if (old != null)
 			old.removePropertyChangeListener(heatmapListener);
-			/*old.getMatrixView().removePropertyChangeListener(heatmapListener);
-			old.getRowDim().removePropertyChangeListener(heatmapListener);
-			old.getRowDim().getLabelsHeader().removePropertyChangeListener(heatmapListener);
-			//TODO clusters
-			old.getColumnDim().removePropertyChangeListener(heatmapListener);
-			old.getColumnDim().getLabelsHeader().removePropertyChangeListener(heatmapListener);
-			//TODO clusters*/
-		}
 
 		heatmap.addPropertyChangeListener(heatmapListener);
-		/*heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);
-		heatmap.getRowDim().addPropertyChangeListener(heatmapListener);
-		heatmap.getRowDim().getLabelsHeader().addPropertyChangeListener(heatmapListener);
-		//TODO clusters
-		heatmap.getColumnDim().addPropertyChangeListener(heatmapListener);
-		heatmap.getColumnDim().getLabelsHeader().addPropertyChangeListener(heatmapListener);
-		//TODO clusters*/
 	}
 
 	private void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
 		Object src = evt.getSource();
 
-		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
-
 		boolean updateAll =
 				(src.equals(heatmap)
 					&& Heatmap.CELL_SIZE_CHANGED.equals(pname))
-				|| ((src.equals(heatmap.getRowDim()) || src.equals(heatmap.getColumnDim()))
+				|| ((src instanceof HeatmapDim)
 					&& (HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname)
+						|| HeatmapDim.HEADERS_CHANGED.equals(pname)
 						|| HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)))
+				|| (src instanceof HeatmapHeader
+					&& (HeatmapHeader.SIZE_CHANGED.equals(pname)
+						|| HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
 				|| (src.equals(heatmap.getMatrixView())
 					&& (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
 						|| MatrixView.VISIBLE_ROWS_CHANGED.equals(pname)
@@ -354,12 +325,12 @@ public class HeatmapPanel extends JPanel {
 			bodyPanel.updateSize();
 			rowHeaderPanel.updateSize();
 			columnHeaderPanel.updateSize();
-			//rowColorAnnPanel.updateSize();
-			//columnColorAnnPanel.updateSize();
 			updateScrolls();
 			revalidate();
 			repaint();
 		}
+
+		System.out.println(getClass().getSimpleName() + " " + src + " " + pname + " update: " + updateAll);
 	}
 
     @Override

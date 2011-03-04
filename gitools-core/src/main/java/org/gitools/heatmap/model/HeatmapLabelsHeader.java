@@ -63,15 +63,23 @@ public class HeatmapLabelsHeader extends HeatmapHeader {
 		this(null);
 	}
 
-	public HeatmapLabelsHeader(HeatmapDim dim) {
-		super(dim);
+	public HeatmapLabelsHeader(HeatmapDim hdim) {
+		super(hdim);
 
-		size = 120;
+		size = 70;
 		foregroundColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
-		labelSource = LabelSource.ID;
-		labelAnnotation = "";
+		AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
+		if (am != null && am.getColumnCount() > 0) {
+			labelSource = LabelSource.ANNOTATION;
+			labelAnnotation = am.getColumnLabel(0);
+		}
+		else {
+			labelSource = LabelSource.ID;
+			labelAnnotation = "";
+		}
+		
 		labelPattern = "${id}";
 		linkName = "Google";
 		linkPattern = "http://www.google.com/search?q=${url:id}";

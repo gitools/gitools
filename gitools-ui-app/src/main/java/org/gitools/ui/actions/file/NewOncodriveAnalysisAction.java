@@ -30,7 +30,7 @@ import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.analysis.htest.wizard.OncodriverAnalysisWizard;
+import org.gitools.ui.analysis.htest.wizard.OncodriveAnalysisWizard;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -53,7 +53,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 		//UnimplementedDialog.show(AppFrame.instance());
 		//if (true) return;
 
-		final OncodriverAnalysisWizard wizard = new OncodriverAnalysisWizard();
+		final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
 
 		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
 
