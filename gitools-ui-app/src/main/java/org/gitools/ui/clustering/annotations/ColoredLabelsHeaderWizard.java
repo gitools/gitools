@@ -19,7 +19,7 @@ package org.gitools.ui.clustering.annotations;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.ClusteringData;
@@ -34,7 +34,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class ColoredClustersHeaderWizard extends AbstractWizard {
+public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 	private Heatmap heatmap;
 	private HeatmapDim hdim;
@@ -43,15 +43,15 @@ public class ColoredClustersHeaderWizard extends AbstractWizard {
 	private boolean editionMode;
 	
 	private String lastPattern;
-	private HeatmapColoredClustersHeader header;
+	private HeatmapColoredLabelsHeader header;
 
 	private AnnPatClusteringMethod clusteringMethod;
 	
-	private ColoredClustersAnnotationsPage sourcePage;
-	private ColoredClustersHeaderPage headerPage;
-	private ColoredClustersPage clustersPage;
+	private ColoredLabelsAnnotationsPage sourcePage;
+	private ColoredLabelsHeaderPage headerPage;
+	private ColoredLabelsPage clustersPage;
 
-	public ColoredClustersHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredClustersHeader h, boolean applyToRows) {
+	public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader h, boolean applyToRows) {
 		super();
 
 		this.heatmap = heatmap;
@@ -67,14 +67,14 @@ public class ColoredClustersHeaderWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		if (!editionMode) {
-			sourcePage = new ColoredClustersAnnotationsPage(hdim, clusteringMethod);
+			sourcePage = new ColoredLabelsAnnotationsPage(hdim, clusteringMethod);
 			addPage(sourcePage);
 		}
 
-		headerPage = new ColoredClustersHeaderPage(header);
+		headerPage = new ColoredLabelsHeaderPage(header);
 		addPage(headerPage);
 
-		clustersPage = new ColoredClustersPage(header);
+		clustersPage = new ColoredLabelsPage(header);
 		addPage(clustersPage);
 	}
 
@@ -109,7 +109,7 @@ public class ColoredClustersHeaderWizard extends AbstractWizard {
 					final ClusteringResults results =
 							clusteringMethod.cluster(data, monitor);
 
-					header.updateClusterResults(results);
+					header.updateFromClusterResults(results);
 				}
 				catch (Throwable ex) {
 					monitor.exception(ex);
@@ -118,7 +118,7 @@ public class ColoredClustersHeaderWizard extends AbstractWizard {
 		});
 	}
 
-	public HeatmapColoredClustersHeader getHeader() {
+	public HeatmapColoredLabelsHeader getHeader() {
 		return header;
 	}
 

@@ -27,16 +27,16 @@ import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader.Cluster;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
-public class HeatmapColoredClustersDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredClustersHeader> {
+public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {
 	
 	private int headerTotalSize = 0;
 
-	public HeatmapColoredClustersDrawer(Heatmap heatmap, HeatmapColoredClustersHeader header, boolean horizontal) {
+	public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapColoredLabelsHeader header, boolean horizontal) {
 		super(heatmap, header, horizontal);
 	}
 
@@ -90,7 +90,7 @@ public class HeatmapColoredClustersDrawer extends AbstractHeatmapHeaderDrawer<He
 					return mv.getRowLabel(index); }
 			};
 
-		Cluster lastCluster = null;
+		ColoredLabel lastCluster = null;
 
 		int x = box.x;
 		int y = box.y + start * height;
@@ -99,7 +99,7 @@ public class HeatmapColoredClustersDrawer extends AbstractHeatmapHeaderDrawer<He
 			Color finalGridColor = gridColor;
 
 			String label = labelProvider.getLabel(index);
-			Cluster cluster = header.getAssignedCluster(label);
+			ColoredLabel cluster = header.getAssignedColoredLabel(label);
 			Color clusterColor = cluster != null ? cluster.getColor() : bgColor;
 
 			boolean selected = !pictureMode && (horizontal ?

@@ -80,7 +80,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="optGroup"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Create clusters by selecting a set of annotations"/>
+        <Property name="text" type="java.lang.String" value="Create labels by selecting a set of annotations"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -104,7 +104,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="optGroup"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Create clusters by using a pattern"/>
+        <Property name="text" type="java.lang.String" value="Create labels by using a pattern"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="patText">

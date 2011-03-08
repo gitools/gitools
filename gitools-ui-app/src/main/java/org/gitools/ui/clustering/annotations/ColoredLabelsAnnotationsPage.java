@@ -36,12 +36,12 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class ColoredClustersAnnotationsPage extends AbstractWizardPage {
+public class ColoredLabelsAnnotationsPage extends AbstractWizardPage {
 
 	private HeatmapDim hdim;
 	private AnnPatClusteringMethod method;
 
-	public ColoredClustersAnnotationsPage(HeatmapDim hdim, AnnPatClusteringMethod method) {
+	public ColoredLabelsAnnotationsPage(HeatmapDim hdim, AnnPatClusteringMethod method) {
 		this.hdim = hdim;
 		this.method = method;
 		
@@ -168,12 +168,12 @@ public class ColoredClustersAnnotationsPage extends AbstractWizardPage {
         annSepCb = new javax.swing.JComboBox();
 
         optGroup.add(annOpt);
-        annOpt.setText("Create clusters by selecting a set of annotations");
+        annOpt.setText("Create labels by selecting a set of annotations");
 
         jScrollPane1.setViewportView(annList);
 
         optGroup.add(patOpt);
-        patOpt.setText("Create clusters by using a pattern");
+        patOpt.setText("Create labels by using a pattern");
 
         patText.setText("${id}");
 

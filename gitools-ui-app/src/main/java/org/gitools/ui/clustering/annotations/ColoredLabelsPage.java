@@ -29,19 +29,19 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader.Cluster;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class ColoredClustersPage extends AbstractWizardPage {
+public class ColoredLabelsPage extends AbstractWizardPage {
 
 	private static class ClusterListModel implements ListModel {
 
-		private Cluster[] clusters;
+		private ColoredLabel[] clusters;
 
-		public ClusterListModel(Cluster[] clusters) {
+		public ClusterListModel(ColoredLabel[] clusters) {
 			this.clusters = clusters;
 		}
 
@@ -67,10 +67,10 @@ public class ColoredClustersPage extends AbstractWizardPage {
 
 	}
 
-	private HeatmapColoredClustersHeader header;
+	private HeatmapColoredLabelsHeader header;
 
     /** Creates new form ColoredClustersPage */
-    public ColoredClustersPage(HeatmapColoredClustersHeader header) {
+    public ColoredLabelsPage(HeatmapColoredLabelsHeader header) {
 		this.header = header;
 		
         initComponents();
@@ -90,7 +90,7 @@ public class ColoredClustersPage extends AbstractWizardPage {
 				clusterColorChanged(); }
 		});
 
-		setTitle("Clusters configuration");
+		setTitle("Labels configuration");
 		setComplete(true);
     }
 
@@ -112,7 +112,7 @@ public class ColoredClustersPage extends AbstractWizardPage {
 		clusterColor.setEnabled(sel);
 
 		if (sel) {
-			Cluster cluster = header.getClusters()[index];
+			ColoredLabel cluster = header.getClusters()[index];
 			clusterName.setText(cluster.getName());
 			clusterColor.setColor(cluster.getColor());
 		}
@@ -120,13 +120,13 @@ public class ColoredClustersPage extends AbstractWizardPage {
 
 	private void clusterNameChanged() {
 		int index = clusterList.getSelectedIndex();
-		Cluster cluster = header.getClusters()[index];
+		ColoredLabel cluster = header.getClusters()[index];
 		cluster.setName(clusterName.getText());
 	}
 
 	private void clusterColorChanged() {
 		int index = clusterList.getSelectedIndex();
-		Cluster cluster = header.getClusters()[index];
+		ColoredLabel cluster = header.getClusters()[index];
 		cluster.setColor(clusterColor.getColor());
 	}
 

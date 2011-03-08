@@ -44,7 +44,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.model.HeatmapDim;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
@@ -52,7 +52,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.clustering.annotations.ColoredClustersHeaderWizard;
+import org.gitools.ui.clustering.annotations.ColoredLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -566,9 +566,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			hdim.addHeader(h);
 		}
 		else {
-			HeatmapColoredClustersHeader h = new HeatmapColoredClustersHeader(hdim);
-			ColoredClustersHeaderWizard wiz =
-					new ColoredClustersHeaderWizard(hm, hdim, h, rowMode);
+			HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(hdim);
+			ColoredLabelsHeaderWizard wiz =
+					new ColoredLabelsHeaderWizard(hm, hdim, h, rowMode);
 			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
 			wdlg.setTitle("Add header");
 			wdlg.setVisible(true);
@@ -590,9 +590,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			dlg.setVisible(true);
 		}
 		else {
-			ColoredClustersHeaderWizard wiz =
-					new ColoredClustersHeaderWizard(
-						hm, hdim, (HeatmapColoredClustersHeader) h, rowMode);
+			ColoredLabelsHeaderWizard wiz =
+					new ColoredLabelsHeaderWizard(
+						hm, hdim, (HeatmapColoredLabelsHeader) h, rowMode);
 			wiz.setEditionMode(true);
 			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
 			wdlg.setTitle("Edit header");

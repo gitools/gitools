@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.clustering.ClusteringResults;
 
-public class HeatmapColoredClustersHeader extends HeatmapHeader {
+public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
 	public static final String THICKNESS_CHANGED = "thickness";
 	public static final String MARGIN_CHANGED = "margin";
@@ -41,19 +41,19 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 	public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
 
-	public class Cluster {
+	public class ColoredLabel {
 
 		protected String name;
 
 		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 		protected Color color;
 
-		public Cluster() {
+		public ColoredLabel() {
 			name = "";
 			color = Color.WHITE;
 		}
 
-		public Cluster(String name, Color color) {
+		public ColoredLabel(String name, Color color) {
 			this.name = name;
 			this.color = color;
 		}
@@ -108,14 +108,12 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 	protected Color labelColor;
 
 	/** The list of clusters in this set */
-	protected Cluster[] clusters;
+	protected ColoredLabel[] coloredLabels;
 
 	/** Maps matrix row/column id to cluster index */
-	protected Map<String, Integer> dataClusterIndices;
+	protected Map<String, Integer> dataColoredLabelIndices;
 
-	//protected ProposedClusterResults clusterResults;
-
-	public HeatmapColoredClustersHeader(HeatmapDim hdim) {
+	public HeatmapColoredLabelsHeader(HeatmapDim hdim) {
 		super(hdim);
 		
 		size = 20;
@@ -129,8 +127,8 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 		labelColorDefined = false;
 		labelColor = Color.BLACK;
 
-		clusters = new Cluster[0];
-		dataClusterIndices = new HashMap<String, Integer>();
+		coloredLabels = new ColoredLabel[0];
+		dataColoredLabelIndices = new HashMap<String, Integer>();
 	}
 
 	/* The thickness of the color band */
@@ -232,56 +230,56 @@ public class HeatmapColoredClustersHeader extends HeatmapHeader {
 	}
 
 	/** The list of clusters in this set */
-	public Cluster[] getClusters() {
-		return clusters;
+	public ColoredLabel[] getClusters() {
+		return coloredLabels;
 	}
 
 	/** The list of clusters in this set */
-	public void setClusters(Cluster[] clusters) {
-		Cluster[] old = this.clusters;
-		this.clusters = clusters;
+	public void setClusters(ColoredLabel[] clusters) {
+		ColoredLabel[] old = this.coloredLabels;
+		this.coloredLabels = clusters;
 		firePropertyChange(CLUSTERS_CHANGED, old, clusters);
 	}
 
 	/** Return the corresponding matrix row/column cluster. Null if there is not cluster assigned. */
-	public Cluster getAssignedCluster(String id) {
-		Integer index = dataClusterIndices.get(id);
+	public ColoredLabel getAssignedColoredLabel(String id) {
+		Integer index = dataColoredLabelIndices.get(id);
 		if (index == null)
 			return null;
-		return clusters[index];
+		return coloredLabels[index];
 	}
 
 	/** Set the corresponding matrix row/column cluster. -1 if there is not cluster assigned. */
-	public void setAssignedCluster(String id, int clusterIndex) {
-		Cluster old = getAssignedCluster(id);
+	public void setAssignedColoredLabel(String id, int clusterIndex) {
+		ColoredLabel old = getAssignedColoredLabel(id);
 		if (old != null && clusterIndex == -1)
-			this.dataClusterIndices.remove(id);
+			this.dataColoredLabelIndices.remove(id);
 		else
-			this.dataClusterIndices.put(id, clusterIndex);
+			this.dataColoredLabelIndices.put(id, clusterIndex);
 		
-		Cluster newCluster = clusterIndex != -1 ? clusters[clusterIndex] : null;
+		ColoredLabel newCluster = clusterIndex != -1 ? coloredLabels[clusterIndex] : null;
 		firePropertyChange(INDICES_CHANGED, old, newCluster);
 	}
 
 	/** Clear all assigned clusters */
-	public void clearAssignedClusters() {
-		this.dataClusterIndices.clear();
+	public void clearAssignedColoredLabels() {
+		this.dataColoredLabelIndices.clear();
 		firePropertyChange(INDICES_CHANGED);
 	}
 
-	public void updateClusterResults(ClusteringResults results) {
+	public void updateFromClusterResults(ClusteringResults results) {
 		ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
 
 		String[] clusterTitles = results.getClusterTitles();
-		clusters = new Cluster[results.getNumClusters()];
+		coloredLabels = new ColoredLabel[results.getNumClusters()];
 		for (int i = 0; i < results.getNumClusters(); i++) {
-			Cluster cluster = clusters[i] = new Cluster();
+			ColoredLabel cluster = coloredLabels[i] = new ColoredLabel();
 			cluster.setName(clusterTitles[i]);
 			cluster.setColor(cg.next());
 		}
 
-		dataClusterIndices = new HashMap<String, Integer>();
+		dataColoredLabelIndices = new HashMap<String, Integer>();
 		for (String label : results.getDataLabels())
-			dataClusterIndices.put(label, results.getClusterIndex(label));
+			dataColoredLabelIndices.put(label, results.getClusterIndex(label));
 	}
 }

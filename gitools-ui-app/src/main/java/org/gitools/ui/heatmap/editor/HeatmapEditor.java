@@ -113,7 +113,7 @@ public class HeatmapEditor extends AbstractEditor {
 	}
 
 	public HeatmapEditor(Heatmap heatmap, boolean embedded) {
-		this(heatmap, null, embedded);
+		this(heatmap, toolBarAS.getActions(), embedded);
 	}
 
 	public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions, boolean embedded) {

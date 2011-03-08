@@ -27,7 +27,7 @@ import java.util.List;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.model.HeatmapHeader;
 import org.gitools.heatmap.model.HeatmapLabelsHeader;
 
@@ -58,8 +58,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			
 			if (h instanceof HeatmapLabelsHeader)
 				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapLabelsHeader) h, horizontal));
-			else if (h instanceof HeatmapColoredClustersHeader)
-				drawers.add(new HeatmapColoredClustersDrawer(heatmap, (HeatmapColoredClustersHeader) h, horizontal));
+			else if (h instanceof HeatmapColoredLabelsHeader)
+				drawers.add(new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal));
 		}
 	}
 

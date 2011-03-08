@@ -34,25 +34,25 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader;
-import org.gitools.heatmap.model.HeatmapColoredClustersHeader.Cluster;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class ColoredClustersHeaderPage extends AbstractWizardPage {
+public class ColoredLabelsHeaderPage extends AbstractWizardPage {
 
-	private HeatmapColoredClustersHeader header;
+	private HeatmapColoredLabelsHeader header;
 
 	private boolean updating = false;
 
-	public ColoredClustersHeaderPage() {
-		this(new HeatmapColoredClustersHeader(null));
+	public ColoredLabelsHeaderPage() {
+		this(new HeatmapColoredLabelsHeader(null));
 	}
 
     /** Creates new form ColoredClustersConfigPage */
-    public ColoredClustersHeaderPage(HeatmapColoredClustersHeader header) {
+    public ColoredLabelsHeaderPage(HeatmapColoredLabelsHeader header) {
 		super();
 
 		this.header = header;
