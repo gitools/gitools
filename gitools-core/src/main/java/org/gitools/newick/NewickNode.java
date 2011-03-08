@@ -17,13 +17,25 @@
 
 package org.gitools.newick;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NewickNode<VT> {
 
 	private String name;
 	private VT value;
 
-	private NewickNode leftChild;
-	private NewickNode rightChild;
+	private List<NewickNode> children;
+
+	public NewickNode() {
+		this(null, null);
+	}
+
+	public NewickNode(String name, VT value) {
+		this.name = name;
+		this.value = value;
+		this.children = new ArrayList<NewickNode>(2);
+	}
 
 	public String getName() {
 		return name;
@@ -41,46 +53,31 @@ public class NewickNode<VT> {
 		this.value = value;
 	}
 
-	public NewickNode getLeftChild() {
-		return leftChild;
-	}
-
-	public NewickNode getRightChild() {
-		return rightChild;
-	}
-
 	public NewickNode getChild(int index) {
-		switch (index) {
-			case 0: return leftChild;
-			case 1: return rightChild;
-			default: return null;
-		}
+		return children.get(index);
 	}
 
 	public void setChild(int index, NewickNode<VT> node) {
-		switch (index) {
-			case 0: leftChild = node;
-			case 1: rightChild = node;
-		}
+		children.set(index, node);
 	}
 
 	public boolean isLeaf() {
-		return leftChild == null && rightChild == null;
+		return children.isEmpty();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		if (isLeaf()) {
+		if (!children.isEmpty()) {
+			sb.append('(').append(children.get(0));
+			for (int i = 1; i < children.size(); i++)
+				sb.append(',').append(children.get(i));
+			sb.append(')');
+		}
+		if (name != null)
 			sb.append(name);
-			if (value != null)
-				sb.append(":").append(value);
-		}
-		else {
-			sb.append(leftChild);
-			sb.append(',');
-			sb.append(rightChild);
-		}
+		if (value != null)
+			sb.append(":").append(value);
 		return sb.toString();
 	}
 }

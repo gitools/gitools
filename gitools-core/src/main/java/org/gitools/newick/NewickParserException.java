@@ -17,21 +17,14 @@
 
 package org.gitools.newick;
 
-public class NewickTree<VT> {
+public class NewickParserException extends Exception {
 
-	private NewickNode<VT> root;
-
-	public NewickTree() {
+	public NewickParserException(String msg) {
+		super(msg);
 	}
 
-	public NewickNode<VT> getRoot() {
-		return root;
+	public NewickParserException(Throwable cause) {
+		super(cause);
 	}
 
-	//TODO ...
-
-	@Override
-	public String toString() {
-		return root.toString() + ";";
-	}
 }
