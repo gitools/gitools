@@ -58,6 +58,10 @@ public class NewickNode<VT> {
 		return children.get(index);
 	}
 
+	public void setChild(int index, NewickNode node) {
+		children.set(index, node);
+	}
+
 	public List<NewickNode> getChildren() {
 		return Collections.unmodifiableList(children);
 	}

@@ -28,7 +28,13 @@ public class NewickTree<VT> {
 		return root;
 	}
 
-	//TODO ...
+	public boolean isEmpty() {
+		return root == null;
+	}
+
+	public void setRoot(NewickNode<VT> root) {
+		this.root = root;
+	}
 
 	@Override
 	public String toString() {
