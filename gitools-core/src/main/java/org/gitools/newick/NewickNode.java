@@ -18,6 +18,7 @@
 package org.gitools.newick;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NewickNode<VT> {
@@ -57,8 +58,12 @@ public class NewickNode<VT> {
 		return children.get(index);
 	}
 
-	public void setChild(int index, NewickNode<VT> node) {
-		children.set(index, node);
+	public List<NewickNode> getChildren() {
+		return Collections.unmodifiableList(children);
+	}
+
+	public void addChild(NewickNode node) {
+		children.add(node);
 	}
 
 	public boolean isLeaf() {

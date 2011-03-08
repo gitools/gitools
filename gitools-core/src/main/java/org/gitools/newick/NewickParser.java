@@ -85,172 +85,176 @@ public class NewickParser<VT> {
 
 		NewickTree tree = null;
 		NewickNode node = null;
-		int branchIndex = 0;
-		NewickNode currentNode = null;
-		Stack<NodeLevel> nodeStack = new Stack<NodeLevel>();
+		NewickNode root = null;
+		Stack<NewickNode> nodeStack = new Stack<NewickNode>();
 
-		try {
-			while (state != ParserState.TREE_END) {
-				switch (state) {
-					case TREE_START:
-						tree = new NewickTree();
-						currentNode = null;
-						branchIndex = 0;
-						token = nextToken();
-						switch (token.getType()) {
-							case SPACE: break;
-							case COLON_COMMA: state = ParserState.TREE_END; break;
-							case PAR_OPEN: state = ParserState.BRANCH_START; break;
-							default:
-								throw new NewickParserException("Unexpected token: " + token);
-						}
-						break;
+		while (state != ParserState.TREE_END) {
+			switch (state) {
+				case TREE_START:
+					tree = new NewickTree();
+					root = null;
+					token = nextTokenNoSpace();
+					switch (token.getType()) {
+						case COLON_COMMA: state = ParserState.TREE_END; break;
+						case PAR_OPEN: state = ParserState.BRANCH_START; break;
+						default: exception("Unexpected token: " + token);
+					}
+					break;
 
-					case BRANCH_START:
-						node = new NewickNode();
-						currentNode.setChild(branchIndex, node);
-						if (currentNode != null)
-							nodeStack.push(new NodeLevel(currentNode, branchIndex));
+				case BRANCH_START:
+					node = new NewickNode();
 
-						currentNode = node;
-						branchIndex = 0;
-						
-						token = nextToken();
-						while (token.getType() == TokenType.SPACE)
-							token = nextToken();
+					if (root != null) {
+						nodeStack.push(root);
+						root.addChild(node);
+					}
 
-						switch (token.getType()) {
-							case PAR_OPEN: state = ParserState.BRANCH_START; break;
-							case COMMA: state = ParserState.BRANCH_ADD; break;
-							case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
-							case NAME: state = ParserState.BRANCH_LEAF; break;
-							case TWO_COLON: state = ParserState.BRANCH_LEAF; break;
-							default:
-								throw new NewickParserException("Unexpected token: " + token);
-						}
+					root = node;
 
-						break;
+					token = nextTokenNoSpace();
 
-					case BRANCH_ADD:
-						// TODO...
+					switch (token.getType()) {
+						case PAR_OPEN: state = ParserState.BRANCH_START; break;
+						case COMMA: state = ParserState.BRANCH_ADD; break;
+						case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
+						case NAME: state = ParserState.BRANCH_LEAF; break;
+						case TWO_COLON: state = ParserState.BRANCH_LEAF; break;
+						default: exception("Unexpected token: " + token);
+					}
 
-						token = nextToken();
-						while (token.getType() == TokenType.SPACE)
-							token = nextToken();
+					break;
 
-						switch (token.getType()) {
-							case PAR_OPEN: state = ParserState.BRANCH_START; break;
-							case COMMA: state = ParserState.BRANCH_ADD; break;
-							case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
-							case NAME: state = ParserState.BRANCH_LEAF; break;
-							case TWO_COLON: state = ParserState.BRANCH_LEAF; break;
-							default:
-								throw new NewickParserException("Unexpected token: " + token);
-						}
+				case BRANCH_ADD:
+					node = new NewickNode();
+					root.addChild(node);
 
-						break;
+					token = nextTokenNoSpace();
 
-					case BRANCH_LEAF:
-						// TODO...
+					switch (token.getType()) {
+						case PAR_OPEN: state = ParserState.BRANCH_START; break;
+						case COMMA: state = ParserState.BRANCH_ADD; break;
+						case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
+						case NAME: state = ParserState.BRANCH_LEAF; break;
+						case TWO_COLON: state = ParserState.BRANCH_LEAF; break;
+						default: exception("Unexpected token: " + token);
+					}
 
-						token = nextToken();
-						while (token.getType() == TokenType.SPACE)
-							token = nextToken();
+					break;
 
-						switch (token.getType()) {
-							case COMMA: state = ParserState.BRANCH_ADD; break;
-							case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
-							default:
-								throw new NewickParserException("Unexpected token: " + token);
-						}
+				case BRANCH_LEAF:
+					// TODO...
 
-						break;
+					token = nextTokenNoSpace();
 
-					case BRANCH_CLOSE:
-						// TODO...
+					switch (token.getType()) {
+						case COMMA: state = ParserState.BRANCH_ADD; break;
+						case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
+						default: exception("Unexpected token: " + token);
+					}
 
-						token = nextToken();
-						while (token.getType() == TokenType.SPACE)
-							token = nextToken();
+					break;
 
-						switch (token.getType()) {
-							case COMMA: state = ParserState.BRANCH_ADD; break;
-							case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
-							case COLON_COMMA: state = ParserState.TREE_END; break;
-							default:
-								throw new NewickParserException("Unexpected token: " + token);
-						}
+				case BRANCH_CLOSE:
+					if (!nodeStack.isEmpty())
+						root = nodeStack.pop();
 
-						break;
-				}
+					token = nextTokenNoSpace();
+
+					switch (token.getType()) {
+						case COMMA: state = ParserState.BRANCH_ADD; break;
+						case PAR_CLOSE: state = ParserState.BRANCH_CLOSE; break;
+						case COLON_COMMA: state = ParserState.TREE_END; break;
+						default: exception("Unexpected token: " + token);
+					}
+
+					break;
 			}
 		}
-		catch (Exception e) {
-			throw new NewickParserException(e);
-		}
-		
+
 		return tree;
 	}
 
-	private Token nextToken() throws IOException, NewickParserException {
+	private void exception(String msg) throws NewickParserException {
+		//TODO row and column
+		throw new NewickParserException(msg);
+	}
+
+	private void exception(Throwable cause) throws NewickParserException {
+		//TODO row and column
+		throw new NewickParserException(cause);
+	}
+
+	private Token nextTokenNoSpace() throws NewickParserException {
+		Token token = nextToken();
+		while (token.getType() == TokenType.SPACE)
+			token = nextToken();
+		return token;
+	}
+
+	private Token nextToken() throws NewickParserException {
 		sb.setLength(0);
 
 		int ch;
 		char state = 'S';
 		boolean done = false;
 
-		while (!done) {
-			switch (state) {
-				case 'S':	// Start
-					ch = nextChar();
-					if (Character.isSpaceChar((char) ch))
-						return new Token(TokenType.SPACE, "" + (char) ch);
-					else if (Character.isDigit((char) ch)) {
-						sb.append((char) ch);
-						state = 'U';
-					}
-					else if (isNameChar(ch)) {
-						sb.append((char) ch);
-						state = 'N';
-					}
-					else {
-						switch (ch) {
-							case '(': return new Token(TokenType.PAR_OPEN, "" + (char) ch);
-							case ')': return new Token(TokenType.PAR_CLOSE, "" + (char) ch);
-							case ',': return new Token(TokenType.COMMA, "" + (char) ch);
-							case ':': return new Token(TokenType.TWO_COLON, "" + (char) ch);
-							case ';': return new Token(TokenType.COLON_COMMA, "" + (char) ch);
-							default:
-								throw new NewickParserException("Unexpected character: " + (char) ch);
+		try {
+			while (!done) {
+				switch (state) {
+					case 'S':	// Start
+						ch = nextChar();
+						if (Character.isSpaceChar((char) ch))
+							return new Token(TokenType.SPACE, "" + (char) ch);
+						else if (Character.isDigit((char) ch)) {
+							sb.append((char) ch);
+							state = 'U';
 						}
-					}
+						else if (isNameChar(ch)) {
+							sb.append((char) ch);
+							state = 'N';
+						}
+						else {
+							switch (ch) {
+								case '(': return new Token(TokenType.PAR_OPEN, "" + (char) ch);
+								case ')': return new Token(TokenType.PAR_CLOSE, "" + (char) ch);
+								case ',': return new Token(TokenType.COMMA, "" + (char) ch);
+								case ':': return new Token(TokenType.TWO_COLON, "" + (char) ch);
+								case ';': return new Token(TokenType.COLON_COMMA, "" + (char) ch);
+								default:
+									throw new NewickParserException("Unexpected character: " + (char) ch);
+							}
+						}
 
-				case 'U':	// Number
-					ch = nextChar();
-					while (Character.isDigit((char) ch)) {
-						sb.append((char) ch);
+					case 'U':	// Number
 						ch = nextChar();
-					}
+						while (Character.isDigit((char) ch)) {
+							sb.append((char) ch);
+							ch = nextChar();
+						}
 
-					if (isNameChar(ch)) {
-						sb.append((char) ch);
-						state = 'N';
-					}
-					else {
+						if (isNameChar(ch)) {
+							sb.append((char) ch);
+							state = 'N';
+						}
+						else {
+							bufferedChar = ch;
+							return new Token(TokenType.NUMBER, sb.toString());
+						}
+						break;
+
+					case 'N':	// Name
+						ch = nextChar();
+						while (isNameChar((char) ch)) {
+							sb.append((char) ch);
+							ch = nextChar();
+						}
 						bufferedChar = ch;
-						return new Token(TokenType.NUMBER, sb.toString());
-					}
-					break;
-
-				case 'N':	// Name
-					ch = nextChar();
-					while (isNameChar((char) ch)) {
-						sb.append((char) ch);
-						ch = nextChar();
-					}
-					bufferedChar = ch;
-					return new Token(TokenType.NAME, sb.toString());
+						return new Token(TokenType.NAME, sb.toString());
+				}
 			}
+		}
+		catch (Exception e) {
+			throw new NewickParserException(e);
 		}
 
 		throw new NewickParserException("Unexpected tokenizer end");
