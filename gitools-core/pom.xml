@@ -21,12 +21,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
 		</dependency> -->
-
-		<dependency>
-			<groupId>uk.ac.vamsas</groupId>
-			<artifactId>vamsas-client</artifactId>
-			<version>0.1</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>colt</groupId>

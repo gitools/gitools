@@ -34,17 +34,17 @@ public class ClusteringMethodFactory {
 				"Cluster data instances according to a set of selected annotations",
 				AnnPatClusteringMethod.class),
 		new ClusteringMethodDescriptor(
-				"Clustering from values",
-				"Cluster data instances according to cobweb clustering method",
-				WekaCobWebMethod.class),
+				"Hierarchical clustering",
+				"Cluster data instances according to classic agglomerative hierarchical clustering method",
+				WekaHCLMethod.class),
 		new ClusteringMethodDescriptor(
-				"Clustering from values",
+				"Kmeans clustering",
 				"Cluster data instances according to k-means clustering method",
 				WekaKmeansMethod.class),
 		new ClusteringMethodDescriptor(
-				"Clustering from values",
-				"Cluster data instances according to classic agglomerative hierarchical clustering method",
-				WekaHCLMethod.class)
+				"CobWeb clustering",
+				"Cluster data instances according to cobweb clustering method",
+				WekaCobWebMethod.class)
 	};
 
 	private static ClusteringMethodFactory instance;

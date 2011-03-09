@@ -28,6 +28,10 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
+import org.gitools.newick.NewickNode;
+import org.gitools.newick.NewickParser;
+import org.gitools.newick.NewickParserException;
+import org.gitools.newick.NewickTree;
 import uk.ac.vamsas.objects.utils.trees.BinaryNode;
 import uk.ac.vamsas.objects.utils.trees.NewickFile;
 import uk.ac.vamsas.objects.utils.trees.SequenceNode;
@@ -84,7 +88,6 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
 				List<Integer> instancesCluster = getTreeLeaves(newickTree);
 								
-
 				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 				
 				clusterResults.put("0", instancesCluster);
@@ -100,27 +103,19 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 		}
 	}
 
-	private List<Integer> getTreeLeaves(String result) throws NumberFormatException, IOException {
+	private List<Integer> getTreeLeaves(String result) throws NumberFormatException, IOException, NewickParserException {
 
-		List<Integer> instancesCluster = new ArrayList<Integer>();
+		List<Integer> instancesCluster = new ArrayList<Integer>();		
 
-		Vector v = new Vector();
+		NewickParser newickParser = new NewickParser(result + ";");
 
-		NewickFile newickTree = new NewickFile(result);
+		NewickTree tree = newickParser.parse();
 
-		SequenceNode sequenceNodes = newickTree.getTree();
+		List<NewickNode> leaves = tree.getLeaves(tree.getRoot());
 
-		newickTree.findLeaves(sequenceNodes, v);
-
-		Enumeration lv = v.elements();
-
-		while (lv.hasMoreElements()) {
-
-			BinaryNode leave = (BinaryNode) lv.nextElement();
-
-			if (leave.getName() != null)
-				instancesCluster.add(new Integer(leave.getName().substring(1)));
-		}
+		for (NewickNode node : leaves) 
+			instancesCluster.add(new Integer(node.getName().substring(1)));
+		
 		return instancesCluster;
 	}
 
