@@ -21,7 +21,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapKeyboardController extends KeyAdapter {

@@ -21,7 +21,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import org.gitools.clustering.method.value.Clusterer;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.clustering.ClusteringDialog;

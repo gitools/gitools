@@ -25,7 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;

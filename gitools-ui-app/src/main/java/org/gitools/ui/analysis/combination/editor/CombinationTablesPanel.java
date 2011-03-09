@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;

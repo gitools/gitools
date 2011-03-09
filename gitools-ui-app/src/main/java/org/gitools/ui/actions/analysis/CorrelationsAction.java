@@ -23,7 +23,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;

@@ -28,12 +28,14 @@
 	</div>
 	#end
 
-	#if( ! $linkName.isEmpty() )
+	#if( $links && $links.size() > 0 )
 	<div id="section">
 		<div id="section_title">Links</div>
 		<div id="section_body">
 			<table id="attr_table">
-				<tr><td><a href="$linkUrl">$linkName</a></td>
+				#foreach($link in $links.entrySet())
+				<tr><td style="white-space:nowrap;"><a target="_external" href="$link.value">$link.key</a></td>
+				#end
 			</table>
 		</div>
 	</div>

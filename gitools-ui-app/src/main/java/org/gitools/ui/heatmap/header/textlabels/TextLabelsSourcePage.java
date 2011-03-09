@@ -21,22 +21,22 @@
  * Created on 25-feb-2011, 21:01:35
  */
 
-package org.gitools.ui.heatmap.header;
+package org.gitools.ui.heatmap.header.textlabels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
-import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class LabelsHeaderPage extends AbstractWizardPage {
+public class TextLabelsSourcePage extends AbstractWizardPage {
 
 	protected HeatmapDim hdim;
-	protected HeatmapLabelsHeader header;
+	protected HeatmapTextLabelsHeader header;
 
-    public LabelsHeaderPage(HeatmapDim hdim, HeatmapLabelsHeader header) {
+    public TextLabelsSourcePage(HeatmapDim hdim, HeatmapTextLabelsHeader header) {
 		this.hdim = hdim;
 		this.header = header;
 		
@@ -92,14 +92,14 @@ public class LabelsHeaderPage extends AbstractWizardPage {
 		header.setLabelPattern(getPattern());
 	}
 
-	public HeatmapLabelsHeader.LabelSource getLabelSource() {
+	public HeatmapTextLabelsHeader.LabelSource getLabelSource() {
 		if (idOpt.isSelected())
-			return HeatmapLabelsHeader.LabelSource.ID;
+			return HeatmapTextLabelsHeader.LabelSource.ID;
 		else if (annOpt.isSelected())
-			return HeatmapLabelsHeader.LabelSource.ANNOTATION;
+			return HeatmapTextLabelsHeader.LabelSource.ANNOTATION;
 		else if (patOpt.isSelected())
-			return HeatmapLabelsHeader.LabelSource.PATTERN;
-		return HeatmapLabelsHeader.LabelSource.ID;
+			return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+		return HeatmapTextLabelsHeader.LabelSource.ID;
 	}
 
 	private void optionsChanged() {

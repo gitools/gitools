@@ -44,7 +44,8 @@ public class NewickTree<VT> {
 	public String toString() {
 		return root.toString() + ";";
 	}
-	
+
+	// FIXME This method should be implemented in the nodes
 	public List<NewickNode<VT>> getLeaves(NewickNode<VT> node) {
 		List<NewickNode<VT>> leaves = new ArrayList<NewickNode<VT>>(0);
 

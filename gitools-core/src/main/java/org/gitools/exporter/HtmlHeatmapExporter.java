@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.gitools.model.decorator.ElementDecoration;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 
 import edu.upf.bg.formatter.GenericFormatter;
 

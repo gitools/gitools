@@ -40,7 +40,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
 	private static final Map<String, String> fileKey = new HashMap<String, String>();
 	static {
-		fileKey.put(ENTREZ, "ncbi-geneid");
+		fileKey.put(NCBI_GENES, "ncbi-geneid");
 		fileKey.put(UNIPROT, "uniprot");
 		fileKey.put(PDB, "pdb");
 		fileKey.put(ENSEMBL_GENES, "ensembl");

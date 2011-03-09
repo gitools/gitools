@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;

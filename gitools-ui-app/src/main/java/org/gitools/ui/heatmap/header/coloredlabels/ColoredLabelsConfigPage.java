@@ -21,38 +21,30 @@
  * Created on 02-mar-2011, 8:27:23
  */
 
-package org.gitools.ui.clustering.annotations;
+package org.gitools.ui.heatmap.header.coloredlabels;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
-import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.utils.DocumentChangeListener;
+import org.gitools.ui.utils.FontUtils;
 
-public class ColoredLabelsHeaderPage extends AbstractWizardPage {
+public class ColoredLabelsConfigPage extends AbstractWizardPage {
 
 	private HeatmapColoredLabelsHeader header;
 
-	private boolean updating = false;
+	private Font labelFont;
 
-	public ColoredLabelsHeaderPage() {
+	public ColoredLabelsConfigPage() {
 		this(new HeatmapColoredLabelsHeader(null));
 	}
 
     /** Creates new form ColoredClustersConfigPage */
-    public ColoredLabelsHeaderPage(HeatmapColoredLabelsHeader header) {
+    public ColoredLabelsConfigPage(HeatmapColoredLabelsHeader header) {
 		super();
 
 		this.header = header;
@@ -77,22 +69,18 @@ public class ColoredLabelsHeaderPage extends AbstractWizardPage {
 	public void updateControls() {
 		super.updateControls();
 
-		updating = true;
-
 		titleField.setText(header.getTitle());
 		thicknessSpin.setValue(header.getThickness());
 		marginSpin.setValue(header.getMargin());
 		separationGridChk.setSelected(header.isSeparationGrid());
 
 		labelVisibleChk.setSelected(header.isLabelVisible());
-		labelFontField.setText(fontText(header.getLabelFont()));
-		labelFontField.setFont(header.getLabelFont());
+		labelFont = header.getLabelFont();
+		fontChanged();
 		labelRotatedChk.setSelected(header.isLabelRotated());
 		labelColorDefinedChk.setSelected(header.isLabelColorDefined());
 		labelColor.setColor(header.getLabelColor());
 		labelVisibleChanged();
-
-		updating = false;
 	}
 
 	private void labelVisibleChanged() {
@@ -104,13 +92,21 @@ public class ColoredLabelsHeaderPage extends AbstractWizardPage {
 		labelColor.setEnabled(labelColorDefinedChk.isSelected() && e);
 	}
 
+	private void fontChanged() {
+		labelFontField.setText(FontUtils.fontText(labelFont));
+		labelFontField.setFont(labelFont);
+	}
+
 	private void selectFont() {
 		FontChooserDialog dlg =
 				new FontChooserDialog(null, header.getLabelFont());
 		dlg.setVisible(true);
 
-		if (!dlg.isCancelled())
-			header.setLabelFont(dlg.getFont());
+		if (dlg.isCancelled())
+			return;
+
+		labelFont = dlg.getFont();
+		fontChanged();
 	}
 
 	@Override
@@ -122,16 +118,10 @@ public class ColoredLabelsHeaderPage extends AbstractWizardPage {
 		header.setMargin((Integer) marginSpin.getValue());
 		header.setSeparationGrid(separationGridChk.isSelected());
 		header.setLabelVisible(labelVisibleChk.isSelected());
+		header.setLabelFont(labelFont);
 		header.setLabelRotated(labelRotatedChk.isSelected());
 		header.setLabelColorDefined(labelColorDefinedChk.isSelected());
 		header.setLabelColor(labelColor.getColor());
-	}
-
-	private String fontText(Font font) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(font.getFontName());
-		sb.append(", ").append(font.getSize());
-		return sb.toString();
 	}
 
     /** This method is called from within the constructor to

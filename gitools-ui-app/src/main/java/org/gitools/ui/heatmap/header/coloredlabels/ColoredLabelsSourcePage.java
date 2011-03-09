@@ -21,7 +21,7 @@
  * Created on 02-mar-2011, 8:08:28
  */
 
-package org.gitools.ui.clustering.annotations;
+package org.gitools.ui.heatmap.header.coloredlabels;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -31,17 +31,17 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class ColoredLabelsAnnotationsPage extends AbstractWizardPage {
+public class ColoredLabelsSourcePage extends AbstractWizardPage {
 
 	private HeatmapDim hdim;
 	private AnnPatClusteringMethod method;
 
-	public ColoredLabelsAnnotationsPage(HeatmapDim hdim, AnnPatClusteringMethod method) {
+	public ColoredLabelsSourcePage(HeatmapDim hdim, AnnPatClusteringMethod method) {
 		this.hdim = hdim;
 		this.method = method;
 		

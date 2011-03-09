@@ -19,7 +19,7 @@ package org.gitools.ui.heatmap.panel.properties;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 
 public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel {
 

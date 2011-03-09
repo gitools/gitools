@@ -20,6 +20,7 @@ package org.gitools.ui.heatmap.panel.details;
 import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
+import edu.upf.bg.textpatt.TextPattern;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -33,10 +34,13 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.analysis.overlapping.OverlappingResult;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.idtype.IdType;
+import org.gitools.idtype.IdTypeManager;
+import org.gitools.idtype.UrlLink;
 import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.AnnotationResolver;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
@@ -148,33 +152,52 @@ public class HeatmapDetailsController implements EntityController {
 
 			if (column >= 0 && column < columnCount) {
 				HeatmapDim colDim = heatmap.getColumnDim();
-				HeatmapLabelsHeader hdr = colDim.getLabelsHeader();
-				//context.put("linkName", hdr.getLinkName());
-				//context.put("linkUrl", heatmap.getColumnLinkUrl(column));
 
 				name = heatmap.getColumnLabel(column);
 				String label = heatmap.getMatrixView().getColumnLabel(column);
 				AnnotationMatrix annMatrix = colDim.getAnnotations();
 				if (annMatrix != null)
 					annotations = annMatrix.getAnnotations(label);
+
+				IdType idType = colDim.getIdType();
+				if (idType != null) {
+					String idTypeKey = idType.getKey();
+					List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
+					AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
+					for (UrlLink link : tlinks) {
+						TextPattern pat = link.getPattern();
+						String url = pat.generate(resolver);
+						links.put(link.getName(), url);
+					}
+				}
 			}
 			else if (row >= 0 && row < rowCount) {
 				HeatmapDim rowDim = heatmap.getRowDim();
-				HeatmapLabelsHeader hdr = rowDim.getLabelsHeader();
-				//context.put("linkName", hdr.getLinkName());
-				//context.put("linkUrl", heatmap.getRowLinkUrl(row));
 
 				name = heatmap.getRowLabel(row);
 				String label = heatmap.getMatrixView().getRowLabel(row);
 				AnnotationMatrix annMatrix = rowDim.getAnnotations();
 				if (annMatrix != null)
 					annotations = annMatrix.getAnnotations(label);
+
+				IdType idType = rowDim.getIdType();
+				if (idType != null) {
+					String idTypeKey = idType.getKey();
+					List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
+					AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
+					for (UrlLink link : tlinks) {
+						TextPattern pat = link.getPattern();
+						String url = pat.generate(resolver);
+						links.put(link.getName(), url);
+					}
+				}
 			}
 
 			templateName = headerTemplateName;
 						
 			context.put("name", name);
 			context.put("annotations", annotations);
+			context.put("links", links);
 		}
 
 		try {

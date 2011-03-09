@@ -22,7 +22,7 @@ import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;

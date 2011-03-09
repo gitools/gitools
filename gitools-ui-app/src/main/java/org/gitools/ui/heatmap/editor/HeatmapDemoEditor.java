@@ -20,7 +20,7 @@ package org.gitools.ui.heatmap.editor;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.ArrayElementAdapter;
@@ -32,7 +32,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 
 public class HeatmapDemoEditor extends HeatmapEditor {
 
@@ -50,8 +50,8 @@ public class HeatmapDemoEditor extends HeatmapEditor {
 				ElementDecoratorNames.PVALUE, matrixView.getCellAdapter());
 		
 		return new Heatmap(matrixView, decorator,
-				new HeatmapLabelsHeader(),
-				new HeatmapLabelsHeader());
+				new HeatmapTextLabelsHeader(),
+				new HeatmapTextLabelsHeader());
 	}
 
 	private static MatrixView createTable(int rows, int cols) {		

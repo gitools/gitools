@@ -20,7 +20,7 @@ package org.gitools.ui.actions.data;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 import java.awt.event.ActionEvent;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.matrix.sort.SortCriteria.SortDirection;

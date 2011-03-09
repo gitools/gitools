@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.utils.DocumentChangeListener;

@@ -15,12 +15,12 @@
  *  under the License.
  */
 
-package org.gitools.ui.clustering.annotations;
+package org.gitools.ui.heatmap.header.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
@@ -47,11 +47,11 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 	private AnnPatClusteringMethod clusteringMethod;
 	
-	private ColoredLabelsAnnotationsPage sourcePage;
-	private ColoredLabelsHeaderPage headerPage;
-	private ColoredLabelsPage clustersPage;
+	private ColoredLabelsSourcePage sourcePage;
+	private ColoredLabelsConfigPage headerPage;
+	private ColoredLabelsGroupsPage clustersPage;
 
-	public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader h, boolean applyToRows) {
+	public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader header, boolean applyToRows) {
 		super();
 
 		this.heatmap = heatmap;
@@ -59,7 +59,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		this.applyToRows = applyToRows;
 
 		this.lastPattern = "";
-		this.header = h;
+		this.header = header;
 
 		clusteringMethod = new AnnPatClusteringMethod();
 	}
@@ -67,14 +67,14 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		if (!editionMode) {
-			sourcePage = new ColoredLabelsAnnotationsPage(hdim, clusteringMethod);
+			sourcePage = new ColoredLabelsSourcePage(hdim, clusteringMethod);
 			addPage(sourcePage);
 		}
 
-		headerPage = new ColoredLabelsHeaderPage(header);
+		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
 
-		clustersPage = new ColoredLabelsPage(header);
+		clustersPage = new ColoredLabelsGroupsPage(header);
 		addPage(clustersPage);
 	}
 

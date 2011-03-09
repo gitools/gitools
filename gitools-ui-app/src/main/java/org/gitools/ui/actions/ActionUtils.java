@@ -17,8 +17,8 @@
 
 package org.gitools.ui.actions;
 
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapAnnotatedMatrixView;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapAnnotatedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.AppFrame;

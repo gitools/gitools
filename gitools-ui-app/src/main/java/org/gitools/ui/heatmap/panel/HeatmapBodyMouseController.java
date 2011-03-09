@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapBodyMouseController

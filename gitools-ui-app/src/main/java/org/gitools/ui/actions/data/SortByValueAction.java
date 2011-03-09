@@ -29,7 +29,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.aggregation.MultAggregator;
 import org.gitools.matrix.sort.SortCriteria;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;

@@ -18,7 +18,7 @@
 package org.gitools.heatmap.util;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;

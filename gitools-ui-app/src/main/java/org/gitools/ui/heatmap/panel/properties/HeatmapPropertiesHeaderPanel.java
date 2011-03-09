@@ -23,7 +23,8 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
-import org.gitools.ui.heatmap.header.LabelsHeaderPage;
+import org.gitools.idtype.IdType;
+import org.gitools.ui.heatmap.header.textlabels.TextLabelsSourcePage;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.Color;
@@ -34,27 +35,31 @@ import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.idtype.IdTypeManager;
+import org.gitools.idtype.IdTypeNames;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.clustering.annotations.ColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
@@ -76,6 +81,13 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		this.rowMode = rowMode;
 
         initComponents();
+
+		List<IdType> idTypes = IdTypeManager.getDefault().getIdTypes();
+		idTypeCb.setModel(new DefaultComboBoxModel(idTypes.toArray(new IdType[idTypes.size()])));
+		idTypeCb.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent e) {
+				hdim.setIdType((IdType) idTypeCb.getSelectedItem()); }
+		});
 
 		headerList.setModel(new DefaultListModel());
 		headerList.addListSelectionListener(new ListSelectionListener() {
@@ -116,6 +128,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	protected void updateControls() {
 		updatingControls = true;
 
+		idTypeCb.setSelectedItem(hdim.getIdType());
+		
 		updateAnnotations();
 
 		updateHeaders();
@@ -124,7 +138,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 		updatingControls = false;
 	}
-
+	
 	private void updateAnnotations() {
 		AnnotationMatrix annMatrix = hdim.getAnnotations();
 		
@@ -152,6 +166,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		headerList.setModel(m);
 		if (index >= 0)
 			headerList.setSelectedIndex(index);
+		else if (!m.isEmpty())
+			headerList.setSelectedIndex(0);
 	}
 
 	private void updateHeaderSelection() {
@@ -212,8 +228,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 	protected void heatmapPropertyChange(PropertyChangeEvent evt) {
 		if (updatingModel)
 			return;
-
-		final HeatmapLabelsHeader hdr = hdim.getLabelsHeader();
 
 		final Object src = evt.getSource();
 		final String pname = evt.getPropertyName();
@@ -280,6 +294,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         headerSize = new javax.swing.JSpinner();
         headerVisible = new javax.swing.JCheckBox();
         headerBgColor = new org.gitools.ui.platform.component.ColorChooserLabel();
+        jLabel3 = new javax.swing.JLabel();
+        idTypeCb = new javax.swing.JComboBox();
+        jSeparator2 = new javax.swing.JSeparator();
 
         jLabel9.setText("Annotations");
 
@@ -381,29 +398,43 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         headerBgColor.setEnabled(false);
 
+        jLabel3.setText("Type of identifiers");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel9))
+                        .addComponent(idTypeCb, 0, 256, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(annOpen)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(annImport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(annClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addComponent(annFilter)))
+                        .addComponent(jLabel3)
+                        .addContainerGap(156, Short.MAX_VALUE))))
+            .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addContainerGap(191, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(annOpen)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(annImport)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(annClear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(annFilter)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
@@ -439,6 +470,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idTypeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(annFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -450,7 +487,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                     .addComponent(annFilter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -468,7 +505,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                         .addComponent(headerSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(headerVisible))
                     .addComponent(headerBgColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(420, Short.MAX_VALUE))
+                .addContainerGap(330, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -555,9 +592,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			return;
 	
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
-		if (cls.equals(HeatmapLabelsHeader.class)) {
-			HeatmapLabelsHeader h = new HeatmapLabelsHeader(hdim);
-			LabelsHeaderPage labelPage = new LabelsHeaderPage(hdim, h);
+		if (cls.equals(HeatmapTextLabelsHeader.class)) {
+			HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(hdim);
+			TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, h);
 			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
 			dlg.setVisible(true);
 			if (dlg.isCancelled())
@@ -584,20 +621,28 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		int index = headerList.getSelectedIndex();
 		HeatmapHeader h = hdim.getHeaders().get(index);
 		Class<? extends HeatmapHeader> cls = h.getClass();
-		if (cls.equals(HeatmapLabelsHeader.class)) {
-			LabelsHeaderPage labelPage = new LabelsHeaderPage(hdim, (HeatmapLabelsHeader) h);
-			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
-			dlg.setVisible(true);
+		IWizard wizard = null;
+		if (cls.equals(HeatmapTextLabelsHeader.class)) {
+			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
+			//TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, (HeatmapLabelsHeader) h);
+			//PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
+			//dlg.setVisible(true);
 		}
 		else {
 			ColoredLabelsHeaderWizard wiz =
 					new ColoredLabelsHeaderWizard(
 						hm, hdim, (HeatmapColoredLabelsHeader) h, rowMode);
 			wiz.setEditionMode(true);
-			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
-			wdlg.setTitle("Edit header");
-			wdlg.setVisible(true);
+			wizard = wiz;
 		}
+
+		if (wizard == null)
+			return;
+
+		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
+		wdlg.setTitle("Edit header");
+		wdlg.setVisible(true);
+
 		updateHeaders();
 	}//GEN-LAST:event_headerEditBtnActionPerformed
 
@@ -646,11 +691,14 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     private javax.swing.JSpinner headerSize;
     private javax.swing.JButton headerUpBtn;
     private javax.swing.JCheckBox headerVisible;
+    private javax.swing.JComboBox idTypeCb;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 
 }

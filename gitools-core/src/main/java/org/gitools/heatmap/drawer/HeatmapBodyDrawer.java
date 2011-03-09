@@ -26,7 +26,7 @@ import java.awt.Rectangle;
 
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {

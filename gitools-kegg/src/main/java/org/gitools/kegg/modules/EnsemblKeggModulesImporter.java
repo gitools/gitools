@@ -98,7 +98,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 	private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[] {
 		new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
-		new EnsemblKeggFeatureCategory("Genes", ENTREZ, "Entrez Genes"),
+		new EnsemblKeggFeatureCategory("Genes", NCBI_GENES, "NCBI Genes"),
 		new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"),
 		new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt"),
 		new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
@@ -301,7 +301,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			String orgId = organism.getKeggDef().getEntry_id();
 			Map<String, String> idMap = new HashMap<String, String>();
 			idMap.put("ensembl-" + orgId, ENSEMBL_GENES);
-			idMap.put("ncbi-geneid", ENTREZ);
+			idMap.put("ncbi-geneid", NCBI_GENES);
 			idMap.put("uniprot", UNIPROT);
 			idMap.put("pdb", PDB);
 
@@ -362,9 +362,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			idmap.put("ensembl_gene_id", ENSEMBL_GENES);
 			idmap.put("ensembl_transcript_id", ENSEMBL_TRANSCRIPTS);
 			idmap.put("pdb", PDB);
-			idmap.put("entrezgene", ENTREZ);
+			idmap.put("entrezgene", NCBI_GENES);
 			idmap.put("uniprot_swissprot_accession", UNIPROT);
-			//ids.put("unigene", "unigene:genes");
+			//idmap.put("unigene", UNIGENE);
 
 			Set<String> idremove = new HashSet<String>(Arrays.asList(new String[] {
 				"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name",
@@ -527,7 +527,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 					&& organism.getKeggDef() != null
 					&& !keggFeatMap.containsKey(ENSEMBL_GENES)) {
 
-				List<String> idList = Arrays.asList(new String[] { ENSEMBL_GENES, ENTREZ, PDB, UNIPROT });
+				List<String> idList = Arrays.asList(new String[] { ENSEMBL_GENES, NCBI_GENES, PDB, UNIPROT });
 				Iterator<String> it = idList.iterator();
 				while (linkId == null && it.hasNext()) {
 					String id = it.next();

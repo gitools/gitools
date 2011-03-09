@@ -32,7 +32,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 
 import org.gitools.stats.mtc.MTC;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;

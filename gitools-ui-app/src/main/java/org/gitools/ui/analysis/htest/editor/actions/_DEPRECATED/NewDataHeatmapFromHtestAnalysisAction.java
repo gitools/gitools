@@ -19,7 +19,7 @@ package org.gitools.ui.analysis.htest.editor.actions._DEPRECATED;
 
 import java.awt.event.ActionEvent;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;

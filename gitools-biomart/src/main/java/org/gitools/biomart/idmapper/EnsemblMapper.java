@@ -97,9 +97,9 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 	private static final Map<String, String> inameMap = new HashMap<String, String>();
 	static {
 		inameMap.put(PDB, "pdb");
-		inameMap.put(GENEBANK, "embl");
-		inameMap.put(ENTREZ, "entrezgene");
-		inameMap.put(UNIGENE, "unigene");
+		inameMap.put(NCBI_REFSEQ, "embl");
+		inameMap.put(NCBI_GENES, "entrezgene");
+		inameMap.put(NCBI_UNIGENE, "unigene");
 		inameMap.put(UNIPROT, "uniprot_swissprot_accession");
 		inameMap.put(GO_BP, "go_biological_process_id");
 		inameMap.put(GO_MF, "go_molecular_function_id");

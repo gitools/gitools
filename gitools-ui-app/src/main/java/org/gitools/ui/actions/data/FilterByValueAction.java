@@ -28,7 +28,7 @@ import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.AppFrame;
 
 
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewValueFilter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;

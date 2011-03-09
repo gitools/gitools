@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.exporter.HtmlHeatmapExporter;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.progress.JobRunnable;

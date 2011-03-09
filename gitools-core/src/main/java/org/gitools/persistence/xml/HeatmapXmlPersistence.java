@@ -21,7 +21,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;

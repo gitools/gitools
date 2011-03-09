@@ -29,7 +29,7 @@ import org.gitools.ui.settings.Settings;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;

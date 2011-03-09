@@ -25,8 +25,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 public class AbstractHeatmapPanel extends JPanel {

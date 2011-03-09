@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingProcessor;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileSuffixes;

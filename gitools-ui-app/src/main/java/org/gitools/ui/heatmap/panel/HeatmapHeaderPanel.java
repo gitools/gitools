@@ -19,9 +19,9 @@ package org.gitools.ui.heatmap.panel;
 
 import java.beans.PropertyChangeEvent;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
 
 public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 

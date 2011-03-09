@@ -18,7 +18,7 @@
 package org.gitools.ui.heatmap.editor;
 
 import java.awt.event.ActionEvent;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.ui.IconNames;

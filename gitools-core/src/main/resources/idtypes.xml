@@ -1,0 +1,56 @@
+<idTypes>
+	<idType key="not_specified">
+		<title>Not specified</title>
+		<link name="Ensembl">http://www.ensembl.org/Multi/Lucene/Results?species=all;q=${id}</link>
+		<link name="NCBI Genes">http://www.ncbi.nlm.nih.gov/gene?term=${id}</link>
+		<link name="NCBI Nucleotide">http://www.ncbi.nlm.nih.gov/nuccore?term=${id}</link>
+		<link name="KEGG">http://www.genome.jp/dbget-bin/www_bget?${id}</link>
+		<link name="AmiGO Terms">http://amigo.geneontology.org/cgi-bin/amigo/search.cgi?search_query=${id}&amp;search_constraint=term&amp;action=new-search</link>
+		<link name="AmiGO Genes and Proteins">http://amigo.geneontology.org/cgi-bin/amigo/search.cgi?search_query=${id}&amp;search_constraint=gp&amp;action=new-search</link>
+	</idType>
+
+	<idType key="ensembl:gene">
+		<title>Ensembl genes</title>
+		<link name="Ensembl">http://www.ensembl.org/id/${id}</link>
+	</idType>
+
+	<idType key="ensembl:transcript">
+		<title>Ensembl transcripts</title>
+		<link name="Ensembl">http://www.ensembl.org/id/${id}</link>
+	</idType>
+	
+	<idType key="ensembl:protein">
+		<title>Ensembl proteins</title>
+		<link name="Ensembl">http://www.ensembl.org/id/${id}</link>
+	</idType>
+
+	<idType key="kegg:pathway">
+		<title>KEGG pathways</title>
+		<link name="KEGG">http://www.genome.jp/dbget-bin/www_bget?${id}</link>
+	</idType>
+
+	<idType key="kegg:gene">
+		<title>KEGG genes</title>
+		<link name="KEGG">http://www.genome.jp/dbget-bin/www_bget?${id}</link>
+	</idType>
+
+	<idType key="go:term">
+		<title>Gene Ontology Term</title>
+		<link name="AmiGO">http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=${id}</link>
+	</idType>
+
+	<idType key="ncbi:gene">
+		<title>NCBI genes</title>
+		<link name="NCBI Genes">http://www.ncbi.nlm.nih.gov/gene/${id}</link>
+	</idType>
+
+	<idType key="ncbi:refseq">
+		<title>NCBI Reference Sequences</title>
+		<link name="NCBI Nucleotides">http://www.ncbi.nlm.nih.gov/nuccore/${id}</link>
+	</idType>
+
+	<idType key="ncbi:protein">
+		<title>NCBI Protein</title>
+		<link name="NCBI Protein">http://www.ncbi.nlm.nih.gov/protein/${id}</link>
+	</idType>
+</idTypes>

@@ -28,7 +28,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;

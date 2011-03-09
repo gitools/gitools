@@ -19,11 +19,11 @@ package org.gitools.idmapper;
 
 public interface Ids {
 
-	public static final String GENEBANK = "genebank:genes";
-	public static final String UNIGENE = "unigene:genes";
-	public static final String ENTREZ = "entrez:genes";
-	public static final String PDB = "pdb:proteins";
-	public static final String UNIPROT = "uniprot:proteins";
+	public static final String NCBI_REFSEQ = "ncbi:refseq";
+	public static final String NCBI_UNIGENE = "ncbi:unigene";
+	public static final String NCBI_GENES = "ncbi:gene";
+	public static final String PDB = "pdb:protein";
+	public static final String UNIPROT = "uniprot:protein";
 
 	public static final String GO_BP = "go:bp";
 	public static final String GO_MF = "go:mf";

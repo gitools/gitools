@@ -23,7 +23,7 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceUtils;

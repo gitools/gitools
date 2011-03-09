@@ -129,10 +129,15 @@ public class TextPattern {
 		return new TextPattern(pattern);
 	}
 
+	private String text;
 	private List<Token> tokens;
 
 	public TextPattern(String pattern) {
 		this.tokens = internalCompile(pattern);
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	public String generate(VariableValueResolver resolver) {

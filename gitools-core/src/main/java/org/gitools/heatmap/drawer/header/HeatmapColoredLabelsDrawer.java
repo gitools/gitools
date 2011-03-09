@@ -26,10 +26,10 @@ import java.awt.Rectangle;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {

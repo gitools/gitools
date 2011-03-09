@@ -21,9 +21,9 @@ import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.platform.editor.MultiEditor;
@@ -66,7 +66,7 @@ public class AnalysisEditor extends MultiEditor {
 			
 			dataView = new HeatmapEditor(
 					new Heatmap(dataTable, dataRowDecorator,
-							new HeatmapLabelsHeader(), new HeatmapLabelsHeader()));
+							new HeatmapTextLabelsHeader(), new HeatmapTextLabelsHeader()));
 			
 			addView(dataView, "Data");
 		}
@@ -82,7 +82,7 @@ public class AnalysisEditor extends MultiEditor {
 		
 		resultsView = new HeatmapEditor(
 				new Heatmap(resultsTable, resultsRowDecorator,
-						new HeatmapLabelsHeader(), new HeatmapLabelsHeader()));
+						new HeatmapTextLabelsHeader(), new HeatmapTextLabelsHeader()));
 
 		addView(resultsView, "Results");
 	}

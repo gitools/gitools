@@ -35,7 +35,7 @@ import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
 
 public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel {

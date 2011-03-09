@@ -19,7 +19,7 @@ package org.gitools.ui.view.details;
 
 import org.gitools.ui.heatmap.panel.details.HeatmapDetailsController;
 import org.gitools.ui.view.entity.EntityController;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.view.entity.EntityView;
 
 public class DetailsView extends EntityView {

@@ -27,14 +27,14 @@ import java.awt.Rectangle;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabelsHeader> {
+public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapTextLabelsHeader> {
 
 	protected static class AnnotationProvider implements LabelProvider {
 
@@ -110,7 +110,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapLabe
 		}
 	}
 
-	public HeatmapLabelsDrawer(Heatmap heatmap, HeatmapLabelsHeader header, boolean horizontal) {
+	public HeatmapLabelsDrawer(Heatmap heatmap, HeatmapTextLabelsHeader header, boolean horizontal) {
 		super(heatmap, header, horizontal);
 	}
 

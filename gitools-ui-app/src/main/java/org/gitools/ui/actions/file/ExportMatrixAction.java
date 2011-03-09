@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.gitools.exporter.TextMatrixViewExporter;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;

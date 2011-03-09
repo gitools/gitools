@@ -88,6 +88,6 @@ public class AnnPatColumnClusteringData implements ClusteringData {
 	public ClusteringDataInstance getInstance(int index) {
 		return new Instance(
 				new AnnotationResolver(
-					am, matrix.getColumnLabel(index)));
+					am, matrix.getColumnLabel(index), "N/A"));
 	}
 }

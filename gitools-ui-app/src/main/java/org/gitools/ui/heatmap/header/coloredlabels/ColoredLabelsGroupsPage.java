@@ -21,7 +21,7 @@
  * Created on 03-mar-2011, 18:51:34
  */
 
-package org.gitools.ui.clustering.annotations;
+package org.gitools.ui.heatmap.header.coloredlabels;
 
 import java.awt.Color;
 import javax.swing.ListModel;
@@ -29,13 +29,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class ColoredLabelsPage extends AbstractWizardPage {
+public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
 	private static class ClusterListModel implements ListModel {
 
@@ -70,7 +70,7 @@ public class ColoredLabelsPage extends AbstractWizardPage {
 	private HeatmapColoredLabelsHeader header;
 
     /** Creates new form ColoredClustersPage */
-    public ColoredLabelsPage(HeatmapColoredLabelsHeader header) {
+    public ColoredLabelsGroupsPage(HeatmapColoredLabelsHeader header) {
 		this.header = header;
 		
         initComponents();
@@ -148,7 +148,7 @@ public class ColoredLabelsPage extends AbstractWizardPage {
         jLabel7 = new javax.swing.JLabel();
         clusterColor = new org.gitools.ui.platform.component.ColorChooserLabel();
 
-        jLabel5.setText("Clusters");
+        jLabel5.setText("Labels");
 
         clusterList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(clusterList);

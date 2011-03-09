@@ -35,8 +35,9 @@ import org.gitools.persistence.FileFormat;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.FileSuffixes;
@@ -131,7 +132,7 @@ public class HeatmapEditor extends AbstractEditor {
 		heatmapListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				heatmapPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+				heatmapPropertyChange(evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 			}
 		};
 		
@@ -166,30 +167,22 @@ public class HeatmapEditor extends AbstractEditor {
 	}
 
 	protected void heatmapPropertyChange(
-			String propertyName, Object oldValue, Object newValue) {
-		
-		if (Heatmap.CELL_DECORATOR_CHANGED.equals(propertyName)) {
-			final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
-			prevDecorator.removePropertyChangeListener(cellDecoratorListener);
-			final ElementDecorator nextDecorator = (ElementDecorator) newValue;
-			nextDecorator.addPropertyChangeListener(cellDecoratorListener);
+			Object src, String pname, Object oldValue, Object newValue) {
 
-			colorScalePanel.setScale(nextDecorator.getScale());
+		if (src.equals(heatmap)) {
+			if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname)) {
+				final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
+				prevDecorator.removePropertyChangeListener(cellDecoratorListener);
+				final ElementDecorator nextDecorator = (ElementDecorator) newValue;
+				nextDecorator.addPropertyChangeListener(cellDecoratorListener);
+
+				colorScalePanel.setScale(nextDecorator.getScale());
+			}
+			else if (Heatmap.PROPERTY_CHANGED.equals(pname)) {
+			}
 		}
-		else if (Heatmap.COLUMN_LABELS_HEADER_CHANGED.equals(propertyName)) {
-			final HeatmapHeader prevDecorator = (HeatmapHeader) oldValue;
-			prevDecorator.removePropertyChangeListener(colDecoratorListener);
-			final HeatmapHeader nextDecorator = (HeatmapHeader) newValue;
-			nextDecorator.addPropertyChangeListener(colDecoratorListener);
-		}
-		else if (Heatmap.ROW_LABELS_HEADER_CHANGED.equals(propertyName)) {
-			final HeatmapHeader prevDecorator = (HeatmapHeader) oldValue;
-			prevDecorator.removePropertyChangeListener(rowDecoratorListener);
-			final HeatmapHeader nextDecorator = (HeatmapHeader) newValue;
-			nextDecorator.addPropertyChangeListener(rowDecoratorListener);
-		}
-		else if (Heatmap.PROPERTY_CHANGED.equals(propertyName)) {
-		}
+		else if ((src instanceof HeatmapDim) && HeatmapDim.IDTYPE_CHANGED.equals(pname))
+			refreshCellDetails();
 
 		setDirty(true);
 	}

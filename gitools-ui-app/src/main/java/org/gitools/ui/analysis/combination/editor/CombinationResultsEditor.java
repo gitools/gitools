@@ -21,7 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JSplitPane;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;

@@ -18,8 +18,8 @@
 package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;

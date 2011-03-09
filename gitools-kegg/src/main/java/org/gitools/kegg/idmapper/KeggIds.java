@@ -19,8 +19,8 @@ package org.gitools.kegg.idmapper;
 
 public interface KeggIds {
 
-	public static final String KEGG_GENES = "kegg:genes";
-	public static final String KEGG_PATHWAYS = "kegg:pathways";
-	public static final String KEGG_ENZYMES = "kegg:enzymes";
-	public static final String KEGG_DRUGS = "kegg:drugs";
+	public static final String KEGG_GENES = "kegg:gene";
+	public static final String KEGG_PATHWAYS = "kegg:pathway";
+	public static final String KEGG_ENZYMES = "kegg:enzyme";
+	public static final String KEGG_DRUGS = "kegg:drug";
 }

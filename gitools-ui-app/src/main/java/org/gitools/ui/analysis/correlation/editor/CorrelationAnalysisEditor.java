@@ -22,7 +22,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;

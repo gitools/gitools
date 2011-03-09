@@ -38,9 +38,9 @@ import javax.swing.JScrollBar;
 
 import javax.swing.JViewport;
 import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
-import org.gitools.heatmap.model.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 

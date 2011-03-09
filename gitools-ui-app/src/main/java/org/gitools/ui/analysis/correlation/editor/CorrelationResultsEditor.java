@@ -22,7 +22,7 @@ import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JSplitPane;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;

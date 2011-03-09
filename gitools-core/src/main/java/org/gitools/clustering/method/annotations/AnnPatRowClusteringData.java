@@ -88,6 +88,6 @@ public class AnnPatRowClusteringData implements ClusteringData {
 	public ClusteringDataInstance getInstance(int index) {
 		return new Instance(
 				new AnnotationResolver(
-					am, matrix.getRowLabel(index)));
+					am, matrix.getRowLabel(index), "N/A"));
 	}
 }

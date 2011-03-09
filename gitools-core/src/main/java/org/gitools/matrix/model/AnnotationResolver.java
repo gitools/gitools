@@ -21,19 +21,28 @@ import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
 
 public class AnnotationResolver implements VariableValueResolver {
 
+		public static final String DEFAULT_NA = "";
+
 		private AnnotationMatrix am;
 
 		private String label;
 		private int annRow;
+
+		private String na;
 
 		public AnnotationResolver(AnnotationMatrix am) {
 			this(am, null);
 		}
 
 		public AnnotationResolver(AnnotationMatrix am, String label) {
+			this(am, label, DEFAULT_NA);
+		}
+
+		public AnnotationResolver(AnnotationMatrix am, String label, String na) {
 			this.am = am;
 			if (label != null)
 				setLabel(label);
+			this.na = na;
 		}
 
 		public final void setLabel(String label) {
@@ -47,6 +56,9 @@ public class AnnotationResolver implements VariableValueResolver {
 		public String resolveValue(String variableName) {
 			if (variableName.equalsIgnoreCase("id"))
 				return label;
+
+			if (annRow == -1)
+				return na;
 
 			int annCol = am != null ? am.getColumnIndex(variableName) : -1;
 			if (annCol == -1)

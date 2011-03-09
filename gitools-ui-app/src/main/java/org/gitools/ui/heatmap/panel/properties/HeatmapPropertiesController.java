@@ -19,7 +19,7 @@ package org.gitools.ui.heatmap.panel.properties;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.view.entity.EntityController;
 
 public class HeatmapPropertiesController implements EntityController {

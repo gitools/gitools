@@ -30,7 +30,7 @@ import java.util.Map;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;

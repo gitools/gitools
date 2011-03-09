@@ -24,7 +24,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 

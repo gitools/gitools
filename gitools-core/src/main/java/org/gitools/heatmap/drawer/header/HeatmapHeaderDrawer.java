@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
@@ -56,8 +56,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			if (!h.isVisible())
 				continue;
 			
-			if (h instanceof HeatmapLabelsHeader)
-				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapLabelsHeader) h, horizontal));
+			if (h instanceof HeatmapTextLabelsHeader)
+				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal));
 			else if (h instanceof HeatmapColoredLabelsHeader)
 				drawers.add(new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal));
 		}

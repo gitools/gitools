@@ -23,7 +23,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.model.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;

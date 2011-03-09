@@ -37,8 +37,8 @@ import javax.swing.JPanel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.heatmap.model.Heatmap;
-import org.gitools.heatmap.model.HeatmapDim;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 

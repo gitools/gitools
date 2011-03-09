@@ -24,9 +24,9 @@
 package org.gitools.ui.heatmap.header;
 
 import javax.swing.DefaultListModel;
-import org.gitools.heatmap.model.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.model.HeatmapHeader;
-import org.gitools.heatmap.model.HeatmapLabelsHeader;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 
@@ -62,7 +62,7 @@ public class AddHeaderPage extends AbstractWizardPage {
         initComponents();
 
 		model = new DefaultListModel();
-		model.addElement(new HeaderType("Text labels", HeatmapLabelsHeader.class));
+		model.addElement(new HeaderType("Text labels", HeatmapTextLabelsHeader.class));
 		model.addElement(new HeaderType("Colored labels from annotations", HeatmapColoredLabelsHeader.class));
 		// TODO Colored clusters from a hierarchical clustering
 		// TODO Values plot

@@ -19,6 +19,7 @@ package org.gitools.ui.modules.wizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
+import org.gitools.biomart.idmapper.EnsemblIds;
 import org.gitools.modules.importer.FeatureCategory;
 import org.gitools.modules.importer.ModulesImporter;
 import org.gitools.modules.importer.Organism;
@@ -55,7 +56,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
 							@Override public void run() {
 								setListData(features);
 								for (FeatureCategory f : features)
-									if (f.getRef().equals("ensembl:genes"))
+									if (f.getRef().equals(EnsemblIds.ENSEMBL_GENES))
 										setSelectedValue(f);
 								loaded = true;
 							}
