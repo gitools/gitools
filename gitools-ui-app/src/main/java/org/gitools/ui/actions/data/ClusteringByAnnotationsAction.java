@@ -19,13 +19,11 @@ package org.gitools.ui.actions.data;
 
 import java.awt.event.ActionEvent;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.wizard.WizardDialog;
 
 public class ClusteringByAnnotationsAction extends BaseAction {
 
@@ -36,8 +34,9 @@ public class ClusteringByAnnotationsAction extends BaseAction {
 
 	@Override
 	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
+		return false;
+		/*return model instanceof Heatmap
+			|| model instanceof IMatrixView;*/
 	}
 
 	@Override

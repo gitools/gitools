@@ -40,6 +40,9 @@ public class LabelSortDialog extends javax.swing.JDialog {
 		initComponents();
 
 		directionCb.setModel(new DefaultComboBoxModel(directions));
+
+		//TODO this option should disappear
+		useOriginalIds.setVisible(false);
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */

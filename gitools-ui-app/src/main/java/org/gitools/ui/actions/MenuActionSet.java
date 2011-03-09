@@ -97,10 +97,12 @@ public class MenuActionSet extends ActionSet {
 			new ActionSet("Data", new BaseAction[] {
 				new ActionSet("Filter", new BaseAction[] {
 					DataActions.filterByLabelAction,
+					DataActions.filterByAnnotationAction,
 					DataActions.filterByValueAction
 				}),
 				new ActionSet("Sort", new BaseAction[] {
 					DataActions.sortByLabelAction,
+					DataActions.sortByAnnotationsAction,
 					DataActions.sortByValueAction
 				}),
 				new ActionSet("Move", new BaseAction[] {

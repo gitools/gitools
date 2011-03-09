@@ -56,6 +56,9 @@ public class LabelFilterDialog extends javax.swing.JDialog {
 				saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
 			}
 		});
+
+		//TODO this option should disappear
+		useOriginalIds.setVisible(false);
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
@@ -132,8 +135,7 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         patterns.setRows(6);
         jScrollPane1.setViewportView(patterns);
 
-        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD));
-        jLabel1.setText("Write one label pattern per line:");
+        jLabel1.setText("One label per line:");
 
         jLabel2.setText("Apply to:");
 

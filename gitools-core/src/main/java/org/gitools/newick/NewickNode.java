@@ -23,6 +23,10 @@ import java.util.List;
 
 public class NewickNode<VT> {
 
+	public enum Order {
+		PRE_ORDER, POST_ORDER
+	}
+
 	private String name;
 	private VT value;
 
@@ -72,6 +76,34 @@ public class NewickNode<VT> {
 
 	public boolean isLeaf() {
 		return children.isEmpty();
+	}
+
+	protected void leaves(List<NewickNode> leaves, int maxLevel, Order order) {
+		if (children.isEmpty() || maxLevel == 0)
+			leaves.add(this);
+		else if (maxLevel > 0) {
+			Iterable<NewickNode> iterable = null;
+			switch (order) {
+				case PRE_ORDER: iterable = children; break;
+				case POST_ORDER: iterable = new ReverseListIterator<NewickNode>(children); break;
+			}
+			for (NewickNode node : iterable)
+				node.leaves(leaves, maxLevel, order);
+		}
+	}
+
+	public List<NewickNode> getLeaves(int maxLevel, Order order) {
+		List<NewickNode> leaves = new ArrayList<NewickNode>();
+		leaves(leaves, maxLevel, order);
+		return leaves;
+	}
+
+	public List<NewickNode> getLeaves(int maxLevel) {
+		return getLeaves(maxLevel, Order.PRE_ORDER);
+	}
+
+	public List<NewickNode> getLeaves() {
+		return getLeaves(Integer.MAX_VALUE);
 	}
 
 	@Override
