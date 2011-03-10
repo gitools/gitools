@@ -28,6 +28,24 @@
 		<wsdlPath>biomart/martwsdl</wsdlPath>
 	</mart>
 	<mart>
+		<name>ensembl_60</name>
+		<description>Ensembl 60 (Nov 2010)</description>
+		<version>0.6</version>
+		<host>nov2010.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
+		<name>ensembl_59</name>
+		<description>Ensembl 59 (Aug 2010)</description>
+		<version>0.6</version>
+		<host>aug2010.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+	</mart>
+	<mart>
 		<name>ensembl_58</name>
 		<description>Ensembl 58 (May 2010)</description>
 		<version>0.6</version>
