@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -84,6 +85,10 @@ public class NewickParser<VT> {
 			NewickParser p = new NewickParser(" ( ( ), (1,2, )B:0.2 ,(:0.4,E):3)A:0.01;");
 			NewickTree t = p.parse();
 			System.out.println(t);
+			System.out.println(t.getTreeDepth()); 
+			for (NewickNode n : (List<NewickNode>) t.getRoot().getLeaves())
+				System.out.println(n);
+			
 		} catch (NewickParserException ex) {
 			Logger.getLogger(NewickParser.class.getName()).log(Level.SEVERE, null, ex);
 		}

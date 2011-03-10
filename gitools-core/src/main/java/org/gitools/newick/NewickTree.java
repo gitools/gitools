@@ -17,10 +17,6 @@
 
 package org.gitools.newick;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 public class NewickTree<VT> {
 
 	private NewickNode<VT> root;
@@ -40,23 +36,12 @@ public class NewickTree<VT> {
 		this.root = root;
 	}
 
+	public int getTreeDepth() {
+		return root.getMaxDepth(0);
+	}
+
 	@Override
 	public String toString() {
 		return root.toString() + ";";
-	}
-
-	// FIXME This method should be implemented in the nodes
-	public List<NewickNode<VT>> getLeaves(NewickNode<VT> node) {
-		List<NewickNode<VT>> leaves = new ArrayList<NewickNode<VT>>(0);
-
-		if (node != null) {
-			if (node.isLeaf())
-				leaves.add(node);
-			else
-				for (NewickNode<VT> n : node.getChildren())
-					leaves.addAll(getLeaves(n));
-
-		}
-		return leaves;
 	}
 }

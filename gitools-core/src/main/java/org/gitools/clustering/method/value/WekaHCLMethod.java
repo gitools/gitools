@@ -106,7 +106,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
 		NewickTree tree = newickParser.parse();
 
-		List<NewickNode> leaves = tree.getLeaves(tree.getRoot());
+		List<NewickNode> leaves = tree.getRoot().getLeaves();
 
 		for (NewickNode node : leaves) 
 			instancesCluster.add(new Integer(node.getName().substring(1)));

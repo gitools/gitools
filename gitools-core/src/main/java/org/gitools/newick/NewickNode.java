@@ -78,6 +78,25 @@ public class NewickNode<VT> {
 		return children.isEmpty();
 	}
 
+	public int getMaxDepth() {
+		return getMaxDepth(0);
+	}
+
+    protected int getMaxDepth(int depth) {
+        int res = 0;
+
+        if (isLeaf())
+            return depth + 1;
+
+        for (NewickNode child : children) {
+            int childDepth = child.getMaxDepth(depth + 1);
+            if (childDepth > res)
+                res = childDepth;
+        }
+
+        return res;
+    }
+
 	protected void leaves(List<NewickNode> leaves, int maxLevel, Order order) {
 		if (children.isEmpty() || maxLevel == 0)
 			leaves.add(this);
@@ -88,7 +107,7 @@ public class NewickNode<VT> {
 				case POST_ORDER: iterable = new ReverseListIterator<NewickNode>(children); break;
 			}
 			for (NewickNode node : iterable)
-				node.leaves(leaves, maxLevel, order);
+				node.leaves(leaves, maxLevel - 1, order);
 		}
 	}
 
