@@ -26,6 +26,8 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
+import org.gitools.clustering.method.value.ClusterUtils;
+import org.gitools.clustering.method.value.MatrixRowClusteringData;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
@@ -50,6 +52,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	private ColoredLabelsSourcePage sourcePage;
 	private ColoredLabelsConfigPage headerPage;
 	private ColoredLabelsGroupsPage clustersPage;
+	private ColoredLabelsHCLPage hclPage;
 
 	public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader header, boolean applyToRows) {
 		super();
@@ -73,7 +76,12 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
-
+/*
+		if (header.getHCLResults() != null) {
+			hclPage = new ColoredLabelsHCLPage();
+			addPage(hclPage);
+		}
+*/
 		clustersPage = new ColoredLabelsGroupsPage(header);
 		addPage(clustersPage);
 	}
@@ -81,6 +89,21 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	@Override
 	public boolean canFinish() {
 		return currentPage != sourcePage;
+	}
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		IWizardPage nextPage = super.getNextPage(page);
+/*
+		if (currentPage == hclPage) {
+
+			ClusteringResults results =
+					ClusterUtils.getHCLResultsByLevel(
+					header.getHCLResults(), hclPage.getLevel());
+
+			header.updateFromClusterResults(results);
+		}
+*/
+		return nextPage;
 	}
 
 	@Override

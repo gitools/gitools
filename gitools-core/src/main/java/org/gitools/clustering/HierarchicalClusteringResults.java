@@ -19,16 +19,19 @@ package org.gitools.clustering;
 
 import java.util.List;
 import java.util.Map;
+import org.gitools.newick.NewickTree;
 
 
 public class HierarchicalClusteringResults extends GenericClusteringResults {
 
 	private String newickTree;
 
-	public HierarchicalClusteringResults(String[] dataLabels, Map<String, List<Integer>> clusters, String newickTree) {
+	private NewickTree tree;
+
+	public HierarchicalClusteringResults(String[] dataLabels, Map<String, List<Integer>> clusters, NewickTree tree, String newickFormat) {
 		super(dataLabels, clusters);
 
-		this.newickTree = newickTree;
+		this.newickTree = newickFormat;
 	}
 
 	public String getNewickTree() {
@@ -37,5 +40,13 @@ public class HierarchicalClusteringResults extends GenericClusteringResults {
 
 	public void setNewickTree(String newickTree) {
 		this.newickTree = newickTree;
-	}	
+	}
+
+	public NewickTree getTree() {
+		return tree;
+	}
+
+	public void setTree(NewickTree tree) {
+		this.tree = tree;
+	}
 }

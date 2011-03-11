@@ -21,10 +21,15 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.gitools.clustering.ClusteringData;
+import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.newick.NewickNode;
+import org.gitools.newick.NewickTree;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.attributeSelection.GreedyStepwise;
@@ -165,6 +170,9 @@ public class ClusterUtils {
 		return labels; 
 	}
 
+	/* Transform value to a formatted string which can be sorted correctly
+	 (i.e: 3, 2, 10  -> 02, 03, 10)
+	 */
 	public static String valueToString(Integer value, Integer maxLength) {
 		String num = value.toString();
 		int numLenght = num.length();
@@ -172,6 +180,36 @@ public class ClusterUtils {
 			num = "0" + num;
 
 		return num;
+	}
+
+	public static ClusteringResults getHCLResultsByLevel(HierarchicalClusteringResults res, Integer level) {
+
+		ClusteringResults results = null;
+
+		HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();		
+
+		List<NewickNode> leaves = res.getTree().getRoot().getLeaves(level);
+
+		Integer maxLengthClusters = Integer.toString(leaves.size()).length();
+		
+		int i = 0;
+
+		for (NewickNode node : leaves) {
+
+			List<Integer> instancesCluster = new ArrayList<Integer>();
+			
+			 for (NewickNode leave : (List<NewickNode>) node.getLeaves()) {
+					instancesCluster.add(Integer.valueOf(leave.getName().substring(1)));
+			}
+
+			clusterResults.put(valueToString(i, maxLengthClusters), instancesCluster);
+
+			i++;
+		}
+
+		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getTree(), res.getNewickTree());
+
+		return results;
 	}
 
 /*

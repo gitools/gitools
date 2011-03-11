@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.HierarchicalClusteringResults;
+import org.gitools.newick.NewickTree;
 
 public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
@@ -113,6 +115,8 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
 	/** Maps matrix row/column id to cluster index */
 	protected Map<String, Integer> dataColoredLabelIndices;
+
+	private HierarchicalClusteringResults HCLResults;
 
 	public HeatmapColoredLabelsHeader(HeatmapDim hdim) {
 		super(hdim);
@@ -282,5 +286,13 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		dataColoredLabelIndices = new HashMap<String, Integer>();
 		for (String label : results.getDataLabels())
 			dataColoredLabelIndices.put(label, results.getClusterIndex(label));
+	}
+
+	public void setHCLResults(HierarchicalClusteringResults results) {
+		this.HCLResults = results;
+	}
+
+	public HierarchicalClusteringResults getHCLResults() {
+		return HCLResults;
 	}
 }

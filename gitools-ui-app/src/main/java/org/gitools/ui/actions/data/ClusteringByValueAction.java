@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.clustering.method.value.ClusterUtils;
 import org.gitools.clustering.method.value.MatrixRowClusteringData;
 import org.gitools.heatmap.Heatmap;
@@ -90,6 +91,10 @@ public class ClusteringByValueAction extends BaseAction {
 
 						HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
 						header.setTitle("Cluster_header_" + hdim.getHeaders().size());
+
+						if (results instanceof HierarchicalClusteringResults)
+							header.setHCLResults((HierarchicalClusteringResults) results);
+
 						header.updateFromClusterResults(results);
 
 						if (wiz.isTranspose())
