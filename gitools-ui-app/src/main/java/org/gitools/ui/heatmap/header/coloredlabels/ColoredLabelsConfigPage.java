@@ -270,4 +270,11 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
+	public HeatmapColoredLabelsHeader getHeader() {
+		return header;
+	}
+
+	public void setHeader(HeatmapColoredLabelsHeader header) {
+		this.header = header;
+	}
 }

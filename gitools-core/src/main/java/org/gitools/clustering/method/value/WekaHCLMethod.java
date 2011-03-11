@@ -26,6 +26,7 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
+import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.newick.NewickNode;
 import org.gitools.newick.NewickParser;
 import org.gitools.newick.NewickParserException;
@@ -87,7 +88,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 				
 				clusterResults.put("0", instancesCluster);
 
-				results = new GenericClusteringResults(labels.toArray(new String[0]), clusterResults);
+				results = new HierarchicalClusteringResults(labels.toArray(new String[0]), clusterResults, newickTree);
 			
 			}
 

@@ -49,13 +49,4 @@ public abstract class AbstractClusteringValueMethod implements ClusteringMethod 
 	public void setTranspose(boolean transposed) {
 		this.transpose = transposed;
 	}
-
-	public int getClassIndex() {
-		return classIndex;
-	}
-
-	public void setClassIndex(int classIndex) {
-		this.classIndex = classIndex;
-	}
-
 }

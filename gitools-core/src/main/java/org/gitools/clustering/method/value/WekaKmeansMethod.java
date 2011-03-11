@@ -78,18 +78,21 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
 				int cluster;
 				Instance current = null;
+
+				Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();
+
 				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
 				for (int i = 0; i < clusterWekaData.numInstances() && !monitor.isCancelled(); i++) {
 					if ((current = clusterWekaData.get(i)) != null) {
 						cluster = clusterer.clusterInstance(current);
 
-						List<Integer> instancesCluster = clusterResults.get(Integer.toString(cluster));
+						List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
 						if (instancesCluster == null) {
 							instancesCluster = new ArrayList<Integer>();							
 						}
 						instancesCluster.add(i);
-						clusterResults.put(Integer.toString(cluster), instancesCluster);
+						clusterResults.put(ClusterUtils.valueToString(cluster, maxLength), instancesCluster);
 					}
 					monitor.worked(1);
 				}

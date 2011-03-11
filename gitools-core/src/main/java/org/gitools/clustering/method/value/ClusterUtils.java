@@ -165,6 +165,15 @@ public class ClusterUtils {
 		return labels; 
 	}
 
+	public static String valueToString(Integer value, Integer maxLength) {
+		String num = value.toString();
+		int numLenght = num.length();
+		for (int i = numLenght; i < maxLength; i++)
+			num = "0" + num;
+
+		return num;
+	}
+
 /*
 	public void dataReductionProcess2(MatrixViewWeka data) throws Exception, IOException {
 

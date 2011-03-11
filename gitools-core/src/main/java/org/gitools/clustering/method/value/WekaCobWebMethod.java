@@ -47,9 +47,9 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 			
 			Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
 
-			MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
-
 			List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
+
+			MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
 			if (preprocess)
 				ClusterUtils.dataReductionProcess(clusterWekaData, monitor);			
@@ -80,26 +80,26 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
 				monitor.end();
 				monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
-				
-				int cluster;
+
+				Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();
+
+				Integer cluster;
 
 				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
 				for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++) {
 					if ((current = clusterWekaData.get(i)) != null) {
 
-						labels.add(clusterWekaData.getMatrixView().getLabel(i));
-
 						cluster = clusterer.clusterInstance(current);
 
-						List<Integer> instancesCluster = clusterResults.get(Integer.toString(cluster));
+						List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
 
 						if (instancesCluster == null) 
 							instancesCluster = new ArrayList<Integer>();
 						
 						instancesCluster.add(i);
 
-						clusterResults.put(Integer.toString(cluster), instancesCluster);
+						clusterResults.put(ClusterUtils.valueToString(cluster, maxLength), instancesCluster);
 					} 
 					monitor.worked(1);
 				}

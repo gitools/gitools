@@ -34,15 +34,15 @@ public class ClusteringMethodFactory {
 				"Cluster data instances according to a set of selected annotations",
 				AnnPatClusteringMethod.class),
 		new ClusteringMethodDescriptor(
-				"Hierarchical clustering",
+				"Agglomerative hierarchical clustering",
 				"Cluster data instances according to classic agglomerative hierarchical clustering method",
 				WekaHCLMethod.class),
 		new ClusteringMethodDescriptor(
-				"Kmeans clustering",
+				"K-means clustering",
 				"Cluster data instances according to k-means clustering method",
 				WekaKmeansMethod.class),
 		new ClusteringMethodDescriptor(
-				"CobWeb clustering",
+				"Cobweb clustering",
 				"Cluster data instances according to cobweb clustering method",
 				WekaCobWebMethod.class)
 	};
