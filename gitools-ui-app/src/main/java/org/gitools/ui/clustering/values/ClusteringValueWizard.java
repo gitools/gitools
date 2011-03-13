@@ -206,4 +206,8 @@ public class ClusteringValueWizard extends AbstractWizard {
 	public HeatmapColoredLabelsHeader getHeader() {
 		return header;
 	}
+	
+	public SaveFilePage getSaveFilePage() {
+		return saveFilePage;
+	}
 }

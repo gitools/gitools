@@ -19,6 +19,11 @@ package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
@@ -75,15 +80,25 @@ public class ClusteringByValueAction extends BaseAction {
 
 					ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
-					if (wiz.isSortData())
+					if (wiz.isSortData()) {
 						if (wiz.isTranspose()) {
 							TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap.getMatrixView());
 							ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
 						} else
 							ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
+					}
+
+					if (! wiz.getSaveFilePage().getFileName().isEmpty() 
+							&& results instanceof HierarchicalClusteringResults) {
+
+							File fileName = wiz.getSaveFilePage().getFile();
+							BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+							out.write(((HierarchicalClusteringResults) results).getStrNewickTree());
+							out.flush();
+							out.close();
+					}
 
 					if (wiz.isAddHeader()) {
-
 						HeatmapDim hdim = wiz.isTranspose() ?
 							heatmap.getRowDim() : heatmap.getColumnDim();
 
