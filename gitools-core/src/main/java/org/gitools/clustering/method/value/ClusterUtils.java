@@ -188,7 +188,7 @@ public class ClusterUtils {
 
 		HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();		
 
-		List<NewickNode> leaves = res.getTree().getRoot().getLeaves(level);
+		List<NewickNode> leaves = res.getNewickTree().getRoot().getLeaves(level);
 
 		Integer maxLengthClusters = Integer.toString(leaves.size()).length();
 		
@@ -207,7 +207,7 @@ public class ClusterUtils {
 			i++;
 		}
 
-		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getTree(), res.getNewickTree());
+		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getNewickTree(), res.getStrNewickTree());
 
 		return results;
 	}

@@ -24,29 +24,31 @@ import org.gitools.newick.NewickTree;
 
 public class HierarchicalClusteringResults extends GenericClusteringResults {
 
-	private String newickTree;
+	private String strNewickTree;
 
-	private NewickTree tree;
+	private NewickTree newickTree;
 
 	public HierarchicalClusteringResults(String[] dataLabels, Map<String, List<Integer>> clusters, NewickTree tree, String newickFormat) {
 		super(dataLabels, clusters);
 
-		this.newickTree = newickFormat;
+		this.newickTree = tree;
+		this.strNewickTree = newickFormat;
 	}
 
-	public String getNewickTree() {
+	public NewickTree getNewickTree() {
 		return newickTree;
 	}
 
-	public void setNewickTree(String newickTree) {
+	public void setNewickTree(NewickTree newickTree) {
 		this.newickTree = newickTree;
 	}
 
-	public NewickTree getTree() {
-		return tree;
+	public String getStrNewickTree() {
+		return strNewickTree;
 	}
 
-	public void setTree(NewickTree tree) {
-		this.tree = tree;
+	public void setStrNewickTree(String strNewickTree) {
+		this.strNewickTree = strNewickTree;
 	}
+
 }

@@ -76,12 +76,12 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
-/*
+
 		if (header.getHCLResults() != null) {
 			hclPage = new ColoredLabelsHCLPage();
 			addPage(hclPage);
 		}
-*/
+
 		clustersPage = new ColoredLabelsGroupsPage(header);
 		addPage(clustersPage);
 	}
@@ -93,7 +93,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		IWizardPage nextPage = super.getNextPage(page);
-/*
+
 		if (currentPage == hclPage) {
 
 			ClusteringResults results =
@@ -102,7 +102,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 			header.updateFromClusterResults(results);
 		}
-*/
+
 		return nextPage;
 	}
 
