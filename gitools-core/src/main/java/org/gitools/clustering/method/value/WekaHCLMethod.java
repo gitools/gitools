@@ -85,7 +85,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
 				NewickTree tree = newickParser.parse();
 
-				List<Integer> instancesCluster = getTreeLeaves(tree);
+				List<Integer> instancesCluster = ClusterUtils.getTreeLeaves(tree);
 								
 				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 				
@@ -100,18 +100,6 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 		} catch (Exception ex) {
 			throw new ClusteringException("Error in agglomerative hierarchical clustering method ");
 		}
-	}
-
-	private List<Integer> getTreeLeaves(NewickTree tree) throws NumberFormatException, IOException, NewickParserException {
-
-		List<Integer> instancesCluster = new ArrayList<Integer>();		
-
-		List<NewickNode> leaves = tree.getRoot().getLeaves();
-
-		for (NewickNode node : leaves) 
-			instancesCluster.add(new Integer(node.getName().substring(1)));
-		
-		return instancesCluster;
 	}
 
 	public NormalizableDistance getDistanceFunction() {

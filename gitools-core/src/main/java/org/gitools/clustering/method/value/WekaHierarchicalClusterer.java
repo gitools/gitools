@@ -209,15 +209,15 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
       if (m_left == null) {
         if (m_right == null) {
-          return "(r" + m_iLeftInstance + ":" + myFormatter.format(m_fLeftLength) + ",r" +
+          return "(" + m_iLeftInstance + ":" + myFormatter.format(m_fLeftLength) + "," +
           m_iRightInstance +":" + myFormatter.format(m_fRightLength) + ")";
         } else {
-          return "(r" + m_iLeftInstance + ":" + myFormatter.format(m_fLeftLength) + "," +
+          return "(" + m_iLeftInstance + ":" + myFormatter.format(m_fLeftLength) + "," +
           m_right.toString2(attIndex) + ":" + myFormatter.format(m_fRightLength) + ")";
         }
       } else {
         if (m_right == null) {
-          return "(" + m_left.toString2(attIndex) + ":" + myFormatter.format(m_fLeftLength) + ",r" +
+          return "(" + m_left.toString2(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
           m_iRightInstance + ":" + myFormatter.format(m_fRightLength) + ")";
         } else {
           return "(" + m_left.toString2(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +

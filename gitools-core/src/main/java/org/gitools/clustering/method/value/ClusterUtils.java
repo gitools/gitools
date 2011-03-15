@@ -29,6 +29,7 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.newick.NewickNode;
+import org.gitools.newick.NewickParserException;
 import org.gitools.newick.NewickTree;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.CfsSubsetEval;
@@ -199,7 +200,7 @@ public class ClusterUtils {
 			List<Integer> instancesCluster = new ArrayList<Integer>();
 			
 			 for (NewickNode leave : (List<NewickNode>) node.getLeaves()) {
-					instancesCluster.add(Integer.valueOf(leave.getName().substring(1)));
+					instancesCluster.add(Integer.valueOf(leave.getName()));
 			}
 
 			clusterResults.put(valueToString(i, maxLengthClusters), instancesCluster);
@@ -210,6 +211,19 @@ public class ClusterUtils {
 		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getNewickTree(), res.getStrNewickTree());
 
 		return results;
+	}
+
+
+	public static List<Integer> getTreeLeaves(NewickTree tree) throws NumberFormatException, IOException, NewickParserException {
+
+		List<Integer> instancesCluster = new ArrayList<Integer>();
+
+		List<NewickNode> leaves = tree.getRoot().getLeaves();
+
+		for (NewickNode node : leaves)
+			instancesCluster.add(new Integer(node.getName()));
+
+		return instancesCluster;
 	}
 
 /*
