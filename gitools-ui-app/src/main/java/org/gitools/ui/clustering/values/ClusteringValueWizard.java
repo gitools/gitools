@@ -27,7 +27,9 @@ import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsConfigPage;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
@@ -48,12 +50,13 @@ public class ClusteringValueWizard extends AbstractWizard {
 	private ColoredLabelsConfigPage headerPage;
 	private SaveFilePage saveFilePage;
 
-
-
 	public ClusteringValueWizard(Heatmap heatmap) {
 		super();
 
 		this.heatmap = heatmap;
+		setTitle("Clustering by value");
+		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CLUSTERING, 96));
+		setHelpContext("analysis_overlapping");
 	}
 
 	@Override

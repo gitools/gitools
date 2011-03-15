@@ -81,6 +81,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 		labelColorDefinedChk.setSelected(header.isLabelColorDefined());
 		labelColor.setColor(header.getLabelColor());
 		labelVisibleChanged();
+
 	}
 
 	private void labelVisibleChanged() {

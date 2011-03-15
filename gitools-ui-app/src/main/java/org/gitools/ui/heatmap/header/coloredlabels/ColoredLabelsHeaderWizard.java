@@ -27,7 +27,6 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.clustering.method.value.ClusterUtils;
-import org.gitools.clustering.method.value.MatrixRowClusteringData;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
@@ -78,7 +77,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		addPage(headerPage);
 
 		if (header.getHCLResults() != null) {
-			hclPage = new ColoredLabelsHCLPage();
+			hclPage = new ColoredLabelsHCLPage(header);
 			addPage(hclPage);
 		}
 
@@ -102,12 +101,12 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 			header.updateFromClusterResults(results);
 		}
-
+		
 		return nextPage;
 	}
 
 	@Override
-	public void pageLeft(IWizardPage currentPage) {
+	public void pageLeft(IWizardPage currentPage) {	
 		super.pageLeft(currentPage);
 
 		if (currentPage != sourcePage || editionMode)
@@ -139,6 +138,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 				}
 			}
 		});
+
 	}
 
 	public HeatmapColoredLabelsHeader getHeader() {

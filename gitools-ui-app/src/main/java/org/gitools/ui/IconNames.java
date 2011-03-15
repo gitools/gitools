@@ -97,6 +97,9 @@ public class IconNames {
 	public static final String intogen16 = "/img/Intogen16.png";
 	public static final String intogen24 = "/img/Intogen24.png";
 
+	public static final String zoomIn16 = "/img/Zoom-In16.png";
+	public static final String zoomOut16 = "/img/Zoom-Out16.png";
+
 	public static final String KEGG16 = "/img/Kegg16.png";
 	public static final String KEGG24 = "/img/Kegg24.png";
 
@@ -137,6 +140,9 @@ public class IconNames {
 
 	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
 
+	public static final String LOGO_CLUSTERING = "/img/logos/Clustering.png";
+
 	public static final String SEARCH16 = "/img/Search16.png";
 	public static final String SEARCH24 = "/img/Search24.png";
+
 }
