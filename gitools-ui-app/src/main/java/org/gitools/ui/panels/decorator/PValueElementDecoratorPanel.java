@@ -61,6 +61,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel minColorCc;
 	private ColorChooserLabel maxColorCc;
 	private ColorChooserLabel nsigColorCc;
+	private ColorChooserLabel emptyCc;
 	
 	public PValueElementDecoratorPanel(Heatmap model) {
 		super(model);
@@ -161,6 +162,13 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 			@Override public void colorChanged(Color color) {
 				decorator.setNonSignificantColor(color); }
 		});
+
+		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+		emptyCc.setToolTipText("Empty cell color");
+		emptyCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setEmptyColor(color); }
+		});
 		
 		refresh();
 		
@@ -174,6 +182,8 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(minColorCc);
 		add(maxColorCc);
 		add(nsigColorCc);
+		add(new JLabel("Empty"));
+		add(emptyCc);
 	}
 	
 	private void refresh() {

@@ -62,6 +62,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel rminColorCc;
 	private ColorChooserLabel rmaxColorCc;
 	private ColorChooserLabel nsigColorCc;
+	private ColorChooserLabel emptyCc;
 	
 	public ZScoreElementDecoratorPanel(Heatmap model) {
 		super(model);
@@ -181,6 +182,13 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 			@Override public void colorChanged(Color color) {
 				decorator.setRightMaxColor(color); }
 		});
+
+		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+		emptyCc.setToolTipText("Empty cell color");
+		emptyCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setEmptyColor(color); }
+		});
 		
 		refresh();
 		
@@ -196,6 +204,8 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(nsigColorCc);
 		add(rminColorCc);
 		add(rmaxColorCc);
+		add(new JLabel("Empty"));
+		add(emptyCc);
 	}
 
 	private void refresh() {

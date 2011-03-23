@@ -58,18 +58,18 @@
                   </Group>
                   <Component id="columnsGridEnabled" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="28" max="32767" attributes="0"/>
           </Group>
-          <Component id="jSeparator1" alignment="0" pref="290" max="32767" attributes="0"/>
+          <Component id="jSeparator1" alignment="0" pref="314" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="243" max="32767" attributes="0"/>
+              <EmptySpace pref="265" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="cellDecorator" alignment="0" pref="266" max="32767" attributes="1"/>
+                  <Component id="cellDecorator" alignment="0" pref="290" max="32767" attributes="1"/>
                   <Component id="decoPanel" alignment="0" min="-2" pref="266" max="-2" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -123,7 +123,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cellDecorator" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="decoPanel" pref="353" max="32767" attributes="0"/>
+              <Component id="decoPanel" pref="347" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>

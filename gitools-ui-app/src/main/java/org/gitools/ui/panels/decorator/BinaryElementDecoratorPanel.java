@@ -50,6 +50,8 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private JTextField cutoffTf;
 
+	private ColorChooserLabel emptyCc;
+
 	public BinaryElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
@@ -105,7 +107,14 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 			@Override public void colorChanged(Color color) {
 				decorator.setNonSignificantColor(color); }
 		});
-		
+
+		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+		emptyCc.setToolTipText("Empty cell color");
+		emptyCc.addColorChangeListener(new ColorChangeListener() {
+			@Override public void colorChanged(Color color) {
+				decorator.setEmptyColor(color); }
+		});
+
 		refresh();
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -115,6 +124,8 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(cutoffTf);
 		add(colorCc);
 		add(nonSigColorCc);
+		add(new JLabel("Empty"));
+		add(emptyCc);
 	}
 
 	private void refresh() {

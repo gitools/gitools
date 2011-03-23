@@ -51,8 +51,8 @@ public class OverlappingResultsEditor extends HeatmapEditor {
 		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
 		dec.setMinValue(0.0);
 		dec.setMinColor(minColor);
-		dec.setMidValue(0.0);
-		dec.setMidColor(minColor);
+		dec.setMidValue(1.0);
+		dec.setMidColor(maxColor);
 		dec.setMaxValue(1.0);
 		dec.setMaxColor(maxColor);
 		dec.setEmptyColor(Color.WHITE);

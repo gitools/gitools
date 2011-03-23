@@ -205,20 +205,40 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		scale.setNonSignificantColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
+
+	public Color getEmptyColor() {
+		return scale.getEmptyColor();
+	}
+
+	public void setEmptyColor(Color color) {
+		Color old = scale.getEmptyColor();
+		scale.setEmptyColor(color);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
+	}
 	
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
 		decoration.reset();
 		
-		if (element == null) {
+		/*if (element == null) {
 			decoration.setBgColor(ColorConstants.emptyColor);
 			decoration.setToolTip("Empty cell");
 			return;
 		}
 		
-		Object value = adapter.getValue(element, valueIndex);
-		
+		Object value = adapter.getValue(element, valueIndex);*/
+
+		Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+
 		double v = MatrixUtils.doubleValue(value);
+
+		if (element == null || Double.isNaN(v)) {
+			decoration.setBgColor(scale.getEmptyColor());
+			decoration.setToolTip("Empty cell");
+			return;
+		}
+		
+		//double v = MatrixUtils.doubleValue(value);
 		
 		boolean useScale = true;
 		

@@ -55,7 +55,7 @@ public class BinaryColorScale extends SimpleColorScale {
 		this(
 				new ColorScalePoint(0, ColorConstants.nonSignificantColor),
 				new ColorScalePoint(1, new Color(20, 120, 250)),
-				0.25, CutoffCmp.LE);
+				1.0, CutoffCmp.EQ);
 	}
 
 	@Override

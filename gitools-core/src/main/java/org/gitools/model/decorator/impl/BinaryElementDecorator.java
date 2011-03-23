@@ -127,6 +127,16 @@ public class BinaryElementDecorator extends ElementDecorator {
 		this.scale.getMin().setColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
+
+	public Color getEmptyColor() {
+		return scale.getEmptyColor();
+	}
+
+	public void setEmptyColor(Color color) {
+		Color old = scale.getEmptyColor();
+		scale.setEmptyColor(color);
+		firePropertyChange(PROPERTY_CHANGED, old, color);
+	}
 	
 	@Override
 	public void decorate(
@@ -134,8 +144,18 @@ public class BinaryElementDecorator extends ElementDecorator {
 			Object element) {
 		
 		decoration.reset();
-		
-		if (element == null) {
+
+		Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+
+		double v = MatrixUtils.doubleValue(value);
+
+		if (element == null || Double.isNaN(v)) {
+			decoration.setBgColor(scale.getEmptyColor());
+			decoration.setToolTip("Empty cell");
+			return;
+		}
+
+		/*if (element == null) {
 			decoration.setBgColor(ColorConstants.emptyColor);
 			decoration.setToolTip("Empty cell");
 			return;
@@ -143,7 +163,7 @@ public class BinaryElementDecorator extends ElementDecorator {
 		
 		Object value = adapter.getValue(element, valueIndex);
 		
-		double v = MatrixUtils.doubleValue(value);
+		double v = MatrixUtils.doubleValue(value);*/
 		
 		final Color c = scale.valueColor(v);
 		
