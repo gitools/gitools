@@ -108,8 +108,11 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 			}
 			return results;
 
-		} catch (Exception ex) {
-			throw new ClusteringException("Error in Cobweb clustering method ");
+		} catch (Throwable ex) {
+			if (ex instanceof OutOfMemoryError)
+				throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
+			else
+				throw new ClusteringException(ex);
 		}
 	}
 

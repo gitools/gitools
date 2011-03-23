@@ -27,4 +27,7 @@ public class ClusteringException extends Exception {
 		super(cause);
 	}
 
+	public ClusteringException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 }

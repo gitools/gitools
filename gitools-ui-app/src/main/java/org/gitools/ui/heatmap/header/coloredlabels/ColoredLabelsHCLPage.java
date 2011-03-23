@@ -59,9 +59,11 @@ public class ColoredLabelsHCLPage extends AbstractWizardPage {
 		setTitle("Header configuration");
 		setComplete(true);
 
+		zoomInBtn.setVisible(false);
 		zoomInBtn.setAction(zoomInAction);
 		zoomInBtn.setIcon(IconUtils.getImageIconResourceScaledByHeight(IconNames.zoomIn16, 16));
 
+		zoomOutBtn.setVisible(false);
 		zoomOutBtn.setAction(zoomOutAction);
 		zoomOutBtn.setIcon(IconUtils.getImageIconResourceScaledByHeight(IconNames.zoomOut16, 16));
 

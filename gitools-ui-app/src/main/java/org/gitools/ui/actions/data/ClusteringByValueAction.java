@@ -99,11 +99,11 @@ public class ClusteringByValueAction extends BaseAction {
 					}
 
 					if (wiz.isHeaderEnabled()) {
-						HeatmapDim hdim = wiz.isTranspose() ?
-							heatmap.getRowDim() : heatmap.getColumnDim();
 
-						HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
-						header.setTitle("Cluster_header_" + hdim.getHeaders().size());
+						HeatmapColoredLabelsHeader header = wiz.getHeader();
+
+						if (header.getTitle().isEmpty())
+							header.setTitle("Cluster_header_" + header.getHeatmapDim().getHeaders().size());
 
 						if (results instanceof HierarchicalClusteringResults)
 							header.setHCLResults((HierarchicalClusteringResults) results);

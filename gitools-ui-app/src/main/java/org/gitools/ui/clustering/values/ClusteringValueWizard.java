@@ -27,6 +27,7 @@ import org.gitools.clustering.method.value.WekaCobWebMethod;
 import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
@@ -119,8 +120,9 @@ public class ClusteringValueWizard extends AbstractWizard {
 		IWizardPage nextPage = null;
 
 		if (currentPage == optionsPage) {
-			if (optionsPage.isHeaderSelected())
-				nextPage = headerPage;
+			if (optionsPage.isHeaderSelected()) {
+				nextPage = getPreparedHeaderPage();
+			}
 			else if (optionsPage.isNewickExportSelected())
 				nextPage = newickPage;
 			else
@@ -136,17 +138,16 @@ public class ClusteringValueWizard extends AbstractWizard {
 		else
 			nextPage = super.getNextPage(currentPage);
 
-		/* TODO
-		if (currentPage == clusterSummPage) {
-			HeatmapDim hdim = isTranspose() ?
-				heatmap.getRowDim() : heatmap.getColumnDim();
+		return nextPage;
+	}
 
-			header.setHeatmapDim(hdim);
-			header.setTitle("Cluster_header_" + hdim.getHeaders().size());
-			headerPage.setHeader(header);
-			page = headerPage;
-			}
-		*/
+	private IWizardPage getPreparedHeaderPage() {
+		IWizardPage nextPage;
+		HeatmapDim hdim = isTranspose() ? heatmap.getRowDim() : heatmap.getColumnDim();
+		header.setHeatmapDim(hdim);
+		header.setTitle("Cluster_header_" + hdim.getHeaders().size());
+		headerPage.setHeader(header);
+		nextPage = headerPage;
 		return nextPage;
 	}
 

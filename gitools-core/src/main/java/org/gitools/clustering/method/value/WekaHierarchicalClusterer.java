@@ -445,7 +445,12 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
    */
   void doLinkClustering(int nClusters, Vector<Integer>[] nClusterID, Node [] clusterNodes) {
     int nInstances = m_instances.numInstances();
-    PriorityQueue<Tuple> queue = new PriorityQueue<Tuple>(nClusters*nClusters/2, new TupleComparator());
+	
+	long size = (long) nClusters*nClusters/2;
+	if (size > Integer.MAX_VALUE)
+		throw new OutOfMemoryError();
+
+    PriorityQueue<Tuple> queue = new PriorityQueue<Tuple>((int) size, new TupleComparator());
     double [][] fDistance0 = new double[nClusters][nClusters];
     double [][] fClusterDistance = null;
     if (m_bDebug) {

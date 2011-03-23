@@ -35,7 +35,7 @@
                       <Component id="levelSpin" min="-2" pref="64" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
                       <Component id="jComboBox1" min="-2" pref="0" max="-2" attributes="0"/>
-                      <EmptySpace pref="223" max="32767" attributes="0"/>
+                      <EmptySpace pref="233" max="32767" attributes="0"/>
                       <Component id="zoomInBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="zoomOutBtn" min="-2" max="-2" attributes="0"/>
