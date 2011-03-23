@@ -23,7 +23,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
@@ -44,6 +47,7 @@ public class HeatmapDim extends AbstractModel {
 	public static final String CLUSTER_SETS_CHANGED = "clusterSets";
 	public static final String GRID_PROPERTY_CHANGED = "gridProperty";
 	public static final String ANNOTATIONS_CHANGED = "annotations";
+	public static final String HIGHLIGHTING_CHANGED = "highlighting";
 
 	@XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
 	protected IdType idType;
@@ -60,6 +64,9 @@ public class HeatmapDim extends AbstractModel {
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	private Color gridColor;
 
+	@XmlTransient
+	private Set<String> highlightedLabels;
+
 	PropertyChangeListener propertyListener;
 
 	public HeatmapDim() {
@@ -74,16 +81,8 @@ public class HeatmapDim extends AbstractModel {
 		gridEnabled = true;
 		gridSize = 1;
 		gridColor = Color.WHITE;
-	}
 
-	public IdType getIdType() {
-		return idType;
-	}
-
-	public void setIdType(IdType idType) {
-		IdType old = this.idType;
-		this.idType = idType;
-		firePropertyChange(IDTYPE_CHANGED, old, idType);
+		highlightedLabels = new HashSet<String>();
 	}
 
 	private void propertyChange(PropertyChangeEvent evt) {
@@ -100,6 +99,16 @@ public class HeatmapDim extends AbstractModel {
 		firePropertyChange(evt);
 	}
 
+	public IdType getIdType() {
+		return idType;
+	}
+
+	public void setIdType(IdType idType) {
+		IdType old = this.idType;
+		this.idType = idType;
+		firePropertyChange(IDTYPE_CHANGED, old, idType);
+	}
+	
 	public List<HeatmapHeader> getHeaders() {
 		return Collections.unmodifiableList(headers);
 	}
@@ -182,5 +191,19 @@ public class HeatmapDim extends AbstractModel {
 		AnnotationMatrix old = this.annotations;
 		this.annotations = annotations;
 		firePropertyChange(ANNOTATIONS_CHANGED, old, annotations);
+	}
+
+	public boolean isHighlighted(String label) {
+		return highlightedLabels.contains(label);
+	}
+	
+	public void setHighlightedLabels(Set<String> highlightedLabels) {
+		this.highlightedLabels = highlightedLabels;
+		firePropertyChange(HIGHLIGHTING_CHANGED);
+	}
+
+	public void clearHighlightedLabels() {
+		highlightedLabels.clear();
+		firePropertyChange(HIGHLIGHTING_CHANGED);
 	}
 }

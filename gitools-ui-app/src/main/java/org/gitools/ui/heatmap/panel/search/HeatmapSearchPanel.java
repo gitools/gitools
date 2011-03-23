@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;
@@ -48,7 +50,6 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 	private Color defaultSearchTextBgColor;
 	private Color defaultSearchTextFgColor;
 
-	/** Creates new form HetamapSearchPanel */
 	public HeatmapSearchPanel(Heatmap hm) {
 		this.hm = hm;
 
@@ -79,6 +80,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 			@Override public void actionPerformed(ActionEvent e) {
 				searchNext(); } });
 
+		highlightAllChk.addActionListener(new ActionListener() {
+			@Override public void actionPerformed(ActionEvent ae) {
+				updateHighlight(); } });
+				
 		matchCaseChk.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				updateSearch();	} });
@@ -142,7 +147,51 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
 		setNotFound(false);
 		
-		// TODO update highlight
+		updateHighlight();
+	}
+
+	private void updateHighlight() {
+		IMatrixView mv = hm.getMatrixView();
+		int leadRow = mv.getLeadSelectionRow();
+		int leadCol = mv.getLeadSelectionColumn();
+
+		Set<String> highlighted = new HashSet<String>();
+		
+		boolean found = false;
+
+		if (leadRow == -1 && leadCol == -1)
+			leadRow = 0;
+
+		if (leadRow != -1) {// Row search
+
+			if (highlightAllChk.isSelected()) {
+				AnnotationMatrix am = hm.getRowDim().getAnnotations();
+
+				int rowCount = mv.getRowCount();
+				for (int index = 0; index < rowCount; index++) {
+					String label = mv.getRowLabel(index);
+					if (checkMatch(mv, am, label))
+						highlighted.add(label);
+				}
+				hm.getRowDim().setHighlightedLabels(highlighted);
+			}
+			else
+				hm.getRowDim().clearHighlightedLabels();
+		} else if (leadRow == -1 && leadCol != -1) {// Column search
+			if (highlightAllChk.isSelected()) {
+				AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+
+				int colCount = mv.getColumnCount();
+				for (int index = 0; index < colCount; index++) {
+					String label = mv.getColumnLabel(index);
+					if (checkMatch(mv, am, label))
+						highlighted.add(label);
+				}
+				hm.getColumnDim().setHighlightedLabels(highlighted);
+			}
+			else
+				hm.getColumnDim().clearHighlightedLabels();
+		}
 	}
 
 	private void searchPrev() {
@@ -286,8 +335,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         nextBtn.setFocusable(false);
         nextBtn.setRequestFocusEnabled(false);
 
+        highlightAllChk.setSelected(true);
         highlightAllChk.setText("Highlight all");
-        highlightAllChk.setEnabled(false);
         highlightAllChk.setFocusable(false);
         highlightAllChk.setRequestFocusEnabled(false);
 

@@ -17,11 +17,14 @@
 
 package org.gitools.heatmap.drawer;
 
+import java.awt.Color;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
+	protected static final Color highlightingColor = Color.YELLOW;
+	
 	protected HT header;
 	protected boolean horizontal;
 

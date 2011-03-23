@@ -99,6 +99,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 			ColoredLabel cluster = header.getAssignedColoredLabel(label);
 			Color clusterColor = cluster != null ? cluster.getColor() : bgColor;
 
+			if (hdim.isHighlighted(label))
+				bgColor = highlightingColor;
+
 			boolean selected = !pictureMode && (horizontal ?
 				data.isColumnSelected(index) : data.isRowSelected(index));
 

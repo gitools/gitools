@@ -90,8 +90,8 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="highlightAllChk">
       <Properties>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Highlight all"/>
-        <Property name="enabled" type="boolean" value="false"/>
         <Property name="focusable" type="boolean" value="false"/>
         <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>

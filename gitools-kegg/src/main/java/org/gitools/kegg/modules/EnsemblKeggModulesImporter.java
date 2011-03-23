@@ -585,8 +585,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 						|| modCategory.getId().equals(GO_CL));
 
 				if (plainGo) {
-					data = plainGoData(data, monitor);
 					tree = retrieveGoTree(monitor);
+					data = plainGoData(data, tree, monitor);
 				}
 				else
 					tree = new HashMap<String, Set<String>>();
@@ -735,11 +735,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return tree;
 	}
 
-	private MappingData plainGoData(MappingData data, IProgressMonitor monitor) throws MalformedURLException, IOException {
-		monitor.begin("Reading Gene Ontology graph ...", 1);
+	private MappingData plainGoData(MappingData data, Map<String, Set<String>> tree, IProgressMonitor monitor) throws MalformedURLException, IOException {
+		monitor.begin("Plaining Gene Ontology hierarchy ...", 1);
 
-		Map<String, Set<String>> tree = retrieveGoTree(monitor.subtask());
-		
 		/*Map<String, Set<String>> m = data.getMap();
 		for (String key : m.keySet()) {
 			System.out.print(key + " --> ");

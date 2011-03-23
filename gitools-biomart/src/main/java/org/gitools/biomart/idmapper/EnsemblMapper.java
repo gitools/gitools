@@ -96,30 +96,26 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 
 	private static final Map<String, String> inameMap = new HashMap<String, String>();
 	static {
+		inameMap.put(ENSEMBL_GENES, "ensembl_gene_id");
+		inameMap.put(ENSEMBL_TRANSCRIPTS, "ensembl_transcript_id");
+		inameMap.put(ENSEMBL_PROTEINS, "ensembl_peptide_id");
+
 		inameMap.put(PDB, "pdb");
 		inameMap.put(NCBI_REFSEQ, "embl");
 		inameMap.put(NCBI_GENES, "entrezgene");
 		inameMap.put(NCBI_UNIGENE, "unigene");
 		inameMap.put(UNIPROT, "uniprot_swissprot_accession");
+
 		inameMap.put(GO_BP, "go_biological_process_id");
 		inameMap.put(GO_MF, "go_molecular_function_id");
 		inameMap.put(GO_CL, "go_cellular_component_id");
 	}
 
 	public static String getInternalName(String id) {
-		if (id.startsWith("ensembl:")) {
-			id = id.substring(8);
-			if ("gene".equals(id))
-				return "ensembl_gene_id";
-			else if ("transcript".equals(id))
-				return "ensembl_transcript_id";
-			else if ("protein".equals(id))
-				return "ensembl_protein_id";
-			else
-				return id;
-		}
-		else
-			return inameMap.get(id);
+		String iname = inameMap.get(id);
+		if (iname == null && id.startsWith("ensembl:"))
+			return id;
+		return iname;
 	}
 
 	public static Query createQuery(String dataset, String srcInternalName, String dstInternalName) {

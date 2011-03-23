@@ -57,7 +57,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				continue;
 			
 			if (h instanceof HeatmapTextLabelsHeader)
-				drawers.add(new HeatmapLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal));
+				drawers.add(new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal));
 			else if (h instanceof HeatmapColoredLabelsHeader)
 				drawers.add(new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal));
 		}

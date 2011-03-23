@@ -21,7 +21,6 @@ import org.gitools.label.AnnotationsPatternProvider;
 import edu.upf.bg.color.utils.ColorUtils;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -39,7 +38,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
 
-public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapTextLabelsHeader> {
+public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapTextLabelsHeader> {
 
 	protected static class AnnotationProvider implements LabelProvider {
 
@@ -73,7 +72,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 		}
 	}
 
-	public HeatmapLabelsDrawer(Heatmap heatmap, HeatmapTextLabelsHeader header, boolean horizontal) {
+	public HeatmapTextLabelsDrawer(Heatmap heatmap, HeatmapTextLabelsHeader header, boolean horizontal) {
 		super(heatmap, header, horizontal);
 	}
 
@@ -160,11 +159,14 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 		int y = box.y + start * height;
 		int padding = 2;
 		for (int index = start; index < end; index++) {
-			String label = labelProvider.getLabel(index);
-
 			Color bgColor = header.getBackgroundColor();
 			Color fgColor = header.getForegroundColor();
 			Color gColor = gridColor;
+
+			String label = labelProvider.getLabel(index);
+			String matrixLabel = matrixLabelProvider.getLabel(index);
+			if (hdim.isHighlighted(matrixLabel))
+				bgColor = highlightingColor;
 
 			boolean selected = !pictureMode && (horizontal ?
 				data.isColumnSelected(index) : data.isRowSelected(index));
@@ -181,7 +183,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 
 			g.setColor(gColor);
 			g.fillRect(x, y + cellHeight, width, gridSize);
-			
+
 			g.setColor(bgColor);
 			g.fillRect(x, y, width, cellHeight);
 
