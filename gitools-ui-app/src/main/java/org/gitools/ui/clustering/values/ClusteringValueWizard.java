@@ -44,9 +44,6 @@ public class ClusteringValueWizard extends AbstractWizard {
 	private AbstractClusteringValueMethod method;
 	private HeatmapColoredLabelsHeader header;
 
-	private boolean headerEnabled;
-	private boolean newickEnabled;
-
 	private ClusteringMethodsPage methodPage;
 	private CobwebParamsPage cobwebPage;
 	private HCLParamsPage hclPage;
@@ -82,7 +79,7 @@ public class ClusteringValueWizard extends AbstractWizard {
 
 		newickPage = new SaveFilePage();
 		newickPage.setTitle("Select Newick's tree destination file");
-		newickPage.setFolder(Settings.getDefault().getLastWorkPath());
+		newickPage.setFolder(Settings.getDefault().getLastExportPath());
 		newickPage.setFormatsVisible(false);
 		addPage(newickPage);
 
@@ -94,6 +91,12 @@ public class ClusteringValueWizard extends AbstractWizard {
 
 		cobwebPage = new CobwebParamsPage();
 		addPage(cobwebPage);
+	}
+
+	@Override
+	public void performFinish() {
+		Settings.getDefault().setLastExportPath(newickPage.getFolder());
+		Settings.getDefault().save();
 	}
 
 	@Override
