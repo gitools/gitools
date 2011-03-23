@@ -127,7 +127,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 									setAnalysis(a);
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
-									saveFilePage.setFileName("example");
+									saveFilePage.setFileNameWithoutExtension("example");
 								}
 							});
 
@@ -163,7 +163,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 	}
 
 	public String getFileName() {
-		return saveFilePage.getFilePath();
+		return saveFilePage.getFileName();
 	}
 
 	public String getDataFileMime() {

@@ -107,7 +107,7 @@ public class CorrelationsAction extends BaseAction {
 					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.HEATMAP));
+					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.CORRELATIONS));
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

@@ -23,13 +23,13 @@ import java.awt.event.ActionEvent;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.MatrixViewSorter;
-import org.gitools.matrix.sort.SortCriteria.SortDirection;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.sort.LabelSortDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.ui.sort.LabelSortPage;
 
 
 public class SortByLabelAction extends BaseAction {
@@ -47,36 +47,44 @@ public class SortByLabelAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final LabelSortDialog dlg = new LabelSortDialog(AppFrame.instance(), SortDirection.values());
+		IEditor editor = AppFrame.instance()
+			.getEditorsPanel()
+			.getSelectedEditor();
+
+		Object model = editor != null ? editor.getModel() : null;
+		if (model == null || !(model instanceof Heatmap))
+			return;
+
+		final Heatmap hm = (Heatmap) model;
+
+		final LabelSortPage page = new LabelSortPage(hm);
+		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
 		dlg.setVisible(true);
 
 		if (dlg.isCancelled())
 			return;
 
-		boolean origIds = dlg.isUseOriginalIds();
-
-		final IMatrixView matrixView = origIds ?
-			ActionUtils.getMatrixView() :
-			ActionUtils.getHeatmapMatrixView();
-
-		if (matrixView == null)
-			return;
+		final IMatrixView matrixView = hm.getMatrixView();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
+			@Override public void run(IProgressMonitor monitor) {
 				monitor.begin("Sorting ...", 1);
 
 				MatrixViewSorter.sortByLabel(matrixView,
-						dlg.getSortDirection(),
-						dlg.isApplyToRowsChecked(),
-						dlg.isApplyToColumnsChecked());
+						page.isApplyToRowsSelected(),
+						page.getRowsPattern(),
+						hm.getRowDim().getAnnotations(),
+						page.getRowsDirection(),
+						page.isApplyToColumnsSelected(),
+						page.getColumnsPattern(),
+						hm.getColumnDim().getAnnotations(),
+						page.getColumnsDirection());
 
 				monitor.end();
 			}
 		});
 
-		AppFrame.instance().setStatusText("Sorted.");
+		AppFrame.instance().setStatusText("Sort done.");
 	}
 
 }

@@ -97,12 +97,10 @@ public class MenuActionSet extends ActionSet {
 			new ActionSet("Data", new BaseAction[] {
 				new ActionSet("Filter", new BaseAction[] {
 					DataActions.filterByLabelAction,
-					DataActions.filterByAnnotationAction,
 					DataActions.filterByValueAction
 				}),
 				new ActionSet("Sort", new BaseAction[] {
 					DataActions.sortByLabelAction,
-					DataActions.sortByAnnotationsAction,
 					DataActions.sortByValueAction
 				}),
 				new ActionSet("Move", new BaseAction[] {
@@ -117,10 +115,10 @@ public class MenuActionSet extends ActionSet {
 					DataActions.showAllColumnsAction,
 					DataActions.hideSelectedColumnsAction
 				}),
-				new ActionSet("Clustering", new BaseAction[] {
-					DataActions.clusteringByAnnotationsAction,
+				//new ActionSet("Clustering", new BaseAction[] {
+				//	DataActions.clusteringByAnnotationsAction,
 					DataActions.clusteringByValueAction
-				})
+				//})
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,

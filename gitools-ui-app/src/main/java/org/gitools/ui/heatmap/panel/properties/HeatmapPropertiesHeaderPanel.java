@@ -24,7 +24,6 @@
 package org.gitools.ui.heatmap.panel.properties;
 
 import org.gitools.idtype.IdType;
-import org.gitools.ui.heatmap.header.textlabels.TextLabelsSourcePage;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import java.awt.Color;
@@ -50,7 +49,6 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.idtype.IdTypeManager;
-import org.gitools.idtype.IdTypeNames;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
@@ -591,44 +589,49 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		if (tdlg.isCancelled())
 			return;
 	
+		HeatmapHeader header = null;
+		IWizard wizard = null;
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
 		if (cls.equals(HeatmapTextLabelsHeader.class)) {
 			HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(hdim);
-			TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, h);
+			/*TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, h);
 			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
 			dlg.setVisible(true);
 			if (dlg.isCancelled())
 				return;
 
-			hdim.addHeader(h);
+			hdim.addHeader(h);*/
+			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
+			header = h;
 		}
 		else {
 			HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(hdim);
-			ColoredLabelsHeaderWizard wiz =
-					new ColoredLabelsHeaderWizard(hm, hdim, h, rowMode);
-			WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
-			wdlg.setTitle("Add header");
-			wdlg.setVisible(true);
-			if (wdlg.isCancelled())
-				return;
-
-			hdim.addHeader(h);
+			wizard = new ColoredLabelsHeaderWizard(hm, hdim, h, rowMode);
+			header = h;
 		}
+
+		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
+		wdlg.setTitle("Add header");
+		wdlg.setVisible(true);
+		if (wdlg.isCancelled())
+			return;
+
+		hdim.addHeader(header);
+
 		updateHeaders();
 	}//GEN-LAST:event_headerAddBtnActionPerformed
 
 	private void headerEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_headerEditBtnActionPerformed
 		int index = headerList.getSelectedIndex();
+		if (index == -1)
+			return;
+
 		HeatmapHeader h = hdim.getHeaders().get(index);
 		Class<? extends HeatmapHeader> cls = h.getClass();
 		IWizard wizard = null;
-		if (cls.equals(HeatmapTextLabelsHeader.class)) {
+		if (cls.equals(HeatmapTextLabelsHeader.class))
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
-			//TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, (HeatmapLabelsHeader) h);
-			//PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
-			//dlg.setVisible(true);
-		}
-		else {
+		else if (cls.equals(HeatmapColoredLabelsHeader.class)) {
 			ColoredLabelsHeaderWizard wiz =
 					new ColoredLabelsHeaderWizard(
 						hm, hdim, (HeatmapColoredLabelsHeader) h, rowMode);

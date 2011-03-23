@@ -20,13 +20,18 @@ package org.gitools.matrix.sort;
 import java.util.Arrays;
 import java.util.Comparator;
 import org.gitools.aggregation.IAggregator;
+import org.gitools.label.AnnotationsPatternProvider;
+import org.gitools.label.LabelProvider;
+import org.gitools.label.MatrixColumnsLabelProvider;
+import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.sort.SortCriteria.SortDirection;
+import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 
 public abstract class MatrixViewSorter {
 
-	public static void sortByValue(IMatrixView matrixView, SortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
+	public static void sortByValue(IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
 		if (applyToRows)
 			sortRowsByValue(matrixView, matrixView.getSelectedColumns(), criteria);
 
@@ -34,7 +39,7 @@ public abstract class MatrixViewSorter {
 			sortColumnsByValue(matrixView, matrixView.getSelectedRows(), criteria);
 	}
 
-	protected static void sortRowsByValue(final IMatrixView matrixView, int[] selColumns, final SortCriteria[] criteriaArray) {
+	protected static void sortRowsByValue(final IMatrixView matrixView, int[] selColumns, final ValueSortCriteria[] criteriaArray) {
 
 		if (criteriaArray == null || criteriaArray.length == 0)
 			return;
@@ -59,7 +64,7 @@ public abstract class MatrixViewSorter {
 				double aggr1 = 0.0;
 				double aggr2 = 0.0;
 
-				SortCriteria criteria = null;
+				ValueSortCriteria criteria = null;
 				int criteriaIndex = 0;
 
 				while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
@@ -107,7 +112,7 @@ public abstract class MatrixViewSorter {
 		matrixView.setVisibleRows(sortedVisibleRows);
 	}
 
-	protected static void sortColumnsByValue(final IMatrixView matrixView, int[] selRows, final SortCriteria[] criteriaArray) {
+	protected static void sortColumnsByValue(final IMatrixView matrixView, int[] selRows, final ValueSortCriteria[] criteriaArray) {
 
 		if (criteriaArray == null || criteriaArray.length == 0)
 			return;
@@ -132,7 +137,7 @@ public abstract class MatrixViewSorter {
 				double aggr1 = 0.0;
 				double aggr2 = 0.0;
 
-				SortCriteria criteria = null;
+				ValueSortCriteria criteria = null;
 				int criteriaIndex = 0;
 
 				while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
@@ -180,7 +185,84 @@ public abstract class MatrixViewSorter {
 		matrixView.setVisibleColumns(sortedVisibleColumns);
 	}
 
-	public static void sortByLabel(IMatrixView matrixView, SortDirection sortDirection, boolean applyToRows, boolean applyToColumns) {
+	public static void sortByLabel(IMatrixView matrixView,
+			boolean sortRows,
+			SortDirection rowsDirection,
+			boolean sortCols,
+			SortDirection colsDirection) {
+
+		sortByLabel(matrixView,
+				sortRows, "${id}", null, rowsDirection,
+				sortCols, "${id}", null, colsDirection);
+	}
+
+	public static void sortByLabel(
+			IMatrixView matrixView,
+			boolean sortRows,
+			String rowsPattern,
+			AnnotationMatrix rowsAnnMatrix,
+			SortDirection rowsDirection,
+			boolean sortCols,
+			String colsPattern,
+			AnnotationMatrix colsAnnMatrix,
+			SortDirection colsDirection) {
+		
+		if (sortRows) {
+			LabelProvider labelProvider = new MatrixRowsLabelProvider(matrixView);
+			if (!rowsPattern.equalsIgnoreCase("${id}"))
+				labelProvider = new AnnotationsPatternProvider(
+						labelProvider, rowsAnnMatrix, rowsPattern);
+
+			matrixView.setVisibleRows(
+					sortLabels(
+						labelProvider,
+						rowsDirection,
+						matrixView.getVisibleRows()));
+		}
+
+		if (sortCols) {
+			LabelProvider labelProvider = new MatrixColumnsLabelProvider(matrixView);
+			if (!colsPattern.equalsIgnoreCase("${id}"))
+				labelProvider = new AnnotationsPatternProvider(
+						labelProvider, colsAnnMatrix, colsPattern);
+
+			matrixView.setVisibleColumns(
+					sortLabels(
+						labelProvider,
+						colsDirection,
+						matrixView.getVisibleColumns()));
+		}
+	}
+
+	public static int[] sortLabels(
+			final LabelProvider labelProvider,
+			SortDirection direction,
+			int[] visibleIndices) {
+
+		int count = labelProvider.getCount();
+		Integer[] indices = new Integer[count];
+		for (int i = 0; i < count; i++)
+			indices[i] = i;
+
+		final int dirSign = direction == SortDirection.ASCENDING ? 1 : -1;
+
+		Comparator<Integer> comparator = new Comparator<Integer>() {
+			@Override public int compare(Integer idx1, Integer idx2) {
+				String label1 = labelProvider.getLabel(idx1);
+				String label2 = labelProvider.getLabel(idx2);
+				return label1.compareTo(label2) * dirSign;
+			}
+		};
+
+		Arrays.sort(indices, comparator);
+
+		int[] vIndices = new int[count];
+		for (int i = 0; i < count; i++)
+			vIndices[i] = visibleIndices[indices[i]];
+		return vIndices;
+	}
+
+	/*public static void sortByLabel(IMatrixView matrixView, SortDirection sortDirection, boolean applyToRows, boolean applyToColumns) {
 		if (applyToRows)
 			sortRowsByLabel(matrixView, sortDirection);
 
@@ -242,5 +324,5 @@ public abstract class MatrixViewSorter {
 			sortedVisibleColumns[i] = visibleColumns[indices[i]];
 
 		matrixView.setVisibleColumns(sortedVisibleColumns);
-	}
+	}*/
 }

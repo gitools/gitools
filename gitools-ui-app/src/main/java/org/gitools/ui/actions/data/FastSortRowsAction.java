@@ -29,7 +29,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.MatrixViewSorter;
-import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -65,11 +65,11 @@ public class FastSortRowsAction extends BaseAction {
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override
 			public void run(IProgressMonitor monitor) {
-				SortCriteria[] criteriaArray = new SortCriteria[] {
-					new SortCriteria(
+				ValueSortCriteria[] criteriaArray = new ValueSortCriteria[] {
+					new ValueSortCriteria(
 							propIndex,
 							new MultAggregator(),
-							SortCriteria.SortDirection.ASCENDING) };
+							ValueSortCriteria.SortDirection.ASCENDING) };
 
 				monitor.begin("Sorting ...", 1);
 

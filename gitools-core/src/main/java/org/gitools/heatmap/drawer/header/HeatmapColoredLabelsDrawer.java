@@ -30,6 +30,9 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.label.LabelProvider;
+import org.gitools.label.MatrixColumnsLabelProvider;
+import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {
@@ -80,15 +83,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 		LabelProvider labelProvider = null;
 
 		if (horizontal)
-			labelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
-				@Override public String getLabel(int index) {
-					return mv.getColumnLabel(index); }
-			};
+			labelProvider = new MatrixColumnsLabelProvider(heatmap.getMatrixView());
 		else
-			labelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
-				@Override public String getLabel(int index) {
-					return mv.getRowLabel(index); }
-			};
+			labelProvider = new MatrixRowsLabelProvider(heatmap.getMatrixView());
 
 		ColoredLabel lastCluster = null;
 
@@ -118,6 +115,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 			g.setColor(bgColor);
 			g.fillRect(x, y, width, height - gridSize);
 
+			g.setColor(finalGridColor);
+			g.fillRect(x, y + height - gridSize, width, gridSize);
+			
 			if (cluster != null) {
 				int sepSize = 0;
 				if (header.isSeparationGrid() && lastCluster != null && !cluster.equals(lastCluster))
@@ -125,15 +125,12 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
 				//int thickness = header.getThickness();
 				int thickness = header.getSize() - header.getMargin() * 2;
-				if (thickness < 0)
-					thickness = 0;
+				if (thickness < 1)
+					thickness = 1;
 
 				g.setColor(clusterColor);
-				g.fillRect(x + header.getMargin(), y + sepSize, thickness, height - gridSize);
+				g.fillRect(x + header.getMargin(), y + sepSize, thickness, height);
 			}
-
-			g.setColor(finalGridColor);
-			g.fillRect(x, y + height - gridSize, width, gridSize);
 
 			if (lead) {
 				g.setColor(ColorUtils.invert(bgColor));

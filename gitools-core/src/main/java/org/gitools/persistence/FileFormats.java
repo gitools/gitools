@@ -82,4 +82,9 @@ public class FileFormats {
 
 	public static final FileFormat HTML = new FileFormat(
 			"HTML", "html", "text/html", true, false);
+
+	// Text
+
+	public static final FileFormat TEXT = new FileFormat(
+			"TEXT", "txt", "text/plain", true, false);
 }

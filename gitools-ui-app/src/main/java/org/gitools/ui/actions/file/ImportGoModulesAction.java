@@ -65,7 +65,7 @@ public class ImportGoModulesAction extends BaseAction {
 					ModuleMap mmap = importer.importMap(monitor);
 					if (!monitor.isCancelled()) {
 						String mime = wz.getSaveFilePage().getFormat().getMime();
-						File file = wz.getSaveFilePage().getFile();
+						File file = wz.getSaveFilePage().getPathAsFile();
 						if (MimeTypes.GENE_MATRIX.equals(mime)
 								|| MimeTypes.GENE_MATRIX_TRANSPOSED.equals(mime)) {
 

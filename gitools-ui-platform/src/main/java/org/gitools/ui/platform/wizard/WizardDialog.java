@@ -243,6 +243,7 @@ public class WizardDialog extends AbstractDialog {
 	private void finishActionPerformed() {
 		if (currentPage != null) {
 			currentPage.updateModel();
+			currentPage.getWizard().pageLeft(currentPage);
 			currentPage.getWizard().performFinish();
 		}
 

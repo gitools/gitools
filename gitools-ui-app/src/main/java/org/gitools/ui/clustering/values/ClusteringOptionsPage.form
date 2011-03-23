@@ -24,39 +24,32 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="cbPreprocessing" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="336" max="32767" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="columnsRadio" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="rowsRadio" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="307" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="cbSort" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="309" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="cbHeader" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="446" max="32767" attributes="0"/>
+                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="attributeCb" pref="406" max="32767" attributes="3"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="rowsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="columnsRadio" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="416" max="-2" attributes="0"/>
+                              <Component id="preprocessingChk" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="28" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="dataClustCombo" pref="400" max="32767" attributes="3"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="438" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="sortChk" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                      <EmptySpace pref="271" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="headerChk" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="newickChk" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -64,23 +57,25 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="cbPreprocessing" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="cbSort" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="cbHeader" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="columnsRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rowsRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dataClustCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="attributeCb" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-              <Component id="columnsRadio" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="rowsRadio" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="preprocessingChk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="sortChk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="headerChk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="newickChk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="74" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -108,7 +103,7 @@
         <Property name="text" type="java.lang.String" value="rows"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="cbPreprocessing">
+    <Component class="javax.swing.JCheckBox" name="preprocessingChk">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Apply dimensionality reduction"/>
@@ -116,20 +111,26 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Values from:"/>
+        <Property name="text" type="java.lang.String" value="Take values from"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="dataClustCombo">
+    <Component class="javax.swing.JComboBox" name="attributeCb">
     </Component>
-    <Component class="javax.swing.JCheckBox" name="cbHeader">
+    <Component class="javax.swing.JCheckBox" name="headerChk">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Create header"/>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Add a new header with colors representing clusters"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="cbSort">
+    <Component class="javax.swing.JCheckBox" name="sortChk">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Sort heatmap by clustering results"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="newickChk">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Save hierarchical clustering tree in Newick format"/>
       </Properties>
     </Component>
   </SubComponents>

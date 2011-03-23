@@ -17,19 +17,24 @@
 
 package org.gitools.heatmap.drawer.header;
 
+import org.gitools.label.AnnotationsPatternProvider;
 import edu.upf.bg.color.utils.ColorUtils;
-import edu.upf.bg.textpatt.TextPattern;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.font.LineMetrics;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.label.LabelProvider;
+import org.gitools.label.MatrixColumnsLabelProvider;
+import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
@@ -52,6 +57,12 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 		}
 
 		@Override
+		public int getCount() {
+			return labelProvider.getCount();
+		}
+
+
+		@Override
 		public String getLabel(int index) {
 			if (am == null)
 				return name;
@@ -59,54 +70,6 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 			String label = labelProvider.getLabel(index);
 			int row = am.getRowIndex(label);
 			return am.getCell(row, column);
-		}
-	}
-
-	protected static class PatternProvider implements LabelProvider {
-
-		private TextPattern pat;
-		private AnnotationsResolver resolver;
-
-		public PatternProvider(LabelProvider labelProvider, AnnotationMatrix am, String pattern) {
-			this.pat = new TextPattern(pattern);
-			this.resolver = new AnnotationsResolver(labelProvider, am);
-		}
-
-		@Override
-		public String getLabel(int index) {
-			resolver.setIndex(index);
-			return pat.generate(resolver);
-		}
-
-	}
-
-	protected static class AnnotationsResolver implements TextPattern.VariableValueResolver {
-
-		private LabelProvider labelProvider;
-		private AnnotationMatrix am;
-		private int index;
-
-		public AnnotationsResolver(LabelProvider labelProvider, AnnotationMatrix am) {
-			this.labelProvider = labelProvider;
-			this.am = am;
-		}
-
-		public void setIndex(int index) {
-			this.index = index;
-		}
-		
-		@Override
-		public String resolveValue(String variableName) {
-			String label = labelProvider.getLabel(index);
-			if (variableName.equalsIgnoreCase("id"))
-				return label;
-			
-			int annRow = am != null ? am.getRowIndex(label) : -1;
-			if (annRow == -1)
-				return "${" + variableName + "}";
-
-			int annCol = am.getColumnIndex(variableName);
-			return am.getCell(annRow, annCol);
 		}
 	}
 
@@ -144,7 +107,8 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 
 		int maxWidth = clip.width;
 		int width = header.getSize();
-		int height = (horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight()) + gridSize;
+		int cellHeight = horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight();
+		int height = cellHeight + gridSize;
 
 		width = width < maxWidth ? maxWidth : width;
 
@@ -158,8 +122,10 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 		start = start > 0 ? start : 0;
 		end = end < count ? end : count;
 
-		int fontHeight = g.getFontMetrics().getHeight();
-		int fontOffset = ((fontHeight + height - gridSize) / 2) - 1;
+		LineMetrics lm = header.getFont().getLineMetrics("yÍ;|", g.getFontRenderContext());
+		float fontHeight = lm.getHeight();
+		float fontDesc = lm.getDescent();
+		int fontOffset = (int) Math.ceil(((fontHeight + cellHeight) / 2) - fontDesc);
 
 		int leadRow = data.getLeadSelectionRow();
 		int leadColumn = data.getLeadSelectionColumn();
@@ -167,15 +133,9 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 		LabelProvider matrixLabelProvider = null;
 
 		if (horizontal)
-			matrixLabelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
-				@Override public String getLabel(int index) {
-					return mv.getColumnLabel(index); }
-			};
+			matrixLabelProvider = new MatrixColumnsLabelProvider(heatmap.getMatrixView());
 		else
-			matrixLabelProvider = new MatrixLabelProvider(heatmap.getMatrixView()) {
-				@Override public String getLabel(int index) {
-					return mv.getRowLabel(index); }
-			};
+			matrixLabelProvider = new MatrixRowsLabelProvider(heatmap.getMatrixView());
 
 		LabelProvider labelProvider = null;
 		switch (header.getLabelSource()) {
@@ -189,7 +149,7 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 						header.getLabelAnnotation());
 				break;
 			case PATTERN:
-				labelProvider = new PatternProvider(
+				labelProvider = new AnnotationsPatternProvider(
 						matrixLabelProvider,
 						hdim.getAnnotations(),
 						header.getLabelPattern());
@@ -220,17 +180,17 @@ public class HeatmapLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapText
 				(leadRow == index) /*&& (leadColumn == -1)*/);
 
 			g.setColor(gColor);
-			g.fillRect(x, y + height - gridSize, width, gridSize);
+			g.fillRect(x, y + cellHeight, width, gridSize);
 			
 			g.setColor(bgColor);
-			g.fillRect(x, y, width, height - gridSize);
+			g.fillRect(x, y, width, cellHeight);
 
 			if (lead) {
 				g.setColor(ColorUtils.invert(bgColor));
-				g.drawRect(x, y, width, height - gridSize - 1);
+				g.drawRect(x, y, width, cellHeight - 1);
 			}
 
-			if (fontHeight <= height - gridSize) {
+			if (fontHeight <= cellHeight) {
 				g.setColor(fgColor);
 				g.drawString(label, x + padding, y + fontOffset);
 			}

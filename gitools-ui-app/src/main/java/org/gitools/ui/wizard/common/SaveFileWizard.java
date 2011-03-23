@@ -41,16 +41,16 @@ public class SaveFileWizard extends AbstractWizard {
 		return page;
 	}
 
+	public String getFileNameWithoutExt() {
+		return getSaveFilePage().getFileNameWithoutExtension();
+	}
+
 	public String getFileName() {
 		return getSaveFilePage().getFileName();
 	}
 
-	public String getFilePath() {
-		return getSaveFilePage().getFilePath();
-	}
-
-	public File getFile() {
-		return getSaveFilePage().getFile();
+	public File getPathAsFile() {
+		return getSaveFilePage().getPathAsFile();
 	}
 
 	public String getFolder() {
@@ -70,7 +70,7 @@ public class SaveFileWizard extends AbstractWizard {
 
 		SaveFilePage page = wiz.getSaveFilePage();
 		page.setTitle("Select destination file");
-		page.setFileName(fileName);
+		page.setFileNameWithoutExtension(fileName);
 		page.setFolder(folder);
 		page.setFormats(fileFormats);
 		page.setFormatsVisible(fileFormats.length > 1);

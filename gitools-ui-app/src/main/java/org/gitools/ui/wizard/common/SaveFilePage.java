@@ -37,7 +37,6 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.utils.FileFormatFilter;
 
 public class SaveFilePage extends AbstractWizardPage {
 
@@ -68,7 +67,7 @@ public class SaveFilePage extends AbstractWizardPage {
     }
 
 	private void updateGeneratedFile() {
-		File file = getFile();
+		File file = getPathAsFile();
 		String fn = file.getAbsolutePath();
 		path.setText(fn);
 		if (isComplete() && file.exists())
@@ -94,11 +93,11 @@ public class SaveFilePage extends AbstractWizardPage {
 	}
 
 	/** Return only the file name */
-	public String getFileName() {
+	public String getFileNameWithoutExtension() {
 		return fileName.getText();
 	}
 
-	public void setFileName(String name) {
+	public void setFileNameWithoutExtension(String name) {
 		fileName.setText(name);
 	}
 
@@ -129,10 +128,10 @@ public class SaveFilePage extends AbstractWizardPage {
 		format.setVisible(visible);
 	}
 
-	/** Returns the full path: folder + file */
-	public String getFilePath() {
+	/* Returns the file name with extension appended */
+	public String getFileName() {
 		StringBuilder sb = new StringBuilder();
-		String name = getFileName();
+		String name = getFileNameWithoutExtension();
 		sb.append(name);
 		File file = new File(name);
 
@@ -147,13 +146,18 @@ public class SaveFilePage extends AbstractWizardPage {
 		return sb.toString();
 	}
 
-	/** Returns a file of the full path */
-	public File getFile() {
+	/** Returns the full path: folder + file + ext */
+	public String getPath() {
+		return getPathAsFile().getAbsolutePath();
+	}
+
+	/** Returns the full path as a file */
+	public File getPathAsFile() {
 		String folderName = folder.getText();
 		if (folderName.isEmpty())
 			folderName = System.getProperty("user.dir");
 
-		return new File(folderName, getFilePath());
+		return new File(folderName, getFileName());
 	}
 
     /** This method is called from within the constructor to

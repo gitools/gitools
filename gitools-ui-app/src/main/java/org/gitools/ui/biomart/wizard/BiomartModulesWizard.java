@@ -142,7 +142,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 	}
 
 	public File getSelectedFile() {
-		return saveFilePage.getFile();
+		return saveFilePage.getPathAsFile();
 	}
 
 	public Query getQuery() {

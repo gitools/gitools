@@ -141,7 +141,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									modulesPage.setSelectedFile(new File(basePath, EXAMPLE_COLUMN_SETS_FILE));
-									saveFilePage.setFileName("example");
+									saveFilePage.setFileNameWithoutExtension("example");
 								}
 							});
 
@@ -181,7 +181,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
 	}
 
 	public String getFileName() {
-		return saveFilePage.getFilePath();
+		return saveFilePage.getFileName();
 	}
 
 	public String getDataFileMime() {

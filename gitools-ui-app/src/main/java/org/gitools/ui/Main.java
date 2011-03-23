@@ -40,7 +40,7 @@ public class Main {
 
 		// Initialize loggers
 		Logger.getLogger("org.lobobrowser").setLevel(Level.WARNING);
-
+		
 		// Initialize help system
 		try {
 			Help.getDefault().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));

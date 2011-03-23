@@ -140,6 +140,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
         optGroup.add(annOpt);
         annOpt.setText("An annotation");
 
+        annList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         annList.setEnabled(false);
         jScrollPane1.setViewportView(annList);
 

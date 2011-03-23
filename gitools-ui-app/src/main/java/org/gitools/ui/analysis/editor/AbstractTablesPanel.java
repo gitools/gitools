@@ -233,7 +233,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 
 		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-		final File file = saveWiz.getFile();
+		final File file = saveWiz.getPathAsFile();
 
 		final String formatExtension = saveWiz.getFormat().getExtension();
 

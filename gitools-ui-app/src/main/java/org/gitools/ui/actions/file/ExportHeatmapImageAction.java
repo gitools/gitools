@@ -88,7 +88,7 @@ public class ExportHeatmapImageAction extends BaseAction {
 
 		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-		final File file = saveWiz.getFile();
+		final File file = saveWiz.getPathAsFile();
 
 		final String formatExtension = saveWiz.getFormat().getExtension();
 

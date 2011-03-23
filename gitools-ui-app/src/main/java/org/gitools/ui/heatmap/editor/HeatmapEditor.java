@@ -310,7 +310,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 			Settings.getDefault().setLastPath(wiz.getFolder());
 
-			file = wiz.getFile();
+			file = wiz.getPathAsFile();
 			setFile(file);
 		}
 
@@ -354,7 +354,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 				Settings.getDefault().setLastPath(wiz.getFolder());
 
-				setFile(wiz.getFile());
+				setFile(wiz.getPathAsFile());
 
 				JobThread.execute(AppFrame.instance(), new JobRunnable() {
 					@Override public void run(IProgressMonitor monitor) {

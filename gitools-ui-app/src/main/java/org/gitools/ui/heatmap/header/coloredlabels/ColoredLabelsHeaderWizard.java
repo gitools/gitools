@@ -34,6 +34,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.ui.wizard.common.PatternSourcePage;
 
 public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
@@ -48,7 +49,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 	private AnnPatClusteringMethod clusteringMethod;
 	
-	private ColoredLabelsSourcePage sourcePage;
+	private PatternSourcePage sourcePage;
 	private ColoredLabelsConfigPage headerPage;
 	private ColoredLabelsGroupsPage clustersPage;
 	private ColoredLabelsHCLPage hclPage;
@@ -69,7 +70,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	@Override
 	public void addPages() {
 		if (!editionMode) {
-			sourcePage = new ColoredLabelsSourcePage(hdim, clusteringMethod);
+			sourcePage = new PatternSourcePage(hdim.getAnnotations(), true);
 			addPage(sourcePage);
 		}
 
@@ -123,7 +124,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 				new AnnPatRowClusteringData(mv, am, pattern)
 				: new AnnPatColumnClusteringData(mv, am, pattern);
 
-		header.setTitle("Colors: " + sourcePage.getClusterTitle());
+		header.setTitle("Colors: " + sourcePage.getPatternTitle());
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override public void run(IProgressMonitor monitor) {

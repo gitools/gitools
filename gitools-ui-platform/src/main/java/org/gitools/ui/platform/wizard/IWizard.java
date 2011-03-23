@@ -46,7 +46,7 @@ public interface IWizard {
 	
 	int getPageCount();
 
-	public void pageLeft(IWizardPage currentPage);
+	public void pageLeft(IWizardPage page);
 
 	public void pageEntered(IWizardPage page);
 	

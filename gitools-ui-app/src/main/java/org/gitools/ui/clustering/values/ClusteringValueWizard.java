@@ -18,6 +18,7 @@
 package org.gitools.ui.clustering.values;
 
 import org.gitools.clustering.ClusteringData;
+import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringMethodDescriptor;
 import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.clustering.method.value.MatrixColumnClusteringData;
@@ -27,6 +28,7 @@ import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsConfigPage;
 import org.gitools.ui.platform.IconUtils;
@@ -42,18 +44,22 @@ public class ClusteringValueWizard extends AbstractWizard {
 	private AbstractClusteringValueMethod method;
 	private HeatmapColoredLabelsHeader header;
 
-	private ClusteringMethodsPage sourcePage;
+	private boolean headerEnabled;
+	private boolean newickEnabled;
+
+	private ClusteringMethodsPage methodPage;
 	private CobwebParamsPage cobwebPage;
 	private HCLParamsPage hclPage;
 	private KmeansParamsPage kmeansPage;
-	private ClusteringSummaryPage clusterSummPage;
+	private ClusteringOptionsPage optionsPage;
 	private ColoredLabelsConfigPage headerPage;
-	private SaveFilePage saveFilePage;
+	private SaveFilePage newickPage;
 
 	public ClusteringValueWizard(Heatmap heatmap) {
 		super();
 
 		this.heatmap = heatmap;
+
 		setTitle("Clustering by value");
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CLUSTERING, 96));
 		setHelpContext("analysis_overlapping");
@@ -61,9 +67,24 @@ public class ClusteringValueWizard extends AbstractWizard {
 
 	@Override
 	public void addPages() {
+		methodPage = new ClusteringMethodsPage();
+		addPage(methodPage);
 
-		sourcePage = new ClusteringMethodsPage();
-		addPage(sourcePage);
+		IMatrixView mv = heatmap.getMatrixView();
+		optionsPage = new ClusteringOptionsPage(
+				mv.getContents().getCellAttributes(),
+				mv.getSelectedPropertyIndex());
+		addPage(optionsPage);
+
+		header = new HeatmapColoredLabelsHeader(heatmap.getColumnDim());
+		headerPage = new ColoredLabelsConfigPage(header);
+		addPage(headerPage);
+
+		newickPage = new SaveFilePage();
+		newickPage.setTitle("Select Newick's tree destination file");
+		newickPage.setFolder(Settings.getDefault().getLastWorkPath());
+		newickPage.setFormatsVisible(false);
+		addPage(newickPage);
 
 		hclPage = new HCLParamsPage();
 		addPage(hclPage);
@@ -73,65 +94,46 @@ public class ClusteringValueWizard extends AbstractWizard {
 
 		cobwebPage = new CobwebParamsPage();
 		addPage(cobwebPage);
-
-		// Destination
-		saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
-		addPage(saveFilePage);
-		
-		clusterSummPage = new ClusteringSummaryPage(heatmap.getMatrixView().getContents().getCellAttributes(),heatmap.getMatrixView().getSelectedPropertyIndex());
-		addPage(clusterSummPage);
-
-		/* Header page
-		header = new HeatmapColoredLabelsHeader(heatmap.getColumnDim());
-		headerPage = new ColoredLabelsConfigPage(header);
-		addPage(headerPage);
-		*/
 	}
 
 	@Override
 	public boolean canFinish() {
-		return (currentPage == clusterSummPage || currentPage == headerPage);
+		return currentPage == cobwebPage
+				|| currentPage == hclPage
+				|| currentPage == kmeansPage;
 	}
 
 	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
+	public boolean isLastPage(IWizardPage page) {
+		return currentPage == cobwebPage
+				|| currentPage == hclPage
+				|| currentPage == kmeansPage;
+	}
 
-		if (currentPage == sourcePage) {
+	@Override
+	public IWizardPage getNextPage(IWizardPage currentPage) {
 
-			ClusteringMethodDescriptor methodDescriptor = sourcePage.getMethodDescriptor();
+		IWizardPage nextPage = null;
 
-			if (methodDescriptor == null)
-				return null;
-
-			if (methodDescriptor.getMethodClass().equals(WekaCobWebMethod.class)) 				
-				page = cobwebPage;			
-
-			if (methodDescriptor.getMethodClass().equals(WekaHCLMethod.class)) 			
-				page = hclPage;			
-
-			if (methodDescriptor.getMethodClass().equals(WekaKmeansMethod.class))
-				page = kmeansPage;			
+		if (currentPage == optionsPage) {
+			if (optionsPage.isHeaderSelected())
+				nextPage = headerPage;
+			else if (optionsPage.isNewickExportSelected())
+				nextPage = newickPage;
+			else
+				nextPage = getMethodConfigPage();
 		}
+		else if ((currentPage == headerPage && !optionsPage.isNewickExportSelected())
+					|| currentPage == newickPage)
+			nextPage = getMethodConfigPage();
+		else if (currentPage == cobwebPage
+				|| currentPage == hclPage
+				|| currentPage == kmeansPage)
+			nextPage = null;
+		else
+			nextPage = super.getNextPage(currentPage);
 
-		if (currentPage == hclPage) {
-			saveFilePage.setTitle("Select Newick's tree destination file");
-			saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-			saveFilePage.setFormatsVisible(false);
-			saveFilePage.setComplete(true);
-			page = saveFilePage;
-		}
-
-		if (currentPage instanceof ClusteringValueMethodPage && currentPage != hclPage) {
-			method = ((ClusteringValueMethodPage) currentPage).getMethod();
-			//clusterSummPage.enableHeader(currentPage != cobwebPage);
-			page = clusterSummPage;
-		}
-
-		if (currentPage == saveFilePage) {
-			method = hclPage.getMethod();
-			page = clusterSummPage;
-		}
-		/*
+		/* TODO
 		if (currentPage == clusterSummPage) {
 			HeatmapDim hdim = isTranspose() ?
 				heatmap.getRowDim() : heatmap.getColumnDim();
@@ -142,68 +144,61 @@ public class ClusteringValueWizard extends AbstractWizard {
 			page = headerPage;
 			}
 		*/
-		return page;
+		return nextPage;
 	}
 
 	@Override
-	public void pageLeft(IWizardPage page) {
-
-		if (currentPage == sourcePage)
-			return;
-
-		if (currentPage == clusterSummPage) {
-
-			ClusteringMethodDescriptor methodDescriptor = sourcePage.getMethodDescriptor();
-
-			if (methodDescriptor == null) 
-				return;	
-
-			if (methodDescriptor.getMethodClass().equals(WekaCobWebMethod.class))
-				page = cobwebPage;
-
-			if (methodDescriptor.getMethodClass().equals(WekaHCLMethod.class)) 
-				page = hclPage;
-
-			if (methodDescriptor.getMethodClass().equals(WekaHCLMethod.class)) 
-				page = kmeansPage;
-			
+	public void pageLeft(IWizardPage currentPage) {
+		if (currentPage == methodPage) {
+			ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
+			Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
+			optionsPage.setNewickExportVisible(WekaHCLMethod.class.equals(methodClass));
 		}
-		if (currentPage instanceof ClusteringValueMethodPage)
-			page = sourcePage;
+		else if (currentPage == cobwebPage
+				|| currentPage == hclPage
+				|| currentPage == kmeansPage)
+			method = ((ClusteringValueMethodPage) currentPage).getMethod();
+	}
 
-		if (currentPage == saveFilePage)
-			page = hclPage;
-		/*
-		if (currentPage == headerPage)
-			page = clusterSummPage;
-		*/
-		super.pageLeft(page);
+	private IWizardPage getMethodConfigPage() {
+		ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
+		Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
+
+		if (WekaCobWebMethod.class.equals(methodClass))
+			return cobwebPage;
+		else if(WekaHCLMethod.class.equals(methodClass))
+			return hclPage;
+		else if(WekaKmeansMethod.class.equals(methodClass))
+			return kmeansPage;
+		return null;
 	}
 
 	public ClusteringData getClusterData() {
-		return clusterSummPage.isValuesFromRows() ?
-		new MatrixRowClusteringData(heatmap.getMatrixView(), clusterSummPage.getDataAttribute())
-		: new MatrixColumnClusteringData(heatmap.getMatrixView(), clusterSummPage.getDataAttribute());
+		int attr = optionsPage.getDataAttribute();
+		IMatrixView mv = heatmap.getMatrixView();
+		return optionsPage.isValuesFromRows() ?
+			new MatrixRowClusteringData(mv, attr)
+			: new MatrixColumnClusteringData(mv, attr);
 	}
 
+	//FIXME Esto tiene pinta de que debería ir o en pageLeft o en Page:updateModel
 	public AbstractClusteringValueMethod getMethod() {
-
-		method.setPreprocess(clusterSummPage.isPreprocessing());
-		method.setTranspose(clusterSummPage.isValuesFromRows());
+		method.setPreprocess(optionsPage.isPreprocessing());
+		method.setTranspose(optionsPage.isValuesFromRows());
 
 		return method;
 	}
 
-	public Boolean isAddHeader() {
-		return clusterSummPage.isHeader();
+	public boolean isHeaderEnabled() {
+		return optionsPage.isHeaderSelected();
 	}
 
-	public Boolean isSortData() {
-		return clusterSummPage.isSort();
+	public boolean isSortData() {
+		return optionsPage.isSort();
 	}
 
-	public Boolean isTranspose() {
-		return clusterSummPage.isValuesFromRows();
+	public boolean isTranspose() {
+		return optionsPage.isValuesFromRows();
 	}
 
 	public HeatmapColoredLabelsHeader getHeader() {
@@ -211,6 +206,6 @@ public class ClusteringValueWizard extends AbstractWizard {
 	}
 	
 	public SaveFilePage getSaveFilePage() {
-		return saveFilePage;
+		return newickPage;
 	}
 }

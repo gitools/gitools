@@ -16,54 +16,106 @@
  */
 
 /*
- * LabelFilterDialog.java
+ * FilterDialog.java
  *
- * Created on Jan 19, 2010, 6:05:24 PM
+ * Created on Jan 19, 2010, 2:04:30 PM
  */
 
-package org.gitools.ui.dialog.filter;
+package org.gitools.ui.sort;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
+import java.awt.Component;
 import java.util.List;
-import javax.swing.event.DocumentEvent;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.utils.DocumentChangeListener;
-import org.gitools.ui.utils.FileChooserUtils;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import org.gitools.aggregation.IAggregator;
+import org.gitools.matrix.sort.ValueSortCriteria;
 
-public class LabelFilterDialog extends javax.swing.JDialog {
+public class ValueSortDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
 
+	private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer {
 
-    /** Creates new form LabelFilterDialog */
-    public LabelFilterDialog(java.awt.Frame parent) {
+		public ComboBoxCellRenderer(Object[] values) {
+			super(values);
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(
+				JTable table, Object value,
+				boolean isSelected, boolean hasFocus,
+				int row, int column) {
+
+			if (isSelected) {
+				setForeground(table.getSelectionForeground());
+				super.setBackground(table.getSelectionBackground());
+			} else {
+				setForeground(table.getForeground());
+				setBackground(table.getBackground());
+			}
+
+			// Select the current value
+			setSelectedItem(value);
+			return this;
+		}
+	}
+
+	private static class ComboBoxCellEditor extends DefaultCellEditor {
+		public ComboBoxCellEditor(Object[] values) {
+			super(new JComboBox(values));
+		}
+	}
+
+	private String[] attributeNames;
+	private IAggregator[] aggregators;
+	private ValueSortCriteria.SortDirection[] directions;
+
+	private ValueSortCriteriaTableModel criteriaModel;
+
+    /** Creates new form FilterDialog */
+    public ValueSortDialog(java.awt.Frame parent,
+			String[] attributeNames,
+			IAggregator[] aggregators,
+			ValueSortCriteria.SortDirection[] directions,
+			List<ValueSortCriteria> initialCriteriaList) {
+
         super(parent, true);
-        initComponents();
 
-		patterns.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
+		this.attributeNames = attributeNames;
+		this.aggregators = aggregators;
+		this.directions = directions;
+
+		this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
+
+		initComponents();
+
+		table.setModel(criteriaModel);
+
+		criteriaModel.addTableModelListener(new TableModelListener() {
+			@Override public void tableChanged(TableModelEvent e) {
+				tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
 			}
 		});
 
-		//TODO this option should disappear
-		useOriginalIds.setVisible(false);
+		if (initialCriteriaList != null)
+			criteriaModel.addAllCriteria(initialCriteriaList);
+		
+		TableColumnModel columnModel = table.getColumnModel();
+		columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
+		columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
     }
 
     /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-    public int getReturnStatus() {
-        return returnStatus;
+    public boolean isCancelled() {
+        return returnStatus != RET_OK;
     }
 
     /** This method is called from within the constructor to
@@ -78,20 +130,19 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         applyToGroup = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        tableAddBtn = new javax.swing.JButton();
+        tableRemoveBtn = new javax.swing.JButton();
         loadBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
-        useRegexCheck = new javax.swing.JCheckBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        patterns = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        applyToRowsRb = new javax.swing.JRadioButton();
-        applyToColumnsRb = new javax.swing.JRadioButton();
-        applyToRowsAndColumnsRb = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
-        useOriginalIds = new javax.swing.JCheckBox();
+        applyToRowsRb = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        applyToRowsAndColumnsRb = new javax.swing.JRadioButton();
+        applyToColumnsRb = new javax.swing.JRadioButton();
 
-        setTitle("Filter labels...");
+        setTitle("Sort by value");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -107,49 +158,64 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.setDefaultCapable(false);
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
-        loadBtn.setText("Load...");
-        loadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadBtnActionPerformed(evt);
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Attribute", "Condition", "Value"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
+        table.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(table);
+        table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        tableAddBtn.setText("Add");
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableAddBtnActionPerformed(evt);
+            }
+        });
+
+        tableRemoveBtn.setText("Remove");
+        tableRemoveBtn.setEnabled(false);
+        tableRemoveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableRemoveBtnActionPerformed(evt);
+            }
+        });
+
+        loadBtn.setText("Load...");
+        loadBtn.setEnabled(false);
 
         saveBtn.setText("Save...");
         saveBtn.setEnabled(false);
-        saveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBtnActionPerformed(evt);
-            }
-        });
-
-        useRegexCheck.setText("Use regular expressions");
-
-        patterns.setColumns(20);
-        patterns.setRows(6);
-        jScrollPane1.setViewportView(patterns);
-
-        jLabel1.setText("One label per line:");
-
-        jLabel2.setText("Apply to:");
 
         applyToGroup.add(applyToRowsRb);
         applyToRowsRb.setSelected(true);
         applyToRowsRb.setText("rows");
 
-        applyToGroup.add(applyToColumnsRb);
-        applyToColumnsRb.setText("columns");
+        jLabel2.setText("Apply to:");
 
         applyToGroup.add(applyToRowsAndColumnsRb);
         applyToRowsAndColumnsRb.setText("rows and columns");
 
-        useOriginalIds.setText("Use original ids only (without annotation substitutions)");
+        applyToGroup.add(applyToColumnsRb);
+        applyToColumnsRb.setText("columns");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,25 +224,23 @@ public class LabelFilterDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
-                    .addComponent(jLabel2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(applyToRowsRb)
                     .addComponent(applyToColumnsRb)
                     .addComponent(applyToRowsAndColumnsRb)
-                    .addComponent(useOriginalIds)
-                    .addComponent(useRegexCheck))
+                    .addComponent(jLabel2))
                 .addContainerGap())
         );
 
@@ -184,29 +248,27 @@ public class LabelFilterDialog extends javax.swing.JDialog {
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(tableAddBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tableRemoveBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(loadBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(useRegexCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(useOriginalIds)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(applyToRowsRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(applyToColumnsRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(applyToRowsAndColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -231,62 +293,14 @@ public class LabelFilterDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-	private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
-		
-		try {
-			File file = FileChooserUtils.selectFile(
-					"Select the file containing values",
-					Settings.getDefault().getLastFilterPath(),
-					FileChooserUtils.MODE_OPEN);
+	private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
+		criteriaModel.addCriteria(new ValueSortCriteria(
+				attributeNames[0], 0, aggregators[0], directions[0]));
+	}//GEN-LAST:event_tableAddBtnActionPerformed
 
-			if (file == null)
-				return;
-
-			Settings.getDefault().setLastFilterPath(file.getParent());
-
-			patterns.setText(readNamesFromFile(file));
-		}
-		catch (IOException ex) {
-			ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
-			edlg.setVisible(true);
-		}
-	}//GEN-LAST:event_loadBtnActionPerformed
-
-	protected String readNamesFromFile(File file) throws IOException {
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-		StringBuilder sb = new StringBuilder();
-	    String line;
-
-	    while ((line = br.readLine()) != null) {
-	    	line = line.trim();
-	    	if(!line.isEmpty())
-				sb.append(line).append('\n');
-	    }
-
-	    return sb.toString();
-	}
-
-	private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-		try {
-			File file = FileChooserUtils.selectFile(
-					"Select file name ...",
-					Settings.getDefault().getLastFilterPath(),
-					FileChooserUtils.MODE_SAVE);
-
-			if (file == null)
-				return;
-
-			Settings.getDefault().setLastFilterPath(file.getParent());
-
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-			bw.append(patterns.getText()).append('\n');
-			bw.close();
-		}
-		catch (Exception ex) {
-			ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
-			edlg.setVisible(true);
-		}
-	}//GEN-LAST:event_saveBtnActionPerformed
+	private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
+		criteriaModel.removeCriteria(table.getSelectedRows());
+	}//GEN-LAST:event_tableRemoveBtnActionPerformed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -300,16 +314,15 @@ public class LabelFilterDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton applyToRowsAndColumnsRb;
     private javax.swing.JRadioButton applyToRowsRb;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton loadBtn;
     private javax.swing.JButton okButton;
-    private javax.swing.JTextArea patterns;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JCheckBox useOriginalIds;
-    private javax.swing.JCheckBox useRegexCheck;
+    private javax.swing.JTable table;
+    private javax.swing.JButton tableAddBtn;
+    private javax.swing.JButton tableRemoveBtn;
     // End of variables declaration//GEN-END:variables
 
     private int returnStatus = RET_CANCEL;
@@ -322,31 +335,7 @@ public class LabelFilterDialog extends javax.swing.JDialog {
 		return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
 	}
 
-	public boolean isUseRegexChecked() {
-		return useRegexCheck.isSelected();
-	}
-
-	public boolean isUseOriginalIds() {
-		return useOriginalIds.isSelected();
-	}
-
-	public List<String> getValues() {
-		List<String> values = new ArrayList<String>();
-		StringReader sr = new StringReader(patterns.getText());
-		BufferedReader br = new BufferedReader(sr);
-		String line;
-		try {
-			while ((line = br.readLine()) != null) {
-				line = line.trim();
-				if (!line.isEmpty())
-					values.add(line);
-			}
-		}
-		catch (IOException ex) {
-			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-			dlg.setVisible(true);
-		}
-
-		return values;
+	public List<ValueSortCriteria> getCriteriaList() {
+		return criteriaModel.getList();
 	}
 }

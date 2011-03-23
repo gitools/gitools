@@ -90,7 +90,7 @@ public class ExportScaleImageAction extends BaseAction {
 
 		final ScaleExportWizard wz = new ScaleExportWizard();
 		wz.setTitle("Export scale to image ...");
-		wz.getSavePage().setFileName(PersistenceUtils.getFileName(editor.getName()) + "-scale");
+		wz.getSavePage().setFileNameWithoutExtension(PersistenceUtils.getFileName(editor.getName()) + "-scale");
 		wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
 		wz.getSavePage().setFormats(new FileFormat[] {
 					FileFormats.PNG,
@@ -104,7 +104,7 @@ public class ExportScaleImageAction extends BaseAction {
 
 		Settings.getDefault().setLastExportPath(wz.getSavePage().getFolder());
 
-		final File file = wz.getSavePage().getFile();
+		final File file = wz.getSavePage().getPathAsFile();
 		if (!file.getParentFile().exists())
 			file.getParentFile().mkdirs();
 

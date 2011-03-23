@@ -22,7 +22,7 @@ import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class ClusteringSummaryPage extends AbstractWizardPage {
+public class ClusteringOptionsPage extends AbstractWizardPage {
 
 	// model wrapper
 	private static class MatrixAttributeWrapper {
@@ -47,7 +47,7 @@ public class ClusteringSummaryPage extends AbstractWizardPage {
 		}
 	}
 
-	public ClusteringSummaryPage(List<IElementAttribute> cellAttributes, int index) {
+	public ClusteringOptionsPage(List<IElementAttribute> cellAttributes, int index) {
 		
 		initComponents();
 
@@ -58,21 +58,51 @@ public class ClusteringSummaryPage extends AbstractWizardPage {
 			model.addElement(attrWrapper);
 		}
 
-		dataClustCombo.setModel(model);
-		dataClustCombo.setSelectedIndex(index);
+		attributeCb.setModel(model);
+		attributeCb.setSelectedIndex(index);
+
+		newickChk.setVisible(false);
 		
-		setTitle("Clustering method selection");
+		setTitle("Clustering options");
 		setComplete(true);
 	}
 
-
-	@Override
-	public void updateModel() {
-		super.updateModel();
-
+	public int getDataAttribute() {
+		return attributeCb.getSelectedIndex();
 	}
 
+	public boolean isValuesFromRows() {
+		return rowsRadio.isSelected();
+	}
 
+	public boolean isPreprocessing() {
+		return preprocessingChk.isSelected();
+	}
+
+	public boolean isSort() {
+		return sortChk.isSelected();
+	}
+
+	public boolean isHeaderSelected() {
+		return headerChk.isSelected();
+	}
+
+	public void setHeaderEnabled(boolean res) {
+		headerChk.setEnabled(res);
+	}
+
+	public boolean isNewickExportVisible() {
+		return newickChk.isVisible();
+	}
+
+	public void setNewickExportVisible(boolean enabled) {
+		newickChk.setVisible(enabled);
+	}
+
+	public boolean isNewickExportSelected() {
+		return newickChk.isVisible() && newickChk.isSelected();
+	}
+	
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -86,11 +116,12 @@ public class ClusteringSummaryPage extends AbstractWizardPage {
         jLabel5 = new javax.swing.JLabel();
         columnsRadio = new javax.swing.JRadioButton();
         rowsRadio = new javax.swing.JRadioButton();
-        cbPreprocessing = new javax.swing.JCheckBox();
+        preprocessingChk = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
-        dataClustCombo = new javax.swing.JComboBox();
-        cbHeader = new javax.swing.JCheckBox();
-        cbSort = new javax.swing.JCheckBox();
+        attributeCb = new javax.swing.JComboBox();
+        headerChk = new javax.swing.JCheckBox();
+        sortChk = new javax.swing.JCheckBox();
+        newickChk = new javax.swing.JCheckBox();
 
         jLabel5.setText("Apply to:");
 
@@ -101,15 +132,18 @@ public class ClusteringSummaryPage extends AbstractWizardPage {
         optGroup.add(rowsRadio);
         rowsRadio.setText("rows");
 
-        cbPreprocessing.setSelected(true);
-        cbPreprocessing.setText("Apply dimensionality reduction");
+        preprocessingChk.setSelected(true);
+        preprocessingChk.setText("Apply dimensionality reduction");
 
-        jLabel6.setText("Values from:");
+        jLabel6.setText("Take values from");
 
-        cbHeader.setText("Create header");
+        headerChk.setSelected(true);
+        headerChk.setText("Add a new header with colors representing clusters");
 
-        cbSort.setSelected(true);
-        cbSort.setText("Sort heatmap by clustering results");
+        sortChk.setSelected(true);
+        sortChk.setText("Sort heatmap by clustering results");
+
+        newickChk.setText("Save hierarchical clustering tree in Newick format");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -119,91 +153,63 @@ public class ClusteringSummaryPage extends AbstractWizardPage {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbPreprocessing)
-                        .addContainerGap(336, Short.MAX_VALUE))
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(columnsRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rowsRadio)
+                        .addGap(307, 307, 307))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbSort)
-                        .addContainerGap(309, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbHeader)
-                        .addContainerGap(446, Short.MAX_VALUE))
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(attributeCb, 0, 406, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rowsRadio)
-                                    .addComponent(columnsRadio))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataClustCombo, 0, 400, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 438, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(70, 70, 70))))
+                                .addComponent(preprocessingChk)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(sortChk))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(headerChk)
+                    .addComponent(newickChk))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cbPreprocessing)
-                .addGap(18, 18, 18)
-                .addComponent(cbSort)
-                .addGap(18, 18, 18)
-                .addComponent(cbHeader)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(columnsRadio)
+                    .addComponent(rowsRadio))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(dataClustCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(14, 14, 14)
-                .addComponent(columnsRadio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rowsRadio)
-                .addContainerGap())
+                .addComponent(preprocessingChk)
+                .addGap(18, 18, 18)
+                .addComponent(sortChk)
+                .addGap(18, 18, 18)
+                .addComponent(headerChk)
+                .addGap(18, 18, 18)
+                .addComponent(newickChk)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox cbHeader;
-    private javax.swing.JCheckBox cbPreprocessing;
-    private javax.swing.JCheckBox cbSort;
+    private javax.swing.JComboBox attributeCb;
     private javax.swing.JRadioButton columnsRadio;
-    private javax.swing.JComboBox dataClustCombo;
+    private javax.swing.JCheckBox headerChk;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JCheckBox newickChk;
     private javax.swing.ButtonGroup optGroup;
+    private javax.swing.JCheckBox preprocessingChk;
     private javax.swing.JRadioButton rowsRadio;
+    private javax.swing.JCheckBox sortChk;
     // End of variables declaration//GEN-END:variables
 
-	public int getDataAttribute() {
-		return dataClustCombo.getSelectedIndex();
-	}
-
-	public boolean isValuesFromRows() {
-		return rowsRadio.isSelected();
-	}
-
-	public boolean isPreprocessing() {
-		return cbPreprocessing.isSelected();
-	}
-
-	public boolean isSort() {
-		return cbSort.isSelected();
-	}
-
-	public boolean isHeader() {
-		return cbHeader.isSelected();
-	}
-
-	public void enableHeader(boolean res) {
-		cbHeader.setEnabled(res);
-	}
-
-	public boolean isHeaderEnabled() {
-		return cbHeader.isEnabled();
-	}
 }

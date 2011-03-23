@@ -1,5 +1,5 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ *  Copyright 2011 cperez.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,28 +15,23 @@
  *  under the License.
  */
 
-package org.gitools.ui.actions.data;
+package org.gitools.label;
 
-import java.awt.event.ActionEvent;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.matrix.model.IMatrix;
 
-public class FilterByAnnotationAction extends BaseAction {
+public class MatrixRowsLabelProvider extends MatrixLabelProvider {
 
-	public FilterByAnnotationAction() {
-		super("Filter by annotation");
-		setDesc("Filter by annotation");
+	public MatrixRowsLabelProvider(IMatrix m) {
+		super(m);
 	}
 
 	@Override
-	public boolean isEnabledByModel(Object model) {
-		return false;
-		/*return model instanceof Heatmap
-			|| model instanceof IMatrixView;*/
+	public int getCount() {
+		return matrix.getRowCount();
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		throw new UnsupportedOperationException("Not supported yet.");
+	public String getLabel(int index) {
+		return matrix.getRowLabel(index);
 	}
-
 }

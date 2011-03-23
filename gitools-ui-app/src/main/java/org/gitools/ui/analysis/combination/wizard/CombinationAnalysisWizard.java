@@ -213,7 +213,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									columnSetsPage.setFile(new File(basePath, EXAMPLE_COLUM_SETS_FILE));
-									saveFilePage.setFileName("example");
+									saveFilePage.setFileNameWithoutExtension("example");
 								}
 							});
 						}

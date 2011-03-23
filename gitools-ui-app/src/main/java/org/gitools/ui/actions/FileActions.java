@@ -23,7 +23,7 @@ import org.gitools.ui.actions.file.ExitAction;
 import org.gitools.ui.actions.file.ExportAction;
 import org.gitools.ui.actions.file.ExportHeatmapHtmlAction;
 import org.gitools.ui.actions.file.ExportHeatmapImageAction;
-import org.gitools.ui.actions.file.ExportLabelNamesAction;
+import org.gitools.ui.actions.file.ExportHeatmapLabelsAction;
 import org.gitools.ui.actions.file.ExportTableAction;
 import org.gitools.ui.actions.file.ExportMatrixAction;
 import org.gitools.ui.actions.file.ExportPdfReportAction;
@@ -96,7 +96,7 @@ public class FileActions {
 	
 	public static final BaseAction exportWizardAction = new ExportAction();
 	
-	public static final BaseAction exportLabelNamesAction = new ExportLabelNamesAction();
+	public static final BaseAction exportLabelNamesAction = new ExportHeatmapLabelsAction();
 	public static final BaseAction exportMatrixAction = new ExportMatrixAction();
 	public static final BaseAction exportTableAction = new ExportTableAction();
 	public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();

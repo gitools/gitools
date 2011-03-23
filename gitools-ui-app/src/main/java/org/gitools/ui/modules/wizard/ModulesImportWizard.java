@@ -74,8 +74,8 @@ public class ModulesImportWizard extends AbstractWizard {
 	@Override
 	public void pageEntered(IWizardPage page) {
 		if (saveFilePage.equals(page))
-			if (saveFilePage.getFileName().isEmpty())
-				saveFilePage.setFileName(automaticFileName(importer));
+			if (saveFilePage.getFileNameWithoutExtension().isEmpty())
+				saveFilePage.setFileNameWithoutExtension(automaticFileName(importer));
 	}
 
 	private String automaticFileName(ModulesImporter importer) {

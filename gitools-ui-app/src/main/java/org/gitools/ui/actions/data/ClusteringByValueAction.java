@@ -44,7 +44,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 public class ClusteringByValueAction extends BaseAction {
 
 	public ClusteringByValueAction() {
-		super("Cluster by values");
+		super("Clustering");
 		setDesc("Cluster by values");
 	}
 
@@ -88,17 +88,17 @@ public class ClusteringByValueAction extends BaseAction {
 							ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
 					}
 
-					if (! wiz.getSaveFilePage().getFileName().isEmpty() 
+					if (! wiz.getSaveFilePage().getFileNameWithoutExtension().isEmpty()
 							&& results instanceof HierarchicalClusteringResults) {
 
-							File fileName = wiz.getSaveFilePage().getFile();
+							File fileName = wiz.getSaveFilePage().getPathAsFile();
 							BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
 							out.write(((HierarchicalClusteringResults) results).getStrNewickTree());
 							out.flush();
 							out.close();
 					}
 
-					if (wiz.isAddHeader()) {
+					if (wiz.isHeaderEnabled()) {
 						HeatmapDim hdim = wiz.isTranspose() ?
 							heatmap.getRowDim() : heatmap.getColumnDim();
 

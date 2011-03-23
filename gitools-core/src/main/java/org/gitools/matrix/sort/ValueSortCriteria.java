@@ -19,7 +19,7 @@ package org.gitools.matrix.sort;
 
 import org.gitools.aggregation.IAggregator;
 
-public final class SortCriteria {
+public final class ValueSortCriteria {
 
 	public enum SortDirection {
 		ASCENDING("Ascending", 1), 
@@ -48,7 +48,7 @@ public final class SortCriteria {
 	protected IAggregator aggregator;
 	protected SortDirection direction;
 
-	public SortCriteria(
+	public ValueSortCriteria(
 			int attributeIndex,
 			IAggregator aggregator,
 			SortDirection direction) {
@@ -56,7 +56,7 @@ public final class SortCriteria {
 		this(null, attributeIndex, aggregator, direction);
 	}
 
-	public SortCriteria(
+	public ValueSortCriteria(
 			String attributeName,
 			int attributeIndex,
 			IAggregator aggregator,

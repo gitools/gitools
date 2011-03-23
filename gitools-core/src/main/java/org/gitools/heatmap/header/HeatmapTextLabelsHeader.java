@@ -20,7 +20,6 @@ package org.gitools.heatmap.header;
 import org.gitools.heatmap.HeatmapDim;
 import java.awt.Color;
 import java.awt.Font;
-import java.net.URLEncoder;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -89,7 +88,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 	@Override
 	public String getTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Label: ");
+		sb.append("Text: ");
 		switch (labelSource) {
 			case ID: sb.append("ID"); break;
 			case ANNOTATION: sb.append(labelAnnotation); break;

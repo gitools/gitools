@@ -28,13 +28,13 @@ import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.aggregation.MultAggregator;
-import org.gitools.matrix.sort.SortCriteria;
+import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.sort.ValueSortDialog;
+import org.gitools.ui.sort.ValueSortDialog;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -87,26 +87,26 @@ public class SortByValueAction extends BaseAction {
 
 		// Default criteria
 
-		List<SortCriteria> initialCriteria = new ArrayList<SortCriteria>(1);
+		List<ValueSortCriteria> initialCriteria = new ArrayList<ValueSortCriteria>(1);
 		if (attributeNames.length > 0) {
-			initialCriteria.add(new SortCriteria(
+			initialCriteria.add(new ValueSortCriteria(
 					attributeNames[attrIndex], attrIndex,
 					aggregators[aggrIndex],
-					SortCriteria.SortDirection.ASCENDING));
+					ValueSortCriteria.SortDirection.ASCENDING));
 		}
 
 		final ValueSortDialog dlg = new ValueSortDialog(
 				AppFrame.instance(),
 				attributeNames,
 				aggregators,
-				SortCriteria.SortDirection.values(),
+				ValueSortCriteria.SortDirection.values(),
 				initialCriteria);
 		dlg.setVisible(true);
 
 		if (dlg.isCancelled())
 			return;
 
-		final List<SortCriteria> criteriaList = dlg.getCriteriaList();
+		final List<ValueSortCriteria> criteriaList = dlg.getCriteriaList();
 		if (criteriaList.size() == 0) {
 			AppFrame.instance().setStatusText("No criteria specified.");
 			return;
@@ -117,8 +117,8 @@ public class SortByValueAction extends BaseAction {
 			public void run(IProgressMonitor monitor) {
 				monitor.begin("Sorting ...", 1);
 
-				SortCriteria[] criteriaArray =
-						new SortCriteria[criteriaList.size()];
+				ValueSortCriteria[] criteriaArray =
+						new ValueSortCriteria[criteriaList.size()];
 
 				MatrixViewSorter.sortByValue(matrixView,
 						criteriaList.toArray(criteriaArray),

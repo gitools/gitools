@@ -109,11 +109,11 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 	public static String getInternalName(String id) {
 		if (id.startsWith("ensembl:")) {
 			id = id.substring(8);
-			if ("genes".equals(id))
+			if ("gene".equals(id))
 				return "ensembl_gene_id";
-			else if ("transcripts".equals(id))
+			else if ("transcript".equals(id))
 				return "ensembl_transcript_id";
-			else if ("proteins".equals(id))
+			else if ("protein".equals(id))
 				return "ensembl_protein_id";
 			else
 				return id;

@@ -137,7 +137,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
 									modulesPage.setSelectedFile(new File(basePath, EXAMPLE_MODULES_FILE));
-									saveFilePage.setFileName("example");
+									saveFilePage.setFileNameWithoutExtension("example");
 								}
 							});
 
@@ -177,7 +177,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	}
 
 	public String getFileName() {
-		return saveFilePage.getFilePath();
+		return saveFilePage.getFileName();
 	}
 
 	public String getDataFileMime() {

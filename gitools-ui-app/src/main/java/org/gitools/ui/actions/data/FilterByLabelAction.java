@@ -19,17 +19,20 @@ package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
+import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.filter.LabelFilterDialog;
+import org.gitools.ui.dialog.filter.LabelFilterPage;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.PageDialog;
 
 public class FilterByLabelAction extends BaseAction {
 
@@ -48,36 +51,41 @@ public class FilterByLabelAction extends BaseAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		IEditor editor = AppFrame.instance()
+			.getEditorsPanel()
+			.getSelectedEditor();
 
-		final LabelFilterDialog dlg =
-				new LabelFilterDialog(AppFrame.instance());
-
-		boolean origIds = dlg.isUseOriginalIds();
-
-		final IMatrixView matrixView = origIds ?
-			ActionUtils.getMatrixView() :
-			ActionUtils.getHeatmapMatrixView();
-
-		if (matrixView == null)
+		Object model = editor != null ? editor.getModel() : null;
+		if (model == null || !(model instanceof Heatmap))
 			return;
-		
+
+		final Heatmap hm = (Heatmap) model;
+
+		final LabelFilterPage page = new LabelFilterPage(hm);
+		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
 		dlg.setVisible(true);
 
-		if (dlg.getReturnStatus() != LabelFilterDialog.RET_OK) {
-			AppFrame.instance().setStatusText("Filter cancelled.");
+		if (dlg.isCancelled())
 			return;
-		}
+
+		final IMatrixView matrixView = hm.getMatrixView();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override
 			public void run(IProgressMonitor monitor) {
 				monitor.begin("Filtering ...", 1);
 
-				MatrixViewLabelFilter.filter(matrixView,
-						dlg.getValues(),
-						dlg.isUseRegexChecked(),
-						dlg.isApplyToRowsChecked(),
-						dlg.isApplyToColumnsChecked());
+				AnnotationMatrix am = null;
+				FilterDimension dim = page.getFilterDimension();
+				switch (dim) {
+					case ROWS: am = hm.getRowDim().getAnnotations(); break;
+					case COLUMNS: am = hm.getColumnDim().getAnnotations(); break;
+				}
+
+				MatrixViewLabelFilter.filter(matrixView, dim,
+						page.getPattern(), am,
+						page.getValues(),
+						page.isUseRegexChecked());
 
 				monitor.end();
 			}

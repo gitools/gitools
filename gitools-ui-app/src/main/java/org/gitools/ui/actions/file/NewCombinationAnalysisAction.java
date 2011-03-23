@@ -61,7 +61,7 @@ public class NewCombinationAnalysisAction extends BaseAction {
 
 		final CombinationAnalysis analysis = wizard.getAnalysis();
 
-		final String analysisPath = wizard.getSaveFilePage().getFilePath();
+		final String analysisPath = wizard.getSaveFilePage().getFileName();
 		File columnSetsFile = wizard.getColumnSetsPage().getFile();
 		String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
 		String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getMime() : null;
