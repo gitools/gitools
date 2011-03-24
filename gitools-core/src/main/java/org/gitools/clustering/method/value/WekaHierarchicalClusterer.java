@@ -205,7 +205,8 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
       }
     }
     public String toString2(int attIndex) {
-      DecimalFormat myFormatter = new DecimalFormat("#.#####");
+      DecimalFormat myFormatter = new DecimalFormat("#.#####;#");
+	  myFormatter.setNegativePrefix("");
 
       if (m_left == null) {
         if (m_right == null) {
