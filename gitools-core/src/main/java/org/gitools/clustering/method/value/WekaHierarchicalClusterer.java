@@ -151,7 +151,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     new Tag(MEAN, "MEAN"),
     new Tag(CENTROID, "CENTROID"),
     new Tag(WARD, "WARD"),
-    new Tag(ADJCOMLPETE,"ADJCOMLPETE"),
+    new Tag(ADJCOMLPETE,"ADJCOMPLETE"),
     new Tag(NEIGHBOR_JOINING,"NEIGHBOR_JOINING")
   };
 
