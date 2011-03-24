@@ -137,7 +137,6 @@ public class ClusteringOptionsPage extends AbstractWizardPage {
 
         jLabel6.setText("Take values from");
 
-        headerChk.setSelected(true);
         headerChk.setText("Add a new header with colors representing clusters");
 
         sortChk.setSelected(true);
@@ -162,14 +161,12 @@ public class ClusteringOptionsPage extends AbstractWizardPage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributeCb, 0, 406, Short.MAX_VALUE))
+                        .addComponent(attributeCb, 0, 418, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(preprocessingChk)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(preprocessingChk)
                             .addComponent(sortChk))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(headerChk)
                     .addComponent(newickChk))
                 .addContainerGap())

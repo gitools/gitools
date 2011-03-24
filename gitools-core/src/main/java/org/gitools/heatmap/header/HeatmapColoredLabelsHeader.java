@@ -118,6 +118,8 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
 	private HierarchicalClusteringResults HCLResults;
 
+	private int HCLCurrentDepth;
+
 	public HeatmapColoredLabelsHeader(HeatmapDim hdim) {
 		super(hdim);
 		
@@ -295,4 +297,13 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 	public HierarchicalClusteringResults getHCLResults() {
 		return HCLResults;
 	}
+
+	public int getHCLCurrentDepth() {
+		return HCLCurrentDepth;
+	}
+
+	public void setHCLCurrentDepth(int currentHCLdepth) {
+		this.HCLCurrentDepth = currentHCLdepth;
+	}
+
 }

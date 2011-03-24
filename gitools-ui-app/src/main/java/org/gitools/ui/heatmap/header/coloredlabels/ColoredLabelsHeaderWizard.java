@@ -90,6 +90,27 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	public boolean canFinish() {
 		return currentPage != sourcePage;
 	}
+
+	@Override
+	public void performFinish() {
+		if (header.getHCLResults() != null) {
+			header.setHCLCurrentDepth(hclPage.getLevel());
+		}
+	}
+
+	@Override
+	public void performCancel() {
+
+		if (header.getHCLResults() != null) {
+
+			ClusteringResults results =
+					ClusterUtils.getHCLResultsByLevel(
+					header.getHCLResults(), header.getHCLCurrentDepth());
+
+			header.updateFromClusterResults(results);
+		}
+	}
+
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		IWizardPage nextPage = super.getNextPage(page);

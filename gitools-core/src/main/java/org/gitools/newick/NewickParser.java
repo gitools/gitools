@@ -278,6 +278,10 @@ public class NewickParser<VT> {
 							return new Token(TokenType.END_OF_STREAM, null);
 						else if (isWhitespace((char) ch))
 							return new Token(TokenType.SPACE, "" + (char) ch);
+						else if (ch == '-') {
+							sb.append((char) ch);
+							state = 'Z';
+						}
 						else if (Character.isDigit((char) ch)) {
 							sb.append((char) ch);
 							state = 'I';
@@ -295,6 +299,22 @@ public class NewickParser<VT> {
 								case ';': return new Token(TokenType.COLON_COMMA, "" + (char) ch);
 								default: exception("Unexpected character: " + (char) ch);
 							}
+						}
+						break;
+
+					case 'Z':	// sign character
+						ch = nextChar();
+
+						 if (Character.isDigit((char) ch)) {
+							sb.append((char) ch);
+							state = 'I';
+						} else if (isNameChar(ch)) {
+							sb.append((char) ch);
+							state = 'N';
+						}
+						else {
+							bufferedChar = ch;
+							return new Token(TokenType.NAME, sb.toString());
 						}
 						break;
 

@@ -23,8 +23,10 @@ package org.gitools.clustering.method.value;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Formatter;
 import java.util.Locale;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -206,27 +208,28 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
       }
     }
     public String toString2(int attIndex) {
-      
+
 	  Locale locale = Locale.US;
 	  DecimalFormat myFormatter = new DecimalFormat("#.#####;#");
 	  myFormatter.setNegativePrefix("");
-
+	
+	  NumberFormat f = myFormatter.getNumberInstance(locale);
 
       if (m_left == null) {
         if (m_right == null) {
-          return "(" + m_iLeftInstance + ":" + myFormatter.getNumberInstance(locale).format(m_fLeftLength) + "," +
-          m_iRightInstance +":" + myFormatter.getNumberInstance(locale).format(m_fRightLength) + ")";
+          return "(" + m_iLeftInstance + ":" + f.format(m_fLeftLength) + "," +
+          m_iRightInstance +":" + f.format(m_fRightLength) + ")";
         } else {
-          return "(" + m_iLeftInstance + ":" + myFormatter.getNumberInstance(locale).format(m_fLeftLength) + "," +
-          m_right.toString2(attIndex) + ":" + myFormatter.getNumberInstance(locale).format(m_fRightLength) + ")";
+          return "(" + m_iLeftInstance + ":" + f.format(m_fLeftLength) + "," +
+          m_right.toString2(attIndex) + ":" + f.format(m_fRightLength) + ")";
         }
       } else {
         if (m_right == null) {
-          return "(" + m_left.toString2(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
-          m_iRightInstance + ":" + myFormatter.getNumberInstance(locale).format(m_fRightLength) + ")";
+          return "(" + m_left.toString2(attIndex) + ":" + f.format(m_fLeftLength) + "," +
+          m_iRightInstance + ":" + f.format(m_fRightLength) + ")";
         } else {
-          return "(" + m_left.toString2(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
-		  m_right.toString2(attIndex) + ":" + myFormatter.getNumberInstance(locale).format(m_fRightLength) + ")";
+          return "(" + m_left.toString2(attIndex) + ":" + f.format(m_fLeftLength) + "," +
+		  m_right.toString2(attIndex) + ":" + f.format(m_fRightLength) + ")";
         }
       }
     }

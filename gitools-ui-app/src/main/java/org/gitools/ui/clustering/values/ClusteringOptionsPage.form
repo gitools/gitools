@@ -34,17 +34,14 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="attributeCb" pref="406" max="32767" attributes="3"/>
+                      <Component id="attributeCb" pref="418" max="32767" attributes="3"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="preprocessingChk" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="28" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="preprocessingChk" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="sortChk" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="271" max="-2" attributes="0"/>
+                      <EmptySpace pref="288" max="-2" attributes="0"/>
                   </Group>
                   <Component id="headerChk" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="newickChk" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -118,7 +115,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="headerChk">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Add a new header with colors representing clusters"/>
       </Properties>
     </Component>

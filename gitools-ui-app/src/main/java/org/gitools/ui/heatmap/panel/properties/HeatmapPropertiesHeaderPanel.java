@@ -43,6 +43,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.method.value.ClusterUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
@@ -629,6 +631,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		HeatmapHeader h = hdim.getHeaders().get(index);
 		Class<? extends HeatmapHeader> cls = h.getClass();
 		IWizard wizard = null;
+
 		if (cls.equals(HeatmapTextLabelsHeader.class))
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
 		else if (cls.equals(HeatmapColoredLabelsHeader.class)) {

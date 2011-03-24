@@ -105,8 +105,15 @@ public class ClusteringByValueAction extends BaseAction {
 						if (header.getTitle().isEmpty())
 							header.setTitle("Cluster_header_" + header.getHeatmapDim().getHeaders().size());
 
-						if (results instanceof HierarchicalClusteringResults)
+						if (results instanceof HierarchicalClusteringResults) {
 							header.setHCLResults((HierarchicalClusteringResults) results);
+
+							/*set depth tree -1 as default level of the clustering tree */
+							int treeDepth = ((HierarchicalClusteringResults) results).getNewickTree().getTreeDepth() / 2;
+							results = ClusterUtils.getHCLResultsByLevel(header.getHCLResults(), treeDepth);
+
+							header.setHCLCurrentDepth(treeDepth);
+						}
 
 						header.updateFromClusterResults(results);
 

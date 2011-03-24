@@ -18,6 +18,7 @@
 package org.gitools.ui.heatmap.header.coloredlabels;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -25,6 +26,9 @@ import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
@@ -67,9 +71,12 @@ public class ColoredLabelsHCLPage extends AbstractWizardPage {
 		zoomOutBtn.setAction(zoomOutAction);
 		zoomOutBtn.setIcon(IconUtils.getImageIconResourceScaledByHeight(IconNames.zoomOut16, 16));
 
+		int treeDepth = header.getHCLResults().getNewickTree().getTreeDepth();
+		SpinnerModel sm = new SpinnerNumberModel(header.getHCLCurrentDepth(), 0, treeDepth, 1);
+		this.levelSpin.setModel(sm);
+
 		treePanel.setLayout(new BorderLayout());
 		
-
 		// Read in the file(s) with the selected PhyloReader
 		String newickString = header.getHCLResults().getStrNewickTree();
 		BufferedReader br = new BufferedReader(new StringReader(newickString));
