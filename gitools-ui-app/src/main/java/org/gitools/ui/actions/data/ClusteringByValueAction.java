@@ -21,8 +21,6 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
@@ -31,6 +29,7 @@ import org.gitools.clustering.method.value.ClusterUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
@@ -63,11 +62,8 @@ public class ClusteringByValueAction extends BaseAction {
 			return;
 
 		final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
-
 		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
-
-		wdlg.open();
-
+		wdlg.setVisible(true);
 		if (wdlg.isCancelled())
 			return;
 
@@ -80,44 +76,47 @@ public class ClusteringByValueAction extends BaseAction {
 
 					ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
-					if (wiz.isSortData()) {
-						if (wiz.isTranspose()) {
+					if (wiz.isSortDataSelected()) {
+						if (wiz.isApplyToRows()) {
 							TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap.getMatrixView());
 							ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
-						} else
+						}
+						else
 							ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
 					}
 
-					if (! wiz.getSaveFilePage().getFileNameWithoutExtension().isEmpty()
-							&& results instanceof HierarchicalClusteringResults) {
-
-							File fileName = wiz.getSaveFilePage().getPathAsFile();
-							BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
-							out.write(((HierarchicalClusteringResults) results).getStrNewickTree());
+					if (wiz.isNewickExportSelected()) {
+							File path = wiz.getSaveFilePage().getPathAsFile();
+							BufferedWriter out = new BufferedWriter(new FileWriter(path));
+							out.write(((HierarchicalClusteringResults) results).getTree().toString());
 							out.flush();
 							out.close();
 					}
 
-					if (wiz.isHeaderEnabled()) {
+					if (wiz.isHeaderSelected()) {
+						boolean hcl = results instanceof HierarchicalClusteringResults;
 
-						HeatmapColoredLabelsHeader header = wiz.getHeader();
+						HeatmapDim hdim = wiz.isApplyToRows() ?
+							heatmap.getRowDim() : heatmap.getColumnDim();
 
-						if (header.getTitle().isEmpty())
-							header.setTitle("Cluster_header_" + header.getHeatmapDim().getHeaders().size());
+						HeatmapColoredLabelsHeader header = hcl ?
+							new HeatmapHierarchicalColoredLabelsHeader(hdim)
+							: new HeatmapColoredLabelsHeader(hdim);
 
-						if (results instanceof HierarchicalClusteringResults) {
-							header.setHCLResults((HierarchicalClusteringResults) results);
+						header.setTitle("Clustering: " + wiz.getMethodName());
 
-							/*set depth tree -1 as default level of the clustering tree */
-							int treeDepth = ((HierarchicalClusteringResults) results).getNewickTree().getTreeDepth() / 2;
-							results = ClusterUtils.getHCLResultsByLevel(header.getHCLResults(), treeDepth);
+						if (hcl) {
+							HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;
+							HierarchicalClusteringResults hclResults = (HierarchicalClusteringResults) results;
 
-							header.setHCLCurrentDepth(treeDepth);
+							hclHeader.setClusteringResults(hclResults);
+							int level = hclResults.getTree().getDepth() / 2;
+							hclHeader.setTreeLevel(level);
 						}
 
 						header.updateFromClusterResults(results);
 
-						if (wiz.isTranspose())
+						if (wiz.isApplyToRows())
 							heatmap.getRowDim().addHeader(header);
 						else
 							heatmap.getColumnDim().addHeader(header);

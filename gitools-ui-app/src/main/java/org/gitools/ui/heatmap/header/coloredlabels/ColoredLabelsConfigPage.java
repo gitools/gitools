@@ -138,7 +138,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         jLabel1 = new javax.swing.JLabel();
         titleField = new javax.swing.JTextField();
         labelVisibleChk = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
+        fontLabel = new javax.swing.JLabel();
         labelFontField = new javax.swing.JTextField();
         labelFontBtn = new javax.swing.JButton();
         labelRotatedChk = new javax.swing.JCheckBox();
@@ -155,7 +155,8 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         labelVisibleChk.setText("Show cluster names");
         labelVisibleChk.setEnabled(false);
 
-        jLabel2.setText("Font");
+        fontLabel.setText("Font");
+        fontLabel.setEnabled(false);
 
         labelFontField.setEditable(false);
 
@@ -208,9 +209,9 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelRotatedChk)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(fontLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelFontField, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                                .addComponent(labelFontField, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelFontBtn))
                             .addGroup(layout.createSequentialGroup()
@@ -238,7 +239,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                 .addComponent(labelVisibleChk)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(fontLabel)
                     .addComponent(labelFontField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelFontBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -254,8 +255,8 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup colorGroup;
+    private javax.swing.JLabel fontLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private org.gitools.ui.platform.component.ColorChooserLabel labelColor;

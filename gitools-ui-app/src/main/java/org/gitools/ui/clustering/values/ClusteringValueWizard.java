@@ -27,11 +27,8 @@ import org.gitools.clustering.method.value.WekaCobWebMethod;
 import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsConfigPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
@@ -43,14 +40,12 @@ public class ClusteringValueWizard extends AbstractWizard {
 	private Heatmap heatmap;
 	
 	private AbstractClusteringValueMethod method;
-	private HeatmapColoredLabelsHeader header;
 
 	private ClusteringMethodsPage methodPage;
 	private CobwebParamsPage cobwebPage;
 	private HCLParamsPage hclPage;
 	private KmeansParamsPage kmeansPage;
 	private ClusteringOptionsPage optionsPage;
-	private ColoredLabelsConfigPage headerPage;
 	private SaveFilePage newickPage;
 
 	public ClusteringValueWizard(Heatmap heatmap) {
@@ -73,10 +68,6 @@ public class ClusteringValueWizard extends AbstractWizard {
 				mv.getContents().getCellAttributes(),
 				mv.getSelectedPropertyIndex());
 		addPage(optionsPage);
-
-		header = new HeatmapColoredLabelsHeader(heatmap.getColumnDim());
-		headerPage = new ColoredLabelsConfigPage(header);
-		addPage(headerPage);
 
 		newickPage = new SaveFilePage();
 		newickPage.setTitle("Select Newick's tree destination file");
@@ -120,17 +111,11 @@ public class ClusteringValueWizard extends AbstractWizard {
 		IWizardPage nextPage = null;
 
 		if (currentPage == optionsPage) {
-			if (optionsPage.isHeaderSelected()) {
-				nextPage = getPreparedHeaderPage();
-			}
-			else if (optionsPage.isNewickExportSelected())
+			if (optionsPage.isNewickExportSelected())
 				nextPage = newickPage;
 			else
 				nextPage = getMethodConfigPage();
 		}
-		else if ((currentPage == headerPage && !optionsPage.isNewickExportSelected())
-					|| currentPage == newickPage)
-			nextPage = getMethodConfigPage();
 		else if (currentPage == cobwebPage
 				|| currentPage == hclPage
 				|| currentPage == kmeansPage)
@@ -138,16 +123,6 @@ public class ClusteringValueWizard extends AbstractWizard {
 		else
 			nextPage = super.getNextPage(currentPage);
 
-		return nextPage;
-	}
-
-	private IWizardPage getPreparedHeaderPage() {
-		IWizardPage nextPage;
-		HeatmapDim hdim = isTranspose() ? heatmap.getRowDim() : heatmap.getColumnDim();
-		header.setHeatmapDim(hdim);
-		header.setTitle("Cluster_header_" + hdim.getHeaders().size());
-		headerPage.setHeader(header);
-		nextPage = headerPage;
 		return nextPage;
 	}
 
@@ -160,8 +135,11 @@ public class ClusteringValueWizard extends AbstractWizard {
 		}
 		else if (currentPage == cobwebPage
 				|| currentPage == hclPage
-				|| currentPage == kmeansPage)
+				|| currentPage == kmeansPage) {
 			method = ((ClusteringValueMethodPage) currentPage).getMethod();
+			method.setPreprocess(optionsPage.isPreprocessing());
+			method.setTranspose(optionsPage.isApplyToRows());
+		}
 	}
 
 	private IWizardPage getMethodConfigPage() {
@@ -180,36 +158,36 @@ public class ClusteringValueWizard extends AbstractWizard {
 	public ClusteringData getClusterData() {
 		int attr = optionsPage.getDataAttribute();
 		IMatrixView mv = heatmap.getMatrixView();
-		return optionsPage.isValuesFromRows() ?
+		return optionsPage.isApplyToRows() ?
 			new MatrixRowClusteringData(mv, attr)
 			: new MatrixColumnClusteringData(mv, attr);
 	}
 
-	//FIXME Esto tiene pinta de que debería ir o en pageLeft o en Page:updateModel
-	public AbstractClusteringValueMethod getMethod() {
-		method.setPreprocess(optionsPage.isPreprocessing());
-		method.setTranspose(optionsPage.isValuesFromRows());
-
-		return method;
-	}
-
-	public boolean isHeaderEnabled() {
+	public boolean isHeaderSelected() {
 		return optionsPage.isHeaderSelected();
 	}
 
-	public boolean isSortData() {
+	public boolean isSortDataSelected() {
 		return optionsPage.isSort();
 	}
 
-	public boolean isTranspose() {
-		return optionsPage.isValuesFromRows();
+	public boolean isNewickExportSelected() {
+		return optionsPage.isNewickExportSelected();
 	}
 
-	public HeatmapColoredLabelsHeader getHeader() {
-		return header;
+	public boolean isApplyToRows() {
+		return optionsPage.isApplyToRows();
 	}
-	
+
 	public SaveFilePage getSaveFilePage() {
 		return newickPage;
+	}
+
+	public String getMethodName() {
+		return methodPage.getMethodDescriptor().getTitle();
+	}
+
+	public AbstractClusteringValueMethod getMethod() {
+		return method;
 	}
 }

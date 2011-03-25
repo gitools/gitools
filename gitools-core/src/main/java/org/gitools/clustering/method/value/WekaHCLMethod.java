@@ -17,18 +17,13 @@
 
 package org.gitools.clustering.method.value;
 
-import java.io.IOException;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
-import org.gitools.newick.NewickNode;
 import org.gitools.newick.NewickParser;
-import org.gitools.newick.NewickParserException;
 import org.gitools.newick.NewickTree;
 import weka.core.Instances;
 import weka.core.NormalizableDistance;
@@ -79,25 +74,19 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
 				// Identify cluster by instance
 				monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
 
-				String newickTree = clusterer.graph();
-
-				NewickParser newickParser = new NewickParser(newickTree + ";");
-
+				NewickParser newickParser = new NewickParser(clusterer.graph() + ";");
 				NewickTree tree = newickParser.parse();
 
-				List<Integer> instancesCluster = ClusterUtils.getTreeLeaves(tree);
-								
-				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
-				
-				clusterResults.put("0", instancesCluster);
-
-				results = new HierarchicalClusteringResults(labels.toArray(new String[0]), clusterResults, tree, newickTree);
+				results = new HierarchicalClusteringResults(
+						labels.toArray(new String[labels.size()]),
+						tree, 0);
 			
 			}
 
 			return results;
 
-		} catch (Throwable ex) {
+		}
+		catch (Throwable ex) {
 			if (ex instanceof OutOfMemoryError)
 				throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
 			else

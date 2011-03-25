@@ -145,6 +145,7 @@ public class ClusterUtils {
 	 * @param clusterParameters
 	 * @return
 	 */
+	@Deprecated // It is not necessary to check for transposed !!!
 	public static Instances buildInstanceStructure(ClusteringData clusterData, boolean transposed) {
 
 		FastVector attr = null;
@@ -157,6 +158,7 @@ public class ClusterUtils {
 		return new Instances("matrixToCluster", attr, 0);
 	}
 
+	@Deprecated // It is not necessary to check for transposed !!!
 	public static List<String> getLabels(ClusteringData clusterData, boolean transpose) {
 
 		List<String> labels = new ArrayList<String>();
@@ -174,6 +176,7 @@ public class ClusterUtils {
 	/* Transform value to a formatted string which can be sorted correctly
 	 (i.e: 3, 2, 10  -> 02, 03, 10)
 	 */
+	@Deprecated // Use a Java Formatter and or StringBuilder !!!
 	public static String valueToString(Integer value, Integer maxLength) {
 		String num = value.toString();
 		int numLenght = num.length();
@@ -183,13 +186,14 @@ public class ClusterUtils {
 		return num;
 	}
 
-	public static ClusteringResults getHCLResultsByLevel(HierarchicalClusteringResults res, Integer level) {
+	/*
+	public static ClusteringResults getHCLResultsByLevel(HierarchicalClusteringResults res, int level) {
 
 		ClusteringResults results = null;
 
-		HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();		
+		HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
-		List<NewickNode> leaves = res.getNewickTree().getRoot().getLeaves(level);
+		List<NewickNode> leaves = res.getTree().getRoot().getLeaves(level);
 
 		Integer maxLengthClusters = Integer.toString(leaves.size()).length();
 		
@@ -208,11 +212,11 @@ public class ClusterUtils {
 			i++;
 		}
 
-		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getNewickTree(), res.getStrNewickTree());
+		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getTree(), res.getStrNewickTree());
 
 		return results;
 	}
-
+	 */
 
 	public static List<Integer> getTreeLeaves(NewickTree tree) throws NumberFormatException, IOException, NewickParserException {
 

@@ -43,11 +43,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.gitools.clustering.ClusteringResults;
-import org.gitools.clustering.method.value.ClusterUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.idtype.IdTypeManager;
@@ -56,6 +55,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -596,13 +596,6 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
 		if (cls.equals(HeatmapTextLabelsHeader.class)) {
 			HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(hdim);
-			/*TextLabelsSourcePage labelPage = new TextLabelsSourcePage(hdim, h);
-			PageDialog dlg = new PageDialog(AppFrame.instance(), labelPage);
-			dlg.setVisible(true);
-			if (dlg.isCancelled())
-				return;
-
-			hdim.addHeader(h);*/
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
 			header = h;
 		}
@@ -632,14 +625,18 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		Class<? extends HeatmapHeader> cls = h.getClass();
 		IWizard wizard = null;
 
-		if (cls.equals(HeatmapTextLabelsHeader.class))
+		if (HeatmapTextLabelsHeader.class.equals(cls))
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
-		else if (cls.equals(HeatmapColoredLabelsHeader.class)) {
+		else if (HeatmapColoredLabelsHeader.class.equals(cls)) {
 			ColoredLabelsHeaderWizard wiz =
 					new ColoredLabelsHeaderWizard(
 						hm, hdim, (HeatmapColoredLabelsHeader) h, rowMode);
 			wiz.setEditionMode(true);
 			wizard = wiz;
+		}
+		else if (HeatmapHierarchicalColoredLabelsHeader.class.equals(cls)) {
+			wizard = new HierarchicalColoredLabelsHeaderWizard(
+						hm, hdim, (HeatmapHierarchicalColoredLabelsHeader) h);
 		}
 
 		if (wizard == null)

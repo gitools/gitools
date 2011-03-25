@@ -18,6 +18,7 @@
 package org.gitools.ui.heatmap.header.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
@@ -26,7 +27,7 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
-import org.gitools.clustering.method.value.ClusterUtils;
+import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
@@ -52,7 +53,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	private PatternSourcePage sourcePage;
 	private ColoredLabelsConfigPage headerPage;
 	private ColoredLabelsGroupsPage clustersPage;
-	private ColoredLabelsHCLPage hclPage;
 
 	public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader header, boolean applyToRows) {
 		super();
@@ -77,11 +77,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
 
-		if (header.getHCLResults() != null) {
-			hclPage = new ColoredLabelsHCLPage(header);
-			addPage(hclPage);
-		}
-
 		clustersPage = new ColoredLabelsGroupsPage(header);
 		addPage(clustersPage);
 	}
@@ -89,42 +84,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	@Override
 	public boolean canFinish() {
 		return currentPage != sourcePage;
-	}
-
-	@Override
-	public void performFinish() {
-		if (header.getHCLResults() != null) {
-			header.setHCLCurrentDepth(hclPage.getLevel());
-		}
-	}
-
-	@Override
-	public void performCancel() {
-
-		if (header.getHCLResults() != null) {
-
-			ClusteringResults results =
-					ClusterUtils.getHCLResultsByLevel(
-					header.getHCLResults(), header.getHCLCurrentDepth());
-
-			header.updateFromClusterResults(results);
-		}
-	}
-
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		IWizardPage nextPage = super.getNextPage(page);
-
-		if (currentPage == hclPage) {
-
-			ClusteringResults results =
-					ClusterUtils.getHCLResultsByLevel(
-					header.getHCLResults(), hclPage.getLevel());
-
-			header.updateFromClusterResults(results);
-		}
-		
-		return nextPage;
 	}
 
 	@Override

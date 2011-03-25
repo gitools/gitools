@@ -160,7 +160,7 @@
 			<dependency>
 				<groupId>weka</groupId>
 				<artifactId>weka</artifactId>
-				<version>3.6.3</version>
+				<version>3.6.4</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

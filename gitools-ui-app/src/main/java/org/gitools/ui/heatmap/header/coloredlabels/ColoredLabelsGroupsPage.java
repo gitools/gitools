@@ -64,12 +64,10 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 		public void removeListDataListener(ListDataListener l) {
 			//TODO
 		}
-
 	}
 
 	private HeatmapColoredLabelsHeader header;
 
-    /** Creates new form ColoredClustersPage */
     public ColoredLabelsGroupsPage(HeatmapColoredLabelsHeader header) {
 		this.header = header;
 		

@@ -35,6 +35,14 @@ public class GenericClusteringResults implements ClusteringResults {
 	private Map<String, Integer> dataLabelsIndex;
 
 	public GenericClusteringResults(String[] dataLabels, Map<String, List<Integer>> clusters) {
+		init(dataLabels, clusters);
+	}
+
+	protected final void init(String[] dataLabels, Map<String, List<Integer>> clusters) {
+		this.dataClusterIndex = null;
+		this.clusterTitlesIndex = null;
+		this.dataLabelsIndex = null;
+
 		this.dataLabels = dataLabels;
 		int numClusters = clusters.size();
 		clusterDataIndices = new int[numClusters][];

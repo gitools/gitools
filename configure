@@ -12,4 +12,4 @@ mvn install:install-file -Dfile=lib/commons-csv-20070823.jar -DgroupId=commons-c
 mvn install:install-file -Dfile=lib/cobra.jar -DgroupId=cobra -DartifactId=cobra -Dversion=0.98.4 -Dpackaging=jar -DgeneratePom=true
 
 # weka machine learning tool
-mvn install:install-file -Dfile=lib/weka.jar -DgroupId=weka -DartifactId=weka -Dversion=3.6.3 -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=lib/weka-3.6.4.jar -DgroupId=weka -DartifactId=weka -Dversion=3.6.4 -Dpackaging=jar -DgeneratePom=true

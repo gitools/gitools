@@ -71,7 +71,7 @@ public class ClusteringOptionsPage extends AbstractWizardPage {
 		return attributeCb.getSelectedIndex();
 	}
 
-	public boolean isValuesFromRows() {
+	public boolean isApplyToRows() {
 		return rowsRadio.isSelected();
 	}
 

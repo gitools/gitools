@@ -72,7 +72,6 @@ public class ClusteringMethodsPage extends AbstractWizardPage {
 
 	}
 
-
 	public ClusteringMethodDescriptor getMethodDescriptor() {
 		int indice = annList.getSelectedIndex();
 		

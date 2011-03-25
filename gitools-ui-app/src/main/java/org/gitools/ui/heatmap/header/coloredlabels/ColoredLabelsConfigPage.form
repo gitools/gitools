@@ -48,9 +48,9 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="labelRotatedChk" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" max="-2" attributes="1"/>
+                              <Component id="fontLabel" min="-2" max="-2" attributes="1"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="labelFontField" pref="543" max="32767" attributes="0"/>
+                              <Component id="labelFontField" pref="544" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelFontBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -87,7 +87,7 @@
               <Component id="labelVisibleChk" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fontLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelFontField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelFontBtn" alignment="3" max="32767" attributes="1"/>
               </Group>
@@ -117,9 +117,10 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="fontLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Font"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="labelFontField">

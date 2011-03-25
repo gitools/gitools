@@ -85,7 +85,7 @@ public class NewickParser<VT> {
 			NewickParser p = new NewickParser(" ( ( ), (1,2, )B:0.2 ,(:0.4,E):3)A:0.01;");
 			NewickTree t = p.parse();
 			System.out.println(t);
-			System.out.println(t.getTreeDepth()); 
+			System.out.println(t.getDepth());
 			for (NewickNode n : (List<NewickNode>) t.getRoot().getLeaves())
 				System.out.println(n);
 			
@@ -308,7 +308,8 @@ public class NewickParser<VT> {
 						 if (Character.isDigit((char) ch)) {
 							sb.append((char) ch);
 							state = 'I';
-						} else if (isNameChar(ch)) {
+						}
+						else if (isNameChar(ch)) {
 							sb.append((char) ch);
 							state = 'N';
 						}

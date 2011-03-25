@@ -17,6 +17,8 @@
 
 package org.gitools.newick;
 
+import java.util.List;
+
 public class NewickTree<VT> {
 
 	private NewickNode<VT> root;
@@ -36,7 +38,7 @@ public class NewickTree<VT> {
 		this.root = root;
 	}
 
-	public int getTreeDepth() {
+	public int getDepth() {
 		return root.getMaxDepth(0);
 	}
 
