@@ -1,0 +1,37 @@
+== Overlap analysis ==
+
+An overlap analysis extracts and measures common elements between two vectors. For all vectors in the input matrix, GiTools counts positive events based on a user-defined significance cutoff and then calculates the Jaccard Index for all possible pairs of columns or rows. Through overlap analysis, each pair of input columns or rows is collapsed to one single value represented in a heat map that has column or row labels in both dimensions. Original row labels are not visible any more.
+
+In the following example, we analyze overlaps between significantly down-regulated KEGG modules in 20 tumor types.
+
+===== Presentation and example =====
+
+We select the icon for Overlap Analysis. In the following steps, the files and parameters for the analysis will be specified.
+
+===== Select data source =====
+
+In the first step, we select the data source, which is an enrichment analysis results file with labeled rows and columns containing values for KEGG modules (in rows) for 20 tumor types (in columns). We load it into “File”. Since the file has the extension .tdm.gz, “Format” is set to (***file type name here! tabulated ***) automatically. The input could also be any continuous data matrix or a results file from an oncodrive or combinations analysis.
+
+===== Select data filtering options =====
+
+In this step, a cutoff for binary processing will be selected. This will transform the input matrix to a matrix containing only 1 or 0 as values depending on the threshold. The overlaps will be calculated from this binarized matrix. In the example, we filter for significant p-value: Therefore, we check the box, select cells with value "less than" and enter 0.05. As a consequence, the filter will transform all values that are less than 0.05 to 1 (positive events) and all the others to 0 (negative events). Then, the default value is set for rows that do not exist in the input data: It can be set to either 0 (negative event, default) or 1 (positive event).
+
+===== Configure overlap options =====
+
+We select the overlap method options: Overlaps can be calculated by columns (typically samples or conditions) which is the default, or by rows (typically genes or modules). Also, we indicate which values should be taken from the input file: When taking an enrichment results file as an input file there will a number of attributes that correspond to the different statistical tests that were carried out during enrichment analysis, such as observed events, expected mean, p-value. Here, we select "right p-value", which is the value displayed by default in enrichment heat maps.
+
+===== Select destination file =====
+
+In this step, we indicate where to save the results of the analysis. We fill in a name and select the folder. For each overlap analysis, Gitools will output 3 files: an analysis file *.overlapping, a data file containing the binary intermediate of the analysis *-data.cdm.gz and a results file *-results-cells.tdm.gz.
+
+===== Analysis details =====
+
+Here, the user can add a title and free text notes that will be saved in the analysis file. Additional attributes like author, project etc. can be added at will. However, this step is optional and can be skipped. Click finish to perform the analysis.
+
+===== Overlap analysis results =====
+
+A new tab in Gitools shows an overview of the analysis parameters. Clicking on the heat map button for results will open another tab with the heat map displaying the results of the analysis.
+
+===== Overlap heatmap =====
+
+Note that in the overlaps heat map, both columns and rows label with the original column labels for an overlap analysis by columns. Overlap heat maps have their own scale in the range of 0 to 1, set to fit the Jaccard index that is displayed by default. However, minimum and maximum can be adjusted manually. Other values from the analysis that can be displayed alternatively, include column count and row count of positive events, count of positive events in the intersection of row and column (both count), the proportions of positive elements in rows and columns as compared to all positive events (row only and column only proportion), the proportion of the intersection as compared to rows or columns respectively (row intersection and column intersection proportion) and the maximum intersection proportion (which displays the maximum of row intersection and column intersection proportion). Along the diagonal, we find all self-to-self overlaps (Jaccard index = 1). Note that some cells are black, a colour not included in the colour scale. These cells represent a zero overlap with no common elements between the two vectors compared. Click on any cell to see details and values in the “Details” tab on the left part of the screen. Select a whole row or column and click on “Results” and “automatic update” in the lower part of the screen to see details for all the cells in a table. Move selected columns to group tumor types. Note that moving columns automatically moves the corresponding row so as not to disturb the geometry of the heat map.
