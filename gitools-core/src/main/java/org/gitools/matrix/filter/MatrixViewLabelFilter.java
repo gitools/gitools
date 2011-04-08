@@ -18,9 +18,11 @@
 package org.gitools.matrix.filter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.regex.Pattern;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
@@ -36,20 +38,24 @@ public class MatrixViewLabelFilter {
 	}
 
 	private static interface LabelFilter {
-		boolean included(String label);
+		int matchIndex(String label);
 	}
 
-	private static class ValueFilter implements LabelFilter {
-		private Set<String> values;
-		public ValueFilter(List<String> values) {
-			this.values = new HashSet<String>(values);
-			if (this.values.contains(""))
-				this.values.remove("");
+	private static class StringFilter implements LabelFilter {
+		private Map<String, Integer> values;
+		public StringFilter(List<String> values) {
+			this.values = new HashMap<String, Integer>();
+			for (int i = 0; i < values.size(); i++) {
+				String v = values.get(i).trim();
+				if (!v.isEmpty())
+					this.values.put(v, i);
+			}
 		}
 
 		@Override
-		public boolean included(String label) {
-			return values.contains(label);
+		public int matchIndex(String label) {
+			Integer index = values.get(label);
+			return index != null ? index : -1;
 		}
 	}
 
@@ -62,11 +68,13 @@ public class MatrixViewLabelFilter {
 					patterns.add(Pattern.compile(value));
 		}
 		@Override
-		public boolean included(String label) {
-			for (Pattern pat : patterns)
+		public int matchIndex(String label) {
+			for (int i = 0; i < patterns.size(); i++) {
+				Pattern pat = patterns.get(i);
 				if (pat.matcher(label).matches())
-					return true;
-			return false;
+					return i;
+			}
+			return -1;
 		}
 	}
 
@@ -121,20 +129,36 @@ public class MatrixViewLabelFilter {
 		if (useRegex)
 			filter = new RegexFilter(values);
 		else
-			filter = new ValueFilter(values);
+			filter = new StringFilter(values);
 
-		List<Integer> indices = new ArrayList<Integer>();
+		final List<Integer> selectedIndices = new ArrayList<Integer>();
+		final List<Integer> matchIndices = new ArrayList<Integer>();
 
 		int count = labelProvider.getCount();
 		for (int index = 0; index < count; index++) {
 			String label = labelProvider.getLabel(index);
-			if (filter.included(label))
-				indices.add(visibleIndices[index]);
+			int mi = filter.matchIndex(label);
+			if (mi != -1) {
+				selectedIndices.add(visibleIndices[index]);
+				matchIndices.add(mi);
+			}
 		}
 
-		int[] vIndices = new int[indices.size()];
-		for (int i = 0; i < indices.size(); i++)
-			vIndices[i] = indices.get(i);
+		Integer[] sortIndices = new Integer[selectedIndices.size()];
+		for (int i = 0; i< sortIndices.length; i++)
+			sortIndices[i] = i;
+
+		Arrays.sort(sortIndices, new Comparator<Integer>() {
+			@Override public int compare(Integer i1, Integer i2) {
+				int d1 = matchIndices.get(i1);
+				int d2 = matchIndices.get(i2);
+				return d1 - d2;
+			}
+		});
+
+		int[] vIndices = new int[sortIndices.length];
+		for (int i = 0; i < vIndices.length; i++)
+			vIndices[i] = selectedIndices.get(sortIndices[i]);
 
 		return vIndices;
 	}
