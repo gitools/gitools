@@ -678,9 +678,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 					@Override public void line(String[] fields) throws Exception {
 						if (fields.length == 3) {
-							if ((src.equals(GO_CL) && fields[2].contains("cellular"))
-									|| (src.equals(GO_MF) && fields[2].contains("molecular"))
-									|| (src.equals(GO_BP) && fields[2].contains("biological")))
+							if ((src.equals(GO_CL) && fields[2].equals("cellular_component"))
+									|| (src.equals(GO_MF) && fields[2].equals("molecular_function"))
+									|| (src.equals(GO_BP) && fields[2].equals("biological_process")))
 							desc.put(fields[0], fields[1]);
 						}
 					}

@@ -26,6 +26,17 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>62</release>
+	</mart>
+	<mart>
+		<name>ensembl_61</name>
+		<description>Ensembl 61 (Feb 2011)</description>
+		<version>0.6</version>
+		<host>feb2011.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>61</release>
 	</mart>
 	<mart>
 		<name>ensembl_60</name>
@@ -35,6 +46,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>60</release>
 	</mart>
 	<mart>
 		<name>ensembl_59</name>
@@ -44,6 +56,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>59</release>
 	</mart>
 	<mart>
 		<name>ensembl_58</name>
@@ -53,6 +66,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>58</release>
 	</mart>
 	<mart>
 		<name>ensembl_57</name>
@@ -62,6 +76,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>57</release>
 	</mart>
 	<mart>
 		<name>ensembl_56</name>
@@ -71,6 +86,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>56</release>
 	</mart>
 	<mart>
 		<name>ensembl_55</name>
@@ -80,6 +96,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>55</release>
 	</mart>
 	<mart>
 		<name>ensembl_54</name>
@@ -89,6 +106,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>54</release>
 	</mart>
 	<mart>
 		<name>ensembl_53</name>
@@ -98,6 +116,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>53</release>
 	</mart>
 	<mart>
 		<name>ensembl_52</name>
@@ -107,6 +126,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>52</release>
 	</mart>
 	<mart>
 		<name>ensembl_51</name>
@@ -116,6 +136,7 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>51</release>
 	</mart>
 	<mart>
 		<name>ensembl_50</name>
@@ -125,5 +146,6 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>50</release>
 	</mart>
 </mart-registry>
