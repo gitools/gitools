@@ -47,6 +47,7 @@ import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.idmapper.EnsemblMapper;
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.queryhandler.BiomartQueryHandler;
+import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
@@ -92,6 +93,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		goDescId.put(GO_BP, "name_1006");
 		goDescId.put(GO_MF, "go_molecular_function__dm_name_1006");
 		goDescId.put(GO_CL, "go_cellular_component__dm_name_1006");
+		goDescId.put(GO_ID, "name_1006");
 	}
 
 	// Features
@@ -480,7 +482,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 	public ModuleMap importMap(IProgressMonitor monitor) throws ModulesImporterException {
 		ModuleMap mmap = null;
-
+		
 		MappingEngine mapping = new MappingEngine();
 
 		// Build KEGG network
@@ -505,6 +507,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		}
 
 		// Build Ensembl network
+		Integer ensRelease = null;
+		
+		if (version.getSource().getRelease() != null && !version.getSource().getRelease().isEmpty())
+			ensRelease = Integer.parseInt(version.getSource().getRelease());
+
 		if (organism.getEnsemblDataset() != null) {
 
 			monitor.info("Ensembl");
@@ -551,29 +558,51 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			for (String id : sinks)
 				mapping.addMapper(linkId, id, new EnsemblMapper(bs, dsName));
 
-			if (goEnabled) {
-				for (String id : sinks) {
-					mapping.addMapper(GO_BP, id, new EnsemblMapper(bs, dsName));
-					mapping.addMapper(GO_MF, id, new EnsemblMapper(bs, dsName));
-					mapping.addMapper(GO_CL, id, new EnsemblMapper(bs, dsName));
-				}
+			if (goEnabled) {				
+				if (ensRelease != null && ensRelease >= 62) {
+					for (String id : sinks)
+						mapping.addMapper(GO_ID, id, new EnsemblMapper(bs, dsName));				
 
-				mapping.addMapper(GO_BP, linkId, new EnsemblMapper(bs, dsName));
-				mapping.addMapper(GO_MF, linkId, new EnsemblMapper(bs, dsName));
-				mapping.addMapper(GO_CL, linkId, new EnsemblMapper(bs, dsName));
+					mapping.addMapper(GO_ID, linkId, new EnsemblMapper(bs, dsName));
+
+				} else {
+					for (String id : sinks) {
+						mapping.addMapper(GO_BP, id, new EnsemblMapper(bs, dsName));
+						mapping.addMapper(GO_MF, id, new EnsemblMapper(bs, dsName));
+						mapping.addMapper(GO_CL, id, new EnsemblMapper(bs, dsName));
+					}
+
+					mapping.addMapper(GO_BP, linkId, new EnsemblMapper(bs, dsName));
+					mapping.addMapper(GO_MF, linkId, new EnsemblMapper(bs, dsName));
+					mapping.addMapper(GO_CL, linkId, new EnsemblMapper(bs, dsName));
+				}
 			}
 		}
 
 		try {
 			String src = modCategory.getId();
 
-			Map<String, String> modDesc = retrieveModules(src, monitor.subtask());
-			String[] ids = modDesc.keySet().toArray(new String[modDesc.size()]);
+			Map<String, String> modDesc = null;
+			String[] ids = null;
+			MappingData data = null;
 
-			MappingData data = mapping.run(ids, src, featCategory.getId(), monitor);
+			if (isCategory(src, KEGG_MODULE_CATEGORIES))
+				modDesc = retrieveKeggsModules(src, monitor.subtask());
+			else
+				if (isCategory(src, GO_MODULE_CATEGORIES))
+					if (ensRelease != null && ensRelease >= 62) {
+						modDesc = retrieveGoModulesEns62(src, monitor.subtask());
+						src = GO_ID;
+					} else
+						modDesc = retrieveGoModules(src, monitor.subtask());
+				else
+					throw new ModulesImporterException("Unknown category id: " + src);
+
+			ids = modDesc.keySet().toArray(new String[modDesc.size()]);
+			data = mapping.run(ids, src, featCategory.getId(), monitor);
 
 			if (!monitor.isCancelled()) {
-				if (!modCategory.getId().equals(data.getSrcNode().getId())
+				if (!src.equals(data.getSrcNode().getId())
 						|| !featCategory.getId().equals(data.getDstNode().getId()))
 					monitor.exception(new ModulesImporterException("There was an unexpected mapping error."));
 
@@ -607,37 +636,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return mmap;
 	}
 
-	private Map<String, String> retrieveModules(String src, IProgressMonitor monitor) throws ModulesImporterException {
+
+	private Map<String, String> retrieveKeggsModules(final String src, IProgressMonitor monitor) throws ModulesImporterException {
 		final Map<String, String> desc = new HashMap<String, String>();
-
-		if (isCategory(src, GO_MODULE_CATEGORIES)) {
-			monitor.begin("Getting Gene Ontology names ...", 1);
-			BiomartService bs = null;
-			try {
-				bs = getBiomartService();
-
-				Query q = EnsemblMapper.createQuery(
-						organism.getEnsemblDataset().getName(),
-						EnsemblMapper.getInternalName(src),
-						goDescId.get(src));
-
-				bs.queryTable(q, new BiomartQueryHandler() {
-					@Override public void begin() throws Exception { }
-
-					@Override public void line(String[] fields) throws Exception {
-						if (fields.length == 2)
-							desc.put(fields[0], fields[1]);
-					}
-
-					@Override public void end() { }
-				}, true, "", monitor.subtask());
-			}
-			catch (BiomartServiceException ex) {
-				throw new ModulesImporterException(ex);
-			}
-			monitor.end();
-		}
-		else if (isCategory(src, KEGG_MODULE_CATEGORIES)) {
 			monitor.begin("Getting KEGG pathways ...", 1);
 			try {
 				String keggorg = organism.getKeggDef().getEntry_id();
@@ -652,9 +653,78 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 				throw new ModulesImporterException(ex);
 			}
 			monitor.end();
+		return desc;
+	}
+
+	private Map<String, String> retrieveGoModulesEns62(final String src, IProgressMonitor monitor) throws ModulesImporterException {
+		final Map<String, String> desc = new HashMap<String, String>();
+
+			monitor.begin("Getting Gene Ontology names ...", 1);
+			BiomartService bs = null;
+			try {
+				bs = getBiomartService();
+
+				Query q = EnsemblMapper.createQuery(
+						organism.getEnsemblDataset().getName(),
+						EnsemblMapper.getInternalName(GO_ID),
+						goDescId.get(GO_ID));
+				
+				Attribute a = new Attribute();
+				a.setName("namespace_1003");
+				q.getDatasets().get(0).getAttribute().add(a);
+
+				bs.queryTable(q, new BiomartQueryHandler() {
+					@Override public void begin() throws Exception { }
+
+					@Override public void line(String[] fields) throws Exception {
+						if (fields.length == 3) {
+							if ((src.equals(GO_CL) && fields[2].contains("cellular"))
+									|| (src.equals(GO_MF) && fields[2].contains("molecular"))
+									|| (src.equals(GO_BP) && fields[2].contains("biological")))
+							desc.put(fields[0], fields[1]);
+						}
+					}
+
+					@Override public void end() { }
+				}, true, "", monitor.subtask());
+			}
+			catch (BiomartServiceException ex) {
+				throw new ModulesImporterException(ex);
+			}
+			monitor.end();
+
+		return desc;
+	}
+
+	private Map<String, String> retrieveGoModules(final String src, IProgressMonitor monitor) throws ModulesImporterException {
+		final Map<String, String> desc = new HashMap<String, String>();
+
+		monitor.begin("Getting Gene Ontology names ...", 1);
+		BiomartService bs = null;
+		try {
+			bs = getBiomartService();
+
+			Query q = EnsemblMapper.createQuery(
+					organism.getEnsemblDataset().getName(),
+					EnsemblMapper.getInternalName(src),
+					goDescId.get(src));
+
+			bs.queryTable(q, new BiomartQueryHandler() {
+				@Override public void begin() throws Exception { }
+
+				@Override public void line(String[] fields) throws Exception {
+					if (fields.length == 2)
+						desc.put(fields[0], fields[1]);
+				}
+
+				@Override public void end() { }
+			}, true, "", monitor.subtask());
+
 		}
-		else
-			throw new ModulesImporterException("Unknown category id: " + src);
+		catch (BiomartServiceException ex) {
+			throw new ModulesImporterException(ex);
+		}
+		monitor.end();
 
 		return desc;
 	}

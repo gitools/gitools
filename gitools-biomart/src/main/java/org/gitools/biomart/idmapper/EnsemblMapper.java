@@ -109,6 +109,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 		inameMap.put(GO_BP, "go_biological_process_id");
 		inameMap.put(GO_MF, "go_molecular_function_id");
 		inameMap.put(GO_CL, "go_cellular_component_id");
+		inameMap.put(GO_ID, "go_id");
 	}
 
 	public static String getInternalName(String id) {

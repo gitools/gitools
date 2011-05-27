@@ -28,4 +28,5 @@ public interface Ids {
 	public static final String GO_BP = "go:bp";
 	public static final String GO_MF = "go:mf";
 	public static final String GO_CL = "go:cl";
+	public static final String GO_ID = "go:id";
 }

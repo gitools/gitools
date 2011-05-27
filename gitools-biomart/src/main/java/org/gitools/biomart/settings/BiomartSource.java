@@ -24,11 +24,14 @@ public class BiomartSource {
 
 	private String name;
 	private String description;
-	private String version;
+	private String version; //Biomart release
 	private String host;
 	private String port;
 	private String restPath;
-	private String wsdlPath; 
+	private String release; //release of the source (ensembl,...)
+	
+	@Deprecated
+	private String wsdlPath;
 
 	public BiomartSource() {
 	}
@@ -88,5 +91,13 @@ public class BiomartSource {
 
 	public void setWsdlPath(String wsdlPath) {
 		this.wsdlPath = wsdlPath;
+	}
+
+	public String getRelease() {
+		return release;
+	}
+
+	public void setRelease(String release) {
+		this.release = release;
 	}
 }
