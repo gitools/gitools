@@ -5,7 +5,7 @@
 	<groupId>org.gitools</groupId>
 	<artifactId>gitools</artifactId>
 	<packaging>pom</packaging>
-	<version>1.5.8-SNAPSHOT</version>
+	<version>1.5.8</version>
 	<name>gitools</name>
 	<description>Gitools</description>
 	<url>https://bg.upf.edu/forge/projects/gitools</url>
@@ -41,9 +41,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</connection>
-		<developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</developerConnection>
-		<url>https://bg.upf.edu/svn/gitools/desktop/trunk</url>
+		<connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.5.8</connection>
+		<developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.5.8</developerConnection>
+		<url>https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.5.8</url>
 	</scm>
 
 	<modules>
@@ -74,7 +74,7 @@
 			<dependency>
 				<groupId>edu.upf.bg</groupId>
 				<artifactId>bg-commons</artifactId>
-				<version>0.1.8-SNAPSHOT</version>
+				<version>0.1.8</version>
 			</dependency>
 
 			<dependency>
