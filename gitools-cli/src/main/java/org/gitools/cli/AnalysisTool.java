@@ -121,7 +121,7 @@ public class AnalysisTool extends AbstractTool {
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
 			FileFormats.MODULES_2C_MAP,
-			FileFormats.DOUBLE_MATRIX,
+			//FileFormats.DOUBLE_MATRIX,
 			FileFormats.DOUBLE_BINARY_MATRIX
 		};
 
