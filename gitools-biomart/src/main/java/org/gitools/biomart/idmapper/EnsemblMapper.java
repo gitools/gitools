@@ -115,7 +115,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 	public static String getInternalName(String id) {
 		String iname = inameMap.get(id);
 		if (iname == null && id.startsWith("ensembl:"))
-			return id;
+			return id.substring(8);
 		return iname;
 	}
 
