@@ -89,7 +89,7 @@ public class LabelFilterPage extends AbstractWizardPage {
 
 		dimChanged();
 
-		setTitle("Filter by value");
+		setTitle("Filter by label");
 		setComplete(true);
 	}
 

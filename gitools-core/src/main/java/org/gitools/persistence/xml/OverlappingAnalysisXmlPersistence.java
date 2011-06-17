@@ -21,8 +21,10 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceException;
@@ -63,7 +65,7 @@ public class OverlappingAnalysisXmlPersistence
 
 		IMatrix data = null;
 		if (context.isLoadReferences())
-			data = (IMatrix) load(baseFile, entity.getFilteredDataResource(), monitor);
+			data = loadData(baseFile, entity.getFilteredDataResource(), monitor);
 		entity.setData(data);
 
 		IMatrix cellResults = null;
@@ -125,5 +127,19 @@ public class OverlappingAnalysisXmlPersistence
 		Object entity = PersistenceManager.getDefault().load(file, mimeType, monitor);
 
 		return entity;
+	}
+
+	private BaseMatrix loadData(File baseFile, ResourceRef resourceRef, IProgressMonitor monitor) throws PersistenceException {
+		Object obj = load(baseFile, resourceRef, monitor);
+
+		BaseMatrix matrix = null;
+		if (obj instanceof BaseMatrix)
+			matrix = (BaseMatrix) obj;
+		else if (obj instanceof ModuleMap)
+			matrix = MatrixUtils.moduleMapToMatrix((ModuleMap) obj);
+		else
+			throw new PersistenceException("Invalid MIME type for data: " + resourceRef.getMime());
+
+		return matrix;
 	}
 }
