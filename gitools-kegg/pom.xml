@@ -17,6 +17,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>gitools-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>gitools-biomart</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
