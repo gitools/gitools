@@ -20,6 +20,7 @@ package org.gitools.matrix;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
@@ -61,7 +62,11 @@ public class DiagonalMatrixView implements IMatrixView {
 		if (this.mv != null)
 			this.mv.removePropertyChangeListener(listener);
 
-		this.mv = new MatrixView(new DiagonalMatrix(mv.getContents()));
+		IMatrix m = mv.getContents();
+		if (!(m instanceof DiagonalMatrix))
+			m = new DiagonalMatrix(m);
+
+		this.mv = new MatrixView(m);
 
 		this.mv.addPropertyChangeListener(listener);
 	}
@@ -78,8 +83,11 @@ public class DiagonalMatrixView implements IMatrixView {
 
 	@Override
 	public void setVisibleRows(int[] indices) {
-		mv.setVisibleRows(indices);
+		int[] selection = mv.getSelectedRows();
 		mv.setVisibleColumns(indices);
+		mv.setSelectedRows(selection);
+		indices = Arrays.copyOf(indices, indices.length);
+		mv.setVisibleRows(indices);
 	}
 
 	@Override
@@ -89,29 +97,43 @@ public class DiagonalMatrixView implements IMatrixView {
 
 	@Override
 	public void setVisibleColumns(int[] indices) {
-		setVisibleRows(indices);
+		int[] selection = mv.getSelectedColumns();
+		mv.setVisibleRows(indices);
+		mv.setSelectedColumns(selection);
+		indices = Arrays.copyOf(indices, indices.length);
+		mv.setVisibleColumns(indices);
 	}
 
 	@Override
 	public void moveRowsUp(int[] indices) {
-		mv.moveRowsUp(indices);
+		int[] selection = mv.getSelectedRows();
 		mv.moveColumnsLeft(indices);
+		mv.setSelectedRows(selection);
+		mv.moveRowsUp(indices);
 	}
 
 	@Override
 	public void moveRowsDown(int[] indices) {
-		mv.moveRowsDown(indices);
+		int[] selection = mv.getSelectedRows();
 		mv.moveColumnsRight(indices);
+		mv.setSelectedRows(selection);
+		mv.moveRowsDown(indices);
 	}
 
 	@Override
 	public void moveColumnsLeft(int[] indices) {
-		moveRowsUp(indices);
+		int[] selection = mv.getSelectedColumns();
+		mv.moveRowsUp(indices);
+		mv.setSelectedColumns(selection);
+		mv.moveColumnsLeft(indices);
 	}
 
 	@Override
 	public void moveColumnsRight(int[] indices) {
-		moveRowsDown(indices);
+		int[] selection = mv.getSelectedColumns();
+		mv.moveRowsDown(indices);
+		mv.setSelectedColumns(selection);
+		mv.moveColumnsRight(indices);
 	}
 
 	@Override

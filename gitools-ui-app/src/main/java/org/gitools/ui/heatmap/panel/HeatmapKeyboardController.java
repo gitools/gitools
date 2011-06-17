@@ -249,12 +249,11 @@ public class HeatmapKeyboardController extends KeyAdapter {
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
 
-		if (row != -1 && col != -1)
-			return;
-
 		boolean horizontal = (row == -1 && col >= 0);
 
 		int[] sel = horizontal ? mv.getSelectedColumns() : mv.getSelectedRows();
+		if (sel.length == 0 && ((horizontal && col != -1) || (!horizontal && row != -1)))
+			sel = horizontal ? new int[] {col} : new int[] {row};
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:

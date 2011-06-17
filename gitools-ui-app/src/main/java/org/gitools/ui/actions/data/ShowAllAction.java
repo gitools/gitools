@@ -84,7 +84,7 @@ public class ShowAllAction extends BaseAction {
 			matrixView.setVisibleRows(visibleRows);
 			
 			AppFrame.instance()
-				.setStatusText(visibleRows.length + " rows showed.");
+				.setStatusText(visibleRows.length + " rows");
 		}
 		else if (type == ElementType.COLUMNS) {
 			int columnCount = contents.getColumnCount();
@@ -97,7 +97,7 @@ public class ShowAllAction extends BaseAction {
 			matrixView.setVisibleColumns(visibleColumns);
 			
 			AppFrame.instance()
-				.setStatusText(visibleColumns.length + " columns showed.");
+				.setStatusText(visibleColumns.length + " columns");
 		}
 	}
 }
