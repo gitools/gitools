@@ -68,6 +68,9 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
 			String label = labelProvider.getLabel(index);
 			int row = am.getRowIndex(label);
+			if (row == -1)
+				return "";
+			
 			return am.getCell(row, column);
 		}
 	}
