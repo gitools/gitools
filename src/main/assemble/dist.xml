@@ -30,6 +30,16 @@
 			<fileMode>0770</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
+		<fileSet>
+			<directory>gitools-cli/src/main/command</directory>
+			<includes>
+				<include>gitools</include>
+				<include>gitools.bat</include>
+			</includes>
+			<outputDirectory></outputDirectory>
+			<fileMode>0770</fileMode>
+			<filtered>true</filtered>
+		</fileSet>
 
 		<!-- <fileSet>
 			<directory>ext</directory>
@@ -56,7 +66,7 @@
 		</fileSet>
 
 		<fileSet>
-			<directory>gitools-ui/src/main/resources/img</directory>
+			<directory>gitools-ui-app/src/main/resources/img</directory>
 			<includes>
 				<include>LogoMini.png</include>
 			</includes>
