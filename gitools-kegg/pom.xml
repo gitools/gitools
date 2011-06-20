@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>gitools</artifactId>
 		<groupId>org.gitools</groupId>
-		<version>1.5.9</version>
+		<version>1.5.10-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.gitools</groupId>
