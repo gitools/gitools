@@ -32,6 +32,7 @@ class OBOStream {
 				ftp.connect(baseUrl.getHost());
 			ftp.login("anonymous", "");
 			ftp.enterLocalPassiveMode();
+			ftp.setControlKeepAliveTimeout(60);
 			InputStream is = ftp.retrieveFileStream(baseUrl.getPath());
 			this.reader = new BufferedReader(new InputStreamReader(is));
 		}

@@ -294,6 +294,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 		List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
 
+		/* if this importer is activated for KEGG and the selected organism exists in KEGG*/
 		if (keggEnabled && organism.getKeggDef() != null) {
 
 			keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
@@ -302,10 +303,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 			String orgId = organism.getKeggDef().getEntry_id();
 			Map<String, String> idMap = new HashMap<String, String>();
-			idMap.put("ensembl-" + orgId, ENSEMBL_GENES);
-			idMap.put("ncbi-geneid", NCBI_GENES);
-			idMap.put("uniprot", UNIPROT);
-			idMap.put("pdb", PDB);
+			idMap.put(KeggGenesMapper.ENSEMBL_FTP_FILE_PREFIX + "-" + orgId, ENSEMBL_GENES);
+			idMap.put(KeggGenesMapper.NCBI_FTP_FILE_PREFIX, NCBI_GENES);
+			idMap.put(KeggGenesMapper.UNIPROT_FTP_FILE_PREFIX, UNIPROT);
+			idMap.put(KeggGenesMapper.PDB_FTP_FILE_PREFIX, PDB);
 
 			try {
 				FTPClient ftp = new FTPClient();
@@ -337,7 +338,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 				throw new ModulesImporterException(ex);
 			}
 		}
-		
+
+		/* if the selected organism has a dataset in ensembl */
 		if (organism.getEnsemblDataset() != null) {
 			ensemblFeats = new ArrayList<EnsemblKeggFeatureCategory>();
 
@@ -380,8 +382,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			for (AttributePage p : attrs)
 				for (AttributeGroup g : p.getAttributeGroups())
 					for (AttributeCollection c : g.getAttributeCollections()) {
+						boolean isXref = c.getInternalName().equals("xrefs");
 						boolean isMicroarray = c.getInternalName().equals("microarray");
-						if (c.getInternalName().equals("xrefs") || isMicroarray) {
+						if (isXref || isMicroarray) {
 
 							logger.debug("Collection: " + c.getDisplayName() + " [" + c.getInternalName() + "]");
 
@@ -507,10 +510,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		}
 
 		// Build Ensembl network
-		Integer ensRelease = null;
-		
-		if (version.getSource().getRelease() != null && !version.getSource().getRelease().isEmpty())
-			ensRelease = Integer.parseInt(version.getSource().getRelease());
+		Integer numericRelease = null;
+		String release = version.getSource().getRelease();
+		if (release != null && !release.isEmpty())
+			numericRelease = Integer.parseInt(release);
 
 		if (organism.getEnsemblDataset() != null) {
 
@@ -559,7 +562,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 				mapping.addMapper(linkId, id, new EnsemblMapper(bs, dsName));
 
 			if (goEnabled) {				
-				if (ensRelease != null && ensRelease >= 62) {
+				if (numericRelease != null && numericRelease >= 62) {
 					for (String id : sinks)
 						mapping.addMapper(GO_ID, id, new EnsemblMapper(bs, dsName));				
 
@@ -590,7 +593,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 				modDesc = retrieveKeggsModules(src, monitor.subtask());
 			else
 				if (isCategory(src, GO_MODULE_CATEGORIES))
-					if (ensRelease != null && ensRelease >= 62) {
+					if (numericRelease != null && numericRelease >= 62) {
 						modDesc = retrieveGoModulesEns62(src, monitor.subtask());
 						src = GO_ID;
 					} else

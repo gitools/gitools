@@ -73,11 +73,16 @@
 			<artifactId>velocity</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>weka</groupId>
+			<artifactId>weka</artifactId>
+		</dependency>
+
 		<!-- <dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency> -->
-		<dependency>
+		<!--<dependency>
 			<artifactId>gitools-kegg</artifactId>
 			<groupId>org.gitools</groupId>
 			<type>jar</type>
@@ -88,7 +93,7 @@
 					<groupId>commons-net</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>

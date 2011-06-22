@@ -38,12 +38,17 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
 	public static final String FTP_BASE_URL = "ftp://" + FTP_HOST + FTP_PATH + "/";
 
+	public static final String NCBI_FTP_FILE_PREFIX = "ncbi-geneid";
+	public static final String UNIPROT_FTP_FILE_PREFIX = "uniprot";
+	public static final String PDB_FTP_FILE_PREFIX = "pdb";
+	public static final String ENSEMBL_FTP_FILE_PREFIX = "ensembl";
+
 	private static final Map<String, String> fileKey = new HashMap<String, String>();
 	static {
-		fileKey.put(NCBI_GENES, "ncbi-geneid");
-		fileKey.put(UNIPROT, "uniprot");
-		fileKey.put(PDB, "pdb");
-		fileKey.put(ENSEMBL_GENES, "ensembl");
+		fileKey.put(NCBI_GENES, NCBI_FTP_FILE_PREFIX);
+		fileKey.put(UNIPROT, UNIPROT_FTP_FILE_PREFIX);
+		fileKey.put(PDB, PDB_FTP_FILE_PREFIX);
+		fileKey.put(ENSEMBL_GENES, ENSEMBL_FTP_FILE_PREFIX);
 	}
 
 	public KeggGenesMapper(KEGGPortType service, String organismId) {
@@ -64,7 +69,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
 				throw new MappingException("Unsupported mapping from " + src + " to " + dst);
 
-			if (prefix.equals("ensembl"))
+			if (prefix.equals(ENSEMBL_FTP_FILE_PREFIX))
 				prefix = prefix + "-" + organismId;
 
 			URL url = new URL(FTP_BASE_URL
