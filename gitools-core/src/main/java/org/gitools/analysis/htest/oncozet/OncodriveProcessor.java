@@ -147,7 +147,7 @@ public class OncodriveProcessor extends HtestProcessor {
 					for (int j = 0; j < numColumns; j++)
 						population.setQuick(k++,
 								MatrixUtils.doubleValue(
-									dataMatrix.getCellValue(j, columnIndices[j], 0)));
+									dataMatrix.getCellValue(i, columnIndices[j], 0)));
 
 				population = population.viewSelection(notNaNProc);
 
