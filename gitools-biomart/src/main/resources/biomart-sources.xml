@@ -26,6 +26,36 @@
 		<port>80</port>
 		<restPath>/biomart/martservice</restPath>
 		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>65</release>
+	</mart>
+	<mart>
+		<name>ensembl_64</name>
+		<description>Ensembl 64 (Sep 2011)</description>
+		<version>0.6</version>
+		<host>sep2011.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>64</release>
+	</mart>
+	<mart>
+		<name>ensembl_63</name>
+		<description>Ensembl 63 (Jun 2011)</description>
+		<version>0.6</version>
+		<host>jun2011.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
+		<release>63</release>
+	</mart>
+	<mart>
+		<name>ensembl_62</name>
+		<description>Ensembl 62 (Apr 2011)</description>
+		<version>0.6</version>
+		<host>apr2011.archive.ensembl.org</host>
+		<port>80</port>
+		<restPath>/biomart/martservice</restPath>
+		<wsdlPath>biomart/martwsdl</wsdlPath>
 		<release>62</release>
 	</mart>
 	<mart>
