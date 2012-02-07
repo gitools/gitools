@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -117,15 +118,20 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 			// Read row names
 
+			String[] populationLabels = getPopulationLabels();
+			final Set<String> popLabelsSet = populationLabels != null ?
+				new HashSet<String>(Arrays.asList(populationLabels)) : null;
+
 			String[] fields;
 
 			final List<String> names = new ArrayList<String>();
-			while ((fields = parser.getLine()) != null)
-				names.add(fields[0]);
+			while ((fields = parser.getLine()) != null) {
+				if (popLabelsSet == null || popLabelsSet.contains(fields[0]))
+					names.add(fields[0]);
+			}
 
 			// Incorporate background names
 
-			String[] populationLabels = getPopulationLabels();
 			if (populationLabels != null) {
 				final Set<String> nameSet = new HashSet<String>(names);
 				for (String name : populationLabels) {
@@ -179,6 +185,10 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 		// Read rows names and data ordered by rowsOrder
 
+		String[] populationLabels = getPopulationLabels();
+		final Set<String> popLabelsSet = populationLabels != null ?
+			new HashSet<String>(Arrays.asList(populationLabels)) : null;
+
 		Reader reader;
 		try {
 			reader = PersistenceUtils.openReader(file);
@@ -197,6 +207,8 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			int row = 0;
 
 			while ((fields = parser.getLine()) != null) {
+				if (popLabelsSet != null && !popLabelsSet.contains(fields[0]))
+					continue;
 
 				int rowidx = rowsOrder != null ? rowsOrder[row] : row;
 

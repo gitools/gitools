@@ -30,25 +30,21 @@ import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingException;
 import org.gitools.idmapper.MappingNode;
 import org.gitools.kegg.soap.KEGGPortType;
+import org.gitools.kegg.soap.LinkDBRelation;
 
 public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
-	public static final String FTP_HOST = "ftp.genome.jp";
-	public static final String FTP_PATH = "/pub/kegg/genes/organisms";
-
-	public static final String FTP_BASE_URL = "ftp://" + FTP_HOST + FTP_PATH + "/";
-
-	public static final String NCBI_FTP_FILE_PREFIX = "ncbi-geneid";
-	public static final String UNIPROT_FTP_FILE_PREFIX = "uniprot";
-	public static final String PDB_FTP_FILE_PREFIX = "pdb";
-	public static final String ENSEMBL_FTP_FILE_PREFIX = "ensembl";
+	public static final String NCBI_DB = "ncbi-geneid";
+	public static final String UNIPROT_DB = "uniprot";
+	public static final String PDB_DB = "pdb";
+	public static final String ENSEMBL_DB = "ensembl";
 
 	private static final Map<String, String> fileKey = new HashMap<String, String>();
 	static {
-		fileKey.put(NCBI_GENES, NCBI_FTP_FILE_PREFIX);
-		fileKey.put(UNIPROT, UNIPROT_FTP_FILE_PREFIX);
-		fileKey.put(PDB, PDB_FTP_FILE_PREFIX);
-		fileKey.put(ENSEMBL_GENES, ENSEMBL_FTP_FILE_PREFIX);
+		fileKey.put(NCBI_GENES, NCBI_DB);
+		fileKey.put(UNIPROT, UNIPROT_DB);
+		fileKey.put(PDB, PDB_DB);
+		fileKey.put(ENSEMBL_GENES, ENSEMBL_DB);
 	}
 
 	public KeggGenesMapper(KEGGPortType service, String organismId) {
@@ -59,41 +55,33 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
 		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
-		monitor.begin("Getting mapping information from KEGG FTP ...", 1);
+		monitor.begin("Getting mapping information from KEGG ...", 1);
 
 		// TODO Filter out items not in data if data is not empty
 		
-		// Get map from the FTP
+		// Get map from the API
 		try {
 			String prefix = fileKey.get(dst.getId());
 			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
 				throw new MappingException("Unsupported mapping from " + src + " to " + dst);
 
-			if (prefix.equals(ENSEMBL_FTP_FILE_PREFIX))
+			if (prefix.equals(ENSEMBL_DB))
 				prefix = prefix + "-" + organismId;
 
-			URL url = new URL(FTP_BASE_URL
-					+ organismId + "/" + organismId + "_" + prefix + ".list");
-
-			monitor.info(url.toString());
-
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(url.openStream()));
+			int numGenes = service.get_number_of_genes_by_organism(organismId);
+			LinkDBRelation[] relations =
+					service.get_linkdb_by_entry(organismId, prefix, 0, numGenes);
 
 			int plen = prefix.length() + 1;
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				String[] fields = line.split("\\t");
-				String sf = fields[0];
-				String df = fields[1];
-				if (fields.length != 2)
-					continue;
-				Set<String> b = map.get(sf);
+			for (LinkDBRelation rel : relations) {
+				String srcId = rel.getEntry_id1();
+				String dstId = rel.getEntry_id2();
+				Set<String> b = map.get(srcId);
 				if (b == null) {
 					b = new HashSet<String>();
-					map.put(sf, b);
+					map.put(srcId, b);
 				}
-				b.add(df.substring(plen));
+				b.add(dstId.substring(plen));
 			}
 		}
 		catch (Exception ex) {

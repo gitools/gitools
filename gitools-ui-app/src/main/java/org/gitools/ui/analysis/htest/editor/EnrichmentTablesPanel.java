@@ -34,6 +34,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.ModuleMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -275,27 +276,53 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
 		return context;
 	}
 
+	private VelocityContext createHeader(IMatrixView mv) {
+		List<String> headerIds = new ArrayList<String>();
+		List<String> headerNames = new ArrayList<String>();
+		List<Boolean> isColor = new ArrayList<Boolean>();
+		for (IElementAttribute a : mv.getCellAttributes()) {
+			String id = a.getId();
+			if (id.equals("distribution"))
+				continue;
+			else if(id.contains("p-value")) {
+				headerIds.add(a.getId() + "-color");
+				headerNames.add("");
+				isColor.add(true);
+			}
+			headerIds.add(a.getId());
+			headerNames.add(a.getName());
+			isColor.add(false);
+		}
+
+		VelocityContext header = new VelocityContext();
+		header.put("ids", headerIds);
+		header.put("names", headerNames);
+		header.put("isColor", isColor);
+
+		return header;
+	}
+
 	private VelocityContext createResultsElement(IMatrixView mv, int row, int col) {
 
 		GenericFormatter fmt = new GenericFormatter();
-
-		String pvalueAttrName = "right-p-value";
-		String cpvalueAttrName = "corrected-right-p-value";
-
-		int pvalueIndex = mv.getCellAdapter().getPropertyIndex(pvalueAttrName);
-		double pvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, pvalueIndex));
-
-		int cpvalueIndex = mv.getCellAdapter().getPropertyIndex(cpvalueAttrName);
-		double cpvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, cpvalueIndex));
 
 		PValueColorScale pscale = new PValueColorScale();
 
 		VelocityContext e = new VelocityContext();
 		
-		e.put("pvalue", fmt.pvalue(pvalue));
-		e.put("pvalue_color", ColorUtils.colorToRGBHtml(pscale.valueColor(pvalue)));
-		e.put("cpvalue", fmt.pvalue(cpvalue));
-		e.put("cpvalue_color", ColorUtils.colorToRGBHtml(pscale.valueColor(cpvalue)));
+		for (IElementAttribute a : mv.getCellAttributes()) {
+			String id = a.getId();
+			Object value = mv.getCellValue(row, col, id);
+			if (id.equals("distribution"))
+				continue;
+			else if (id.contains("p-value")) {
+				double pvalue = MatrixUtils.doubleValue(value);
+				e.put(id, fmt.pvalue(pvalue));
+				e.put(id + "-color", ColorUtils.colorToRGBHtml(pscale.valueColor(pvalue)));
+			}
+			else
+				e.put(id, fmt.format(value));
+		}
 
 		return e;
 	}
@@ -307,10 +334,13 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
 		List<VelocityContext> elements = new ArrayList<VelocityContext>();
 		elements.add(e);
 
+		VelocityContext header = createHeader(mv);
+
 		VelocityContext table = new VelocityContext();
 		table.put("name", mv.getRowLabel(row));
-		table.put("vaCount", 0);
+		table.put("vaCount", ((List)header.get("ids")).size());
 		table.put("elements", elements);
+		table.put("header", header);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
 		tables.add(table);
@@ -335,9 +365,12 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
 			elements.add(e);
 		}
 
+		VelocityContext header = createHeader(mv);
+
 		VelocityContext table = new VelocityContext();
-		table.put("vaCount", 0);
+		table.put("vaCount", ((List)header.get("ids")).size());
 		table.put("elements", elements);
+		table.put("header", header);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
 		tables.add(table);
@@ -361,9 +394,12 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
 			elements.add(e);
 		}
 
+		VelocityContext header = createHeader(mv);
+
 		VelocityContext table = new VelocityContext();
-		table.put("vaCount", 0);
+		table.put("vaCount", ((List)header.get("ids")).size());
 		table.put("elements", elements);
+		table.put("header", header);
 
 		List<VelocityContext> tables = new ArrayList<VelocityContext>();
 		tables.add(table);

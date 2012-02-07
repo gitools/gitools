@@ -51,15 +51,22 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			: heatmap.getRowDim().getHeaders();
 
 		drawers = new ArrayList<AbstractHeatmapDrawer>(headers.size());
+
 		for (int i = 0; i < headers.size(); i++) {
 			HeatmapHeader h = headers.get(i);
 			if (!h.isVisible())
 				continue;
-			
+
+			AbstractHeatmapDrawer d = null;
 			if (h instanceof HeatmapTextLabelsHeader)
-				drawers.add(new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal));
+				d = new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal);
 			else if (h instanceof HeatmapColoredLabelsHeader)
-				drawers.add(new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal));
+				d = new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal);
+			
+			if (d != null) {
+				d.setPictureMode(pictureMode);
+				drawers.add(d);
+			}
 		}
 	}
 
@@ -159,6 +166,12 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 	public Point getPoint(HeatmapPosition p) {
 		//throw new UnsupportedOperationException("Not supported yet.");
 		return new Point(0, 0);
+	}
+
+	@Override
+	public void setPictureMode(boolean pictureMode) {
+		for (AbstractHeatmapDrawer d : drawers)
+			d.setPictureMode(pictureMode);
 	}
 
 }

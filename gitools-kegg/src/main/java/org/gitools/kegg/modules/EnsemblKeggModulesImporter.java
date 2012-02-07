@@ -303,39 +303,18 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 			String orgId = organism.getKeggDef().getEntry_id();
 			Map<String, String> idMap = new HashMap<String, String>();
-			idMap.put(KeggGenesMapper.ENSEMBL_FTP_FILE_PREFIX + "-" + orgId, ENSEMBL_GENES);
-			idMap.put(KeggGenesMapper.NCBI_FTP_FILE_PREFIX, NCBI_GENES);
-			idMap.put(KeggGenesMapper.UNIPROT_FTP_FILE_PREFIX, UNIPROT);
-			idMap.put(KeggGenesMapper.PDB_FTP_FILE_PREFIX, PDB);
+			idMap.put(KeggGenesMapper.ENSEMBL_DB + "-" + orgId, ENSEMBL_GENES);
+			idMap.put(KeggGenesMapper.NCBI_DB, NCBI_GENES);
+			idMap.put(KeggGenesMapper.UNIPROT_DB, UNIPROT);
+			idMap.put(KeggGenesMapper.PDB_DB, PDB);
 
-			try {
-				FTPClient ftp = new FTPClient();
-				ftp.connect(KeggGenesMapper.FTP_HOST);
-				ftp.login("anonymous", "");
-				ftp.enterLocalPassiveMode();
-				String path = KeggGenesMapper.FTP_PATH + "/" + orgId + "/";
-				
-				String[] files = ftp.listNames(path);
-				if (files == null)
-					throw new ModulesImporterException("Unable to connect to KEGG FTP: " + ftp.getReplyString());
+			String[] idList = new String[] {
+				ENSEMBL_GENES, NCBI_GENES, UNIPROT, PDB};
 
-				ftp.disconnect();
-				Pattern pat = Pattern.compile("^" + path + orgId + "_" + "(.+)" + "[.]list$");
-				for (String file : files) {
-					Matcher m = pat.matcher(file);
-					if (m.matches()) {
-						String key = m.group(1);
-						String id = idMap.get(key);
-						if (id != null) {
-							EnsemblKeggFeatureCategory f = featMap.get(id);
-							feats.add(f);
-							keggFeatMap.put(id, f);
-						}
-					}
-				}
-			}
-			catch (IOException ex) {
-				throw new ModulesImporterException(ex);
+			for (String id : idList) {
+				EnsemblKeggFeatureCategory f = featMap.get(id);
+				feats.add(f);
+				keggFeatMap.put(id, f);
 			}
 		}
 

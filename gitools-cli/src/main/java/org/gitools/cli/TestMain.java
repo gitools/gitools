@@ -94,6 +94,11 @@ public class TestMain {
 				" -w "+ temp + "/test -N test_ovl" +
 				" -verbose -debug -err-log -";
 
+		cmd = "oncodrive" +
+				" -N upreg -w upreg -t binomial" +
+				" -d /home/cperez/temp/intogen/v03_16/results/data/mrna/log2r_tumour_unit/4e0ddbf4-9d62-4836-b6d0-985aeb2b51e2.tsv.gz" +
+				" -df cdm -b gt,1.174";
+
 		String[] args = cmdLineSplit(cmd);
 
 		Main.main(args);

@@ -175,6 +175,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 		forceUpdate = false;
 		
 		VelocityContext context = createModel();
+		context.put("exporting", false);
 		String template = context.get("__template__").toString();
 
 		try {
@@ -245,6 +246,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel {
 					monitor.info("File: " + file.getName());
 
 					VelocityContext context = createModel();
+					context.put("exporting", true);
 					String template = context.get("__template__").toString();
 
 					try {

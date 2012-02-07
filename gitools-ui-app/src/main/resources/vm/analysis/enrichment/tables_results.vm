@@ -10,13 +10,16 @@
 	#foreach( $section in $sections )
 		#foreach( $table in $section.tables )
 
-			#set( $nc = 1 + $table.vaCount + 4 )
+			#set( $nc = 1 + $table.vaCount )
 
 			#if( $table.name )
 				#set( $title = "$section.name &gt; $table.name" )
 			#else
 				#set( $title = "$section.name" )
 			#end
+
+			#set( $headerIds = $table.header.ids )
+			#set( $headerIsColor = $table.header.isColor )
 
 			<table id="elems">
 				<thead>
@@ -25,8 +28,20 @@
 					</tr>
 					<tr>
 						<th>Name</th>
-						<th colspan="2">P-value</th>
-						<th colspan="2">Corr-P-value</th>
+						#set( $span = 1 )
+						#foreach( $name in $table.header.names )
+							#if( $headerIsColor.get($forIndex) )
+								#set( $span = 1 )
+								<th></th>
+							#else
+								#if( $span > 1)
+									<th colspan="$span">$name</th>
+									#set( $span = 1 )
+								#else
+									<th>$name</th>
+								#end
+							#end
+						#end
 					</tr>
 				</thead>
 
@@ -34,10 +49,18 @@
 					#foreach( $e in $table.elements )
 						<tr>
 							<td>$e.name</td>
-							<td class="cl" style="background-color: $e.pvalue_color">&nbsp;</td>
+							#foreach( $id in $headerIds )
+							#if( $headerIsColor.get($forIndex) )
+							<td class="cl" style="background-color: $e.get($id)">&nbsp;</td>
+							#else
+							<td>$e.get($id)</td>
+							#end
+							#end
+
+							<!-- <td class="cl" style="background-color: $e.pvalue_color">&nbsp;</td>
 							<td>$e.pvalue</td>
 							<td class="cl" style="background-color: $e.cpvalue_color">&nbsp;</td>
-							<td>$e.cpvalue</td>
+							<td>$e.cpvalue</td> -->
 						</tr>
 					#end
 				</tbody>
