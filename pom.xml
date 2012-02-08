@@ -239,6 +239,7 @@
 					<username>${gitools.scm.username}</username>
 					<password>${gitools.scm.password}</password>
 					<tagBase>https://bg.upf.edu/svn/gitools/desktop/tags</tagBase>
+					<goals>assembly:assembly</goals>
 				</configuration>
 			</plugin>
 		</plugins>
