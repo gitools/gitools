@@ -101,7 +101,8 @@ public class MenuActionSet extends ActionSet {
 				}),
 				new ActionSet("Sort", new BaseAction[] {
 					DataActions.sortByLabelAction,
-					DataActions.sortByValueAction
+					DataActions.sortByValueAction,
+					DataActions.sortByMutualExclusionAction
 				}),
 				new ActionSet("Move", new BaseAction[] {
 					DataActions.moveRowsUpAction,
@@ -124,6 +125,7 @@ public class MenuActionSet extends ActionSet {
 				AnalysisActions.correlations,
 				AnalysisActions.combinations,
 				AnalysisActions.overlapping,
+				AnalysisActions.groupComparison,
 //				new ActionSet("Clustering", new BaseAction[] {
 //					AnalysisActions.clusteringAction
 //				}),

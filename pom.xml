@@ -162,6 +162,12 @@
 				<artifactId>weka</artifactId>
 				<version>3.6.4</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>jsc</groupId>
+				<artifactId>jsc</artifactId>
+				<version>20050805</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

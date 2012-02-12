@@ -19,16 +19,24 @@ package org.gitools.aggregation;
 
 import cern.jet.math.Functions;
 
-/** Sum */
+/** Absolute Sum */
 public class SumAbsAggregator extends AbstractAggregator {
 
 	@Override
 	public double aggregate(double[] data) {
-		return aggregate(data, Functions.plusAbs, 0);
+		int nanValue = 0;
+		if (data.length == 1)
+			return checkNaN(data[0], nanValue);
+		else
+			return aggregate(data, Functions.plusAbs, nanValue);
 	}
 
 	@Override
 	public String toString() {
 		return "Absolute Sum";
+	}
+
+	private double checkNaN(double d, int nanValue) {
+		return Double.isNaN(d) ? nanValue : Math.abs(d);
 	}
 }

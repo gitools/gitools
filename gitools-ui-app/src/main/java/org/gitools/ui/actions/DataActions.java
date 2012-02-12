@@ -22,6 +22,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.actions.data.FastSortRowsAction;
 import org.gitools.ui.actions.data.FilterByLabelAction;
 import org.gitools.ui.actions.data.FilterByValueAction;
+import org.gitools.ui.actions.data.SortByMutualExclusionAction;
 import org.gitools.ui.actions.data.HideSelectionAction;
 import org.gitools.ui.actions.data.MoveSelectionAction;
 import org.gitools.ui.actions.data.ShowAllAction;
@@ -47,6 +48,8 @@ public final class DataActions {
 	public static final BaseAction sortByLabelAction = new SortByLabelAction();
 
 	public static final BaseAction sortByValueAction = new SortByValueAction();
+
+	public static final BaseAction sortByMutualExclusionAction = new SortByMutualExclusionAction();
 	
 	public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
 	

@@ -19,17 +19,209 @@ package org.gitools.matrix.sort;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import jsc.distributions.MannWhitneyU;
+import jsc.independentsamples.MannWhitneyTest;
+import jsc.tests.H1;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.aggregation.IAggregator;
+import org.gitools.aggregation.SumAbsAggregator;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 
 public abstract class MatrixViewSorter {
+
+
+	public static void sortByMutualExclusion(final IMatrixView matrixView,
+												String pattern,
+												AnnotationMatrix am,
+												List<String> values,
+												boolean regExChecked,
+												boolean applyToRows,
+												boolean applyToColumns) {
+		if (applyToRows)
+			sortRowsByMutualExclusion(matrixView, pattern, am, values, regExChecked);
+
+		if (applyToColumns)
+			sortColumnsByMutualExclusion(matrixView, pattern, am, values, regExChecked);
+	}
+	
+	protected static void sortRowsByMutualExclusion(final IMatrixView matrixView,
+												String pattern,
+												AnnotationMatrix am,
+												List<String> values,
+												boolean regExChecked) {
+
+		int[] selColumns = matrixView.getSelectedColumns();
+
+		LabelProvider labelProvider = new MatrixRowsLabelProvider(matrixView);
+		labelProvider = new AnnotationsPatternProvider(labelProvider, am, pattern);
+		int[] visibleRows = matrixView.getVisibleRows();
+		int[] selRows = MatrixViewLabelFilter.filterLabels(labelProvider,
+															values,
+															regExChecked,
+															visibleRows);
+
+
+		int numRows = selRows.length;
+		final Integer[] indices = new Integer[numRows];
+		for (int i = 0; i < selRows.length; i++)
+			indices[i] = ArrayUtils.indexOf(visibleRows, selRows[i]);
+
+		if (selColumns == null || selColumns.length == 0) {
+			selColumns = new int[matrixView.getColumnCount()];
+			for (int i = 0; i < selColumns.length; i++)
+				selColumns[i] = i;
+		}
+
+
+
+
+		final int[] selectedColumns = selColumns;
+		final double[] valueBuffer = new double[selectedColumns.length];
+
+		Comparator<Integer> comparator = new Comparator<Integer>() {
+			@Override public int compare(Integer idx1, Integer idx2) {
+
+				double aggr1 = 0.0;
+				double aggr2 = 0.0;
+
+				//int criteriaIndex = 0;
+
+				//while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
+				//criteria = criteriaArray[criteriaIndex];
+
+				IAggregator aggregator = new SumAbsAggregator();
+				int propIndex = matrixView.getSelectedPropertyIndex();
+
+									//TODO: figure out how to get the attribute (which data matrix is shown)
+				SortDirection sortDirection = SortDirection.DESCENDING;
+
+				aggr1 = aggregateValue(matrixView, selectedColumns, idx1, propIndex, aggregator, valueBuffer);
+				aggr2 = aggregateValue(matrixView, selectedColumns, idx2, propIndex, aggregator, valueBuffer);
+
+				//	criteriaIndex++;
+				//}
+
+				int res = (int) Math.signum(aggr1 - aggr2);
+				return res * sortDirection.getFactor();
+			}
+
+			private double aggregateValue(
+					IMatrixView matrixView,
+					int[] selectedColumns,
+					int idx,
+					int propIndex,
+					IAggregator aggregator,
+					double[] valueBuffer) {
+
+				for (int i = 0; i < selectedColumns.length; i++) {
+					int col = selectedColumns[i];
+
+					Object valueObject = matrixView.getCellValue(idx, col, propIndex);
+					valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
+				}
+
+				return aggregator.aggregate(valueBuffer);
+			}
+		};
+
+		Arrays.sort(indices, comparator);
+
+		//put the chosen indices at the top of the matrix
+		int[] rowIndices = new int[indices.length];
+		for (int i = 0; i < indices.length; i++) {
+			rowIndices[i] = visibleRows[indices[i]];
+		}
+
+		for (int i = 0; i < rowIndices.length; i++) {
+			int rowPos = ArrayUtils.indexOf(visibleRows, rowIndices[i]);
+			int replacingRow = rowIndices[i];
+			for (int j = i; j <= rowPos; j++) {
+				int rowToReplace = visibleRows[j];
+				visibleRows[j] = replacingRow;
+				replacingRow = rowToReplace;
+			}
+		}
+
+
+
+		final int[] sortedVisibleRows = visibleRows;
+		
+
+
+		matrixView.setVisibleRows(sortedVisibleRows);
+
+		ValueSortCriteria[] criteriaArray =
+						new ValueSortCriteria[1];
+		criteriaArray[0] = new ValueSortCriteria(0, new SumAbsAggregator(), SortDirection.DESCENDING);
+
+		for (int i = numRows-1; i >= 0; i--) {
+			//selRows[i] = i;
+			int[] exclusiveRow = new int[1];
+			exclusiveRow[0] = i;
+			sortColumnsByValue(matrixView, exclusiveRow, criteriaArray);
+		}
+
+
+
+
+				/*
+ENSG00000075218
+ENSG00000198625
+ENSG00000141510
+ENSG00000172115
+ENSG00000113328
+				 *
+TP53
+MDM2
+MDM4
+CCNG1
+CHEK1
+CCNE1
+RRM2
+TSC2
+BID
+=========
+CDKN2B
+INHBE
+INHBC
+SMAD4
+EP300
+DCN
+SKP1
+SMAD9
+SMURF1
+INHBA
+				 *
+ENSG00000147883
+ENSG00000139269
+ENSG00000175189
+ENSG00000100393
+ENSG00000011465
+ENSG00000141646
+ENSG00000113558
+ENSG00000120693
+ENSG00000198742
+ENSG00000122641
+
+		 */
+
+	}
+
+	private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, AnnotationMatrix am, List<String> values, boolean regExChecked) {
+
+
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
+
 
 	public static void sortByValue(IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
 		if (applyToRows)
@@ -261,6 +453,11 @@ public abstract class MatrixViewSorter {
 			vIndices[i] = visibleIndices[indices[i]];
 		return vIndices;
 	}
+
+
+
+
+
 
 	/*public static void sortByLabel(IMatrixView matrixView, SortDirection sortDirection, boolean applyToRows, boolean applyToColumns) {
 		if (applyToRows)

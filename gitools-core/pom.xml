@@ -47,6 +47,11 @@
 			<groupId>weka</groupId>
 			<artifactId>weka</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>jsc</groupId>
+			<artifactId>jsc</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- <reporting>

@@ -124,6 +124,8 @@ public class IconNames {
 
 	public static final String LOGO_CORRELATION = "/img/logos/Correlation.png";
 
+	public static final String LOGO_GROUP_COMPARISON = "/img/logos/Comparison.png";
+
 	public static final String LOGO_OVERLAPPING = "/img/logos/Overlapping.png";
 
 	public static final String LOGO_COMBINATION = "/img/logos/Combination.png";
