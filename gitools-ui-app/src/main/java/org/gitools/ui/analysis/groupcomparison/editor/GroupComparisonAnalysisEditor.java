@@ -18,12 +18,18 @@
 package org.gitools.ui.analysis.groupcomparison.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.util.List;
 import java.util.Map;
 import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
@@ -81,6 +87,11 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (data)");
 
+				heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
+				copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+				heatmap.getColumnDim().setAnnotations(analysis.getColumnAnnotations());
+				copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
 				editor.setName(editorPanel.deriveName(
@@ -101,6 +112,65 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 		UnimplementedDialog.show(AppFrame.instance());
 	}*/
 
+	private void copyHeaders(HeatmapDim dim, List<HeatmapHeader> headers) {
+
+		dim.removeHeader(0);
+
+		for (HeatmapHeader hh : headers ) {
+			HeatmapHeader headerCopy = null;
+			if (hh instanceof HeatmapTextLabelsHeader) {
+				HeatmapTextLabelsHeader oldHeader = (HeatmapTextLabelsHeader) hh;
+				HeatmapTextLabelsHeader textHeaderCopy = new HeatmapTextLabelsHeader(dim);
+				textHeaderCopy.setFont(oldHeader.getFont());
+				textHeaderCopy.setForegroundColor(oldHeader.getForegroundColor());
+				textHeaderCopy.setLabelAnnotation(oldHeader.getLabelAnnotation());
+				textHeaderCopy.setLabelPattern(oldHeader.getLabelPattern());
+				textHeaderCopy.setLabelSource(oldHeader.getLabelSource());
+				headerCopy = textHeaderCopy;
+			} else if (hh instanceof HeatmapColoredLabelsHeader) {
+				//headerCopy = hh;
+				// Not working yet!
+				
+				HeatmapColoredLabelsHeader oldHeader = (HeatmapColoredLabelsHeader) hh;
+				HeatmapColoredLabelsHeader colorHeaderCopy = new HeatmapColoredLabelsHeader(dim);
+				colorHeaderCopy.setLabelColor(oldHeader.getLabelColor());
+				colorHeaderCopy.setLabelColorDefined(oldHeader.isLabelColorDefined());
+				colorHeaderCopy.setLabelFont(oldHeader.getLabelFont());
+				colorHeaderCopy.setLabelRotated(oldHeader.isLabelRotated());
+				colorHeaderCopy.setLabelVisible(oldHeader.isLabelVisible());
+				colorHeaderCopy.setMargin(oldHeader.getMargin());
+				colorHeaderCopy.setSeparationGrid(oldHeader.isSeparationGrid());
+				colorHeaderCopy.setThickness(oldHeader.getThickness());
+
+				ColoredLabel[] clusters = oldHeader.getClusters();
+				ColoredLabel[] newClusters = new ColoredLabel[clusters.length];
+				int index = 0;
+
+				for (ColoredLabel cl : clusters) {
+					//newClusters[index] ;
+					HeatmapColoredLabelsHeader.ColoredLabel newcl = 
+							colorHeaderCopy.new ColoredLabel(cl.getName(), cl.getColor());
+					newClusters[index] = newcl;
+					index++;
+				}
+				colorHeaderCopy.setClusters(newClusters);
+				colorHeaderCopy.setAssignedColoredLabels(
+						oldHeader.getAssignedColoredLabels());
+
+				dim.getAnnotations().getRows();
+
+				headerCopy = colorHeaderCopy;
+				
+			}
+			headerCopy.setBackgroundColor(hh.getBackgroundColor());
+			//newHh.setHeatmapDim(dim);
+			headerCopy.setSize(hh.getSize());
+			headerCopy.setTitle(hh.getTitle());
+			headerCopy.setVisible(hh.isVisible());
+			dim.addHeader(headerCopy);
+		}
+	}
+
 	private void newResultsHeatmap() {
 		if (analysis.getResults() == null) {
 			AppFrame.instance().setStatusText("Analysis doesn't contain results.");
@@ -117,6 +187,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (results)");
+		
+				heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
+				copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 

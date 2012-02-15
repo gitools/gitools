@@ -128,6 +128,7 @@ public class EditorsPanel extends JTabbedPane {
 			names.add(editor.getName());
 		}
 
+		prefix = prefix.replace(" ", "_");
 		Integer c = nameCounts.get(prefix);
 		if (c == null)
 			c = 0;

@@ -95,8 +95,12 @@ public class GroupComparisonAction extends BaseAction {
 								//TODO: adapt to group comparison analysis
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-comparison", FileSuffixes.GROUP_COMPARISON));
-
+					if (analysis.getTitle().equals("")) {
+						editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-comparison", FileSuffixes.GROUP_COMPARISON));
+					} else {
+						editor.setName(editorPanel.createName(analysis.getTitle(), "."+FileSuffixes.GROUP_COMPARISON));
+					}
+							
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {

@@ -250,6 +250,15 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		return coloredLabels[index];
 	}
 
+	public void setAssignedColoredLabels(Map<String, Integer> assigned) {
+		this.dataColoredLabelIndices = new HashMap<String, Integer>(assigned);
+		firePropertyChange(INDICES_CHANGED);
+	}
+
+	public Map<String, Integer> getAssignedColoredLabels() {
+		return this.dataColoredLabelIndices;
+	}
+
 	/** Set the corresponding matrix row/column cluster. -1 if there is not cluster assigned. */
 	public void setAssignedColoredLabel(String id, int clusterIndex) {
 		ColoredLabel old = getAssignedColoredLabel(id);

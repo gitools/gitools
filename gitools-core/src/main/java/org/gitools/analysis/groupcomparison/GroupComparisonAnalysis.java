@@ -17,8 +17,11 @@
 
 package org.gitools.analysis.groupcomparison;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
@@ -38,10 +41,18 @@ public class GroupComparisonAnalysis extends Analysis {
 	protected boolean transposeData;
 	
 	protected int attributeIndex;
+	//which attribute of the matrix should be taken as value
 
 	protected String dataFile = "";
 
-	//which attribute of the matrix should be taken as value
+	protected AnnotationMatrix rowAnnotations;
+
+	protected List<HeatmapHeader> rowHeaders;
+	
+	protected List<HeatmapHeader> columnHeaders;
+
+	protected AnnotationMatrix columnAnnotations;
+
 
 	protected int[] group1;
 	protected int[] group2;
@@ -143,5 +154,37 @@ public class GroupComparisonAnalysis extends Analysis {
 
 	public void setResults(IMatrix results) {
 		this.results = results;
+	}
+
+	public void setRowAnnotations(AnnotationMatrix annotations) {
+		this.rowAnnotations = annotations;
+	}
+
+	public AnnotationMatrix getRowAnnotations() {
+		return this.rowAnnotations;
+	}
+	
+	public AnnotationMatrix getColumnAnnotations() {
+		return columnAnnotations;
+	}
+
+	public void setColumnAnnotations(AnnotationMatrix columnAnnotations) {
+		this.columnAnnotations = columnAnnotations;
+	}
+
+	public List<HeatmapHeader> getRowHeaders() {
+		return rowHeaders;
+	}
+
+	public void setRowHeaders(List<HeatmapHeader> rowHeaders) {
+		this.rowHeaders = rowHeaders;
+	}
+	
+	public List<HeatmapHeader> getColumnHeaders() {
+		return columnHeaders;
+	}
+
+	public void setColumnHeaders(List<HeatmapHeader> columnHeaders) {
+		this.columnHeaders = columnHeaders;
 	}
 }

@@ -103,7 +103,12 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 		a.setMtc(attrSelectPage.getMtc());
 		a.setGroup1(compPage.getGroup1());
 		a.setGroup2(compPage.getGroup2());
-		
+		a.setRowAnnotations(heatmap.getRowDim().getAnnotations());
+		a.setRowHeaders(heatmap.getRowDim().getHeaders());
+		a.setColumnAnnotations(heatmap.getColumnDim().getAnnotations());
+		a.setColumnHeaders(heatmap.getColumnDim().getHeaders());
+
+
 		return a;
 	}
 }
