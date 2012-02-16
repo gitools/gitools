@@ -44,19 +44,23 @@ public class OverlappingResultsEditor extends HeatmapEditor {
 		Heatmap heatmap = new Heatmap(results);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		IElementAdapter cellAdapter = results.getCellAdapter();
-		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
-		int valueIndex = cellAdapter.getPropertyIndex("jaccard-index");
-		Color minColor = new Color(0x63, 0xdc, 0xfe);
-		Color maxColor = new Color(0xff, 0x00, 0x5f);
-		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
-		dec.setMinValue(0.0);
-		dec.setMinColor(minColor);
-		dec.setMidValue(1.0);
-		dec.setMidColor(maxColor);
-		dec.setMaxValue(1.0);
-		dec.setMaxColor(maxColor);
-		dec.setEmptyColor(Color.WHITE);
-		heatmap.setCellDecorator(dec);
+		int propertiesNb = cellAdapter.getProperties().size();
+		LinearTwoSidedElementDecorator[] dec = new LinearTwoSidedElementDecorator[propertiesNb];
+		for (int i = 0; i < propertiesNb; i++) {
+			dec[i] = new LinearTwoSidedElementDecorator(cellAdapter);
+			int valueIndex = cellAdapter.getPropertyIndex("jaccard-index");
+			Color minColor = new Color(0x63, 0xdc, 0xfe);
+			Color maxColor = new Color(0xff, 0x00, 0x5f);
+			dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
+			dec[i].setMinValue(0.0);
+			dec[i].setMinColor(minColor);
+			dec[i].setMidValue(1.0);
+			dec[i].setMidColor(maxColor);
+			dec[i].setMaxValue(1.0);
+			dec[i].setMaxColor(maxColor);
+			dec[i].setEmptyColor(Color.WHITE);
+		}
+		heatmap.setCellDecorators(dec);
 
 		heatmap.setTitle(analysis.getTitle());
 

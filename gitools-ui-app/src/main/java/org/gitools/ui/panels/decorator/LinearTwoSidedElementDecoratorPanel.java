@@ -58,8 +58,8 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 	public LinearTwoSidedElementDecoratorPanel(Heatmap model) {
 		super(model);
 	
-		this.decorator = (LinearTwoSidedElementDecorator) model.getCellDecorator();
-		
+		this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
+
 		final IElementAdapter adapter = decorator.getAdapter();
 		
 		valueProperties = new ArrayList<IndexedProperty>();
@@ -166,12 +166,30 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 	private void valueChanged() {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
+
+		model.changeActiveCellDecorator(propAdapter.getIndex());
+		changeDecorator();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
-		
+
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 
+		private void changeDecorator() {
+
+		this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
+
+		minColorCc.setColor(decorator.getMinColor());
+		midColorCc.setColor(decorator.getMidColor());
+		maxColorCc.setColor(decorator.getMaxColor());
+		emptyCc.setColor(decorator.getEmptyColor());
+
+		minValTxt.setText(Double.toString(decorator.getMinValue()));
+		midValTxt.setText(Double.toString(decorator.getMidValue()));
+		maxValTxt.setText(Double.toString(decorator.getMaxValue()));
+
+	}
+		
 	protected void minValueChanged() {
 		try {
 			double value = Double.parseDouble(minValTxt.getText());

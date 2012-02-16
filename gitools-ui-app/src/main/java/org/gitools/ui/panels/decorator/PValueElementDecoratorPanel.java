@@ -208,6 +208,10 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		
 		decorator.setValueIndex(propAdapter.getIndex());
 		
+		model.changeActiveCellDecorator(propAdapter.getIndex());
+		changeDecorator();
+
+		decorator.setValueIndex(propAdapter.getIndex());
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 		
 		// search for corresponding corrected value
@@ -221,6 +225,26 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		//showCorrChkBox.setEnabled(corrIndex >= 0);
 		
 		refresh();
+	}
+
+	private void changeDecorator() {
+
+		this.decorator = (PValueElementDecorator) model.getActiveCellDecorator();
+
+		minColorCc.setColor(decorator.getMinColor());
+		maxColorCc.setColor(decorator.getMaxColor());
+		emptyCc.setColor(decorator.getEmptyColor());
+		nsigColorCc.setColor(decorator.getNonSignificantColor());
+
+		sigLevelTb.setText(Double.toString(decorator.getSignificanceLevel()));
+		//corrValueCb.setSelectedIndex(decorator.getCorrectedValueIndex());
+
+		minColorCc.setColor(decorator.getMinColor());
+		maxColorCc.setColor(decorator.getMaxColor());
+		emptyCc.setColor(decorator.getEmptyColor());
+
+		sigLevelTb.setText(Double.toString(decorator.getSignificanceLevel()));
+
 	}
 	
 	private void showCorrectionChecked() {

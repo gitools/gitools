@@ -17,6 +17,7 @@
 
 package org.gitools.heatmap;
 
+import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -35,6 +36,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Figure;
+import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
@@ -66,7 +68,8 @@ public class Heatmap
 
 	// Cells
 
-	private ElementDecorator cellDecorator;
+	private ElementDecorator activeDecorator;
+	private ElementDecorator[] cellDecorators;
 	private int cellWidth;
 	private int cellHeight;
 
@@ -109,8 +112,8 @@ public class Heatmap
 		this.matrixView = matrixView;
 		this.matrixView.addPropertyChangeListener(propertyListener);
 		
-		this.cellDecorator = cellDecorator;
-		this.cellDecorator.addPropertyChangeListener(propertyListener);
+		this.activeDecorator = cellDecorator;
+		this.activeDecorator.addPropertyChangeListener(propertyListener);
 
 		this.cellWidth = 14;
 		this.cellHeight = 14;
@@ -169,16 +172,33 @@ public class Heatmap
 
 	// Cells
 
-	public final ElementDecorator getCellDecorator() {
-		return cellDecorator;
+	public final ElementDecorator getActiveCellDecorator() {
+		int propIndex = getMatrixView().getSelectedPropertyIndex();
+		return cellDecorators[propIndex];
 	}
-	
-	public final void setCellDecorator(ElementDecorator decorator) {
-		this.cellDecorator.removePropertyChangeListener(propertyListener);
-		decorator.addPropertyChangeListener(propertyListener);
-		final ElementDecorator old = this.cellDecorator;	
-		this.cellDecorator = decorator;
-		firePropertyChange(CELL_DECORATOR_CHANGED, old, decorator);
+
+	public final void changeActiveCellDecorator(int newindex) {
+		final int oldindex = getMatrixView().getSelectedPropertyIndex();
+		getMatrixView().setSelectedPropertyIndex(newindex);
+		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
+		this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
+	}
+
+	public final void setCellDecorators(ElementDecorator[] decorators) {
+		int propIndex = getMatrixView().getSelectedPropertyIndex();
+		ElementDecorator old = null;
+		if (this.cellDecorators != null) {
+			this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
+			old = this.cellDecorators[propIndex];
+		}
+		decorators[propIndex].addPropertyChangeListener(propertyListener);
+
+		this.cellDecorators = decorators;
+		firePropertyChange(CELL_DECORATOR_CHANGED, old, decorators[propIndex]);
+	}
+
+	public final ElementDecorator[] getCellDecorators() {
+		return this.cellDecorators;
 	}
 
 	public int getCellWidth() {

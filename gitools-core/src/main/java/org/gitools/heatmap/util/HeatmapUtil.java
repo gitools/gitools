@@ -36,27 +36,46 @@ public class HeatmapUtil {
 		final IMatrix matrix = matrixView.getContents();
 
 		final Heatmap figure = new Heatmap(matrixView);
+		final int propertiesNb = figure.getMatrixView().getCellAdapter().getPropertyCount();
 
 		if (matrix instanceof DoubleBinaryMatrix) {
-			BinaryElementDecorator decorator =
-				(BinaryElementDecorator) ElementDecoratorFactory.create(
-						ElementDecoratorNames.BINARY,
-						matrix.getCellAdapter());
-			decorator.setCutoff(1.0);
-			decorator.setCutoffCmp(CutoffCmp.EQ);
-			figure.setCellDecorator(decorator);
+			BinaryElementDecorator[] decorators = new BinaryElementDecorator[propertiesNb];
+			for (int i = 0; i < decorators.length; i++) {
+				BinaryElementDecorator decorator =
+					(BinaryElementDecorator) ElementDecoratorFactory.create(
+							ElementDecoratorNames.BINARY,
+							matrix.getCellAdapter());
+				decorator.setCutoff(1.0);
+				decorator.setCutoffCmp(CutoffCmp.EQ);
+				decorators[i] = decorator;
+			}
+			figure.setCellDecorators(decorators);
 			figure.getRowDim().setGridEnabled(false);
 			figure.getColumnDim().setGridEnabled(false);
 		} else if (matrix instanceof DoubleMatrix) {
+			ElementDecorator[] decorators = new ElementDecorator[propertiesNb];
+			for (int i = 0; i < decorators.length; i++) {
+				ElementDecorator decorator =
+					ElementDecoratorFactory.create(
+						ElementDecoratorNames.PVALUE,
+						matrix.getCellAdapter());
+			decorators[i] = decorator;
+			}
+			figure.setCellDecorators(decorators);
 			figure.getRowDim().setGridEnabled(false);
 			figure.getColumnDim().setGridEnabled(false);
 		}
 		else if (matrix instanceof ObjectMatrix) {
-			ElementDecorator decorator =
-				ElementDecoratorFactory.create(
+			
+			ElementDecorator[] decorators = new ElementDecorator[propertiesNb];
+			for (int i = 0; i < decorators.length; i++) {
+				ElementDecorator decorator =
+					ElementDecoratorFactory.create(
 						ElementDecoratorNames.PVALUE,
 						matrix.getCellAdapter());
-			figure.setCellDecorator(decorator);
+			decorators[i] = decorator;
+			}
+			figure.setCellDecorators(decorators);
 		}
 
 		return figure;

@@ -82,7 +82,7 @@ public class ExportScaleImageAction extends BaseAction {
 				});*/
 
 		Heatmap hm = (Heatmap) model;
-		ElementDecorator cd = hm.getCellDecorator();
+		ElementDecorator cd = hm.getActiveCellDecorator();
 		final IColorScale scale = cd != null ? cd.getScale() : null;
 
 		if (scale == null)

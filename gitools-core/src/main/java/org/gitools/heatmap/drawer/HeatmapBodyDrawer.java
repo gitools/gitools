@@ -68,7 +68,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 		int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
 		colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
 		
-		ElementDecorator deco = heatmap.getCellDecorator();
+		ElementDecorator deco = heatmap.getActiveCellDecorator();
 		ElementDecoration decoration = new ElementDecoration();
 
 		int leadRow = heatmap.getMatrixView().getLeadSelectionRow();

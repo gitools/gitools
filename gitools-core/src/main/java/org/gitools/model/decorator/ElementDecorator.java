@@ -49,6 +49,8 @@ public abstract class ElementDecorator extends AbstractModel {
 
 	@XmlTransient
 	protected IElementAdapter adapter;
+
+	private int valueIndex;
 	
 	public ElementDecorator() {
 	}
@@ -59,6 +61,12 @@ public abstract class ElementDecorator extends AbstractModel {
 	
 	public IElementAdapter getAdapter() {
 		return adapter;
+	}
+
+	public abstract void setValueIndex(int valueIndex);
+
+	public int getValueIndex() {
+		return this.valueIndex;
 	}
 	
 	public void setAdapter(IElementAdapter adapter){

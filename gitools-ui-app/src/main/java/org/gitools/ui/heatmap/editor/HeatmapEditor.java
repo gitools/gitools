@@ -156,7 +156,7 @@ public class HeatmapEditor extends AbstractEditor {
 		};
 		
 		heatmap.addPropertyChangeListener(heatmapListener);
-		heatmap.getCellDecorator().addPropertyChangeListener(cellDecoratorListener);
+		heatmap.getActiveCellDecorator().addPropertyChangeListener(cellDecoratorListener);
 		
 		matrixView.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override public void propertyChange(PropertyChangeEvent evt) {
@@ -221,7 +221,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 		// Color scale panel
 
-		colorScalePanel = new ColorScalePanel(heatmap.getCellDecorator().getScale());
+		colorScalePanel = new ColorScalePanel(heatmap.getActiveCellDecorator().getScale());
 
 		// Heatmap panel
 

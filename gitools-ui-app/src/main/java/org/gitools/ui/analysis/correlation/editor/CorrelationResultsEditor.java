@@ -42,10 +42,14 @@ public class CorrelationResultsEditor extends HeatmapEditor {
 		Heatmap heatmap = new Heatmap(results);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		IElementAdapter cellAdapter = results.getCellAdapter();
-		CorrelationElementDecorator dec = new CorrelationElementDecorator(cellAdapter);
-		int valueIndex = cellAdapter.getPropertyIndex("score");
-		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
-		heatmap.setCellDecorator(dec);
+		int propertiesNb = cellAdapter.getProperties().size();
+		CorrelationElementDecorator[] dec = new CorrelationElementDecorator[propertiesNb];
+		for (int i = 0; i < propertiesNb; i++) {
+			dec[i] = new CorrelationElementDecorator(cellAdapter);
+			int valueIndex = cellAdapter.getPropertyIndex("score");
+			dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
+		}
+		heatmap.setCellDecorators(dec);
 
 		heatmap.setTitle(analysis.getTitle());
 

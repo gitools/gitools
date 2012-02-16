@@ -67,7 +67,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	public ZScoreElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
-		this.decorator = (ZScoreElementDecorator) model.getCellDecorator();
+		this.decorator = (ZScoreElementDecorator) model.getActiveCellDecorator();
 		
 		final IElementAdapter adapter = decorator.getAdapter();
 		
@@ -227,10 +227,28 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
-		
+
+		model.changeActiveCellDecorator(propAdapter.getIndex());
+		changeDecorator();
+
 		decorator.setValueIndex(propAdapter.getIndex());
 		
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+	}
+
+	private void changeDecorator() {
+
+		this.decorator = (ZScoreElementDecorator) model.getActiveCellDecorator();
+
+		lminColorCc.setColor(decorator.getLeftMinColor());
+		lmaxColorCc.setColor(decorator.getLeftMaxColor());
+		nsigColorCc.setColor(decorator.getNonSignificantColor());
+		rminColorCc.setColor(decorator.getRightMinColor());
+		rmaxColorCc.setColor(decorator.getRightMaxColor());
+
+		sigLevelTb.setText(Double.toString(decorator.getSignificanceLevel()));
+		corrValueCb.setSelectedIndex(decorator.getCorrectedValueIndex());
+
 	}
 	
 	private void showCorrectionChecked() {		

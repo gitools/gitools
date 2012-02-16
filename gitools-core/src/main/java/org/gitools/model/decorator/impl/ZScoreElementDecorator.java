@@ -90,11 +90,13 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		return obj;
 	}*/
 
+	@Override
 	public final int getValueIndex() {
 		return valueIndex;
 	}
 
-	public final void setValueIndex(int valueIndex) {
+	@Override
+	public void setValueIndex(int valueIndex) {
 		int old = this.valueIndex;
 		this.valueIndex = valueIndex;
 		firePropertyChange(PROPERTY_CHANGED, old, valueIndex);

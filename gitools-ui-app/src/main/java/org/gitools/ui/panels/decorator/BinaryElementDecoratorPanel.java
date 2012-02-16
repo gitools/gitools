@@ -50,6 +50,10 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private JTextField cutoffTf;
 
+	private ColorChooserLabel colorCc;
+
+	private ColorChooserLabel nonSigColorCc;
+
 	private ColorChooserLabel emptyCc;
 
 	public BinaryElementDecoratorPanel(Heatmap model) {
@@ -94,14 +98,14 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 				cutoffChanged(); }
 		});
 
-		final ColorChooserLabel colorCc = new ColorChooserLabel(decorator.getColor());
+		colorCc = new ColorChooserLabel(decorator.getColor());
 		colorCc.setToolTipText("Condition color");
 		colorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setColor(color); }
 		});
 		
-		final ColorChooserLabel nonSigColorCc = new ColorChooserLabel(decorator.getNonSignificantColor());
+		nonSigColorCc = new ColorChooserLabel(decorator.getNonSignificantColor());
 		nonSigColorCc.setToolTipText("Non condition color");
 		nonSigColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
@@ -146,10 +150,28 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private void valueChanged() {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
+
+		model.changeActiveCellDecorator(propAdapter.getIndex());
+		changeDecorator();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
 		
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+	}
+
+			private void changeDecorator() {
+
+		this.decorator = (BinaryElementDecorator) model.getActiveCellDecorator();
+
+
+		colorCc.setColor(decorator.getColor());
+		nonSigColorCc.setColor(decorator.getNonSignificantColor());
+		emptyCc.setColor(decorator.getEmptyColor());
+
+		cutoffTf.setText(Double.toString(decorator.getCutoff()));
+		cmpCb.setSelectedItem(decorator.getCutoffCmp());
+
+
 	}
 	
 	protected void cmpChanged() {

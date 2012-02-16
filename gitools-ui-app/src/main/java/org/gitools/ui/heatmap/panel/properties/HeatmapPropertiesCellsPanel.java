@@ -44,8 +44,8 @@ import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel {
 
-	private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache =
-			new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
+	private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorCache =
+			new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
 	
     /** Creates new form HeaderPropertiesCellsPanel */
     public HeatmapPropertiesCellsPanel() {
@@ -106,7 +106,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 		cellDecorator.setModel(new DefaultComboBoxModel(descriptors));
 
 		ElementDecoratorDescriptor descriptor =
-				ElementDecoratorFactory.getDescriptor(hm.getCellDecorator().getClass());
+				ElementDecoratorFactory.getDescriptor(hm.getActiveCellDecorator().getClass());
 		
 		cellDecorator.setSelectedItem(descriptor);
 
@@ -118,7 +118,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	@Override
 	protected void heatmapPropertyChange(PropertyChangeEvent evt) {
 		String pname = evt.getPropertyName();
-
 		if (evt.getSource().equals(hm)) {
 			if (Heatmap.CELL_SIZE_CHANGED.equals(pname)) {
 				cellWidth.setValue(hm.getCellWidth());
@@ -366,20 +365,25 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 
 		if (evt.getStateChange() == ItemEvent.DESELECTED) {
 			ElementDecoratorDescriptor descriptor =
-				ElementDecoratorFactory.getDescriptor(hm.getCellDecorator().getClass());
+				ElementDecoratorFactory.getDescriptor(hm.getActiveCellDecorator().getClass());
 
-			decoratorCache.put(descriptor, hm.getCellDecorator());
+			decoratorCache.put(descriptor, hm.getCellDecorators());
 		}
 		else if (evt.getStateChange() == ItemEvent.SELECTED) {
 			ElementDecoratorDescriptor descriptor =
 				(ElementDecoratorDescriptor) evt.getItem();
 
-			ElementDecorator decorator = decoratorCache.get(descriptor);
-			if (decorator == null)
-				decorator = ElementDecoratorFactory.create(
-						descriptor, hm.getMatrixView().getCellAdapter());
+			ElementDecorator[] decorators = decoratorCache.get(descriptor);
+			if (decorators == null) {
+				int propNb = hm.getActiveCellDecorator().getAdapter().getPropertyCount();
+				decorators = new ElementDecorator[propNb];
+				for (int i = 0; i < decorators.length; i++) {
+					decorators[i] = ElementDecoratorFactory.create(
+							descriptor, hm.getMatrixView().getCellAdapter());
+				}
+			}
 
-			hm.setCellDecorator(decorator);
+			hm.setCellDecorators(decorators);
 
 			changeDecoratorPanel(descriptor);
 		}
@@ -390,9 +394,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 		confPanel.setLayout(new BorderLayout());
 		
 		Class<? extends ElementDecorator> decoratorClass = descriptor.getDecoratorClass();
-		
+
 		JComponent c = ElementDecoratorPanelFactory.create(decoratorClass, hm);
-		
 		confPanel.add(c, BorderLayout.CENTER);
 		
 		decoPanel.removeAll();

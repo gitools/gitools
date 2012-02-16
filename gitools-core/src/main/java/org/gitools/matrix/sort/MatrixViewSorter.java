@@ -101,7 +101,6 @@ public abstract class MatrixViewSorter {
 				IAggregator aggregator = new SumAbsAggregator();
 				int propIndex = matrixView.getSelectedPropertyIndex();
 
-									//TODO: figure out how to get the attribute (which data matrix is shown)
 				SortDirection sortDirection = SortDirection.DESCENDING;
 
 				aggr1 = aggregateValue(matrixView, selectedColumns, idx1, propIndex, aggregator, valueBuffer);
