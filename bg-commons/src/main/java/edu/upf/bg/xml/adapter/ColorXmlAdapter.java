@@ -18,19 +18,27 @@
 package edu.upf.bg.xml.adapter;
 
 import java.awt.Color;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
 	@Override
 	public String marshal(Color v) throws Exception {
-		return "#"+Integer.toHexString(v.getRGB());
+        String rgb = Integer.toHexString(v.getRGB());
+        rgb = rgb.substring(2, rgb.length());
+		return "#"+rgb;
 	}
 
 	@Override
 	public Color unmarshal(String v) throws Exception {
-		return Color.decode(v);
+        String sixLetterHex = v.substring(0, 7);
+        try {
+        Color c = Color.decode(v);
+        return c;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 
 }

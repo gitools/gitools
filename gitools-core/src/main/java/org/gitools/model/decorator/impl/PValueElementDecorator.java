@@ -31,7 +31,6 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
-import edu.upf.bg.colorscale.util.ColorConstants;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -83,10 +82,12 @@ public class PValueElementDecorator extends ElementDecorator {
 		fmt = new GenericFormatter("<");
 	}
 
+    @Override
 	public final int getValueIndex() {
 		return valueIndex;
 	}
 
+    @Override
 	public final void setValueIndex(int valueIndex) {
 		int old = this.valueIndex;
 		this.valueIndex = valueIndex;

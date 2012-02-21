@@ -18,21 +18,10 @@
 package org.gitools.model.decorator;
 
 import edu.upf.bg.colorscale.IColorScale;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
-
-import org.gitools.model.AbstractModel;
+import javax.xml.bind.annotation.*;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.model.decorator.impl.ZScoreElementDecorator;
+import org.gitools.model.AbstractModel;
+import org.gitools.model.decorator.impl.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -41,7 +30,8 @@ import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 	FormattedTextElementDecorator.class,
 	LinearTwoSidedElementDecorator.class,
 	PValueElementDecorator.class,
-	ZScoreElementDecorator.class
+	ZScoreElementDecorator.class,
+    CorrelationElementDecorator.class
 })
 public abstract class ElementDecorator extends AbstractModel {
 
@@ -51,6 +41,9 @@ public abstract class ElementDecorator extends AbstractModel {
 	protected IElementAdapter adapter;
 
 	private int valueIndex;
+    
+    @XmlAttribute
+    private String name;
 	
 	public ElementDecorator() {
 	}
@@ -78,6 +71,14 @@ public abstract class ElementDecorator extends AbstractModel {
 			Object element);
 
 	public abstract IColorScale getScale();
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 /*	@Deprecated //FIXME use JAXB to save state
 	public Map<String, String> getConfiguration() {

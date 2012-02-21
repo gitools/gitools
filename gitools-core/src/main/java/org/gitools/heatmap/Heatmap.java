@@ -17,8 +17,6 @@
 
 package org.gitools.heatmap;
 
-import edu.upf.bg.colorscale.IColorScale;
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -36,7 +34,6 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Figure;
-import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
@@ -183,6 +180,21 @@ public class Heatmap
 		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
 		this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
 	}
+    
+    public void setActiveDecorator(ElementDecorator newDecorator) throws Exception {
+        int propIndex = getMatrixView().getSelectedPropertyIndex();
+        this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
+		newDecorator.addPropertyChangeListener(propertyListener);
+        ElementDecorator old = this.cellDecorators[propIndex];
+        if (old.getAdapter().getElementClass().equals(
+                newDecorator.getAdapter().getElementClass())) {
+            this.cellDecorators[propIndex] = newDecorator;
+            newDecorator.setValueIndex(propIndex);
+            firePropertyChange(CELL_DECORATOR_CHANGED, old, newDecorator);
+        } else {
+            throw new Exception("Substituting decorator not of same class");
+        }
+    }
 
 	public final void setCellDecorators(ElementDecorator[] decorators) {
 		int propIndex = getMatrixView().getSelectedPropertyIndex();
