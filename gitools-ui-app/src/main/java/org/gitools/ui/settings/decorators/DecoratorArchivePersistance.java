@@ -18,23 +18,14 @@
 package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import edu.upf.bg.colorscale.ColorScaleFragment;
 import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.impl.*;
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import edu.upf.bg.colorscale.impl.CorrelationColorScale;
+import edu.upf.bg.colorscale.impl.LinearColorScale;
+import edu.upf.bg.colorscale.impl.LogColorScale;
+import edu.upf.bg.colorscale.impl.UniformColorScale;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.impl.*;
 
 
@@ -115,6 +106,7 @@ public class DecoratorArchivePersistance {
         
         xstream.omitField(ElementDecorator.class, "valueIndex");
         xstream.omitField(ElementDecorator.class, "adapter");
+        xstream.useAttributeFor(ElementDecorator.class, "name");
         //xstream.omitField(ElementDecorator.class, "fmt");
         
         xstream.setMode(XStream.NO_REFERENCES);
