@@ -115,7 +115,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
         headerPanel = new org.gitools.ui.platform.dialog.DialogHeaderPanel();
 
-        setTitle("Download...");
+        setTitle("Save Scale");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {

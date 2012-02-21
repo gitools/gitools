@@ -212,7 +212,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
 
-        setTitle("Download...");
+        setTitle("Load Scale");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
