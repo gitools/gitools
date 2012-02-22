@@ -119,7 +119,8 @@ public class DecoratorArchivePersistance {
 
         try {
             FileWriter writer = new FileWriter(configFile);
-            
+
+			writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
             xstream.toXML(archive, writer);
             writer.close();
             

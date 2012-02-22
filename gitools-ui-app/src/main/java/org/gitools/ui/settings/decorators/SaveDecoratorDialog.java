@@ -111,7 +111,6 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         name = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        folderBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         headerPanel = new org.gitools.ui.platform.dialog.DialogHeaderPanel();
 
@@ -139,20 +138,13 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Name");
 
-        folderBtn.setText("Browse...");
-        folderBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                folderBtnActionPerformed(evt);
-            }
-        });
-
         headerPanel.setMessage("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -162,12 +154,10 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(folderBtn)))
+                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)))
                 .addGap(9, 9, 9))
         );
 
@@ -180,18 +170,15 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(folderBtn))
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton))
-                .addGap(27, 27, 27))
+                .addGap(29, 29, 29))
         );
-
-        getAccessibleContext().setAccessibleName("Save Scale");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,10 +196,6 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-	private void folderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folderBtnActionPerformed
-		//TODO: propose already existing Color Scale Names
-}//GEN-LAST:event_folderBtnActionPerformed
-
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -221,7 +204,6 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton folderBtn;
     private org.gitools.ui.platform.dialog.DialogHeaderPanel headerPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
