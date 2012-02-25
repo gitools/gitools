@@ -51,6 +51,7 @@ public class Heatmap
 	private static final long serialVersionUID = 325437934312047512L;
 
 	public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
+    public static final String CELL_DECORATOR_SWITCHED = "cellDecoratorSwitched";
 	public static final String MATRIX_VIEW_CHANGED = "matrixView";
 	public static final String CELL_SIZE_CHANGED = "cellSize";
 	public static final String ROW_DIMENSION_CHANGED = "rowDim";
@@ -179,9 +180,10 @@ public class Heatmap
 		getMatrixView().setSelectedPropertyIndex(newindex);
 		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
 		this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
+        firePropertyChange(CELL_DECORATOR_SWITCHED, this.cellDecorators[oldindex], this.cellDecorators[newindex]);
 	}
     
-    public void setActiveDecorator(ElementDecorator newDecorator) throws Exception {
+    public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception {
         int propIndex = getMatrixView().getSelectedPropertyIndex();
         this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
 		newDecorator.addPropertyChangeListener(propertyListener);

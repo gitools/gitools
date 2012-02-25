@@ -233,10 +233,6 @@ public class GroupComparisonFromEditorPage extends AbstractWizardPage {
 				unselected.add(labelProvider.getLabel(unselectedIndices[i]));
 			return unselected;
 
-
-
-
-			
 	}
 
 	public boolean isUseRegexChecked() {

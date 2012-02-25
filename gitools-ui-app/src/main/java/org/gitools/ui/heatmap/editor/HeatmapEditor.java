@@ -178,6 +178,10 @@ public class HeatmapEditor extends AbstractEditor {
 
 				colorScalePanel.setScale(nextDecorator.getScale());
 			}
+            if (Heatmap.CELL_DECORATOR_SWITCHED.equals(pname)) {
+                final ElementDecorator nextDecorator = (ElementDecorator) newValue;
+                colorScalePanel.setScale(nextDecorator.getScale());
+            } 
 			else if (Heatmap.PROPERTY_CHANGED.equals(pname)) {
 			}
 		}

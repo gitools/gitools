@@ -78,7 +78,7 @@ public class SortByMutualExclusionAction extends BaseAction {
 
 
 		//Propose selected rows or columns
-		ArrayList<String> selected = new ArrayList<String>();
+		/*ArrayList<String> selected = new ArrayList<String>();
 		if (hm.getMatrixView().getSelectedRows().length > 0) {
 			LabelProvider labelProvider = new MatrixRowsLabelProvider(hm.getMatrixView());
 			int[] selectedIndices = hm.getMatrixView().getSelectedRows();
@@ -94,7 +94,10 @@ public class SortByMutualExclusionAction extends BaseAction {
 		}
 		if(!selected.isEmpty()) {
 			page.setValues(selected);
-		}
+		}*/
+        if(hm.getMatrixView().getSelectedColumns().length > 0)
+            page.setFilterDimension(FilterDimension.COLUMNS);
+            
 
 		dlg.setVisible(true);
 		

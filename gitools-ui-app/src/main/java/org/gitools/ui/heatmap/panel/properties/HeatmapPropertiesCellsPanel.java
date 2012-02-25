@@ -440,7 +440,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
         }
         ElementDecorator loadedDecorator = dialog.getSelectedDecorator();
         try {
-            hm.setActiveDecorator(loadedDecorator);
+            hm.replaceActiveDecorator(loadedDecorator);
         } catch (Exception ex) {
             Logger.getLogger(HeatmapPropertiesCellsPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -467,6 +467,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 				for (int i = 0; i < decorators.length; i++) {
 					decorators[i] = ElementDecoratorFactory.create(
 							descriptor, hm.getMatrixView().getCellAdapter());
+                    decorators[i].setValueIndex(i);
 				}
 			}
 

@@ -35,8 +35,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.event.DocumentEvent;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.label.AnnotationsPatternProvider;
+import org.gitools.label.LabelProvider;
+import org.gitools.label.MatrixColumnsLabelProvider;
+import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -165,6 +171,69 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 		else
 			return colsPatt;
 	}
+    
+    private ArrayList<String> getSelected() {
+        FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
+        ArrayList<String> selected = new ArrayList<String>();
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? 
+                                        new MatrixRowsLabelProvider(hm.getMatrixView()) : 
+                                        new MatrixColumnsLabelProvider(hm.getMatrixView());
+        if (!getPattern().equalsIgnoreCase("${id}")) {
+            AnnotationMatrix am = dim == FilterDimension.ROWS ? 
+                        hm.getRowDim().getAnnotations() :
+                        hm.getColumnDim().getAnnotations();
+            labelProvider = new AnnotationsPatternProvider(
+                    labelProvider,
+                    am,
+                    getPattern());
+        }
+
+        int[] selectedIndices = dim == FilterDimension.ROWS ?
+                hm.getMatrixView().getSelectedRows() :
+                hm.getMatrixView().getSelectedColumns();
+        for (int i=0; i < selectedIndices.length; i++)
+            selected.add(labelProvider.getLabel(selectedIndices[i]));
+
+		return selected;
+	}
+    
+    private ArrayList<String> getUnselected() {
+        FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
+        ArrayList<String> unselected = new ArrayList<String>();
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? 
+                                        new MatrixRowsLabelProvider(hm.getMatrixView()) : 
+                                        new MatrixColumnsLabelProvider(hm.getMatrixView());
+            if (!getPattern().equalsIgnoreCase("${id}")) {
+                AnnotationMatrix am = dim == FilterDimension.ROWS ? 
+                            hm.getRowDim().getAnnotations() :
+                            hm.getColumnDim().getAnnotations();
+                labelProvider = new AnnotationsPatternProvider(
+                        labelProvider,
+                        am,
+                        getPattern());
+            }
+
+            int[] selectedIndices = dim == FilterDimension.ROWS ?
+                    hm.getMatrixView().getSelectedRows() :
+                    hm.getMatrixView().getSelectedColumns();
+            int visibleCount = dim == FilterDimension.ROWS ? 
+                    hm.getMatrixView().getRowCount() :
+                    hm.getMatrixView().getColumnCount();
+
+            
+            int[] unselectedIndices = new int[visibleCount-selectedIndices.length];
+            int count = 0;
+            for (int i = 0; i < visibleCount; i++) {
+                if (!(ArrayUtils.contains(selectedIndices, i))) {
+                    unselectedIndices[count] = i;
+                    count++;
+                }
+            }
+
+            for (int i=0; i < unselectedIndices.length; i++)
+                unselected.add(labelProvider.getLabel(unselectedIndices[i]));
+            return unselected;
+	}
 
 	public void setValues(List<String> values) {
 		Iterator<String> it = values.iterator();
@@ -221,6 +290,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         colsPattBtn = new javax.swing.JButton();
         rowsRb = new javax.swing.JRadioButton();
         colsRb = new javax.swing.JRadioButton();
+        pasteSelected1 = new javax.swing.JButton();
+        pasteUnselected1 = new javax.swing.JButton();
 
         jLabel1.setText("Labels to include:");
 
@@ -263,6 +334,20 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         applyGroup.add(colsRb);
         colsRb.setText("Columns");
 
+        pasteSelected1.setText("paste Selected");
+        pasteSelected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteSelected1ActionPerformed(evt);
+            }
+        });
+
+        pasteUnselected1.setText("paste Unselected");
+        pasteUnselected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteUnselected1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,29 +357,33 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(colsRb)
-                            .addComponent(rowsRb))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(rowsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rowsPattBtn))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(colsRb)
+                                    .addComponent(rowsRb))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(colsPattBtn))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(rowsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(rowsPattBtn))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(colsPattBtn))))
+                            .addComponent(jLabel3)
+                            .addComponent(useRegexCheck))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(loadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel3)
-                    .addComponent(useRegexCheck))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pasteUnselected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pasteSelected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,7 +405,11 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loadBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveBtn))
+                        .addComponent(saveBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pasteSelected1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pasteUnselected1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
@@ -367,6 +460,16 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 		}
 }//GEN-LAST:event_saveBtnActionPerformed
 
+    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteSelected1ActionPerformed
+        ArrayList<String> selectedColsLabels = getSelected();
+        setValues(selectedColsLabels);
+    }//GEN-LAST:event_pasteSelected1ActionPerformed
+
+    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteUnselected1ActionPerformed
+        ArrayList<String> unselectedColsLabels = getUnselected();
+        setValues(unselectedColsLabels);
+    }//GEN-LAST:event_pasteUnselected1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup applyGroup;
     private javax.swing.JButton colsPattBtn;
@@ -376,6 +479,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton loadBtn;
+    private javax.swing.JButton pasteSelected1;
+    private javax.swing.JButton pasteUnselected1;
     private javax.swing.JTextArea patterns;
     private javax.swing.JButton rowsPattBtn;
     private javax.swing.JTextField rowsPattFld;

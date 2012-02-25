@@ -45,6 +45,7 @@ public class HeatmapUtil {
 					(BinaryElementDecorator) ElementDecoratorFactory.create(
 							ElementDecoratorNames.BINARY,
 							matrix.getCellAdapter());
+                decorator.setValueIndex(i);
 				decorator.setCutoff(1.0);
 				decorator.setCutoffCmp(CutoffCmp.EQ);
 				decorators[i] = decorator;
@@ -59,6 +60,7 @@ public class HeatmapUtil {
 					ElementDecoratorFactory.create(
 						ElementDecoratorNames.PVALUE,
 						matrix.getCellAdapter());
+                decorator.setValueIndex(i);
 			decorators[i] = decorator;
 			}
 			figure.setCellDecorators(decorators);
@@ -73,6 +75,7 @@ public class HeatmapUtil {
 					ElementDecoratorFactory.create(
 						ElementDecoratorNames.PVALUE,
 						matrix.getCellAdapter());
+                decorator.setValueIndex(i);
 			decorators[i] = decorator;
 			}
 			figure.setCellDecorators(decorators);
