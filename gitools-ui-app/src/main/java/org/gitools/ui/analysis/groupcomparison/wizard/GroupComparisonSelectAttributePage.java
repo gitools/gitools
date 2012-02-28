@@ -26,6 +26,7 @@ package org.gitools.ui.analysis.groupcomparison.wizard;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.Bonferroni;
@@ -37,8 +38,8 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
-	private List<IElementAttribute> attrs;
 
+	
 	private static class TestElement {
 		public Test test;
 		public TestElement(Test test) {
@@ -69,7 +70,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 		}
 	};
 
-	private static class AttrOption {
+		public class AttrOption {
 		private String name;
 		private IElementAttribute attr;
 
@@ -111,7 +112,11 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 			new MTCElement(new Bonferroni())
 		}));
 
-
+		columnGroupingCb.setModel(
+				new DefaultComboBoxModel(
+					GroupComparisonAnalysis.getColumnGroupingMethods()
+				)
+		);
 	}
 
 	public Test getTest() {
@@ -122,6 +127,10 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 	public MTC getMtc() {
 		MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
 		return mtcElement.getMTC();
+	}
+
+	public String getColumnGrouping () {
+		return (String) columnGroupingCb.getSelectedItem();
 	}
 
     /** This method is called from within the constructor to
@@ -140,6 +149,11 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         attributeLabel1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         mtcCb = new javax.swing.JComboBox();
+        attributeLabel2 = new javax.swing.JLabel();
+        columnGroupingCb = new javax.swing.JComboBox();
+        attributeLabel3 = new javax.swing.JLabel();
+        attributeLabel4 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         attributeLabel.setText("Take values from");
 
@@ -157,6 +171,12 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bonferroni", "Benjamini Hochberg FDR" }));
         mtcCb.setSelectedIndex(1);
 
+        attributeLabel2.setText("Group columns by:");
+
+        attributeLabel3.setText("Data:");
+
+        attributeLabel4.setText("Statistics:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,27 +184,44 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(attributeLabel)
-                        .addGap(59, 59, 59)
-                        .addComponent(attributeCb, 0, 342, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(attributeLabel2)
+                            .addComponent(attributeLabel))
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(columnGroupingCb, 0, 349, Short.MAX_VALUE)
+                            .addComponent(attributeCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 349, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(attributeLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(testCbox, 0, 342, Short.MAX_VALUE)
-                            .addComponent(mtcCb, 0, 342, Short.MAX_VALUE))))
+                            .addComponent(testCbox, 0, 349, Short.MAX_VALUE)
+                            .addComponent(mtcCb, 0, 349, Short.MAX_VALUE)))
+                    .addComponent(attributeLabel4)
+                    .addComponent(attributeLabel3))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(attributeLabel3)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(attributeLabel)
                     .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(attributeLabel2)
+                    .addComponent(columnGroupingCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(attributeLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,27 +243,16 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 		return this;
 	}
 
-	private boolean isValidNumber(String text) {
-		try {
-			Double.parseDouble(text);
-		}
-		catch (NumberFormatException ex) {
-			return false;
-		}
-		return true;
-	}
-
 
 	public void setAttributes(List<IElementAttribute> attrs) {
-		this.attrs = attrs;
 
 		if (attrs != null) {
-			AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
+			AttrOption[] attrOptions = new AttrOption[attrs.size()];
 
 			for (int i = 0; i < attrs.size(); i++)
-				pvalueAttrs[i] = new AttrOption(attrs.get(i));
+				attrOptions[i] = new AttrOption(attrs.get(i));
 
-			attributeCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
+			attributeCb.setModel(new DefaultComboBoxModel(attrOptions));
 			attributeCb.setSelectedIndex(0);
 			attributeCb.setEnabled(true);
 			attributeCb.setVisible(true);
@@ -248,7 +274,12 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
     private javax.swing.JComboBox attributeCb;
     private javax.swing.JLabel attributeLabel;
     private javax.swing.JLabel attributeLabel1;
+    private javax.swing.JLabel attributeLabel2;
+    private javax.swing.JLabel attributeLabel3;
+    private javax.swing.JLabel attributeLabel4;
+    private javax.swing.JComboBox columnGroupingCb;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox mtcCb;
     public javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables

@@ -17,9 +17,11 @@
 
 package org.gitools.analysis.groupcomparison;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
@@ -32,6 +34,62 @@ import org.gitools.stats.test.Test;
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis {
 
+
+	public class ColumnGroup {
+
+		protected String name = "";
+		protected int[] columns = new int[0];
+		protected BinaryCutoff binaryCutoff = null;
+		protected int cutoffAttributeIndex = -1;
+
+		private ColumnGroup(String string) {
+			this.name = name;
+		}
+
+		public void ColumnGroup (String name,
+								int[] columns,
+								BinaryCutoff binaryCutoff,
+								int cutoffAttributeIndex) {
+			this.name = name;
+			this.columns = columns;
+			this.binaryCutoff = binaryCutoff;
+			this.cutoffAttributeIndex = cutoffAttributeIndex;
+		}
+
+		public BinaryCutoff getBinaryCutoff() {
+			return binaryCutoff;
+		}
+
+		public void setBinaryCutoff(BinaryCutoff binaryCutoff) {
+			this.binaryCutoff = binaryCutoff;
+		}
+
+		public int getCutoffAttributeIndex() {
+			return cutoffAttributeIndex;
+		}
+
+		public void setCutoffAttributeIndex(int cutoffAttributeIndex) {
+			this.cutoffAttributeIndex = cutoffAttributeIndex;
+		}
+
+		public int[] getColumns() {
+			return columns;
+		}
+
+		public void setColumns(int[] columns) {
+			this.columns = columns;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+	}
+
 	protected String sizeAttrName;
 	//protected int sizeAttrIndex;
 
@@ -42,6 +100,11 @@ public class GroupComparisonAnalysis extends Analysis {
 	
 	protected int attributeIndex;
 	//which attribute of the matrix should be taken as value
+
+	public static String COLUMN_GROUPING_BY_VALUE = "Group by value";
+	public static String COLUMN_GROUPING_BY_LABEL = "Group by label";
+
+	protected String columnGrouping = null;
 
 	protected String dataFile = "";
 
@@ -54,9 +117,8 @@ public class GroupComparisonAnalysis extends Analysis {
 	protected AnnotationMatrix columnAnnotations;
 
 
-	protected int[] group1;
-	protected int[] group2;
-	//the two groups of (column) int[]
+	protected ColumnGroup group1 = new ColumnGroup("Group 1");
+	protected ColumnGroup group2 = new ColumnGroup("Group 2");
 
 	protected Test test = new MannWhitneyWilxoxonTest();
 	protected MTC mtc;
@@ -122,20 +184,53 @@ public class GroupComparisonAnalysis extends Analysis {
 	public void setTransposeData(boolean transposeData) {
 		this.transposeData = transposeData;
 	}
+	
+	public String getColumnGrouping() {
+		return columnGrouping;
+	}
 
-	public int[] getGroups1() {
+	public static String[] getColumnGroupingMethods() {
+		return new String[]{
+			COLUMN_GROUPING_BY_LABEL,
+			COLUMN_GROUPING_BY_VALUE
+		};
+	}
+
+	public void setColumnGrouping(String columnGrouping) {
+		this.columnGrouping = columnGrouping;
+	}
+
+	public ColumnGroup getGroups1() {
 		return group1;
 	}
 
-	public int[] getGroups2() {
+	public ColumnGroup getGroups2() {
 		return group2;
 	}
 
 	public void setGroup1(int[] group1) {
-		this.group1 = group1;
+		this.group1.setColumns(group1);
 	}
 
 	public void setGroup2(int[] group2) {
+		this.group2.setColumns(group2);
+	}
+
+	public void setGroup1(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
+		this.group1.setBinaryCutoff(binaryCutoff);
+		this.group1.setCutoffAttributeIndex(cutoffAttrIndex);
+	}
+
+	public void setGroup2(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
+		this.group2.setBinaryCutoff(binaryCutoff);
+		this.group2.setCutoffAttributeIndex(cutoffAttrIndex);
+	}
+
+	public void setGroup1(ColumnGroup group1) {
+		this.group1 = group1;
+	}
+
+	public void setGroup2(ColumnGroup group2) {
 		this.group2 = group2;
 	}
 

@@ -41,7 +41,6 @@ import org.gitools.ui.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;

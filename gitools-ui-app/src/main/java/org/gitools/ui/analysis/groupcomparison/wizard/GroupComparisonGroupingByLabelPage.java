@@ -53,13 +53,13 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class GroupComparisonFromEditorPage extends AbstractWizardPage {
+public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
 	private Heatmap hm;
 
 	private String colsPatt;
 
-	public GroupComparisonFromEditorPage(Heatmap hm) {
+	public GroupComparisonGroupingByLabelPage(Heatmap hm) {
 		this.hm = hm;
 		
 		initComponents();

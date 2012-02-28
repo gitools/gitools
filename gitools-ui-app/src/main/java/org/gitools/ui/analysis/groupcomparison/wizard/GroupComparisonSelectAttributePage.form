@@ -23,22 +23,31 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="attributeLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                      <Component id="attributeCb" pref="342" max="32767" attributes="0"/>
+                  <Component id="jSeparator1" alignment="0" pref="525" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="attributeLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="attributeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="columnGroupingCb" pref="349" max="32767" attributes="0"/>
+                          <Component id="attributeCb" alignment="0" pref="349" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="attributeLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="testCbox" alignment="0" pref="342" max="32767" attributes="0"/>
-                          <Component id="mtcCb" alignment="0" pref="342" max="32767" attributes="0"/>
+                          <Component id="testCbox" alignment="0" pref="349" max="32767" attributes="0"/>
+                          <Component id="mtcCb" alignment="0" pref="349" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="attributeLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="attributeLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -48,11 +57,22 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="attributeLabel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="attributeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="attributeCb" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="attributeLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="columnGroupingCb" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="attributeLabel4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="testCbox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="attributeLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -115,6 +135,30 @@
         </Property>
         <Property name="selectedIndex" type="int" value="1"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="attributeLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Group columns by:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="columnGroupingCb">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="attributeLabel3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Data:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="attributeLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Statistics:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
   </SubComponents>
 </Form>
