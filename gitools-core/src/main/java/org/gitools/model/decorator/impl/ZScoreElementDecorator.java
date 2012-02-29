@@ -134,7 +134,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 	
 	private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel) {
-		double v = Probability.normalInverse(sigLevel);
+		double v = Probability.normalInverse(sigLevel/2);
 		return Math.abs(v);
 	}
 
