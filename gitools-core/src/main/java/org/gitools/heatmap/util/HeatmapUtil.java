@@ -23,6 +23,7 @@ import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -33,10 +34,12 @@ import org.gitools.model.decorator.impl.BinaryElementDecorator;
 public class HeatmapUtil {
 
 	public static Heatmap createFromMatrixView(IMatrixView matrixView) {
-		final IMatrix matrix = matrixView.getContents();
-
 		final Heatmap figure = new Heatmap(matrixView);
 		final int propertiesNb = figure.getMatrixView().getCellAdapter().getPropertyCount();
+
+		while (matrixView.getContents() instanceof MatrixView)
+			matrixView = (IMatrixView) matrixView.getContents();
+		final IMatrix matrix = matrixView.getContents();
 
 		if (matrix instanceof DoubleBinaryMatrix) {
 			BinaryElementDecorator[] decorators = new BinaryElementDecorator[propertiesNb];
