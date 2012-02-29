@@ -17,10 +17,13 @@
 
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
+import edu.upf.bg.cutoffcmp.CutoffCmp;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.Attribute;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
@@ -91,11 +94,13 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 				return page;
 			}
 			else {
+				updateAnalysisDetails();
 				return super.getPage(analysisDetailsPage.getId());
 			}
 		}
 		//Group by value page
 		else if(page == groupByValuePage) {
+			updateAnalysisDetails();
 			return super.getPage(analysisDetailsPage.getId());
 		}
 		return super.getNextPage(page);
@@ -126,7 +131,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
 		IWizardPage page = getCurrentPage();
 
-		canFinish |= page.isComplete() && (page == attrSelectPage);
+		canFinish |= page.isComplete() && (page == groupByLabelPage || page == groupByValuePage);
 
 		return canFinish;
 	}
@@ -166,5 +171,27 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 						groupByValuePage.getCutoffAttributeIndex());
 		}
 		return a;
+	}
+
+	private void updateAnalysisDetails() {
+		List<Attribute> analysisAttributes = new ArrayList<Attribute>();
+		if (attrSelectPage.getColumnGrouping().equals(
+				GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+			analysisAttributes.add(new Attribute("Group 1", "user defined group"));
+			analysisAttributes.add(new Attribute("Group 2", "user defined group"));
+		} else {
+			CutoffCmp[] groupCutoffCmps = groupByValuePage.getGroupCutoffCmps();
+			double[] groupCutoffValues = groupByValuePage.getGroupCutoffValues();
+			String cutoffAttributeString = groupByValuePage.getCutoffAttributeString();
+
+			for (int i = 0; i < groupCutoffCmps.length; i++) {
+				String group = "Group " + (i+1);
+				String name = cutoffAttributeString + " " +
+								groupCutoffCmps[i].getLongName() + " " +
+								String.valueOf(groupCutoffValues[i]);
+				analysisAttributes.add(new Attribute(group, name));
+			}
+		}
+		analysisDetailsPage.setAnalysisAttributes(analysisAttributes);
 	}
 }

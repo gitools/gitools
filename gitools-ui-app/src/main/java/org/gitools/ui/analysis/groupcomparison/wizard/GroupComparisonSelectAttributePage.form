@@ -31,8 +31,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="columnGroupingCb" pref="349" max="32767" attributes="0"/>
-                          <Component id="attributeCb" alignment="0" pref="349" max="32767" attributes="0"/>
+                          <Component id="columnGroupingCb" pref="275" max="32767" attributes="0"/>
+                          <Component id="attributeCb" alignment="0" pref="275" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -90,7 +90,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="attributeLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Take values from"/>
+        <Property name="text" type="java.lang.String" value="Take values to compare from:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="attributeCb">

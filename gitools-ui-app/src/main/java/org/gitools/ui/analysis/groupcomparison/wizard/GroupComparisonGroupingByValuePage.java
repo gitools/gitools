@@ -111,13 +111,16 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
 		else {
 			setMessage(MessageStatus.WARN, "Put valid cutoff-values");
 		}
-		setComplete(complete);
-
+		setComplete(complete);	
 	}
-
+	
 	public int getCutoffAttributeIndex() {
 		int index = cutoffAttributeSelect.getSelectedIndex();
 		return index;
+	}
+
+	public String getCutoffAttributeString() {
+		return cutoffAttributeSelect.getSelectedItem().toString();
 	}
 
 	@Override
@@ -150,7 +153,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
 
         attributeLabel3.setText("Group 1:");
 
-        attributeLabel.setText("Take values from:");
+        attributeLabel.setText("Take values to group from:");
 
         attributeLabel4.setText("Group 2:");
 
@@ -170,7 +173,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(attributeLabel)
                         .addGap(54, 54, 54)
-                        .addComponent(cutoffAttributeSelect, 0, 487, Short.MAX_VALUE))
+                        .addComponent(cutoffAttributeSelect, 0, 424, Short.MAX_VALUE))
                     .addComponent(attributeLabel3)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
@@ -180,13 +183,13 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(attributeLabel1)
                                 .addComponent(attributeLabel2))
-                            .addGap(73, 73, 73)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cutoffCmpGroup1Cb, 0, 393, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(cutoffCmpGroup1Cb, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cutoffValueGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(cutoffCmpGroup2Cb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cutoffValueGroup2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))

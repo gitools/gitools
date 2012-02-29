@@ -94,6 +94,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
+
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.GROUP_COMPARISON,
 						"-data", FileSuffixes.HEATMAP));

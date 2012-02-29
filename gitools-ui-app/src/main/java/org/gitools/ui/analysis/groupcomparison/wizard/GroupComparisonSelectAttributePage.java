@@ -155,7 +155,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         attributeLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
-        attributeLabel.setText("Take values from");
+        attributeLabel.setText("Take values to compare from:");
 
         testCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mann-Whitney-Wilcoxon" }));
         testCbox.addActionListener(new java.awt.event.ActionListener() {
@@ -191,8 +191,8 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
                             .addComponent(attributeLabel))
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(columnGroupingCb, 0, 349, Short.MAX_VALUE)
-                            .addComponent(attributeCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 349, Short.MAX_VALUE)))
+                            .addComponent(columnGroupingCb, 0, 275, Short.MAX_VALUE)
+                            .addComponent(attributeCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 275, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
