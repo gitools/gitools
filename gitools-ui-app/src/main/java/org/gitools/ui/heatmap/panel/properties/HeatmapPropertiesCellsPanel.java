@@ -41,6 +41,9 @@ import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.PValueElementDecorator;
+import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 import org.gitools.ui.platform.AppFrame;
@@ -462,12 +465,21 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 
 			ElementDecorator[] decorators = decoratorCache.get(descriptor);
 			if (decorators == null) {
-				int propNb = hm.getActiveCellDecorator().getAdapter().getPropertyCount();
+                IElementAdapter cellAdapter = hm.getActiveCellDecorator().getAdapter();
+				int propNb = cellAdapter.getPropertyCount();
 				decorators = new ElementDecorator[propNb];
 				for (int i = 0; i < decorators.length; i++) {
 					decorators[i] = ElementDecoratorFactory.create(
-							descriptor, hm.getMatrixView().getCellAdapter());
-                    decorators[i].setValueIndex(i);
+							descriptor, cellAdapter);
+                    if (decorators[i] instanceof ZScoreElementDecorator) {
+                        int valueIndex = cellAdapter.getPropertyIndex("z-score");
+                        decorators[i].setValueIndex(valueIndex != -1 ? valueIndex : i);
+                    } else if (decorators[i] instanceof PValueElementDecorator) {
+                        	int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
+                            decorators[i].setValueIndex(valueIndex != -1 ? valueIndex : i);                        
+                    } else
+                        decorators[i].setValueIndex(i);
+                    
 				}
 			}
 
