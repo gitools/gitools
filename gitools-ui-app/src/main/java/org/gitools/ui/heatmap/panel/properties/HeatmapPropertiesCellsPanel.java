@@ -442,6 +442,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             return;
         }
         ElementDecorator loadedDecorator = dialog.getSelectedDecorator();
+        loadedDecorator = setValueIndex(loadedDecorator, d.getAdapter(), hm.getMatrixView().getSelectedPropertyIndex());
         try {
             hm.replaceActiveDecorator(loadedDecorator);
         } catch (Exception ex) {
@@ -469,18 +470,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 				int propNb = cellAdapter.getPropertyCount();
 				decorators = new ElementDecorator[propNb];
 				for (int i = 0; i < decorators.length; i++) {
-					decorators[i] = ElementDecoratorFactory.create(
+					ElementDecorator decorator = ElementDecoratorFactory.create(
 							descriptor, cellAdapter);
-                    if (decorators[i] instanceof ZScoreElementDecorator) {
-                        int valueIndex = cellAdapter.getPropertyIndex("z-score");
-                        decorators[i].setValueIndex(valueIndex != -1 ? valueIndex : i);
-                    } else if (decorators[i] instanceof PValueElementDecorator) {
-                        	int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
-                            decorators[i].setValueIndex(valueIndex != -1 ? valueIndex : i);                        
-                    } else
-                        decorators[i].setValueIndex(i);
+                    setValueIndex(decorator, cellAdapter, i);
                     
+                    decorators[i] = decorator;
 				}
+                
 			}
 
 			hm.setCellDecorators(decorators);
@@ -488,6 +484,24 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 			changeDecoratorPanel(descriptor);
 		}
 	}
+
+    private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex) {
+        if (decorator instanceof ZScoreElementDecorator) {
+            ZScoreElementDecorator zscoreDecorator = (ZScoreElementDecorator) decorator;
+            int valueIndex = cellAdapter.getPropertyIndex("z-score");
+            int correctedValueIndex = cellAdapter.getPropertyIndex("corrected-two-tail-p-value");
+            zscoreDecorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
+            zscoreDecorator.setCorrectedValueIndex(correctedValueIndex != -1 ? correctedValueIndex : currentValueIndex);
+            decorator = zscoreDecorator;
+            
+        } else if (decorator instanceof PValueElementDecorator) {
+                int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
+                decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);                        
+        } else
+            decorator.setValueIndex(currentValueIndex);
+        
+        return decorator;
+    }
 
 	private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
 		final JPanel confPanel = new JPanel();

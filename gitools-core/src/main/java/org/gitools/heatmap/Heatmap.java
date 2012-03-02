@@ -171,11 +171,17 @@ public class Heatmap
 	// Cells
 
 	public final ElementDecorator getActiveCellDecorator() {
+        // returns the active ElementDecorator
+        
 		int propIndex = getMatrixView().getSelectedPropertyIndex();
 		return cellDecorators[propIndex];
 	}
 
 	public final void changeActiveCellDecorator(int newindex) {
+        // switches from active ElementDecorator to ElementDecorator
+        // of same type, but for another propertyIndex (data dimension)
+        // no new ElementDecorator has been created and none will be removed
+        
 		final int oldindex = getMatrixView().getSelectedPropertyIndex();
 		getMatrixView().setSelectedPropertyIndex(newindex);
 		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
@@ -184,6 +190,9 @@ public class Heatmap
 	}
     
     public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception {
+        // removes the actual ElementDecorator for the propertyIndex displayed 
+        // and puts the new one. Needs to have proper propertyIndex set!
+        
         int propIndex = getMatrixView().getSelectedPropertyIndex();
         this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
 		newDecorator.addPropertyChangeListener(propertyListener);
@@ -191,7 +200,6 @@ public class Heatmap
         if (old.getAdapter().getElementClass().equals(
                 newDecorator.getAdapter().getElementClass())) {
             this.cellDecorators[propIndex] = newDecorator;
-            newDecorator.setValueIndex(propIndex);
             firePropertyChange(CELL_DECORATOR_CHANGED, old, newDecorator);
         } else {
             throw new Exception("Substituting decorator not of same class");
@@ -199,6 +207,10 @@ public class Heatmap
     }
 
 	public final void setCellDecorators(ElementDecorator[] decorators) {
+        // The ElementDecorator Type has been changed and thus a new
+        // set of ElementDecorators has to be put in place (for each
+        // propertyIndex one.
+        
 		int propIndex = getMatrixView().getSelectedPropertyIndex();
 		ElementDecorator old = null;
 		if (this.cellDecorators != null) {
