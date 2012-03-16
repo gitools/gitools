@@ -19,7 +19,6 @@ package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import org.gitools.aggregation.IAggregator;
 
 import org.gitools.ui.platform.actions.BaseAction;
@@ -28,9 +27,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.aggregation.AggregatorFactory;
 import org.gitools.aggregation.MultAggregator;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
