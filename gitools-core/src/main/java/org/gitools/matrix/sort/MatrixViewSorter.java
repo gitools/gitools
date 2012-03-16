@@ -160,7 +160,8 @@ public abstract class MatrixViewSorter {
 
 		ValueSortCriteria[] criteriaArray =
 						new ValueSortCriteria[1];
-		criteriaArray[0] = new ValueSortCriteria(0, new SumAbsAggregator(), SortDirection.DESCENDING);
+		int index = matrixView.getSelectedPropertyIndex();
+		criteriaArray[0] = new ValueSortCriteria(index, new SumAbsAggregator(), SortDirection.DESCENDING);
 
 		for (int i = numRows-1; i >= 0; i--) {
 			//selRows[i] = i;
