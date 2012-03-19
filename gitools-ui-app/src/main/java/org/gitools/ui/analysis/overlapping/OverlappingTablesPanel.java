@@ -18,7 +18,6 @@
 package org.gitools.ui.analysis.overlapping;
 
 import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.LinearColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
@@ -350,7 +349,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 		double score = MatrixUtils.doubleValue(mv.getCellValue(row, col, "score"));
 		double se = MatrixUtils.doubleValue(mv.getCellValue(row, col, "se"));*/
 
-		LinearColorScale scale = new LinearColorScale();
+		// LinearColorScale scale = new LinearColorScale();
 
 		VelocityContext e = new VelocityContext();
 

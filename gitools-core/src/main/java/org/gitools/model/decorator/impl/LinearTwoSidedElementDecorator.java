@@ -33,8 +33,6 @@ import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -181427286948958314L;
@@ -43,10 +41,8 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 	
 	private LinearTwoSidedColorScale scale;
 
-	@XmlTransient
-	private GenericFormatter fmt;
-	
-	
+	private final static GenericFormatter fmt = new GenericFormatter("<");
+
 	public LinearTwoSidedElementDecorator() {
 		this(null, new LinearTwoSidedColorScale());
 	}
@@ -62,21 +58,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator {
 				"value", "log2ratio", "score" });
 		
 		this.scale = scale;
-
-		fmt = new GenericFormatter("<");
 	}
-
-	/*@Override
-	public Object clone() {
-		LinearTwoSidedElementDecorator obj = null;
-		try {
-			obj = (LinearTwoSidedElementDecorator) super.clone();
-			obj.scale = scale.clone();
-			obj.fmt = new GenericFormatter("<");
-		}
-		catch (CloneNotSupportedException ex) { }
-		return obj;
-	}*/
 
 	public final int getValueIndex() {
 		return valueIndex;

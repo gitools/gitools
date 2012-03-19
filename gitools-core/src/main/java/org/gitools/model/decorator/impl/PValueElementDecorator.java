@@ -33,8 +33,6 @@ import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class PValueElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -1215192981017862718L;
@@ -46,8 +44,7 @@ public class PValueElementDecorator extends ElementDecorator {
 	
 	private PValueColorScale scale;
 
-	@XmlTransient
-	private GenericFormatter fmt;
+	private final static GenericFormatter fmt = new GenericFormatter("<");
 	
 	public PValueElementDecorator() {
 		
@@ -61,8 +58,6 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		significanceLevel = 0.05;
 		scale = new PValueColorScale();
-
-		fmt = new GenericFormatter("<");
 	}
 	
 	public PValueElementDecorator(IElementAdapter adapter) {
@@ -78,8 +73,6 @@ public class PValueElementDecorator extends ElementDecorator {
 		
 		significanceLevel = 0.05;
 		scale = new PValueColorScale();
-
-		fmt = new GenericFormatter("<");
 	}
 
     @Override
@@ -130,22 +123,22 @@ public class PValueElementDecorator extends ElementDecorator {
 	}
 
 	public Color getMinColor() {
-		return scale.getMin().getColor();
+		return scale.getMinColor();
 	}
 
 	public void setMinColor(Color color) {
-		Color old = scale.getMin().getColor();
-		scale.getMin().setColor(color);
+		Color old = scale.getMinColor();
+		scale.setMinColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 
 	public Color getMaxColor() {
-		return scale.getSigLevelPoint().getLeftColor();
+		return scale.getMaxColor();
 	}
 
 	public void setMaxColor(Color color) {
-		Color old = scale.getSigLevelPoint().getLeftColor();
-		scale.getSigLevelPoint().setLeftColor(color);
+		Color old = scale.getMaxColor();
+		scale.setMaxColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	

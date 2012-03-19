@@ -18,15 +18,17 @@
 package edu.upf.bg.colorscale.impl;
 
 import edu.upf.bg.colorscale.ColorScalePoint;
-import java.awt.Color;
+
+import java.awt.*;
 
 public class CorrelationColorScale extends LinearTwoSidedColorScale {
 
-	public CorrelationColorScale() {
-		super(
-				new ColorScalePoint(-1, Color.GREEN),
-				new ColorScalePoint(0, Color.WHITE),
-				new ColorScalePoint(1, new Color(255, 0, 255)));
-	}
+    public CorrelationColorScale() {
+        super(
+                new ColorScalePoint(-1, Color.GREEN),
+                new ColorScalePoint(0, Color.WHITE),
+                new ColorScalePoint(1, new Color(255, 0, 255))
+        );
+    }
 
 }

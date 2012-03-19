@@ -31,4 +31,7 @@ public class ColorConstants {
 	
 	public static final Color minColor = new Color(255, 0, 0);
 	public static final Color maxColor = new Color(255, 255, 0);
+
+    public static final Color binaryMinColor = nonSignificantColor;
+    public static final Color binaryMaxColor = new Color(20, 120, 250);
 }

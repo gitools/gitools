@@ -17,9 +17,9 @@
 
 package edu.upf.bg.colorscale.drawer;
 
-import edu.upf.bg.formatter.GenericFormatter;
+import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.ColorScaleRange;
+import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,12 +28,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
-import java.util.List;
 
 public class ColorScaleDrawer {
 
-	private IColorScale scale;
+	private NumericColorScale scale;
 
 	private Color bgColor;
 
@@ -77,15 +75,13 @@ public class ColorScaleDrawer {
 	}
 
 	public void setScale(IColorScale scale) {
-		this.scale = scale;
-
-		resetZoom();
+		this.scale = (NumericColorScale) scale;
+        resetZoom();
 	}
 
 	public void resetZoom() {
-		final ColorScaleRange range = scale.getRange();
-		zoomRangeMin = range.getMin();
-		zoomRangeMax = range.getMax();
+        zoomRangeMin = scale.getMinValue();
+		zoomRangeMax = scale.getMaxValue();
 	}
 
 	public double getZoomRangeMin() {
@@ -151,16 +147,13 @@ public class ColorScaleDrawer {
 			GenericFormatter gf = new GenericFormatter();
 
 			g.setColor(legendPointColor);
-			List<ColorScalePoint> points = scale.getPoints();
-			Iterator<ColorScalePoint> it = points.iterator();
-			while (it.hasNext()) {
-				ColorScalePoint pt = it.next();
-				value = pt.getValue();
-				if (value >= zoomRangeMin && value <= zoomRangeMax) {
-					int x = bxs + (int) ((value - zoomRangeMin) * invDelta);
+
+			for (double point : scale.getPoints()) {
+				if (point >= zoomRangeMin && point <= zoomRangeMax) {
+					int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
 					g.drawLine(x, bys, x, ye);
 					
-					String legend = gf.format(legendFormat, value);
+					String legend = gf.format(legendFormat, point);
 					
 					int fontWidth = g.getFontMetrics().stringWidth(legend);
 					if (x + 2 + fontWidth > bxe)

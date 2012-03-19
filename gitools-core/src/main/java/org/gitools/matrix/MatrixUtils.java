@@ -125,8 +125,8 @@ public class MatrixUtils {
 
 		if (binary) {
 			BinaryColorScale bscale = new BinaryColorScale();
-			bscale.getCutoff().setValue(1.0);
-			bscale.setCutoffCmp(CutoffCmp.EQ);
+			bscale.setCutoff(1.0);
+			bscale.setComparator(CutoffCmp.EQ.getShortName());
 			scale = bscale;
 		} else {
 			if (min >= 0 && max <= 1) {

@@ -17,26 +17,18 @@
 
 package org.gitools.model.decorator.impl;
 
-import java.awt.Color;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.decorator.ElementDecoration;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.matrix.model.element.IElementAdapter;
-
 import cern.jet.stat.Probability;
-import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.ElementDecoration;
+import org.gitools.model.decorator.ElementDecorator;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+import java.awt.*;
+
 public class ZScoreElementDecorator extends ElementDecorator {
 
 	private static final long serialVersionUID = -7623938918947195891L;
@@ -48,8 +40,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	
 	private ZScoreColorScale scale;
 
-	@XmlTransient
-	private GenericFormatter fmt = new GenericFormatter("<");
+	private final static GenericFormatter fmt = new GenericFormatter("<");
 	
 	
 	public ZScoreElementDecorator(){
@@ -77,18 +68,6 @@ public class ZScoreElementDecorator extends ElementDecorator {
 		
 		scale = new ZScoreColorScale();
 	}
-
-	/*@Override
-	public Object clone() {
-		ZScoreElementDecorator obj = null;
-		try {
-			obj = (ZScoreElementDecorator) super.clone();
-			obj.scale = scale.clone();
-			obj.fmt = new GenericFormatter("<");
-		}
-		catch (CloneNotSupportedException ex) { }
-		return obj;
-	}*/
 
 	@Override
 	public final int getValueIndex() {
@@ -159,42 +138,42 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	}
 
 	public Color getLeftMinColor() {
-		return scale.getMin().getColor();
+		return scale.getLeftMinColor();
 	}
 	
 	public void setLeftMinColor(Color color) {
-		Color old = scale.getMin().getColor();
-		scale.getMin().setColor(color);
+		Color old = scale.getLeftMinColor();
+		scale.setLeftMinColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getLeftMaxColor() {
-		return scale.getCenter().getLeftColor();
+		return scale.getLeftMaxColor();
 	}
 	
 	public void setLeftMaxColor(Color color) {
-		Color old = scale.getCenter().getLeftColor();
-		scale.getCenter().setLeftColor(color);
+		Color old = scale.getLeftMaxColor();
+		scale.setLeftMaxColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getRightMinColor() {
-		return scale.getCenter().getRightColor();
+		return scale.getRightMinColor();
 	}
 	
 	public void setRightMinColor(Color color) {
-		Color old = scale.getCenter().getRightColor();
-		scale.getCenter().setRightColor(color);
+		Color old = scale.getRightMinColor();
+		scale.setRightMinColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
 	public Color getRightMaxColor() {
-		return scale.getMax().getColor();
+		return scale.getRightMaxColor();
 	}
 	
 	public void setRightMaxColor(Color color) {
-		Color old = scale.getMax().getColor();
-		scale.getMax().setColor(color);
+		Color old = scale.getRightMaxColor();
+		scale.setRightMaxColor(color);
 		firePropertyChange(PROPERTY_CHANGED, old, color);
 	}
 	
@@ -221,14 +200,6 @@ public class ZScoreElementDecorator extends ElementDecorator {
 	@Override
 	public void decorate(ElementDecoration decoration, Object element) {
 		decoration.reset();
-		
-		/*if (element == null) {
-			decoration.setBgColor(ColorConstants.emptyColor);
-			decoration.setToolTip("Empty cell");
-			return;
-		}
-		
-		Object value = adapter.getValue(element, valueIndex);*/
 
 		Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
 
@@ -239,9 +210,7 @@ public class ZScoreElementDecorator extends ElementDecorator {
 			decoration.setToolTip("Empty cell");
 			return;
 		}
-		
-		//double v = MatrixUtils.doubleValue(value);
-		
+
 		boolean useScale = true;
 		
 		if (useCorrection) {

@@ -34,7 +34,7 @@ import org.gitools.model.decorator.ElementDecoratorFactory;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DecoratorArchive {
 
-    public transient final static String VERSION = "1.0";
+    public transient final static String VERSION = "2.0";
 
     private List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
         

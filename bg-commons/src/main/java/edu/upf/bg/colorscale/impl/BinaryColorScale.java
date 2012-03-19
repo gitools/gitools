@@ -17,66 +17,84 @@
 
 package edu.upf.bg.colorscale.impl;
 
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.SimpleColorScale;
+import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
 import java.awt.Color;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class BinaryColorScale extends SimpleColorScale {
 
-	private ColorScalePoint cutoff;
+public class BinaryColorScale extends NumericColorScale {
 
-	@XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
-	private CutoffCmp cutoffCmp;
+	private String comparator;
+    private double cutoff;
+    
+    private Color minColor;
+    private Color maxColor;
 
-	public BinaryColorScale(
-			ColorScalePoint min,
-			ColorScalePoint max,
-			double cutoffValue,
-			CutoffCmp cmp) {
+	public BinaryColorScale(double cutoff, CutoffCmp cmp) {
+        super();
 
-		super(min, max);
+        this.comparator = cmp.getShortName();
+        this.cutoff = cutoff;
 
-		this.cutoff = new ColorScalePoint(cutoffValue);
-		this.cutoffCmp = cmp;
-
-		addPoint(cutoff);
 	}
 
-	public BinaryColorScale() {
-		this(
-				new ColorScalePoint(0, ColorConstants.nonSignificantColor),
-				new ColorScalePoint(1, new Color(20, 120, 250)),
-				1.0, CutoffCmp.EQ);
-	}
+    public BinaryColorScale() {
+        this(1.0, CutoffCmp.EQ);
+    }
 
-	@Override
-	public Color valueColor(double value) {
-		Color color = simpleLimitsColor(value);
-		if (color != null)
-			return color;
+    @Override
+    protected Color colorOf(double value) {
+        boolean satisfies = CutoffCmp.getFromName(comparator).compare(value, cutoff);
+        return satisfies ? getMaxColor() : getMinColor();
+    }
 
-		boolean satisfies = cutoffCmp.compare(value, cutoff.getValue());
-		return satisfies ? max.getColor() : min.getColor();
-	}
+    @Override
+    public double[] getPoints() {
+        double edge = Math.abs(cutoff) * 1.5;
+        if (edge < 0.5) {
+            edge = 0.5;
+        }
+        return new double[] { -edge, cutoff, edge };
+    }
 
-	public ColorScalePoint getCutoff() {
-		return cutoff;
-	}
+    public Color getMinColor() {
+        if (minColor == null) {
+            return ColorConstants.binaryMinColor;
+        }
+        return minColor;
+    }
 
-	public CutoffCmp getCutoffCmp() {
-		return cutoffCmp;
-	}
+    public void setMinColor(Color minColor) {
+        this.minColor = minColor;
+    }
 
-	public void setCutoffCmp(CutoffCmp cutoffCmp) {
-		this.cutoffCmp = cutoffCmp;
-	}
+    public Color getMaxColor() {
+        if (maxColor == null) {
+            return ColorConstants.binaryMaxColor;
+        }
+        return maxColor;
+    }
+
+    public void setMaxColor(Color maxColor) {
+        this.maxColor = maxColor;
+    }
+
+    public String getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(String comparator) {
+        this.comparator = comparator;
+    }
+
+    public double getCutoff() {
+        return cutoff;
+    }
+
+    public void setCutoff(double cutoff) {
+        this.cutoff = cutoff;
+    }
+
+
 }

@@ -17,140 +17,134 @@
 
 package edu.upf.bg.colorscale.impl;
 
-import edu.upf.bg.colorscale.ColorScaleFragment;
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.CompositeColorScale;
-import java.awt.Color;
-
+import edu.upf.bg.color.utils.ColorUtils;
+import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ZScoreColorScale extends CompositeColorScale {
+import java.awt.*;
 
-	private double halfAmplitude;
-	private double sigHalfAmplitude;
 
-	private final ColorScalePoint center;
-	private final ColorScalePoint nonSigLeft;
-	private final ColorScalePoint nonSigRight;
+public class ZScoreColorScale extends NumericColorScale {
 
-	@XmlTransient
-	private UniformColorScale nonSigScale;
+    private double center;
+    private double halfAmplitude;
+    private double sigHalfAmplitude;
 
-	@XmlTransient
-	private ColorScaleFragment nonSigScaleFrag;
+    private Color leftMinColor;
+    private Color leftMaxColor;
+    private Color rightMinColor;
+    private Color rightMaxColor;
+    private Color nonSignificantColor;
 
-	@XmlTransient
-	private LinearColorScale leftScale;
+    public ZScoreColorScale(double center, double halfAmplitude, double sigHalfAmplitude, Color leftMinColor, Color leftMaxColor, Color rightMinColor, Color rightMaxColor, Color nonSignificantColor) {
+        this.center = center;
+        this.halfAmplitude = halfAmplitude;
+        this.sigHalfAmplitude = sigHalfAmplitude;
+        this.leftMinColor = leftMinColor;
+        this.leftMaxColor = leftMaxColor;
+        this.rightMinColor = rightMinColor;
+        this.rightMaxColor = rightMaxColor;
+        this.nonSignificantColor = nonSignificantColor;
+    }
 
-	@XmlTransient
-	private ColorScaleFragment leftScaleFrag;
+    public ZScoreColorScale() {
+        this(
+                0, 10, 1.96,
+                Color.BLUE, Color.CYAN,
+                Color.YELLOW, Color.RED,
+                ColorConstants.nonSignificantColor);
+    }
 
-	@XmlTransient
-	private LinearColorScale rightScale;
+    @Override
+    protected Color colorOf(double value) {
+        
+        double absValue = Math.abs(value);
+        
+        if (absValue < sigHalfAmplitude) {
+            return nonSignificantColor;
+        }
 
-	@XmlTransient
-	private ColorScaleFragment rightScaleFrag;
-	
-	public ZScoreColorScale(
-			double centerValue,
-			double halfAmplitude, 
-			double sigHalfAmplitude,
-			Color leftMinColor,
-			Color leftMaxColor,
-			Color rightMinColor,
-			Color rightMaxColor,
-			Color nonSignificantColor) {
-		
-		super(
-				new ColorScalePoint(leftMinColor),
-				new ColorScalePoint(rightMaxColor));
-	
-		this.halfAmplitude = halfAmplitude;
-		this.sigHalfAmplitude = sigHalfAmplitude;
+        double f = (absValue - sigHalfAmplitude) / (halfAmplitude - sigHalfAmplitude);
+        
+        if (value > center) {
+            return ColorUtils.mix(rightMaxColor, rightMinColor, f);
+        } else {
+            return ColorUtils.mix(leftMinColor, leftMaxColor, f);
+        }
 
-		center = new ColorScalePoint(centerValue, leftMaxColor, rightMinColor);
+    }
 
-		min.setValue(centerValue - halfAmplitude);
-		max.setValue(centerValue + halfAmplitude);
+    @Override
+    public double[] getPoints() {
+        return new double[] {
+                center - halfAmplitude,
+                center - sigHalfAmplitude,
+                center + sigHalfAmplitude,
+                center + halfAmplitude
+        };
+    }
 
-		nonSigLeft = new ColorScalePoint(centerValue - sigHalfAmplitude);
-		nonSigRight = new ColorScalePoint(centerValue + sigHalfAmplitude);
+    public double getCenter() {
+        return center;
+    }
 
-		addPoint(nonSigLeft);
-		addPoint(nonSigRight);
-		
-		nonSigScale = new UniformColorScale(nonSignificantColor);
-		nonSigScaleFrag = new ColorScaleFragment(nonSigLeft, nonSigRight, nonSigScale);
-		
-		leftScale = new LinearColorScale(min, center);
-		leftScaleFrag = new ColorScaleFragment(min, center, leftScale);
-		
-		rightScale = new LinearColorScale(center, max);
-		rightScaleFrag = new ColorScaleFragment(center, max, rightScale);
-		
-		setScaleRanges(new ColorScaleFragment[] {
-				nonSigScaleFrag,
-				leftScaleFrag,
-				rightScaleFrag
-		});
-	}
+    public void setCenter(double center) {
+        this.center = center;
+    }
 
-	public ZScoreColorScale() {
-		this(0, 10, 1.96, 
-				Color.BLUE, Color.CYAN,
-				Color.YELLOW, Color.RED,
-				ColorConstants.nonSignificantColor);
-	}
+    public double getHalfAmplitude() {
+        return halfAmplitude;
+    }
 
-	public double getHalfAmplitude() {
-		return halfAmplitude;
-	}
+    public void setHalfAmplitude(double halfAmplitude) {
+        this.halfAmplitude = halfAmplitude;
+    }
 
-	public void setHalfAmplitude(double halfAmplitude) {
-		this.halfAmplitude = halfAmplitude;
-		recalculate();
-	}
+    public double getSigHalfAmplitude() {
+        return sigHalfAmplitude;
+    }
 
-	public double getSigHalfAmplitude() {
-		return sigHalfAmplitude;
-	}
+    public void setSigHalfAmplitude(double sigHalfAmplitude) {
+        this.sigHalfAmplitude = sigHalfAmplitude;
+    }
 
-	public void setSigHalfAmplitude(double sigHalfAmplitude) {
-		this.sigHalfAmplitude = sigHalfAmplitude;
-		recalculate();
-	}
+    public Color getLeftMinColor() {
+        return leftMinColor;
+    }
 
-	public ColorScalePoint getCenter() {
-		return center;
-	}
+    public void setLeftMinColor(Color leftMinColor) {
+        this.leftMinColor = leftMinColor;
+    }
 
-	public ColorScalePoint getNonSigLeft() {
-		return nonSigLeft;
-	}
+    public Color getLeftMaxColor() {
+        return leftMaxColor;
+    }
 
-	public ColorScalePoint getNonSigRight() {
-		return nonSigRight;
-	}
+    public void setLeftMaxColor(Color leftMaxColor) {
+        this.leftMaxColor = leftMaxColor;
+    }
 
-	public Color getNonSignificantColor() {
-		return nonSigScale.getColor();
-	}
-	
-	public void setNonSignificantColor(Color color) {
-		nonSigScale.setColor(color);
-	}
-	
-	private void recalculate() {
-		min.setValue(center.getValue() - halfAmplitude);
-		max.setValue(center.getValue() + halfAmplitude);
+    public Color getRightMinColor() {
+        return rightMinColor;
+    }
 
-		nonSigLeft.setValue(center.getValue() - sigHalfAmplitude);
-		nonSigRight.setValue(center.getValue() + sigHalfAmplitude);
-	}
+    public void setRightMinColor(Color rightMinColor) {
+        this.rightMinColor = rightMinColor;
+    }
+
+    public Color getRightMaxColor() {
+        return rightMaxColor;
+    }
+
+    public void setRightMaxColor(Color rightMaxColor) {
+        this.rightMaxColor = rightMaxColor;
+    }
+
+    public Color getNonSignificantColor() {
+        return nonSignificantColor;
+    }
+
+    public void setNonSignificantColor(Color nonSignificantColor) {
+        this.nonSignificantColor = nonSignificantColor;
+    }
 }

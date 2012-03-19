@@ -90,23 +90,4 @@ public class FormattedTextElementDecorator extends ElementDecorator {
 		return null;
 	}
 
-	/*@Deprecated
-	@Override
-	public Map<String, String> getConfiguration() {
-	
-		Map<String, String> configuration = new HashMap <String, String>();
-		configuration.put("valueIndex", Integer.toString(valueIndex));
-		configuration.put("formatString", formatString);
-		
-		return configuration;
-	}
-
-	@Deprecated
-	@Override
-	public void setConfiguration(Map<String, String> configuration) {
-	
-		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-		this.formatString = configuration.get("formatString");
-	}*/
-
 }

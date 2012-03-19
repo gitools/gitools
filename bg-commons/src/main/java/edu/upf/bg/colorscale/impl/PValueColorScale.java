@@ -17,64 +17,35 @@
 
 package edu.upf.bg.colorscale.impl;
 
-import edu.upf.bg.colorscale.ColorScaleFragment;
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.CompositeColorScale;
+import edu.upf.bg.color.utils.ColorUtils;
+import edu.upf.bg.colorscale.NumericColorScale;
+
 import java.awt.Color;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.PROPERTY)
-public class PValueColorScale extends CompositeColorScale {
+public class PValueColorScale extends NumericColorScale {
 	
 	public static final double defaultLogFactor = 0.25;
-	
-	private static final double epsilon = 1e-16;
-	
+
 	private double significanceLevel;
 
-	private UniformColorScale nonSigScale;
-
-	private ColorScaleFragment nonSigScaleFrag;
-
-	private LogColorScale scale;
-
-	private ColorScaleFragment scaleFrag;
+    private Color minColor;
+    private Color maxColor;
+    private Color nonSignificantColor;
 	
-	private ColorScalePoint sigLevel;
-
 	public PValueColorScale(
 			double significanceLevel, 
 			Color minColor, 
 			Color maxColor,
 			Color nonSignificantColor) {
 		
-		super(
-				new ColorScalePoint(0.0, minColor),
-				new ColorScalePoint(1.0, nonSignificantColor));
+		super();
 		
 		this.significanceLevel = significanceLevel;
-
-		sigLevel = new ColorScalePoint(significanceLevel + epsilon, maxColor);
-
-		addPoint(sigLevel);
-
-		nonSigScale = new UniformColorScale(nonSignificantColor);
-		nonSigScaleFrag = new ColorScaleFragment(sigLevel, max, nonSigScale);
-		
-		scale = new LogColorScale(min, sigLevel);
-		scaleFrag = new ColorScaleFragment(min, sigLevel, scale);
-		
-		setScaleRanges(new ColorScaleFragment[] {
-			nonSigScaleFrag,
-			scaleFrag
-		});
+        this.maxColor = maxColor;
+        this.minColor = minColor;
+        this.nonSignificantColor = nonSignificantColor;
 	}
 	
 	public PValueColorScale() {
@@ -83,31 +54,62 @@ public class PValueColorScale extends CompositeColorScale {
 				ColorConstants.maxColor,
 				ColorConstants.nonSignificantColor);
 	}
-	
-	public double getSignificanceLevel() {
-		return significanceLevel;
-	}
-	
-	public void setSignificanceLevel(double significanceLevel) {
-		this.significanceLevel = significanceLevel;
-		sigLevel.setValue(significanceLevel + epsilon);
-	}
 
-	public ColorScalePoint getSigLevelPoint() {
-		return sigLevel;
-	}
+    @Override
+    protected Color colorOf(double value) {
 
-	public void setSigLevelPoint(ColorScalePoint sigLevel) {
-		this.sigLevel = sigLevel;
-	}
+        if (value > significanceLevel || value < 0) {
+            return nonSignificantColor;
+        }
 
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	public Color getNonSignificantColor() {
-		return max.getColor();
-	}
-	
-	public void setNonSignificantColor(Color color) {
-		nonSigScale.setColor(color);
-		max.setColor(color);
-	}
+        double f = value / significanceLevel;
+        f = (f == 0.0 ? 0.0 : 1.0 + defaultLogFactor * Math.log10(f));
+        return ColorUtils.mix(maxColor, minColor, f);
+
+    }
+
+    @Override
+    public double[] getPoints() {
+        return new double[] { 0, significanceLevel, 1 } ;
+    }
+
+    public double getSignificanceLevel() {
+        return significanceLevel;
+    }
+
+    public void setSignificanceLevel(double significanceLevel) {
+        this.significanceLevel = significanceLevel;
+
+        if (significanceLevel > 1) {
+            this.significanceLevel = 1;
+        }
+
+        if (significanceLevel < 0) {
+            this.significanceLevel = 0;
+        }
+    }
+
+    public Color getMinColor() {
+        return minColor;
+    }
+
+    public void setMinColor(Color minColor) {
+        this.minColor = minColor;
+    }
+
+    public Color getMaxColor() {
+        return maxColor;
+    }
+
+    public void setMaxColor(Color maxColor) {
+        this.maxColor = maxColor;
+    }
+
+    public Color getNonSignificantColor() {
+        return nonSignificantColor;
+    }
+
+    public void setNonSignificantColor(Color nonSignificantColor) {
+        this.nonSignificantColor = nonSignificantColor;
+    }
 }

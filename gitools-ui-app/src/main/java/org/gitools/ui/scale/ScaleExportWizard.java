@@ -18,6 +18,7 @@
 package org.gitools.ui.scale;
 
 import edu.upf.bg.colorscale.IColorScale;
+import edu.upf.bg.colorscale.NumericColorScale;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.wizard.common.SaveFilePage;
 
@@ -36,9 +37,12 @@ public class ScaleExportWizard extends AbstractWizard {
 	}
 
 	public void setScale(IColorScale scale) {
-		configPage.setRange(
-				scale.getRange().getMin(),
-				scale.getRange().getMax());
+        
+        if (scale instanceof NumericColorScale) {
+            NumericColorScale nScale = (NumericColorScale) scale;
+            configPage.setRange(nScale.getMinValue(), nScale.getMaxValue());
+        }
+		
 	}
 
 	@Override

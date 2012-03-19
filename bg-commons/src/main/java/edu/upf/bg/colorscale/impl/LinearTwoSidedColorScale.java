@@ -1,79 +1,82 @@
-/*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
 package edu.upf.bg.colorscale.impl;
 
-import edu.upf.bg.colorscale.ColorScaleFragment;
+
+import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.CompositeColorScale;
-import java.awt.Color;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import edu.upf.bg.colorscale.NumericColorScale;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public class LinearTwoSidedColorScale extends CompositeColorScale {
+import java.awt.*;
 
-	protected ColorScalePoint mid;
+public class LinearTwoSidedColorScale extends NumericColorScale {
 
-	@XmlTransient
-	private ColorScaleFragment leftScaleFrag;
-	
-	@XmlTransient
-	private LinearColorScale leftScale;
 
-	@XmlTransient
-	private ColorScaleFragment rightScaleFrag;
+    private ColorScalePoint min;
+    private ColorScalePoint mid;
+    private ColorScalePoint max;
 
-	@XmlTransient
-	private LinearColorScale rightScale;
-	
-	public LinearTwoSidedColorScale(
-			ColorScalePoint min,
-			ColorScalePoint mid,
-			ColorScalePoint max) {
-		
-		super(min, max);
-	
-		this.mid = mid;
+    public LinearTwoSidedColorScale(ColorScalePoint min, ColorScalePoint mid, ColorScalePoint max) {
+        super();
+        this.min = min;
+        this.mid = mid;
+        this.max = max;
+    }
 
-		addPoint(mid);
-		
-		leftScale = new LinearColorScale(min, mid);
-		leftScaleFrag = new ColorScaleFragment(min, mid, leftScale);
-		
-		rightScale = new LinearColorScale(mid, max);
-		rightScaleFrag = new ColorScaleFragment(mid, max, rightScale);
-				
-		setScaleRanges(new ColorScaleFragment[] {
-				leftScaleFrag,
-				rightScaleFrag });
-	}
-	
-	public LinearTwoSidedColorScale() {
-		this(
-				new ColorScalePoint(-2, Color.GREEN),
-				new ColorScalePoint(0, Color.BLACK),
-				new ColorScalePoint(2, Color.RED));
-	}
+    public LinearTwoSidedColorScale() {
+        this(
+                new ColorScalePoint(-2, Color.GREEN),
+                new ColorScalePoint(0, Color.BLACK),
+                new ColorScalePoint(2, Color.RED)
+        );
+    }
 
-	public ColorScalePoint getMid() {
-		return mid;
-	}
+    @Override
+    protected Color colorOf(double value) {
+
+        if (value < min.getValue()) {
+            return min.getColor();
+        }
+
+        if (value > max.getValue()) {
+            return max.getColor();
+        }
+
+
+        if (value < mid.getValue()) {
+            double f = (value - min.getValue()) / (mid.getValue() - min.getValue());
+            return ColorUtils.mix(mid.getColor(), min.getColor(), f);
+        } else {
+            double f = (value - mid.getValue()) / (max.getValue() - mid.getValue());
+            return ColorUtils.mix(max.getColor(), mid.getColor() , f);
+        }
+
+    }
+
+    @Override
+    public double[] getPoints() {
+        return new double[]{ min.getValue(), mid.getValue(), max.getValue()};
+    }
+
+    public ColorScalePoint getMin() {
+        return min;
+    }
+
+    public void setMin(ColorScalePoint min) {
+        this.min = min;
+    }
+
+    public ColorScalePoint getMid() {
+        return mid;
+    }
+
+    public void setMid(ColorScalePoint mid) {
+        this.mid = mid;
+    }
+
+    public ColorScalePoint getMax() {
+        return max;
+    }
+
+    public void setMax(ColorScalePoint max) {
+        this.max = max;
+    }
 }

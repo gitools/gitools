@@ -35,13 +35,8 @@ public class GenericFormatter implements Serializable {
 		new HashMap<Class<?>, String>();
 	
 	static {
-		//defaultGenericFormatMap.put(Byte.class, "%d");
-		//defaultGenericFormatMap.put(Short.class, "%d");
-		//defaultGenericFormatMap.put(Integer.class, "%d");
-		//defaultGenericFormatMap.put(Long.class, "%d");
 		defaultGenericFormatMap.put(Float.class, "%.3g");
 		defaultGenericFormatMap.put(Double.class, "%.3g");
-		//defaultGenericFormatMap.put(String.class, "%s");
 	}
 	
 	private String ltString;
@@ -75,35 +70,6 @@ public class GenericFormatter implements Serializable {
 	}
 	
 	public String elapsedTime(Long elapsedTime) {
-		/*long us = elapsedTime / oneMicrosecond;
-		long ms = elapsedTime / oneMilisecond;
-		long s = elapsedTime / oneSecond;
-		long h = elapsedTime / oneHour;
-		long m = h /
-		String s = null;
-		if (elapsedTime < oneMicrosecond) {
-			s = "ns";
-		}
-		else if (elapsedTime < oneMilisecond) {
-			s = "us";
-		}
-		else if (elapsedTime < oneSecond) {
-			s = "ms";
-		}
-		else if (elapsedTime < oneMinute) {
-			s = "s";
-		}
-		else if (elapsedTime < oneHour) {
-			s = "m";
-		}
-		else if (elapsedTime < oneDay) {
-			s = "h";
-		}
-		else {
-			s = "d";
-		}
-		
-		return s;*/
 		return elapsedTime + " ns";
 	}
 	

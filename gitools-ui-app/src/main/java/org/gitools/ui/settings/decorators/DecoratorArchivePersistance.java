@@ -18,100 +18,70 @@
 package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
-import edu.upf.bg.colorscale.ColorScaleFragment;
-import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.impl.CorrelationColorScale;
-import edu.upf.bg.colorscale.impl.LinearColorScale;
-import edu.upf.bg.colorscale.impl.LogColorScale;
-import edu.upf.bg.colorscale.impl.UniformColorScale;
-import java.io.*;
+import org.apache.commons.io.FileUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.*;
 
+import java.awt.*;
+import java.io.*;
+import java.util.regex.Pattern;
+
 
 /**
- *
  * @author michi
  */
 public class DecoratorArchivePersistance {
 
- 
-
     private transient static XStream xstream;
 
-
-	/*public static DecoratorArchivePersistance getInstance() {
-		if (instance == null) {
-            instance = load();
-        }
-        return instance;
-	}*/
-
     private static final String userPath =
-		System.getProperty("user.home", ".");
+            System.getProperty("user.home", ".");
 
-	public static final String CONFIG_PATH =
-		userPath + File.separator + ".gitools";
+    public static final String CONFIG_PATH =
+            userPath + File.separator + ".gitools";
 
-	private static final String configFileName = "scales.xml";
+    private static final String configFileName = "scales.xml";
 
-	private static final String configFile =
-		CONFIG_PATH + File.separator + configFileName;
+    private static final String configFile =
+            CONFIG_PATH + File.separator + configFileName;
 
-    /*	FormattedTextElementDecorator.class,
-	LinearTwoSidedElementDecorator.class,
-	PValueElementDecorator.class,
-	ZScoreElementDecorator.class,
-    CorrelationElementDecorator.class*/
-    
     public DecoratorArchivePersistance() {
         xstream = new XStream();
-        
+
         xstream.alias("decoratorArchive", DecoratorArchive.class);
-        xstream.alias("colorScalePoint", ColorScalePoint.class);
-        
-        xstream.alias("colorScaleFragment", ColorScaleFragment.class);
-        xstream.alias("linearColorScale", LinearColorScale.class);
-        xstream.alias("uniformColorScale", UniformColorScale.class);
-        xstream.alias("logColorScale", LogColorScale.class);
+
         xstream.alias("correlationColorScale", CorrelationColorScale.class);
-        
-        xstream.aliasPackage("cutoffComparison", "edu.upf.bg.cutoffcmp");
-        
+
         xstream.alias("binaryDecorator", BinaryElementDecorator.class);
-        xstream.omitField(BinaryElementDecorator.class, "valueIndex");     
-        //xstream.omitField(BinaryElementDecorator.class, "fmt");  
-        
+        xstream.omitField(BinaryElementDecorator.class, "valueIndex");
+
         xstream.alias("linearTwoSidedDecorator", LinearTwoSidedElementDecorator.class);
         xstream.omitField(LinearTwoSidedElementDecorator.class, "valueIndex");
-        //xstream.omitField(LinearTwoSidedElementDecorator.class, "fmt"); 
-        
+
         xstream.alias("formattedTextDecorator", FormattedTextElementDecorator.class);
         xstream.omitField(FormattedTextElementDecorator.class, "valueIndex");
-        //xstream.omitField(FormattedTextElementDecorator.class, "fmt"); 
-        
+
         xstream.alias("pValueDecorator", PValueElementDecorator.class);
         xstream.omitField(PValueElementDecorator.class, "valueIndex");
         xstream.omitField(PValueElementDecorator.class, "correctedValueIndex");
-        //xstream.omitField(PValueElementDecorator.class, "fmt"); 
-        
+
         xstream.alias("zScoreDecorator", ZScoreElementDecorator.class);
         xstream.omitField(ZScoreElementDecorator.class, "valueIndex");
         xstream.omitField(ZScoreElementDecorator.class, "correctedValueIndex");
-        //xstream.omitField(ZScoreElementDecorator.class, "fmt");
-        
+
         xstream.alias("correlationDecorator", CorrelationElementDecorator.class);
         xstream.omitField(CorrelationElementDecorator.class, "valueIndex");
-        //xstream.omitField(CorrelationElementDecorator.class, "fmt");
-        
+
         xstream.omitField(ElementDecorator.class, "valueIndex");
         xstream.omitField(ElementDecorator.class, "adapter");
         xstream.useAttributeFor(ElementDecorator.class, "name");
-        //xstream.omitField(ElementDecorator.class, "fmt");
-        
+
+        xstream.omitField(Color.class, "alpha");
+
         xstream.setMode(XStream.NO_REFERENCES);
     }
-   
+
     public void save(DecoratorArchive archive) {
         File path = new File(CONFIG_PATH);
         if (!path.exists())
@@ -120,29 +90,44 @@ public class DecoratorArchivePersistance {
         try {
             FileWriter writer = new FileWriter(configFile);
 
-			writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
+            writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
             xstream.toXML(archive, writer);
             writer.close();
-            
+
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
     public DecoratorArchive load() {
         DecoratorArchive decoratorArchive;
         try {
-            Reader reader = new FileReader(configFile);
-            decoratorArchive = (DecoratorArchive) xstream.fromXML(reader, new DecoratorArchive());
-            reader.close();
+            BufferedReader reader = new BufferedReader(new FileReader(configFile));
+
+            String firstLine = reader.readLine();
+
+            if (!firstLine.matches("(.*)" + Pattern.quote("version " + DecoratorArchive.VERSION) + "(.*)")) {
+                System.err.println("Current scales.xml file not compatible with current version.");
+                reader.close();
+                FileUtils.copyFile(new File(configFile), new File(configFile + ".backup"));
+                decoratorArchive = new DecoratorArchive();
+                decoratorArchive.add(decoratorArchive.getDefaultElementDecoratros());
+                save(decoratorArchive);
+                System.err.println("Created scales file with defaults and there is a backup copy on " + configFileName + ".backup");
+
+            } else {
+                decoratorArchive = (DecoratorArchive) xstream.fromXML(reader, new DecoratorArchive());
+                reader.close();
+            }
+
+
         } catch (FileNotFoundException e) {
             System.err.println("Settings file doesn't exist: " + configFile);
-            System.err.println("Created one with defaults.");
+            System.err.println("Created scales file with defaults.");
             decoratorArchive = new DecoratorArchive();
             decoratorArchive.add(decoratorArchive.getDefaultElementDecoratros());
             save(decoratorArchive);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             decoratorArchive = new DecoratorArchive();
             e.printStackTrace();
         }

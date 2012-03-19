@@ -23,8 +23,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.gitools.matrix.model.element.IElementAdapter;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class CorrelationElementDecorator extends LinearTwoSidedElementDecorator {
     
 	public CorrelationElementDecorator() {
