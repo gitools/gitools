@@ -36,6 +36,7 @@ public class Settings {
 	public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
 	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
 	public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
+    public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
 	
 	private static final String userPath = 
 		System.getProperty("user.home", ".");
@@ -52,8 +53,8 @@ public class Settings {
 		CONFIG_PATH + File.separator + "workspace";
 
 	private static Settings instance;
-	
-	public static Settings getDefault() {
+
+    public static Settings getDefault() {
 		if (instance == null) {
             instance = load();
         }
@@ -101,6 +102,17 @@ public class Settings {
 	private boolean showCorrelationExamplePage = true;
 	private boolean showOverlapExamplePage = true;
 	private boolean showCombinationExamplePage = true;
+
+    // Port parameters
+    private boolean portEnabled = false;
+    private int defaultPort = 50151;
+
+    // IGV parameters
+    private boolean showIGVLink = false;
+    private String igvUrl = DEFAULT_IGV_URL;
+    private int igvTimeout = 3000;
+
+    
 
 	private Settings() {
 	}
@@ -260,4 +272,43 @@ public class Settings {
 		this.showOverlapExamplePage = showOverlapExamplePage;
 	}
 
+    public boolean isPortEnabled() {
+        return portEnabled;
+    }
+
+    public void setPortEnabled(boolean portEnabled) {
+        this.portEnabled = portEnabled;
+    }
+
+    public int getDefaultPort() {
+        return defaultPort;
+    }
+
+    public void setDefaultPort(int defaultPort) {
+        this.defaultPort = defaultPort;
+    }
+
+    public String getIgvUrl() {
+        return igvUrl;
+    }
+
+    public void setIgvUrl(String igvUrl) {
+        this.igvUrl = igvUrl;
+    }
+
+    public int getIgvTimeout() {
+        return igvTimeout;
+    }
+
+    public void setIgvTimeout(int igvTimeout) {
+        this.igvTimeout = igvTimeout;
+    }
+
+    public boolean isShowIGVLink() {
+        return showIGVLink;
+    }
+
+    public void setShowIGVLink(boolean showIGVLink) {
+        this.showIGVLink = showIGVLink;
+    }
 }

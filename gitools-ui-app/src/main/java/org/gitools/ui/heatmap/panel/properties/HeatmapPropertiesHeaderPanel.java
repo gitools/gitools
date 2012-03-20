@@ -148,6 +148,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			File file = fileRef != null ? fileRef.getFile() : null;
 			if (file != null)
 				annFile.setText(file.getName());*/
+            annFile.setText(annMatrix.getTitle());
 
 			setAnnotationControlsEnabled(true);
 		}

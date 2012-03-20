@@ -20,27 +20,7 @@
 	</div>
 	#end
 
-	#if( $annotations && $annotations.size() > 0 )
-	<div id="section">
-		<div id="section_title">Annotations</div>
-		<div id="section_body">
-			<table id="attr_table">
-				#foreach($ann in $annotations)
-				<tr><td class="name">$ann.key</td><td>$fmt.format($ann.value)</td></tr>
-				#end
-			</table>
-		</div>
-	</div>
-	#end
+	#parse("/vm/details/common.vm")
 
-	<div id="section">
-		<div id="section_title">Dimensions</div>
-		<div id="section_body">
-			<table id="attr_table">
-				<tr><td class="name">Columns</td><td class="value">$numColumns</td></tr>
-				<tr><td class="name">Rows</td><td class="value">$numRows</td></tr>
-			</table>
-		</div>
-	</div>
 </body>
 </html>

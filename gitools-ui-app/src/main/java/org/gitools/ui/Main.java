@@ -17,18 +17,29 @@
 
 package org.gitools.ui;
 
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
 
+import org.gitools.ui.batch.CommandExecutor;
+import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.help.Help;
+import org.gitools.ui.settings.Settings;
 
 public class Main {
 
 	public static void main(String[] args) {
+
+        CommandExecutor cmdExecutor = new CommandExecutor();
+        if (args.length > 0) {
+            if (!cmdExecutor.checkArguments(args, new PrintWriter(System.err))) {
+                return;
+            };
+        }
 
 		// Initialize look and feel
 		try {
@@ -59,5 +70,22 @@ public class Main {
 
 		// Launch frame
 		AppFrame.instance().start();
+
+        // Start CommandListener
+        boolean portEnabled = Settings.getDefault().isPortEnabled();
+        String portString = null;
+        if (portEnabled || portString != null) {
+            int port = Settings.getDefault().getDefaultPort();
+            if (portString != null) {
+                port = Integer.parseInt(portString);
+            }
+            CommandListener.start(port);
+        }
+
+        if (args.length > 0) {
+            cmdExecutor.execute(args, new PrintWriter(System.err));
+        }
+
+
 	}
 }

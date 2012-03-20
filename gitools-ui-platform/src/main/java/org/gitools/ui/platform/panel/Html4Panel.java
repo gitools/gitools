@@ -17,15 +17,6 @@
 
 package org.gitools.ui.platform.panel;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.JPanel;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -34,132 +25,143 @@ import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
 import org.w3c.dom.html2.HTMLElement;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Html4Panel extends JPanel {
 
-	public static class LinkVetoException extends Exception {
-		public LinkVetoException() {
-		}
-	}
+    public static class LinkVetoException extends Exception {
+        public LinkVetoException() {
+        }
+    }
 
-	private class LocalHtmlRendererContext extends SimpleHtmlRendererContext {
+    private class LocalHtmlRendererContext extends SimpleHtmlRendererContext {
 
-		public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext) {
-			super(panel, userAgentContext);
-		}
+        public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext) {
+            super(panel, userAgentContext);
+        }
 
-		@Override
-		public void onMouseOver(HTMLElement element, MouseEvent event) {
-			super.onMouseOver(element, event);
+        @Override
+        public void onMouseOver(HTMLElement element, MouseEvent event) {
+            super.onMouseOver(element, event);
 
-			Cursor cursor = null;
-			if ("a".equalsIgnoreCase(element.getTagName()))
-				cursor = new Cursor(Cursor.HAND_CURSOR);
-			else
-				cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+            Cursor cursor = null;
+            if ("a".equalsIgnoreCase(element.getTagName()))
+                cursor = new Cursor(Cursor.HAND_CURSOR);
+            else
+                cursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
-			setCursor(cursor);
-		}
+            setCursor(cursor);
+        }
 
-		@Override
-		public void onMouseOut(HTMLElement element, MouseEvent event) {
-			super.onMouseOut(element, event);
-			Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
-			setCursor(cursor);
-		}
+        @Override
+        public void onMouseOut(HTMLElement element, MouseEvent event) {
+            super.onMouseOut(element, event);
+            Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+            setCursor(cursor);
+        }
 
-		@Override
-		public void linkClicked(HTMLElement linkNode, URL url, String target) {
-			try {
-				Html4Panel.this.linkClicked(linkNode, url, target);
-				super.linkClicked(linkNode, url, target);
-			}
-			catch (LinkVetoException ex) {
-			}
-		}
+        @Override
+        public boolean onMouseClick(HTMLElement element, MouseEvent event) {
 
-		@Override
-		public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
-			try {
-				//System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-				Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
-				super.submitForm(method, action, target, enctype, formInputs);
-			}
-			catch (LinkVetoException ex) {
-			}
-		}
+            if ("a".equalsIgnoreCase(element.getTagName())) {
+                try {
+                    Html4Panel.this.linkClicked(element);
+                    return false;
+                } catch (LinkVetoException ex) {
+                    return false;
+                }
+            }
 
-	}
+            return true;
+        }
 
-	protected HtmlPanel panel;
-	protected SimpleHtmlRendererContext rcontext;
+        @Override
+        public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+            try {
+                //System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+                Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
+                super.submitForm(method, action, target, enctype, formInputs);
+            } catch (LinkVetoException ex) {
+            }
+        }
 
-	public Html4Panel() {
-		createComponents();
-	}
+    }
 
-	private void createComponents() {
-		panel = new HtmlPanel();
-		rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
+    protected HtmlPanel panel;
+    protected SimpleHtmlRendererContext rcontext;
 
-		setLayout(new BorderLayout());
-		add(panel, BorderLayout.CENTER);
-	}
+    public Html4Panel() {
+        createComponents();
+    }
 
-	protected void linkClicked(HTMLElement linkNode, URL url, String target) throws LinkVetoException {
-		String rel = linkNode.getAttribute("rel");
-		String href = linkNode.getAttribute("href");
-		if (rel != null && rel.equalsIgnoreCase("action")) {
-			String name = href;
-			Map<String, String> params = new HashMap<String, String>();
+    private void createComponents() {
+        panel = new HtmlPanel();
+        rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
 
-			int pos = href.indexOf('?');
-			if (pos >= 0) {
-				name = href.substring(0, pos);
-				String p1 = pos < href.length() ? href.substring(pos + 1) : "";
-				if (!p1.isEmpty()) {
-					String[] p2 = p1.split("\\&");
-					for (String p3 : p2) {
-						pos = p3.indexOf('=');
-						if (pos > 0) {
-							String id = p3.substring(0, pos);
-							String value = pos < p3.length() ? p3.substring(pos + 1) : "";
-							params.put(id, value);
-						}
-					}
-				}
-			}
-			
-			performUrlAction(name, params);
-			throw new LinkVetoException();
-		}
-		else if (target != null && target.equalsIgnoreCase("_external")) {
-			try {
-				Desktop.getDesktop().browse(new URI(href));
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-			}
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
+    }
 
-			throw new LinkVetoException();
-		}
-	}
+    protected void linkClicked(HTMLElement linkNode) throws LinkVetoException {
+        String rel = linkNode.getAttribute("rel");
+        String href = linkNode.getAttribute("href");
+        String target = linkNode.getAttribute("target");
+        if (rel != null && rel.equalsIgnoreCase("action")) {
+            String name = href;
+            Map<String, String> params = new HashMap<String, String>();
 
-	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-		/*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-		if (formInputs != null)
-			for (FormInput fi : formInputs)
-				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
-	}
+            int pos = href.indexOf('?');
+            if (pos >= 0) {
+                name = href.substring(0, pos);
+                String p1 = pos < href.length() ? href.substring(pos + 1) : "";
+                if (!p1.isEmpty()) {
+                    String[] p2 = p1.split("\\&");
+                    for (String p3 : p2) {
+                        pos = p3.indexOf('=');
+                        if (pos > 0) {
+                            String id = p3.substring(0, pos);
+                            String value = pos < p3.length() ? p3.substring(pos + 1) : "";
+                            params.put(id, value);
+                        }
+                    }
+                }
+            }
 
-	protected void performUrlAction(String name, Map<String, String> params) {
-		// do nothing
-	}
+            performUrlAction(name, params);
+            throw new LinkVetoException();
+        } else if (target != null && target.equalsIgnoreCase("_external")) {
+            try {
+                Desktop.getDesktop().browse(new URI(href));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
-	public void navigate(URL url) throws Exception {
-		rcontext.navigate(url, "_this");
-	}
+            throw new LinkVetoException();
+        }
+    }
 
-	public HtmlRendererContext getHtmlRenderContext() {
-		return rcontext;
-	}
+    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+        /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
+          if (formInputs != null)
+              for (FormInput fi : formInputs)
+                  System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
+    }
+
+    protected void performUrlAction(String name, Map<String, String> params) {
+        // do nothing
+    }
+
+    public void navigate(URL url) throws Exception {
+        rcontext.navigate(url, "_this");
+    }
+
+    public HtmlRendererContext getHtmlRenderContext() {
+        return rcontext;
+    }
 }

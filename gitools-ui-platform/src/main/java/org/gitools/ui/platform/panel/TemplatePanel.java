@@ -43,6 +43,8 @@ public class TemplatePanel extends Html4Panel {
 	private VelocityContext context;
 
 	public TemplatePanel(Properties props) {
+        super();
+
 		velocityEngine = new VelocityEngine();
 		
 		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
@@ -136,7 +138,7 @@ public class TemplatePanel extends Html4Panel {
 		final StringWriter sw = new StringWriter();
 		template.merge(context, sw);
 
-		panel.setHtml(sw.toString(), templateUrl, rcontext);
+        panel.setHtml(sw.toString(), templateUrl, rcontext);
 	}
 
 	public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {

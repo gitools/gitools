@@ -17,19 +17,11 @@
 
 package org.gitools.ui.heatmap.panel.details;
 
-import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
+import edu.upf.bg.formatter.GenericFormatter;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.textpatt.TextPattern;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
@@ -47,191 +39,304 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.panel.TemplatePanel;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.view.entity.EntityController;
+
+import javax.swing.*;
+import java.io.*;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HeatmapDetailsController implements EntityController {
 
-	private static final String defaultTemplateName = "/vm/details/noselection.vm";
-	private static final String headerTemplateName = "/vm/details/header.vm";
-	private static final String heatmapTemplateName = "/vm/details/heatmap.vm";
-	
-	private TemplatePanel templatePanel;
+    private static final String defaultTemplateName = "/vm/details/noselection.vm";
+    private static final String headerTemplateName = "/vm/details/header.vm";
+    private static final String heatmapTemplateName = "/vm/details/heatmap.vm";
 
-	protected TemplatePanel getTemplatePanel() {
-		if (templatePanel == null) {
-			Properties props = new Properties();
-			//props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-			templatePanel = new TemplatePanel(props);
-		}
-		return templatePanel;
-	}
+    private TemplatePanel templatePanel;
 
-	@Override
-	public JComponent getComponent(Object ctx) {
-		TemplatePanel panel = getTemplatePanel();
+    protected TemplatePanel getTemplatePanel() {
+        if (templatePanel == null) {
+            Properties props = new Properties();
+            //props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+            templatePanel = new TemplatePanel(props) {
+                @Override
+                protected void performUrlAction(String name, Map<String, String> params) {
+                    HeatmapDetailsController.this.performUrlAction(name, params);
+                }
+            };
+        }
+        return templatePanel;
+    }
 
-		final Heatmap heatmap = (Heatmap) ctx;
-		final IMatrixView matrixView = heatmap.getMatrixView();
-		int row = matrixView.getLeadSelectionRow();
-		int rowCount = matrixView.getRowCount();
-		int column = matrixView.getLeadSelectionColumn();
-		int columnCount = matrixView.getColumnCount();
+    private void performUrlAction(String name, Map<String, String> params) {
 
-		VelocityContext context = new VelocityContext();
-		context.put("fmt", new GenericFormatter());
-		
-		String templateName = defaultTemplateName;
+        // Open IGV
+        if ("action:igv".equals(name)) {
+            IgvCommand igv = new IgvCommand(params);
+            JobThread.execute(AppFrame.instance(), igv);
+        }
 
-		context.put("rowIndex", row + 1);
-		context.put("columnIndex", column + 1);
+    }
 
-		if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-			//final IElementAdapter columnAdapter = matrixView.getColumnAdapter();
-			final Object columnId = matrixView.getColumnLabel(column);
-			final Object columnLabel = heatmap.getColumnLabel(column);
+    @Override
+    public JComponent getComponent(Object ctx) {
+        TemplatePanel panel = getTemplatePanel();
 
-			//final IElementAdapter rowAdapter = matrixView.getRowAdapter();
-			final Object rowId = matrixView.getRowLabel(row);
-			final Object rowLabel = heatmap.getRowLabel(row);
-			
-			final IElementAdapter cellAdapter = matrixView.getCellAdapter();
-			final Object cellElement = matrixView.getCell(row, column);
+        final Heatmap heatmap = (Heatmap) ctx;
+        final IMatrixView matrixView = heatmap.getMatrixView();
+        int row = matrixView.getLeadSelectionRow();
+        int rowCount = matrixView.getRowCount();
+        int column = matrixView.getLeadSelectionColumn();
+        int columnCount = matrixView.getColumnCount();
 
-			templateName = getTemplateNameFromObject(cellElement);
+        VelocityContext context = new VelocityContext();
+        context.put("fmt", new GenericFormatter());
 
-			if (templateName != null) {
-				context.put("zscoreScale", new ZScoreColorScale()); //FIXME
-				context.put("pvalueScale", new PValueColorScale()); //FIXME
+        String templateName = heatmapTemplateName;
 
-				//context.put("columnAdapter", columnAdapter);
-				context.put("columnId", columnId);
-				context.put("columnLabel", columnLabel);
-				context.put("columnElement", columnLabel); //FIXME deprecated
+        context.put("rowIndex", row + 1);
+        context.put("columnIndex", column + 1);
+        context.put("title", heatmap.getTitle());
+        context.put("notes", heatmap.getDescription());
+        context.put("attributes", heatmap.getAttributes());
+        context.put("numColumns", matrixView.getColumnCount());
+        context.put("numRows", matrixView.getRowCount());
 
-				//context.put("rowAdapter", rowAdapter);
-				context.put("rowId", rowId);
-				context.put("rowLabel", rowLabel);
-				context.put("rowElement", rowLabel); //FIXME deprecated
+        // Cell related properties
+        String igvColumnLabel = null;
+        String igvRowLabel = null;
 
-				context.put("cellAdapter", cellAdapter);
-				context.put("cellElement", cellElement);
+        if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
 
-				final List<IElementAttribute> properties =
-					cellAdapter.getProperties();
+            igvRowLabel = heatmap.getMatrixView().getRowLabel(row);
+            igvColumnLabel = heatmap.getMatrixView().getColumnLabel(column);
 
-				final Map<String, Object> cellMap =	new HashMap<String, Object>();
+            final Object columnId = matrixView.getColumnLabel(column);
+            final Object columnLabel = heatmap.getColumnLabel(column);
 
-				final Map<String, IElementAttribute> attrMap =
-						new HashMap<String, IElementAttribute>();
+            final Object rowId = matrixView.getRowLabel(row);
+            final Object rowLabel = heatmap.getRowLabel(row);
 
-				for (int index = 0; index < properties.size(); index++) {
-					final IElementAttribute prop = properties.get(index);
-					cellMap.put(prop.getId(),
-							cellAdapter.getValue(cellElement, index));
+            final IElementAdapter cellAdapter = matrixView.getCellAdapter();
+            final Object cellElement = matrixView.getCell(row, column);
 
-					attrMap.put(prop.getId(), prop);
-				}
+            templateName = getTemplateNameFromObject(cellElement);
 
-				context.put("cell", cellMap);
-				context.put("attr", attrMap);
-			}
-		}
-		else if (column == -1 && row == -1) {
-			templateName = heatmapTemplateName;
-			context.put("title", heatmap.getTitle());
-			context.put("notes", heatmap.getDescription());
-			context.put("attributes", heatmap.getAttributes());
-			context.put("numColumns", matrixView.getColumnCount());
-			context.put("numRows", matrixView.getRowCount());
-		}
-		else if (column == -1 || row == -1) {
-			String name = "";
-			List<AnnotationMatrix.Annotation> annotations = new ArrayList<AnnotationMatrix.Annotation>(0);
-			Map<String, String> links = new HashMap<String, String>();
+            if (templateName != null) {
+                context.put("zscoreScale", new ZScoreColorScale()); //FIXME
+                context.put("pvalueScale", new PValueColorScale()); //FIXME
 
-			if (column >= 0 && column < columnCount) {
-				HeatmapDim colDim = heatmap.getColumnDim();
+                context.put("columnId", columnId);
+                context.put("columnLabel", columnLabel);
+                context.put("columnElement", columnLabel); //FIXME deprecated
 
-				name = heatmap.getColumnLabel(column);
-				String label = heatmap.getMatrixView().getColumnLabel(column);
-				AnnotationMatrix annMatrix = colDim.getAnnotations();
-				if (annMatrix != null)
-					annotations = annMatrix.getAnnotations(label);
+                context.put("rowId", rowId);
+                context.put("rowLabel", rowLabel);
+                context.put("rowElement", rowLabel); //FIXME deprecated
 
-				IdType idType = colDim.getIdType();
-				if (idType != null) {
-					String idTypeKey = idType.getKey();
-					List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
-					AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
-					for (UrlLink link : tlinks) {
-						TextPattern pat = link.getPattern();
-						String url = pat.generate(resolver);
-						links.put(link.getName(), url);
-					}
-				}
-			}
-			else if (row >= 0 && row < rowCount) {
-				HeatmapDim rowDim = heatmap.getRowDim();
+                context.put("cellAdapter", cellAdapter);
+                context.put("cellElement", cellElement);
 
-				name = heatmap.getRowLabel(row);
-				String label = heatmap.getMatrixView().getRowLabel(row);
-				AnnotationMatrix annMatrix = rowDim.getAnnotations();
-				if (annMatrix != null)
-					annotations = annMatrix.getAnnotations(label);
+                final List<IElementAttribute> properties =
+                        cellAdapter.getProperties();
 
-				IdType idType = rowDim.getIdType();
-				if (idType != null) {
-					String idTypeKey = idType.getKey();
-					List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
-					AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
-					for (UrlLink link : tlinks) {
-						TextPattern pat = link.getPattern();
-						String url = pat.generate(resolver);
-						links.put(link.getName(), url);
-					}
-				}
-			}
+                final Map<String, Object> cellMap = new HashMap<String, Object>();
 
-			templateName = headerTemplateName;
-						
-			context.put("name", name);
-			context.put("annotations", annotations);
-			context.put("links", links);
-		}
+                final Map<String, IElementAttribute> attrMap =
+                        new HashMap<String, IElementAttribute>();
 
-		try {
-			panel.setTemplateFromResource(templateName);
-			panel.setContext(context);
-			panel.render();
-		}
-		catch (Exception ex) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			ex.printStackTrace(pw);
-			pw.close();
-			return new JLabel(sw.toString());
-		}
+                for (int index = 0; index < properties.size(); index++) {
+                    final IElementAttribute prop = properties.get(index);
+                    cellMap.put(prop.getId(),
+                            cellAdapter.getValue(cellElement, index));
 
-		return panel;
-	}
+                    attrMap.put(prop.getId(), prop);
+                }
 
-	private String getTemplateNameFromObject(Object object) {
-		String templateName = "generic.vm";
-		if (object != null) {
-			if (object instanceof BinomialResult)
-				templateName = "binomial.vm";
-			else if (object instanceof FisherResult)
-				templateName = "fisher.vm";
-			else if (object instanceof ZScoreResult)
-				templateName = "zscore.vm";
-			else if (object instanceof CorrelationResult)
-				templateName = "correlation.vm";
-			else if (object instanceof CombinationResult)
-				templateName = "combination.vm";
-			else if (object instanceof OverlappingResult)
-				templateName = "overlapping.vm";
-		}
-		return "/vm/details/" + templateName;
-	}
+                context.put("cell", cellMap);
+                context.put("attr", attrMap);
+            }
+        }
+
+
+        // Annotations properties
+        String name = "";
+        List<AnnotationMatrix.Annotation> annotations = new ArrayList<AnnotationMatrix.Annotation>(0);
+        Map<String, String> links = new LinkedHashMap<String, String>();
+
+        // Add IGV link
+        if (Settings.getDefault().isShowIGVLink()) {
+            if (row >= 0 || column >= 0) {
+                links.put("Locate in genomic viewer (IGV)", "action:igv?" + (row>=0 ? "row=" +  heatmap.getRowLabel(row) + "&" : "") + (column>=0 ? "column=" + heatmap.getColumnLabel(column) : ""));
+            }
+        }
+
+        if (row >= 0 && row < rowCount) {
+            HeatmapDim rowDim = heatmap.getRowDim();
+
+            name = heatmap.getRowLabel(row);
+            String label = heatmap.getMatrixView().getRowLabel(row);
+
+
+            AnnotationMatrix annMatrix = rowDim.getAnnotations();
+            if (annMatrix != null)
+                annotations = annMatrix.getAnnotations(label);
+
+            IdType idType = rowDim.getIdType();
+            if (idType != null) {
+                String idTypeKey = idType.getKey();
+                List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
+                AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
+                for (UrlLink link : tlinks) {
+                    TextPattern pat = link.getPattern();
+                    String url = pat.generate(resolver);
+                    links.put(link.getName() + " (" + label + ")", url);
+                }
+            }
+        }
+
+        if (column >= 0 && column < columnCount) {
+            HeatmapDim colDim = heatmap.getColumnDim();
+
+            name = heatmap.getColumnLabel(column);
+            String label = heatmap.getMatrixView().getColumnLabel(column);
+            AnnotationMatrix annMatrix = colDim.getAnnotations();
+            if (annMatrix != null)
+                annotations = annMatrix.getAnnotations(label);
+
+            IdType idType = colDim.getIdType();
+            if (idType != null) {
+                String idTypeKey = idType.getKey();
+                List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
+                AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
+                for (UrlLink link : tlinks) {
+                    TextPattern pat = link.getPattern();
+                    String url = pat.generate(resolver);
+                    links.put(link.getName() + " (" + label + ")", url);
+                }
+            }
+        }
+
+
+        context.put("name", name);
+        context.put("annotations", annotations);
+        context.put("links", links);
+
+
+        try {
+            panel.setTemplateFromResource(templateName);
+            panel.setContext(context);
+            panel.render();
+
+
+        } catch (Exception ex) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            pw.close();
+            return new JLabel(sw.toString());
+        }
+
+        return panel;
+    }
+
+    private String getTemplateNameFromObject(Object object) {
+        String templateName = "generic.vm";
+        if (object != null) {
+            if (object instanceof BinomialResult)
+                templateName = "binomial.vm";
+            else if (object instanceof FisherResult)
+                templateName = "fisher.vm";
+            else if (object instanceof ZScoreResult)
+                templateName = "zscore.vm";
+            else if (object instanceof CorrelationResult)
+                templateName = "correlation.vm";
+            else if (object instanceof CombinationResult)
+                templateName = "combination.vm";
+            else if (object instanceof OverlappingResult)
+                templateName = "overlapping.vm";
+        }
+        return "/vm/details/" + templateName;
+    }
+
+
+    private class IgvCommand implements JobRunnable {
+
+        private Map<String, String> params;
+
+        private IgvCommand(Map<String, String> params) {
+            this.params = params;
+        }
+
+        @Override
+        public void run(IProgressMonitor monitor) {
+
+            Socket socket = null;
+            try {
+
+                monitor.title("Connecting with Integrative Genomics Viewer");
+
+                String igvUrl[] = Settings.getDefault().getIgvUrl().replace("http://", "").split(":");
+                socket = new Socket(igvUrl[0], Integer.valueOf(igvUrl[1]));
+                System.out.println();
+                socket.setSoTimeout(Settings.getDefault().getIgvTimeout());
+
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                String cmd, response;
+                if (params.containsKey("column")) {
+                    monitor.info("Locating " + params.get("column"));
+                    cmd = "goto " + params.get("column");
+                    out.println(cmd);
+                    response = in.readLine();
+                }
+
+                if (params.containsKey("row")) {
+                    monitor.info("Locating " + params.get("row"));
+                    cmd = "goto " + params.get("row");
+                    out.println(cmd);
+                    response = in.readLine();
+                }
+
+
+            } catch (ConnectException e) {
+                monitor.end();
+                showMessage("Unable to connect with Integrative Genomics Viewer (IGV). " +
+                        "\n It must be running on '" + Settings.getDefault().getIgvUrl() + "'. " +
+                        "\n Install or launch it from 'http://www.broadinstitute.org/igv'.");
+            } catch (SocketTimeoutException e) {
+                monitor.end();
+                showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
+            } catch (IOException e) {
+                monitor.end();
+                showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check GiTools help.");
+            } finally {
+                monitor.end();
+                if (socket != null) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
+        }
+
+        private void showMessage(String msg) {
+            AppFrame frame = AppFrame.instance();
+            JOptionPane.showMessageDialog(frame, msg);
+        }
+    }
 }

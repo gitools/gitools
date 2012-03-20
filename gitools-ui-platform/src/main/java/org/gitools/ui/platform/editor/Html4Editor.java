@@ -91,8 +91,8 @@ public class Html4Editor extends AbstractEditor {
 	}
 
 	private String title;
-	private HtmlPanel panel;
-	private SimpleHtmlRendererContext rcontext;
+	protected HtmlPanel panel;
+	protected SimpleHtmlRendererContext rcontext;
 
 	public Html4Editor(String title) {
 		this.title = title;

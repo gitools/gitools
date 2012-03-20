@@ -22,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import org.gitools.ui.IconNames;
+import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
@@ -95,44 +96,8 @@ public class OpenHeatmapAction extends BaseAction {
 		Settings.getDefault().setLastPath(file.getParent());
 		Settings.getDefault().save();
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Loading ...", 1);
-					monitor.info("File: " + file.getName());
-
-					String mime = ff.getMime();
-					if (mime == null)
-						mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
-
-					final IMatrix matrix = (IMatrix) PersistenceManager.getDefault()
-							.load(file, mime, monitor);
-
-					final IMatrixView matrixView = new MatrixView(matrix);
-
-					Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
-
-					final HeatmapEditor editor = new HeatmapEditor(figure);
-
-					editor.setName(PersistenceUtils.getFileName(file.getName())
-							+ "." + FileSuffixes.HEATMAP);
-
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							AppFrame.instance().getEditorsPanel().addEditor(editor);
-							AppFrame.instance().refresh();
-						}
-					});
-
-					monitor.end();
-				}
-				catch (Exception ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+        JobRunnable loadFile = new CommandLoadFile(file.getAbsolutePath(), ff.getMime());
+		JobThread.execute(AppFrame.instance(), loadFile);
 
 		AppFrame.instance().setStatusText("Done.");
 	}
