@@ -18,6 +18,7 @@
 package org.gitools.ui.panels.decorator;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +26,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -171,17 +174,27 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		});
 		
 		refresh();
+
+		Dimension boxSpace = new Dimension(3, 3);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
 		add(showCorrChkBox);
 		add(corrValueCb);
-		add(new JLabel("Sig. level"));
-		add(sigLevelTb);
-		add(minColorCc);
-		add(maxColorCc);
-		add(nsigColorCc);
+
+		Box box01 = new Box(BoxLayout.X_AXIS);
+		box01.add(new JLabel("Sig. level"));
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(sigLevelTb);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(minColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(maxColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(nsigColorCc);
+		add(box01);
+
 		add(new JLabel("Empty"));
 		add(emptyCc);
 	}

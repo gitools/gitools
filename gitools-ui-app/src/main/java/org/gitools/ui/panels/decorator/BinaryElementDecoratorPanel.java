@@ -19,10 +19,13 @@ package org.gitools.ui.panels.decorator;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -120,14 +123,22 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		});
 
 		refresh();
-		
+
+		Dimension boxSpace = new Dimension(3, 3);
+
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
-		add(cmpCb);
-		add(cutoffTf);
-		add(colorCc);
-		add(nonSigColorCc);
+
+		Box box01 = new Box(BoxLayout.X_AXIS);
+		box01.add(cmpCb);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(cutoffTf);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(colorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(nonSigColorCc);
+		add(box01);
 		add(new JLabel("Empty"));
 		add(emptyCc);
 	}

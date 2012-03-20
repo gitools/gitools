@@ -83,6 +83,8 @@ public class HeatmapPropertiesDocumentPanel extends HeatmapPropertiesAbstractPan
         jScrollPane2 = new javax.swing.JScrollPane();
         description = new javax.swing.JTextArea();
 
+        setPreferredSize(new java.awt.Dimension(214, 300));
+
         jLabel1.setText("Title");
 
         title.setColumns(10);

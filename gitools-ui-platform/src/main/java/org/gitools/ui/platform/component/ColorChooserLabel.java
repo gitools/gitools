@@ -52,6 +52,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener {
 		
 		final Dimension dim = new Dimension(24, 24);
 		setMinimumSize(dim);
+		setMaximumSize(dim);
 		setPreferredSize(dim);
 		setOpaque(true);
 		

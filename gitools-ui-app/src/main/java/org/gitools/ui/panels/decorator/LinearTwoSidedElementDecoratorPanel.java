@@ -18,10 +18,14 @@
 package org.gitools.ui.panels.decorator;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -138,21 +142,42 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 		});
 
 		refresh();
-		
+
+		Dimension boxSpace = new Dimension(3, 3);
+
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
-		add(new JLabel(" Min"));
-		add(minValTxt);
-		add(minColorCc);
-		add(new JLabel(" Mid"));
-		add(midValTxt);
-		add(midColorCc);
-		add(new JLabel(" Max"));
-		add(maxValTxt);
-		add(maxColorCc);
-		add(new JLabel(" Empty"));
-		add(emptyCc);
+
+		Box box01 = new Box(BoxLayout.X_AXIS);
+		box01.add(new JLabel(" Min"));
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(minValTxt);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(minColorCc);
+		add(box01);
+
+		Box box02 = new Box(BoxLayout.LINE_AXIS);
+		box02.add(new JLabel(" Mid"));
+		box02.add(Box.createRigidArea(boxSpace));
+		box02.add(midValTxt);
+		box02.add(Box.createRigidArea(boxSpace));
+		box02.add(midColorCc);
+		add(box02);
+
+		Box box03 = new Box(BoxLayout.LINE_AXIS);
+		box03.add(new JLabel(" Max"));
+		box03.add(Box.createRigidArea(boxSpace));
+		box03.add(maxValTxt);
+		box03.add(Box.createRigidArea(boxSpace));
+		box03.add(maxColorCc);
+		add(box03);
+
+		Box box04 = new Box(BoxLayout.LINE_AXIS);
+		box04.add(new JLabel(" Empty"));
+		box04.add(Box.createRigidArea(boxSpace));
+		box04.add(emptyCc);
+		add(box04);
 	}
 
 	private void refresh() {

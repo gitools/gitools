@@ -67,7 +67,7 @@ public class HeatmapPropertiesPanel extends JPanel {
         tabs = new javax.swing.JTabbedPane();
 
         setFocusable(false);
-        setPreferredSize(new java.awt.Dimension(300, 646));
+        setPreferredSize(new java.awt.Dimension(220, 646));
         setRequestFocusEnabled(false);
 
         tabs.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 1, 1, 1));
@@ -78,11 +78,11 @@ public class HeatmapPropertiesPanel extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

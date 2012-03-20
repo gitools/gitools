@@ -18,6 +18,7 @@
 package org.gitools.ui.panels.decorator;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +26,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -191,6 +194,8 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		});
 		
 		refresh();
+
+		Dimension boxSpace = new Dimension(3, 3);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
@@ -199,13 +204,24 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		add(corrValueCb);
 		add(new JLabel("Sig. level"));
 		add(sigLevelTb);
-		add(lminColorCc);
-		add(lmaxColorCc);
-		add(nsigColorCc);
-		add(rminColorCc);
-		add(rmaxColorCc);
-		add(new JLabel("Empty"));
-		add(emptyCc);
+
+		Box box01 = new Box(BoxLayout.X_AXIS);
+		box01.add(lminColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(lmaxColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(nsigColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(rminColorCc);
+		box01.add(Box.createRigidArea(boxSpace));
+		box01.add(rmaxColorCc);
+		add(box01);
+
+		Box box02 = new Box(BoxLayout.X_AXIS);
+		box02.add(new JLabel("Empty"));
+		box02.add(Box.createRigidArea(boxSpace));
+		box02.add(emptyCc);
+		add(box02);
 	}
 
 	private void refresh() {
