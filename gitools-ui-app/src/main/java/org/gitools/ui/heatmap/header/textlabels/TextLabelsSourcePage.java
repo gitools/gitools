@@ -74,8 +74,8 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
 		
 			String label = header.getLabelAnnotation();
 			int annIndex = am.getColumnIndex(label);
-			if (annIndex > 0)
-				annList.setSelectedIndex(0);
+			if (annIndex > -1)
+				annList.setSelectedIndex(annIndex);
 		}
 
 		pattText.setText(header.getLabelPattern());
