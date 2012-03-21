@@ -53,6 +53,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 			this.name = name;
 			if (am != null)
 				this.column = am.getColumnIndex(name);
+
 		}
 
 		@Override
@@ -70,7 +71,11 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 			int row = am.getRowIndex(label);
 			if (row == -1)
 				return "";
-			
+
+            if (column == -1) {
+                return "";
+            }
+
 			return am.getCell(row, column);
 		}
 	}

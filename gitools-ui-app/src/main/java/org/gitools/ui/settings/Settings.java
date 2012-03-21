@@ -104,13 +104,16 @@ public class Settings {
 	private boolean showCombinationExamplePage = true;
 
     // Port parameters
-    private boolean portEnabled = false;
+    private boolean portEnabled = true;
     private int defaultPort = 50151;
 
     // IGV parameters
-    private boolean showIGVLink = false;
+    private boolean showIGVLink = true;
     private String igvUrl = DEFAULT_IGV_URL;
     private int igvTimeout = 3000;
+
+    // Preview features
+    private boolean previewFeatures = false;
 
     
 
@@ -273,7 +276,7 @@ public class Settings {
 	}
 
     public boolean isPortEnabled() {
-        return portEnabled;
+        return isPreviewFeatures() && portEnabled;
     }
 
     public void setPortEnabled(boolean portEnabled) {
@@ -305,10 +308,18 @@ public class Settings {
     }
 
     public boolean isShowIGVLink() {
-        return showIGVLink;
+        return isPreviewFeatures() && showIGVLink;
     }
 
     public void setShowIGVLink(boolean showIGVLink) {
         this.showIGVLink = showIGVLink;
+    }
+
+    public boolean isPreviewFeatures() {
+        return previewFeatures;
+    }
+
+    public void setPreviewFeatures(boolean previewFeatures) {
+        this.previewFeatures = previewFeatures;
     }
 }
