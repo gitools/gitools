@@ -2,25 +2,13 @@
 	<id>bin</id>
 
 	<formats>
-		<!--
-		<format>tar.bz2</format>
-		<format>tar.gz</format>-->
 		<format>zip</format>
-		<format>dir</format>
 	</formats>
 
 	<includeSiteDirectory>false</includeSiteDirectory>
 
 	<fileSets>
-		<!-- <fileSet>
-			<directory>src/main/command</directory>
-			<includes>
-				<include>*</include>
-			</includes>
-			<outputDirectory>bin</outputDirectory>
-			<fileMode>0770</fileMode>
-			<filtered>true</filtered>
-		</fileSet>-->
+
 		<fileSet>
 			<directory>gitools-cli/src/main/command</directory>
 			<includes>
@@ -30,32 +18,6 @@
 			<fileMode>0770</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
-		<!-- fileSet>
-			<directory>gitools-cli/src/main/command</directory>
-			<includes>
-				<include>gitools</include>
-				<include>gitools.bat</include>
-			</includes>
-			<outputDirectory></outputDirectory>
-			<fileMode>0770</fileMode>
-			<filtered>true</filtered>
-		</fileSet -->
-
-		<!-- <fileSet>
-			<directory>ext</directory>
-			<includes>
-				<include>**/*</include>
-			</includes>
-			<outputDirectory>lib/ext</outputDirectory>
-		</fileSet> -->
-
-		<!-- <fileSet>
-			<directory>templates</directory>
-			<includes>
-				<include>**/*</include>
-			</includes>
-			<outputDirectory>templates</outputDirectory>
-		</fileSet> -->
 
 		<fileSet>
 			<directory>examples</directory>
@@ -79,13 +41,20 @@
 			</includes>
 			<outputDirectory></outputDirectory>
 		</fileSet>
+
 	</fileSets>
 
 	<moduleSets>
 		<moduleSet>
-			<binaries>
-				<outputDirectory>lib</outputDirectory>
+            <binaries>
+                <outputDirectory>lib</outputDirectory>
 				<unpack>false</unpack>
+                <dependencySets>
+                    <dependencySet>
+                        <unpack>false</unpack>
+                        <scope>runtime</scope>
+                    </dependencySet>
+                </dependencySets>
 			</binaries>
 		</moduleSet>
 	</moduleSets>
