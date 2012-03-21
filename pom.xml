@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.1</version>
     <name>gitools</name>
     <description>Gitools</description>
     <url>https://bg.upf.edu/forge/projects/gitools</url>
@@ -42,9 +41,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</connection>
-        <developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</developerConnection>
-        <url>https://bg.upf.edu/svn/gitools/desktop/trunk</url>
+        <connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.6.1</connection>
+        <developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.6.1</developerConnection>
+        <url>https://bg.upf.edu/svn/gitools/desktop/tags/gitools-1.6.1</url>
     </scm>
 
     <modules>
@@ -75,7 +74,7 @@
             <dependency>
                 <groupId>edu.upf.bg</groupId>
                 <artifactId>bg-commons</artifactId>
-                <version>0.2.1-SNAPSHOT</version>
+                <version>0.2.1</version>
             </dependency>
 
             <dependency>
@@ -191,7 +190,7 @@
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <classpathPrefix/>
+                                <classpathPrefix />
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             </manifest>
