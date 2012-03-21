@@ -308,7 +308,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         annOpen.setText("Load...");
         annOpen.setFocusable(false);
-        annOpen.setPreferredSize(new java.awt.Dimension(68, 29));
+        annOpen.setMaximumSize(new java.awt.Dimension(68, 25));
+        annOpen.setMinimumSize(new java.awt.Dimension(68, 25));
+        annOpen.setPreferredSize(new java.awt.Dimension(68, 25));
         annOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 annOpenActionPerformed(evt);
@@ -318,6 +320,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         annImport.setText("Import...");
         annImport.setEnabled(false);
         annImport.setFocusable(false);
+        annImport.setMaximumSize(new java.awt.Dimension(68, 25));
+        annImport.setMinimumSize(new java.awt.Dimension(68, 25));
+        annImport.setPreferredSize(new java.awt.Dimension(68, 25));
         annImport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 annImportActionPerformed(evt);
@@ -326,7 +331,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         annClear.setText("Clear");
         annClear.setFocusable(false);
-        annClear.setPreferredSize(new java.awt.Dimension(68, 29));
+        annClear.setMaximumSize(new java.awt.Dimension(68, 25));
+        annClear.setMinimumSize(new java.awt.Dimension(68, 25));
+        annClear.setPreferredSize(new java.awt.Dimension(68, 25));
         annClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 annClearActionPerformed(evt);
@@ -336,7 +343,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         annFilter.setText("Filter");
         annFilter.setToolTipText("Filter out elements without annotations");
         annFilter.setFocusable(false);
-        annFilter.setPreferredSize(new java.awt.Dimension(68, 29));
+        annFilter.setMaximumSize(new java.awt.Dimension(68, 25));
+        annFilter.setMinimumSize(new java.awt.Dimension(68, 25));
+        annFilter.setPreferredSize(new java.awt.Dimension(68, 25));
         annFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 annFilterActionPerformed(evt);
@@ -349,6 +358,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         headerAddBtn.setText("Add");
         headerAddBtn.setFocusable(false);
+        headerAddBtn.setMaximumSize(new java.awt.Dimension(39, 25));
+        headerAddBtn.setMinimumSize(new java.awt.Dimension(39, 25));
+        headerAddBtn.setPreferredSize(new java.awt.Dimension(39, 25));
         headerAddBtn.setRequestFocusEnabled(false);
         headerAddBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,6 +371,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         headerRemoveBtn.setText("Remove");
         headerRemoveBtn.setEnabled(false);
         headerRemoveBtn.setFocusable(false);
+        headerRemoveBtn.setMaximumSize(new java.awt.Dimension(69, 25));
+        headerRemoveBtn.setMinimumSize(new java.awt.Dimension(69, 25));
+        headerRemoveBtn.setPreferredSize(new java.awt.Dimension(69, 25));
         headerRemoveBtn.setRequestFocusEnabled(false);
         headerRemoveBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -369,6 +384,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         headerEditBtn.setText("Edit");
         headerEditBtn.setEnabled(false);
         headerEditBtn.setFocusable(false);
+        headerEditBtn.setMaximumSize(new java.awt.Dimension(38, 25));
+        headerEditBtn.setMinimumSize(new java.awt.Dimension(38, 25));
+        headerEditBtn.setPreferredSize(new java.awt.Dimension(38, 25));
         headerEditBtn.setRequestFocusEnabled(false);
         headerEditBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -379,7 +397,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         headerUpBtn.setText("Up");
         headerUpBtn.setEnabled(false);
         headerUpBtn.setFocusable(false);
-        headerUpBtn.setPreferredSize(new java.awt.Dimension(39, 29));
+        headerUpBtn.setMaximumSize(new java.awt.Dimension(39, 25));
+        headerUpBtn.setMinimumSize(new java.awt.Dimension(39, 25));
+        headerUpBtn.setPreferredSize(new java.awt.Dimension(39, 25));
         headerUpBtn.setRequestFocusEnabled(false);
         headerUpBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,7 +410,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         headerDownBtn.setText("Down");
         headerDownBtn.setEnabled(false);
         headerDownBtn.setFocusable(false);
-        headerDownBtn.setPreferredSize(new java.awt.Dimension(69, 29));
+        headerDownBtn.setMaximumSize(new java.awt.Dimension(69, 25));
+        headerDownBtn.setMinimumSize(new java.awt.Dimension(69, 25));
+        headerDownBtn.setPreferredSize(new java.awt.Dimension(69, 25));
         headerDownBtn.setRequestFocusEnabled(false);
         headerDownBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -412,69 +434,67 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+            .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(annOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(annOpen, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(annImport)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addComponent(annImport, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addGap(95, 95, 95))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(idTypeCb, 0, 229, Short.MAX_VALUE)
+                    .addComponent(idTypeCb, 0, 237, Short.MAX_VALUE)
                     .addComponent(jLabel3))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(headerAddBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(headerRemoveBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(headerEditBtn)
-                .addContainerGap(83, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(headerSize, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(headerVisible)
-                .addGap(18, 18, 18)
-                .addComponent(headerBgColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel9)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(166, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addContainerGap(191, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(headerUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(headerDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(annClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(annClear, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(annFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addComponent(annFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addGap(95, 95, 95))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(annFile, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(headerSize, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(headerVisible)
+                        .addGap(18, 26, Short.MAX_VALUE)
+                        .addComponent(headerBgColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(headerUpBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(headerAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(headerDownBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                            .addComponent(headerRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(headerEditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -492,7 +512,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(annOpen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(annImport))
+                    .addComponent(annImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(annClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -505,13 +525,16 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(headerAddBtn)
-                    .addComponent(headerRemoveBtn)
-                    .addComponent(headerEditBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(headerDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(headerUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(headerAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headerRemoveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(headerEditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(headerUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(headerDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -519,7 +542,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
                         .addComponent(headerSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(headerVisible))
                     .addComponent(headerBgColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addContainerGap(272, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -60,7 +60,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cellHeight" min="-2" pref="51" max="-2" attributes="0"/>
+                              <Component id="cellHeight" min="-2" pref="54" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -101,7 +101,7 @@
                       <Component id="rowsGridEnabled" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="cellSyncSize" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
