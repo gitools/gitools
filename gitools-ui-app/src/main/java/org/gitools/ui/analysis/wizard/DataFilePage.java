@@ -29,6 +29,7 @@ public class DataFilePage extends SelectFilePage {
 	private static final FileFormat[] formats = new FileFormat[] {
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
+            FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.DOUBLE_MATRIX,
 			FileFormats.DOUBLE_BINARY_MATRIX,
 			FileFormats.MODULES_2C_MAP,

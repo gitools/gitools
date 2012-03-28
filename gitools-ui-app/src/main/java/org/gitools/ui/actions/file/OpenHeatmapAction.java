@@ -27,23 +27,13 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
+
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
 
@@ -65,14 +55,14 @@ public class OpenHeatmapAction extends BaseAction {
 		FileFilter[] filters = new FileFilter[] {
 			// TODO new FileFormatFilter(FileFormats.HEATMAP),
 			new FileFormatFilter("Known formats", null, new FileFormat[] {
-				FileFormats.RESULTS_MATRIX,
+				FileFormats.MULTIVALUE_DATA_MATRIX,
 				FileFormats.DOUBLE_MATRIX,
 				FileFormats.DOUBLE_BINARY_MATRIX,
 				FileFormats.GENE_MATRIX,
 				FileFormats.GENE_MATRIX_TRANSPOSED
 			}),
-			new FileFormatFilter(FileFormats.RESULTS_MATRIX),
-			new FileFormatFilter(FileFormats.RESULTS_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
+			new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
+			new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)", MimeTypes.DOUBLE_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
