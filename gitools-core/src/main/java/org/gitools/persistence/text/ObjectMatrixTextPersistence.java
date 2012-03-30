@@ -222,7 +222,7 @@ public class ObjectMatrixTextPersistence
 			
 			// read header
 			if (line.length < 3)
-				throw new DataFormatException("Almost 3 columns expected.");
+				throw new DataFormatException("At least 3 columns expected.");
 			
 			int numParams = line.length - 2;
 			String[] paramNames = new String[numParams];
