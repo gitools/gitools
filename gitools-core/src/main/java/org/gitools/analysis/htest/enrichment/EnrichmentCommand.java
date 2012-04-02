@@ -152,14 +152,14 @@ public class EnrichmentCommand extends HtestCommand {
 
 		File dataFile = new File(dataFileName);
 
-		ValueTranslator valueTranslator = createValueTranslator(
+		ValueTranslator[] valueTranslators = { createValueTranslator(
 				analysis.isBinaryCutoffEnabled(),
 				analysis.getBinaryCutoffCmp(),
-				analysis.getBinaryCutoffValue());
+				analysis.getBinaryCutoffValue()) };
 
 		Properties dataProps = new Properties();
 		dataProps.put(BaseMatrixPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-		dataProps.put(BaseMatrixPersistence.VALUE_TRANSLATOR, valueTranslator);
+		dataProps.put(BaseMatrixPersistence.VALUE_TRANSLATORS, valueTranslators);
         dataProps.put(ObjectMatrixTextPersistence.VALUE_INDICES,new int[]{ valueIndex });
 		if (populationLabels != null) {
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);

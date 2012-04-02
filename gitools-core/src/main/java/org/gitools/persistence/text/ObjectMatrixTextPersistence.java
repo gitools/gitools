@@ -114,17 +114,6 @@ public class ObjectMatrixTextPersistence
 		return getElementClassId(ids);
 	}
 
-    /** Returns the String <-> Double translator to use.
-     *
-     * @return value translator
-     */
-    protected ValueTranslator getValueTranslator() {
-        if (getProperties().containsKey(VALUE_TRANSLATOR))
-            return (ValueTranslator) getProperties().get(VALUE_TRANSLATOR);
-        else
-            return new DoubleTranslator();
-    }
-	
 	private static String getElementClassId(String[] ids) {
 		String[] ids2 = new String[ids.length];
 		System.arraycopy(ids, 0, ids2, 0, ids.length);

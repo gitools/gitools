@@ -26,7 +26,7 @@ public abstract class BaseMatrixPersistence<T extends BaseMatrix>
 	public static final String POPULATION_LABELS = "population_labels";
 	public static final String BACKGROUND_VALUE = "background_value";
     public static final String BINARY_VALUES = "binary_values";
-    public static final String VALUE_TRANSLATOR = "value_translator";
+    public static final String VALUE_TRANSLATORS = "value_translators";
 
     /** Returns the array of labels to consider as background population,
 	 * or null if no population is specified.

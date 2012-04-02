@@ -52,7 +52,7 @@ public class OverlappingCommand extends AnalysisCommand {
 
 				Properties dataProps = new Properties();
 				dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);*/
+				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATORS, valueTranslator);*/
 
 				BaseMatrix data = loadDataMatrix(
 						new File(dataPath), dataMime, new Properties(), monitor);
