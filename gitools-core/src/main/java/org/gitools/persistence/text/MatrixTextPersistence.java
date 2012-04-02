@@ -46,29 +46,6 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			return false;
 	}
 
-	/** Returns the String <-> Double translator to use.
-	 *
-     * the class calling this method assumes there is only ONE ValueTranslator
-	 * @return value translator
-	 */
-	protected ValueTranslator getValueTranslator() {
-         return getValueTranslator(0);
-	}
-
-    /** Returns the String <-> Double translator to use for
-     *  value index i.
-     *
-     * @return value translator
-     */
-    protected ValueTranslator getValueTranslator(int i) {
-        if (getProperties().containsKey(VALUE_TRANSLATORS)) {
-            ValueTranslator[] valueTranslators = (ValueTranslator[]) getProperties().get(VALUE_TRANSLATORS);
-            return valueTranslators[i];
-        }
-        else
-            return new DoubleTranslator();
-    }
-
 	protected abstract T createEntity();
 	
 	public T read(
