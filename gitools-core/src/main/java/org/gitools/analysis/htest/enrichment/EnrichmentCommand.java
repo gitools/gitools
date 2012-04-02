@@ -20,6 +20,7 @@ package org.gitools.analysis.htest.enrichment;
 import java.io.File;
 import java.util.*;
 
+import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 
@@ -149,10 +150,10 @@ public class EnrichmentCommand extends HtestCommand {
 
 		Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
         valueTranslators.put(0,
-            createValueTranslator(
-                    analysis.isBinaryCutoffEnabled(),
-                    analysis.getBinaryCutoffCmp(),
-                    analysis.getBinaryCutoffValue())
+                createValueTranslator(
+                        analysis.isBinaryCutoffEnabled(),
+                        analysis.getBinaryCutoffCmp(),
+                        analysis.getBinaryCutoffValue())
         );
 
 		Properties dataProps = new Properties();
@@ -188,7 +189,7 @@ public class EnrichmentCommand extends HtestCommand {
 
 			BaseMatrix fmatrix = null;
 			try {
-				fmatrix = dataMatrix.getClass().newInstance();
+                fmatrix = DoubleBinaryMatrix.class.newInstance();
 			} catch (Exception ex) {
 				throw new PersistenceException("Error filtering data matrix.", ex);
 			}
