@@ -19,9 +19,14 @@ package org.gitools.ui.analysis.wizard;
 
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
+
+import java.io.File;
 
 
 public class DataFilePage extends SelectFilePage {
@@ -29,9 +34,9 @@ public class DataFilePage extends SelectFilePage {
 	private static final FileFormat[] formats = new FileFormat[] {
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.DOUBLE_MATRIX,
 			FileFormats.DOUBLE_BINARY_MATRIX,
+            FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.MODULES_2C_MAP,
 			FileFormats.MODULES_INDEXED_MAP
 	};
@@ -47,6 +52,32 @@ public class DataFilePage extends SelectFilePage {
 		
 		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_DATA, 96));
 	}
+
+    @Override
+    protected void updateState() {
+
+        FileFormat ff = getFileFormat();
+        super.updateState();
+
+        if (isComplete() == true &
+                ff.getExtension().equals(
+                    FileFormats.MULTIVALUE_DATA_MATRIX.getExtension())) {
+            activateValueSelection();
+
+            ObjectMatrixTextPersistence obp =  new ObjectMatrixTextPersistence();
+            String[] headers = new String[0];
+            try {
+                headers = obp.readHeader(getFile());
+            } catch (PersistenceException e) {
+                setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
+                setComplete(false);
+                deactivateValueSelection();
+            }
+            setValues(headers);
+        } else {
+            deactivateValueSelection();
+        }
+    }
 
 	@Override
 	protected String getLastPath() {

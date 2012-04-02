@@ -160,11 +160,11 @@ public class ObjectMatrixTextPersistence
 
 			// read header
 			if (line.length < 3)
-				throw new DataFormatException("Almost 3 columns expected.");
+				throw new DataFormatException("At least 3 columns expected.");
 
-			int numParams = line.length - 2;
-			String[] paramNames = new String[numParams];
-			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
+			int numAttributes = line.length - 2;
+			String[] attributeNames = new String[numAttributes];
+			System.arraycopy(line, 2, attributeNames, 0, line.length - 2);
 
 			Class<?> elementClass = null;
 
@@ -174,11 +174,11 @@ public class ObjectMatrixTextPersistence
 			if (elementClass == null) {
 				// infer element class and create corresponding adapter and factory
 				elementClass = elementClasses.get(
-					getElementClassId(paramNames));
+					getElementClassId(attributeNames));
 			}
 
 			if (elementClass == null)
-				elementAdapter = new ArrayElementAdapter(paramNames);
+				elementAdapter = new ArrayElementAdapter(attributeNames);
 			else
 				elementAdapter = new BeanElementAdapter(elementClass);
 
@@ -190,6 +190,31 @@ public class ObjectMatrixTextPersistence
 
 		return elementAdapter.getProperties();
 	}
+    
+    
+    public String[] readHeader(File file)
+            throws PersistenceException {
+
+            String[] matrixHeaders = null;
+            try {
+                Reader reader = PersistenceUtils.openReader(file);
+
+                CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+
+                String[] line = parser.getLine();
+
+                // read header
+                if (line.length < 3)
+                    throw new DataFormatException("At least 3 columns expected.");
+
+                int numAttributes = line.length - 2;
+                matrixHeaders = new String[numAttributes];
+                System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
+            } catch (Exception e) {
+                throw new PersistenceException(e);
+            }
+            return matrixHeaders;
+    }
 
 	@Override
 	public ObjectMatrix read(
@@ -204,7 +229,7 @@ public class ObjectMatrixTextPersistence
 	
 	public void read(
 			File file,
-			ObjectMatrix resultsMatrix, 
+			ObjectMatrix multiValMatrix,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
@@ -219,14 +244,31 @@ public class ObjectMatrixTextPersistence
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 
 			String[] line = parser.getLine();
-			
-			// read header
 			if (line.length < 3)
 				throw new DataFormatException("At least 3 columns expected.");
-			
-			int numParams = line.length - 2;
-			String[] paramNames = new String[numParams];
-			System.arraycopy(line, 2, paramNames, 0, numParams);
+
+
+            int[] indices = null;
+            int numAttributes;
+            if (properties.containsKey(META_ATTRIBUTES)) {
+                indices = (int[]) properties.get(META_ATTRIBUTES);
+                numAttributes = indices.length;
+            } else {
+                numAttributes = line.length - 2;
+                indices = new int[numAttributes];
+                for (int i = 0; i < indices.length; i++){
+                    indices[i] = i;
+                }
+            }
+
+            // read header
+			String[] attributeNames = new String[numAttributes];
+            for (int i = 0; i < numAttributes; i++) {
+                attributeNames[i] = line[indices[i]+2];
+            }
+
+            String[] allAttributeNames = new String[line.length - 2];
+            System.arraycopy(line, 2, allAttributeNames, 0, line.length - 2);
 			
 			// infer element class and create corresponding adapter and factory
 			Class<?> elementClass = null;
@@ -237,23 +279,26 @@ public class ObjectMatrixTextPersistence
 			if (elementClass == null) {
 				// infer element class and create corresponding adapter and factory
 				elementClass = elementClasses.get(
-					getElementClassId(paramNames));
+					getElementClassId(allAttributeNames));
 			}
 			
-			IElementAdapter elementAdapter = null;
+			IElementAdapter origElementAdapter = null;
+            IElementAdapter destElementAdapter = null;
 			IElementFactory elementFactory = null;
 			if (elementClass == null) {
-				elementAdapter = new ArrayElementAdapter(paramNames);
-				elementFactory = new ArrayElementFactory(paramNames.length);
+				origElementAdapter = new ArrayElementAdapter(allAttributeNames);
+                destElementAdapter = new ArrayElementAdapter(attributeNames);
+				elementFactory = new ArrayElementFactory(attributeNames.length);
 			}
 			else {
-				elementAdapter = new BeanElementAdapter(elementClass);
+				origElementAdapter = new BeanElementAdapter(elementClass);
+                destElementAdapter = new BeanElementAdapter(elementClass);
 				elementFactory = new BeanElementFactory(elementClass);
 			}
 			
 			Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
 			int index = 0;
-			for (IElementAttribute attr : elementAdapter.getProperties())
+			for (IElementAttribute attr : origElementAdapter.getProperties())
 				attrIdmap.put(attr.getId(), index++);
 			
 			// read body
@@ -276,17 +321,17 @@ public class ObjectMatrixTextPersistence
 					rowIndex = rowMap.size();
 					rowMap.put(rowName, rowIndex);
 				}
-				
+
 				Object element = elementFactory.create();
 	
-				for (int i = 2; i < line.length; i++) {
-					final Integer pix = attrIdmap.get(paramNames[i - 2]);
+				for (int i = 0; i < indices.length; i++) {
+					final Integer pix = attrIdmap.get(allAttributeNames[indices[i]]);
 
 					if (pix != null) {
 						Object value = parsePropertyValue(
-								elementAdapter.getProperty(pix), line[i]);
+                                origElementAdapter.getProperty(pix), line[pix+2]);
 
-						elementAdapter.setValue(element, pix, value);
+						origElementAdapter.setValue(element, i, value);
 					}
 				}
 				
@@ -304,20 +349,20 @@ public class ObjectMatrixTextPersistence
 			ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
 			for (Entry<String, Integer> entry : rowMap.entrySet())
 				rows.setQuick(entry.getValue(), entry.getKey());
+
+            multiValMatrix.setColumns(columns);
+			multiValMatrix.setRows(rows);
+            multiValMatrix.makeCells();
 			
-			resultsMatrix.setColumns(columns);
-			resultsMatrix.setRows(rows);
-			resultsMatrix.makeCells();
-			
-			resultsMatrix.setCellAdapter(elementAdapter);
+			multiValMatrix.setCellAdapter(destElementAdapter);
 			
 			for (Object[] result : list) {
 				int[] coord = (int[]) result[0];
 				final int columnIndex = coord[0];
 				final int rowIndex = coord[1];
-				
-				Object element = result[1];
-				resultsMatrix.setCell(rowIndex, columnIndex, element);
+
+                Object element = result[1];
+				multiValMatrix.setCell(rowIndex, columnIndex, element);
 			}
 		}
 		catch (Exception e) {
@@ -457,7 +502,7 @@ public class ObjectMatrixTextPersistence
 			IProgressMonitor monitor) {
 
 		Object element = resultsMatrix.getCell(rowIndex, colIndex);
-		if (element == null)
+        if (element == null)
 			return;
 
 		final String colName = resultsMatrix.getColumnLabel(colIndex);

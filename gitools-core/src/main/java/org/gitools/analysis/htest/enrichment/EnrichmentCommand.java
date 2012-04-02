@@ -37,6 +37,7 @@ import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
 
 public class EnrichmentCommand extends HtestCommand {
@@ -48,6 +49,7 @@ public class EnrichmentCommand extends HtestCommand {
 			EnrichmentAnalysis analysis,
 			String dataMime,
 			String dataFile,
+            int valueIndex,
 			String populationPath,
 			Double populationDefaultValue,
 			String modulesMime,
@@ -55,7 +57,7 @@ public class EnrichmentCommand extends HtestCommand {
 			String workdir,
 			String fileName) {
 		
-		super(analysis, dataMime, dataFile,
+		super(analysis, dataMime, dataFile, valueIndex,
 				populationPath, populationDefaultValue,
 				workdir, fileName);
 
@@ -77,6 +79,7 @@ public class EnrichmentCommand extends HtestCommand {
 
 			loadDataAndModules(
 					dataMime, dataPath,
+                    valueIndex,
 					populationPath,
 					modulesMime, modulesPath,
 					enrichAnalysis,
@@ -113,6 +116,7 @@ public class EnrichmentCommand extends HtestCommand {
 	 *
 	 * @param dataFileMime
 	 * @param dataFileName
+     * @param valueIndex
 	 * @param modulesFileMime
 	 * @param modulesFileName
 	 * @param analysis
@@ -122,6 +126,7 @@ public class EnrichmentCommand extends HtestCommand {
 	private void loadDataAndModules(
 			String dataFileMime,
 			String dataFileName,
+            int valueIndex,
 			String populationFileName,
 			String modulesFileMime,
 			String modulesFileName,
@@ -143,7 +148,7 @@ public class EnrichmentCommand extends HtestCommand {
 		}
 
 		// Load data
-		
+
 		File dataFile = new File(dataFileName);
 
 		ValueTranslator valueTranslator = createValueTranslator(
@@ -154,6 +159,7 @@ public class EnrichmentCommand extends HtestCommand {
 		Properties dataProps = new Properties();
 		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
 		dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
+        dataProps.put(ObjectMatrixTextPersistence.META_ATTRIBUTES,new int[]{ valueIndex });
 		if (populationLabels != null) {
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 			dataProps.put(MatrixTextPersistence.BACKGROUND_VALUE, populationDefaultValue);
@@ -203,7 +209,7 @@ public class EnrichmentCommand extends HtestCommand {
 
 			fmatrix.make(numRows, numColumns);
 			fmatrix.setColumns(dataMatrix.getColumns());
-			
+
 			for (int ri = 0; ri < numRows; ri++) {
 				int srcRow = rows.get(ri);
 				fmatrix.setRow(ri, dataMatrix.getRowLabel(srcRow));

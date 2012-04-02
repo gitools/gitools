@@ -51,7 +51,7 @@ public class OncodriveCommand extends HtestCommand {
 			String workdir,
 			String fileName) {
 		
-		super(analysis, dataMime, dataPath,
+		super(analysis, dataMime, dataPath, -1,
 				populationPath, populationDefaultValue,
 				workdir, fileName);
 

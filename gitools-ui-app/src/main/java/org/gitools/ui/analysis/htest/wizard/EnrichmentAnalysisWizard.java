@@ -187,6 +187,10 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 	public File getDataFile() {
 		return dataPage.getFile();
 	}
+    
+    public int getSelectedValueIndex() {
+        return dataPage.getSelectedValueIndex();
+    }
 
 	public File getPopulationFile() {
 		return dataFilterPage.getRowsFilterFile();
@@ -206,7 +210,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
 
 	public EnrichmentAnalysis getAnalysis() {
 		EnrichmentAnalysis analysis = new EnrichmentAnalysis();
-
+        
 		analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
 		analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
 		analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
