@@ -22,6 +22,8 @@ import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.AbstractEntityPersistence;
 
+import java.util.Map;
+
 public abstract class BaseMatrixPersistence<T extends BaseMatrix>
 		extends AbstractEntityPersistence<T> {
 
@@ -66,8 +68,12 @@ public abstract class BaseMatrixPersistence<T extends BaseMatrix>
      */
     protected ValueTranslator getValueTranslator(int i) {
         if (getProperties().containsKey(VALUE_TRANSLATORS)) {
-            ValueTranslator[] valueTranslators = (ValueTranslator[]) getProperties().get(VALUE_TRANSLATORS);
-            return valueTranslators[i];
+            Map<Integer, ValueTranslator> valueTranslatorMap;
+            valueTranslatorMap = (Map<Integer, ValueTranslator>) getProperties().get(VALUE_TRANSLATORS);
+            if (valueTranslatorMap.containsKey(i))
+                return valueTranslatorMap.get(i);
+            else
+                return null;
         }
         else
             return new DoubleTranslator();

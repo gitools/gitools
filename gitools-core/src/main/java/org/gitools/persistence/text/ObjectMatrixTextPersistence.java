@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.ArrayElementAdapter;
@@ -263,6 +264,13 @@ public class ObjectMatrixTextPersistence
                 }
             }
 
+            ValueTranslator[] valueTranslators = new ValueTranslator[numAttributes];
+            if (properties.containsKey(VALUE_TRANSLATORS)) {
+                for (int i = 0; i < numAttributes; i++ ) {
+                    valueTranslators[i] = getValueTranslator(i);
+                }
+            }
+
             // read header
 			String[] attributeNames = new String[numAttributes];
             for (int i = 0; i < numAttributes; i++) {
@@ -329,10 +337,14 @@ public class ObjectMatrixTextPersistence
 				for (int i = 0; i < indices.length; i++) {
 					final Integer pix = attrIdmap.get(allAttributeNames[indices[i]]);
 
+                    Object value;                    
 					if (pix != null) {
-						Object value = parsePropertyValue(
-                                origElementAdapter.getProperty(pix), line[pix+2]);
-
+                         if  (valueTranslators[i] != null) {
+                            value = valueTranslators[i].stringToValue(line[pix + 2]);
+                        } else {
+						    value = parsePropertyValue(
+                                    origElementAdapter.getProperty(pix), line[pix+2]);
+                        }
 						origElementAdapter.setValue(element, i, value);
 					}
 				}

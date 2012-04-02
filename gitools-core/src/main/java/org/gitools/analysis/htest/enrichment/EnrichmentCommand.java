@@ -18,17 +18,12 @@
 package org.gitools.analysis.htest.enrichment;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.*;
 
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
@@ -152,10 +147,13 @@ public class EnrichmentCommand extends HtestCommand {
 
 		File dataFile = new File(dataFileName);
 
-		ValueTranslator[] valueTranslators = { createValueTranslator(
-				analysis.isBinaryCutoffEnabled(),
-				analysis.getBinaryCutoffCmp(),
-				analysis.getBinaryCutoffValue()) };
+		Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
+        valueTranslators.put(0,
+            createValueTranslator(
+                    analysis.isBinaryCutoffEnabled(),
+                    analysis.getBinaryCutoffCmp(),
+                    analysis.getBinaryCutoffValue())
+        );
 
 		Properties dataProps = new Properties();
 		dataProps.put(BaseMatrixPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
