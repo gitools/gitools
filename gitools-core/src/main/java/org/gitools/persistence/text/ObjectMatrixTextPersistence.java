@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.ArrayElementAdapter;
 import org.gitools.matrix.model.element.ArrayElementFactory;
@@ -56,11 +57,12 @@ import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
-		extends AbstractEntityPersistence<ObjectMatrix> {
+		extends BaseMatrixPersistence<ObjectMatrix> {
 
 	public static final String META_COLUMN_LABELS = "labels.columns";
 	public static final String META_ROW_LABELS = "labels.rows";
 	public static final String META_ATTRIBUTES = "attributes";
+    public static final String VALUE_INDICES = "valueIndices";
 
 	private static final String META_TAG = "#?";
 
@@ -111,6 +113,17 @@ public class ObjectMatrixTextPersistence
 		
 		return getElementClassId(ids);
 	}
+
+    /** Returns the String <-> Double translator to use.
+     *
+     * @return value translator
+     */
+    protected ValueTranslator getValueTranslator() {
+        if (getProperties().containsKey(VALUE_TRANSLATOR))
+            return (ValueTranslator) getProperties().get(VALUE_TRANSLATOR);
+        else
+            return new DoubleTranslator();
+    }
 	
 	private static String getElementClassId(String[] ids) {
 		String[] ids2 = new String[ids.length];
@@ -250,8 +263,8 @@ public class ObjectMatrixTextPersistence
 
             int[] indices = null;
             int numAttributes;
-            if (properties.containsKey(META_ATTRIBUTES)) {
-                indices = (int[]) properties.get(META_ATTRIBUTES);
+            if (properties.containsKey(VALUE_INDICES)) {
+                indices = (int[]) properties.get(VALUE_INDICES);
                 numAttributes = indices.length;
             } else {
                 numAttributes = line.length - 2;

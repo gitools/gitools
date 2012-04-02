@@ -39,10 +39,7 @@ import org.gitools.utils.CSVStrategies;
 public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		extends BaseMatrixPersistence<T> {
 
-	public static final String BINARY_VALUES = "binary_values";
-	public static final String VALUE_TRANSLATOR = "value_translator";
-	
-	protected boolean isBinaryValues() {
+    protected boolean isBinaryValues() {
 		if (getProperties().containsKey(BINARY_VALUES))
 			return (Boolean) getProperties().get(BINARY_VALUES);
 		else

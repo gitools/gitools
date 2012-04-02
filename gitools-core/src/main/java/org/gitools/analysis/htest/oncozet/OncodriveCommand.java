@@ -31,6 +31,7 @@ import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.text.BaseMatrixPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
 import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
@@ -125,8 +126,8 @@ public class OncodriveCommand extends HtestCommand {
 				analysis.getBinaryCutoffValue());
 
 		Properties dataProps = new Properties();
-		dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-		dataProps.put(MatrixTextPersistence.VALUE_TRANSLATOR, valueTranslator);
+		dataProps.put(BaseMatrixPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
+		dataProps.put(BaseMatrixPersistence.VALUE_TRANSLATOR, valueTranslator);
 		if (populationLabels != null) {
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 			dataProps.put(MatrixTextPersistence.BACKGROUND_VALUE, populationDefaultValue);
