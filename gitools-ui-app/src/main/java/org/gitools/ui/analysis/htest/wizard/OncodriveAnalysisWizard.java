@@ -192,6 +192,10 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
 		return dataPage.getFile();
 	}
 
+    public int getSelectedValueIndex() {
+        return dataPage.getSelectedValueIndex();
+    }
+
 	public File getPopulationFile() {
 		return dataFilterPage.getRowsFilterFile();
 	}

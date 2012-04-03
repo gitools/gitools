@@ -71,6 +71,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 				analysis,
 				wizard.getDataFileMime(),
 				wizard.getDataFile().getAbsolutePath(),
+                wizard.getSelectedValueIndex(),
 				populationFile != null ? populationFile.getAbsolutePath() : null,
 				wizard.getPopulationDefaultValue(),
 				wizard.getModulesFileMime(),

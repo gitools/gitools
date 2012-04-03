@@ -37,6 +37,7 @@ import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.text.BaseMatrixPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
 
 public class OncodriveCommand extends HtestCommand {
@@ -48,6 +49,7 @@ public class OncodriveCommand extends HtestCommand {
 			OncodriveAnalysis analysis,
 			String dataMime,
 			String dataPath,
+            int valueIndex,
 			String populationPath,
 			Double populationDefaultValue,
 			String modulesMime,
@@ -55,7 +57,7 @@ public class OncodriveCommand extends HtestCommand {
 			String workdir,
 			String fileName) {
 		
-		super(analysis, dataMime, dataPath, -1,
+		super(analysis, dataMime, dataPath, valueIndex,
 				populationPath, populationDefaultValue,
 				workdir, fileName);
 
@@ -77,6 +79,7 @@ public class OncodriveCommand extends HtestCommand {
 
 			loadDataAndModules(
 					dataMime, dataPath,
+                    valueIndex,
 					populationPath,
 					modulesMime, modulesPath,
 					oncozAnalysis,
@@ -100,6 +103,7 @@ public class OncodriveCommand extends HtestCommand {
 	private void loadDataAndModules(
 			String dataFileMime,
 			String dataFileName,
+            int valueIndex,
 			String populationFileName,
 			String modulesFileMime,
 			String modulesFileName,
@@ -134,6 +138,7 @@ public class OncodriveCommand extends HtestCommand {
 		Properties dataProps = new Properties();
 		dataProps.put(BaseMatrixPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
 		dataProps.put(BaseMatrixPersistence.VALUE_TRANSLATORS, valueTranslators);
+        dataProps.put(ObjectMatrixTextPersistence.VALUE_INDICES,new int[]{ valueIndex });
 		if (populationLabels != null) {
 			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
 			dataProps.put(MatrixTextPersistence.BACKGROUND_VALUE, populationDefaultValue);
