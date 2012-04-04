@@ -96,9 +96,9 @@ public class OncodriveProcessor extends HtestProcessor {
 		final int numCsets = csetLabels.size();
 		
 		monitor.begin("Running oncodrive analysis...", numRows * numCsets);
-	
+
 		Test test = testFactory.create();
-		
+
 		final ObjectMatrix resultsMatrix = new ObjectMatrix();
 		
 		resultsMatrix.setColumns(csetLabels);
@@ -151,8 +151,6 @@ public class OncodriveProcessor extends HtestProcessor {
 
 				population = population.viewSelection(notNaNProc);
 
-				final DoubleMatrix1D itemValues =
-						DoubleFactory1D.dense.make(numColumns);
 
 				final int[] cindices = new int[numColumns];
 				for (int i = 0; i < numColumns; i++)
@@ -162,12 +160,15 @@ public class OncodriveProcessor extends HtestProcessor {
 
 					final int itemIdx = itemIndex;
 
-					final String itemName = rowLabels.getQuick(itemIndex).toString();
+					final String itemName = rowLabels.getQuick(itemIdx).toString();
+
+                    final DoubleMatrix1D itemValues =
+                            DoubleFactory1D.dense.make(numColumns);
 
 					for (int j = 0; j < numColumns; j++)
 						itemValues.setQuick(j,
 								MatrixUtils.doubleValue(
-									dataMatrix.getCellValue(itemIndex, columnIndices[j], 0)));
+									dataMatrix.getCellValue(itemIdx, columnIndices[j], 0)));
 
 					final RunSlot slot;
 					try {
