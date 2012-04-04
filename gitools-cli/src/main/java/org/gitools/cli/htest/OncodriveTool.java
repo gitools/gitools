@@ -89,6 +89,7 @@ public class OncodriveTool extends HtestTool {
 
 		OncodriveCommand cmd = new OncodriveCommand(
         		analysis, dataMime, args.dataFile,
+                args.valueIndex,
 				args.populationFile,
 				populationDefaultValue,
 				setsMime, args.setsFile,

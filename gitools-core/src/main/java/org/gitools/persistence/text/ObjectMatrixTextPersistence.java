@@ -20,15 +20,13 @@ package org.gitools.persistence.text;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.lang.ArrayUtils;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.ArrayElementAdapter;
 import org.gitools.matrix.model.element.ArrayElementFactory;
@@ -56,11 +54,12 @@ import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.datafilters.DoubleTranslator;
 
 public class ObjectMatrixTextPersistence
-		extends AbstractEntityPersistence<ObjectMatrix> {
+		extends BaseMatrixPersistence<ObjectMatrix> {
 
 	public static final String META_COLUMN_LABELS = "labels.columns";
 	public static final String META_ROW_LABELS = "labels.rows";
 	public static final String META_ATTRIBUTES = "attributes";
+    public static final String VALUE_INDICES = "valueIndices";
 
 	private static final String META_TAG = "#?";
 
@@ -111,7 +110,7 @@ public class ObjectMatrixTextPersistence
 		
 		return getElementClassId(ids);
 	}
-	
+
 	private static String getElementClassId(String[] ids) {
 		String[] ids2 = new String[ids.length];
 		System.arraycopy(ids, 0, ids2, 0, ids.length);
@@ -160,11 +159,11 @@ public class ObjectMatrixTextPersistence
 
 			// read header
 			if (line.length < 3)
-				throw new DataFormatException("Almost 3 columns expected.");
+				throw new DataFormatException("At least 3 columns expected.");
 
-			int numParams = line.length - 2;
-			String[] paramNames = new String[numParams];
-			System.arraycopy(line, 2, paramNames, 0, line.length - 2);
+			int numAttributes = line.length - 2;
+			String[] attributeNames = new String[numAttributes];
+			System.arraycopy(line, 2, attributeNames, 0, line.length - 2);
 
 			Class<?> elementClass = null;
 
@@ -174,11 +173,11 @@ public class ObjectMatrixTextPersistence
 			if (elementClass == null) {
 				// infer element class and create corresponding adapter and factory
 				elementClass = elementClasses.get(
-					getElementClassId(paramNames));
+					getElementClassId(attributeNames));
 			}
 
 			if (elementClass == null)
-				elementAdapter = new ArrayElementAdapter(paramNames);
+				elementAdapter = new ArrayElementAdapter(attributeNames);
 			else
 				elementAdapter = new BeanElementAdapter(elementClass);
 
@@ -190,6 +189,31 @@ public class ObjectMatrixTextPersistence
 
 		return elementAdapter.getProperties();
 	}
+    
+    
+    public String[] readHeader(File file)
+            throws PersistenceException {
+
+            String[] matrixHeaders = null;
+            try {
+                Reader reader = PersistenceUtils.openReader(file);
+
+                CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+
+                String[] line = parser.getLine();
+
+                // read header
+                if (line.length < 3)
+                    throw new DataFormatException("At least 3 columns expected.");
+
+                int numAttributes = line.length - 2;
+                matrixHeaders = new String[numAttributes];
+                System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
+            } catch (Exception e) {
+                throw new PersistenceException(e);
+            }
+            return matrixHeaders;
+    }
 
 	@Override
 	public ObjectMatrix read(
@@ -204,7 +228,7 @@ public class ObjectMatrixTextPersistence
 	
 	public void read(
 			File file,
-			ObjectMatrix resultsMatrix, 
+			ObjectMatrix multiValMatrix,
 			IProgressMonitor monitor) 
 			throws PersistenceException {
 		
@@ -218,15 +242,43 @@ public class ObjectMatrixTextPersistence
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 
+            String[] populationLabels = getPopulationLabels();
+            final Set<String> popLabelsSet = populationLabels != null ?
+                    new HashSet<String>(Arrays.asList(populationLabels)) : null;
+
 			String[] line = parser.getLine();
-			
-			// read header
 			if (line.length < 3)
-				throw new DataFormatException("Almost 3 columns expected.");
-			
-			int numParams = line.length - 2;
-			String[] paramNames = new String[numParams];
-			System.arraycopy(line, 2, paramNames, 0, numParams);
+				throw new DataFormatException("At least 3 columns expected.");
+
+
+            int[] indices = null;
+            int numAttributes;
+            if (properties.containsKey(VALUE_INDICES)) {
+                indices = (int[]) properties.get(VALUE_INDICES);
+                numAttributes = indices.length;
+            } else {
+                numAttributes = line.length - 2;
+                indices = new int[numAttributes];
+                for (int i = 0; i < indices.length; i++){
+                    indices[i] = i;
+                }
+            }
+
+            ValueTranslator[] valueTranslators = new ValueTranslator[numAttributes];
+            if (properties.containsKey(VALUE_TRANSLATORS)) {
+                for (int i = 0; i < numAttributes; i++ ) {
+                    valueTranslators[i] = getValueTranslator(i);
+                }
+            }
+
+            // read header
+			String[] attributeNames = new String[numAttributes];
+            for (int i = 0; i < numAttributes; i++) {
+                attributeNames[i] = line[indices[i]+2];
+            }
+
+            String[] allAttributeNames = new String[line.length - 2];
+            System.arraycopy(line, 2, allAttributeNames, 0, line.length - 2);
 			
 			// infer element class and create corresponding adapter and factory
 			Class<?> elementClass = null;
@@ -237,23 +289,26 @@ public class ObjectMatrixTextPersistence
 			if (elementClass == null) {
 				// infer element class and create corresponding adapter and factory
 				elementClass = elementClasses.get(
-					getElementClassId(paramNames));
+					getElementClassId(allAttributeNames));
 			}
 			
-			IElementAdapter elementAdapter = null;
+			IElementAdapter origElementAdapter = null;
+            IElementAdapter destElementAdapter = null;
 			IElementFactory elementFactory = null;
 			if (elementClass == null) {
-				elementAdapter = new ArrayElementAdapter(paramNames);
-				elementFactory = new ArrayElementFactory(paramNames.length);
+				origElementAdapter = new ArrayElementAdapter(allAttributeNames);
+                destElementAdapter = new ArrayElementAdapter(attributeNames);
+				elementFactory = new ArrayElementFactory(attributeNames.length);
 			}
 			else {
-				elementAdapter = new BeanElementAdapter(elementClass);
+				origElementAdapter = new BeanElementAdapter(elementClass);
+                destElementAdapter = new BeanElementAdapter(elementClass);
 				elementFactory = new BeanElementFactory(elementClass);
 			}
 			
 			Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
 			int index = 0;
-			for (IElementAttribute attr : elementAdapter.getProperties())
+			for (IElementAttribute attr : origElementAdapter.getProperties())
 				attrIdmap.put(attr.getId(), index++);
 			
 			// read body
@@ -264,35 +319,63 @@ public class ObjectMatrixTextPersistence
 			while ((line = parser.getLine()) != null) {
 				final String columnName = line[0];
 				final String rowName = line[1];
+
+                if (popLabelsSet != null && !(popLabelsSet.contains(rowName)))
+                    continue;
+
 				
 				Integer columnIndex = columnMap.get(columnName);
 				if (columnIndex == null) {
 					columnIndex = columnMap.size();
 					columnMap.put(columnName, columnIndex);
 				}
-				
+
 				Integer rowIndex = rowMap.get(rowName);
 				if (rowIndex == null) {
 					rowIndex = rowMap.size();
 					rowMap.put(rowName, rowIndex);
 				}
-				
+
 				Object element = elementFactory.create();
 	
-				for (int i = 2; i < line.length; i++) {
-					final Integer pix = attrIdmap.get(paramNames[i - 2]);
+				for (int i = 0; i < indices.length; i++) {
+					final Integer pix = attrIdmap.get(allAttributeNames[indices[i]]);
 
+                    Object value;                    
 					if (pix != null) {
-						Object value = parsePropertyValue(
-								elementAdapter.getProperty(pix), line[i]);
-
-						elementAdapter.setValue(element, pix, value);
+                         if  (valueTranslators[i] != null) {
+                            value = valueTranslators[i].stringToValue(line[pix + 2]);
+                        } else {
+						    value = parsePropertyValue(
+                                    origElementAdapter.getProperty(pix), line[pix+2]);
+                        }
+						origElementAdapter.setValue(element, i, value);
 					}
 				}
 				
 				list.add(new Object[] {
 						new int[] { columnIndex, rowIndex }, element });
 			}
+
+            // add missing population labels to matrix
+            if (popLabelsSet != null) {
+                for (String rowName : popLabelsSet) {
+                    if (!rowMap.containsKey(rowName)) {
+                        int rowIndex = rowMap.size();
+                        rowMap.put(rowName, rowIndex);
+                        for (Integer columnIndex : columnMap.values()) {
+                            Object element = elementFactory.create();
+                            for (int i = 0; i < indices.length; i++) {
+                                Double backgroundValue = getBackgroundValue();
+                                origElementAdapter.setValue(element, i, backgroundValue);
+                            }
+                            list.add(new Object[] {
+                                    new int[] {columnIndex, rowIndex}, element
+                            });
+                        }
+                    }
+                }
+            }
 			
 			int numColumns = columnMap.size();
 			int numRows = rowMap.size();
@@ -304,20 +387,20 @@ public class ObjectMatrixTextPersistence
 			ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
 			for (Entry<String, Integer> entry : rowMap.entrySet())
 				rows.setQuick(entry.getValue(), entry.getKey());
+
+            multiValMatrix.setColumns(columns);
+			multiValMatrix.setRows(rows);
+            multiValMatrix.makeCells();
 			
-			resultsMatrix.setColumns(columns);
-			resultsMatrix.setRows(rows);
-			resultsMatrix.makeCells();
-			
-			resultsMatrix.setCellAdapter(elementAdapter);
+			multiValMatrix.setCellAdapter(destElementAdapter);
 			
 			for (Object[] result : list) {
 				int[] coord = (int[]) result[0];
 				final int columnIndex = coord[0];
 				final int rowIndex = coord[1];
-				
-				Object element = result[1];
-				resultsMatrix.setCell(rowIndex, columnIndex, element);
+
+                Object element = result[1];
+				multiValMatrix.setCell(rowIndex, columnIndex, element);
 			}
 		}
 		catch (Exception e) {
@@ -457,7 +540,7 @@ public class ObjectMatrixTextPersistence
 			IProgressMonitor monitor) {
 
 		Object element = resultsMatrix.getCell(rowIndex, colIndex);
-		if (element == null)
+        if (element == null)
 			return;
 
 		final String colName = resultsMatrix.getColumnLabel(colIndex);

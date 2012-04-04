@@ -72,10 +72,13 @@ public class SelectFilePage extends AbstractWizardPage {
 				updateState(); }
 		};
 
+                valueCb.setVisible(false);
+                valueLabel.setVisible(false);
+
 		filePath.getDocument().addDocumentListener(docCompleteListener);
     }
 
-	private void updateState() {
+	protected void updateState() {
 		FileFormat ff = getFileFormat();
 
 		setMessage(MessageStatus.INFO, "");
@@ -135,6 +138,8 @@ public class SelectFilePage extends AbstractWizardPage {
         jLabel2 = new javax.swing.JLabel();
         filePath = new javax.swing.JTextField();
         fileBrowseBtn = new javax.swing.JButton();
+        valueLabel = new javax.swing.JLabel();
+        valueCb = new javax.swing.JComboBox();
 
         jLabel1.setText("Format");
 
@@ -149,6 +154,12 @@ public class SelectFilePage extends AbstractWizardPage {
             }
         });
 
+        valueLabel.setText("Value");
+        valueLabel.setEnabled(false);
+
+        valueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Value1", "Value2"}));
+        valueCb.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,29 +170,37 @@ public class SelectFilePage extends AbstractWizardPage {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(formatCb, 0, 570, Short.MAX_VALUE))
+                        .addComponent(formatCb, 0, 576, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileBrowseBtn)))
+                        .addComponent(fileBrowseBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(valueLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(valueCb, 0, 586, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(formatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(formatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fileBrowseBtn)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)))
-                .addContainerGap(283, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(valueLabel)
+                    .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -251,6 +270,8 @@ public class SelectFilePage extends AbstractWizardPage {
     private javax.swing.JComboBox formatCb;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox valueCb;
+    private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 
 	public FileFormat getFileFormat() {
@@ -274,4 +295,35 @@ public class SelectFilePage extends AbstractWizardPage {
 
 		updateState();
 	}
+
+    public void activateValueSelection() {
+            valueCb.setVisible(true);
+            valueLabel.setVisible(true);
+            valueCb.setEnabled(true);
+            valueLabel.setEnabled(true);
+        }
+
+    public void deactivateValueSelection() {
+            valueCb.setEnabled(false);
+            valueLabel.setEnabled(false);
+            valueCb.setVisible(false);
+            valueLabel.setVisible(false);
+        }
+
+    protected void setValues (String[] values) {
+        valueCb.setModel(new DefaultComboBoxModel(values));
+    }
+    
+    public int getSelectedValueIndex () {
+        if (valueCb.isEnabled() == true)
+            return valueCb.getSelectedIndex();
+        else
+            return -1;  /* return -1 if not enabled */
+    }
+    
+    public String[] getValues () {
+        //if (valueCb.isEnabled() == true)
+            //TODO: return items
+        return new String[0];
+    }
 }

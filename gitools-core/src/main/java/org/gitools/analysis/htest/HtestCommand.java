@@ -31,6 +31,7 @@ public abstract class HtestCommand extends AnalysisCommand {
 
 	protected String dataMime;
 	protected String dataPath;
+    protected int valueIndex;
 
 	protected String populationPath;
 	protected Double populationDefaultValue;
@@ -38,6 +39,7 @@ public abstract class HtestCommand extends AnalysisCommand {
 	public HtestCommand(
 			HtestAnalysis analysis,
 			String dataMime, String dataPath,
+            int valueIndex,
 			String populationPath,
 			Double populationDefaultValue,
 			String workdir, String fileName) {
@@ -47,6 +49,7 @@ public abstract class HtestCommand extends AnalysisCommand {
 		this.analysis = analysis;
 		this.dataMime = dataMime;
 		this.dataPath = dataPath;
+        this.valueIndex = valueIndex;
 		this.populationPath = populationPath;
 		this.populationDefaultValue = populationDefaultValue;
 	}
@@ -74,6 +77,14 @@ public abstract class HtestCommand extends AnalysisCommand {
 	public void setDataPath(String dataPath) {
 		this.dataPath = dataPath;
 	}
+
+    public int getValueIndex() {
+        return valueIndex;
+    }
+
+    public void setValueIndex(int valueIndex) {
+        this.valueIndex = valueIndex;
+    }
 
 	public String getPopulationPath() {
 		return populationPath;
