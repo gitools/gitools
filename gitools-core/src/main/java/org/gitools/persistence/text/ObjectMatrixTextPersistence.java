@@ -20,11 +20,7 @@ package org.gitools.persistence.text;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
@@ -246,6 +242,10 @@ public class ObjectMatrixTextPersistence
 			
 			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
 
+            String[] populationLabels = getPopulationLabels();
+            final Set<String> popLabelsSet = populationLabels != null ?
+                    new HashSet<String>(Arrays.asList(populationLabels)) : null;
+
 			String[] line = parser.getLine();
 			if (line.length < 3)
 				throw new DataFormatException("At least 3 columns expected.");
@@ -319,13 +319,17 @@ public class ObjectMatrixTextPersistence
 			while ((line = parser.getLine()) != null) {
 				final String columnName = line[0];
 				final String rowName = line[1];
+
+                if (popLabelsSet != null && !(popLabelsSet.contains(rowName)))
+                    continue;
+
 				
 				Integer columnIndex = columnMap.get(columnName);
 				if (columnIndex == null) {
 					columnIndex = columnMap.size();
 					columnMap.put(columnName, columnIndex);
 				}
-				
+
 				Integer rowIndex = rowMap.get(rowName);
 				if (rowIndex == null) {
 					rowIndex = rowMap.size();
@@ -352,6 +356,26 @@ public class ObjectMatrixTextPersistence
 				list.add(new Object[] {
 						new int[] { columnIndex, rowIndex }, element });
 			}
+
+            // add missing population labels to matrix
+            if (popLabelsSet != null) {
+                for (String rowName : popLabelsSet) {
+                    if (!rowMap.containsKey(rowName)) {
+                        int rowIndex = rowMap.size();
+                        rowMap.put(rowName, rowIndex);
+                        for (Integer columnIndex : columnMap.values()) {
+                            Object element = elementFactory.create();
+                            for (int i = 0; i < indices.length; i++) {
+                                Double backgroundValue = getBackgroundValue();
+                                origElementAdapter.setValue(element, i, backgroundValue);
+                            }
+                            list.add(new Object[] {
+                                    new int[] {columnIndex, rowIndex}, element
+                            });
+                        }
+                    }
+                }
+            }
 			
 			int numColumns = columnMap.size();
 			int numRows = rowMap.size();
