@@ -82,7 +82,7 @@ public class ExportTableAction extends BaseAction {
 		if (file == null)
 			return;
 
-		Settings.getDefault().setLastExportPath(file.getAbsolutePath());
+		Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 
 		final List<Integer> selectedIndices = dlg.getSelectedIndices();
 		
