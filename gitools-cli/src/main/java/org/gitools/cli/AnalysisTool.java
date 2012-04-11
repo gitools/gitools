@@ -44,6 +44,9 @@ public class AnalysisTool extends AbstractTool {
 
 		AnalysisArguments args = (AnalysisArguments) argsObject;
 
+        if (args.version)
+            Main.printVersion();
+        
 		if (args.analysisTitle == null)
 			args.analysisTitle = args.analysisName;
 

@@ -50,9 +50,9 @@ public class Main {
 		System.exit(code);
 	}
 	
-	private static void printVersion() {
+	public static void printVersion() {
 		System.out.println(appName + " version " + versionString);
-		System.out.println("Written by Christian Perez-Llamas <christian.perez@upf.edu>");
+        System.exit(0);
 	}
 
 	private static void printUsage(PrintStream out, CmdLineParser parser, String toolName) {
