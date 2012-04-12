@@ -272,25 +272,30 @@ public class ObjectMatrixTextPersistence
             }
 
             // read header
+                // first the wanted, and then all column headers
 			String[] attributeNames = new String[numAttributes];
             for (int i = 0; i < numAttributes; i++) {
                 attributeNames[i] = line[indices[i]+2];
             }
-
             String[] allAttributeNames = new String[line.length - 2];
             System.arraycopy(line, 2, allAttributeNames, 0, line.length - 2);
+
+            boolean readAllValues = allAttributeNames.length == attributeNames.length;
 			
 			// infer element class and create corresponding adapter and factory
 			Class<?> elementClass = null;
 
-			if (meta.containsKey(TYPE_TAG))
-				elementClass = typeToClass.get(meta.get(TYPE_TAG));
+            // only try to force special type if all the values are going to be loaded
+            if(readAllValues) {
+                if (meta.containsKey(TYPE_TAG))
+                    elementClass = typeToClass.get(meta.get(TYPE_TAG));
 
-			if (elementClass == null) {
-				// infer element class and create corresponding adapter and factory
-				elementClass = elementClasses.get(
-					getElementClassId(allAttributeNames));
-			}
+                if (elementClass == null) {
+                    // infer element class and create corresponding adapter and factory
+                    elementClass = elementClasses.get(
+                        getElementClassId(allAttributeNames));
+                }
+            }
 			
 			IElementAdapter origElementAdapter = null;
             IElementAdapter destElementAdapter = null;
