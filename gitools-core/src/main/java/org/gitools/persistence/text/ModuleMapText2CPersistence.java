@@ -54,9 +54,13 @@ public class ModuleMapText2CPersistence
 
 		if (isItemNamesFilterEnabled()) {
 			String[] itemNames = getItemNames();
-			for (int i = 0; i < itemNames.length; i++)
-				itemNameToRowMapping.put(itemNames[i], i);
-		}
+			for (int i = 0; i < itemNames.length; i++) {
+                if (itemNameToRowMapping.containsKey(itemNames[i]))
+                    throw new PersistenceException("Modules not mappable to heatmap due to duplicated row: " + itemNames[i]);
+                else
+                    itemNameToRowMapping.put(itemNames[i], i);
+            }
+        }
 
 		// map between modules and item indices
 
