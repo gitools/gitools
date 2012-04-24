@@ -69,6 +69,18 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>gitools-snapshots</id>
+            <url>file:///${user.dir}/target/repo</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>gitools-releases</id>
+            <url>file:///${user.dir}/target/repo</url>
+        </repository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -231,9 +243,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.2.2</version>
                 <configuration>
                     <goals>assembly:assembly</goals>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
@@ -274,4 +287,5 @@
             </plugin>
         </plugins>
     </reporting>
+
 </project>
