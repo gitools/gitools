@@ -41,9 +41,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</connection>
-        <developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</developerConnection>
-        <url>https://bg.upf.edu/svn/gitools/desktop/trunk</url>
+        <url>git@github.com:gitools/gitools.git</url>
+        <connection>scm:git:git@github.com:gitools/gitools.git</connection>
+        <developerConnection>scm:git:git@github.com:gitools/gitools.git</developerConnection>
     </scm>
 
     <modules>
@@ -233,9 +233,6 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <username>${gitools.scm.username}</username>
-                    <password>${gitools.scm.password}</password>
-                    <tagBase>https://bg.upf.edu/svn/gitools/desktop/tags</tagBase>
                     <goals>assembly:assembly</goals>
                 </configuration>
             </plugin>
