@@ -18,6 +18,12 @@
 				#end
 				<tr><td class="name">Created</td><td>$fmt.format($analysis.startTime)</td></tr>
 				<tr><td class="name">Elapsed time</td><td>$fmt.elapsedTime($analysis.elapsedTime)</td></tr>
+                <tr><td class="name">Test</td><td>$test</td></tr>
+				#if( $testAttributes && $testAttributes.size() > 0 )
+					#foreach($mapEntry in $testAttributes.entrySet())
+						<tr><td class="name">$mapEntry.key</td><td>$mapEntry.value</td></tr>
+					#end
+				#end
 				#if( $analysis.attributes && $analysis.attributes.size() > 0 )
 					#foreach($attr in $analysis.attributes)
 						#if ($attr.name)

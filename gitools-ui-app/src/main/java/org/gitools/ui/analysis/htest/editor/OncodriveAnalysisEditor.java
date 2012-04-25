@@ -19,16 +19,22 @@ package org.gitools.ui.analysis.htest.editor;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.SwingUtilities;
+
+import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -51,6 +57,20 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
 		context.put("dataFile",
 				fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        ToolConfig testConfig = analysis.getTestConfig();
+        if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "") {
+            context.put("test", WordUtils.capitalize(testConfig.get(TestFactory.TEST_NAME_PROPERTY)));
+            HashMap<String,Object> testAttributes = new HashMap<String,Object>();
+            for (String key: testConfig.getConfiguration().keySet()) {
+                if (!key.equals(TestFactory.TEST_NAME_PROPERTY))
+                    testAttributes.put(WordUtils.capitalize(key),
+                            WordUtils.capitalize(testConfig.get(key)));
+            }
+            if (testAttributes.size() > 0)
+                context.put("testAttributes",testAttributes);
+
+        }
 
 		CutoffCmp cmp = analysis.getBinaryCutoffCmp();
 		String filterDesc = cmp == null ?
@@ -136,9 +156,6 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 				monitor.begin("Creating new heatmap from results ...", 1);
 
 				IMatrixView dataTable = new MatrixView(analysis.getResults());
-
-				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-				heatmap.setTitle(analysis.getTitle() + " (results)");
 
 				final OncodriveResultsEditor editor = new OncodriveResultsEditor(analysis);
 

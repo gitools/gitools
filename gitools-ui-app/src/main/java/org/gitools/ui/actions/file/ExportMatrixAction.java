@@ -94,7 +94,7 @@ public class ExportMatrixAction extends BaseAction {
 		if (file == null)
 			return;
 
-		Settings.getDefault().setLastExportPath(file.getAbsolutePath());
+		Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override

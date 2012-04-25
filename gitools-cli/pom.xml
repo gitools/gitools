@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.gitools</groupId>
 		<artifactId>gitools</artifactId>
-		<version>1.7.0-SNAPSHOT</version>
+		<version>1.6.2</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -21,15 +21,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>org.gitools</groupId>
 			<artifactId>gitools-core</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>

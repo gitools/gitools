@@ -51,7 +51,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
 	private static final FileFormat[] dataFormats = new FileFormat[] {
-			FileFormats.RESULTS_MATRIX,
+			FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
 			FileFormats.DOUBLE_MATRIX,

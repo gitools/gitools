@@ -60,6 +60,10 @@ public abstract class HtestTool extends AnalysisTool {
 				usage = "File with data to be processed.")
 		public String dataFile;
 
+        @Option(name = "-vi", aliases = "value-index", metaVar = "<file>",
+                usage = "Integer indicating the value-index, in case of multi-value data matrix (.tdm)")
+        public int valueIndex = -1;
+
 		@Option(name = "-P", aliases = "-population", metaVar = "<file>",
 				usage = "File with background population elements.")
 		public String populationFile;

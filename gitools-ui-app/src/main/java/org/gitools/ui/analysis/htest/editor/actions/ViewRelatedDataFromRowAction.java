@@ -36,6 +36,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.utils.SerialClone;
 
 
 public class ViewRelatedDataFromRowAction extends BaseAction {
@@ -117,6 +118,8 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
 		heatmap.setTitle(title);
 		heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
+        heatmap.setColumnDim(SerialClone.xclone(srcHeatmap.getColumnDim()));
+
 
 		// Create editor
 		HeatmapEditor editor = new HeatmapEditor(heatmap);

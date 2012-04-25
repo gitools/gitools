@@ -141,7 +141,7 @@ public class CombinationTool extends AnalysisTool {
 	protected void printDataFormats(PrintStream out) {
 		out.println("Supported data formats:");
 		FileFormat[] formats = new FileFormat[] {
-			FileFormats.RESULTS_MATRIX,
+			FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.DOUBLE_MATRIX,
 			FileFormats.DOUBLE_BINARY_MATRIX,
 			FileFormats.GENE_MATRIX,

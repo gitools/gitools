@@ -55,7 +55,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 	private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
 	private static final FileFormat[] dataFormats = new FileFormat[] {
-			FileFormats.RESULTS_MATRIX,
+			FileFormats.MULTIVALUE_DATA_MATRIX,
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
 			FileFormats.DOUBLE_MATRIX,

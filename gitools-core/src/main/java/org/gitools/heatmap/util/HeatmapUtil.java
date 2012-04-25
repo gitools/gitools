@@ -25,7 +25,6 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
@@ -56,33 +55,13 @@ public class HeatmapUtil {
 			figure.setCellDecorators(decorators);
 			figure.getRowDim().setGridEnabled(false);
 			figure.getColumnDim().setGridEnabled(false);
-		} else if (matrix instanceof DoubleMatrix) {
-			ElementDecorator[] decorators = new ElementDecorator[propertiesNb];
-			for (int i = 0; i < decorators.length; i++) {
-				ElementDecorator decorator =
-					ElementDecoratorFactory.create(
-						ElementDecoratorNames.PVALUE,
-						matrix.getCellAdapter());
-                decorator.setValueIndex(i);
-			decorators[i] = decorator;
-			}
-			figure.setCellDecorators(decorators);
+        }
+        else if (matrix instanceof DoubleMatrix) {
 			figure.getRowDim().setGridEnabled(false);
 			figure.getColumnDim().setGridEnabled(false);
 		}
-		else if (matrix instanceof ObjectMatrix) {
-			
-			ElementDecorator[] decorators = new ElementDecorator[propertiesNb];
-			for (int i = 0; i < decorators.length; i++) {
-				ElementDecorator decorator =
-					ElementDecoratorFactory.create(
-						ElementDecoratorNames.PVALUE,
-						matrix.getCellAdapter());
-                decorator.setValueIndex(i);
-			decorators[i] = decorator;
-			}
-			figure.setCellDecorators(decorators);
-		}
+		/*else if (matrix instanceof ObjectMatrix) {
+		}*/
 
 		return figure;
 	}

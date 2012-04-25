@@ -99,6 +99,7 @@ public class EnrichmentTool extends HtestTool {
 		EnrichmentCommand cmd = new EnrichmentCommand(
         		analysis,
 				dataMime, args.dataFile,
+                args.valueIndex,
 				args.populationFile,
 				populationDefaultValue,
 				modulesMime, args.modulesFile,

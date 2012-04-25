@@ -35,8 +35,10 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Figure;
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.stats.test.results.CommonResult;
 
 /*TODO: Heatmap should implement IMatrixView
  * and handle movement and visibility synchronized
@@ -66,7 +68,6 @@ public class Heatmap
 
 	// Cells
 
-	private ElementDecorator activeDecorator;
 	private ElementDecorator[] cellDecorators;
 	private int cellWidth;
 	private int cellHeight;
@@ -81,12 +82,13 @@ public class Heatmap
 	private boolean showBorders;
 
 	PropertyChangeListener propertyListener;
-	
-	public Heatmap() {
-		this(
-				null, null, //FIXME should it be null ?
-				new HeatmapTextLabelsHeader(),
-				new HeatmapTextLabelsHeader());
+
+    public Heatmap() {
+         this(
+                 null,
+                 new ElementDecorator[0],  //FIXME will cause null pointer exception but is unused ?
+                 new HeatmapTextLabelsHeader(),
+                 new HeatmapTextLabelsHeader());
 	}
 
 	public Heatmap(IMatrixView matrixView) {
@@ -96,10 +98,24 @@ public class Heatmap
 				new HeatmapTextLabelsHeader(),
 				new HeatmapTextLabelsHeader());
 	}
-	
-	public Heatmap(
+    
+    public Heatmap (
+            IMatrixView matrixView,
+            ElementDecorator cellDecorator,
+            HeatmapTextLabelsHeader rowsLabelsHeader,
+            HeatmapTextLabelsHeader columnLabelsHeader) {
+
+        this(
+                matrixView,
+                getCellDecoratorsFromDecorator(cellDecorator,
+                        matrixView.getCellAttributes().size()),
+                rowsLabelsHeader,
+                columnLabelsHeader);
+    }
+
+    public Heatmap(
 			IMatrixView matrixView,
-			ElementDecorator cellDecorator,
+			ElementDecorator[] cellDecorators,
 			HeatmapTextLabelsHeader rowsLabelsHeader,
 			HeatmapTextLabelsHeader columnLabelsHeader) {
 
@@ -109,26 +125,33 @@ public class Heatmap
 
 		this.matrixView = matrixView;
 		this.matrixView.addPropertyChangeListener(propertyListener);
-		
-		this.activeDecorator = cellDecorator;
-		this.activeDecorator.addPropertyChangeListener(propertyListener);
+
+        this.cellDecorators = cellDecorators;
+        getActiveCellDecorator().addPropertyChangeListener(propertyListener);
 
 		this.cellWidth = 14;
 		this.cellHeight = 14;
 		this.showBorders = false;
 				
 		this.rowDim = new HeatmapDim();
-		//rowsLabelsHeader.setSize(220);
 		this.rowDim.addHeader(rowsLabelsHeader);
 		this.rowDim.addPropertyChangeListener(propertyListener);
 
 		this.columnDim = new HeatmapDim();
-		//columnLabelsHeader.setSize(130);
 		this.columnDim.addHeader(columnLabelsHeader);
 		this.columnDim.addPropertyChangeListener(propertyListener);
 	}
 
-	private static ElementDecorator cellDecoratorFromMatrix(
+    private static ElementDecorator[] getCellDecoratorsFromDecorator(ElementDecorator cellDecorator, int attributesNb) {
+        ElementDecorator[] cellDecorators = new ElementDecorator[attributesNb];
+        for (int i = 0; i < attributesNb; i++) {
+            ElementDecoratorDescriptor descriptor =  ElementDecoratorFactory.getDescriptor(cellDecorator.getClass());
+            cellDecorators[i] = ElementDecoratorFactory.create(descriptor, cellDecorator.getAdapter());
+        }
+        return cellDecorators;
+    }
+
+	private static ElementDecorator[] cellDecoratorFromMatrix(
 			IMatrixView matrixView) {
 		
 		ElementDecorator decorator = null;
@@ -139,9 +162,14 @@ public class Heatmap
 		int attrIndex = matrixView.getSelectedPropertyIndex();
 		if (attrIndex >= 0 && attrIndex < attributes.size()) {
 			Class<?> elementClass = attributes.get(attrIndex).getValueClass();
-			
-			//FIXME No funciona
-			if (Double.class.isInstance(elementClass)
+
+            Class<?> c = adapter.getElementClass();
+            
+            if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
+                decorator = ElementDecoratorFactory.create(
+                        ElementDecoratorNames.PVALUE, adapter);
+            }
+			else if (elementClass == double.class 	//FIXME No funciona
 					|| double.class.isInstance(elementClass))
 				decorator = ElementDecoratorFactory.create(
 						ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
@@ -150,8 +178,8 @@ public class Heatmap
 		if (decorator == null)
 			decorator = ElementDecoratorFactory.create(
 					ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
-		
-		return decorator;
+
+		return getCellDecoratorsFromDecorator(decorator, matrixView.getCellAttributes().size());
 	}
 
 	// Matrix View

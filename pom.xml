@@ -5,7 +5,7 @@
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.6.2</version>
     <name>gitools</name>
     <description>Gitools</description>
     <url>https://bg.upf.edu/forge/projects/gitools</url>
@@ -41,9 +41,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</connection>
-        <developerConnection>scm:svn:https://bg.upf.edu/svn/gitools/desktop/trunk</developerConnection>
-        <url>https://bg.upf.edu/svn/gitools/desktop/trunk</url>
+        <url>git@github.com:gitools/gitools.git</url>
+        <connection>scm:git:git@github.com:gitools/gitools.git</connection>
+        <developerConnection>scm:git:git@github.com:gitools/gitools.git</developerConnection>
     </scm>
 
     <modules>
@@ -69,12 +69,61 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>gitools-snapshots</id>
+            <url>file:///${user.dir}/target/repo</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>gitools-releases</id>
+            <url>file:///${user.dir}/target/repo</url>
+        </repository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>edu.upf.bg</groupId>
                 <artifactId>bg-commons</artifactId>
-                <version>0.2.2-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-biomart</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-obo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-kegg</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-intogen</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-ui-platform</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -162,6 +211,7 @@
                 <artifactId>jsc</artifactId>
                 <version>20050805</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -231,12 +281,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.2.2</version>
                 <configuration>
-                    <username>${gitools.scm.username}</username>
-                    <password>${gitools.scm.password}</password>
-                    <tagBase>https://bg.upf.edu/svn/gitools/desktop/tags</tagBase>
                     <goals>assembly:assembly</goals>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
@@ -277,4 +325,5 @@
             </plugin>
         </plugins>
     </reporting>
+
 </project>

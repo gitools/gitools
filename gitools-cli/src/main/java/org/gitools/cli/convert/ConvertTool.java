@@ -28,6 +28,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.cli.GitoolsArguments;
+import org.gitools.cli.Main;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
@@ -62,6 +63,9 @@ public class ConvertTool extends AbstractTool {
 		super.validate(argsObject);
 
 		Arguments args = (Arguments) argsObject;
+
+        if (args.version)
+            Main.printVersion();
 
 		if (args.inputFileName == null)
 			throw new ToolValidationException("An input file is required.");
