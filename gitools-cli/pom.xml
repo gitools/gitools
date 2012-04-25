@@ -21,15 +21,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>org.gitools</groupId>
 			<artifactId>gitools-core</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>

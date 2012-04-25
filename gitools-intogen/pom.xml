@@ -12,16 +12,16 @@
 	<name>gitools-intogen</name>
 	
 	<dependencies>
-		<dependency>
+
+        <dependency>
 			<groupId>edu.upf.bg</groupId>
 			<artifactId>bg-commons</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>org.gitools</groupId>
 			<artifactId>gitools-core</artifactId>
-			<version>${project.version}</version>
-			<scope>compile</scope>
 		</dependency>
+
 	</dependencies>
 </project>

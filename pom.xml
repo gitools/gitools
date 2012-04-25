@@ -83,10 +83,47 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>edu.upf.bg</groupId>
                 <artifactId>bg-commons</artifactId>
-                <version>0.2.2-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-biomart</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-obo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-kegg</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-intogen</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-ui-platform</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -174,6 +211,7 @@
                 <artifactId>jsc</artifactId>
                 <version>20050805</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

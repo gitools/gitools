@@ -17,11 +17,6 @@
 			<artifactId>bg-commons</artifactId>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math</artifactId>
-		</dependency> -->
-		
 		<dependency>
 			<groupId>colt</groupId>
 			<artifactId>colt</artifactId>
@@ -52,42 +47,9 @@
 			<groupId>jsc</groupId>
 			<artifactId>jsc</artifactId>
 		</dependency>
+
 	</dependencies>
 
-	<!-- <reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>dependencies</report>
-							<report>project-team</report>
-							<report>cim</report>
-							<report>issue-tracker</report>
-							<report>javadoc</report>
-							<report>license</report>
-							<report>scm</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting> -->
 </project>
 
 
