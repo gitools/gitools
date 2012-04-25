@@ -15,10 +15,10 @@ git-flow release publish gitools-1.6.2
 
 # Update pom.xml version
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed s/1.6.2-SNAPSHOT/1.6.2/g "$0)}' | grep -A2 -B3 1.6.2
+find . -name pom.xml | awk '{ system("sed 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}' | grep -A2 -B3 1.6.2
 
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i s/1.6.2-SNAPSHOT/1.6.2/g "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}'
 
 # Compile and package 
 mvn clean package install
@@ -50,10 +50,10 @@ git branch
 # Update pom.xml versions to new SNAPSHOT version
 
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed s/1.6.2/1.7.0-SNAPSHOT/g "$0)}' | grep -A2 -B3 1.7.0-SNAPSHOT
+find . -name pom.xml | awk '{ system("sed 0,/1.6.2/s//1.7.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.7.0-SNAPSHOT
 
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i s/1.6.2/1.7.0-SNAPSHOT/g "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/1.6.2/s//1.7.0-SNAPSHOT/ "$0)}'
 
 # Commit
 git commit -a -m "Next iteration version 1.7.0-SNAPSHOT"
