@@ -357,7 +357,7 @@ public class ObjectMatrixTextPersistence
                             value = valueTranslators[i].stringToValue(line[sourceIdx + 2]);
                         } else {
 						    value = parsePropertyValue(
-                                    origElementAdapter.getProperty(sourceIdx), line[sourceIdx+2]);
+                                    origElementAdapter.getProperty(origElementAdapter.getPropertyIndex(property)), line[sourceIdx+2]);
                         }
 						destElementAdapter.setValue(element, destIdx, value);
 					}
