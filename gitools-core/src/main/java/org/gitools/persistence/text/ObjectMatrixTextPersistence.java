@@ -313,8 +313,11 @@ public class ObjectMatrixTextPersistence
 			
 			Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
 			int index = 0;
-			for (IElementAttribute attr : origElementAdapter.getProperties())
-				attrIdmap.put(attr.getId(), index++);
+			//for (IElementAttribute attr : origElementAdapter.getProperties())
+			//	attrIdmap.put(attr.getId(), index++);
+            for (int i = 0; i < allAttributeNames.length; i++) {
+                attrIdmap.put(allAttributeNames[i],i);
+            }
 			
 			// read body
 			Map<String, Integer> columnMap = new HashMap<String, Integer>();
@@ -344,17 +347,19 @@ public class ObjectMatrixTextPersistence
 				Object element = elementFactory.create();
 	
 				for (int i = 0; i < indices.length; i++) {
-					final Integer pix = attrIdmap.get(allAttributeNames[indices[i]]);
+                    final String property = allAttributeNames[indices[i]];
+					final Integer sourceIdx = attrIdmap.get(property);
+                    final Integer destIdx = destElementAdapter.getPropertyIndex(property);
 
                     Object value;                    
-					if (pix != null) {
+					if (sourceIdx != null) {
                          if  (valueTranslators[i] != null) {
-                            value = valueTranslators[i].stringToValue(line[pix + 2]);
+                            value = valueTranslators[i].stringToValue(line[sourceIdx + 2]);
                         } else {
 						    value = parsePropertyValue(
-                                    origElementAdapter.getProperty(pix), line[pix+2]);
+                                    origElementAdapter.getProperty(sourceIdx), line[sourceIdx+2]);
                         }
-						origElementAdapter.setValue(element, i, value);
+						destElementAdapter.setValue(element, destIdx, value);
 					}
 				}
 				
