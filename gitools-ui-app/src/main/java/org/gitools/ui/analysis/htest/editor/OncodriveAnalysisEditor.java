@@ -32,6 +32,8 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ToolConfig;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.stats.test.factory.TestFactory;
@@ -121,6 +123,13 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 				IMatrixView dataTable = new MatrixView(analysis.getData());
 
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
+                if (!testName.equals(TestFactory.ZSCORE_TEST)) {
+                    //entry data is binary
+                    ElementDecorator[] decorators = new ElementDecorator[1];
+                    decorators[0] = new BinaryElementDecorator(heatmap.getActiveCellDecorator().getAdapter());
+                    heatmap.setCellDecorators(decorators);
+                }
 				heatmap.setTitle(analysis.getTitle() + " (data)");
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
