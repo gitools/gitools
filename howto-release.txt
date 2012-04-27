@@ -1,0 +1,68 @@
+
+
+# Be sure to be on 'develop' branch
+git checkout develop
+
+# Pull and push all commits
+git pull
+git push
+
+# Start a new release
+git-flow release start gitools-1.6.2
+
+# Publish the release branch
+git-flow release publish gitools-1.6.2
+
+# Update pom.xml version
+# Check that you are going to update only the correct versions:
+find . -name pom.xml | awk '{ system("sed 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}' | grep -A2 -B3 1.6.2
+
+# Update all like this:
+find . -name pom.xml | awk '{ system("sed -i 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}'
+
+# Compile and package 
+mvn clean package install
+mvn package assembly:assembly
+
+# Test new release
+cd target
+unzip gitools-1.6.2-bin.zip
+gitools-1.6.2/bin/gitools
+
+# Deploy Webstart
+./webstart-deploy.sh 1.6.2
+
+# Deploy ZIP file
+scp target/gitools-1.6.2-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
+
+# Update this file on the server:
+/usr/local/gitools/www/download/latest.txt
+
+# Commit the changes
+git commit -a -m "Set version to 1.6.2"
+
+# Finish the release and push everything
+git-flow release finish -p gitools-1.6.2
+
+# Check that you are on develop branch
+git branch
+
+# Update pom.xml versions to new SNAPSHOT version
+
+# Check that you are going to update only the correct versions:
+find . -name pom.xml | awk '{ system("sed 0,/1.6.2/s//1.7.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.7.0-SNAPSHOT
+
+# Update all like this:
+find . -name pom.xml | awk '{ system("sed -i 0,/1.6.2/s//1.7.0-SNAPSHOT/ "$0)}'
+
+# Commit
+git commit -a -m "Next iteration version 1.7.0-SNAPSHOT"
+
+# Push develop
+git push
+
+
+
+
+
+
