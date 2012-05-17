@@ -22,6 +22,9 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.wizard.add.data.DataIntegrationDimensionsWizard;
 
 import java.awt.event.ActionEvent;
 
@@ -34,7 +37,25 @@ public class IntegrateDataDimensionsAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+        IEditor editor = AppFrame.instance()
+                .getEditorsPanel()
+                .getSelectedEditor();
+
+        Object model = editor != null ? editor.getModel() : null;
+        if (model == null || !(model instanceof Heatmap))
+            return;
+
+        final Heatmap hm = (Heatmap) model;
+
+        WizardDialog wizDlg = new WizardDialog(
+                AppFrame.instance(),
+                new DataIntegrationDimensionsWizard(hm));
+
+        wizDlg.open();
+
+
+
         AppFrame.instance().setStatusText("Data integrated and added.");
     }
     @Override
