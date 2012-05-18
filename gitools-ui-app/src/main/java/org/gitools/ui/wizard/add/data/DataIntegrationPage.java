@@ -25,6 +25,7 @@ package org.gitools.ui.wizard.add.data;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.operators.Operator;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -39,9 +40,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class DataIntegrationPage extends AbstractWizardPage {
-
-        private String[] attrNames;
-        DefaultTableModel model;
 
         private static class DataIntegrationCriteriaListCellRender extends JTextArea implements TableCellRenderer {
             public DataIntegrationCriteriaListCellRender() {
@@ -73,6 +71,9 @@ public class DataIntegrationPage extends AbstractWizardPage {
             }
         }
 
+        private String[] attrNames;
+        DefaultTableModel model;
+
 	public DataIntegrationPage(Heatmap hm) {
 		
 		initComponents();
@@ -92,19 +93,39 @@ public class DataIntegrationPage extends AbstractWizardPage {
                 model = (DefaultTableModel) table.getModel();
                 
                 //table.setModel(model);
-                table.getColumnModel().getColumn(1).setCellRenderer(
+                table.getColumnModel().getColumn(0).setMaxWidth(65);
+                table.getColumnModel().getColumn(1).setMaxWidth(100);
+                table.getColumnModel().getColumn(2).setCellRenderer(
                         new DataIntegrationCriteriaListCellRender());
-                table.getColumnModel().getColumn(0).setMaxWidth(100);
                 table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                     @Override
                     public void valueChanged(ListSelectionEvent e) {
-                        update();
+                        updateButtons();
                     }
                 });
 	}
 
+        public double[] getValues () {
+            double values[] = new double[table.getRowCount()];
+            for (int i = 0; i < table.getRowCount(); i++) {
+                values[i] = Double.parseDouble((String) table.getValueAt(i, 1));
+            }
+            return values;
+        }
 
-        private void update() {
+        public List<ArrayList<DataIntegrationCriteria>> getCriteria() {
+            ArrayList<ArrayList<DataIntegrationCriteria>> criteria =
+                    new ArrayList<ArrayList<DataIntegrationCriteria>>();
+            for (int i = 0; i < table.getRowCount(); i++) {
+                ArrayList<DataIntegrationCriteria> c =
+                        (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
+                criteria.add(c);
+            }
+            return criteria;
+        }
+
+
+        private void updateButtons() {
             int rowNb = table.getRowCount();
             removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
             upBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
@@ -113,11 +134,15 @@ public class DataIntegrationPage extends AbstractWizardPage {
             setComplete(rowNb > 0);
         }
 
-        private void updateRowHeights() {
+        private void updateRowHeightsAndPriorities() {
             for (int i = 0; i < table.getRowCount(); i++) {
-                List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) table.getValueAt(i, 1);
+                table.setValueAt(i+1, i, 0);
+
+                List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) table.getValueAt(i, 2);
                 int lines = criteriaList.size()*2-1;
                 table.setRowHeight(i, table.getRowHeight()*lines);
+
+                
             }
         }
 
@@ -142,7 +167,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         table = new javax.swing.JTable();
         editBtn = new javax.swing.JButton();
 
-        jLabel1.setText("Select the data dimensions to integrate");
+        jLabel1.setText("Add integration rules according to their priorities");
 
         tableAddBtn.setText("Add");
         tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +205,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
 
             },
             new String [] {
-                "Value", "Criteria"
+                "Priority","Value", "Criteria"
             }
         ) {
             Class[] types = new Class [] {
@@ -196,6 +221,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
                 return false;//This causes all cells to be not editable
             }
         });
+        table.setColumnSelectionAllowed(true);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(table);
@@ -266,14 +292,15 @@ public class DataIntegrationPage extends AbstractWizardPage {
 		}
                 List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
                 String setToValue = dlg.getSetToValue();
-                model.addRow(new Object[]{setToValue, criteriaList});
-                updateRowHeights();
-                update();
+                model.addRow(new Object[]{table.getRowCount(),setToValue, criteriaList});
+                updateRowHeightsAndPriorities();
+                updateButtons();
 }//GEN-LAST:event_tableAddBtnActionPerformed
 
         private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
             model.removeRow(table.getSelectedRow());
-            update();
+            updateRowHeightsAndPriorities();
+            updateButtons();
 }//GEN-LAST:event_removeBtnActionPerformed
 
         private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
@@ -281,7 +308,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
             int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ?
                                 selectedPosition : selectedPosition+1;
             model.moveRow(selectedPosition, selectedPosition , wantedPosition);
-            updateRowHeights();
+            updateRowHeightsAndPriorities();
             table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
         }//GEN-LAST:event_downBtnActionPerformed
 
@@ -290,15 +317,15 @@ public class DataIntegrationPage extends AbstractWizardPage {
             int wantedPosition = (selectedPosition == 0) ?
                                 selectedPosition : selectedPosition-1;
             model.moveRow(selectedPosition, selectedPosition , wantedPosition);
-            updateRowHeights();
+            updateRowHeightsAndPriorities();
             table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
         }//GEN-LAST:event_upBtnActionPerformed
 
         private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
             String[] ops = new String[] {Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
             List<DataIntegrationCriteria> criteria =
-                    (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 1);
-            String setToValue = (String) table.getValueAt(table.getSelectedRow(), 0);
+                    (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
+            String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
             final DataIntegrationCriteriaDialog dlg =
                         new DataIntegrationCriteriaDialog(AppFrame.instance(),
                                                         attrNames,
@@ -315,9 +342,9 @@ public class DataIntegrationPage extends AbstractWizardPage {
                 List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
                 setToValue = dlg.getSetToValue();
                 model.removeRow(selectedRow);
-                model.insertRow(selectedRow, new Object[]{setToValue, criteriaList});
-                updateRowHeights();
-                update();
+                model.insertRow(selectedRow, new Object[]{selectedRow+1,setToValue, criteriaList});
+                updateRowHeightsAndPriorities();
+                updateButtons();
         }//GEN-LAST:event_editBtnActionPerformed
 
 

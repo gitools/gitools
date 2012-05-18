@@ -22,27 +22,72 @@
  */
 package org.gitools.ui.wizard.add.data;
 
+import javax.swing.event.DocumentEvent;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.utils.DocumentChangeListener;
 
 public class DataDetailsPage extends AbstractWizardPage {
 
-	private Heatmap hm;
+    private Heatmap hm;
+    private String dimensionName;
+    private String message;
 
-	public DataDetailsPage(Heatmap hm) {
-		this.hm = hm;
-		
-		initComponents();
-		setComplete(false);
+    public DataDetailsPage(Heatmap hm) {
+            this.hm = hm;
 
-		setTitle("Data Dimension Integration");
-		setMessage("Choose from which dimensions and with what cut-offs"
-                        + "to integrate");
-	}
+            initComponents();
+            setComplete(false);
+
+            setTitle("Data Dimension Integration");
+            this.message =  "Choose a name for the new data value dimension";
+            setMessage(message);
+
+            nameField.getDocument().addDocumentListener(new DocumentChangeListener() {
+
+                    @Override
+                    protected void update(DocumentEvent e) {
+                        nameChanged();
+                    }
+             });
+    }
 
 
+    private void nameChanged() {
+        if (nameField.getText().length() > 0) {
 
+            boolean everythingIsOk = true;
+            String existingName;
+            String originalWantedName = nameField.getText();
+            String wantedName = originalWantedName.toLowerCase().trim();
+            IElementAdapter adapter = hm.getMatrixView().getCellAdapter();
+            int c = 0;
+            for (IElementAttribute iElementAttribute : adapter.getProperties()) {
+                existingName = iElementAttribute.getName().toLowerCase();
+                if (existingName.equals(wantedName)) {
+                    setMessage(MessageStatus.ERROR, "Data dimension with name '"+originalWantedName+"' already exists");
+                    everythingIsOk = false;
+                    break;
+                }
+            }
+            
+            if (everythingIsOk)    {
+                setComplete(true);
+                setMessage(MessageStatus.INFO,message);
+                dimensionName = nameField.getText();
+            }
+        } else {
+            setComplete(false);
+            dimensionName = "";
+        }
+    }
 
+    public String getDimensionName() {
+        return dimensionName;
+    }
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -55,8 +100,11 @@ public class DataDetailsPage extends AbstractWizardPage {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
 
-        jLabel1.setText("Select the data dimensions to integrate");
+        jLabel1.setText("Name");
+
+        nameField.setText("Integrated values");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -64,15 +112,19 @@ public class DataDetailsPage extends AbstractWizardPage {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(384, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(447, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(408, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -81,6 +133,7 @@ public class DataDetailsPage extends AbstractWizardPage {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup applyGroup;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField nameField;
     // End of variables declaration//GEN-END:variables
 
 

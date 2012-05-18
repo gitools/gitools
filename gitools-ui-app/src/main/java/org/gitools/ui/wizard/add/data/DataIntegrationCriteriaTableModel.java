@@ -31,7 +31,7 @@ import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 class DataIntegrationCriteriaTableModel implements TableModel {
 
 	private static final String[] columnName = new String[] {
-		"Attribute", "Condition", "Value", "Operator" };
+		"Operator","Attribute", "Condition", "Value" };
 
 	private static final Class<?>[] columnClass = new Class<?>[] {
 		String.class, CutoffCmp.class, String.class, Operator.class};

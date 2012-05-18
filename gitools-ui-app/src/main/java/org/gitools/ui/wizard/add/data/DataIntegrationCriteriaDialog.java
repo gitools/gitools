@@ -124,9 +124,9 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
     private void addCriteria(boolean first) {
         if (first)
-            criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, comparators[0], 0.0, Operator.EMPTY));
+            criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, CutoffCmp.EQ, 1.0, Operator.EMPTY));
         else
-            criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, comparators[0], 0.0, Operator.AND));
+            criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, CutoffCmp.EQ, 1.0, Operator.AND));
 
     }
 
