@@ -31,11 +31,13 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
+import org.gitools.ui.utils.DocumentChangeListener;
 
 public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
@@ -87,7 +89,7 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 		this.criteriaModel = new DataIntegrationCriteriaTableModel(attributeNames);
 		initComponents();
 
-                this.setToValue.setText(setToValue);
+        this.setToValue.setText(setToValue);
 		table.setModel(criteriaModel);
 
 		criteriaModel.addTableModelListener(new TableModelListener() {
@@ -213,9 +215,10 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         jLabel2.setText("Set value:");
 
         setToValue.setText("0");
-        setToValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setToValueActionPerformed(evt);
+        setToValue.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                setToValueChanged(e);
             }
         });
 
@@ -294,9 +297,15 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 		criteriaModel.removeCriteria(table.getSelectedRows());
 	}//GEN-LAST:event_tableRemoveBtnActionPerformed
 
-        private void setToValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setToValueActionPerformed
-            // TODO add your handling code here:
-        }//GEN-LAST:event_setToValueActionPerformed
+        private void setToValueChanged(DocumentEvent evt) {
+            double d;
+            try {
+                d = Double.parseDouble(setToValue.getText());
+                okButton.setEnabled(true);
+            } catch (NumberFormatException e) {
+                okButton.setEnabled(false);
+            }
+        }
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
