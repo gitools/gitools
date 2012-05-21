@@ -205,7 +205,7 @@ public class Heatmap
 		return cellDecorators[propIndex];
 	}
 
-	public final void changeActiveCellDecorator(int newindex) {
+	public final void switchActiveCellDecorator(int newindex) {
         // switches from active ElementDecorator to ElementDecorator
         // of same type, but for another propertyIndex (data dimension)
         // no new ElementDecorator has been created and none will be removed
@@ -238,13 +238,21 @@ public class Heatmap
         // The ElementDecorator Type has been changed and thus a new
         // set of ElementDecorators has to be put in place (for each
         // propertyIndex one.
-        
+
 		int propIndex = getMatrixView().getSelectedPropertyIndex();
 		ElementDecorator old = null;
 		if (this.cellDecorators != null) {
 			this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
 			old = this.cellDecorators[propIndex];
 		}
+
+        //a new data dimension has been added
+        if (decorators.length > this.cellDecorators.length) {
+            propIndex = decorators.length-1;
+            matrixView.setSelectedPropertyIndex(propIndex);
+        }
+
+
 		decorators[propIndex].addPropertyChangeListener(propertyListener);
 
 		this.cellDecorators = decorators;

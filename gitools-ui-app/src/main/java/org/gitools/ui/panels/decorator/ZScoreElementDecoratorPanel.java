@@ -244,7 +244,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 
-		model.changeActiveCellDecorator(propAdapter.getIndex());
+		model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
 
 		decorator.setValueIndex(propAdapter.getIndex());

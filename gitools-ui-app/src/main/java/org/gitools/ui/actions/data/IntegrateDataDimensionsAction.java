@@ -22,10 +22,11 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.*;
-import org.gitools.model.Attribute;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorDescriptor;
+import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
@@ -139,8 +140,24 @@ public class IntegrateDataDimensionsAction extends BaseAction {
                     final int rowIndex = coord[0];
                     Object element = result[1];
                     objectMatrix.setCell(rowIndex, columnIndex, element);
+                    monitor.worked(1);
                 }
                 objectMatrix.setCellAdapter(newAdapter);
+                
+                ElementDecorator[] oldDecorators = heatmap.getCellDecorators();
+                ElementDecorator[] newDecorators = new ElementDecorator[oldDecorators.length+1];
+                for (int i = 0; i < oldDecorators.length; i++) {
+                    newDecorators[i] = oldDecorators[i];
+                    newDecorators[i].setAdapter(newAdapter);
+                    newDecorators[i].setValueIndex(i);
+                }
+                ElementDecoratorDescriptor descriptor = new ElementDecoratorDescriptor("",oldDecorators[0].getClass());
+                ElementDecorator decorator = ElementDecoratorFactory.create(
+                        descriptor,
+                        oldDecorators[0].getAdapter());
+                newDecorators[oldDecorators.length] = decorator;
+                decorator.setValueIndex(oldDecorators.length);
+                heatmap.setCellDecorators(newDecorators);
             }
         });
     }
