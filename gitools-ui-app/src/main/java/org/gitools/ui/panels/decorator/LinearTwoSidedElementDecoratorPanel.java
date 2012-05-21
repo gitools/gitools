@@ -18,7 +18,6 @@
 package org.gitools.ui.panels.decorator;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
@@ -192,7 +191,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 
-		model.changeActiveCellDecorator(propAdapter.getIndex());
+		model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
 		
 		decorator.setValueIndex(propAdapter.getIndex());

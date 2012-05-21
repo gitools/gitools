@@ -221,7 +221,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		
 		decorator.setValueIndex(propAdapter.getIndex());
 		
-		model.changeActiveCellDecorator(propAdapter.getIndex());
+		model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
 
 		decorator.setValueIndex(propAdapter.getIndex());
