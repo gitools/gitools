@@ -18,8 +18,10 @@
 
 package org.gitools.ui.actions.data;
 
+import edu.upf.bg.operators.Operator;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.ObjectMatrix;
@@ -77,13 +79,13 @@ public class IntegrateDataDimensionsAction extends BaseAction {
 
 
     public void executeIntegrateDataDimensions(Heatmap hm,
-                                               double[] valuesArray,
+                                               double[] setToValuesArray,
                                                List<ArrayList<DataIntegrationCriteria>> criteriaList,
                                                String dimensionNameString) {
         
         final Heatmap heatmap = hm;
-        final double[] values = valuesArray;
-        final List<ArrayList<DataIntegrationCriteria>> criteria = criteriaList;
+        final double[] setToValues = setToValuesArray;
+        final List<ArrayList<DataIntegrationCriteria>> criteriaLists = criteriaList;
         final String dimensionName = dimensionNameString;
         
         JobThread.execute(AppFrame.instance(), new JobRunnable() {
@@ -113,6 +115,11 @@ public class IntegrateDataDimensionsAction extends BaseAction {
 
                 monitor.begin("Integrating Data", rowNb *2);
                 int newIndex = attributes.length-1;
+                MatrixUtils.DoubleCast[] doubleCasts = new MatrixUtils.DoubleCast[attributes.length];
+                for (int i = 0; i < adapter.getPropertyCount(); i++) {
+                    doubleCasts[i] = MatrixUtils.createDoubleCast(
+                            adapter.getProperty(i).getValueClass());
+                }
 
                 for (int r = 0; r<rowNb; r++) {
 
@@ -125,7 +132,15 @@ public class IntegrateDataDimensionsAction extends BaseAction {
                                     new int[]{r, c}, element });
                         }
 
-                        newAdapter.setValue(element, newIndex, 99.0);
+                        //TODO: integrate data
+                        Object value = 0.0;
+                        for (int i = 0; i < setToValues.length; i++) {
+                            if (evaluateCriteria(c, r, objectMatrix, doubleCasts[i], criteriaLists.get(i))) {
+                                value = setToValues[i];
+                                break;
+                            }
+                        }
+                        newAdapter.setValue(element, newIndex, value);
                         list.add(new Object[] {
                                 new int[] {r ,c } ,element });
                         monitor.worked(1);
@@ -161,7 +176,35 @@ public class IntegrateDataDimensionsAction extends BaseAction {
             }
         });
     }
-    
+
+    private boolean evaluateCriteria(int column, int row, ObjectMatrix objectMatrix, MatrixUtils.DoubleCast doubleCast, List<DataIntegrationCriteria> criteria) {
+        ArrayList<Boolean> ORs = new ArrayList<Boolean>();
+        for (DataIntegrationCriteria dic : criteria) {
+
+            double matrixValue = doubleCast.getDoubleValue(
+                    objectMatrix.getCellValue(row, column, dic.getAttributeIndex()));
+            boolean evaluatedCondition = dic.getComparator().compare(
+                                matrixValue,dic.getCutoffValue());
+
+            if (dic.getOperator().equals(Operator.EMPTY)) {
+                ORs.add(evaluatedCondition);
+            }
+            else if(dic.getOperator().equals(Operator.OR)) {
+                ORs.add(evaluatedCondition);
+            }
+            else {
+                Boolean lastOr;
+                lastOr = ORs.get(ORs.size()-1);
+                ORs.remove(lastOr);
+                ORs.add(dic.getOperator().evaluate(lastOr, evaluatedCondition));
+            }
+        }
+        for (Boolean or : ORs)
+            if (or)
+                return true;
+        return false;
+    }
+
     @Override
     public boolean isEnabledByModel(Object model) {
         boolean isHeatmap = model instanceof Heatmap;

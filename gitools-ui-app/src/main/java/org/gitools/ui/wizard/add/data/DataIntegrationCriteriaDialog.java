@@ -51,7 +51,10 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Operator op = (Operator) value;
-                return super.getTableCellRendererComponent(table, op.getAbbreviation(), isSelected, hasFocus, row, column);
+                String opString = op.getAbbreviation();
+                if (op.equals(Operator.AND))
+                    opString = "    " + op.getAbbreviation();
+                return super.getTableCellRendererComponent(table, opString, isSelected, hasFocus, row, column);
             }
         }
 

@@ -62,7 +62,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
                     
                     rendering = rendering + "    " + c.getAttributeName() + " "
                             + c.getComparator().getLongName() +" "
-                            + Double.toString(c.getValue()) + "\n";
+                            + Double.toString(c.getCutoffValue()) + "\n";
                     
 
                 }

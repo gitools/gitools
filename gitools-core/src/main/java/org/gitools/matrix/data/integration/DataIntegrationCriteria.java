@@ -26,31 +26,31 @@ public class DataIntegrationCriteria {
 	protected String attributeName;
 	protected int attributeIndex;
 	protected CutoffCmp comparator;
-	protected double value;
-        protected Operator operator;
+	protected double cutoffValue;
+    protected Operator operator;
 
 	public DataIntegrationCriteria(String attributeName,
                                         int attributeIndex,
                                         CutoffCmp comparator,
-                                        double value,
+                                        double cutoffValue,
                                         Operator operator) {
 		this.attributeName = attributeName;
 		this.attributeIndex = attributeIndex;
 		this.comparator = comparator;
-		this.value = value;
-                this.operator = operator;
+		this.cutoffValue = cutoffValue;
+        this.operator = operator;
 	}
 
 	public DataIntegrationCriteria(String attributeName, 
                                         int attributeIndex,
                                         CutoffCmp comparator,
-                                        double value,
+                                        double cutoffValue,
                                         String operator) {
 		this.attributeName = attributeName;
 		this.attributeIndex = attributeIndex;
 		this.comparator = comparator;
-		this.value = value;
-                this.operator = Operator.getFromName(operator);
+		this.cutoffValue = cutoffValue;
+        this.operator = Operator.getFromName(operator);
 	}
 
 	public String getAttributeName() {
@@ -77,12 +77,12 @@ public class DataIntegrationCriteria {
 		this.comparator = comparator;
 	}
 
-	public double getValue() {
-		return this.value;
+	public double getCutoffValue() {
+		return this.cutoffValue;
 	}
 
-	public void setValue(double value) {
-		this.value = value;
+	public void setCutoffValue(double cutoffValue) {
+		this.cutoffValue = cutoffValue;
 	}
 
         public Operator getOperator() {
@@ -95,6 +95,6 @@ public class DataIntegrationCriteria {
 
 	@Override
 	public String toString() {
-		return attributeName.toString() + " " + comparator.toString() + " " + value + " " + operator.getLongName();
+		return attributeName.toString() + " " + comparator.toString() + " " + cutoffValue + " " + operator.getLongName();
 	}
 }

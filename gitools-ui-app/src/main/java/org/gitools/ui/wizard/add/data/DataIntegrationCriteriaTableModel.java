@@ -83,7 +83,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
                         case 0: return criteriaList.get(rowIndex).getOperator();
 			case 1: return criteriaList.get(rowIndex).getAttributeName();
 			case 2: return criteriaList.get(rowIndex).getComparator();
-			case 3: return String.valueOf(criteriaList.get(rowIndex).getValue());
+			case 3: return String.valueOf(criteriaList.get(rowIndex).getCutoffValue());
 
 		}
 		return null;
@@ -110,7 +110,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
 			break;
 
 			case 3:
-				criteriaList.get(rowIndex).setValue(Double.parseDouble((String) aValue));
+				criteriaList.get(rowIndex).setCutoffValue(Double.parseDouble((String) aValue));
 			break;
 		}
 	}
