@@ -132,8 +132,7 @@ public class IntegrateDataDimensionsAction extends BaseAction {
                                     new int[]{r, c}, element });
                         }
 
-                        //TODO: integrate data
-                        Object value = 0.0;
+                        Object value = Double.NaN;
                         for (int i = 0; i < setToValues.length; i++) {
                             if (evaluateCriteria(c, r, objectMatrix, doubleCasts[i], criteriaLists.get(i))) {
                                 value = setToValues[i];

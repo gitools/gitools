@@ -108,9 +108,9 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(attributeNames));
                 columnModel.getColumn(1).setMinWidth(200);
 		columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(comparators));
-                columnModel.getColumn(2).setMaxWidth(70);
+                columnModel.getColumn(2).setMaxWidth(110);
                 columnModel.getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
-                columnModel.getColumn(3).setMaxWidth(100);
+                columnModel.getColumn(3).setMaxWidth(60);
 
                 if (initialCriteriaList == null)
                     addCriteria(true);
@@ -155,7 +155,7 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         setToValue = new javax.swing.JTextField();
 
-        setTitle("Sort by value");
+        setTitle("Create criteria");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
