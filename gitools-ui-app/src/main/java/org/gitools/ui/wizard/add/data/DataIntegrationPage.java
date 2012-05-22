@@ -80,8 +80,8 @@ public class DataIntegrationPage extends AbstractWizardPage {
 		setComplete(false);
 
 		setTitle("Data Dimension Integration");
-		setMessage("Choose from which dimensions and with what cut-offs"
-                        + "to integrate");
+		setMessage("Choose which data dimensions and what cut-offs"
+                        + " to integrate");
                 
                	List<IElementAttribute> attributes = hm.getMatrixView().getContents().getCellAdapter().getProperties();
 
