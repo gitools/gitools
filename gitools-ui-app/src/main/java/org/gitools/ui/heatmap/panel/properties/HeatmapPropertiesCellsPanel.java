@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +37,19 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import org.apache.commons.lang.ArrayUtils;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.CategoricalElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -170,20 +178,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                 ElementDecoratorDescriptor newDescriptor = descriptorMap.get(newDataDimensionName);
                 if (newDescriptor!=null)
                     this.cellDecorator.setSelectedItem(newDescriptor);
-
-
-                /*
-                if (descriptor==null) {
-                    descriptor = new ElementDecoratorDescriptor("P-value scale",PValueElementDecorator.class);
-                }
-                if (descriptor.getDecoratorClass() == hm.getActiveCellDecorator().getClass())
-                    return;
-                else {
-                    ElementDecorator[] decorators = getDecoratorsForDescriptor(descriptor);
-                    hm.setCellDecorators(decorators);
-                    changeDecoratorPanel(descriptor);
-                    this.cellDecorator.setSelectedIndex(newIndex);
-                }                                                 */
             }
 		}
 	}
@@ -538,11 +532,41 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             for (int i = 0; i < decorators.length; i++) {
                 ElementDecorator decorator = ElementDecoratorFactory.create(
                         descriptor, cellAdapter);
+                if (descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class)) {
+                    double[] values;
+                    values = getMatrixValuesForCategoricalScale(cellAdapter);
+                    CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
+                    scale.setValues(values);
+
+                }
+
                 setValueIndex(decorator, cellAdapter, i);
                 decorators[i] = decorator;
             }
         }
         return decorators;
+    }
+
+    private double[] getMatrixValuesForCategoricalScale(IElementAdapter cellAdapter) {
+
+        Double[] values = null;
+        List<Double> valueList = new ArrayList<Double>();
+        int valueDimension = hm.getMatrixView().getSelectedPropertyIndex();
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(
+                cellAdapter.getProperty(valueDimension).getValueClass());
+        int colNb = hm.getMatrixView().getContents().getColumnCount();
+        int rowNb = hm.getMatrixView().getContents().getRowCount();
+        for (int r = 0; r<rowNb; r++) {
+            for (int c = 0; c < colNb; c++) {
+                double d = cast.getDoubleValue(
+                        hm.getMatrixView().getContents().getCellValue(r,c,valueDimension));
+                if (!valueList.contains(d) && !Double.isNaN(d))
+                    valueList.add(d);
+            }
+        }
+        System.out.println("new values" + valueList);
+
+        return ArrayUtils.toPrimitive(valueList.toArray(new Double[]{}));
     }
 
     private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex) {

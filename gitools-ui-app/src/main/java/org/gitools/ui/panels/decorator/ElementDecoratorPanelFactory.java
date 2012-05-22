@@ -42,6 +42,8 @@ public class ElementDecoratorPanelFactory {
 			return new LinearTwoSidedElementDecoratorPanel(model);
 		else if (CorrelationElementDecorator.class.equals(decoratorClass))
 			return new LinearTwoSidedElementDecoratorPanel(model);
+        else if ((CategoricalElementDecoratorPanel.class.equals(decoratorClass)))
+            return new CategoricalElementDecoratorPanel(model);
 		
 		return new JPanel();
 	}
