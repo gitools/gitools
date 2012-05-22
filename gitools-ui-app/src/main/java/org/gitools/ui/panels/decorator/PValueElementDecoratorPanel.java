@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
@@ -242,7 +243,11 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private void changeDecorator() {
 
-		this.decorator = (PValueElementDecorator) model.getActiveCellDecorator();
+        ElementDecorator elementDecorator = model.getActiveCellDecorator();
+        if (elementDecorator instanceof  PValueElementDecorator)
+            this.decorator = (PValueElementDecorator) elementDecorator;
+        else
+            return;
 
 		minColorCc.setColor(decorator.getMinColor());
 		maxColorCc.setColor(decorator.getMaxColor());

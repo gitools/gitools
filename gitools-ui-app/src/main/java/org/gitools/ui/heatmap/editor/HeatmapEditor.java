@@ -35,7 +35,6 @@ import org.gitools.persistence.FileFormat;
 
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -178,7 +177,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 				colorScalePanel.setScale(nextDecorator.getScale());
 			}
-            if (Heatmap.CELL_DECORATOR_SWITCHED.equals(pname)) {
+            if (Heatmap.VALUE_DIMENSION_SWITCHED.equals(pname)) {
                 final ElementDecorator nextDecorator = (ElementDecorator) newValue;
                 colorScalePanel.setScale(nextDecorator.getScale());
             } 

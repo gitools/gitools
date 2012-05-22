@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
@@ -199,9 +200,13 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 
-		private void changeDecorator() {
+	private void changeDecorator() {
 
-		this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
+        ElementDecorator elementDecorator = model.getActiveCellDecorator();
+        if (elementDecorator instanceof  LinearTwoSidedElementDecorator)
+    		this.decorator = (LinearTwoSidedElementDecorator) elementDecorator;
+        else
+            return;
 
 		minColorCc.setColor(decorator.getMinColor());
 		midColorCc.setColor(decorator.getMidColor());

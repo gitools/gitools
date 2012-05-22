@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.AppFrame;
@@ -254,7 +255,11 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
 	private void changeDecorator() {
 
-		this.decorator = (ZScoreElementDecorator) model.getActiveCellDecorator();
+        ElementDecorator elementDecorator = model.getActiveCellDecorator();
+        if (elementDecorator instanceof ZScoreElementDecorator)
+            this.decorator = (ZScoreElementDecorator) elementDecorator;
+        else
+            return;
 
 		lminColorCc.setColor(decorator.getLeftMinColor());
 		lmaxColorCc.setColor(decorator.getLeftMaxColor());
