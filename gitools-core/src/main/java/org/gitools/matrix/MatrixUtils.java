@@ -18,12 +18,14 @@
 package org.gitools.matrix;
 
 import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.BinaryColorScale;
-import edu.upf.bg.colorscale.impl.LinearTwoSidedColorScale;
-import edu.upf.bg.colorscale.impl.PValueColorScale;
+import edu.upf.bg.colorscale.impl.*;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
@@ -32,6 +34,8 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.ModuleMap;
 
 public class MatrixUtils {
+    
+    private static int MAX_UNIQUE = 30;
 
 	public static interface DoubleCast {
 		Double getDoubleValue(Object value);
@@ -100,46 +104,53 @@ public class MatrixUtils {
 	}
 
 	public static IColorScale inferScale(IMatrix data, int valueIndex) {
-		final int numRows = data.getRowCount();
-		final int numCols = data.getColumnCount();
 
-		boolean binary = true;
-		double min = 0;
-		double max = 0;
-
-		final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-				data.getCellAdapter().getProperty(valueIndex).getValueClass());
-
-		for (int ri = 0; ri < numRows; ri++) {
-			for (int ci = 0; ci < numCols; ci++) {
-				Double v = valueCast.getDoubleValue(data.getCellValue(ri, ci, valueIndex));
-				if (v != null) {
-					min = v < min ? v : min;
-					max = v > max ? v : max;
-					binary &= (Double.isNaN(v) || v == 0 || v == 1);
-				}
-			}
-		}
+        double min = Double.POSITIVE_INFINITY;
+        double max = Double.NEGATIVE_INFINITY;
 
 		IColorScale scale = null;
+        String dataDimName = data.getCellAttributes().get(valueIndex).getName();
+        String pvalRegex = ("(?i:pval|p-val)");
+        String zscoreRegex = ("(?i:z-score|zscore|zval|z-val)");
 
-		if (binary) {
+        double[] values = getUniquedValuesFromMatrix(data, data.getCellAdapter(),valueIndex,MAX_UNIQUE);
+        for (int i = 0; i < values.length; i++) {
+            double v = values[i];
+            min = v < min ? v : min;
+            max = v > max ? v : max;
+        }
+
+
+        if (values.length == 2) {
 			BinaryColorScale bscale = new BinaryColorScale();
-			bscale.setCutoff(1.0);
+			bscale.setCutoff(max);
 			bscale.setComparator(CutoffCmp.EQ.getShortName());
 			scale = bscale;
-		} else {
-			if (min >= 0 && max <= 1) {
+		} else if (values.length > 2 && values.length < MAX_UNIQUE) {
+            scale = new CategoricalColorScale(values);
+        }
+        else {
+			if (min >= 0 && max <= 1 || dataDimName.matches(pvalRegex)) {
 				scale = new PValueColorScale();
+            }
+            else if (dataDimName.matches(zscoreRegex)) {
+                scale = new ZScoreColorScale();
 			} else {
 				LinearTwoSidedColorScale lscale = new LinearTwoSidedColorScale();
 				lscale.getMin().setValue(min);
 				lscale.getMax().setValue(max);
-				// TODO infer middle point value
+                if (lscale.getMax().getValue()>0 && lscale.getMin().getValue()<0) {
+                    lscale.getMid().setValue(0.0);
+                }
+                else {
+                    lscale.getMid().setValue(
+                            (lscale.getMax().getValue()+
+                            lscale.getMin().getValue())
+                                /2);
+                }
 				scale = lscale;
 			}
 		}
-
 		return scale;
 	}
 
@@ -199,4 +210,51 @@ public class MatrixUtils {
 
 		return map;
 	}
+
+    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension) {
+        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE);
+    }
+
+
+    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, int maxUnique) {
+        /* returns all values DIFFERENT from a heatmap dimension except if it is too man (50), it returns
+        * an equally distributed array values from min to max*/
+
+        Double[] values = null;
+        maxUnique = 30;
+        List<Double> valueList = new ArrayList<Double>();
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(
+                cellAdapter.getProperty(valueDimension).getValueClass());
+        Double min = Double.POSITIVE_INFINITY;
+        Double max = Double.NEGATIVE_INFINITY;
+        
+        int colNb = data.getColumnCount();
+        int rowNb = data.getRowCount();
+        for (int r = 0; r<rowNb; r++) {
+            for (int c = 0; c < colNb; c++) {
+                double d = cast.getDoubleValue(
+                        data.getCellValue(r, c, valueDimension));
+                if (!Double.isNaN(d)) {
+                    if (valueList.size() <= maxUnique && !valueList.contains(d) )
+                        valueList.add(d);
+                    min = d < min ? d : min;
+                    max = d > max ? d : max;
+                }
+            }
+        }
+        if (!valueList.contains(min))
+            valueList.add(min);
+        if (!valueList.contains(max))
+            valueList.add(max);
+
+        if (valueList.size() >= maxUnique) {
+            valueList.clear();
+            double spectrum = max-min;
+            double step = spectrum/maxUnique;
+            for (int i = 0; i < maxUnique; i++) {
+                valueList.add(i*step-(spectrum - max));
+            }
+        }
+        return ArrayUtils.toPrimitive(valueList.toArray(new Double[]{}));
+    }
 }

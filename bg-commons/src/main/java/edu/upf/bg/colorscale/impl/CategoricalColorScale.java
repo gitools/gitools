@@ -11,18 +11,7 @@ import java.util.Arrays;
 public class CategoricalColorScale extends NumericColorScale {
 
     private ColorScalePoint[] points;
-    private Color[] predefinedColors = new Color[] {
-            Color.BLUE,
-            Color.GREEN,
-            Color.RED,
-            Color.YELLOW,
-            Color.CYAN,
-            Color.ORANGE,
-            Color.PINK,
-            Color.MAGENTA,
-            Color.BLACK,
-            Color.GRAY
-    };
+    private boolean cagetoricalSpans = true;
 
     public CategoricalColorScale() {
         this(
@@ -43,33 +32,12 @@ public class CategoricalColorScale extends NumericColorScale {
     public void setValues(double[] pointValues) {
         Arrays.sort(pointValues);
         this.points = new ColorScalePoint[pointValues.length];
-        /*if (pointValues.length > predefinedColors.length) {
-            try {
-                throw new Exception("Too many different values for categorical scale");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-        } */
 
         
         Color[] palette = generateColors(pointValues.length);
         for (int i = 0; i<pointValues.length; i++) {
             this.points[i] =
                     new ColorScalePoint(pointValues[i],palette[i]);
-            /*
-            if (i < 10)
-               this.points[i] =
-                    new ColorScalePoint(pointValues[i],predefinedColors[i]);
-            else if(i < 20)
-                this.points[i] =
-                        new ColorScalePoint(pointValues[i],predefinedColors[i-10].brighter());
-            else if(i < 30)
-                this.points[i] =
-                        new ColorScalePoint(pointValues[i],predefinedColors[i-20].brighter().brighter());
-            else if(i < 40)
-                this.points[i] =
-                        new ColorScalePoint(pointValues[i],predefinedColors[i-30].brighter().brighter().brighter());*/
         }
 
     }
@@ -77,6 +45,14 @@ public class CategoricalColorScale extends NumericColorScale {
     public Color[] generateColors(int n)
     {
         Color[] cols = new Color[n];
+
+        if (n == 3) {
+            cols[0] = Color.BLUE;
+            cols[1] = Color.green.darker();
+            cols[2] = Color.RED;
+            return cols;
+        }
+
         for(int i = 0; i < n; i++)
         {
             cols[i] = Color.getHSBColor((float) i / (float) n, 0.85f, 1.0f);
@@ -86,8 +62,13 @@ public class CategoricalColorScale extends NumericColorScale {
 
     public ColorScalePoint getColorScalePoint(double value) {
         for (ColorScalePoint p: points) {
-            if (p.getValue() == value)
-                return p;
+            if (cagetoricalSpans) {
+                if (p.getValue() >= value)
+                    return p;
+            } else {
+                if (p.getValue() == value)
+                    return p;
+            }
         }
         return null;
     }
@@ -95,11 +76,18 @@ public class CategoricalColorScale extends NumericColorScale {
     @Override
     protected Color colorOf(double value) {
 
-       for (ColorScalePoint p: points) {
-           if (p.getValue() == value)
-               return p.getColor();
-       }
-       return super.getEmptyColor();
+        Color c = super.getEmptyColor();
+        ColorScalePoint firstPoint = getMin();
+        for (ColorScalePoint p: points) {
+            if (cagetoricalSpans) {
+                if (p.getValue() >= value)
+                    return p.getColor();
+            } else {
+                if (p.getValue() == value)
+                    return p.getColor();
+            }
+        }
+        return c;
     }
 
     @Override
@@ -107,14 +95,41 @@ public class CategoricalColorScale extends NumericColorScale {
         double[] pointValues = new double[points.length];
         for(int i = 0; i<points.length;i++)
             pointValues[i] = points[i].getValue();
+
+        /*
+        Double spectrum = getMaxValue() - getMinValue();
+        Double step = spectrum/(points.length-1);
+        pointValues[points.length] = pointValues[points.length-1] + step;  */
         return pointValues;
     }
 
     public ColorScalePoint getMin() {
         return points[0];
     }
+    
+    @Override
+    public double getMinValue() {
+        Double spectrum = points[points.length-1].getValue() - points[0].getValue();
+        Double step = spectrum/(points.length-1);
+        return points[0].getValue()-step;
+    }
 
     public ColorScalePoint getMax() {
-        return points[points.length-1];
+        ColorScalePoint last = points[points.length-1];
+        return last;
     }
+
+    @Override
+    public double getMaxValue() {
+        return points[points.length-1].getValue();
+    }
+
+    public boolean isCagetoricalSpans() {
+        return cagetoricalSpans;
+    }
+
+    public void setCagetoricalSpans(boolean cagetoricalSpans) {
+        this.cagetoricalSpans = cagetoricalSpans;
+    }
+
 }

@@ -51,6 +51,10 @@ public abstract class ElementDecorator extends AbstractModel {
 	public ElementDecorator(IElementAdapter adapter) {
 		this.adapter = adapter;
 	}
+
+    public ElementDecorator(IColorScale scale, IElementAdapter adapter) {
+        this.adapter = adapter;
+    }
 	
 	public IElementAdapter getAdapter() {
 		return adapter;

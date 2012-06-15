@@ -73,58 +73,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 				}
 			}
 		});
-        /*
-		
-		minValTxt = new JTextField(Double.toString(decorator.getMinValue()));
-		minValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				minValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				minValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				minValueChanged(); }
-		});
-		
-		minColorCc = new ColorChooserLabel(decorator.getMinColor());
-		minColorCc.setToolTipText("Minimum value color");
-		minColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMinColor(color); }
-		});
-		
-		midValTxt = new JTextField(Double.toString(decorator.getMidValue()));
-		midValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				midValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				midValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				midValueChanged(); }
-		});
-		
-		midColorCc = new ColorChooserLabel(decorator.getMidColor());
-		midColorCc.setToolTipText("Middle value color");
-		midColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMidColor(color); }
-		});
-		
-		maxValTxt = new JTextField(Double.toString(decorator.getMaxValue()));
-		maxValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				maxValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				maxValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				maxValueChanged(); }
-		});
-		
-		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
-		maxColorCc.setToolTipText("Maximum value color");
-		maxColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMaxColor(color); }
-		});
+	
 
 		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
 		emptyCc.setToolTipText("Empty cell color");
@@ -141,7 +90,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 		add(new JLabel("Value"));
 		add(valueCb);
 
-		Box box01 = new Box(BoxLayout.X_AXIS);
+		/*Box box01 = new Box(BoxLayout.X_AXIS);
 		box01.add(new JLabel(" Min"));
 		box01.add(Box.createRigidArea(boxSpace));
 		box01.add(minValTxt);
@@ -163,13 +112,13 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 		box03.add(maxValTxt);
 		box03.add(Box.createRigidArea(boxSpace));
 		box03.add(maxColorCc);
-		add(box03);
+		add(box03); */
 
 		Box box04 = new Box(BoxLayout.LINE_AXIS);
 		box04.add(new JLabel(" Empty"));
 		box04.add(Box.createRigidArea(boxSpace));
 		box04.add(emptyCc);
-		add(box04); */
+		add(box04); 
 	}
 
 	private void refresh() {
@@ -200,13 +149,13 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
         else
             return;
 
-        /*
-		minColorCc.setColor(decorator.getMinColor());
-		maxColorCc.setColor(decorator.getMaxColor());
+        
+		//minColorCc.setColor(decorator.getMinColor());
+		//maxColorCc.setColor(decorator.getMaxColor());
 		emptyCc.setColor(decorator.getEmptyColor());
 
-		minValTxt.setText(Double.toString(decorator.getMinValue()));
-		maxValTxt.setText(Double.toString(decorator.getMaxValue()));  */
+		//minValTxt.setText(Double.toString(decorator.getMinValue()));
+		//maxValTxt.setText(Double.toString(decorator.getMaxValue()));
 
 	}
 		

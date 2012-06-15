@@ -21,12 +21,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.model.decorator.impl.ZScoreElementDecorator;
+import org.gitools.model.decorator.impl.*;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 
 public class ElementDecoratorPanelFactory {
 
@@ -42,7 +38,7 @@ public class ElementDecoratorPanelFactory {
 			return new LinearTwoSidedElementDecoratorPanel(model);
 		else if (CorrelationElementDecorator.class.equals(decoratorClass))
 			return new LinearTwoSidedElementDecoratorPanel(model);
-        else if ((CategoricalElementDecoratorPanel.class.equals(decoratorClass)))
+        else if ((CategoricalElementDecorator.class.equals(decoratorClass)))
             return new CategoricalElementDecoratorPanel(model);
 		
 		return new JPanel();

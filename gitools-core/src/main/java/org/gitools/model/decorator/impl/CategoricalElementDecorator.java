@@ -122,4 +122,13 @@ public class CategoricalElementDecorator extends ElementDecorator {
 	public IColorScale getScale() {
 		return scale;
 	}
+
+    public boolean isCagetoricalSpans() {
+        return scale.isCagetoricalSpans();
+    }
+
+    public void setCagetoricalSpans(boolean cagetoricalSpans) {
+        scale.setCagetoricalSpans(cagetoricalSpans);
+    }
+
 }

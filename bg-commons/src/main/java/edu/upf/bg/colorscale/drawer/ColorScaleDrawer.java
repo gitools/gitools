@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ColorScaleDrawer {
 
@@ -148,20 +149,57 @@ public class ColorScaleDrawer {
 
 			g.setColor(legendPointColor);
 
-			for (double point : scale.getPoints()) {
+            int lastX = 0;
+            int minusWidth = g.getFontMetrics().stringWidth("-");
+            double[] points = scale.getPoints();
+			for (int i=0; i < points.length ; i++ ) {
+                double point = points[i];
+                
 				if (point >= zoomRangeMin && point <= zoomRangeMax) {
-					int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
-					g.drawLine(x, bys, x, ye);
 					
+                    int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
 					String legend = gf.format(legendFormat, point);
-					
 					int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    int positiveOffset = (point >= 0 ? minusWidth : 0);
+
+                    if (x - 2 - fontWidth - positiveOffset < lastX) {
+
+                        // Check if it fits in the next range
+                        if ( x != bxs && i + 1 < points.length) {
+                            
+                           double nextPoint = points[i + 1];
+                           int nextX = bxs + (int) ((nextPoint - zoomRangeMin) * invDelta);
+
+                           if ( x + (positiveOffset + fontWidth)*2 + 2 > nextX) {
+
+                               g.drawLine(x, bys, x, ye - fontHeight);
+
+                                // Skip this point because there is no space for it.
+                                continue;
+                           }
+                        }
+
+                        g.drawLine(x, bys, x, ye);
+                        lastX = x + fontWidth + 2;
+                        x = x + 2;
+                        
+                    } else {
+
+                       g.drawLine(x, bys, x, ye);
+                       lastX = x + 2;
+                       x = x - fontWidth - 2;
+
+                    }
+
+                    /*
 					if (x + 2 + fontWidth > bxe)
 						x = x - fontWidth - 2;
 					else
 						x = x + 2;
+						*/
 
-					g.drawString(legend, x, ye);
+                    g.drawString(legend, x, ye);
+
 				}
 			}
 		}
