@@ -62,7 +62,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard {
 		hclPage = new HclLevelPage(header);
 		addPage(hclPage);
 
-		clustersPage = new ColoredLabelsGroupsPage(header);
+		clustersPage = new ColoredLabelsGroupsPage(header.getClusters());
 		addPage(clustersPage);
 	}
 

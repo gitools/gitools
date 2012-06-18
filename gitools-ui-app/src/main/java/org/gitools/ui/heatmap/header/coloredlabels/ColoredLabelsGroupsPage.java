@@ -23,109 +23,123 @@
 
 package org.gitools.ui.heatmap.header.coloredlabels;
 
-import java.awt.Color;
-import javax.swing.ListModel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
-import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumnModel;
+
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.utils.DocumentChangeListener;
 
 public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
-	private static class ClusterListModel implements ListModel {
+    private boolean valueEditable;
 
-		private ColoredLabel[] clusters;
+    class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
-		public ClusterListModel(ColoredLabel[] clusters) {
-			this.clusters = clusters;
-		}
+        private JButton delegate = new JButton();
 
-		@Override
-		public int getSize() {
-			return clusters.length;
-		}
+        Color savedColor;
 
-		@Override
-		public Object getElementAt(int index) {
-			return clusters[index];
-		}
+        public ColorChooserEditor() {
+            ActionListener actionListener = new ActionListener() {
+                public void actionPerformed(ActionEvent actionEvent) {
+                    Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
+                    ColorChooserEditor.this.changeColor(color);
+                }
+            };
+            delegate.setFocusPainted(false);
+            delegate.setContentAreaFilled(false);
+            delegate.setFocusable(false);
+            delegate.setOpaque(true);
+            delegate.addActionListener(actionListener);
+        }
 
-		@Override
-		public void addListDataListener(ListDataListener l) {
-			//TODO
-		}
+        public Object getCellEditorValue() {
+            return savedColor;
+        }
 
-		@Override
-		public void removeListDataListener(ListDataListener l) {
-			//TODO
-		}
-	}
+        private void changeColor(Color color) {
+            if (color != null) {
+                savedColor = color;
+                delegate.setBackground(color);
+            }
+        }
 
-	private HeatmapColoredLabelsHeader header;
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+                                                     int row, int column) {
+            changeColor((Color) value);
+            return delegate;
+        }
+    }
 
-    public ColoredLabelsGroupsPage(HeatmapColoredLabelsHeader header) {
-		this.header = header;
+    private static class ColorCellRenderer extends DefaultTableCellRenderer {
+        public ColorCellRenderer() {
+            super();
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Color c = (Color) value;
+            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            component.setBackground(c);
+            component.setForeground(c);
+            return component;
+        }
+    }
+
+
+	private ColoredLabel[] coloredLabels;
+
+    public ColoredLabelsGroupsPage(ColoredLabel[] coloredLabels) {
+
+        this.coloredLabels = coloredLabels;
 		
         initComponents();
 
-		clusterList.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent e) {
-				clusterSelectionChanged(); }
-		});
+        ColoredLabelsTableModel tm = new ColoredLabelsTableModel(coloredLabels);
+        table.setModel(tm);
 
-		clusterName.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				clusterNameChanged(); }
-		});
+        tm.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
 
-		clusterColor.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				clusterColorChanged(); }
-		});
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
+        columnModel.getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
+        columnModel.getColumn(2).setCellEditor(new ColorChooserEditor());
+        columnModel.getColumn(2).setCellRenderer(new ColorCellRenderer());
+                
+        setTitle("Labels configuration");
+        setComplete(true);
+    }
 
-		setTitle("Labels configuration");
-		setComplete(true);
+    public void setColoredLabels(ColoredLabel[] coloredLabels) {
+        this.coloredLabels = coloredLabels;
+        ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
+        model.addAllLabels(coloredLabels);
+    }
+    
+    public void setValueEditable(boolean editable) {
+        ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
+        model.setValueEditable(editable);
+    }
+
+    public boolean isValueEditable() {
+        ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
+        return model.isValueEditable();
     }
 
 	@Override
 	public void updateControls() {
 		super.updateControls();
-
-		ClusterListModel clusterListModel =
-				new ClusterListModel(header.getClusters());
-
-		clusterList.setModel(clusterListModel);
-		clusterSelectionChanged();
-	}
-
-	private void clusterSelectionChanged() {
-		int index = clusterList.getSelectedIndex();
-		boolean sel = index != -1;
-		clusterName.setEnabled(sel);
-		clusterColor.setEnabled(sel);
-
-		if (sel) {
-			ColoredLabel cluster = header.getClusters()[index];
-			clusterName.setText(cluster.getName());
-			clusterColor.setColor(cluster.getColor());
-		}
-	}
-
-	private void clusterNameChanged() {
-		int index = clusterList.getSelectedIndex();
-		ColoredLabel cluster = header.getClusters()[index];
-		cluster.setName(clusterName.getText());
-	}
-
-	private void clusterColorChanged() {
-		int index = clusterList.getSelectedIndex();
-		ColoredLabel cluster = header.getClusters()[index];
-		cluster.setColor(clusterColor.getColor());
 	}
 
 
@@ -139,42 +153,28 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     private void initComponents() {
 
         jLabel5 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        clusterList = new javax.swing.JList();
-        jLabel6 = new javax.swing.JLabel();
-        clusterName = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        clusterColor = new org.gitools.ui.platform.component.ColorChooserLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
 
         jLabel5.setText("Labels");
 
-        clusterList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(clusterList);
-
-        jLabel6.setText("Name");
-
-        jLabel7.setText("Color");
-
-        clusterColor.setColor(new java.awt.Color(1, 1, 1));
-        clusterColor.setPreferredSize(new java.awt.Dimension(28, 28));
+        table.setModel(new org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsTableModel());
+        table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        table.setShowHorizontalLines(false);
+        jScrollPane2.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clusterName, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clusterColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                        .addGap(84, 84, 84)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -183,27 +183,16 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(clusterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7))
-                    .addComponent(clusterColor, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                .addGap(58, 58, 58))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.gitools.ui.platform.component.ColorChooserLabel clusterColor;
-    private javax.swing.JList clusterList;
-    private javax.swing.JTextField clusterName;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 
 }

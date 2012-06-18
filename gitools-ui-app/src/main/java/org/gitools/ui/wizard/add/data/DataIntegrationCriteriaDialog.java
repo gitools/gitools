@@ -45,20 +45,20 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
     /** A return status code - returned if OK button has been pressed */
     public static final int RET_OK = 1;
 
-        private static class OperatorCellRenderer extends DefaultTableCellRenderer {
-            public OperatorCellRenderer() {
-                super();
-            }
-
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Operator op = (Operator) value;
-                String opString = op.getAbbreviation();
-                if (op.equals(Operator.AND))
-                    opString = "    " + op.getAbbreviation();
-                return super.getTableCellRendererComponent(table, opString, isSelected, hasFocus, row, column);
-            }
+    private static class OperatorCellRenderer extends DefaultTableCellRenderer {
+        public OperatorCellRenderer() {
+            super();
         }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Operator op = (Operator) value;
+            String opString = op.getAbbreviation();
+            if (op.equals(Operator.AND))
+                opString = "    " + op.getAbbreviation();
+            return super.getTableCellRendererComponent(table, opString, isSelected, hasFocus, row, column);
+        }
+    }
 
 	private static class ComboBoxCellEditor extends DefaultCellEditor {
 		public ComboBoxCellEditor(Object[] values) {

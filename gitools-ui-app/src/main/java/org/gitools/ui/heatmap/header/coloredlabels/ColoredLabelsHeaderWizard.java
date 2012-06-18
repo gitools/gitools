@@ -18,7 +18,6 @@
 package org.gitools.ui.heatmap.header.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
@@ -27,7 +26,6 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
-import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
@@ -77,7 +75,8 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
 
-		clustersPage = new ColoredLabelsGroupsPage(header);
+		clustersPage = new ColoredLabelsGroupsPage(header.getClusters());
+        clustersPage.setValueEditable(false);
 		addPage(clustersPage);
 	}
 
@@ -85,6 +84,14 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 	public boolean canFinish() {
 		return currentPage != sourcePage;
 	}
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        if (page == headerPage) {
+            clustersPage.setColoredLabels(header.getClusters());
+        }
+        return super.getNextPage(page);
+    }
 
 	@Override
 	public void pageLeft(IWizardPage currentPage) {	
@@ -119,7 +126,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 				}
 			}
 		});
-
 	}
 
 	public HeatmapColoredLabelsHeader getHeader() {
