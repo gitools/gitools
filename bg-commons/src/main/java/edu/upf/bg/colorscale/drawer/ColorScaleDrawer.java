@@ -19,6 +19,7 @@ package edu.upf.bg.colorscale.drawer;
 
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
 import edu.upf.bg.formatter.GenericFormatter;
 
 import java.awt.*;
@@ -133,7 +134,7 @@ public class ColorScaleDrawer {
 			g.drawRect(bxs, bys, bxe - bxs, bye - bys);
 		}
 
-		if (legendEnabled) {
+        if (legendEnabled) {
 			int fontHeight = g.getFontMetrics().getHeight();
 			int ys = bye + legendPadding;
 			int ye = ys + fontHeight;
@@ -148,12 +149,25 @@ public class ColorScaleDrawer {
             double[] points = scale.getPoints();
 			for (int i=0; i < points.length ; i++ ) {
                 double point = points[i];
+                /*experimental*/
+                if (scale instanceof CategoricalColorScale) {
+
+                    
+                }
+                    /*end-experimental*/           
                 
 				if (point >= zoomRangeMin && point <= zoomRangeMax) {
 					
                     int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
 					String legend = gf.format(legendFormat, point);
-					int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    /*experimental*/
+                    if (scale instanceof CategoricalColorScale) {
+                        scale = (CategoricalColorScale) scale;
+                        String name = ((CategoricalColorScale) scale).getPointObjects()[i].getName();
+                        legend = (name == "") ? legend : name;
+                    }
+                    /*end-experimental*/
+                    int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int positiveOffset = (point >= 0 ? minusWidth : 0);
 
                     int optimalPosition = x - 2 - fontWidth - positiveOffset;
