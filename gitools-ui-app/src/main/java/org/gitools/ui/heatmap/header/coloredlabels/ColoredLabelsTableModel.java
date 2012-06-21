@@ -37,7 +37,8 @@ class ColoredLabelsTableModel implements TableModel {
 	private List<ColoredLabel> labelList;
 
 	private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
-    private boolean valueEditable;
+    private boolean valueEditable = true;
+    private boolean valueMustBeNumeric = false;
 
     public ColoredLabelsTableModel(ColoredLabel[] coloredLabels) {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
@@ -60,6 +61,14 @@ class ColoredLabelsTableModel implements TableModel {
 
     public boolean isValueEditable() {
         return this.valueEditable;
+    }
+
+    public boolean isValueMustBeNumeric() {       
+        return valueMustBeNumeric;
+    }
+
+    public void setValueMustBeNumeric(boolean valueMustBeNumeric) {
+        this.valueMustBeNumeric = valueMustBeNumeric;
     }
 
 	@Override
@@ -105,8 +114,15 @@ class ColoredLabelsTableModel implements TableModel {
 		switch (columnIndex) {
             case 0:
                 String value = (String) aValue;
-                labelList.get(rowIndex).setDescription(value);
+                try {
+                    if (this.valueMustBeNumeric)
+                        Double.parseDouble(value);
+                    labelList.get(rowIndex).setValue(value);
+                } catch (NumberFormatException e) {
+                    // do nothing
+                }
             break;
+
 			case 1:
 				String description = (String) aValue;
                 labelList.get(rowIndex).setDescription(description);

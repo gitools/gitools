@@ -17,18 +17,12 @@
 
 package edu.upf.bg.colorscale.drawer;
 
-import edu.upf.bg.colorscale.NumericColorScale;
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.formatter.GenericFormatter;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 public class ColorScaleDrawer {
 
@@ -162,7 +156,8 @@ public class ColorScaleDrawer {
 					int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int positiveOffset = (point >= 0 ? minusWidth : 0);
 
-                    if (x - 2 - fontWidth - positiveOffset < lastX) {
+                    int optimalPosition = x - 2 - fontWidth - positiveOffset;
+                    if (optimalPosition < lastX) {
 
                         // Check if it fits in the next range
                         if ( x != bxs && i + 1 < points.length) {
@@ -197,8 +192,8 @@ public class ColorScaleDrawer {
 					else
 						x = x + 2;
 						*/
-
-                    g.drawString(legend, x, ye);
+                    if (x < bxe)
+                        g.drawString(legend, x, ye);
 
 				}
 			}

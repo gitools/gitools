@@ -1,9 +1,25 @@
+/*
+ *  Copyright 2011 Universitat Pompeu Fabra.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *  under the License.
+ */
 package edu.upf.bg.colorscale.impl;
 
 
-import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.colorscale.util.ColorConstants;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -46,7 +62,12 @@ public class CategoricalColorScale extends NumericColorScale {
     {
         Color[] cols = new Color[n];
 
-        if (n == 3) {
+        if (n == 2) {
+            cols[0] = ColorConstants.binaryMinColor;
+            cols[1] = ColorConstants.binaryMaxColor;
+            return cols;
+        }
+        else if (n == 3) {
             cols[0] = Color.BLUE;
             cols[1] = Color.green.darker();
             cols[2] = Color.RED;
@@ -96,10 +117,6 @@ public class CategoricalColorScale extends NumericColorScale {
         for(int i = 0; i<points.length;i++)
             pointValues[i] = points[i].getValue();
 
-        /*
-        Double spectrum = getMaxValue() - getMinValue();
-        Double step = spectrum/(points.length-1);
-        pointValues[points.length] = pointValues[points.length-1] + step;  */
         return pointValues;
     }
 
@@ -132,4 +149,12 @@ public class CategoricalColorScale extends NumericColorScale {
         this.cagetoricalSpans = cagetoricalSpans;
     }
 
+    public ColorScalePoint[] getPointObjects() {
+        return this.points;
+    }
+
+    public void setPointObjects(ColorScalePoint[] points) {
+        Arrays.sort(points);
+        this.points = points;
+    }
 }

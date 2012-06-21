@@ -19,6 +19,7 @@ package org.gitools.ui.heatmap.header.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
@@ -85,14 +86,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		return currentPage != sourcePage;
 	}
 
-    @Override
-    public IWizardPage getNextPage(IWizardPage page) {
-        if (page == headerPage) {
-            clustersPage.setColoredLabels(header.getClusters());
-        }
-        return super.getNextPage(page);
-    }
-
 	@Override
 	public void pageLeft(IWizardPage currentPage) {	
 		super.pageLeft(currentPage);
@@ -126,7 +119,14 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 				}
 			}
 		});
+        clustersPage.setColoredLabels(header.getClusters());
 	}
+    
+    @Override
+    public void performFinish() {
+        ColoredLabel[] cls = clustersPage.getColoredLabels();
+        header.setClusters(cls);
+    }
 
 	public HeatmapColoredLabelsHeader getHeader() {
 		return header;

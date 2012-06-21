@@ -17,16 +17,23 @@
 
 package org.gitools.ui.panels.decorator;
 
+import edu.upf.bg.colorscale.ColorScalePoint;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.CategoricalElementDecorator;
+import org.gitools.ui.dialog.EditCategoricalScaleDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.platform.dialog.AbstractDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -39,14 +46,10 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
 	private JComboBox valueCb;
 
-	private JTextField minValTxt;
-	private JTextField maxValTxt;
-	private JTextField midValTxt;
-
-	private ColorChooserLabel minColorCc;
-	private ColorChooserLabel midColorCc;
-	private ColorChooserLabel maxColorCc;
 	private ColorChooserLabel emptyCc;
+    
+    private String categoriesLabelText = " Categories:";
+    private JLabel categoriesLabel = new JLabel(categoriesLabelText);
 
 	public CategoricalElementDecoratorPanel(Heatmap model) {
 		super(model);
@@ -87,39 +90,71 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JLabel("Value"));
 		add(valueCb);
+        
+        int catCount = decorator.getCategoriesCount();
+        categoriesLabel.setText(catCount + categoriesLabelText);
+        Box box02 = new Box(BoxLayout.LINE_AXIS);
+        box02.add(categoriesLabel);
+        JButton categoryEditBtn = new JButton("edit");
+        categoryEditBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editCategoricalColorScale();
+            }
+        });
+        box02.add(categoryEditBtn);
+        add(box02);
 
-		/*Box box01 = new Box(BoxLayout.X_AXIS);
-		box01.add(new JLabel(" Min"));
-		box01.add(Box.createRigidArea(boxSpace));
-		box01.add(minValTxt);
-		box01.add(Box.createRigidArea(boxSpace));
-		box01.add(minColorCc);
-		add(box01);
 
-		Box box02 = new Box(BoxLayout.LINE_AXIS);
-		box02.add(new JLabel(" Mid"));
-		box02.add(Box.createRigidArea(boxSpace));
-		box02.add(midValTxt);
-		box02.add(Box.createRigidArea(boxSpace));
-		box02.add(midColorCc);
-		add(box02);
 
-		Box box03 = new Box(BoxLayout.LINE_AXIS);
-		box03.add(new JLabel(" Max"));
-		box03.add(Box.createRigidArea(boxSpace));
-		box03.add(maxValTxt);
-		box03.add(Box.createRigidArea(boxSpace));
-		box03.add(maxColorCc);
-		add(box03); */
-
-		Box box04 = new Box(BoxLayout.LINE_AXIS);
-		box04.add(new JLabel(" Empty"));
-		box04.add(Box.createRigidArea(boxSpace));
-		box04.add(emptyCc);
-		add(box04); 
+        Box box01 = new Box(BoxLayout.LINE_AXIS);
+        box01.add(new JLabel(" Empty"));
+        box01.add(Box.createRigidArea(boxSpace));
+        box01.add(emptyCc);
+        add(box01);
 	}
 
-	private void refresh() {
+    private void editCategoricalColorScale() {
+
+
+        CategoricalElementDecorator elementDecorator = (CategoricalElementDecorator) model.getActiveCellDecorator();
+        CategoricalColorScale scale =
+                (CategoricalColorScale) elementDecorator.getScale();
+        ColorScalePoint[] scalePoints = scale.getPointObjects();
+
+        ColoredLabel[] coloredLabels = new ColoredLabel[scalePoints.length];
+        int index = 0;
+        for (ColorScalePoint sp : scalePoints) {
+            coloredLabels[index] = new ColoredLabel(sp.getValue(),sp.getName(),sp.getColor());
+            index++;
+        }
+
+        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.instance(), coloredLabels);
+        dialog.getPage().setValueMustBeNumeric(true);
+        dialog.setVisible(true);
+        if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {
+            coloredLabels = dialog.getPage().getColoredLabels();
+
+            ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.length];
+            index = 0;
+            for (ColoredLabel cl : coloredLabels) {
+                newScalePoints[index] = new ColorScalePoint( Double.parseDouble(cl.getValue()),
+                                                             cl.getColor(),
+                                                             cl.getDescription());
+                index++;
+            }
+
+            updateCategoriesLabel();
+            elementDecorator.setCategories(newScalePoints);
+        }
+    }
+
+    private void updateCategoriesLabel() {
+        int catCount = decorator.getCategoriesCount();
+        categoriesLabel.setText(catCount + categoriesLabelText);
+    }
+
+    private void refresh() {
 		for (int i = 0; i < valueProperties.size(); i++)
 			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
 				valueCb.setSelectedIndex(i);
@@ -135,7 +170,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 		changeDecorator();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
-
+        updateCategoriesLabel();
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 
@@ -147,49 +182,20 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
         else
             return;
 
-        
-		//minColorCc.setColor(decorator.getMinColor());
-		//maxColorCc.setColor(decorator.getMaxColor());
 		emptyCc.setColor(decorator.getEmptyColor());
 
-		//minValTxt.setText(Double.toString(decorator.getMinValue()));
-		//maxValTxt.setText(Double.toString(decorator.getMaxValue()));
+	}
 
-	}
-		
-	protected void minValueChanged() {
-		try {
-			double value = Double.parseDouble(minValTxt.getText());
-			//decorator.setMinValue(value);
-			
-			AppFrame.instance().setStatusText("Minimum value changed to " + value);
-		}
-		catch (Exception e) { 
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}
-	
-	protected void midValueChanged() {
-		try {
-			double value = Double.parseDouble(midValTxt.getText());
-			//decorator.setMidValue(value);
-			
-			AppFrame.instance().setStatusText("Middle value changed to " + value);
-		}
-		catch (Exception e) { 
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}
-	
-	protected void maxValueChanged() {
+
+	/*protected void maxValueChanged() {
 		try {
 			double value = Double.parseDouble(maxValTxt.getText());
 			//decorator.setMaxValue(value);
-			
+
 			AppFrame.instance().setStatusText("Maximum value changed to " + value);
 		}
-		catch (Exception e) { 
+		catch (Exception e) {
 			AppFrame.instance().setStatusText("Invalid value.");
 		}
-	}
+	}                  */
 }

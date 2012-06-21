@@ -17,6 +17,7 @@
 
 package org.gitools.model.decorator.impl;
 
+import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.CategoricalColorScale;
 import edu.upf.bg.formatter.GenericFormatter;
@@ -117,6 +118,16 @@ public class CategoricalElementDecorator extends ElementDecorator {
 		decoration.setBgColor(color);
 		decoration.setToolTip(fmt.pvalue(v));
 	}
+
+    public void setCategories(ColorScalePoint[] newScalePoints) {
+        ColorScalePoint[] old = scale.getPointObjects();
+        scale.setPointObjects(newScalePoints);
+        firePropertyChange(PROPERTY_CHANGED, old, newScalePoints);
+    }
+    
+    public int getCategoriesCount() {
+        return scale.getPoints().length;
+    }
 
 	@Override
 	public IColorScale getScale() {
