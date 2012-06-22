@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader.ColoredLabel;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
@@ -149,8 +149,8 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				for (ColoredLabel cl : clusters) {
 					//newClusters[index] ;
-					HeatmapColoredLabelsHeader.ColoredLabel newcl = 
-							colorHeaderCopy.new ColoredLabel(cl.getName(), cl.getColor());
+					ColoredLabel newcl =
+							new ColoredLabel(cl.getDescription(), cl.getColor());
 					newClusters[index] = newcl;
 					index++;
 				}

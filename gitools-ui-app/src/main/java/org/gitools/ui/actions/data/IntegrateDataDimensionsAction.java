@@ -172,6 +172,7 @@ public class IntegrateDataDimensionsAction extends BaseAction {
                 newDecorators[oldDecorators.length] = decorator;
                 decorator.setValueIndex(oldDecorators.length);
                 heatmap.setCellDecorators(newDecorators);
+
             }
         });
     }

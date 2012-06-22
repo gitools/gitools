@@ -42,46 +42,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 	public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
 
-	public class ColoredLabel {
-
-		protected String name;
-
-		@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-		protected Color color;
-
-		public ColoredLabel() {
-			name = "";
-			color = Color.WHITE;
-		}
-
-		public ColoredLabel(String name, Color color) {
-			this.name = name;
-			this.color = color;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Color getColor() {
-			return color;
-		}
-
-		public void setColor(Color color) {
-			this.color = color;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-	}
-	
-	/* The thickness of the color band */
+    /* The thickness of the color band */
 	protected int thickness;
 
 	/* Color band margin */
@@ -283,9 +244,9 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		String[] clusterTitles = results.getClusterTitles();
 		coloredLabels = new ColoredLabel[results.getNumClusters()];
 		for (int i = 0; i < results.getNumClusters(); i++) {
-			ColoredLabel cluster = coloredLabels[i] = new ColoredLabel();
-			cluster.setName(clusterTitles[i]);
-			cluster.setColor(cg.next());
+			ColoredLabel cluster = coloredLabels[i]
+                    = new ColoredLabel(clusterTitles[i],
+                                       cg.next());
 		}
 
 		dataColoredLabelIndices = new HashMap<String, Integer>();

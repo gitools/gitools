@@ -18,8 +18,8 @@
 package org.gitools.ui.heatmap.header.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
@@ -27,7 +27,6 @@ import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
-import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
@@ -77,7 +76,8 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 		headerPage = new ColoredLabelsConfigPage(header);
 		addPage(headerPage);
 
-		clustersPage = new ColoredLabelsGroupsPage(header);
+		clustersPage = new ColoredLabelsGroupsPage(header.getClusters());
+        clustersPage.setValueEditable(false);
 		addPage(clustersPage);
 	}
 
@@ -119,8 +119,14 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 				}
 			}
 		});
-
+        clustersPage.setColoredLabels(header.getClusters());
 	}
+    
+    @Override
+    public void performFinish() {
+        ColoredLabel[] cls = clustersPage.getColoredLabels();
+        header.setClusters(cls);
+    }
 
 	public HeatmapColoredLabelsHeader getHeader() {
 		return header;

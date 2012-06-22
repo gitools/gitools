@@ -25,4 +25,5 @@ public class ElementDecoratorNames {
 	public static final String ZSCORE = "Z-Score scale";
 	public static final String FORMATTED_TEXT = "Formatted text";
 	public static final String CORRELATION = "Correlation scale";
+    public static final String CATEGORICAL = "Categorical scale";
 }

@@ -20,12 +20,8 @@ package org.gitools.model.decorator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.model.decorator.impl.ZScoreElementDecorator;
+import org.gitools.model.decorator.impl.*;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 
 
 public class ElementDecoratorFactory {
@@ -48,6 +44,9 @@ public class ElementDecoratorFactory {
 
 		descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.CORRELATION, CorrelationElementDecorator.class));
+
+        descriptors.add(new ElementDecoratorDescriptor(
+                ElementDecoratorNames.CATEGORICAL, CategoricalElementDecorator.class));
 
 		/*descriptors.add(new ElementDecoratorDescriptor(
 				ElementDecoratorNames.FORMATTED_TEXT, FormattedTextElementDecorator.class));*/

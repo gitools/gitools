@@ -37,6 +37,13 @@ public abstract class AbstractDialog extends JDialog {
 	private DialogHeaderPanel hdrPanel;
 	
 	protected JComponent container;
+
+    /** A return status code - returned if Cancel button has been pressed */
+    public static final int RET_CANCEL = 0;
+    /** A return status code - returned if OK button has been pressed */
+    public static final int RET_OK = 1;
+
+    private int returnStatus = RET_CANCEL;
 	
 	public AbstractDialog(
 			Window owner,
@@ -114,4 +121,16 @@ public abstract class AbstractDialog extends JDialog {
 	protected abstract JComponent createContainer();
 	
 	protected abstract List<JButton> createButtons();
+
+    protected void doClose(int retStatus) {
+        returnStatus = retStatus;
+        setVisible(false);
+        dispose();
+    }
+
+    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    public int getReturnStatus() {
+        return returnStatus;
+    }
+
 }

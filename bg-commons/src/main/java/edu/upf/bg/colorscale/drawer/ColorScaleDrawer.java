@@ -17,16 +17,12 @@
 
 package edu.upf.bg.colorscale.drawer;
 
-import edu.upf.bg.colorscale.NumericColorScale;
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.colorscale.IColorScale;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import edu.upf.bg.formatter.GenericFormatter;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ColorScaleDrawer {
@@ -138,7 +134,7 @@ public class ColorScaleDrawer {
 			g.drawRect(bxs, bys, bxe - bxs, bye - bys);
 		}
 
-		if (legendEnabled) {
+        if (legendEnabled) {
 			int fontHeight = g.getFontMetrics().getHeight();
 			int ys = bye + legendPadding;
 			int ye = ys + fontHeight;
@@ -148,20 +144,65 @@ public class ColorScaleDrawer {
 
 			g.setColor(legendPointColor);
 
-			for (double point : scale.getPoints()) {
+            int lastX = 0;
+            int minusWidth = g.getFontMetrics().stringWidth("-");
+            double[] points = scale.getPoints();
+			for (int i=0; i < points.length ; i++ ) {
+                double point = points[i];
+                
 				if (point >= zoomRangeMin && point <= zoomRangeMax) {
-					int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
-					g.drawLine(x, bys, x, ye);
 					
+                    int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
 					String legend = gf.format(legendFormat, point);
-					
-					int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    /*experimental*/
+                    if (scale instanceof CategoricalColorScale) {
+                        scale = (CategoricalColorScale) scale;
+                        String name = ((CategoricalColorScale) scale).getPointObjects()[i].getName();
+                        legend = (name == "") ? legend : name;
+                    }
+                    /*end-experimental*/
+                    int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    int positiveOffset = (point >= 0 ? minusWidth : 0);
+
+                    int optimalPosition = x - 2 - fontWidth - positiveOffset;
+                    if (optimalPosition < lastX) {
+
+                        // Check if it fits in the next range
+                        if ( x != bxs && i + 1 < points.length) {
+                            
+                           double nextPoint = points[i + 1];
+                           int nextX = bxs + (int) ((nextPoint - zoomRangeMin) * invDelta);
+
+                           if ( x + (positiveOffset + fontWidth)*2 + 2 > nextX) {
+
+                               g.drawLine(x, bys, x, ye - fontHeight);
+
+                                // Skip this point because there is no space for it.
+                                continue;
+                           }
+                        }
+
+                        g.drawLine(x, bys, x, ye);
+                        lastX = x + fontWidth + 2;
+                        x = x + 2;
+                        
+                    } else {
+
+                       g.drawLine(x, bys, x, ye);
+                       lastX = x + 2;
+                       x = x - fontWidth - 2;
+
+                    }
+
+                    /*
 					if (x + 2 + fontWidth > bxe)
 						x = x - fontWidth - 2;
 					else
 						x = x + 2;
+						*/
+                    if (x < bxe)
+                        g.drawString(legend, x, ye);
 
-					g.drawString(legend, x, ye);
 				}
 			}
 		}
