@@ -149,12 +149,6 @@ public class ColorScaleDrawer {
             double[] points = scale.getPoints();
 			for (int i=0; i < points.length ; i++ ) {
                 double point = points[i];
-                /*experimental*/
-                if (scale instanceof CategoricalColorScale) {
-
-                    
-                }
-                    /*end-experimental*/           
                 
 				if (point >= zoomRangeMin && point <= zoomRangeMax) {
 					
