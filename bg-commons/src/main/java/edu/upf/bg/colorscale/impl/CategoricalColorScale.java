@@ -18,10 +18,12 @@ package edu.upf.bg.colorscale.impl;
 
 
 import edu.upf.bg.colorscale.ColorScalePoint;
+import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CategoricalColorScale extends NumericColorScale {
@@ -56,6 +58,7 @@ public class CategoricalColorScale extends NumericColorScale {
                     new ColorScalePoint(pointValues[i],palette[i]);
         }
 
+        updateRangesList();
     }
 
     public Color[] generateColors(int n)
@@ -156,5 +159,31 @@ public class CategoricalColorScale extends NumericColorScale {
     public void setPointObjects(ColorScalePoint[] points) {
         Arrays.sort(points);
         this.points = points;
+        updateRangesList();
     }
+
+    @Override
+    protected void updateRangesList() {
+
+        ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
+        rangesList.clear();
+
+        for (ColorScalePoint p : points) {
+            ColorScaleRange r = new ColorScaleRange(p.getValue(),p.getValue(),10);
+            if (p.getName().equals(""))
+                r.setCenterLabel(p.getValue());
+            else
+                r.setCenterLabel(p.getName());
+            r.setType(ColorScaleRange.CONSTANT_TYPE);
+            rangesList.add(r);
+
+            if (p != points[points.length-1]) {
+                ColorScaleRange e = new ColorScaleRange(-1,-1,1);
+                e.setType(ColorScaleRange.EMPTY_TYPE);
+                e.setBorderEnabled(false);
+                rangesList.add(e);
+            }
+        }
+    }
+
 }
