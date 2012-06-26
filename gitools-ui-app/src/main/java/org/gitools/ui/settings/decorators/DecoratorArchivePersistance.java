@@ -18,6 +18,7 @@
 package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
+import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.impl.CorrelationColorScale;
 import org.apache.commons.io.FileUtils;
 import org.gitools.model.decorator.ElementDecorator;
@@ -76,6 +77,8 @@ public class DecoratorArchivePersistance {
         xstream.omitField(ElementDecorator.class, "valueIndex");
         xstream.omitField(ElementDecorator.class, "adapter");
         xstream.useAttributeFor(ElementDecorator.class, "name");
+
+        xstream.omitField(NumericColorScale.class, "rangesList");
 
         xstream.omitField(Color.class, "alpha");
 

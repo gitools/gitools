@@ -3,7 +3,6 @@ package edu.upf.bg.colorscale;
 
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.util.ColorConstants;
-import org.apache.commons.collections.iterators.SingletonIterator;
 
 import java.awt.*;
 import java.util.ArrayList;
