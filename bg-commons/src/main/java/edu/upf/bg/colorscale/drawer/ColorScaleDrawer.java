@@ -17,6 +17,7 @@
 
 package edu.upf.bg.colorscale.drawer;
 
+import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.impl.CategoricalColorScale;
@@ -24,6 +25,9 @@ import edu.upf.bg.formatter.GenericFormatter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class ColorScaleDrawer {
 
@@ -38,7 +42,6 @@ public class ColorScaleDrawer {
 	private int heightPadding;
 	
 	private int barSize;
-	private boolean barBorderEnabled;
 	private Color barBorderColor;
 
 	private boolean legendEnabled;
@@ -56,7 +59,6 @@ public class ColorScaleDrawer {
 		this.heightPadding = 8;
 
 		this.barSize = 18;
-		this.barBorderEnabled = true;
 		this.barBorderColor = Color.BLACK;
 
 		this.legendEnabled = true;
@@ -114,101 +116,124 @@ public class ColorScaleDrawer {
 		bounds.y += heightPadding;
 		bounds.height -= heightPadding * 2;
 
-		int bxs = bounds.x;
-		int bxe = bxs + bounds.width - 1;
-		int bys = bounds.y;
-		int bye = bys + barSize - 1;
+		int scaleXLeft = bounds.x;
+		int scaleXRight = scaleXLeft + bounds.width - 1;
+		int scaleYTop = bounds.y;
+		int scaleYBottom = scaleYTop + barSize - 1;
+        int scaleWidth = scaleXRight - scaleXLeft;
+        int scaleHeight = scaleYBottom - scaleYTop;
 
-		double delta = (zoomRangeMax - zoomRangeMin) / (bxe - bxs);
-		double value = zoomRangeMin;
+        ArrayList<ColorScaleRange> ranges = scale.getScaleRanges();
 
-		for (int x = bxs; x <= bxe; x++) {
-			final Color color = scale.valueColor(value);
-			g.setColor(color);
-			g.drawLine(x, bys, x, bye);
-			value += delta;
-		}
+        adjustRangeWidths(scaleWidth, ranges);
 
-		if (barBorderEnabled) {
-			g.setColor(barBorderColor);
-			g.drawRect(bxs, bys, bxe - bxs, bye - bys);
-		}
+        int rangeXLeft = scaleXLeft;
+        
+        for (ColorScaleRange range : ranges) {
 
-        if (legendEnabled) {
-			int fontHeight = g.getFontMetrics().getHeight();
-			int ys = bye + legendPadding;
-			int ye = ys + fontHeight;
-			double invDelta = 1.0 / delta;
 
-			GenericFormatter gf = new GenericFormatter();
+            int rangeWidth = (int) range.getWidth();
 
-			g.setColor(legendPointColor);
+            int rangeEnd = rangeXLeft + rangeWidth;
 
-            int lastX = 0;
-            int minusWidth = g.getFontMetrics().stringWidth("-");
-            double[] points = scale.getPoints();
-			for (int i=0; i < points.length ; i++ ) {
-                double point = points[i];
-                
-				if (point >= zoomRangeMin && point <= zoomRangeMax) {
-					
-                    int x = bxs + (int) ((point - zoomRangeMin) * invDelta);
-					String legend = gf.format(legendFormat, point);
-                    /*experimental*/
-                    if (scale instanceof CategoricalColorScale) {
-                        scale = (CategoricalColorScale) scale;
-                        String name = ((CategoricalColorScale) scale).getPointObjects()[i].getName();
-                        legend = (name == "") ? legend : name;
-                    }
-                    /*end-experimental*/
+            //paint the colored box of scale range
+            if (!(range.getType().equals(ColorScaleRange.EMPTY_TYPE))) {
+                for (int x = rangeXLeft; x <= rangeEnd; x++) {
+                    double value = getValueForX(x,range.getType(),rangeXLeft,rangeEnd,range.getMinValue(),range.getMaxValue());
+                    final Color color = scale.valueColor(value);
+                    g.setColor(color);
+                    g.drawLine(x, scaleYTop, x, scaleYBottom);
+                }
+            }
+
+            //paint Border
+            if (range.isBorderEnabled()) {
+                g.setColor(barBorderColor);
+                g.drawRect(rangeXLeft, scaleYTop, rangeWidth, scaleHeight);
+            }
+
+            //paint legend
+            if (legendEnabled) {
+
+                int lastX = rangeXLeft;
+                int fontHeight = g.getFontMetrics().getHeight();
+                int legendYTop = scaleYBottom + legendPadding;
+                int ye = legendYTop + fontHeight;
+                GenericFormatter gf = new GenericFormatter();
+                gf.addCustomFormatter(Double.class,this.legendFormat);
+                g.setColor(legendPointColor);
+
+
+                if (range.getLeftLabel() != null) {
+                    String legend = gf.format(range.getLeftLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
-                    int positiveOffset = (point >= 0 ? minusWidth : 0);
-
-                    int optimalPosition = x - 2 - fontWidth - positiveOffset;
-                    if (optimalPosition < lastX) {
-
-                        // Check if it fits in the next range
-                        if ( x != bxs && i + 1 < points.length) {
-                            
-                           double nextPoint = points[i + 1];
-                           int nextX = bxs + (int) ((nextPoint - zoomRangeMin) * invDelta);
-
-                           if ( x + (positiveOffset + fontWidth)*2 + 2 > nextX) {
-
-                               g.drawLine(x, bys, x, ye - fontHeight);
-
-                                // Skip this point because there is no space for it.
-                                continue;
-                           }
-                        }
-
-                        g.drawLine(x, bys, x, ye);
-                        lastX = x + fontWidth + 2;
-                        x = x + 2;
-                        
-                    } else {
-
-                       g.drawLine(x, bys, x, ye);
-                       lastX = x + 2;
-                       x = x - fontWidth - 2;
-
+                    int legendStart = rangeXLeft + legendPadding;
+                    g.drawString(legend, legendStart , ye);
+                    lastX = fontWidth + legendPadding;
+                }
+                if (range.getCenterLabel() != null) {
+                    String legend = gf.format(range.getCenterLabel());
+                    int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    int legendStart = rangeEnd - (rangeWidth/2 + fontWidth/2);
+                    if (legendStart > lastX + legendPadding*2) {
+                        g.drawString(legend, legendStart , ye);
+                        lastX = legendStart + fontWidth + legendPadding;
                     }
+                }
+                if (range.getRightLabel() != null) {
+                    String legend = gf.format(range.getRightLabel());
+                    int fontWidth = g.getFontMetrics().stringWidth(legend);
+                    int legendStart = rangeXLeft + rangeWidth - legendPadding - fontWidth;
+                    if (legendStart > lastX + legendPadding)
+                        g.drawString(legend, legendStart , ye);
+                }
+            }
 
-                    /*
-					if (x + 2 + fontWidth > bxe)
-						x = x - fontWidth - 2;
-					else
-						x = x + 2;
-						*/
-                    if (x < bxe)
-                        g.drawString(legend, x, ye);
+            rangeXLeft = rangeEnd;
 
-				}
-			}
-		}
+        }
 	}
 
-	public Dimension getSize() {
+    private double getValueForX(int x, String type, int minX, int maxX, double minValue, double maxValue) {
+        if (type.equals(ColorScaleRange.LINEAR_TYPE)) {
+
+            double delta = (maxValue - minValue) / (maxX-minX);
+            return minValue + delta * (x-minX);
+
+        }
+        else if (type.equals(ColorScaleRange.LOGARITHMIC_TYPE)) {
+
+            double exp = 1.0 * (x - minX) / (maxX-minX);
+            return minValue + ((Math.pow(10,exp) - 1) / 9) * (maxValue-minValue);
+
+        } else if (type.equals(ColorScaleRange.CONSTANT_TYPE)) {
+
+            return maxValue;
+
+        }
+
+
+        return 0;
+    }
+
+    private void adjustRangeWidths(int scaleWidth, ArrayList<ColorScaleRange> ranges) {
+        double rangesWidth = 0;
+        for (ColorScaleRange r : ranges) {
+            rangesWidth += r.getWidth();
+        }
+
+        HashSet rangesSet = new HashSet<ColorScaleRange>(ranges);
+        
+        double resizeFactor = scaleWidth / rangesWidth;
+
+        Iterator iter = rangesSet.iterator();
+        while (iter.hasNext()) {
+            ColorScaleRange r = (ColorScaleRange) iter.next();
+            r.setWidth(r.getWidth()*resizeFactor);
+        }
+    }
+
+    public Dimension getSize() {
 		int height = heightPadding * 2 + barSize;
 		if (legendEnabled) {
 			BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);

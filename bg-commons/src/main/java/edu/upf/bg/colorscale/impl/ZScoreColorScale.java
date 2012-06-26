@@ -18,10 +18,12 @@
 package edu.upf.bg.colorscale.impl;
 
 import edu.upf.bg.color.utils.ColorUtils;
+import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 
 public class ZScoreColorScale extends NumericColorScale {
@@ -84,12 +86,34 @@ public class ZScoreColorScale extends NumericColorScale {
         };
     }
 
+    @Override
+    protected void updateRangesList() {
+
+        ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
+        rangesList.clear();
+
+        ColorScaleRange left = new ColorScaleRange(getMinValue(),-getSigHalfAmplitude(),-getSigHalfAmplitude()-getMinValue());
+        ColorScaleRange middle = new ColorScaleRange(-getSigHalfAmplitude(),getSigHalfAmplitude()-0.01,getSigHalfAmplitude()*2);
+        ColorScaleRange right = new ColorScaleRange(getSigHalfAmplitude(),getMaxValue(),getMaxValue()-getSigHalfAmplitude());
+        
+        left.setLeftLabel(getMinValue());
+        left.setRightLabel(-getSigHalfAmplitude());
+        middle.setType(ColorScaleRange.CONSTANT_TYPE);
+        right.setLeftLabel(getSigHalfAmplitude());
+        right.setRightLabel(getMaxValue());
+        
+        rangesList.add(left);
+        rangesList.add(middle);
+        rangesList.add(right);
+    }
+
     public double getCenter() {
         return center;
     }
 
     public void setCenter(double center) {
         this.center = center;
+        updateRangesList();
     }
 
     public double getHalfAmplitude() {
@@ -98,6 +122,7 @@ public class ZScoreColorScale extends NumericColorScale {
 
     public void setHalfAmplitude(double halfAmplitude) {
         this.halfAmplitude = halfAmplitude;
+        updateRangesList();
     }
 
     public double getSigHalfAmplitude() {
@@ -114,6 +139,7 @@ public class ZScoreColorScale extends NumericColorScale {
 
     public void setLeftMinColor(Color leftMinColor) {
         this.leftMinColor = leftMinColor;
+        updateRangesList();
     }
 
     public Color getLeftMaxColor() {
@@ -122,6 +148,7 @@ public class ZScoreColorScale extends NumericColorScale {
 
     public void setLeftMaxColor(Color leftMaxColor) {
         this.leftMaxColor = leftMaxColor;
+        updateRangesList();
     }
 
     public Color getRightMinColor() {
@@ -130,6 +157,7 @@ public class ZScoreColorScale extends NumericColorScale {
 
     public void setRightMinColor(Color rightMinColor) {
         this.rightMinColor = rightMinColor;
+        updateRangesList();
     }
 
     public Color getRightMaxColor() {
@@ -138,6 +166,7 @@ public class ZScoreColorScale extends NumericColorScale {
 
     public void setRightMaxColor(Color rightMaxColor) {
         this.rightMaxColor = rightMaxColor;
+        updateRangesList();
     }
 
     public Color getNonSignificantColor() {
