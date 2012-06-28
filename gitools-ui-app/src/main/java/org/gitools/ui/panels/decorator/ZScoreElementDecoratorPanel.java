@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -67,7 +68,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 	private ColorChooserLabel rmaxColorCc;
 	private ColorChooserLabel nsigColorCc;
 	private ColorChooserLabel emptyCc;
-	
+
 	public ZScoreElementDecoratorPanel(Heatmap model) {
 		super(model);
 		
@@ -245,12 +246,22 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 
-		model.switchActiveCellDecorator(propAdapter.getIndex());
+        model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
 
-		decorator.setValueIndex(propAdapter.getIndex());
-		
+        decorator.setValueIndex(propAdapter.getIndex());
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+
+        // search for corresponding corrected value
+
+        int corrIndex = MatrixUtils.correctedValueIndex(
+                decorator.getAdapter(), propAdapter.getProperty());
+
+        if (corrIndex >= 0)
+            decorator.setCorrectedValueIndex(corrIndex);
+
+
+        refresh();
 	}
 
 	private void changeDecorator() {

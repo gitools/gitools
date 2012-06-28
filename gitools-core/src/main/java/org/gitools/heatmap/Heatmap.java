@@ -253,6 +253,12 @@ public class Heatmap
         }
 
 
+        if (decorators[propIndex].getValueIndex() != propIndex) {
+            // the new decorator forces a new a ValueIndex different to the
+            // one that was selected
+            propIndex = decorators[propIndex].getValueIndex();
+            matrixView.setSelectedPropertyIndex(propIndex);
+        }
 		decorators[propIndex].addPropertyChangeListener(propertyListener);
 
 		this.cellDecorators = decorators;

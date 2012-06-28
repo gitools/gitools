@@ -220,14 +220,15 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             for (int i = 0; i < decorators.length; i++) {
                 ElementDecorator decorator = ElementDecoratorFactory.create(
                         descriptor, cellAdapter);
-                if (descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class)) {
 
+                if (descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class)) {
                     double[] values;
                     values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i);
                     CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
                     scale.setValues(values);
 
                 }
+
                 setValueIndex(decorator, cellAdapter, i);
                 decorators[i] = decorator;
             }
@@ -239,16 +240,16 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
     private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex) {
 
         if (decorator instanceof ZScoreElementDecorator) {
+
             ZScoreElementDecorator zscoreDecorator = (ZScoreElementDecorator) decorator;
             int valueIndex = cellAdapter.getPropertyIndex("z-score");
-            int correctedValueIndex = cellAdapter.getPropertyIndex("corrected-two-tail-p-value");
-            zscoreDecorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
-            zscoreDecorator.setCorrectedValueIndex(correctedValueIndex != -1 ? correctedValueIndex : currentValueIndex);
-            decorator = zscoreDecorator;
+            decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
 
         } else if (decorator instanceof PValueElementDecorator) {
+
             int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
             decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
+
         } else
             decorator.setValueIndex(currentValueIndex);
 
