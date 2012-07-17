@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis.ColumnGroup;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.matrix.MatrixUtils;

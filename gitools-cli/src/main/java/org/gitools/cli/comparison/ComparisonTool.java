@@ -23,17 +23,24 @@ import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import edu.upf.bg.tools.ToolDescriptor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.correlation.GroupComparisonCommand;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
+import org.gitools.model.ToolConfig;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.stats.mtc.MTCFactory;
+import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class ComparisonTool extends AnalysisTool {
@@ -62,7 +69,18 @@ public class ComparisonTool extends AnalysisTool {
                         "Example: \"Copy Number abs>= 1\",\"Copy Number == 0\"")
         public String groupCutoffs;
 
+        @Option(name = "-mtc", metaVar = "<name>",
+                usage = "Multiple test correxction method.\n" +
+                        "Available: bonferroni, bh. (default: bh)")
+        public String mtc = "bh";
 
+        @Option(name = "-an", aliases = "-attr-name", metaVar = "<name>",
+                usage = "Attribute name of the data matrix to take values for comparison from.")
+        public String attrName;
+
+        @Option(name = "-ai", aliases = "-attr-index", metaVar = "<index>",
+                usage = "Attribute index of the data matrix to take values for comparison. (default: 0)")
+        public int attrIndex = 0;
 
 	}
 
@@ -83,14 +101,27 @@ public class ComparisonTool extends AnalysisTool {
         else if (! (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) || args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS) ) )
             throw new ToolValidationException("Unknown grouping method: "+ args.grouping +". Choose from ["+ GroupComparisonCommand.GROUP_BY_VALUE+","+ GroupComparisonCommand.GROUP_BY_LABELS+"]");
         
-        if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) && args.groupLabels == null) {
-            throw new ToolValidationException("The <grouping> by value requires the -gl option to be set");
-        } else if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS) && args.groupCutoffs == null)  {
-            throw new ToolValidationException("The <grouping> by labels requires the -gc option to be set");
+        if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS) && args.groupLabels == null) {
+            throw new ToolValidationException("The <grouping> by labels requires the -gl option to be set");
+        } else if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) && args.groupCutoffs == null)  {
+            throw new ToolValidationException("The <grouping> by value requires the -gc option to be set");
         }
-        
-        this.groups =  (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
 
+        this.groups =  (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
+        
+        if (args.attrName != null) {
+            ObjectMatrixTextPersistence obp =  new ObjectMatrixTextPersistence();
+            String[] headers = new String[0];
+            try {
+                headers = obp.readHeader(new File(args.dataFile));
+            } catch (PersistenceException e) {
+                throw new ToolValidationException("Data file could not be opened");
+            }
+            args.attrIndex = Arrays.asList(headers).indexOf(args.attrName);
+            if (args.attrIndex < 0)  {
+                throw new ToolValidationException("Specified attribute index not found: " + args.attrName);
+            }
+        }
     }
 
     @Override
@@ -102,11 +133,11 @@ public class ComparisonTool extends AnalysisTool {
 		prepareGeneralAnalysisAttributes(analysis, args);
 		//analysis.setMethodProperties(methodProperties);
 
-
+        analysis.setMtc(MTCFactory.createFromName(args.mtc));
 
 		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
 
-
+        analysis.setAttributeIndex(args.attrIndex);
         
 		GroupComparisonCommand cmd = new GroupComparisonCommand(
         		analysis,
@@ -123,7 +154,7 @@ public class ComparisonTool extends AnalysisTool {
         try {
 			cmd.run(monitor);
 		} catch (Exception e) {
-			throw new ToolException(e);
+			throw new  ToolException(e);
 		}
 		finally {
 			ThreadManager.shutdown(monitor);

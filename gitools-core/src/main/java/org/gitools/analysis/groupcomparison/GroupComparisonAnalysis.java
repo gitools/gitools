@@ -17,7 +17,6 @@
 
 package org.gitools.analysis.groupcomparison;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -35,62 +34,7 @@ import org.gitools.stats.test.Test;
 public class GroupComparisonAnalysis extends Analysis {
 
 
-	public class ColumnGroup {
-
-		protected String name = "";
-		protected int[] columns = new int[0];
-		protected BinaryCutoff binaryCutoff = null;
-		protected int cutoffAttributeIndex = -1;
-
-		private ColumnGroup(String string) {
-			this.name = name;
-		}
-
-		public void ColumnGroup (String name,
-								int[] columns,
-								BinaryCutoff binaryCutoff,
-								int cutoffAttributeIndex) {
-			this.name = name;
-			this.columns = columns;
-			this.binaryCutoff = binaryCutoff;
-			this.cutoffAttributeIndex = cutoffAttributeIndex;
-		}
-
-		public BinaryCutoff getBinaryCutoff() {
-			return binaryCutoff;
-		}
-
-		public void setBinaryCutoff(BinaryCutoff binaryCutoff) {
-			this.binaryCutoff = binaryCutoff;
-		}
-
-		public int getCutoffAttributeIndex() {
-			return cutoffAttributeIndex;
-		}
-
-		public void setCutoffAttributeIndex(int cutoffAttributeIndex) {
-			this.cutoffAttributeIndex = cutoffAttributeIndex;
-		}
-
-		public int[] getColumns() {
-			return columns;
-		}
-
-		public void setColumns(int[] columns) {
-			this.columns = columns;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-		
-	}
-
-	protected String sizeAttrName;
+    protected String sizeAttrName;
 	//protected int sizeAttrIndex;
 
 	protected String pvalueAttrName;
@@ -117,8 +61,8 @@ public class GroupComparisonAnalysis extends Analysis {
 	protected AnnotationMatrix columnAnnotations;
 
 
-	protected ColumnGroup group1 = new ColumnGroup("Group 1");
-	protected ColumnGroup group2 = new ColumnGroup("Group 2");
+	protected ColumnGroup group1;
+	protected ColumnGroup group2;
 
 	protected Test test = new MannWhitneyWilxoxonTest();
 	protected MTC mtc;
@@ -150,6 +94,8 @@ public class GroupComparisonAnalysis extends Analysis {
 
 	public GroupComparisonAnalysis() {
 		this.transposeData = false;
+        group1  = new ColumnGroup("Group 1");
+        group2  = new ColumnGroup("Group 2");
 	}
 
 	public String getSizeAttrName() {
