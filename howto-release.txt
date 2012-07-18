@@ -7,16 +7,20 @@ git checkout develop
 git pull
 git push
 
-# Start a new release
+# Start a new release or hotfix
 git-flow release start gitools-1.6.2
+git-flow hotfix start gitools-1.6.2
 
-# Publish the release branch
+# Publish the release or hotfix branch
 git-flow release publish gitools-1.6.2
+git-flow hotfix publish gitools-1.6.2
 
 # Update pom.xml version
+# The following command only prints to display
 # Check that you are going to update only the correct versions:
 find . -name pom.xml | awk '{ system("sed 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}' | grep -A2 -B3 1.6.2
 
+# The following command will apply the changes
 # Update all like this:
 find . -name pom.xml | awk '{ system("sed -i 0,/1.6.2-SNAPSHOT/s//1.6.2/ "$0)}'
 
@@ -30,6 +34,7 @@ unzip gitools-1.6.2-bin.zip
 gitools-1.6.2/bin/gitools
 
 # Deploy Webstart
+# change back to the gitools root folder
 ./webstart-deploy.sh 1.6.2
 
 # Deploy ZIP file
@@ -41,8 +46,9 @@ scp target/gitools-1.6.2-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
 # Commit the changes
 git commit -a -m "Set version to 1.6.2"
 
-# Finish the release and push everything
-git-flow release finish -p gitools-1.6.2
+# Finish the release or hotfix and push everything
+git flow release finish -p gitools-1.6.2
+git flow hotfix finish -p gitools-1.6.2
 
 # Check that you are on develop branch
 git branch

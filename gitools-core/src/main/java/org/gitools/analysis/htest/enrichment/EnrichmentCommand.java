@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.*;
 
 import org.gitools.matrix.model.DoubleBinaryMatrix;
+import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 
@@ -189,7 +190,8 @@ public class EnrichmentCommand extends HtestCommand {
 
 			BaseMatrix fmatrix = null;
 			try {
-                fmatrix = DoubleBinaryMatrix.class.newInstance();
+                fmatrix = dataMatrix.getClass().newInstance();
+                fmatrix.setCellAdapter(dataMatrix.getCellAdapter());
 			} catch (Exception ex) {
 				throw new PersistenceException("Error filtering data matrix.", ex);
 			}
@@ -207,7 +209,7 @@ public class EnrichmentCommand extends HtestCommand {
 			int numRows = rows.size();
 			int numColumns = dataMatrix.getColumnCount();
 
-			fmatrix.make(numRows, numColumns);
+            fmatrix.make(numRows, numColumns);
 			fmatrix.setColumns(dataMatrix.getColumns());
 
 			for (int ri = 0; ri < numRows; ri++) {
