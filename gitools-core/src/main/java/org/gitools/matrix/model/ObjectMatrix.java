@@ -99,5 +99,12 @@ public class ObjectMatrix extends BaseMatrix {
 	@Override
 	public void makeCells(int rows, int columns) {
 		cells = ObjectFactory2D.dense.make(rows, columns);
+        if (cellAdapter != null)  {
+            for (int r = 0; r < rows ; r++) {
+                for (int c = 0; c < columns; c++) {
+                    setCell(r,c,new double[cellAdapter.getPropertyCount()]);
+                }
+            }
+        }
 	}
 }
