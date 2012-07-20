@@ -32,9 +32,10 @@ public abstract class TestFactory {
 	public static final String FISHER_EXACT_TEST = "fisher-exact";
 	public static final String HYPERGEOMETRIC_TEST = "hypergeometric";
 	public static final String CHI_SQUARE_TEST = "chi-square";
+    public static final String MANN_WHITNEY_WILCOXON = "mannWhitneyWilcoxon";
 	
 	private static enum TestEnum {
-		zscore, binomial, hypergeometric, fisherExact, chiSquare
+		zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
 	}
 	
 	private static final Map<String, TestEnum> testNameMap =
@@ -46,12 +47,13 @@ public abstract class TestFactory {
 		testNameMap.put(FISHER_EXACT_TEST, TestEnum.fisherExact);
 		testNameMap.put(HYPERGEOMETRIC_TEST, TestEnum.hypergeometric);
 		testNameMap.put(CHI_SQUARE_TEST, TestEnum.chiSquare);
+        testNameMap.put(MANN_WHITNEY_WILCOXON, TestEnum.mannWhitneyWilcoxon);
 	}
 	
 	private static enum TestConfigEnum {
 		zscoreMean, zscoreMedian, 
 		binomial, binomialExact, binomialNormal, binomialPoisson,
-		hypergeometric, fisherExact, chiSquare
+		hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
 	}
 	
 	private static Map<String, TestConfigEnum> testAliases = 
@@ -70,6 +72,7 @@ public abstract class TestFactory {
 		testAliases.put("hyper-geometric", TestConfigEnum.hypergeometric);
 		testAliases.put("hypergeometric", TestConfigEnum.hypergeometric);
 		testAliases.put("chi-square", TestConfigEnum.chiSquare);
+        testAliases.put("mannWhitneyWilcoxon", TestConfigEnum.mannWhitneyWilcoxon);
 	}
 	
 	public static TestFactory createFactory(ToolConfig config) {
@@ -97,6 +100,8 @@ public abstract class TestFactory {
 		case chiSquare:
 			throw new IllegalArgumentException("Test not implemented yet: " + testName);
 			//break;
+        case mannWhitneyWilcoxon:
+            testFactory = new MannWhitneyWilcoxonTestFactory(config);
 		}
 		
 		return testFactory;
@@ -157,6 +162,9 @@ public abstract class TestFactory {
 		case chiSquare:
 			config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.CHI_SQUARE_TEST);
 			break;
+        case mannWhitneyWilcoxon:
+            config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.MANN_WHITNEY_WILCOXON);
+            break;
 		}
 		
 		return config;

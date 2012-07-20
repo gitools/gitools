@@ -18,6 +18,8 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.utils.FileFormatFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -71,13 +73,15 @@ public class OpenAnalysisAction extends BaseAction {
 				FileFormats.ONCODRIVE,
 				FileFormats.CORRELATIONS,
 				FileFormats.COMBINATION,
-				FileFormats.OVERLAPPING
+				FileFormats.OVERLAPPING,
+                FileFormats.GROUP_COMPARISON
 			}),
 			new FileFormatFilter(FileFormats.ENRICHMENT),
 			new FileFormatFilter(FileFormats.ONCODRIVE),
 			new FileFormatFilter(FileFormats.CORRELATIONS),
 			new FileFormatFilter(FileFormats.COMBINATION),
-			new FileFormatFilter(FileFormats.OVERLAPPING)
+			new FileFormatFilter(FileFormats.OVERLAPPING),
+            new FileFormatFilter(FileFormats.GROUP_COMPARISON)
 		};
 
 		FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
@@ -122,6 +126,8 @@ public class OpenAnalysisAction extends BaseAction {
 							editor = new CombinationAnalysisEditor((CombinationAnalysis) analysis);
 						else if (mime.equals(MimeTypes.OVERLAPPING_ANALYSIS))
 							editor = new OverlappingAnalysisEditor((OverlappingAnalysis) analysis);
+                        else if (mime.equals(MimeTypes.GROUPCOMPARISON_ANALYSIS))
+                            editor = new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) analysis);
 
 						editor.setName(file.getName());
 

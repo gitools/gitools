@@ -87,10 +87,14 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (data)");
 
-				heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
-				copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
-				heatmap.getColumnDim().setAnnotations(analysis.getColumnAnnotations());
-				copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+                if (analysis.getRowHeaders() != null) {
+				    heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
+				    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                }
+                if (analysis.getColumnHeaders() != null) {
+				    heatmap.getColumnDim().setAnnotations(analysis.getColumnAnnotations());
+				    copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+                }
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
@@ -188,9 +192,11 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (results)");
-		
-				heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
-				copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+
+                if (analysis.getRowHeaders() != null) {
+                    heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
+                    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                }
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
 

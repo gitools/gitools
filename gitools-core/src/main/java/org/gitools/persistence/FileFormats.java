@@ -36,6 +36,9 @@ public class FileFormats {
 	public static final FileFormat OVERLAPPING = new FileFormat(
 			"Overlapping analysis", FileSuffixes.OVERLAPPING, MimeTypes.OVERLAPPING_ANALYSIS);
 
+    public static final FileFormat GROUP_COMPARISON = new FileFormat(
+            "Overlapping analysis", FileSuffixes.GROUP_COMPARISON, MimeTypes.GROUPCOMPARISON_ANALYSIS);
+
 	// Data
 
 	public static final FileFormat GENE_MATRIX = new FileFormat(

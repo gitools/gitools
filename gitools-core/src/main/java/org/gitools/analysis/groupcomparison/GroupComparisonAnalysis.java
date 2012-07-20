@@ -17,21 +17,29 @@
 
 package org.gitools.analysis.groupcomparison;
 
+import java.io.Serializable;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
+import org.gitools.model.ToolConfig;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.stats.mtc.MTC;
-import org.gitools.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
+import org.gitools.stats.test.factory.MannWhitneyWilcoxonTestFactory;
+import org.gitools.stats.test.factory.TestFactory;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class GroupComparisonAnalysis extends Analysis {
+public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
 
     protected String sizeAttrName;
@@ -52,20 +60,26 @@ public class GroupComparisonAnalysis extends Analysis {
 
 	protected String dataFile = "";
 
-	protected AnnotationMatrix rowAnnotations;
+    @XmlTransient
+    protected AnnotationMatrix rowAnnotations;
 
+    @XmlTransient
 	protected List<HeatmapHeader> rowHeaders;
-	
+
+    @XmlTransient
 	protected List<HeatmapHeader> columnHeaders;
 
+    @XmlTransient
 	protected AnnotationMatrix columnAnnotations;
 
-
+    @XmlTransient
 	protected ColumnGroup group1;
+    @XmlTransient
 	protected ColumnGroup group2;
 
-	protected Test test = new MannWhitneyWilxoxonTest();
-	protected MTC mtc;
+    /** Test name */
+    protected ToolConfig testConfig;
+    protected String mtc;
 
 
 	/** Data */
@@ -77,19 +91,22 @@ public class GroupComparisonAnalysis extends Analysis {
 	protected IMatrix results;
 
 	public MTC getMtc() {
-		return mtc;
+        MTC mtcObj = MTCFactory.createFromName(mtc);
+        String name = mtcObj.toString();
+		return mtcObj;
 	}
 
-	public void setMtc(MTC mtc) {
+	public void setMtc(String mtc) {
 		this.mtc = mtc;
 	}
 
-	public void setTest(Test test) {
-		this.test = test;
-	}
+    public void setToolConfig(ToolConfig testConfig) {
+        this.testConfig =  testConfig;
+    }
 
 	public Test getTest() {
-		return test;
+        TestFactory tf = TestFactory.createFactory(testConfig);
+		return tf.create();
 	}
 
 	public GroupComparisonAnalysis() {

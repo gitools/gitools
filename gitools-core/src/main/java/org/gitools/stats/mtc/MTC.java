@@ -22,6 +22,8 @@ import cern.colt.matrix.DoubleMatrix1D;
 public interface MTC {
 
 	String getName();
+    
+    String getShortName();
 	
 	void correct(DoubleMatrix1D values);
 }

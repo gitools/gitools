@@ -21,12 +21,19 @@ import cern.colt.matrix.DoubleMatrix1D;
 
 public class BenjaminiHochbergFdr implements MTC {
 
+    public static String SHORT_NAME = "bh";
+
 	@Override
 	public String getName() {
 		return "Benjamini Hochberg FDR";
 	}
-	
-	@Override
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
+    }
+
+    @Override
 	public void correct(final DoubleMatrix1D values) {
 		
 		DoubleMatrix1D sortedValues = values.viewSorted();

@@ -34,6 +34,8 @@ import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.stats.mtc.MTCFactory;
+import org.gitools.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.kohsuke.args4j.CmdLineParser;
@@ -133,7 +135,9 @@ public class ComparisonTool extends AnalysisTool {
 		prepareGeneralAnalysisAttributes(analysis, args);
 		//analysis.setMethodProperties(methodProperties);
 
-        analysis.setMtc(MTCFactory.createFromName(args.mtc));
+        Test t = new MannWhitneyWilxoxonTest();
+        analysis.setMtc(args.mtc);
+        analysis.setToolConfig(TestFactory.createToolConfig("group comparison",t.getName()));
 
 		String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
 
