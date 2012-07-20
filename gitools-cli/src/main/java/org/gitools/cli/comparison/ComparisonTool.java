@@ -59,7 +59,7 @@ public class ComparisonTool extends AnalysisTool {
 		public String dataFile;
 
         @Option(name = "-g", aliases = "-grouping", metaVar = "<grouping>",
-                usage = "By what criteria the groups are defined: 'value' (cut-offs) or 'label' (row)")
+                usage = "By what criteria the groups are defined: 'value' (cut-offs) or 'label' (column labels)")
         public String grouping;
 
         @Option(name = "-gl", aliases = "-group-labels", metaVar = "<group-labels>",
