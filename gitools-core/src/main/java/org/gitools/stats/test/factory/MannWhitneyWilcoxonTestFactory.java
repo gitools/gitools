@@ -15,15 +15,22 @@
  *  under the License.
  */
 
-package org.gitools.stats.mtc;
+package org.gitools.stats.test.factory;
 
-import cern.colt.matrix.DoubleMatrix1D;
+import org.gitools.model.ToolConfig;
+import org.gitools.stats.test.FisherTest;
+import org.gitools.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.stats.test.Test;
 
-public interface MTC {
+public final class MannWhitneyWilcoxonTestFactory extends TestFactory {
 
-	String getName();
-    
-    String getShortName();
-	
-	void correct(DoubleMatrix1D values);
+	public MannWhitneyWilcoxonTestFactory(ToolConfig config) {
+		super(config);
+	}
+
+	@Override
+	public Test create() {
+		return new MannWhitneyWilxoxonTest();
+	}
+
 }

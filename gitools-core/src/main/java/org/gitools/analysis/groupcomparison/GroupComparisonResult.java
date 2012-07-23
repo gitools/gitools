@@ -26,6 +26,10 @@ public class GroupComparisonResult extends CommonResult {
 	public int N_group1;
 	public int N_group2;
 
+    public GroupComparisonResult() {
+        super(0,0.0,0.0,0.0);
+    }
+
 	public GroupComparisonResult(
 			int N,
 			double leftPvalue, double rightPvalue,

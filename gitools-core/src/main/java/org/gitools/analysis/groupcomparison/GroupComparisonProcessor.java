@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis.ColumnGroup;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.matrix.MatrixUtils;
@@ -144,7 +143,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
 	}
 
 	private int[] getColumnIndices(IMatrix data, ColumnGroup group, int row) {
-		if (group.getColumns().length > 0)
+		if (group.getColumns() != null && group.getColumns().length > 0)
 			return group.getColumns();
 
 		int attrIndex = group.getCutoffAttributeIndex();

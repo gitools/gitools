@@ -32,7 +32,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 	
 	@Override
 	public String getName() {
-		return "Mann-Whitney-Wilcoxon";
+		return "mannWhitneyWilcoxon";
 	}
 
 

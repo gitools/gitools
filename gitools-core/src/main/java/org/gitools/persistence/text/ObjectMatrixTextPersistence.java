@@ -26,6 +26,7 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.lang.ArrayUtils;
+import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.ArrayElementAdapter;
@@ -38,6 +39,7 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
+import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
@@ -74,6 +76,7 @@ public class ObjectMatrixTextPersistence
 		typeToClass.put("correlation", CorrelationResult.class);
 		typeToClass.put("combination", CombinationResult.class);
 		typeToClass.put("overlapping", OverlappingResult.class);
+        typeToClass.put("group-comparison", GroupComparisonResult.class);
 
 		for (Map.Entry<String, Class<?>> e : typeToClass.entrySet())
 			classToType.put(e.getValue(), e.getKey());
@@ -90,7 +93,8 @@ public class ObjectMatrixTextPersistence
 			FisherResult.class,
 			CorrelationResult.class,
 			CombinationResult.class,
-			OverlappingResult.class
+			OverlappingResult.class,
+            GroupComparisonResult.class
 		};
 		
 		for (Class<?> elementClass : classes) {

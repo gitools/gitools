@@ -22,12 +22,19 @@ import cern.colt.matrix.DoubleMatrix1D;
 
 public class Bonferroni implements MTC {
 
+    public static String SHORT_NAME = "bonferroni";
+
 	@Override
 	public String getName() {
 		return "Bonferroni";
 	}
-	
-	@Override
+
+    @Override
+    public String getShortName() {
+        return SHORT_NAME;
+    }
+
+    @Override
 	public void correct(DoubleMatrix1D values) {
 		final int n = values.size();
 		

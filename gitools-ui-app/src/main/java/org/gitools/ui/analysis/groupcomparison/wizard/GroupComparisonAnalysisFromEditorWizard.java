@@ -24,6 +24,9 @@ import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.Attribute;
+import org.gitools.model.ToolConfig;
+import org.gitools.stats.test.Test;
+import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
@@ -144,11 +147,12 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 		a.setTransposeData(false);
 
+        ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
 		
 		a.setAttributeIndex(attrSelectPage.getAttributeIndex());
 		a.setColumnGrouping(attrSelectPage.getColumnGrouping());
-		a.setTest(attrSelectPage.getTest());
-		a.setMtc(attrSelectPage.getMtc());
+		a.setToolConfig(toolConfig);
+		a.setMtc(attrSelectPage.getMtc().getShortName());
 		a.setRowAnnotations(heatmap.getRowDim().getAnnotations());
 		a.setRowHeaders(heatmap.getRowDim().getHeaders());
 		a.setColumnAnnotations(heatmap.getColumnDim().getAnnotations());
