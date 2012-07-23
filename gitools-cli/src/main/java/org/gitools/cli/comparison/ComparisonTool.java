@@ -62,14 +62,26 @@ public class ComparisonTool extends AnalysisTool {
                 usage = "By what criteria the groups are defined: 'value' (cut-offs) or 'label' (column labels)")
         public String grouping;
 
-        @Option(name = "-gl", aliases = "-group-labels", metaVar = "<group-labels>",
+        @Option(name = "-gl", aliases = "-group-labels", metaVar = "<GROUP1,GROUP2>",
                 usage = "For each group, pass a file with a list of row ids. Example: -gl group1.txt,group2.txt")
          public String groupLabels;
 
-        @Option(name = "-gc", aliases = "-group-cutoffs", metaVar = "<group-cutoffs>",
-                usage = "For each group, define a cutoff (Data Dimension <= Value). \n" +
-                        "Example: \"Copy Number abs>= 1\",\"Copy Number == 0\"")
+        @Option(name = "-gc", aliases = "-group-cutoffs", metaVar = "<'DIM' COMPARATOR VALUE,'DIM' COMPARATOR VALUE>",
+                usage = "For each group, define a cutoff like this: 'Data Dimension' Comparator Value. \n" +
+                        "Example: \"'Copy Number' agt 1\",\"'Copy Number' eq 0\"\n" +
+                        "lt (less than), le (less equal than),\n" +
+                        "eq (equal), ne (not equal),\n" +
+                        "gt (greatar than), ge (greater equal than)," +
+                        "alt (abs less than), ale (abs less equal than),\n" +
+                        "aeq (abs equal), ane (abs not equal),\n" +
+                        "agt (abs greatar than), age (abs greater equal than)")
         public String groupCutoffs;
+
+        @Option(name = "-gd", aliases = "-group-descriptions", metaVar = "<DESC 1,DESC 2>",
+                usage="Add a short description for each group seperated by commas. If not \n"+
+                        "supplied, an automatically generated description will be added \n"+
+                        "Example: \"With disease,Without disease\"")
+        public String groupDescriptions = "";
 
         @Option(name = "-mtc", metaVar = "<name>",
                 usage = "Multiple test correxction method.\n" +
@@ -143,11 +155,14 @@ public class ComparisonTool extends AnalysisTool {
 
         analysis.setAttributeIndex(args.attrIndex);
         
+        String[] groupDescriptions = args.groupDescriptions.split(",");
+
+        
 		GroupComparisonCommand cmd = new GroupComparisonCommand(
         		analysis,
 				dataMime, args.dataFile,
 				args.workdir, args.analysisName + "." + FileSuffixes.GROUP_COMPARISON,
-                args.grouping, this.groups);
+                args.grouping, this.groups, groupDescriptions);
         
         IProgressMonitor monitor = !args.quiet ? 
 			new StreamProgressMonitor(System.out, args.verbose, args.debug)

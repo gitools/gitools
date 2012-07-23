@@ -143,7 +143,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
 	}
 
 	private int[] getColumnIndices(IMatrix data, ColumnGroup group, int row) {
-		if (group.getColumns().length > 0)
+		if (group.getColumns() != null && group.getColumns().length > 0)
 			return group.getColumns();
 
 		int attrIndex = group.getCutoffAttributeIndex();
