@@ -12,7 +12,7 @@ mvn install:install-file -Dfile=lib/jsc-20050805.jar -DgroupId=jsc -DartifactId=
 #mvn install:install-file -Dfile=ext/cobra-no-commons.jar -DgroupId=cobra -DartifactId=cobra-no-commons -Dversion=0.98.4 -Dpackaging=jar -DgeneratePom=true
 
 # cobra html renderer
-mvn install:install-file -Dfile=lib/cobra.jar -DgroupId=cobra -DartifactId=cobra -Dversion=0.98.4 -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=lib/cobra-0.98.5.jar -DgroupId=cobra -DartifactId=cobra -Dversion=0.98.5 -Dpackaging=jar -DgeneratePom=true
 
 # weka machine learning tool
 mvn install:install-file -Dfile=lib/weka-3.6.4.jar -DgroupId=weka -DartifactId=weka -Dversion=3.6.4 -Dpackaging=jar -DgeneratePom=true
