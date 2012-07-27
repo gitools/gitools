@@ -17,6 +17,8 @@
 package edu.upf.bg.colorscale.impl;
 
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
@@ -186,4 +188,8 @@ public class CategoricalColorScale extends NumericColorScale {
         }
     }
 
+    @Override
+    public IAggregator defaultAggregator() {
+        return SumAggregator.INSTANCE;
+    }
 }

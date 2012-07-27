@@ -20,12 +20,10 @@ package org.gitools.matrix.sort;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import jsc.distributions.MannWhitneyU;
-import jsc.independentsamples.MannWhitneyTest;
-import jsc.tests.H1;
+
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.aggregation.IAggregator;
-import org.gitools.aggregation.SumAbsAggregator;
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.SumAbsAggregator;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
@@ -98,7 +96,7 @@ public abstract class MatrixViewSorter {
 				//while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
 				//criteria = criteriaArray[criteriaIndex];
 
-				IAggregator aggregator = new SumAbsAggregator();
+				IAggregator aggregator = SumAbsAggregator.INSTANCE;
 				int propIndex = matrixView.getSelectedPropertyIndex();
 
 				SortDirection sortDirection = SortDirection.DESCENDING;
@@ -161,7 +159,7 @@ public abstract class MatrixViewSorter {
 		ValueSortCriteria[] criteriaArray =
 						new ValueSortCriteria[1];
 		int index = matrixView.getSelectedPropertyIndex();
-		criteriaArray[0] = new ValueSortCriteria(index, new SumAbsAggregator(), SortDirection.DESCENDING);
+		criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
 		for (int i = numRows-1; i >= 0; i--) {
 			//selRows[i] = i;

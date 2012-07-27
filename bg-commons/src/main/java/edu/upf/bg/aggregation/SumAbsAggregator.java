@@ -15,12 +15,17 @@
  *  under the License.
  */
 
-package org.gitools.aggregation;
+package edu.upf.bg.aggregation;
 
 import cern.jet.math.Functions;
 
 /** Absolute Sum */
 public class SumAbsAggregator extends AbstractAggregator {
+
+    public final static IAggregator INSTANCE = new SumAbsAggregator();
+
+    private SumAbsAggregator() {
+    }
 
 	@Override
 	public double aggregate(double[] data) {

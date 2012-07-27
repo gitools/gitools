@@ -1,6 +1,9 @@
 package edu.upf.bg.colorscale.impl;
 
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.MeanAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.ColorScaleRange;
@@ -101,5 +104,10 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
                              min,max,1,min,mid,max,ColorScaleRange.LINEAR_TYPE)
         );
 
+    }
+
+    @Override
+    public IAggregator defaultAggregator() {
+        return MeanAggregator.INSTANCE;
     }
 }

@@ -15,12 +15,17 @@
  *  under the License.
  */
 
-package org.gitools.aggregation;
+package edu.upf.bg.aggregation;
 
 import cern.jet.math.Functions;
 
 /** Sum of logarithms */
 public class LogSumAggregator extends AbstractAggregator {
+
+    public final static IAggregator INSTANCE = new LogSumAggregator();
+
+    private LogSumAggregator() {
+    }
 
 	@Override
 	public double aggregate(double[] data) {

@@ -17,6 +17,10 @@
 
 package edu.upf.bg.colorscale.impl;
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.MeanAggregator;
+import edu.upf.bg.aggregation.SumAbsAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
@@ -153,4 +157,8 @@ public class BinaryColorScale extends NumericColorScale {
     }
 
 
+    @Override
+    public IAggregator defaultAggregator() {
+        return SumAggregator.INSTANCE;
+    }
 }

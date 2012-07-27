@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.aggregation;
+package edu.upf.bg.aggregation;
 
 public interface IAggregator {
 	

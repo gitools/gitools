@@ -15,20 +15,26 @@
  *  under the License.
  */
 
-package org.gitools.aggregation;
+package edu.upf.bg.aggregation;
 
 import cern.jet.math.Functions;
 
-/** Multiplication */
-public class MultAggregator extends AbstractAggregator {
+/** Mean */
+public class MeanAggregator extends AbstractAggregator {
+
+    public final static IAggregator INSTANCE = new MeanAggregator();
+
+    private MeanAggregator() {
+    }
 	
 	@Override
 	public double aggregate(double[] data) {
-		return aggregate(data, Functions.mult, 1);
+		double sum = aggregate(data, Functions.plus, 0);
+		return sum / data.length; //FIXME should have into account NaN values ???
 	}
 
 	@Override
 	public String toString() {
-		return "Multiplication";
+		return "Mean";
 	}
 }

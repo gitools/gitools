@@ -17,6 +17,9 @@
 
 package edu.upf.bg.colorscale.impl;
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.MultAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
@@ -135,5 +138,10 @@ public class PValueColorScale extends NumericColorScale {
                 mid,max,10,null,null,max,ColorScaleRange.LOGARITHMIC_TYPE)
         );
 
+    }
+
+    @Override
+    public IAggregator defaultAggregator() {
+        return MultAggregator.INSTANCE;
     }
 }

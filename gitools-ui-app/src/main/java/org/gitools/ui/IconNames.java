@@ -60,8 +60,11 @@ public class IconNames {
 	public static final String selectAll16 = "/img/SelectAll16.gif";
 	public static final String selectAll24 = "/img/SelectAll24.gif";
 	
-	public static final String sortSelectedColumns16 = "/img/SortSelectedColumns16.gif";
-	public static final String sortSelectedColumns24 = "/img/SortSelectedColumns24.gif";
+	public static final String sortSelectedColumns16Asc = "/img/SortSelectedColumns16Asc.gif";
+	public static final String sortSelectedColumns24Asc = "/img/SortSelectedColumns24Asc.gif";
+
+    public static final String sortSelectedColumns16Desc = "/img/SortSelectedColumns16Asc.gif";
+    public static final String sortSelectedColumns24Desc = "/img/SortSelectedColumns24Desc.gif";
 	
 	public static final String unselectAll16 = "/img/UnselectAll16.gif";
 	public static final String unselectAll24 = "/img/UnselectAll24.gif";

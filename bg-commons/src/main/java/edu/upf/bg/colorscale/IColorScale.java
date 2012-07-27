@@ -17,10 +17,16 @@
 
 package edu.upf.bg.colorscale;
 
+import edu.upf.bg.aggregation.IAggregator;
+
 import java.awt.*;
 
 public interface IColorScale {
 
     Color valueColor(double value);
+
+    IAggregator defaultAggregator();
+
+
 
 }

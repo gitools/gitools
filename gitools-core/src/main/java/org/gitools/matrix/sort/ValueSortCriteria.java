@@ -17,7 +17,7 @@
 
 package org.gitools.matrix.sort;
 
-import org.gitools.aggregation.IAggregator;
+import edu.upf.bg.aggregation.IAggregator;
 
 public final class ValueSortCriteria {
 

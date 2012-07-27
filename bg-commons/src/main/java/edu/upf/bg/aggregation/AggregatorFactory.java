@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.aggregation;
+package edu.upf.bg.aggregation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,11 +33,11 @@ public class AggregatorFactory {
 		= new HashMap<String, IAggregator>();
 	
 	static {
-		put(new MultAggregator());
-		put(new SumAggregator());
-		put(new MeanAggregator());
-		put(new LogSumAggregator());
-		put(new SumAbsAggregator());
+		put(MultAggregator.INSTANCE);
+		put(SumAggregator.INSTANCE);
+		put(MeanAggregator.INSTANCE);
+		put(LogSumAggregator.INSTANCE);
+		put(SumAbsAggregator.INSTANCE);
 	}
 	
 	private static void put(IAggregator aggregator) {
