@@ -218,6 +218,6 @@ public class IntegrateDataDimensionsAction extends BaseAction {
             dimensions = mv.getContents().getCellAdapter().getPropertyCount();
         }
 
-        return (isHeatmap||isMatrixView) && dimensions > 1;
+        return (isHeatmap||isMatrixView) && dimensions > 0;
     }
 }
