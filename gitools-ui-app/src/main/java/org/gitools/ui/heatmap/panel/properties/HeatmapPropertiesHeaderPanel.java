@@ -639,9 +639,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 			wizard = new ColoredLabelsHeaderWizard(hm, hdim, h, rowMode);
 			header = h;
 		}
-        else if (cls.equals(HeatmapDataLabelsHeader.class)) {
-            HeatmapDataLabelsHeader h = new HeatmapDataLabelsHeader(hdim);
-            wizard = new DataLabelsHeaderWizard(hm, hdim, h, rowMode);
+        else if (cls.equals(HeatmapDataHeatmapHeader.class)) {
+            HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(hdim);
+            wizard = new DataLabelsHeaderWizard(hm, h, rowMode);
             header = h;
         }
 

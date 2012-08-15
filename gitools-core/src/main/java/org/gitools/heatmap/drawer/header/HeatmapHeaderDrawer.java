@@ -25,9 +25,11 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.HeatmapBodyDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 
@@ -62,6 +64,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				d = new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal);
 			else if (h instanceof HeatmapColoredLabelsHeader)
 				d = new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal);
+            else if (h instanceof HeatmapDataHeatmapHeader)
+                d = new HeatmapDataHeatmapDrawer((HeatmapDataHeatmapHeader) h);
 			
 			if (d != null) {
 				d.setPictureMode(pictureMode);

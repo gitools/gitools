@@ -22,6 +22,7 @@ import edu.upf.bg.color.generator.ColorGeneratorFactory;
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 import edu.upf.bg.xml.adapter.FontXmlAdapter;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -29,7 +30,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HeatmapDataLabelsHeader extends HeatmapHeader {
+public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
 	public static final String THICKNESS_CHANGED = "thickness";
 	public static final String MARGIN_CHANGED = "margin";
@@ -37,10 +38,8 @@ public class HeatmapDataLabelsHeader extends HeatmapHeader {
 	public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
 	public static final String LABEL_FONT_CHANGED = "labelFont";
 	public static final String LABEL_ROTATED_CHANGED = "labelRotated";
-	public static final String LABEL_COLOR_DEFINED_CHANGED = "labelColorDefined";
-	public static final String LABEL_COLOR_CHANGED = "labelColor";
-	public static final String CLUSTERS_CHANGED = "clusters";
-	public static final String INDICES_CHANGED = "indices";
+    private static final String HEADER_HEATMAP_CHANGED = "headerHeatmap";
+
 
     /* The thickness of the color band */
 	protected int thickness;
@@ -74,8 +73,9 @@ public class HeatmapDataLabelsHeader extends HeatmapHeader {
 
 	/** Maps matrix row/column id to cluster index */
 	protected Map<String, Integer> dataColoredLabelIndices;
+    private Heatmap headerHeatmap;
 
-	public HeatmapDataLabelsHeader(HeatmapDim hdim) {
+    public HeatmapDataHeatmapHeader(HeatmapDim hdim) {
 		super(hdim);
 		
 		size = 20;
@@ -129,12 +129,7 @@ public class HeatmapDataLabelsHeader extends HeatmapHeader {
 		firePropertyChange(SEPARATION_GRID_CHANGED, old, separationGrid);
 	}
 
-	/** Whether to show labels of each cluster */
-	public boolean isLabelVisible() {
-		return labelVisible;
-	}
-
-	/** Whether to show labels of each cluster */
+	/** Whether to show labels of each value */
 	public void setLabelVisible(boolean labelVisible) {
 		boolean old = this.labelVisible;
 		this.labelVisible = labelVisible;
@@ -167,74 +162,14 @@ public class HeatmapDataLabelsHeader extends HeatmapHeader {
 		firePropertyChange(LABEL_ROTATED_CHANGED, old, labelRotated);
 	}
 
-	/** Instead of use the same color as the cluster use a defined color */
-	public boolean isLabelColorDefined() {
-		return labelColorDefined;
-	}
+    public void setHeaderHeatmap (Heatmap headerHeatmap) {
+        Heatmap old = this.headerHeatmap;
+        this.headerHeatmap = headerHeatmap;
+        firePropertyChange(HEADER_HEATMAP_CHANGED,old,headerHeatmap);
+    }
+    
+    public Heatmap getHeaderHeatmap () {
+        return this.headerHeatmap;
+    }
 
-	/** Instead of use the same color as the cluster use a defined color */
-	public void setLabelColorDefined(boolean labelColorDefined) {
-		boolean old = this.labelColorDefined;
-		this.labelColorDefined = labelColorDefined;
-		firePropertyChange(LABEL_COLOR_DEFINED_CHANGED, old, labelColorDefined);
-	}
-
-	/** Label foreground color */
-	public Color getLabelColor() {
-		return labelColor;
-	}
-
-	/** Label foreground color */
-	public void setLabelColor(Color labelColor) {
-		Color old = this.labelColor;
-		this.labelColor = labelColor;
-		firePropertyChange(LABEL_COLOR_CHANGED, old, labelColor);
-	}
-
-	/** The list of clusters in this set */
-	public ColoredLabel[] getClusters() {
-		return coloredLabels;
-	}
-
-	/** The list of clusters in this set */
-	public void setClusters(ColoredLabel[] clusters) {
-		ColoredLabel[] old = this.coloredLabels;
-		this.coloredLabels = clusters;
-		firePropertyChange(CLUSTERS_CHANGED, old, clusters);
-	}
-
-	/** Return the corresponding matrix row/column cluster. Null if there is not cluster assigned. */
-	public ColoredLabel getAssignedColoredLabel(String id) {
-		Integer index = dataColoredLabelIndices.get(id);
-		if (index == null)
-			return null;
-		return coloredLabels[index];
-	}
-
-	public void setAssignedColoredLabels(Map<String, Integer> assigned) {
-		this.dataColoredLabelIndices = new HashMap<String, Integer>(assigned);
-		firePropertyChange(INDICES_CHANGED);
-	}
-
-	public Map<String, Integer> getAssignedColoredLabels() {
-		return this.dataColoredLabelIndices;
-	}
-
-	/** Set the corresponding matrix row/column cluster. -1 if there is not cluster assigned. */
-	public void setAssignedColoredLabel(String id, int clusterIndex) {
-		ColoredLabel old = getAssignedColoredLabel(id);
-		if (old != null && clusterIndex == -1)
-			this.dataColoredLabelIndices.remove(id);
-		else
-			this.dataColoredLabelIndices.put(id, clusterIndex);
-		
-		ColoredLabel newCluster = clusterIndex != -1 ? coloredLabels[clusterIndex] : null;
-		firePropertyChange(INDICES_CHANGED, old, newCluster);
-	}
-
-	/** Clear all assigned clusters */
-	public void clearAssignedColoredLabels() {
-		this.dataColoredLabelIndices.clear();
-		firePropertyChange(INDICES_CHANGED);
-	}
 }

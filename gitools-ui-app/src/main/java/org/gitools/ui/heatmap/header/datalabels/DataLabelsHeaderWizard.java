@@ -22,7 +22,7 @@ import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.aggregation.IAggregator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.HeatmapDataLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
@@ -34,22 +34,20 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
     private Heatmap heatmap;
     private Heatmap aggregatedValueHeatmap;
-    private HeatmapDim hdim;
     private boolean applyToRows;
 
     private boolean editionMode;
 
-    private HeatmapDataLabelsHeader header;
+    private HeatmapDataHeatmapHeader header;
 
 
     private LabelDataSourcePage dataSourcePage;
     private ColorScalePage colorScalePage;
 
-    public DataLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapDataLabelsHeader header, boolean applyToRows) {
+    public DataLabelsHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows) {
         super();
 
         this.heatmap = heatmap;
-        this.hdim = hdim;
         this.applyToRows = applyToRows;
 
         this.header = header;
@@ -59,7 +57,7 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
     @Override
     public void addPages() {
         if (!editionMode) {
-            dataSourcePage = new LabelDataSourcePage(heatmap, hdim, applyToRows);
+            dataSourcePage = new LabelDataSourcePage(heatmap, applyToRows);
             addPage(dataSourcePage);
         }
 
@@ -97,20 +95,22 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
             int[] columns = useAll ? heatmap.getMatrixView().getVisibleColumns() :
                     heatmap.getMatrixView().getSelectedColumns();
+            int[] rows = heatmap.getMatrixView().getVisibleRows();
+
 
             elementsToAggregate = columns.length;
-            valueMatrix = DoubleFactory2D.dense.make(1, elementsToAggregate, 0.0);
+            valueMatrix = DoubleFactory2D.dense.make(1, rows.length, 0.0);
             final double[] valueBuffer = new double[elementsToAggregate];
 
-            int[] rows = heatmap.getMatrixView().getVisibleRows();
             for (int i = 0; i < rows.length; i++) {
                 double aggregatedValue = aggregateValue(heatmap.getMatrixView(),columns,i,valueIndex,aggregator,valueBuffer);
                 valueMatrix.set(0,i,aggregatedValue);
             }
 
             rowNames = new String[rows.length];
-            for (int i = 0; i < rows.length;)
+            for (int i = 0; i < rows.length; i++)
                 rowNames[i] = heatmap.getMatrixView().getRowLabel(i);
+
 
             columnNames = new String[1];
             columnNames[0] = dataSourcePage.getDataAggregator().toString();
@@ -120,12 +120,13 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
             int[] rows = useAll ? heatmap.getMatrixView().getVisibleRows() :
                     heatmap.getMatrixView().getSelectedRows();
+            int[] columns = heatmap.getMatrixView().getVisibleColumns();
+
 
             elementsToAggregate = rows.length;
-            valueMatrix = DoubleFactory2D.dense.make(1, elementsToAggregate, 0.0);
+            valueMatrix = DoubleFactory2D.dense.make(1, columns.length, 0.0);
             final double[] valueBuffer = new double[elementsToAggregate];
 
-            int[] columns = heatmap.getMatrixView().getVisibleColumns();
             for (int i = 0; i < columns.length; i++) {
                 double aggregatedValue = aggregateValue(heatmap.getMatrixView(),rows,i,valueIndex,aggregator,valueBuffer);
                 valueMatrix.set(0,i,aggregatedValue);
@@ -165,11 +166,11 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
    @Override
     public void performFinish() {
-        System.out.print(aggregatedValueHeatmap.getActiveCellDecorator().getName());
+       header.setHeaderHeatmap(aggregatedValueHeatmap);
     }
 
 
-    public HeatmapDataLabelsHeader getHeader() {
+    public HeatmapDataHeatmapHeader getHeader() {
         return header;
     }
 
