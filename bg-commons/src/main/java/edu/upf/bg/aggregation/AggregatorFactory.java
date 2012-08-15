@@ -38,6 +38,10 @@ public class AggregatorFactory {
 		put(MeanAggregator.INSTANCE);
 		put(LogSumAggregator.INSTANCE);
 		put(SumAbsAggregator.INSTANCE);
+        put(StdDevAggregator.INSTANCE);
+        put(VarianceAggregator.INSTANCE);
+        put(MinAggregator.INSTANCE);
+        put(MaxAggregator.INSTANCE);
 	}
 	
 	private static void put(IAggregator aggregator) {
