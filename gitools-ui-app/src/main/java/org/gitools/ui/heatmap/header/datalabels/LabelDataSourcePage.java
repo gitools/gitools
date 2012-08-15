@@ -60,34 +60,6 @@ public class LabelDataSourcePage extends AbstractWizardPage {
         this.applyToRows = applyToRows;
 		initComponents();
         updateModel();
-    }
-
-    public IAggregator getDataAggregator () {
-        return aggregatorsArray[aggregatorCb.getSelectedIndex()];
-    }
-    
-    public int getSelectedDataValueIndex() {
-        return valueCb.getSelectedIndex();
-    }
-    
-    public boolean useAllColumnsOrRows() {
-        return useAllRb.isSelected();
-    }
-
-	private void updateCompleted() {
-		boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
-		setComplete(completed);
-	}
-
-    @Override
-    public void updateControls() {
-        updateCompleted();
-    }
-
-
-	@Override
-	public void updateModel() {
-        super.updateModel();
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
         valueCb.setSelectedIndex(heatmap.getMatrixView().getSelectedPropertyIndex());
@@ -114,6 +86,39 @@ public class LabelDataSourcePage extends AbstractWizardPage {
             useSelectedRb.setText("Use values from selected rows");
         }
 
+
+    }
+
+    public IAggregator getDataAggregator () {
+        return aggregatorsArray[aggregatorCb.getSelectedIndex()];
+    }
+    
+    public int getSelectedDataValueIndex() {
+        return valueCb.getSelectedIndex();
+    }
+
+    public String getSelectedDataValueName() {
+        return valueCb.getSelectedItem().toString();
+    }
+    
+    public boolean useAllColumnsOrRows() {
+        return useAllRb.isSelected();
+    }
+
+	private void updateCompleted() {
+		boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
+		setComplete(completed);
+	}
+
+    @Override
+    public void updateControls() {
+        updateCompleted();
+    }
+
+
+	@Override
+	public void updateModel() {
+        super.updateModel();
 	}
 
 

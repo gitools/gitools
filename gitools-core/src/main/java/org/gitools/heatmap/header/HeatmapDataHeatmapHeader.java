@@ -34,7 +34,6 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
 	public static final String THICKNESS_CHANGED = "thickness";
 	public static final String MARGIN_CHANGED = "margin";
-	public static final String SEPARATION_GRID_CHANGED = "separationGrid";
 	public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
 	public static final String LABEL_FONT_CHANGED = "labelFont";
 	public static final String LABEL_ROTATED_CHANGED = "labelRotated";
@@ -47,9 +46,6 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 	/* Color band margin */
 	protected int margin;
 
-	/* Separate different clusters with a grid */
-	protected boolean separationGrid;
-
 	/** Whether to show labels of each cluster */
 	protected boolean labelVisible;
 
@@ -61,18 +57,10 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 	 * otherwise the label is perpendicular to the color band */
 	protected boolean labelRotated;
 
-	/** Instead of use the same color as the cluster use a defined color */
-	protected boolean labelColorDefined;
-
 	/** Label foreground color */
 	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
 	protected Color labelColor;
 
-	/** The list of clusters in this set */
-	protected ColoredLabel[] coloredLabels;
-
-	/** Maps matrix row/column id to cluster index */
-	protected Map<String, Integer> dataColoredLabelIndices;
     private Heatmap headerHeatmap;
 
     public HeatmapDataHeatmapHeader(HeatmapDim hdim) {
@@ -81,16 +69,12 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 		size = 20;
 		thickness = 14;
 		margin = 1;
-		separationGrid = true;
 
 		labelVisible = false;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
 		labelRotated = false;
-		labelColorDefined = false;
 		labelColor = Color.BLACK;
 
-		coloredLabels = new ColoredLabel[0];
-		dataColoredLabelIndices = new HashMap<String, Integer>();
 	}
 
 	/* The thickness of the color band */
@@ -115,18 +99,6 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 		int old = this.margin;
 		this.margin = margin;
 		firePropertyChange(MARGIN_CHANGED, old, margin);
-	}
-
-	/* Separate different clusters with a grid */
-	public boolean isSeparationGrid() {
-		return separationGrid;
-	}
-
-	/* Separate different clusters with a grid */
-	public void setSeparationGrid(boolean separationGrid) {
-		boolean old = this.separationGrid;
-		this.separationGrid = separationGrid;
-		firePropertyChange(SEPARATION_GRID_CHANGED, old, separationGrid);
 	}
 
 	/** Whether to show labels of each value */
@@ -170,6 +142,14 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
     
     public Heatmap getHeaderHeatmap () {
         return this.headerHeatmap;
+    }
+
+    @Override
+    public String getTitle() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Data: ");
+        sb.append(headerHeatmap.getTitle());
+        return sb.toString();
     }
 
 }

@@ -21,7 +21,6 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import edu.upf.bg.aggregation.IAggregator;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleMatrix;
@@ -35,9 +34,7 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
     private Heatmap heatmap;
     private Heatmap aggregatedValueHeatmap;
     private boolean applyToRows;
-
     private boolean editionMode;
-
     private HeatmapDataHeatmapHeader header;
 
 
@@ -82,6 +79,8 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
     }
 
     private Heatmap aggregateToHeatmap() {
+
+
         int elementsToAggregate;
         String[] columnNames;
         String[] rowNames;
@@ -99,12 +98,12 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
 
             elementsToAggregate = columns.length;
-            valueMatrix = DoubleFactory2D.dense.make(1, rows.length, 0.0);
+            valueMatrix = DoubleFactory2D.dense.make(rows.length, 1, 0.0);
             final double[] valueBuffer = new double[elementsToAggregate];
 
             for (int i = 0; i < rows.length; i++) {
                 double aggregatedValue = aggregateValue(heatmap.getMatrixView(),columns,i,valueIndex,aggregator,valueBuffer);
-                valueMatrix.set(0,i,aggregatedValue);
+                valueMatrix.set(i,0,aggregatedValue);
             }
 
             rowNames = new String[rows.length];
@@ -166,6 +165,12 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
 
    @Override
     public void performFinish() {
+       StringBuilder sb = new StringBuilder("");
+       sb.append(dataSourcePage.getDataAggregator().toString());
+       sb.append(" of ");
+       sb.append(dataSourcePage.getSelectedDataValueName());
+
+       aggregatedValueHeatmap.setTitle(sb.toString());
        header.setHeaderHeatmap(aggregatedValueHeatmap);
     }
 
