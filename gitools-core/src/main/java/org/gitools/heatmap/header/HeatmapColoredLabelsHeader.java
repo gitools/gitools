@@ -21,7 +21,7 @@ import org.gitools.heatmap.HeatmapDim;
 import edu.upf.bg.color.generator.ColorGenerator;
 import edu.upf.bg.color.generator.ColorGeneratorFactory;
 
-import java.awt.Font;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,7 +68,12 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		dataColoredLabelIndices = new HashMap<String, Integer>();
 	}
 
-	/* The thickness of the color band */
+    @Override
+    protected void updateLargestLabelLength(Component component) {
+        this.largestLabelLength = 0;
+    }
+
+    /* The thickness of the color band */
 	public int getThickness() {
 		return thickness;
 	}

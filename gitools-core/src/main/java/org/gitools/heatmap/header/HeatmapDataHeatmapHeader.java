@@ -17,22 +17,32 @@
 
 package org.gitools.heatmap.header;
 
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import edu.upf.bg.formatter.GenericFormatter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.matrix.model.IMatrixView;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
+    public enum LabelPositionEnum {
+        leftOf,
+        rightOf,
+        inside;
+    }
+
     private static final String HEADER_HEATMAP_CHANGED = "headerHeatmap";
+    private LabelPositionEnum labelPosition;
+
     private Heatmap headerHeatmap;
 
     public HeatmapDataHeatmapHeader(HeatmapDim hdim) {
 		super(hdim);
 		
-		size = 20;
+		size = 80;
+
+        this.labelPosition = LabelPositionEnum.inside;
 
         labelColor = Color.BLACK;
 
@@ -48,12 +58,36 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
         return this.headerHeatmap;
     }
 
+    public LabelPositionEnum getLabelPosition() {
+        return labelPosition;
+    }
+
+    public void setLabelPosition(LabelPositionEnum labelPosition) {
+        this.labelPosition = labelPosition;
+    }
+
     @Override
-    public String getTitle() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Data: ");
-        sb.append(headerHeatmap.getTitle());
-        return sb.toString();
+    public void updateLargestLabelLength(Component component) {
+        // Get largest label:
+        int rows = headerHeatmap.getMatrixView().getRowCount();
+        int cols = headerHeatmap.getMatrixView().getColumnCount();
+        IMatrixView  data = headerHeatmap.getMatrixView();
+
+        // Formatter for value labels
+        GenericFormatter gf = new GenericFormatter();
+        FontMetrics fm = component.getFontMetrics(this.font);
+
+        int largestLabelLenght = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Double element = (Double) data.getCell(row, col);
+                String valueLabel = gf.format(element);
+                int length = fm.stringWidth(valueLabel);
+                if (length > largestLabelLenght)
+                    largestLabelLenght = length;
+            }
+        }
+        setLargestLabelLength(largestLabelLenght);
     }
 
 }

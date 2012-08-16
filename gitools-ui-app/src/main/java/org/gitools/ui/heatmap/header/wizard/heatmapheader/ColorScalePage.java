@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -34,12 +35,14 @@ import javax.swing.*;
 
 public class ColorScalePage extends AbstractWizardPage {
 
-	private HeatmapColoredLabelsHeader header;
+	private HeatmapDataHeatmapHeader header;
 
     private Heatmap heatmap;
 
-    public ColorScalePage() {
+    public ColorScalePage(HeatmapDataHeatmapHeader header) {
 		super();
+
+        this.header = header;
 
         initComponents();
 
@@ -91,6 +94,8 @@ public class ColorScalePage extends AbstractWizardPage {
 
 	@Override
 	public void updateControls() {
+        this.heatmap = header.getHeaderHeatmap();
+        changeDecoratorPanel((ElementDecoratorDescriptor) cellDecoratorCb.getSelectedItem());
 		super.updateControls();
 	}
 
@@ -162,11 +167,11 @@ public class ColorScalePage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
-	public HeatmapColoredLabelsHeader getHeader() {
+	public HeatmapDataHeatmapHeader getHeader() {
 		return header;
 	}
 
-	public void setHeader(HeatmapColoredLabelsHeader header) {
+	public void setHeader(HeatmapDataHeatmapHeader header) {
 		this.header = header;
 	}
 }

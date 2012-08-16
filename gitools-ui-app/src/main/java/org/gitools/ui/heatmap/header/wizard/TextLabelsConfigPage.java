@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -34,13 +35,11 @@ import org.gitools.ui.utils.FontUtils;
 
 public class TextLabelsConfigPage extends AbstractWizardPage {
 
-	private HeatmapDim hdim;
-	private HeatmapTextLabelsHeader header;
+	private HeatmapHeader header;
 
 	private Font font;
 
-    public TextLabelsConfigPage(HeatmapDim hdim, HeatmapTextLabelsHeader header) {
-		this.hdim = hdim;
+    public TextLabelsConfigPage(HeatmapHeader header) {
 		this.header = header;
 		
         initComponents();

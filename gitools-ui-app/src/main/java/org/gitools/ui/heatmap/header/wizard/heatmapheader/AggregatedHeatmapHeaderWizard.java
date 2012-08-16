@@ -26,7 +26,7 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsConfigPage;
+import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
@@ -41,7 +41,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
     private AggregationDataSourcePage dataSourcePage;
     private ColorScalePage colorScalePage;
-    private ColoredLabelsConfigPage configPage;
+    private HeatmapHeaderConfigPage configPage;
+    private TextLabelsConfigPage textConfigPage;
 
     public AggregatedHeatmapHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows) {
         super();
@@ -58,20 +59,28 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         if (!editionMode) {
             dataSourcePage = new AggregationDataSourcePage(heatmap, applyToRows);
             addPage(dataSourcePage);
-
-            colorScalePage = new ColorScalePage();
-            addPage(colorScalePage);
-
-            //configPage = new ColoredLabelsConfigPage(header);
-            //addPage(configPage);
-        } else {
-            //configPage = new ColoredLabelsConfigPage(header);
-            //addPage(configPage);
-
-            colorScalePage = new ColorScalePage();
-            addPage(colorScalePage);
         }
 
+        configPage = new HeatmapHeaderConfigPage(header);
+        addPage(configPage);
+
+        colorScalePage = new ColorScalePage(header);
+        addPage(colorScalePage);
+
+        textConfigPage = new TextLabelsConfigPage(header);
+        addPage(textConfigPage);
+
+    }
+
+    public boolean isLastPage(IWizardPage page) {
+        if (page == this.colorScalePage) {
+            if (!header.isLabelVisible() && page == this.colorScalePage)
+                return true;
+            else
+                return false;
+        } else {
+            return super.isLastPage(page);
+        }
     }
 
     @Override
@@ -80,9 +89,17 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         if (page == this.dataSourcePage) {
 
             aggregatedValueHeatmap = aggregateToHeatmap();
-            colorScalePage.setHeatmap(aggregatedValueHeatmap);
-            nextPage = colorScalePage;
 
+            StringBuilder sb = new StringBuilder("Data: ");
+            sb.append(dataSourcePage.getDataAggregator().toString());
+            sb.append(" of ");
+            sb.append(dataSourcePage.getSelectedDataValueName());
+
+            header.setHeaderHeatmap(aggregatedValueHeatmap);
+            header.setTitle(sb.toString());
+
+            nextPage = super.getNextPage(page);
+            
         } else {
             nextPage = super.getNextPage(page);
         }
@@ -176,12 +193,6 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
    @Override
     public void performFinish() {
-       StringBuilder sb = new StringBuilder("");
-       sb.append(dataSourcePage.getDataAggregator().toString());
-       sb.append(" of ");
-       sb.append(dataSourcePage.getSelectedDataValueName());
-
-       aggregatedValueHeatmap.setTitle(sb.toString());
        header.setHeaderHeatmap(aggregatedValueHeatmap);
     }
 

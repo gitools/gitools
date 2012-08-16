@@ -18,16 +18,14 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDim;
-import java.awt.Color;
-import java.awt.Font;
+
+import java.awt.*;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.matrix.model.AnnotationMatrix;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -98,7 +96,12 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 		firePropertyChange(LABEL_FONT_CHANGED, old, font);
 	}
 
-	public LabelSource getLabelSource() {
+    @Override
+    protected void updateLargestLabelLength(Component component) {
+        this.largestLabelLength = 0;
+    }
+
+    public LabelSource getLabelSource() {
 		return labelSource;
 	}
 

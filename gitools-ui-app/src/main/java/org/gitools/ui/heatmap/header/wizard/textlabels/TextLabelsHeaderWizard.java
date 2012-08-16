@@ -40,7 +40,7 @@ public class TextLabelsHeaderWizard extends AbstractWizard {
 		sourcePage = new TextLabelsSourcePage(hdim, header);
 		addPage(sourcePage);
 
-		configPage = new TextLabelsConfigPage(hdim, header);
+		configPage = new TextLabelsConfigPage(header);
 		addPage(configPage);
 	}
 

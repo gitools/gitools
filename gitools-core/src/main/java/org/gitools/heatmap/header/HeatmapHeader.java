@@ -37,6 +37,7 @@ public abstract class HeatmapHeader extends AbstractModel {
     public static final String LABEL_FONT_CHANGED = "labelFont";
     public static final String LABEL_ROTATED_CHANGED = "labelRotated";
     public static final String LABEL_COLOR_CHANGED = "labelColor";
+    public static final String LARGEST_LABEL_LENGTH_CHANGED = "largestLabelLength";
 
     /** The title of the cluster set */
 	protected String title;
@@ -64,6 +65,12 @@ public abstract class HeatmapHeader extends AbstractModel {
     /** If false the label is painted along the color band,
 	 * otherwise the label is perpendicular to the color band */
 	protected boolean labelRotated;
+
+    /** Tells the drawer how long the largest label is with current
+     * font settings
+     */
+    
+    protected int largestLabelLength;
 
     /** Label foreground color */
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
@@ -161,6 +168,14 @@ public abstract class HeatmapHeader extends AbstractModel {
         return this.labelVisible;
     }
 
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
     /** The font to use for labels */
     public Font getLabelFont() {
         return font;
@@ -170,6 +185,7 @@ public abstract class HeatmapHeader extends AbstractModel {
     public void setLabelFont(Font font) {
         Font old = this.font;
         this.font = font;
+        updateLargestLabelLength(null);
         firePropertyChange(LABEL_FONT_CHANGED, old, font);
     }
 
@@ -198,4 +214,17 @@ public abstract class HeatmapHeader extends AbstractModel {
         this.labelColor = labelColor;
         firePropertyChange(LABEL_COLOR_CHANGED, old, labelColor);
     }
+
+    public int getLargestLabelLength() {
+        return largestLabelLength;
+    }
+
+    public void setLargestLabelLength(int largestLabelLength) {
+        int old = this.largestLabelLength;
+        this.largestLabelLength = largestLabelLength;
+        firePropertyChange(LARGEST_LABEL_LENGTH_CHANGED, old, largestLabelLength);
+    }
+
+    abstract protected void updateLargestLabelLength(Component component);
+
 }

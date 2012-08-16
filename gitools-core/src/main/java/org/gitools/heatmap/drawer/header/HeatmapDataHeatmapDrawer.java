@@ -18,8 +18,8 @@
 package org.gitools.heatmap.drawer.header;
 
 import edu.upf.bg.color.utils.ColorUtils;
+import edu.upf.bg.formatter.GenericFormatter;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
@@ -37,9 +37,6 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
 	@Override
 	public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
-
-        //TODO: adapt
-
         Heatmap headerHeatmap = header.getHeaderHeatmap();
 		IMatrixView data = header.getHeaderHeatmap().getMatrixView();
 
@@ -53,6 +50,17 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int rowEnd;
         int colStart;
         int colEnd;
+        int legendPadding = 4;
+        int largestLegendLength = header.isLabelVisible() ? header.getLargestLabelLength() : 0;
+        Font font = header.getFont();
+        HeatmapDataHeatmapHeader.LabelPositionEnum labelPosition = header.getLabelPosition();
+        g.setFont(font);
+        FontMetrics fm = g.getFontMetrics(header.getFont());
+        GenericFormatter gf = new GenericFormatter();
+
+        // legend will not fit even though user asked for it
+        if (header.isLabelVisible() && header.getSize() <= largestLegendLength + legendPadding)
+            largestLegendLength = 0;
 
         // Clear background
         g.setColor(Color.WHITE);
@@ -102,7 +110,6 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
             colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
         }
 
-
 		ElementDecorator deco = headerHeatmap.getActiveCellDecorator();
 		ElementDecoration decoration = new ElementDecoration();
 
@@ -130,9 +137,32 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 					columnsGridColor = columnsGridColor.darker();
 				}
 
-				g.setColor(color);
+                int colorRectWith = cellWidth;
+                int colorRectX = cellWidth;
+                int legendStart = x;
+                String valueLabel = gf.format(element);
+                int legendLength = fm.stringWidth(valueLabel);
 
-				g.fillRect(x, y, cellWidth - columnsGridSize, cellHeight - rowsGridSize);
+
+
+                switch (labelPosition) {
+                    case rightOf:
+                        colorRectWith = cellWidth - legendPadding - largestLegendLength;
+                        legendStart = x + cellWidth + legendPadding;
+                        
+                        break;
+                    case leftOf:
+                        colorRectWith = cellWidth - legendPadding - largestLegendLength;
+                        colorRectX = x + legendPadding + largestLegendLength;
+                        break;
+                    case inside:
+                        legendStart = x + cellWidth/2 - largestLegendLength/2;
+                        break;
+                }
+
+                g.setColor(color);
+
+				g.fillRect(colorRectX, y, colorRectWith - columnsGridSize, cellHeight - rowsGridSize);
 
 				g.setColor(rowsGridColor);
 
@@ -142,6 +172,12 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
 				g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
+                
+                if (largestLegendLength > 0) {
+                    g.setColor(Color.BLACK);
+                    int fontHeight = g.getFontMetrics().getHeight();
+                    g.drawString(valueLabel,legendStart,y + fontHeight);
+                }
 
 				if (!pictureMode) {
 					if (row == leadRow && col == leadColumn) {
