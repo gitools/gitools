@@ -35,7 +35,7 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class LabelDataSourcePage extends AbstractWizardPage {
+public class AggregationDataSourcePage extends AbstractWizardPage {
 
     private Heatmap heatmap;
     private String[] cellAttributes;
@@ -44,7 +44,7 @@ public class LabelDataSourcePage extends AbstractWizardPage {
     private boolean applyToRows;
 
 
-	public LabelDataSourcePage(Heatmap heatmap, boolean applyToRows) {
+	public AggregationDataSourcePage(Heatmap heatmap, boolean applyToRows) {
         this.heatmap = heatmap;
 
         List<IElementAttribute> attributes =  heatmap.getMatrixView().getCellAttributes();

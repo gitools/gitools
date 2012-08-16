@@ -23,7 +23,6 @@
 
 package org.gitools.ui.heatmap.header.textlabels;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,13 +58,13 @@ public class TextLabelsConfigPage extends AbstractWizardPage {
 	public void updateControls() {
 		font = header.getFont();
 		fontChanged();
-		fgColor.setColor(header.getForegroundColor());
+		fgColor.setColor(header.getLabelColor());
 	}
 
 	@Override
 	public void updateModel() {
 		header.setFont(font);
-		header.setForegroundColor(fgColor.getColor());
+		header.setLabelColor(fgColor.getColor());
 	}
 
 	private void fontChanged() {

@@ -124,7 +124,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 			if (cluster != null) {
 				int sepSize = 0;
 				if (header.isSeparationGrid() && lastCluster != null && !cluster.equals(lastCluster))
-					sepSize = header.getMargin();
+					sepSize = gridSize;
 
 				//int thickness = header.getThickness();
 				int thickness = header.getSize() - header.getMargin() * 2;
@@ -132,7 +132,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 					thickness = 1;
 
 				g.setColor(clusterColor);
-				g.fillRect(x + header.getMargin(), y + sepSize, thickness, height);
+				g.fillRect(x + header.getMargin(), y + sepSize - gridSize, thickness, height-sepSize);
 			}
 
 			if (lead) {

@@ -26,10 +26,11 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class DataLabelsHeaderWizard extends AbstractWizard {
+public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
     private Heatmap heatmap;
     private Heatmap aggregatedValueHeatmap;
@@ -38,10 +39,11 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
     private HeatmapDataHeatmapHeader header;
 
 
-    private LabelDataSourcePage dataSourcePage;
+    private AggregationDataSourcePage dataSourcePage;
     private ColorScalePage colorScalePage;
+    private ColoredLabelsConfigPage configPage;
 
-    public DataLabelsHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows) {
+    public AggregatedHeatmapHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows) {
         super();
 
         this.heatmap = heatmap;
@@ -54,12 +56,21 @@ public class DataLabelsHeaderWizard extends AbstractWizard {
     @Override
     public void addPages() {
         if (!editionMode) {
-            dataSourcePage = new LabelDataSourcePage(heatmap, applyToRows);
+            dataSourcePage = new AggregationDataSourcePage(heatmap, applyToRows);
             addPage(dataSourcePage);
-        }
 
-        colorScalePage = new ColorScalePage();
-        addPage(colorScalePage);
+            colorScalePage = new ColorScalePage();
+            addPage(colorScalePage);
+
+            //configPage = new ColoredLabelsConfigPage(header);
+            //addPage(configPage);
+        } else {
+            //configPage = new ColoredLabelsConfigPage(header);
+            //addPage(configPage);
+
+            colorScalePage = new ColorScalePage();
+            addPage(colorScalePage);
+        }
 
     }
 

@@ -65,7 +65,7 @@ public class AddHeaderPage extends AbstractWizardPage {
 		model = new DefaultListModel();
 		model.addElement(new HeaderType("Text labels", HeatmapTextLabelsHeader.class));
 		model.addElement(new HeaderType("Colored labels from annotations", HeatmapColoredLabelsHeader.class));
-        model.addElement(new HeaderType("Data heatmap from aggregated matrix data", HeatmapDataHeatmapHeader.class));
+        model.addElement(new HeaderType("Aggregated heatmap from matrix data", HeatmapDataHeatmapHeader.class));
 		// TODO Colored clusters from a hierarchical clustering
 		// TODO Values plot
 		// TODO Calculated value

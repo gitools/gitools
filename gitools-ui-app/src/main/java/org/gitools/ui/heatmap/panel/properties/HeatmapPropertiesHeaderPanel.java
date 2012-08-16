@@ -53,7 +53,7 @@ import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.datalabels.DataLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.datalabels.AggregatedHeatmapHeaderWizard;
 import org.gitools.ui.heatmap.header.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -641,7 +641,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		}
         else if (cls.equals(HeatmapDataHeatmapHeader.class)) {
             HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(hdim);
-            wizard = new DataLabelsHeaderWizard(hm, h, rowMode);
+            wizard = new AggregatedHeatmapHeaderWizard(hm, h, rowMode);
             header = h;
         }
 

@@ -127,7 +127,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				HeatmapTextLabelsHeader oldHeader = (HeatmapTextLabelsHeader) hh;
 				HeatmapTextLabelsHeader textHeaderCopy = new HeatmapTextLabelsHeader(dim);
 				textHeaderCopy.setFont(oldHeader.getFont());
-				textHeaderCopy.setForegroundColor(oldHeader.getForegroundColor());
+				textHeaderCopy.setLabelColor(oldHeader.getLabelColor());
 				textHeaderCopy.setLabelAnnotation(oldHeader.getLabelAnnotation());
 				textHeaderCopy.setLabelPattern(oldHeader.getLabelPattern());
 				textHeaderCopy.setLabelSource(oldHeader.getLabelSource());

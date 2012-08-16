@@ -40,54 +40,79 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         //TODO: adapt
 
-		int borderSize = getBorderSize();
-		int rowsGridSize = heatmap.getRowDim().isGridEnabled() ? heatmap.getRowDim().getGridSize() : 0;
-		int columnsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;
-		
-		// Clear background
-		g.setColor(Color.WHITE);
-		g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
-		// Draw borders and grid background
-		if (heatmap.isShowBorders()) {
-			g.setColor(Color.BLACK);
-			g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-			box.grow(-borderSize, -borderSize);
-		}
-		
         Heatmap headerHeatmap = header.getHeaderHeatmap();
 		IMatrixView data = header.getHeaderHeatmap().getMatrixView();
 
+
+        int borderSize = getBorderSize();
+        int rowsGridSize;
+        int columnsGridSize;
         int cellWidth;
         int cellHeight;
-        if (horizontal)  {
-		    cellWidth = heatmap.getCellWidth() + columnsGridSize;
-		    cellHeight = header.getSize();
-        } else {
-            cellWidth = header.getSize();
-            cellHeight = heatmap.getCellHeight() + rowsGridSize;
+        int rowStart;
+        int rowEnd;
+        int colStart;
+        int colEnd;
+
+        // Clear background
+        g.setColor(Color.WHITE);
+        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+
+        // Draw borders and grid background
+        if (heatmap.isShowBorders()) {
+            g.setColor(Color.BLACK);
+            g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
+            box.grow(-borderSize, -borderSize);
         }
 
-		//TODO take into account extBorderSize
-		int rowStart = (clip.y - box.y) / cellHeight;
-		int rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
-		rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
 
-		//TODO take into account extBorderSize
-		int colStart = (clip.x - box.x) / cellWidth;
-		int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
-		colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
-		
+        cellWidth = header.getSize();
+        columnsGridSize = header.getMargin();
+
+        if (horizontal)  {
+
+            rowsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;
+
+            cellHeight = heatmap.getCellWidth() + rowsGridSize;
+
+            //TODO take into account extBorderSize
+            colStart = (clip.y - box.y) / cellHeight;
+            colEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
+            colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
+
+            //TODO take into account extBorderSize
+            rowStart = (clip.x - box.x) / cellHeight;
+            rowEnd = (clip.x - box.x + clip.width + cellHeight - 1) / cellHeight;
+            rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
+
+        } else {
+
+            rowsGridSize = heatmap.getRowDim().isGridEnabled() ? heatmap.getRowDim().getGridSize() : 0;
+
+            cellHeight = heatmap.getCellHeight() + rowsGridSize;
+
+            //TODO take into account extBorderSize
+            rowStart = (clip.y - box.y) / cellHeight;
+            rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
+            rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
+
+            //TODO take into account extBorderSize
+            colStart = (clip.x - box.x) / cellWidth;
+            colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
+            colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
+        }
+
+
 		ElementDecorator deco = headerHeatmap.getActiveCellDecorator();
 		ElementDecoration decoration = new ElementDecoration();
 
-		int leadRow = heatmap.getMatrixView().getLeadSelectionRow();
-		int leadColumn = heatmap.getMatrixView().getLeadSelectionColumn();
+		int leadRow = headerHeatmap.getMatrixView().getLeadSelectionRow();
+		int leadColumn = headerHeatmap.getMatrixView().getLeadSelectionColumn();
 
 		int y = box.y + rowStart * cellHeight;
 		for (int row = rowStart; row < rowEnd; row++) {
 			int x = box.x + colStart * cellWidth;
-			boolean rowSelected = data.isRowSelected(row);
+            boolean rowSelected = data.isRowSelected(row);
 			for (int col = colStart; col < colEnd; col++) {
 				Object element = data.getCell(row, col);
 				deco.decorate(decoration, element);
@@ -117,6 +142,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
 				g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
+
 				if (!pictureMode) {
 					if (row == leadRow && col == leadColumn) {
 						g.setColor(ColorUtils.invert(color));
@@ -126,21 +152,28 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 						g.setColor(ColorUtils.invert(color));
 						int x2 = x + cellWidth - columnsGridSize - 1;
 						int y2 = y + cellHeight - rowsGridSize - 1;
-						g.drawLine(x, y, x2, y);
-						g.drawLine(x, y2, x2, y2);
+						/*g.drawLine(x, y, x2, y);
+						g.drawLine(x, y2, x2, y2);  */
 					}
 					else if (row != leadRow && col == leadColumn) {
 						g.setColor(ColorUtils.invert(color));
 						int x2 = x + cellWidth - columnsGridSize - 1;
 						int y2 = y + cellHeight - rowsGridSize - 1;
-						g.drawLine(x, y, x, y2);
-						g.drawLine(x2, y, x2, y2);
+						/*g.drawLine(x, y, x, y2);
+						g.drawLine(x2, y, x2, y2);*/
 					}
 				}
 
-				x += cellWidth;
+
+                if (horizontal)
+				    y += cellHeight;
+                else
+                    x += cellWidth;
 			}
-			y += cellHeight;
+            if (horizontal)
+			    x += cellWidth;
+            else
+                y += cellHeight;
 		}
 	}
 
