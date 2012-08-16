@@ -15,10 +15,11 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.header.textlabels;
+package org.gitools.ui.heatmap.header.wizard.textlabels;
 
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 public class TextLabelsHeaderWizard extends AbstractWizard {

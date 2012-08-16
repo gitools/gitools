@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.heatmap.header.ColoredLabel;
 

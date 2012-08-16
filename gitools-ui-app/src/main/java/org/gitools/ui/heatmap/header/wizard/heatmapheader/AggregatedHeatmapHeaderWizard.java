@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.header.datalabels;
+package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -26,7 +26,7 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsConfigPage;
+import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 

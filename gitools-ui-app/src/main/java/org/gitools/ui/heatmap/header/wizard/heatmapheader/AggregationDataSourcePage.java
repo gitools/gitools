@@ -21,7 +21,7 @@
  * Created on 02-mar-2011, 8:08:28
  */
 
-package org.gitools.ui.heatmap.header.datalabels;
+package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import edu.upf.bg.aggregation.AggregatorFactory;
 import edu.upf.bg.aggregation.IAggregator;
@@ -31,7 +31,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 

@@ -21,7 +21,7 @@
  * Created on 25-mar-2011, 10:17:45
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import javax.swing.DefaultListModel;
 import org.gitools.clustering.HierarchicalClusteringResults;

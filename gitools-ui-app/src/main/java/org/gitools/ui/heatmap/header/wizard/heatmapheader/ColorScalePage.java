@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.header.datalabels;
+package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

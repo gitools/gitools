@@ -15,10 +15,9 @@
  *  under the License.
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;

@@ -28,16 +28,12 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="titleField" pref="587" max="32767" attributes="0"/>
+                              <Component id="titleField" pref="588" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="marginSpin" min="-2" pref="64" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="thicknessSpin" min="-2" pref="64" max="-2" attributes="0"/>
                           </Group>
                           <Component id="separationGridChk" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="labelVisibleChk" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -78,8 +74,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="marginSpin" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="thicknessSpin" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="separationGridChk" min="-2" max="-2" attributes="0"/>
@@ -136,20 +130,6 @@
     <Component class="javax.swing.JCheckBox" name="labelRotatedChk">
       <Properties>
         <Property name="text" type="java.lang.String" value="Rotated text"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Thickness"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JSpinner" name="thicknessSpin">
-      <Properties>
-        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="14" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
-        </Property>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="separationGridChk">
