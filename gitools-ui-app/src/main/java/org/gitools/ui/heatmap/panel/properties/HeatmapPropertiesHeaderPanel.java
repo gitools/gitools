@@ -677,7 +677,13 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		else if (HeatmapHierarchicalColoredLabelsHeader.class.equals(cls)) {
 			wizard = new HierarchicalColoredLabelsHeaderWizard(
 						hm, hdim, (HeatmapHierarchicalColoredLabelsHeader) h);
-		}
+		} else if (HeatmapDataHeatmapHeader.class.equals(cls)) {
+            AggregatedHeatmapHeaderWizard wiz
+                    = new AggregatedHeatmapHeaderWizard(hm,(HeatmapDataHeatmapHeader) h, rowMode);
+            wiz.setEditionMode(true);
+            wizard = wiz;
+            
+        }
 
 		if (wizard == null)
 			return;

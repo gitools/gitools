@@ -23,6 +23,8 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
@@ -36,6 +38,7 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
     private LabelPositionEnum labelPosition;
 
     private Heatmap headerHeatmap;
+    private Map<String,Integer> labelIndexMap;
 
     public HeatmapDataHeatmapHeader(HeatmapDim hdim) {
 		super(hdim);
@@ -56,6 +59,14 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
     public Heatmap getHeaderHeatmap () {
         return this.headerHeatmap;
+    }
+
+    public Map<String,Integer> getLabelIndexMap() {
+        return labelIndexMap;
+    }
+
+    public void setLabelIndexMap(Map<String,Integer> labelIndexMap) {
+        this.labelIndexMap = labelIndexMap;
     }
 
     public LabelPositionEnum getLabelPosition() {

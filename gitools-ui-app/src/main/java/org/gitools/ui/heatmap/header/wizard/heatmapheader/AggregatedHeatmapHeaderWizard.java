@@ -19,6 +19,7 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
+import com.thoughtworks.xstream.mapper.ArrayMapper;
 import edu.upf.bg.aggregation.IAggregator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
@@ -29,6 +30,9 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
@@ -88,14 +92,19 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         IWizardPage nextPage;
         if (page == this.dataSourcePage) {
 
+            // generate heatmap
             aggregatedValueHeatmap = aggregateToHeatmap();
+            header.setHeaderHeatmap(aggregatedValueHeatmap);
 
+            //generate Label to id map
+            Map<String, Integer> map = generateMap(aggregatedValueHeatmap.getMatrixView());
+            header.setLabelIndexMap(map);
+
+            // generate title
             StringBuilder sb = new StringBuilder("Data: ");
             sb.append(dataSourcePage.getDataAggregator().toString());
             sb.append(" of ");
             sb.append(dataSourcePage.getSelectedDataValueName());
-
-            header.setHeaderHeatmap(aggregatedValueHeatmap);
             header.setTitle(sb.toString());
 
             nextPage = super.getNextPage(page);
@@ -104,6 +113,18 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             nextPage = super.getNextPage(page);
         }
         return nextPage;
+    }
+
+    private Map<String, Integer> generateMap(IMatrixView data) {
+        Map<String,Integer> map = new HashMap<String, Integer>();
+        if (applyToRows) {
+            for (int i : data.getVisibleRows())
+                map.put(data.getRowLabel(i),i);
+        } else {
+            for (int i : data.getVisibleColumns())
+                map.put(data.getColumnLabel(i),i);
+        }
+        return map;
     }
 
     private Heatmap aggregateToHeatmap() {
@@ -149,11 +170,9 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                     heatmap.getMatrixView().getSelectedRows();
             int[] columns = heatmap.getMatrixView().getVisibleColumns();
 
-
             elementsToAggregate = rows.length;
             valueMatrix = DoubleFactory2D.dense.make(1, columns.length, 0.0);
             final double[] valueBuffer = new double[elementsToAggregate];
-
             for (int i = 0; i < columns.length; i++) {
                 double aggregatedValue = aggregateValue(heatmap.getMatrixView(),rows,i,valueIndex,aggregator,valueBuffer);
                 valueMatrix.set(0,i,aggregatedValue);
@@ -191,10 +210,6 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
     }
 
-   @Override
-    public void performFinish() {
-       header.setHeaderHeatmap(aggregatedValueHeatmap);
-    }
 
 
     public HeatmapDataHeatmapHeader getHeader() {
@@ -215,13 +230,11 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             double[] valueBuffer) {
 
         for (int i = 0; i < selectedIndices.length; i++) {
-            int selected = selectedIndices[i];
-
             Object valueObject;
             if (applyToRows)
-                valueObject = matrixView.getCellValue(idx, selected, valueIndex);
+                valueObject = matrixView.getCellValue(idx, i, valueIndex);
             else
-                valueObject = matrixView.getCellValue(selected, idx, valueIndex);
+                valueObject = matrixView.getCellValue(i, idx, valueIndex);
             valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
         }
 

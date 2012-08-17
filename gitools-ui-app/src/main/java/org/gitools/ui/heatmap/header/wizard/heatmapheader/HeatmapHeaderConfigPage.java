@@ -76,7 +76,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 		marginSpin.setValue(header.getMargin());
 
 		labelVisibleChk.setSelected(header.isLabelVisible());
-		labelVisibleChanged();
+        switchLabelPositionUI();
+        labelVisibleChanged();
 
 	}
 

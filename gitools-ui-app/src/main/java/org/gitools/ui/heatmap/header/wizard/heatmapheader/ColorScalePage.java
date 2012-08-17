@@ -25,6 +25,7 @@ import java.util.List;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
@@ -51,7 +52,6 @@ public class ColorScalePage extends AbstractWizardPage {
         final ElementDecoratorDescriptor[] descriptors =
                 new ElementDecoratorDescriptor[descList.size()];
         descList.toArray(descriptors);
-
         cellDecoratorCb.setModel(new DefaultComboBoxModel(descriptors));
         cellDecoratorCb.addActionListener(new ActionListener() {
             @Override
@@ -60,9 +60,13 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         });
 
-        //ElementDecoratorDescriptor descriptor =
-                //ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
-
+        if (header.getHeaderHeatmap() != null) {
+            this.heatmap = header.getHeaderHeatmap();
+            ElementDecoratorDescriptor d =
+                    ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
+            changeDecoratorPanel(d);
+            cellDecoratorCb.setSelectedItem(d);
+        }
 
         setTitle("Select the color scale");
 		setComplete(true);
@@ -70,6 +74,10 @@ public class ColorScalePage extends AbstractWizardPage {
     
     public void setHeatmap(Heatmap heatmap) {
         this.heatmap = heatmap;
+        ElementDecoratorDescriptor d =
+                ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
+        changeDecoratorPanel(d);
+        cellDecoratorCb.setSelectedItem(d);
     }
 
 
@@ -94,8 +102,12 @@ public class ColorScalePage extends AbstractWizardPage {
 
 	@Override
 	public void updateControls() {
-        this.heatmap = header.getHeaderHeatmap();
-        changeDecoratorPanel((ElementDecoratorDescriptor) cellDecoratorCb.getSelectedItem());
+        //this.heatmap = header.getHeaderHeatmap();
+        if (this.heatmap == null && header.getHeaderHeatmap() != null)
+        {
+            this.heatmap = header.getHeaderHeatmap();
+            changeDecoratorPanel((ElementDecoratorDescriptor) cellDecoratorCb.getSelectedItem());
+        }
 		super.updateControls();
 	}
 
@@ -167,11 +179,4 @@ public class ColorScalePage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
-	public HeatmapDataHeatmapHeader getHeader() {
-		return header;
-	}
-
-	public void setHeader(HeatmapDataHeatmapHeader header) {
-		this.header = header;
-	}
 }
