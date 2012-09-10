@@ -146,7 +146,13 @@ public class IconNames {
 	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
 
 	public static final String LOGO_CLUSTERING = "/img/logos/Clustering.png";
+    
+    public static final String LOGO_ANNOTATION_TEXT_LABEL_HEADER = "/img/logos/HeaderAnnotationTextLabel.png";
+    
+    public static final String LOGO_ANNOTATION_COLORED_LABEL = "/img/logos/HeaderAnnotationColorLabel.png";
 
+    public static final String LOGO_AGGREGATED_DATA_HEATMAP = "/img/logos/HeaderAggregatedDataHeatmap.png";
+    
 	public static final String SEARCH16 = "/img/Search16.png";
 	public static final String SEARCH24 = "/img/Search24.png";
 
