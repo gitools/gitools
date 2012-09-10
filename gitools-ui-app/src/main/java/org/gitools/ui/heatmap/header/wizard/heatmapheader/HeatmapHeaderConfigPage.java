@@ -26,6 +26,7 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -64,6 +65,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
                 break;
         }
 
+        forceLabelColor.setSelected(header.isForceLabelColor());
+
 		setTitle("Header configuration");
 		setComplete(true);
     }
@@ -90,8 +93,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.leftOf);
             else if (rightOf.isSelected())
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.rightOf);
-            else if (inside.isSelected())
+            else if (inside.isSelected()) {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.inside);
+            }
+            setForceLabelColor();
         }
         header.updateLargestLabelLength(new Label("text"));
 	}
@@ -141,6 +146,11 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         forceLabelColor.setText("Show same color for all labels in colored area");
+        forceLabelColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forceLabelColorActionPerformed(evt);
+            }
+        });
 
         labelPositionBtnGroup.add(leftOf);
         leftOf.setText("left of");
@@ -179,50 +189,50 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelVisibleChk)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(forceLabelColor)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(leftOf)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rightOf)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(inside)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelVisibleChk)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(forceLabelColor)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(leftOf)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(rightOf)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(inside)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(coloredArea)))))
+                                .addComponent(coloredArea)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelVisibleChk)
-                            .addComponent(leftOf)
-                            .addComponent(rightOf)
-                            .addComponent(inside)
-                            .addComponent(coloredArea))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(forceLabelColor)
-                    .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelVisibleChk)
+                    .addComponent(leftOf)
+                    .addComponent(rightOf)
+                    .addComponent(inside)
+                    .addComponent(coloredArea))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(forceLabelColor)
+                .addContainerGap(153, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -241,6 +251,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
     private void labelVisibleChkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelVisibleChkActionPerformed
         switchLabelPositionUI();
     }//GEN-LAST:event_labelVisibleChkActionPerformed
+
+    private void forceLabelColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceLabelColorActionPerformed
+        setForceLabelColor();
+    }//GEN-LAST:event_forceLabelColorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -273,5 +287,9 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         rightOf.setEnabled(enabled);
         inside.setEnabled(enabled);
         coloredArea.setEnabled(enabled);
+    }
+
+    private void setForceLabelColor() {
+        header.setForceLabelColor(forceLabelColor.isEnabled() && forceLabelColor.isSelected());
     }
 }

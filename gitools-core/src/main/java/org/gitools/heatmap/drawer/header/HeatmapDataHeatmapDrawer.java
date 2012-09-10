@@ -168,7 +168,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     }
 
                     int colorRectWith = cellWidth;
-                    int colorRectX = cellWidth;
+                    int colorRectX = box.x;
                     int legendStart = x;
                     String valueLabel = gf.format(element);
                     int legendLength = fm.stringWidth(valueLabel);
@@ -177,8 +177,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
                     switch (labelPosition) {
                         case rightOf:
-                            colorRectWith = cellWidth - legendPadding - largestLegendLength;
-                            legendStart = x + cellWidth + legendPadding;
+                            colorRectWith = cellWidth - legendPadding*2 - largestLegendLength;
+                            legendStart = x + colorRectWith + legendPadding;
 
                             break;
                         case leftOf:
@@ -205,7 +205,10 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
 
                     if (largestLegendLength > 0) {
-                        g.setColor(Color.BLACK);
+                        if (labelPosition != HeatmapDataHeatmapHeader.LabelPositionEnum.inside|| header.isForceLabelColor())
+                            g.setColor(header.getLabelColor());
+                        else
+                            g.setColor(ColorUtils.invert(color));
                         int fontHeight = g.getFontMetrics().getHeight();
                         g.drawString(valueLabel,legendStart,y + fontHeight);
                     }

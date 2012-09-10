@@ -20,7 +20,9 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -39,6 +41,8 @@ public class ColorScalePage extends AbstractWizardPage {
 	private HeatmapDataHeatmapHeader header;
 
     private Heatmap heatmap;
+    
+    private Map<ElementDecoratorDescriptor,ElementDecorator> decoratorCache;
 
     public ColorScalePage(HeatmapDataHeatmapHeader header) {
 		super();
@@ -47,11 +51,14 @@ public class ColorScalePage extends AbstractWizardPage {
 
         initComponents();
 
+        decoratorCache = new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
+
         final List<ElementDecoratorDescriptor> descList =
                 ElementDecoratorFactory.getDescriptors();
         final ElementDecoratorDescriptor[] descriptors =
                 new ElementDecoratorDescriptor[descList.size()];
         descList.toArray(descriptors);
+
         cellDecoratorCb.setModel(new DefaultComboBoxModel(descriptors));
         cellDecoratorCb.addActionListener(new ActionListener() {
             @Override
@@ -60,13 +67,13 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         });
 
-        if (header.getHeaderHeatmap() != null) {
+        /*if (header.getHeaderHeatmap() != null) {
             this.heatmap = header.getHeaderHeatmap();
             ElementDecoratorDescriptor d =
                     ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
-            changeDecoratorPanel(d);
-            cellDecoratorCb.setSelectedItem(d);
-        }
+            decoratorCache.put(d,heatmap.getActiveCellDecorator());
+
+        } */
 
         setTitle("Select the color scale");
 		setComplete(true);
@@ -82,12 +89,17 @@ public class ColorScalePage extends AbstractWizardPage {
 
 
     private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
-        final JPanel confPanel = new JPanel();
-        confPanel.setLayout(new BorderLayout());
 
         ElementDecorator[] decorators = new ElementDecorator[1];
-        decorators[0] = ElementDecoratorFactory.create(descriptor,heatmap.getMatrixView().getCellAdapter());
+        decorators[0] = decoratorCache.get(descriptor);
         heatmap.setCellDecorators(decorators);
+
+        createNewDecoratorPanel(descriptor);
+    }
+
+    private void createNewDecoratorPanel(ElementDecoratorDescriptor descriptor) {
+        final JPanel confPanel = new JPanel();
+        confPanel.setLayout(new BorderLayout());
 
         Class<? extends ElementDecorator> decoratorClass = descriptor.getDecoratorClass();
 
@@ -100,13 +112,26 @@ public class ColorScalePage extends AbstractWizardPage {
         decoPanel.add(c, BorderLayout.CENTER);
     }
 
-	@Override
+    @Override
 	public void updateControls() {
-        //this.heatmap = header.getHeaderHeatmap();
+        System.out.println("update controls");
         if (this.heatmap == null && header.getHeaderHeatmap() != null)
         {
             this.heatmap = header.getHeaderHeatmap();
-            changeDecoratorPanel((ElementDecoratorDescriptor) cellDecoratorCb.getSelectedItem());
+            
+            ElementDecoratorDescriptor descriptor;
+            for (int i = 0; i < cellDecoratorCb.getItemCount(); i++) {
+                descriptor = (ElementDecoratorDescriptor) cellDecoratorCb.getItemAt(i);
+                ElementDecorator decorator  = ElementDecoratorFactory.create(descriptor, heatmap.getMatrixView().getCellAdapter());
+                decoratorCache.put(descriptor,decorator);
+            }
+            ElementDecoratorDescriptor d =
+                    ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
+            decoratorCache.put(d,heatmap.getActiveCellDecorator());
+
+            createNewDecoratorPanel(d);
+            cellDecoratorCb.setSelectedItem(d);
+            //changeDecoratorPanel(d);
         }
 		super.updateControls();
 	}

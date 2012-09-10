@@ -109,6 +109,11 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
             nextPage = super.getNextPage(page);
             
+        } else if (page == this.configPage) {
+
+            textConfigPage.setFgColorEnabled(header.isForceLabelColor());
+            nextPage = super.getNextPage(page);
+            
         } else {
             nextPage = super.getNextPage(page);
         }

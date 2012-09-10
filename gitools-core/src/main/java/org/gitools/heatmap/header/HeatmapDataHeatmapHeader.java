@@ -40,14 +40,16 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
     private Heatmap headerHeatmap;
     private Map<String,Integer> labelIndexMap;
 
+    private boolean forceLabelColor;
+
     public HeatmapDataHeatmapHeader(HeatmapDim hdim) {
 		super(hdim);
-		
+
 		size = 80;
 
         this.labelPosition = LabelPositionEnum.inside;
-
         labelColor = Color.BLACK;
+        forceLabelColor = true;
 
 	}
 
@@ -75,6 +77,14 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
     public void setLabelPosition(LabelPositionEnum labelPosition) {
         this.labelPosition = labelPosition;
+    }
+
+    public boolean isForceLabelColor() {
+        return forceLabelColor;
+    }
+
+    public void setForceLabelColor(boolean forceLabelColor) {
+        this.forceLabelColor = forceLabelColor;
     }
 
     @Override
