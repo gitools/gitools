@@ -85,6 +85,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             useSelectedRb.setText("Use values from selected rows");
         }
 
+        setTitle("Choose the data source for the header to add");
 
     }
 

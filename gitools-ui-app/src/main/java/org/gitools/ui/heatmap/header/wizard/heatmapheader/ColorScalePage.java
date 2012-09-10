@@ -67,14 +67,6 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         });
 
-        /*if (header.getHeaderHeatmap() != null) {
-            this.heatmap = header.getHeaderHeatmap();
-            ElementDecoratorDescriptor d =
-                    ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
-            decoratorCache.put(d,heatmap.getActiveCellDecorator());
-
-        } */
-
         setTitle("Select the color scale");
 		setComplete(true);
     }
@@ -114,7 +106,6 @@ public class ColorScalePage extends AbstractWizardPage {
 
     @Override
 	public void updateControls() {
-        System.out.println("update controls");
         if (this.heatmap == null && header.getHeaderHeatmap() != null)
         {
             this.heatmap = header.getHeaderHeatmap();
@@ -131,7 +122,6 @@ public class ColorScalePage extends AbstractWizardPage {
 
             createNewDecoratorPanel(d);
             cellDecoratorCb.setSelectedItem(d);
-            //changeDecoratorPanel(d);
         }
 		super.updateControls();
 	}
