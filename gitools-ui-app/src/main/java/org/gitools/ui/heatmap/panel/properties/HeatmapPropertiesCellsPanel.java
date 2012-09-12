@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
@@ -53,6 +54,8 @@ import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.progress.JobProgressDialog;
+import org.gitools.ui.platform.progress.JobProgressMonitor;
 import org.gitools.ui.settings.decorators.DecoratorArchive;
 import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
 import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
@@ -212,26 +215,40 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 
     private ElementDecorator[] getDecoratorsForDescriptor(ElementDecoratorDescriptor descriptor) {
         ElementDecorator[] decorators = decoratorMap.get(descriptor);
+        
+        boolean categoricalScale = descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class);
+
         if (decorators == null) {
             IElementAdapter cellAdapter = hm.getActiveCellDecorator().getAdapter();
             int propNb = cellAdapter.getPropertyCount();
             decorators = new ElementDecorator[propNb];
 
+            IProgressMonitor monitor = null;
+            if (categoricalScale) {
+                monitor = new JobProgressMonitor(new JobProgressDialog(AppFrame.instance(),true),System.out,true,false);
+                monitor.begin("Reading all values in data matrix.", decorators.length);
+            }
+            
             for (int i = 0; i < decorators.length; i++) {
                 ElementDecorator decorator = ElementDecoratorFactory.create(
                         descriptor, cellAdapter);
 
-                if (descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class)) {
+                if (categoricalScale) {
                     double[] values;
-                    values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i);
+                    values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i, monitor);
                     CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
                     scale.setValues(values);
-
+                    monitor.worked(1);
                 }
 
                 setValueIndex(decorator, cellAdapter, i);
                 decorators[i] = decorator;
             }
+            
+            if (categoricalScale) {
+                monitor.end();
+            }
+            
         }
         return decorators;
     }

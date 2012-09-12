@@ -20,18 +20,18 @@ package org.gitools.matrix;
 import edu.upf.bg.colorscale.IColorScale;
 import edu.upf.bg.colorscale.impl.*;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.ModuleMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MatrixUtils {
     
@@ -113,7 +113,7 @@ public class MatrixUtils {
         String pvalRegex = ("(?i:pval|p-val)");
         String zscoreRegex = ("(?i:z-score|zscore|zval|z-val)");
 
-        double[] values = getUniquedValuesFromMatrix(data, data.getCellAdapter(),valueIndex,MAX_UNIQUE);
+        double[] values = getUniquedValuesFromMatrix(data, data.getCellAdapter(),valueIndex);
         for (int i = 0; i < values.length; i++) {
             double v = values[i];
             min = v < min ? v : min;
@@ -210,18 +210,21 @@ public class MatrixUtils {
 
 		return map;
 	}
+    
+    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor) {
+        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE,monitor);
+    }
 
     public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension) {
-        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE);
+        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out,true,true));
     }
 
 
-    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, int maxUnique) {
+    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, int maxUnique, IProgressMonitor monitor) {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too man (50), it returns
         * an equally distributed array values from min to max*/
 
         Double[] values = null;
-        maxUnique = 30;
         List<Double> valueList = new ArrayList<Double>();
         MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(
                 cellAdapter.getProperty(valueDimension).getValueClass());
@@ -230,7 +233,15 @@ public class MatrixUtils {
         
         int colNb = data.getColumnCount();
         int rowNb = data.getRowCount();
+
+        IProgressMonitor submonitor = monitor.subtask();
+        String valueDimensionName = data.getCellAttributes().get(valueDimension).getName();
+        submonitor.begin("Reading all values in data matrix for "+ valueDimensionName, rowNb);
+
+
+
         for (int r = 0; r<rowNb; r++) {
+            monitor.worked(1);
             for (int c = 0; c < colNb; c++) {
                 double d = cast.getDoubleValue(
                         data.getCellValue(r, c, valueDimension));
@@ -255,6 +266,7 @@ public class MatrixUtils {
                 valueList.add(i*step-(spectrum - max));
             }
         }
+        monitor.end();
         return ArrayUtils.toPrimitive(valueList.toArray(new Double[]{}));
     }
 }
