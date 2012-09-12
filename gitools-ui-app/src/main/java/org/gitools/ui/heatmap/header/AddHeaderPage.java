@@ -95,9 +95,11 @@ public class AddHeaderPage extends AbstractWizardPage {
 		}
 	}
     
-    private static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
-    private static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
-    private static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    public static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    public static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    public static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    public static String ANNOTATION_HEATMAP = "Heatmap from annotation";
+
 
 	private DefaultListModel model;
 
@@ -109,11 +111,14 @@ public class AddHeaderPage extends AbstractWizardPage {
         icons.put(ANNOTATION_TEXT_LABEL_HEADER, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_TEXT_LABEL_HEADER, 60));
         icons.put(ANNOTATION_COLORED_LABEL, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_COLORED_LABEL, 60));
         icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));
+        icons.put(ANNOTATION_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_HEATMAP, 60));
+
 
 		model = new DefaultListModel();
 		model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
 		model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
         model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDataHeatmapHeader.class));
+        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDataHeatmapHeader.class));
 		// TODO Colored clusters from a hierarchical clustering
 		// TODO Values plot
 		// TODO Calculated value
@@ -130,6 +135,10 @@ public class AddHeaderPage extends AbstractWizardPage {
 	public Class<? extends HeatmapHeader> getHeaderClass() {
 		return ((HeaderType) headerTypeList.getSelectedValue()).getHeaderClass();
 	}
+    
+    public String getHeaderTitle() {
+        return ((HeaderType) headerTypeList.getSelectedValue()).getTitle();
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.

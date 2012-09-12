@@ -153,6 +153,10 @@ public class IconNames {
 
     public static final String LOGO_AGGREGATED_DATA_HEATMAP = "/img/logos/HeaderAggregatedDataHeatmap.png";
     
+    public static final String LOGO_ANNOTATION_HEATMAP = "/img/logos/HeaderAnnotationHeatmap.png";
+    
+    public static final String LOGO_AGGREGATED_DATA_TEXT_LABEL = "/img/logos/HeaderAggregatedDataTextLabel.png";
+    
 	public static final String SEARCH16 = "/img/Search16.png";
 	public static final String SEARCH24 = "/img/Search24.png";
 

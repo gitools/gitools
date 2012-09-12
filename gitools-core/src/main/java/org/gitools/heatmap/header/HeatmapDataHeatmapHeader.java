@@ -49,7 +49,7 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
         this.labelPosition = LabelPositionEnum.inside;
         labelColor = Color.BLACK;
-        forceLabelColor = true;
+        forceLabelColor = false;
 
 	}
 

@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -35,10 +37,15 @@ import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.settings.decorators.DecoratorArchive;
+import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
+import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
+import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
 public class ColorScalePage extends AbstractWizardPage {
 
-	private HeatmapDataHeatmapHeader header;
+    private HeatmapDataHeatmapHeader header;
 
     private Heatmap heatmap;
     
@@ -67,7 +74,7 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         });
 
-        setTitle("Select the color scale");
+        setTitle("Select a color scale");
 		setComplete(true);
     }
     
@@ -144,6 +151,8 @@ public class ColorScalePage extends AbstractWizardPage {
         cellDecoratorCb = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         decoPanel = new javax.swing.JPanel();
+        saveScale = new javax.swing.JButton();
+        loadScale = new javax.swing.JButton();
 
         cellDecoratorCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -156,9 +165,31 @@ public class ColorScalePage extends AbstractWizardPage {
             .addGap(0, 368, Short.MAX_VALUE)
         );
         decoPanelLayout.setVerticalGroup(
-                decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 270, Short.MAX_VALUE)
+            decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 230, Short.MAX_VALUE)
         );
+
+        saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Save16.gif"))); // NOI18N
+        saveScale.setToolTipText("Save scale");
+        saveScale.setFocusable(false);
+        saveScale.setMaximumSize(new java.awt.Dimension(30, 30));
+        saveScale.setMinimumSize(new java.awt.Dimension(0, 0));
+        saveScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveScaleActionPerformed(evt);
+            }
+        });
+
+        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/OpenAnalysis16.gif"))); // NOI18N
+        loadScale.setToolTipText("LoadScale");
+        loadScale.setFocusable(false);
+        loadScale.setMaximumSize(new java.awt.Dimension(30, 30));
+        loadScale.setMinimumSize(new java.awt.Dimension(0, 0));
+        loadScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadScaleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -169,7 +200,11 @@ public class ColorScalePage extends AbstractWizardPage {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(248, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -179,11 +214,65 @@ public class ColorScalePage extends AbstractWizardPage {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadScaleActionPerformed
+
+        DecoratorArchivePersistance archivePersistance =
+                new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+
+        ElementDecorator d = heatmap.getActiveCellDecorator();
+        ElementDecoratorDescriptor descriptor =
+                ElementDecoratorFactory.getDescriptor(d.getClass());
+
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
+                AppFrame.instance(),
+                d.getAdapter(),
+                archive.getDecorators().values().toArray(),
+                descriptor.getDecoratorClass());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+        ElementDecorator loadedDecorator = dialog.getSelectedDecorator();
+        loadedDecorator.setValueIndex(0);
+        try {
+            heatmap.replaceActiveDecorator(loadedDecorator);
+        } catch (Exception ex) {
+            Logger.getLogger(ColorScalePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        createNewDecoratorPanel(descriptor);
+        decoratorCache.put(descriptor,loadedDecorator);
+
+}//GEN-LAST:event_loadScaleActionPerformed
+
+    private void saveScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveScaleActionPerformed
+        DecoratorArchivePersistance archivePersistance =
+                new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+        ElementDecorator d = heatmap.getActiveCellDecorator();
+        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.instance());
+        dialog.setExistingScaleNames(archive.getDecorators().keySet());
+        dialog.setName(d.getName());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+
+        d.setName(dialog.getScaleName());
+        archive.add(d);
+        archivePersistance.save(archive);
+}//GEN-LAST:event_saveScaleActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -191,6 +280,8 @@ public class ColorScalePage extends AbstractWizardPage {
     private javax.swing.ButtonGroup colorGroup;
     private javax.swing.JPanel decoPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton loadScale;
+    private javax.swing.JButton saveScale;
     // End of variables declaration//GEN-END:variables
 
 

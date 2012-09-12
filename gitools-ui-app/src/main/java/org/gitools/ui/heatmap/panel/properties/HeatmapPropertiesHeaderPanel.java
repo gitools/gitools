@@ -629,6 +629,8 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		HeatmapHeader header = null;
 		IWizard wizard = null;
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
+        String headerTitle = headerPage.getHeaderTitle();
+
 		if (cls.equals(HeatmapTextLabelsHeader.class)) {
 			HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(hdim);
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
@@ -643,6 +645,15 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(hdim);
             wizard = new AggregatedHeatmapHeaderWizard(hm, h, rowMode);
             header = h;
+            
+            if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
+                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
+                        AggregatedHeatmapHeaderWizard.DataSourceEnum.annotation);
+            } else {
+                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
+                        AggregatedHeatmapHeaderWizard.DataSourceEnum.aggregatedData);
+            }
+            
         }
 
 		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);

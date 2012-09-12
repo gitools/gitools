@@ -179,12 +179,14 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                         case rightOf:
                             colorRectWith = cellWidth - legendPadding*2 - largestLegendLength;
                             legendStart = x + colorRectWith + legendPadding;
-
                             break;
+
                         case leftOf:
                             colorRectWith = cellWidth - legendPadding - largestLegendLength;
                             colorRectX = x + legendPadding + largestLegendLength;
+                            legendStart = legendStart + (largestLegendLength - legendLength);
                             break;
+
                         case inside:
                             legendStart = x + cellWidth/2 - largestLegendLength/2;
                             break;
