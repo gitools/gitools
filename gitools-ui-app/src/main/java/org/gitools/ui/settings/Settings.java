@@ -276,7 +276,7 @@ public class Settings {
 	}
 
     public boolean isPortEnabled() {
-        return isPreviewFeatures() && portEnabled;
+        return portEnabled;
     }
 
     public void setPortEnabled(boolean portEnabled) {
@@ -308,7 +308,7 @@ public class Settings {
     }
 
     public boolean isShowIGVLink() {
-        return isPreviewFeatures() && showIGVLink;
+        return showIGVLink;
     }
 
     public void setShowIGVLink(boolean showIGVLink) {
