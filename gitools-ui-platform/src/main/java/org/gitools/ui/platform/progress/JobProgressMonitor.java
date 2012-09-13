@@ -84,6 +84,8 @@ public class JobProgressMonitor extends StreamProgressMonitor {
 			@Override public void run() {
 				dlg.setWork(totalWork);
 				dlg.setProgress(getTotalWork());
+                if (level == 0)
+                    dlg.dispose();
 			}
 		});
 
