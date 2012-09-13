@@ -18,13 +18,11 @@
 package org.gitools.ui.dialog;
 
 import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsGroupsPage;
+import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;

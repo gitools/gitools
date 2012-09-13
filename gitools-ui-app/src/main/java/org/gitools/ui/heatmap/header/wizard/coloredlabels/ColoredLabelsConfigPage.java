@@ -21,7 +21,7 @@
  * Created on 02-mar-2011, 8:27:23
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -70,7 +70,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 		super.updateControls();
 
 		titleField.setText(header.getTitle());
-		thicknessSpin.setValue(header.getThickness());
 		marginSpin.setValue(header.getMargin());
 		separationGridChk.setSelected(header.isSeparationGrid());
 
@@ -115,7 +114,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 		super.updateModel();
 
 		header.setTitle(titleField.getText());
-		header.setThickness((Integer) thicknessSpin.getValue());
 		header.setMargin((Integer) marginSpin.getValue());
 		header.setSeparationGrid(separationGridChk.isSelected());
 		header.setLabelVisible(labelVisibleChk.isSelected());
@@ -142,8 +140,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         labelFontField = new javax.swing.JTextField();
         labelFontBtn = new javax.swing.JButton();
         labelRotatedChk = new javax.swing.JCheckBox();
-        jLabel4 = new javax.swing.JLabel();
-        thicknessSpin = new javax.swing.JSpinner();
         separationGridChk = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         marginSpin = new javax.swing.JSpinner();
@@ -163,12 +159,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         labelFontBtn.setText("...");
 
         labelRotatedChk.setText("Rotated text");
-
-        jLabel4.setText("Thickness");
-        jLabel4.setEnabled(false);
-
-        thicknessSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(14), Integer.valueOf(0), null, Integer.valueOf(1)));
-        thicknessSpin.setEnabled(false);
 
         separationGridChk.setText("Grid between different clusters");
 
@@ -193,15 +183,11 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
+                                .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(thicknessSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(separationGridChk)
                             .addComponent(labelVisibleChk)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -230,9 +216,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(thicknessSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(separationGridChk)
                 .addGap(18, 18, 18)
@@ -258,7 +242,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
     private javax.swing.JLabel fontLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private org.gitools.ui.platform.component.ColorChooserLabel labelColor;
     private javax.swing.JCheckBox labelColorDefinedChk;
     private javax.swing.JButton labelFontBtn;
@@ -267,7 +250,6 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
     private javax.swing.JCheckBox labelVisibleChk;
     private javax.swing.JSpinner marginSpin;
     private javax.swing.JCheckBox separationGridChk;
-    private javax.swing.JSpinner thicknessSpin;
     private javax.swing.JTextField titleField;
     // End of variables declaration//GEN-END:variables
 

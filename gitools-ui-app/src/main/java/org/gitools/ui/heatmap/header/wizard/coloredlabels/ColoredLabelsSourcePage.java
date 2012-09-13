@@ -21,7 +21,7 @@
  * Created on 02-mar-2011, 8:08:28
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;

@@ -100,9 +100,8 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
         double max = getMaxValue();
         double mid = getMid().getValue();
 
-        rangesList.add(new ColorScaleRange(
-                             min,max,1,min,mid,max,ColorScaleRange.LINEAR_TYPE)
-        );
+        rangesList.add(new ColorScaleRange(min,mid,1,min,"",mid,ColorScaleRange.LINEAR_TYPE));
+        rangesList.add(new ColorScaleRange(mid,max,1,"","",max,ColorScaleRange.LINEAR_TYPE));
 
     }
 

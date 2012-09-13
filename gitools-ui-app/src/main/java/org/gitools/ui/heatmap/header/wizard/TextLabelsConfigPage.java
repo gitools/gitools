@@ -21,13 +21,13 @@
  * Created on 09-mar-2011, 14:41:13
  */
 
-package org.gitools.ui.heatmap.header.textlabels;
+package org.gitools.ui.heatmap.header.wizard;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -35,13 +35,11 @@ import org.gitools.ui.utils.FontUtils;
 
 public class TextLabelsConfigPage extends AbstractWizardPage {
 
-	private HeatmapDim hdim;
-	private HeatmapTextLabelsHeader header;
+	private HeatmapHeader header;
 
 	private Font font;
 
-    public TextLabelsConfigPage(HeatmapDim hdim, HeatmapTextLabelsHeader header) {
-		this.hdim = hdim;
+    public TextLabelsConfigPage(HeatmapHeader header) {
 		this.header = header;
 		
         initComponents();
@@ -59,13 +57,13 @@ public class TextLabelsConfigPage extends AbstractWizardPage {
 	public void updateControls() {
 		font = header.getFont();
 		fontChanged();
-		fgColor.setColor(header.getForegroundColor());
+		fgColor.setColor(header.getLabelColor());
 	}
 
 	@Override
 	public void updateModel() {
 		header.setFont(font);
-		header.setForegroundColor(fgColor.getColor());
+		header.setLabelColor(fgColor.getColor());
 	}
 
 	private void fontChanged() {
@@ -84,6 +82,10 @@ public class TextLabelsConfigPage extends AbstractWizardPage {
 		font = dlg.getFont();
 		fontChanged();
 	}
+
+    public void setFgColorEnabled(boolean enabled) {
+        fgColor.setEnabled(enabled);
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.

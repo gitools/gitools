@@ -18,17 +18,14 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDim;
-import java.awt.Color;
-import java.awt.Font;
+
+import java.awt.*;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.gitools.matrix.model.AnnotationMatrix;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
-import edu.upf.bg.xml.adapter.FontXmlAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -36,8 +33,6 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 
 	private static final long serialVersionUID = -2580139666999968074L;
 	
-	public static final String FG_COLOR_CHANGED = "fgColorChanged";
-	public static final String FONT_CHANGED = "fontChanged";
 	public static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
 	public static final String LINK_NAME_CHANGED = "linkNameChanged";
 	public static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
@@ -45,12 +40,6 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 	public enum LabelSource {
 		ID, ANNOTATION, PATTERN
 	}
-
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	protected Color foregroundColor;
-
-	@XmlJavaTypeAdapter(FontXmlAdapter.class)
-	protected Font font;
 
 	protected LabelSource labelSource;
 	protected String labelAnnotation;
@@ -67,7 +56,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 		super(hdim);
 
 		size = 80;
-		foregroundColor = Color.BLACK;
+		labelColor = Color.BLACK;
 		backgroundColor = Color.WHITE;
 		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
 		AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
@@ -97,16 +86,6 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 		return sb.toString();
 	}
 
-	public Color getForegroundColor() {
-		return foregroundColor;
-	}
-	
-	public void setForegroundColor(Color color) {
-		Color old = this.foregroundColor;
-		this.foregroundColor = color;
-		firePropertyChange(FG_COLOR_CHANGED, old, color);
-	}
-
 	public Font getFont() {
 		return font;
 	}
@@ -114,10 +93,15 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 	public void setFont(Font font) {
 		Font old = this.font;
 		this.font = font;
-		firePropertyChange(FONT_CHANGED, old, font);
+		firePropertyChange(LABEL_FONT_CHANGED, old, font);
 	}
 
-	public LabelSource getLabelSource() {
+    @Override
+    protected void updateLargestLabelLength(Component component) {
+        this.largestLabelLength = 0;
+    }
+
+    public LabelSource getLabelSource() {
 		return labelSource;
 	}
 

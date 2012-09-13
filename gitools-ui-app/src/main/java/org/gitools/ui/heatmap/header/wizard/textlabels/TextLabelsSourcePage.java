@@ -21,7 +21,7 @@
  * Created on 25-feb-2011, 21:01:35
  */
 
-package org.gitools.ui.heatmap.header.textlabels;
+package org.gitools.ui.heatmap.header.wizard.textlabels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

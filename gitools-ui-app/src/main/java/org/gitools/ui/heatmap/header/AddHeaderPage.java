@@ -23,14 +23,54 @@
 
 package org.gitools.ui.heatmap.header;
 
-import javax.swing.DefaultListModel;
+import javax.swing.*;
+
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AddHeaderPage extends AbstractWizardPage {
+
+    private class IconListRenderer
+            extends DefaultListCellRenderer {
+
+        private Map<Object, ImageIcon> icons = null;
+
+        public IconListRenderer(Map<Object, ImageIcon> icons) {
+            this.icons = icons;
+        }
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+
+            // Get the renderer component from parent class
+
+            JLabel label =
+                    (JLabel) super.getListCellRendererComponent(list,
+                            value, index, isSelected, cellHasFocus);
+
+            // Get icon to use for the list item value
+
+            Icon icon = icons.get(value.toString());
+
+            // Set icon to display for value
+
+            label.setIcon(icon);
+            return label;
+        }
+    }
+
 
 	private static class HeaderType {
 		private String title;
@@ -54,6 +94,12 @@ public class AddHeaderPage extends AbstractWizardPage {
 			return title;
 		}
 	}
+    
+    public static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    public static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    public static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    public static String ANNOTATION_HEATMAP = "Heatmap from annotation";
+
 
 	private DefaultListModel model;
 
@@ -61,14 +107,24 @@ public class AddHeaderPage extends AbstractWizardPage {
     public AddHeaderPage() {
         initComponents();
 
+        Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
+        icons.put(ANNOTATION_TEXT_LABEL_HEADER, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_TEXT_LABEL_HEADER, 60));
+        icons.put(ANNOTATION_COLORED_LABEL, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_COLORED_LABEL, 60));
+        icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));
+        icons.put(ANNOTATION_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_HEATMAP, 60));
+
+
 		model = new DefaultListModel();
-		model.addElement(new HeaderType("Text labels", HeatmapTextLabelsHeader.class));
-		model.addElement(new HeaderType("Colored labels from annotations", HeatmapColoredLabelsHeader.class));
+		model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
+		model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
+        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDataHeatmapHeader.class));
+        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDataHeatmapHeader.class));
 		// TODO Colored clusters from a hierarchical clustering
 		// TODO Values plot
 		// TODO Calculated value
 
 		headerTypeList.setModel(model);
+        headerTypeList.setCellRenderer(new IconListRenderer(icons));
 		headerTypeList.setSelectedIndex(0);
 
 		setTitle("Which type of header do you want to add ?");
@@ -79,6 +135,10 @@ public class AddHeaderPage extends AbstractWizardPage {
 	public Class<? extends HeatmapHeader> getHeaderClass() {
 		return ((HeaderType) headerTypeList.getSelectedValue()).getHeaderClass();
 	}
+    
+    public String getHeaderTitle() {
+        return ((HeaderType) headerTypeList.getSelectedValue()).getTitle();
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.

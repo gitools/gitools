@@ -21,7 +21,7 @@
  * Created on 03-mar-2011, 18:51:34
  */
 
-package org.gitools.ui.heatmap.header.coloredlabels;
+package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -248,7 +248,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
         jLabel5.setText("Labels");
 
-        table.setModel(new org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsTableModel());
+        table.setModel(new org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsTableModel());
         table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table.setShowHorizontalLines(false);

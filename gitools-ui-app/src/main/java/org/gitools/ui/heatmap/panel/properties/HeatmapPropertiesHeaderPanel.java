@@ -23,6 +23,7 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
+import org.gitools.heatmap.header.*;
 import org.gitools.idtype.IdType;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
@@ -44,19 +45,16 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.heatmap.header.coloredlabels.ColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.textlabels.TextLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregatedHeatmapHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.wizard.IWizard;
@@ -631,16 +629,32 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		HeatmapHeader header = null;
 		IWizard wizard = null;
 		Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
+        String headerTitle = headerPage.getHeaderTitle();
+
 		if (cls.equals(HeatmapTextLabelsHeader.class)) {
 			HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(hdim);
 			wizard = new TextLabelsHeaderWizard(hdim, (HeatmapTextLabelsHeader) h);
 			header = h;
 		}
-		else {
+		else if (cls.equals(HeatmapColoredLabelsHeader.class)) {
 			HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(hdim);
 			wizard = new ColoredLabelsHeaderWizard(hm, hdim, h, rowMode);
 			header = h;
 		}
+        else if (cls.equals(HeatmapDataHeatmapHeader.class)) {
+            HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(hdim);
+            wizard = new AggregatedHeatmapHeaderWizard(hm, h, rowMode);
+            header = h;
+            
+            if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
+                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
+                        AggregatedHeatmapHeaderWizard.DataSourceEnum.annotation);
+            } else {
+                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
+                        AggregatedHeatmapHeaderWizard.DataSourceEnum.aggregatedData);
+            }
+            
+        }
 
 		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wizard);
 		wdlg.setTitle("Add header");
@@ -674,7 +688,13 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 		else if (HeatmapHierarchicalColoredLabelsHeader.class.equals(cls)) {
 			wizard = new HierarchicalColoredLabelsHeaderWizard(
 						hm, hdim, (HeatmapHierarchicalColoredLabelsHeader) h);
-		}
+		} else if (HeatmapDataHeatmapHeader.class.equals(cls)) {
+            AggregatedHeatmapHeaderWizard wiz
+                    = new AggregatedHeatmapHeaderWizard(hm,(HeatmapDataHeatmapHeader) h, rowMode);
+            wiz.setEditionMode(true);
+            wizard = wiz;
+            
+        }
 
 		if (wizard == null)
 			return;

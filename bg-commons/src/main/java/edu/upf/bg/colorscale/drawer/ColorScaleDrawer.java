@@ -65,7 +65,7 @@ public class ColorScaleDrawer {
 		this.legendPointColor = Color.BLACK;
 		this.legendPadding = 4;
 		this.legendFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
-		this.legendFormat = "%.2f";
+		this.legendFormat = "%.3g";
 	}
 
 	public IColorScale getScale() {
