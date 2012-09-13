@@ -165,7 +165,7 @@ public abstract class MatrixViewSorter {
 			//selRows[i] = i;
 			int[] exclusiveRow = new int[1];
 			exclusiveRow[0] = i;
-			sortColumnsByValue(matrixView, exclusiveRow, null, criteriaArray);
+			sortColumnsByValue(matrixView, null, exclusiveRow, criteriaArray);
 		}
 
 
