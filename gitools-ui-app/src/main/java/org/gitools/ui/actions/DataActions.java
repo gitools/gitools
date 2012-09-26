@@ -54,6 +54,7 @@ public final class DataActions {
 
 	public static final BaseAction clusteringByValueAction = new ClusteringByValueAction();
 
-    public static final BaseAction integrateDataDimensionsAction = new IntegrateDataDimensionsAction();
+    //TODO: finish the data integration option
+    //public static final BaseAction integrateDataDimensionsAction = new IntegrateDataDimensionsAction();
 
 }

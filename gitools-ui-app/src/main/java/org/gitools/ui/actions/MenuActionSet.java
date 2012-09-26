@@ -120,9 +120,9 @@ public class MenuActionSet extends ActionSet {
 				//	DataActions.clusteringByAnnotationsAction,
 					DataActions.clusteringByValueAction,
 				//})
-                new ActionSet("Add data", new BaseAction[] {
+                /*new ActionSet("Add data", new BaseAction[] {
                         DataActions.integrateDataDimensionsAction
-                }),
+                }),*/
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,
