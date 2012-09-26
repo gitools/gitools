@@ -340,9 +340,9 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         for (int i = 0; i < selectedIndices.length; i++) {
             Object valueObject;
             if (applyToRows)
-                valueObject = matrixView.getCellValue(idx, i, valueIndex);
+                valueObject = matrixView.getCellValue(idx, selectedIndices[i], valueIndex);
             else
-                valueObject = matrixView.getCellValue(i, idx, valueIndex);
+                valueObject = matrixView.getCellValue(selectedIndices[i], idx, valueIndex);
             valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
         }
 
