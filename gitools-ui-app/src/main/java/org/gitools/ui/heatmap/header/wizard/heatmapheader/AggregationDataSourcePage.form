@@ -30,6 +30,7 @@
                   <Component id="aggregatorCb" alignment="0" min="-2" pref="364" max="-2" attributes="0"/>
                   <Component id="useAllRb" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="useSelectedRb" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="separateAggregationCb" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="204" max="32767" attributes="0"/>
           </Group>
@@ -48,11 +49,13 @@
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="aggregatorCb" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="separateAggregationCb" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="useAllRb" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="useSelectedRb" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="120" max="32767" attributes="0"/>
+              <EmptySpace pref="83" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -121,6 +124,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useSelectedRbActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="separateAggregationCb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="aggregate sperately for annotation groups"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="separateAggregationCbActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

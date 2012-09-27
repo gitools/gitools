@@ -60,6 +60,9 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
 		initComponents();
         updateModel();
 
+        boolean hasAnnotation = applyToRows ? heatmap.getColumnDim().getAnnotations() != null : heatmap.getRowDim().getAnnotations() != null;
+        separateAggregationCb.setEnabled(hasAnnotation);
+
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
         valueCb.setSelectedIndex(heatmap.getMatrixView().getSelectedPropertyIndex());
         valueCb.addActionListener(new ActionListener() {
@@ -80,9 +83,11 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         if (applyToRows) {
             useAllRb.setText("Use values from all columns");
             useSelectedRb.setText("Use values from selected columns");
+            separateAggregationCb.setText("aggregate by column annotations groups");
         } else {
             useAllRb.setText("Use values from all rows");
             useSelectedRb.setText("Use values from selected rows");
+            separateAggregationCb.setText("aggregate by row annotations groups");
         }
 
         setTitle("Choose the data source for the header to add");
@@ -109,6 +114,10 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
 		boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
 		setComplete(completed);
 	}
+
+    public boolean aggregateAnnotationsSeparately(){
+        return separateAggregationCb.isEnabled() && separateAggregationCb.isSelected();
+    }
 
     @Override
     public void updateControls() {
@@ -140,6 +149,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         jLabel3 = new javax.swing.JLabel();
         useAllRb = new javax.swing.JRadioButton();
         useSelectedRb = new javax.swing.JRadioButton();
+        separateAggregationCb = new javax.swing.JCheckBox();
 
         valueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -169,6 +179,13 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             }
         });
 
+        separateAggregationCb.setText("aggregate sperately for annotation groups");
+        separateAggregationCb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                separateAggregationCbActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,7 +199,8 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
                     .addComponent(jLabel3)
                     .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(useAllRb)
-                    .addComponent(useSelectedRb))
+                    .addComponent(useSelectedRb)
+                    .addComponent(separateAggregationCb))
                 .addContainerGap(204, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -198,11 +216,13 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(separateAggregationCb)
                 .addGap(18, 18, 18)
                 .addComponent(useAllRb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(useSelectedRb)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -214,6 +234,11 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         // TODO add your handling code here:
     }//GEN-LAST:event_useSelectedRbActionPerformed
 
+    private void separateAggregationCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_separateAggregationCbActionPerformed
+        useAllRb.setEnabled(!separateAggregationCb.isSelected());
+        useSelectedRb.setEnabled(!separateAggregationCb.isSelected());
+    }//GEN-LAST:event_separateAggregationCbActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox aggregatorCb;
@@ -221,6 +246,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JCheckBox separateAggregationCb;
     private javax.swing.JRadioButton useAllRb;
     private javax.swing.JRadioButton useSelectedRb;
     private javax.swing.JComboBox valueCb;

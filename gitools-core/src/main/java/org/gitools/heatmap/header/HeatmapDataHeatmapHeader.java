@@ -90,6 +90,9 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
     @Override
     public void updateLargestLabelLength(Component component) {
         // Get largest label:
+        if (headerHeatmap == null)
+            return;
+        
         int rows = headerHeatmap.getMatrixView().getRowCount();
         int cols = headerHeatmap.getMatrixView().getColumnCount();
         IMatrixView  data = headerHeatmap.getMatrixView();

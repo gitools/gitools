@@ -23,12 +23,8 @@
 
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.ui.heatmap.header.wizard.textlabels.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -46,7 +42,7 @@ public class AnnotationSourcePage extends AbstractWizardPage {
 
 		setTitle("Select the a numeric annotation");
         setMessage(MessageStatus.INFO,infoMessage);
-		setComplete(true);
+		setComplete(false);
     }
 
 
@@ -64,7 +60,6 @@ public class AnnotationSourcePage extends AbstractWizardPage {
 
 		}
 
-
 	}
 
 	@Override
@@ -72,13 +67,21 @@ public class AnnotationSourcePage extends AbstractWizardPage {
 		super.updateModel();
 	}
 
-/*
-	private void optionsChanged() {
-		//annList.setEnabled(annOpt.isSelected());
-		pattText.setEnabled(patOpt.isSelected());
-	}*/
+    public String getSelectedPattern() {
 
-	public String getAnnotation() {
+        StringBuilder sb = new StringBuilder();
+        Object[] values = annList.getSelectedValues();
+        if (values.length == 0)
+            return "";
+
+        sb.append("${");
+        sb.append(values[0]);
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+	public String getSelectedAnnotation() {
 		if (annList.getSelectedIndex() != -1)
 			return (String) annList.getSelectedValue();
 		else
@@ -101,6 +104,11 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         jLabel1 = new javax.swing.JLabel();
 
         annList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        annList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                annListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(annList);
 
         jLabel1.setText("Available annotations");
@@ -112,8 +120,8 @@ public class AnnotationSourcePage extends AbstractWizardPage {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -126,6 +134,11 @@ public class AnnotationSourcePage extends AbstractWizardPage {
                 .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void annListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_annListValueChanged
+        if (annList.getSelectedIndex() > -1)
+            setComplete(true);
+    }//GEN-LAST:event_annListValueChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
