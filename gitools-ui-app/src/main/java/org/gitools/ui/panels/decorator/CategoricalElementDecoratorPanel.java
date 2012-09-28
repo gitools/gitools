@@ -140,7 +140,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
             for (ColoredLabel cl : coloredLabels) {
                 newScalePoints[index] = new ColorScalePoint( Double.parseDouble(cl.getValue()),
                                                              cl.getColor(),
-                                                             cl.getDescription());
+                                                             cl.getDisplayedLabel());
                 index++;
             }
 

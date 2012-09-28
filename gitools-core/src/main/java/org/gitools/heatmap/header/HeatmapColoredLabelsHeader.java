@@ -31,7 +31,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
 	public static final String THICKNESS_CHANGED = "thickness";
 	public static final String SEPARATION_GRID_CHANGED = "separationGrid";
-	public static final String LABEL_COLOR_DEFINED_CHANGED = "labelColorDefined";
+    public static final String FORCE_LABEL_COLOR = "forceLabelColor";
     public static final String CLUSTERS_CHANGED = "clusters";
 	public static final String INDICES_CHANGED = "indices";
 
@@ -41,9 +41,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 	/* Separate different clusters with a grid */
 	protected boolean separationGrid;
 
-
-	/** Instead of use the same color as the cluster use a defined color */
-	protected boolean labelColorDefined;
+    protected boolean forceLabelColor;
 
     /** The list of clusters in this set */
 	protected ColoredLabel[] coloredLabels;
@@ -60,9 +58,11 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		separationGrid = true;
 
 		labelVisible = false;
-		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+		font = new Font(Font.MONOSPACED, Font.BOLD, 12);
 		labelRotated = false;
-		labelColorDefined = false;
+		forceLabelColor = true;
+        labelColor = Color.black;
+
 
         coloredLabels = new ColoredLabel[0];
 		dataColoredLabelIndices = new HashMap<String, Integer>();
@@ -95,18 +95,6 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		boolean old = this.separationGrid;
 		this.separationGrid = separationGrid;
 		firePropertyChange(SEPARATION_GRID_CHANGED, old, separationGrid);
-	}
-
-	/** Instead of use the same color as the cluster use a defined color */
-	public boolean isLabelColorDefined() {
-		return labelColorDefined;
-	}
-
-	/** Instead of use the same color as the cluster use a defined color */
-	public void setLabelColorDefined(boolean labelColorDefined) {
-		boolean old = this.labelColorDefined;
-		this.labelColorDefined = labelColorDefined;
-		firePropertyChange(LABEL_COLOR_DEFINED_CHANGED, old, labelColorDefined);
 	}
 
     /** The list of clusters in this set */
@@ -155,6 +143,17 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 		this.dataColoredLabelIndices.clear();
 		firePropertyChange(INDICES_CHANGED);
 	}
+
+    public boolean isForceLabelColor() {
+        return forceLabelColor;
+    }
+
+    /*Use the same color for all labels instead of inverted*/
+    public void setForceLabelColor(boolean forceLabelColor) {
+        boolean old = this.forceLabelColor;
+        this.forceLabelColor = forceLabelColor;
+        firePropertyChange(FORCE_LABEL_COLOR, old, forceLabelColor);
+    }
 
 	public void updateFromClusterResults(ClusteringResults results) {
 		ColorGenerator cg = ColorGeneratorFactory.getDefault().create();

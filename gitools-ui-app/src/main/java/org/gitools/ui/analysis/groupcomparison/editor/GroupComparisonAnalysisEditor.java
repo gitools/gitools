@@ -139,7 +139,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				HeatmapColoredLabelsHeader oldHeader = (HeatmapColoredLabelsHeader) hh;
 				HeatmapColoredLabelsHeader colorHeaderCopy = new HeatmapColoredLabelsHeader(dim);
 				colorHeaderCopy.setLabelColor(oldHeader.getLabelColor());
-				colorHeaderCopy.setLabelColorDefined(oldHeader.isLabelColorDefined());
+				colorHeaderCopy.setForceLabelColor(oldHeader.isForceLabelColor());
 				colorHeaderCopy.setLabelFont(oldHeader.getLabelFont());
 				colorHeaderCopy.setLabelRotated(oldHeader.isLabelRotated());
 				colorHeaderCopy.setLabelVisible(oldHeader.isLabelVisible());
@@ -154,7 +154,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				for (ColoredLabel cl : clusters) {
 					//newClusters[index] ;
 					ColoredLabel newcl =
-							new ColoredLabel(cl.getDescription(), cl.getColor());
+							new ColoredLabel(cl.getDisplayedLabel(), cl.getColor());
 					newClusters[index] = newcl;
 					index++;
 				}

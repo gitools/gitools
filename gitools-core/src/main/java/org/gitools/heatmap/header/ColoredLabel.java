@@ -23,7 +23,7 @@ import java.awt.*;
 
 public class ColoredLabel {
 
-    protected String description;
+    protected String displayedLabel;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     protected Color color;
@@ -31,7 +31,7 @@ public class ColoredLabel {
     protected String value;
 
     public ColoredLabel() {
-        description = "";
+        displayedLabel = "";
         color = Color.WHITE;
         value = "";
     }
@@ -40,30 +40,30 @@ public class ColoredLabel {
         this(value,value, color);
     }
 
-    public ColoredLabel( String value, String description, Color color) {
-        this.description = description;
+    public ColoredLabel( String value, String displayedLabel, Color color) {
+        this.displayedLabel = displayedLabel;
         this.value = value;
         this.color = color;
     }
 
-    public ColoredLabel(int value, String description, Color color) {
-        this.description = description;
+    public ColoredLabel(int value, String displayedLabel, Color color) {
+        this.displayedLabel = displayedLabel;
         setValue(value);
         this.color = color;
     }
 
-    public ColoredLabel(double value, String description, Color color) {
-        this.description = description;
+    public ColoredLabel(double value, String displayedLabel, Color color) {
+        this.displayedLabel = displayedLabel;
         setValue(value);
         this.color = color;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDisplayedLabel() {
+        return displayedLabel;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDisplayedLabel(String displayedLabel) {
+        this.displayedLabel = displayedLabel;
     }
 
     public Color getColor() {
@@ -92,6 +92,6 @@ public class ColoredLabel {
 
     @Override
     public String toString() {
-        return description;
+        return displayedLabel;
     }
 }

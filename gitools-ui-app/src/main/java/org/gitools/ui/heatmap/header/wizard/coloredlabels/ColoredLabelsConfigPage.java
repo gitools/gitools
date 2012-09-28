@@ -56,6 +56,13 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 				labelVisibleChanged(); }
 		});
 
+        forceLabelColorChk.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                labelVisibleChanged();
+            }
+        });
+
 		labelFontBtn.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				selectFont(); }
@@ -77,7 +84,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 		labelFont = header.getLabelFont();
 		fontChanged();
 		labelRotatedChk.setSelected(header.isLabelRotated());
-		labelColorDefinedChk.setSelected(header.isLabelColorDefined());
+        forceLabelColorChk.setSelected(header.isForceLabelColor());
 		labelColor.setColor(header.getLabelColor());
 		labelVisibleChanged();
 
@@ -86,10 +93,12 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 	private void labelVisibleChanged() {
 		boolean e = labelVisibleChk.isSelected();
 		labelFontField.setEnabled(e);
+        fontLabel.setEnabled(e);
 		labelFontBtn.setEnabled(e);
-		labelRotatedChk.setEnabled(e);
-		labelColorDefinedChk.setEnabled(e);
-		labelColor.setEnabled(labelColorDefinedChk.isSelected() && e);
+		forceLabelColorChk.setEnabled(e);
+		labelColor.setEnabled(forceLabelColorChk.isSelected() && e);
+        labelRotatedChk.setEnabled(false);
+        labelRotatedChk.setVisible(false);
 	}
 
 	private void fontChanged() {
@@ -118,8 +127,9 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 		header.setSeparationGrid(separationGridChk.isSelected());
 		header.setLabelVisible(labelVisibleChk.isSelected());
 		header.setLabelFont(labelFont);
+        header.setLabelColor(labelColor.getColor());
+        header.setForceLabelColor(forceLabelColorChk.isSelected());
 		header.setLabelRotated(labelRotatedChk.isSelected());
-		header.setLabelColorDefined(labelColorDefinedChk.isSelected());
 		header.setLabelColor(labelColor.getColor());
 	}
 
@@ -144,12 +154,11 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         jLabel3 = new javax.swing.JLabel();
         marginSpin = new javax.swing.JSpinner();
         labelColor = new org.gitools.ui.platform.component.ColorChooserLabel();
-        labelColorDefinedChk = new javax.swing.JCheckBox();
+        forceLabelColorChk = new javax.swing.JCheckBox();
 
         jLabel1.setText("Title");
 
         labelVisibleChk.setText("Show cluster names");
-        labelVisibleChk.setEnabled(false);
 
         fontLabel.setText("Font");
         fontLabel.setEnabled(false);
@@ -169,7 +178,8 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         labelColor.setColor(new java.awt.Color(1, 1, 1));
         labelColor.setPreferredSize(new java.awt.Dimension(28, 28));
 
-        labelColorDefinedChk.setText("All cluster names with the same color");
+        forceLabelColorChk.setSelected(true);
+        forceLabelColorChk.setText("All cluster names with the same color");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -192,18 +202,19 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                             .addComponent(labelVisibleChk)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelRotatedChk)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(fontLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelFontField, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelFontBtn))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelColorDefinedChk)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(fontLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelFontField, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelFontBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(forceLabelColorChk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelRotatedChk)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -227,12 +238,12 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
                     .addComponent(labelFontField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelFontBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(labelRotatedChk)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelColorDefinedChk)
+                    .addComponent(forceLabelColorChk)
                     .addComponent(labelColor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(labelRotatedChk)
+                .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -240,10 +251,10 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup colorGroup;
     private javax.swing.JLabel fontLabel;
+    private javax.swing.JCheckBox forceLabelColorChk;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private org.gitools.ui.platform.component.ColorChooserLabel labelColor;
-    private javax.swing.JCheckBox labelColorDefinedChk;
     private javax.swing.JButton labelFontBtn;
     private javax.swing.JTextField labelFontField;
     private javax.swing.JCheckBox labelRotatedChk;

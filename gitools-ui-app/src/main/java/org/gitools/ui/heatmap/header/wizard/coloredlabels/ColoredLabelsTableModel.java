@@ -29,7 +29,7 @@ import java.util.List;
 class ColoredLabelsTableModel implements TableModel {
 
 	private static final String[] columnName = new String[] {
-		"Value","Description", "Color" };
+		"Value","Displayed Label", "Color" };
 
 	private static final Class<?>[] columnClass = new Class<?>[] {
 		String.class, String.class, Color.class};
@@ -103,7 +103,7 @@ class ColoredLabelsTableModel implements TableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
             case 0: return labelList.get(rowIndex).getValue();
-			case 1: return labelList.get(rowIndex).getDescription();
+			case 1: return labelList.get(rowIndex).getDisplayedLabel();
 			case 2: return labelList.get(rowIndex).getColor();
 		}
 		return null;
@@ -124,8 +124,8 @@ class ColoredLabelsTableModel implements TableModel {
             break;
 
 			case 1:
-				String description = (String) aValue;
-                labelList.get(rowIndex).setDescription(description);
+				String displayedLabel = (String) aValue;
+                labelList.get(rowIndex).setDisplayedLabel(displayedLabel);
 			break;
 
 			case 2:
