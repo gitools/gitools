@@ -83,9 +83,12 @@ public class HeatmapLayout implements LayoutManager {
 		int widthBody = XRowHeader - XBody;
 		int widthRowHeader = XRightEnd - XRowHeader;
 
-		if (widthBody > colHeaderSize.width && colHeaderSize.width > 0) {
-			widthBody = colHeaderSize.width;
-			XRowHeader = XBody + widthBody;
+		if (widthBody > colHeaderSize.width) {
+			widthBody = colHeaderSize.width > 0 ? colHeaderSize.width : bodySize.width;
+            if (XBody + widthBody > XRowHeader)
+                widthBody -= XBody + widthBody -XRowHeader;
+            else
+			    XRowHeader = XBody + widthBody;
 			widthRowHeader = XRightEnd - XRowHeader;
 		}
 
