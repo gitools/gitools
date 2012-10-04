@@ -212,7 +212,7 @@ public class MatrixUtils {
 	}
     
     public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor) {
-        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE,monitor);
+        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out,true,true));
     }
 
     public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension) {
@@ -238,8 +238,13 @@ public class MatrixUtils {
         String valueDimensionName = data.getCellAttributes().get(valueDimension).getName();
         submonitor.begin("Reading all values in data matrix for "+ valueDimensionName, rowNb);
 
+        int randomRows = 50 > rowNb ? rowNb : 50;
+        int[] randomRowsIdx = new int[randomRows];
+        for (int i = 0; i < randomRows; i++)
+            randomRowsIdx[i] = (int)(Math.random() * ((rowNb) + 1));
+        
 
-
+        int rr = 0;
         for (int r = 0; r<rowNb; r++) {
             monitor.worked(1);
             for (int c = 0; c < colNb; c++) {
@@ -252,6 +257,13 @@ public class MatrixUtils {
                     max = d > max ? d : max;
                 }
             }
+            if (rr >= randomRows-1)
+                break;
+            else if (valueList.size() >= maxUnique) {
+                r = randomRowsIdx[rr];
+                rr++;                
+            }
+            
         }
         if (!valueList.contains(min))
             valueList.add(min);
@@ -266,7 +278,6 @@ public class MatrixUtils {
                 valueList.add(i*step-(spectrum - max));
             }
         }
-        monitor.end();
         return ArrayUtils.toPrimitive(valueList.toArray(new Double[]{}));
     }
 }

@@ -184,8 +184,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 	}
 
     private void cellDecoratorChanged(ItemEvent evt) {
-        /*final ElementDecoratorDescriptor descriptor =
-              (ElementDecoratorDescriptor) evt.getItem();*/
 
         if (evt.getStateChange() == ItemEvent.DESELECTED) {
             ElementDecoratorDescriptor descriptor =
@@ -222,12 +220,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             IElementAdapter cellAdapter = hm.getActiveCellDecorator().getAdapter();
             int propNb = cellAdapter.getPropertyCount();
             decorators = new ElementDecorator[propNb];
-
-            IProgressMonitor monitor = null;
-            if (categoricalScale) {
-                monitor = new JobProgressMonitor(new JobProgressDialog(AppFrame.instance(),true),System.out,true,false);
-                monitor.begin("Reading all values in data matrix.", decorators.length);
-            }
             
             for (int i = 0; i < decorators.length; i++) {
                 ElementDecorator decorator = ElementDecoratorFactory.create(
@@ -235,19 +227,15 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 
                 if (categoricalScale) {
                     double[] values;
-                    values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i, monitor);
+                    values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i);
                     CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
                     scale.setValues(values);
-                    monitor.worked(1);
                 }
 
                 setValueIndex(decorator, cellAdapter, i);
                 decorators[i] = decorator;
             }
-            
-            if (categoricalScale) {
-                monitor.end();
-            }
+
             
         }
         return decorators;
