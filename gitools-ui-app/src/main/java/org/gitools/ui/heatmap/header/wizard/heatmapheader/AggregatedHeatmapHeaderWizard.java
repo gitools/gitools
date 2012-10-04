@@ -50,7 +50,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
     public enum DataSourceEnum  {
         aggregatedData,
-        annotation};
+        annotation
+    };
 
     private DataSourceEnum dataSource;
 
@@ -291,6 +292,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         IMatrixView mv = heatmap.getMatrixView();
         AnnotationMatrix am = heatmapDim.getAnnotations();
         String pattern = dataSourceAnnotationPage.getSelectedPattern();
+        header.setAnnotationPattern(pattern);
         final AggregatedHeatmapHeaderWizard wiz = this;
 
         final ClusteringData data = applyToRows ?

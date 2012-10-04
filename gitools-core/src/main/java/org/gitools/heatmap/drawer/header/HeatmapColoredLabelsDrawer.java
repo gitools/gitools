@@ -21,7 +21,6 @@ import edu.upf.bg.color.utils.ColorUtils;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 
 import edu.upf.bg.formatter.GenericFormatter;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
@@ -31,6 +30,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
@@ -148,7 +148,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 					sepSize = gridSize;
 
 				//int thickness = header.getThickness();
-				int thickness = header.getSize() - header.getMargin() * 2;
+				int thickness = header.getSize() - header.getMargin();
 				if (thickness < 1)
 					thickness = 1;
 
@@ -270,4 +270,45 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
 		return new Point(x, y);
 	}
+
+    @Override
+    public void drawHeaderLegend(Graphics2D g, Rectangle rect, HeatmapHeader oppositeHeatmapHeader) {
+        int gridSize;
+        int height;
+        int width;
+        int margin;
+        int oppositeMargin;
+
+        int y = horizontal ? rect.y : rect.y + rect.height;
+        int x = rect.x;
+
+
+        String[] annValues = oppositeHeatmapHeader.getAnnotationValues(horizontal);
+        ColoredLabel[] clusters = header.getClusters();
+
+        gridSize = 1;
+        oppositeMargin = oppositeHeatmapHeader.getMargin();
+        margin = header.getMargin();
+        height = (oppositeHeatmapHeader.getSize() - oppositeMargin - gridSize * annValues.length) / annValues.length;
+        width = header.getSize()-margin;
+
+        for (String v : annValues) {
+            for (ColoredLabel cl : clusters) {
+                if (cl.getValue().equals(v)) {
+                    // paint
+                    g.setColor(cl.getColor());
+
+                    if (horizontal) {
+
+                        g.fillRect(x+oppositeMargin,y,height,width);
+                        x += gridSize+height ;
+                    } else {
+                        y -= height;
+                        g.fillRect(x,y-oppositeMargin,width,height);
+                        y -= gridSize;
+                    }
+                }
+            }
+        }
+    }
 }

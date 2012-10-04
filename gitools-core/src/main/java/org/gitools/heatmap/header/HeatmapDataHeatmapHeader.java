@@ -23,7 +23,6 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class HeatmapDataHeatmapHeader extends HeatmapHeader {
@@ -112,6 +111,26 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
             }
         }
         setLargestLabelLength(largestLabelLenght);
+    }
+    
+    @Override 
+    public String[] getAnnotationValues(boolean horizontal){
+
+        String[] values;
+        if (horizontal) {
+            int size =  headerHeatmap.getMatrixView().getColumnCount();
+            values = new String[size];
+            for (int i = 0; i < size; i++) {
+                values[i] = headerHeatmap.getMatrixView().getColumnLabel(i);
+            }
+        } else {
+            int size = headerHeatmap.getMatrixView().getRowCount();
+            values = new String[size];
+            for (int i = 0; i < size; i++)
+                values[i] = headerHeatmap.getMatrixView().getRowLabel(i);
+        }
+
+        return values;
     }
 
 }

@@ -19,6 +19,7 @@ package org.gitools.heatmap.drawer.header;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
@@ -33,7 +34,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	private boolean horizontal;
 	
-	private List<AbstractHeatmapDrawer> drawers;
+	private List<AbstractHeatmapHeaderDrawer> drawers;
 
 	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
@@ -48,14 +49,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			heatmap.getColumnDim().getHeaders()
 			: heatmap.getRowDim().getHeaders();
 
-		drawers = new ArrayList<AbstractHeatmapDrawer>(headers.size());
+		drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
 
 		for (int i = 0; i < headers.size(); i++) {
 			HeatmapHeader h = headers.get(i);
 			if (!h.isVisible())
 				continue;
 
-			AbstractHeatmapDrawer d = null;
+            AbstractHeatmapHeaderDrawer d = null;
 			if (h instanceof HeatmapTextLabelsHeader)
 				d = new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal);
 			else if (h instanceof HeatmapColoredLabelsHeader)
@@ -168,10 +169,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		return new Point(0, 0);
 	}
 
-	@Override
+    @Override
 	public void setPictureMode(boolean pictureMode) {
 		for (AbstractHeatmapDrawer d : drawers)
 			d.setPictureMode(pictureMode);
 	}
 
+    public List<AbstractHeatmapHeaderDrawer> getDrawers() {
+        return drawers;
+    }
 }

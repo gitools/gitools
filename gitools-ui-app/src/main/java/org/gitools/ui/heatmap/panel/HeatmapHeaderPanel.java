@@ -35,7 +35,7 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 		this.hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
 	}
 
-	private HeatmapHeaderDrawer getHeaderDrawer() {
+	public HeatmapHeaderDrawer getHeaderDrawer() {
 		return (HeatmapHeaderDrawer) getDrawer();
 	}
 
@@ -43,13 +43,15 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 	protected void heatmapPropertyChanged(PropertyChangeEvent evt) {
 		super.heatmapPropertyChanged(evt);
 
-		String pname = evt.getPropertyName();
-		Object src = evt.getSource();
+          /*
+          String pname = evt.getPropertyName();
+          Object src = evt.getSource();
 
-		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
+          //System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
-		if (src.equals(hdim) && HeatmapDim.HEADERS_CHANGED.equals(pname)
-				|| (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
-				getHeaderDrawer().updateDrawers();
+          if (src.equals(hdim) && HeatmapDim.HEADERS_CHANGED.equals(pname)
+                  || (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
+                  getHeaderDrawer().updateDrawers();    */
+
 	}
 }

@@ -66,6 +66,12 @@ public abstract class HeatmapHeader extends AbstractModel {
 	 * otherwise the label is perpendicular to the color band */
 	protected boolean labelRotated;
 
+    /* If the header is referring to annotation from
+    * the other dimension, the pattern is stored here*/
+    protected String annotationPattern;
+    
+    protected String[] annotationValues;
+
     /** Tells the drawer how long the largest label is with current
      * font settings
      */
@@ -87,6 +93,8 @@ public abstract class HeatmapHeader extends AbstractModel {
         labelRotated = false;
         labelVisible = false;
         labelColor = Color.BLACK;
+        annotationPattern = null;
+        annotationValues = new String[0];
     }
 
 	@XmlTransient
@@ -223,6 +231,23 @@ public abstract class HeatmapHeader extends AbstractModel {
         int old = this.largestLabelLength;
         this.largestLabelLength = largestLabelLength;
         firePropertyChange(LARGEST_LABEL_LENGTH_CHANGED, old, largestLabelLength);
+    }
+
+    public String getAnnotationPattern() {
+        return annotationPattern;
+    }
+
+    public void setAnnotationPattern(String annotationPattern) {
+        this.annotationPattern = annotationPattern;
+        //TODO: needs fireproperty change? - one time action
+    }
+
+    public String[] getAnnotationValues(boolean horizontal) {
+        return annotationValues;
+    }
+
+    public void setAnnotationValues(String[] annotationValues) {
+        this.annotationValues = annotationValues;
     }
 
     abstract protected void updateLargestLabelLength(Component component);

@@ -44,6 +44,9 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         IMatrixView data = heatmap.getMatrixView();
 
 
+        g.setColor(header.getBackgroundColor());
+        g.fillRect(box.x,box.y,box.width,box.height);
+
         int borderSize = getBorderSize();
         int rowsGridSize;
         int columnsGridSize;
@@ -54,7 +57,9 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int colStart;
         int colEnd;
         int headerSize;
-
+        int margin;
+        
+        margin = header.getMargin();
         int legendPadding = 4;
         Map<String, Integer> labelIndexMap = header.getLabelIndexMap();
         int largestLegendLength = header.isLabelVisible() ? header.getLargestLabelLength() : 0;
@@ -83,22 +88,22 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         headerSize = header.getSize();
 
+        columnsGridSize = headerHeatmap.getColumnDim().isGridEnabled() ? headerHeatmap.getColumnDim().getGridSize() : 0;
+
         if (horizontal)  {
 
             rowsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;
 
             cellHeight = heatmap.getCellWidth() + rowsGridSize;
 
-            //TODO take into account extBorderSize
             colStart = (clip.y - box.y) / cellHeight;
             colEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
             colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
 
-            //TODO take into account extBorderSize
             rowStart = (clip.x - box.x) / headerSize;
             rowEnd = headerData.getRowCount();
 
-            cellWidth = (headerSize - rowsGridSize * rowEnd) / rowEnd;
+            cellWidth = (headerSize - margin - columnsGridSize * rowEnd) / rowEnd;
 
 
         } else {
@@ -107,20 +112,17 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
             cellHeight = heatmap.getCellHeight() + rowsGridSize;
 
-            //TODO take into account extBorderSize
             rowStart = (clip.y - box.y) / cellHeight;
             rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
             rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
 
-            //TODO take into account extBorderSize
             colStart = (clip.x - box.x) / headerSize;
             colEnd = headerData.getColumnCount();
 
-            cellWidth = (headerSize - rowsGridSize * colEnd) / colEnd;
+            cellWidth = (headerSize - margin - columnsGridSize * colEnd) / colEnd;
             
         }
 
-        columnsGridSize = header.getMargin();
 
 		ElementDecorator deco = headerHeatmap.getActiveCellDecorator();
 		ElementDecoration decoration = new ElementDecoration();
@@ -134,9 +136,9 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
             int x;
             if (horizontal) {
                 y = Yoriginal;
-                x = box.x  + row * cellWidth;
+                x = box.x  + row * (cellWidth + columnsGridSize);
             } else {
-                x = box.x + colStart * cellWidth;
+                x = box.x + colStart * (cellWidth + columnsGridSize);
             }
 
             boolean rowSelected = data.isRowSelected(row);
@@ -182,43 +184,44 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                         columnsGridColor = columnsGridColor.darker();
                     }
 
-                    int colorRectWith = cellWidth-rowsGridSize;
-                    int colorRectX = horizontal ? box.x + (row*colorRectWith) : box.x + (col*colorRectWith);
-                    int legendStart = x;
+                    int colorRectWith = cellWidth;
+                    int colorRectX = horizontal ? box.x + margin + (row*(cellWidth + columnsGridSize)) : box.x + margin + (col*(cellWidth + columnsGridSize));
+                    int legendStart = x + margin;
                     String valueLabel = gf.format(element);
                     int legendLength = fm.stringWidth(valueLabel);
 
 
+                    if (header.isLabelVisible()) {
+                        switch (labelPosition) {
+                            case rightOf:
+                                colorRectWith = cellWidth - legendPadding - largestLegendLength;
+                                legendStart = x + legendPadding + margin + colorRectWith;
+                                break;
 
-                    switch (labelPosition) {
-                        case rightOf:
-                            colorRectWith = cellWidth - legendPadding - largestLegendLength;
-                            legendStart = x + colorRectWith;
-                            break;
+                            case leftOf:
+                                colorRectWith = cellWidth - legendPadding - largestLegendLength;
+                                colorRectX = x + margin + legendPadding + largestLegendLength;
+                                legendStart = legendStart + (largestLegendLength - legendLength);
+                                break;
 
-                        case leftOf:
-                            colorRectWith = cellWidth - legendPadding - largestLegendLength;
-                            colorRectX = x + largestLegendLength;
-                            legendStart = legendStart + (largestLegendLength - legendLength);
-                            break;
-
-                        case inside:
-                            legendStart = x + cellWidth/2 - largestLegendLength/2;
-                            break;
+                            case inside:
+                                legendStart = x + margin + cellWidth/2 - largestLegendLength/2;
+                                break;
+                        }
                     }
 
 
                     g.setColor(color);
 
-                    g.fillRect(colorRectX, y, colorRectWith - columnsGridSize, cellHeight - rowsGridSize);
+                    g.fillRect(colorRectX, y, colorRectWith , cellHeight - rowsGridSize);
 
-                    g.setColor(rowsGridColor);
+                    //g.setColor(rowsGridColor);
 
-                    g.fillRect(x, y + cellHeight - rowsGridSize, cellWidth, rowsGridSize);
+                    //g.fillRect(x, y + cellHeight - rowsGridSize, cellWidth, rowsGridSize);
 
-                    g.setColor(columnsGridColor);
+                    //g.setColor(columnsGridColor);
 
-                    g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
+                    //g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
 
                     if (largestLegendLength > 0) {
@@ -233,16 +236,16 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     if (!pictureMode) {
                         if (row == leadRow && col == leadColumn) {
                             g.setColor(ColorUtils.invert(color));
-                            g.drawRect(x, y, cellWidth - columnsGridSize - 1, cellHeight - rowsGridSize - 1);
+                            g.drawRect(x, y, cellWidth - 1, cellHeight - rowsGridSize - 1);
                         }
                         else if (row == leadRow && col != leadColumn) {
                             g.setColor(ColorUtils.invert(color));
-                            int x2 = x + cellWidth - columnsGridSize - 1;
+                            int x2 = x + cellWidth - 1;
                             int y2 = y + cellHeight - rowsGridSize - 1;
                         }
                         else if (row != leadRow && col == leadColumn) {
                             g.setColor(ColorUtils.invert(color));
-                            int x2 = x + cellWidth - columnsGridSize - 1;
+                            int x2 = x + cellWidth - 1;
                             int y2 = y + cellHeight - rowsGridSize - 1;
                         }
                     }
@@ -252,10 +255,10 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                 if (horizontal)
 				    y += cellHeight;
                 else
-                    x += cellWidth;
+                    x += cellWidth + columnsGridSize;
 			}
             if (horizontal)
-			    x += cellWidth;
+			    x += cellWidth + columnsGridSize;
             else
                 y += cellHeight;
 		}

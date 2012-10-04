@@ -99,7 +99,8 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
 		IMatrixView mv = heatmap.getMatrixView();
 		AnnotationMatrix am = hdim.getAnnotations();
-
+        header.setAnnotationPattern(pattern);
+        
 		final ClusteringData data = applyToRows ?
 				new AnnPatRowClusteringData(mv, am, pattern)
 				: new AnnPatColumnClusteringData(mv, am, pattern);
