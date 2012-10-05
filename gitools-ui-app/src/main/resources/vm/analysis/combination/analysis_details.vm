@@ -62,6 +62,7 @@
 		<div id="section_title">Results</div>
 		<div id="section_body">
 			<table id="attr_table">
+			    <tr><td class="name">File</td><td>$resultsFile</td></tr>
 				<tr><td class="name">Combination of</td><td>$combinationOf</td></tr>
 			</table>
 
