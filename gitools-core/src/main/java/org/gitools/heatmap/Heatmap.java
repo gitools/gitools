@@ -39,6 +39,7 @@ import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.stats.test.results.CommonResult;
+import org.gitools.stats.test.results.ZScoreResult;
 
 /*TODO: Heatmap should implement IMatrixView
  * and handle movement and visibility synchronized
@@ -165,7 +166,10 @@ public class Heatmap
 
             Class<?> c = adapter.getElementClass();
             
-            if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
+            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c){
+                decorator = ElementDecoratorFactory.create(
+                        ElementDecoratorNames.ZSCORE, adapter);
+            } else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
                 decorator = ElementDecoratorFactory.create(
                         ElementDecoratorNames.PVALUE, adapter);
             }
