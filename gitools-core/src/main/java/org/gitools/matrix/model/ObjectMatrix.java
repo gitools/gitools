@@ -17,14 +17,14 @@
 
 package org.gitools.matrix.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-import org.gitools.matrix.model.element.IElementAdapter;
-
+import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
+import org.gitools.matrix.model.element.*;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 //TODO remove JAXB support
 @XmlAccessorType(XmlAccessType.NONE)
@@ -50,6 +50,18 @@ public class ObjectMatrix extends BaseMatrix {
 		
 		this.cells = cells;
 	}
+
+    public ObjectMatrix(
+            String title,
+            String[] rowNames,
+            String[] columnNames,
+            IElementAdapter cellAdapter) {
+
+
+        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(columnNames), cellAdapter);
+
+        makeCells(rowNames.length, columnNames.length);
+    }
 
 	// rows and columns
 	
@@ -100,9 +112,16 @@ public class ObjectMatrix extends BaseMatrix {
 	public void makeCells(int rows, int columns) {
 		cells = ObjectFactory2D.dense.make(rows, columns);
         if (cellAdapter != null)  {
+
+            IElementFactory elementFactory;
+            if (cellAdapter instanceof BeanElementAdapter)
+                elementFactory = new BeanElementFactory(cellAdapter.getElementClass());
+            else
+                elementFactory = new ArrayElementFactory(cellAdapter.getPropertyCount());
+
             for (int r = 0; r < rows ; r++) {
                 for (int c = 0; c < columns; c++) {
-                    setCell(r,c,new double[cellAdapter.getPropertyCount()]);
+                    setCell(r, c,elementFactory.create());
                 }
             }
         }

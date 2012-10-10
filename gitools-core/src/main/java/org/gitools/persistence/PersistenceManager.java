@@ -17,13 +17,16 @@
 
 package org.gitools.persistence;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixFactory;
+
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
-
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.util.Properties;
 
 public class PersistenceManager implements Serializable {
@@ -127,9 +130,16 @@ public class PersistenceManager implements Serializable {
 		return mimeToExt.get(mime);
 	}
 
-	public String getExtensionFromEntity(Class<?> entityClass) {
+    public String getExtensionFromEntityClass(Class<?> entityClass) {
 		return getExtensionFromMime(getMimeFromEntity(entityClass));
 	}
+    
+    public String getExtensionFromEntity(IMatrix entity) {
+        if (entity instanceof IMatrixView)
+            return getExtensionFromEntityClass(((IMatrixView) entity).getContents().getClass());
+        else
+            return getExtensionFromEntityClass(entity.getClass());
+    }
 
 	@SuppressWarnings("unchecked")
 	public <T> IEntityPersistence<T> createEntityPersistence(
@@ -198,9 +208,12 @@ public class PersistenceManager implements Serializable {
 			createEntityPersistence(mimeType, properties);
 
 		Object entity = entityPersistence.read(file, monitor);
+        //entityFileRefMap.put(file)
 
 		//DISABLED: entityCache.put(fileRef, entity);
 		//DISABLED: entityFileRefMap.put(entity, fileRef);
+
+        entityFileRefMap.put(entity.hashCode(),fileRef);
 
 		return entity;
 	}
@@ -210,6 +223,12 @@ public class PersistenceManager implements Serializable {
 			Object entity,
 			IProgressMonitor monitor)
 			throws PersistenceException {
+        
+      if (entity instanceof IMatrixView) {
+          entity = MatrixFactory.create((IMatrixView) entity);
+      }
+
+
 
 		String mimeType = getMimeFromEntity(entity.getClass());
 
@@ -279,6 +298,6 @@ public class PersistenceManager implements Serializable {
 	}
 
 	public FileRef getEntityFileRef(Object entity) {
-		return entityFileRefMap.get(entity);
+		return entityFileRefMap.get(entity.hashCode());
 	}
 }

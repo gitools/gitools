@@ -64,11 +64,11 @@ public class GroupComparisonAnalysisXmlPersistence
 
 		PersistenceManager pm = getPersistenceManager();
 
-		String dataExt = pm.getExtensionFromEntity(entity.getData().getClass());
+		String dataExt = pm.getExtensionFromEntity(entity.getData());
 		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		String resultsExt = pm.getExtensionFromEntity(entity.getResults().getClass());
+		String resultsExt = pm.getExtensionFromEntity(entity.getResults());
 		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
 	}

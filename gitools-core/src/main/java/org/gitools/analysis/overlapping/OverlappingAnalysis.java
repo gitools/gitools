@@ -19,16 +19,13 @@ package org.gitools.analysis.overlapping;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.xml.adapter.ResourceRefXmlAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -162,9 +159,14 @@ public class OverlappingAnalysis extends Analysis {
 		this.cellResultsResource = cellResultsResource;
 	}
 
+    @Deprecated
 	public IMatrix getCellResults() {
 		return cellResults;
 	}
+
+    public IMatrix getResult() {
+        return cellResults;
+    }
 
 	public void setCellResults(IMatrix results) {
 		this.cellResults = results;

@@ -18,28 +18,32 @@
 package org.gitools.ui.analysis.groupcomparison.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.List;
-import java.util.Map;
-import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.GroupComparisonAnalysisXmlPersistence;
+import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.Map;
+
 
 public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupComparisonAnalysis> {
 
@@ -58,9 +62,30 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
 		context.put("mtc", analysis.getMtc().getName());
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResults());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
+
 	}
 
-	@Override
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        xmlPersistance = new GroupComparisonAnalysisXmlPersistence();
+        fileformat = FileFormats.GROUP_COMPARISON;
+        super.doSave(monitor);
+    }
+
+    @Override
 	protected void performUrlAction(String name, Map<String, String> params) {
 		if ("NewDataHeatmap".equals(name))
 			newDataHeatmap();

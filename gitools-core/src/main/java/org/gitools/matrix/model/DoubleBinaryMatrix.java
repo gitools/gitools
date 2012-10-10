@@ -45,6 +45,20 @@ public class DoubleBinaryMatrix extends BaseMatrix {
 		this.cells = cells;
 	}
 
+    public DoubleBinaryMatrix(
+            String title,
+            String[] colNames,
+            String[] rowNames) {
+
+        super(
+                title,
+                ObjectFactory1D.dense.make(rowNames),
+                ObjectFactory1D.dense.make(colNames),
+                new DoubleElementAdapter());
+
+        makeCells(rowNames.length,colNames.length);
+    }
+
 	@Override
 	public int getRowCount() {
 		return cells.rows();

@@ -19,11 +19,6 @@ package org.gitools.ui.analysis.htest.editor;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.SwingUtilities;
-
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
@@ -36,9 +31,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.stats.test.ZscoreTest;
 import org.gitools.stats.test.factory.TestFactory;
-import org.gitools.stats.test.factory.ZscoreTestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -46,6 +39,10 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis> {
 
@@ -98,7 +95,22 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 			context.put("mtc", "Benjamini Hochberg FDR");
 		else if (analysis.getMtc().equals("bonferroni"))
 			context.put("mtc", "Bonferroni");
-	}
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResults());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
+
+        super.prepareContext(context);
+    }
 
 	@Override
 	protected void performUrlAction(String name, Map<String, String> params) {

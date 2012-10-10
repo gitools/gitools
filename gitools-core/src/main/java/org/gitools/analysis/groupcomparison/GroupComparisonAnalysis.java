@@ -17,25 +17,27 @@
 
 package org.gitools.analysis.groupcomparison;
 
-import java.io.Serializable;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
-import org.gitools.stats.test.factory.MannWhitneyWilcoxonTestFactory;
 import org.gitools.stats.test.factory.TestFactory;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -203,7 +205,10 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
 
 	public void setData(IMatrix data) {
-		this.data = data;
+        if(data instanceof IMatrixView)
+            this.data = MatrixFactory.create((IMatrixView) data);
+		else
+            this.data = data;
 	}
 
 	public IMatrix getResults() {

@@ -17,14 +17,13 @@
 
 package org.gitools.ui.platform.editor;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.platform.actions.ActionManager;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 
 public class MultiEditor extends AbstractEditor {
 
@@ -76,6 +75,11 @@ public class MultiEditor extends AbstractEditor {
 	public boolean isSaveAsAllowed() {
 		return getSelectedEditor().isSaveAsAllowed();
 	}
+
+    @Override
+    public boolean isSaveAllowed() {
+        return getSelectedEditor().isSaveAllowed();
+    }
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {

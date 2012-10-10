@@ -18,19 +18,29 @@
 package org.gitools.ui.analysis.editor;
 
 import edu.upf.bg.formatter.GenericFormatter;
-import java.awt.BorderLayout;
-import java.net.URL;
-import java.util.Map;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
+import org.gitools.model.Analysis;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePanel;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
+import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.io.File;
+import java.net.URL;
+import java.util.Map;
 
 public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
@@ -43,6 +53,10 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 	protected ActionSet toolBar = null;
 
 	protected TemplatePanel templatePanel;
+
+    protected AbstractXmlPersistence xmlPersistance = null;
+
+    protected FileFormat fileformat;
 
 	public AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar) {
 		this.analysis = analysis;
@@ -107,4 +121,34 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
 	protected void performUrlAction(String name, Map<String, String> params) {
 	}
+
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        if (xmlPersistance == null || fileformat == null)
+            return;
+
+        String title = ((Analysis) analysis).getTitle();
+
+        String lastWorkPath = Settings.getDefault().getLastWorkPath();
+
+        SaveFileWizard wizard = SaveFileWizard.createSimple(title,title,lastWorkPath, fileformat);
+        WizardDialog dlg = new WizardDialog(AppFrame.instance(), wizard);
+        dlg.setVisible(true);
+
+        if (dlg.isCancelled())
+            return;
+
+        File workdir = new File(wizard.getFolder());
+        File file = new File(workdir,wizard.getFileName());
+        xmlPersistance.setRecursivePersistence(true);
+        Settings.getDefault().setLastWorkPath(wizard.getFolder());
+
+
+        try {
+            xmlPersistance.write(file, analysis, monitor);
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

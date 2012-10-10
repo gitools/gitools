@@ -18,8 +18,6 @@
 package org.gitools.persistence.xml;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
@@ -31,6 +29,9 @@ import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.persistence.xml.adapter.ResourceRefXmlAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
 
 public class OverlappingAnalysisXmlPersistence
 		extends AbstractXmlPersistence<OverlappingAnalysis> {
@@ -88,7 +89,7 @@ public class OverlappingAnalysisXmlPersistence
 		PersistenceManager pm = getPersistenceManager();
 
 		if (entity.isBinaryCutoffEnabled()) {
-			String dataExt = pm.getExtensionFromEntity(entity.getData().getClass());
+			String dataExt = pm.getExtensionFromEntity(entity.getData());
 			File dataFile = new File(baseFile, baseName + "-data." + dataExt + ".gz");
 			if (entity.getFilteredDataResource() == null)
 				entity.setFilteredDataResource(new ResourceRef(
@@ -100,7 +101,7 @@ public class OverlappingAnalysisXmlPersistence
 		else
 			entity.setFilteredDataResource(entity.getSourceDataResource());
 
-		String cellResultsExt = pm.getExtensionFromEntity(entity.getCellResults().getClass());
+		String cellResultsExt = pm.getExtensionFromEntity(entity.getResult());
 		File cellResultsFile = new File(baseFile, baseName + "-results-cells." + cellResultsExt + ".gz");
 		if (entity.getCellResultsResource() == null)
 			entity.setCellResultsResource(new ResourceRef(

@@ -19,22 +19,25 @@ package org.gitools.ui.analysis.overlapping;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Map;
-import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.model.ResourceRef;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.OverlappingAnalysisXmlPersistence;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.Map;
 
 
 public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<OverlappingAnalysis> {
@@ -46,13 +49,16 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 	@Override
 	protected void prepareContext(VelocityContext context) {
 
-		ResourceRef sourceDataRes = analysis.getSourceDataResource();
-		context.put("sourceDataFile",
-				sourceDataRes != null ? sourceDataRes.getPath() : "Not defined");
+        PersistenceManager.FileRef fileRef;
 
-		ResourceRef filteredDataRes = analysis.getFilteredDataResource();
+        /*ResourceRef sourceDataRes = analysis.getSourceDataResource();
+		context.put("sourceDataFile",
+				sourceDataRes != null ? sourceDataRes.getPath() : "Not defined");*/
+
+		fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getData());
 		context.put("filteredDataFile",
-				filteredDataRes != null ? filteredDataRes.getPath() : "Not defined");
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
 
 		String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
 		context.put("appliedTo", appliedTo);
@@ -64,7 +70,29 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 				+ cmp.getLongName() + " "
 				+ analysis.getBinaryCutoffValue();
 		context.put("filterDesc", filterDesc);
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResult());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
+
 	}
+
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+
+        xmlPersistance = new OverlappingAnalysisXmlPersistence();
+        fileformat = FileFormats.OVERLAPPING;
+        super.doSave(monitor);
+    }
 
 	@Override
 	protected void performUrlAction(String name, Map<String, String> params) {

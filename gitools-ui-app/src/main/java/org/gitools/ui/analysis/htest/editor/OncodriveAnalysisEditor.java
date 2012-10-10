@@ -19,11 +19,6 @@ package org.gitools.ui.analysis.htest.editor;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.SwingUtilities;
-
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
@@ -44,6 +39,10 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnalysis> {
 
@@ -96,6 +95,20 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 			context.put("mtc", "Benjamini Hochberg FDR");
 		else if (analysis.getMtc().equals("bonferroni"))
 			context.put("mtc", "Bonferroni");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResults());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
+
 	}
 
 	@Override
