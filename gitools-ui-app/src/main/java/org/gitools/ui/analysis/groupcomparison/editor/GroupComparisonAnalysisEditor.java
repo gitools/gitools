@@ -90,8 +90,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 	protected void performUrlAction(String name, Map<String, String> params) {
 		if ("NewDataHeatmap".equals(name))
 			newDataHeatmap();
-/*		else if ("ViewModuleMap".equals(name))
-			viewModuleMap();*/
 		else if ("NewResultsHeatmap".equals(name))
 			newResultsHeatmap();
 	}
@@ -139,9 +137,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 		});
 	}
 
-	/*private void viewModuleMap() {
-		UnimplementedDialog.show(AppFrame.instance());
-	}*/
 
 	private void copyHeaders(HeatmapDim dim, List<HeatmapHeader> headers) {
 
@@ -201,11 +196,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 			dim.addHeader(headerCopy);
 		}
 	}
-    
-    
-    private void copyHeaders(HeatmapDim dim) {
-        SerialClone.xclone(analysis.getRowHeaders());
-    }
 
 	private void newResultsHeatmap() {
 		if (analysis.getResults() == null) {
@@ -223,11 +213,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (results)");
-
-                /*if (analysis.getRowHeaders() != null) {
-                    heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
-                    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
-                }*/
 
                 if (analysis.getRowHeaders() != null) {
                     heatmap.getRowDim().setAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
