@@ -372,7 +372,10 @@ public class MatrixView
 
 	@Override
 	public boolean isRowSelected(int index) {
-		return checkSelectionBitmap(selectedRowsBitmap, visibleRows[index]);
+        if (index >= visibleRows.length)
+            return false;
+        else
+		    return checkSelectionBitmap(selectedRowsBitmap, visibleRows[index]);
 	}
 
 	@Override
@@ -389,7 +392,10 @@ public class MatrixView
 
 	@Override
 	public boolean isColumnSelected(int index) {
-		return checkSelectionBitmap(selectedColumnsBitmap, visibleColumns[index]);
+        if (index >= visibleColumns.length)
+            return false;
+        else
+		    return checkSelectionBitmap(selectedColumnsBitmap, visibleColumns[index]);
 	}
 
 	@Override

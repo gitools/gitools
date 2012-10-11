@@ -39,6 +39,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.utils.SerialClone;
 
 import javax.swing.*;
 import java.util.List;
@@ -200,6 +201,11 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 			dim.addHeader(headerCopy);
 		}
 	}
+    
+    
+    private void copyHeaders(HeatmapDim dim) {
+        SerialClone.xclone(analysis.getRowHeaders());
+    }
 
 	private void newResultsHeatmap() {
 		if (analysis.getResults() == null) {
@@ -218,9 +224,17 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 				heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                if (analysis.getRowHeaders() != null) {
+                /*if (analysis.getRowHeaders() != null) {
                     heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
                     copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                }*/
+
+                if (analysis.getRowHeaders() != null) {
+                    heatmap.getRowDim().setAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
+                    heatmap.getRowDim().removeHeader(0);
+                    for (HeatmapHeader hh : analysis.getRowHeaders()) {
+                        heatmap.getRowDim().addHeader(SerialClone.xclone(hh));
+                    }
                 }
 
 				final HeatmapEditor editor = new HeatmapEditor(heatmap);
