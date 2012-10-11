@@ -179,14 +179,27 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             //get all indices
             setAggregationTitles(new String[]{"All Cols"});
             Map<String,int[]> indicesMap = new HashMap<String,int[]>();
-            int[] aggregationGroups;
+            int[] aggregationGroups = new int[0];
 
             if (applyToRows) {
-                aggregationGroups = useAll ? heatmap.getMatrixView().getVisibleColumns() :
-                        heatmap.getMatrixView().getSelectedColumns();
+                if (useAll) {
+                    aggregationGroups = new int[heatmap.getMatrixView().getColumnCount()];
+                    for (int i = 0; i < heatmap.getMatrixView().getColumnCount(); i++)
+                        aggregationGroups[i] = i;
+                } else {
+                    aggregationGroups = heatmap.getMatrixView().getSelectedColumns();
+                }
             } else {
-                aggregationGroups = useAll ? heatmap.getMatrixView().getVisibleRows() :
-                        heatmap.getMatrixView().getSelectedRows();
+                if (useAll) {
+
+                } else
+                 if (useAll) {
+                     aggregationGroups = new int[heatmap.getMatrixView().getRowCount()];
+                     for (int i = 0; i < heatmap.getMatrixView().getRowCount(); i++)
+                         aggregationGroups[i] = i;
+                 } else {
+                     aggregationGroups = heatmap.getMatrixView().getSelectedRows();
+                 }
             }
             indicesMap.put(aggregationTitles[0],aggregationGroups);
             setDataIndicesToAggregateByTitle(indicesMap);
