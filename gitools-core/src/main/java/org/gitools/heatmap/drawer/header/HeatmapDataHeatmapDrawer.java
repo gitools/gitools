@@ -26,7 +26,6 @@ import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
-import weka.classifiers.trees.m5.YongSplitInfo;
 
 import java.awt.*;
 import java.util.Map;
@@ -141,8 +140,6 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                 x = box.x + colStart * (cellWidth + columnsGridSize);
             }
 
-            boolean rowSelected = data.isRowSelected(row);
-
 			for (int col = colStart; col < colEnd; col++) {
 
                 int headerCol = col;
@@ -175,8 +172,13 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     Color rowsGridColor = heatmap.getRowDim().getGridColor();
                     Color columnsGridColor = heatmap.getColumnDim().getGridColor();
 
-                    boolean selected = !pictureMode
-                            && (rowSelected || data.isColumnSelected(col));
+                    boolean selected = false;
+                    if (horizontal) {
+                        selected = data.isColumnSelected(col) && !pictureMode;
+                    } else {
+                        selected = !pictureMode && data.isRowSelected(row);
+                    }
+
 
                     if (selected) {
                         color = color.darker();
