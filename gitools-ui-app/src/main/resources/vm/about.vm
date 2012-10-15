@@ -23,20 +23,20 @@
 		<p>Biomedical Genomics Laboratory<br>
 		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
 
-		<p><b>Authors:</b></p>
+		<p><b>Development:</b></p>
+		<ul>
+			<li>Christian Perez-Llamas</li>
+			<li>Jordi Deu-Pons</li>
+			<li>Michael P Schroeder</li>
+			<li>Xavier Rafael-Pons</li>
+		</ul>
+
+		<p><b>Principal Investigator:</b></p>
 		<ul>
 			<li>Nuria Lopez-Bigas</li>
-			<li>Christian Perez-Llamas</li>
 		</ul>
 
-		<p><b>Collaborators:</b></p>
-		<ul>
-			<li>Xavier Rafael-Pons</li>
-			<li>Jordi Deu-Pons</li>
-			<li>Michael Schroeder</li>
-		</ul>
-
-		<p><b>Bug reporting and suggestions:</b></p>
+		<p><b>Bug reporting, suggestions and documentation:</b></p>
 		<ul>
 			<li>Sonja Haenzelmann</li>
 			<li>Khademul Islam</li>
