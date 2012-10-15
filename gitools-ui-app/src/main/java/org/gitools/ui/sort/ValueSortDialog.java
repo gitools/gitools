@@ -32,7 +32,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import org.gitools.aggregation.IAggregator;
+import edu.upf.bg.aggregation.IAggregator;
 import org.gitools.matrix.sort.ValueSortCriteria;
 
 public class ValueSortDialog extends javax.swing.JDialog {

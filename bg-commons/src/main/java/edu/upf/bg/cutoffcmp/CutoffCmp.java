@@ -17,6 +17,8 @@
 
 package edu.upf.bg.cutoffcmp;
 
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +92,16 @@ public abstract class CutoffCmp implements Serializable {
 		LT, LE, GT, GE, EQ, NE,
 		ABS_LT, ABS_LE, ABS_GT, ABS_GE, ABS_EQ, ABS_NE
 	};
+    
+    private static final DualHashBidiMap opposite = new DualHashBidiMap();
+    static {
+        opposite.put(CutoffCmp.LT, CutoffCmp.GE);
+        opposite.put(CutoffCmp.LE, CutoffCmp.GT);
+        opposite.put(CutoffCmp.EQ, CutoffCmp.NE);
+        opposite.put(CutoffCmp.ABS_LT, CutoffCmp.ABS_GE);
+        opposite.put(CutoffCmp.ABS_LE, CutoffCmp.ABS_GT);
+        opposite.put(CutoffCmp.ABS_EQ, CutoffCmp.ABS_NE);
+    }
 	
 	public static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<String, CutoffCmp>();
 	public static final Map<String, CutoffCmp> shortNameMap = new HashMap<String, CutoffCmp>();
@@ -132,6 +144,13 @@ public abstract class CutoffCmp implements Serializable {
 	public String getLongName() {
 		return longName;
 	}
+    
+    public static CutoffCmp getOpposite(CutoffCmp key) {
+        if (opposite.get(key) == null) 
+            return (CutoffCmp) (opposite.getKey(key));
+        else 
+            return (CutoffCmp) (opposite.get(key));
+    }
 	
 	public abstract boolean compare(double value, double cutoff);
 	

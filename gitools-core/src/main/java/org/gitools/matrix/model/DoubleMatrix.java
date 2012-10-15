@@ -17,11 +17,10 @@
 
 package org.gitools.matrix.model;
 
-import org.gitools.matrix.model.element.DoubleElementAdapter;
-
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
+import org.gitools.matrix.model.element.DoubleElementAdapter;
 
 public class DoubleMatrix extends BaseMatrix	{			
 
@@ -47,6 +46,20 @@ public class DoubleMatrix extends BaseMatrix	{
 		
 		this.cells = cells;
 	}
+
+    public DoubleMatrix(
+            String title,
+            String[] colNames,
+            String[] rowNames) {
+
+        super(
+                title,
+                ObjectFactory1D.dense.make(rowNames),
+                ObjectFactory1D.dense.make(colNames),
+                new DoubleElementAdapter());
+
+        makeCells(rowNames.length,colNames.length);
+    }
 
 	// rows and columns
 	

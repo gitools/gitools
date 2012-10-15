@@ -17,9 +17,10 @@
 
 package org.gitools.ui.wizard.common;
 
-import java.io.File;
 import org.gitools.persistence.FileFormat;
 import org.gitools.ui.platform.wizard.AbstractWizard;
+
+import java.io.File;
 
 
 public class SaveFileWizard extends AbstractWizard {
@@ -60,7 +61,14 @@ public class SaveFileWizard extends AbstractWizard {
 	public FileFormat getFormat() {
 		return getSaveFilePage().getFormat();
 	}
-	
+
+    public static SaveFileWizard createSimple(
+            String title, String fileName,
+            String folder, FileFormat fileFormat) {
+        return createSimple(title,fileName,folder, new FileFormat[] {fileFormat});
+    }
+
+
 	public static SaveFileWizard createSimple(
 			String title, String fileName,
 			String folder, FileFormat[] fileFormats) {

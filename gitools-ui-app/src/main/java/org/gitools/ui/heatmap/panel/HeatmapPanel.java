@@ -54,10 +54,12 @@ public class HeatmapPanel extends JPanel {
 	private HeatmapBodyPanel bodyPanel;
 	private HeatmapHeaderPanel columnHeaderPanel;
 	private HeatmapHeaderPanel rowHeaderPanel;
+    private HeatmapHeaderIntersectionPanel headerIntersectPanel;
 
 	private JViewport bodyVP;
 	private JViewport colVP;
 	private JViewport rowVP;
+    private JViewport intersectVP;
 
 	private JScrollBar colSB;
 	private JScrollBar rowSB;
@@ -90,6 +92,7 @@ public class HeatmapPanel extends JPanel {
 		bodyPanel.setHeatmap(heatmap);
 		columnHeaderPanel.setHeatmap(heatmap);
 		rowHeaderPanel.setHeatmap(heatmap);
+        headerIntersectPanel.setHeatmap(heatmap);
 		heatmapChanged(old);
 	}
 
@@ -97,6 +100,7 @@ public class HeatmapPanel extends JPanel {
 		bodyPanel = new HeatmapBodyPanel(heatmap);
 		columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
 		rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
+        headerIntersectPanel = new HeatmapHeaderIntersectionPanel(heatmap,columnHeaderPanel.getHeaderDrawer(),rowHeaderPanel.getHeaderDrawer());
 	
 		bodyVP = new JViewport();
 		bodyVP.setView(bodyPanel);
@@ -124,6 +128,9 @@ public class HeatmapPanel extends JPanel {
 
 		rowVP = new JViewport();
 		rowVP.setView(rowHeaderPanel);
+        
+        intersectVP = new JViewport();
+        intersectVP.setView(headerIntersectPanel);
 
 		HeatmapHeaderMouseController rowMouseCtrl =
 				new HeatmapHeaderMouseController(this, false);
@@ -144,6 +151,7 @@ public class HeatmapPanel extends JPanel {
 		add(bodyVP);
 		add(colSB);
 		add(rowSB);
+        add(intersectVP);
 
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -234,6 +242,7 @@ public class HeatmapPanel extends JPanel {
 		colVP.setViewPosition(new Point(colValue, 0));
 		rowVP.setViewPosition(new Point(0, rowValue));
 		bodyVP.setViewPosition(new Point(colValue, rowValue));
+        intersectVP.setViewPosition(new Point(0,0));
 	}
 
 	public JViewport getBodyViewPort() {
@@ -247,6 +256,10 @@ public class HeatmapPanel extends JPanel {
 	public JViewport getRowViewPort() {
 		return rowVP;
 	}
+
+    public JViewport getIntersectVP() {
+        return intersectVP;
+    }
 
 	public HeatmapBodyPanel getBodyPanel() {
 		return bodyPanel;
@@ -325,6 +338,7 @@ public class HeatmapPanel extends JPanel {
 			bodyPanel.updateSize();
 			rowHeaderPanel.updateSize();
 			columnHeaderPanel.updateSize();
+            headerIntersectPanel.updateSize();
 			updateScrolls();
 			revalidate();
 			repaint();

@@ -114,6 +114,8 @@ public class HeatmapDim extends AbstractModel {
 	}
 
 	public void addHeader(HeatmapHeader header) {
+        if (header.getHeatmapDim() == null)
+            header.setHeatmapDim(this);
 		headers.add(header);
 		header.addPropertyChangeListener(propertyListener);
 		firePropertyChange(HEADERS_CHANGED);

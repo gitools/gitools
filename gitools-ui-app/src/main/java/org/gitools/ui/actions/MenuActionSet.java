@@ -118,8 +118,11 @@ public class MenuActionSet extends ActionSet {
 				}),
 				//new ActionSet("Clustering", new BaseAction[] {
 				//	DataActions.clusteringByAnnotationsAction,
-					DataActions.clusteringByValueAction
+					DataActions.clusteringByValueAction,
 				//})
+                /*new ActionSet("Add data", new BaseAction[] {
+                        DataActions.integrateDataDimensionsAction
+                }),*/
 			}),
 			new ActionSet("Analysis", new BaseAction[] {
 				AnalysisActions.correlations,

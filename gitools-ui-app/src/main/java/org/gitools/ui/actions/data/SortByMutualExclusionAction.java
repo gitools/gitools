@@ -19,13 +19,13 @@ package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
-import org.gitools.aggregation.IAggregator;
+import edu.upf.bg.aggregation.IAggregator;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.aggregation.AggregatorFactory;
-import org.gitools.aggregation.MultAggregator;
+import edu.upf.bg.aggregation.AggregatorFactory;
+import edu.upf.bg.aggregation.MultAggregator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -72,25 +72,6 @@ public class SortByMutualExclusionAction extends BaseAction {
 		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
 
 
-
-		//Propose selected rows or columns
-		/*ArrayList<String> selected = new ArrayList<String>();
-		if (hm.getMatrixView().getSelectedRows().length > 0) {
-			LabelProvider labelProvider = new MatrixRowsLabelProvider(hm.getMatrixView());
-			int[] selectedIndices = hm.getMatrixView().getSelectedRows();
-			for (int i=0; i < selectedIndices.length; i++)
-				selected.add(labelProvider.getLabel(selectedIndices[i]));
-		}
-		else if(hm.getMatrixView().getSelectedColumns().length > 0) {
-			LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
-			page.setFilterDimension(FilterDimension.COLUMNS);
-			int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
-			for (int i=0; i < selectedIndices.length; i++)
-				selected.add(labelProvider.getLabel(selectedIndices[i]));
-		}
-		if(!selected.isEmpty()) {
-			page.setValues(selected);
-		}*/
         if(hm.getMatrixView().getSelectedColumns().length > 0)
             page.setFilterDimension(FilterDimension.COLUMNS);
             

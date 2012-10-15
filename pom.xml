@@ -5,7 +5,7 @@
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.4</version>
+    <version>1.7.0</version>
     <name>gitools</name>
     <description>Gitools</description>
     <url>https://bg.upf.edu/forge/projects/gitools</url>
@@ -185,7 +185,7 @@
             <dependency>
                 <groupId>cobra</groupId>
                 <artifactId>cobra</artifactId>
-                <version>0.98.4</version>
+                <version>0.98.5</version>
             </dependency>
 
             <dependency>

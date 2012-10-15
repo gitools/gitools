@@ -56,54 +56,60 @@ public class HeatmapLayout implements LayoutManager {
 		Insets insets = parent.getInsets();
 		Dimension size = parent.getSize();
 
-		Component colC = parent.getComponent(0);
-		Component rowC = parent.getComponent(1);
-		Component bdyC = parent.getComponent(2);
-		Component clsC = parent.getComponent(3);
-		Component rwsC = parent.getComponent(4);
+		Component colHeaderC = parent.getComponent(0);
+		Component rowHeaderC = parent.getComponent(1);
+		Component bodyC = parent.getComponent(2);
+		Component colScrollC = parent.getComponent(3);
+		Component rowScrollC = parent.getComponent(4);
+        Component headerIntersectC = parent.getComponent(5);
 
-		Dimension colPsz = colC.getPreferredSize();
-		Dimension rowPsz = rowC.getPreferredSize();
-		Dimension bdyPsz = bdyC.getPreferredSize();
-		Dimension clsPsz = clsC.getPreferredSize();
-		Dimension rwsPsz = rwsC.getPreferredSize();
+		Dimension colHeaderSize = colHeaderC.getPreferredSize();
+		Dimension rowHeaderSize = rowHeaderC.getPreferredSize();
+		Dimension bodySize = bodyC.getPreferredSize();
+		Dimension colScrollSize = colScrollC.getPreferredSize();
+		Dimension rowsScrollSize = rowScrollC.getPreferredSize();
+        Dimension headerIntersectSize = headerIntersectC.getPreferredSize();
 
-		int x0 = insets.left;
-		int x1 = x0 + rwsPsz.width;
-		int x3 = size.width - insets.right;
-		int x2 = x3 - rowPsz.width;
+		int XLeft = insets.left;
+		int XBody = XLeft + rowsScrollSize.width;
+		int XRightEnd = size.width - insets.right;
+		int XRowHeader = XRightEnd - rowHeaderSize.width;
 
-		if (x2 < x1) {
-			x2 = x1;
+		if (XRowHeader < XBody) {
+			XRowHeader = XBody;
 		}
 
-		int xs0 = x1 - x0;
-		int xs1 = x2 - x1;
-		int xs2 = x3 - x2;
+		int widthRowScroll = XBody - XLeft;
+		int widthBody = XRowHeader - XBody;
+		int widthRowHeader = XRightEnd - XRowHeader;
 
-		if (xs1 > colPsz.width) {
-			xs1 = colPsz.width;
-			x2 = x1 + xs1;
-			xs2 = x3 - x2;
+		if (widthBody > colHeaderSize.width) {
+			widthBody = colHeaderSize.width > 0 ? colHeaderSize.width : bodySize.width;
+            if (XBody + widthBody > XRowHeader)
+                widthBody -= XBody + widthBody -XRowHeader;
+            else
+			    XRowHeader = XBody + widthBody;
+			widthRowHeader = XRightEnd - XRowHeader;
 		}
 
-		int y0 = insets.top;
-		int y1 = y0 + colPsz.height;
-		int y3 = size.height - insets.bottom;
-		int y2 = y3 - clsPsz.height;
+		int YTop = insets.top;
+		int YBody = YTop + colHeaderSize.height;
+		int YBottom = size.height - insets.bottom;
+		int YColScroll = YBottom - colScrollSize.height;
 
-		if (y2 < y1) {
-			y2 = y1;
+		if (YColScroll < YBody) {
+			YColScroll = YBody;
 		}
 
-		int ys0 = y1 - y0;
-		int ys1 = y2 - y1;
-		int ys2 = y3 - y2;
+		int heightColHeader = YBody - YTop;
+		int heightBody = YColScroll - YBody;
+		int heightColScroll = YBottom - YColScroll;
 
-		colC.setBounds(x1, y0, xs1, ys0);
-		rowC.setBounds(x2, y1, xs2, ys1);
-		bdyC.setBounds(x1, y1, xs1, ys1);
-		clsC.setBounds(x1, y2, xs1, ys2);
-		rwsC.setBounds(x0, y1, xs0, ys1);
+		colHeaderC.setBounds(XBody, YTop, widthBody, heightColHeader);
+		rowHeaderC.setBounds(XRowHeader, YBody, widthRowHeader, heightBody);
+		bodyC.setBounds(XBody, YBody, widthBody, heightBody);
+		colScrollC.setBounds(XBody, YColScroll, widthBody, heightColScroll);
+		rowScrollC.setBounds(XLeft, YBody, widthRowScroll, heightBody);
+        headerIntersectC.setBounds(XRowHeader,YTop,widthRowHeader,heightColHeader);
 	}
 }

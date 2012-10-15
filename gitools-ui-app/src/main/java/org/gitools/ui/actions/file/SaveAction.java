@@ -18,16 +18,16 @@
 package org.gitools.ui.actions.file;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.editor.EditorsPanel;
 
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.IEditor;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class SaveAction extends BaseAction {
 
@@ -44,8 +44,14 @@ public class SaveAction extends BaseAction {
 
 	@Override
 	public boolean isEnabledByEditor(IEditor editor) {
-		return false;
-		//return editor != null && editor.isDirty();
+
+        if (editor == null)
+            return false;
+
+        EditorsPanel editorPanel;
+        editorPanel = AppFrame.instance().getEditorsPanel();
+
+        return editorPanel.getSelectedEditor().isSaveAllowed();
 	}
 	
 	@Override

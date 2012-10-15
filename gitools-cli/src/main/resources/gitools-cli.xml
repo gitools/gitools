@@ -43,4 +43,11 @@
         <argumentsClass>org.gitools.cli.overlapping.OverlappingTool$OverlappingArguments</argumentsClass>
         <lifeCycleClass>org.gitools.cli.overlapping.OverlappingTool</lifeCycleClass>
     </tool>
+
+    <tool>
+        <name>comparison</name>
+        <description>Run a group comparison analysis</description>
+        <argumentsClass>org.gitools.cli.comparison.ComparisonTool$ComparisonArguments</argumentsClass>
+        <lifeCycleClass>org.gitools.cli.comparison.ComparisonTool</lifeCycleClass>
+    </tool>
 </tools>

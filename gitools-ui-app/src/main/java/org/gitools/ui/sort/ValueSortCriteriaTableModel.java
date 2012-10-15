@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import org.gitools.aggregation.IAggregator;
+import edu.upf.bg.aggregation.IAggregator;
 import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 

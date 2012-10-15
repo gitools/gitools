@@ -18,11 +18,12 @@
 package org.gitools.ui.platform.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.ui.platform.actions.ActionManager;
+import org.gitools.ui.platform.view.AbstractView;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.gitools.ui.platform.actions.ActionManager;
-import org.gitools.ui.platform.view.AbstractView;
 
 public abstract class AbstractEditor
 		extends AbstractView
@@ -40,6 +41,7 @@ public abstract class AbstractEditor
 	private File file;
 	private boolean dirty = false;
 	private boolean saveAsAllowed = false;
+    private boolean saveAllowed = false;
 
 	private List<EditorListener> listeners = new ArrayList<EditorListener>();
 
@@ -82,10 +84,19 @@ public abstract class AbstractEditor
 	public boolean isSaveAsAllowed() {
 		return saveAsAllowed;
 	}
-	
+
 	public void setSaveAsAllowed(boolean saveAsAllowed) {
 		this.saveAsAllowed = saveAsAllowed;
 	}
+
+    @Override
+    public boolean isSaveAllowed() {
+        return saveAllowed;
+    }
+
+    public void setSaveAllowed(boolean  saveAllowed) {
+        this.saveAllowed = saveAllowed;
+    }
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {

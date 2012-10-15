@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.model.AbstractModel;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
@@ -91,10 +92,10 @@ public class MatrixView
 	public MatrixView(IMatrixView matrixView) {
 		if (matrixView instanceof MatrixView) {
 			this.contents = matrixView.getContents();
-			this.visibleRows = matrixView.getVisibleRows();
-			this.visibleColumns = matrixView.getVisibleColumns();
-			this.selectedRows = matrixView.getSelectedRows();
-			this.selectedColumns = matrixView.getSelectedColumns();
+			this.visibleRows = ArrayUtils.clone(matrixView.getVisibleRows());
+			this.visibleColumns = ArrayUtils.clone(matrixView.getVisibleColumns());
+			this.selectedRows = ArrayUtils.clone(matrixView.getSelectedRows());
+			this.selectedColumns = ArrayUtils.clone(matrixView.getSelectedColumns());
 			this.selectionLeadRow = matrixView.getLeadSelectionRow();
 			this.selectionLeadColumn = matrixView.getLeadSelectionColumn();
 			this.selectedPropertyIndex = matrixView.getSelectedPropertyIndex();
@@ -371,7 +372,10 @@ public class MatrixView
 
 	@Override
 	public boolean isRowSelected(int index) {
-		return checkSelectionBitmap(selectedRowsBitmap, visibleRows[index]);
+        if (index >= visibleRows.length)
+            return false;
+        else
+		    return checkSelectionBitmap(selectedRowsBitmap, visibleRows[index]);
 	}
 
 	@Override
@@ -388,7 +392,10 @@ public class MatrixView
 
 	@Override
 	public boolean isColumnSelected(int index) {
-		return checkSelectionBitmap(selectedColumnsBitmap, visibleColumns[index]);
+        if (index >= visibleColumns.length)
+            return false;
+        else
+		    return checkSelectionBitmap(selectedColumnsBitmap, visibleColumns[index]);
 	}
 
 	@Override

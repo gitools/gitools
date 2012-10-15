@@ -39,6 +39,7 @@ import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.stats.test.results.CommonResult;
+import org.gitools.stats.test.results.ZScoreResult;
 
 /*TODO: Heatmap should implement IMatrixView
  * and handle movement and visibility synchronized
@@ -53,7 +54,7 @@ public class Heatmap
 	private static final long serialVersionUID = 325437934312047512L;
 
 	public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
-    public static final String CELL_DECORATOR_SWITCHED = "cellDecoratorSwitched";
+    public static final String VALUE_DIMENSION_SWITCHED = "valueDimensionSwitched";
 	public static final String MATRIX_VIEW_CHANGED = "matrixView";
 	public static final String CELL_SIZE_CHANGED = "cellSize";
 	public static final String ROW_DIMENSION_CHANGED = "rowDim";
@@ -165,7 +166,10 @@ public class Heatmap
 
             Class<?> c = adapter.getElementClass();
             
-            if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
+            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c){
+                decorator = ElementDecoratorFactory.create(
+                        ElementDecoratorNames.ZSCORE, adapter);
+            } else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
                 decorator = ElementDecoratorFactory.create(
                         ElementDecoratorNames.PVALUE, adapter);
             }
@@ -205,7 +209,7 @@ public class Heatmap
 		return cellDecorators[propIndex];
 	}
 
-	public final void changeActiveCellDecorator(int newindex) {
+	public final void switchActiveCellDecorator(int newindex) {
         // switches from active ElementDecorator to ElementDecorator
         // of same type, but for another propertyIndex (data dimension)
         // no new ElementDecorator has been created and none will be removed
@@ -214,7 +218,7 @@ public class Heatmap
 		getMatrixView().setSelectedPropertyIndex(newindex);
 		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
 		this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
-        firePropertyChange(CELL_DECORATOR_SWITCHED, this.cellDecorators[oldindex], this.cellDecorators[newindex]);
+        firePropertyChange(VALUE_DIMENSION_SWITCHED, this.cellDecorators[oldindex], this.cellDecorators[newindex]);
 	}
     
     public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception {
@@ -238,13 +242,27 @@ public class Heatmap
         // The ElementDecorator Type has been changed and thus a new
         // set of ElementDecorators has to be put in place (for each
         // propertyIndex one.
-        
+
 		int propIndex = getMatrixView().getSelectedPropertyIndex();
 		ElementDecorator old = null;
 		if (this.cellDecorators != null) {
 			this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
 			old = this.cellDecorators[propIndex];
 		}
+
+        //a new data dimension has been added
+        if (decorators.length > this.cellDecorators.length) {
+            propIndex = decorators.length-1;
+            matrixView.setSelectedPropertyIndex(propIndex);
+        }
+
+
+        if (decorators[propIndex].getValueIndex() != propIndex) {
+            // the new decorator forces a new a ValueIndex different to the
+            // one that was selected
+            propIndex = decorators[propIndex].getValueIndex();
+            matrixView.setSelectedPropertyIndex(propIndex);
+        }
 		decorators[propIndex].addPropertyChangeListener(propertyListener);
 
 		this.cellDecorators = decorators;

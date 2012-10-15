@@ -18,15 +18,12 @@
 package org.gitools.persistence.xml;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.persistence.PersistenceContext;
-import org.gitools.persistence.PersistenceEntityContext;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.*;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
 
 public class CorrelationAnalysisXmlPersistence
 		extends AbstractXmlPersistence<CorrelationAnalysis> {
@@ -67,11 +64,11 @@ public class CorrelationAnalysisXmlPersistence
 
 		PersistenceManager pm = getPersistenceManager();
 
-		String dataExt = pm.getExtensionFromEntity(entity.getData().getClass());
+		String dataExt = pm.getExtensionFromEntity(entity.getData());
 		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		String resultsExt = pm.getExtensionFromEntity(entity.getResults().getClass());
+		String resultsExt = pm.getExtensionFromEntity(entity.getResults());
 		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
 				new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
 	}

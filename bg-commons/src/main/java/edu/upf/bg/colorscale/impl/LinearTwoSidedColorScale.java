@@ -1,11 +1,16 @@
 package edu.upf.bg.colorscale.impl;
 
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.MeanAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScalePoint;
+import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class LinearTwoSidedColorScale extends NumericColorScale {
 
@@ -19,6 +24,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
         this.min = min;
         this.mid = mid;
         this.max = max;
+        updateRangesList();
     }
 
     public LinearTwoSidedColorScale() {
@@ -62,6 +68,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
     public void setMin(ColorScalePoint min) {
         this.min = min;
+        updateRangesList();
     }
 
     public ColorScalePoint getMid() {
@@ -70,6 +77,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
     public void setMid(ColorScalePoint mid) {
         this.mid = mid;
+        updateRangesList();
     }
 
     public ColorScalePoint getMax() {
@@ -78,5 +86,27 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
     public void setMax(ColorScalePoint max) {
         this.max = max;
+        updateRangesList();
+    }
+
+    @Override
+    protected void updateRangesList() {
+
+        ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
+        rangesList.clear();
+
+        double[] points = getPoints();
+        double min = getMinValue();
+        double max = getMaxValue();
+        double mid = getMid().getValue();
+
+        rangesList.add(new ColorScaleRange(min,mid,1,min,"",mid,ColorScaleRange.LINEAR_TYPE));
+        rangesList.add(new ColorScaleRange(mid,max,1,"","",max,ColorScaleRange.LINEAR_TYPE));
+
+    }
+
+    @Override
+    public IAggregator defaultAggregator() {
+        return MeanAggregator.INSTANCE;
     }
 }

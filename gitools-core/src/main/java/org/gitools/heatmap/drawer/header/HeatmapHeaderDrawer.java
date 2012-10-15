@@ -17,25 +17,24 @@
 
 package org.gitools.heatmap.drawer.header;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.List;
-import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
 	private boolean horizontal;
 	
-	private List<AbstractHeatmapDrawer> drawers;
+	private List<AbstractHeatmapHeaderDrawer> drawers;
 
 	public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
 		super(heatmap);
@@ -50,18 +49,20 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 			heatmap.getColumnDim().getHeaders()
 			: heatmap.getRowDim().getHeaders();
 
-		drawers = new ArrayList<AbstractHeatmapDrawer>(headers.size());
+		drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
 
 		for (int i = 0; i < headers.size(); i++) {
 			HeatmapHeader h = headers.get(i);
 			if (!h.isVisible())
 				continue;
 
-			AbstractHeatmapDrawer d = null;
+            AbstractHeatmapHeaderDrawer d = null;
 			if (h instanceof HeatmapTextLabelsHeader)
 				d = new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal);
 			else if (h instanceof HeatmapColoredLabelsHeader)
 				d = new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal);
+            else if (h instanceof HeatmapDataHeatmapHeader)
+                d = new HeatmapDataHeatmapDrawer(heatmap, (HeatmapDataHeatmapHeader) h, horizontal);
 			
 			if (d != null) {
 				d.setPictureMode(pictureMode);
@@ -168,10 +169,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 		return new Point(0, 0);
 	}
 
-	@Override
+    @Override
 	public void setPictureMode(boolean pictureMode) {
 		for (AbstractHeatmapDrawer d : drawers)
 			d.setPictureMode(pictureMode);
 	}
 
+    public List<AbstractHeatmapHeaderDrawer> getDrawers() {
+        return drawers;
+    }
 }

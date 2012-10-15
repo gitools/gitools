@@ -17,10 +17,15 @@
 
 package edu.upf.bg.colorscale.impl;
 
+import edu.upf.bg.aggregation.IAggregator;
+import edu.upf.bg.aggregation.MultAggregator;
+import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.color.utils.ColorUtils;
+import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import edu.upf.bg.colorscale.util.ColorConstants;
 
@@ -53,6 +58,7 @@ public class PValueColorScale extends NumericColorScale {
 				ColorConstants.minColor,
 				ColorConstants.maxColor,
 				ColorConstants.nonSignificantColor);
+        updateRangesList();
 	}
 
     @Override
@@ -87,6 +93,7 @@ public class PValueColorScale extends NumericColorScale {
         if (significanceLevel < 0) {
             this.significanceLevel = 0;
         }
+        updateRangesList();
     }
 
     public Color getMinColor() {
@@ -111,5 +118,30 @@ public class PValueColorScale extends NumericColorScale {
 
     public void setNonSignificantColor(Color nonSignificantColor) {
         this.nonSignificantColor = nonSignificantColor;
+    }
+
+    @Override
+    protected void updateRangesList() {
+
+        ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
+        rangesList.clear();
+
+        double[] points = getPoints();
+        double min = getMinValue();
+        double max = getMaxValue();
+        double mid = getSignificanceLevel();
+
+        rangesList.add(new ColorScaleRange(
+                min,mid,20,min,null,mid,ColorScaleRange.LOGARITHMIC_TYPE)
+        );
+        rangesList.add(new ColorScaleRange(
+                mid,max,10,null,null,max,ColorScaleRange.LOGARITHMIC_TYPE)
+        );
+
+    }
+
+    @Override
+    public IAggregator defaultAggregator() {
+        return MultAggregator.INSTANCE;
     }
 }

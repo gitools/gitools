@@ -17,7 +17,8 @@
 
 package org.gitools.heatmap.drawer;
 
-import java.awt.Color;
+import java.awt.*;
+
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 
@@ -26,7 +27,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 	protected static final Color highlightingColor = Color.YELLOW;
 	
 	protected HT header;
-	protected boolean horizontal;
+    protected boolean horizontal;
 
 	public AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal) {
 		super(heatmap);
@@ -39,4 +40,12 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 		return header;
 	}
 
+
+    public void drawHeaderLegend(Graphics2D g, Rectangle headerIntersection, HeatmapHeader heatmapHeader) {
+        return;
+    };
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
 }

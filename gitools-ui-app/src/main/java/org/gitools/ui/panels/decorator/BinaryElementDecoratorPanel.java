@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
@@ -162,7 +163,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 
-		model.changeActiveCellDecorator(propAdapter.getIndex());
+		model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
 		
 		decorator.setValueIndex(propAdapter.getIndex());
@@ -170,9 +171,14 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
 	}
 
-			private void changeDecorator() {
+	private void changeDecorator() {
 
-		this.decorator = (BinaryElementDecorator) model.getActiveCellDecorator();
+        ElementDecorator elementDecorator = model.getActiveCellDecorator();
+        if (elementDecorator instanceof  BinaryElementDecorator)
+		    this.decorator = (BinaryElementDecorator) elementDecorator;
+        else
+            return;
+
 
 
 		colorCc.setColor(decorator.getColor());

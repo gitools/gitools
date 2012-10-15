@@ -23,14 +23,18 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.Map;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
+import org.gitools.heatmap.header.HeatmapHeader;
 
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
 	private HeatmapBodyDrawer body;
 	private final HeatmapHeaderDrawer rowsHeader;
 	private final HeatmapHeaderDrawer colsHeader;
+    private final HeatmapHeaderIntersectionDrawer headerIntersection;
 	/*private HeatmapLabelsDrawer rows;
 	private HeatmapLabelsDrawer columns;
 	private HeatmapColoredClustersDrawer rowsClusterSet;
@@ -42,6 +46,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 		body = new HeatmapBodyDrawer(heatmap);
 		rowsHeader = new HeatmapHeaderDrawer(heatmap, false);
 		colsHeader = new HeatmapHeaderDrawer(heatmap, true);
+        headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap,colsHeader,rowsHeader);
 
 		/*rows = new HeatmapLabelsDrawer(heatmap, false);
 		columns = new HeatmapLabelsDrawer(heatmap, true);
@@ -62,6 +67,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 		Rectangle bodyBounds = new Rectangle(0, columnsSize. height, bodySize.width, bodySize.height);
 		//Rectangle rowsCSBounds = new Rectangle(bodySize.width, columnsSize.height + columnsCSSize.height, rowsCSSize.width, rowsCSSize.height);
 		Rectangle rowsBounds = new Rectangle(bodySize.width, columnsSize.height, rowsSize.width, rowsSize.height);
+        Rectangle headerIntersectionBounds = new Rectangle(bodySize.width, 0, rowsSize.width, columnsSize.height);
 
 		AffineTransform at = new AffineTransform();
 
@@ -74,9 +80,18 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 		rowsHeader.draw(g, rowsBounds, rowsBounds);
 		at.setToIdentity();
 		g.setTransform(at);
+        //headerIntersection.updateDrawers(null);
+        headerIntersection.draw(g,headerIntersectionBounds,headerIntersectionBounds);
+
+        /*rowsHeader.drawHeaderIntersection(g, headerIntersection);
+        at.setToIdentity();
+        g.setTransform(at);
+        colsHeader.drawHeaderIntersection(g, headerIntersection);
+        at.setToIdentity();
+        g.setTransform(at); */
 	}
 
-	@Override
+    @Override
 	public Dimension getSize() {
 		Dimension bodySize = body.getSize();
 		Dimension rowsSize = rowsHeader.getSize();
@@ -96,7 +111,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
-	@Override
+    @Override
 	public void setPictureMode(boolean pictureMode) {
 		super.setPictureMode(pictureMode);
 		body.setPictureMode(pictureMode);

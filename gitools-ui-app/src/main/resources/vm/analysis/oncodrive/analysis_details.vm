@@ -31,6 +31,9 @@
 						#end
 					#end
 				#end
+				#if($analysisLocation)
+				    <tr><td class="name">Location</td><td>$analysisLocation</td></tr>
+				#end
 			</table>
 		</div>
 	</div>
@@ -68,6 +71,7 @@
 		<div id="section_title">Results</div>
 		<div id="section_body">
 			<table id="attr_table">
+			    <tr><td class="name">File</td><td>$resultsFile</td></tr>
 				<tr><td class="name">Multiple test correction</td><td>$mtc</td></tr>
 			</table>
 

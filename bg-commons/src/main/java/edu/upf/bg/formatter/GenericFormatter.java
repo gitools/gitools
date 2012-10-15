@@ -33,6 +33,9 @@ public class GenericFormatter implements Serializable {
 	
 	private static Map<Class<?>, String> defaultGenericFormatMap = 
 		new HashMap<Class<?>, String>();
+
+    private Map<Class<?>, String> customFormatMap =
+            new HashMap<Class<?>, String>();
 	
 	static {
 		defaultGenericFormatMap.put(Float.class, "%.3g");
@@ -55,6 +58,10 @@ public class GenericFormatter implements Serializable {
 	public GenericFormatter() {
 		this("&lt;");
 	}
+
+    public void addCustomFormatter(Class<?> c , String s) {
+        customFormatMap.put(c,s);
+    }
 	
 	public String pvalue(double value) {
 		if (value < 1e-16)
@@ -83,7 +90,9 @@ public class GenericFormatter implements Serializable {
 		if (value == null)
 			return "null";
 		
-		String format = genericFormatMap.get(value.getClass());
+        String format = customFormatMap.get(value.getClass());
+        if (format == null)
+		    format = genericFormatMap.get(value.getClass());
 		if (format == null)
 			format = "%s";
 		

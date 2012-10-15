@@ -3,9 +3,9 @@ package edu.upf.bg.colorscale;
 
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.util.ColorConstants;
-import org.apache.commons.collections.iterators.SingletonIterator;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class NumericColorScale implements IColorScale, IColorScaleHtml {
 
@@ -14,8 +14,11 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
     private Color negInfinityColor;
     private Color emptyColor;
 
+    private ArrayList<ColorScaleRange> rangesList;
+
     protected NumericColorScale() {
         super();
+        rangesList = new ArrayList<ColorScaleRange>();
     }
 
     @Override
@@ -105,6 +108,41 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
     public void setEmptyColor(Color emptyColor) {
         this.emptyColor = emptyColor;
     }
+    
+    public final ArrayList<ColorScaleRange> getScaleRanges() {
 
+        updateRangesList();
 
+        return rangesList;
+    }
+
+    protected ArrayList<ColorScaleRange> getInternalScaleRanges() {
+        if (rangesList == null) {
+            rangesList = new ArrayList<ColorScaleRange>();
+        }
+        return rangesList;
+    }
+
+    protected void updateRangesList() {
+        rangesList.clear();
+
+        double[] points = getPoints();
+        double min = Double.NaN;
+        double max = Double.NaN;
+        for (int i = 0; i < points.length; i++) {
+            min = max;
+            max = points[i];
+
+            if (Double.isNaN(min))
+                continue;
+
+            Object leftLabel = (i==1) ? min : "";
+            Object rightLabel = max;
+            ColorScaleRange range = new ColorScaleRange(min,max,(max-min));
+            range.setLeftLabel(leftLabel);
+            range.setRightLabel(rightLabel);
+
+            rangesList.add(range);
+        }
+    }
 }

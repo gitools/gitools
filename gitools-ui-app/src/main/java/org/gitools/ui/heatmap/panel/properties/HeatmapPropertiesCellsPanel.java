@@ -36,26 +36,41 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import edu.upf.bg.colorscale.IColorScale;
+import edu.upf.bg.colorscale.NumericColorScale;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.CategoricalElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.progress.JobProgressDialog;
+import org.gitools.ui.platform.progress.JobProgressMonitor;
 import org.gitools.ui.settings.decorators.DecoratorArchive;
 import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
 import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel {
+    
+    private Map<Integer,Object[]> decorationCache =
+            new HashMap<Integer, Object[]>();
 
-	private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorCache =
+	private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorMap =
 			new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
+    
+    private Map<String,ElementDecoratorDescriptor> descriptorMap =
+            new HashMap<String, ElementDecoratorDescriptor>();
 	
     /** Creates new form HeaderPropertiesCellsPanel */
     public HeatmapPropertiesCellsPanel() {
@@ -64,11 +79,24 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
 
 	@Override
 	public void setHeatmap(Heatmap heatmap) {
-		if (getHeatmap() != heatmap)
-			decoratorCache.clear();
-		
+		if (getHeatmap() != heatmap && getHeatmap()!=null) {
+            Integer newId =  heatmap.hashCode();
+            Integer oldId = getHeatmap().hashCode();
+            decorationCache.put(oldId,new Object[]{decoratorMap,descriptorMap});            
+            
+            if (decorationCache.containsKey(newId)) {
+                Object[] cache = decorationCache.get(newId);
+			    decoratorMap = (HashMap<ElementDecoratorDescriptor, ElementDecorator[]>) cache[0];
+                descriptorMap = (HashMap<String, ElementDecoratorDescriptor>) cache[1];
+            }  else {
+                decoratorMap = new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
+                descriptorMap = new HashMap<String, ElementDecoratorDescriptor>();
+            }
+        }
 		super.setHeatmap(heatmap);
 	}
+
+    //TODO: how to remove decorationCache for heatmaps being closed?
 
 	@Override
 	protected void initControls() {
@@ -139,8 +167,116 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
                     changeDecoratorPanel(descriptor);
                 }
             }
+            else if(Heatmap.VALUE_DIMENSION_SWITCHED.equals(pname)) {
+                ElementDecorator oldDecorator = (ElementDecorator) evt.getOldValue();
+                ElementDecoratorDescriptor oldDescriptor = ElementDecoratorFactory.getDescriptor(oldDecorator.getClass());
+                int newIndex = hm.getMatrixView().getSelectedPropertyIndex();
+                String newDataDimensionName = hm.getMatrixView().getCellAttributes().get(newIndex).getName();
+                String oldDataDimensionName = hm.getMatrixView().getCellAttributes().get(oldDecorator.getValueIndex()).getName();
+
+
+                descriptorMap.put(oldDataDimensionName,oldDescriptor);
+                ElementDecoratorDescriptor newDescriptor = descriptorMap.get(newDataDimensionName);
+                if (newDescriptor!=null)
+                    this.cellDecorator.setSelectedItem(newDescriptor);
+            }
 		}
 	}
+
+    private void cellDecoratorChanged(ItemEvent evt) {
+
+        if (evt.getStateChange() == ItemEvent.DESELECTED) {
+            ElementDecoratorDescriptor descriptor =
+                    ElementDecoratorFactory.getDescriptor(hm.getActiveCellDecorator().getClass());
+
+            cacheDecorators(descriptor);
+        }
+        else if (evt.getStateChange() == ItemEvent.SELECTED) {
+            ElementDecoratorDescriptor descriptor =
+                    (ElementDecoratorDescriptor) evt.getItem();
+
+            ElementDecorator[] decorators = getDecoratorsForDescriptor(descriptor);
+            int selectedDataDimension = hm.getMatrixView().getSelectedPropertyIndex();
+            if (decorators[selectedDataDimension].getValueIndex() != selectedDataDimension) {
+                decorators[selectedDataDimension] = setValueIndex(decorators[selectedDataDimension],
+                                                    decorators[selectedDataDimension].getAdapter(),
+                                                    selectedDataDimension);
+            }
+            hm.setCellDecorators(decorators);
+            changeDecoratorPanel(descriptor);
+        }
+    }
+
+    private void cacheDecorators(ElementDecoratorDescriptor descriptor) {
+        decoratorMap.put(descriptor, hm.getCellDecorators());
+    }
+
+    private ElementDecorator[] getDecoratorsForDescriptor(ElementDecoratorDescriptor descriptor) {
+        ElementDecorator[] decorators = decoratorMap.get(descriptor);
+        
+        boolean categoricalScale = descriptor.getDecoratorClass().equals(CategoricalElementDecorator.class);
+
+        if (decorators == null) {
+            IElementAdapter cellAdapter = hm.getActiveCellDecorator().getAdapter();
+            int propNb = cellAdapter.getPropertyCount();
+            decorators = new ElementDecorator[propNb];
+            
+            for (int i = 0; i < decorators.length; i++) {
+                ElementDecorator decorator = ElementDecoratorFactory.create(
+                        descriptor, cellAdapter);
+
+                if (categoricalScale) {
+                    double[] values;
+                    values = MatrixUtils.getUniquedValuesFromMatrix(hm.getMatrixView().getContents(), cellAdapter, i);
+                    CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
+                    scale.setValues(values);
+                }
+
+                setValueIndex(decorator, cellAdapter, i);
+                decorators[i] = decorator;
+            }
+
+            
+        }
+        return decorators;
+    }
+
+
+    private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex) {
+
+        if (decorator instanceof ZScoreElementDecorator) {
+
+            ZScoreElementDecorator zscoreDecorator = (ZScoreElementDecorator) decorator;
+            int valueIndex = cellAdapter.getPropertyIndex("z-score");
+            decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
+
+        } else if (decorator instanceof PValueElementDecorator) {
+
+            int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
+            decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
+
+        } else
+            decorator.setValueIndex(currentValueIndex);
+
+        return decorator;
+    }
+
+    private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
+        final JPanel confPanel = new JPanel();
+        confPanel.setLayout(new BorderLayout());
+
+        Class<? extends ElementDecorator> decoratorClass = descriptor.getDecoratorClass();
+
+        JComponent c = ElementDecoratorPanelFactory.create(decoratorClass, hm);
+        confPanel.add(c, BorderLayout.CENTER);
+
+        decoPanel.removeAll();
+        decoPanel.setLayout(new BorderLayout());
+        //decoPanel.setMaximumSize(new Dimension(20, 20));
+        //decoPanel.setPreferredSize(new Dimension(20, 20))
+        decoPanel.add(c, BorderLayout.CENTER);
+    }
+
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -455,75 +591,6 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             Logger.getLogger(HeatmapPropertiesCellsPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_loadScaleActionPerformed
-
-	private void cellDecoratorChanged(ItemEvent evt) {
-		/*final ElementDecoratorDescriptor descriptor =
-			(ElementDecoratorDescriptor) evt.getItem();*/
-
-		if (evt.getStateChange() == ItemEvent.DESELECTED) {
-			ElementDecoratorDescriptor descriptor =
-				ElementDecoratorFactory.getDescriptor(hm.getActiveCellDecorator().getClass());
-
-			decoratorCache.put(descriptor, hm.getCellDecorators());
-		}
-		else if (evt.getStateChange() == ItemEvent.SELECTED) {
-			ElementDecoratorDescriptor descriptor =
-				(ElementDecoratorDescriptor) evt.getItem();
-
-			ElementDecorator[] decorators = decoratorCache.get(descriptor);
-			if (decorators == null) {
-                IElementAdapter cellAdapter = hm.getActiveCellDecorator().getAdapter();
-				int propNb = cellAdapter.getPropertyCount();
-				decorators = new ElementDecorator[propNb];
-				for (int i = 0; i < decorators.length; i++) {
-					ElementDecorator decorator = ElementDecoratorFactory.create(
-							descriptor, cellAdapter);
-                    setValueIndex(decorator, cellAdapter, i);
-                    
-                    decorators[i] = decorator;
-				}
-                
-			}
-
-			hm.setCellDecorators(decorators);
-
-			changeDecoratorPanel(descriptor);
-		}
-	}
-
-    private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex) {
-        if (decorator instanceof ZScoreElementDecorator) {
-            ZScoreElementDecorator zscoreDecorator = (ZScoreElementDecorator) decorator;
-            int valueIndex = cellAdapter.getPropertyIndex("z-score");
-            int correctedValueIndex = cellAdapter.getPropertyIndex("corrected-two-tail-p-value");
-            zscoreDecorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);
-            zscoreDecorator.setCorrectedValueIndex(correctedValueIndex != -1 ? correctedValueIndex : currentValueIndex);
-            decorator = zscoreDecorator;
-            
-        } else if (decorator instanceof PValueElementDecorator) {
-                int valueIndex = cellAdapter.getPropertyIndex("right-p-value");
-                decorator.setValueIndex(valueIndex != -1 ? valueIndex : currentValueIndex);                        
-        } else
-            decorator.setValueIndex(currentValueIndex);
-        
-        return decorator;
-    }
-
-	private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor) {
-		final JPanel confPanel = new JPanel();
-		confPanel.setLayout(new BorderLayout());
-		
-		Class<? extends ElementDecorator> decoratorClass = descriptor.getDecoratorClass();
-
-		JComponent c = ElementDecoratorPanelFactory.create(decoratorClass, hm);
-		confPanel.add(c, BorderLayout.CENTER);
-		
-		decoPanel.removeAll();
-		decoPanel.setLayout(new BorderLayout());
-		//decoPanel.setMaximumSize(new Dimension(20, 20));
-		//decoPanel.setPreferredSize(new Dimension(20, 20));
-		decoPanel.add(c, BorderLayout.CENTER);
-	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cellDecorator;

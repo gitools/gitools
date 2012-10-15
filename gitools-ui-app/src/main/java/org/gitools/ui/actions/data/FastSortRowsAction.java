@@ -17,10 +17,11 @@
 
 package org.gitools.ui.actions.data;
 
+import edu.upf.bg.aggregation.IAggregator;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import org.gitools.aggregation.MultAggregator;
+import edu.upf.bg.aggregation.MultAggregator;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -38,15 +39,33 @@ public class FastSortRowsAction extends BaseAction {
 
 	private static final long serialVersionUID = -582380114189586206L;
 
+    private ValueSortCriteria.SortDirection currentSort;
+
 	public FastSortRowsAction() {
 		super("Sort rows");
 		
 		setDesc("Sort rows");
-		setSmallIconFromResource(IconNames.sortSelectedColumns16);
-		setLargeIconFromResource(IconNames.sortSelectedColumns24);
+
+        currentSort = ValueSortCriteria.SortDirection.ASCENDING;
+        updateIcon();
+
 		setMnemonic(KeyEvent.VK_S);
+
+
 	}
-	
+
+    private void updateIcon() {
+
+        if (currentSort == ValueSortCriteria.SortDirection.ASCENDING) {
+            setSmallIconFromResource(IconNames.sortSelectedColumns16Desc);
+            setLargeIconFromResource(IconNames.sortSelectedColumns24Desc);
+        }else {
+            setSmallIconFromResource(IconNames.sortSelectedColumns16Asc);
+            setLargeIconFromResource(IconNames.sortSelectedColumns24Asc);
+        }
+
+    }
+
 	@Override
 	public boolean isEnabledByModel(Object model) {
 		return model instanceof Heatmap
@@ -56,11 +75,26 @@ public class FastSortRowsAction extends BaseAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {		
 		final IMatrixView matrixView = ActionUtils.getMatrixView();
+
+
+        // Deduce default Aggregator from the associated ColorScale
+        IAggregator defaultAggregator;
+        try {
+            Heatmap heatmap = ActionUtils.getHeatmap();
+            defaultAggregator = heatmap.getActiveCellDecorator().getScale().defaultAggregator();
+        } catch (Exception ex) {
+            defaultAggregator = MultAggregator.INSTANCE;
+        }
+        final IAggregator aggregator = defaultAggregator;
 		
 		if (matrixView == null)
 			return;
 
 		final int propIndex = matrixView.getSelectedPropertyIndex();
+
+        final ValueSortCriteria.SortDirection sort = currentSort;
+        currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);
+        updateIcon();
 
 		JobThread.execute(AppFrame.instance(), new JobRunnable() {
 			@Override
@@ -68,8 +102,8 @@ public class FastSortRowsAction extends BaseAction {
 				ValueSortCriteria[] criteriaArray = new ValueSortCriteria[] {
 					new ValueSortCriteria(
 							propIndex,
-							new MultAggregator(),
-							ValueSortCriteria.SortDirection.ASCENDING) };
+							aggregator,
+							sort) };
 
 				monitor.begin("Sorting ...", 1);
 

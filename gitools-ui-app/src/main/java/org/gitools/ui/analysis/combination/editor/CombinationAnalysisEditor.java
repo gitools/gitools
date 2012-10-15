@@ -18,25 +18,28 @@
 package org.gitools.ui.analysis.combination.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.List;
-import java.util.Map;
-import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
-import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.CombinationAnalysisXmlPersistence;
+import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.Map;
 
 public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
 
@@ -76,7 +79,27 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 				pvalueAttr = attrs.get(0).getName();
 		}
 		context.put("pvalueAttr", pvalueAttr);
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResults());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
 	}
+
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        xmlPersistance = new CombinationAnalysisXmlPersistence();
+        fileformat = FileFormats.COMBINATION;
+        super.doSave(monitor);
+    }
 
 	@Override
 	protected void performUrlAction(String name, Map<String, String> params) {

@@ -18,22 +18,25 @@
 package org.gitools.ui.analysis.correlation.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Map;
-import javax.swing.SwingUtilities;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.xml.CorrelationAnalysisXmlPersistence;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+
+import javax.swing.*;
+import java.util.Map;
 
 public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis> {
 
@@ -55,7 +58,27 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
 		if (analysis.getMethod().equals("pearson"))
 			context.put("method", "Pearson's correlation");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis.getResults());
+        context.put("resultsFile",
+                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+
+        fileRef = PersistenceManager.getDefault()
+                .getEntityFileRef(analysis);
+        if (fileRef != null) {
+            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        } else {
+            setSaveAllowed(true);
+        }
 	}
+
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        xmlPersistance = new CorrelationAnalysisXmlPersistence();
+        fileformat = FileFormats.CORRELATIONS;
+        super.doSave(monitor);
+    }
 
 	@Override
 	protected void performUrlAction(String name, Map<String, String> params) {

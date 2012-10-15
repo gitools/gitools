@@ -29,8 +29,8 @@ public class MTCFactory {
 			new HashMap<Class<? extends MTC>, String>();
 
 	static {
-		nameMap.put("bonferroni", Bonferroni.class);
-		nameMap.put("bh", BenjaminiHochbergFdr.class);
+		nameMap.put(Bonferroni.SHORT_NAME, Bonferroni.class);
+		nameMap.put(BenjaminiHochbergFdr.SHORT_NAME, BenjaminiHochbergFdr.class);
 
 		for (Map.Entry<String, Class<? extends MTC>> e : nameMap.entrySet())
 			classMap.put(e.getValue(), e.getKey());

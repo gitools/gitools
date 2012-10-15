@@ -52,8 +52,6 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HeatmapDetailsController implements EntityController {
 
@@ -94,9 +92,17 @@ public class HeatmapDetailsController implements EntityController {
         final Heatmap heatmap = (Heatmap) ctx;
         final IMatrixView matrixView = heatmap.getMatrixView();
         int row = matrixView.getLeadSelectionRow();
+        int[] rows = matrixView.getSelectedRows();
         int rowCount = matrixView.getRowCount();
         int column = matrixView.getLeadSelectionColumn();
+        int columns[] = matrixView.getSelectedColumns();
         int columnCount = matrixView.getColumnCount();
+        
+        if (rows.length == 0 && row >= 0)
+            rows = new int[] {row};
+        
+        if (columns.length == 0 && column >= 0)
+            columns = new int[] {column};
 
         VelocityContext context = new VelocityContext();
         context.put("fmt", new GenericFormatter());
@@ -116,9 +122,6 @@ public class HeatmapDetailsController implements EntityController {
         String igvRowLabel = null;
 
         if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
-
-            igvRowLabel = heatmap.getMatrixView().getRowLabel(row);
-            igvColumnLabel = heatmap.getMatrixView().getColumnLabel(column);
 
             final Object columnId = matrixView.getColumnLabel(column);
             final Object columnLabel = heatmap.getColumnLabel(column);
@@ -175,8 +178,23 @@ public class HeatmapDetailsController implements EntityController {
 
         // Add IGV link
         if (Settings.getDefault().isShowIGVLink()) {
-            if (row >= 0 || column >= 0) {
-                links.put("Locate in genomic viewer (IGV)", "action:igv?" + (row>=0 ? "row=" +  heatmap.getRowLabel(row) + "&" : "") + (column>=0 ? "column=" + heatmap.getColumnLabel(column) : ""));
+            if (rows.length > 0 || columns.length > 0) {
+
+                igvRowLabel = "";
+                igvColumnLabel = "";
+
+                for (int i : rows)
+                    igvRowLabel = igvRowLabel + heatmap.getMatrixView().getRowLabel(i) + " ";
+
+                for (int i : columns)
+                    igvColumnLabel = igvColumnLabel +  heatmap.getMatrixView().getColumnLabel(i) + " ";
+                
+                String id = (rows.length > 1 || columns.length > 1) ? "Ids" : "Id";
+
+                final String rowLink = "action:igv?" + (row>=0 ? "row=" +  igvRowLabel + "&" : "");
+                final String completeLink = rowLink; /* + (column>=0 ? "column=" + igvColumnLabel : "");*/
+                if (row >= 0)
+                    links.put("Locate "+ id + " in genomic viewer (IGV)", completeLink);
             }
         }
 

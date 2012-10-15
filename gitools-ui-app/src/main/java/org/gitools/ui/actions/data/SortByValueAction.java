@@ -21,13 +21,13 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import org.gitools.aggregation.IAggregator;
+import edu.upf.bg.aggregation.IAggregator;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import org.gitools.aggregation.AggregatorFactory;
-import org.gitools.aggregation.MultAggregator;
+import edu.upf.bg.aggregation.AggregatorFactory;
+import edu.upf.bg.aggregation.MultAggregator;
 import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
