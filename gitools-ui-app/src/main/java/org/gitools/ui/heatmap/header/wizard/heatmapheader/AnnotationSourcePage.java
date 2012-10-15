@@ -23,24 +23,27 @@
 
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import javax.swing.DefaultListModel;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
+import javax.swing.*;
+
 public class AnnotationSourcePage extends AbstractWizardPage {
 
 	protected HeatmapDim hdim;
-    public  String infoMessage = "The annotation column must not contain numeric values";
+    public  String infoMessage = "";
+    private int[] selectedIndices;
 
-    public AnnotationSourcePage(HeatmapDim hdim) {
+    public AnnotationSourcePage(HeatmapDim hdim, String infoMessage) {
 		this.hdim = hdim;
 
         initComponents();
-	
 
-		setTitle("Select the a numeric annotation");
+        this.selectedIndices = new int[0];
+        this.infoMessage = infoMessage;
+		setTitle("Select the annotation");
         setMessage(MessageStatus.INFO,infoMessage);
 		setComplete(false);
     }
@@ -52,14 +55,14 @@ public class AnnotationSourcePage extends AbstractWizardPage {
 		super.updateControls();
 
 		AnnotationMatrix am = hdim.getAnnotations();
-		if (am != null && am.getColumnCount() > 0) {
+        int seomvar = annList.getModel().getSize();
+		if (am != null && am.getColumnCount() > 0 && annList.getModel().getSize() != am.getColumnCount()) {
 			DefaultListModel model = new DefaultListModel();
 			for (int i = 0; i < am.getColumnCount(); i++)
 				model.addElement(am.getColumnLabel(i));
 			annList.setModel(model);
-
 		}
-
+        annList.setSelectedIndices(selectedIndices);
 	}
 
 	@Override
@@ -136,8 +139,16 @@ public class AnnotationSourcePage extends AbstractWizardPage {
     }// </editor-fold>//GEN-END:initComponents
 
     private void annListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_annListValueChanged
-        if (annList.getSelectedIndex() > -1)
-            setComplete(true);
+        boolean complete = annList.getSelectedIndices().length > 0;
+        setComplete(complete);
+        
+        if (complete) {
+            int oldvalue = selectedIndices.length > 0 ? selectedIndices[0]: -1;
+            selectedIndices = annList.getSelectedIndices();
+            int newvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
+            if (oldvalue != selectedIndices[0])
+                setMessage(MessageStatus.INFO,this.infoMessage);
+        }
     }//GEN-LAST:event_annListValueChanged
 
 

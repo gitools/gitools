@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
-    public enum DataSourceEnum  {
+    public enum DataSourceEnum {
         aggregatedData,
         annotation
     };
@@ -91,12 +91,14 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 addPage(dataSourceAggregationPage);
 
                 heatmapDim = applyToRows ? heatmap.getColumnDim() : heatmap.getRowDim();
-                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim);
+                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The aggregation is calculated for each " +
+                        "distinct value of the chosen annotation individually");
                 addPage(dataSourceAnnotationPage);
             }
             else if (dataSource == DataSourceEnum.annotation)  {
                 heatmapDim = applyToRows ? heatmap.getRowDim() : heatmap.getColumnDim();
-                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim);
+                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The annotation column must not contain " +
+                        "numeric values");
                 addPage(dataSourceAnnotationPage);
             }
         }
