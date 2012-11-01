@@ -2,6 +2,7 @@ package org.gitools.ui.batch;
 
 import org.gitools.ui.batch.tools.ITool;
 import org.gitools.ui.batch.tools.LoadTool;
+import org.gitools.ui.batch.tools.VersionTool;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -13,10 +14,11 @@ public class CommandExecutor {
     
     static {
         addTool(new LoadTool());
+        addTool(new VersionTool());
     }
 
     private static void addTool(ITool tool) {
-        TOOLS.put(tool.getName(), tool);
+        TOOLS.put(tool.getName().toLowerCase(), tool);
     }
     
     public boolean checkArguments(String[] args, PrintWriter out) {
@@ -57,7 +59,7 @@ public class CommandExecutor {
         String toolArgs[] = new String[args.length - 1];
         System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
         
-        ITool tool = TOOLS.get(toolName);
+        ITool tool = TOOLS.get(toolName.toLowerCase());
         
         if (tool == null) {
             out.println(errorMsg());

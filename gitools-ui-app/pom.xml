@@ -113,6 +113,8 @@
 						<manifestEntries>
 							<Implementation-Title>GiTools</Implementation-Title>
 							<Specification-Title>GiTools</Specification-Title>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifestEntries>
 					</archive>
 				</configuration>
