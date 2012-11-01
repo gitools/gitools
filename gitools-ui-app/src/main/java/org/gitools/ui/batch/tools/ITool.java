@@ -10,6 +10,4 @@ public interface ITool {
     
     boolean check(String[] args, PrintWriter out);
     
-    void execute();
-
 }
