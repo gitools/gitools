@@ -56,7 +56,7 @@ git checkout develop
 # Update pom.xml versions to new SNAPSHOT version
 
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed 0,/1.7.1/s//1.7.2-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.7.1-SNAPSHOT
+find . -name pom.xml | awk '{ system("sed 0,/1.7.1/s//1.7.2-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.7.2-SNAPSHOT
 
 # Update all like this:
 find . -name pom.xml | awk '{ system("sed -i 0,/1.7.1/s//1.7.2-SNAPSHOT/ "$0)}'
