@@ -17,31 +17,24 @@
 
 package org.gitools.ui.platform;
 
-import org.gitools.ui.platform.editor.EditorsPanel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
-
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.welcome.WelcomeEditor;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
-import org.gitools.ui.workspace.NavigatorPanel;
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.view.details.DetailsView;
+import org.gitools.ui.view.properties.PropertiesView;
+import org.gitools.ui.welcome.WelcomeEditor;
+import org.gitools.ui.workspace.NavigatorPanel;
 import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.ui.view.details.DetailsView;
-import org.gitools.ui.view.properties.PropertiesView;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AppFrame extends JFrame {
 
@@ -57,7 +50,7 @@ public class AppFrame extends JFrame {
 	static {
 		/*appName = AppFrame.class.getPackage().getImplementationTitle();
 		if (appName == null)*/
-			appName = "GiTools";
+			appName = "Gitools";
 		
 		appVersion = AppFrame.class.getPackage().getImplementationVersion();
 		if (appVersion == null)

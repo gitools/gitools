@@ -111,8 +111,8 @@
 							<mainClass>${mainClass}</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Implementation-Title>GiTools</Implementation-Title>
-							<Specification-Title>GiTools</Specification-Title>
+							<Implementation-Title>Gitools</Implementation-Title>
+							<Specification-Title>Gitools</Specification-Title>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifestEntries>

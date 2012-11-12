@@ -10,7 +10,7 @@
 
 	<artifactId>gitools-biomart</artifactId>
 	<name>gitools-biomart</name>
-	<description>GiTools BioMart Bridge</description>
+	<description>Gitools BioMart Bridge</description>
 
 	<dependencies>
 		<dependency>

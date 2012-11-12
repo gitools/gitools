@@ -18,32 +18,27 @@
 package org.gitools.ui.actions.file;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.Settings;
-
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class ExportHeatmapImageAction extends BaseAction {
 
@@ -132,42 +127,5 @@ public class ExportHeatmapImageAction extends BaseAction {
 		AppFrame.instance().setStatusText("Image created.");
 	}
 
-	/*Document doc = new Document(PageSize.A4, 10, 10, 10, 10);
-			PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(file));
-			doc.open();
-			doc.addCreator("GiTools");
 
-			PdfContentByte cb = writer.getDirectContent();
-
-			Dimension size = drawer.getSize();
-
-            // Create the graphics as shapes
-            cb.saveState();
-            Graphics2D g2 = cb.createGraphicsShapes(size.width, size.height);
-
-			Shape oldClip = g2.getClip();
-            g2.clipRect(0, 0, size.width, size.height);
-            drawer.draw(g2, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
-            g2.setClip(oldClip);
-
-            g2.dispose();
-            cb.restoreState();
-
-            doc.newPage();
-
-            // Create the graphics with pdf fonts
-            cb.saveState();
-            g2 = cb.createGraphics(500, 500);
-
-            // Print the table to the graphics
-            oldClip = g2.getClip();
-            g2.clipRect(0, 0, 500, 500);
-            ////table.print(g2);
-            g2.setClip(oldClip);
-
-            g2.dispose();
-            cb.restoreState();
-
-			doc.close();
-*/
 }
