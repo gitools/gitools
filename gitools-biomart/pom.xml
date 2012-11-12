@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.gitools</groupId>
 		<artifactId>gitools</artifactId>
-		<version>1.7.0</version>
+		<version>1.7.1</version>
 	</parent>
 
 	<artifactId>gitools-biomart</artifactId>
 	<name>gitools-biomart</name>
-	<description>GiTools BioMart Bridge</description>
+	<description>Gitools BioMart Bridge</description>
 
 	<dependencies>
 		<dependency>

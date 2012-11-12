@@ -1,168 +1,293 @@
-/*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
 package edu.upf.bg.csv;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
-@Deprecated
-public class CSVReader {
+/**
+ * A very simple CSV reader released under a commercial-friendly license.
+ *
+ * @author Glen Smith
+ *
+ */
+public class CSVReader implements Closeable {
 
-	private static final CSVProcessor defaultProcessor = new CSVProcessorAdapter();
+    private BufferedReader br;
 
-	private CharSequence seq;
-	
-	private Pattern pat;
-	private Pattern patLineSep;
-	private Pattern patRemoveQuotes;
-	private Pattern patInternalQuotes;
-	
-	private int row;
-	private Matcher matcher;
-	
-	public CSVReader(FileInputStream in, char sep, char quote) throws IOException {
-		createCharSequence(in);
-		createPattern(sep, quote);
-		reset();
-	}
-	
-	public CSVReader(File file, char sep, char quote) throws IOException {
-		this(new FileInputStream(file), sep, quote);
-	}
-	
-	private void createCharSequence(FileInputStream in) throws IOException {
-		// Open a file channel
-		FileChannel channel = in.getChannel();
-    
-		// Create a read-only CharBuffer on the file
-		ByteBuffer bbuf = channel.map(FileChannel.MapMode.READ_ONLY, 0, (int)channel.size());
-		seq = Charset.defaultCharset().newDecoder().decode(bbuf); //.forName("8859_1")
-	}
+    private boolean hasNext = true;
 
-	private void createPattern(char sep, char quote) {
-		
-		String regex = sep == ' ' ?
-				"(q(?:[^q]|qq)*q|[^qs\\r\\n]*)(s+|s*\\r\\n?|s*\\n)?" :
-				"( *q(?:[^q]|qq)*q *|[^qs\\r\\n]*)(s|\\r\\n?|\\n)?";
-		
-		String regexQuote = String.valueOf(quote);
-		String regexSep = String.valueOf(sep);
-		
-		regex = regex.replaceAll("q", regexQuote);
-		regex = regex.replaceAll("s", regexSep);
-		
-		pat = Pattern.compile(regex);
-		
-		regex = "\\r\\n?|\\n";
-		patLineSep = Pattern.compile(regex);
-		
-		regex = "^q((?:[^q]|qq)*)q$";
-		regex = regex.replaceAll("q", regexQuote);
-		patRemoveQuotes = Pattern.compile(regex);
-		
-		regex = "(q)q";
-		regex = regex.replaceAll("q", regexQuote);
-		patInternalQuotes = Pattern.compile(regex);
-	}
+    private CSVParser parser;
 
-	public void scan(CSVProcessor proc) throws CSVException {
+    private int skipLines;
 
-		if (proc == null)
-			proc = defaultProcessor;
-		
-		if (row == 0)
-			proc.start();
-		
-		while(internalScanLine(proc));
-		
-		proc.end();
-	}
+    private char commentchar;
 
-	public boolean scanLine(CSVProcessor proc) throws CSVException {
-		if (proc == null)
-			proc = defaultProcessor;
-		
-		if (row == 0)
-			proc.start();
-		
-		boolean endOfFile = !internalScanLine(proc);
-		
-		if (endOfFile)
-			proc.end();
-		
-		return !endOfFile;
-	}
-	
-	private boolean internalScanLine(CSVProcessor proc) throws CSVException {
-		
-		int col = 0;
-		
-		boolean endOfFile = false;
-		boolean lastField = false;
-		
-		proc.lineStart(row);
-		
-		while (!lastField && matcher.find()) {
-			
-			String field = matcher.group(1);
-			String sep = matcher.group(2);
-		
-			//System.out.print("'"+matcher.group(1)+"' - ");
-			//System.out.println("'"+matcher.group(2)+"'");
-			
-			if (sep == null) {
-				/*if (field.length() > 0)
-					throw new CSVException(row, col, 
-							CSVException.msgSeparatorExpected);
-				else*/ if (matcher.end() < seq.length())
-					throw new CSVException(row, col, 
-							CSVException.msgEndOfFileExpected);
-				else {
-					endOfFile = true;
-					if (field.length() == 0 && col == 0)
-						return !endOfFile;
-					else
-						lastField = true;
-				}
-			} else
-				lastField = patLineSep.matcher(sep).matches();
-			
-			Matcher mq = patRemoveQuotes.matcher(field.trim());
-			field = mq.replaceAll("$1");
-			mq = patInternalQuotes.matcher(field);
-			field = mq.replaceAll("$1");
-			proc.field(field, row, col++);
-		}
-		
-		proc.lineEnd(row++);
-		
-		return !endOfFile;
-	}
-	
-	public void reset() {
-		row = 0;
-		matcher = pat.matcher(seq);
-	}
+    private boolean linesSkiped;
 
+    private int lineNumber;
+
+    /**
+     * The default line to start reading.
+     */
+    public static final int DEFAULT_SKIP_LINES = 0;
+
+    /*
+    * The default comment character. All lines that start with this
+    * character will be skipped.
+    *
+    */
+    public static final char DEFAULT_COMMENT_CHARACTER = '#';
+
+    /**
+     * Constructs CSVReader using a comma for the separator.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     */
+    public CSVReader(Reader reader) {
+        this(reader, CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVReader(Reader reader, char separator) {
+        this(reader, separator, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     */
+    public CSVReader(Reader reader, char separator, char quotechar) {
+        this(reader, separator, quotechar, CSVParser.DEFAULT_ESCAPE_CHARACTER, DEFAULT_SKIP_LINES, CSVParser.DEFAULT_STRICT_QUOTES);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator, quote char and quote handling
+     * behavior.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param strictQuotes
+     *            sets if characters outside the quotes are ignored
+     */
+    public CSVReader(Reader reader, char separator, char quotechar, boolean strictQuotes) {
+        this(reader, separator, quotechar, CSVParser.DEFAULT_ESCAPE_CHARACTER, DEFAULT_SKIP_LINES, strictQuotes);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param escape
+     *            the character to use for escaping a separator or quote
+     */
+
+    public CSVReader(Reader reader, char separator,
+                     char quotechar, char escape) {
+        this(reader, separator, quotechar, escape, DEFAULT_SKIP_LINES, CSVParser.DEFAULT_STRICT_QUOTES);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param line
+     *            the line number to skip for start reading
+     */
+    public CSVReader(Reader reader, char separator, char quotechar, int line) {
+        this(reader, separator, quotechar, CSVParser.DEFAULT_ESCAPE_CHARACTER, line, CSVParser.DEFAULT_STRICT_QUOTES);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param escape
+     *            the character to use for escaping a separator or quote
+     * @param line
+     *            the line number to skip for start reading
+     */
+    public CSVReader(Reader reader, char separator, char quotechar, char escape, int line) {
+        this(reader, separator, quotechar, escape, line, CSVParser.DEFAULT_STRICT_QUOTES);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param escape
+     *            the character to use for escaping a separator or quote
+     * @param line
+     *            the line number to skip for start reading
+     * @param strictQuotes
+     *            sets if characters outside the quotes are ignored
+     */
+    public CSVReader(Reader reader, char separator, char quotechar, char escape, int line, boolean strictQuotes) {
+        this(reader, separator, quotechar, escape, DEFAULT_COMMENT_CHARACTER, line, strictQuotes, CSVParser.DEFAULT_IGNORE_LEADING_WHITESPACE);
+    }
+
+    /**
+     * Constructs CSVReader with supplied separator and quote char.
+     *
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param escape
+     *            the character to use for escaping a separator or quote
+     * @param commentchar
+     *            the comment char, all lines that start with this char will be skipped.
+     * @param line
+     *            the line number to skip for start reading
+     * @param strictQuotes
+     *            sets if characters outside the quotes are ignored
+     * @param ignoreLeadingWhiteSpace
+     *            it true, parser should ignore white space before a quote in a field
+     */
+    public CSVReader(Reader reader, char separator, char quotechar, char escape, char commentchar, int line, boolean strictQuotes, boolean ignoreLeadingWhiteSpace) {
+        this.br = new BufferedReader(reader);
+        this.parser = new CSVParser(separator, quotechar, escape, strictQuotes, ignoreLeadingWhiteSpace);
+        this.skipLines = line;
+        this.commentchar = commentchar;
+        this.lineNumber = 0;
+    }
+
+    /**
+     * Reads the entire file into a List with each element being a String[] of
+     * tokens.
+     *
+     * @return a List of String[], with each String[] representing a line of the
+     *         file.
+     *
+     * @throws IOException
+     *             if bad things happen during the read
+     */
+    public List<String[]> readAll() throws IOException {
+
+        List<String[]> allElements = new ArrayList<String[]>();
+        while (hasNext) {
+            String[] nextLineAsTokens = readNext();
+            if (nextLineAsTokens != null)
+                allElements.add(nextLineAsTokens);
+        }
+        return allElements;
+
+    }
+
+    /**
+     * Reads the next line from the buffer and converts to a string array.
+     *
+     * @return a string array with each comma-separated element as a separate
+     *         entry.
+     *
+     * @throws IOException
+     *             if bad things happen during the read
+     */
+    public String[] readNext() throws IOException {
+
+        String[] result = null;
+        do {
+            String nextLine = getNextLine();
+            if (!hasNext) {
+                return result; // should throw if still pending?
+            }
+            String[] r = parser.parseLineMulti(nextLine);
+            if (r.length > 0) {
+                if (result == null) {
+                    result = r;
+                } else {
+                    String[] t = new String[result.length+r.length];
+                    System.arraycopy(result, 0, t, 0, result.length);
+                    System.arraycopy(r, 0, t, result.length, r.length);
+                    result = t;
+                }
+            }
+        } while (parser.isPending());
+        return result;
+    }
+
+    /**
+     * Reads the next line from the file.
+     *
+     * @return the next line from the file without trailing newline
+     * @throws IOException
+     *             if bad things happen during the read
+     */
+    private String getNextLine() throws IOException {
+        if (!this.linesSkiped) {
+            for (int i = 0; i < skipLines; i++) {
+                br.readLine();
+                lineNumber++;
+            }
+            this.linesSkiped = true;
+        }
+        String nextLine = br.readLine();
+        lineNumber++;
+
+        // Skip comments
+        while (nextLine != null && nextLine.charAt(0) == commentchar) {
+            nextLine = br.readLine();
+            lineNumber++;
+        }
+
+        if (nextLine == null) {
+            hasNext = false;
+        }
+        return hasNext ? nextLine : null;
+    }
+
+    /**
+     * Closes the underlying reader.
+     *
+     * @throws IOException if the close fails
+     */
+    public void close() throws IOException{
+        br.close();
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
 }

@@ -17,27 +17,15 @@
 
 package org.gitools.persistence.text;
 
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import org.apache.commons.csv.CSVParser;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
+
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 /** Read/Write modules from a two columns tabulated file,
  * first column for item and second for module. */
@@ -74,7 +62,7 @@ public class ModuleMapText2CPersistence
 
 			Reader reader = PersistenceUtils.openReader(file);
 
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 
 			readModuleMappings(parser, isItemNamesFilterEnabled(),
 					itemNameToRowMapping, moduleItemsMap);
@@ -153,7 +141,7 @@ public class ModuleMapText2CPersistence
 	}
 
 	protected void readModuleMappings(
-			CSVParser parser,
+			CSVReader parser,
 			boolean filterRows,
 			Map<String, Integer> itemNameToRowMapping,
 			Map<String, Set<Integer>> moduleItemsMap)
@@ -162,7 +150,7 @@ public class ModuleMapText2CPersistence
 		try {
 			String[] fields;
 
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 				if (fields.length < 2)
 					throw new PersistenceException(
 							"At least 2 columns expected at "

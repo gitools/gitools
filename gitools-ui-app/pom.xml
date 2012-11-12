@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.gitools</groupId>
 		<artifactId>gitools</artifactId>
-		<version>1.7.0</version>
+		<version>1.7.1</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -67,7 +67,7 @@
 			<groupId>weka</groupId>
 			<artifactId>weka</artifactId>
 		</dependency>
-        
+
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
@@ -80,7 +80,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.1</version>
         </dependency>
-            
+
 
 		<!-- <dependency>
 			<groupId>com.lowagie</groupId>
@@ -111,8 +111,8 @@
 							<mainClass>${mainClass}</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Implementation-Title>GiTools</Implementation-Title>
-							<Specification-Title>GiTools</Specification-Title>
+							<Implementation-Title>Gitools</Implementation-Title>
+							<Specification-Title>Gitools</Specification-Title>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifestEntries>

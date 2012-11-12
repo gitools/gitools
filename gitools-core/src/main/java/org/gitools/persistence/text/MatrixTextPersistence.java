@@ -17,24 +17,19 @@
 
 package org.gitools.persistence.text;
 
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.zip.DataFormatException;
-import org.apache.commons.csv.CSVParser;
-import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.*;
+import java.util.zip.DataFormatException;
 
 public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		extends BaseMatrixPersistence<T> {
@@ -83,12 +78,12 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			throw new PersistenceException("Error opening file: " + file.getName(), e);
 		}
 
-		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+		CSVReader parser = new CSVReader(reader);
 
 		// Read header
 
 		try {
-			final String[] header = parser.getLine();
+			final String[] header = parser.readNext();
 			if (header.length < 2)
 				throw new DataFormatException("At least 2 columns expected.");
 
@@ -111,7 +106,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			String[] fields;
 
 			final List<String> names = new ArrayList<String>();
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 				if (popLabelsSet == null || popLabelsSet.contains(fields[0]))
 					names.add(fields[0]);
 			}
@@ -183,16 +178,16 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		}
 
 		try {
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 
-			parser.getLine(); // discard header
+			parser.readNext(); // discard header
 
 			matrix.makeCells(numRows, numColumns);
 
 			String[] fields;
 			int row = 0;
 
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 				if (popLabelsSet != null && !popLabelsSet.contains(fields[0]))
 					continue;
 

@@ -1,6 +1,6 @@
 == Overlap analysis ==
 
-An overlap analysis extracts and measures common elements between two vectors. For all vectors in the input matrix, GiTools counts positive events based on a user-defined significance cutoff and then calculates the Jaccard Index for all possible pairs of columns or rows. Through overlap analysis, each pair of input columns or rows is collapsed to one single value represented in a heat map that has column or row labels in both dimensions. Original row labels are not visible any more.
+An overlap analysis extracts and measures common elements between two vectors. For all vectors in the input matrix, Gitools counts positive events based on a user-defined significance cutoff and then calculates the Jaccard Index for all possible pairs of columns or rows. Through overlap analysis, each pair of input columns or rows is collapsed to one single value represented in a heat map that has column or row labels in both dimensions. Original row labels are not visible any more.
 
 In the following example, we analyze overlaps between significantly down-regulated KEGG modules in 20 tumor types.
 

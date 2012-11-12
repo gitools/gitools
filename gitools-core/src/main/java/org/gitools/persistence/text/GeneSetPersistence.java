@@ -17,21 +17,17 @@
 
 package org.gitools.persistence.text;
 
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
+import org.gitools.persistence.AbstractEntityPersistence;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceUtils;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.csv.CSVParser;
-import org.gitools.persistence.AbstractEntityPersistence;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
 
 public class GeneSetPersistence
 		extends AbstractEntityPersistence<List<String>> {
@@ -50,14 +46,14 @@ public class GeneSetPersistence
 			throw new PersistenceException("Error opening file: " + file.getName(), e);
 		}
 
-		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+		CSVReader parser = new CSVReader(reader);
 
 		try {
 			String[] fields;
 
 			// read file
 
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 
 				if (fields.length > 1)
 					throw new PersistenceException("Only one column is allowed at line " + parser.getLineNumber());

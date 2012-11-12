@@ -337,7 +337,7 @@ public class HeatmapDetailsController implements EntityController {
                 showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
             } catch (IOException e) {
                 monitor.end();
-                showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check GiTools help.");
+                showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
             } finally {
                 monitor.end();
                 if (socket != null) {

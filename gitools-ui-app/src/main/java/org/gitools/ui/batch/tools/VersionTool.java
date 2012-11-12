@@ -17,7 +17,7 @@ public class VersionTool implements ITool {
 
     @Override
     public boolean run(String[] args, PrintWriter out) {
-        out.println("GiTools " + Main.class.getPackage().getImplementationVersion());
+        out.println("Gitools " + Main.class.getPackage().getImplementationVersion());
         return true;
     }
 
