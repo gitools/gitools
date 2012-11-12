@@ -3,7 +3,6 @@ package edu.upf.bg.colorscale.impl;
 
 import edu.upf.bg.aggregation.IAggregator;
 import edu.upf.bg.aggregation.MeanAggregator;
-import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.ColorScalePoint;
 import edu.upf.bg.colorscale.ColorScaleRange;
@@ -46,6 +45,9 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
             return max.getColor();
         }
 
+        if (value == mid.getValue()) {
+            return mid.getColor();
+        }
 
         if (value < mid.getValue()) {
             double f = (value - min.getValue()) / (mid.getValue() - min.getValue());
