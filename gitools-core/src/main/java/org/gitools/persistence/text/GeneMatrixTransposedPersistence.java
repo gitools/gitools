@@ -17,6 +17,7 @@
 
 package org.gitools.persistence.text;
 
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.io.IOException;
@@ -28,12 +29,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.csv.CSVParser;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
 
 public class GeneMatrixTransposedPersistence
 		extends BaseMatrixPersistence<DoubleBinaryMatrix> {
@@ -52,7 +51,7 @@ public class GeneMatrixTransposedPersistence
 			throw new PersistenceException("Error opening file: " + file.getName(), e);
 		}
 
-		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+		CSVReader parser = new CSVReader(reader);
 
 		try {
 			// read file
@@ -64,7 +63,7 @@ public class GeneMatrixTransposedPersistence
 
 			Map<String, Integer> rowIndices = new HashMap<String, Integer>();
 
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 
 				if (fields.length < 2)
 					throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());

@@ -18,6 +18,7 @@
 package org.gitools.persistence.text;
 
 import cern.colt.matrix.ObjectFactory1D;
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.io.IOException;
@@ -30,12 +31,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.csv.CSVParser;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
 
 
 public class GeneMatrixPersistence
@@ -55,13 +54,13 @@ public class GeneMatrixPersistence
 			throw new PersistenceException("Error opening file: " + file.getName(), e);
 		}
 
-		CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+		CSVReader parser = new CSVReader(reader);
 
 		try {
 			// read column names
 
-			String[] columnNames = parser.getLine();
-			parser.getLine(); // Discard descriptions
+			String[] columnNames = parser.readNext();
+			parser.readNext(); // Discard descriptions
 
 			String[] fields;
 
@@ -73,7 +72,7 @@ public class GeneMatrixPersistence
 			for (int i = 0; i < columnNames.length; i++)
 				indices.add(new HashSet<Integer>());
 
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 
 				if (fields.length > columnNames.length)
 					throw new PersistenceException("Row with more columns than expected at line " + parser.getLineNumber());

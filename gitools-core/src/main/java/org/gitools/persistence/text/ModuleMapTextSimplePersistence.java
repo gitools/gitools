@@ -31,11 +31,10 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
-import org.apache.commons.csv.CSVParser;
+import edu.upf.bg.csv.CSVReader;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 import org.gitools._DEPRECATED.resources.FileResource;
-import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 
@@ -95,7 +94,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 			
 			Reader reader = openReader();
 			
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 			
 			final Map<String, SortedSet<Integer>> moduleItemsMap = 
 				new HashMap<String, SortedSet<Integer>>();
@@ -223,7 +222,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 	}
 	
 	protected void readModuleMappings(
-			CSVParser parser,
+			CSVReader parser,
 			Map<String, Integer> itemNameToRowMapping, 
 			Map<String, SortedSet<Integer>> moduleItemsMap)
 			throws PersistenceException {
@@ -231,7 +230,7 @@ public class ModuleMapTextSimplePersistence extends FileResource {
 		try {
 			String[] fields;
 			
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 				if (fields.length < 2)
 					throw new DataFormatException(
 							"At least 2 columns expected at " 

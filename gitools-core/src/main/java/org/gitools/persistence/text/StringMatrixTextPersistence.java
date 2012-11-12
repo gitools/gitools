@@ -22,12 +22,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.csv.CSVParser;
+import edu.upf.bg.csv.CSVReader;
 import org.gitools.matrix.model.StringMatrix;
 import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
@@ -48,10 +47,10 @@ public class StringMatrixTextPersistence
 		
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 			
 			// header
-			String[] hdr = parser.getLine();
+			String[] hdr = parser.readNext();
 			int numColumns = hdr.length - 1;
 			ObjectMatrix1D columns = ObjectFactory1D.dense.make(numColumns);
 			for (int i = 0; i < numColumns; i++)
@@ -61,7 +60,7 @@ public class StringMatrixTextPersistence
 			// body
 			List<String> rawData = new ArrayList<String>();
 			String[] fields;
-			while ((fields = parser.getLine()) != null) {
+			while ((fields = parser.readNext()) != null) {
 				if (fields.length > hdr.length)
 					throw new PersistenceException("Number of fields greater than number of header fields at line " + parser.getLineNumber());
 				

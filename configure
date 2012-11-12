@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# commons-csv
-mvn install:install-file -Dfile=lib/commons-csv-20070823.jar -DgroupId=commons-csv -DartifactId=commons-csv -Dversion=20070823 -Dpackaging=jar -DgeneratePom=true
-
 # jsc statistics package jar
 mvn install:install-file -Dfile=lib/jsc-20050805.jar -DgroupId=jsc -DartifactId=jsc -Dversion=20050805 -Dpackaging=jar -DgeneratePom=true
 

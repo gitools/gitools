@@ -24,14 +24,13 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.zip.DataFormatException;
 
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVStrategy;
+import edu.upf.bg.csv.CSVReader;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.utils.CSVStrategies;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,8 +40,6 @@ import java.util.Set;
 
 public class ModuleMapTextIndicesPersistence
 		extends ModuleMapPersistence<ModuleMap> {
-
-	private static final CSVStrategy csvStrategy = CSVStrategies.TSV;
 
 	public ModuleMapTextIndicesPersistence() {
 	}
@@ -63,7 +60,7 @@ public class ModuleMapTextIndicesPersistence
 					+ file.getName(), e);
 		}
 
-		CSVParser parser = new CSVParser(reader, csvStrategy);
+		CSVReader parser = new CSVReader(reader);
 		
 		ModuleMap moduleMap = new ModuleMap();
 
@@ -140,12 +137,12 @@ public class ModuleMapTextIndicesPersistence
 	}
 
 	private void loadItemNames(ModuleMap moduleMap, IProgressMonitor monitor,
-			CSVParser parser) throws FileNotFoundException, IOException,
+			CSVReader parser) throws FileNotFoundException, IOException,
 			DataFormatException {
 
 		monitor.begin("Reading item names ...", 1);
 
-		final String[] itemNames = parser.getLine();
+		final String[] itemNames = parser.readNext();
 
 		moduleMap.setItemNames(itemNames);
 
@@ -156,7 +153,7 @@ public class ModuleMapTextIndicesPersistence
 	}
 
 	private void loadModules(ModuleMap moduleMap, IProgressMonitor monitor,
-			CSVParser parser) throws NumberFormatException, IOException {
+			CSVReader parser) throws NumberFormatException, IOException {
 
 		monitor.begin("Reading modules ...", 1);
 
@@ -190,7 +187,7 @@ public class ModuleMapTextIndicesPersistence
 		int minSize = getMinSize();
 		int maxSize = getMaxSize();
 
-		while ((fields = parser.getLine()) != null) {
+		while ((fields = parser.readNext()) != null) {
 
 			String moduleName = fields[0];
 

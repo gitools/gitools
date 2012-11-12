@@ -24,8 +24,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.zip.DataFormatException;
 
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.lang.ArrayUtils;
+import edu.upf.bg.csv.CSVReader;
 import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.ObjectMatrix;
@@ -36,14 +35,11 @@ import org.gitools.matrix.model.element.BeanElementFactory;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementFactory;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence.AbstractEntityPersistence;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
-import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
-import org.gitools.utils.CSVStrategies;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
@@ -157,9 +153,9 @@ public class ObjectMatrixTextPersistence
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
 
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 
-			String[] line = parser.getLine();
+			String[] line = parser.readNext();
 
 			// read header
 			if (line.length < 3)
@@ -202,9 +198,9 @@ public class ObjectMatrixTextPersistence
             try {
                 Reader reader = PersistenceUtils.openReader(file);
 
-                CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+                CSVReader parser = new CSVReader(reader);
 
-                String[] line = parser.getLine();
+                String[] line = parser.readNext();
 
                 // read header
                 if (line.length < 3)
@@ -244,13 +240,13 @@ public class ObjectMatrixTextPersistence
 		try {
 			Reader reader = PersistenceUtils.openReader(file);
 			
-			CSVParser parser = new CSVParser(reader, CSVStrategies.TSV);
+			CSVReader parser = new CSVReader(reader);
 
             String[] populationLabels = getPopulationLabels();
             final Set<String> popLabelsSet = populationLabels != null ?
                     new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
-			String[] line = parser.getLine();
+			String[] line = parser.readNext();
 			if (line.length < 3)
 				throw new DataFormatException("At least 3 columns expected.");
 
@@ -328,7 +324,7 @@ public class ObjectMatrixTextPersistence
 			Map<String, Integer> rowMap = new HashMap<String, Integer>();
 			List<Object[]> list = new ArrayList<Object[]>();
 			
-			while ((line = parser.getLine()) != null) {
+			while ((line = parser.readNext()) != null) {
 				final String columnName = line[0];
 				final String rowName = line[1];
 
@@ -516,8 +512,8 @@ public class ObjectMatrixTextPersistence
 	public void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor monitor) {
 
 		RawCsvWriter out = new RawCsvWriter(writer,
-				CSVStrategies.TSV.getDelimiter(),
-				CSVStrategies.TSV.getEncapsulator());
+				'\t',
+				'"');
 		
 		IElementAdapter cellAdapter = resultsMatrix.getCellAdapter();
 
