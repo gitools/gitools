@@ -110,7 +110,6 @@ public class Settings {
     // IGV parameters
     private boolean showIGVLink = true;
     private String igvUrl = DEFAULT_IGV_URL;
-    private int igvTimeout = 3000;
 
     // Preview features
     private boolean previewFeatures = false;
@@ -297,14 +296,6 @@ public class Settings {
 
     public void setIgvUrl(String igvUrl) {
         this.igvUrl = igvUrl;
-    }
-
-    public int getIgvTimeout() {
-        return igvTimeout;
-    }
-
-    public void setIgvTimeout(int igvTimeout) {
-        this.igvTimeout = igvTimeout;
     }
 
     public boolean isShowIGVLink() {

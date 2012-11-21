@@ -22,6 +22,7 @@ import edu.upf.bg.colorscale.impl.ZScoreColorScale;
 import edu.upf.bg.formatter.GenericFormatter;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.textpatt.TextPattern;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
@@ -306,24 +307,24 @@ public class HeatmapDetailsController implements EntityController {
                 String igvUrl[] = Settings.getDefault().getIgvUrl().replace("http://", "").split(":");
                 socket = new Socket(igvUrl[0], Integer.valueOf(igvUrl[1]));
                 System.out.println();
-                socket.setSoTimeout(Settings.getDefault().getIgvTimeout());
+                socket.setSoTimeout(30000);
 
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                InputStream in = socket.getInputStream();
 
-                String cmd, response;
+                String cmd;
                 if (params.containsKey("column")) {
                     monitor.info("Locating " + params.get("column"));
                     cmd = "goto " + params.get("column");
                     out.println(cmd);
-                    response = in.readLine();
+                    waitServerResponse(in, monitor);
                 }
 
                 if (params.containsKey("row")) {
                     monitor.info("Locating " + params.get("row"));
                     cmd = "goto " + params.get("row");
                     out.println(cmd);
-                    response = in.readLine();
+                    waitServerResponse(in, monitor);
                 }
 
 
@@ -338,6 +339,7 @@ public class HeatmapDetailsController implements EntityController {
             } catch (IOException e) {
                 monitor.end();
                 showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
+            } catch (UnsupportedOperationException e) {
             } finally {
                 monitor.end();
                 if (socket != null) {
@@ -350,6 +352,17 @@ public class HeatmapDetailsController implements EntityController {
             }
 
 
+        }
+
+        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException {
+            while (in.available() == 0) {
+                try{Thread.sleep(1000);}catch(Exception ee){}
+                if (monitor.isCancelled()) {
+                    throw new UnsupportedOperationException("User cancel");
+                }
+            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            reader.readLine();
         }
 
         private void showMessage(String msg) {
