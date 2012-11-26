@@ -1,6 +1,14 @@
 #!/bin/bash
 
-BINDIR=$(dirname "$0")
+SOURCE="${BASH_SOURCE[0]}"
+BINDIR="$( dirname "$SOURCE" )"
+while [ -h "$SOURCE" ]
+do
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$BINDIR/$SOURCE"
+  BINDIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+done
+BINDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 source $BINDIR/common.sh
 
