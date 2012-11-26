@@ -17,36 +17,26 @@
 
 package org.gitools.ui.panels.decorator;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.impl.PValueElementDecorator;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.component.ColorChooserLabel;
+import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.ui.platform.component.ColorChooserLabel;
-import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.platform.AppFrame;
-
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 
 public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 
@@ -220,7 +210,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel {
 		IndexedProperty propAdapter = 
 			(IndexedProperty) valueCb.getSelectedItem();
 		
-		decorator.setValueIndex(propAdapter.getIndex());
+		//decorator.setValueIndex(propAdapter.getIndex());
 		
 		model.switchActiveCellDecorator(propAdapter.getIndex());
 		changeDecorator();
