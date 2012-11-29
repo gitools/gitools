@@ -64,9 +64,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>weka</groupId>
-			<artifactId>weka</artifactId>
-		</dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+        </dependency>
         
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>

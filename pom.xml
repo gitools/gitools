@@ -63,10 +63,19 @@
     </properties>
 
     <repositories>
+
+        <repository>
+            <id>project</id>
+            <name>Project Maven Repository</name>
+            <layout>default</layout>
+            <url>file://${project.basedir}/../lib</url>
+        </repository>
+
         <repository>
             <id>java.net</id>
             <url>http://download.java.net/maven/2</url>
         </repository>
+
     </repositories>
 
     <distributionManagement>
@@ -189,9 +198,9 @@
             </dependency>
 
             <dependency>
-                <groupId>weka</groupId>
-                <artifactId>weka</artifactId>
-                <version>3.6.4</version>
+                <groupId>nz.ac.waikato.cms.weka</groupId>
+                <artifactId>weka-stable</artifactId>
+                <version>3.6.8</version>
             </dependency>
 
             <dependency>
