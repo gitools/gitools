@@ -18,7 +18,18 @@
 package org.gitools.ui.welcome;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.Desktop;
+import org.gitools.ui.actions.file.*;
+import org.gitools.ui.dialog.UnimplementedDialog;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.editor.Html4Editor;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.settings.Settings;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,29 +40,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.gitools.ui.actions.file.ImportBiomartModulesAction;
-import org.gitools.ui.actions.file.ImportBiomartTableAction;
-import org.gitools.ui.actions.file.ImportGoModulesAction;
-import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
-import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
-import org.gitools.ui.actions.file.ImportKeggModulesAction;
-import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
-import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
-import org.gitools.ui.actions.file.NewOverlappingAnalysisAction;
-import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
-import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
-
-import org.gitools.ui.actions.file.OpenAnalysisAction;
-import org.gitools.ui.actions.file.OpenHeatmapAction;
-import org.gitools.ui.dialog.UnimplementedDialog;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.editor.Html4Editor;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.settings.Settings;
-import org.slf4j.LoggerFactory;
 
 
 public class WelcomeEditor extends Html4Editor {
@@ -121,6 +109,10 @@ public class WelcomeEditor extends Html4Editor {
 				}
 			}
 		}
+        else if (name.equals("importExcel")) {
+            new ImportExcelMatrixAction()
+                    .actionPerformed(new ActionEvent(this, 0, name));
+        }
 		else if (name.equals("analysis")) {
 			final Map<String, Class<? extends BaseAction>> actions =
 					new HashMap<String, Class<? extends BaseAction>>();

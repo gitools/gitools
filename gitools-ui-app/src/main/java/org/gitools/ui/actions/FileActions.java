@@ -17,36 +17,8 @@
 
 package org.gitools.ui.actions;
 
+import org.gitools.ui.actions.file.*;
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.actions.file.CloseAction;
-import org.gitools.ui.actions.file.ExitAction;
-import org.gitools.ui.actions.file.ExportAction;
-import org.gitools.ui.actions.file.ExportHeatmapHtmlAction;
-import org.gitools.ui.actions.file.ExportHeatmapImageAction;
-import org.gitools.ui.actions.file.ExportHeatmapLabelsAction;
-import org.gitools.ui.actions.file.ExportTableAction;
-import org.gitools.ui.actions.file.ExportMatrixAction;
-import org.gitools.ui.actions.file.ExportPdfReportAction;
-import org.gitools.ui.actions.file.ExportScaleImageAction;
-import org.gitools.ui.actions.file.ImportBiomartMatrixAction;
-import org.gitools.ui.actions.file.ImportBiomartTableAction;
-import org.gitools.ui.actions.file.ImportBiomartModulesAction;
-import org.gitools.ui.actions.file.ImportGoModulesAction;
-import org.gitools.ui.actions.file.ImportIntogenHeatmapAction;
-import org.gitools.ui.actions.file.ImportIntogenOncomodulesAction;
-import org.gitools.ui.actions.file.ImportIntogenMatrixAction;
-import org.gitools.ui.actions.file.ImportKeggModulesAction;
-import org.gitools.ui.actions.file.NewCombinationAnalysisAction;
-import org.gitools.ui.actions.file.NewCorrelationAnalysisAction;
-import org.gitools.ui.actions.file.NewEnrichmentAnalysisAction;
-import org.gitools.ui.actions.file.NewOncodriveAnalysisAction;
-import org.gitools.ui.actions.file.NewOverlappingAnalysisAction;
-import org.gitools.ui.actions.file.NewProjectAction;
-import org.gitools.ui.actions.file.OpenAnalysisAction;
-import org.gitools.ui.actions.file.OpenHeatmapAction;
-import org.gitools.ui.actions.file.OpenProjectAction;
-import org.gitools.ui.actions.file.SaveAction;
-import org.gitools.ui.actions.file.SaveAsAction;
 
 public class FileActions {
 
@@ -82,6 +54,7 @@ public class FileActions {
 	// Import
 	
 	public static final BaseAction importIntogenTableAction = new ImportIntogenMatrixAction();
+    public static final BaseAction importExcelMatrixAction = new ImportExcelMatrixAction();
 	public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
 	public static final BaseAction importIntogenHeatmapAction = new ImportIntogenHeatmapAction();
 	

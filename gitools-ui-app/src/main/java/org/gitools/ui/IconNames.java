@@ -100,6 +100,10 @@ public class IconNames {
 	public static final String intogen16 = "/img/Intogen16.png";
 	public static final String intogen24 = "/img/Intogen24.png";
 
+    public static final String excel16 = "/img/excel16.png";
+    public static final String excel24 = "/img/excel24.png";
+    public static final String excel48 = "/img/excel48.png";
+
 	public static final String zoomIn16 = "/img/Zoom-In16.png";
 	public static final String zoomOut16 = "/img/Zoom-Out16.png";
 

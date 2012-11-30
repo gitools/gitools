@@ -80,12 +80,27 @@
             <artifactId>commons-io</artifactId>
             <version>2.1</version>
         </dependency>
-            
 
-		<!-- <dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-		</dependency> -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jgoodies</groupId>
+            <artifactId>forms</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+        <!-- <dependency>
+              <groupId>com.lowagie</groupId>
+              <artifactId>itext</artifactId>
+          </dependency> -->
 		<!--<dependency>
 			<artifactId>gitools-kegg</artifactId>
 			<groupId>org.gitools</groupId>
