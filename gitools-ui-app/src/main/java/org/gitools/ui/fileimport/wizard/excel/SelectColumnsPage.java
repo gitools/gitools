@@ -1,11 +1,12 @@
 package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
     private JComboBox rowsCellsCombo;
     private JComboBox columnsCellsCombo;
     private JList valueCellsList;
+    private JCheckBox hideNonNumericHeadersCheckBox;
 
 
     private ExcelReader reader;
@@ -36,8 +38,8 @@ public class SelectColumnsPage extends AbstractWizardPage {
         try {
             reader.init();
 
-            List<ExcelHeader> stringHeaders = new ArrayList<ExcelHeader>();
-            List<ExcelHeader> numericHeaders = new ArrayList<ExcelHeader>();
+            final List<ExcelHeader> allHeaders = new ArrayList<ExcelHeader>();
+            final List<ExcelHeader> numericHeaders = new ArrayList<ExcelHeader>();
 
             for (ExcelHeader header : reader.getHeaders()) {
 
@@ -48,28 +50,25 @@ public class SelectColumnsPage extends AbstractWizardPage {
                     case Cell.CELL_TYPE_NUMERIC:
                         numericHeaders.add(header);
                         break;
-                    default:
-                        stringHeaders.add(header);
                 }
 
+                allHeaders.add(header);
             }
 
-            if (stringHeaders.size() < 2 || numericHeaders.size() < 1) {
+            if (allHeaders.size() < 2 || numericHeaders.size() < 1) {
                 throw new RuntimeException("At least we need three columns (two string and one numeric column) to create a matrix");
             }
 
-            rowsCells = new DefaultComboBoxModel(stringHeaders.toArray());
-            rowsCells.setSelectedItem(stringHeaders.get(0));
+            rowsCells = new DefaultComboBoxModel(allHeaders.toArray());
+            rowsCells.setSelectedItem(allHeaders.get(0));
             rowsCellsCombo.setModel(rowsCells);
 
-            colsCells = new DefaultComboBoxModel(stringHeaders.toArray());
-            colsCells.setSelectedItem(stringHeaders.get(1));
+            colsCells = new DefaultComboBoxModel(allHeaders.toArray());
+            colsCells.setSelectedItem(allHeaders.get(1));
             columnsCellsCombo.setModel(colsCells);
 
-            values = new CheckListItem[numericHeaders.size()];
-            for (int i = 0; i < numericHeaders.size(); i++) {
-                values[i] = new CheckListItem(numericHeaders.get(i));
-            }
+            createCheckListItems(numericHeaders);
+
             valueCellsList.setListData(values);
             valueCellsList.setCellRenderer(new CheckListRenderer());
             valueCellsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -88,10 +87,31 @@ public class SelectColumnsPage extends AbstractWizardPage {
                 }
             });
 
+            hideNonNumericHeadersCheckBox.setEnabled(true);
+            hideNonNumericHeadersCheckBox.setSelected(true);
+            hideNonNumericHeadersCheckBox.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (hideNonNumericHeadersCheckBox.isSelected()) {
+                        createCheckListItems(numericHeaders);
+                    } else {
+                        createCheckListItems(allHeaders);
+                    }
+                    valueCellsList.setListData(values);
+                }
+            });
+
         } catch (Exception e) {
-            setMessage(MessageStatus.ERROR, e.getMessage());
+            throw new RuntimeException(e);
         }
 
+    }
+
+    private void createCheckListItems(List<ExcelHeader> headers) {
+        values = new CheckListItem[headers.size()];
+        for (int i = 0; i < headers.size(); i++) {
+            values[i] = new CheckListItem(headers.get(i));
+        }
     }
 
     @Override

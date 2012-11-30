@@ -80,7 +80,8 @@ public class ExcelReader {
                 cell = header.getCell(i);
                 firstCell = firstRow.getCell(i);
                 if (cell != null) {
-                    headers.add(new ExcelHeader(cellToString(cell), i, firstCell.getCellType()));
+                    int cellType = (firstCell == null?Cell.CELL_TYPE_BLANK : firstCell.getCellType());
+                    headers.add(new ExcelHeader(cellToString(cell), i, cellType));
                 }
             }
         }
