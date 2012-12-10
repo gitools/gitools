@@ -192,9 +192,6 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                     aggregationGroups = heatmap.getMatrixView().getSelectedColumns();
                 }
             } else {
-                if (useAll) {
-
-                } else
                  if (useAll) {
                      aggregationGroups = new int[heatmap.getMatrixView().getRowCount()];
                      for (int i = 0; i < heatmap.getMatrixView().getRowCount(); i++)
