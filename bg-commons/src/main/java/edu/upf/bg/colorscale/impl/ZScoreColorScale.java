@@ -69,8 +69,13 @@ public class ZScoreColorScale extends NumericColorScale {
         }
 
         double f = (absValue - sigHalfAmplitude) / (halfAmplitude - sigHalfAmplitude);
-        
-        if (value > center) {
+
+
+        if (value > getMaxValue())
+            return rightMaxColor;
+        else if (value < getMinValue())
+            return leftMinColor;
+        else if (value > center) {
             return ColorUtils.mix(rightMaxColor, rightMinColor, f);
         } else {
             return ColorUtils.mix(leftMinColor, leftMaxColor, f);

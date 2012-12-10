@@ -60,32 +60,32 @@ public abstract class CutoffCmp implements Serializable {
 	
 	public static final CutoffCmp ABS_LT = new CutoffCmp("alt", "abs <", "absolute less than") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) < cutoff; }
+			return Math.abs(value) < Math.abs(cutoff); }
 	};
 	
 	public static final CutoffCmp ABS_LE = new CutoffCmp("ale", "abs <=", "absolute less than or equal to") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) <= cutoff; }
+			return Math.abs(value) <= Math.abs(cutoff); }
 	};
 	
 	public static final CutoffCmp ABS_EQ = new CutoffCmp("aeq", "abs =", "absolute equal to") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) == cutoff; }
+			return Math.abs(value) == Math.abs(cutoff); }
 	};
 	
 	public static final CutoffCmp ABS_NE = new CutoffCmp("ane", "abs !=", "absolute not equal to") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) != cutoff; }
+			return Math.abs(value) != Math.abs(cutoff); }
 	};
 	
 	public static final CutoffCmp ABS_GT = new CutoffCmp("agt", "abs >", "absolute greater than") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) > cutoff; }
+			return Math.abs(value) > Math.abs(cutoff); }
 	};
 	
 	public static final CutoffCmp ABS_GE = new CutoffCmp("age", "abs >=", "absolute greater than or equal to") {
 		@Override public boolean compare(double value, double cutoff) {
-			return Math.abs(value) >= cutoff; }
+			return Math.abs(value) >= Math.abs(cutoff); }
 	};
 
 	public static final CutoffCmp[] comparators = new CutoffCmp[] {

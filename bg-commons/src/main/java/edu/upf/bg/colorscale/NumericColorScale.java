@@ -57,10 +57,10 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
     public Color limitsColor(double value) {
         if (Double.isNaN(value))
             return getNotANumberColor();
-        else if (value == Double.POSITIVE_INFINITY)
-            return getPosInfinityColor();
-        else if (value == Double.NEGATIVE_INFINITY)
-            return getNegInfinityColor();
+//        else if (value == Double.POSITIVE_INFINITY)
+//            return getPosInfinityColor();
+//        else if (value == Double.NEGATIVE_INFINITY)
+//            return getNegInfinityColor();
 
         return null;
     }
