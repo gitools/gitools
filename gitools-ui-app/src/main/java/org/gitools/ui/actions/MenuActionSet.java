@@ -54,7 +54,8 @@ public class MenuActionSet extends ActionSet {
 				new ActionSet("Import", new BaseAction[] {
 					new ActionSet("Matrix", new BaseAction[] {
                         FileActions.importExcelMatrixAction,
-						FileActions.importIntogenTableAction
+						FileActions.importIntogenTableAction,
+                        FileActions.importGenomeSpaceMatrixAction
 					}),
 					new ActionSet("Modules", new BaseAction[] {
 						FileActions.importIntogenOncomodulesAction,

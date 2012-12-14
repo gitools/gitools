@@ -2,7 +2,6 @@ package org.gitools.ui.commands;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
@@ -11,7 +10,12 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.*;
+import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.PersistenceUtils;
+import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 
@@ -19,7 +23,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -127,7 +130,9 @@ public class CommandLoadFile extends AbstractCommand {
             try {
                 resultFile = File.createTempFile("gitools", fileName);
                 monitor.info("Downloading " + url.toString());
-                FileUtils.copyURLToFile(url, resultFile);
+
+                HttpUtils.getInstance().downloadFile(url.toString(), resultFile);
+
             } catch (IOException e) {
                 throw new CommandException(e);
             }
