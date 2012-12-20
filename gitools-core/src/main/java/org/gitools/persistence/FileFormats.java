@@ -53,6 +53,9 @@ public class FileFormats {
 	public static final FileFormat DOUBLE_MATRIX = new FileFormat(
 			"Continuous data matrix", FileSuffixes.DOUBLE_MATRIX, MimeTypes.DOUBLE_MATRIX);
 
+    public static final FileFormat GENE_CLUSTER_TEXT = new FileFormat(
+            "Gene cluster text", FileSuffixes.GENE_CLUSTER_TEXT, MimeTypes.DOUBLE_MATRIX);
+
 	public static final FileFormat MODULES_INDEXED_MAP = new FileFormat(
 			"Indexed mappings", FileSuffixes.MODULES_INDEXED_MAP, MimeTypes.MODULES_INDEXED_MAP);
 
