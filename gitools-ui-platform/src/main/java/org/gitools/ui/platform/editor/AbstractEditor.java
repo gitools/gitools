@@ -18,6 +18,7 @@
 package org.gitools.ui.platform.editor;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.view.AbstractView;
 
@@ -53,6 +54,24 @@ public abstract class AbstractEditor
 			for (EditorListener l : listeners) l.nameChanged(this);
 		}
 	}
+
+    public void abbreviateName(int maxLength) {
+
+        String extension = "";
+        String filename = getName();
+        String name = getName();
+        String newname;
+
+        int i = name.lastIndexOf('.');
+        if (i > 0) {
+            extension = "." + name.substring(i+1);
+            filename = name.substring(0, name.lastIndexOf('.'));
+        }
+
+        newname = StringUtils.abbreviate(filename, maxLength) + extension;
+
+        setName(newname);
+    }
 
 	public File getFile() {
 		return file;

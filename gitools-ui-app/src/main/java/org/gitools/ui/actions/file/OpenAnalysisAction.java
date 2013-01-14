@@ -17,23 +17,10 @@
 
 package org.gitools.ui.actions.file;
 
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
-import org.gitools.ui.utils.FileFormatFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
-import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.Settings;
-
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
-import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
@@ -42,15 +29,27 @@ import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
+import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.FileFormatFilter;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class OpenAnalysisAction extends BaseAction {
 
@@ -130,8 +129,9 @@ public class OpenAnalysisAction extends BaseAction {
                             editor = new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) analysis);
 
 						editor.setName(file.getName());
+                        editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
-						final AbstractEditor newEditor = editor;
+                        final AbstractEditor newEditor = editor;
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {

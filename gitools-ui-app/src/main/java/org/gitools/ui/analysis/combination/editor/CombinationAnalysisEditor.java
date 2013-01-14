@@ -132,7 +132,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.COMBINATION,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -169,7 +169,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.COMBINATION,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

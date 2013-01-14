@@ -24,11 +24,17 @@ public class IconNames {
 	public static final String logoMini = "/img/LogoMini.png";
 	public static final String aboutLogo = "/img/AboutLogo.png";
 	
-	public static final String openAnalysis16 = "/img/OpenAnalysis16.gif";
-	public static final String openAnalysis24 = "/img/OpenAnalysis24.gif";
+	public static final String openAnalysis16 = "/img/OpenAnalysis16.png";
+	public static final String openAnalysis24 = "/img/OpenAnalysis24.png";
+
+    public static final String heatmap16 = "/img/Heatmap16.png";
+    public static final String heatmap24 = "/img/Heatmap24.png";
+
+    public static final String analysisHeatmap16 = "/img/Analysis16.png";
+    public static final String analysisHeatmap26 = "/img/Analysis24.png";
 	
-	public static final String openMatrix16 = "/img/OpenMatrix16.gif";
-	public static final String openMatrix24 = "/img/OpenMatrix24.gif";
+	public static final String openMatrix16 = "/img/OpenMatrix16.png";
+	public static final String openMatrix24 = "/img/OpenMatrix24.png";
 
 	public static final String close16 = "/img/Close16.gif";
 	public static final String close24 = "/img/Close24.gif";
@@ -152,8 +158,14 @@ public class IconNames {
 	public static final String LOGO_METHOD = "/img/logos/Method.png";
 
 	public static final String LOGO_ANALYSIS_DETAILS = "/img/logos/AnalysisDetails.png";
+    public static final String LOGO_ANALYSIS_DETAILS16 = "/img/logos/AnalysisDetails16.png";
 
-	public static final String LOGO_CLUSTERING = "/img/logos/Clustering.png";
+    public static final String LOGO_ANALYSIS_OPEN = "/img/logos/AnalysisOpen.png";
+
+    public static final String LOGO_MATRIX_OPEN = "/img/logos/MatrixOpen.png";
+
+
+    public static final String LOGO_CLUSTERING = "/img/logos/Clustering.png";
     
     public static final String LOGO_ANNOTATION_TEXT_LABEL_HEADER = "/img/logos/HeaderAnnotationTextLabel.png";
     

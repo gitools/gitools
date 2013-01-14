@@ -150,7 +150,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.ENRICHMENT,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -184,7 +184,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.ENRICHMENT,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

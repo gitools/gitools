@@ -10,7 +10,6 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
@@ -18,6 +17,7 @@ import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
 import java.io.File;
@@ -90,7 +90,8 @@ public class CommandLoadFile extends AbstractCommand {
 
         final HeatmapEditor editor = new HeatmapEditor(figure);
 
-        editor.setName(PersistenceUtils.getFileName(file.getName()) + "." + FileSuffixes.HEATMAP);
+        editor.setName(PersistenceUtils.getFileName(file.getName()));
+        editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

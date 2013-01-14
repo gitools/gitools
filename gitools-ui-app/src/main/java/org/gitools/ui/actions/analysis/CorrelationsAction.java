@@ -18,9 +18,6 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.util.List;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
@@ -39,6 +36,11 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class CorrelationsAction extends BaseAction {
 
@@ -107,7 +109,13 @@ public class CorrelationsAction extends BaseAction {
 					final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-correlation", FileSuffixes.CORRELATIONS));
+                    String analysisTitle = analysis.getTitle();
+
+                    if (!analysisTitle.equals(""))
+                        editor.setName(analysis.getTitle() + "."+FileSuffixes.CORRELATIONS);
+                    else
+					    editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.CORRELATIONS));
+                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

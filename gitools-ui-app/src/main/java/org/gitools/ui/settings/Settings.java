@@ -23,11 +23,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
+import java.io.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -36,6 +32,8 @@ public class Settings {
 	public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
 	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
 	public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
+
+    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
     public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
 
@@ -100,6 +98,9 @@ public class Settings {
 	private String workspacePath = defaultWorkspacePath;
 	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
 	private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
+
+
+    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
 
 	private boolean showEnrichmentExamplePage = true;
 	private boolean showOncodriveExamplePage = true;
@@ -336,5 +337,13 @@ public class Settings {
 
     public void setPreviewFeatures(boolean previewFeatures) {
         this.previewFeatures = previewFeatures;
+    }
+
+    public int getEditorTabLength() {
+        return editorTabLength;
+    }
+
+    public void setEditorTabLength(int editorTabLength) {
+        this.editorTabLength = editorTabLength;
     }
 }

@@ -18,17 +18,16 @@
 package org.gitools.ui.platform.editor;
 
 
+import org.gitools.ui.platform.actions.ActionManager;
+import org.gitools.ui.platform.component.EditorTabComponent;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.Icon;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.gitools.ui.platform.actions.ActionManager;
-import org.gitools.ui.platform.component.EditorTabComponent;
 
 public class EditorsPanel extends JTabbedPane {
 
@@ -131,7 +130,7 @@ public class EditorsPanel extends JTabbedPane {
 		prefix = prefix.replace(" ", "_");
 		Integer c = nameCounts.get(prefix);
 		if (c == null)
-			c = 0;
+			c = 1;
 
 		int nameCount = c;
 		String name = prefix + "-" + (nameCount++) + suffix;
@@ -157,8 +156,11 @@ public class EditorsPanel extends JTabbedPane {
 
 		if (!name.endsWith(prefixAdd))
 			name += prefixAdd;
+
+        if (!newExtension.equals(""))
+            newExtension = "." + newExtension;
 		
-		return createName(name, "." + newExtension);
+		return createName(name, newExtension);
 	}
 
 	private EditorTabComponent getEditorTab(IEditor editor) {

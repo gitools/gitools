@@ -1,0 +1,3645 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="drawing.svg">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="404.51722"
+     inkscape:cy="216.40343"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="1175"
+     inkscape:window-x="1600"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       bendpath="M 0,0 1,0"
+       is_visible="true"
+       id="path-effect5892"
+       effect="bend_path" />
+    <inkscape:path-effect
+       vertical="false"
+       scale_y_rel="false"
+       prop_scale="1"
+       bendpath="m 322.00891,639.86219 44.19643,0"
+       is_visible="true"
+       id="path-effect5879"
+       effect="bend_path" />
+    <inkscape:perspective
+       id="perspective5632"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4877"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4879"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g4881">
+        <path
+           id="path4883"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4885"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4887"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g4889">
+        <path
+           id="path4891"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4893"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern4911">
+      <g
+         id="g4913"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path4915"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path4917"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4919">
+      <g
+         id="g4921"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path4923"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4925"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern4927"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5250">
+      <g
+         id="g5252"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5254"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5256"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5258">
+      <g
+         id="g5260"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5262"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5264"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5272">
+      <g
+         id="g5274"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5276"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5278"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5280">
+      <g
+         id="g5282"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5284"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5286"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5288"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5294">
+      <g
+         id="g5296"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5298"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5300"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5302">
+      <g
+         id="g5304"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5306"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5308"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5310"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5336">
+      <g
+         id="g5338"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5340"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5342"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5344">
+      <g
+         id="g5346"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5348"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5350"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5358">
+      <g
+         id="g5360"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5362"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5364"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5366">
+      <g
+         id="g5368"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5370"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5372"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5374"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5380">
+      <g
+         id="g5382"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5384"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5386"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5388">
+      <g
+         id="g5390"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5392"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5394"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5396"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5420">
+      <g
+         id="g5422"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5424"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5426"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5428">
+      <g
+         id="g5430"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5432"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5434"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5442">
+      <g
+         id="g5444"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5446"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5448"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5450">
+      <g
+         id="g5452"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5454"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5456"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5458"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5464">
+      <g
+         id="g5466"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5468"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5470"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5472">
+      <g
+         id="g5474"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5476"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5478"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5480"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern5540">
+      <g
+         id="g5542"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path5544"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path5546"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern5548">
+      <g
+         id="g5550"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path5552"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path5554"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern5556"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4878"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4870"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g4872">
+        <path
+           id="path4874"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4876"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4862"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g4864">
+        <path
+           id="path4866"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4868"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern4838">
+      <g
+         id="g4840"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path4842"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path4844"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4830">
+      <g
+         id="g4832"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path4834"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4836"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern4828"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern2777">
+      <g
+         id="g2779"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path2781"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path2783"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern2769">
+      <g
+         id="g2771"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path2773"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path2775"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3413"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3415">
+        <path
+           id="path3417"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3419"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3421"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3423">
+        <path
+           id="path3425"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3427"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3078">
+      <g
+         id="g3080"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3082"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3084"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3070">
+      <g
+         id="g3072"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3074"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3076"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3443"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3509"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3511"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3513">
+        <path
+           id="path3515"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3517"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3519"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3521">
+        <path
+           id="path3523"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3525"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4025"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3531"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3533">
+        <path
+           id="path3535"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3537"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3539"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3541">
+        <path
+           id="path3543"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3545"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4038"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g4040">
+        <path
+           id="path4042"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4044"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4046"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g4048">
+        <path
+           id="path4050"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4052"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3583"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3585"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3587">
+        <path
+           id="path3589"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3591"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3593"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3595">
+        <path
+           id="path3597"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3599"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3605"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3607"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3609">
+        <path
+           id="path3611"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3613"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3615"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3617">
+        <path
+           id="path3619"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3621"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3629"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3631">
+        <path
+           id="path3633"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3635"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3637"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3639">
+        <path
+           id="path3641"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3643"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3666"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3668"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3670">
+        <path
+           id="path3672"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3674"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3676"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3678">
+        <path
+           id="path3680"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3682"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3688"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3690"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3692">
+        <path
+           id="path3694"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3696"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3698"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3700">
+        <path
+           id="path3702"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3704"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3712"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3714">
+        <path
+           id="path3716"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3718"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3720"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3722">
+        <path
+           id="path3724"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3726"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3089"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3091"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3093">
+        <path
+           id="path3095"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3097"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3099"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3101">
+        <path
+           id="path3103"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3105"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3611">
+      <g
+         id="g3613"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3615"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3617"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3603">
+      <g
+         id="g3605"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3607"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3609"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3601"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern4053">
+      <g
+         id="g4055"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path4057"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path4059"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4045">
+      <g
+         id="g4047"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path4049"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4051"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern4043"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern4529"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4531"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g4533">
+        <path
+           id="path4535"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4537"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4539"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g4541">
+        <path
+           id="path4543"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4545"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3699"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3691"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3693">
+        <path
+           id="path3695"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3697"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3683"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3685">
+        <path
+           id="path3687"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3689"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3677"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3669"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3671">
+        <path
+           id="path3673"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3675"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3661"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3663">
+        <path
+           id="path3665"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3667"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3647"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3649">
+        <path
+           id="path3651"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3653"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3639"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3641">
+        <path
+           id="path4154"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3645"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3614"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4172"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3607">
+        <path
+           id="path3610"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3612"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3597"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3599">
+        <path
+           id="path3601"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3603"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3591"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4184"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3585">
+        <path
+           id="path3587"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4188"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3575"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3577">
+        <path
+           id="path3579"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3581"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3561"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3563">
+        <path
+           id="path3565"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3567"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3553"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3555">
+        <path
+           id="path3557"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3559"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3527"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern4224"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g4226">
+        <path
+           id="path4228"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path4230"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern4232"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g4234">
+        <path
+           id="path4236"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path4238"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3505"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3497"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3499">
+        <path
+           id="path3501"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3503"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3489"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3491">
+        <path
+           id="path3493"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3495"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3475"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3477">
+        <path
+           id="path3479"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3481"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3467"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3469">
+        <path
+           id="path3471"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3473"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3142"
+       xlink:href="#pattern3386" />
+    <pattern
+       id="pattern3134"
+       patternTransform="translate(-8.5, 7.5)"
+       height="5"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(8.5, -7.5)"
+         id="g3136">
+        <path
+           id="path3138"
+           d="m-7,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-8,8l0,4"
+           id="path3140"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       id="pattern3126"
+       patternTransform="translate(-9, 7)"
+       height="9"
+       width="2"
+       patternUnits="userSpaceOnUse">
+      <g
+         transform="translate(9, -7)"
+         id="g3128">
+        <path
+           id="path3130"
+           d="m-8.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3132"
+           d="m-7.5,7.5l0,8"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3102">
+      <g
+         id="g3104"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3106"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3108"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3094">
+      <g
+         id="g3096"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3098"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3100"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3092"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern2551">
+      <g
+         id="g2553"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path2555"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path2557"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern2559">
+      <g
+         id="g2561"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path2563"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path2565"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern2573">
+      <g
+         id="g2575"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path2577"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path2579"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern2581">
+      <g
+         id="g2583"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path2585"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path2587"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern2589"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern2595">
+      <g
+         id="g2597"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path2599"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path2601"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern2603">
+      <g
+         id="g2605"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path2607"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path2609"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern2611"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3220">
+      <g
+         id="g3222"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3224"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3226"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3228">
+      <g
+         id="g3230"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3232"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3234"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3242">
+      <g
+         id="g3244"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3246"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3248"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3250">
+      <g
+         id="g3252"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3254"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3256"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3258"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3264">
+      <g
+         id="g3266"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3268"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3270"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3272">
+      <g
+         id="g3274"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3276"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3278"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3280"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3409">
+      <g
+         id="g3405"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3401"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3403"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3386">
+      <g
+         id="g3382"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3370"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3376"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3041">
+      <g
+         id="g3043"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3045"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3047"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3033">
+      <g
+         id="g3035"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3037"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3039"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3399"
+       patternTransform="translate(-8.5, 7.5)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="9"
+       patternTransform="translate(-9, 7)"
+       id="pattern3834">
+      <g
+         id="g3836"
+         transform="translate(9, -7)">
+        <path
+           d="m-8.5,7.5l0,8"
+           id="path3838"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           d="m-7.5,7.5l0,8"
+           id="path3840"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="2"
+       height="5"
+       patternTransform="translate(-8.5, 7.5)"
+       id="pattern3826">
+      <g
+         id="g3828"
+         transform="translate(8.5, -7.5)">
+        <path
+           d="m-7,8l0,4"
+           id="path3830"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#ffffff"
+           fill="none" />
+        <path
+           id="path3832"
+           d="m-8,8l0,4"
+           stroke-miterlimit="0"
+           stroke-linejoin="bevel"
+           stroke="#000000"
+           fill="none" />
+      </g>
+    </pattern>
+    <pattern
+       xlink:href="#pattern3386"
+       id="pattern3824"
+       patternTransform="translate(-8.5, 7.5)" />
+    <linearGradient
+       id="linearGradient907"
+       xlink:href="#linearGradient900" />
+    <linearGradient
+       id="linearGradient906"
+       xlink:href="#linearGradient900" />
+    <linearGradient
+       id="linearGradient905"
+       xlink:href="#linearGradient900" />
+    <linearGradient
+       id="linearGradient904"
+       xlink:href="#linearGradient900" />
+    <linearGradient
+       id="linearGradient903"
+       xlink:href="#linearGradient900" />
+    <linearGradient
+       id="linearGradient900">
+      <stop
+         id="stop901"
+         offset="0"
+         style="stop-color:#000;stop-opacity:1;" />
+      <stop
+         id="stop902"
+         offset="1"
+         style="stop-color:#fff;stop-opacity:1;" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       inkscape:export-ydpi="48"
+       inkscape:export-xdpi="48"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/Heatmap24.png"
+       transform="translate(28.286075,1.1327046)"
+       id="g5648">
+      <g
+         id="g2996"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#ffffff"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+    <g
+       transform="translate(-7.0710678,-1.0101525)"
+       id="g5817">
+      <rect
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-8"
+         width="45.089287"
+         height="45.089287"
+         x="321.47324"
+         y="617.31757"
+         rx="0"
+         ry="3.9999998" />
+      <rect
+         style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846"
+         width="43.030296"
+         height="43.030296"
+         x="322.53363"
+         y="618.28876"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9-2-0"
+         width="10.775065"
+         height="10.775065"
+         x="354.86752"
+         y="618.29187"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0"
+         width="10.775065"
+         height="10.775065"
+         x="322.59427"
+         y="618.29382"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-85"
+         width="10.775065"
+         height="42.768784"
+         x="333.29001"
+         y="618.29236"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9"
+         width="11.104897"
+         height="10.775065"
+         x="333.26721"
+         y="618.29163"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-8"
+         width="10.775065"
+         height="10.775065"
+         x="322.44739"
+         y="650.45062"
+         rx="0"
+         ry="3.9999995" />
+      <rect
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9"
+         width="10.775065"
+         height="10.775065"
+         x="333.33179"
+         y="639.60736"
+         rx="0"
+         ry="3.9999995" />
+      <path
+         style="fill:#ffa000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 354.90859,618.25201 -10.77506,0 0,10.6118 0,0.16326 0,10.61181 10.77506,0 0,-10.61181 0,-0.16326 0,-10.6118 z"
+         id="rect3846-7-0-99"
+         inkscape:connector-curvature="0" />
+      <rect
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9-2"
+         width="10.775065"
+         height="10.775065"
+         x="354.72266"
+         y="650.51868"
+         rx="0"
+         ry="3.9999995" />
+    </g>
+    <g
+       transform="matrix(0.09244116,0,0,0.09244116,320.59157,666.70499)"
+       id="g4625" />
+    <g
+       transform="translate(-6.0609153,8.0812203)"
+       id="g3604">
+      <g
+         transform="translate(-0.48216461,69.285687)"
+         id="g5817-8">
+        <rect
+           ry="3.9999998"
+           rx="0"
+           y="617.31757"
+           x="321.47324"
+           height="45.089287"
+           width="45.089287"
+           id="rect3846-8-1"
+           style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="618.28876"
+           x="322.53363"
+           height="43.030296"
+           width="43.030296"
+           id="rect3846-2"
+           style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="618.29187"
+           x="354.86752"
+           height="10.775065"
+           width="10.775065"
+           id="rect3846-7-0-9-9-2-0-8"
+           style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="618.29382"
+           x="322.59427"
+           height="10.775065"
+           width="10.775065"
+           id="rect3846-7-0-93"
+           style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="618.29236"
+           x="333.29001"
+           height="42.768784"
+           width="10.775065"
+           id="rect3846-7-0-9-85-6"
+           style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="618.29163"
+           x="333.26721"
+           height="10.775065"
+           width="11.104897"
+           id="rect3846-7-0-9-80"
+           style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="650.45062"
+           x="322.44739"
+           height="10.775065"
+           width="10.775065"
+           id="rect3846-7-0-9-8-2"
+           style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="639.60736"
+           x="333.33179"
+           height="10.775065"
+           width="10.775065"
+           id="rect3846-7-0-9-9-1"
+           style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <path
+           inkscape:connector-curvature="0"
+           id="rect3846-7-0-99-0"
+           d="m 354.90859,618.25201 -10.77506,0 0,10.6118 0,0.16326 0,10.61181 10.77506,0 0,-10.61181 0,-0.16326 0,-10.6118 z"
+           style="fill:#ffa000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+        <rect
+           ry="3.9999995"
+           rx="0"
+           y="650.51868"
+           x="354.72266"
+           height="10.775065"
+           width="10.775065"
+           id="rect3846-7-0-9-9-2-5"
+           style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      </g>
+      <g
+         id="g5127"
+         transform="matrix(0.64301779,0,0,0.64301779,321.71813,759.49336)">
+        <title
+           id="title5129">Layer 1</title>
+        <g
+           id="g3518"
+           style="fill:#000000;stroke:none"
+           transform="matrix(0.4222937,0,0,0.4222937,4.2383337,-112.06775)">
+          <path
+             stroke-miterlimit="4"
+             id="path58241"
+             d="m 40.999859,1 c -2.739159,0 -5.415157,0.28719 -8,0.8125 l 0,6.1875 c -3.47485,0.83887 -6.719818,2.18462 -9.687498,4 l -4.375,-4.375 C 16.69472,9.11112 14.6451,10.85476 12.74986,12.75 c -1.89526,1.89523 -3.63888,3.94486 -5.125,6.1875 l 4.375,4.375 c -1.8154,2.96769 -3.16113,6.21265 -4,9.6875 l -6.18751,0 c -0.5253,2.58485 -0.8125,5.26083 -0.8125,8 0,2.73917 0.2872,5.41515 0.8125,8 l 6.18751,0 c 0.83887,3.47485 2.1846,6.719799 4,9.6875 l -4.375,4.375 c 1.48612,2.242638 3.22974,4.292267 5.125,6.1875 1.89524,1.895241 3.94486,3.638893 6.187501,5.125008 L 23.312361,70 c 2.96768,1.815376 6.212648,3.161133 9.687498,4.000008 l 0,6.1875 c 2.584843,0.525299 5.260811,0.8125 8,0.8125 2.73914,0 5.415131,-0.287201 8,-0.8125 l 0,-6.1875 C 52.47469,73.161133 55.71965,71.815377 58.687359,70 l 4.375,4.375008 c 2.242649,-1.48613 4.29224,-3.229767 6.187504,-5.125008 1.895241,-1.895233 3.638885,-3.944862 5.125,-6.1875 l -4.375,-4.375 c 1.815369,-2.967701 3.161095,-6.21265 4,-9.6875 l 6.1875,0 c 0.525299,-2.58485 0.8125,-5.26083 0.8125,-8 0,-2.73917 -0.287201,-5.41515 -0.8125,-8 l -6.1875,0 c -0.838905,-3.47485 -2.184631,-6.71981 -4,-9.6875 l 4.375,-4.375 C 72.888748,16.69486 71.145104,14.64523 69.249863,12.75 67.354599,10.85476 65.305008,9.11112 63.062359,7.625 L 58.687359,12 C 55.71965,10.18462 52.47469,8.83887 48.999859,8 l 0,-6.1875 C 46.41499,1.28719 43.738999,1 40.999859,1 z m 0,20 c 11.039982,0 20,8.959999 20,20 0,11.040001 -8.960018,20 -20,20 -11.040009,0 -19.999998,-8.959999 -19.999998,-20 0,-11.040001 8.95999,-20 19.999998,-20 z"
+             inkscape:connector-curvature="0"
+             style="fill:#000000;stroke:none" />
+        </g>
+        <g
+           id="g3518-8"
+           style="fill:#000000;stroke:none"
+           transform="matrix(0.40873411,-0.10615273,0.10615273,0.40873411,28.126171,-90.83663)">
+          <path
+             stroke-miterlimit="4"
+             id="path58241-6"
+             d="m 40.999859,1 c -2.739159,0 -5.415157,0.28719 -8,0.8125 l 0,6.1875 c -3.47485,0.83887 -6.719818,2.18462 -9.687498,4 l -4.375,-4.375 C 16.69472,9.11112 14.6451,10.85476 12.74986,12.75 c -1.89526,1.89523 -3.63888,3.94486 -5.125,6.1875 l 4.375,4.375 c -1.8154,2.96769 -3.16113,6.21265 -4,9.6875 l -6.18751,0 c -0.5253,2.58485 -0.8125,5.26083 -0.8125,8 0,2.73917 0.2872,5.41515 0.8125,8 l 6.18751,0 c 0.83887,3.47485 2.1846,6.719799 4,9.6875 l -4.375,4.375 c 1.48612,2.242638 3.22974,4.292267 5.125,6.1875 1.89524,1.895241 3.94486,3.638893 6.187501,5.125008 L 23.312361,70 c 2.96768,1.815376 6.212648,3.161133 9.687498,4.000008 l 0,6.1875 c 2.584843,0.525299 5.260811,0.8125 8,0.8125 2.73914,0 5.415131,-0.287201 8,-0.8125 l 0,-6.1875 C 52.47469,73.161133 55.71965,71.815377 58.687359,70 l 4.375,4.375008 c 2.242649,-1.48613 4.29224,-3.229767 6.187504,-5.125008 1.895241,-1.895233 3.638885,-3.944862 5.125,-6.1875 l -4.375,-4.375 c 1.815369,-2.967701 3.161095,-6.21265 4,-9.6875 l 6.1875,0 c 0.525299,-2.58485 0.8125,-5.26083 0.8125,-8 0,-2.73917 -0.287201,-5.41515 -0.8125,-8 l -6.1875,0 c -0.838905,-3.47485 -2.184631,-6.71981 -4,-9.6875 l 4.375,-4.375 C 72.888748,16.69486 71.145104,14.64523 69.249863,12.75 67.354599,10.85476 65.305008,9.11112 63.062359,7.625 L 58.687359,12 C 55.71965,10.18462 52.47469,8.83887 48.999859,8 l 0,-6.1875 C 46.41499,1.28719 43.738999,1 40.999859,1 z m 0,20 c 11.039982,0 20,8.959999 20,20 0,11.040001 -8.960018,20 -20,20 -11.040009,0 -19.999998,-8.959999 -19.999998,-20 0,-11.040001 8.95999,-20 19.999998,-20 z"
+             inkscape:connector-curvature="0"
+             style="fill:#000000;stroke:none" />
+        </g>
+        <g
+           id="g3518-0"
+           style="fill:#000000;stroke:none"
+           transform="matrix(0.38922214,0.1638234,-0.1638234,0.38922214,11.837185,-84.821949)">
+          <path
+             stroke-miterlimit="4"
+             id="path58241-7"
+             d="m 40.999859,1 c -2.739159,0 -5.415157,0.28719 -8,0.8125 l 0,6.1875 c -3.47485,0.83887 -6.719818,2.18462 -9.687498,4 l -4.375,-4.375 C 16.69472,9.11112 14.6451,10.85476 12.74986,12.75 c -1.89526,1.89523 -3.63888,3.94486 -5.125,6.1875 l 4.375,4.375 c -1.8154,2.96769 -3.16113,6.21265 -4,9.6875 l -6.18751,0 c -0.5253,2.58485 -0.8125,5.26083 -0.8125,8 0,2.73917 0.2872,5.41515 0.8125,8 l 6.18751,0 c 0.83887,3.47485 2.1846,6.719799 4,9.6875 l -4.375,4.375 c 1.48612,2.242638 3.22974,4.292267 5.125,6.1875 1.89524,1.895241 3.94486,3.638893 6.187501,5.125008 L 23.312361,70 c 2.96768,1.815376 6.212648,3.161133 9.687498,4.000008 l 0,6.1875 c 2.584843,0.525299 5.260811,0.8125 8,0.8125 2.73914,0 5.415131,-0.287201 8,-0.8125 l 0,-6.1875 C 52.47469,73.161133 55.71965,71.815377 58.687359,70 l 4.375,4.375008 c 2.242649,-1.48613 4.29224,-3.229767 6.187504,-5.125008 1.895241,-1.895233 3.638885,-3.944862 5.125,-6.1875 l -4.375,-4.375 c 1.815369,-2.967701 3.161095,-6.21265 4,-9.6875 l 6.1875,0 c 0.525299,-2.58485 0.8125,-5.26083 0.8125,-8 0,-2.73917 -0.287201,-5.41515 -0.8125,-8 l -6.1875,0 c -0.838905,-3.47485 -2.184631,-6.71981 -4,-9.6875 l 4.375,-4.375 C 72.888748,16.69486 71.145104,14.64523 69.249863,12.75 67.354599,10.85476 65.305008,9.11112 63.062359,7.625 L 58.687359,12 C 55.71965,10.18462 52.47469,8.83887 48.999859,8 l 0,-6.1875 C 46.41499,1.28719 43.738999,1 40.999859,1 z m 0,20 c 11.039982,0 20,8.959999 20,20 0,11.040001 -8.960018,20 -20,20 -11.040009,0 -19.999998,-8.959999 -19.999998,-20 0,-11.040001 8.95999,-20 19.999998,-20 z"
+             inkscape:connector-curvature="0"
+             style="fill:#000000;stroke:none" />
+        </g>
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="32"
+       inkscape:export-xdpi="32"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/Analysis16.png"
+       id="g5648-6"
+       transform="translate(27.670161,78.937145)">
+      <g
+         id="g2996-3"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#ffffff"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010-4"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000-1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998-9"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6-9"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60-5"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7-8"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+    <g
+       inkscape:export-ydpi="32"
+       inkscape:export-xdpi="32"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/Analysis16.png"
+       id="g3518-8-3"
+       style="fill:#000000;stroke:none"
+       transform="matrix(0.33966388,-0.08821443,0.08821443,0.33966388,419.68507,714.89889)">
+      <path
+         style="fill:#000000;stroke:none"
+         d="M 40.999859,1 C 31.614545,-2.1501411 34.117456,11.937471 25.18976,10.68982 19.559292,8.9074536 15.004066,8.132379 11.2012,14.02244 c -5.9474685,5.609789 4.410939,12.560655 -3.8595764,17.818983 -7.73846762,0.854151 -8.6609773,11.937016 -3.9642108,16.99371 7.0376992,-0.754121 9.7214222,10.105294 4.9541474,14.566552 2.6490468,5.74813 9.8824188,13.519041 15.5213658,7.379312 8.640293,-1.128907 7.685822,10.347411 14.521188,10.202847 5.371523,1.584468 11.984884,-0.884429 11.56134,-6.814785 5.309691,-6.895438 12.771477,1.928729 17.463895,-3.072017 4.894512,-2.674099 7.883793,-9.054843 3.3815,-12.950115 C 69.651922,49.506623 81.128274,50.461112 80.9837,43.625737 82.568168,38.254212 80.099268,31.640853 74.16891,32.064403 67.273474,26.754712 76.097654,19.292922 71.096901,14.600504 68.422798,9.7059968 62.042054,6.7167271 58.146784,11.219008 50.74412,12.020963 49.764708,3.4459658 45.736635,0.94687556 44.156626,0.78418178 42.579666,1.1690767 40.999859,1 z m 0,20 C 55.787981,20.166171 66.58102,39.118633 58.202657,51.409405 51.558394,62.816314 33.128907,64.470951 25.254592,53.489736 17.154797,43.502356 21.344161,26.220006 33.991587,22.267767 36.225676,21.428259 38.611751,20.984083 40.999859,21 z"
+         id="path58241-6-4"
+         inkscape:connector-curvature="0" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="296.79095"
+       y="609.98474"
+       id="text5748"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5750"
+         x="296.79095"
+         y="609.98474"
+         style="font-size:20px">Heatmap</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="304.8024"
+       y="688.75037"
+       id="text5748-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5750-1"
+         x="304.8024"
+         y="688.75037"
+         style="font-size:20px">Analysis</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="297.52649"
+       y="762.54059"
+       id="text5748-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5750-7"
+         x="297.52649"
+         y="762.54059"
+         style="font-size:20px">Open heatmap</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="303.05197"
+       y="859.36774"
+       id="text5748-9-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5750-7-1"
+         x="303.05197"
+         y="859.36774"
+         style="font-size:20px">Open analysis</tspan></text>
+    <g
+       inkscape:path-effect="#path-effect5892"
+       id="g5817-3"
+       transform="matrix(0.67676769,0,0,0.67676769,166.76227,366.82412)">
+      <path
+         inkscape:original-d="m 322.00891,617.76398 44.19643,0 0,44.19643 -44.19643,0 z"
+         id="rect3846-8-0"
+         d="m 0,-22.098215 1,0 0,44.19643 -1,0 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 322.53363,618.28876 43.0303,0 0,43.03029 -43.0303,0 z"
+         id="rect3846-3"
+         d="m 0.01187245,-21.573435 0.97361484,0 0,43.03029 -0.97361484,0 z"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 354.86752,618.29187 10.77507,0 0,10.77507 -10.77507,0 z"
+         id="rect3846-7-0-9-9-2-0-2"
+         d="m 0.74346752,-21.570325 0.24379955,0 0,10.77507 -0.24379955,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 322.59427,618.29382 10.77506,0 0,10.77507 -10.77506,0 z"
+         id="rect3846-7-0-7"
+         d="m 0.01324451,-21.568375 0.24379933,0 0,10.77507 -0.24379933,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 333.29001,618.29236 10.77506,0 0,42.76878 -10.77506,0 z"
+         id="rect3846-7-0-9-85-7"
+         d="m 0.25524912,-21.569835 0.24379933,0 0,42.76878 -0.24379933,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 333.26721,618.29163 11.1049,0 0,10.77506 -11.1049,0 z"
+         id="rect3846-7-0-9-7"
+         d="m 0.25473324,-21.570565 0.25126238,0 0,10.77506 -0.25126238,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 322.44739,650.45062 10.77506,0 0,10.77507 -10.77506,0 z"
+         id="rect3846-7-0-9-8-8"
+         d="m 0.00992116,10.588425 0.24379933,0 0,10.77507 -0.24379933,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 333.33179,639.60736 10.77506,0 0,10.77507 -10.77506,0 z"
+         id="rect3846-7-0-9-9-0"
+         d="m 0.25619445,-0.254835 0.24379933,0 0,10.77507 -0.24379933,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 354.90859,618.25201 -10.77506,0 0,10.6118 0,0.16326 0,10.61181 10.77506,0 0,-10.61181 0,-0.16326 z"
+         id="rect3846-7-0-99-3"
+         d="m 0.74439678,-21.610185 -0.24379933,0 0,10.6118 0,0.16326 0,10.61181 0.24379933,0 0,-10.61181 0,-0.16326 z"
+         style="fill:#ffa000;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:original-d="m 354.72266,650.51868 10.77506,0 0,10.77506 -10.77506,0 z"
+         id="rect3846-7-0-9-9-2-8"
+         d="m 0.74018988,10.656485 0.24379932,0 0,10.77506 -0.24379932,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+    </g>
+    <g
+       transform="translate(172.88956,775.07213)"
+       id="g5797">
+      <g
+         id="g5802">
+        <path
+           style="font-size:12px;fill:#cccccc;fill-rule:evenodd;stroke:#333333;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path938"
+           d="m 71.893878,10.989757 c -0.526248,0 -0.96875,0.442502 -0.96875,0.96875 l 0,4.874999 c -0.0011,0.02498 -0.03125,0.03722 -0.03125,0.0625 l 0,37 c 0,0.883796 0.709956,1.59375 1.59375,1.59375 l 37.281242,0 c 0.8838,-10e-7 1.59375,-0.709956 1.59375,-1.59375 l 0,-37 c 0,-0.883794 -0.70995,-1.59375 -1.59375,-1.59375 l -14.718743,0 0,-3.343749 c 0,-0.526247 -0.442502,-0.96875 -0.96875,-0.96875 l -22.187499,0 z"
+           inkscape:connector-curvature="0" />
+        <path
+           id="rect922"
+           d="m 94.053205,26.080591 37.285845,0 c 0.88379,0 1.59529,0.711502 1.59529,1.595296 l 0,30.259768 c 0,0.883794 -0.7115,1.595296 -1.59529,1.595296 l -37.285845,0 c -0.883794,0 -1.595296,-0.711502 -1.595296,-1.595296 l 0,-30.259768 c 0,-0.883794 0.711502,-1.595296 1.595296,-1.595296 z"
+           style="font-size:12px;fill:#b3b3b3;fill-rule:evenodd;stroke:#333333;stroke-width:2.07046962;stroke-linejoin:round;stroke-miterlimit:4"
+           transform="matrix(1,0,-0.35965009,0.93308725,0,0)"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       id="g5817-8-1"
+       transform="matrix(0.58019803,0,0,0.58019803,71.439666,443.61186)">
+      <rect
+         d="m 321.47324,617.31757 45.08928,0 0,45.08928 -45.08928,0 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-8-1-1"
+         width="45.089287"
+         height="45.089287"
+         x="321.47324"
+         y="617.31757"
+         rx="0"
+         ry="6.8941975" />
+      <rect
+         d="m 322.53363,618.28876 43.0303,0 0,43.03029 -43.0303,0 z"
+         style="fill:#cccccc;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-2-0"
+         width="43.030296"
+         height="43.030296"
+         x="322.53363"
+         y="618.28876"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 354.86752,618.29187 10.77507,0 0,10.77507 -10.77507,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9-2-0-8-8"
+         width="10.775065"
+         height="10.775065"
+         x="354.86752"
+         y="618.29187"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 322.59427,618.29382 10.77506,0 0,10.77507 -10.77506,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-93-5"
+         width="10.775065"
+         height="10.775065"
+         x="322.59427"
+         y="618.29382"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 333.29001,618.29236 10.77506,0 0,42.76878 -10.77506,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-85-6-0"
+         width="10.775065"
+         height="42.768784"
+         x="333.29001"
+         y="618.29236"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 333.26721,618.29163 11.1049,0 0,10.77506 -11.1049,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-80-6"
+         width="11.104897"
+         height="10.775065"
+         x="333.26721"
+         y="618.29163"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 322.44739,650.45062 10.77506,0 0,10.77507 -10.77506,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-8-2-4"
+         width="10.775065"
+         height="10.775065"
+         x="322.44739"
+         y="650.45062"
+         rx="0"
+         ry="6.894197" />
+      <rect
+         d="m 333.33179,639.60736 10.77506,0 0,10.77507 -10.77506,0 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9-1-6"
+         width="10.775065"
+         height="10.775065"
+         x="333.33179"
+         y="639.60736"
+         rx="0"
+         ry="6.894197" />
+      <path
+         style="fill:#ffa000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 354.90859,618.25201 -10.77506,0 0,10.6118 0,0.16326 0,10.61181 10.77506,0 0,-10.61181 0,-0.16326 0,-10.6118 z"
+         id="rect3846-7-0-99-0-2"
+         inkscape:connector-curvature="0" />
+      <rect
+         d="m 354.72266,650.51868 10.77506,0 0,10.77506 -10.77506,0 z"
+         style="fill:#ffff00;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="rect3846-7-0-9-9-2-5-5"
+         width="10.775065"
+         height="10.775065"
+         x="354.72266"
+         y="650.51868"
+         rx="0"
+         ry="6.894197" />
+    </g>
+    <g
+       inkscape:export-ydpi="48"
+       inkscape:export-xdpi="48"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/heatmap24.png"
+       transform="translate(107.16419,2.7694288)"
+       id="g5648-3">
+      <g
+         id="g2996-5"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#000000"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010-1"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002-7"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000-8"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998-94"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6-1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7-4"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+    <g
+       inkscape:export-ydpi="32"
+       inkscape:export-xdpi="32"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/Analysis16.png"
+       id="g5648-6-3"
+       transform="translate(106.54828,80.573869)">
+      <g
+         id="g2996-3-5"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#000000"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010-4-4"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002-3-8"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000-1-7"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998-9-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6-9-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60-5-5"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7-8-0"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+    <g
+       inkscape:export-ydpi="48"
+       inkscape:export-xdpi="48"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/Analysis24.png"
+       id="g3518-8-3-1"
+       style="fill:#000000;stroke:none"
+       transform="matrix(0.33966388,-0.08821443,0.08821443,0.33966388,498.65257,716.85218)">
+      <path
+         style="fill:#000000;stroke:none"
+         d="M 40.999859,1 C 31.614545,-2.1501411 34.117456,11.937471 25.18976,10.68982 19.559292,8.9074536 15.004066,8.132379 11.2012,14.02244 c -5.9474685,5.609789 4.410939,12.560655 -3.8595764,17.818983 -7.73846762,0.854151 -8.6609773,11.937016 -3.9642108,16.99371 7.0376992,-0.754121 9.7214222,10.105294 4.9541474,14.566552 2.6490468,5.74813 9.8824188,13.519041 15.5213658,7.379312 8.640293,-1.128907 7.685822,10.347411 14.521188,10.202847 5.371523,1.584468 11.984884,-0.884429 11.56134,-6.814785 5.309691,-6.895438 12.771477,1.928729 17.463895,-3.072017 4.894512,-2.674099 7.883793,-9.054843 3.3815,-12.950115 C 69.651922,49.506623 81.128274,50.461112 80.9837,43.625737 82.568168,38.254212 80.099268,31.640853 74.16891,32.064403 67.273474,26.754712 76.097654,19.292922 71.096901,14.600504 68.422798,9.7059968 62.042054,6.7167271 58.146784,11.219008 50.74412,12.020963 49.764708,3.4459658 45.736635,0.94687556 44.156626,0.78418178 42.579666,1.1690767 40.999859,1 z m 0,20 C 55.787981,20.166171 66.58102,39.118633 58.202657,51.409405 51.558394,62.816314 33.128907,64.470951 25.254592,53.489736 17.154797,43.502356 21.344161,26.220006 33.991587,22.267767 36.225676,21.428259 38.611751,20.984083 40.999859,21 z"
+         id="path58241-6-4-6"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       inkscape:export-ydpi="24.169636"
+       inkscape:export-xdpi="24.169636"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenMatrix16.png"
+       transform="matrix(1.1013514,0,0,1.000004,272.9996,744.16181)"
+       id="g5797-0-67-8">
+      <g
+         id="g5802-2-7-2"
+         transform="translate(57.095306,26.263861)">
+        <path
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575123;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path938-9-5-9"
+           d="m 71.893878,10.989757 c -0.526248,0 -0.96875,0.442502 -0.96875,0.96875 l 0,4.874999 c -0.0011,0.02498 -0.03125,0.03722 -0.03125,0.0625 l 0,37 c 0,0.883796 0.709956,1.59375 1.59375,1.59375 l 37.281242,0 c 0.8838,-10e-7 1.58199,-0.710051 1.59375,-1.59375 l 0.57325,-43.060891 c -1.02531,-0.05881 -17.854493,0.154642 -17.854493,0.154642 z"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="sscsssssccs" />
+        <path
+           id="rect922-4-9-4"
+           d="m 84.673318,19.692628 37.285842,0 c 0.88379,0 1.3394,0.762648 1.02154,1.709974 l -10.88292,32.434994 c -0.31786,0.947326 -1.28525,1.709974 -2.16904,1.709974 l -37.285847,0 c -0.883794,0 -1.339404,-0.762648 -1.021548,-1.709974 L 82.504274,21.402602 c 0.317856,-0.947326 1.28525,-1.709974 2.169044,-1.709974 z"
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575111;stroke-linejoin:round;stroke-miterlimit:4"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="24.169636"
+       inkscape:export-xdpi="24.169636"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenMatrix16.png"
+       transform="matrix(0.57235111,0,0,0.57235111,212.08326,441.10569)"
+       id="g5648-8-8">
+      <g
+         id="g2996-2-6"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#000000"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010-6-2"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002-0-9"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000-6-0"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998-64-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6-6-1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60-2-7"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7-89-0"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+    <g
+       inkscape:export-ydpi="24.17"
+       inkscape:export-xdpi="24.17"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenAnalysis16.png"
+       transform="matrix(1.1013514,0,0,1.000004,324.62261,835.58195)"
+       id="g5797-0-67">
+      <g
+         id="g5802-2-7"
+         transform="translate(57.095306,26.263861)">
+        <path
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575123;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path938-9-5"
+           d="m 71.893878,10.989757 c -0.526248,0 -0.96875,0.442502 -0.96875,0.96875 l 0,4.874999 c -0.0011,0.02498 -0.03125,0.03722 -0.03125,0.0625 l 0,37 c 0,0.883796 0.709956,1.59375 1.59375,1.59375 l 37.281242,0 c 0.8838,-10e-7 1.58199,-0.710051 1.59375,-1.59375 l 0.57325,-43.060891 c -1.02531,-0.05881 -17.854493,0.154642 -17.854493,0.154642 z"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="sscsssssccs" />
+        <path
+           id="rect922-4-9"
+           d="m 84.673318,19.692628 37.285842,0 c 0.88379,0 1.3394,0.762648 1.02154,1.709974 l -10.88292,32.434994 c -0.31786,0.947326 -1.28525,1.709974 -2.16904,1.709974 l -37.285847,0 c -0.883794,0 -1.339404,-0.762648 -1.021548,-1.709974 L 82.504274,21.402602 c 0.317856,-0.947326 1.28525,-1.709974 2.169044,-1.709974 z"
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575111;stroke-linejoin:round;stroke-miterlimit:4"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <image
+       inkscape:export-ydpi="24.17"
+       inkscape:export-xdpi="24.17"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenAnalysis16.png"
+       width="30.821428"
+       height="30.821428"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAcBJREFU OI2Nk71uE0EURs+dySpoLQsjIZsCORR2XNDRgISgSJOaxr2TxoXlN6CAZ3CDhai2oqBDSmgQ4g3o HIuK2quV1rGzPzNDY69/E+VKt5jV3k/n3NEIwKfhZ3XeOftgMsmdBWPBrbU1TnKufz6ulX+xVQLw /eLb01fP3/37++eGq9+H2/8A0HqboB8kX16cVM7Xvx8AZKl16jAF4PhNsjfAOWi99M5Go9HXVqt1 uREwv87wShnHr7PdSRFu5nPSNMX3665er1+Mx+PTZrP5A0ABGGNQolBK77YofL9EpfKIOI4lyzIa jcblcDgsFwRJkqC1RkTQWpPnOZ7nLdDdxnkFJg+B+AAgTVO01gDUak8IwwmDwWDvLtrtNtVqlSiK XEGwDFBKEYYTrLX0er1blukAmM1ma7eQrZYXxzHlcpkoihARRGSJDIDv+2itSZJkFZDneRFwdPSM MJwQBMFegk6nQ6lUKmY2CESEMJwA3KqwrOXMBoFzjul0eqeCUgrf9zcV0jS9t0K32y2udofgvgrG mEJBAVhr5U7hrVqoKVi8RsALguCjiLhFYNHOOYwxOOew1mKMwRhDv99/D5j/iR7pFBiBgLoAAAAA SUVORK5CYII= "
+       id="image3702-5-6"
+       x="479.76785"
+       y="884.77295"
+       style="fill:#000000;stroke:none" />
+    <g
+       inkscape:export-ydpi="92.62545"
+       inkscape:export-xdpi="92.62545"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenAnalysis.png"
+       transform="matrix(1.1013514,0,0,1.000004,192.18741,835.07553)"
+       id="g5797-0-67-2">
+      <g
+         id="g5802-2-7-5"
+         transform="translate(57.095306,26.263861)">
+        <path
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575123;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path938-9-5-2"
+           d="m 71.893878,10.989757 c -0.526248,0 -0.96875,0.442502 -0.96875,0.96875 l 0,4.874999 c -0.0011,0.02498 -0.03125,0.03722 -0.03125,0.0625 l 0,37 c 0,0.883796 0.709956,1.59375 1.59375,1.59375 l 37.281242,0 c 0.8838,-10e-7 1.58199,-0.710051 1.59375,-1.59375 l 0.57325,-43.060891 c -1.02531,-0.05881 -17.854493,0.154642 -17.854493,0.154642 z"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="sscsssssccs" />
+        <path
+           id="rect922-4-9-7"
+           d="m 84.673318,19.692628 37.285842,0 c 0.88379,0 1.3394,0.762648 1.02154,1.709974 l -10.88292,32.434994 c -0.31786,0.947326 -1.28525,1.709974 -2.16904,1.709974 l -37.285847,0 c -0.883794,0 -1.339404,-0.762648 -1.021548,-1.709974 L 82.504274,21.402602 c 0.317856,-0.947326 1.28525,-1.709974 2.169044,-1.709974 z"
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575111;stroke-linejoin:round;stroke-miterlimit:4"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       transform="matrix(1.2449316,0,0,1.2449316,-187.43188,-221.7225)"
+       id="g3797-0"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenAnalysis.png"
+       inkscape:export-xdpi="92.62545"
+       inkscape:export-ydpi="92.62545">
+      <image
+         style="fill:#000000;stroke:none"
+         y="889.07648"
+         x="430.28571"
+         id="image3691-7"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAC/JJREFU eJztnTtsFM8dx7/7upd9f0z0BwMG/ykAFzkKC8eBOjTY+MGzSE9PqhSkikRPb0VKQw2KiGQkCkgF EQLpLxdxkJBA2I6xjMHns317uzMp7uY8N96929d5d33zkVa3r3nszW9+v9/M/PYOkEgkEolE0oso IdOq6+vrfyoUCn8xDOOIooTJLn1Uq1XYtg1VVWFZ1r9evXp1a3p6+hsAEnfduo0CwFhZWfmzaZq0 1ymXy7RcLtONjY1f5+bmBgGocTeQV4J2WQ1AYWtr60tfX99P4kVKabhapQim9crlMnRdx/b29sKT J0+u3rt3bw0p0ARBBSAL4Gi1Wl3JZDLNk9s/gB9fAdgApY2N7ROAiOfYeVL/hHCdNK43t8Z1IqRn afbl38iTOJTZLNehTsShTJY/hDJZPYd+S/D7W7tQVRVbW1sLT58+TYUQBFVVOoA+3ubvblFsraVI 90XMl19VlL+byOVyUBSlNDMz82Jubu4YEv6VBK2cCiDDn9jZ7C0H0ImV/2Rg2zY0TQOltDQ9PZ14 IQhaMQWAytv6WrV37L4ble8qarUaisUiqtUqAJSmpqZePHr0KLFCkMhKpZVvn7MwTROapiGTyTSF 4O7du4kVglAVavH2e2wOwBFKYZomACCTySCTybDj0p07dxIpBImqTNohAAipO/2GYTSFwLIsKIpS un37duKEIDEVOQxQSmHbNgAgn8+nQgiiMwESAKSpAZgfwAtBQzhKt27dSowQxF6Bw0R90mivU7DG 54WAEAJFUUo3btxIhBBEVrh0AQFQ2tQAQH2a2DCM5sYLgaqqiRACaQIihGLPB2AoitLUArwQUEoT IQTSBERIfR1h/9R/OyFQFKU0OzsbmxDoYRK3aIDMDhRdA2h9qZBSAKSxEsIWUShL1zhG/R7xPEtD iXA/K47PiwhpxDKIS94sL4fyKXcPIRSUUBBCQWwKm9j1Y0ph2xSU2I3zFHpux1EAgD0hEDFNE4qi lKanp18AuHr//v0DXUAKJQA8SqZS/xTOa1EVEBO0Yddt227ZCCGwLKvlmmVZsO2ia17thEDTtNLU 1NSBC0EoARAdnsOKoijNTVVV5sk3N3YP4GwCxLzchEBV1dLk5OSBCoH0AUIgNj7gzTF28wk0TYOm aaWJiYkD8wkiMwGqenhlqeGxg1Lass+0ATsGsG8U4IabJmhQunbt2otKpXL1wYMHXdUEkQnAYcZJ 1fOfvAboZALEfA3DcLxGKS3dvHnzBYCuCkF0o4BDjNjYrMfzfoBXH0BEVdW2QjA7O9tVIYhuFHCI nUBe/fMNz8wepRSapkFRFM8mQMyfCYFDp+qqEEgN4AFRA/BagD8P+NcAjLg0gdQAHtG0+oyGqAl4 LQAEFwDAXQgaeZdmZmYiFwKpATwi2nu+4RVFgaZpUFU1kAng6aQJ2IxhVEIgNYAPnHwBXjMYhoH1 9XXs7Owgn8+HKsdNCAghpevXr0cmBHIY6BGn3g+gxRTk83kMDg7i+fPnGB4eRrFYdPQf2LGqqq7X 2RQ0+2T7DcEoTUxMRCIEQbvtTwDObGxsLAwMDAAANjc3g9YhVfBrAeyTXxcghGBnZwfVarVFW/AN yjbAu++QyWSg6zqy2SwMw4CiKDBNc2F0dPR3AEwEFILDO33XJVRVbQ75WA/mfQCmCYrFIvr7+1Eo FJDP55tbNptFNpttTgXrug5N05qfonZhW7Vaxfb2NsrlMmq1Gmq1GjRNK718+fKvqGvyQJ1Z+gA+ Yc+p6zosy+p4r6IoTW3BjlnwqDjFzDSEKAR8uQCwu7uLYrEIy7LQ39//RwAPAdiNzRdyFBAAJ1/A C0zN82pfdCrZdTeTwMokhKBQKGBra2sIQB+AXRy0APD0igYAvD2rk9MnLic79X5gb2ZR7GDiOsTg 4CB0XQeAPOptWfX7LJHFA/QanXo/LyTMDPCfTBBYw/O9H3D/blm5uq7zK4oGAvpzcjk4Yth6AGtA NjkkagBREMRRgdv3yfsgbA4C9caP1wnsRfhG4p098RwTCicNwDuCgHcNwEYgjfsD21/pBIaEd8rE Xis2KlP1zOY7TfqwY3GNQTQpbCgaFukERgC/DsBUPRvmeRn2OTW4W+fiTUAulwvdCaUGiAjWK9nP xgH7ez4TAn7YJw4J+XSdyooCqQEihO/9rHF5DcD2naaFnfyAduU0hn9SAyQN1jhio/O238kUAJ3V P18G73uEQY4CugRT07zDxz5Fp89P72cwDRAWaQK6iNj7eRMgNrqoBTrBxyGEQZqALsNPB7eb+hUd R4bbMDBxGiAI7969w9u3bwG0TqpcunQJo6OjnvKYn5/H6urqvi+IwXvLbve47YvH4sSPn323tKyB x8fHcfTo0Zay3dYC+Pxi1QBRvBvIT4awh+J7TSf4NXmnfPkJGnHOvdN+u/p63XdreLFOuq7DMAzf PkCsAhA1nb78KNL6FQJ+nxDiafwtpnESQHZeDBHj83CCNydREJkPEKThvKpeP/Vxazj+y25Xdrs6 iW8EdUrTyWTwWq9d/To9cxgSt4QX5IH4NG77QcbLbnWJ0vmN25GO1QScOnUKY2NjzWMm9SdPnvSc x7lz53DixIl95916kFuv9JJWvOY3fbsl3qBh5InxAYLYpKGhIQwNDYUq98KFC6HS9zryV8JSTtip 4MT5AJKDJdZRgCQ8h24UIDlYpAZIOVIDSEIhBSDlJGYeQJqAdCLnAVKO9AEkoQglAL38bmBSkDOB klBIHyDlSB9AEopY4wGWl5extLS07/zp06c9xwR8+PAB5XIZgLe1+nbXvJzv9Np2p2tu9509exa5 XM41DzdSHRa+tLSEN2/etJxj4VZeBWBxcRHLy8sAOgdgOl3zsu83srhd+W51HBwcDCQAYYndBETp R/AesddwMC/hZPw7/17u91qvKJ49MTOBQWgXXBkkL2AvGDSqeP52EcFRBIay/bhmUhM5CvATXnaQ X1xUz5ukoNLYTQBPmIcRVauXiF6/+/zrXF7z9WKW4hxOx+oEjo2NtUQFB2FycjJU+jTTTtC9kigN IPFHFJpDCkDKiXUtQE4Fx4vUAD1OO6fUK3I5uMeRGiDFyFFAjxO7DyCdwPiRGqCHkSagh4mi8QFp AlKP1AA9jNQAPQz7sUkZFi4JhdQAKSYKRzDWkLDFxUUsLCwAaI3suXjxIs6fP+8pj9evX2Ntba15 7OX3Btvd4yWcqxv5jo2NoVAo7MvTjahGAbEKwObmJj59+gSg9Qs6c+aM5zxWV1fx5cuXSGMAo4gh dKoH/6ugPIqiwDRNXwLASPUoIOoIWYaXKNx2+26OVZAQsk73hCH2UUAUq4FRfTHt0oaJA/RaJy9C EKVA8H85E4ZDNQoI8tOw3XoXgKfbmiAMsQaFHjlyBL/88guAVrs4MDDgOY/jx4/vOxeV8xbk7SIv 9zjl2/gLWF+kfhQwMjKCkZGRUHlcuXIlotqki3a+ih/kPEDKkTOBPUzsowBJfDD7H+soQJqA9CM1 QIqJXQNI4kNGBEkApHwtQBIOOQ/QwyRiFCCJH/luYA8TuxMoiQ+m/uXvA0hCITVAipFOYA8Tlf8l TUCKkRqgx4l9IkgSH6zny+XgHsWyLDkP0MuUy+X4fQDTNEMVLgnG8vIyLMsCEPPPxX/9+rVSq9X6 DMMIVQknxAfz8uJFp3u95umUr9d8/NTVT33YcaVSaR7/+PEDnz9//jeAwFIQVAAoAPL+/ft/Hjt2 7O7ly5d9x7V3aiQ/r3d1Iz2fh5/0TuUGKbPTvZVKBSsrK3j27Nk/AFgAAg0JggoAAWA+fPjw79vb 230rKyt/GB4ezokP0Ak/6ivue5P0XIQQbGxs7D5+/Phv8/PzrwFUAdhtE7sQ9N8WsgB+A2C4sf08 Pj5esixLa59MEhZVVem3b98qHz9+/C+AVQCfACwB+A6g5je/oAKgASgA+BnAYOOzD3WNIv9FurtQ 1Bt6E8AagP8B2ACwiwBmIGhjKag3dg5AsbHlIQXgICCoC8A2gDKALeyZAN/OYJjGUlAfRhrcpoXM U9Ie2ths1IWghj0HMNBIIIrGYnmowrGkO1BuAwI2POP/UW/+NLeMTpwAAAAASUVORK5CYII= "
+         height="23.714285"
+         width="23.714285" />
+    </g>
+    <g
+       inkscape:export-ydpi="92.150002"
+       inkscape:export-xdpi="92.150002"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenMatrix.png"
+       transform="matrix(1.1013514,0,0,1.000004,186.31978,746.22108)"
+       id="g5797-0-67-8-3">
+      <g
+         id="g5802-2-7-2-4"
+         transform="translate(57.095306,26.263861)">
+        <path
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575123;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+           id="path938-9-5-9-9"
+           d="m 71.893878,10.989757 c -0.526248,0 -0.96875,0.442502 -0.96875,0.96875 l 0,4.874999 c -0.0011,0.02498 -0.03125,0.03722 -0.03125,0.0625 l 0,37 c 0,0.883796 0.709956,1.59375 1.59375,1.59375 l 37.281242,0 c 0.8838,-10e-7 1.58199,-0.710051 1.59375,-1.59375 l 0.57325,-43.060891 c -1.02531,-0.05881 -17.854493,0.154642 -17.854493,0.154642 z"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="sscsssssccs" />
+        <path
+           id="rect922-4-9-4-4"
+           d="m 84.673318,19.692628 37.285842,0 c 0.88379,0 1.3394,0.762648 1.02154,1.709974 l -10.88292,32.434994 c -0.31786,0.947326 -1.28525,1.709974 -2.16904,1.709974 l -37.285847,0 c -0.883794,0 -1.339404,-0.762648 -1.021548,-1.709974 L 82.504274,21.402602 c 0.317856,-0.947326 1.28525,-1.709974 2.169044,-1.709974 z"
+           style="font-size:12px;fill:#ccbb99;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:1.90575111;stroke-linejoin:round;stroke-miterlimit:4"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="92.150002"
+       inkscape:export-xdpi="92.150002"
+       inkscape:export-filename="/home/mschroeder/Documents/projects/gitools/gitools-ui-app/src/main/resources/img/OpenMatrix.png"
+       transform="matrix(0.57235111,0,0,0.57235111,125.40344,443.16497)"
+       id="g5648-8-8-2">
+      <g
+         id="g2996-2-6-7"
+         transform="translate(81.183472,20.535714)">
+        <path
+           style="fill:#000000"
+           d="m 307.731,641.47457 c -6.0862,-0.31855 -6.0862,-0.31855 -6.71716,-7.58276 -1.09941,-12.65726 -0.76595,-34.32244 0.55029,-35.75371 1.26257,-1.37293 38.92772,-1.94823 42.05718,-0.64238 2.06155,0.86023 2.40552,41.98701 0.36264,43.35994 -1.21416,0.81598 -24.79598,1.21857 -36.25295,0.61891 z"
+           id="path3010-6-2-5"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cccccc"
+           d="m 313.23715,639.6536 c -0.37562,-0.42319 0.39102,0.79374 -1.41135,0.73458 -3.64212,-0.11955 -7.06113,-0.68288 -7.97116,-5.8209 -0.76508,-4.31957 -3.35607,-31.91002 0.0478,-35.8191 1.95018,-2.23962 38.66482,-0.75782 38.33498,1.60967 -0.166,1.19158 0.97584,11.84674 0.99415,21.82619 0.0333,18.14446 0.0333,18.14446 -4.74587,18.14446 -14.81141,-0.36046 -7.42947,1.64384 -25.24855,-0.6749 z"
+           id="path3002-0-9-1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cssssscc" />
+        <path
+           style="fill:#ffff00"
+           d="m 313.15633,638.21926 c -0.31614,-0.9282 -0.30236,-2.48752 0.0306,-3.46516 0.33297,-0.97762 -0.0422,-2.89102 -0.83366,-4.25199 -1.14486,-1.96859 -1.22285,-3.17325 -0.38151,-5.89246 0.77857,-2.51628 0.76765,-4.03795 -0.0413,-5.76808 -0.75055,-1.60505 -0.81137,-3.46159 -0.19187,-5.85606 1.0794,-4.17202 0.36936,-4.90513 -4.3108,-4.45083 -6.0042,-8.50552 23.38796,-12.76821 34.9114,-7.90894 2.4246,7.88424 -0.27707,7.53725 -9.16489,6.42859 -12.75389,-1.59091 -13.85025,0.43978 -12.12121,6.02793 1.62807,6.08469 0.13443,4.71786 0.93507,11.79793 -0.61478,3.30469 1.90423,5.89761 0.62761,7.4943 -0.79032,0.98846 -0.75097,4.21211 0.47952,5.78201 1.8722,2.38864 -12.58786,4.07276 -9.93888,0.0627 z m 21.42423,0.83994 c -0.35255,-0.39718 -2.56392,-0.62737 -2.56392,-3.15947 0,-2.66949 1.38907,-5.96981 0.6922,-6.28662 -0.66101,-0.30051 1.07202,-1.61494 3.81586,-1.66198 4.96392,-0.085 8.18272,6.01571 5.62955,10.67008 -0.69429,1.26567 -6.53907,1.60368 -7.57369,0.43799 z"
+           id="path3000-6-0-1"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccscsccsccsscccsscsc" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.84604,606.59828 c -4.28518,-4.82796 -1.57449,-10.0597 10.04005,-9.1016 14.03596,1.15785 11.82325,-1.16768 11.74364,6.61478 -0.0672,6.5668 -19.02912,5.59029 -21.78369,2.48682 z"
+           id="path2998-64-3-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 303.64707,638.84534 c -1.95476,-4.82796 -0.73504,-9.34893 4.57994,-9.1016 4.53076,0.21083 5.35708,2.8234 5.35708,6.61478 0,3.63125 -8.68048,5.59029 -9.93702,2.48682 z"
+           id="path2998-6-6-1-7"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+        <path
+           style="fill:#ff0000"
+           d="m 312.78245,626.76718 c -1.81967,-4.82795 -0.81143,-9.08818 4.26342,-9.1016 5.62202,-0.0149 4.98684,2.8234 4.98684,6.61478 0,3.63125 -8.08056,5.59029 -9.25026,2.48682 z"
+           id="path2998-60-2-7-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssss" />
+      </g>
+      <path
+         style="fill:#ffa000;fill-opacity:1"
+         d="m 411.05269,636.31817 c -0.98899,5.33243 -9.57864,4.04083 -9.15555,-7.51594 0.34157,-9.33011 -0.10655,-11.06433 7.44004,-10.45776 6.06866,0.48777 4.92288,0.68038 1.71551,17.9737 z"
+         id="path2998-60-7-89-0-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ssss" />
+    </g>
+  </g>
+</svg>

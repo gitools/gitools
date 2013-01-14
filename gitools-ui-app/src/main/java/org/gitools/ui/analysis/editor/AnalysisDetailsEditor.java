@@ -24,7 +24,9 @@ import org.gitools.model.Analysis;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -62,8 +64,9 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 		this.analysis = analysis;
 		this.template = template;
 		this.toolBar = toolBar;
+        this.setIcon(IconUtils.getIconResource(IconNames.LOGO_ANALYSIS_DETAILS16));
 
-		createComponents();
+        createComponents();
 	}
 
 	private void createComponents() {
