@@ -17,19 +17,23 @@
 
 package org.gitools.persistence.text;
 
-import java.io.File;
-
+import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.PersistenceException;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import java.io.File;
 
 public class DoubleMatrixTextPersistence 
 	extends MatrixTextPersistence<DoubleMatrix> {
 
 	private static final long serialVersionUID = 1995227069362928225L;
 
+    public DoubleMatrixTextPersistence(int skipLines, Integer... skipColumns) {
+        super(skipLines, skipColumns);
+    }
+
 	public DoubleMatrixTextPersistence() {
+        super();
 	}
 
 	@Override

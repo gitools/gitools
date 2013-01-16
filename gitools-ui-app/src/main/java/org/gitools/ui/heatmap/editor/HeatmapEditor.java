@@ -19,45 +19,45 @@ package org.gitools.ui.heatmap.editor;
 
 import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.BorderLayout;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.IModel;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.actions.DataActions;
+import org.gitools.ui.actions.EditActions;
+import org.gitools.ui.actions.HeatmapActions;
+import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
+import org.gitools.ui.heatmap.panel.HeatmapPanel;
+import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFileWizard;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence.FileFormat;
-
-import org.gitools.model.IModel;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.actions.DataActions;
-import org.gitools.ui.actions.EditActions;
-import org.gitools.ui.actions.HeatmapActions;
-import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.heatmap.panel.HeatmapPanel;
-import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 
 public class HeatmapEditor extends AbstractEditor {
 
@@ -120,8 +120,14 @@ public class HeatmapEditor extends AbstractEditor {
 		
 		this.heatmap = heatmap;
 		this.externalToolbarActions = externalToolbarActions;
-		
-		final IMatrixView matrixView = heatmap.getMatrixView();
+
+        if (heatmap.getCellDecorators()[0].getAdapter() instanceof BeanElementAdapter)
+            this.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
+        else
+            this.setIcon(IconUtils.getIconResource(IconNames.heatmap16));
+
+
+        final IMatrixView matrixView = heatmap.getMatrixView();
 	
 		this.blockSelectionUpdate = false;
 

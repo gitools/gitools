@@ -149,7 +149,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.ONCODRIVE,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -183,7 +183,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.ONCODRIVE,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

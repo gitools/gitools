@@ -17,25 +17,23 @@
 
 package org.gitools.ui.actions.file;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
-import org.gitools.ui.IconNames;
-import org.gitools.ui.commands.CommandLoadFile;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.Settings;
-
-import javax.swing.filechooser.FileFilter;
-
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.MimeTypes;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.commands.CommandLoadFile;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
+
+import javax.swing.filechooser.FileFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class OpenHeatmapAction extends BaseAction {
 
@@ -58,6 +56,7 @@ public class OpenHeatmapAction extends BaseAction {
 				FileFormats.MULTIVALUE_DATA_MATRIX,
 				FileFormats.DOUBLE_MATRIX,
 				FileFormats.DOUBLE_BINARY_MATRIX,
+                FileFormats.GENE_CLUSTER_TEXT,
 				FileFormats.GENE_MATRIX,
 				FileFormats.GENE_MATRIX_TRANSPOSED
 			}),
@@ -65,6 +64,7 @@ public class OpenHeatmapAction extends BaseAction {
 			new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
 			new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)", MimeTypes.DOUBLE_MATRIX),
+            new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
 			new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
 			new FileFormatFilter(FileFormats.GENE_MATRIX),
 			new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED)

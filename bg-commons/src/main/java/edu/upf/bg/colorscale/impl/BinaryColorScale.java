@@ -18,14 +18,13 @@
 package edu.upf.bg.colorscale.impl;
 
 import edu.upf.bg.aggregation.IAggregator;
-import edu.upf.bg.aggregation.MeanAggregator;
-import edu.upf.bg.aggregation.SumAbsAggregator;
 import edu.upf.bg.aggregation.SumAggregator;
 import edu.upf.bg.colorscale.ColorScaleRange;
 import edu.upf.bg.colorscale.NumericColorScale;
 import edu.upf.bg.colorscale.util.ColorConstants;
 import edu.upf.bg.cutoffcmp.CutoffCmp;
-import java.awt.Color;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +37,25 @@ public class BinaryColorScale extends NumericColorScale {
     private Color minColor;
     private Color maxColor;
 
-    private static List<CutoffCmp> sharpCutoffs = new ArrayList<CutoffCmp>();
+    private static List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
     static {
-        sharpCutoffs.add(CutoffCmp.EQ);
-        sharpCutoffs.add(CutoffCmp.NE);
-        sharpCutoffs.add(CutoffCmp.ABS_EQ);
-        sharpCutoffs.add(CutoffCmp.ABS_NE);
+        equalCmp.add(CutoffCmp.EQ);
+        equalCmp.add(CutoffCmp.ABS_EQ);
+    }
+private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+    {
+        notequalCmp.add(CutoffCmp.NE);
+        notequalCmp.add(CutoffCmp.ABS_NE);
+    }
+
+    private static List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
+    {
+        absoluteCmp.add(CutoffCmp.ABS_GE);
+        absoluteCmp.add(CutoffCmp.ABS_LE);
+        absoluteCmp.add(CutoffCmp.ABS_EQ);
+        absoluteCmp.add(CutoffCmp.ABS_GT);
+        absoluteCmp.add(CutoffCmp.ABS_LT);
+        absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
 	public BinaryColorScale(double cutoff, CutoffCmp cmp) {
@@ -79,18 +91,46 @@ public class BinaryColorScale extends NumericColorScale {
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
 
-        CutoffCmp positive = CutoffCmp.getFromName(comparator);
-        CutoffCmp negative = CutoffCmp.getOpposite(positive);
+        CutoffCmp positiveCmp = CutoffCmp.getFromName(comparator);
+        CutoffCmp negativeCmp = CutoffCmp.getOpposite(positiveCmp);
 
-        double outsideRange = Math.abs(cutoff) * 1.5;
-        double insideRange = (sharpCutoffs.contains(positive)) ?
-                            cutoff :
-                            cutoff * 0.8;
 
-        double positiveValue;
-        double negativeValue;
+        double outsideRange;
+        double insideRange;
+        double cutoffForRanges;
 
-        if (positive.compare(outsideRange,cutoff)) {
+        if (absoluteCmp.contains(positiveCmp)) {
+            cutoffForRanges = Math.abs(cutoff);
+        } else {
+            cutoffForRanges = cutoff;
+        }
+
+        if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY){
+            outsideRange = (cutoffForRanges == 0.0) ?
+                                    Math.abs(cutoffForRanges) +  0.5:
+                                    cutoffForRanges * 2.5;
+
+
+            if (cutoffForRanges == 0.0)
+                insideRange = -0.8;
+            else
+                insideRange = cutoffForRanges - cutoffForRanges * 0.5;
+
+
+        } else if (cutoffForRanges == Double.POSITIVE_INFINITY) {
+            outsideRange = 0.0;
+            insideRange = Double.POSITIVE_INFINITY;
+        } else {
+            outsideRange = 0.0;
+            insideRange = Double.NEGATIVE_INFINITY;
+        }
+
+
+
+        double positiveValue = 0.0;
+        double negativeValue = 0.0;
+
+        if (positiveCmp.compare(outsideRange,cutoffForRanges)) {
             negativeValue = insideRange;
             positiveValue = outsideRange;
         } else {
@@ -98,15 +138,23 @@ public class BinaryColorScale extends NumericColorScale {
             positiveValue = insideRange;
         }
 
+        if (!positiveCmp.compare(insideRange,cutoffForRanges) && equalCmp.contains(positiveCmp) ) {
+            positiveValue = cutoffForRanges;
+        } else if (positiveCmp.compare(negativeValue,cutoffForRanges) && notequalCmp.contains(positiveCmp)) {
+            negativeValue = cutoffForRanges;
+        }
+
         ColorScaleRange positiveRange = new ColorScaleRange(positiveValue,positiveValue,3);
-        positiveRange.setCenterLabel(positive.getShortName() + " " + Double.toString(cutoff));
+        positiveRange.setType(ColorScaleRange.CONSTANT_TYPE);
+        positiveRange.setCenterLabel(positiveCmp.getShortName() + " " + Double.toString(cutoffForRanges));
 
         ColorScaleRange empty = new ColorScaleRange(0,0,1);
         empty.setType(ColorScaleRange.EMPTY_TYPE);
         empty.setBorderEnabled(false);
 
         ColorScaleRange negativeRange = new ColorScaleRange(negativeValue,negativeValue,3);
-        negativeRange.setCenterLabel(negative.getShortName() + " " + Double.toString(cutoff));
+        negativeRange.setType(ColorScaleRange.CONSTANT_TYPE);
+        negativeRange.setCenterLabel(negativeCmp.getShortName() + " " + Double.toString(cutoffForRanges));
 
         rangesList.add(empty);
         rangesList.add(positiveRange);

@@ -18,9 +18,6 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.util.List;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.heatmap.Heatmap;
@@ -39,6 +36,11 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class GroupComparisonAction extends BaseAction {
 
@@ -95,13 +97,16 @@ public class GroupComparisonAction extends BaseAction {
 								//TODO: adapt to group comparison analysis
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					if (analysis.getTitle().equals("")) {
-						editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-comparison", FileSuffixes.GROUP_COMPARISON));
-					} else {
-						editor.setName(editorPanel.createName(analysis.getTitle(), "."+FileSuffixes.GROUP_COMPARISON));
-					}
-							
-					SwingUtilities.invokeLater(new Runnable() {
+                    String analysisTitle = analysis.getTitle();
+
+                    if (!analysisTitle.equals(""))
+                        editor.setName(analysis.getTitle() + "." + FileSuffixes.GROUP_COMPARISON);
+                    else
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.GROUP_COMPARISON));
+                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
+
+
+                    SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
 							AppFrame.instance().getEditorsPanel().addEditor(editor);

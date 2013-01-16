@@ -125,7 +125,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.GROUP_COMPARISON,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -226,7 +226,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.GROUP_COMPARISON,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

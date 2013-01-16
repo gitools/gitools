@@ -248,8 +248,10 @@ public class MatrixUtils {
         for (int r = 0; r<rowNb; r++) {
             monitor.worked(1);
             for (int c = 0; c < colNb; c++) {
-                double d = cast.getDoubleValue(
-                        data.getCellValue(r, c, valueDimension));
+                Object v = data.getCellValue(r, c, valueDimension);
+                if (v == null)
+                    continue;
+                double d = cast.getDoubleValue(v);
                 if (!Double.isNaN(d)) {
                     if (valueList.size() <= maxUnique && !valueList.contains(d) )
                         valueList.add(d);

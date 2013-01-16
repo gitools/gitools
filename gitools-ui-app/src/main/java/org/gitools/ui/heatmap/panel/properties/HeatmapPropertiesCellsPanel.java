@@ -23,8 +23,28 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDim;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorDescriptor;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.impl.CategoricalElementDecorator;
+import org.gitools.model.decorator.impl.PValueElementDecorator;
+import org.gitools.model.decorator.impl.ZScoreElementDecorator;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.gitools.ui.settings.decorators.DecoratorArchive;
+import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
+import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
+import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
@@ -33,33 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.NumericColorScale;
-import edu.upf.bg.colorscale.impl.CategoricalColorScale;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.impl.CategoricalElementDecorator;
-import org.gitools.model.decorator.impl.PValueElementDecorator;
-import org.gitools.model.decorator.impl.ZScoreElementDecorator;
-import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.progress.JobProgressDialog;
-import org.gitools.ui.platform.progress.JobProgressMonitor;
-import org.gitools.ui.settings.decorators.DecoratorArchive;
-import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
-import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
-import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel {
     
@@ -390,7 +383,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             }
         });
 
-        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/OpenAnalysis16.gif"))); // NOI18N
+        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.openAnalysis16))); // NOI18N
         loadScale.setToolTipText("LoadScale");
         loadScale.setFocusable(false);
         loadScale.setMaximumSize(new java.awt.Dimension(30, 30));

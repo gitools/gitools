@@ -17,22 +17,21 @@
 
 package org.gitools.ui.wizard.common;
 
-import java.awt.BorderLayout;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class FileChooserPage extends AbstractWizardPage {
 
 	private int selectionMode;
 	private File currentPath;
 	private File selectedFile;
+    private FileFilter fileFilter;
 	
 	private JFileChooser fileChooser;
 	
@@ -50,6 +49,7 @@ public class FileChooserPage extends AbstractWizardPage {
 		fileChooser = new JFileChooser();
 		fileChooser.setControlButtonsAreShown(false);
 		fileChooser.setFileSelectionMode(selectionMode);
+        fileChooser.setFileFilter(fileFilter);
 		
 		if (currentPath != null)
 			fileChooser.setCurrentDirectory(currentPath);
@@ -95,4 +95,12 @@ public class FileChooserPage extends AbstractWizardPage {
 	public File[] getSelectedFiles() {
 		return fileChooser.getSelectedFiles();
 	}
+
+    public FileFilter getFileFilter() {
+        return fileFilter;
+    }
+
+    public void setFileFilter(FileFilter fileFilter) {
+        this.fileFilter = fileFilter;
+    }
 }

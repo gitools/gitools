@@ -6,13 +6,15 @@
  */
 package org.gitools.ui.platform.component;
 
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.editor.IEditor;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
+
 
 /**
  * Component to be used as tabComponent;
@@ -75,7 +77,15 @@ public class EditorTabComponent extends JPanel {
 		else
 			label.setFont(label.getFont().deriveFont(Font.PLAIN));
 
-		label.setText(editor.getName());
+
+        String name = editor.getName();
+		label.setText(name);
+        label.setIcon(editor.getIcon());
+        label.setIconTextGap(3);
+        label.setHorizontalTextPosition(SwingConstants.RIGHT);
+
+
+        //TODO: ADD ICON heatmap or analysis
 
 		String toolTip = null;
 		if (editor.getFile() != null)

@@ -109,7 +109,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.CORRELATIONS,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -142,7 +142,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.CORRELATIONS,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

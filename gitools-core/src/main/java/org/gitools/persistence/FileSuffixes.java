@@ -41,6 +41,7 @@ public class FileSuffixes {
 
 	public static final String OBJECT_MATRIX = "tdm";
 	public static final String DOUBLE_MATRIX = "cdm";
+    public static final String GENE_CLUSTER_TEXT = "gct";
 	public static final String DOUBLE_BINARY_MATRIX = "bdm";
 	public static final String STRING_MATRIX = "tsv";
 	public static final String ANNOTATION_MATRIX = "tsv";

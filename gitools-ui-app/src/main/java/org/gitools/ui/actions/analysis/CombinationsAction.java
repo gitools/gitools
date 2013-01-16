@@ -18,9 +18,6 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.heatmap.Heatmap;
@@ -37,6 +34,11 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 
 public class CombinationsAction extends BaseAction {
 
@@ -103,7 +105,13 @@ public class CombinationsAction extends BaseAction {
 					final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-combination", FileSuffixes.HEATMAP));
+                    String analysisTitle = analysis.getTitle();
+
+                    if (!analysisTitle.equals(""))
+                        editor.setName(analysis.getTitle() + "." + FileSuffixes.COMBINATION);
+                    else
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.COMBINATION));
+                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

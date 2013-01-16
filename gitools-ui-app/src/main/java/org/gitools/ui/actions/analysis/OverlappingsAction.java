@@ -18,8 +18,6 @@
 package org.gitools.ui.actions.analysis;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingProcessor;
 import org.gitools.heatmap.Heatmap;
@@ -37,6 +35,10 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.settings.Settings;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public class OverlappingsAction extends BaseAction {
 
@@ -106,10 +108,16 @@ public class OverlappingsAction extends BaseAction {
 					final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
 					String ext = PersistenceUtils.getExtension(currentEditor.getName());
-					
-					editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "-overlapping", FileSuffixes.HEATMAP));
 
-					SwingUtilities.invokeLater(new Runnable() {
+                    String analysisTitle = analysis.getTitle();
+
+                    if (!analysisTitle.equals(""))
+                        editor.setName(analysis.getTitle() + "."+FileSuffixes.OVERLAPPING);
+                    else
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.OVERLAPPING));
+                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
+
+                    SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
 							AppFrame.instance().getEditorsPanel().addEditor(editor);

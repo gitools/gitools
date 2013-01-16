@@ -35,6 +35,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class AppFrame extends JFrame {
 
@@ -107,7 +111,7 @@ public class AppFrame extends JFrame {
 		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(980, 680));
+		setPreferredSize(new Dimension(980, 750));
 		pack();
 	}
 
@@ -207,10 +211,54 @@ public class AppFrame extends JFrame {
 		createWelcomeView();
 		//createDemoView();
 		editorsPanel.setSelectedIndex(0);
-		
+
 		setLocationByPlatform(true);
 		setVisible(true);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(!isLatestGitools()) {
+                        JOptionPane.showMessageDialog(AppFrame.instance(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        };
+
+        Thread t = new Thread(runnable);
+        t.start();
+
+
+
 	}
+
+    public boolean isLatestGitools() throws Exception {
+
+        String thisVersion = AppFrame.getAppVersion();
+        if (thisVersion.toLowerCase().contains("snapshot"))
+            return true;
+
+        URL latestUrl = new URL("http://www.gitools.org/download/latest.txt");
+
+        URLConnection con = latestUrl.openConnection();
+        con.setConnectTimeout(5);
+        con.setReadTimeout(5);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(latestUrl.openStream()));
+
+        String latestVersion;
+        latestVersion = in.readLine();
+        in.close();
+
+        if (latestUrl != null && !latestVersion.equals(thisVersion)) {
+            return false;
+        }
+        return true;
+    }
 
 	public void setLeftPanelVisible(boolean visible) {
 		boolean prevVisible = leftPanel.isVisible();

@@ -32,15 +32,7 @@ import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
 
-import org.gitools.persistence.text.DoubleBinaryMatrixTextPersistence;
-import org.gitools.persistence.text.GeneMatrixPersistence;
-import org.gitools.persistence.text.GeneMatrixTransposedPersistence;
-import org.gitools.persistence.text.GeneSetPersistence;
-import org.gitools.persistence.text.ModuleMapText2CPersistence;
-import org.gitools.persistence.text.AnnotationMatrixTextPersistence;
-import org.gitools.persistence.text.DoubleMatrixTextPersistence;
-import org.gitools.persistence.text.ModuleMapTextIndicesPersistence;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.text.*;
 import org.gitools.persistence.xml.*;
 import org.gitools.table.model.TableFigure;
 
@@ -72,6 +64,7 @@ public class PersistenceInitialization {
 		pm.registerFormat(MimeTypes.GENE_MATRIX_TRANSPOSED, FileSuffixes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
 		pm.registerFormat(MimeTypes.OBJECT_MATRIX, FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class, ObjectMatrixTextPersistence.class);
 		pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class, DoubleMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.GENE_CLUSTER_TEXT, DoubleMatrix.class, GctMatrixTextPersistence.class);
 		pm.registerFormat(MimeTypes.DOUBLE_BINARY_MATRIX, FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class, DoubleBinaryMatrixTextPersistence.class);
 
 		pm.registerFormat(MimeTypes.ANNOTATION_MATRIX, FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class, AnnotationMatrixTextPersistence.class);

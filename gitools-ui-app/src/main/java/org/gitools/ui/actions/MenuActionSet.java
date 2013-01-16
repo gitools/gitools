@@ -18,11 +18,10 @@
 package org.gitools.ui.actions;
 
 import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
 
-import javax.swing.JMenuBar;
-
-import org.gitools.ui.platform.actions.ActionSetUtils;
+import javax.swing.*;
 
 public class MenuActionSet extends ActionSet {
 
@@ -44,7 +43,8 @@ public class MenuActionSet extends ActionSet {
 				new ActionSet("Open", new BaseAction[] {
 					//FileActions.openProjectAction,
 					FileActions.openEnrichmentAnalysisAction,
-					FileActions.openHeatmapFromMatrixAction
+					FileActions.openHeatmapFromMatrixAction,
+                    FileActions.openGenomeSpaceMatrixAction
 				}),
 				BaseAction.separator,
 				FileActions.saveAction,
@@ -54,6 +54,7 @@ public class MenuActionSet extends ActionSet {
 				BaseAction.separator,
 				new ActionSet("Import", new BaseAction[] {
 					new ActionSet("Matrix", new BaseAction[] {
+                        FileActions.importExcelMatrixAction,
 						FileActions.importIntogenTableAction
 					}),
 					new ActionSet("Modules", new BaseAction[] {

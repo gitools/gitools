@@ -5,7 +5,7 @@
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.1</version>
+    <version>1.8.0</version>
     <name>gitools</name>
     <description>Gitools</description>
     <url>https://bg.upf.edu/forge/projects/gitools</url>
@@ -63,10 +63,19 @@
     </properties>
 
     <repositories>
+
+        <repository>
+            <id>project</id>
+            <name>Project Maven Repository</name>
+            <layout>default</layout>
+            <url>file://${project.basedir}/../lib</url>
+        </repository>
+
         <repository>
             <id>java.net</id>
             <url>http://download.java.net/maven/2</url>
         </repository>
+
     </repositories>
 
     <distributionManagement>
@@ -189,9 +198,9 @@
             </dependency>
 
             <dependency>
-                <groupId>weka</groupId>
-                <artifactId>weka</artifactId>
-                <version>3.6.4</version>
+                <groupId>nz.ac.waikato.cms.weka</groupId>
+                <artifactId>weka-stable</artifactId>
+                <version>3.6.8</version>
             </dependency>
 
             <dependency>
@@ -205,6 +214,19 @@
                 <artifactId>jsc</artifactId>
                 <version>20050805</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>3.8</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

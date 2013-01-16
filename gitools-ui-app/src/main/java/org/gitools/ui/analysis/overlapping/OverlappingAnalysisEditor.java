@@ -123,7 +123,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.OVERLAPPING,
-						"-data", FileSuffixes.HEATMAP));
+						"-data", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {
@@ -156,7 +156,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
 				editor.setName(editorPanel.deriveName(
 						getName(), FileSuffixes.OVERLAPPING,
-						"-results", FileSuffixes.HEATMAP));
+						"-results", ""));
 
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override public void run() {

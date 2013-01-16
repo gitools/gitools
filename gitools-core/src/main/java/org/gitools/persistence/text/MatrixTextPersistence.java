@@ -34,6 +34,19 @@ import java.util.zip.DataFormatException;
 public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		extends BaseMatrixPersistence<T> {
 
+    private int skipLines;
+    private Set<Integer> skipColumns;
+
+    public MatrixTextPersistence() {
+        this(0);
+    }
+
+    public MatrixTextPersistence(int skipLines, Integer... skipColumns) {
+        super();
+        this.skipLines = skipLines;
+        this.skipColumns = new HashSet<Integer>(Arrays.asList(skipColumns));
+    }
+
     protected boolean isBinaryValues() {
 		if (getProperties().containsKey(BINARY_VALUES))
 			return (Boolean) getProperties().get(BINARY_VALUES);
@@ -83,7 +96,15 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		// Read header
 
 		try {
-			final String[] header = parser.readNext();
+
+            if (skipLines > 0) {
+                for (int s = 0; s < skipLines; s++) {
+                    parser.readNext();
+                }
+            }
+
+            String[] allHeaders = parser.readNext();
+			final String[] header = skipColumns(allHeaders, allHeaders.length - skipColumns.size());
 			if (header.length < 2)
 				throw new DataFormatException("At least 2 columns expected.");
 
@@ -106,7 +127,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			String[] fields;
 
 			final List<String> names = new ArrayList<String>();
-			while ((fields = parser.readNext()) != null) {
+			while ((fields = skipColumns(parser.readNext(), numColumns)) != null) {
 				if (popLabelsSet == null || popLabelsSet.contains(fields[0]))
 					names.add(fields[0]);
 			}
@@ -180,6 +201,12 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		try {
 			CSVReader parser = new CSVReader(reader);
 
+            if (skipLines > 0) {
+                for (int s = 0; s < skipLines; s++) {
+                    parser.readNext();
+                }
+            }
+
 			parser.readNext(); // discard header
 
 			matrix.makeCells(numRows, numColumns);
@@ -187,14 +214,14 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			String[] fields;
 			int row = 0;
 
-			while ((fields = parser.readNext()) != null) {
+			while ((fields = skipColumns(parser.readNext(), numColumns)) != null) {
 				if (popLabelsSet != null && !popLabelsSet.contains(fields[0]))
 					continue;
 
 				int rowidx = rowsOrder != null ? rowsOrder[row] : row;
 
 				if (rowidx >= 0) {
-					rowNames[rowidx] = fields[0];
+                    rowNames[rowidx] = fields[0];
 
 					int col = 0;
 
@@ -236,6 +263,31 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 		monitor.end();
 	}
+
+    private String[] skipColumns(String[] columns, int numColumns) {
+        if (skipColumns.isEmpty()) {
+            return columns;
+        }
+
+        if (columns == null || columns.length == 0) {
+            return columns;
+        }
+
+        String[] result = new String[numColumns];
+        int r=0;
+        for (int i=0; i < columns.length; i++) {
+            if (!skipColumns.contains(Integer.valueOf(i))) {
+                result[r] = columns[i];
+                r++;
+
+                if (r == numColumns) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
 
 	public void write(
 			File file,
@@ -298,4 +350,5 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 
 		monitor.end();
 	}
+
 }

@@ -17,17 +17,13 @@
 
 package org.gitools.ui.settings;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -36,7 +32,13 @@ public class Settings {
 	public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
 	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
 	public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
+
+    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+
     public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+
+    public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
+    public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identitydev.genomespace.org:8444/identityServer/basic";
 	
 	private static final String userPath = 
 		System.getProperty("user.home", ".");
@@ -97,6 +99,9 @@ public class Settings {
 	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
 	private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
 
+
+    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
+
 	private boolean showEnrichmentExamplePage = true;
 	private boolean showOncodriveExamplePage = true;
 	private boolean showCorrelationExamplePage = true;
@@ -110,7 +115,10 @@ public class Settings {
     // IGV parameters
     private boolean showIGVLink = true;
     private String igvUrl = DEFAULT_IGV_URL;
-    private int igvTimeout = 3000;
+
+    // Genome space parameters
+    private String gsDmServer = DEFAULT_GS_DM_SERVER;
+    private String gsIdentityServer = DEFAULT_GS_IDENTITY_SERVER;
 
     // Preview features
     private boolean previewFeatures = false;
@@ -299,14 +307,6 @@ public class Settings {
         this.igvUrl = igvUrl;
     }
 
-    public int getIgvTimeout() {
-        return igvTimeout;
-    }
-
-    public void setIgvTimeout(int igvTimeout) {
-        this.igvTimeout = igvTimeout;
-    }
-
     public boolean isShowIGVLink() {
         return showIGVLink;
     }
@@ -315,11 +315,35 @@ public class Settings {
         this.showIGVLink = showIGVLink;
     }
 
+    public String getGsDmServer() {
+        return gsDmServer;
+    }
+
+    public void setGsDmServer(String gsDmServer) {
+        this.gsDmServer = gsDmServer;
+    }
+
+    public String getGsIdentityServer() {
+        return gsIdentityServer;
+    }
+
+    public void setGsIdentityServer(String gsIdentityServer) {
+        this.gsIdentityServer = gsIdentityServer;
+    }
+
     public boolean isPreviewFeatures() {
         return previewFeatures;
     }
 
     public void setPreviewFeatures(boolean previewFeatures) {
         this.previewFeatures = previewFeatures;
+    }
+
+    public int getEditorTabLength() {
+        return editorTabLength;
+    }
+
+    public void setEditorTabLength(int editorTabLength) {
+        this.editorTabLength = editorTabLength;
     }
 }
