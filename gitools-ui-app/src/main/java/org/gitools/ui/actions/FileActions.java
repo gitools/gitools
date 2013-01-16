@@ -37,6 +37,7 @@ public class FileActions {
 	public static final BaseAction openProjectAction = new OpenProjectAction();
 	public static final BaseAction openEnrichmentAnalysisAction = new OpenAnalysisAction();
 	public static final BaseAction openHeatmapFromMatrixAction = new OpenHeatmapAction();
+    public static final BaseAction openGenomeSpaceMatrixAction = new OpenGenomeSpaceMatrixAction();
 
 	// Save
 
@@ -55,8 +56,7 @@ public class FileActions {
 	
 	public static final BaseAction importIntogenTableAction = new ImportIntogenMatrixAction();
     public static final BaseAction importExcelMatrixAction = new ImportExcelMatrixAction();
-    public static final BaseAction importGenomeSpaceMatrixAction = new ImportGenomeSpaceMatrixAction();
-	public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
+    public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
 	public static final BaseAction importIntogenHeatmapAction = new ImportIntogenHeatmapAction();
 	
 	public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();

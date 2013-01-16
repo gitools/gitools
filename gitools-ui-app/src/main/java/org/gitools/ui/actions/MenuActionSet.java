@@ -43,7 +43,8 @@ public class MenuActionSet extends ActionSet {
 				new ActionSet("Open", new BaseAction[] {
 					//FileActions.openProjectAction,
 					FileActions.openEnrichmentAnalysisAction,
-					FileActions.openHeatmapFromMatrixAction
+					FileActions.openHeatmapFromMatrixAction,
+                    FileActions.openGenomeSpaceMatrixAction
 				}),
 				BaseAction.separator,
 				FileActions.saveAction,
@@ -54,8 +55,7 @@ public class MenuActionSet extends ActionSet {
 				new ActionSet("Import", new BaseAction[] {
 					new ActionSet("Matrix", new BaseAction[] {
                         FileActions.importExcelMatrixAction,
-						FileActions.importIntogenTableAction,
-                        FileActions.importGenomeSpaceMatrixAction
+						FileActions.importIntogenTableAction
 					}),
 					new ActionSet("Modules", new BaseAction[] {
 						FileActions.importIntogenOncomodulesAction,

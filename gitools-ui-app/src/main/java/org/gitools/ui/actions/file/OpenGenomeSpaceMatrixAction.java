@@ -30,12 +30,12 @@ import org.json.JSONException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-public class ImportGenomeSpaceMatrixAction extends BaseAction {
+public class OpenGenomeSpaceMatrixAction extends BaseAction {
 
 	private static final long serialVersionUID = 668140963768246841L;
 
-	public ImportGenomeSpaceMatrixAction() {
-		super("Genomespace matrix ...");
+	public OpenGenomeSpaceMatrixAction() {
+		super("Heatmap from Genomespace ...");
 		setLargeIconFromResource(IconNames.gs24);
 		setSmallIconFromResource(IconNames.gs16);
 		setDefaultEnabled(true);
