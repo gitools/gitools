@@ -143,6 +143,8 @@ public class WelcomeEditor extends Html4Editor {
 				new OpenAnalysisAction().actionPerformed(new ActionEvent(this, 0, name));
 			else if (ref.equals("DataHeatmap"))
 				new OpenHeatmapAction().actionPerformed(new ActionEvent(this, 0, name));
+            else if (ref.equals("DataHeatmapGS"))
+                new OpenGenomeSpaceMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
 		}
 		else if (name.equals("example")) {
 			LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
