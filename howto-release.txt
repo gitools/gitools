@@ -33,12 +33,12 @@ cd target
 unzip gitools-1.8.0-bin.zip
 gitools-1.8.0/bin/gitools
 
+# Deploy ZIP file
+scp target/gitools-1.8.0-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
+
 # Deploy Webstart
 # change back to the gitools root folder
 ./webstart-deploy.sh 1.8.0
-
-# Deploy ZIP file
-scp target/gitools-1.8.0-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
 
 # Update this file on the server:
 /usr/local/gitools/www/download/latest.txt
