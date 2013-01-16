@@ -103,8 +103,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
                 }
             }
 
-            String[] allHeaders = parser.readNext();
-			final String[] header = skipColumns(allHeaders, allHeaders.length - skipColumns.size());
+			final String[] header = skipColumns(parser.readNext());
 			if (header.length < 2)
 				throw new DataFormatException("At least 2 columns expected.");
 
@@ -127,7 +126,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			String[] fields;
 
 			final List<String> names = new ArrayList<String>();
-			while ((fields = skipColumns(parser.readNext(), numColumns)) != null) {
+			while ((fields = skipColumns(parser.readNext())) != null) {
 				if (popLabelsSet == null || popLabelsSet.contains(fields[0]))
 					names.add(fields[0]);
 			}
@@ -214,7 +213,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 			String[] fields;
 			int row = 0;
 
-			while ((fields = skipColumns(parser.readNext(), numColumns)) != null) {
+			while ((fields = skipColumns(parser.readNext())) != null) {
 				if (popLabelsSet != null && !popLabelsSet.contains(fields[0]))
 					continue;
 
@@ -264,7 +263,7 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
 		monitor.end();
 	}
 
-    private String[] skipColumns(String[] columns, int numColumns) {
+    private String[] skipColumns(String[] columns) {
         if (skipColumns.isEmpty()) {
             return columns;
         }
@@ -273,14 +272,14 @@ public abstract class MatrixTextPersistence<T extends BaseMatrix>
             return columns;
         }
 
-        String[] result = new String[numColumns];
+        String[] result = new String[columns.length - skipColumns.size()];
         int r=0;
         for (int i=0; i < columns.length; i++) {
             if (!skipColumns.contains(Integer.valueOf(i))) {
                 result[r] = columns[i];
                 r++;
 
-                if (r == numColumns) {
+                if (r == result.length) {
                     break;
                 }
             }

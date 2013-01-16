@@ -64,7 +64,7 @@ public class PersistenceInitialization {
 		pm.registerFormat(MimeTypes.GENE_MATRIX_TRANSPOSED, FileSuffixes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
 		pm.registerFormat(MimeTypes.OBJECT_MATRIX, FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class, ObjectMatrixTextPersistence.class);
 		pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class, DoubleMatrixTextPersistence.class);
-        pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.GENE_CLUSTER_TEXT, DoubleMatrix.class, GctMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.GENE_CLUSTER_TEXT, FileSuffixes.GENE_CLUSTER_TEXT, DoubleMatrix.class, GctMatrixTextPersistence.class);
 		pm.registerFormat(MimeTypes.DOUBLE_BINARY_MATRIX, FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class, DoubleBinaryMatrixTextPersistence.class);
 
 		pm.registerFormat(MimeTypes.ANNOTATION_MATRIX, FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class, AnnotationMatrixTextPersistence.class);
