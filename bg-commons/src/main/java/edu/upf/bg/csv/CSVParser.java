@@ -55,6 +55,11 @@ public class CSVParser {
      */
     public static final char DEFAULT_QUOTE_CHARACTER = '"';
 
+    /**
+     * By default don't use quoted fields.
+     */
+    public static final boolean DEFAULT_USE_QUOTE = false;
+
 
     /**
      * The default escape character to use if none is supplied to the
@@ -218,7 +223,7 @@ public class CSVParser {
                     sb.append(nextLine.charAt(i + 1));
                     i++;
                 }
-            } else if (c == quotechar) {
+            } else if (DEFAULT_USE_QUOTE && c == quotechar) {
                 if (isNextCharacterEscapedQuote(nextLine, inQuotes || inField, i)) {
                     sb.append(nextLine.charAt(i + 1));
                     i++;
