@@ -1,24 +1,57 @@
+<?php
+
+    header('Content-type: application/x-java-jnlp-file');
+    header('Content-Disposition: attachment; filename="gitools.jnlp"');
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate");
+    header("Cache-control: post-check=0, pre-check=0, false");
+    header("Pragma: no-cache");
+    header("Content-Type: application/x-java-jnlp-file");
+
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+
+    if(preg_match('/Linux/',$agent)) $heapsize = '3200m';
+    elseif(preg_match('/Mac/',$agent)) $heapsize = '3200m';
+    elseif(preg_match('/Win/',$agent)) $heapsize = '1100m';
+    else $heapsize = '1100m';
+
+    $LOAD=htmlspecialchars($_GET['load']);
+?>
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+"
-  codebase="$project.Properties.wsCodebase" href="$outputFile">
-	<information>
-		<title>Gitools</title>
-		<vendor>Biomedical Genomics</vendor>
-		<homepage href="$project.Properties.wsHomepage"/>
-		<description>Analysis and visualization of genomic data</description>
-		<icon href="icon.png"/>
-		<icon kind="splash" href="splash.png"/> 
-		<offline-allowed/>
-	</information>
+<jnlp spec="6.0+"
+  codebase="$wsCodebase">
+        <information>
+                <title>Gitools</title>
+                <vendor>Biomedical Genomics</vendor>
+                <homepage href="$wsHomepage"/>
+                <description>Analysis and visualization of genomic data</description>
+                <icon href="icon.png"/>
+                <icon kind="splash" href="splash.png"/>
+                <offline-allowed/>
+        </information>
 
-	<security>
-		<all-permissions/>
-	</security>
-	
-	<resources>
-		<j2se version="1.6+"/>
-		$dependencies
-	</resources>
+        <security>
+                <all-permissions/>
+        </security>
 
-	<application-desc main-class="$mainClass"/>
+        <update check="always" policy="always"/>
+
+ <resources>
+         <java version="1.6+"
+                  initial-heap-size="256m"
+                  max-heap-size="<?php echo $heapsize; ?>" />
+          $dependencies
+        </resources>
+
+  <application-desc main-class="$mainClass">
+
+<?php
+    if($LOAD != null && $LOAD != "")
+    {
+        print("     <argument>load</argument>\n");
+        print("     <argument>$LOAD</argument>\n");
+    }
+?>
+  </application-desc>
 </jnlp>

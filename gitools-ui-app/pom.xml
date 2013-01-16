@@ -193,8 +193,8 @@
 					<!-- JNLP generation -->
 					<jnlp>
 						<!-- default values -->
-						<!--inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath-->
-						<!--inputTemplate>src/main/jnlp/template.vm</inputTemplate--> <!-- relative to inputTemplateResourcePath -->
+						<inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
+						<inputTemplate>src/main/jnlp/template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
 						<outputFile>gitools.jnlp</outputFile> <!-- defaults to launch.jnlp -->
 
 						<mainClass>${mainClass}</mainClass>
