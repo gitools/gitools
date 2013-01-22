@@ -372,7 +372,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
         decoPanel.setRequestFocusEnabled(false);
         decoPanel.setLayout(new javax.swing.BoxLayout(decoPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Save16.gif"))); // NOI18N
+        saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.save16))); // NOI18N
         saveScale.setToolTipText("Save scale");
         saveScale.setFocusable(false);
         saveScale.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -383,7 +383,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel 
             }
         });
 
-        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.openAnalysis16))); // NOI18N
+        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.open16))); // NOI18N
         loadScale.setToolTipText("LoadScale");
         loadScale.setFocusable(false);
         loadScale.setMaximumSize(new java.awt.Dimension(30, 30));
