@@ -427,7 +427,7 @@ public abstract class MatrixViewSorter {
         Comparator<Integer> numericComparator = new Comparator<Integer>() {
             @Override public int compare(Integer idx1, Integer idx2) {
                 Double v1;
-                Double v2 = Double.NaN;
+                Double v2;
 
                 try {
                     v1 = Double.parseDouble(labelProvider.getLabel(idx1));
@@ -441,7 +441,10 @@ public abstract class MatrixViewSorter {
                     v2 = Double.NaN;
                 }
 
-                return v1.compareTo(v2) * dirSign;
+                if (v1.isNaN() || v2.isNaN())
+                    return v1.compareTo(v2);
+                else
+                    return v1.compareTo(v2) * dirSign;
             }
         };
 
