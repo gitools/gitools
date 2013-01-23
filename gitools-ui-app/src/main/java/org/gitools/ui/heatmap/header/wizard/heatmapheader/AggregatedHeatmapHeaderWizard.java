@@ -357,7 +357,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 int annRowIdx = -1;
                 annRowIdx = annotations.getRowIndex(rowLabel);
                 Double v = Double.NaN;
-                if (annRowIdx >= 0) {
+                if (annRowIdx >= 0 && annColIdx >= 0) {
                     v = Double.parseDouble( annotations.getCell(annRowIdx,annColIdx) );
                 }
                 valueMatrix.set(i,0,v);
@@ -381,7 +381,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 int annRowIdx = -1;
                 annRowIdx = annotations.getRowIndex(colLabel);
                 Double v = Double.NaN;
-                if (annColIdx >= 0) {
+                if (annColIdx >= 0 && annRowIdx >= 0) {
                     v = Double.parseDouble(annotations.getCell(annRowIdx,annColIdx));
                 }
                 valueMatrix.set(0,i,v);

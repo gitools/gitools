@@ -17,6 +17,21 @@
 
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.ElementDecoratorDescriptor;
+import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.settings.decorators.DecoratorArchive;
+import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
+import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
+import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,23 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.ui.panels.decorator.ElementDecoratorPanelFactory;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
-
-import javax.swing.*;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.decorators.DecoratorArchive;
-import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
-import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
-import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
 public class ColorScalePage extends AbstractWizardPage {
 
@@ -169,7 +167,7 @@ public class ColorScalePage extends AbstractWizardPage {
             .addGap(0, 230, Short.MAX_VALUE)
         );
 
-        saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Save16.gif"))); // NOI18N
+        saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.save16))); // NOI18N
         saveScale.setToolTipText("Save scale");
         saveScale.setFocusable(false);
         saveScale.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -180,7 +178,7 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         });
 
-        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/OpenAnalysis16.gif"))); // NOI18N
+        loadScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.open16))); // NOI18N
         loadScale.setToolTipText("LoadScale");
         loadScale.setFocusable(false);
         loadScale.setMaximumSize(new java.awt.Dimension(30, 30));
