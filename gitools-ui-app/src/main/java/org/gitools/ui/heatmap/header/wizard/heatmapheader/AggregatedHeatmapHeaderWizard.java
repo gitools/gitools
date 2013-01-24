@@ -27,6 +27,7 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
+import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
@@ -144,8 +145,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         } else if (dataSource == DataSourceEnum.annotation && page == this.dataSourceAnnotationPage) {
             try {
                 headerValueHeatmap = annotationToHeatmap();
-            } catch (NumberFormatException  e) {
-                dataSourceAnnotationPage.setMessage(MessageStatus.ERROR,"The selected annotation contains non-numeric values.");
+            } catch (Exception  e) {
+                dataSourceAnnotationPage.setMessage(MessageStatus.ERROR,"The selected annotation doesn't contain any numeric values.");
                 return page;
             }
             dataSourceAnnotationPage.setMessage(MessageStatus.INFO,dataSourceAnnotationPage.infoMessage);
@@ -336,7 +337,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         });
     }
 
-    private Heatmap annotationToHeatmap() {
+    private Heatmap annotationToHeatmap() throws Exception {
 
         String[] columnNames;
         String[] rowNames;
@@ -350,7 +351,10 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             int[] rows = heatmap.getMatrixView().getVisibleRows();
             valueMatrix = DoubleFactory2D.dense.make(rows.length, 1, 0.0);
 
+            DoubleTranslator doubleTranslator = new DoubleTranslator();
             rowNames = new String[rows.length];
+            boolean containsNumericValue = false;
+
             for (int i = 0; i < rows.length; i++) {
                 String rowLabel = heatmap.getMatrixView().getRowLabel(i);
                 rowNames[i] = rowLabel;
@@ -358,10 +362,16 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 annRowIdx = annotations.getRowIndex(rowLabel);
                 Double v = Double.NaN;
                 if (annRowIdx >= 0 && annColIdx >= 0) {
-                    v = Double.parseDouble( annotations.getCell(annRowIdx,annColIdx) );
+                    String value = annotations.getCell(annRowIdx, annColIdx);
+                    v = doubleTranslator.stringToValue(value,false);
                 }
                 valueMatrix.set(i,0,v);
+                if (!containsNumericValue && !v.isNaN())
+                    containsNumericValue = true;
             }
+
+            if (!containsNumericValue)
+                throw new Exception("No numeric values parsed");
 
             columnNames = new String[1];
             columnNames[0] = dataSourceAnnotationPage.getSelectedAnnotation();
