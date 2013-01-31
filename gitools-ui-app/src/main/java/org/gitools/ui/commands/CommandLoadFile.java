@@ -101,6 +101,9 @@ public class CommandLoadFile extends AbstractCommand {
             }
         });
 
+        // Force a GC to release free memory
+        System.gc();
+
         monitor.end();
 
     }
