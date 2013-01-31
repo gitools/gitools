@@ -18,8 +18,6 @@
 package org.gitools.ui.actions.data;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-
-import java.awt.event.ActionEvent;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.MatrixViewSorter;
@@ -30,6 +28,8 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.sort.LabelSortPage;
+
+import java.awt.event.ActionEvent;
 
 
 public class SortByLabelAction extends BaseAction {
@@ -75,10 +75,12 @@ public class SortByLabelAction extends BaseAction {
 						page.getRowsPattern(),
 						hm.getRowDim().getAnnotations(),
 						page.getRowsDirection(),
+                        page.getRowsNumeric(),
 						page.isApplyToColumnsSelected(),
 						page.getColumnsPattern(),
 						hm.getColumnDim().getAnnotations(),
-						page.getColumnsDirection());
+						page.getColumnsDirection(),
+                        page.getColumnsNumeric());
 
 				monitor.end();
 			}

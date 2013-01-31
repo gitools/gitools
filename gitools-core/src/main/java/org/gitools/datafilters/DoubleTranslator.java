@@ -21,16 +21,22 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
 	@Override
 	public Double stringToValue(String str) {
-		if (str == null || str.isEmpty())
-			return null;
-		
-		double value = Double.NaN;
-		try {
-			value = Double.parseDouble(str);
-		}
-		catch (NumberFormatException e) {}
-		return value;
+		return stringToValue(str,true);
 	}
+
+    public Double stringToValue(String str, boolean allowNull) {
+        if (allowNull) {
+            if (str == null || str.isEmpty())
+                return null;
+        }
+
+        double value = Double.NaN;
+        try {
+            value = Double.parseDouble(str);
+        }
+        catch (NumberFormatException e) {}
+        return value;
+    }
 
 	@Override
 	public String valueToString(Double value) {

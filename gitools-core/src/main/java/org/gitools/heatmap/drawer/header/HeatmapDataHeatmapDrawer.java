@@ -129,7 +129,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 		int leadRow = headerHeatmap.getMatrixView().getLeadSelectionRow();
 		int leadColumn = headerHeatmap.getMatrixView().getLeadSelectionColumn();
 
-		int y = box.y + rowStart * cellHeight;
+		int y = (horizontal ) ? box.y + colStart * cellHeight :  box.y + rowStart * cellHeight;
         int Yoriginal = y;
 		for (int row = rowStart; row < rowEnd; row++) {
             int x;

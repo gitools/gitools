@@ -17,13 +17,9 @@
 
 package org.gitools.matrix.sort;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.commons.lang.ArrayUtils;
 import edu.upf.bg.aggregation.IAggregator;
 import edu.upf.bg.aggregation.SumAbsAggregator;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
@@ -33,6 +29,10 @@ import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class MatrixViewSorter {
 
@@ -350,12 +350,14 @@ public abstract class MatrixViewSorter {
 	public static void sortByLabel(IMatrixView matrixView,
 			boolean sortRows,
 			SortDirection rowsDirection,
+            boolean rowsNumeric,
 			boolean sortCols,
-			SortDirection colsDirection) {
+			SortDirection colsDirection,
+            boolean colsNumeric) {
 
 		sortByLabel(matrixView,
-				sortRows, "${id}", null, rowsDirection,
-				sortCols, "${id}", null, colsDirection);
+				sortRows, "${id}", null, rowsDirection, rowsNumeric,
+				sortCols, "${id}", null, colsDirection, colsNumeric);
 	}
 
     //TODO: sort by label with all selected properties!
@@ -365,10 +367,12 @@ public abstract class MatrixViewSorter {
 			String rowsPattern,
 			AnnotationMatrix rowsAnnMatrix,
 			SortDirection rowsDirection,
+            boolean rowsNumeric,
 			boolean sortCols,
 			String colsPattern,
 			AnnotationMatrix colsAnnMatrix,
-			SortDirection colsDirection) {
+			SortDirection colsDirection,
+            boolean colsNumeric) {
 		
 		if (sortRows) {
 			LabelProvider labelProvider = new MatrixRowsLabelProvider(matrixView);
@@ -380,7 +384,8 @@ public abstract class MatrixViewSorter {
 					sortLabels(
 						labelProvider,
 						rowsDirection,
-						matrixView.getVisibleRows()));
+						matrixView.getVisibleRows(),
+                        rowsNumeric));
 		}
 
 		if (sortCols) {
@@ -393,14 +398,16 @@ public abstract class MatrixViewSorter {
 					sortLabels(
 						labelProvider,
 						colsDirection,
-						matrixView.getVisibleColumns()));
+						matrixView.getVisibleColumns(),
+                        colsNumeric));
 		}
 	}
 
 	public static int[] sortLabels(
 			final LabelProvider labelProvider,
 			SortDirection direction,
-			int[] visibleIndices) {
+			int[] visibleIndices,
+            boolean numeric) {
 
 		int count = labelProvider.getCount();
 		Integer[] indices = new Integer[count];
@@ -417,7 +424,34 @@ public abstract class MatrixViewSorter {
 			}
 		};
 
-		Arrays.sort(indices, comparator);
+        Comparator<Integer> numericComparator = new Comparator<Integer>() {
+            @Override public int compare(Integer idx1, Integer idx2) {
+                Double v1;
+                Double v2;
+
+                try {
+                    v1 = Double.parseDouble(labelProvider.getLabel(idx1));
+                } catch (NumberFormatException e) {
+                    v1 = Double.NaN;
+                }
+
+                try {
+                    v2 = Double.parseDouble(labelProvider.getLabel(idx2));
+                } catch (NumberFormatException e) {
+                    v2 = Double.NaN;
+                }
+
+                if (v1.isNaN() || v2.isNaN())
+                    return v1.compareTo(v2);
+                else
+                    return v1.compareTo(v2) * dirSign;
+            }
+        };
+
+		if (numeric)
+            Arrays.sort(indices,numericComparator);
+        else
+            Arrays.sort(indices, comparator);
 
 		int[] vIndices = new int[count];
 		for (int i = 0; i < count; i++)
