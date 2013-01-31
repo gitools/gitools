@@ -373,6 +373,12 @@ public class HeatmapEditor extends AbstractEditor {
 			}
 		}
 
+        // Force heatmap IMatrixView detach to allow GC to free memory
+        this.heatmap.detach();
+
+        // Force GC
+        System.gc();
+
 		return true;
 	}
 

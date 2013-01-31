@@ -366,4 +366,8 @@ public class Heatmap
 		rowDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getUrl();*/
 	}
+
+    public void detach() {
+        this.matrixView = null;
+    }
 }
