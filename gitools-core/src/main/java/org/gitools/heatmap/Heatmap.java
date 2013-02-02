@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -38,6 +39,7 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.ZScoreResult;
 
@@ -69,12 +71,15 @@ public class Heatmap
 
 	// Cells
 
+	@XmlTransient
 	private ElementDecorator[] cellDecorators;
 	private int cellWidth;
 	private int cellHeight;
 
+	//@XmlTransient
 	private HeatmapDim rowDim;
 
+	@XmlTransient
 	private HeatmapDim columnDim;
 
 	// Other
@@ -82,6 +87,7 @@ public class Heatmap
 	@XmlTransient
 	private boolean showBorders;
 
+	@XmlTransient
 	PropertyChangeListener propertyListener;
 
     public Heatmap() {
