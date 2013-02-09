@@ -13,20 +13,9 @@ package org.gitools.ui.genomespace;
 
 
 import org.apache.log4j.Logger;
-import org.gitools.ui.settings.Settings;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookieStore;
-import java.net.HttpCookie;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +35,9 @@ public class GSUtils {
     private static String usernameSaveFileName = ".gsusername";
     public static String gsUser = null;
     public static String gsToken = null;
+
+    public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
+    public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identity.genomespace.org/identityServer/basic";
 
     private static File getTokenSaveDir() {
         String userDir = System.getProperty("user.home");
@@ -158,7 +150,7 @@ public class GSUtils {
 
 
         try {
-            URI gsURI = new URI(Settings.getDefault().getGsDmServer());
+            URI gsURI = new URI(DEFAULT_GS_DM_SERVER);
             CookieManager manager = (CookieManager) CookieManager.getDefault();
             if (manager == null) return;
             final CookieStore cookieStore = manager.getCookieStore();
@@ -174,6 +166,8 @@ public class GSUtils {
         } catch (URISyntaxException e) {
             log.error("Error creating GS URI", e);
         }
+
+
     }
 
     private static void writeToFile(String line, File aFile) {
