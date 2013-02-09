@@ -13,23 +13,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.gitools.ui.genomespace;
+package org.gitools.ui.platform.dialog;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.gitools.ui.platform.AppFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * Provides thread-safe, Swing-safe, utilities for interacting with JOptionPane.  Accounts for
- * (1) Swing is not thread safe => synchronize access
- * (2) JOptionPane methods must be invoked on event dispatch thread
- *
- * @author jrobinso
- */
 public class MessageUtils {
 
     private static Logger log = Logger.getLogger(MessageUtils.class);
@@ -45,33 +37,27 @@ public class MessageUtils {
      * @param e
      * @param message
      */
-    public static void showErrorMessage(String message, Exception e) {
+    public static void showErrorMessage(final Frame parent, String message, Exception e) {
         log.error(message, e);
-        showMessage(Level.ERROR, message);
+        showMessage(parent, Level.ERROR, message);
     }
 
-    public static void showMessage(String message) {
-        showMessage(Level.INFO, message);
+    public static void showMessage(final Frame parent, String message) {
+        showMessage(parent, Level.INFO, message);
     }
 
-    public static synchronized void showMessage(Level level, String message) {
+    public static synchronized void showMessage(final Frame parent, Level level, String message) {
 
         log.log(level, message);
-            // Always use HTML for message displays, but first remove any embedded <html> tags.
-            message = "<html>" + message.replaceAll("<html>", "");
-            Frame parent = AppFrame.instance();
-            Color background = parent != null ? parent.getBackground() : Color.lightGray;
-            //So users can select text
-            JEditorPane content = new JEditorPane();
-            content.setContentType("text/html");
-            content.setText(message);
-            content.setBackground(background);
-            JOptionPane.showMessageDialog(parent, content);
-    }
-
-    public static synchronized boolean confirm(final String message) {
-        final Frame parent = AppFrame.instance();
-        return confirm(parent, message);
+        // Always use HTML for message displays, but first remove any embedded <html> tags.
+        message = "<html>" + message.replaceAll("<html>", "");
+        Color background = parent != null ? parent.getBackground() : Color.lightGray;
+        //So users can select text
+        JEditorPane content = new JEditorPane();
+        content.setContentType("text/html");
+        content.setText(message);
+        content.setBackground(background);
+        JOptionPane.showMessageDialog(parent, content);
     }
 
     /**
@@ -110,9 +96,8 @@ public class MessageUtils {
         }
     }
 
-    public static String showInputDialog(final String message, final String defaultValue) {
+    public static String showInputDialog(final Frame parent, final String message, final String defaultValue) {
 
-        final Frame parent = AppFrame.instance();
         if (SwingUtilities.isEventDispatchThread()) {
             String val = JOptionPane.showInputDialog(parent, message, defaultValue);
             return val;
@@ -138,9 +123,9 @@ public class MessageUtils {
         }
     }
 
-    public static String showInputDialog(final String message) {
+    public static String showInputDialog(final Frame parent, final String message) {
 
-        final Frame parent = AppFrame.instance();
+
         if (SwingUtilities.isEventDispatchThread()) {
             String val = JOptionPane.showInputDialog(parent, message);
             return val;
@@ -165,7 +150,6 @@ public class MessageUtils {
             return (String) (returnValue.value);
         }
     }
-
 
 
 }

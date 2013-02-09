@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.dm.DMUtils;
 import org.gitools.ui.genomespace.dm.GSDirectoryListing;
 import org.gitools.ui.genomespace.dm.GSFileMetadata;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
 import org.json.JSONException;
 
@@ -178,7 +180,7 @@ public class GSFileBrowser extends JDialog {
         setVisible(false);
         dispose();
         GSUtils.logout();
-        if (MessageUtils.confirm("You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
+        if (MessageUtils.confirm(AppFrame.instance(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
             Settings.getDefault().save();
             System.exit(0);
         }
@@ -214,12 +216,12 @@ public class GSFileBrowser extends JDialog {
 
         } catch (Exception e1) {
             log.error("Error loading GS files", e1);
-            MessageUtils.showMessage("Error: " + e1.toString());
+            MessageUtils.showMessage(AppFrame.instance(), "Error: " + e1.toString());
         }
     }
 
     private void newFolderButtonActionPerformed(ActionEvent e) {
-        String folderName = MessageUtils.showInputDialog("Name of new folder:");
+        String folderName = MessageUtils.showInputDialog(AppFrame.instance(), "Name of new folder:");
         if (folderName != null && folderName.length() > 0) {
             String dirurl = selectedFile.getUrl();
             if (!selectedFile.isDirectory()) {
@@ -237,7 +239,7 @@ public class GSFileBrowser extends JDialog {
                 fetchContents(new URL(putURL));
             } catch (IOException e1) {
                 log.error("Error creating directory: " + putURL, e1);
-                MessageUtils.showMessage("<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
+                MessageUtils.showMessage(AppFrame.instance(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
             } catch (JSONException e1) {
                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }

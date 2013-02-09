@@ -17,6 +17,7 @@ import org.gitools.persistence.PersistenceUtils;
 import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
@@ -38,11 +39,11 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     public CommandLoadFile(String file, String mime) {
-       this(file, mime, null, null);
+        this(file, mime, null, null);
     }
 
     public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations) {
-       this(file, null, rowsAnnotations, columnsAnnotations);
+        this(file, null, rowsAnnotations, columnsAnnotations);
     }
 
     public CommandLoadFile(String file, String mime, String rowsAnnotations, String columnsAnnotations) {
@@ -58,16 +59,16 @@ public class CommandLoadFile extends AbstractCommand {
         monitor.begin("Loading ...", 1);
 
         File file = download(this.file, monitor);
-        
+
         if (mime == null)
             mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
 
         final IMatrix matrix;
         try {
-            matrix = (IMatrix) PersistenceManager.getDefault()
-                    .load(file, mime, monitor);
-        } catch (PersistenceException e) {
-            throw new CommandException(e);
+            matrix = (IMatrix) PersistenceManager.getDefault().load(file, mime, monitor);
+        } catch (Exception e) {
+            MessageUtils.showErrorMessage(AppFrame.instance(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
+            return;
         }
 
         final IMatrixView matrixView = new MatrixView(matrix);
@@ -75,10 +76,10 @@ public class CommandLoadFile extends AbstractCommand {
         Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
 
         if (rowsAnnotations != null) {
-            
+
             File rowsFile = download(rowsAnnotations, monitor);
             loadAnnotations(rowsFile, figure.getRowDim());
-            
+
 
         }
 
@@ -107,7 +108,7 @@ public class CommandLoadFile extends AbstractCommand {
         monitor.end();
 
     }
-    
+
     private static File download(String file, IProgressMonitor monitor) throws CommandException {
 
         URL url = null;
@@ -141,12 +142,12 @@ public class CommandLoadFile extends AbstractCommand {
                 throw new CommandException(e);
             }
         }
-       
+
         return resultFile;
     }
-    
+
     private static void loadAnnotations(File file, HeatmapDim hdim) throws CommandException {
-       
+
         if (file != null) {
             AnnotationMatrix annMatrix =
                     null;
