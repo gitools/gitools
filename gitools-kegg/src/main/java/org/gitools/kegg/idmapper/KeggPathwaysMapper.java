@@ -18,22 +18,18 @@
 package org.gitools.kegg.idmapper;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingException;
 import org.gitools.idmapper.MappingNode;
-import org.gitools.kegg.soap.Definition;
-import org.gitools.kegg.soap.KEGGPortType;
+import org.gitools.kegg.service.domain.KeggPathway;
+import org.gitools.kegg.service.KeggService;
+
+import java.util.*;
 
 public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 
-	public KeggPathwaysMapper(KEGGPortType service, String organismId) {
+	public KeggPathwaysMapper(KeggService service, String organismId) {
 		super("KeggPathways", false, true, service, organismId);
 	}
 
@@ -45,11 +41,11 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 		if (data.isEmpty()) {
 			monitor.begin("Getting KEGG pathways ...", 1);
 			try {
-				Definition[] pathwaysDefs = service.list_pathways(organismId);
-				for (Definition d : pathwaysDefs)
-					data.put(d.getEntry_id(), d.getEntry_id());
+				List<KeggPathway> pathwaysDefs = service.getPathways(organismId);
+				for (KeggPathway d : pathwaysDefs)
+					data.put(d.getId(), d.getId());
 			}
-			catch (RemoteException ex) {
+			catch (Exception ex) {
 				throw new MappingException(ex);
 			}
 			monitor.end();
@@ -71,12 +67,12 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 				//if (count++ > 10) //FIXME
 				//	break;
 
-				String[] genes = service.get_genes_by_pathway(dstId);
-				map.put(dstId, new HashSet<String>(Arrays.asList(genes)));
+				List<String> genes = service.getGenesByPathway(dstId);
+				map.put(dstId, new HashSet<String>(genes));
 				monitor.worked(1);
 			}
 		}
-		catch (RemoteException ex) {
+		catch (Exception ex) {
 			throw new MappingException(ex);
 		}
 		monitor.end();

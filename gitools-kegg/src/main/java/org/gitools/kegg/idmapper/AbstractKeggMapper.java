@@ -18,15 +18,15 @@
 package org.gitools.kegg.idmapper;
 
 import org.gitools.idmapper.AbstractMapper;
-import org.gitools.kegg.soap.KEGGPortType;
+import org.gitools.kegg.service.KeggService;
 
 public abstract class AbstractKeggMapper extends AbstractMapper {
 
-	protected KEGGPortType service;
+	protected KeggService service;
 	protected String organismId;
 
 	public AbstractKeggMapper(String name, boolean bidirectional, boolean generator,
-			KEGGPortType service, String organismId) {
+			KeggService service, String organismId) {
 
 		super(name, bidirectional, generator);
 		

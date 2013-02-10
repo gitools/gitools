@@ -16,7 +16,7 @@
 
 	<dependencies>
 
-		<dependency>
+        <dependency>
 			<groupId>edu.upf.bg</groupId>
 			<artifactId>bg-commons</artifactId>
 		</dependency>
@@ -37,41 +37,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis-jaxrpc</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis-saaj</artifactId>
-			<version>1.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>axis</groupId>
-			<artifactId>axis-wsdl4j</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-discovery</groupId>
-			<artifactId>commons-discovery</artifactId>
-			<version>0.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -80,56 +45,7 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>axistools-maven-plugin</artifactId>
-				<version>1.4</version>
-				<configuration>
-					<sourceDirectory>${basedir}/src/main/wsdl</sourceDirectory>
-					<wsdlFiles>
-						<wsdlFile>KEGG.wsdl</wsdlFile>
-					</wsdlFiles>
-					<packageSpace>org.gitools.kegg.soap</packageSpace>
-					<outputDirectory>${basedir}/target/generated-sources/axistools</outputDirectory>
-					<typeMappingVersion>1.2</typeMappingVersion>
-					<testCases>false</testCases>
-					<serverSide>false</serverSide>
-					<subPackageByFileName>false</subPackageByFileName>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>wsdl2java</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>axisfix</id>
-						<phase>process-sources</phase>
-            			<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>perl</executable>
-								<workingDirectory>${basedir}</workingDirectory>
-								<arguments>
-									<argument>src/main/wsdl/axisfix.pl</argument>
-									<argument>target/generated-sources/axistools/org/gitools/kegg/soap/KEGGBindingStub.java</argument>
-								</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
