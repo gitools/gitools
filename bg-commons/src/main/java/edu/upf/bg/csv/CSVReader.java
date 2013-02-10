@@ -266,8 +266,8 @@ public class CSVReader implements Closeable {
         String nextLine = br.readLine();
         lineNumber++;
 
-        // Skip comments
-        while (nextLine != null && nextLine.charAt(0) == commentchar) {
+        // Skip comments & empty lines
+        while (nextLine != null && (nextLine.isEmpty() || nextLine.charAt(0) == commentchar)) {
             nextLine = br.readLine();
             lineNumber++;
         }
