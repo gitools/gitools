@@ -14,7 +14,6 @@ package org.gitools.ui.genomespace.dm;
 import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.GSUtils;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.Settings;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -25,13 +24,8 @@ import java.io.*;
 import java.net.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
@@ -82,6 +76,7 @@ public class HttpUtils {
 
         byteRangeTestMap = Collections.synchronizedMap(new HashMap());
     }
+
 
     public static boolean isRemoteURL(String string) {
         String lcString = string.toLowerCase();
@@ -586,7 +581,7 @@ public class HttpUtils {
 
         @Override
         public void put(URI uri, Map<String, List<String>> stringListMap) throws IOException {
-            if (uri.toString().startsWith(Settings.getDefault().getGsIdentityServer())) {
+            if (uri.toString().startsWith(GSUtils.DEFAULT_GS_IDENTITY_SERVER)) {
                 List<String> cookies = stringListMap.get("Set-Cookie");
                 if (cookies != null) {
                     for (String cstring : cookies) {

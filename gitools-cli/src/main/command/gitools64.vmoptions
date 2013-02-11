@@ -1,0 +1,6 @@
+-Xmx5200m
+-Xms256m
+-XX:MaxPermSize=350m
+-XX:+UseSerialGC
+-XX:MinHeapFreeRatio=10
+-XX:MaxHeapFreeRatio=20

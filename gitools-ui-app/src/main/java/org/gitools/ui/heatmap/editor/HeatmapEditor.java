@@ -168,6 +168,7 @@ public class HeatmapEditor extends AbstractEditor {
 				matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue()); }
 		});
 		
+		setSaveAllowed(true);
 		setSaveAsAllowed(true);
 	}
 
@@ -372,6 +373,12 @@ public class HeatmapEditor extends AbstractEditor {
 				});
 			}
 		}
+
+        // Force heatmap IMatrixView detach to allow GC to free memory
+        this.heatmap.detach();
+
+        // Force GC
+        System.gc();
 
 		return true;
 	}

@@ -26,17 +26,15 @@ import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.dm.DMUtils;
 import org.gitools.ui.genomespace.dm.GSDirectoryListing;
 import org.gitools.ui.genomespace.dm.GSFileMetadata;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
 import org.json.JSONException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -110,7 +108,7 @@ public class GSFileBrowser extends JDialog {
         fileList.addMouseListener(mouseListener);
 
         String rootdirectory = mode == Mode.OPEN ? DMUtils.DEFAULT_DIRECTORY : DMUtils.PERSONAL_DIRECTORY;
-        URL defaultURL = new URL(Settings.getDefault().getGsDmServer() + rootdirectory);
+        URL defaultURL = new URL(GSUtils.DEFAULT_GS_DM_SERVER + rootdirectory);
         fetchContents(defaultURL);
     }
 
@@ -177,6 +175,17 @@ public class GSFileBrowser extends JDialog {
         dispose();
     }
 
+    private void logoutButtonActionPerformed(ActionEvent e) {
+        selectedFile = null;
+        setVisible(false);
+        dispose();
+        GSUtils.logout();
+        if (MessageUtils.confirm(AppFrame.instance(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
+            Settings.getDefault().save();
+            System.exit(0);
+        }
+    }
+
     private void loadButtonActionPerformed(ActionEvent e) {
 
         try {
@@ -207,12 +216,12 @@ public class GSFileBrowser extends JDialog {
 
         } catch (Exception e1) {
             log.error("Error loading GS files", e1);
-            MessageUtils.showMessage("Error: " + e1.toString());
+            MessageUtils.showMessage(AppFrame.instance(), "Error: " + e1.toString());
         }
     }
 
     private void newFolderButtonActionPerformed(ActionEvent e) {
-        String folderName = MessageUtils.showInputDialog("Name of new folder:");
+        String folderName = MessageUtils.showInputDialog(AppFrame.instance(), "Name of new folder:");
         if (folderName != null && folderName.length() > 0) {
             String dirurl = selectedFile.getUrl();
             if (!selectedFile.isDirectory()) {
@@ -230,7 +239,7 @@ public class GSFileBrowser extends JDialog {
                 fetchContents(new URL(putURL));
             } catch (IOException e1) {
                 log.error("Error creating directory: " + putURL, e1);
-                MessageUtils.showMessage("<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
+                MessageUtils.showMessage(AppFrame.instance(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
             } catch (JSONException e1) {
                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -297,6 +306,7 @@ public class GSFileBrowser extends JDialog {
         hSpacer1 = new JPanel(null);
         cancelButton = new JButton();
         openButton = new JButton();
+        logoutButton = new JButton();
         savePanel = new JPanel();
         label2 = new JLabel();
         selectedFileTextField = new JTextField();
@@ -347,6 +357,15 @@ public class GSFileBrowser extends JDialog {
                     }
                 });
                 buttonBar.add(openButton);
+
+                //---- logoutButton ----
+                logoutButton.setText("Logout");
+                logoutButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        logoutButtonActionPerformed(e);
+                    }
+                });
+                buttonBar.add(logoutButton);
             }
             dialogPane.add(buttonBar, BorderLayout.SOUTH);
 
@@ -394,6 +413,7 @@ public class GSFileBrowser extends JDialog {
     private JPanel hSpacer1;
     private JButton cancelButton;
     private JButton openButton;
+    private JButton logoutButton;
     private JPanel savePanel;
     private JLabel label2;
     private JTextField selectedFileTextField;

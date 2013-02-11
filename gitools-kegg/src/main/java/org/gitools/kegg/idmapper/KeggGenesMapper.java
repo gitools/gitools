@@ -18,19 +18,14 @@
 package org.gitools.kegg.idmapper;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingException;
 import org.gitools.idmapper.MappingNode;
-import org.gitools.kegg.soap.KEGGPortType;
-import org.gitools.kegg.soap.LinkDBRelation;
+import org.gitools.kegg.service.domain.IdConversion;
+import org.gitools.kegg.service.KeggService;
+
+import java.util.*;
 
 public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
@@ -47,7 +42,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 		fileKey.put(ENSEMBL_GENES, ENSEMBL_DB);
 	}
 
-	public KeggGenesMapper(KEGGPortType service, String organismId) {
+	public KeggGenesMapper(KeggService service, String organismId) {
 		super("KeggGenes", false, true, service, organismId);
 	}
 
@@ -68,14 +63,12 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 			if (prefix.equals(ENSEMBL_DB))
 				prefix = prefix + "-" + organismId;
 
-			int numGenes = service.get_number_of_genes_by_organism(organismId);
-			LinkDBRelation[] relations =
-					service.get_linkdb_by_entry(organismId, prefix, 0, numGenes);
+			List<IdConversion> relations = service.getConvert(organismId, prefix);
 
 			int plen = prefix.length() + 1;
-			for (LinkDBRelation rel : relations) {
-				String srcId = rel.getEntry_id1();
-				String dstId = rel.getEntry_id2();
+			for (IdConversion rel : relations) {
+				String srcId = rel.getSourceId();
+				String dstId = rel.getTargetId();
 				Set<String> b = map.get(srcId);
 				if (b == null) {
 					b = new HashSet<String>();

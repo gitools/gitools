@@ -1,12 +1,15 @@
 Gitools
 =======
 
-Bug tracker
+Web portal
+------------
+
++ <http://www.gitools.org>
+
+Source code
 -----------
 
-Have a bug? Please create an issue here on our project page!
-
-https://bg.upf.edu/forge/projects/gitools/issues/new
++ <https://github.com/gitools/gitools>
 
 Versioning
 ----------
@@ -22,21 +25,6 @@ And constructed with the following guidelines:
 * Bug fixes and misc changes bump the patch
 
 For more information on SemVer, please visit <http://semver.org/>.
-
-Web portal
-------------
-
-+ <http://www.gitools.org>
-
-Project site
-------------
-
-+ <https://bg.upf.edu/forge/projects/gitools>
-
-Source code
------------
-
-+ <https://github.com/gitools/gitools>
 
 Copyright and license
 ---------------------

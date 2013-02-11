@@ -22,11 +22,11 @@ import java.io.File;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
 public class HeatmapXmlPersistence
 		extends AbstractXmlPersistence<Heatmap> {

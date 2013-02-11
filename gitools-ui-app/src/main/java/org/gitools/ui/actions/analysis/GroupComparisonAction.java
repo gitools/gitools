@@ -103,7 +103,6 @@ public class GroupComparisonAction extends BaseAction {
                         editor.setName(analysis.getTitle() + "." + FileSuffixes.GROUP_COMPARISON);
                     else
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.GROUP_COMPARISON));
-                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
 
                     SwingUtilities.invokeLater(new Runnable() {

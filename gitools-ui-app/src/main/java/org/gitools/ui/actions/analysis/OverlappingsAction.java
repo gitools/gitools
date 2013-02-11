@@ -115,7 +115,6 @@ public class OverlappingsAction extends BaseAction {
                         editor.setName(analysis.getTitle() + "."+FileSuffixes.OVERLAPPING);
                     else
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.OVERLAPPING));
-                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
                     SwingUtilities.invokeLater(new Runnable() {
 						@Override

@@ -115,7 +115,6 @@ public class CorrelationsAction extends BaseAction {
                         editor.setName(analysis.getTitle() + "."+FileSuffixes.CORRELATIONS);
                     else
 					    editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.CORRELATIONS));
-                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

@@ -17,22 +17,22 @@
 
 package org.gitools.kegg.modules;
 
+import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.kegg.service.domain.KeggOrganism;
 import org.gitools.modules.importer.Organism;
 import org.gitools.modules.importer.RefImpl;
-import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.kegg.soap.Definition;
 
 public class EnsemblKeggOrganism extends RefImpl implements Organism {
 
 	private DatasetInfo ensemblDataset;
-	private Definition keggDef;
+	private KeggOrganism keggDef;
 
 	public EnsemblKeggOrganism(String id, String name, DatasetInfo dataset) {
 		super(id, name);
 		this.ensemblDataset = dataset;
 	}
 
-	public EnsemblKeggOrganism(String id, String name, Definition def) {
+	public EnsemblKeggOrganism(String id, String name, KeggOrganism def) {
 		super(id, name);
 		this.keggDef = def;
 	}
@@ -45,11 +45,11 @@ public class EnsemblKeggOrganism extends RefImpl implements Organism {
 		this.ensemblDataset = ensemblDataset;
 	}
 
-	public Definition getKeggDef() {
+	public KeggOrganism getKeggOrganism() {
 		return keggDef;
 	}
 
-	public void setKeggDef(Definition keggDef) {
+	public void setKeggDef(KeggOrganism keggDef) {
 		this.keggDef = keggDef;
 	}
 

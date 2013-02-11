@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -39,6 +41,7 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 /**
  * Represents either row or column properties of a heatmap
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapDim extends AbstractModel {
 
 	public static final String IDTYPE_CHANGED = "idType";
@@ -55,6 +58,7 @@ public class HeatmapDim extends AbstractModel {
 	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	protected AnnotationMatrix annotations;
 	
+	@XmlTransient
 	protected List<HeatmapHeader> headers;
 
 	private boolean gridEnabled;
@@ -67,6 +71,7 @@ public class HeatmapDim extends AbstractModel {
 	@XmlTransient
 	private Set<String> highlightedLabels;
 
+	@XmlTransient
 	PropertyChangeListener propertyListener;
 
 	public HeatmapDim() {

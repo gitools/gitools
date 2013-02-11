@@ -7,7 +7,7 @@ public class ColorScaleRange {
     public static String EMPTY_TYPE = "empty";
     public static String LINEAR_TYPE = "linear";
     public static String LOGARITHMIC_TYPE = "logarithmic";
-    
+
     private String type = "";
     private Object leftLabel = null;
     private Object centerLabel = null;
@@ -18,9 +18,12 @@ public class ColorScaleRange {
 
     private boolean borderEnabled = true;
 
-        
+    public ColorScaleRange() {
+        super();
+    }
+
     public ColorScaleRange(double minValue, double maxValue, double width) {
-           this(minValue,maxValue,width,null,null,null,LINEAR_TYPE);
+        this(minValue, maxValue, width, null, null, null, LINEAR_TYPE);
     }
 
     public ColorScaleRange(double minValue, double maxValue, double width, Object leftLabel, Object centerLabel, Object rightLabel, String type) {

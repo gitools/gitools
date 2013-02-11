@@ -37,9 +37,6 @@ public class Settings {
 
     public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
 
-    public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
-    public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identitydev.genomespace.org:8444/identityServer/basic";
-	
 	private static final String userPath = 
 		System.getProperty("user.home", ".");
 	
@@ -115,10 +112,6 @@ public class Settings {
     // IGV parameters
     private boolean showIGVLink = true;
     private String igvUrl = DEFAULT_IGV_URL;
-
-    // Genome space parameters
-    private String gsDmServer = DEFAULT_GS_DM_SERVER;
-    private String gsIdentityServer = DEFAULT_GS_IDENTITY_SERVER;
 
     // Preview features
     private boolean previewFeatures = false;
@@ -313,22 +306,6 @@ public class Settings {
 
     public void setShowIGVLink(boolean showIGVLink) {
         this.showIGVLink = showIGVLink;
-    }
-
-    public String getGsDmServer() {
-        return gsDmServer;
-    }
-
-    public void setGsDmServer(String gsDmServer) {
-        this.gsDmServer = gsDmServer;
-    }
-
-    public String getGsIdentityServer() {
-        return gsIdentityServer;
-    }
-
-    public void setGsIdentityServer(String gsIdentityServer) {
-        this.gsIdentityServer = gsIdentityServer;
     }
 
     public boolean isPreviewFeatures() {

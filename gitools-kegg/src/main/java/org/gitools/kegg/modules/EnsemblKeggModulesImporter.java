@@ -17,58 +17,35 @@
 
 package org.gitools.kegg.modules;
 
-import java.net.MalformedURLException;
-import org.gitools.modules.importer.Organism;
-import org.gitools.modules.importer.ModulesImporter;
-import org.gitools.modules.importer.ModuleCategory;
-import org.gitools.modules.importer.FeatureCategory;
-import org.gitools.modules.importer.ModulesImporterException;
-import org.gitools.modules.importer.Version;
-import org.gitools.kegg.idmapper.KeggGenesMapper;
-import org.gitools.kegg.idmapper.KeggPathwaysMapper;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.xml.rpc.ServiceException;
-import org.apache.commons.net.ftp.FTPClient;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
 import org.gitools.biomart.idmapper.EnsemblMapper;
-import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.queryhandler.BiomartQueryHandler;
-import org.gitools.biomart.restful.model.Attribute;
-import org.gitools.biomart.restful.model.AttributeCollection;
-import org.gitools.biomart.restful.model.AttributeDescription;
-import org.gitools.biomart.restful.model.AttributeGroup;
-import org.gitools.biomart.restful.model.AttributePage;
-import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.model.MartLocation;
-import org.gitools.biomart.restful.model.Query;
+import org.gitools.biomart.restful.model.*;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingEngine;
 import org.gitools.kegg.idmapper.AllIds;
-import org.gitools.kegg.soap.Definition;
-import org.gitools.kegg.soap.KEGGLocator;
-import org.gitools.kegg.soap.KEGGPortType;
+import org.gitools.kegg.idmapper.KeggGenesMapper;
+import org.gitools.kegg.idmapper.KeggPathwaysMapper;
+import org.gitools.kegg.service.domain.KeggOrganism;
+import org.gitools.kegg.service.domain.KeggPathway;
+import org.gitools.kegg.service.KeggService;
 import org.gitools.model.ModuleMap;
+import org.gitools.modules.importer.*;
 import org.gitools.obo.OBOEvent;
 import org.gitools.obo.OBOEventTypes;
 import org.gitools.obo.OBOStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes {
 
@@ -135,7 +112,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 	private MartLocation martLocation;
 
-	private KEGGPortType keggService;
+	private KeggService keggService;
 
 	private Organism[] cachedOrganisms;
 
@@ -187,14 +164,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return martLocation;
 	}
 
-	private KEGGPortType getKeggService() throws ServiceException {
-		if (keggService != null)
-			return keggService;
-
-		KEGGLocator locator = new KEGGLocator();
-		return keggService = locator.getKEGGPort();
-	}
-
 	@Override
 	public Version[] getVersions() {
 		LinkedList<Version> sources = new LinkedList<Version>();
@@ -215,69 +184,66 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		return sources.toArray(new Version[sources.size()]);
 	}
 
-	@Override
-	public Organism[] getOrganisms() throws ModulesImporterException {
-		if (cachedOrganisms != null)
-			return cachedOrganisms;
-		
-		List<EnsemblKeggOrganism> orgs = new ArrayList<EnsemblKeggOrganism>();
-		Map<String, EnsemblKeggOrganism> orgsMap = new HashMap<String, EnsemblKeggOrganism>();
+    @Override
+    public Organism[] getOrganisms() throws ModulesImporterException {
+        if (cachedOrganisms != null)
+            return cachedOrganisms;
 
-		try {
-			// Ensembl organisms
+        List<EnsemblKeggOrganism> orgs = new ArrayList<EnsemblKeggOrganism>();
+        Map<String, EnsemblKeggOrganism> orgsMap = new HashMap<String, EnsemblKeggOrganism>();
 
-			BiomartService bs = getBiomartService();
-			MartLocation mart = getMart();
+        try {
+            // Ensembl organisms
 
-			List<DatasetInfo> datasets = bs.getDatasets(mart);
-			for (DatasetInfo ds : datasets) {
-				String id = ds.getDisplayName().replaceAll(" genes [(].*[)]", "").toLowerCase();
-				EnsemblKeggOrganism o = orgsMap.get(id);
-				if (o == null) {
-					o = new EnsemblKeggOrganism(id, id, ds);
-					orgs.add(o);
-					orgsMap.put(id, o);
-				}
-				else
-					o.setEnsemblDataset(ds);
-			}
+            BiomartService bs = getBiomartService();
+            MartLocation mart = getMart();
 
-			// KEGG organisms
+            List<DatasetInfo> datasets = bs.getDatasets(mart);
+            for (DatasetInfo ds : datasets) {
+                String id = ds.getDisplayName().replaceAll(" genes [(].*[)]", "").toLowerCase();
+                EnsemblKeggOrganism o = orgsMap.get(id);
+                if (o == null) {
+                    o = new EnsemblKeggOrganism(id, id, ds);
+                    orgs.add(o);
+                    orgsMap.put(id, o);
+                } else
+                    o.setEnsemblDataset(ds);
+            }
 
-			if (keggEnabled) {
-				KEGGPortType serv = getKeggService();
-				
-				Definition[] orgDefs = serv.list_organisms();
+            // KEGG organisms
 
-				for (Definition def : orgDefs) {
-					String id = def.getDefinition().replaceAll(" [(].*[)]", "").toLowerCase();
-					EnsemblKeggOrganism o = orgsMap.get(id);
-					if (o == null) {
-						o = new EnsemblKeggOrganism(id, id, def);
-						orgs.add(o);
-						orgsMap.put(id, o);
-					}
-					else
-						o.setKeggDef(def);
-				}
+            if (keggEnabled) {
+                KeggService serv = getKeggService();
 
-				// Remove organism of Ensembl not in KEGG
-				Iterator<EnsemblKeggOrganism> it = orgs.iterator();
-				while (it.hasNext()) {
-					EnsemblKeggOrganism o = it.next();
-					if (o.getKeggDef() == null) {
-						it.remove();
-						orgsMap.remove(o.getId());
-					}
-				}
-			}
-		}
-		catch (Exception ex) {
-			throw new ModulesImporterException(ex);
-		}
+                List<KeggOrganism> orgDefs = serv.getOrganisms();
 
-		return cachedOrganisms = orgs.toArray(new EnsemblKeggOrganism[orgs.size()]);
-	}
+                for (KeggOrganism def : orgDefs) {
+                    String id = def.getDescription().replaceAll(" [(].*[)]", "").toLowerCase();
+                    EnsemblKeggOrganism o = orgsMap.get(id);
+                    if (o == null) {
+                        o = new EnsemblKeggOrganism(id, id, def);
+                        orgs.add(o);
+                        orgsMap.put(id, o);
+                    } else
+                        o.setKeggDef(def);
+                }
+
+                // Remove organism of Ensembl not in KEGG
+                Iterator<EnsemblKeggOrganism> it = orgs.iterator();
+                while (it.hasNext()) {
+                    EnsemblKeggOrganism o = it.next();
+                    if (o.getKeggOrganism() == null) {
+                        it.remove();
+                        orgsMap.remove(o.getId());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new ModulesImporterException(ex);
+        }
+
+        return cachedOrganisms = orgs.toArray(new EnsemblKeggOrganism[orgs.size()]);
+    }
 
 	@Override
 	public ModuleCategory[] getModuleCategories() {
@@ -295,21 +261,22 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
 
 		/* if this importer is activated for KEGG and the selected organism exists in KEGG*/
-		if (keggEnabled && organism.getKeggDef() != null) {
+		if (keggEnabled && organism.getKeggOrganism() != null) {
 
 			keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
 			keggFeatMap.put(KEGG_GENES, featMap.get(KEGG_GENES));
 			feats.add(featMap.get(KEGG_GENES));
 
-			String orgId = organism.getKeggDef().getEntry_id();
+			String orgId = organism.getKeggOrganism().getId();
 			Map<String, String> idMap = new HashMap<String, String>();
 			idMap.put(KeggGenesMapper.ENSEMBL_DB + "-" + orgId, ENSEMBL_GENES);
 			idMap.put(KeggGenesMapper.NCBI_DB, NCBI_GENES);
 			idMap.put(KeggGenesMapper.UNIPROT_DB, UNIPROT);
 			idMap.put(KeggGenesMapper.PDB_DB, PDB);
 
-			String[] idList = new String[] {
-				ENSEMBL_GENES, NCBI_GENES, UNIPROT, PDB};
+			// PDB and ENSMBL are removed from REST API
+			// String[] idList = new String[] { ENSEMBL_GENES, NCBI_GENES, UNIPROT, PDB};
+            String[] idList = new String[] { NCBI_GENES, UNIPROT};
 
 			for (String id : idList) {
 				EnsemblKeggFeatureCategory f = featMap.get(id);
@@ -468,13 +435,13 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		MappingEngine mapping = new MappingEngine();
 
 		// Build KEGG network
-		if (organism.getKeggDef() != null) {
+		if (organism.getKeggOrganism() != null) {
 
 			monitor.info("KEGG");
 
-			String keggorg = organism.getKeggDef().getEntry_id();
+			String keggorg = organism.getKeggOrganism().getId();
 
-			KEGGPortType ks = null;
+			KeggService ks = null;
 			try {
 				ks = getKeggService();
 			}
@@ -513,7 +480,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			String linkId = null;
 
 			if (keggEnabled
-					&& organism.getKeggDef() != null
+					&& organism.getKeggOrganism() != null
 					&& !keggFeatMap.containsKey(ENSEMBL_GENES)) {
 
 				List<String> idList = Arrays.asList(new String[] { ENSEMBL_GENES, NCBI_GENES, PDB, UNIPROT });
@@ -623,13 +590,13 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 		final Map<String, String> desc = new HashMap<String, String>();
 			monitor.begin("Getting KEGG pathways ...", 1);
 			try {
-				String keggorg = organism.getKeggDef().getEntry_id();
+				String keggorg = organism.getKeggOrganism().getId();
 
-				KEGGPortType ks = getKeggService();
+				KeggService ks = getKeggService();
 
-				Definition[] pathwaysDefs = ks.list_pathways(keggorg);
-				for (Definition d : pathwaysDefs)
-					desc.put(d.getEntry_id(), d.getDefinition());
+				List<KeggPathway> pathwaysDefs = ks.getPathways(keggorg);
+				for (KeggPathway d : pathwaysDefs)
+					desc.put(d.getId(), d.getDescription());
 			}
 			catch (Exception ex) {
 				throw new ModulesImporterException(ex);
@@ -839,4 +806,13 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			plainGoTerm(child, childPath, dstIds, map, childrenTree);
 		}
 	}
+
+    public KeggService getKeggService() {
+
+        if (keggService == null) {
+            keggService = new KeggService();
+        }
+
+        return keggService;
+    }
 }
