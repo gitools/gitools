@@ -168,7 +168,8 @@ public class HeatmapEditor extends AbstractEditor {
 				matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue()); }
 		});
 		
-		setSaveAllowed(true);
+		//TODO Enable save feature
+		//setSaveAllowed(true);
 		setSaveAsAllowed(true);
 	}
 
