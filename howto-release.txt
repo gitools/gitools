@@ -59,7 +59,8 @@ find . -name pom.xml | awk '{ system("sed -i 0,/1.8.4/s//1.9.0-SNAPSHOT/ "$0)}'
 git commit -a -m "Next iteration version 1.9.0-SNAPSHOT"
 
 # Push develop
-git push
+git push 
+git push origin gitools-1.8.4
 
 
 
