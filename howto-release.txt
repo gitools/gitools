@@ -6,21 +6,21 @@ git pull
 git push
 
 # Start a new release or hotfix
-git-flow release start gitools-1.8.2
-git-flow hotfix start gitools-1.8.2
+git-flow release start gitools-1.8.3
+git-flow hotfix start gitools-1.8.3
 
 # Publish the release or hotfix branch
-git-flow release publish gitools-1.8.2
-git-flow hotfix publish gitools-1.8.2
+git-flow release publish gitools-1.8.3
+git-flow hotfix publish gitools-1.8.3
 
 # Update pom.xml version
 # The following command only prints to display
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed 0,/1.9.0-SNAPSHOT/s//1.8.2/ "$0)}' | grep -A2 -B3 1.8.2
+find . -name pom.xml | awk '{ system("sed 0,/1.9.0-SNAPSHOT/s//1.8.3/ "$0)}' | grep -A2 -B3 1.8.3
 
 # The following command will apply the changes
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i 0,/1.9.0-SNAPSHOT/s//1.8.2/ "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/1.9.0-SNAPSHOT/s//1.8.3/ "$0)}'
 
 # Compile and package 
 mvn clean package install
@@ -28,25 +28,25 @@ mvn package assembly:assembly
 
 # Test new release
 cd target
-unzip gitools-1.8.2-bin.zip
-gitools-1.8.2/bin/gitools
+unzip gitools-1.8.3-bin.zip
+gitools-1.8.3/bin/gitools
 
 # Deploy ZIP file
-scp target/gitools-1.8.2-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
+scp target/gitools-1.8.3-bin.zip bgadmin@ankara:/usr/local/gitools/www/download/
 
 # Deploy Webstart
 # change back to the gitools root folder
-./webstart-deploy.sh 1.8.2
+./webstart-deploy.sh 1.8.3
 
 # Update this file on the server:
 /usr/local/gitools/www/download/latest.txt
 
 # Commit the changes
-git commit -a -m "Set version to 1.8.2"
+git commit -a -m "Set version to 1.8.3"
 
 # Finish the release or hotfix and push everything
-git flow release finish -p gitools-1.8.2
-git flow hotfix finish -p gitools-1.8.2
+git flow release finish -p gitools-1.8.3
+git flow hotfix finish -p gitools-1.8.3
 
 # Check that you are on develop branch
 git checkout develop 
@@ -54,10 +54,10 @@ git checkout develop
 # Update pom.xml versions to new SNAPSHOT version
 
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed 0,/1.8.2/s//1.9.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.9.0-SNAPSHOT
+find . -name pom.xml | awk '{ system("sed 0,/1.8.3/s//1.9.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 1.9.0-SNAPSHOT
 
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i 0,/1.8.2/s//1.9.0-SNAPSHOT/ "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/1.8.3/s//1.9.0-SNAPSHOT/ "$0)}'
 
 # Commit
 git commit -a -m "Next iteration version 1.9.0-SNAPSHOT"
