@@ -129,7 +129,6 @@ public class OpenAnalysisAction extends BaseAction {
                             editor = new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) analysis);
 
 						editor.setName(file.getName());
-                        editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
                         final AbstractEditor newEditor = editor;
 						SwingUtilities.invokeLater(new Runnable() {

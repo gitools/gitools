@@ -6,6 +6,7 @@
  */
 package org.gitools.ui.platform.component;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
@@ -22,6 +23,8 @@ import java.awt.event.*;
  * a JButton to close the tab it belongs to
  */
 public class EditorTabComponent extends JPanel {
+
+    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
 	private final EditorsPanel editorPanel;
 	private final AbstractEditor editor;
@@ -79,7 +82,20 @@ public class EditorTabComponent extends JPanel {
 
 
         String name = editor.getName();
-		label.setText(name);
+        String extension = "";
+        String filename = name;
+        String newname;
+
+        int i = name.lastIndexOf('.');
+        if (i > 0) {
+            extension = "." + name.substring(i+1);
+            filename = name.substring(0, name.lastIndexOf('.'));
+        }
+
+        //TODO allow the default editor tab length to be configurable
+        newname = StringUtils.abbreviate(filename, DEFAULT_EDITOR_TAB_LENGTH) + extension;
+
+		label.setText(newname);
         label.setIcon(editor.getIcon());
         label.setIconTextGap(3);
         label.setHorizontalTextPosition(SwingConstants.RIGHT);

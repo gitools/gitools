@@ -111,7 +111,6 @@ public class CombinationsAction extends BaseAction {
                         editor.setName(analysis.getTitle() + "." + FileSuffixes.COMBINATION);
                     else
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.COMBINATION));
-                    editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

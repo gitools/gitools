@@ -92,7 +92,6 @@ public class CommandLoadFile extends AbstractCommand {
         final HeatmapEditor editor = new HeatmapEditor(figure);
 
         editor.setName(PersistenceUtils.getFileName(file.getName()));
-        editor.abbreviateName(Settings.getDefault().getEditorTabLength());
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

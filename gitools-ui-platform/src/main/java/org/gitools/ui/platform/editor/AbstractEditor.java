@@ -55,24 +55,6 @@ public abstract class AbstractEditor
 		}
 	}
 
-    public void abbreviateName(int maxLength) {
-
-        String extension = "";
-        String filename = getName();
-        String name = getName();
-        String newname;
-
-        int i = name.lastIndexOf('.');
-        if (i > 0) {
-            extension = "." + name.substring(i+1);
-            filename = name.substring(0, name.lastIndexOf('.'));
-        }
-
-        newname = StringUtils.abbreviate(filename, maxLength) + extension;
-
-        setName(newname);
-    }
-
 	public File getFile() {
 		return file;
 	}
