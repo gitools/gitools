@@ -73,8 +73,8 @@ public abstract class AbstractEditor
 	}
 	
 	protected void setDirty(boolean dirty) {
-		// FIXME dirty disabled
-		if (this.dirty != dirty) {
+		//TODO enablse save feature
+		if (false && this.dirty != dirty) {
 			this.dirty = dirty;
 			for (EditorListener l : listeners) l.dirtyChanged(this);
 			ActionManager.getDefault().updateEnabledByEditor(this);
