@@ -40,8 +40,7 @@
  <resources>
          <java version="1.6+"
                   initial-heap-size="256m"
-                  max-heap-size="<?php echo $heapsize; ?>"
-                  java-vm-args="-XX:MaxPermSize=250m -XX:+UseSerialGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20" />
+                  max-heap-size="<?php echo $heapsize; ?>" />
           $dependencies
         </resources>
 
