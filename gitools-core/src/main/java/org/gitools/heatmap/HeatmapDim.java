@@ -18,18 +18,6 @@
 package org.gitools.heatmap;
 
 import edu.upf.bg.xml.adapter.ColorXmlAdapter;
-import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
@@ -38,11 +26,21 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.model.AbstractModel;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.*;
+import java.util.List;
+
 /**
  * Represents either row or column properties of a heatmap
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapDim extends AbstractModel {
+public class HeatmapDim extends AbstractModel implements PropertyChangeListener {
 
 	public static final String IDTYPE_CHANGED = "idType";
 	public static final String HEADERS_CHANGED = "headers";
@@ -71,13 +69,7 @@ public class HeatmapDim extends AbstractModel {
 	@XmlTransient
 	private Set<String> highlightedLabels;
 
-	@XmlTransient
-	PropertyChangeListener propertyListener;
-
 	public HeatmapDim() {
-		propertyListener = new PropertyChangeListener() {
-			@Override public void propertyChange(PropertyChangeEvent evt) {
-				HeatmapDim.this.propertyChange(evt); } };
 
 		idType = IdTypeManager.getDefault().getDefaultIdType();
 
@@ -90,7 +82,7 @@ public class HeatmapDim extends AbstractModel {
 		highlightedLabels = new HashSet<String>();
 	}
 
-	private void propertyChange(PropertyChangeEvent evt) {
+	public void propertyChange(PropertyChangeEvent evt) {
 		Object src = evt.getSource();
 		String pname = evt.getPropertyName();
 
@@ -122,7 +114,7 @@ public class HeatmapDim extends AbstractModel {
         if (header.getHeatmapDim() == null)
             header.setHeatmapDim(this);
 		headers.add(header);
-		header.addPropertyChangeListener(propertyListener);
+		header.addPropertyChangeListener(this);
 		firePropertyChange(HEADERS_CHANGED);
 	}
 
@@ -130,7 +122,7 @@ public class HeatmapDim extends AbstractModel {
 		if (index >= headers.size())
 			return;
 		HeatmapHeader header = headers.get(index);
-		header.removePropertyChangeListener(propertyListener);
+		header.removePropertyChangeListener(this);
 		headers.remove(header);
 		firePropertyChange(HEADERS_CHANGED);
 	}
@@ -213,4 +205,5 @@ public class HeatmapDim extends AbstractModel {
 		highlightedLabels.clear();
 		firePropertyChange(HIGHLIGHTING_CHANGED);
 	}
+
 }
