@@ -23,14 +23,6 @@
 
 package org.gitools.ui.analysis.wizard;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.File;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.event.DocumentEvent;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.ui.IconNames;
@@ -41,6 +33,14 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+
 public class ModulesPage extends AbstractWizardPage {
 
 	private static final long serialVersionUID = -3938595143114651781L;
@@ -49,7 +49,6 @@ public class ModulesPage extends AbstractWizardPage {
 			FileFormats.MODULES_2C_MAP,
 			FileFormats.GENE_MATRIX,
 			FileFormats.GENE_MATRIX_TRANSPOSED,
-			FileFormats.DOUBLE_MATRIX,
 			FileFormats.DOUBLE_BINARY_MATRIX,
 			FileFormats.MODULES_INDEXED_MAP
 	};
