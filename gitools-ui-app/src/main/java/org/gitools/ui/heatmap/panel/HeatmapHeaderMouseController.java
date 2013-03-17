@@ -17,20 +17,16 @@
 
 package org.gitools.ui.heatmap.panel;
 
-import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.drawer.HeatmapPosition;
+import org.gitools.matrix.model.IMatrixView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JViewport;
-import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
 
 public class HeatmapHeaderMouseController
 		implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -271,13 +267,6 @@ public class HeatmapHeaderMouseController
 			mv.setSelectedRows(sel);
 		}
 
-		if (horizontal)
-			mv.setLeadSelection(-1, index);
-		else
-			mv.setLeadSelection(index, -1);
-
-		//System.out.println(dragging + " " + shiftDown + " " + ctrlDown + " " + Arrays.toString(sel));
-		//System.out.println(mode + " " + point + " -> " + coord);
 	}
 
 	private void updateScroll(MouseEvent e, boolean dragging) {
