@@ -22,7 +22,15 @@
  */
 package org.gitools.ui.heatmap.panel.search;
 
-import java.awt.Color;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.utils.DocumentChangeListener;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -30,282 +38,351 @@ import java.awt.event.ComponentListener;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
-import javax.swing.event.DocumentEvent;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.ui.utils.DocumentChangeListener;
 
 public class HeatmapSearchPanel extends javax.swing.JPanel {
 
-	private static Highlighter.HighlightPainter redHighlightPainter =
-			new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
+    private static Highlighter.HighlightPainter redHighlightPainter =
+            new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 
-	private Heatmap hm;
+    private Heatmap hm;
 
-	private Pattern searchPat;
+    private Pattern searchPat;
 
-	private Color defaultSearchTextBgColor;
-	private Color defaultSearchTextFgColor;
+    private Color defaultSearchTextBgColor;
+    private Color defaultSearchTextFgColor;
 
-	public HeatmapSearchPanel(Heatmap hm) {
-		this.hm = hm;
+    public HeatmapSearchPanel(Heatmap hm) {
+        this.hm = hm;
 
-		initComponents();
+        initComponents();
 
-		defaultSearchTextBgColor = searchText.getBackground();
-		defaultSearchTextFgColor = searchText.getForeground();
+        defaultSearchTextBgColor = searchText.getBackground();
+        defaultSearchTextFgColor = searchText.getForeground();
 
-		addComponentListener(new ComponentListener() {
-			@Override public void componentResized(ComponentEvent e) { }
-			@Override public void componentMoved(ComponentEvent e) { }
-			@Override public void componentHidden(ComponentEvent e) { }
-			@Override public void componentShown(ComponentEvent e) {
-				searchText.requestFocus(); } });
+        addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+            }
 
-		searchText.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				updateSearch(); } });
-		searchText.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				searchNext(); } });
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            }
 
-		prevBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				searchPrev(); } });
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
 
-		nextBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				searchNext(); } });
+            @Override
+            public void componentShown(ComponentEvent e) {
+                searchText.requestFocus();
+            }
+        });
 
-		highlightAllChk.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				updateHighlight(); } });
-				
-		matchCaseChk.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				updateSearch();	} });
+        searchText.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                updateSearch();
+            }
+        });
+        searchText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchNext();
+            }
+        });
 
-		anyWordChk.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				updateSearch();	} });
+        prevBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchPrev();
+            }
+        });
 
-		setNotFound(false);
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchNext();
+            }
+        });
 
-	}
+        highlightAllChk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                updateHighlight();
+            }
+        });
 
-	private void setNotFound(boolean b) {
-		if (b) {
-			//searchText.setBackground(Color.RED);
-			searchText.setForeground(Color.RED);
-			textNotFoundLabel.setVisible(true);
-		}
-		else {
-			//searchText.setBackground(defaultSearchTextColor);
-			searchText.setForeground(defaultSearchTextFgColor);
-			textNotFoundLabel.setVisible(false);
-		}
-	}
+        matchCaseChk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSearch();
+            }
+        });
 
-	private boolean checkMatch(IMatrixView mv, AnnotationMatrix am, String label) {
-		if (searchPat.matcher(label).find())
-			return true;
+        anyWordChk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSearch();
+            }
+        });
 
-		if (am == null)
-			return false;
+        rowsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSearch();
+            }
+        });
 
-		int annRow = am.getRowIndex(label);
-		if (annRow == -1)
-			return false;
+        columnsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSearch();
+            }
+        });
 
-		boolean found = false;
-		for (int i = 0; i < am.getColumnCount() && !found; i++)
-			found = searchPat.matcher(am.getCell(annRow, i)).find();
+        setNotFound(false);
 
-		return found;
-	}
+    }
 
-	private void updateSearch() {
-		StringBuilder sb = new StringBuilder();
-		if (anyWordChk.isSelected()) {
-			String[] tokens = searchText.getText().split(" ");
-			if (tokens.length > 0) {
-				sb.append(Pattern.quote(tokens[0].trim()));
-				for (int i = 1; i < tokens.length; i++)
-					sb.append("|").append(Pattern.quote(tokens[i].trim()));
-			}
-		}
-		else
-			sb.append(Pattern.quote(searchText.getText()));
+    private void setNotFound(boolean b) {
+        if (b) {
+            //searchText.setBackground(Color.RED);
+            searchText.setForeground(Color.RED);
+            textNotFoundLabel.setVisible(true);
+        } else {
+            //searchText.setBackground(defaultSearchTextColor);
+            searchText.setForeground(defaultSearchTextFgColor);
+            textNotFoundLabel.setVisible(false);
+        }
+    }
 
-		if (matchCaseChk.isSelected())
-			searchPat = Pattern.compile(sb.toString());
-		else
-			searchPat = Pattern.compile(sb.toString(), Pattern.CASE_INSENSITIVE);
+    private boolean checkMatch(IMatrixView mv, AnnotationMatrix am, String label) {
 
-		setNotFound(false);
-		
-		updateHighlight();
-	}
+        if (searchPat == null) {
+            return false;
+        }
 
-	private void updateHighlight() {
-		IMatrixView mv = hm.getMatrixView();
-		int leadRow = mv.getLeadSelectionRow();
-		int leadCol = mv.getLeadSelectionColumn();
+        if (searchPat.matcher(label).find())
+            return true;
 
-		Set<String> highlighted = new HashSet<String>();
-		
-		boolean found = false;
+        if (am == null)
+            return false;
 
-		if (leadRow == -1 && leadCol == -1)
-			leadRow = 0;
+        int annRow = am.getRowIndex(label);
+        if (annRow == -1)
+            return false;
 
-		if (leadRow != -1) {// Row search
+        boolean found = false;
+        for (int i = 0; i < am.getColumnCount() && !found; i++)
+            found = searchPat.matcher(am.getCell(annRow, i)).find();
 
-			if (highlightAllChk.isSelected()) {
-				AnnotationMatrix am = hm.getRowDim().getAnnotations();
+        return found;
+    }
 
-				int rowCount = mv.getRowCount();
-				for (int index = 0; index < rowCount; index++) {
-					String label = mv.getRowLabel(index);
-					if (checkMatch(mv, am, label))
-						highlighted.add(label);
-				}
-				hm.getRowDim().setHighlightedLabels(highlighted);
-			}
-			else
-				hm.getRowDim().clearHighlightedLabels();
-		} else if (leadRow == -1 && leadCol != -1) {// Column search
-			if (highlightAllChk.isSelected()) {
-				AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+    private void updateSearch() {
+        StringBuilder sb = new StringBuilder();
+        if (!searchText.getText().isEmpty()) {
+            if (anyWordChk.isSelected()) {
+                String[] tokens = searchText.getText().split(" ");
+                if (tokens.length > 0) {
+                    sb.append(Pattern.quote(tokens[0].trim()));
+                    for (int i = 1; i < tokens.length; i++)
+                        sb.append("|").append(Pattern.quote(tokens[i].trim()));
+                }
+            } else
+                sb.append(Pattern.quote(searchText.getText()));
 
-				int colCount = mv.getColumnCount();
-				for (int index = 0; index < colCount; index++) {
-					String label = mv.getColumnLabel(index);
-					if (checkMatch(mv, am, label))
-						highlighted.add(label);
-				}
-				hm.getColumnDim().setHighlightedLabels(highlighted);
-			}
-			else
-				hm.getColumnDim().clearHighlightedLabels();
-		}
-	}
+            if (matchCaseChk.isSelected())
+                searchPat = Pattern.compile(sb.toString());
+            else
+                searchPat = Pattern.compile(sb.toString(), Pattern.CASE_INSENSITIVE);
+        } else {
+            searchPat = null;
+        }
 
-	private void searchPrev() {
-		IMatrixView mv = hm.getMatrixView();
-		int leadRow = mv.getLeadSelectionRow();
-		int leadCol = mv.getLeadSelectionColumn();
+        setNotFound(false);
 
-		boolean found = false;
+        updateHighlight();
+    }
 
-		int rowCount = mv.getRowCount();
+    private void updateHighlight() {
 
-		if (leadRow == -1 && leadCol == -1)
-			leadRow = rowCount - 1;
+        IMatrixView mv = hm.getMatrixView();
+        Set<String> highlighted = new HashSet<String>();
 
-		if (leadRow != -1) {// Row search
-			AnnotationMatrix am = hm.getRowDim().getAnnotations();
+        boolean searchRows = searchRows();
+        boolean found = false;
 
-			int index = leadRow - 1;
-			if (index < 0)
-				index = rowCount - 1;
-			while (index != leadRow) {
-				found = checkMatch(mv, am, mv.getRowLabel(index));
-				if (found)
-					break;
-				index--;
-				if (index < 0)
-					index = rowCount - 1;
-			}
-			if (index == leadRow)
-				found = checkMatch(mv, am, mv.getRowLabel(index));
-			mv.setLeadSelection(index, leadCol);
-		} else if (leadRow == -1 && leadCol != -1) {// Column search
-			AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+        if (searchRows) {
 
-			int colCount = mv.getColumnCount();
-			int index = leadCol - 1;
-			if (index < 0)
-				index = colCount - 1;
-			while (index != leadCol) {
-				found = checkMatch(mv, am, mv.getColumnLabel(index));
-				if (found)
-					break;
-				index--;
-				if (index < 0)
-					index = colCount - 1;
-			}
-			if (index == leadCol)
-				found = checkMatch(mv, am, mv.getColumnLabel(index));
-			mv.setLeadSelection(leadRow, index);
-		}
+            // Search rows
+            if (highlightAllChk.isSelected()) {
+                AnnotationMatrix am = hm.getRowDim().getAnnotations();
 
-		setNotFound(!found);
-	}
+                int rowCount = mv.getRowCount();
+                for (int index = 0; index < rowCount; index++) {
+                    String label = mv.getRowLabel(index);
+                    if (checkMatch(mv, am, label))
+                        highlighted.add(label);
+                }
+                hm.getRowDim().setHighlightedLabels(highlighted);
+            } else {
+                hm.getRowDim().clearHighlightedLabels();
+            }
 
-	private void searchNext() {
-		IMatrixView mv = hm.getMatrixView();
-		int leadRow = mv.getLeadSelectionRow();
-		int leadCol = mv.getLeadSelectionColumn();
+        } else {
 
-		boolean found = false;
+            // Column search
+            if (highlightAllChk.isSelected()) {
+                AnnotationMatrix am = hm.getColumnDim().getAnnotations();
 
-		if (leadRow == -1 && leadCol == -1)
-			leadRow = 0;
-		
-		if (leadRow != -1) {// Row search
-			AnnotationMatrix am = hm.getRowDim().getAnnotations();
+                int colCount = mv.getColumnCount();
+                for (int index = 0; index < colCount; index++) {
+                    String label = mv.getColumnLabel(index);
+                    if (checkMatch(mv, am, label))
+                        highlighted.add(label);
+                }
+                hm.getColumnDim().setHighlightedLabels(highlighted);
+            } else {
+                hm.getColumnDim().clearHighlightedLabels();
+            }
+        }
+    }
 
-			int rowCount = mv.getRowCount();
-			int index = leadRow + 1;
-			if (index >= rowCount)
-				index = 0;
-			while (index != leadRow) {
-				found = checkMatch(mv, am, mv.getRowLabel(index));
-				if (found)
-					break;
-				index++;
-				if (index >= rowCount)
-					index = 0;
-			}
-			if (index == leadRow)
-				found = checkMatch(mv, am, mv.getRowLabel(index));
-			mv.setLeadSelection(index, leadCol);
-		} else if (leadRow == -1 && leadCol != -1) {// Column search
-			AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+    private void searchPrev() {
+        IMatrixView mv = hm.getMatrixView();
+        int leadRow = mv.getLeadSelectionRow();
+        int leadCol = mv.getLeadSelectionColumn();
 
-			int colCount = mv.getColumnCount();
-			int index = leadCol + 1;
-			if (index >= colCount)
-				index = 0;
-			while (index != leadCol) {
-				found = checkMatch(mv, am, mv.getColumnLabel(index));
-				if (found)
-					break;
-				index++;
-				if (index >= colCount)
-					index = 0;
-			}
-			if (index == leadCol)
-				found = checkMatch(mv, am, mv.getColumnLabel(index));
-			mv.setLeadSelection(leadRow, index);
-		}
+        boolean searchRows = searchRows();
+        boolean found = false;
 
-		setNotFound(!found);
-	}
+        int rowCount = mv.getRowCount();
+        if (searchRows && leadRow == -1)
+            leadRow = rowCount - 1;
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+        if (searchRows && leadRow != -1) {
+
+            // Row search
+            AnnotationMatrix am = hm.getRowDim().getAnnotations();
+
+            int index = leadRow - 1;
+            if (index < 0)
+                index = rowCount - 1;
+            while (index != leadRow) {
+                found = checkMatch(mv, am, mv.getRowLabel(index));
+                if (found)
+                    break;
+                index--;
+                if (index < 0)
+                    index = rowCount - 1;
+            }
+            if (index == leadRow) {
+                found = checkMatch(mv, am, mv.getRowLabel(index));
+            }
+            mv.setLeadSelection(index, leadCol);
+
+        } else if (!searchRows && leadCol != -1) {
+
+            // Column search
+            AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+
+            int colCount = mv.getColumnCount();
+            int index = leadCol - 1;
+            if (index < 0)
+                index = colCount - 1;
+            while (index != leadCol) {
+                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                if (found)
+                    break;
+                index--;
+                if (index < 0)
+                    index = colCount - 1;
+            }
+            if (index == leadCol)
+                found = checkMatch(mv, am, mv.getColumnLabel(index));
+            mv.setLeadSelection(leadRow, index);
+        }
+
+        setNotFound(!found);
+    }
+
+    private void searchNext() {
+        IMatrixView mv = hm.getMatrixView();
+        int leadRow = mv.getLeadSelectionRow();
+        int leadCol = mv.getLeadSelectionColumn();
+
+        boolean searchRows = searchRows();
+        boolean found = false;
+
+        if (searchRows && leadRow == -1) {
+            leadRow = 0;
+        }
+
+        if (!searchRows && leadCol == -1) {
+            leadCol = 0;
+        }
+
+        if (searchRows) {
+
+            // Row search
+            AnnotationMatrix am = hm.getRowDim().getAnnotations();
+
+            int rowCount = mv.getRowCount();
+            int index = leadRow + 1;
+            if (index >= rowCount)
+                index = 0;
+            while (index != leadRow) {
+                found = checkMatch(mv, am, mv.getRowLabel(index));
+                if (found)
+                    break;
+                index++;
+                if (index >= rowCount)
+                    index = 0;
+            }
+            if (index == leadRow)
+                found = checkMatch(mv, am, mv.getRowLabel(index));
+            mv.setLeadSelection(index, leadCol);
+        } else if (!searchRows && leadCol != -1) {
+
+            // Column search
+            AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+
+            int colCount = mv.getColumnCount();
+            int index = leadCol + 1;
+            if (index >= colCount)
+                index = 0;
+            while (index != leadCol) {
+                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                if (found)
+                    break;
+                index++;
+                if (index >= colCount)
+                    index = 0;
+            }
+            if (index == leadCol)
+                found = checkMatch(mv, am, mv.getColumnLabel(index));
+            mv.setLeadSelection(leadRow, index);
+        }
+
+        setNotFound(!found);
+    }
+
+    private boolean searchRows() {
+        return rowsOrColumns.isSelected(rowsButton.getModel());
+    }
+
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rowsOrColumns = new javax.swing.ButtonGroup();
         closeBtn = new javax.swing.JButton();
         searchText = new javax.swing.JTextField();
         prevBtn = new javax.swing.JButton();
@@ -314,6 +391,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         matchCaseChk = new javax.swing.JCheckBox();
         textNotFoundLabel = new javax.swing.JLabel();
         anyWordChk = new javax.swing.JCheckBox();
+        rowsButton = new javax.swing.JRadioButton();
+        columnsButton = new javax.swing.JRadioButton();
 
         setFocusable(false);
         setRequestFocusEnabled(false);
@@ -351,6 +430,18 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         anyWordChk.setFocusable(false);
         anyWordChk.setRequestFocusEnabled(false);
 
+        rowsOrColumns.add(rowsButton);
+        rowsButton.setSelected(true);
+        rowsButton.setText("Rows");
+        rowsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rowsButtonActionPerformed(evt);
+            }
+        });
+
+        rowsOrColumns.add(columnsButton);
+        columnsButton.setText("Columns");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -363,15 +454,19 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
                 .addComponent(prevBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nextBtn)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(textNotFoundLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rowsButton)
+                .addGap(8, 8, 8)
+                .addComponent(columnsButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(highlightAllChk)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(matchCaseChk)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(anyWordChk)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,21 +478,30 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
                 .addComponent(highlightAllChk)
                 .addComponent(textNotFoundLabel)
                 .addComponent(matchCaseChk)
-                .addComponent(anyWordChk))
+                .addComponent(anyWordChk)
+                .addComponent(rowsButton)
+                .addComponent(columnsButton))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-		this.setVisible(false);
-	}//GEN-LAST:event_closeBtnActionPerformed
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_closeBtnActionPerformed
+
+    private void rowsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rowsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rowsButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox anyWordChk;
     private javax.swing.JButton closeBtn;
+    private javax.swing.JRadioButton columnsButton;
     private javax.swing.JCheckBox highlightAllChk;
     private javax.swing.JCheckBox matchCaseChk;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton prevBtn;
+    private javax.swing.JRadioButton rowsButton;
+    private javax.swing.ButtonGroup rowsOrColumns;
     private javax.swing.JTextField searchText;
     private javax.swing.JLabel textNotFoundLabel;
     // End of variables declaration//GEN-END:variables
