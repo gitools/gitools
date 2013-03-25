@@ -137,11 +137,15 @@ public class Html4Panel extends JPanel {
             throw new LinkVetoException();
         } else if (target != null && target.equalsIgnoreCase("_external")) {
             try {
-                Desktop.getDesktop().browse(new URI(href));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                URI uri = new URI(href);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(uri);
+                } else {
+                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
             throw new LinkVetoException();
         }
     }

@@ -17,14 +17,6 @@
 
 package org.gitools.ui.platform.editor;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -32,6 +24,14 @@ import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
 import org.w3c.dom.html2.HTMLElement;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 //FIXME Use Html4Panel !!!
 public class Html4Editor extends AbstractEditor {
@@ -154,14 +154,17 @@ public class Html4Editor extends AbstractEditor {
 			throw new LinkVetoException();
 		}
 		else if (target != null && target.equalsIgnoreCase("_external")) {
-			try {
-				Desktop.getDesktop().browse(new URI(href));
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-			}
-
-			throw new LinkVetoException();
+            try {
+                URI uri = new URI(href);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(uri);
+                } else {
+                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            throw new LinkVetoException();
 		}
 	}
 
