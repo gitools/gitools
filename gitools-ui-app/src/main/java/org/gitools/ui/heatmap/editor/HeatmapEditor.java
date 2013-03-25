@@ -21,6 +21,8 @@ import edu.upf.bg.colorscale.drawer.ColorScalePanel;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.BeanElementAdapter;
@@ -405,34 +407,46 @@ public class HeatmapEditor extends AbstractEditor {
 		if (row != -1 && col == -1) { // Row
 			String label = mv.getRowLabel(row);
 			sb.append(label);
-			AnnotationMatrix am = heatmap.getRowDim().getAnnotations();
-			if (am != null) {
-				int annRow = am.getRowIndex(label);
-				if (annRow != -1) {
-					int annCount = am.getColumnCount();
-					if (annCount > 0)
-					sb.append(": ").append(am.getColumnLabel(0))
-							.append(" = ").append(am.getCell(annRow, 0));
-					for (int annCol = 1; annCol < annCount; annCol++)
-						sb.append(", ").append(am.getColumnLabel(annCol))
-								.append(" = ").append(am.getCell(annRow, annCol));
-				}
-			}
+            HeatmapDim rowDim = heatmap.getRowDim();
+			AnnotationMatrix am = rowDim.getAnnotations();
+            if (am != null) {
+                int annRow = am.getRowIndex(label);
+                if (annRow != -1) {
+                    boolean first = true;
+                    for (HeatmapHeader header : rowDim.getHeaders()) {
+                        if (header instanceof HeatmapTextLabelsHeader) {
+                            String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
+                            if (annLabel == null || annLabel.isEmpty()) {
+                                continue;
+                            }
+                            int annCol = am.getColumnIndex(annLabel);
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
+                            first = false;
+                        }
+                    }
+                }
+            }
 		}
 		else if (row == -1 && col != -1) { // Column
 			String label = mv.getColumnLabel(col);
 			sb.append(label);
-			AnnotationMatrix am = heatmap.getColumnDim().getAnnotations();
+            HeatmapDim colDim = heatmap.getColumnDim();
+			AnnotationMatrix am = colDim.getAnnotations();
 			if (am != null) {
 				int annRow = am.getRowIndex(label);
 				if (annRow != -1) {
-					int annCount = am.getColumnCount();
-					if (annCount > 0)
-					sb.append(": ").append(am.getColumnLabel(0))
-							.append(" = ").append(am.getCell(annRow, 0));
-					for (int annCol = 1; annCol < annCount; annCol++)
-						sb.append(", ").append(am.getColumnLabel(annCol))
-								.append(" = ").append(am.getCell(annRow, annCol));
+                    boolean first = true;
+                    for (HeatmapHeader header : colDim.getHeaders()) {
+                        if (header instanceof HeatmapTextLabelsHeader) {
+                            String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
+                            if (annLabel == null || annLabel.isEmpty()) {
+                                continue;
+                            }
+                            int annCol = am.getColumnIndex(annLabel);
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
+                            first = false;
+                        }
+                    }
 				}
 			}
 		}
