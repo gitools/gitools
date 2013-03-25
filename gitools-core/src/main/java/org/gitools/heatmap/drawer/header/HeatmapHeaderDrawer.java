@@ -107,6 +107,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 				RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        g.setColor(Color.WHITE);
+        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+
 		if (horizontal) {
 			int x = box.y;
 			int y = box.x;
