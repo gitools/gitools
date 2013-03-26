@@ -17,18 +17,18 @@
 
 package org.gitools.ui;
 
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UIManager;
 import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
-
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.settings.Settings;
+
+import javax.swing.*;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
 
@@ -62,15 +62,6 @@ public class Main {
 			ex.printStackTrace();
 		}
 
-		// Initialize file formats
-		PersistenceInitialization.registerFormats();
-		
-		// Initialize actions
-		Actions.init();
-
-		// Launch frame
-		AppFrame.instance().start();
-
         // Start CommandListener
         boolean portEnabled = Settings.getDefault().isPortEnabled();
         String portString = null;
@@ -79,8 +70,17 @@ public class Main {
             if (portString != null) {
                 port = Integer.parseInt(portString);
             }
-            CommandListener.start(port);
+            CommandListener.start(port, args);
         }
+
+		// Initialize file formats
+		PersistenceInitialization.registerFormats();
+		
+		// Initialize actions
+		Actions.init();
+
+		// Launch frame
+		AppFrame.instance().start();
 
         if (args.length > 0) {
             cmdExecutor.execute(args, new PrintWriter(System.err));

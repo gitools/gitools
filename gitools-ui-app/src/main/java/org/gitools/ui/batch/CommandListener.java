@@ -26,6 +26,50 @@ public class CommandListener implements Runnable {
     boolean halt = false;
 
     public static synchronized void start(int port) {
+         start(port, null);
+    }
+
+    public static synchronized void start(int port, String[] args) {
+        if (args != null && args.length > 0) {
+            if (!available(port)) {
+
+                // Pass the arguments to the other gitools instance
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost", port);
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    InputStream in = socket.getInputStream();
+
+                    StringBuilder cmd = new StringBuilder();
+                    for (String arg : args) {
+                        cmd.append(arg).append(' ');
+                    }
+                    out.println(cmd.toString());
+
+                    // Wait server response
+                    while (in.available() == 0) {
+                        try{Thread.sleep(1000);}catch(Exception ee){}
+                    }
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    reader.readLine();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (socket != null) {
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                // Close gitools
+                System.exit(0);
+            }
+        }
+
         listener = new CommandListener(port);
         listener.listenerThread.start();
     }
@@ -277,6 +321,31 @@ public class CommandListener implements Runnable {
             return URLDecoder.decode(s);
         }
     }
+
+    /**
+     * Checks to see if a specific port is available.
+     *
+     * @param port the port to check for availability
+     */
+    private static boolean available(int port) {
+        Socket s = null;
+        try {
+            s = new Socket("localhost", port);
+            return false;
+        } catch (IOException e) {
+            return true;
+        } finally {
+            if( s != null){
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        }
+    }
+
 
 
 }
