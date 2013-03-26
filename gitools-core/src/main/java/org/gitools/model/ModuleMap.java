@@ -17,16 +17,11 @@
 
 package org.gitools.model;
 
-import java.util.Set;
+import cern.colt.bitvector.BitMatrix;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-
-import cern.colt.bitvector.BitMatrix;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)	
 public class ModuleMap extends Artifact {

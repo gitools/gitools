@@ -17,47 +17,48 @@
 
 package org.gitools.persistence.xml.adapter;
 
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceUtils;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
+
 
 public class ResourceRefXmlAdapter extends XmlAdapter<ResourceRef, ResourceRef> {
 
-	private PersistenceContext context;
+    private PersistenceContext context;
 
-	public ResourceRefXmlAdapter(PersistenceContext context) {
-		this.context = context;
-	}
+    public ResourceRefXmlAdapter(PersistenceContext context) {
+        this.context = context;
+    }
 
-	@Override
-	public ResourceRef unmarshal(ResourceRef v) throws Exception {
-		if (v == null)
-			return null;
+    @Override
+    public ResourceRef unmarshal(ResourceRef v) throws Exception {
+        if (v == null)
+            return null;
 
-		if (!PersistenceUtils.isAbsolute(v.getPath())) {
-			File baseFile = new File(context.getBasePath());
-			File path = new File(baseFile, v.getPath());
-			v.setPath(path.getAbsolutePath());
-		}
+        if (!PersistenceUtils.isAbsolute(v.getPath())) {
+            File baseFile = new File(context.getBasePath());
+            File path = new File(baseFile, v.getPath());
+            v.setPath(path.getAbsolutePath());
+        }
 
-		return v;
-	}
+        return v;
+    }
 
-	@Override
-	public ResourceRef marshal(ResourceRef v) throws Exception {
-		if (v == null)
-			return null;
+    @Override
+    public ResourceRef marshal(ResourceRef v) throws Exception {
+        if (v == null)
+            return null;
 
-		File baseFile = new File(context.getBasePath());
+        File baseFile = new File(context.getBasePath());
 
-		String path = PersistenceUtils.getRelativePath(
-				baseFile.getAbsolutePath(),
-				v.getPath());
+        String path = PersistenceUtils.getRelativePath(
+                baseFile.getAbsolutePath(),
+                v.getPath());
 
-		return new ResourceRef(v.getMime(), path);
-	}
+        return new ResourceRef(v.getMime(), path);
+    }
 
 }

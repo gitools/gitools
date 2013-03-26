@@ -18,19 +18,10 @@
 package org.gitools.ui.analysis.combination.wizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.IEntityPersistence;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.*;
+import org.gitools.persistence.locators.FileResourceLocator;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
@@ -38,6 +29,7 @@ import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
 import org.gitools.ui.analysis.wizard.ExamplePage;
 import org.gitools.ui.analysis.wizard.SelectFilePage;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -47,6 +39,12 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+
+import javax.swing.*;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
 
@@ -158,11 +156,11 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 						monitor.begin("Reading data header ...", 1);
 
 						String mimeType = dataPage.getFileFormat().getMime();
-						IEntityPersistence<Object> ep = PersistenceManager.getDefault()
+						IResourcePersistence<Object> ep = PersistenceManager.getDefault()
 								.createEntityPersistence(mimeType, new Properties());
 						Map<String, Object> meta = null;
 						try {
-							meta = ep.readMetadata(dataPage.getFile(), new String[] {
+							meta = ep.readMetadata(new FileResourceLocator(dataPage.getFile()), new String[] {
 								ObjectMatrixTextPersistence.META_ATTRIBUTES }, monitor);
 
 							if (meta != null) {

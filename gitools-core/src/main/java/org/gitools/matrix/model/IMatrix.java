@@ -17,10 +17,10 @@
 
 package org.gitools.matrix.model;
 
-import java.util.List;
-
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+
+import java.util.List;
 
 public interface IMatrix {
 

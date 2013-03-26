@@ -18,83 +18,84 @@
 package org.gitools.persistence.xml.adapter;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.persistence.PersistenceContext;
 import org.gitools.persistence.PersistenceEntityContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.PersistenceManager.FileRef;
 import org.gitools.persistence.PersistenceUtils;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
+
 public class PersistenceReferenceXmlAdapter<T>
-		extends XmlAdapter<PersistenceReferenceXmlElement, T> {
+        extends XmlAdapter<PersistenceReferenceXmlElement, T> {
 
-	private PersistenceContext context;
+    private PersistenceContext context;
 
-	public PersistenceReferenceXmlAdapter(PersistenceContext context) {
-		this.context = context;
-	}
+    public PersistenceReferenceXmlAdapter(PersistenceContext context) {
+        this.context = context;
+    }
 
-	@Override
-	public T unmarshal(PersistenceReferenceXmlElement v) throws Exception {
-		if (v.getPath() == null)
-			return null;
-		
-		File baseFile = new File(context.getBasePath());
+    @Override
+    public T unmarshal(PersistenceReferenceXmlElement v) throws Exception {
+        if (v.getPath() == null)
+            return null;
 
-		boolean absolute = PersistenceUtils.isAbsolute(v.getPath());
+        File baseFile = new File(context.getBasePath());
 
-		File file = absolute ?
-			new File(v.getPath()) : new File(baseFile, v.getPath());
+        boolean absolute = PersistenceUtils.isAbsolute(v.getPath());
 
-		String mimeType = v.getMime();
-		if (mimeType == null)
-			mimeType = PersistenceManager.getDefault().getMimeFromFile(file.getName());
+        File file = absolute ?
+                new File(v.getPath()) : new File(baseFile, v.getPath());
 
-		IProgressMonitor monitor = context.getMonitor();
+        String mimeType = v.getMime();
+        if (mimeType == null)
+            mimeType = PersistenceManager.getDefault().getMimeFromFile(file.getName());
 
-		T entity = null;
+        IProgressMonitor monitor = context.getProgressMonitor();
 
-		if (context.isLoadReferences()) {
-			entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
+        T entity = null;
 
-			context.setEntityContext(entity,
-					new PersistenceEntityContext(mimeType, file.getAbsolutePath()));
-		}
+        if (context.isLoadReferences()) {
+            entity = (T) PersistenceManager.getDefault().load(file, mimeType, monitor);
 
-		return entity;
-	}
+            context.setEntityContext(entity,
+                    new PersistenceEntityContext(mimeType, file.getAbsolutePath()));
+        }
 
-	@Override
-	public PersistenceReferenceXmlElement marshal(T v) throws Exception {
-		if (v == null)
-			return new PersistenceReferenceXmlElement();
-		
-		PersistenceEntityContext entityContext = context.getEntityContext(v);
+        return entity;
+    }
 
-		String mimeType = entityContext.getMimeType();
-		if (mimeType == null)
-			mimeType = PersistenceManager.getDefault().getMimeFromEntity(v.getClass());
+    @Override
+    public PersistenceReferenceXmlElement marshal(T v) throws Exception {
+        if (v == null)
+            return new PersistenceReferenceXmlElement();
 
-		File baseFile = new File(context.getBasePath());
-		
-		File file = new File(entityContext.getFilePath());
+        PersistenceEntityContext entityContext = context.getEntityContext(v);
 
-		FileRef fileRef = PersistenceManager.getDefault().getEntityFileRef(v);
-		File linkFile = fileRef != null ? fileRef.getFile() : null;
-		if (entityContext.isReferenceCacheEnabled() && linkFile != null)
-			file = linkFile;
+        String mimeType = entityContext.getMimeType();
+        if (mimeType == null)
+            mimeType = PersistenceManager.getDefault().getMimeFromEntity(v.getClass());
 
-		String path = PersistenceUtils.getRelativePath(
-				baseFile.getAbsolutePath(),
-				file.getAbsolutePath());
+        File baseFile = new File(context.getBasePath());
 
-		IProgressMonitor monitor = context.getMonitor();
+        File file = new File(entityContext.getFilePath());
 
-		if (!entityContext.isReferenceCacheEnabled() || linkFile == null)
-			PersistenceManager.getDefault().store(file, v, monitor);
+        FileRef fileRef = PersistenceManager.getDefault().getEntityFileRef(v);
+        File linkFile = fileRef != null ? fileRef.getFile() : null;
+        if (entityContext.isReferenceCacheEnabled() && linkFile != null)
+            file = linkFile;
 
-		return new PersistenceReferenceXmlElement(mimeType, path);
-	}
+        String path = PersistenceUtils.getRelativePath(
+                baseFile.getAbsolutePath(),
+                file.getAbsolutePath());
+
+        IProgressMonitor monitor = context.getProgressMonitor();
+
+        if (!entityContext.isReferenceCacheEnabled() || linkFile == null)
+            PersistenceManager.getDefault().store(file, v, monitor);
+
+        return new PersistenceReferenceXmlElement(mimeType, path);
+    }
 
 }

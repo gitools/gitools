@@ -1,122 +1,124 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <heatmap version="1">
-	<title>Enrichment for ovarian tumours</title>
-	<desc>bla bla bla</desc>
-	<!-- Currently in JAXB this tag is named <attributes> but could be confussed with data slides/attributes -->
+    <title>Enrichment for ovarian tumours</title>
+    <desc>bla bla bla</desc>
+    <!-- Currently in JAXB this tag is named <attributes> but could be confussed with data slides/attributes -->
     <properties>
-    	<prop name="Author">Myshelf</prop>
-    	<prop name="Laboratory conditions">bla bla bla</prop>
+        <prop name="Author">Myshelf</prop>
+        <prop name="Laboratory conditions">bla bla bla</prop>
     </properties>
-    
+
     <!-- The count attribute in <rows> and <columns> allows to dimension the heatmaps grid.
     It is possible to have empty bodies but not empty rows/columns -->
     <rows count="1">
-		<row index="0">
-		    <id-type>not_specified</id-type>
-		    <annotations path="row_annotations.tsv.gz" mime="application/annotations"/>
-		    <headers>
-		    	<labels> <!-- ... --> </label>
-		    	<color-labels> <!-- ... --> </color-labels>
-		    	<histogram> <!-- ... --> </histogram>
-		    </headers>
-		    <grid-enabled>false</grid-enabled>
-		    <grid-size>1</grid-size>
-		    <grid-color>#ffffff</grid-color>
-		    <labels>
-		    	<label>G1</label>
-				<label>G2</label>
-		    	<!-- ... -->
-		    </labels>
-		    <visible>0-8,17-19,26</visible>
-		</row>
-	</rows>
-	
-	<columns count="2">
-		<column index="0">
-		    <idType>not_specified</idType>
-		    <annotations path="col_annotations.tsv.gz" mime="application/annotations"/>
-		    <headers>
-		    	<labels> <!-- ... --> </label>
-		    	<color-labels> <!-- ... --> </color-labels>
-		    </headers>
-		    <grid-enabled>false</grid-enabled>
-		    <grid-size>1</grid-size>
-		    <grid-color>#ffffff</grid-color>
-			<labels>
-				<label>P1</label>
-				<label>P2</label>
-		    	<!-- ... -->
-		    </labels>
-		    <visible>0-8,11</visible>
-		</column>
-		<column index="1"> <!-- ... --> </column>
-	</columns>
-	
-	<bodies>
-		<body col="0" row="0">
-			<data path="20_all_tumor_types_upreg.cdm.gz" mime="application/gene-cluster-text"/>
-			<cell-width>14</cell-width>
-			<cell-height>14</cell-height>
-			<selected-view>0</selected-view>
-			<views>
-				<view name="Enrichment P-Values">
-					<decorator id="pvalues">
-						<attribute>p-value</attribute>
-						<filter-attribute>corrected-p-value</filter-attribute>
-						<min-color>#ff5598</min-color>
-						<max-color>#e0346f</max-color>
-						<nosig-color>#f978ba</nosig-color>
-						<empty-color>#fc8c56</empty-color>
-						<!-- ... -->
-					</decorator>
-					<aggregator>mul</aggregator> <!-- es necesario si tenemos el <sort> ? -->
-					<sort-by-value applyto="both">
-						<attribute id="p-value" aggregation="mul" dir="asc" />
-						<attribute id="N" aggregation="sum" dir="desc" />
-					</sort-by-value>
-					<overlays>
-						<overlay name="Mutations" visible="true">
-							<!-- There could be simple condition tags such as the ones shown below
-							but if someone wants to implement a parser for expressions we could
-							also have something like:
-								<expr>log(2^${log-2-ratio} * ${p-value}) > 10</expr>
-							-->
-							<condition>
-								<attr-eq id="mutated" value="1" />
-								<!-- <ann-eq id="mutated" value="yes" /> -->
-							</condition>
-							<!-- Apart from predefined figures it could be also a vector graphics path.
-							A cell can be considered like a canvas and all the positions and sizes
-							given as relative to the canvas size -->
-							<figure id="diamond">
-								<color>#0000ff</color>
-								<size>
-									<width>25%</width>
-									<height>25%</height>
-								</size>
-								<position>
-									<horizontal>75%</horizontal>
-									<vertical>25%</vertical>
-								</position>
-							</figure>
-						</overlay>
-					</overlays>
-				</view>
-				<view name="Expression">
-					<decorator id="two-sided">
-						<attribute>log2-ratio</attribute>
-						<min-color>#ff5598</min-color>
-						<mid-color>#ffffff</mid-color>
-						<max-color>#e0346f</max-color>
-						<empty-color>#fc8c56</empty-color>
-						<!-- ... -->
-					</decorator>
-					<aggregator>mul</aggregator> <!-- es necesario si tenemos el <sort> ? -->
-					<sort-by-value applyto="rows">
-						<attribute id="log2-ratio" aggregation="mul" dir="asc" />
-					</sort-by-value>
-				</view>
-			</views>
-		</body>
-	</bodies>
+        <row index="0">
+            <id-type>not_specified</id-type>
+            <annotations path="row_annotations.tsv.gz" mime="application/annotations"/>
+            <headers>
+                <labels> <!-- ... --> </label>
+                <color-labels> <!-- ... --> </color-labels>
+                <histogram> <!-- ... --> </histogram>
+            </headers>
+            <grid-enabled>false</grid-enabled>
+            <grid-size>1</grid-size>
+            <grid-color>#ffffff</grid-color>
+            <labels>
+                <label>G1</label>
+                <label>G2</label>
+                <!-- ... -->
+            </labels>
+            <visible>0-8,17-19,26</visible>
+        </row>
+    </rows>
+
+    <columns count="2">
+        <column index="0">
+            <idType>not_specified</idType>
+            <annotations path="col_annotations.tsv.gz" mime="application/annotations"/>
+            <headers>
+                <labels> <!-- ... --> </label>
+                <color-labels> <!-- ... --> </color-labels>
+            </headers>
+            <grid-enabled>false</grid-enabled>
+            <grid-size>1</grid-size>
+            <grid-color>#ffffff</grid-color>
+            <labels>
+                <label>P1</label>
+                <label>P2</label>
+                <!-- ... -->
+            </labels>
+            <visible>0-8,11</visible>
+        </column>
+        <column index="1"> <!-- ... --> </column>
+    </columns>
+
+    <bodies>
+        <body col="0" row="0">
+            <data path="20_all_tumor_types_upreg.cdm.gz" mime="application/gene-cluster-text"/>
+            <cell-width>14</cell-width>
+            <cell-height>14</cell-height>
+            <selected-view>0</selected-view>
+            <views>
+                <view name="Enrichment P-Values">
+                    <decorator id="pvalues">
+                        <attribute>p-value</attribute>
+                        <filter-attribute>corrected-p-value</filter-attribute>
+                        <min-color>#ff5598</min-color>
+                        <max-color>#e0346f</max-color>
+                        <nosig-color>#f978ba</nosig-color>
+                        <empty-color>#fc8c56</empty-color>
+                        <!-- ... -->
+                    </decorator>
+                    <aggregator>mul</aggregator>
+                    <!-- es necesario si tenemos el <sort> ? -->
+                    <sort-by-value applyto="both">
+                        <attribute id="p-value" aggregation="mul" dir="asc"/>
+                        <attribute id="N" aggregation="sum" dir="desc"/>
+                    </sort-by-value>
+                    <overlays>
+                        <overlay name="Mutations" visible="true">
+                            <!-- There could be simple condition tags such as the ones shown below
+                            but if someone wants to implement a parser for expressions we could
+                            also have something like:
+                                <expr>log(2^${log-2-ratio} * ${p-value}) > 10</expr>
+                            -->
+                            <condition>
+                                <attr-eq id="mutated" value="1"/>
+                                <!-- <ann-eq id="mutated" value="yes" /> -->
+                            </condition>
+                            <!-- Apart from predefined figures it could be also a vector graphics path.
+                            A cell can be considered like a canvas and all the positions and sizes
+                            given as relative to the canvas size -->
+                            <figure id="diamond">
+                                <color>#0000ff</color>
+                                <size>
+                                    <width>25%</width>
+                                    <height>25%</height>
+                                </size>
+                                <position>
+                                    <horizontal>75%</horizontal>
+                                    <vertical>25%</vertical>
+                                </position>
+                            </figure>
+                        </overlay>
+                    </overlays>
+                </view>
+                <view name="Expression">
+                    <decorator id="two-sided">
+                        <attribute>log2-ratio</attribute>
+                        <min-color>#ff5598</min-color>
+                        <mid-color>#ffffff</mid-color>
+                        <max-color>#e0346f</max-color>
+                        <empty-color>#fc8c56</empty-color>
+                        <!-- ... -->
+                    </decorator>
+                    <aggregator>mul</aggregator>
+                    <!-- es necesario si tenemos el <sort> ? -->
+                    <sort-by-value applyto="rows">
+                        <attribute id="log2-ratio" aggregation="mul" dir="asc"/>
+                    </sort-by-value>
+                </view>
+            </views>
+        </body>
+    </bodies>
 </heatmap>

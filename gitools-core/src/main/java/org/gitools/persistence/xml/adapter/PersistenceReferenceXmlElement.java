@@ -26,33 +26,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersistenceReferenceXmlElement {
 
-	@XmlAttribute
-	private String mime;
+    @XmlAttribute
+    private String mime;
 
-	@XmlAttribute
-	private String path;
+    @XmlAttribute
+    private String path;
 
-	public PersistenceReferenceXmlElement() {
-	}
+    public PersistenceReferenceXmlElement() {
+    }
 
-	public PersistenceReferenceXmlElement(String mime, String path) {
-		this.mime = mime;
-		this.path = path;
-	}
+    public PersistenceReferenceXmlElement(String mime, String path) {
+        this.mime = mime;
+        this.path = path;
+    }
 
-	public String getMime() {
-		return mime;
-	}
+    public String getMime() {
+        return mime;
+    }
 
-	public void setMime(String mime) {
-		this.mime = mime;
-	}
+    public void setMime(String mime) {
+        this.mime = mime;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

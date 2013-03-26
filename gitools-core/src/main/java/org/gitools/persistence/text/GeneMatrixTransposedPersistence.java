@@ -19,161 +19,155 @@ package org.gitools.persistence.text;
 
 import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.DoubleBinaryMatrix;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.PersistenceException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
+import java.util.*;
 
-public class GeneMatrixTransposedPersistence
-		extends BaseMatrixPersistence<DoubleBinaryMatrix> {
+public class GeneMatrixTransposedPersistence extends BaseMatrixPersistence<DoubleBinaryMatrix> {
 
-	@Override
-	public DoubleBinaryMatrix read(File file, IProgressMonitor monitor) throws PersistenceException {
+    @Override
+    public DoubleBinaryMatrix read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-		monitor.begin("Reading names ...", 1);
+        progressMonitor.begin("Reading names ...", 1);
 
-		DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
+        DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
 
-		Reader reader = null;
-		try {
-			reader = PersistenceUtils.openReader(file);
-		} catch (Exception e) {
-			throw new PersistenceException("Error opening file: " + file.getName(), e);
-		}
+        Reader reader = null;
+        try {
+            reader = resourceLocator.getReader();
+        } catch (Exception e) {
+            throw new PersistenceException("Error opening: " + resourceLocator.getURL(), e);
+        }
 
-		CSVReader parser = new CSVReader(reader);
+        CSVReader parser = new CSVReader(reader);
 
-		try {
-			// read file
+        try {
+            // read file
 
-			String[] fields;
+            String[] fields;
 
-			List<String> colNames = new ArrayList<String>();
-			List<int[]> colRowIndices = new ArrayList<int[]>();
+            List<String> colNames = new ArrayList<String>();
+            List<int[]> colRowIndices = new ArrayList<int[]>();
 
-			Map<String, Integer> rowIndices = new HashMap<String, Integer>();
+            Map<String, Integer> rowIndices = new HashMap<String, Integer>();
 
-			while ((fields = parser.readNext()) != null) {
+            while ((fields = parser.readNext()) != null) {
 
-				if (fields.length < 2)
-					throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
+                if (fields.length < 2)
+                    throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
 
-				colNames.add(fields[0]);
+                colNames.add(fields[0]);
 
-				// fields[1] is for description, but currently not used
+                // fields[1] is for description, but currently not used
 
-				int[] rows = new int[fields.length - 2];
-				colRowIndices.add(rows);
+                int[] rows = new int[fields.length - 2];
+                colRowIndices.add(rows);
 
-				for (int i = 2; i < fields.length; i++) {
-					Integer rowIndex = rowIndices.get(fields[i]);
-					if (rowIndex == null) {
-						rowIndex = rowIndices.size();
-						rowIndices.put(fields[i], rowIndex);
-					}
+                for (int i = 2; i < fields.length; i++) {
+                    Integer rowIndex = rowIndices.get(fields[i]);
+                    if (rowIndex == null) {
+                        rowIndex = rowIndices.size();
+                        rowIndices.put(fields[i], rowIndex);
+                    }
 
-					rows[i - 2] = rowIndex;
-				}
-			}
+                    rows[i - 2] = rowIndex;
+                }
+            }
 
-			// incorporate population labels
+            // incorporate population labels
 
-			String[] populationLabels = getPopulationLabels();
-			if (populationLabels != null) {
-				for (String name : populationLabels) {
-					Integer index = rowIndices.get(name);
-					if (index == null)
-						rowIndices.put(name, rowIndices.size());
-				}
-			}
+            String[] populationLabels = getPopulationLabels();
+            if (populationLabels != null) {
+                for (String name : populationLabels) {
+                    Integer index = rowIndices.get(name);
+                    if (index == null)
+                        rowIndices.put(name, rowIndices.size());
+                }
+            }
 
-			int numRows = rowIndices.size();
-			int numColumns = colNames.size();
-			
-			matrix.makeCells(numRows, numColumns);
+            int numRows = rowIndices.size();
+            int numColumns = colNames.size();
 
-			// set row names
+            matrix.makeCells(numRows, numColumns);
 
-			for (Map.Entry<String, Integer> entry : rowIndices.entrySet())
-				matrix.setRow(entry.getValue(), entry.getKey());
+            // set row names
 
-			// fill matrix with background value
+            for (Map.Entry<String, Integer> entry : rowIndices.entrySet())
+                matrix.setRow(entry.getValue(), entry.getKey());
 
-			double backgroundValue = getBackgroundValue();
-			for (int row = 0; row < numRows; row++)
-				for (int col = 0; col < numColumns; col++)
-					matrix.setCellValue(row, col, 0, backgroundValue);
+            // fill matrix with background value
 
-			// set column names and cell values
+            double backgroundValue = getBackgroundValue();
+            for (int row = 0; row < numRows; row++)
+                for (int col = 0; col < numColumns; col++)
+                    matrix.setCellValue(row, col, 0, backgroundValue);
 
-			int colIndex = 0;
-			Iterator<String> colNameIt = colNames.iterator();
-			Iterator<int[]> colRowsIt = colRowIndices.iterator();
+            // set column names and cell values
 
-			while (colNameIt.hasNext()) {
-				matrix.setColumn(colIndex, colNameIt.next());
-				int[] rows = colRowsIt.next();
-				for (int row : rows)
-					matrix.setCellValue(row, colIndex, 0, 1.0);
-				colIndex++;
-			}
-			
-			reader.close();
+            int colIndex = 0;
+            Iterator<String> colNameIt = colNames.iterator();
+            Iterator<int[]> colRowsIt = colRowIndices.iterator();
 
-			monitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
+            while (colNameIt.hasNext()) {
+                matrix.setColumn(colIndex, colNameIt.next());
+                int[] rows = colRowsIt.next();
+                for (int row : rows)
+                    matrix.setCellValue(row, colIndex, 0, 1.0);
+                colIndex++;
+            }
 
-			monitor.end();
-		}
-		catch (IOException e) {
-			throw new PersistenceException(e);
-		}
+            reader.close();
 
-		return matrix;
-	}
+            progressMonitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
 
-	@Override
-	public void write(File file, DoubleBinaryMatrix matrix, IProgressMonitor monitor) throws PersistenceException {
-		monitor.begin("Saving matrix...", matrix.getColumnCount());
-		monitor.info("File: " + file.getAbsolutePath());
+            progressMonitor.end();
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
 
-		Writer writer;
-		try {
-			writer = PersistenceUtils.openWriter(file);
-		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + file.getName(), e);
-		}
+        return matrix;
+    }
 
-		PrintWriter pw = new PrintWriter(writer);
+    @Override
+    public void write(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException {
+        progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
+        progressMonitor.info("To: " + resourceLocator.getURL());
 
-		final int rowCount = matrix.getRowCount();
+        Writer writer;
+        try {
+            writer = resourceLocator.getWriter();
+        } catch (Exception e) {
+            throw new PersistenceException("Error writing: " + resourceLocator.getURL(), e);
+        }
 
-		for (int ci = 0; ci < matrix.getColumnCount(); ci++) {
-			pw.append(matrix.getColumnLabel(ci));
-			pw.append('\t'); // description, but currently not used
-			for (int ri = 0; ri < rowCount; ri++) {
-				Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
-				if (value == 1.0)
-					pw.append('\t').append(matrix.getRowLabel(ri));
-			}
-			pw.println();
-		}
+        PrintWriter pw = new PrintWriter(writer);
 
-		try {
-			writer.close();
-		} catch (Exception e) {
-			throw new PersistenceException("Error closing file: " + file.getName(), e);
-		}
+        final int rowCount = matrix.getRowCount();
 
-		monitor.end();
-	}
+        for (int ci = 0; ci < matrix.getColumnCount(); ci++) {
+            pw.append(matrix.getColumnLabel(ci));
+            pw.append('\t'); // description, but currently not used
+            for (int ri = 0; ri < rowCount; ri++) {
+                Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
+                if (value == 1.0)
+                    pw.append('\t').append(matrix.getRowLabel(ri));
+            }
+            pw.println();
+        }
+
+        try {
+            writer.close();
+        } catch (Exception e) {
+            throw new PersistenceException("Error closing: " + resourceLocator.getURL(), e);
+        }
+
+        progressMonitor.end();
+    }
 }

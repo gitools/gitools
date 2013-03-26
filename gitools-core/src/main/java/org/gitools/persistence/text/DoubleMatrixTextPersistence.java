@@ -19,58 +19,31 @@ package org.gitools.persistence.text;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 
-import java.io.File;
+public class DoubleMatrixTextPersistence extends MatrixTextPersistence<DoubleMatrix> {
 
-public class DoubleMatrixTextPersistence 
-	extends MatrixTextPersistence<DoubleMatrix> {
-
-	private static final long serialVersionUID = 1995227069362928225L;
+    public DoubleMatrixTextPersistence() {
+        super();
+    }
 
     public DoubleMatrixTextPersistence(int skipLines, Integer... skipColumns) {
         super(skipLines, skipColumns);
     }
 
-	public DoubleMatrixTextPersistence() {
-        super();
-	}
+    @Override
+    protected DoubleMatrix createEntity() {
+        return new DoubleMatrix();
+    }
 
-	@Override
-	protected DoubleMatrix createEntity() {
-		/*return isBinaryValues() ?
-			new DoubleBinaryMatrix() : new DoubleMatrix();*/
+    @Override
+    public DoubleMatrix read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+        return read(resourceLocator, getValueTranslator(), progressMonitor);
+    }
 
-		return new DoubleMatrix();
-	}
-
-	@Override
-	public DoubleMatrix read(
-			File file, 
-			IProgressMonitor monitor) 
-			throws PersistenceException {
-		
-		return read(file, getValueTranslator(), monitor);
-	}
-	
-	public void readData(
-			File file,
-			DoubleMatrix doubleMatrix,
-			int[] columnsOrder, int[] rowsOrder,
-			IProgressMonitor monitor)
-			throws PersistenceException {
-
-		readData(file, doubleMatrix, getValueTranslator(),
-				columnsOrder, rowsOrder, monitor);
-	}
-
-	@Override
-	public void write(
-			File file,
-			DoubleMatrix doubleMatrix,
-			IProgressMonitor monitor) 
-			throws PersistenceException {
-
-		write(file, doubleMatrix, getValueTranslator(), monitor);
-	}
+    @Override
+    public void write(IResourceLocator resourceLocator, DoubleMatrix doubleMatrix, IProgressMonitor progressMonitor) throws PersistenceException {
+        write(resourceLocator, doubleMatrix, getValueTranslator(), progressMonitor);
+    }
 }

@@ -17,34 +17,31 @@
 
 package org.gitools.persistence.xml.adapter;
 
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.gitools.persistence.PersistenceUtils;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
 
 public class FileXmlAdapter extends XmlAdapter<String, File> {
 
-	private File baseFile;
+    private String basePath;
 
-	public FileXmlAdapter() {
-	}
+    public FileXmlAdapter(String basePath) {
+        this.basePath = basePath;
+    }
 
-	public FileXmlAdapter(File baseFile) {
-		this.baseFile = baseFile;
-	}
+    @Override
+    public File unmarshal(String v) throws Exception {
+        return basePath != null ?
+                new File(basePath, v) :
+                new File(v);
+    }
 
-	@Override
-	public File unmarshal(String v) throws Exception {
-		return baseFile != null ?
-			new File(baseFile, v) :
-			new File(v);
-	}
-
-	@Override
-	public String marshal(File v) throws Exception {
-		return baseFile != null ?
-			PersistenceUtils.getRelativePath(
-				baseFile.getAbsolutePath(), v.getAbsolutePath()) :
-			v.getAbsolutePath();
-	}
+    @Override
+    public String marshal(File v) throws Exception {
+        return basePath != null ?
+                PersistenceUtils.getRelativePath( basePath, v.getAbsolutePath()) :
+                v.getAbsolutePath();
+    }
 
 }

@@ -26,53 +26,52 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 
 public class EnrichmentAnalysisXmlPersistence
-		extends AbstractXmlPersistence<EnrichmentAnalysis> {
+        extends AbstractXmlPersistence<EnrichmentAnalysis> {
 
-	public EnrichmentAnalysisXmlPersistence() {
-		super(EnrichmentAnalysis.class);
+    public EnrichmentAnalysisXmlPersistence() {
+        super(EnrichmentAnalysis.class);
 
-		setPersistenceTitle("enrichment analysis");
-	}
-	
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		PersistenceContext context = getPersistenceContext();
-		return new XmlAdapter<?, ?>[] {
-			new PersistenceReferenceXmlAdapter(context)
-		};
-	}
+        setPersistenceTitle("enrichment analysis");
+    }
 
-	@Override
-	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {
-		File baseFile = file.getParentFile();
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        PersistenceContext context = getPersistenceContext();
+        return new XmlAdapter<?, ?>[]{
+                new PersistenceReferenceXmlAdapter(context)
+        };
+    }
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
-	}
+    @Override
+    protected void beforeRead(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+        String baseFile = PersistenceUtils.getBasePath(resourceLocator);
 
-	@Override
-	protected void beforeWrite(File file, EnrichmentAnalysis entity,
-			IProgressMonitor monitor) throws PersistenceException {
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(baseFile);
+        context.setProgressMonitor(progressMonitor);
+    }
 
-		File baseFile = file.getParentFile();
-		String baseName = PersistenceUtils.getFileName(file.getName());
+    @Override
+    protected void beforeWrite(IResourceLocator resourceLocator, EnrichmentAnalysis resource,        IProgressMonitor progressMonitor) throws PersistenceException {
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
+        String baseFile = PersistenceUtils.getBasePath(resourceLocator);
+        String baseName = PersistenceUtils.getFileName(resourceLocator.getName());
 
-		PersistenceManager pm = getPersistenceManager();
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(baseFile);
+        context.setProgressMonitor(progressMonitor);
 
-		String dataExt = pm.getExtensionFromEntity(entity.getData());
-		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
+        PersistenceManager pm = getPersistenceManager();
 
-		context.setEntityContext(entity.getModuleMap(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
+        String dataExt = pm.getExtensionFromEntity(resource.getData());
+        context.setEntityContext(resource.getData(), new PersistenceEntityContext(
+                new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		String resultsExt = pm.getExtensionFromEntity(entity.getResults());
-		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
-	}
+        context.setEntityContext(resource.getModuleMap(), new PersistenceEntityContext(
+                new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
+
+        String resultsExt = pm.getExtensionFromEntity(resource.getResults());
+        context.setEntityContext(resource.getResults(), new PersistenceEntityContext(
+                new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
+    }
 }

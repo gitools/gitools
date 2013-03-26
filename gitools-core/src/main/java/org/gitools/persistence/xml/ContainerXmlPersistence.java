@@ -18,35 +18,34 @@
 package org.gitools.persistence.xml;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
+import org.gitools.model.Container;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.xml.adapter.FileXmlAdapter;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.model.Container;
-import org.gitools.persistence.xml.adapter.FileXmlAdapter;
-import org.gitools.persistence.PersistenceException;
+public class ContainerXmlPersistence extends AbstractXmlPersistence<Container> {
 
-public class ContainerXmlPersistence
-		extends AbstractXmlPersistence<Container> {
+    private String basePath;
 
-	private File baseFile;
+    public ContainerXmlPersistence() {
+        super(Container.class);
+    }
 
-	public ContainerXmlPersistence() {	
-		super(Container.class);
-	}
-	
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		return new XmlAdapter[] {
-				new FileXmlAdapter(baseFile) };
-	}
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        return new XmlAdapter[]{ new FileXmlAdapter(basePath)};
+    }
 
-	@Override
-	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {
-		baseFile = file.getParentFile();
-	}
+    @Override
+    protected void beforeRead(IResourceLocator resourceLocator, IProgressMonitor monitor) throws PersistenceException {
+        basePath = PersistenceUtils.getBasePath(resourceLocator);
+    }
 
-	@Override
-	protected void beforeWrite(File file, Container entity, IProgressMonitor monitor) throws PersistenceException {
-		baseFile = file.getParentFile();
-	}
+    @Override
+    protected void beforeWrite(IResourceLocator resourceLocator, Container resource, IProgressMonitor progressMonitor) throws PersistenceException {
+        basePath = PersistenceUtils.getBasePath(resourceLocator);
+    }
 }

@@ -17,24 +17,24 @@
 
 package org.gitools.persistence.xml;
 
+import org.gitools.persistence.PersistenceContext;
+import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.table.model.TableFigure;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.gitools.table.model.TableFigure;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
-import org.gitools.persistence.PersistenceContext;
-
 public class TableFigureXmlPersistence
-		extends AbstractXmlPersistence<TableFigure> {
+        extends AbstractXmlPersistence<TableFigure> {
 
-	public TableFigureXmlPersistence() {
-		super(TableFigure.class);
-	}
+    public TableFigureXmlPersistence() {
+        super(TableFigure.class);
+    }
 
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		PersistenceContext context = getPersistenceContext();
-		return new XmlAdapter<?, ?>[] {
-			new PersistenceReferenceXmlAdapter(context)
-		};
-	}
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        PersistenceContext context = getPersistenceContext();
+        return new XmlAdapter<?, ?>[]{
+                new PersistenceReferenceXmlAdapter(context)
+        };
+    }
 }

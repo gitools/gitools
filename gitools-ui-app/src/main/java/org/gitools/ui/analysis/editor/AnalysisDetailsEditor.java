@@ -23,6 +23,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.locators.FileResourceLocator;
 import org.gitools.persistence.xml.AbstractXmlPersistence;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
@@ -143,12 +144,11 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
         File workdir = new File(wizard.getFolder());
         File file = new File(workdir,wizard.getFileName());
-        xmlPersistance.setRecursivePersistence(true);
         Settings.getDefault().setLastWorkPath(wizard.getFolder());
 
 
         try {
-            xmlPersistance.write(file, analysis, monitor);
+            xmlPersistance.write(new FileResourceLocator(file), analysis, monitor);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }

@@ -18,31 +18,26 @@
 package org.gitools.persistence.text;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 
-public class DoubleBinaryMatrixTextPersistence
-		extends MatrixTextPersistence<DoubleBinaryMatrix> {
+public class DoubleBinaryMatrixTextPersistence extends MatrixTextPersistence<DoubleBinaryMatrix> {
 
-	@Override
-	protected DoubleBinaryMatrix createEntity() {
-		return new DoubleBinaryMatrix();
-	}
+    @Override
+    protected DoubleBinaryMatrix createEntity() {
+        return new DoubleBinaryMatrix();
+    }
 
-	@Override
-	public DoubleBinaryMatrix read(File file, IProgressMonitor monitor)
-			throws PersistenceException {
+    @Override
+    public DoubleBinaryMatrix read(IResourceLocator locator, IProgressMonitor progressMonitor) throws PersistenceException {
+        return read(locator, new DoubleTranslator(), progressMonitor);
+    }
 
-		return read(file, new DoubleTranslator(), monitor);
-	}
-
-	@Override
-	public void write(File file, DoubleBinaryMatrix entity,
-			IProgressMonitor monitor) throws PersistenceException {
-		
-		write(file, entity, new DoubleTranslator(), monitor);
-	}
+    @Override
+    public void write(IResourceLocator resourceLocator, DoubleBinaryMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
+        write(resourceLocator, resource, new DoubleTranslator(), progressMonitor);
+    }
 
 }

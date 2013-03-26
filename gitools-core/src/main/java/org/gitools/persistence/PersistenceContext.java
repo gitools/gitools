@@ -18,81 +18,53 @@
 package org.gitools.persistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class PersistenceContext extends HashMap<Object, Object> {
 
-	//TODO private PersistenceManager manager;
+    private IProgressMonitor progressMonitor;
 
-	private IProgressMonitor monitor;
+    private String basePath;
 
-	private String basePath;
+    private Map<Object, PersistenceEntityContext> entityContext = new HashMap<Object, PersistenceEntityContext>();
 
-	private Map<Object, PersistenceEntityContext> entityContext =
-			new HashMap<Object, PersistenceEntityContext>();
+    private boolean loadReferences;
 
-	private boolean loadReferences;
+    public PersistenceContext() {
+        loadReferences = true;
+    }
 
-	//private Map<Object, String> filePath = new HashMap<Object, String>();
+    public IProgressMonitor getProgressMonitor() {
+        return progressMonitor;
+    }
 
-	public PersistenceContext() {
-		loadReferences = true;
-	}
+    public void setProgressMonitor(IProgressMonitor progressMonitor) {
+        this.progressMonitor = progressMonitor;
+    }
 
-	/*
-	public PersistenceManager getPersistenceManager() {
-		return manager;
-	}
+    public String getBasePath() {
+        return basePath;
+    }
 
-	public void setPersistenceManager(PersistenceManager manager) {
-		this.manager = manager;
-	}
-	 */
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
+    }
 
-	public IProgressMonitor getMonitor() {
-		return monitor;
-	}
+    public PersistenceEntityContext getEntityContext(Object key) {
+        return entityContext.get(key);
+    }
 
-	public void setMonitor(IProgressMonitor monitor) {
-		this.monitor = monitor;
-	}
+    public void setEntityContext(Object key, PersistenceEntityContext context) {
+        this.entityContext.put(key, context);
+    }
 
-	public String getBasePath() {
-		return basePath;
-	}
+    public boolean isLoadReferences() {
+        return loadReferences;
+    }
 
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
-	}
-
-	@Deprecated
-	public String getMimeType(Object key) {
-		return entityContext.get(key).getMimeType();
-	}
-
-	@Deprecated
-	public String getFilePath(Object key) {
-		return entityContext.get(key).getFilePath();
-	}
-
-	public PersistenceEntityContext getEntityContext(Object key) {
-		return entityContext.get(key);
-	}
-
-	public void setEntityContext(Object key, PersistenceEntityContext context) {
-		this.entityContext.put(key, context);
-	}
-
-	public String getString(Object key) {
-		return (String) get(key);
-	}
-
-	public boolean isLoadReferences() {
-		return loadReferences;
-	}
-
-	public void setLoadReferences(boolean loadReferences) {
-		this.loadReferences = loadReferences;
-	}
+    public void setLoadReferences(boolean loadReferences) {
+        this.loadReferences = loadReferences;
+    }
 }

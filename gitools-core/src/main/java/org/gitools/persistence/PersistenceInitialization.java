@@ -31,44 +31,43 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Container;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.Project;
-
 import org.gitools.persistence.text.*;
 import org.gitools.persistence.xml.*;
 import org.gitools.table.model.TableFigure;
 
 public class PersistenceInitialization {
 
-	public static void registerFormats() {
-		registerFormats(
-				PersistenceManager.getDefault());
-	}
+    public static void registerFormats() {
+        registerFormats(
+                PersistenceManager.getDefault());
+    }
 
-	public static void registerFormats(PersistenceManager pm) {
-		
-		pm.registerFormat(MimeTypes.PROJECT, FileSuffixes.PROJECT, Project.class, ProjectXmlPersistence.class);
-		pm.registerFormat(MimeTypes.CONTENT, FileSuffixes.CONTENT, Container.class, ContainerXmlPersistence.class);
-		pm.registerFormat(MimeTypes.TABLE, FileSuffixes.TABLE_FIGURE, TableFigure.class, TableFigureXmlPersistence.class);
+    public static void registerFormats(PersistenceManager pm) {
 
-		pm.registerFormat(MimeTypes.ENRICHMENT_ANALYSIS, FileSuffixes.ENRICHMENT, EnrichmentAnalysis.class, EnrichmentAnalysisXmlPersistence.class);
-		pm.registerFormat(MimeTypes.ONCODRIVE_ANALYSIS, FileSuffixes.ONCODRIVE, OncodriveAnalysis.class, OncodriveAnalysisXmlPersistence.class);
-		pm.registerFormat(MimeTypes.CORRELATIONS_ANALYSIS, FileSuffixes.CORRELATIONS, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
-		pm.registerFormat(MimeTypes.COMBINATION_ANALYSIS, FileSuffixes.COMBINATION, CombinationAnalysis.class, CombinationAnalysisXmlPersistence.class);
-		pm.registerFormat(MimeTypes.OVERLAPPING_ANALYSIS, FileSuffixes.OVERLAPPING, OverlappingAnalysis.class, OverlappingAnalysisXmlPersistence.class);
+        pm.registerFormat(MimeTypes.PROJECT, FileSuffixes.PROJECT, Project.class, ProjectXmlPersistence.class);
+        pm.registerFormat(MimeTypes.CONTENT, FileSuffixes.CONTENT, Container.class, ContainerXmlPersistence.class);
+        pm.registerFormat(MimeTypes.TABLE, FileSuffixes.TABLE_FIGURE, TableFigure.class, TableFigureXmlPersistence.class);
+
+        pm.registerFormat(MimeTypes.ENRICHMENT_ANALYSIS, FileSuffixes.ENRICHMENT, EnrichmentAnalysis.class, EnrichmentAnalysisXmlPersistence.class);
+        pm.registerFormat(MimeTypes.ONCODRIVE_ANALYSIS, FileSuffixes.ONCODRIVE, OncodriveAnalysis.class, OncodriveAnalysisXmlPersistence.class);
+        pm.registerFormat(MimeTypes.CORRELATIONS_ANALYSIS, FileSuffixes.CORRELATIONS, CorrelationAnalysis.class, CorrelationAnalysisXmlPersistence.class);
+        pm.registerFormat(MimeTypes.COMBINATION_ANALYSIS, FileSuffixes.COMBINATION, CombinationAnalysis.class, CombinationAnalysisXmlPersistence.class);
+        pm.registerFormat(MimeTypes.OVERLAPPING_ANALYSIS, FileSuffixes.OVERLAPPING, OverlappingAnalysis.class, OverlappingAnalysisXmlPersistence.class);
         pm.registerFormat(MimeTypes.GROUPCOMPARISON_ANALYSIS, FileSuffixes.GROUP_COMPARISON, GroupComparisonAnalysis.class, GroupComparisonAnalysisXmlPersistence.class);
 
-		pm.registerFormat(MimeTypes.HEATMAP, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
+        pm.registerFormat(MimeTypes.HEATMAP, FileSuffixes.HEATMAP, Heatmap.class, HeatmapXmlPersistence.class);
 
-		pm.registerFormat(MimeTypes.GENE_SET, FileSuffixes.GENE_SET, GeneSetPersistence.class);
+        pm.registerFormat(MimeTypes.GENE_SET, FileSuffixes.GENE_SET, GeneSetPersistence.class);
 
-		pm.registerFormat(MimeTypes.GENE_MATRIX, FileSuffixes.GENE_MATRIX, GeneMatrixPersistence.class);
-		pm.registerFormat(MimeTypes.GENE_MATRIX_TRANSPOSED, FileSuffixes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
-		pm.registerFormat(MimeTypes.OBJECT_MATRIX, FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class, ObjectMatrixTextPersistence.class);
-		pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class, DoubleMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.GENE_MATRIX, FileSuffixes.GENE_MATRIX, GeneMatrixPersistence.class);
+        pm.registerFormat(MimeTypes.GENE_MATRIX_TRANSPOSED, FileSuffixes.GENE_MATRIX_TRANSPOSED, GeneMatrixTransposedPersistence.class);
+        pm.registerFormat(MimeTypes.OBJECT_MATRIX, FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class, ObjectMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.DOUBLE_MATRIX, FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class, DoubleMatrixTextPersistence.class);
         pm.registerFormat(MimeTypes.GENE_CLUSTER_TEXT, FileSuffixes.GENE_CLUSTER_TEXT, DoubleMatrix.class, GctMatrixTextPersistence.class);
-		pm.registerFormat(MimeTypes.DOUBLE_BINARY_MATRIX, FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class, DoubleBinaryMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.DOUBLE_BINARY_MATRIX, FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class, DoubleBinaryMatrixTextPersistence.class);
 
-		pm.registerFormat(MimeTypes.ANNOTATION_MATRIX, FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class, AnnotationMatrixTextPersistence.class);
-		pm.registerFormat(MimeTypes.MODULES_2C_MAP, FileSuffixes.MODULES_2C_MAP, ModuleMapText2CPersistence.class);
-		pm.registerFormat(MimeTypes.MODULES_INDEXED_MAP, FileSuffixes.MODULES_INDEXED_MAP, ModuleMap.class, ModuleMapTextIndicesPersistence.class);
-	}
+        pm.registerFormat(MimeTypes.ANNOTATION_MATRIX, FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class, AnnotationMatrixTextPersistence.class);
+        pm.registerFormat(MimeTypes.MODULES_2C_MAP, FileSuffixes.MODULES_2C_MAP, ModuleMapText2CPersistence.class);
+        pm.registerFormat(MimeTypes.MODULES_INDEXED_MAP, FileSuffixes.MODULES_INDEXED_MAP, ModuleMap.class, ModuleMapTextIndicesPersistence.class);
+    }
 }

@@ -19,41 +19,34 @@ package org.gitools.persistence.text;
 
 import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.PersistenceException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
 
-/** Read/Write modules from a two columns tabulated file,
- * first column for item and second for module. */
+/**
+ * Read/Write modules from a two columns tabulated file,
+ * first column for item and second for module.
+ */
 
-public class ModuleMapText2CPersistence
-		extends ModuleMapPersistence<ModuleMap>{
+public class ModuleMapText2CPersistence extends ModuleMapPersistence<ModuleMap> {
 
-	@Override
-	public ModuleMap read(File file, IProgressMonitor monitor) throws PersistenceException {
+    @Override
+    public ModuleMap read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-		// map between the item names and its index
+        // map between the item names and its index
 
-		Map<String, Integer> itemNameToRowMapping = new TreeMap<String, Integer>();
+        Map<String, Integer> itemNameToRowMapping = new TreeMap<String, Integer>();
 
-		if (isItemNamesFilterEnabled()) {
-			String[] itemNames = getItemNames();
-			for (int i = 0; i < itemNames.length; i++) {
+        if (isItemNamesFilterEnabled()) {
+            String[] itemNames = getItemNames();
+            for (int i = 0; i < itemNames.length; i++) {
                 if (itemNameToRowMapping.containsKey(itemNames[i]))
                     throw new PersistenceException("Modules not mappable to heatmap due to duplicated row: " + itemNames[i]);
                 else
@@ -61,172 +54,159 @@ public class ModuleMapText2CPersistence
             }
         }
 
-		// map between modules and item indices
+        // map between modules and item indices
 
-		final Map<String, Set<Integer>> moduleItemsMap =
-				new HashMap<String, Set<Integer>>();
+        final Map<String, Set<Integer>> moduleItemsMap =
+                new HashMap<String, Set<Integer>>();
 
-		// read mappings
+        // read mappings
 
-		try {
-			monitor.begin("Reading modules ...", 1);
+        try {
+            progressMonitor.begin("Reading modules ...", 1);
 
-			Reader reader = PersistenceUtils.openReader(file);
+            Reader reader = resourceLocator.getReader();
 
-			CSVReader parser = new CSVReader(reader);
+            CSVReader parser = new CSVReader(reader);
 
-			readModuleMappings(parser, isItemNamesFilterEnabled(),
-					itemNameToRowMapping, moduleItemsMap);
+            readModuleMappings(parser, isItemNamesFilterEnabled(),
+                    itemNameToRowMapping, moduleItemsMap);
 
-			monitor.end();
-		}
-		catch (Exception ex) {
-			throw new PersistenceException(ex);
-		}
+            progressMonitor.end();
+        } catch (Exception ex) {
+            throw new PersistenceException(ex);
+        }
 
-		monitor.begin("Filtering modules ...", 1);
+        progressMonitor.begin("Filtering modules ...", 1);
 
-		int minSize = getMinSize();
-		int maxSize = getMaxSize();
+        int minSize = getMinSize();
+        int maxSize = getMaxSize();
 
-		// create array of item names
-		//monitor.debug("isItemNamesFilterEnabled() = " + isItemNamesFilterEnabled());
-		//monitor.debug("itemNameToRowMapping.size() = " + itemNameToRowMapping.size());
-		String[] itemNames = new String[itemNameToRowMapping.size()];
-		for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet()) {
-			//monitor.debug(entry.getKey() + " --> " + entry.getValue());
-			itemNames[entry.getValue()] = entry.getKey();
-		}
+        // create array of item names
+        String[] itemNames = new String[itemNameToRowMapping.size()];
+        for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet()) {
+            //monitor.debug(entry.getKey() + " --> " + entry.getValue());
+            itemNames[entry.getValue()] = entry.getKey();
+        }
 
-		// mask of used items
-		BitSet used = new BitSet(itemNames.length);
+        // mask of used items
+        BitSet used = new BitSet(itemNames.length);
 
-		// remappend indices
-		int lastIndex = 0;
-		int[] indexMap = new int[itemNames.length];
+        // remapped indices
+        int lastIndex = 0;
+        int[] indexMap = new int[itemNames.length];
 
-		// filter modules by size and identify which items are indexed
+        // filter modules by size and identify which items are indexed
+        List<String> moduleNames = new ArrayList<String>();
+        List<int[]> modulesItemIndices = new ArrayList<int[]>();
 
-		List<String> moduleNames = new ArrayList<String>();
-		List<int[]> modulesItemIndices = new ArrayList<int[]>();
+        Iterator<Entry<String, Set<Integer>>> it =
+                moduleItemsMap.entrySet().iterator();
 
-		Iterator<Entry<String, Set<Integer>>> it =
-				moduleItemsMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<String, Set<Integer>> entry = it.next();
+            Set<Integer> indices = entry.getValue();
+            if (indices.size() >= minSize && indices.size() <= maxSize) {
+                moduleNames.add(entry.getKey());
+                int[] remappedIndices = new int[indices.size()];
+                Iterator<Integer> iit = indices.iterator();
+                for (int i = 0; i < indices.size(); i++) {
+                    int index = iit.next();
+                    if (!used.get(index)) {
+                        used.set(index);
+                        indexMap[index] = lastIndex++;
+                    }
 
-		while (it.hasNext()) {
-			Entry<String, Set<Integer>> entry = it.next();
-			Set<Integer> indices = entry.getValue();
-			if (indices.size() >= minSize && indices.size() <= maxSize) {
-				moduleNames.add(entry.getKey());
-				int[] remapedIndices = new int[indices.size()];
-				Iterator<Integer> iit = indices.iterator();
-				for (int i = 0; i < indices.size(); i++) {
-					int index = iit.next();
-					if (!used.get(index)) {
-						used.set(index);
-						indexMap[index] = lastIndex++;
-					}
+                    remappedIndices[i] = indexMap[index];
+                }
+                modulesItemIndices.add(remappedIndices);
+            } else
+                it.remove();
+        }
 
-					remapedIndices[i] = indexMap[index];
-				}
-				modulesItemIndices.add(remapedIndices);
-			}
-			else
-				it.remove();
-		}
+        // reorder item names according with remapped indices
+        String[] finalItemNames = new String[lastIndex];
+        for (int i = 0; i < itemNames.length; i++)
+            if (used.get(i))
+                finalItemNames[indexMap[i]] = itemNames[i];
 
-		// reorder item names according with remaped indices
+        progressMonitor.end();
 
-		String[] finalItemNames = new String[lastIndex];
-		for (int i = 0; i < itemNames.length; i++)
-			if (used.get(i))
-				finalItemNames[indexMap[i]] = itemNames[i];
+        ModuleMap mmap = new ModuleMap();
+        mmap.setItemNames(finalItemNames);
+        mmap.setModuleNames(moduleNames.toArray(new String[moduleNames.size()]));
+        mmap.setAllItemIndices(modulesItemIndices.toArray(new int[modulesItemIndices.size()][]));
+        return mmap;
+    }
 
-		monitor.end();
+    protected void readModuleMappings(CSVReader parser, boolean filterRows, Map<String, Integer> itemNameToRowMapping, Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException {
 
-		ModuleMap mmap = new ModuleMap();
-		mmap.setItemNames(finalItemNames);
-		mmap.setModuleNames(moduleNames.toArray(new String[moduleNames.size()]));
-		mmap.setAllItemIndices(modulesItemIndices.toArray(new int[modulesItemIndices.size()][]));
-		return mmap;
-	}
+        try {
+            String[] fields;
 
-	protected void readModuleMappings(
-			CSVReader parser,
-			boolean filterRows,
-			Map<String, Integer> itemNameToRowMapping,
-			Map<String, Set<Integer>> moduleItemsMap)
-			throws PersistenceException {
+            while ((fields = parser.readNext()) != null) {
+                if (fields.length < 2)
+                    throw new PersistenceException(
+                            "At least 2 columns expected at "
+                                    + parser.getLineNumber()
+                                    + "(item name and group name).");
 
-		try {
-			String[] fields;
+                String itemName = fields[0];
+                String groupName = fields[1];
 
-			while ((fields = parser.readNext()) != null) {
-				if (fields.length < 2)
-					throw new PersistenceException(
-							"At least 2 columns expected at "
-							+ parser.getLineNumber()
-							+ "(item name and group name).");
+                Integer itemIndex = itemNameToRowMapping.get(itemName);
+                if (itemIndex == null && !filterRows) {
+                    itemIndex = itemNameToRowMapping.size();
+                    itemNameToRowMapping.put(itemName, itemIndex);
+                }
 
-				String itemName = fields[0];
-				String groupName = fields[1];
+                if (itemIndex != null) {
+                    Set<Integer> itemIndices = moduleItemsMap.get(groupName);
+                    if (itemIndices == null) {
+                        itemIndices = new TreeSet<Integer>();
+                        moduleItemsMap.put(groupName, itemIndices);
+                    }
+                    itemIndices.add(itemIndex);
+                }
+            }
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
+    }
 
-				Integer itemIndex = itemNameToRowMapping.get(itemName);
-				if (itemIndex == null && !filterRows) {
-					itemIndex = itemNameToRowMapping.size();
-					itemNameToRowMapping.put(itemName, itemIndex);
-				}
+    @Override
+    public void write(IResourceLocator resourceLocator, ModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException {
 
-				if (itemIndex != null) {
-					Set<Integer> itemIndices = moduleItemsMap.get(groupName);
-					if (itemIndices == null) {
-						itemIndices = new TreeSet<Integer>();
-						moduleItemsMap.put(groupName, itemIndices);
-					}
-					itemIndices.add(itemIndex);
-				}
-			}
-		}
-		catch (IOException e) {
-			throw new PersistenceException(e);
-		}
-	}
+        final String[] moduleNames = moduleMap.getModuleNames();
 
-	@Override
-	public void write(File file, ModuleMap moduleMap, IProgressMonitor monitor) throws PersistenceException {
+        int numModules = moduleNames.length;
 
-		final String[] moduleNames = moduleMap.getModuleNames();
+        progressMonitor.begin("Saving modules...", numModules);
 
-		int numModules = moduleNames.length;
+        try {
+            Writer writer = resourceLocator.getWriter();
 
-		monitor.begin("Saving modules...", numModules);
+            final PrintWriter pw = new PrintWriter(writer);
 
-		try {
-			Writer writer = PersistenceUtils.openWriter(file);
+            final String[] itemNames = moduleMap.getItemNames();
 
-			final PrintWriter pw = new PrintWriter(writer);
+            final int[][] indices = moduleMap.getAllItemIndices();
 
-			final String[] itemNames = moduleMap.getItemNames();
+            for (int i = 0; i < numModules; i++) {
+                for (int index : indices[i]) {
+                    pw.print(itemNames[index]);
+                    pw.print('\t');
+                    pw.print(moduleNames[i]);
+                    pw.print('\n');
+                }
 
-			final int[][] indices = moduleMap.getAllItemIndices();
+                progressMonitor.worked(1);
+            }
 
-			for (int i = 0; i < numModules; i++) {
-				for (int index : indices[i]) {
-					pw.print(itemNames[index]);
-					pw.print('\t');
-					pw.print(moduleNames[i]);
-					pw.print('\n');
-				}
+            pw.close();
 
-				monitor.worked(1);
-			}
-
-			pw.close();
-
-			monitor.end();
-		}
-		catch (Exception e) {
-			throw new PersistenceException(e);
-		}
-	}
+            progressMonitor.end();
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+    }
 }

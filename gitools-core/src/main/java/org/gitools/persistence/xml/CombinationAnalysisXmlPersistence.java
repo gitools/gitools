@@ -25,54 +25,56 @@ import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 
-public class CombinationAnalysisXmlPersistence
-		extends AbstractXmlPersistence<CombinationAnalysis> {
+public class CombinationAnalysisXmlPersistence extends AbstractXmlPersistence<CombinationAnalysis> {
 
-	public CombinationAnalysisXmlPersistence() {
-		super(CombinationAnalysis.class);
+    public CombinationAnalysisXmlPersistence() {
+        super(CombinationAnalysis.class);
 
-		setPersistenceTitle("combination analysis");
-	}
+        setPersistenceTitle("combination analysis");
+    }
 
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		PersistenceContext context = getPersistenceContext();
-		return new XmlAdapter<?, ?>[] {
-			new PersistenceReferenceXmlAdapter(context)
-		};
-	}
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        PersistenceContext context = getPersistenceContext();
+        return new XmlAdapter<?, ?>[]{
+                new PersistenceReferenceXmlAdapter(context)
+        };
+    }
 
-	@Override
-	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {
-		File baseFile = file.getParentFile();
+    @Override
+    protected void beforeRead(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
-	}
+        String basePath = PersistenceUtils.getBasePath(resourceLocator);
 
-	@Override
-	protected void beforeWrite(File file, CombinationAnalysis entity,
-			IProgressMonitor monitor) throws PersistenceException {
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(basePath);
+        context.setProgressMonitor(progressMonitor);
+    }
 
-		File baseFile = file.getParentFile();
-		String baseName = PersistenceUtils.getFileName(file.getName());
+    @Override
+    protected void beforeWrite(IResourceLocator resourceLocator, CombinationAnalysis entity,  IProgressMonitor progressMonitor) throws PersistenceException {
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
+        String url = resourceLocator.getURL().toString();
 
-		PersistenceManager pm = getPersistenceManager();
+        int lastSlash = url.lastIndexOf('/');
+        String basePath = url.substring(0, lastSlash);
+        String baseName = PersistenceUtils.getFileName(url.substring(lastSlash+1));
 
-		String dataExt = pm.getExtensionFromEntity(entity.getData());
-		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), true));
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(basePath);
+        context.setProgressMonitor(progressMonitor);
 
-		context.setEntityContext(entity.getGroupsMap(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
+        PersistenceManager pm = getPersistenceManager();
 
-		String resultsExt = pm.getExtensionFromEntity(entity.getResults());
-		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
-	}
+        String dataExt = pm.getExtensionFromEntity(entity.getData());
+        context.setEntityContext(entity.getData(), new PersistenceEntityContext(
+                new File(basePath, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), true));
+
+        context.setEntityContext(entity.getGroupsMap(), new PersistenceEntityContext(
+                new File(basePath, baseName + "-modules.ixm.gz").getAbsolutePath(), false));
+
+        String resultsExt = pm.getExtensionFromEntity(entity.getResults());
+        context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
+                new File(basePath, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
+    }
 }

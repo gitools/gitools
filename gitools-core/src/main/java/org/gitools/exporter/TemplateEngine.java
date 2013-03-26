@@ -17,14 +17,7 @@
 
 package org.gitools.exporter;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Map.Entry;
-
+import edu.upf.bg.fileutils.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -32,7 +25,14 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.gitools._DEPRECATED.resources.FileResource;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 public class TemplateEngine {
 
@@ -100,7 +100,7 @@ public class TemplateEngine {
 	public void render(File file) 
 		throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 		
-		Writer writer = FileResource.openWriter(file);
+		Writer writer = IOUtils.openWriter(file);
 		render(writer);
 		writer.close();
 	}

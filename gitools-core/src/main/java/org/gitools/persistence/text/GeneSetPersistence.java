@@ -19,7 +19,10 @@ package org.gitools.persistence.text;
 
 import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
+import org.gitools.persistence.AbstractResourcePersistence;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.PersistenceException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -28,85 +31,81 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.gitools.persistence.AbstractEntityPersistence;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
 
 public class GeneSetPersistence
-		extends AbstractEntityPersistence<List<String>> {
+        extends AbstractResourcePersistence<List<String>> {
 
-	@Override
-	public List<String> read(File file, IProgressMonitor monitor) throws PersistenceException {
-		monitor.begin("Reading ...", 1);
-		monitor.info("File: " + file.getAbsolutePath());
+    @Override
+    public List<String> read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+        progressMonitor.begin("Reading ...", 1);
+        progressMonitor.info("From: " + resourceLocator.getURL());
 
-		final Map<String, Integer> labelMap = new HashMap<String, Integer>();
+        final Map<String, Integer> labelMap = new HashMap<String, Integer>();
 
-		Reader reader = null;
-		try {
-			reader = PersistenceUtils.openReader(file);
-		} catch (Exception e) {
-			throw new PersistenceException("Error opening file: " + file.getName(), e);
-		}
+        Reader reader = null;
+        try {
+            reader = resourceLocator.getReader();
+        } catch (Exception e) {
+            throw new PersistenceException("Error opening: " + resourceLocator.getURL(), e);
+        }
 
-		CSVReader parser = new CSVReader(reader);
+        CSVReader parser = new CSVReader(reader);
 
-		try {
-			String[] fields;
+        try {
+            String[] fields;
 
-			// read file
+            // read file
 
-			while ((fields = parser.readNext()) != null) {
+            while ((fields = parser.readNext()) != null) {
 
-				if (fields.length > 1)
-					throw new PersistenceException("Only one column is allowed at line " + parser.getLineNumber());
+                if (fields.length > 1)
+                    throw new PersistenceException("Only one column is allowed at line " + parser.getLineNumber());
 
-				Integer index = labelMap.get(fields[0]);
-				if (index == null)
-					labelMap.put(fields[0], labelMap.size());
-			}
+                Integer index = labelMap.get(fields[0]);
+                if (index == null)
+                    labelMap.put(fields[0], labelMap.size());
+            }
 
-			reader.close();
+            reader.close();
 
-			monitor.info(labelMap.size() + " rows");
+            progressMonitor.info(labelMap.size() + " rows");
 
-			monitor.end();
-		}
-		catch (IOException e) {
-			throw new PersistenceException(e);
-		}
+            progressMonitor.end();
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
 
-		List<String> labels = new ArrayList<String>(labelMap.keySet());
-		for (Map.Entry<String, Integer> entry : labelMap.entrySet())
-			labels.set(entry.getValue(), entry.getKey());
+        List<String> labels = new ArrayList<String>(labelMap.keySet());
+        for (Map.Entry<String, Integer> entry : labelMap.entrySet())
+            labels.set(entry.getValue(), entry.getKey());
 
-		return labels;
-	}
+        return labels;
+    }
 
-	@Override
-	public void write(File file, List<String> entity, IProgressMonitor monitor) throws PersistenceException {
-		monitor.begin("Saving matrix...", entity.size());
-		monitor.info("File: " + file.getAbsolutePath());
+    @Override
+    public void write(IResourceLocator resourceLocator, List<String> entity, IProgressMonitor progressMonitor) throws PersistenceException {
+        progressMonitor.begin("Saving matrix...", entity.size());
+        progressMonitor.info("To: " + resourceLocator.getURL());
 
-		Writer writer;
-		try {
-			writer = PersistenceUtils.openWriter(file);
-		} catch (Exception e) {
-			throw new PersistenceException("Error opening resource: " + file.getName(), e);
-		}
+        Writer writer;
+        try {
+            writer = resourceLocator.getWriter();
+        } catch (Exception e) {
+            throw new PersistenceException("Error opening: " + resourceLocator.getURL(), e);
+        }
 
-		PrintWriter pw = new PrintWriter(writer);
+        PrintWriter pw = new PrintWriter(writer);
 
-		for (String label : entity)
-			pw.println(label);
+        for (String label : entity)
+            pw.println(label);
 
-		try {
-			writer.close();
-		} catch (Exception e) {
-			throw new PersistenceException("Error closing file: " + file.getName(), e);
-		}
+        try {
+            writer.close();
+        } catch (Exception e) {
+            throw new PersistenceException("Error closing: " + resourceLocator.getURL(), e);
+        }
 
-		monitor.end();
-	}
+        progressMonitor.end();
+    }
 
 }

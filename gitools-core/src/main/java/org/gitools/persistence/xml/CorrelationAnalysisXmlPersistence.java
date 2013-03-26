@@ -26,50 +26,49 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 
 public class CorrelationAnalysisXmlPersistence
-		extends AbstractXmlPersistence<CorrelationAnalysis> {
+        extends AbstractXmlPersistence<CorrelationAnalysis> {
 
-	public CorrelationAnalysisXmlPersistence() {
-		super(CorrelationAnalysis.class);
+    public CorrelationAnalysisXmlPersistence() {
+        super(CorrelationAnalysis.class);
 
-		setPersistenceTitle("correlation analysis");
-	}
+        setPersistenceTitle("correlation analysis");
+    }
 
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		PersistenceContext context = getPersistenceContext();
-		return new XmlAdapter<?, ?>[] {
-			new PersistenceReferenceXmlAdapter(context)
-		};
-	}
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        PersistenceContext context = getPersistenceContext();
+        return new XmlAdapter<?, ?>[]{
+                new PersistenceReferenceXmlAdapter(context)
+        };
+    }
 
-	@Override
-	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {
-		File baseFile = file.getParentFile();
+    @Override
+    protected void beforeRead(IResourceLocator resourceLocator, IProgressMonitor monitor) throws PersistenceException {
+        String basePath = PersistenceUtils.getBasePath(resourceLocator);
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
-	}
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(basePath);
+        context.setProgressMonitor(monitor);
+    }
 
-	@Override
-	protected void beforeWrite(File file, CorrelationAnalysis entity,
-			IProgressMonitor monitor) throws PersistenceException {
+    @Override
+    protected void beforeWrite(IResourceLocator resourceLocator, CorrelationAnalysis entity, IProgressMonitor progressMonitor) throws PersistenceException {
 
-		File baseFile = file.getParentFile();
-		String baseName = PersistenceUtils.getFileName(file.getName());
+        String basePath = PersistenceUtils.getBasePath(resourceLocator);
+        String baseName = PersistenceUtils.getFileName(resourceLocator.getName());
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(basePath);
+        context.setProgressMonitor(progressMonitor);
 
-		PersistenceManager pm = getPersistenceManager();
+        PersistenceManager pm = getPersistenceManager();
 
-		String dataExt = pm.getExtensionFromEntity(entity.getData());
-		context.setEntityContext(entity.getData(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
+        String dataExt = pm.getExtensionFromEntity(entity.getData());
+        context.setEntityContext(entity.getData(), new PersistenceEntityContext(
+                new File(basePath, baseName + "-data." + dataExt + ".gz").getAbsolutePath(), false));
 
-		String resultsExt = pm.getExtensionFromEntity(entity.getResults());
-		context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
-				new File(baseFile, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
-	}
+        String resultsExt = pm.getExtensionFromEntity(entity.getResults());
+        context.setEntityContext(entity.getResults(), new PersistenceEntityContext(
+                new File(basePath, baseName + "-results." + resultsExt + ".gz").getAbsolutePath()));
+    }
 }

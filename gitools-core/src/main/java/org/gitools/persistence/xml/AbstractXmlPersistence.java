@@ -17,171 +17,144 @@
 
 package org.gitools.persistence.xml;
 
-import java.io.File;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.Properties;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Properties;
 
-import org.gitools.persistence.AbstractEntityPersistence;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
+public abstract class AbstractXmlPersistence<R> extends AbstractResourcePersistence<R> {
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.persistence.PersistenceContext;
+    public static final String LOAD_REFERENCES_PROP = "load_references";
 
-public abstract class AbstractXmlPersistence<T> extends AbstractEntityPersistence<T> {
+    private Class<R> entityClass;
 
-	private static final long serialVersionUID = -3625243178449832555L;
+    private XmlAdapter<?, ?>[] adapters;
 
-	public static final String LOAD_REFERENCES_PROP = "load_references";
+    private String persistenceTitle;
 
-	private Class<T> entityClass;
+    private PersistenceContext persistenceContext;
 
-	private XmlAdapter<?, ?>[] adapters;
+    public AbstractXmlPersistence(Class<R> entityClass) {
+        this.entityClass = entityClass;
+        this.persistenceTitle = entityClass.getSimpleName();
+        this.persistenceContext = new PersistenceContext();
+    }
 
-	private boolean recursivePersistence;
+    public void setAdapters(XmlAdapter<?, ?>[] adapters) {
+        this.adapters = adapters;
+    }
 
-	private String persistenceTitle;
+    public XmlAdapter<?, ?>[] getAdapters() {
+        return adapters;
+    }
 
-	private PersistenceContext persistenceContext;
-	
-	public AbstractXmlPersistence(Class<T> entityClass) {	
-		this.entityClass = entityClass;
-		this.persistenceTitle = entityClass.getSimpleName();
-		this.recursivePersistence = true;
-		this.persistenceContext = new PersistenceContext();
-	}
+    public PersistenceContext getPersistenceContext() {
+        return persistenceContext;
+    }
 
-	public void setAdapters(XmlAdapter<?, ?>[] adapters) {
-		this.adapters = adapters;
-	}
-	
-	public XmlAdapter<?, ?>[] getAdapters() {
-		return adapters;
-	}
+    @Override
+    public void setProperties(Properties properties) {
+        super.setProperties(properties);
 
-	public PersistenceContext getPersistenceContext() {
-		return persistenceContext;
-	}
+        String lr = properties.getProperty(LOAD_REFERENCES_PROP, "true");
+        boolean loadReferences = lr == null || Boolean.parseBoolean(lr);
+        persistenceContext.setLoadReferences(loadReferences);
+    }
 
-	public void setPersistenceContext(PersistenceContext persistenceContext) {
-		this.persistenceContext = persistenceContext;
-	}
+    /**
+     * Classes extending AbstractXmlPersistence should
+     * override this method if they need to specify adapters.
+     */
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        return new XmlAdapter<?, ?>[0];
+    }
 
-	@Override
-	public void setProperties(Properties properties) {
-		super.setProperties(properties);
+    public void setPersistenceTitle(String entityName) {
+        this.persistenceTitle = entityName;
+    }
 
-		String lr = properties.getProperty(LOAD_REFERENCES_PROP, "true");
-		boolean loadReferences = lr == null || Boolean.parseBoolean(lr);
-		persistenceContext.setLoadReferences(loadReferences);
-	}
-	
-	/** Classes extending AbstractXmlPersistence should
-	 * override this method if they need to specify adapters. */
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		return new XmlAdapter<?, ?>[0];
-	}
+    protected void beforeRead(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+    }
 
-	public boolean isRecursivePersistence() {
-		return recursivePersistence;
-	}
+    protected void afterRead(IResourceLocator resourceLocator, R entity, IProgressMonitor progressMonitor) throws PersistenceException {
+    }
 
-	public void setRecursivePersistence(boolean recirsivePersistence) {
-		this.recursivePersistence = recirsivePersistence;
-	}
-	
-	public String getPersistenceTitle() {
-		return persistenceTitle;
-	}
+    @Override
+    public R read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-	public void setPersistenceTitle(String entityName) {
-		this.persistenceTitle = entityName;
-	}
+        R entity;
+        Reader reader;
 
-	protected void beforeRead(File file, IProgressMonitor monitor) throws PersistenceException {}
-	protected void afterRead(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+        beforeRead(resourceLocator, progressMonitor);
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public T read(
-			File file,
-			IProgressMonitor monitor)
-			throws PersistenceException {
+        try {
+            reader = resourceLocator.getReader();
+            JAXBContext context = JAXBContext.newInstance(entityClass);
+            Unmarshaller u = context.createUnmarshaller();
 
-		T entity;
-		Reader reader;
+            if (adapters == null)
+                setAdapters(createAdapters());
 
-		beforeRead(file, monitor);
+            for (XmlAdapter<?, ?> adapter : adapters)
+                u.setAdapter(adapter);
 
-		try {
-			reader = PersistenceUtils.openReader(file);
-			JAXBContext context = JAXBContext.newInstance(entityClass);
-			Unmarshaller u = context.createUnmarshaller();
-			
-			if (adapters == null)
-				setAdapters(createAdapters());
-			
-			for (XmlAdapter<?, ?> adapter : adapters)
-				u.setAdapter(adapter);
+            entity = (R) u.unmarshal(reader);
+            reader.close();
 
-			entity = (T) u.unmarshal(reader);
-			reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PersistenceException("Error reading: " + resourceLocator.getURL(), e);
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PersistenceException("Error reading resource: " + file.getName(), e);
-		}
+        afterRead(resourceLocator, entity, progressMonitor);
 
-		afterRead(file, entity, monitor);
-		
-		return entity;
-	}
+        return entity;
+    }
 
-	protected void beforeWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
-	protected void afterWrite(File file, T entity, IProgressMonitor monitor) throws PersistenceException {}
+    protected void beforeWrite(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
+    }
 
-	@Override
-	public void write(
-			File file,
-			T entity,
-			IProgressMonitor monitor)
-			throws PersistenceException {
+    protected void afterWrite(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
+    }
 
-		Writer writer;
+    @Override
+    public void write(IResourceLocator resourceLocator, R resource, IProgressMonitor monitor) throws PersistenceException {
 
-		monitor.begin("Saving " + persistenceTitle + "...", 1);
-		monitor.info("File: " + file.getAbsolutePath());
+        Writer writer;
 
-		beforeWrite(file, entity, monitor.subtask());
+        monitor.begin("Saving " + persistenceTitle + "...", 1);
+        monitor.info("To: " + resourceLocator.getURL());
 
-		try {
-			writer = PersistenceUtils.openWriter(file);
-			JAXBContext context = JAXBContext.newInstance(entityClass);
-			Marshaller m = context.createMarshaller();
-		
-			if (adapters == null)
-				setAdapters(createAdapters());
-			
-			for (XmlAdapter<?, ?> adapter : adapters)
-				m.setAdapter(adapter);
-			
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        beforeWrite(resourceLocator, resource, monitor.subtask());
 
-			m.marshal(entity, writer);
-			writer.close();
+        try {
+            writer = resourceLocator.getWriter();
+            JAXBContext context = JAXBContext.newInstance(entityClass);
+            Marshaller m = context.createMarshaller();
 
-		} catch (Exception e) {
-			throw new PersistenceException("Error writing resource: " + file.getName(), e);
-		}
+            if (adapters == null)
+                setAdapters(createAdapters());
 
-		afterWrite(file, entity, monitor.subtask());
+            for (XmlAdapter<?, ?> adapter : adapters)
+                m.setAdapter(adapter);
 
-		monitor.end();
-	}
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            m.marshal(resource, writer);
+            writer.close();
+
+        } catch (Exception e) {
+            throw new PersistenceException("Error writing: " + resourceLocator.getURL(), e);
+        }
+
+        afterWrite(resourceLocator, resource, monitor.subtask());
+
+        monitor.end();
+    }
 }

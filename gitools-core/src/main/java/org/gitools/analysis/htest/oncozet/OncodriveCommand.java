@@ -17,28 +17,27 @@
 
 package org.gitools.analysis.htest.oncozet;
 
-import java.io.File;
-
-import org.gitools.datafilters.ValueTranslator;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.PersistenceException;
-
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
+import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.locators.FileResourceLocator;
 import org.gitools.persistence.text.BaseMatrixPersistence;
 import org.gitools.persistence.text.MatrixTextPersistence;
 import org.gitools.persistence.text.ModuleMapPersistence;
 import org.gitools.persistence.text.ObjectMatrixTextPersistence;
 import org.gitools.persistence.xml.OncodriveAnalysisXmlPersistence;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 public class OncodriveCommand extends HtestCommand {
 
@@ -177,7 +176,6 @@ public class OncodriveCommand extends HtestCommand {
 
 		File file = new File(workdirFile, fileName);
 		OncodriveAnalysisXmlPersistence p = new OncodriveAnalysisXmlPersistence();
-		p.setRecursivePersistence(true);
-		p.write(file, analysis, monitor);
+		p.write(new FileResourceLocator(file), analysis, monitor);
 	}
 }

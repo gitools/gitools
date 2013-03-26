@@ -18,52 +18,46 @@
 package org.gitools.persistence.xml;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.gitools.heatmap.Heatmap;
-import org.gitools.persistence.PersistenceContext;
-import org.gitools.persistence.PersistenceEntityContext;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.*;
 import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
 
-public class HeatmapXmlPersistence
-		extends AbstractXmlPersistence<Heatmap> {
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.File;
 
-	public HeatmapXmlPersistence() {
-		super(Heatmap.class);
-	}
+public class HeatmapXmlPersistence extends AbstractXmlPersistence<Heatmap> {
 
-	@Override
-	protected XmlAdapter<?, ?>[] createAdapters() {
-		PersistenceContext context = getPersistenceContext();
-		return new XmlAdapter<?, ?>[] {
-			new PersistenceReferenceXmlAdapter(context)
-		};
-	}
+    public HeatmapXmlPersistence() {
+        super(Heatmap.class);
+    }
 
-	@Override
-	protected void beforeWrite(File file, Heatmap entity, IProgressMonitor monitor) throws PersistenceException {
+    @Override
+    protected XmlAdapter<?, ?>[] createAdapters() {
+        PersistenceContext context = getPersistenceContext();
+        return new XmlAdapter<?, ?>[]{
+                new PersistenceReferenceXmlAdapter(context)
+        };
+    }
 
-		file = file.getAbsoluteFile();
-		File baseFile = file.getParentFile();
-		String baseName = PersistenceUtils.getFileName(file.getName());
+    @Override
+    protected void beforeWrite(IResourceLocator resourceLocator, Heatmap resource, IProgressMonitor progressMonitor) throws PersistenceException {
 
-		PersistenceContext context = getPersistenceContext();
-		context.setBasePath(baseFile.getAbsolutePath());
-		context.setMonitor(monitor);
+        String basePath = PersistenceUtils.getBasePath(resourceLocator);
+        String baseName = PersistenceUtils.getFileName(resourceLocator.getName());
 
-		//context.setMimeType(entity.getDataTable(), MimeTypes.DOUBLE_MATRIX);
-		context.setEntityContext(entity.getMatrixView().getContents(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".data.gz").getAbsolutePath()));
+        PersistenceContext context = getPersistenceContext();
+        context.setBasePath(basePath);
+        context.setProgressMonitor(progressMonitor);
 
-		context.setEntityContext(entity.getRowDim().getAnnotations(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".row.annotations.gz").getAbsolutePath()));
+        context.setEntityContext(resource.getMatrixView().getContents(), new PersistenceEntityContext(
+                new File(basePath, baseName + ".data.gz").getAbsolutePath()));
 
-		context.setEntityContext(entity.getColumnDim().getAnnotations(), new PersistenceEntityContext(
-				new File(baseFile, baseName + ".column.annotations.gz").getAbsolutePath()));
-	}
+        context.setEntityContext(resource.getRowDim().getAnnotations(), new PersistenceEntityContext(
+                new File(basePath, baseName + ".row.annotations.gz").getAbsolutePath()));
+
+        context.setEntityContext(resource.getColumnDim().getAnnotations(), new PersistenceEntityContext(
+                new File(basePath, baseName + ".column.annotations.gz").getAbsolutePath()));
+    }
 
 
 }
