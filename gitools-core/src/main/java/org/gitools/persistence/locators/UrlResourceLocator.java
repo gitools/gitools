@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class UrlResourceLocator implements IResourceLocator {
 
     private static Pattern ABSOLUTE_FILE_PATH = Pattern.compile("^(\\/.*|[a-zA-Z]\\:\\\\)");
-    private static Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+\\:\\/\\/");
+    private static Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+:\\/\\/.*");
 
     private URL url;
     private File file;
@@ -92,7 +92,9 @@ public class UrlResourceLocator implements IResourceLocator {
 
         // A relative path to a remote URL
         if (file == null) {
-            return new UrlResourceLocator(url.toString() + '/' + referenceName);
+            String parentUrl = url.toString();
+            parentUrl = parentUrl.substring(0, parentUrl.lastIndexOf('/'));
+            return new UrlResourceLocator(parentUrl + '/' + referenceName);
         }
 
         // We allow absolute path references on local files

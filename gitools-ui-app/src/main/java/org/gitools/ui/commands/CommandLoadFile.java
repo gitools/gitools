@@ -3,6 +3,12 @@ package org.gitools.ui.commands;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.util.HeatmapUtil;
@@ -10,14 +16,20 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.*;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
+import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
+import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
+import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
+import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
+import org.gitools.ui.genomespace.GsResourceLocator;
 import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
 import javax.swing.*;
 import java.io.File;
@@ -57,40 +69,18 @@ public class CommandLoadFile extends AbstractCommand {
 
         monitor.begin("Loading ...", 1);
 
-        File file = download(this.file, monitor);
-
-        if (mime == null)
-            mime = PersistenceManager.get().getMimeFromFile(file.getName());
-
-        final IMatrix matrix;
+        IResourceLocator resourceLocator;
+        final IResource resource;
         try {
-            matrix = (IMatrix) PersistenceManager.get().load(file, mime, monitor);
+            resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
+            resource = PersistenceManager.get().load(resourceLocator, IResource.class, monitor);
         } catch (Exception e) {
             MessageUtils.showErrorMessage(AppFrame.instance(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
             return;
         }
 
-        final IMatrixView matrixView = new MatrixView(matrix);
-
-        Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
-
-        if (rowsAnnotations != null) {
-
-            File rowsFile = download(rowsAnnotations, monitor);
-            loadAnnotations(rowsFile, figure.getRowDim());
-
-
-        }
-
-        if (columnsAnnotations != null) {
-            File colsFile = download(columnsAnnotations, monitor);
-            loadAnnotations(colsFile, figure.getColumnDim());
-
-        }
-
-        final HeatmapEditor editor = new HeatmapEditor(figure);
-
-        editor.setName(PersistenceUtils.getFileName(file.getName()));
+        final AbstractEditor editor = createEditor(resource, monitor);
+        editor.setName(resourceLocator.getName());
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -105,6 +95,43 @@ public class CommandLoadFile extends AbstractCommand {
 
         monitor.end();
 
+    }
+
+    private AbstractEditor createEditor(IResource resource, IProgressMonitor progressMonitor) throws CommandException {
+
+        if (resource instanceof EnrichmentAnalysis)
+            return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
+        else if (resource instanceof OncodriveAnalysis)
+            return new OncodriveAnalysisEditor((OncodriveAnalysis) resource);
+        else if (resource instanceof CorrelationAnalysis)
+            return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
+        else if (resource instanceof CombinationAnalysis)
+            return new CombinationAnalysisEditor((CombinationAnalysis) resource);
+        else if (resource instanceof OverlappingAnalysis)
+            return new OverlappingAnalysisEditor((OverlappingAnalysis) resource);
+        else if (resource instanceof GroupComparisonAnalysis)
+            return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
+
+        return createHeatmapEditor((IMatrix) resource, progressMonitor);
+    }
+
+    private AbstractEditor createHeatmapEditor(IMatrix resource, IProgressMonitor progressMonitor) throws CommandException {
+
+        final IMatrixView matrixView = new MatrixView(resource);
+        Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
+
+        if (rowsAnnotations != null) {
+            File rowsFile = download(rowsAnnotations, progressMonitor);
+            loadAnnotations(rowsFile, figure.getRowDim());
+        }
+
+        if (columnsAnnotations != null) {
+            File colsFile = download(columnsAnnotations, progressMonitor);
+            loadAnnotations(colsFile, figure.getColumnDim());
+
+        }
+
+        return new HeatmapEditor(figure);
     }
 
     private static File download(String file, IProgressMonitor monitor) throws CommandException {

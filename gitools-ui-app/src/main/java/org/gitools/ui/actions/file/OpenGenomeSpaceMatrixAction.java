@@ -35,7 +35,7 @@ public class OpenGenomeSpaceMatrixAction extends BaseAction {
 	private static final long serialVersionUID = 668140963768246841L;
 
 	public OpenGenomeSpaceMatrixAction() {
-		super("Heatmap from Genomespace ...");
+		super("from Genomespace ...");
 		setLargeIconFromResource(IconNames.gs24);
 		setSmallIconFromResource(IconNames.gs16);
 		setDefaultEnabled(true);

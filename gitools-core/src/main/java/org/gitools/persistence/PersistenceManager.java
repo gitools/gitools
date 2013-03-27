@@ -104,16 +104,19 @@ public class PersistenceManager implements Serializable {
 
     public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, IResourceFormat<R> resourceFormat, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        // Apply compression adapters if it's required
-        resourceLocator = applyAdaptors(resourceLocator);
+        // Apply compression filters if it's required
+        IResourceLocator filteredResourceLocator = applyFilters(resourceLocator);
 
         // Configure the format
         if (resourceFormat.isConfigurable()) {
-            resourceFormat.configure(resourceLocator, resourceClass, properties, progressMonitor);
+            resourceFormat.configure(filteredResourceLocator, resourceClass, properties, progressMonitor);
         }
 
         // Build the resource
-        R resource = resourceFormat.read(resourceLocator, resourceClass, progressMonitor);
+        R resource = resourceFormat.read(filteredResourceLocator, resourceClass, progressMonitor);
+
+        // Set the original locator without the filters.
+        resource.setLocator(resourceLocator);
 
         return resource;
     }
@@ -143,7 +146,7 @@ public class PersistenceManager implements Serializable {
         }
 
         // Apply compression adapters if it's required
-        resourceLocator = applyAdaptors(resourceLocator);
+        resourceLocator = applyFilters(resourceLocator);
 
         // Write the resource
         resourceFormat.write(resourceLocator, resource, progressMonitor);
@@ -181,7 +184,7 @@ public class PersistenceManager implements Serializable {
         classToExtension.put(resourceFormat.getResourceClass(), resourceFormat.getDefaultExtension());
     }
 
-    private IResourceLocator applyAdaptors(IResourceLocator resourceLocator) {
+    private IResourceLocator applyFilters(IResourceLocator resourceLocator) {
 
         if (GzResourceLocatorAdapter.isAdaptable(resourceLocator.getExtension())) {
             resourceLocator = GzResourceLocatorAdapter.getAdaptor(resourceLocator);
