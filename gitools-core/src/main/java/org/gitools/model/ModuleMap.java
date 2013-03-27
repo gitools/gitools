@@ -18,17 +18,21 @@
 package org.gitools.model;
 
 import cern.colt.bitvector.BitMatrix;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)	
-public class ModuleMap extends Artifact {
+public class ModuleMap extends Artifact implements IResource {
 
 	private static final long serialVersionUID = 6463084331984782264L;
 
-	protected String organism;
+    private IResourceLocator locator;
+
+    protected String organism;
 	protected String moduleCategory;
 	protected String itemCategory;
 
@@ -152,7 +156,16 @@ public class ModuleMap extends Artifact {
 		this.moduleTreeIndices = treeIndices;
 	}
 
-	public String getOrganism() {
+
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    public String getOrganism() {
 		return organism;
 	}
 

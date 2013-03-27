@@ -30,7 +30,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
@@ -53,11 +53,10 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 	@Override
 	protected void prepareContext(VelocityContext context) {
 
-		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getData());
+		IResourceLocator fileRef = analysis.getData().getLocator();
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Not defined");
+				fileRef != null ? fileRef.getName() : "Not defined");
 
         ToolConfig testConfig = analysis.getTestConfig();
         if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "") {
@@ -81,11 +80,10 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 				+ analysis.getBinaryCutoffValue();
 		context.put("filterDesc", filterDesc);
 
-		fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getModuleMap());
+		fileRef = analysis.getModuleMap().getLocator();
 
 		context.put("modulesFile",
-				fileRef != null ? fileRef.getFile().getName() : "Unknown");
+				fileRef != null ? fileRef.getName() : "Unknown");
 
 		context.put("moduleMinSize", analysis.getMinModuleSize());
 		int maxSize = analysis.getMaxModuleSize();
@@ -96,15 +94,13 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 		else if (analysis.getMtc().equals("bonferroni"))
 			context.put("mtc", "Bonferroni");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis.getResults());
+        fileRef = analysis.getResults().getLocator();
         context.put("resultsFile",
-                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+                fileRef != null ? fileRef.getName() : "Not defined");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis);
+        fileRef = analysis.getLocator();
         if (fileRef != null) {
-            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+            context.put("analysisLocation", fileRef.getURL());
         } else {
             setSaveAllowed(true);
         }

@@ -17,16 +17,15 @@
 
 package org.gitools.ui.workspace;
 
+import org.gitools.workspace.Workspace;
+import org.gitools.workspace.WorkspaceProjectRef;
+
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.workspace.Workspace;
-import org.gitools.workspace.WorkspaceProjectRef;
 
 public class WorkspaceNode extends AbstractNode {
 
@@ -46,8 +45,7 @@ public class WorkspaceNode extends AbstractNode {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void refresh() {
-		final Map<WorkspaceProjectRef, WorkspaceProjectNode> nodeMap =
-			new HashMap<WorkspaceProjectRef, WorkspaceProjectNode>();
+		final Map<WorkspaceProjectRef, WorkspaceProjectNode> nodeMap =	new HashMap<WorkspaceProjectRef, WorkspaceProjectNode>();
 		
 		Enumeration<WorkspaceProjectNode> e = children();
 		while (e.hasMoreElements()) {
@@ -59,9 +57,9 @@ public class WorkspaceNode extends AbstractNode {
 		for (Entry<WorkspaceProjectRef, WorkspaceProjectNode> entry : nodeMap.entrySet()) {
 			final WorkspaceProjectRef project = entry.getKey();
 			final WorkspaceProjectNode node = entry.getValue();
-			
-			final File file = PersistenceManager.getDefault()
-										.getEntityFile(project).getParentFile();
+
+			final File file = null;
+            //TODO file = PersistenceManager.get().getEntityFile(project).getParentFile();
 			
 			if (file != null && !file.exists())
 				remove(node);

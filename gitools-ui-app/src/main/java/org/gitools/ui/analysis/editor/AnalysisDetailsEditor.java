@@ -22,9 +22,10 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.FileFormat;
+import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.locators.FileResourceLocator;
-import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.formats.xml.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
@@ -45,19 +46,19 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-public class AnalysisDetailsEditor<A> extends AbstractEditor {
+public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
 	private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
 	
 	protected A analysis;
-	
-	protected String template;
 
-	protected ActionSet toolBar = null;
+    protected String template;
 
-	protected TemplatePanel templatePanel;
+    protected ActionSet toolBar = null;
 
-    protected AbstractXmlPersistence xmlPersistance = null;
+    protected TemplatePanel templatePanel;
+
+    protected AbstractXmlFormat xmlPersistance = null;
 
     protected FileFormat fileformat;
 
@@ -127,7 +128,7 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 	}
 
     @Override
-    public void doSave(IProgressMonitor monitor) {
+    public void doSave(IProgressMonitor progressMonitor) {
         if (xmlPersistance == null || fileformat == null)
             return;
 
@@ -148,7 +149,7 @@ public class AnalysisDetailsEditor<A> extends AbstractEditor {
 
 
         try {
-            xmlPersistance.write(new FileResourceLocator(file), analysis, monitor);
+            xmlPersistance.write(new UrlResourceLocator(file), analysis, progressMonitor);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }

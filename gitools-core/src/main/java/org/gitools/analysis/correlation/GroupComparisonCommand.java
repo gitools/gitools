@@ -28,7 +28,9 @@ import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.Attribute;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.locators.UrlResourceLocator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,7 +39,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -175,12 +176,14 @@ public class GroupComparisonCommand extends AnalysisCommand {
     }
 
     @Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+	public void run(IProgressMonitor progressMonitor) throws AnalysisException {
 
 		try {
 
             BaseMatrix data = loadDataMatrix(
-                    new File(dataPath), dataMime, new Properties(), monitor);
+                    new UrlResourceLocator(new File(dataPath)),
+                    progressMonitor
+            );
 
             analysis.setData(data);
 
@@ -193,19 +196,19 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 analysis.setAttributes(attributes);
 
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
 
 			GroupComparisonProcessor proc = new GroupComparisonProcessor(analysis);
 
-			proc.run(monitor);
+			proc.run(progressMonitor);
 
 			File workdirFile = new File(workdir);
 			if (!workdirFile.exists())
 				workdirFile.mkdirs();
 
-			File file = new File(workdirFile, fileName);
-			PersistenceManager.getDefault().store(file, analysis, monitor);
+			IResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
+			PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
 		}
 		catch (Throwable cause) {
 			throw new AnalysisException(cause);

@@ -18,10 +18,6 @@
 package org.gitools.ui.actions.file;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.PrintWriter;
-import javax.swing.SwingUtilities;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
@@ -37,6 +33,11 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.PrintWriter;
 
 public class ImportGoModulesAction extends BaseAction {
 
@@ -70,10 +71,10 @@ public class ImportGoModulesAction extends BaseAction {
 								|| MimeTypes.GENE_MATRIX_TRANSPOSED.equals(mime)) {
 
 							BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
-							PersistenceManager.getDefault().store(file, mime, mat, monitor);
+							PersistenceManager.get().store(file, mime, mat, monitor);
 						}
 						else
-							PersistenceManager.getDefault().store(file, mime, mmap, monitor);
+							PersistenceManager.get().store(file, mime, mmap, monitor);
 
 						// FIXME Put this in other place !!!
 						String prefix = PersistenceUtils.getFileName(file.getName());

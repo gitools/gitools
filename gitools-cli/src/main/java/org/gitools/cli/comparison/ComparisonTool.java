@@ -17,6 +17,8 @@
 
 package org.gitools.cli.comparison;
 
+import edu.upf.bg.csv.CSVReader;
+import edu.upf.bg.fileutils.IOUtils;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.NullProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
@@ -30,7 +32,7 @@ import org.gitools.cli.AnalysisTool;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.MimeTypes;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.formats.text.MultiValueMatrixFormat;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
@@ -40,8 +42,10 @@ import org.kohsuke.args4j.Option;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.zip.DataFormatException;
 
 public class ComparisonTool extends AnalysisTool {
 
@@ -122,10 +126,10 @@ public class ComparisonTool extends AnalysisTool {
         this.groups =  (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
         
         if (args.attrName != null) {
-            ObjectMatrixTextPersistence obp =  new ObjectMatrixTextPersistence();
+            MultiValueMatrixFormat obp =  new MultiValueMatrixFormat();
             String[] headers = new String[0];
             try {
-                headers = obp.readHeader(new File(args.dataFile));
+                headers = readHeader(new File(args.dataFile));
             } catch (PersistenceException e) {
                 throw new ToolValidationException("Data file could not be opened");
             }
@@ -134,6 +138,30 @@ public class ComparisonTool extends AnalysisTool {
                 throw new ToolValidationException("Specified attribute index not found: " + args.attrName);
             }
         }
+    }
+
+    public static String[] readHeader(File file)
+            throws PersistenceException {
+
+        String[] matrixHeaders = null;
+        try {
+            Reader reader = IOUtils.openReader(file);
+
+            CSVReader parser = new CSVReader(reader);
+
+            String[] line = parser.readNext();
+
+            // read header
+            if (line.length < 3)
+                throw new DataFormatException("At least 3 columns expected.");
+
+            int numAttributes = line.length - 2;
+            matrixHeaders = new String[numAttributes];
+            System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+        return matrixHeaders;
     }
 
     @Override

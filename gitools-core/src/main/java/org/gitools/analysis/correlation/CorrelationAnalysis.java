@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 public class CorrelationAnalysis extends Analysis {

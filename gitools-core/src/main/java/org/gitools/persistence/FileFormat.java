@@ -17,6 +17,7 @@
 
 package org.gitools.persistence;
 
+@Deprecated
 public class FileFormat {
 
     private String title;

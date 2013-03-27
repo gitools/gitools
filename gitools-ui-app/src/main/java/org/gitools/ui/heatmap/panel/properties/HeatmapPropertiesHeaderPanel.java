@@ -529,7 +529,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
 			if (file != null) {
 				AnnotationMatrix annMatrix =
-						(AnnotationMatrix) PersistenceManager.getDefault().load(
+						(AnnotationMatrix) PersistenceManager.get().load(
 							file, MimeTypes.ANNOTATION_MATRIX,
 							new NullProgressMonitor());
 

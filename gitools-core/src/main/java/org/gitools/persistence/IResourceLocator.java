@@ -1,8 +1,8 @@
 package org.gitools.persistence;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 /**
@@ -10,12 +10,19 @@ import java.net.URL;
  */
 public interface IResourceLocator {
 
-    Reader getReader() throws IOException;
+    URL getURL();
+
+    String getBaseName();
+
+    String getExtension();
 
     String getName();
 
-    URL getURL();
+    IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException;
 
-    Writer getWriter() throws IOException;
+    boolean isWritable();
 
+    InputStream openInputStream() throws IOException;
+
+    OutputStream openOutputStream() throws IOException;
 }

@@ -17,21 +17,20 @@
 
 package org.gitools.analysis.combination;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
 
 	protected String sizeAttrName;
-	//protected int sizeAttrIndex;
 
 	protected String pvalueAttrName;
-	//protected int pvalueAttrIndex;
 
 	protected boolean transposeData;
 

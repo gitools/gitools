@@ -21,9 +21,8 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.*;
-import org.gitools.persistence.locators.FileResourceLocator;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
-import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.persistence.formats.text.MultiValueMatrixFormat;
+import org.gitools.persistence.formats.xml.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -43,7 +42,6 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
@@ -155,26 +153,20 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 					public void run(IProgressMonitor monitor) {
 						monitor.begin("Reading data header ...", 1);
 
-						String mimeType = dataPage.getFileFormat().getMime();
-						IResourcePersistence<Object> ep = PersistenceManager.getDefault()
-								.createEntityPersistence(mimeType, new Properties());
-						Map<String, Object> meta = null;
-						try {
-							meta = ep.readMetadata(new FileResourceLocator(dataPage.getFile()), new String[] {
-								ObjectMatrixTextPersistence.META_ATTRIBUTES }, monitor);
+                        try {
+                            dataFile = dataPage.getFile();
 
-							if (meta != null) {
-								attributes = (List<IElementAttribute>)
-										meta.get(ObjectMatrixTextPersistence.META_ATTRIBUTES);
-								combinationParamsPage.setAttributes(attributes);
-								
-								dataFile = dataPage.getFile();
-							}
-						}
-						catch (Exception ex) {
+                            String mime = PersistenceManager.get().getMimeFromFile(dataFile.getName());
+                            if (MimeTypes.OBJECT_MATRIX.equals(mime)) {
+                                attributes = MultiValueMatrixFormat.readMetaAttributes(dataFile, monitor);
+                            } else {
+                                attributes = null;
+                            }
+
+							combinationParamsPage.setAttributes(attributes);
+						} catch (Exception ex) {
 							monitor.exception(ex);
 						}
-
 						monitor.end();
 					}
 				});
@@ -199,10 +191,10 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
 						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
 						Properties props = new Properties();
-						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
+						props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
 						try {
-							final CombinationAnalysis a = (CombinationAnalysis) PersistenceManager.getDefault()
-									.load(analysisFile, props, monitor);
+							final CombinationAnalysis a = PersistenceManager.get()
+									.load(analysisFile, CombinationAnalysis.class, props, monitor);
 						
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override public void run() {

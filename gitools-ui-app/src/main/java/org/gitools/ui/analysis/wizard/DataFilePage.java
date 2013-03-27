@@ -17,16 +17,20 @@
 
 package org.gitools.ui.analysis.wizard;
 
+import edu.upf.bg.csv.CSVReader;
+import edu.upf.bg.fileutils.IOUtils;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
+import org.gitools.persistence.formats.text.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
 
 import java.io.File;
+import java.io.Reader;
+import java.util.zip.DataFormatException;
 
 
 public class DataFilePage extends SelectFilePage {
@@ -64,10 +68,10 @@ public class DataFilePage extends SelectFilePage {
                     FileFormats.MULTIVALUE_DATA_MATRIX.getExtension())) {
             activateValueSelection();
 
-            ObjectMatrixTextPersistence obp =  new ObjectMatrixTextPersistence();
+            MultiValueMatrixFormat obp =  new MultiValueMatrixFormat();
             String[] headers = new String[0];
             try {
-                headers = obp.readHeader(getFile());
+                headers = readHeader(getFile());
             } catch (PersistenceException e) {
                 setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
                 setComplete(false);
@@ -77,6 +81,30 @@ public class DataFilePage extends SelectFilePage {
         } else {
             deactivateValueSelection();
         }
+    }
+
+    public static String[] readHeader(File file)
+            throws PersistenceException {
+
+        String[] matrixHeaders = null;
+        try {
+            Reader reader = IOUtils.openReader(file);
+
+            CSVReader parser = new CSVReader(reader);
+
+            String[] line = parser.readNext();
+
+            // read header
+            if (line.length < 3)
+                throw new DataFormatException("At least 3 columns expected.");
+
+            int numAttributes = line.length - 2;
+            matrixHeaders = new String[numAttributes];
+            System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+        return matrixHeaders;
     }
 
 	@Override

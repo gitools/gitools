@@ -17,32 +17,25 @@
 
 package org.gitools.persistence;
 
+import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.fileutils.IOUtils;
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.matrix.model.element.ArrayElementAdapter;
+import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
 
+@Deprecated
 public class PersistenceUtils {
-
-    public static Reader openReader(File path) throws IOException {
-        return IOUtils.openReader(path);
-    }
-
-    public static Writer openWriter(File path) throws IOException {
-        return IOUtils.openWriter(path);
-    }
-
-    public static Writer openWriter(File path, boolean append) throws IOException {
-        return IOUtils.openWriter(path, append);
-    }
-
-    public static OutputStream openOutputStream(File path) throws IOException {
-        return IOUtils.openOutputStream(path);
-    }
-
-    public static OutputStream openOutputStream(File path, boolean append) throws IOException {
-        return IOUtils.openOutputStream(path, append);
-    }
 
     // Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls
     public static String getRelativePath(String basePath, String targetPath) {
@@ -141,21 +134,8 @@ public class PersistenceUtils {
         return ext;
     }
 
-    /**
-     * Return whether is or not an absolute path
-     */
-    public static boolean isAbsolute(String path) {
-        return path.matches("^(\\/.*|[a-zA-Z]\\:\\\\)");
-    }
 
-    @Deprecated
-    public static String getBasePath(IResourceLocator resourceLocator) {
-        String basePath = resourceLocator.getURL().getFile();
-        int lastSlash = basePath.lastIndexOf('/');
-        basePath = basePath.substring(0, lastSlash);
 
-        // Strip file
 
-        return basePath;
-    }
+
 }

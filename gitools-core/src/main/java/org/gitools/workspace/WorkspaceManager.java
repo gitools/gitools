@@ -17,21 +17,20 @@
 
 package org.gitools.workspace;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
+import edu.upf.bg.progressmonitor.IProgressMonitor;
+import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import org.gitools.model.Project;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.locators.UrlResourceLocator;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 public class WorkspaceManager {
 
@@ -134,7 +133,7 @@ public class WorkspaceManager {
 			basePath.mkdirs();
 		File file = new File(basePath, FileSuffixes.PROJECT);
 		IProgressMonitor monitor = new StreamProgressMonitor(System.out, true, true);
-		PersistenceManager.getDefault().store(file, project, monitor);
+		PersistenceManager.get().store(new UrlResourceLocator(file), project, monitor);
 		return project;
 	}
 	

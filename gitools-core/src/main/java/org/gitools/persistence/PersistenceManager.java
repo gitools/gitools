@@ -18,286 +18,177 @@
 package org.gitools.persistence;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixFactory;
-import org.gitools.persistence.locators.FileResourceLocator;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.locators.filters.adapters.GzResourceLocatorAdapter;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 public class PersistenceManager implements Serializable {
 
-    private static final long serialVersionUID = -1442103565401901838L;
+    private static PersistenceManager defaultManager = new PersistenceManager();
 
-    public static class FileRef {
-        private File file;
-        private String mime;
-
-        public FileRef(File file, String mime) {
-            this.file = file;
-            this.mime = mime;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public String getMime() {
-            return mime;
-        }
-
-        @Override
-        public int hashCode() {
-            int code = file.hashCode();
-            code = 37 * code + (int) file.lastModified();
-            code = 37 * code + mime.hashCode();
-            return code;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null)
-                return false;
-            else if (!(obj instanceof FileRef))
-                return false;
-            FileRef f = (FileRef) obj;
-            return file.hashCode() == f.file.hashCode()
-                    && file.lastModified() == f.file.lastModified()
-                    && ((mime == null && f.mime == null) || (mime != null && mime.equals(f.mime)));
-        }
-    }
-
-    private static PersistenceManager defaultManager;
-
-    // Maps PersistenceClass <-> Mime <-> EntityClass <-> Extension <-> Mime
-
-    private final Map<String, Class<? extends IResourcePersistence<?>>> mimeToPClass =
-            new HashMap<String, Class<? extends IResourcePersistence<?>>>();
-
-    private final Map<String, String> mimeToExt = new HashMap<String, String>();
-
-    private final Map<String, String> extToMime = new HashMap<String, String>();
-
-    private final Map<Class<?>, String> eclassToMime = new HashMap<Class<?>, String>();
-
-
-    private final Map<FileRef, Object> entityCache = new HashMap<FileRef, Object>();
-    private final Map<Object, FileRef> entityFileRefMap = new HashMap<Object, FileRef>();
-
-    public static PersistenceManager getDefault() {
-        if (defaultManager == null)
-            defaultManager = new PersistenceManager();
+    public static PersistenceManager get() {
         return defaultManager;
     }
 
-    public PersistenceManager() {
+    private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
+
+    private final Map<String, String> extensionToMime = new HashMap<String, String>();
+    private final Map<String, IResourceFormat> mimeToFormat = new HashMap<String, IResourceFormat>();
+    private final Map<Class<? extends IResource>, String> classToExtension = new HashMap<Class<? extends IResource>, String>();
+
+    private PersistenceManager() {
     }
 
-    public void registerFormat(String mime, String extension,
-                               Class<? extends IResourcePersistence<?>> pclass) {
-        registerFormat(mime, extension, null, pclass);
-    }
+    public <R extends IResource> IResourceFormat<R> getFormat(String extension, Class<R> resourceClass) throws PersistenceException {
 
-    public void registerFormat(String mime, String extension,
-                               Class<?> eclass, Class<? extends IResourcePersistence<?>> pclass) {
-
-        mimeToPClass.put(mime, pclass);
-        mimeToExt.put(mime, extension);
-
-        if (eclass != null)
-            eclassToMime.put(eclass, mime);
-
-        registerExtension(extension, mime);
-    }
-
-    public void registerExtension(String extension, String mime) {
-        extToMime.put(extension, mime);
-        extToMime.put(extension + ".gz", mime);
-    }
-
-    public String getMimeFromFile(String fileName) {
-        for (Map.Entry<String, String> entry : extToMime.entrySet())
-            if (fileName.endsWith(entry.getKey()))
-                return entry.getValue();
-        return null;
-    }
-
-    public String getMimeFromEntity(Class<?> entityClass) {
-        return eclassToMime.get(entityClass);
-    }
-
-    public String getExtensionFromMime(String mime) {
-        return mimeToExt.get(mime);
-    }
-
-    public String getExtensionFromEntityClass(Class<?> entityClass) {
-        return getExtensionFromMime(getMimeFromEntity(entityClass));
-    }
-
-    public String getExtensionFromEntity(IMatrix entity) {
-        if (entity instanceof IMatrixView)
-            return getExtensionFromEntityClass(((IMatrixView) entity).getContents().getClass());
-        else
-            return getExtensionFromEntityClass(entity.getClass());
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> IResourcePersistence<T> createEntityPersistence(
-            String mimeType, Properties properties) {
-
-        Class<?> persistenceClass = mimeToPClass.get(mimeType);
-
-        try {
-            Constructor<?> c = persistenceClass.getConstructor();
-            IResourcePersistence<T> entityPersistence =
-                    (IResourcePersistence<T>) c.newInstance();
-
-            entityPersistence.setPersistenceManager(this);
-            entityPersistence.setProperties(properties);
-
-            return entityPersistence;
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Use only the first part of a composed extension to check the format.
+        int composedExtension = extension.indexOf(".");
+        if (composedExtension != -1) {
+            extension = extension.substring(0, composedExtension);
         }
 
-        return null;
-    }
+        Map<String, IResourceFormat> extensions = formats.get(resourceClass);
 
-    public Object load(
-            File file,
-            IProgressMonitor monitor)
-            throws PersistenceException {
+        if (extensions == null) {
 
-        return load(file, null, new Properties(), monitor);
-    }
+            // Try to deduce from the extension and the parent class
+            for (Class<? extends IResource> keyClass : formats.keySet()) {
+                if (resourceClass.isAssignableFrom(keyClass) && formats.get(keyClass).containsKey(extension)) {
+                    return formats.get(keyClass).get(extension);
+                }
+            }
 
-    public Object load(
-            File file,
-            String mimeType,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        return load(file, mimeType, new Properties(), monitor);
-    }
-
-    public Object load(
-            File file,
-            Properties properties,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        return load(file, null, properties, monitor);
-    }
-
-    public Object load(
-            File file,
-            String mimeType,
-            Properties properties,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        if (mimeType == null)
-            mimeType = getMimeFromFile(file.getName());
-
-        FileRef fileRef = new FileRef(file, mimeType);
-
-        if (entityCache.containsKey(fileRef))
-            return entityCache.get(fileRef);
-
-        IResourcePersistence<Object> entityPersistence = (IResourcePersistence<Object>)
-                createEntityPersistence(mimeType, properties);
-
-        Object entity = entityPersistence.read(new FileResourceLocator(file), monitor);
-
-        entityFileRefMap.put(entity.hashCode(), fileRef);
-
-        return entity;
-    }
-
-    public void store(
-            File file,
-            Object entity,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        if (entity instanceof IMatrixView) {
-            entity = MatrixFactory.create((IMatrixView) entity);
+            throw new PersistenceException("Unknow resource: '" + resourceClass.getName() + "'");
         }
 
+        IResourceFormat resourceFormat = extensions.get(extension);
 
-        String mimeType = getMimeFromEntity(entity.getClass());
-
-        store(file, mimeType, entity, new Properties(), monitor);
-    }
-
-    public void store(
-            File file,
-            String mimeType,
-            Object entity,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        store(file, mimeType, entity, new Properties(), monitor);
-    }
-
-    public void store(
-            File file,
-            String mimeType,
-            Object entity,
-            Properties properties,
-            IProgressMonitor monitor)
-            throws PersistenceException {
-
-        IResourcePersistence<Object> entityPersistence = (IResourcePersistence<Object>)
-                createEntityPersistence(mimeType, properties);
-
-        entityPersistence.write(new FileResourceLocator(file), entity, monitor);
-
-        FileRef fileRef = new FileRef(file, mimeType);
-
-        //DISABLED: entityCache.put(fileRef, entity);
-        //DISABLED: entityFileRefMap.put(entity, fileRef);
-    }
-
-    public void clearEntityCache() {
-        entityCache.clear();
-        entityFileRefMap.clear();
-    }
-
-    public void clearEntityCache(Object entity) {
-        FileRef fileRef = entityFileRefMap.get(entity);
-        if (fileRef != null) {
-            entityFileRefMap.remove(entity);
-            entityCache.remove(fileRef);
+        if (resourceFormat == null) {
+            throw new PersistenceException("Invalid file extension '" + extension + "' for a resource of type '" + resourceClass.getName());
         }
+
+        return resourceFormat;
     }
 
-    public void clearEntityCache(File file, String mimeType) {
-        FileRef fileRef = new FileRef(file, mimeType);
+    @Deprecated
+    public IResourceFormat getFormatByMime(String mime) {
+        return mimeToFormat.get(mime);
+    }
 
-        if (entityCache.containsKey(fileRef)) {
-            Object entity = entityCache.get(fileRef);
-            entityFileRefMap.remove(entity);
-            entityCache.remove(fileRef);
+    @Deprecated
+    public String getMimeFromFile(String name) {
+        String extension = name.substring(name.indexOf(".") + 1);
+        extension = extension.replace(".gz", "");
+        return extensionToMime.get(extension);
+    }
+
+    public String getDefaultExtension(IResource resource) {
+        return classToExtension.get(resource.getClass());
+    }
+
+
+    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, IProgressMonitor progressMonitor) throws PersistenceException {
+        return load(resourceLocator, resourceClass, new Properties(), progressMonitor);
+    }
+
+    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+        return load(resourceLocator, resourceClass, getFormat(resourceLocator.getExtension(), resourceClass), properties, progressMonitor);
+    }
+
+    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, IResourceFormat<R> resourceFormat, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        // Apply compression adapters if it's required
+        resourceLocator = applyAdaptors(resourceLocator);
+
+        // Configure the format
+        if (resourceFormat.isConfigurable()) {
+            resourceFormat.configure(resourceLocator, resourceClass, properties, progressMonitor);
         }
+
+        // Build the resource
+        R resource = resourceFormat.read(resourceLocator, resourceClass, progressMonitor);
+
+        return resource;
     }
 
-    @Deprecated // use getEntityFileRef() instead
-    public File getEntityFile(Object entity) {
-        return entityFileRefMap.get(entity).getFile();
+    @Deprecated
+    public <R extends IResource> R load(File file, String mime, IProgressMonitor progressMonitor) throws PersistenceException {
+        IResourceLocator resourceLocator = new UrlResourceLocator(file);
+        IResourceFormat<R> resourceFormat = getFormatByMime(mime);
+
+        return load(resourceLocator, resourceFormat.getResourceClass(), resourceFormat, new Properties(), progressMonitor);
     }
 
-    @Deprecated // use getEntityFileRef() instead
-    public String getEntityMime(Object entity) {
-        return entityFileRefMap.get(entity).getMime();
+    @Deprecated
+    public <R extends IResource> R load(File file, Class<R> resourceClass, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+        return load(new UrlResourceLocator(file), resourceClass, properties, progressMonitor);
     }
 
-    public FileRef getEntityFileRef(Object entity) {
-        return entityFileRefMap.get(entity.hashCode());
+    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
+        store(resourceLocator, resource, (IResourceFormat<R>) getFormat(resourceLocator.getExtension(), resource.getClass()), progressMonitor);
     }
+
+    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        //TODO Look for another way to manage this singular case
+        if (resource instanceof IMatrixView) {
+            resource = (R) MatrixFactory.create((IMatrixView) resource);
+        }
+
+        // Apply compression adapters if it's required
+        resourceLocator = applyAdaptors(resourceLocator);
+
+        // Write the resource
+        resourceFormat.write(resourceLocator, resource, progressMonitor);
+
+    }
+
+
+    @Deprecated
+    public <R extends IResource> void store(File file, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
+        store(new UrlResourceLocator(file), resource, progressMonitor);
+    }
+
+    @Deprecated
+    public <R extends IResource> void store(File file, String mime, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        IResourceLocator resourceLocator = new UrlResourceLocator(file);
+        IResourceFormat<R> resourceFormat = getFormatByMime(mime);
+
+        store(resourceLocator, resource, resourceFormat, progressMonitor);
+    }
+
+    void registerFormat(IResourceFormat resourceFormat) {
+
+        if (!formats.containsKey(resourceFormat.getResourceClass())) {
+            formats.put(resourceFormat.getResourceClass(), new HashMap<String, IResourceFormat>());
+        }
+
+        Map<String, IResourceFormat> extensions = formats.get(resourceFormat.getResourceClass());
+        for (String extension : resourceFormat.getExtensions()) {
+            extensions.put(extension, resourceFormat);
+        }
+
+        extensionToMime.put(resourceFormat.getDefaultExtension(), resourceFormat.getMime());
+        mimeToFormat.put(resourceFormat.getMime(), resourceFormat);
+        classToExtension.put(resourceFormat.getResourceClass(), resourceFormat.getDefaultExtension());
+    }
+
+    private IResourceLocator applyAdaptors(IResourceLocator resourceLocator) {
+
+        if (GzResourceLocatorAdapter.isAdaptable(resourceLocator.getExtension())) {
+            resourceLocator = GzResourceLocatorAdapter.getAdaptor(resourceLocator);
+        }
+
+        return resourceLocator;
+    }
+
+
 }

@@ -17,16 +17,18 @@
 
 package org.gitools.matrix;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResourceLocator;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DiagonalMatrixView implements IMatrixView {
 
@@ -35,6 +37,8 @@ public class DiagonalMatrixView implements IMatrixView {
 	private PropertyChangeListener listener;
 
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+
+    private IResourceLocator locator;
 
 	public DiagonalMatrixView(IMatrix m) {
 		listener = new PropertyChangeListener() {
@@ -52,7 +56,15 @@ public class DiagonalMatrixView implements IMatrixView {
 		setMatrixView(mv);
 	}
 
-	public final void setMatrix(IMatrix matrix) {
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    public final void setMatrix(IMatrix matrix) {
 		IMatrixView mview = matrix instanceof IMatrixView ?
 			(IMatrixView) matrix : new MatrixView(matrix);
 		setMatrixView(mview);

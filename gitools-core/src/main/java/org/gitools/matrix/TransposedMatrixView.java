@@ -17,17 +17,21 @@
 
 package org.gitools.matrix;
 
-import java.beans.PropertyChangeListener;
-import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResourceLocator;
+
+import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class TransposedMatrixView implements IMatrixView {
 
 	private IMatrixView mv;
+
+    private IResourceLocator locator;
 
 	public TransposedMatrixView() {
 	}
@@ -44,8 +48,16 @@ public class TransposedMatrixView implements IMatrixView {
 		this.mv = matrix instanceof IMatrixView ?
 			(IMatrixView) matrix : new MatrixView(matrix);
 	}
-	
-	@Override
+
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    @Override
 	public IMatrix getContents() {
 		return mv.getContents(); //FIXME return TransposedMatrix(mv.getContents)
 	}

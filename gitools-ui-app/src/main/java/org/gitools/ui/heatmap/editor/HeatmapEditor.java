@@ -29,10 +29,7 @@ import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.*;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;
@@ -290,7 +287,7 @@ public class HeatmapEditor extends AbstractEditor {
 	}
 
 	@Override
-	public Object getModel() {
+	public IResource getModel() {
 		return heatmap;
 	}
 
@@ -328,7 +325,7 @@ public class HeatmapEditor extends AbstractEditor {
 		}
 
 		try {
-			PersistenceManager.getDefault().store(file, getModel(), monitor);
+			PersistenceManager.get().store(file, getModel(), monitor);
 		}
 		catch (PersistenceException ex) {
 			monitor.exception(ex);

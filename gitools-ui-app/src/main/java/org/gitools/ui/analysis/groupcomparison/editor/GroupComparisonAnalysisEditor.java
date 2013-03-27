@@ -31,8 +31,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.GroupComparisonAnalysisXmlPersistence;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.formats.xml.GroupComparisonAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -56,34 +56,31 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 	@Override
 	protected void prepareContext(VelocityContext context) {
 
-		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getData());
+		IResourceLocator fileRef = analysis.getData().getLocator();
 
 		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Not defined");
+				fileRef != null ? fileRef.getName() : "Not defined");
 
 		context.put("mtc", analysis.getMtc().getName());
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis.getResults());
+        fileRef = analysis.getResults().getLocator();
         context.put("resultsFile",
-                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+                fileRef != null ? fileRef.getName() : "Not defined");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis);
-        if (fileRef != null) {
-            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
-        } else {
+        fileRef = analysis.getLocator();
+        context.put("analysisLocation", fileRef.getURL());
+
+        if (fileRef == null || fileRef.isWritable()) {
             setSaveAllowed(true);
         }
 
 	}
 
     @Override
-    public void doSave(IProgressMonitor monitor) {
-        xmlPersistance = new GroupComparisonAnalysisXmlPersistence();
+    public void doSave(IProgressMonitor progressMonitor) {
+        xmlPersistance = new GroupComparisonAnalysisXmlFormat();
         fileformat = FileFormats.GROUP_COMPARISON;
-        super.doSave(monitor);
+        super.doSave(progressMonitor);
     }
 
     @Override

@@ -17,7 +17,9 @@
 
 package org.gitools.intogen;
 
+import edu.upf.bg.fileutils.IOUtils;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.gitools.persistence.PersistenceUtils;
 
 
 public class IntogenService {
@@ -120,7 +121,7 @@ public class IntogenService {
 				if (!outFile.getParentFile().exists())
 					outFile.getParentFile().mkdirs();
 				
-				OutputStream fout = PersistenceUtils.openOutputStream(outFile);
+				OutputStream fout = IOUtils.openOutputStream(outFile);
 
 				final int BUFFER_SIZE = 4 * 1024;
 				byte[] data = new byte[BUFFER_SIZE];

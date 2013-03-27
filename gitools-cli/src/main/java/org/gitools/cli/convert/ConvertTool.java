@@ -23,19 +23,18 @@ import edu.upf.bg.tools.ToolDescriptor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
 import edu.upf.bg.tools.impl.AbstractTool;
+import org.gitools.cli.GitoolsArguments;
+import org.gitools.cli.Main;
+import org.gitools.persistence.*;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.gitools.cli.GitoolsArguments;
-import org.gitools.cli.Main;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.MimeTypes;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
+import java.util.Properties;
 
 public class ConvertTool extends AbstractTool {
 
@@ -71,7 +70,7 @@ public class ConvertTool extends AbstractTool {
 			throw new ToolValidationException("An input file is required.");
 
 		if (args.inputFileFormat == null) {
-			args.inputFileFormat = PersistenceManager.getDefault()
+			args.inputFileFormat = PersistenceManager.get()
 					.getMimeFromFile(args.inputFileName);
 
 			if (args.inputFileFormat == null)
@@ -83,7 +82,7 @@ public class ConvertTool extends AbstractTool {
 			throw new ToolValidationException("An output file is required.");
 
 		if (args.outputFileFormat == null) {
-			args.outputFileFormat = PersistenceManager.getDefault()
+			args.outputFileFormat = PersistenceManager.get()
 					.getMimeFromFile(args.outputFileName);
 
 			if (args.outputFileFormat == null)
@@ -120,26 +119,27 @@ public class ConvertTool extends AbstractTool {
 
 		monitor.begin("Loading input file ...", 1);
 
-		File inputFile = new File(args.inputFileName);
 
-		Object srcObject = null;
+
+		IResource resource = null;
 		try {
-			srcObject = PersistenceManager.getDefault()
-					.load(inputFile, inputMime, monitor.subtask());
+            IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.inputFileName));
+            IResourceFormat format = PersistenceManager.get().getFormatByMime(inputMime);
+			resource = PersistenceManager.get().load(resourceLocator, IResource.class, format, new Properties(), monitor.subtask());
 		} catch (PersistenceException ex) {
 			monitor.exception(ex);
 			throw new ToolException(ex);
 		}
 
-		if (srcObject == null)
+		if (resource == null)
 			throw new ToolException("Unexpected error loading " + args.inputFileName);
 
 		monitor.end();
 
-		Object dstObject = null;
+		IResource dstObject = null;
 		try {
-			dstObject = targetConv.delegate.convert(
-					args.inputFileFormat, srcObject, args.outputFileFormat, monitor);
+            dstObject = (IResource) targetConv.delegate.convert(
+					args.inputFileFormat, resource, args.outputFileFormat, monitor);
 		}
 		catch (Exception ex) {
 			monitor.exception(ex);
@@ -148,11 +148,10 @@ public class ConvertTool extends AbstractTool {
 
 		monitor.begin("Saving output file ...", 1);
 
-		File outputFile = new File(args.outputFileName);
-
 		try {
-			PersistenceManager.getDefault()
-					.store(outputFile, outputMime, dstObject, monitor.subtask());
+            IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.outputFileName));
+            IResourceFormat format = PersistenceManager.get().getFormatByMime(outputMime);
+            PersistenceManager.get().store(resourceLocator, dstObject, format, monitor.subtask());
 		} catch (PersistenceException ex) {
 			monitor.exception(ex);
 			throw new ToolException(ex);
@@ -206,13 +205,13 @@ public class ConvertTool extends AbstractTool {
 
 		if (format != null) {
 			// Try with file extension first
-			mime = PersistenceManager.getDefault().getMimeFromFile("fake." + format);
+			mime = PersistenceManager.get().getMimeFromFile("fake." + format);
 			if (mime == null)
 				mime = format; // it should be mime type then
 			//TODO check valid mime
 		}
 		else
-			mime = PersistenceManager.getDefault().getMimeFromFile(fileName);
+			mime = PersistenceManager.get().getMimeFromFile(fileName);
 
 		return mime;
 	}

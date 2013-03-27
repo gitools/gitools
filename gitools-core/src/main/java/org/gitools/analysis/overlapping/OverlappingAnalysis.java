@@ -22,7 +22,6 @@ import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ResourceRef;
-import org.gitools.persistence.xml.adapter.ResourceRefXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -52,26 +51,21 @@ public class OverlappingAnalysis extends Analysis {
 
 	/** Data source file */
 	@XmlElement(name = "sourceData")
-	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
 	protected ResourceRef sourceDataResource;
 
 	/** Filtered data file */
 	@XmlElement(name = "filteredData")
-	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
 	protected ResourceRef filteredDataResource;
 
 	/** Data */
-	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	@XmlTransient
 	protected IMatrix data;
 
 	/** Cell Results file */
 	@XmlElement(name = "cellResults")
-	@XmlJavaTypeAdapter(ResourceRefXmlAdapter.class)
 	protected ResourceRef cellResultsResource;
 
 	/** Results */
-	//@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
 	@XmlTransient
 	protected IMatrix cellResults;
 

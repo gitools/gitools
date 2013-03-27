@@ -107,9 +107,9 @@ public class OpenAnalysisAction extends BaseAction {
 
 						String mime = filter.getMime();
 						if (mime == null)
-							mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
+							mime = PersistenceManager.get().getMimeFromFile(file.getName());
 						
-						Analysis analysis =	(Analysis) PersistenceManager.getDefault()
+						Analysis analysis =	(Analysis) PersistenceManager.get()
 								.load(file, mime, monitor);
 
 						if (monitor.isCancelled())

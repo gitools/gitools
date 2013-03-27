@@ -17,21 +17,18 @@
 
 package org.gitools.model;
 
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
+
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType( propOrder={"publications", "laboratories" } )
 
-public class Project extends Artifact {
+public class Project extends Artifact implements IResource {
 
 	private static final long serialVersionUID = 7978328129043692524L;
 
@@ -47,10 +44,20 @@ public class Project extends Artifact {
     @XmlElement(name = "laboratory")
 	private List<Laboratory> laboratories = new ArrayList<Laboratory>();
 
+    private IResourceLocator locator;
+
 	public Project() {
 	}
 
-	public List<Publication> getPublications() {
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    public List<Publication> getPublications() {
 		return publications;
 	}
 

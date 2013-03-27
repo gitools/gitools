@@ -18,7 +18,6 @@ import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
-import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
 import java.io.File;
@@ -61,11 +60,11 @@ public class CommandLoadFile extends AbstractCommand {
         File file = download(this.file, monitor);
 
         if (mime == null)
-            mime = PersistenceManager.getDefault().getMimeFromFile(file.getName());
+            mime = PersistenceManager.get().getMimeFromFile(file.getName());
 
         final IMatrix matrix;
         try {
-            matrix = (IMatrix) PersistenceManager.getDefault().load(file, mime, monitor);
+            matrix = (IMatrix) PersistenceManager.get().load(file, mime, monitor);
         } catch (Exception e) {
             MessageUtils.showErrorMessage(AppFrame.instance(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
             return;
@@ -151,7 +150,7 @@ public class CommandLoadFile extends AbstractCommand {
             AnnotationMatrix annMatrix =
                     null;
             try {
-                annMatrix = (AnnotationMatrix) PersistenceManager.getDefault().load(
+                annMatrix = (AnnotationMatrix) PersistenceManager.get().load(
                         file, MimeTypes.ANNOTATION_MATRIX,
                         new NullProgressMonitor());
                 annMatrix.setTitle(file.getName());

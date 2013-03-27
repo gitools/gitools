@@ -17,22 +17,22 @@
 
 package org.gitools.matrix.model;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.model.AbstractModel;
+import org.gitools.model.xml.IndexArrayXmlAdapter;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.model.AbstractModel;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.xml.IndexArrayXmlAdapter;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -74,6 +74,9 @@ public class MatrixView
 
 	@XmlTransient
 	private int[] selectedRowsBitmap;
+
+    @XmlTransient
+    private IResourceLocator locator;
 	
 	public MatrixView() {
 		visibleRows = new int[0];
@@ -107,7 +110,15 @@ public class MatrixView
 		selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
 	}
 
-	private void initFromMatrix(IMatrix contents) {
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    private void initFromMatrix(IMatrix contents) {
 		this.contents = contents;
 
 		// initialize visible rows and columns

@@ -22,16 +22,17 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.locators.FileResourceLocator;
-import org.gitools.persistence.text.BaseMatrixPersistence;
-import org.gitools.persistence.text.MatrixTextPersistence;
-import org.gitools.persistence.text.ModuleMapPersistence;
-import org.gitools.persistence.text.ObjectMatrixTextPersistence;
-import org.gitools.persistence.xml.EnrichmentAnalysisXmlPersistence;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.formats.text.AbstractMatrixFormat;
+import org.gitools.persistence.formats.text.AbstractModuleMapFormat;
+import org.gitools.persistence.formats.text.AbstractTextMatrixFormat;
+import org.gitools.persistence.formats.text.MultiValueMatrixFormat;
+import org.gitools.persistence.formats.xml.EnrichmentAnalysisXmlFormat;
 
 import java.io.File;
 import java.util.*;
@@ -103,8 +104,8 @@ public class EnrichmentCommand extends HtestCommand {
 			workdirFile.mkdirs();
 
 		File file = new File(workdirFile, fileName);
-		EnrichmentAnalysisXmlPersistence p = new EnrichmentAnalysisXmlPersistence();
-		p.write(new FileResourceLocator(file), analysis, monitor);
+		EnrichmentAnalysisXmlFormat p = new EnrichmentAnalysisXmlFormat();
+		p.write(new UrlResourceLocator(file), analysis, monitor);
 	}
 
 	/** Loads data and modules taking into account filtering
@@ -134,17 +135,16 @@ public class EnrichmentCommand extends HtestCommand {
 		String[] populationLabels = null;
 
 		if (populationFileName != null) {
-			File bgFile = new File(populationFileName);
+			IResourceLocator resourceLocator = new UrlResourceLocator(new File(populationFileName));
 
-			List<String> popLabels = (List<String>) PersistenceManager.getDefault()
-					.load(bgFile, MimeTypes.GENE_SET, monitor);
+			GeneSet popLabels = PersistenceManager.get().load(resourceLocator, GeneSet.class, monitor);
 
 			populationLabels = popLabels.toArray(new String[popLabels.size()]);
 		}
 
 		// Load data
 
-		File dataFile = new File(dataFileName);
+		IResourceLocator dataLocator = new UrlResourceLocator(new File(dataFileName));
 
 		Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
         valueTranslators.put(0,
@@ -155,34 +155,29 @@ public class EnrichmentCommand extends HtestCommand {
         );
 
 		Properties dataProps = new Properties();
-		dataProps.put(BaseMatrixPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-		dataProps.put(BaseMatrixPersistence.VALUE_TRANSLATORS, valueTranslators);
-        dataProps.put(ObjectMatrixTextPersistence.VALUE_INDICES,new int[]{ valueIndex });
+		dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
+		dataProps.put(AbstractMatrixFormat.VALUE_TRANSLATORS, valueTranslators);
+        dataProps.put(MultiValueMatrixFormat.VALUE_INDICES,new int[]{ valueIndex });
 		if (populationLabels != null) {
-			dataProps.put(MatrixTextPersistence.POPULATION_LABELS, populationLabels);
-			dataProps.put(MatrixTextPersistence.BACKGROUND_VALUE, populationDefaultValue);
+			dataProps.put(AbstractTextMatrixFormat.POPULATION_LABELS, populationLabels);
+			dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
 		}
 
-		BaseMatrix dataMatrix = loadDataMatrix(dataFile, dataFileMime, dataProps, monitor);
-
-		PersistenceManager.getDefault().clearEntityCache(dataMatrix);
+		BaseMatrix dataMatrix = loadDataMatrix(dataLocator, dataProps, monitor);
 
 		// Load modules
 
-		File file = new File(modulesFileName);
+		IResourceLocator modLocator = new UrlResourceLocator(new File(modulesFileName));
 
 		Properties modProps = new Properties();
-		modProps.put(ModuleMapPersistence.ITEM_NAMES_FILTER_ENABLED, true);
-		modProps.put(ModuleMapPersistence.ITEM_NAMES, dataMatrix.getRowStrings());
-		modProps.put(ModuleMapPersistence.MIN_SIZE, analysis.getMinModuleSize());
-		modProps.put(ModuleMapPersistence.MAX_SIZE, analysis.getMaxModuleSize());
+		modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
+		modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.getRowStrings());
+		modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
+		modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
 
-		ModuleMap moduleMap = loadModuleMap(file, modulesFileMime, modProps, monitor);
-
-		PersistenceManager.getDefault().clearEntityCache(moduleMap);
+		ModuleMap moduleMap = loadModuleMap(modLocator, modProps, monitor);
 
 		// Filter rows if DiscardNonMappedRows is enabled
-
 		if (analysis.isDiscardNonMappedRows()) {
 
 			BaseMatrix fmatrix = null;

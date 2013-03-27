@@ -17,6 +17,7 @@
 
 package org.gitools.persistence;
 
+@Deprecated
 public class MimeTypes {
 
     public static final String PROJECT = "application/gitools-project";

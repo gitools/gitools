@@ -17,20 +17,8 @@
 
 package org.gitools.heatmap;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.Serializable;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.xml.HeatmapMatrixViewXmlAdapter;
-
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
@@ -39,9 +27,20 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.ZScoreResult;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.Serializable;
+import java.util.List;
 
 /*TODO: Heatmap should implement IMatrixView
  * and handle movement and visibility synchronized
@@ -49,9 +48,7 @@ import org.gitools.stats.test.results.ZScoreResult;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
-public class Heatmap
-		extends Figure
-		implements Serializable {
+public class Heatmap extends Figure	implements Serializable, IResource {
 
 	private static final long serialVersionUID = 325437934312047512L;
 
@@ -89,6 +86,9 @@ public class Heatmap
 
 	@XmlTransient
 	PropertyChangeListener propertyListener;
+
+    @XmlTransient
+    private IResourceLocator locator;
 
     public Heatmap() {
          this(
@@ -148,6 +148,14 @@ public class Heatmap
 		this.columnDim.addHeader(columnLabelsHeader);
 		this.columnDim.addPropertyChangeListener(propertyListener);
 	}
+
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
 
     private static ElementDecorator[] getCellDecoratorsFromDecorator(ElementDecorator cellDecorator, int attributesNb) {
         ElementDecorator[] cellDecorators = new ElementDecorator[attributesNb];

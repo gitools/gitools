@@ -18,21 +18,18 @@
 package org.gitools.ui.analysis.correlation.wizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.util.Properties;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.persistence.formats.xml.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
+import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.ExamplePage;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -41,6 +38,10 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+
+import javax.swing.*;
+import java.io.File;
+import java.util.Properties;
 
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
@@ -115,12 +116,12 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
 						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
 						Properties props = new Properties();
-						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
+						props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
 						try {
 							monitor.begin("Loading example parameters ...", 1);
 
-							final CorrelationAnalysis a = (CorrelationAnalysis) PersistenceManager.getDefault()
-									.load(analysisFile, props, monitor);
+							final CorrelationAnalysis a = PersistenceManager.get()
+									.load(analysisFile, CorrelationAnalysis.class, props, monitor);
 
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override public void run() {

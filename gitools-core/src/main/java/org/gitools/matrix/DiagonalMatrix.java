@@ -17,20 +17,32 @@
 
 package org.gitools.matrix;
 
-import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResourceLocator;
+
+import java.util.List;
 
 public class DiagonalMatrix implements IMatrix {
 
 	private IMatrix m;
 
+    private IResourceLocator locator;
+
 	public DiagonalMatrix(IMatrix matrix) {
 		this.m = matrix;
 	}
 
-	@Override
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    @Override
 	public int getRowCount() {
 		return m.getRowCount();
 	}

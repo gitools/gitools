@@ -17,24 +17,38 @@
 
 package org.gitools.heatmap;
 
-import java.beans.PropertyChangeListener;
-import java.util.List;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResourceLocator;
+
+import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class HeatmapAnnotatedMatrixView implements IMatrixView {
 
 	private final Heatmap hm;
 	private final IMatrixView mv;
 
+    private IResourceLocator locator;
+
 	public HeatmapAnnotatedMatrixView(Heatmap hm) {
 		this.hm = hm;
 		this.mv = hm.getMatrixView();
 	}
 
-	@Override
+    @Override
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    @Override
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    @Override
 	public IMatrix getContents() {
 		return mv.getContents();
 	}

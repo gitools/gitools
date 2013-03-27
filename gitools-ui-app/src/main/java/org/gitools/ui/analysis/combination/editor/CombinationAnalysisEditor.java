@@ -27,8 +27,8 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.CombinationAnalysisXmlPersistence;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.formats.xml.CombinationAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -54,16 +54,11 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 			combOf = "rows";
 		context.put("combinationOf", combOf);
 
-		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getData());
+		IResourceLocator resourceLocator = analysis.getData().getLocator();
+		context.put("dataFile",	resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
-		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Not defined");
-
-		fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getGroupsMap());
-
-		String groupsFile = fileRef != null ? fileRef.getFile().getName()
+		resourceLocator = analysis.getGroupsMap().getLocator();
+		String groupsFile = resourceLocator != null ? resourceLocator.getName()
 				: "Not specified. All " + combOf + " are combined";
 		context.put("groupsFile", groupsFile);
 
@@ -80,25 +75,23 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 		}
 		context.put("pvalueAttr", pvalueAttr);
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis.getResults());
+        resourceLocator = analysis.getResults().getLocator();
         context.put("resultsFile",
-                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+                resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis);
-        if (fileRef != null) {
-            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
+        resourceLocator = analysis.getLocator();
+        if (resourceLocator != null) {
+            context.put("analysisLocation", resourceLocator.getURL());
         } else {
             setSaveAllowed(true);
         }
 	}
 
     @Override
-    public void doSave(IProgressMonitor monitor) {
-        xmlPersistance = new CombinationAnalysisXmlPersistence();
+    public void doSave(IProgressMonitor progressMonitor) {
+        xmlPersistance = new CombinationAnalysisXmlFormat();
         fileformat = FileFormats.COMBINATION;
-        super.doSave(monitor);
+        super.doSave(progressMonitor);
     }
 
 	@Override

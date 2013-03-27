@@ -18,13 +18,14 @@
 package org.gitools.analysis.overlapping;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.locators.UrlResourceLocator;
+
+import java.io.File;
 
 
 public class OverlappingCommand extends AnalysisCommand {
@@ -38,39 +39,35 @@ public class OverlappingCommand extends AnalysisCommand {
 	}
 
 	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+	public void run(IProgressMonitor progressMonitor) throws AnalysisException {
 		try {
 			if (analysis.getData() == null) {
 				ResourceRef res = analysis.getSourceDataResource();
 				String dataPath = res.getPath();
 				String dataMime = res.getMime();
-				
-				/*ValueTranslator valueTranslator = createValueTranslator(
-					analysis.isBinaryCutoffEnabled(),
-					analysis.getBinaryCutoffCmp(),
-					analysis.getBinaryCutoffValue());
-
-				Properties dataProps = new Properties();
-				dataProps.put(MatrixTextPersistence.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
-				dataProps.put(MatrixTextPersistence.VALUE_TRANSLATORS, valueTranslator);*/
 
 				BaseMatrix data = loadDataMatrix(
-						new File(dataPath), dataMime, new Properties(), monitor);
+						new UrlResourceLocator(new File(dataPath)),
+                        progressMonitor
+                );
 
 				analysis.setData(data);
 			}
 
 			OverlappingProcessor proc = new OverlappingProcessor(analysis);
 
-			proc.run(monitor);
+			proc.run(progressMonitor);
 
 			if (storeAnalysis) {
 				File workdirFile = new File(workdir);
 				if (!workdirFile.exists())
 					workdirFile.mkdirs();
 
-				File file = new File(workdirFile, fileName);
-				PersistenceManager.getDefault().store(file, analysis, monitor);
+				PersistenceManager.get().store(
+                        new UrlResourceLocator(new File(workdirFile, fileName)),
+                        analysis,
+                        progressMonitor
+                );
 			}
 		}
 		catch (Throwable cause) {

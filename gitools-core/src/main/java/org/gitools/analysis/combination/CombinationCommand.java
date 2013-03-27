@@ -18,13 +18,15 @@
 package org.gitools.analysis.combination;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.util.Properties;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.locators.UrlResourceLocator;
+
+import java.io.File;
+import java.util.Properties;
 
 
 public class CombinationCommand extends AnalysisCommand {
@@ -55,33 +57,37 @@ public class CombinationCommand extends AnalysisCommand {
 	}
 
 	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+	public void run(IProgressMonitor progressMonitor) throws AnalysisException {
 		try {
 			if (analysis.getData() == null) {
 				BaseMatrix data = loadDataMatrix(
-						new File(dataPath), dataMime, new Properties(), monitor);
+						new UrlResourceLocator(new File(dataPath)),
+                        progressMonitor
+                );
 
 				analysis.setData(data);
 			}
 
 			if (columnsPath != null) {
 				ModuleMap columnsMap = loadModuleMap(
-					new File(columnsPath), columnsMime, new Properties(), monitor);
+					    new UrlResourceLocator(new File(columnsPath)),
+                        new Properties(),
+                        progressMonitor);
 				
 				analysis.setGroupsMap(columnsMap);
 			}
 
 			CombinationProcessor proc = new CombinationProcessor(analysis);
 
-			proc.run(monitor);
+			proc.run(progressMonitor);
 
 			if (storeAnalysis) {
 				File workdirFile = new File(workdir);
 				if (!workdirFile.exists())
 					workdirFile.mkdirs();
 
-				File file = new File(workdirFile, fileName);
-				PersistenceManager.getDefault().store(file, analysis, monitor);
+				UrlResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
+				PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
 			}
 		}
 		catch (Throwable cause) {

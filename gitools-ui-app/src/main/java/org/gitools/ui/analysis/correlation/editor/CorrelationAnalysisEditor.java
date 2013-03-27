@@ -26,8 +26,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.CorrelationAnalysisXmlPersistence;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.formats.xml.CorrelationAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -47,11 +47,8 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 	@Override
 	protected void prepareContext(VelocityContext context) {
 
-		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getData());
-
-		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Not defined");
+		IResourceLocator dataLocator = analysis.getData().getLocator();
+		context.put("dataFile",	dataLocator != null ? dataLocator.getName() : "Not defined");
 
 		String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
 		context.put("appliedTo", appliedTo);
@@ -59,25 +56,25 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 		if (analysis.getMethod().equals("pearson"))
 			context.put("method", "Pearson's correlation");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis.getResults());
-        context.put("resultsFile",
-                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+        IResourceLocator resultsLocator = analysis.getResults().getLocator();
+        context.put("resultsFile", resultsLocator != null ? resultsLocator.getName() : "Not defined");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis);
-        if (fileRef != null) {
-            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
-        } else {
-            setSaveAllowed(true);
+        IResourceLocator analysisLocator = analysis.getLocator();
+
+        if (analysisLocator != null) {
+            context.put("analysisLocation", analysisLocator.getURL());
+
+            if (analysisLocator.isWritable()) {
+                setSaveAllowed(true);
+            }
         }
 	}
 
     @Override
-    public void doSave(IProgressMonitor monitor) {
-        xmlPersistance = new CorrelationAnalysisXmlPersistence();
+    public void doSave(IProgressMonitor progressMonitor) {
+        xmlPersistance = new CorrelationAnalysisXmlFormat();
         fileformat = FileFormats.CORRELATIONS;
-        super.doSave(monitor);
+        super.doSave(progressMonitor);
     }
 
 	@Override

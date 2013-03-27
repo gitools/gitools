@@ -19,10 +19,11 @@ package org.gitools.matrix.model;
 
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResource;
 
 import java.util.List;
 
-public interface IMatrix {
+public interface IMatrix extends IResource {
 
 	// rows
 	

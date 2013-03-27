@@ -19,23 +19,19 @@ package org.gitools.ui.analysis.overlapping.wizard;
 
 import edu.upf.bg.cutoffcmp.CutoffCmp;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.io.File;
-import java.util.List;
-import java.util.Properties;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.FileFormat;
 import org.gitools.persistence.FileFormats;
 import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.persistence.formats.xml.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
 import org.gitools.ui.analysis.wizard.DataFilterPage;
 import org.gitools.ui.analysis.wizard.ExamplePage;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -44,6 +40,11 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+
+import javax.swing.*;
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
 
 public class OverlappingAnalysisWizard extends AbstractWizard {
 
@@ -147,12 +148,12 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 
 						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
 						Properties props = new Properties();
-						props.setProperty(AbstractXmlPersistence.LOAD_REFERENCES_PROP, "false");
+						props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
 						try {
 							monitor.begin("Loading example parameters ...", 1);
 
-							final OverlappingAnalysis a = (OverlappingAnalysis) PersistenceManager.getDefault()
-									.load(analysisFile, props, monitor);
+							final OverlappingAnalysis a = PersistenceManager.get()
+									.load(analysisFile,OverlappingAnalysis.class, props, monitor);
 
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override public void run() {

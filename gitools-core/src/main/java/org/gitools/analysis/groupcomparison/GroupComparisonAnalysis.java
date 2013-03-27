@@ -25,7 +25,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;

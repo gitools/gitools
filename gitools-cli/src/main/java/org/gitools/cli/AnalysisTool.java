@@ -65,13 +65,13 @@ public class AnalysisTool extends AbstractTool {
 		
 		if (format != null) {
 			// Try with file extension first
-			mime = PersistenceManager.getDefault().getMimeFromFile("fake." + format);
+			mime = PersistenceManager.get().getMimeFromFile("fake." + format);
 			if (mime == null)
 				mime = format; // it should be mime type then
 			//TODO check valid mime
 		}
 		else
-			mime = PersistenceManager.getDefault().getMimeFromFile(fileName);
+			mime = PersistenceManager.get().getMimeFromFile(fileName);
 
 		return mime != null ? mime : defaultMime;
 	}

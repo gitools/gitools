@@ -17,32 +17,35 @@
 
 package org.gitools.table.model;
 
+import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.AbstractModel;
 import org.gitools.model.Figure;
-import java.awt.Color;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
+import org.gitools.model.xml.AbstractModelXmlAdapter;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.table.model.impl.TableView;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.gitools.model.AbstractModel;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.model.decorator.impl.FormattedTextElementDecorator;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.table.model.impl.TableView;
-import org.gitools.model.xml.AbstractModelXmlAdapter;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "tableFigure")
-public class TableFigure extends Figure implements Serializable {
+public class TableFigure extends Figure implements Serializable, IResource {
 
 	private static final long serialVersionUID = 9006041133309250290L;
+
+    private IResourceLocator locator;
 
 	private TableView tableView;
 	
@@ -115,7 +118,15 @@ public class TableFigure extends Figure implements Serializable {
 					"Wrong number of columns in table decorators");
 	}
 
-	public void setDecorator(AbstractModel decorator, int column) {
+    public IResourceLocator getLocator() {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
+
+    public void setDecorator(AbstractModel decorator, int column) {
 		cellDecorators.set(column, decorator);
 	}
 
