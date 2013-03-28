@@ -28,11 +28,11 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.persistence.formats.text.AbstractMatrixFormat;
-import org.gitools.persistence.formats.text.AbstractModuleMapFormat;
-import org.gitools.persistence.formats.text.AbstractTextMatrixFormat;
-import org.gitools.persistence.formats.text.MultiValueMatrixFormat;
-import org.gitools.persistence.formats.xml.EnrichmentAnalysisXmlFormat;
+import org.gitools.persistence.formats.matrix.AbstractMatrixFormat;
+import org.gitools.persistence.formats.modulemap.AbstractModuleMapFormat;
+import org.gitools.persistence.formats.matrix.AbstractTextMatrixFormat;
+import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
 
 import java.io.File;
 import java.util.*;

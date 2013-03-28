@@ -20,7 +20,7 @@ package org.gitools.workspace;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import org.gitools.model.Project;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.locators.UrlResourceLocator;

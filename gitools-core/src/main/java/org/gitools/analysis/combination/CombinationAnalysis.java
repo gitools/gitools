@@ -20,10 +20,9 @@ package org.gitools.analysis.combination;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
@@ -35,16 +34,13 @@ public class CombinationAnalysis extends Analysis {
 	protected boolean transposeData;
 
 	/** Modules */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected ModuleMap groupsMap;
+	protected ResourceReference<ModuleMap> groupsMap;
 
 	/** Data */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix data;
+	protected ResourceReference<IMatrix> data;
 
 	/** Results */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix results;
+	protected ResourceReference<IMatrix> results;
 
 	public CombinationAnalysis() {
 		this.transposeData = false;
@@ -74,27 +70,27 @@ public class CombinationAnalysis extends Analysis {
 		this.transposeData = transposeData;
 	}
 
-	public ModuleMap getGroupsMap() {
+	public ResourceReference<ModuleMap> getGroupsMap() {
 		return groupsMap;
 	}
 
-	public void setGroupsMap(ModuleMap groupsMap) {
+	public void setGroupsMap(ResourceReference<ModuleMap> groupsMap) {
 		this.groupsMap = groupsMap;
 	}
 
-	public IMatrix getData() {
+	public ResourceReference<IMatrix> getData() {
 		return data;
 	}
 
-	public void setData(IMatrix data) {
+	public void setData(ResourceReference<IMatrix> data) {
 		this.data = data;
 	}
 
-	public IMatrix getResults() {
+	public ResourceReference<IMatrix> getResults() {
 		return results;
 	}
 
-	public void setResults(IMatrix results) {
+	public void setResults(ResourceReference<IMatrix> results) {
 		this.results = results;
 	}
 }

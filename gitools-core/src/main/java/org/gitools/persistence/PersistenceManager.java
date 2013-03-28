@@ -77,20 +77,37 @@ public class PersistenceManager implements Serializable {
         return resourceFormat;
     }
 
-    @Deprecated
+    /**
+     * @param mime
+     * @return
+     * @deprecated Use {@link #getClassFromLocator(IResourceLocator)} instead.
+     */
     public IResourceFormat getFormatByMime(String mime) {
         return mimeToFormat.get(mime);
     }
 
-    @Deprecated
+    /**
+     * @param name
+     * @return
+     * @deprecated Use {@link #getClassFromLocator(IResourceLocator)} instead.
+     */
     public String getMimeFromFile(String name) {
         String extension = name.substring(name.indexOf(".") + 1);
         extension = extension.replace(".gz", "");
         return extensionToMime.get(extension);
     }
 
+    public <R extends IResource> Class<R> getClassFromLocator(IResourceLocator resourceLocator) {
+        return getFormatByMime(getMimeFromFile(resourceLocator.getName())).getResourceClass();
+    }
+
+
     public String getDefaultExtension(IResource resource) {
-        return classToExtension.get(resource.getClass());
+        return getDefaultExtension(resource.getClass());
+    }
+
+    public String getDefaultExtension(Class<? extends IResource> resourceClass) {
+        return classToExtension.get(resourceClass);
     }
 
 
@@ -192,6 +209,4 @@ public class PersistenceManager implements Serializable {
 
         return resourceLocator;
     }
-
-
 }

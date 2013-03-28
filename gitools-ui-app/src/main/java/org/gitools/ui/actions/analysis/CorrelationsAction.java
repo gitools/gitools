@@ -24,8 +24,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
@@ -36,7 +36,6 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

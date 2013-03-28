@@ -17,7 +17,7 @@
 
 package org.gitools.ui.wizard.common;
 
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 import java.io.File;

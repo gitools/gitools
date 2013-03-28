@@ -30,7 +30,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.filechooser.FileFilter;
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;

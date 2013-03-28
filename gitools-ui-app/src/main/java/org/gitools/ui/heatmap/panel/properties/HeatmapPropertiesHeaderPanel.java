@@ -31,7 +31,7 @@ import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;

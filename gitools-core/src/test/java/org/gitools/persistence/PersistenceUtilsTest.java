@@ -17,6 +17,7 @@
 
 package org.gitools.persistence;
 
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

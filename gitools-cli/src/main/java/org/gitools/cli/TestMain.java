@@ -20,7 +20,7 @@ package org.gitools.cli;
 import edu.upf.bg.tools.exception.ToolException;
 import java.util.ArrayList;
 import java.util.List;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 
 public class TestMain {
 

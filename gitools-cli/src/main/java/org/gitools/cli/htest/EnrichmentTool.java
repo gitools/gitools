@@ -27,8 +27,8 @@ import edu.upf.bg.tools.exception.ToolValidationException;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 

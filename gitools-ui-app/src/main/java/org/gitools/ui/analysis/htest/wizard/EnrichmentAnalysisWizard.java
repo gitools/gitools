@@ -19,10 +19,10 @@ package org.gitools.ui.analysis.htest.wizard;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.formats.xml.AbstractXmlFormat;
+import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;

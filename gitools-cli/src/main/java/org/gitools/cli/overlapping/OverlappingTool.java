@@ -30,8 +30,8 @@ import org.gitools.analysis.overlapping.OverlappingCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
 import org.gitools.model.ResourceRef;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.threads.ThreadManager;
 import org.kohsuke.args4j.Option;
 

@@ -33,7 +33,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.Matrix;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.table.model.impl.AbstractTableColumn;
 import org.gitools.model.xml.TableColumnXmlAdapter;
 

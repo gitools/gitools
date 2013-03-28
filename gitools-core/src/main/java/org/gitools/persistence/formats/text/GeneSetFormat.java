@@ -20,9 +20,9 @@ package org.gitools.persistence.formats.text;
 import edu.upf.bg.csv.CSVReader;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.model.GeneSet;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 

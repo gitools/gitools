@@ -39,7 +39,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.queryhandler.TsvFileQueryHandler;
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.biomart.settings.BiomartSource;
 
 import org.slf4j.Logger;

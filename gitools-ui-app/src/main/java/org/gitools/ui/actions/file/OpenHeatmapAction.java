@@ -17,9 +17,9 @@
 
 package org.gitools.ui.actions.file;
 
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;

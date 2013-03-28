@@ -24,7 +24,7 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 
 import org.gitools.ui.platform.actions.BaseAction;

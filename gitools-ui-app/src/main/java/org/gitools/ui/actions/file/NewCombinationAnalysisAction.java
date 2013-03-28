@@ -18,22 +18,22 @@
 package org.gitools.ui.actions.file;
 
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class NewCombinationAnalysisAction extends BaseAction {
 

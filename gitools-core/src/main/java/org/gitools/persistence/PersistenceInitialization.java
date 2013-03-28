@@ -17,8 +17,11 @@
 
 package org.gitools.persistence;
 
+import org.gitools.persistence.formats.matrix.*;
+import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
+import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
 import org.gitools.persistence.formats.text.*;
-import org.gitools.persistence.formats.xml.*;
+import org.gitools.persistence.formats.analysis.*;
 
 public class PersistenceInitialization {
 

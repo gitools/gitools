@@ -29,7 +29,7 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.htest.editor._DEPRECATED.HtestAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;

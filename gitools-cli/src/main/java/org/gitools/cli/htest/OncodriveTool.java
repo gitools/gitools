@@ -28,8 +28,8 @@ import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 

@@ -30,6 +30,8 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.persistence.*;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;

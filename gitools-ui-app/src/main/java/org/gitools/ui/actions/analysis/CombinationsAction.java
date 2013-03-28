@@ -21,9 +21,11 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
@@ -34,7 +36,6 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -78,8 +79,7 @@ public class CombinationsAction extends BaseAction {
 			return;
 
 		final CombinationAnalysis analysis = wizard.getAnalysis();
-
-		analysis.setData(matrixView);
+		analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
 		
 		File columnSetsFile = wizard.getColumnSetsPage().getFile();
 		String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;

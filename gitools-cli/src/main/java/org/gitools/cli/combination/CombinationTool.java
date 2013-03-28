@@ -23,18 +23,19 @@ import edu.upf.bg.progressmonitor.StreamProgressMonitor;
 import edu.upf.bg.tools.ToolDescriptor;
 import edu.upf.bg.tools.exception.ToolException;
 import edu.upf.bg.tools.exception.ToolValidationException;
-import java.io.PrintStream;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.threads.ThreadManager;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+
+import java.io.PrintStream;
 
 
 public class CombinationTool extends AnalysisTool {

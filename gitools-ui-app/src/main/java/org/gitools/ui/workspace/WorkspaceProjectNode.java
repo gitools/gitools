@@ -19,7 +19,7 @@ package org.gitools.ui.workspace;
 
 import java.io.File;
 
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.workspace.WorkspaceProjectRef;
 
 public class WorkspaceProjectNode extends AbstractNode {

@@ -20,13 +20,13 @@ package org.gitools.analysis.combination;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 
 import java.io.File;
-import java.util.Properties;
 
 
 public class CombinationCommand extends AnalysisCommand {
@@ -60,21 +60,15 @@ public class CombinationCommand extends AnalysisCommand {
 	public void run(IProgressMonitor progressMonitor) throws AnalysisException {
 		try {
 			if (analysis.getData() == null) {
-				BaseMatrix data = loadDataMatrix(
-						new UrlResourceLocator(new File(dataPath)),
-                        progressMonitor
-                );
-
-				analysis.setData(data);
+                ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)));
+                analysis.setData(data);
+                data.load(progressMonitor);
 			}
 
 			if (columnsPath != null) {
-				ModuleMap columnsMap = loadModuleMap(
-					    new UrlResourceLocator(new File(columnsPath)),
-                        new Properties(),
-                        progressMonitor);
-				
-				analysis.setGroupsMap(columnsMap);
+                ResourceReference<ModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)));
+                analysis.setGroupsMap(columnsMap);
+                columnsMap.load(progressMonitor);
 			}
 
 			CombinationProcessor proc = new CombinationProcessor(analysis);

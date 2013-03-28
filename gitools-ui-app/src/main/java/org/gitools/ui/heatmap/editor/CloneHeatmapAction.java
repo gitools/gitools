@@ -22,7 +22,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;

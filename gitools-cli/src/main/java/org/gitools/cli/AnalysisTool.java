@@ -27,8 +27,8 @@ import java.util.Properties;
 import org.gitools.model.Analysis;
 import org.gitools.model.Attribute;
 import org.gitools.model.KeyValue;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence.PersistenceManager;
 
 public class AnalysisTool extends AbstractTool {

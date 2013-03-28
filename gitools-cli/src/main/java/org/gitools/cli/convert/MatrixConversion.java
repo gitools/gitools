@@ -21,7 +21,7 @@ import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 
 
 public class MatrixConversion implements ConversionDelegate {

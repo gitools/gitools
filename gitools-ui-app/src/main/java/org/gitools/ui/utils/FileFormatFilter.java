@@ -19,7 +19,7 @@ package org.gitools.ui.utils;
 
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public class FileFormatFilter extends FileFilter {
 

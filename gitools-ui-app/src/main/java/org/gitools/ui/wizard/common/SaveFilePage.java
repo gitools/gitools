@@ -23,7 +23,7 @@
 
 package org.gitools.ui.wizard.common;
 
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

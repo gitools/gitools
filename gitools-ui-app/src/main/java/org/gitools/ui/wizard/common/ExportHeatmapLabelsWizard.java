@@ -18,8 +18,8 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;

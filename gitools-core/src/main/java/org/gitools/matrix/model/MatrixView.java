@@ -23,7 +23,7 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

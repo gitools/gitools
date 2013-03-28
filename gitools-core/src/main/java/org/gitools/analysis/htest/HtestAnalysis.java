@@ -31,7 +31,7 @@ import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 
 @XmlRootElement
 

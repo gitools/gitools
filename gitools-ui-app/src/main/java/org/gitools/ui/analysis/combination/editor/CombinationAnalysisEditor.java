@@ -25,10 +25,10 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.xml.CombinationAnalysisXmlFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -43,37 +43,37 @@ import java.util.Map;
 
 public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
 
-	public CombinationAnalysisEditor(CombinationAnalysis analysis) {
-		super(analysis, "/vm/analysis/combination/analysis_details.vm", null);
-	}
+    public CombinationAnalysisEditor(CombinationAnalysis analysis) {
+        super(analysis, "/vm/analysis/combination/analysis_details.vm", null);
+    }
 
-	@Override
-	protected void prepareContext(VelocityContext context) {
-		String combOf = "columns";
-		if (analysis.isTransposeData())
-			combOf = "rows";
-		context.put("combinationOf", combOf);
+    @Override
+    protected void prepareContext(VelocityContext context) {
+        String combOf = "columns";
+        if (analysis.isTransposeData())
+            combOf = "rows";
+        context.put("combinationOf", combOf);
 
-		IResourceLocator resourceLocator = analysis.getData().getLocator();
-		context.put("dataFile",	resourceLocator != null ? resourceLocator.getName() : "Not defined");
+        IResourceLocator resourceLocator = analysis.getData().getLocator();
+        context.put("dataFile", resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
-		resourceLocator = analysis.getGroupsMap().getLocator();
-		String groupsFile = resourceLocator != null ? resourceLocator.getName()
-				: "Not specified. All " + combOf + " are combined";
-		context.put("groupsFile", groupsFile);
+        resourceLocator = analysis.getGroupsMap().getLocator();
+        String groupsFile = resourceLocator != null ? resourceLocator.getName()
+                : "Not specified. All " + combOf + " are combined";
+        context.put("groupsFile", groupsFile);
 
-		String sizeAttr = analysis.getSizeAttrName();
-		if (sizeAttr == null || sizeAttr.isEmpty())
-			sizeAttr = "Constant value of 1";
-		context.put("sizeAttr", sizeAttr);
+        String sizeAttr = analysis.getSizeAttrName();
+        if (sizeAttr == null || sizeAttr.isEmpty())
+            sizeAttr = "Constant value of 1";
+        context.put("sizeAttr", sizeAttr);
 
-		String pvalueAttr = analysis.getPvalueAttrName();
-		if (pvalueAttr == null || pvalueAttr.isEmpty()) {
-			List<IElementAttribute> attrs = analysis.getData().getCellAttributes();
-			if (attrs.size() > 0)
-				pvalueAttr = attrs.get(0).getName();
-		}
-		context.put("pvalueAttr", pvalueAttr);
+        String pvalueAttr = analysis.getPvalueAttrName();
+        if (pvalueAttr == null || pvalueAttr.isEmpty()) {
+            List<IElementAttribute> attrs = analysis.getData().get().getCellAttributes();
+            if (attrs.size() > 0)
+                pvalueAttr = attrs.get(0).getName();
+        }
+        context.put("pvalueAttr", pvalueAttr);
 
         resourceLocator = analysis.getResults().getLocator();
         context.put("resultsFile",
@@ -85,7 +85,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         } else {
             setSaveAllowed(true);
         }
-	}
+    }
 
     @Override
     public void doSave(IProgressMonitor progressMonitor) {
@@ -94,83 +94,97 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         super.doSave(progressMonitor);
     }
 
-	@Override
-	protected void performUrlAction(String name, Map<String, String> params) {
-		if ("NewDataHeatmap".equals(name))
-			newDataHeatmap();
-		else if ("ViewModuleMap".equals(name))
-			viewModuleMap();
-		else if ("NewResultsHeatmap".equals(name))
-			newResultsHeatmap();
-	}
+    @Override
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name))
+            newDataHeatmap();
+        else if ("ViewModuleMap".equals(name))
+            viewModuleMap();
+        else if ("NewResultsHeatmap".equals(name))
+            newResultsHeatmap();
+    }
 
-	private void newDataHeatmap() {
-		if (analysis.getData() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contain data.");
-			return;
-		}
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
+            AppFrame.instance().setStatusText("Analysis doesn't contain data.");
+            return;
+        }
 
-		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+        final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				monitor.begin("Creating new heatmap from data ...", 1);
+        JobThread.execute(AppFrame.instance(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
+                try {
+                    monitor.begin("Creating new heatmap from data ...", 1);
 
-				IMatrixView dataTable = new MatrixView(analysis.getData());
+                    IMatrixView dataTable = new MatrixView(analysis.getData().get());
 
-				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-				heatmap.setTitle(analysis.getTitle() + " (data)");
+                    Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                    heatmap.setTitle(analysis.getTitle() + " (data)");
 
-				final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                    final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-				editor.setName(editorPanel.deriveName(
-						getName(), FileSuffixes.COMBINATION,
-						"-data", ""));
+                    editor.setName(editorPanel.deriveName(
+                            getName(), FileSuffixes.COMBINATION,
+                            "-data", ""));
 
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override public void run() {
-						editorPanel.addEditor(editor);
-						AppFrame.instance().setStatusText("New heatmap created.");
-					}
-				});
-			}
-		});
-	}
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            editorPanel.addEditor(editor);
+                            AppFrame.instance().setStatusText("New heatmap created.");
+                        }
+                    });
 
-	private void viewModuleMap() {
-		UnimplementedDialog.show(AppFrame.instance());
-	}
+                    monitor.end();
+                } catch (Exception e) {
+                    monitor.exception(e);
+                }
+            }
+        });
+    }
 
-	private void newResultsHeatmap() {
-		if (analysis.getResults() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contain results.");
-			return;
-		}
+    private void viewModuleMap() {
+        UnimplementedDialog.show(AppFrame.instance());
+    }
 
-		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
+            AppFrame.instance().setStatusText("Analysis doesn't contain results.");
+            return;
+        }
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				monitor.begin("Creating new heatmap from results ...", 1);
+        final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
 
-				IMatrixView dataTable = new MatrixView(analysis.getResults());
+        JobThread.execute(AppFrame.instance(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
+                monitor.begin("Creating new heatmap from results ...", 1);
 
-				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-				heatmap.setTitle(analysis.getTitle() + " (results)");
+                try {
+                    IMatrixView dataTable = new MatrixView(analysis.getResults().get());
 
-				final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
+                    Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                    heatmap.setTitle(analysis.getTitle() + " (results)");
 
-				editor.setName(editorPanel.deriveName(
-						getName(), FileSuffixes.COMBINATION,
-						"-results", ""));
+                    final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
 
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override public void run() {
-						editorPanel.addEditor(editor);
-						AppFrame.instance().setStatusText("Heatmap for combination results created.");
-					}
-				});
-			}
-		});
-	}
+                    editor.setName(editorPanel.deriveName(
+                            getName(), FileSuffixes.COMBINATION,
+                            "-results", ""));
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            editorPanel.addEditor(editor);
+                            AppFrame.instance().setStatusText("Heatmap for combination results created.");
+                        }
+                    });
+                } catch (Exception e) {
+                    monitor.exception(e);
+                }
+            }
+        });
+    }
 }

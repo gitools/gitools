@@ -29,7 +29,7 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;

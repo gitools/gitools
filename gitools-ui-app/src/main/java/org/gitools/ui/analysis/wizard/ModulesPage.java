@@ -23,8 +23,8 @@
 
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;

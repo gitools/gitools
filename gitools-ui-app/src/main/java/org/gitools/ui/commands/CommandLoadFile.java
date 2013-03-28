@@ -17,6 +17,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.*;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;

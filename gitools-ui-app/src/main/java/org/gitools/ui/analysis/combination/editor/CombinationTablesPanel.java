@@ -17,14 +17,10 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
+import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.colorscale.impl.PValueColorScale;
 import edu.upf.bg.colorscale.impl.ZScoreColorScale;
-import edu.upf.bg.color.utils.ColorUtils;
 import edu.upf.bg.formatter.GenericFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
@@ -35,6 +31,11 @@ import org.gitools.model.ModuleMap;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnalysis> {
 
@@ -52,7 +53,7 @@ public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnal
 		super(analysis, heatmap);
 
 		// TODO transposeData !!!
-		IMatrix data = analysis.getData();
+		IMatrix data = analysis.getData().get();
 		final int numRows = data.getRowCount();
 		final int numCols = data.getColumnCount();
 
@@ -73,7 +74,7 @@ public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnal
 
 		String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
-		gmap = analysis.getGroupsMap();
+		gmap = analysis.getGroupsMap().get();
 		if (gmap != null)
 			gmap = gmap.remap(labels);
 		else {
@@ -101,7 +102,7 @@ public class CombinationTablesPanel extends  AbstractTablesPanel<CombinationAnal
 		int row = mv.getLeadSelectionRow();
 		int col = mv.getLeadSelectionColumn();
 
-		IMatrix data = analysis.getData();
+		IMatrix data = analysis.getData().get();
 
 		String template = DATA_TEMPLATE;
 		VelocityContext context = new VelocityContext();

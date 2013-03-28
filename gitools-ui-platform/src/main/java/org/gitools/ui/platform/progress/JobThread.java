@@ -17,12 +17,14 @@
 
 package org.gitools.ui.platform.progress;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import edu.upf.bg.progressmonitor.*;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
-import java.awt.Window;
+
+import javax.swing.*;
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.SwingUtilities;
 
 public class JobThread implements JobRunnable {
 
@@ -39,6 +41,10 @@ public class JobThread implements JobRunnable {
 	public static void execute(Window parent, JobRunnable runnable) {
 		new JobThread(parent, runnable).execute();
 	}
+
+    public static void executeAndWait(Window parent, JobRunnable runnable) {
+        new JobThread(parent, runnable).executeAndWait();
+    }
     
 	public JobThread(Window parent, JobRunnable runnable) {
         this.parent = parent;
@@ -127,19 +133,30 @@ public class JobThread implements JobRunnable {
         thread = new Thread("JobThread") {
             @Override
             public void run() {
-				JobProgressMonitor m = new JobProgressMonitor(
-						getDlg(), System.out, false, false);
+                newRunnable().run();
+            }
+        };
+        thread.start();
+    }
 
-				setMonitor(m);
+    private Runnable newRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                JobProgressMonitor m = new JobProgressMonitor(
+                        getDlg(), System.out, false, false);
 
-				try {
-					runnable.run(monitor);
-				}
-				catch (Throwable cause) {
-					m.exception(cause);
-				}
+                setMonitor(m);
+                edu.upf.bg.progressmonitor.ProgressMonitor.set(m);
 
-				done();
+                try {
+                    runnable.run(monitor);
+                }
+                catch (Throwable cause) {
+                    m.exception(cause);
+                }
+
+                done();
 
                 setThread(null);
 
@@ -149,8 +166,6 @@ public class JobThread implements JobRunnable {
                 }
             }
         };
-
-        thread.start();
     }
 
 	public void execute() {
@@ -159,6 +174,20 @@ public class JobThread implements JobRunnable {
 		getDlg().setModal(true);
 		getDlg().setVisible(true);
 	}
+
+    public void executeAndWait() {
+
+        getDlg().setModal(true);
+        getDlg().setVisible(true);
+
+        try {
+            SwingUtilities.invokeAndWait(newRunnable());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public boolean isCancelled() {
 		return getMonitor().isCancelled();

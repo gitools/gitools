@@ -24,7 +24,7 @@ import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.IdTypeXmlAdapter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.model.AbstractModel;
-import org.gitools.persistence.formats.xml.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

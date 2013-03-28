@@ -24,7 +24,7 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
-import org.gitools.persistence.PersistenceUtils;
+import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 
 import org.gitools.ui.platform.actions.BaseAction;

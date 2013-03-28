@@ -19,8 +19,6 @@ package org.gitools.analysis.combination;
 
 import cern.jet.stat.Probability;
 import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.util.Arrays;
-import java.util.Date;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.matrix.MatrixUtils;
@@ -29,6 +27,10 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.ResourceReference;
+
+import java.util.Arrays;
+import java.util.Date;
 
 
 public class CombinationProcessor implements AnalysisProcessor {
@@ -45,7 +47,7 @@ public class CombinationProcessor implements AnalysisProcessor {
 		Date startTime = new Date();
 
 		// Prepare data
-		IMatrix data = analysis.getData();
+		IMatrix data = analysis.getData().get();
 		if (analysis.isTransposeData())
 			data = new TransposedMatrixView(data);
 
@@ -59,13 +61,13 @@ public class CombinationProcessor implements AnalysisProcessor {
 		String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
 		// Prepare columns map
-		ModuleMap cmap = analysis.getGroupsMap();
-		if (cmap != null)
+		ModuleMap cmap = analysis.getGroupsMap().get();
+		if (cmap != null) {
 			cmap = cmap.remap(labels);
-		else
+        } else {
 			cmap = new ModuleMap("All data " + combOf, labels);
-		
-		analysis.setGroupsMap(cmap);
+        }
+		analysis.setGroupsMap(new ResourceReference<ModuleMap>("modules", cmap));
 
 		// Prepare results matrix
 		final ObjectMatrix results = new ObjectMatrix();
@@ -83,7 +85,7 @@ public class CombinationProcessor implements AnalysisProcessor {
 		results.setCellAdapter(
 				new BeanElementAdapter(CombinationResult.class));
 
-		analysis.setResults(results);
+		analysis.setResults(new ResourceReference<IMatrix>("results", results));
 
 		// Run combination
 		int sizeIndex = -1;

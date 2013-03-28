@@ -17,15 +17,15 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import javax.swing.JSplitPane;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class CombinationResultsEditor extends HeatmapEditor {
 
@@ -34,7 +34,7 @@ public class CombinationResultsEditor extends HeatmapEditor {
 	protected CombinationTablesPanel tablesPanel;
 
 	protected static Heatmap createHeatmap(CombinationAnalysis analysis) {
-		IMatrixView dataTable = new MatrixView(analysis.getResults());
+		IMatrixView dataTable = new MatrixView(analysis.getResults().get());
 		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
 		heatmap.setTitle(analysis.getTitle() + " (results)");
 		return heatmap;

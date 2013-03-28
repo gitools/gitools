@@ -28,7 +28,7 @@ import org.gitools.biomart.restful.model.FilterPage;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.queryhandler.BiomartQueryHandler;
-import org.gitools.persistence.FileFormat;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public interface BiomartService {
 

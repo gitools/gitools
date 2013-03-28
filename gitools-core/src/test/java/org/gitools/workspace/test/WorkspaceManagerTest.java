@@ -28,12 +28,11 @@ import org.gitools.model.Attribute;
 import org.gitools.model.Laboratory;
 import org.gitools.model.Project;
 import org.gitools.model.Publication;
-import org.gitools.persistence.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 import org.gitools.workspace.WorkspaceProjectRef;
-import org.junit.Test;
 
 import junit.framework.TestCase;
 
