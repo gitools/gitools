@@ -17,7 +17,7 @@
 
 package org.gitools.persistence.formats.analysis.adapter;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.ResourceReference;

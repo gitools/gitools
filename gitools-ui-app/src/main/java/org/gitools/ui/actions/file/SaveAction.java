@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;

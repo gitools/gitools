@@ -17,10 +17,10 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
-import edu.upf.bg.color.utils.ColorUtils;
-import edu.upf.bg.colorscale.impl.PValueColorScale;
-import edu.upf.bg.colorscale.impl.ZScoreColorScale;
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.colorscale.impl.PValueColorScale;
+import org.gitools.utils.colorscale.impl.ZScoreColorScale;
+import org.gitools.utils.formatter.GenericFormatter;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;

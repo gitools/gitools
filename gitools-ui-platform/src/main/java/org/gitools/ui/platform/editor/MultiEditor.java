@@ -17,7 +17,7 @@
 
 package org.gitools.ui.platform.editor;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.ui.platform.actions.ActionManager;
 
 import javax.swing.*;

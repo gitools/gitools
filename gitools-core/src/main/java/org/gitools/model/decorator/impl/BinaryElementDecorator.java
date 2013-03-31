@@ -17,10 +17,10 @@
 
 package org.gitools.model.decorator.impl;
 
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.BinaryColorScale;
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.BinaryColorScale;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;

@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.editor;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;

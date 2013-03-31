@@ -17,15 +17,15 @@
 
 package org.gitools.ui.actions.data;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
-import edu.upf.bg.aggregation.IAggregator;
+import org.gitools.utils.aggregation.IAggregator;
 
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 
-import edu.upf.bg.aggregation.AggregatorFactory;
-import edu.upf.bg.aggregation.MultAggregator;
+import org.gitools.utils.aggregation.AggregatorFactory;
+import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.AnnotationMatrix;

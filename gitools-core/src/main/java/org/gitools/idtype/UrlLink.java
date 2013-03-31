@@ -17,8 +17,8 @@
 
 package org.gitools.idtype;
 
-import edu.upf.bg.textpatt.TextPattern;
-import edu.upf.bg.textpatt.TextPatternXmlAdapter;
+import org.gitools.utils.textpatt.TextPattern;
+import org.gitools.utils.textpatt.TextPatternXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;

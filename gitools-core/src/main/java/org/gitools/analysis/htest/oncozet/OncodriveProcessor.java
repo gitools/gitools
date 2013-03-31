@@ -32,7 +32,7 @@ import org.gitools.threads.ThreadSlot;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestProcessor;
 import org.gitools.matrix.MatrixUtils;

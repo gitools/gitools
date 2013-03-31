@@ -21,8 +21,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 public class ThreadManager {
 

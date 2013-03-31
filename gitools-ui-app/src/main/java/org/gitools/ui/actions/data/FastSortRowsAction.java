@@ -17,11 +17,11 @@
 
 package org.gitools.ui.actions.data;
 
-import edu.upf.bg.aggregation.IAggregator;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import edu.upf.bg.aggregation.MultAggregator;
+import org.gitools.utils.aggregation.MultAggregator;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.actions.BaseAction;

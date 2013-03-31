@@ -17,22 +17,8 @@
 
 package org.gitools.persistence._DEPRECATED;
 
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.fileutils.IOUtils;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.matrix.model.element.ArrayElementAdapter;
-import org.gitools.matrix.model.element.BeanElementAdapter;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.zip.DataFormatException;
 
 @Deprecated
 public class PersistenceUtils {
@@ -86,7 +72,7 @@ public class PersistenceUtils {
             //  the base path MINUS the number of common path elements, minus
             //  one because the last element in the path isn't a directory.
             for (int i = 1; i <= (numDirsUp); i++) {
-                relative += "src/main" + pathSeparator;
+                relative += ".." + pathSeparator;
             }
         }
         //if we are comparing directories then we

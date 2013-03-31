@@ -17,8 +17,8 @@
 
 package org.gitools.persistence.formats.modulemap;
 
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;

@@ -18,8 +18,8 @@
 
 package org.gitools.ui.actions.data;
 
-import edu.upf.bg.operators.Operator;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.operators.Operator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;

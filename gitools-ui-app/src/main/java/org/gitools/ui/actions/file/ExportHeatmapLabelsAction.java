@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -28,8 +28,6 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
@@ -39,15 +37,12 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.ExportHeatmapLabelsWizard;
 
 public class ExportHeatmapLabelsAction extends BaseAction {

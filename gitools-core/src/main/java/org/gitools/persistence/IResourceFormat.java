@@ -1,6 +1,6 @@
 package org.gitools.persistence;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Properties;
 

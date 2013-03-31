@@ -17,7 +17,7 @@
 
 package org.gitools.ui.panels.decorator;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

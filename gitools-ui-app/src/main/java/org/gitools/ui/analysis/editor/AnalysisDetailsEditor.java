@@ -17,8 +17,8 @@
 
 package org.gitools.ui.analysis.editor;
 
-import edu.upf.bg.formatter.GenericFormatter;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.model.Analysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;

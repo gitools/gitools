@@ -17,12 +17,11 @@
 
 package org.gitools.ui.heatmap.panel.details;
 
-import edu.upf.bg.colorscale.impl.PValueColorScale;
-import edu.upf.bg.colorscale.impl.ZScoreColorScale;
-import edu.upf.bg.formatter.GenericFormatter;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.textpatt.TextPattern;
-import org.apache.commons.io.input.ReaderInputStream;
+import org.gitools.utils.colorscale.impl.PValueColorScale;
+import org.gitools.utils.colorscale.impl.ZScoreColorScale;
+import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.textpatt.TextPattern;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;

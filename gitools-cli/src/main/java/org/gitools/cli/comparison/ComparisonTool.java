@@ -17,14 +17,14 @@
 
 package org.gitools.cli.comparison;
 
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.fileutils.IOUtils;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import edu.upf.bg.tools.ToolDescriptor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.fileutils.IOUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.ToolDescriptor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.analysis.correlation.GroupComparisonCommand;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;

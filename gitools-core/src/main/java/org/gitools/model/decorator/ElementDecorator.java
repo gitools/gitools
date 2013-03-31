@@ -17,7 +17,7 @@
 
 package org.gitools.model.decorator;
 
-import edu.upf.bg.colorscale.IColorScale;
+import org.gitools.utils.colorscale.IColorScale;
 import javax.xml.bind.annotation.*;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.AbstractModel;

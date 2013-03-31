@@ -17,7 +17,7 @@
 
 package org.gitools.exporter;
 
-import edu.upf.bg.fileutils.IOUtils;
+import org.gitools.utils.fileutils.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;

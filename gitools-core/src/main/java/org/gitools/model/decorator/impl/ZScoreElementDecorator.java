@@ -18,10 +18,10 @@
 package org.gitools.model.decorator.impl;
 
 import cern.jet.stat.Probability;
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.ZScoreColorScale;
-import edu.upf.bg.colorscale.util.ColorConstants;
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.ZScoreColorScale;
+import org.gitools.utils.colorscale.util.ColorConstants;
+import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;

@@ -17,8 +17,8 @@
 
 package org.gitools.intogen;
 
-import edu.upf.bg.fileutils.IOUtils;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.fileutils.IOUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.DataOutputStream;
 import java.io.File;

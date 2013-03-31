@@ -17,8 +17,8 @@
 
 package org.gitools.heatmap.drawer.header;
 
-import edu.upf.bg.color.utils.ColorUtils;
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;

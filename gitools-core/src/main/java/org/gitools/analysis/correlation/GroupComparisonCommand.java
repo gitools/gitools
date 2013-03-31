@@ -17,8 +17,8 @@
 
 package org.gitools.analysis.correlation;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;

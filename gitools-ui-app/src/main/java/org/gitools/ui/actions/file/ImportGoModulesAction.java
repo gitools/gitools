@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;

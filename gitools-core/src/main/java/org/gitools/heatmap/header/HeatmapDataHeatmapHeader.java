@@ -17,7 +17,7 @@
 
 package org.gitools.heatmap.header;
 
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;

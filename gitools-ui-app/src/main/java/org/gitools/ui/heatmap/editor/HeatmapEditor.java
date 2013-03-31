@@ -17,8 +17,8 @@
 
 package org.gitools.ui.heatmap.editor;
 
-import edu.upf.bg.colorscale.drawer.ColorScalePanel;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.colorscale.drawer.ColorScalePanel;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapHeader;

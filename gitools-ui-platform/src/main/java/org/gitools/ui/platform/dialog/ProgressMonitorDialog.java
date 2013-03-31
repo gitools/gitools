@@ -33,8 +33,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 
 @Deprecated
 public class ProgressMonitorDialog extends JDialog {

@@ -23,8 +23,8 @@
 
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import edu.upf.bg.aggregation.AggregatorFactory;
-import edu.upf.bg.aggregation.IAggregator;
+import org.gitools.utils.aggregation.AggregatorFactory;
+import org.gitools.utils.aggregation.IAggregator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

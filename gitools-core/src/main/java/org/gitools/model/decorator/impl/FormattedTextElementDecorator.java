@@ -17,7 +17,7 @@
 
 package org.gitools.model.decorator.impl;
 
-import edu.upf.bg.colorscale.IColorScale;
+import org.gitools.utils.colorscale.IColorScale;
 import java.util.IllegalFormatException;
 
 import org.gitools.model.decorator.ElementDecoration;

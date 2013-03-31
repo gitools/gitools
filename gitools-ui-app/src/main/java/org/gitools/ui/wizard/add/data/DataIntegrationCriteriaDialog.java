@@ -23,8 +23,8 @@
 
 package org.gitools.ui.wizard.add.data;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.operators.Operator;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultCellEditor;

@@ -23,7 +23,7 @@
 
 package org.gitools.ui.dialog.filter;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultCellEditor;

@@ -17,7 +17,7 @@
 
 package org.gitools.kegg.idmapper;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.idmapper.MappingContext;
 import org.gitools.idmapper.MappingData;
 import org.gitools.idmapper.MappingException;

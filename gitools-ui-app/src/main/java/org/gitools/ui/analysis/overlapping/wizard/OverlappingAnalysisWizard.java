@@ -17,8 +17,8 @@
 
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence._DEPRECATED.FileFormat;

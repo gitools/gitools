@@ -17,8 +17,8 @@
 
 package org.gitools.analysis.overlapping;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ResourceRef;

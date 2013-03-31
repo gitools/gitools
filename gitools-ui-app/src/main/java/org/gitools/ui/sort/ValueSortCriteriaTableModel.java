@@ -17,7 +17,7 @@
 
 package org.gitools.ui.sort;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import edu.upf.bg.aggregation.IAggregator;
+import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 

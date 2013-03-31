@@ -17,12 +17,12 @@
 
 package org.gitools.cli.overlapping;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;

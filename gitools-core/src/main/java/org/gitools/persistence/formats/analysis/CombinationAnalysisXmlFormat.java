@@ -17,7 +17,7 @@
 
 package org.gitools.persistence.formats.analysis;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;

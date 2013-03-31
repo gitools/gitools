@@ -1,6 +1,6 @@
 package org.gitools.label;
 
-import edu.upf.bg.textpatt.TextPattern;
+import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.matrix.model.AnnotationMatrix;
 
 public class AnnotationsResolver implements TextPattern.VariableValueResolver {

@@ -1,7 +1,7 @@
 package org.gitools.ui.fileimport.wizard.excel;
 
-import edu.upf.bg.csv.RawCsvWriter;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.commands.CommandLoadFile;

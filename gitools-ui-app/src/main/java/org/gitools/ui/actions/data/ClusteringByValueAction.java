@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.data;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;

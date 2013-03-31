@@ -17,8 +17,8 @@
 
 package org.gitools.clustering.method.annotations;
 
-import edu.upf.bg.textpatt.TextPattern;
-import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
+import org.gitools.utils.textpatt.TextPattern;
+import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.AnnotationMatrix;

@@ -17,7 +17,7 @@
 
 package org.gitools.ui.dialog.filter;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

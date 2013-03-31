@@ -23,7 +23,7 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.*;

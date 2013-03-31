@@ -17,8 +17,8 @@
 
 package org.gitools.ui.analysis.wizard;
 
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.fileutils.IOUtils;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence.PersistenceException;

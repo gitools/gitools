@@ -17,7 +17,7 @@
 
 package org.gitools.persistence.formats.matrix;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;

@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import edu.upf.bg.fileutils.IOUtils;
+import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.datafilters.ValueTranslatorFactory;
 

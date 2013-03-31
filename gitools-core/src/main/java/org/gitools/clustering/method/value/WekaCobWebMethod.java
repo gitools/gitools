@@ -17,7 +17,7 @@
 
 package org.gitools.clustering.method.value;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

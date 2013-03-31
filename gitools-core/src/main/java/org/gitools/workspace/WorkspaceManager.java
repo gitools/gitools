@@ -17,8 +17,8 @@
 
 package org.gitools.workspace;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.model.Project;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.PersistenceException;

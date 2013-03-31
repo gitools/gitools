@@ -23,12 +23,11 @@
 
 package org.gitools.ui.analysis.wizard;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;

@@ -18,8 +18,8 @@
 package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
-import edu.upf.bg.colorscale.NumericColorScale;
-import edu.upf.bg.colorscale.impl.CorrelationColorScale;
+import org.gitools.utils.colorscale.NumericColorScale;
+import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 import org.apache.commons.io.FileUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.*;

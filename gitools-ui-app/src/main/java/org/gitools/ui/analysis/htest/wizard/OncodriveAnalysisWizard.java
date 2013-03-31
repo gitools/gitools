@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.htest.wizard;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;

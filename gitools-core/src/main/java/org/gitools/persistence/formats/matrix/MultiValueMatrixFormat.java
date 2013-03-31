@@ -19,10 +19,10 @@ package org.gitools.persistence.formats.matrix;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.csv.RawCsvWriter;
-import edu.upf.bg.fileutils.IOUtils;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.utils.fileutils.IOUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
 import org.gitools.analysis.groupcomparison.GroupComparisonResult;

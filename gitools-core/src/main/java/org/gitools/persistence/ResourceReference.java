@@ -1,7 +1,7 @@
 package org.gitools.persistence;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.ProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.ProgressMonitor;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

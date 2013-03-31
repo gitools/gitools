@@ -17,7 +17,7 @@
 
 package org.gitools.heatmap;
 
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;

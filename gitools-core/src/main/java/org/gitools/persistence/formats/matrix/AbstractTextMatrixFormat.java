@@ -17,8 +17,8 @@
 
 package org.gitools.persistence.formats.matrix;
 
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.IResourceLocator;

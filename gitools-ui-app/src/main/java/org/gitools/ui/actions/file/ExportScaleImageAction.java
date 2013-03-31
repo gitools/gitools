@@ -17,9 +17,9 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.drawer.ColorScaleDrawer;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.persistence._DEPRECATED.FileFormat;

@@ -24,7 +24,7 @@ import org.gitools.stats.test.results.CommonResult;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisProcessor;
 
 public abstract class HtestProcessor implements AnalysisProcessor {

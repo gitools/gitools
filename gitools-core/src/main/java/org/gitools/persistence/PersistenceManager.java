@@ -17,7 +17,7 @@
 
 package org.gitools.persistence;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.persistence.locators.UrlResourceLocator;

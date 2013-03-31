@@ -17,7 +17,7 @@
 
 package org.gitools.ui.intogen.dialog;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;

@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
@@ -25,7 +25,6 @@ import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.Attribute;
 import org.gitools.model.ToolConfig;
-import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;

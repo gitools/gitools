@@ -17,7 +17,7 @@
 
 package org.gitools.matrix.filter;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 public class ValueFilterCriteria {
 

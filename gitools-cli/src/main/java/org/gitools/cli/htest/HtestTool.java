@@ -17,10 +17,10 @@
 
 package org.gitools.cli.htest;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.tools.ToolDescriptor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.tools.ToolDescriptor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;

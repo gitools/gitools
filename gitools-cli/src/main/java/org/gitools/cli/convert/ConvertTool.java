@@ -17,12 +17,12 @@
 
 package org.gitools.cli.convert;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import edu.upf.bg.tools.ToolDescriptor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
-import edu.upf.bg.tools.impl.AbstractTool;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.ToolDescriptor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
+import org.gitools.utils.tools.impl.AbstractTool;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
 import org.gitools.persistence.*;

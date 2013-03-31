@@ -23,7 +23,7 @@
 
 package org.gitools.ui.heatmap.panel.properties;
 
-import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.MatrixUtils;

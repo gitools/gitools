@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.combination.editor;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;

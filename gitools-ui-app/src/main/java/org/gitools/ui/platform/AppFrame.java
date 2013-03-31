@@ -17,7 +17,7 @@
 
 package org.gitools.ui.platform;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;

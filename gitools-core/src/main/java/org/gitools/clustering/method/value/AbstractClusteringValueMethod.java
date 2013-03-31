@@ -17,7 +17,7 @@
 
 package org.gitools.clustering.method.value;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringMethod;

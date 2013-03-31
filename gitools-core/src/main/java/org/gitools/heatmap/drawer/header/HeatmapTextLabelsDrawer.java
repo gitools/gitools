@@ -18,7 +18,7 @@
 package org.gitools.heatmap.drawer.header;
 
 import org.gitools.label.AnnotationsPatternProvider;
-import edu.upf.bg.color.utils.ColorUtils;
+import org.gitools.utils.color.utils.ColorUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

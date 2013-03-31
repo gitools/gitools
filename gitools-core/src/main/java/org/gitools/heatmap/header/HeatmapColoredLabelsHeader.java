@@ -18,8 +18,8 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDim;
-import edu.upf.bg.color.generator.ColorGenerator;
-import edu.upf.bg.color.generator.ColorGeneratorFactory;
+import org.gitools.utils.color.generator.ColorGenerator;
+import org.gitools.utils.color.generator.ColorGeneratorFactory;
 
 import java.awt.*;
 import java.util.HashMap;

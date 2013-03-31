@@ -17,8 +17,8 @@
 
 package org.gitools.ui.actions.data;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;

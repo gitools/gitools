@@ -19,12 +19,12 @@ package org.gitools.cli.correlation;
 
 import org.kohsuke.args4j.Option;
 
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import edu.upf.bg.tools.ToolDescriptor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.ToolDescriptor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;

@@ -28,7 +28,7 @@ import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import org.gitools.stats.mtc.MTC;
 import org.gitools.matrix.MatrixUtils;

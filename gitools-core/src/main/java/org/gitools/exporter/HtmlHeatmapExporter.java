@@ -17,15 +17,14 @@
 
 package org.gitools.exporter;
 
+import org.gitools.heatmap.Heatmap;
+import org.gitools.model.decorator.ElementDecoration;
+import org.gitools.utils.formatter.GenericFormatter;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gitools.model.decorator.ElementDecoration;
-import org.gitools.heatmap.Heatmap;
-
-import edu.upf.bg.formatter.GenericFormatter;
 
 public class HtmlHeatmapExporter extends AbstractHtmlExporter {
 	
@@ -59,7 +58,6 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter {
 			eng.setContext(context);
 			
 			File file = new File(basePath, indexName);
-			//eng.loadTemplate("/vm/exporter/html/matrixfigure.vm");
 			eng.loadTemplate("matrixfigure.vm");
 			eng.render(file);
 			

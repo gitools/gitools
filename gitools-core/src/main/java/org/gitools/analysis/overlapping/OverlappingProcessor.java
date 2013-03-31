@@ -17,8 +17,8 @@
 
 package org.gitools.analysis.overlapping;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.BitSet;
 import java.util.Date;
 import org.gitools.analysis.AnalysisException;

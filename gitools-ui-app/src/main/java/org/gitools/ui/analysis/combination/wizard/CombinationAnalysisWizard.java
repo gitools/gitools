@@ -17,7 +17,7 @@
 
 package org.gitools.ui.analysis.combination.wizard;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.*;

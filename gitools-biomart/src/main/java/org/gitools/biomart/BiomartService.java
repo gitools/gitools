@@ -17,7 +17,7 @@
 
 package org.gitools.biomart;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;

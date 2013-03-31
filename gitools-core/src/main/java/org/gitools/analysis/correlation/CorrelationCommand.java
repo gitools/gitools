@@ -17,7 +17,7 @@
 
 package org.gitools.analysis.correlation;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.BaseMatrix;

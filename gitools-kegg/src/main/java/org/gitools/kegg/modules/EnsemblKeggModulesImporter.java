@@ -17,7 +17,7 @@
 
 package org.gitools.kegg.modules;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;

@@ -20,7 +20,7 @@ package org.gitools.clustering.method.annotations;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

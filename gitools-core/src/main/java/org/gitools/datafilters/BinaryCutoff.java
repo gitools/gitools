@@ -17,7 +17,7 @@
 
 package org.gitools.datafilters;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.io.Serializable;
 
 import cern.colt.function.DoubleFunction;

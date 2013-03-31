@@ -1,6 +1,6 @@
 package org.gitools.kegg.service;
 
-import edu.upf.bg.csv.CSVReader;
+import org.gitools.utils.csv.CSVReader;
 import org.gitools.kegg.service.domain.IdConversion;
 import org.gitools.kegg.service.domain.KeggOrganism;
 import org.gitools.kegg.service.domain.KeggPathway;

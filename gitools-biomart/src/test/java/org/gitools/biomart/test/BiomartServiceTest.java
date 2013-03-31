@@ -17,8 +17,8 @@
 
 package org.gitools.biomart.test;
 
-import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

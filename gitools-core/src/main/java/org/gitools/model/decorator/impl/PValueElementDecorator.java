@@ -19,19 +19,14 @@ package org.gitools.model.decorator.impl;
 
 import java.awt.Color;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.matrix.model.element.IElementAdapter;
 
-import edu.upf.bg.formatter.GenericFormatter;
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.PValueColorScale;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.PValueColorScale;
 
 public class PValueElementDecorator extends ElementDecorator {
 

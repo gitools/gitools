@@ -1,6 +1,6 @@
 package org.gitools.persistence.formats;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;

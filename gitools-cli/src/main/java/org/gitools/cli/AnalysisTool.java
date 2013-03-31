@@ -17,9 +17,9 @@
 
 package org.gitools.cli;
 
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
-import edu.upf.bg.tools.impl.AbstractTool;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
+import org.gitools.utils.tools.impl.AbstractTool;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;

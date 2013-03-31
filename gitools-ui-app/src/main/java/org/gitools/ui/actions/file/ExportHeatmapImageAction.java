@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapDrawer;
 import org.gitools.persistence._DEPRECATED.FileFormat;

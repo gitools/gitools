@@ -17,7 +17,7 @@
 
 package org.gitools.idmapper;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 public interface Mapper {
 

@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.analysis;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.heatmap.Heatmap;

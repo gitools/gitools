@@ -17,7 +17,7 @@
 
 package org.gitools.ui.platform.progress;
 
-import edu.upf.bg.progressmonitor.*;
+import org.gitools.utils.progressmonitor.*;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 import javax.swing.*;
@@ -147,7 +147,7 @@ public class JobThread implements JobRunnable {
                         getDlg(), System.out, false, false);
 
                 setMonitor(m);
-                edu.upf.bg.progressmonitor.ProgressMonitor.set(m);
+                org.gitools.utils.progressmonitor.ProgressMonitor.set(m);
 
                 try {
                     runnable.run(monitor);

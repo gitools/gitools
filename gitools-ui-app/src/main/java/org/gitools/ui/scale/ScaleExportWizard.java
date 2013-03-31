@@ -17,8 +17,8 @@
 
 package org.gitools.ui.scale;
 
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.NumericColorScale;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.wizard.common.SaveFilePage;
 

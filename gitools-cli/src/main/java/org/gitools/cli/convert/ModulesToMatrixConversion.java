@@ -17,7 +17,7 @@
 
 package org.gitools.cli.convert;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.model.ModuleMap;
 

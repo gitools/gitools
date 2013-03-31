@@ -17,8 +17,8 @@
 
 package org.gitools.matrix.sort;
 
-import edu.upf.bg.aggregation.IAggregator;
-import edu.upf.bg.aggregation.SumAbsAggregator;
+import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;

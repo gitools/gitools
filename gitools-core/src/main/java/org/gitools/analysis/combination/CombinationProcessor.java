@@ -18,7 +18,7 @@
 package org.gitools.analysis.combination;
 
 import cern.jet.stat.Probability;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.matrix.MatrixUtils;

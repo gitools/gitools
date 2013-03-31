@@ -25,7 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.panel.TemplatePanel;
 
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.formatter.GenericFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import org.gitools.analysis.htest.HtestAnalysis;

@@ -17,7 +17,7 @@
 
 package org.gitools.table.model;
 
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.AbstractModel;

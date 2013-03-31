@@ -17,7 +17,7 @@
 
 package org.gitools.ui.modules.wizard;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import javax.swing.SwingUtilities;
 import org.gitools.biomart.idmapper.EnsemblIds;
 import org.gitools.modules.importer.FeatureCategory;

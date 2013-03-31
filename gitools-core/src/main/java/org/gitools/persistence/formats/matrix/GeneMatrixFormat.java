@@ -18,8 +18,8 @@
 package org.gitools.persistence.formats.matrix;
 
 import cern.colt.matrix.ObjectFactory1D;
-import edu.upf.bg.csv.CSVReader;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;

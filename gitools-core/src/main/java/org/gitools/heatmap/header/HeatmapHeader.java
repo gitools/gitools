@@ -17,9 +17,9 @@
 
 package org.gitools.heatmap.header;
 
-import edu.upf.bg.xml.adapter.FontXmlAdapter;
+import org.gitools.utils.xml.adapter.FontXmlAdapter;
 import org.gitools.heatmap.HeatmapDim;
-import edu.upf.bg.xml.adapter.ColorXmlAdapter;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import java.awt.*;
 import javax.xml.bind.annotation.XmlTransient;

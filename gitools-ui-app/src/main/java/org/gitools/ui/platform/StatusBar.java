@@ -24,8 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import edu.upf.bg.progressmonitor.DefaultProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 public class StatusBar extends JPanel {
 

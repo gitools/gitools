@@ -17,7 +17,7 @@
 
 package org.gitools.biomart.idmapper;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

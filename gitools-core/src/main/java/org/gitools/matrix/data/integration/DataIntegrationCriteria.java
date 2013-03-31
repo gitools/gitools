@@ -17,8 +17,8 @@
 
 package org.gitools.matrix.data.integration;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.operators.Operator;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
 
 
 public class DataIntegrationCriteria {

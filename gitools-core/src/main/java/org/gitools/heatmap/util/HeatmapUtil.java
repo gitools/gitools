@@ -17,14 +17,13 @@
 
 package org.gitools.heatmap.util;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;

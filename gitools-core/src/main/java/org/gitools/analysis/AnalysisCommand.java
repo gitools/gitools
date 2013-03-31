@@ -17,8 +17,8 @@
 
 package org.gitools.analysis;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.datafilters.BinaryCutoffTranslator;
 import org.gitools.datafilters.DoubleTranslator;

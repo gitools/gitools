@@ -17,11 +17,11 @@
 
 package org.gitools.ui.analysis.correlation.editor;
 
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.CorrelationColorScale;
-import edu.upf.bg.colorscale.util.ColorConstants;
-import edu.upf.bg.color.utils.ColorUtils;
-import edu.upf.bg.formatter.GenericFormatter;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.CorrelationColorScale;
+import org.gitools.utils.colorscale.util.ColorConstants;
+import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.formatter.GenericFormatter;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;

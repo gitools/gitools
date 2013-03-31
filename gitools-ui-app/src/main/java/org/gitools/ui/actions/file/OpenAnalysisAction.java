@@ -17,7 +17,7 @@
 
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;

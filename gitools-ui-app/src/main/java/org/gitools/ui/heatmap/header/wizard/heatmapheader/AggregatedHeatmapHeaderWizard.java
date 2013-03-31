@@ -19,8 +19,8 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import edu.upf.bg.aggregation.IAggregator;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;

@@ -17,14 +17,14 @@
 
 package org.gitools.cli;
 
-import edu.upf.bg.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolException;
 import java.io.PrintStream;
 
 import org.kohsuke.args4j.CmdLineParser;
 
-import edu.upf.bg.tools.ToolManager;
-import edu.upf.bg.tools.ToolSet;
-import edu.upf.bg.tools.XmlToolSetResource;
+import org.gitools.utils.tools.ToolManager;
+import org.gitools.utils.tools.ToolSet;
+import org.gitools.utils.tools.XmlToolSetResource;
 import java.io.InputStreamReader;
 import org.gitools.persistence.PersistenceInitialization;
 

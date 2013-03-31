@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>gitools</artifactId>
 		<groupId>org.gitools</groupId>
-		<version>1.9.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.gitools</groupId>
@@ -12,9 +12,10 @@
 	<name>gitools-ui-platform</name>
 
 	<dependencies>
+
 		<dependency>
-			<groupId>edu.upf.bg</groupId>
-			<artifactId>bg-commons</artifactId>
+			<groupId>org.gitools</groupId>
+			<artifactId>gitools-utils</artifactId>
 		</dependency>
 
 		<dependency>

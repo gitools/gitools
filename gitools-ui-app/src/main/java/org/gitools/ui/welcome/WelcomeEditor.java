@@ -17,7 +17,7 @@
 
 package org.gitools.ui.welcome;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;

@@ -17,7 +17,7 @@
 
 package org.gitools.analysis.htest;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
-import edu.upf.bg.xml.adapter.CutoffCmpXmlAdapter;
+import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 

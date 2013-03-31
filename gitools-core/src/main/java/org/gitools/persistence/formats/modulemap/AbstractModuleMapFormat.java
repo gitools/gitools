@@ -17,7 +17,7 @@
 
 package org.gitools.persistence.formats.modulemap;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;

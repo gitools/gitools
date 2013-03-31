@@ -17,7 +17,7 @@
 
 package org.gitools.cli;
 
-import edu.upf.bg.tools.args.BaseArguments;
+import org.gitools.utils.tools.args.BaseArguments;
 import org.kohsuke.args4j.Option;
 
 import org.gitools.threads.ThreadManager;

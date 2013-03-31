@@ -23,7 +23,7 @@
 
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;

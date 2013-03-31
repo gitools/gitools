@@ -17,7 +17,7 @@
 
 package org.gitools.idmapper;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

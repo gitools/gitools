@@ -17,8 +17,8 @@
 
 package org.gitools.ui.analysis.overlapping;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;

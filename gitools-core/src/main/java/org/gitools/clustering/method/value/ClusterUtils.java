@@ -17,16 +17,13 @@
 
 package org.gitools.clustering.method.value;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.gitools.clustering.ClusteringData;
-import org.gitools.clustering.ClusteringResults;
-import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.newick.NewickNode;
 import org.gitools.newick.NewickParserException;

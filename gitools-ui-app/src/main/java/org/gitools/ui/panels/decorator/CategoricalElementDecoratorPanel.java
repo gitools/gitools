@@ -17,8 +17,8 @@
 
 package org.gitools.ui.panels.decorator;
 
-import edu.upf.bg.colorscale.ColorScalePoint;
-import edu.upf.bg.colorscale.impl.CategoricalColorScale;
+import org.gitools.utils.colorscale.ColorScalePoint;
+import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.matrix.model.element.IElementAdapter;

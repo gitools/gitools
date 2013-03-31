@@ -17,7 +17,7 @@
 
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;

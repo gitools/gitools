@@ -17,7 +17,7 @@
 
 package org.gitools.matrix.model;
 
-import edu.upf.bg.textpatt.TextPattern.VariableValueResolver;
+import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 
 public class AnnotationResolver implements VariableValueResolver {
 

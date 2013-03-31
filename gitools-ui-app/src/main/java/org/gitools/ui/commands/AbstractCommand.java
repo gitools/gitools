@@ -1,7 +1,7 @@
 package org.gitools.ui.commands;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.ui.platform.progress.JobRunnable;
 
 

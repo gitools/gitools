@@ -17,7 +17,7 @@
 
 package org.gitools.analysis.htest.enrichment;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;

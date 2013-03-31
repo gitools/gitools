@@ -19,11 +19,11 @@ package org.gitools.cli.htest;
 
 import org.kohsuke.args4j.Option;
 
-import edu.upf.bg.progressmonitor.NullProgressMonitor;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
-import edu.upf.bg.tools.exception.ToolException;
-import edu.upf.bg.tools.exception.ToolValidationException;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;

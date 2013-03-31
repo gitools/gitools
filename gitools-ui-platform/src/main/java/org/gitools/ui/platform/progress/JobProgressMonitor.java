@@ -17,8 +17,8 @@
 
 package org.gitools.ui.platform.progress;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import java.io.PrintStream;
 import javax.swing.SwingUtilities;
 

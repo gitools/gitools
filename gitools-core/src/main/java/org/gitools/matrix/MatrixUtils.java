@@ -17,11 +17,11 @@
 
 package org.gitools.matrix;
 
-import edu.upf.bg.colorscale.IColorScale;
-import edu.upf.bg.colorscale.impl.*;
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import edu.upf.bg.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.*;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
