@@ -115,7 +115,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
 	@Override
 	public void doVisible() {
-		AppFrame.instance().setLeftPanelVisible(true);
+		AppFrame.instance().setLeftPanelVisible(false);
 		AppFrame.instance().getPropertiesView().updateContext(null);
 		AppFrame.instance().getDetailsView().updateContext(null);
 		templatePanel.requestFocusInWindow();
