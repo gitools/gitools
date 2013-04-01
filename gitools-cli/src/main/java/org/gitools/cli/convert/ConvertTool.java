@@ -1,28 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-cli
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.cli.convert;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.StreamProgressMonitor;
-import org.gitools.utils.tools.ToolDescriptor;
-import org.gitools.utils.tools.exception.ToolException;
-import org.gitools.utils.tools.exception.ToolValidationException;
-import org.gitools.utils.tools.impl.AbstractTool;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
 import org.gitools.persistence.*;
@@ -30,6 +28,12 @@ import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.tools.ToolDescriptor;
+import org.gitools.utils.tools.exception.ToolException;
+import org.gitools.utils.tools.exception.ToolValidationException;
+import org.gitools.utils.tools.impl.AbstractTool;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -39,202 +43,238 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class ConvertTool extends AbstractTool {
+public class ConvertTool extends AbstractTool
+{
 
-	public static class Arguments extends GitoolsArguments {
+    public static class Arguments extends GitoolsArguments
+    {
 
-		@Option(name = "-i", aliases = "-input", metaVar = "<path>",
-				usage = "Input file.")
-		public String inputFileName;
+        @Option(name = "-i", aliases = "-input", metaVar = "<path>",
+                usage = "Input file.")
+        public String inputFileName;
 
-		@Option(name = "-if", aliases = "-input-format", metaVar = "<FORMAT>",
-				usage = "Input file format.")
-		public String inputFileFormat;
+        @Option(name = "-if", aliases = "-input-format", metaVar = "<FORMAT>",
+                usage = "Input file format.")
+        public String inputFileFormat;
 
-		@Option(name = "-o", aliases = "-output", metaVar = "<path>",
-				usage = "Output file.")
-		public String outputFileName;
+        @Option(name = "-o", aliases = "-output", metaVar = "<path>",
+                usage = "Output file.")
+        public String outputFileName;
 
-		@Option(name = "-of", aliases = "-output-format", metaVar = "<FORMAT>",
-				usage = "Output file format.")
-		public String outputFileFormat;
-	}
+        @Option(name = "-of", aliases = "-output-format", metaVar = "<FORMAT>",
+                usage = "Output file format.")
+        public String outputFileFormat;
+    }
 
-	@Override
-	public void validate(Object argsObject) throws ToolException {
-		super.validate(argsObject);
+    @Override
+    public void validate(Object argsObject) throws ToolException
+    {
+        super.validate(argsObject);
 
-		Arguments args = (Arguments) argsObject;
+        Arguments args = (Arguments) argsObject;
 
         if (args.version)
+        {
             Main.printVersion();
+        }
 
-		if (args.inputFileName == null)
-			throw new ToolValidationException("An input file is required.");
+        if (args.inputFileName == null)
+        {
+            throw new ToolValidationException("An input file is required.");
+        }
 
-		if (args.inputFileFormat == null) {
-			args.inputFileFormat = PersistenceManager.get()
-					.getMimeFromFile(args.inputFileName);
+        if (args.inputFileFormat == null)
+        {
+            args.inputFileFormat = PersistenceManager.get()
+                    .getMimeFromFile(args.inputFileName);
 
-			if (args.inputFileFormat == null)
-				throw new ToolValidationException("Unknown input file format.\n" +
-						"You can use the option -input-format");
-		}
+            if (args.inputFileFormat == null)
+            {
+                throw new ToolValidationException("Unknown input file format.\n" +
+                        "You can use the option -input-format");
+            }
+        }
 
-		if (args.outputFileName == null)
-			throw new ToolValidationException("An output file is required.");
+        if (args.outputFileName == null)
+        {
+            throw new ToolValidationException("An output file is required.");
+        }
 
-		if (args.outputFileFormat == null) {
-			args.outputFileFormat = PersistenceManager.get()
-					.getMimeFromFile(args.outputFileName);
+        if (args.outputFileFormat == null)
+        {
+            args.outputFileFormat = PersistenceManager.get()
+                    .getMimeFromFile(args.outputFileName);
 
-			if (args.outputFileFormat == null)
-				throw new ToolValidationException("Unknown output file format.\n" +
-						"You can use the option -output-format");
-		}
-	}
+            if (args.outputFileFormat == null)
+            {
+                throw new ToolValidationException("Unknown output file format.\n" +
+                        "You can use the option -output-format");
+            }
+        }
+    }
 
-	@Override
-	public void run(Object argsObject) throws ToolException {
-		super.run(argsObject);
+    @Override
+    public void run(Object argsObject) throws ToolException
+    {
+        super.run(argsObject);
 
-		Arguments args = (Arguments) argsObject;
+        Arguments args = (Arguments) argsObject;
 
-		List<Conversion> vc = new ArrayList<Conversion>();
+        List<Conversion> vc = new ArrayList<Conversion>();
 
-		initConversionList(vc);
+        initConversionList(vc);
 
-		String inputMime = mimeFromFormat(args.inputFileFormat, args.inputFileName);
-		String outputMime = mimeFromFormat(args.outputFileFormat, args.outputFileName);
+        String inputMime = mimeFromFormat(args.inputFileFormat, args.inputFileName);
+        String outputMime = mimeFromFormat(args.outputFileFormat, args.outputFileName);
 
-		Conversion targetConv = new Conversion(inputMime, outputMime);
-		int convIndex = vc.indexOf(targetConv);
-		if (convIndex < 0)
-			throw new ToolException("Unsupportted conversion from '"
-					+ args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+        Conversion targetConv = new Conversion(inputMime, outputMime);
+        int convIndex = vc.indexOf(targetConv);
+        if (convIndex < 0)
+        {
+            throw new ToolException("Unsupportted conversion from '"
+                    + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+        }
 
-		targetConv = vc.get(convIndex);
-		if (targetConv.delegate == null)
-			throw new ToolException("Unimplemented conversion from '"
-					+ args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+        targetConv = vc.get(convIndex);
+        if (targetConv.delegate == null)
+        {
+            throw new ToolException("Unimplemented conversion from '"
+                    + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+        }
 
-		IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
+        IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
 
-		monitor.begin("Loading input file ...", 1);
+        monitor.begin("Loading input file ...", 1);
 
 
-
-		IResource resource = null;
-		try {
+        IResource resource = null;
+        try
+        {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.inputFileName));
             IResourceFormat format = PersistenceManager.get().getFormatByMime(inputMime);
-			resource = PersistenceManager.get().load(resourceLocator, IResource.class, format, new Properties(), monitor.subtask());
-		} catch (PersistenceException ex) {
-			monitor.exception(ex);
-			throw new ToolException(ex);
-		}
+            resource = PersistenceManager.get().load(resourceLocator, IResource.class, format, new Properties(), monitor.subtask());
+        } catch (PersistenceException ex)
+        {
+            monitor.exception(ex);
+            throw new ToolException(ex);
+        }
 
-		if (resource == null)
-			throw new ToolException("Unexpected error loading " + args.inputFileName);
+        if (resource == null)
+        {
+            throw new ToolException("Unexpected error loading " + args.inputFileName);
+        }
 
-		monitor.end();
+        monitor.end();
 
-		IResource dstObject = null;
-		try {
+        IResource dstObject = null;
+        try
+        {
             dstObject = (IResource) targetConv.delegate.convert(
-					args.inputFileFormat, resource, args.outputFileFormat, monitor);
-		}
-		catch (Exception ex) {
-			monitor.exception(ex);
-			throw new ToolException(ex);
-		}
+                    args.inputFileFormat, resource, args.outputFileFormat, monitor);
+        } catch (Exception ex)
+        {
+            monitor.exception(ex);
+            throw new ToolException(ex);
+        }
 
-		monitor.begin("Saving output file ...", 1);
+        monitor.begin("Saving output file ...", 1);
 
-		try {
+        try
+        {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.outputFileName));
             IResourceFormat format = PersistenceManager.get().getFormatByMime(outputMime);
             PersistenceManager.get().store(resourceLocator, dstObject, format, monitor.subtask());
-		} catch (PersistenceException ex) {
-			monitor.exception(ex);
-			throw new ToolException(ex);
-		}
+        } catch (PersistenceException ex)
+        {
+            monitor.exception(ex);
+            throw new ToolException(ex);
+        }
 
-		monitor.end();
-	}
+        monitor.end();
+    }
 
-	private void initConversionList(List<Conversion> vc) {
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+    private void initConversionList(List<Conversion> vc)
+    {
+        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-		vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-		vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.MODULES_INDEXED_MAP, new ModulesConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.MODULES_INDEXED_MAP, new ModulesConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
 
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.MODULES_2C_MAP, new ModulesConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
-		vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
-	}
+        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.MODULES_2C_MAP, new ModulesConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+    }
 
-	protected static final String LIST_L_FMT = "\t* %-48s%s";
+    protected static final String LIST_L_FMT = "\t* %-48s%s";
 
-	protected String mimeFromFormat(String format, String fileName) {
-		String mime = null;
-		if (fileName == null)
-			return null;
+    protected String mimeFromFormat(String format, String fileName)
+    {
+        String mime = null;
+        if (fileName == null)
+        {
+            return null;
+        }
 
-		if (format != null) {
-			// Try with file extension first
-			mime = PersistenceManager.get().getMimeFromFile("fake." + format);
-			if (mime == null)
-				mime = format; // it should be mime type then
-			//TODO check valid mime
-		}
-		else
-			mime = PersistenceManager.get().getMimeFromFile(fileName);
+        if (format != null)
+        {
+            // Try with file extension first
+            mime = PersistenceManager.get().getMimeFromFile("fake." + format);
+            if (mime == null)
+            {
+                mime = format; // it should be mime type then
+            }
+            //TODO check valid mime
+        }
+        else
+        {
+            mime = PersistenceManager.get().getMimeFromFile(fileName);
+        }
 
-		return mime;
-	}
+        return mime;
+    }
 
-	@Override
-	public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
-		super.printUsage(outputStream, appName, toolDesc, parser);
+    @Override
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    {
+        super.printUsage(outputStream, appName, toolDesc, parser);
 
-		outputStream.println();
+        outputStream.println();
 
-		outputStream.println("Supported formats:");
-		FileFormat[] formats = new FileFormat[] {
-			FileFormats.DOUBLE_MATRIX,
-			FileFormats.DOUBLE_BINARY_MATRIX,
-			FileFormats.GENE_MATRIX,
-			FileFormats.GENE_MATRIX_TRANSPOSED,
-			FileFormats.MODULES_2C_MAP
-		};
+        outputStream.println("Supported formats:");
+        FileFormat[] formats = new FileFormat[]{
+                FileFormats.DOUBLE_MATRIX,
+                FileFormats.DOUBLE_BINARY_MATRIX,
+                FileFormats.GENE_MATRIX,
+                FileFormats.GENE_MATRIX_TRANSPOSED,
+                FileFormats.MODULES_2C_MAP
+        };
 
-		for (FileFormat f : formats)
-			outputStream.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
-	}
+        for (FileFormat f : formats)
+            outputStream.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
+    }
 }

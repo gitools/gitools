@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.matrix.model;
 
 import cern.colt.matrix.ObjectFactory1D;
@@ -27,7 +31,8 @@ import org.gitools.persistence.IResourceLocator;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class BaseMatrix extends Artifact implements IMatrix, Serializable {
+public abstract class BaseMatrix extends Artifact implements IMatrix, Serializable
+{
 
     private static final long serialVersionUID = 4021765485781500318L;
 
@@ -38,7 +43,8 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
 
     protected IElementAdapter cellAdapter;
 
-    public BaseMatrix() {
+    public BaseMatrix()
+    {
         this(
                 "",
                 ObjectFactory1D.dense.make(0),
@@ -50,7 +56,8 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
             String title,
             ObjectMatrix1D rows,
             ObjectMatrix1D columns,
-            IElementAdapter cellAdapter) {
+            IElementAdapter cellAdapter)
+    {
 
         this.title = title;
 
@@ -60,15 +67,18 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         this.cellAdapter = cellAdapter;
     }
 
-    public IResourceLocator getLocator() {
+    public IResourceLocator getLocator()
+    {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator) {
+    public void setLocator(IResourceLocator locator)
+    {
         this.locator = locator;
     }
 
-    public void make(int numRows, int numColumns) {
+    public void make(int numRows, int numColumns)
+    {
         rows = ObjectFactory1D.dense.make(numRows);
         columns = ObjectFactory1D.dense.make(numColumns);
         makeCells(numRows, numColumns);
@@ -78,123 +88,148 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
 
     // rows
 
-    public ObjectMatrix1D getRows() {
+    public ObjectMatrix1D getRows()
+    {
         return rows;
     }
 
     @Deprecated
-    public String[] getRowStrings() {
+    public String[] getRowStrings()
+    {
         String[] a = new String[rows.size()];
         rows.toArray(a);
         return a;
     }
 
-    public void setRows(ObjectMatrix1D rows) {
+    public void setRows(ObjectMatrix1D rows)
+    {
         this.rows = rows;
     }
 
-    public void setRows(String[] names) {
+    public void setRows(String[] names)
+    {
         this.rows = ObjectFactory1D.dense.make(names);
     }
 
-    public Object getRow(int index) {
+    public Object getRow(int index)
+    {
         return rows.get(index);
     }
 
     @Deprecated // Use getRowLabel() instead
-    public String getRowString(int index) {
+    public String getRowString(int index)
+    {
         return (String) rows.get(index);
     }
 
     @Override
-    public String getRowLabel(int index) {
+    public String getRowLabel(int index)
+    {
         return (String) rows.get(index);
     }
 
-    public void setRow(int index, Object row) {
+    public void setRow(int index, Object row)
+    {
         rows.set(index, row);
     }
 
     // columns
 
-    public ObjectMatrix1D getColumns() {
+    public ObjectMatrix1D getColumns()
+    {
         return columns;
     }
 
     @Deprecated
-    public String[] getColumnStrings() {
+    public String[] getColumnStrings()
+    {
         String[] a = new String[columns.size()];
         columns.toArray(a);
         return a;
     }
 
-    public void setColumns(ObjectMatrix1D columns) {
+    public void setColumns(ObjectMatrix1D columns)
+    {
         this.columns = columns;
     }
 
-    public void setColumns(String[] names) {
+    public void setColumns(String[] names)
+    {
         this.columns = ObjectFactory1D.dense.make(names);
     }
 
-    public Object getColumn(int index) {
+    public Object getColumn(int index)
+    {
         return columns.get(index);
     }
 
     @Deprecated // Use getColumnLabel() instead
-    public String getColumnString(int index) {
+    public String getColumnString(int index)
+    {
         return (String) columns.get(index);
     }
 
     @Override
-    public String getColumnLabel(int index) {
+    public String getColumnLabel(int index)
+    {
         return (String) columns.get(index);
     }
 
-    public void setColumn(int index, Object column) {
+    public void setColumn(int index, Object column)
+    {
         columns.set(index, column);
     }
 
     // cells
 
     @Override
-    public Object getCellValue(int row, int column, String id) {
+    public Object getCellValue(int row, int column, String id)
+    {
         return getCellValue(row, column, getCellAttributeIndex(id));
     }
 
     @Override
-    public void setCellValue(int row, int column, String id, Object value) {
+    public void setCellValue(int row, int column, String id, Object value)
+    {
         setCellValue(row, column, getCellAttributeIndex(id), value);
     }
 
     // adapters
 
     @Override
-    public IElementAdapter getCellAdapter() {
+    public IElementAdapter getCellAdapter()
+    {
         return cellAdapter;
     }
 
-    public void setCellAdapter(IElementAdapter cellAdapter) {
+    public void setCellAdapter(IElementAdapter cellAdapter)
+    {
         this.cellAdapter = cellAdapter;
     }
 
     // attributes
 
     @Override
-    public List<IElementAttribute> getCellAttributes() {
+    public List<IElementAttribute> getCellAttributes()
+    {
         return cellAdapter.getProperties();
     }
 
     @Override
-    public int getCellAttributeIndex(String id) {
+    public int getCellAttributeIndex(String id)
+    {
         Integer index = cellAdapter.getPropertyIndex(id);
         if (index == null)
+        {
             throw new RuntimeException("There isn't any property with id: " + id);
+        }
 
         return index.intValue();
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder sb = new StringBuilder();
         sb.append(getColumnCount()).append(" columns, ");
         sb.append(getRowCount()).append(" rows");

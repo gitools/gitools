@@ -1,40 +1,26 @@
 /*
- *  Copyright 2011 cperez.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-/*
- * LabelFilterPage.java
- *
- * Created on 22-mar-2011, 15:54:05
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.sort;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import javax.swing.event.DocumentEvent;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
@@ -43,7 +29,6 @@ import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -51,137 +36,190 @@ import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.wizard.common.PatternSourcePage;
 
-public class MutualExclusionSortPage extends AbstractWizardPage {
+import javax.swing.event.DocumentEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-	private Heatmap hm;
+public class MutualExclusionSortPage extends AbstractWizardPage
+{
 
-	private String rowsPatt;
-	private String colsPatt;
+    private Heatmap hm;
 
-	public MutualExclusionSortPage(Heatmap hm) {
-		this.hm = hm;
-		
-		initComponents();
+    private String rowsPatt;
+    private String colsPatt;
 
-		ActionListener dimChangedListener = new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				dimChanged(); }
-		};
+    public MutualExclusionSortPage(Heatmap hm)
+    {
+        this.hm = hm;
 
-		rowsRb.addActionListener(dimChangedListener);
-		colsRb.addActionListener(dimChangedListener);
+        initComponents();
 
-		rowsPattBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				selectRowsPattern(); }
-		});
+        ActionListener dimChangedListener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                dimChanged();
+            }
+        };
 
-		colsPattBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				selectColsPattern(); }
-		});
+        rowsRb.addActionListener(dimChangedListener);
+        colsRb.addActionListener(dimChangedListener);
 
-		patterns.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
-			}
-		});
+        rowsPattBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                selectRowsPattern();
+            }
+        });
 
-		rowsPatt = "${id}";
-		rowsPattFld.setText("id");
+        colsPattBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                selectColsPattern();
+            }
+        });
 
-		colsPatt = "${id}";
-		colsPattFld.setText("id");
+        patterns.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
+            }
+        });
 
-		dimChanged();
+        rowsPatt = "${id}";
+        rowsPattFld.setText("id");
 
-		setTitle("Sort by mutual exclusion");
-		setMessage("Puts the selected rows/columns at the top of the matrix and "
-				+ "sorts them by their mutual exclusion.");
-		setComplete(true);
-	}
+        colsPatt = "${id}";
+        colsPattFld.setText("id");
 
-	private void dimChanged() {
-		boolean rs = rowsRb.isSelected();
-		rowsPattFld.setEnabled(rs);
-		rowsPattBtn.setEnabled(rs);
-		boolean cs = colsRb.isSelected();
-		colsPattFld.setEnabled(cs);
-		colsPattBtn.setEnabled(cs);
-	}
+        dimChanged();
 
-	protected String readNamesFromFile(File file) throws IOException {
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-		StringBuilder sb = new StringBuilder();
-	    String line;
+        setTitle("Sort by mutual exclusion");
+        setMessage("Puts the selected rows/columns at the top of the matrix and "
+                + "sorts them by their mutual exclusion.");
+        setComplete(true);
+    }
 
-	    while ((line = br.readLine()) != null) {
-	    	line = line.trim();
-	    	if(!line.isEmpty())
-				sb.append(line).append('\n');
-	    }
+    private void dimChanged()
+    {
+        boolean rs = rowsRb.isSelected();
+        rowsPattFld.setEnabled(rs);
+        rowsPattBtn.setEnabled(rs);
+        boolean cs = colsRb.isSelected();
+        colsPattFld.setEnabled(cs);
+        colsPattBtn.setEnabled(cs);
+    }
 
-	    return sb.toString();
-	}
+    protected String readNamesFromFile(File file) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        StringBuilder sb = new StringBuilder();
+        String line;
 
-	private void selectRowsPattern() {
-		PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
-		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+        while ((line = br.readLine()) != null)
+        {
+            line = line.trim();
+            if (!line.isEmpty())
+            {
+                sb.append(line).append('\n');
+            }
+        }
 
-		rowsPatt = page.getPattern();
-		rowsPattFld.setText(page.getPatternTitle());
-	}
+        return sb.toString();
+    }
 
-	private void selectColsPattern() {
-		PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
-		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+    private void selectRowsPattern()
+    {
+        PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        dlg.setVisible(true);
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-		colsPatt = page.getPattern();
-		colsPattFld.setText(page.getPatternTitle());
-	}
+        rowsPatt = page.getPattern();
+        rowsPattFld.setText(page.getPatternTitle());
+    }
 
-	public FilterDimension getFilterDimension() {
-		if (rowsRb.isSelected())
-			return FilterDimension.ROWS;
-		else
-			return FilterDimension.COLUMNS;
-	}
+    private void selectColsPattern()
+    {
+        PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        dlg.setVisible(true);
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-	public void setFilterDimension(FilterDimension fd) {
-		if (fd.equals(FilterDimension.COLUMNS)){
-			colsRb.setSelected(true);
-			rowsRb.setSelected(false);
-		}else if(fd.equals(FilterDimension.ROWS)) {
-			colsRb.setSelected(false);
-			rowsRb.setSelected(true);
-		}
-		dimChanged();
-	}
+        colsPatt = page.getPattern();
+        colsPattFld.setText(page.getPatternTitle());
+    }
 
-	public String getPattern() {
-		if (rowsRb.isSelected())
-			return rowsPatt;
-		else
-			return colsPatt;
-	}
-    
-    private ArrayList<String> getSelected() {
+    public FilterDimension getFilterDimension()
+    {
+        if (rowsRb.isSelected())
+        {
+            return FilterDimension.ROWS;
+        }
+        else
+        {
+            return FilterDimension.COLUMNS;
+        }
+    }
+
+    public void setFilterDimension(FilterDimension fd)
+    {
+        if (fd.equals(FilterDimension.COLUMNS))
+        {
+            colsRb.setSelected(true);
+            rowsRb.setSelected(false);
+        }
+        else if (fd.equals(FilterDimension.ROWS))
+        {
+            colsRb.setSelected(false);
+            rowsRb.setSelected(true);
+        }
+        dimChanged();
+    }
+
+    public String getPattern()
+    {
+        if (rowsRb.isSelected())
+        {
+            return rowsPatt;
+        }
+        else
+        {
+            return colsPatt;
+        }
+    }
+
+    private ArrayList<String> getSelected()
+    {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? 
-                                        new MatrixRowsLabelProvider(hm.getMatrixView()) : 
-                                        new MatrixColumnsLabelProvider(hm.getMatrixView());
-        if (!getPattern().equalsIgnoreCase("${id}")) {
-            AnnotationMatrix am = dim == FilterDimension.ROWS ? 
-                        hm.getRowDim().getAnnotations() :
-                        hm.getColumnDim().getAnnotations();
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ?
+                new MatrixRowsLabelProvider(hm.getMatrixView()) :
+                new MatrixColumnsLabelProvider(hm.getMatrixView());
+        if (!getPattern().equalsIgnoreCase("${id}"))
+        {
+            AnnotationMatrix am = dim == FilterDimension.ROWS ?
+                    hm.getRowDim().getAnnotations() :
+                    hm.getColumnDim().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(
                     labelProvider,
                     am,
@@ -191,90 +229,104 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         int[] selectedIndices = dim == FilterDimension.ROWS ?
                 hm.getMatrixView().getSelectedRows() :
                 hm.getMatrixView().getSelectedColumns();
-        for (int i=0; i < selectedIndices.length; i++)
+        for (int i = 0; i < selectedIndices.length; i++)
             selected.add(labelProvider.getLabel(selectedIndices[i]));
 
-		return selected;
-	}
-    
-    private ArrayList<String> getUnselected() {
+        return selected;
+    }
+
+    private ArrayList<String> getUnselected()
+    {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? 
-                                        new MatrixRowsLabelProvider(hm.getMatrixView()) : 
-                                        new MatrixColumnsLabelProvider(hm.getMatrixView());
-            if (!getPattern().equalsIgnoreCase("${id}")) {
-                AnnotationMatrix am = dim == FilterDimension.ROWS ? 
-                            hm.getRowDim().getAnnotations() :
-                            hm.getColumnDim().getAnnotations();
-                labelProvider = new AnnotationsPatternProvider(
-                        labelProvider,
-                        am,
-                        getPattern());
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ?
+                new MatrixRowsLabelProvider(hm.getMatrixView()) :
+                new MatrixColumnsLabelProvider(hm.getMatrixView());
+        if (!getPattern().equalsIgnoreCase("${id}"))
+        {
+            AnnotationMatrix am = dim == FilterDimension.ROWS ?
+                    hm.getRowDim().getAnnotations() :
+                    hm.getColumnDim().getAnnotations();
+            labelProvider = new AnnotationsPatternProvider(
+                    labelProvider,
+                    am,
+                    getPattern());
+        }
+
+        int[] selectedIndices = dim == FilterDimension.ROWS ?
+                hm.getMatrixView().getSelectedRows() :
+                hm.getMatrixView().getSelectedColumns();
+        int visibleCount = dim == FilterDimension.ROWS ?
+                hm.getMatrixView().getRowCount() :
+                hm.getMatrixView().getColumnCount();
+
+
+        int[] unselectedIndices = new int[visibleCount - selectedIndices.length];
+        int count = 0;
+        for (int i = 0; i < visibleCount; i++)
+        {
+            if (!(ArrayUtils.contains(selectedIndices, i)))
+            {
+                unselectedIndices[count] = i;
+                count++;
             }
+        }
 
-            int[] selectedIndices = dim == FilterDimension.ROWS ?
-                    hm.getMatrixView().getSelectedRows() :
-                    hm.getMatrixView().getSelectedColumns();
-            int visibleCount = dim == FilterDimension.ROWS ? 
-                    hm.getMatrixView().getRowCount() :
-                    hm.getMatrixView().getColumnCount();
+        for (int i = 0; i < unselectedIndices.length; i++)
+            unselected.add(labelProvider.getLabel(unselectedIndices[i]));
+        return unselected;
+    }
 
-            
-            int[] unselectedIndices = new int[visibleCount-selectedIndices.length];
-            int count = 0;
-            for (int i = 0; i < visibleCount; i++) {
-                if (!(ArrayUtils.contains(selectedIndices, i))) {
-                    unselectedIndices[count] = i;
-                    count++;
+    public void setValues(List<String> values)
+    {
+        Iterator<String> it = values.iterator();
+        while (it.hasNext())
+        {
+            patterns.append(it.next() + "\n");
+        }
+
+    }
+
+    public List<String> getValues()
+    {
+        List<String> values = new ArrayList<String>();
+        StringReader sr = new StringReader(patterns.getText());
+        BufferedReader br = new BufferedReader(sr);
+        String line;
+        try
+        {
+            while ((line = br.readLine()) != null)
+            {
+                line = line.trim();
+                if (!line.isEmpty())
+                {
+                    values.add(line);
                 }
             }
+        } catch (IOException ex)
+        {
+            ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+            dlg.setVisible(true);
+        }
 
-            for (int i=0; i < unselectedIndices.length; i++)
-                unselected.add(labelProvider.getLabel(unselectedIndices[i]));
-            return unselected;
-	}
+        return values;
+    }
 
-	public void setValues(List<String> values) {
-		Iterator<String> it = values.iterator();
-		while(it.hasNext()) {
-			patterns.append(it.next()+"\n");
-		}
+    public boolean isUseRegexChecked()
+    {
+        return useRegexCheck.isSelected();
+    }
 
-	}
-
-	public List<String> getValues() {
-		List<String> values = new ArrayList<String>();
-		StringReader sr = new StringReader(patterns.getText());
-		BufferedReader br = new BufferedReader(sr);
-		String line;
-		try {
-			while ((line = br.readLine()) != null) {
-				line = line.trim();
-				if (!line.isEmpty())
-					values.add(line);
-			}
-		}
-		catch (IOException ex) {
-			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-			dlg.setVisible(true);
-		}
-
-		return values;
-	}
-
-	public boolean isUseRegexChecked() {
-		return useRegexCheck.isSelected();
-	}
-
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -301,12 +353,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         patterns.setRows(6);
         jScrollPane1.setViewportView(patterns);
 
-        jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()-2f));
+        jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize() - 2f));
         jLabel3.setText("One label or regular expression per line");
 
         loadBtn.setText("Load...");
-        loadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadBtnActionPerformed(evt);
             }
         });
@@ -315,8 +369,10 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
         saveBtn.setText("Save...");
         saveBtn.setEnabled(false);
-        saveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveBtnActionPerformed(evt);
             }
         });
@@ -335,15 +391,19 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         colsRb.setText("Columns");
 
         pasteSelected1.setText("paste Selected");
-        pasteSelected1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        pasteSelected1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 pasteSelected1ActionPerformed(evt);
             }
         });
 
         pasteUnselected1.setText("paste Unselected");
-        pasteUnselected1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        pasteUnselected1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 pasteUnselected1ActionPerformed(evt);
             }
         });
@@ -351,121 +411,133 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(colsRb)
-                                    .addComponent(rowsRb))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(rowsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(rowsPattBtn))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(colsPattBtn))))
-                            .addComponent(jLabel3)
-                            .addComponent(useRegexCheck))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pasteUnselected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pasteSelected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(colsRb)
+                                                                        .addComponent(rowsRb))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                                .addComponent(rowsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(rowsPattBtn))
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(colsPattBtn))))
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(useRegexCheck))
+                                                .addContainerGap())
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(pasteUnselected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(pasteSelected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rowsPattBtn)
-                    .addComponent(rowsRb)
-                    .addComponent(rowsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colsPattBtn)
-                    .addComponent(colsRb)
-                    .addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(loadBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pasteSelected1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pasteUnselected1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(useRegexCheck)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(rowsPattBtn)
+                                        .addComponent(rowsRb)
+                                        .addComponent(rowsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(colsPattBtn)
+                                        .addComponent(colsRb)
+                                        .addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(loadBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(saveBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(pasteSelected1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(pasteUnselected1))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(useRegexCheck)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
+    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_loadBtnActionPerformed
 
-		try {
-			File file = FileChooserUtils.selectFile(
-					"Select the file containing values",
-					Settings.getDefault().getLastFilterPath(),
-					FileChooserUtils.MODE_OPEN);
+        try
+        {
+            File file = FileChooserUtils.selectFile(
+                    "Select the file containing values",
+                    Settings.getDefault().getLastFilterPath(),
+                    FileChooserUtils.MODE_OPEN);
 
-			if (file == null)
-				return;
+            if (file == null)
+            {
+                return;
+            }
 
-			Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.getDefault().setLastFilterPath(file.getParent());
 
-			patterns.setText(readNamesFromFile(file));
-		} catch (IOException ex) {
-			ExceptionDialog edlg = new ExceptionDialog(AppFrame.instance(), ex);
-			edlg.setVisible(true);
-		}
-}//GEN-LAST:event_loadBtnActionPerformed
+            patterns.setText(readNamesFromFile(file));
+        } catch (IOException ex)
+        {
+            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            edlg.setVisible(true);
+        }
+    }//GEN-LAST:event_loadBtnActionPerformed
 
-	private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-		try {
-			File file = FileChooserUtils.selectFile(
-					"Select file name ...",
-					Settings.getDefault().getLastFilterPath(),
-					FileChooserUtils.MODE_SAVE);
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_saveBtnActionPerformed
+        try
+        {
+            File file = FileChooserUtils.selectFile(
+                    "Select file name ...",
+                    Settings.getDefault().getLastFilterPath(),
+                    FileChooserUtils.MODE_SAVE);
 
-			if (file == null)
-				return;
+            if (file == null)
+            {
+                return;
+            }
 
-			Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.getDefault().setLastFilterPath(file.getParent());
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-			bw.append(patterns.getText()).append('\n');
-			bw.close();
-		} catch (Exception ex) {
-			ExceptionDialog edlg = new ExceptionDialog(AppFrame.instance(), ex);
-			edlg.setVisible(true);
-		}
-}//GEN-LAST:event_saveBtnActionPerformed
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            bw.append(patterns.getText()).append('\n');
+            bw.close();
+        } catch (Exception ex)
+        {
+            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            edlg.setVisible(true);
+        }
+    }//GEN-LAST:event_saveBtnActionPerformed
 
-    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteSelected1ActionPerformed
+    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_pasteSelected1ActionPerformed
         ArrayList<String> selectedColsLabels = getSelected();
         setValues(selectedColsLabels);
     }//GEN-LAST:event_pasteSelected1ActionPerformed
 
-    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteUnselected1ActionPerformed
+    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_pasteUnselected1ActionPerformed
         ArrayList<String> unselectedColsLabels = getUnselected();
         setValues(unselectedColsLabels);
     }//GEN-LAST:event_pasteUnselected1ActionPerformed

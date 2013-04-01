@@ -1,34 +1,39 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.persistence.formats.matrix;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.AbstractResourceFormat;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Map;
 import java.util.Properties;
 
-public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends AbstractResourceFormat<T> {
+public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends AbstractResourceFormat<T>
+{
 
     public static final String POPULATION_LABELS = "population_labels";
     public static final String BACKGROUND_VALUE = "background_value";
@@ -41,17 +46,20 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
     private Map<Integer, ValueTranslator> valueTranslatorMap;
 
 
-    public AbstractMatrixFormat(String extension, String mime, Class<T> resourceClass) {
+    public AbstractMatrixFormat(String extension, String mime, Class<T> resourceClass)
+    {
         super(extension, mime, resourceClass);
     }
 
     @Override
-    public boolean isConfigurable() {
+    public boolean isConfigurable()
+    {
         return true;
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    {
 
         // Save properties
         this.properties = properties;
@@ -61,19 +69,27 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
 
         // Background value
         if (properties.containsKey(BACKGROUND_VALUE))
+        {
             this.backgroundValue = (Double) properties.get(BACKGROUND_VALUE);
+        }
         else
+        {
             this.backgroundValue = 0.0;
+        }
 
         // Value translator map
-        if (properties.containsKey(VALUE_TRANSLATORS)) {
+        if (properties.containsKey(VALUE_TRANSLATORS))
+        {
             valueTranslatorMap = (Map<Integer, ValueTranslator>) properties.get(VALUE_TRANSLATORS);
-        } else {
+        }
+        else
+        {
             valueTranslatorMap = null;
         }
     }
 
-    protected Properties getProperties() {
+    protected Properties getProperties()
+    {
         return properties;
     }
 
@@ -83,7 +99,8 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return population labels
      */
-    protected String[] getPopulationLabels() {
+    protected String[] getPopulationLabels()
+    {
         return populationLabels;
     }
 
@@ -92,7 +109,8 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return background value
      */
-    protected Double getBackgroundValue() {
+    protected Double getBackgroundValue()
+    {
         return this.backgroundValue;
     }
 
@@ -103,7 +121,8 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return value translator
      */
-    protected ValueTranslator getValueTranslator() {
+    protected ValueTranslator getValueTranslator()
+    {
         return getValueTranslator(0);
     }
 
@@ -114,15 +133,21 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      * @return value translator
      */
     @Deprecated
-    protected ValueTranslator getValueTranslator(int i) {
-        if (valueTranslatorMap == null) {
+    protected ValueTranslator getValueTranslator(int i)
+    {
+        if (valueTranslatorMap == null)
+        {
             return new DoubleTranslator();
         }
 
         if (valueTranslatorMap.containsKey(i))
+        {
             return valueTranslatorMap.get(i);
+        }
         else
+        {
             return null;
+        }
     }
 
 }

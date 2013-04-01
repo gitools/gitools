@@ -1,76 +1,86 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.correlation.methods;
 
-import java.util.Properties;
 import org.gitools.analysis.AbstractMethod;
 import org.gitools.analysis.MethodException;
 import org.gitools.analysis.correlation.CorrelationMethod;
 import org.gitools.analysis.correlation.CorrelationResult;
 
-public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod {
+import java.util.Properties;
 
-	public static final String ID = "pearson";
+public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod
+{
 
-	public PearsonCorrelationMethod() {
-		this(new Properties());
-	}
+    public static final String ID = "pearson";
 
-	public PearsonCorrelationMethod(Properties properties) {
-		super(ID,
-				"Pearson's correlation",
-				"Pearson's product-moment correlation",
-				CorrelationResult.class, properties);
-	}
+    public PearsonCorrelationMethod()
+    {
+        this(new Properties());
+    }
 
-	@Override
-	public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
-		CorrelationResult result = new CorrelationResult();
+    public PearsonCorrelationMethod(Properties properties)
+    {
+        super(ID,
+                "Pearson's correlation",
+                "Pearson's product-moment correlation",
+                CorrelationResult.class, properties);
+    }
 
-		double sumxy = 0;
-		double sumx = 0;
-		double sumx2 = 0;
-		double sumy = 0;
-		double sumy2 = 0;
-		double n = indicesLength;
+    @Override
+    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException
+    {
+        CorrelationResult result = new CorrelationResult();
 
-		for (int k = 0; k < indicesLength; k++) {
-			int i = indices[k];
-			double xi = x[i];
-			double yi = y[i];
-			sumxy += xi * yi;
-			sumx += xi;
-			sumx2 += xi * xi;
-			sumy += yi;
-			sumy2 += yi * yi;
-		}
+        double sumxy = 0;
+        double sumx = 0;
+        double sumx2 = 0;
+        double sumy = 0;
+        double sumy2 = 0;
+        double n = indicesLength;
 
-		double r = (sumxy - (sumx * sumy / n))
-				/ Math.sqrt(
-					(sumx2 - (sumx * sumx / n))
-					* (sumy2 - (sumy * sumy / n)));
+        for (int k = 0; k < indicesLength; k++)
+        {
+            int i = indices[k];
+            double xi = x[i];
+            double yi = y[i];
+            sumxy += xi * yi;
+            sumx += xi;
+            sumx2 += xi * xi;
+            sumy += yi;
+            sumy2 += yi * yi;
+        }
 
-		double se = Math.sqrt((1 - (r * r)) / (n - 2));
+        double r = (sumxy - (sumx * sumy / n))
+                / Math.sqrt(
+                (sumx2 - (sumx * sumx / n))
+                        * (sumy2 - (sumy * sumy / n)));
 
-		result.setN(indicesLength);
-		result.setScore(r);
-		result.setStandardError(se);
+        double se = Math.sqrt((1 - (r * r)) / (n - 2));
 
-		return result;
-	}
+        result.setN(indicesLength);
+        result.setScore(r);
+        result.setStandardError(se);
+
+        return result;
+    }
 }

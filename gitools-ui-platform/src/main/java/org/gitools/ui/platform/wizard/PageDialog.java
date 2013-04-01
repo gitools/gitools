@@ -1,32 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -34,123 +28,156 @@ import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.help.HelpException;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
 
-public class PageDialog extends AbstractDialog {
 
-	private IWizardPage page;
+public class PageDialog extends AbstractDialog
+{
 
-	private boolean cancelled;
+    private IWizardPage page;
 
-	private JButton cancelButton;
-	private JButton finishButton;
-	private JButton helpButton;
+    private boolean cancelled;
 
-	protected JPanel pagePanel;
+    private JButton cancelButton;
+    private JButton finishButton;
+    private JButton helpButton;
 
-	public PageDialog(Window owner, IWizardPage page) {
-		super(owner, page.getTitle(), page.getLogo());
+    protected JPanel pagePanel;
 
-		setMinimumSize(new Dimension(800, 600));
-		setPreferredSize(new Dimension(800, 600));
-		setLocationRelativeTo(owner);
+    public PageDialog(Window owner, IWizardPage page)
+    {
+        super(owner, page.getTitle(), page.getLogo());
 
-		this.page = page;
-		
-		cancelled = true;
+        setMinimumSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 600));
+        setLocationRelativeTo(owner);
 
-		page.addPageUpdateListener(new IWizardPageUpdateListener() {
-			@Override public void pageUpdated(IWizardPage page) {
-				updateState(); }
-		});
+        this.page = page;
 
-		JComponent contents = page.createControls();
-		pagePanel.add(contents, BorderLayout.CENTER);
-		contents.repaint();
+        cancelled = true;
 
-		updateState();
+        page.addPageUpdateListener(new IWizardPageUpdateListener()
+        {
+            @Override
+            public void pageUpdated(IWizardPage page)
+            {
+                updateState();
+            }
+        });
 
-		page.updateControls();
-	}
+        JComponent contents = page.createControls();
+        pagePanel.add(contents, BorderLayout.CENTER);
+        contents.repaint();
 
-	@Override
-	protected JComponent createContainer() {
-		pagePanel = new JPanel(new BorderLayout());
-		return pagePanel;
-	}
+        updateState();
 
-	@Override
-	protected List<JButton> createButtons() {
-		helpButton = new JButton("Help");
-		helpButton.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				helpActionPerformed();
-			}
-		});
+        page.updateControls();
+    }
 
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				cancelActionPerformed();
-			}
-		});
+    @Override
+    protected JComponent createContainer()
+    {
+        pagePanel = new JPanel(new BorderLayout());
+        return pagePanel;
+    }
 
-		finishButton = new JButton("Ok");
-		finishButton.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				finishActionPerformed();
-			}
-		});
+    @Override
+    protected List<JButton> createButtons()
+    {
+        helpButton = new JButton("Help");
+        helpButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                helpActionPerformed();
+            }
+        });
 
-		finishButton.setDefaultCapable(true);
-		
-		return Arrays.asList(
-				cancelButton,
-				finishButton,
-				helpButton);
-	}
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                cancelActionPerformed();
+            }
+        });
 
-	private void helpActionPerformed() {
-		HelpContext context = page.getHelpContext();
-		if (context != null) {
-			try {
-				Help.getDefault().showHelp(context);
-			} catch (HelpException ex) {
-				ExceptionDialog dlg = new ExceptionDialog(this, ex);
-				dlg.setVisible(true);
-			}
-		}
-	}
+        finishButton = new JButton("Ok");
+        finishButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                finishActionPerformed();
+            }
+        });
 
-	private void cancelActionPerformed() {
-		cancelled = true;
+        finishButton.setDefaultCapable(true);
 
-		setVisible(false);
-	}
-	
-	private void finishActionPerformed() {
-		page.updateModel();
+        return Arrays.asList(
+                cancelButton,
+                finishButton,
+                helpButton);
+    }
 
-		cancelled = false;
+    private void helpActionPerformed()
+    {
+        HelpContext context = page.getHelpContext();
+        if (context != null)
+        {
+            try
+            {
+                Help.getDefault().showHelp(context);
+            } catch (HelpException ex)
+            {
+                ExceptionDialog dlg = new ExceptionDialog(this, ex);
+                dlg.setVisible(true);
+            }
+        }
+    }
 
-		setVisible(false);
-	}
+    private void cancelActionPerformed()
+    {
+        cancelled = true;
 
-	public boolean isCancelled() {
-		return cancelled;
-	}
+        setVisible(false);
+    }
 
-	private void updateState() {
-		DialogHeaderPanel header = getHeaderPanel();
-		header.setTitle(page.getTitle());
-		header.setLeftLogo(page.getLogo());
-		header.setMessageStatus(page.getStatus());
-		header.setMessage(page.getMessage());
+    private void finishActionPerformed()
+    {
+        page.updateModel();
 
-		updateButtons();
-	}
+        cancelled = false;
 
-	private void updateButtons() {
-		finishButton.setEnabled(page.isComplete());
-		cancelButton.setEnabled(true);
-	}
+        setVisible(false);
+    }
+
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
+
+    private void updateState()
+    {
+        DialogHeaderPanel header = getHeaderPanel();
+        header.setTitle(page.getTitle());
+        header.setLeftLogo(page.getLogo());
+        header.setMessageStatus(page.getStatus());
+        header.setMessage(page.getMessage());
+
+        updateButtons();
+    }
+
+    private void updateButtons()
+    {
+        finishButton.setEnabled(page.isComplete());
+        cancelButton.setEnabled(true);
+    }
 }

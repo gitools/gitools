@@ -1,29 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.matrix.filter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
@@ -31,140 +28,179 @@ import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 
-public class MatrixViewLabelFilter {
+import java.util.*;
+import java.util.regex.Pattern;
 
-	public enum FilterDimension {
-		ROWS, COLUMNS
-	}
+public class MatrixViewLabelFilter
+{
 
-	private static interface LabelFilter {
-		int matchIndex(String label);
-	}
+    public enum FilterDimension
+    {
+        ROWS, COLUMNS
+    }
 
-	private static class StringFilter implements LabelFilter {
-		private Map<String, Integer> values;
-		public StringFilter(List<String> values) {
-			this.values = new HashMap<String, Integer>();
-			for (int i = 0; i < values.size(); i++) {
-				String v = values.get(i).trim();
-				if (!v.isEmpty())
-					this.values.put(v, i);
-			}
-		}
+    private static interface LabelFilter
+    {
+        int matchIndex(String label);
+    }
 
-		@Override
-		public int matchIndex(String label) {
-			Integer index = values.get(label);
-			return index != null ? index : -1;
-		}
-	}
+    private static class StringFilter implements LabelFilter
+    {
+        private Map<String, Integer> values;
 
-	private static class RegexFilter implements LabelFilter {
-		private List<Pattern> patterns;
-		public RegexFilter(List<String> values) {
-			patterns = new ArrayList<Pattern>(values.size());
-			for (String value : values)
-				if (!value.trim().isEmpty())
-					patterns.add(Pattern.compile(value));
-		}
-		@Override
-		public int matchIndex(String label) {
-			for (int i = 0; i < patterns.size(); i++) {
-				Pattern pat = patterns.get(i);
-				if (pat.matcher(label).matches())
-					return i;
-			}
-			return -1;
-		}
-	}
+        public StringFilter(List<String> values)
+        {
+            this.values = new HashMap<String, Integer>();
+            for (int i = 0; i < values.size(); i++)
+            {
+                String v = values.get(i).trim();
+                if (!v.isEmpty())
+                {
+                    this.values.put(v, i);
+                }
+            }
+        }
 
-	public static void filter(
-			IMatrixView matrixView,
-			FilterDimension dim,
-			String pattern,
-			AnnotationMatrix annMatrix,
-			List<String> values,
-			boolean useRegex) {
+        @Override
+        public int matchIndex(String label)
+        {
+            Integer index = values.get(label);
+            return index != null ? index : -1;
+        }
+    }
 
-		LabelProvider labelProvider = null;
+    private static class RegexFilter implements LabelFilter
+    {
+        private List<Pattern> patterns;
 
-		switch (dim) {
-			case ROWS:
-				labelProvider = new MatrixRowsLabelProvider(matrixView);
-				if (!pattern.equalsIgnoreCase("${id}"))
-					labelProvider = new AnnotationsPatternProvider(
-							labelProvider, annMatrix, pattern);
+        public RegexFilter(List<String> values)
+        {
+            patterns = new ArrayList<Pattern>(values.size());
+            for (String value : values)
+                if (!value.trim().isEmpty())
+                {
+                    patterns.add(Pattern.compile(value));
+                }
+        }
 
-				matrixView.setVisibleRows(
-						filterLabels(
-							labelProvider,
-							values,
-							useRegex,
-							matrixView.getVisibleRows()));
-				break;
+        @Override
+        public int matchIndex(String label)
+        {
+            for (int i = 0; i < patterns.size(); i++)
+            {
+                Pattern pat = patterns.get(i);
+                if (pat.matcher(label).matches())
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
 
-			case COLUMNS:
-				labelProvider = new MatrixColumnsLabelProvider(matrixView);
-				if (!pattern.equalsIgnoreCase("${id}"))
-					labelProvider = new AnnotationsPatternProvider(
-							labelProvider, annMatrix, pattern);
+    public static void filter(
+            IMatrixView matrixView,
+            FilterDimension dim,
+            String pattern,
+            AnnotationMatrix annMatrix,
+            List<String> values,
+            boolean useRegex)
+    {
 
-				matrixView.setVisibleColumns(
-						filterLabels(
-							labelProvider,
-							values,
-							useRegex,
-							matrixView.getVisibleColumns()));
-				break;
-		}
-	}
+        LabelProvider labelProvider = null;
 
-	public static int[] filterLabels(
-			LabelProvider labelProvider,
-			List<String> values,
-			boolean useRegex,
-			int[] visibleIndices) {
+        switch (dim)
+        {
+            case ROWS:
+                labelProvider = new MatrixRowsLabelProvider(matrixView);
+                if (!pattern.equalsIgnoreCase("${id}"))
+                {
+                    labelProvider = new AnnotationsPatternProvider(
+                            labelProvider, annMatrix, pattern);
+                }
 
-		LabelFilter filter = null;
-		if (useRegex)
-			filter = new RegexFilter(values);
-		else
-			filter = new StringFilter(values);
+                matrixView.setVisibleRows(
+                        filterLabels(
+                                labelProvider,
+                                values,
+                                useRegex,
+                                matrixView.getVisibleRows()));
+                break;
 
-		final List<Integer> selectedIndices = new ArrayList<Integer>();
-		final List<Integer> matchIndices = new ArrayList<Integer>();
+            case COLUMNS:
+                labelProvider = new MatrixColumnsLabelProvider(matrixView);
+                if (!pattern.equalsIgnoreCase("${id}"))
+                {
+                    labelProvider = new AnnotationsPatternProvider(
+                            labelProvider, annMatrix, pattern);
+                }
 
-		int count = labelProvider.getCount();
-		for (int index = 0; index < count; index++) {
-			String label = labelProvider.getLabel(index);
-			int mi = filter.matchIndex(label);
-			if (mi != -1) {
-				selectedIndices.add(visibleIndices[index]);
-				matchIndices.add(mi);
-			}
-		}
+                matrixView.setVisibleColumns(
+                        filterLabels(
+                                labelProvider,
+                                values,
+                                useRegex,
+                                matrixView.getVisibleColumns()));
+                break;
+        }
+    }
 
-		Integer[] sortIndices = new Integer[selectedIndices.size()];
-		for (int i = 0; i< sortIndices.length; i++)
-			sortIndices[i] = i;
+    public static int[] filterLabels(
+            LabelProvider labelProvider,
+            List<String> values,
+            boolean useRegex,
+            int[] visibleIndices)
+    {
 
-		Arrays.sort(sortIndices, new Comparator<Integer>() {
-			@Override public int compare(Integer i1, Integer i2) {
-				int d1 = matchIndices.get(i1);
-				int d2 = matchIndices.get(i2);
-				return d1 - d2;
-			}
-		});
+        LabelFilter filter = null;
+        if (useRegex)
+        {
+            filter = new RegexFilter(values);
+        }
+        else
+        {
+            filter = new StringFilter(values);
+        }
 
-		int[] vIndices = new int[sortIndices.length];
-		for (int i = 0; i < vIndices.length; i++)
-			vIndices[i] = selectedIndices.get(sortIndices[i]);
+        final List<Integer> selectedIndices = new ArrayList<Integer>();
+        final List<Integer> matchIndices = new ArrayList<Integer>();
 
-		return vIndices;
-	}
+        int count = labelProvider.getCount();
+        for (int index = 0; index < count; index++)
+        {
+            String label = labelProvider.getLabel(index);
+            int mi = filter.matchIndex(label);
+            if (mi != -1)
+            {
+                selectedIndices.add(visibleIndices[index]);
+                matchIndices.add(mi);
+            }
+        }
+
+        Integer[] sortIndices = new Integer[selectedIndices.size()];
+        for (int i = 0; i < sortIndices.length; i++)
+            sortIndices[i] = i;
+
+        Arrays.sort(sortIndices, new Comparator<Integer>()
+        {
+            @Override
+            public int compare(Integer i1, Integer i2)
+            {
+                int d1 = matchIndices.get(i1);
+                int d2 = matchIndices.get(i2);
+                return d1 - d2;
+            }
+        });
+
+        int[] vIndices = new int[sortIndices.length];
+        for (int i = 0; i < vIndices.length; i++)
+            vIndices[i] = selectedIndices.get(sortIndices[i]);
+
+        return vIndices;
+    }
 
 	/*public static void filterRows(
-			IMatrixView matrixView,
+            IMatrixView matrixView,
 			String pattern,
 			AnnotationMatrix am,
 			List<String> values,

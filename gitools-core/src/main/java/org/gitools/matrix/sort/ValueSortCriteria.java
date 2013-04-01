@@ -1,109 +1,129 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.matrix.sort;
 
 import org.gitools.utils.aggregation.IAggregator;
 
-public final class ValueSortCriteria {
+public final class ValueSortCriteria
+{
 
-	public enum SortDirection {
-		ASCENDING("Ascending", 1), 
-		DESCENDING("Descending", -1);
+    public enum SortDirection
+    {
+        ASCENDING("Ascending", 1),
+        DESCENDING("Descending", -1);
 
-		private String title;
-		private int factor;
+        private String title;
+        private int factor;
 
-		private SortDirection(String title, int factor) {
-			this.title = title;
-			this.factor = factor;
-		}
+        private SortDirection(String title, int factor)
+        {
+            this.title = title;
+            this.factor = factor;
+        }
 
-		public int getFactor() {
-			return factor;
-		}
-		
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
+        public int getFactor()
+        {
+            return factor;
+        }
 
-	protected String attributeName;
-	protected int attributeIndex;
-	protected IAggregator aggregator;
-	protected SortDirection direction;
+        @Override
+        public String toString()
+        {
+            return title;
+        }
+    }
 
-	public ValueSortCriteria(
-			int attributeIndex,
-			IAggregator aggregator,
-			SortDirection direction) {
-		
-		this(null, attributeIndex, aggregator, direction);
-	}
+    protected String attributeName;
+    protected int attributeIndex;
+    protected IAggregator aggregator;
+    protected SortDirection direction;
 
-	public ValueSortCriteria(
-			String attributeName,
-			int attributeIndex,
-			IAggregator aggregator,
-			SortDirection direction) {
+    public ValueSortCriteria(
+            int attributeIndex,
+            IAggregator aggregator,
+            SortDirection direction)
+    {
 
-		this.attributeName = attributeName;
-		this.attributeIndex = attributeIndex;
-		this.direction = direction;
-		this.aggregator = aggregator;
-	}
+        this(null, attributeIndex, aggregator, direction);
+    }
 
-	public String getAttributeName() {
-		return attributeName;
-	}
+    public ValueSortCriteria(
+            String attributeName,
+            int attributeIndex,
+            IAggregator aggregator,
+            SortDirection direction)
+    {
 
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
+        this.attributeName = attributeName;
+        this.attributeIndex = attributeIndex;
+        this.direction = direction;
+        this.aggregator = aggregator;
+    }
 
-	public final int getAttributeIndex() {
-		return attributeIndex;
-	}
+    public String getAttributeName()
+    {
+        return attributeName;
+    }
 
-	public final void setAttributeIndex(int propIndex) {
-		this.attributeIndex = propIndex;
-	}
+    public void setAttributeName(String attributeName)
+    {
+        this.attributeName = attributeName;
+    }
 
-	public final SortDirection getDirection() {
-		return direction;
-	}
+    public final int getAttributeIndex()
+    {
+        return attributeIndex;
+    }
 
-	public final void setDirection(SortDirection direction) {
-		this.direction = direction;
-	}
+    public final void setAttributeIndex(int propIndex)
+    {
+        this.attributeIndex = propIndex;
+    }
 
-	public final IAggregator getAggregator() {
-		return aggregator;
-	}
+    public final SortDirection getDirection()
+    {
+        return direction;
+    }
 
-	public final void setAggregator(IAggregator aggregator) {
-		this.aggregator = aggregator;
-	}
+    public final void setDirection(SortDirection direction)
+    {
+        this.direction = direction;
+    }
 
-	@Override
-	public String toString() {
-		return attributeName + ", "
-			+ aggregator.toString() + ", "
-			+ direction.toString();
-	}
+    public final IAggregator getAggregator()
+    {
+        return aggregator;
+    }
+
+    public final void setAggregator(IAggregator aggregator)
+    {
+        this.aggregator = aggregator;
+    }
+
+    @Override
+    public String toString()
+    {
+        return attributeName + ", "
+                + aggregator.toString() + ", "
+                + direction.toString();
+    }
 }

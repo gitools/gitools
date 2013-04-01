@@ -1,116 +1,142 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.correlation;
 
-import java.util.Properties;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Properties;
+
 @XmlRootElement
-public class CorrelationAnalysis extends Analysis {
+public class CorrelationAnalysis extends Analysis
+{
 
-	protected String method;
+    protected String method;
 
-	protected Properties methodProperties;
+    protected Properties methodProperties;
 
-	protected Double replaceNanValue;
+    protected Double replaceNanValue;
 
-	protected boolean transposeData;
+    protected boolean transposeData;
 
-	protected int attributeIndex;
+    protected int attributeIndex;
 
-	/** Data */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix data;
+    /**
+     * Data
+     */
+    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+    protected IMatrix data;
 
-	/** Results */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix results;
+    /**
+     * Results
+     */
+    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+    protected IMatrix results;
 
-	public CorrelationAnalysis() {
-		this.method = PearsonCorrelationMethod.ID;
-		this.methodProperties = new Properties();
-		this.replaceNanValue = null;
-		this.transposeData = false;
-		this.attributeIndex = 0;
-	}
-	
-	public String getMethod() {
-		return method;
-	}
+    public CorrelationAnalysis()
+    {
+        this.method = PearsonCorrelationMethod.ID;
+        this.methodProperties = new Properties();
+        this.replaceNanValue = null;
+        this.transposeData = false;
+        this.attributeIndex = 0;
+    }
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
+    public String getMethod()
+    {
+        return method;
+    }
 
-	public Properties getMethodProperties() {
-		return methodProperties;
-	}
+    public void setMethod(String method)
+    {
+        this.method = method;
+    }
 
-	public void setMethodProperties(Properties methodProperties) {
-		this.methodProperties = methodProperties;
-	}
+    public Properties getMethodProperties()
+    {
+        return methodProperties;
+    }
 
-	public boolean isReplaceNanValues() {
-		return replaceNanValue != null && !Double.isNaN(replaceNanValue);
-	}
+    public void setMethodProperties(Properties methodProperties)
+    {
+        this.methodProperties = methodProperties;
+    }
 
-	public Double getReplaceNanValue() {
-		return replaceNanValue;
-	}
+    public boolean isReplaceNanValues()
+    {
+        return replaceNanValue != null && !Double.isNaN(replaceNanValue);
+    }
 
-	public void setReplaceNanValue(Double value) {
-		this.replaceNanValue = value;
-	}
+    public Double getReplaceNanValue()
+    {
+        return replaceNanValue;
+    }
 
-	public boolean isTransposeData() {
-		return transposeData;
-	}
+    public void setReplaceNanValue(Double value)
+    {
+        this.replaceNanValue = value;
+    }
 
-	public void setTransposeData(boolean transposeData) {
-		this.transposeData = transposeData;
-	}
+    public boolean isTransposeData()
+    {
+        return transposeData;
+    }
 
-	public int getAttributeIndex() {
-		return attributeIndex;
-	}
+    public void setTransposeData(boolean transposeData)
+    {
+        this.transposeData = transposeData;
+    }
 
-	public void setAttributeIndex(int attributeIndex) {
-		this.attributeIndex = attributeIndex;
-	}
+    public int getAttributeIndex()
+    {
+        return attributeIndex;
+    }
 
-	public IMatrix getData() {
-		return data;
-	}
+    public void setAttributeIndex(int attributeIndex)
+    {
+        this.attributeIndex = attributeIndex;
+    }
 
-	public void setData(IMatrix data) {
-		this.data = data;
-	}
+    public IMatrix getData()
+    {
+        return data;
+    }
 
-	public IMatrix getResults() {
-		return results;
-	}
+    public void setData(IMatrix data)
+    {
+        this.data = data;
+    }
 
-	public void setResults(IMatrix results) {
-		this.results = results;
-	}
+    public IMatrix getResults()
+    {
+        return results;
+    }
+
+    public void setResults(IMatrix results)
+    {
+        this.results = results;
+    }
 }

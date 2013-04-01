@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-utils
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.utils.textpatt;
 
 import java.lang.reflect.Method;
@@ -22,80 +26,97 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BeanResolver implements TextPattern.VariableValueResolver {
+public class BeanResolver implements TextPattern.VariableValueResolver
+{
 
-	private static class BeanProperty {
-		private Method m;
+    private static class BeanProperty
+    {
+        private Method m;
 
-		public BeanProperty(Method m) {
-			this.m = m;
-		}
+        public BeanProperty(Method m)
+        {
+            this.m = m;
+        }
 
-		public Object get(Object beanInstance) {
-			try {
-				return m.invoke(beanInstance, (Object[]) null);
-			}
-			catch (Exception ex) {
-				return null;
-			}
-		}
-	}
-	
-	private Class<?> beanClass;
-	private Object beanInstance;
+        public Object get(Object beanInstance)
+        {
+            try
+            {
+                return m.invoke(beanInstance, (Object[]) null);
+            } catch (Exception ex)
+            {
+                return null;
+            }
+        }
+    }
 
-	private Map<String, BeanProperty> beanProperties;
+    private Class<?> beanClass;
+    private Object beanInstance;
 
-	public BeanResolver(Class<?> beanClass) {
-		this.beanClass = beanClass;
-		this.beanProperties = readProperties(beanClass);
-	}
+    private Map<String, BeanProperty> beanProperties;
 
-	public Class<?> getBeanClass() {
-		return beanClass;
-	}
+    public BeanResolver(Class<?> beanClass)
+    {
+        this.beanClass = beanClass;
+        this.beanProperties = readProperties(beanClass);
+    }
 
-	public Object getBeanInstance() {
-		return beanInstance;
-	}
+    public Class<?> getBeanClass()
+    {
+        return beanClass;
+    }
 
-	public void setBeanInstance(Object beanInstance) {
-		this.beanInstance = beanInstance;
-	}
+    public Object getBeanInstance()
+    {
+        return beanInstance;
+    }
 
-	@Override
-	public String resolveValue(String variableName) {
-		BeanProperty p = beanProperties.get(variableName.toLowerCase());
-		if (p == null)
-			return null;
+    public void setBeanInstance(Object beanInstance)
+    {
+        this.beanInstance = beanInstance;
+    }
 
-		Object value = p.get(beanInstance);
-		if (value == null)
-			return null;
+    @Override
+    public String resolveValue(String variableName)
+    {
+        BeanProperty p = beanProperties.get(variableName.toLowerCase());
+        if (p == null)
+        {
+            return null;
+        }
 
-		return value.toString();
-	}
+        Object value = p.get(beanInstance);
+        if (value == null)
+        {
+            return null;
+        }
 
-	private Map<String, BeanProperty> readProperties(Class<?> beanClass) {
-		Map<String, BeanProperty> map = new HashMap<String, BeanResolver.BeanProperty>();
+        return value.toString();
+    }
 
-		for (Method m : beanClass.getMethods()) {
-			boolean isGet = m.getName().startsWith("get");
-			boolean isIs = m.getName().startsWith("is");
-			if (m.getParameterTypes().length == 0
-					&& !m.getName().equals("getClass")
-					&& (isGet || isIs)) {
+    private Map<String, BeanProperty> readProperties(Class<?> beanClass)
+    {
+        Map<String, BeanProperty> map = new HashMap<String, BeanResolver.BeanProperty>();
 
-				final String getterName = isGet ?
-						m.getName().substring(3) : m.getName().substring(2);
+        for (Method m : beanClass.getMethods())
+        {
+            boolean isGet = m.getName().startsWith("get");
+            boolean isIs = m.getName().startsWith("is");
+            if (m.getParameterTypes().length == 0
+                    && !m.getName().equals("getClass")
+                    && (isGet || isIs))
+            {
 
-				//final Class<?> propertyClass = m.getReturnType();
+                final String getterName = isGet ?
+                        m.getName().substring(3) : m.getName().substring(2);
 
-				BeanProperty p = new BeanProperty(m);
-				map.put(getterName.toLowerCase(), p);
-			}
-		}
+                //final Class<?> propertyClass = m.getReturnType();
 
-		return map;
-	}
+                BeanProperty p = new BeanProperty(m);
+                map.put(getterName.toLowerCase(), p);
+            }
+        }
+
+        return map;
+    }
 }

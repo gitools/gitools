@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.matrix.model;
 
 import cern.colt.matrix.DoubleFactory2D;
@@ -22,35 +26,24 @@ import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import org.gitools.matrix.model.element.DoubleElementAdapter;
 
-public class DoubleMatrix extends BaseMatrix	{			
+public class DoubleMatrix extends BaseMatrix
+{
 
-	private static final long serialVersionUID = -710485141066995079L;
+    private static final long serialVersionUID = -710485141066995079L;
 
-	protected DoubleMatrix2D cells;
-	
-	public DoubleMatrix() {
-		this("", new String[0], new String[0], DoubleFactory2D.dense.make(0, 0));
-	}
-	
-	public DoubleMatrix(
-			String title, 
-			String[] colNames, 
-			String[] rowNames, 
-			DoubleMatrix2D cells) {
+    protected DoubleMatrix2D cells;
 
-		super(
-				title,
-				ObjectFactory1D.dense.make(rowNames),
-				ObjectFactory1D.dense.make(colNames),
-				new DoubleElementAdapter());
-		
-		this.cells = cells;
-	}
+    public DoubleMatrix()
+    {
+        this("", new String[0], new String[0], DoubleFactory2D.dense.make(0, 0));
+    }
 
     public DoubleMatrix(
             String title,
             String[] colNames,
-            String[] rowNames) {
+            String[] rowNames,
+            DoubleMatrix2D cells)
+    {
 
         super(
                 title,
@@ -58,52 +51,75 @@ public class DoubleMatrix extends BaseMatrix	{
                 ObjectFactory1D.dense.make(colNames),
                 new DoubleElementAdapter());
 
-        makeCells(rowNames.length,colNames.length);
+        this.cells = cells;
     }
 
-	// rows and columns
-	
-	@Override
-	public int getColumnCount() {
-		return columns.cardinality();
-	}
+    public DoubleMatrix(
+            String title,
+            String[] colNames,
+            String[] rowNames)
+    {
 
-	@Override
-	public int getRowCount() {
-		return rows.cardinality();
-	}
-	
-	// cells
-	
-	public final DoubleMatrix2D getCells() {
-		return cells;
-	}
+        super(
+                title,
+                ObjectFactory1D.dense.make(rowNames),
+                ObjectFactory1D.dense.make(colNames),
+                new DoubleElementAdapter());
 
-	public final void setCells(DoubleMatrix2D cells) {
-		this.cells = cells;
-	}
-	
-	@Override
-	public Object getCell(int row, int column) {
-		return cells.get(row, column);
-	}
-	
-	@Override
-	public Object getCellValue(int row, int column, int index) {
-		return cells.get(row, column);
-	}
+        makeCells(rowNames.length, colNames.length);
+    }
 
-	@Override
-	public void setCellValue(int row, int column, int index, Object value) {
-		// FIXME null and NaN are different things
-		cells.set(row, column, value != null ? (Double) value : Double.NaN);
-	}
+    // rows and columns
 
-	@Override
-	public void makeCells(int rows, int columns) {
-		this.cells = DoubleFactory2D.dense.make(rows, columns);
-	}
-	
+    @Override
+    public int getColumnCount()
+    {
+        return columns.cardinality();
+    }
+
+    @Override
+    public int getRowCount()
+    {
+        return rows.cardinality();
+    }
+
+    // cells
+
+    public final DoubleMatrix2D getCells()
+    {
+        return cells;
+    }
+
+    public final void setCells(DoubleMatrix2D cells)
+    {
+        this.cells = cells;
+    }
+
+    @Override
+    public Object getCell(int row, int column)
+    {
+        return cells.get(row, column);
+    }
+
+    @Override
+    public Object getCellValue(int row, int column, int index)
+    {
+        return cells.get(row, column);
+    }
+
+    @Override
+    public void setCellValue(int row, int column, int index, Object value)
+    {
+        // FIXME null and NaN are different things
+        cells.set(row, column, value != null ? (Double) value : Double.NaN);
+    }
+
+    @Override
+    public void makeCells(int rows, int columns)
+    {
+        this.cells = DoubleFactory2D.dense.make(rows, columns);
+    }
+
 	/*@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

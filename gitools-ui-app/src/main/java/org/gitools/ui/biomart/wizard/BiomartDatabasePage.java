@@ -1,133 +1,160 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JComponent;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.MartLocation;
-
-import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.wizard.common.FilteredListPanel;
 
-public class BiomartDatabasePage extends AbstractWizardPage {
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BiomartDatabasePage extends AbstractWizardPage
+{
 
 
-	private static class DatabaseListWrapper {
-		private MartLocation mart;
-		
-		public DatabaseListWrapper(MartLocation mart) {
-			this.mart = mart;
-		}
-		
-		public MartLocation getMart() {
-			return mart;
-		}
-		
-		@Override
-		public String toString() {
-			return mart.getDisplayName();
-		}
-	}
+    private static class DatabaseListWrapper
+    {
+        private MartLocation mart;
 
-	private BiomartService biomartService;
+        public DatabaseListWrapper(MartLocation mart)
+        {
+            this.mart = mart;
+        }
 
-	private FilteredListPanel panelDataset;
-	
-	private boolean updated;
-	
-	public BiomartDatabasePage(BiomartService biomartService /*IBiomartService biomartService*/) {
-		super();
-		
-		this.biomartService = biomartService;
-		updated = false;
-		
-		setTitle("Select database");
+        public MartLocation getMart()
+        {
+            return mart;
+        }
+
+        @Override
+        public String toString()
+        {
+            return mart.getDisplayName();
+        }
+    }
+
+    private BiomartService biomartService;
+
+    private FilteredListPanel panelDataset;
+
+    private boolean updated;
+
+    public BiomartDatabasePage(BiomartService biomartService /*IBiomartService biomartService*/)
+    {
+        super();
+
+        this.biomartService = biomartService;
+        updated = false;
+
+        setTitle("Select database");
 
 
-	}
-	
-	@Override
-	public JComponent createControls() {
-		panelDataset = new FilteredListPanel();
+    }
 
-		panelDataset.list.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent e) {
-				selectionChangeActionPerformed();
-			}
-		});
+    @Override
+    public JComponent createControls()
+    {
+        panelDataset = new FilteredListPanel();
 
-		return panelDataset;
-	}
+        panelDataset.list.addListSelectionListener(new ListSelectionListener()
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                selectionChangeActionPerformed();
+            }
+        });
 
-	@Override
-	public void updateControls() {
-		if (updated)
-			return;
-		
-		setMessage(MessageStatus.PROGRESS, "Retrieving databases...");
-		
-		panelDataset.setListData(new Object[] {});
-		
-		new Thread(new Runnable() {
-			@Override public void run() {
-				try {					
-					List<MartLocation> registry = biomartService.getRegistry();
-					final List<DatabaseListWrapper> listData = new ArrayList<DatabaseListWrapper>();
-					for (MartLocation mart : registry)
-						if (mart.getVisible() != 0)
-							listData.add(new DatabaseListWrapper(mart));
-					
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override public void run() {
-							panelDataset.setListData(listData.toArray(
-									new DatabaseListWrapper[listData.size()]));
-							
-							setMessage(MessageStatus.INFO, "");
-						}
-					});
-					
-					updated = true;
-				} catch (Exception e) {
-					setStatus(MessageStatus.ERROR);
-					setMessage(e.getMessage());
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), e);
-					dlg.setVisible(true);
-				}
-			}
-		}).start();
-	}
+        return panelDataset;
+    }
 
-	public MartLocation getMart() {
-		DatabaseListWrapper model = (DatabaseListWrapper) panelDataset.getSelectedValue();
-		return model.getMart();
-	}
+    @Override
+    public void updateControls()
+    {
+        if (updated)
+        {
+            return;
+        }
 
-	private void selectionChangeActionPerformed() {
-		Object value = panelDataset.list.getSelectedValue();
-		setComplete(value != null);
-	}
+        setMessage(MessageStatus.PROGRESS, "Retrieving databases...");
+
+        panelDataset.setListData(new Object[]{});
+
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    List<MartLocation> registry = biomartService.getRegistry();
+                    final List<DatabaseListWrapper> listData = new ArrayList<DatabaseListWrapper>();
+                    for (MartLocation mart : registry)
+                        if (mart.getVisible() != 0)
+                        {
+                            listData.add(new DatabaseListWrapper(mart));
+                        }
+
+                    SwingUtilities.invokeAndWait(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            panelDataset.setListData(listData.toArray(
+                                    new DatabaseListWrapper[listData.size()]));
+
+                            setMessage(MessageStatus.INFO, "");
+                        }
+                    });
+
+                    updated = true;
+                } catch (Exception e)
+                {
+                    setStatus(MessageStatus.ERROR);
+                    setMessage(e.getMessage());
+                    ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), e);
+                    dlg.setVisible(true);
+                }
+            }
+        }).start();
+    }
+
+    public MartLocation getMart()
+    {
+        DatabaseListWrapper model = (DatabaseListWrapper) panelDataset.getSelectedValue();
+        return model.getMart();
+    }
+
+    private void selectionChangeActionPerformed()
+    {
+        Object value = panelDataset.list.getSelectedValue();
+        setComplete(value != null);
+    }
 }

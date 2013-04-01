@@ -1,24 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.correlation;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.util.Date;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.MethodException;
@@ -28,109 +30,129 @@ import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class CorrelationProcessor implements AnalysisProcessor {
+import java.util.Date;
 
-	protected CorrelationAnalysis analysis;
+public class CorrelationProcessor implements AnalysisProcessor
+{
 
-	public CorrelationProcessor(CorrelationAnalysis analysis) {
-		this.analysis = analysis;
-	}
+    protected CorrelationAnalysis analysis;
 
-	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+    public CorrelationProcessor(CorrelationAnalysis analysis)
+    {
+        this.analysis = analysis;
+    }
 
-		Date startTime = new Date();
+    @Override
+    public void run(IProgressMonitor monitor) throws AnalysisException
+    {
 
-		CorrelationMethod method = CorrelationMethodFactory.createMethod(
-				analysis.getMethod(), analysis.getMethodProperties());
+        Date startTime = new Date();
 
-		IMatrix data = analysis.getData();
-		int attributeIndex = analysis.getAttributeIndex();
+        CorrelationMethod method = CorrelationMethodFactory.createMethod(
+                analysis.getMethod(), analysis.getMethodProperties());
 
-		if (analysis.isTransposeData()) {
-			TransposedMatrixView mt = new TransposedMatrixView();
-			mt.setMatrix(data);
-			data = mt;
-		}
+        IMatrix data = analysis.getData();
+        int attributeIndex = analysis.getAttributeIndex();
 
-		int numRows = data.getRowCount();
-		int numColumns = data.getColumnCount();
+        if (analysis.isTransposeData())
+        {
+            TransposedMatrixView mt = new TransposedMatrixView();
+            mt.setMatrix(data);
+            data = mt;
+        }
 
-		monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
+        int numRows = data.getRowCount();
+        int numColumns = data.getColumnCount();
 
-		String[] labels = new String[numColumns];
-		for (int i = 0; i < numColumns; i++)
-			labels[i] = data.getColumnLabel(i);
+        monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
 
-		final ObjectMatrix results = new ObjectMatrix();
-		analysis.setResults(results);
+        String[] labels = new String[numColumns];
+        for (int i = 0; i < numColumns; i++)
+            labels[i] = data.getColumnLabel(i);
 
-		results.setColumns(labels);
-		results.setRows(labels);
-		results.makeCells();
+        final ObjectMatrix results = new ObjectMatrix();
+        analysis.setResults(results);
 
-		results.setCellAdapter(
-				new BeanElementAdapter(method.getResultClass()));
-		
-		double[] x = new double[numRows];
-		double[] y = new double[numRows];
-		int[] indices = new int[numRows];
+        results.setColumns(labels);
+        results.setRows(labels);
+        results.makeCells();
 
-		//boolean replaceNanValues = analysis.isReplaceNanValues();
-		Double replaceNanValue = analysis.getReplaceNanValue();
-		if (replaceNanValue == null)
-			replaceNanValue = Double.NaN;
+        results.setCellAdapter(
+                new BeanElementAdapter(method.getResultClass()));
 
-		Class<?> valueClass = data.getCellAttributes().get(attributeIndex).getValueClass();
-		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+        double[] x = new double[numRows];
+        double[] y = new double[numRows];
+        int[] indices = new int[numRows];
 
-		for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
-			for (int row = 0; row < numRows; row++) {
-				Object value = data.getCellValue(row, i, attributeIndex);
-				Double v = cast.getDoubleValue(value);
-				if (v == null || Double.isNaN(v))
-					v = replaceNanValue;
-				x[row] = v;
-			}
+        //boolean replaceNanValues = analysis.isReplaceNanValues();
+        Double replaceNanValue = analysis.getReplaceNanValue();
+        if (replaceNanValue == null)
+        {
+            replaceNanValue = Double.NaN;
+        }
 
-			for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
-				monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
+        Class<?> valueClass = data.getCellAttributes().get(attributeIndex).getValueClass();
+        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
-				//TODO Parallelize
-				{
-					int numPairs = 0;
-					for (int row = 0; row < numRows; row++) {
-						double v0 = x[row];
+        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++)
+        {
+            for (int row = 0; row < numRows; row++)
+            {
+                Object value = data.getCellValue(row, i, attributeIndex);
+                Double v = cast.getDoubleValue(value);
+                if (v == null || Double.isNaN(v))
+                {
+                    v = replaceNanValue;
+                }
+                x[row] = v;
+            }
 
-						Object value = data.getCellValue(row, j, attributeIndex);
+            for (int j = i; j < numColumns && !monitor.isCancelled(); j++)
+            {
+                monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
 
-						Double v1 = cast.getDoubleValue(value);
-						if (v1 == null || Double.isNaN(v1))
-							v1 = replaceNanValue;
+                //TODO Parallelize
+                {
+                    int numPairs = 0;
+                    for (int row = 0; row < numRows; row++)
+                    {
+                        double v0 = x[row];
 
-						if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
-							y[row] = v1;
+                        Object value = data.getCellValue(row, j, attributeIndex);
 
-							indices[numPairs++] = row;
-						}
-					}
+                        Double v1 = cast.getDoubleValue(value);
+                        if (v1 == null || Double.isNaN(v1))
+                        {
+                            v1 = replaceNanValue;
+                        }
 
-					try {
-						results.setCell(i, j,
-								method.correlation(x, y, indices, numPairs));
-					} catch (MethodException ex) {
-						throw new AnalysisException(ex);
-					}
-				}
+                        if (!Double.isNaN(v0) && !Double.isNaN(v1))
+                        {
+                            y[row] = v1;
 
-				monitor.worked(1);
-			}
-		}
+                            indices[numPairs++] = row;
+                        }
+                    }
 
-		analysis.setStartTime(startTime);
-		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-		
-		monitor.end();
-	}
+                    try
+                    {
+                        results.setCell(i, j,
+                                method.correlation(x, y, indices, numPairs));
+                    } catch (MethodException ex)
+                    {
+                        throw new AnalysisException(ex);
+                    }
+                }
+
+                monitor.worked(1);
+            }
+        }
+
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+
+        monitor.end();
+    }
 }

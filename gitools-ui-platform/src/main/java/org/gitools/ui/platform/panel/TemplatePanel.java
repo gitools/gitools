@@ -1,28 +1,25 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.panel;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.util.Properties;
-import java.util.Map.Entry;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -32,120 +29,110 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class TemplatePanel extends Html4Panel {
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.util.Map.Entry;
+import java.util.Properties;
 
-	private static final long serialVersionUID = 1939265225161205798L;
-	
-	private VelocityEngine velocityEngine;
-	private String templateName;
-	private String templateUrl;
-	private Template template;
-	private VelocityContext context;
+public class TemplatePanel extends Html4Panel
+{
 
-	public TemplatePanel(Properties props) {
+    private static final long serialVersionUID = 1939265225161205798L;
+
+    private VelocityEngine velocityEngine;
+    private String templateName;
+    private String templateUrl;
+    private Template template;
+    private VelocityContext context;
+
+    public TemplatePanel(Properties props)
+    {
         super();
 
-		velocityEngine = new VelocityEngine();
-		
-		velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
-		velocityEngine.setProperty(
-				"class." + VelocityEngine.RESOURCE_LOADER + ".class", 
-				ClasspathResourceLoader.class.getName());
-		
-		velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
-		velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
+        velocityEngine = new VelocityEngine();
 
-		// TODO runtime.log.logsystem.class <-> org.apache.velocity.runtime.log.LogChute
-		
-		velocityEngine.setProperty("runtime.log.logsystem.log4j.logger",
-				"org.apache.velocity.runtime.log.Log4JLogChute" );
-		
-		velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
-		
-		//FIXME: external parameter
-		// velocityEngine.setProperty(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
+        velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
+        velocityEngine.setProperty(
+                "class." + VelocityEngine.RESOURCE_LOADER + ".class",
+                ClasspathResourceLoader.class.getName());
 
-		for (Entry<Object, Object> prop : props.entrySet())
-			velocityEngine.setProperty(
-					(String) prop.getKey(), prop.getValue());
-		
-		try {
-			velocityEngine.init();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	public TemplatePanel() {
-		this(new Properties());
-	}
+        velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
+        velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 
-	public Template getTemplate() {
-		return template;
-	}
-	
-	@Deprecated // specify a base url
-	public void setTemplateFromResource(String resource)
-			throws ResourceNotFoundException, ParseErrorException, Exception {
+        velocityEngine.setProperty("runtime.log.logsystem.log4j.logger",
+                "org.apache.velocity.runtime.log.Log4JLogChute");
 
-		if (!resource.startsWith("/"))
-			resource = "/" + resource;
-		
-		//setTemplateFromResource(new URL("http://localhost" + path));
-		setTemplateFromResource(resource, "http://localhost");
-	}
+        velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
 
-	//@Deprecated // use setTemplateFromResource(URL url)
-	public void setTemplateFromResource(String resource, String baseUrl) throws Exception {
-		
-		setTemplateFromResource(resource, new URL(baseUrl));
-	}
+        for (Entry<Object, Object> prop : props.entrySet())
+            velocityEngine.setProperty(
+                    (String) prop.getKey(), prop.getValue());
 
-	public void setTemplateFromResource(String resource, URL baseUrl) throws Exception {
-		if (template == null || !this.templateName.equals(resource)) {
-			template = velocityEngine.getTemplate(resource);
-			this.templateName = resource;
-		}
+        try
+        {
+            velocityEngine.init();
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
-		this.templateUrl = baseUrl.toString();
-	}
+    public TemplatePanel()
+    {
+        this(new Properties());
+    }
 
-	/*public void setTemplateFromResource(URL url) throws Exception {
-		String basePath = getClass().getResource("/").getPath();
-		String path = url.getPath();
+    @Deprecated
+    public void setTemplateFromResource(String resource) throws Exception
+    {
 
-		if (template == null || !this.templateName.equals(path)) {
-			template = velocityEngine.getTemplate(path);
-			this.templateName = path;
-		}
+        if (!resource.startsWith("/"))
+        {
+            resource = "/" + resource;
+        }
 
-		this.templateUrl = url.toString();
-	}*/
+        setTemplateFromResource(resource, "http://localhost");
+    }
 
-	public String getTemplateUrl() {
-		return templateUrl;
-	}
+    public void setTemplateFromResource(String resource, String baseUrl) throws Exception
+    {
 
-	public VelocityContext getContext() {
-		return context;
-	}
-	
-	public void setContext(VelocityContext context) {
-		this.context = context;
-	}
+        setTemplateFromResource(resource, new URL(baseUrl));
+    }
 
-	public void render(VelocityContext context) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
-		final StringWriter sw = new StringWriter();
-		template.merge(context, sw);
+    public void setTemplateFromResource(String resource, URL baseUrl) throws Exception
+    {
+        if (template == null || !this.templateName.equals(resource))
+        {
+            template = velocityEngine.getTemplate(resource);
+            this.templateName = resource;
+        }
+
+        this.templateUrl = baseUrl.toString();
+    }
+
+    public void setContext(VelocityContext context)
+    {
+        this.context = context;
+    }
+
+    public void render(VelocityContext context) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
+    {
+        final StringWriter sw = new StringWriter();
+        template.merge(context, sw);
 
         panel.setHtml(sw.toString(), templateUrl, rcontext);
-	}
+    }
 
-	public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
-		render(context);
-	}
+    public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
+    {
+        render(context);
+    }
 
-	public void merge(VelocityContext context, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
-		template.merge(context, writer);
-	}
+    public void merge(VelocityContext context, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
+    {
+        template.merge(context, writer);
+    }
 }

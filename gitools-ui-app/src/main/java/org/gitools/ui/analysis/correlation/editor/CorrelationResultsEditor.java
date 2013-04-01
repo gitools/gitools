@@ -1,26 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.correlation.editor;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.List;
-import javax.swing.JSplitPane;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
@@ -31,49 +31,58 @@ import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public class CorrelationResultsEditor extends HeatmapEditor {
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
-	protected CorrelationAnalysis analysis;
+public class CorrelationResultsEditor extends HeatmapEditor
+{
 
-	protected AbstractTablesPanel tablesPanel;
+    protected CorrelationAnalysis analysis;
 
-	protected static Heatmap createHeatmap(CorrelationAnalysis analysis) {
-		IMatrixView results = new DiagonalMatrixView(analysis.getResults());
-		Heatmap heatmap = new Heatmap(results);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
-		IElementAdapter cellAdapter = results.getCellAdapter();
-		int propertiesNb = cellAdapter.getProperties().size();
-		CorrelationElementDecorator[] dec = new CorrelationElementDecorator[propertiesNb];
-		for (int i = 0; i < propertiesNb; i++) {
-			dec[i] = new CorrelationElementDecorator(cellAdapter);
-			int valueIndex = cellAdapter.getPropertyIndex("score");
-			dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
-		}
-		heatmap.setCellDecorators(dec);
+    protected AbstractTablesPanel tablesPanel;
 
-		heatmap.setTitle(analysis.getTitle());
+    protected static Heatmap createHeatmap(CorrelationAnalysis analysis)
+    {
+        IMatrixView results = new DiagonalMatrixView(analysis.getResults());
+        Heatmap heatmap = new Heatmap(results);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        IElementAdapter cellAdapter = results.getCellAdapter();
+        int propertiesNb = cellAdapter.getProperties().size();
+        CorrelationElementDecorator[] dec = new CorrelationElementDecorator[propertiesNb];
+        for (int i = 0; i < propertiesNb; i++)
+        {
+            dec[i] = new CorrelationElementDecorator(cellAdapter);
+            int valueIndex = cellAdapter.getPropertyIndex("score");
+            dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
+        }
+        heatmap.setCellDecorators(dec);
 
-		return heatmap;
-	}
+        heatmap.setTitle(analysis.getTitle());
 
-	protected static List<BaseAction> createToolBar(CorrelationAnalysis analysis) {
-		return null;
-	}
+        return heatmap;
+    }
 
-	public CorrelationResultsEditor(CorrelationAnalysis analysis) {
-		super(createHeatmap(analysis), createToolBar(analysis), true);
+    protected static List<BaseAction> createToolBar(CorrelationAnalysis analysis)
+    {
+        return null;
+    }
 
-		tablesPanel = new CorrelationTablesPanel(analysis, heatmap);
-		tablesPanel.setMinimumSize(new Dimension(140, 140));
+    public CorrelationResultsEditor(CorrelationAnalysis analysis)
+    {
+        super(createHeatmap(analysis), createToolBar(analysis), true);
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setContinuousLayout(true);
-		splitPane.setResizeWeight(1);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setTopComponent(embeddedContainer);
-		splitPane.setBottomComponent(tablesPanel);
+        tablesPanel = new CorrelationTablesPanel(analysis, heatmap);
+        tablesPanel.setMinimumSize(new Dimension(140, 140));
 
-		setLayout(new BorderLayout());
-		add(splitPane);
-	}
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setContinuousLayout(true);
+        splitPane.setResizeWeight(1);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setTopComponent(embeddedContainer);
+        splitPane.setBottomComponent(tablesPanel);
+
+        setLayout(new BorderLayout());
+        add(splitPane);
+    }
 }

@@ -1,3 +1,24 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.fileimport.wizard.excel;
 
 import org.gitools.ui.IconNames;
@@ -14,12 +35,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.List;
 
-public class ImportExcelWizard extends AbstractWizard {
+public class ImportExcelWizard extends AbstractWizard
+{
 
     private FileChooserPage fileSelectionPage;
     private SelectColumnsPage selectColumnsPage;
 
-    public ImportExcelWizard() {
+    public ImportExcelWizard()
+    {
         setTitle("Import an Excel matrix");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
         setHelpContext("import_excel");
@@ -27,7 +50,8 @@ public class ImportExcelWizard extends AbstractWizard {
 
 
     @Override
-    public void addPages() {
+    public void addPages()
+    {
 
         fileSelectionPage = new FileChooserPage();
         fileSelectionPage.setTitle("Select Excel file");
@@ -42,9 +66,11 @@ public class ImportExcelWizard extends AbstractWizard {
     }
 
     @Override
-    public IWizardPage getNextPage(IWizardPage page) {
+    public IWizardPage getNextPage(IWizardPage page)
+    {
 
-        if (page == fileSelectionPage) {
+        if (page == fileSelectionPage)
+        {
             selectColumnsPage.setReader(new ExcelReader(fileSelectionPage.getSelectedFile()));
         }
 
@@ -52,7 +78,8 @@ public class ImportExcelWizard extends AbstractWizard {
     }
 
     @Override
-    public void performFinish() {
+    public void performFinish()
+    {
 
         File excelFile = fileSelectionPage.getSelectedFile();
 
@@ -65,8 +92,8 @@ public class ImportExcelWizard extends AbstractWizard {
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
         JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader);
-        JobThread.execute(AppFrame.instance(), loadFile);
+        JobThread.execute(AppFrame.get(), loadFile);
 
-        AppFrame.instance().setStatusText("Done.");
+        AppFrame.get().setStatusText("Done.");
     }
 }

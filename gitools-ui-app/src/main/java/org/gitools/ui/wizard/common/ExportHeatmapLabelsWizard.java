@@ -1,20 +1,24 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.wizard.common;
 
 import org.gitools.heatmap.Heatmap;
@@ -24,72 +28,82 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 
-public class ExportHeatmapLabelsWizard extends AbstractWizard {
+public class ExportHeatmapLabelsWizard extends AbstractWizard
+{
 
-	private FileFormat[] supportedFormats = new FileFormat[] {
-		FileFormats.TEXT
-	};
+    private FileFormat[] supportedFormats = new FileFormat[]{
+            FileFormats.TEXT
+    };
 
-	private Heatmap hm;
+    private Heatmap hm;
 
-	private ExportHeatmapLabelsPage sourcePage;
-	private PatternSourcePage patPage;
-	private SaveFilePage savePage;
+    private ExportHeatmapLabelsPage sourcePage;
+    private PatternSourcePage patPage;
+    private SaveFilePage savePage;
 
-	public ExportHeatmapLabelsWizard(Heatmap hm) {
-		this.hm = hm;
+    public ExportHeatmapLabelsWizard(Heatmap hm)
+    {
+        this.hm = hm;
 
-		setTitle("Export labels ...");
-	}
+        setTitle("Export labels ...");
+    }
 
-	@Override
-	public void addPages() {
-		sourcePage = new ExportHeatmapLabelsPage();
-		addPage(sourcePage);
+    @Override
+    public void addPages()
+    {
+        sourcePage = new ExportHeatmapLabelsPage();
+        addPage(sourcePage);
 
-		patPage = new PatternSourcePage(true);
-		addPage(patPage);
-		
-		savePage = new SaveFilePage();
-		savePage.setTitle("Select destination file");
-		savePage.setFolder(Settings.getDefault().getLastExportPath());
-		savePage.setFormats(supportedFormats);
-		addPage(savePage);
-	}
+        patPage = new PatternSourcePage(true);
+        addPage(patPage);
 
-	@Override
-	public void performFinish() {
-		Settings.getDefault().setLastExportPath(savePage.getFolder());
-		Settings.getDefault().save();
-	}
+        savePage = new SaveFilePage();
+        savePage.setTitle("Select destination file");
+        savePage.setFolder(Settings.getDefault().getLastExportPath());
+        savePage.setFormats(supportedFormats);
+        addPage(savePage);
+    }
 
-	@Override
-	public void pageLeft(IWizardPage page) {
-		if (page == sourcePage) {
-			switch (sourcePage.getWhichLabels()) {
-				case VISIBLE_ROWS:
-				case HIDDEN_ROWS:
-					patPage.setAnnotationMatrix(hm.getRowDim().getAnnotations());
-					break;
+    @Override
+    public void performFinish()
+    {
+        Settings.getDefault().setLastExportPath(savePage.getFolder());
+        Settings.getDefault().save();
+    }
 
-				case VISIBLE_COLUMNS:
-				case HIDDEN_COLUMNS:
-					patPage.setAnnotationMatrix(hm.getColumnDim().getAnnotations());
-					break;
-			}
-		}
-	}
+    @Override
+    public void pageLeft(IWizardPage page)
+    {
+        if (page == sourcePage)
+        {
+            switch (sourcePage.getWhichLabels())
+            {
+                case VISIBLE_ROWS:
+                case HIDDEN_ROWS:
+                    patPage.setAnnotationMatrix(hm.getRowDim().getAnnotations());
+                    break;
 
-	public ExportHeatmapLabelsPage.WhichLabels getWhichLabels() {
-		return sourcePage.getWhichLabels();
-	}
+                case VISIBLE_COLUMNS:
+                case HIDDEN_COLUMNS:
+                    patPage.setAnnotationMatrix(hm.getColumnDim().getAnnotations());
+                    break;
+            }
+        }
+    }
 
-	public String getPattern() {
-		return patPage.getPattern();
-	}
+    public ExportHeatmapLabelsPage.WhichLabels getWhichLabels()
+    {
+        return sourcePage.getWhichLabels();
+    }
 
-	public SaveFilePage getSavePage() {
-		return savePage;
-	}
+    public String getPattern()
+    {
+        return patPage.getPattern();
+    }
+
+    public SaveFilePage getSavePage()
+    {
+        return savePage;
+    }
 
 }

@@ -1,21 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.combination.editor;
+
 
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
@@ -27,34 +32,37 @@ import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import javax.swing.*;
 import java.awt.*;
 
-public class CombinationResultsEditor extends HeatmapEditor {
+public class CombinationResultsEditor extends HeatmapEditor
+{
 
-	protected CombinationAnalysis analysis;
+    protected CombinationAnalysis analysis;
 
-	protected CombinationTablesPanel tablesPanel;
+    protected CombinationTablesPanel tablesPanel;
 
-	protected static Heatmap createHeatmap(CombinationAnalysis analysis) {
-		IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
-		return heatmap;
-	}
+    protected static Heatmap createHeatmap(CombinationAnalysis analysis)
+    {
+        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        return heatmap;
+    }
 
-	public CombinationResultsEditor(CombinationAnalysis analysis) {
-		super(createHeatmap(analysis), true);
+    public CombinationResultsEditor(CombinationAnalysis analysis)
+    {
+        super(createHeatmap(analysis), true);
 
-		tablesPanel = new CombinationTablesPanel(analysis, heatmap);
-		tablesPanel.setMinimumSize(new Dimension(140, 140));
+        tablesPanel = new CombinationTablesPanel(analysis, heatmap);
+        tablesPanel.setMinimumSize(new Dimension(140, 140));
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setContinuousLayout(true);
-		splitPane.setResizeWeight(1);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setTopComponent(embeddedContainer);
-		splitPane.setBottomComponent(tablesPanel);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setContinuousLayout(true);
+        splitPane.setResizeWeight(1);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setTopComponent(embeddedContainer);
+        splitPane.setBottomComponent(tablesPanel);
 
-		setLayout(new BorderLayout());
-		add(splitPane);
-	}
+        setLayout(new BorderLayout());
+        add(splitPane);
+    }
 
 }

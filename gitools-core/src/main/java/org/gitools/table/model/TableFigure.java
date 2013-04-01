@@ -1,23 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.table.model;
 
-import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.AbstractModel;
@@ -28,6 +31,7 @@ import org.gitools.model.xml.AbstractModelXmlAdapter;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.table.model.impl.TableView;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,113 +45,130 @@ import java.util.List;
 @SuppressWarnings("unused")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "tableFigure")
-public class TableFigure extends Figure implements Serializable, IResource {
+public class TableFigure extends Figure implements Serializable, IResource
+{
 
-	private static final long serialVersionUID = 9006041133309250290L;
+    private static final long serialVersionUID = 9006041133309250290L;
 
     private IResourceLocator locator;
 
-	private TableView tableView;
-	
-	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
-	private List<AbstractModel> cellDecorators;
+    private TableView tableView;
 
-	@XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
-	private List<AbstractModel> headerDecorators;
+    @XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
+    private List<AbstractModel> cellDecorators;
 
-	private boolean showGrid;
+    @XmlJavaTypeAdapter(AbstractModelXmlAdapter.class)
+    private List<AbstractModel> headerDecorators;
 
-	@XmlJavaTypeAdapter(ColorXmlAdapter.class)
-	private Color gridColor;
+    private boolean showGrid;
 
-	private int rowSize;
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    private Color gridColor;
 
-	public TableFigure() {
+    private int rowSize;
 
-		showGrid = true;
-		gridColor = Color.WHITE;
-		rowSize = 18;
+    public TableFigure()
+    {
 
-		cellDecorators = new ArrayList<AbstractModel>();
-		headerDecorators = new ArrayList<AbstractModel>();
-	}
+        showGrid = true;
+        gridColor = Color.WHITE;
+        rowSize = 18;
 
-	public TableFigure(TableView tableView) {
+        cellDecorators = new ArrayList<AbstractModel>();
+        headerDecorators = new ArrayList<AbstractModel>();
+    }
 
-		showGrid = true;
-		gridColor = Color.WHITE;
-		rowSize = 18;
+    public TableFigure(TableView tableView)
+    {
 
-		this.tableView = tableView;
-		cellDecorators = new ArrayList<AbstractModel>();
-		headerDecorators = new ArrayList<AbstractModel>();
+        showGrid = true;
+        gridColor = Color.WHITE;
+        rowSize = 18;
 
-		Object cellElement;
-		
-		ElementDecorator cellDecorator;
-		IElementAdapter elementAdapter;
-		HeatmapTextLabelsHeader headerDecorator;
+        this.tableView = tableView;
+        cellDecorators = new ArrayList<AbstractModel>();
+        headerDecorators = new ArrayList<AbstractModel>();
 
-		for (int i = 0; i < tableView.getColumnCount(); i++) {
-			
-			elementAdapter = tableView.getCellColumnAdapter(i);
-			cellDecorator = new FormattedTextElementDecorator(elementAdapter);
+        Object cellElement;
 
-			headerDecorator = new HeatmapTextLabelsHeader();
-			cellDecorators.add(cellDecorator);
-			headerDecorators.add(headerDecorator);
+        ElementDecorator cellDecorator;
+        IElementAdapter elementAdapter;
+        HeatmapTextLabelsHeader headerDecorator;
 
-		}
-	}
+        for (int i = 0; i < tableView.getColumnCount(); i++)
+        {
 
-	public TableFigure(ITable table, List<AbstractModel> cellDecorators,
-			List<AbstractModel> headerDecorators) throws TableFormatException {
+            elementAdapter = tableView.getCellColumnAdapter(i);
+            cellDecorator = new FormattedTextElementDecorator(elementAdapter);
 
-		int columns = table.getColumnCount();
+            headerDecorator = new HeatmapTextLabelsHeader();
+            cellDecorators.add(cellDecorator);
+            headerDecorators.add(headerDecorator);
 
-		if ((columns == cellDecorators.size())
-				&& (columns == headerDecorators.size())) {
+        }
+    }
 
-			this.cellDecorators = cellDecorators;
-			this.headerDecorators = headerDecorators;
-			showGrid = true;
-			gridColor = Color.WHITE;
-			rowSize = 18;
-		} else
-			throw new TableFormatException(
-					"Wrong number of columns in table decorators");
-	}
+    public TableFigure(ITable table, List<AbstractModel> cellDecorators,
+                       List<AbstractModel> headerDecorators) throws TableFormatException
+    {
 
-    public IResourceLocator getLocator() {
+        int columns = table.getColumnCount();
+
+        if ((columns == cellDecorators.size())
+                && (columns == headerDecorators.size()))
+        {
+
+            this.cellDecorators = cellDecorators;
+            this.headerDecorators = headerDecorators;
+            showGrid = true;
+            gridColor = Color.WHITE;
+            rowSize = 18;
+        }
+        else
+        {
+            throw new TableFormatException(
+                    "Wrong number of columns in table decorators");
+        }
+    }
+
+    public IResourceLocator getLocator()
+    {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator) {
+    public void setLocator(IResourceLocator locator)
+    {
         this.locator = locator;
     }
 
-    public void setDecorator(AbstractModel decorator, int column) {
-		cellDecorators.set(column, decorator);
-	}
+    public void setDecorator(AbstractModel decorator, int column)
+    {
+        cellDecorators.set(column, decorator);
+    }
 
-	public void setHeaderDecorator(AbstractModel decorator, int column) {
-		cellDecorators.set(column, decorator);
-	}
+    public void setHeaderDecorator(AbstractModel decorator, int column)
+    {
+        cellDecorators.set(column, decorator);
+    }
 
-	public TableView getTableView() {
-		return tableView;
-	}
+    public TableView getTableView()
+    {
+        return tableView;
+    }
 
-	public void setTableView(TableView tableView) {
-		this.tableView = tableView;
-	}
+    public void setTableView(TableView tableView)
+    {
+        this.tableView = tableView;
+    }
 
-	public AbstractModel getHeaderDecorator(int column) {
-		return headerDecorators.get(column);
-	}
+    public AbstractModel getHeaderDecorator(int column)
+    {
+        return headerDecorators.get(column);
+    }
 
-	public AbstractModel getDecorator(int column) {
-		return cellDecorators.get(column);
-	}
+    public AbstractModel getDecorator(int column)
+    {
+        return cellDecorators.get(column);
+    }
 }
 

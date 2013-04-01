@@ -1,182 +1,189 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.wizard;
 
-import java.io.File;
-import java.util.List;
-
-import org.gitools.biomart.restful.model.Attribute;
-import org.gitools.biomart.restful.model.Dataset;
-import org.gitools.biomart.restful.model.Query;
 import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.DatasetConfig;
-import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.model.Filter;
-import org.gitools.biomart.restful.model.MartLocation;
-
-
+import org.gitools.biomart.restful.model.*;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 
-public class BiomartModulesWizard extends AbstractWizard {
+import java.io.File;
+import java.util.List;
 
-	private BiomartAttributePage modulesAttributePage;
+public class BiomartModulesWizard extends AbstractWizard
+{
 
-	private BiomartAttributePage dataAttributePage;
+    private BiomartAttributePage modulesAttributePage;
 
-	private SaveFilePage saveFilePage;
+    private BiomartAttributePage dataAttributePage;
 
-	private BiomartService biomartService;
+    private SaveFilePage saveFilePage;
 
-	private DatasetConfig biomartConfig;
+    private BiomartService biomartService;
 
-	private BiomartFilterConfigurationPage filterListPage;
+    private DatasetConfig biomartConfig;
 
-	private BiomartSourcePage sourcePage;
+    private BiomartFilterConfigurationPage filterListPage;
 
-	private MartLocation Database;
+    private BiomartSourcePage sourcePage;
 
-	private DatasetInfo Dataset;
-	
-	public static final String FORMAT_PLAIN = "TSV";
-	public static final String FORMAT_COMPRESSED_GZ = "GZ";
+    private MartLocation Database;
 
-	private FileFormat[] supportedFormats = new FileFormat[] {
-		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), FORMAT_PLAIN, true, false),
-		new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", FORMAT_COMPRESSED_GZ, true, false)
-	};
-	
-	public BiomartModulesWizard() {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
+    private DatasetInfo Dataset;
 
-		setTitle("Import modules...");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
-		setHelpContext("import_biomart");
-	}
+    public static final String FORMAT_PLAIN = "TSV";
+    public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
-	@Override
-	public void addPages() {
+    private FileFormat[] supportedFormats = new FileFormat[]{
+            new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), FORMAT_PLAIN, true, false),
+            new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", FORMAT_COMPRESSED_GZ, true, false)
+    };
 
-		// Source
-		sourcePage = new BiomartSourcePage();
-		addPage(sourcePage);
+    public BiomartModulesWizard()
+    {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
 
-		// FIXME Modules attribute
-		modulesAttributePage = new BiomartAttributePage();
-		modulesAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "1");
-		modulesAttributePage.setTitle("Select attribute for items");
-		addPage(modulesAttributePage);
+        setTitle("Import modules...");
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
+        setHelpContext("import_biomart");
+    }
 
-		// FIXME Data attribute
-		dataAttributePage = new BiomartAttributePage();
-		dataAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "2");
-		dataAttributePage.setTitle("Select attribute for modules");
-		addPage(dataAttributePage);
+    @Override
+    public void addPages()
+    {
 
-		// Advanced filtering
-		filterListPage = new BiomartFilterConfigurationPage();
-		filterListPage.setTitle("Select filters");
-		addPage(filterListPage);
+        // Source
+        sourcePage = new BiomartSourcePage();
+        addPage(sourcePage);
 
-		// Destination
-		saveFilePage = new SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
-		saveFilePage.setFormats(supportedFormats);
-		addPage(saveFilePage);
-	}
+        // FIXME Modules attribute
+        modulesAttributePage = new BiomartAttributePage();
+        modulesAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "1");
+        modulesAttributePage.setTitle("Select attribute for items");
+        addPage(modulesAttributePage);
 
-	@Override
-	public void performFinish() {
-		Settings.getDefault().setLastMapPath(saveFilePage.getFolder());
-		Settings.getDefault().save();
-	}
+        // FIXME Data attribute
+        dataAttributePage = new BiomartAttributePage();
+        dataAttributePage.setId(BiomartAttributePage.class.getCanonicalName() + "2");
+        dataAttributePage.setTitle("Select attribute for modules");
+        addPage(dataAttributePage);
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
+        // Advanced filtering
+        filterListPage = new BiomartFilterConfigurationPage();
+        filterListPage.setTitle("Select filters");
+        addPage(filterListPage);
 
-		if (page == sourcePage) {
+        // Destination
+        saveFilePage = new SaveFilePage();
+        saveFilePage.setTitle("Select destination file");
+        saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
+        saveFilePage.setFormats(supportedFormats);
+        addPage(saveFilePage);
+    }
 
-			biomartService = sourcePage.getBiomartService();
-			Database = sourcePage.getDataBase();
-			Dataset = sourcePage.getDataset();
+    @Override
+    public void performFinish()
+    {
+        Settings.getDefault().setLastMapPath(saveFilePage.getFolder());
+        Settings.getDefault().save();
+    }
 
-			modulesAttributePage.setSource(
-					biomartService,
-					Database,
-					Dataset);
-			
-		} else if (page == modulesAttributePage) {
+    @Override
+    public IWizardPage getNextPage(IWizardPage page)
+    {
 
-			dataAttributePage.setAttributePages(
-					modulesAttributePage.getAttributePages());
-		}
+        if (page == sourcePage)
+        {
 
-		else if (page == dataAttributePage){
-			//filterListPage.setSource(biomartService, Dataset);
-			biomartConfig = modulesAttributePage.getBiomartConfig();
-			filterListPage.setSource(biomartService,biomartConfig);
-		}
-		 
-		return super.getNextPage(page);
-	}
+            biomartService = sourcePage.getBiomartService();
+            Database = sourcePage.getDataBase();
+            Dataset = sourcePage.getDataset();
 
-	public File getSelectedFile() {
-		return saveFilePage.getPathAsFile();
-	}
+            modulesAttributePage.setSource(
+                    biomartService,
+                    Database,
+                    Dataset);
 
-	public Query getQuery() {
-		MartLocation mart = getDatabase();
+        }
+        else if (page == modulesAttributePage)
+        {
 
-		int header = 0;
-		int count = 0;
-		int uniqueRows = 1;
+            dataAttributePage.setAttributePages(
+                    modulesAttributePage.getAttributePages());
+        }
 
-		Dataset ds = new Dataset();
-		ds.setName(getDataset().getName());
+        else if (page == dataAttributePage)
+        {
+            //filterListPage.setSource(biomartService, Dataset);
+            biomartConfig = modulesAttributePage.getBiomartConfig();
+            filterListPage.setSource(biomartService, biomartConfig);
+        }
 
-		Attribute moduleAttr = new Attribute();
-		moduleAttr.setName(modulesAttributePage.getAttribute().getInternalName());
+        return super.getNextPage(page);
+    }
 
-		Attribute dataAttr = new Attribute();
-		dataAttr.setName(dataAttributePage.getAttribute().getInternalName());
+    public File getSelectedFile()
+    {
+        return saveFilePage.getPathAsFile();
+    }
 
-		ds.getAttribute().add(moduleAttr);
-		ds.getAttribute().add(dataAttr);
+    public Query getQuery()
+    {
+        MartLocation mart = getDatabase();
 
-		//Add filters into dataset
-		List<Filter> dsFilters = ds.getFilter();
-		dsFilters.addAll(filterListPage.getFilters());
+        int header = 0;
+        int count = 0;
+        int uniqueRows = 1;
 
-		Query query = new Query();
-		query.setVirtualSchemaName(mart.getServerVirtualSchema());
-		query.setHeader(header);
-		query.setCount(count);
-		query.setUniqueRows(uniqueRows);
-		query.getDatasets().add(ds);
+        Dataset ds = new Dataset();
+        ds.setName(getDataset().getName());
+
+        Attribute moduleAttr = new Attribute();
+        moduleAttr.setName(modulesAttributePage.getAttribute().getInternalName());
+
+        Attribute dataAttr = new Attribute();
+        dataAttr.setName(dataAttributePage.getAttribute().getInternalName());
+
+        ds.getAttribute().add(moduleAttr);
+        ds.getAttribute().add(dataAttr);
+
+        //Add filters into dataset
+        List<Filter> dsFilters = ds.getFilter();
+        dsFilters.addAll(filterListPage.getFilters());
+
+        Query query = new Query();
+        query.setVirtualSchemaName(mart.getServerVirtualSchema());
+        query.setHeader(header);
+        query.setCount(count);
+        query.setUniqueRows(uniqueRows);
+        query.getDatasets().add(ds);
 
 		/*try {
-		List<ResultsRow> resultRows = port.query(
+        List<ResultsRow> resultRows = port.query(
 		mart.getServerVirtualSchema(), header, count, uniqueRows, Arrays.asList(ds));
 
 		ListIterator<ResultsRow> it = resultRows.listIterator();
@@ -189,22 +196,26 @@ public class BiomartModulesWizard extends AbstractWizard {
 		Logger.getLogger(BiomartModulesWizard.class.getName()).log(Level.SEVERE, null, ex);
 		}*/
 
-		return query;
-	}
+        return query;
+    }
 
-	public FileFormat getFormat() {
-		return saveFilePage.getFormat();
-	}
+    public FileFormat getFormat()
+    {
+        return saveFilePage.getFormat();
+    }
 
-	public MartLocation getDatabase() {
-		return Database;
-	}
+    public MartLocation getDatabase()
+    {
+        return Database;
+    }
 
-	public DatasetInfo getDataset() {
-		return Dataset;
-	}
+    public DatasetInfo getDataset()
+    {
+        return Dataset;
+    }
 
-	public BiomartService getService() {
-		return biomartService;
-	}
+    public BiomartService getService()
+    {
+        return biomartService;
+    }
 }

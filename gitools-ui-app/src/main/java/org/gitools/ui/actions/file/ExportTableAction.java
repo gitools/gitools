@@ -1,113 +1,129 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.file;
-
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 import org.gitools.exporter.TextMatrixViewExporter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.dialog.attributes.AttributesSelectionDialog;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class ExportTableAction extends BaseAction {
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
-	private static final long serialVersionUID = -7288045475037410310L;
+public class ExportTableAction extends BaseAction
+{
 
-	public ExportTableAction() {
-		super("Export table ...");
-		
-		setDesc("Export a table");
-		setMnemonic(KeyEvent.VK_A);
-	}
-	
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
-	}
+    private static final long serialVersionUID = -7288045475037410310L;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    public ExportTableAction()
+    {
+        super("Export table ...");
 
-		final IMatrixView matrixView = ActionUtils.getMatrixView();
-		if (matrixView == null)
-			return;
+        setDesc("Export a table");
+        setMnemonic(KeyEvent.VK_A);
+    }
 
-		final List<IElementAttribute> properties = matrixView.getCellAdapter().getProperties();
-		final String[] attributeNames = new String[properties.size()];
-		for (int i = 0; i < properties.size(); i++)
-			attributeNames[i] = properties.get(i).getName();
+    @Override
+    public boolean isEnabledByModel(Object model)
+    {
+        return model instanceof Heatmap
+                || model instanceof IMatrixView;
+    }
 
-		AttributesSelectionDialog dlg = new AttributesSelectionDialog(AppFrame.instance(), attributeNames);
-		dlg.setVisible(true);
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
 
-		if (dlg.getReturnStatus() != AttributesSelectionDialog.RET_OK) {
-			AppFrame.instance().setStatusText("Table export cancelled.");
-			return;
-		}
+        final IMatrixView matrixView = ActionUtils.getMatrixView();
+        if (matrixView == null)
+        {
+            return;
+        }
 
-		final File file = FileChooserUtils.selectFile(
-						"Select destination file",
-						Settings.getDefault().getLastExportPath(),
-						FileChooserUtils.MODE_SAVE);
+        final List<IElementAttribute> properties = matrixView.getCellAdapter().getProperties();
+        final String[] attributeNames = new String[properties.size()];
+        for (int i = 0; i < properties.size(); i++)
+            attributeNames[i] = properties.get(i).getName();
 
-		if (file == null)
-			return;
+        AttributesSelectionDialog dlg = new AttributesSelectionDialog(AppFrame.get(), attributeNames);
+        dlg.setVisible(true);
 
-		Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+        if (dlg.getReturnStatus() != AttributesSelectionDialog.RET_OK)
+        {
+            AppFrame.get().setStatusText("Table export cancelled.");
+            return;
+        }
 
-		final List<Integer> selectedIndices = dlg.getSelectedIndices();
-		
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Exporting table ...", 1);
-					monitor.info("File: " + file.getName());
+        final File file = FileChooserUtils.selectFile(
+                "Select destination file",
+                Settings.getDefault().getLastExportPath(),
+                FileChooserUtils.MODE_SAVE);
 
-					int[] attributeIndices = new int[selectedIndices.size()];
-					for (int i = 0; i < selectedIndices.size(); i++)
-						attributeIndices[i] = selectedIndices.get(i);
+        if (file == null)
+        {
+            return;
+        }
 
-					TextMatrixViewExporter.exportTable(matrixView, attributeIndices, file);
+        Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 
-					monitor.end();
-				}
-				catch (IOException ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+        final List<Integer> selectedIndices = dlg.getSelectedIndices();
 
-		AppFrame.instance().setStatusText("Table exported.");
-	}
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    monitor.begin("Exporting table ...", 1);
+                    monitor.info("File: " + file.getName());
+
+                    int[] attributeIndices = new int[selectedIndices.size()];
+                    for (int i = 0; i < selectedIndices.size(); i++)
+                        attributeIndices[i] = selectedIndices.get(i);
+
+                    TextMatrixViewExporter.exportTable(matrixView, attributeIndices, file);
+
+                    monitor.end();
+                } catch (IOException ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+
+        AppFrame.get().setStatusText("Table exported.");
+    }
 
 }

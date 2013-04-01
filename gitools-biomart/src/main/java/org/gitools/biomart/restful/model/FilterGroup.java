@@ -1,96 +1,113 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-biomart
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.biomart.restful.model;
 
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterGroup {
+public class FilterGroup
+{
 
-	@XmlAttribute
-	private String internalName;
+    @XmlAttribute
+    private String internalName;
 
-	@XmlAttribute
-	private String displayName;
+    @XmlAttribute
+    private String displayName;
 
-	@XmlAttribute
-	private String description;
+    @XmlAttribute
+    private String description;
 
-	@XmlAttribute
-	private boolean hidden;
+    @XmlAttribute
+    private boolean hidden;
 
-	@XmlAttribute
-	private boolean hideDisplay;
-	
-	@XmlElement(name = "FilterCollection")
-	private List<FilterCollection> filterCollections;
+    @XmlAttribute
+    private boolean hideDisplay;
 
-	public String getDescription() {
-		return description;
-	}
+    @XmlElement(name = "FilterCollection")
+    private List<FilterCollection> filterCollections;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
+    public String getDisplayName()
+    {
+        return displayName;
+    }
 
-	public List<FilterCollection> getFilterCollections() {
-		return filterCollections;
-	}
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
 
-	public void setFilterCollections(List<FilterCollection> filterCollections) {
-		this.filterCollections = filterCollections;
-	}
+    public List<FilterCollection> getFilterCollections()
+    {
+        return filterCollections;
+    }
 
-	public boolean isHidden() {
-		return hidden;
-	}
+    public void setFilterCollections(List<FilterCollection> filterCollections)
+    {
+        this.filterCollections = filterCollections;
+    }
 
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
+    public boolean isHidden()
+    {
+        return hidden;
+    }
 
-	public boolean isHideDisplay() {
-		return hideDisplay;
-	}
+    public void setHidden(boolean hidden)
+    {
+        this.hidden = hidden;
+    }
 
-	public void setHideDisplay(boolean hideDisplay) {
-		this.hideDisplay = hideDisplay;
-	}
+    public boolean isHideDisplay()
+    {
+        return hideDisplay;
+    }
 
-	public String getInternalName() {
-		return internalName;
-	}
+    public void setHideDisplay(boolean hideDisplay)
+    {
+        this.hideDisplay = hideDisplay;
+    }
 
-	public void setInternalName(String internalName) {
-		this.internalName = internalName;
-	}
+    public String getInternalName()
+    {
+        return internalName;
+    }
+
+    public void setInternalName(String internalName)
+    {
+        this.internalName = internalName;
+    }
 
 
 }

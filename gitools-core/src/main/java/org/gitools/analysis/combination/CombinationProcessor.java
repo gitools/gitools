@@ -1,24 +1,27 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.combination;
 
 import cern.jet.stat.Probability;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.matrix.MatrixUtils;
@@ -28,159 +31,185 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.ResourceReference;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Arrays;
 import java.util.Date;
 
 
-public class CombinationProcessor implements AnalysisProcessor {
+public class CombinationProcessor implements AnalysisProcessor
+{
 
-	private CombinationAnalysis analysis;
+    private CombinationAnalysis analysis;
 
-	public CombinationProcessor(CombinationAnalysis analysis) {
-		this.analysis = analysis;
-	}
-	
-	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+    public CombinationProcessor(CombinationAnalysis analysis)
+    {
+        this.analysis = analysis;
+    }
 
-		Date startTime = new Date();
+    @Override
+    public void run(IProgressMonitor monitor) throws AnalysisException
+    {
 
-		// Prepare data
-		IMatrix data = analysis.getData().get();
-		if (analysis.isTransposeData())
-			data = new TransposedMatrixView(data);
+        Date startTime = new Date();
 
-		final int numCols = data.getColumnCount();
-		final int numRows = data.getRowCount();
-
-		String[] labels = new String[numCols];
-		for (int i = 0; i < numCols; i++)
-			labels[i] = data.getColumnLabel(i);
-
-		String combOf = analysis.isTransposeData() ? "rows" : "columns";
-
-		// Prepare columns map
-		ModuleMap cmap = analysis.getGroupsMap().get();
-		if (cmap != null) {
-			cmap = cmap.remap(labels);
-        } else {
-			cmap = new ModuleMap("All data " + combOf, labels);
+        // Prepare data
+        IMatrix data = analysis.getData().get();
+        if (analysis.isTransposeData())
+        {
+            data = new TransposedMatrixView(data);
         }
-		analysis.setGroupsMap(new ResourceReference<ModuleMap>("modules", cmap));
 
-		// Prepare results matrix
-		final ObjectMatrix results = new ObjectMatrix();
+        final int numCols = data.getColumnCount();
+        final int numRows = data.getRowCount();
 
-		String[] cclabels = cmap.getModuleNames();
-		cclabels = Arrays.copyOf(cclabels, cclabels.length);
-		String[] rlabels = new String[numRows];
-		for (int i = 0; i < numRows; i++)
-			rlabels[i] = data.getRowLabel(i);
+        String[] labels = new String[numCols];
+        for (int i = 0; i < numCols; i++)
+            labels[i] = data.getColumnLabel(i);
 
-		results.setColumns(cclabels);
-		results.setRows(rlabels);
-		results.makeCells();
+        String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
-		results.setCellAdapter(
-				new BeanElementAdapter(CombinationResult.class));
+        // Prepare columns map
+        ModuleMap cmap = analysis.getGroupsMap().get();
+        if (cmap != null)
+        {
+            cmap = cmap.remap(labels);
+        }
+        else
+        {
+            cmap = new ModuleMap("All data " + combOf, labels);
+        }
+        analysis.setGroupsMap(new ResourceReference<ModuleMap>("modules", cmap));
 
-		analysis.setResults(new ResourceReference<IMatrix>("results", results));
+        // Prepare results matrix
+        final ObjectMatrix results = new ObjectMatrix();
 
-		// Run combination
-		int sizeIndex = -1;
-		String sizeAttrName = analysis.getSizeAttrName();
-		/*if (sizeAttrName == null || sizeAttrName.isEmpty())
+        String[] cclabels = cmap.getModuleNames();
+        cclabels = Arrays.copyOf(cclabels, cclabels.length);
+        String[] rlabels = new String[numRows];
+        for (int i = 0; i < numRows; i++)
+            rlabels[i] = data.getRowLabel(i);
+
+        results.setColumns(cclabels);
+        results.setRows(rlabels);
+        results.makeCells();
+
+        results.setCellAdapter(
+                new BeanElementAdapter(CombinationResult.class));
+
+        analysis.setResults(new ResourceReference<IMatrix>("results", results));
+
+        // Run combination
+        int sizeIndex = -1;
+        String sizeAttrName = analysis.getSizeAttrName();
+        /*if (sizeAttrName == null || sizeAttrName.isEmpty())
 			sizeIndex = analysis.getSizeAttrIndex();*/
-		if (sizeAttrName != null && !sizeAttrName.isEmpty())
-			sizeIndex = data.getCellAdapter().getPropertyIndex(sizeAttrName);
-		
-		int pvalueIndex = 0;
-		String pvalueAttrName = analysis.getPvalueAttrName();
+        if (sizeAttrName != null && !sizeAttrName.isEmpty())
+        {
+            sizeIndex = data.getCellAdapter().getPropertyIndex(sizeAttrName);
+        }
+
+        int pvalueIndex = 0;
+        String pvalueAttrName = analysis.getPvalueAttrName();
 		/*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
 			pvalueIndex = analysis.getPvalueAttrIndex();*/
-		if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
-			pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
+        if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
+        {
+            pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
+        }
 
-		MatrixUtils.DoubleCast sizeCast = null;
+        MatrixUtils.DoubleCast sizeCast = null;
 
-		if (sizeIndex >= 0)
-			sizeCast = MatrixUtils.createDoubleCast(
-				data.getCellAdapter().getProperty(sizeIndex).getValueClass());
+        if (sizeIndex >= 0)
+        {
+            sizeCast = MatrixUtils.createDoubleCast(
+                    data.getCellAdapter().getProperty(sizeIndex).getValueClass());
+        }
 
-		MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
-				data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
+        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
+                data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
 
-		int numCC = cmap.getModuleCount();
+        int numCC = cmap.getModuleCount();
 
-		monitor.begin("Running combination analysis ...", numCC * numRows);
+        monitor.begin("Running combination analysis ...", numCC * numRows);
 
-		for (int cmi = 0; cmi < numCC; cmi++) {
-			int[] cindices = cmap.getItemIndices(cmi);
-			for (int ri = 0; ri < numRows; ri++) {
-				int n = 0;
-				double sumSizeZ = 0;
-				double sumSizeSqr = 0;
+        for (int cmi = 0; cmi < numCC; cmi++)
+        {
+            int[] cindices = cmap.getItemIndices(cmi);
+            for (int ri = 0; ri < numRows; ri++)
+            {
+                int n = 0;
+                double sumSizeZ = 0;
+                double sumSizeSqr = 0;
 
-				for (int ci = 0; ci < cindices.length; ci++) {
-					int mci = cindices[ci];
-					
-					if (data.getCell(ri, mci) != null) {
-						double size = sizeIndex < 0 ? 1
-								: sizeCast.getDoubleValue(
-									data.getCellValue(ri, mci, sizeIndex));
+                for (int ci = 0; ci < cindices.length; ci++)
+                {
+                    int mci = cindices[ci];
 
-						double pvalue = pvalueCast.getDoubleValue(
-								data.getCellValue(ri, mci, pvalueIndex));
+                    if (data.getCell(ri, mci) != null)
+                    {
+                        double size = sizeIndex < 0 ? 1
+                                : sizeCast.getDoubleValue(
+                                data.getCellValue(ri, mci, sizeIndex));
 
-						double zscore = pvalueToZscore(pvalue);
+                        double pvalue = pvalueCast.getDoubleValue(
+                                data.getCellValue(ri, mci, pvalueIndex));
 
-						if (!Double.isNaN(size + pvalue + zscore)) {
-							n++;
-							sumSizeZ += size * zscore;
-							sumSizeSqr += size * size;
-						}
-					}
-				}
+                        double zscore = pvalueToZscore(pvalue);
 
-				double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
-				double pvalue = zscoreToPvalue(zcomb);
+                        if (!Double.isNaN(size + pvalue + zscore))
+                        {
+                            n++;
+                            sumSizeZ += size * zscore;
+                            sumSizeSqr += size * size;
+                        }
+                    }
+                }
 
-				CombinationResult r = new CombinationResult();
-				r.setN(n);
-				r.setZscore(zcomb);
-				r.setPvalue(pvalue);
+                double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
+                double pvalue = zscoreToPvalue(zcomb);
 
-				results.setCell(ri, cmi, r);
+                CombinationResult r = new CombinationResult();
+                r.setN(n);
+                r.setZscore(zcomb);
+                r.setPvalue(pvalue);
 
-				monitor.worked(1);
-			}
-		}
+                results.setCell(ri, cmi, r);
 
-		analysis.setStartTime(startTime);
-		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+                monitor.worked(1);
+            }
+        }
 
-		monitor.end();
-	}
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-	private double pvalueToZscore(double pvalue) {
-		if (Double.isNaN(pvalue))
-			return pvalue;
+        monitor.end();
+    }
 
-		pvalue = 1.0 - pvalue;
-		pvalue = pvalue < 0.000001 ? 0.000001 : pvalue;
-		pvalue = pvalue > 0.999999 ? 0.999999 : pvalue;
+    private double pvalueToZscore(double pvalue)
+    {
+        if (Double.isNaN(pvalue))
+        {
+            return pvalue;
+        }
 
-		double zscore = Probability.normalInverse(pvalue);
-		return zscore;
-	}
+        pvalue = 1.0 - pvalue;
+        pvalue = pvalue < 0.000001 ? 0.000001 : pvalue;
+        pvalue = pvalue > 0.999999 ? 0.999999 : pvalue;
 
-	private double zscoreToPvalue(double zscore) {
-		if (Double.isNaN(zscore))
-			return zscore;
+        double zscore = Probability.normalInverse(pvalue);
+        return zscore;
+    }
 
-		double pvalue = 1.0 - Probability.normal(zscore);
-		return pvalue;
-	}
+    private double zscoreToPvalue(double zscore)
+    {
+        if (Double.isNaN(zscore))
+        {
+            return zscore;
+        }
+
+        double pvalue = 1.0 - Probability.normal(zscore);
+        return pvalue;
+    }
 
 }

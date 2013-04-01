@@ -1,96 +1,114 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.data;
-
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
-
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
+import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.dialog.filter.LabelFilterPage;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class FilterByLabelAction extends BaseAction {
+import java.awt.event.ActionEvent;
 
-	private static final long serialVersionUID = -1582437709508438222L;
+public class FilterByLabelAction extends BaseAction
+{
 
-	public FilterByLabelAction() {
-		super("Filter by label...");
-		setDesc("Filter by label");
-	}
-	
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		IEditor editor = AppFrame.instance()
-			.getEditorsPanel()
-			.getSelectedEditor();
+    private static final long serialVersionUID = -1582437709508438222L;
 
-		Object model = editor != null ? editor.getModel() : null;
-		if (model == null || !(model instanceof Heatmap))
-			return;
+    public FilterByLabelAction()
+    {
+        super("Filter by label...");
+        setDesc("Filter by label");
+    }
 
-		final Heatmap hm = (Heatmap) model;
+    @Override
+    public boolean isEnabledByModel(Object model)
+    {
+        return model instanceof Heatmap
+                || model instanceof IMatrixView;
+    }
 
-		final LabelFilterPage page = new LabelFilterPage(hm);
-		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
-		dlg.setVisible(true);
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        IEditor editor = AppFrame.get()
+                .getEditorsPanel()
+                .getSelectedEditor();
 
-		if (dlg.isCancelled())
-			return;
+        Object model = editor != null ? editor.getModel() : null;
+        if (model == null || !(model instanceof Heatmap))
+        {
+            return;
+        }
 
-		final IMatrixView matrixView = hm.getMatrixView();
+        final Heatmap hm = (Heatmap) model;
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				monitor.begin("Filtering ...", 1);
+        final LabelFilterPage page = new LabelFilterPage(hm);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        dlg.setVisible(true);
 
-				AnnotationMatrix am = null;
-				FilterDimension dim = page.getFilterDimension();
-				switch (dim) {
-					case ROWS: am = hm.getRowDim().getAnnotations(); break;
-					case COLUMNS: am = hm.getColumnDim().getAnnotations(); break;
-				}
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-				MatrixViewLabelFilter.filter(matrixView, dim,
-						page.getPattern(), am,
-						page.getValues(),
-						page.isUseRegexChecked());
+        final IMatrixView matrixView = hm.getMatrixView();
 
-				monitor.end();
-			}
-		});
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                monitor.begin("Filtering ...", 1);
 
-		AppFrame.instance().setStatusText("Filter by label done.");
-	}
+                AnnotationMatrix am = null;
+                FilterDimension dim = page.getFilterDimension();
+                switch (dim)
+                {
+                    case ROWS:
+                        am = hm.getRowDim().getAnnotations();
+                        break;
+                    case COLUMNS:
+                        am = hm.getColumnDim().getAnnotations();
+                        break;
+                }
+
+                MatrixViewLabelFilter.filter(matrixView, dim,
+                        page.getPattern(), am,
+                        page.getValues(),
+                        page.isUseRegexChecked());
+
+                monitor.end();
+            }
+        });
+
+        AppFrame.get().setStatusText("Filter by label done.");
+    }
 }

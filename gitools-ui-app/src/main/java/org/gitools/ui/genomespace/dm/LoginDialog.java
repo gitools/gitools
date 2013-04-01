@@ -31,53 +31,68 @@ import java.awt.event.ActionListener;
 /**
  * @author Jim Robinson
  */
-public class LoginDialog extends JDialog {
+public class LoginDialog extends JDialog
+{
 
     boolean canceled = false;
 
-    public LoginDialog(Frame owner) {
+    public LoginDialog(Frame owner)
+    {
         this(owner, false, "", false);
     }
 
-    public LoginDialog(Frame owner, boolean isGenomeSpace, String resource, boolean proxyChallenge) {
+    public LoginDialog(Frame owner, boolean isGenomeSpace, String resource, boolean proxyChallenge)
+    {
         super(owner);
         initComponents();
         getRootPane().setDefaultButton(okButton);
-        if (isGenomeSpace) {
+        if (isGenomeSpace)
+        {
             promptLabel.setText("Please login to your GenomeSpace account");
             iconLabel.setVisible(true);
-        } else {
-            if (proxyChallenge) {
+        }
+        else
+        {
+            if (proxyChallenge)
+            {
                 promptLabel.setText("<html>Please enter username and password for your Proxy server to access<br>" + resource);
-            } else {
+            }
+            else
+            {
                 promptLabel.setText("<html>Please enter username and password to access<br>" + resource);
             }
             iconLabel.setVisible(false);
         }
     }
 
-    public String getUsername() {
+    public String getUsername()
+    {
         return usernameField.getText();
     }
 
-    public char[] getPassword() {
+    public char[] getPassword()
+    {
         return passwordField.getPassword();
     }
 
-    public boolean isCanceled() {
+    public boolean isCanceled()
+    {
         return canceled;
     }
 
-    private void okButtonActionPerformed(ActionEvent e) {
+    private void okButtonActionPerformed(ActionEvent e)
+    {
         setVisible(false);
     }
 
-    private void cancelButtonActionPerformed(ActionEvent e) {
+    private void cancelButtonActionPerformed(ActionEvent e)
+    {
         canceled = true;
         setVisible(false);
     }
 
-    private void initComponents() {
+    private void initComponents()
+    {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner non-commercial license
         dialogPane = new JPanel();
@@ -135,7 +150,8 @@ public class LoginDialog extends JDialog {
 
                 { // compute preferred size
                     Dimension preferredSize = new Dimension();
-                    for (int i = 0; i < contentPanel.getComponentCount(); i++) {
+                    for (int i = 0; i < contentPanel.getComponentCount(); i++)
+                    {
                         Rectangle bounds = contentPanel.getComponent(i).getBounds();
                         preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                         preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -158,8 +174,10 @@ public class LoginDialog extends JDialog {
 
                 //---- okButton ----
                 okButton.setText("OK");
-                okButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                okButton.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
                         okButtonActionPerformed(e);
                     }
                 });
@@ -169,8 +187,10 @@ public class LoginDialog extends JDialog {
 
                 //---- cancelButton ----
                 cancelButton.setText("Cancel");
-                cancelButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                cancelButton.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
                         cancelButtonActionPerformed(e);
                     }
                 });

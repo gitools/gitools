@@ -1,28 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.htest.editor.actions;
 
-import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import javax.swing.JOptionPane;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
@@ -33,101 +31,122 @@ import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class ViewRelatedDataFromColumnAction extends BaseAction {
 
-	protected String title;
-	protected IMatrix matrix;
-	protected ModuleMap map;
+public class ViewRelatedDataFromColumnAction extends BaseAction
+{
 
-	public ViewRelatedDataFromColumnAction(
-			String title, IMatrix matrix, ModuleMap map) {
-		super("View annotated elements");
+    protected String title;
+    protected IMatrix matrix;
+    protected ModuleMap map;
 
-		setDesc("View annotated elements in a new heatmap");
-		setLargeIconFromResource(IconNames.viewAnnotatedElements24);
-		setSmallIconFromResource(IconNames.viewAnnotatedElements16);
+    public ViewRelatedDataFromColumnAction(
+            String title, IMatrix matrix, ModuleMap map)
+    {
+        super("View annotated elements");
 
-		this.title = title;
-		this.matrix = matrix;
-		this.map = map;
-	}
+        setDesc("View annotated elements in a new heatmap");
+        setLargeIconFromResource(IconNames.viewAnnotatedElements24);
+        setSmallIconFromResource(IconNames.viewAnnotatedElements16);
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+        this.title = title;
+        this.matrix = matrix;
+        this.map = map;
+    }
 
-		IEditor currentEditor = editorPanel.getSelectedEditor();
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-		// Check selection
-		Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
-		IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
-		IMatrix srcMatrix = srcMatrixView.getContents();
-		int[] selColumns = srcMatrixView.getSelectedColumns();
-		int leadColumn = srcMatrixView.getLeadSelectionColumn();
-		if ((selColumns == null || selColumns.length == 0) && leadColumn != -1)
-			selColumns = new int[] {leadColumn};
-		else if (leadColumn == -1) {
-			JOptionPane.showMessageDialog(AppFrame.instance(),
-				"You must select some columns before.",
-				"Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+        IEditor currentEditor = editorPanel.getSelectedEditor();
 
-		// Retrieve elements
-		int[] view = srcMatrixView.getVisibleColumns();
+        // Check selection
+        Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
+        IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
+        IMatrix srcMatrix = srcMatrixView.getContents();
+        int[] selColumns = srcMatrixView.getSelectedColumns();
+        int leadColumn = srcMatrixView.getLeadSelectionColumn();
+        if ((selColumns == null || selColumns.length == 0) && leadColumn != -1)
+        {
+            selColumns = new int[]{leadColumn};
+        }
+        else if (leadColumn == -1)
+        {
+            JOptionPane.showMessageDialog(AppFrame.get(),
+                    "You must select some columns before.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-		Set<Integer> elements = new HashSet<Integer>();
+        // Retrieve elements
+        int[] view = srcMatrixView.getVisibleColumns();
 
-		Map<String, Integer> itemNameMap = new HashMap<String, Integer>();
-		for (int i = 0; i < matrix.getColumnCount(); i++)
-			itemNameMap.put(matrix.getColumnLabel(i), i);
+        Set<Integer> elements = new HashSet<Integer>();
 
-		StringBuilder moduleNames = new StringBuilder();
+        Map<String, Integer> itemNameMap = new HashMap<String, Integer>();
+        for (int i = 0; i < matrix.getColumnCount(); i++)
+            itemNameMap.put(matrix.getColumnLabel(i), i);
 
-		for (int i = 0; i < selColumns.length; i++) {
-			String modName = srcMatrix.getColumnLabel(view[selColumns[i]]);
-			if (i != 0)
-				moduleNames.append(", ");
-			moduleNames.append(modName);
+        StringBuilder moduleNames = new StringBuilder();
 
-			int[] indices = map.getItemIndices(modName);
-			if (indices != null)
-				for (int index : indices) {
-					String itemName = map.getItemName(index);
-					Integer dstIndex = itemNameMap.get(itemName);
-					if (dstIndex != null)
-						elements.add(dstIndex);
-				}
-		}
+        for (int i = 0; i < selColumns.length; i++)
+        {
+            String modName = srcMatrix.getColumnLabel(view[selColumns[i]]);
+            if (i != 0)
+            {
+                moduleNames.append(", ");
+            }
+            moduleNames.append(modName);
 
-		int[] newView = new int[elements.size()];
-		int i = 0;
-		for (Integer index : elements)
-			newView[i++] = index;
+            int[] indices = map.getItemIndices(modName);
+            if (indices != null)
+            {
+                for (int index : indices)
+                {
+                    String itemName = map.getItemName(index);
+                    Integer dstIndex = itemNameMap.get(itemName);
+                    if (dstIndex != null)
+                    {
+                        elements.add(dstIndex);
+                    }
+                }
+            }
+        }
 
-		// Create heatmap
-		final IMatrixView matrixView = new MatrixView(matrix);
-		matrixView.setVisibleColumns(newView);
+        int[] newView = new int[elements.size()];
+        int i = 0;
+        for (Integer index : elements)
+            newView[i++] = index;
 
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
-		heatmap.setTitle(title);
-		heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());
+        // Create heatmap
+        final IMatrixView matrixView = new MatrixView(matrix);
+        matrixView.setVisibleColumns(newView);
 
-		// Create editor
-		HeatmapEditor editor = new HeatmapEditor(heatmap);
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
+        heatmap.setTitle(title);
+        heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());
 
-		editor.setName(editorPanel.deriveName(
-				currentEditor.getName(), FileSuffixes.HEATMAP,
-				"-data", FileSuffixes.HEATMAP));
-		
-		editorPanel.addEditor(editor);
+        // Create editor
+        HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-		AppFrame.instance().setStatusText("New heatmap created.");
-	}
+        editor.setName(editorPanel.deriveName(
+                currentEditor.getName(), FileSuffixes.HEATMAP,
+                "-data", FileSuffixes.HEATMAP));
+
+        editorPanel.addEditor(editor);
+
+        AppFrame.get().setStatusText("New heatmap created.");
+    }
 
 }

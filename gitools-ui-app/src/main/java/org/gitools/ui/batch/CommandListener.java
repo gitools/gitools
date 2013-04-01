@@ -1,5 +1,25 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.batch;
-
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.platform.AppFrame;
@@ -13,7 +33,8 @@ import java.nio.channels.ClosedByInterruptException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandListener implements Runnable {
+public class CommandListener implements Runnable
+{
 
     private static Logger log = Logger.getLogger(CommandListener.class);
 
@@ -25,41 +46,58 @@ public class CommandListener implements Runnable {
     private Thread listenerThread;
     boolean halt = false;
 
-    public static synchronized void start(int port) {
-         start(port, null);
+    public static synchronized void start(int port)
+    {
+        start(port, null);
     }
 
-    public static synchronized void start(int port, String[] args) {
-        if (args != null && args.length > 0) {
-            if (!available(port)) {
+    public static synchronized void start(int port, String[] args)
+    {
+        if (args != null && args.length > 0)
+        {
+            if (!available(port))
+            {
 
                 // Pass the arguments to the other gitools instance
                 Socket socket = null;
-                try {
+                try
+                {
                     socket = new Socket("localhost", port);
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     InputStream in = socket.getInputStream();
 
                     StringBuilder cmd = new StringBuilder();
-                    for (String arg : args) {
+                    for (String arg : args)
+                    {
                         cmd.append(arg).append(' ');
                     }
                     out.println(cmd.toString());
 
                     // Wait server response
-                    while (in.available() == 0) {
-                        try{Thread.sleep(1000);}catch(Exception ee){}
+                    while (in.available() == 0)
+                    {
+                        try
+                        {
+                            Thread.sleep(1000);
+                        } catch (Exception ee)
+                        {
+                        }
                     }
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     reader.readLine();
 
-                } catch (IOException e) {
+                } catch (IOException e)
+                {
                     e.printStackTrace();
-                } finally {
-                    if (socket != null) {
-                        try {
+                } finally
+                {
+                    if (socket != null)
+                    {
+                        try
+                        {
                             socket.close();
-                        } catch (IOException e) {
+                        } catch (IOException e)
+                        {
                             e.printStackTrace();
                         }
                     }
@@ -74,8 +112,10 @@ public class CommandListener implements Runnable {
         listener.listenerThread.start();
     }
 
-    public static synchronized void halt() {
-        if (listener != null) {
+    public static synchronized void halt()
+    {
+        if (listener != null)
+        {
             listener.halt = true;
             listener.listenerThread.interrupt();
             listener.closeSockets();
@@ -83,7 +123,8 @@ public class CommandListener implements Runnable {
         }
     }
 
-    private CommandListener(int port) {
+    private CommandListener(int port)
+    {
         this.port = port;
         listenerThread = new Thread(this);
     }
@@ -91,35 +132,45 @@ public class CommandListener implements Runnable {
     /**
      * Loop forever, processing client requests synchronously.  The server is single threaded.
      */
-    public void run() {
+    public void run()
+    {
 
         CommandExecutor cmdExe = new CommandExecutor();
 
-        try {
+        try
+        {
             serverSocket = new ServerSocket(port);
             log.info("Listening on port " + port);
 
-            while (!halt) {
+            while (!halt)
+            {
                 clientSocket = serverSocket.accept();
                 processClientSession(cmdExe);
-                if (clientSocket != null) {
-                    try {
+                if (clientSocket != null)
+                {
+                    try
+                    {
                         clientSocket.close();
                         clientSocket = null;
-                    } catch (IOException e) {
+                    } catch (IOException e)
+                    {
                         log.error("Error in client socket loop", e);
                     }
                 }
             }
 
 
-        } catch (java.net.BindException e) {
+        } catch (java.net.BindException e)
+        {
             log.error(e);
-        } catch (ClosedByInterruptException e) {
+        } catch (ClosedByInterruptException e)
+        {
             log.error(e);
 
-        } catch (IOException e) {
-            if (!halt) {
+        } catch (IOException e)
+        {
+            if (!halt)
+            {
                 log.error("IO Error on port socket ", e);
             }
         }
@@ -131,31 +182,41 @@ public class CommandListener implements Runnable {
      * @param cmdExe
      * @throws IOException
      */
-    private void processClientSession(CommandExecutor cmdExe) throws IOException {
+    private void processClientSession(CommandExecutor cmdExe) throws IOException
+    {
         PrintWriter out = null;
         BufferedReader in = null;
 
-        try {
+        try
+        {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String inputLine;
 
-            while (!halt && (inputLine = in.readLine()) != null) {
+            while (!halt && (inputLine = in.readLine()) != null)
+            {
 
                 String cmd = inputLine;
-                if (cmd.startsWith("GET")) {
+                if (cmd.startsWith("GET"))
+                {
                     String command = null;
                     Map<String, String> params = null;
                     String[] tokens = inputLine.split(" ");
-                    if (tokens.length < 2) {
+                    if (tokens.length < 2)
+                    {
                         sendHTTPResponse(out, "ERROR unexpected command line: " + inputLine);
                         return;
-                    } else {
+                    }
+                    else
+                    {
                         String[] parts = tokens[1].split("\\?");
-                        if (parts.length < 2) {
+                        if (parts.length < 2)
+                        {
                             sendHTTPResponse(out, "ERROR unexpected command line: " + inputLine);
                             return;
-                        } else {
+                        }
+                        else
+                        {
                             command = parts[0];
                             params = parseParameters(parts[1]);
                         }
@@ -163,14 +224,16 @@ public class CommandListener implements Runnable {
 
                     // Consume the remainder of the request, if any.  This is important to free the connection.
                     String nextLine = in.readLine();
-                    while (nextLine != null && nextLine.length() > 0) {
+                    while (nextLine != null && nextLine.length() > 0)
+                    {
                         nextLine = in.readLine();
                     }
 
                     // If a callback (javascript) function is specified write it back immediately.  This function
                     // is used to cancel a timeout handler
                     String callback = params.get("callback");
-                    if (callback != null) {
+                    if (callback != null)
+                    {
                         sendHTTPResponse(out, callback);
                     }
 
@@ -178,7 +241,8 @@ public class CommandListener implements Runnable {
                     processGet(command, params, cmdExe, new PrintWriter(response));
 
                     // If no callback was specified write back a "no response" header
-                    if (callback == null) {
+                    if (callback == null)
+                    {
 
                         sendHTTPResponse(out, response.toString());
                     }
@@ -186,16 +250,26 @@ public class CommandListener implements Runnable {
                     // http sockets are used for one request onle
                     return;
 
-                } else {
+                }
+                else
+                {
                     // Port command
                     cmdExe.execute(inputLine.split(" "), out);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             log.error("Error processing client session", e);
-        } finally {
-            if (out != null) out.close();
-            if (in != null) in.close();
+        } finally
+        {
+            if (out != null)
+            {
+                out.close();
+            }
+            if (in != null)
+            {
+                in.close();
+            }
         }
     }
 
@@ -208,10 +282,12 @@ public class CommandListener implements Runnable {
     private static final String CONTENT_TYPE_TEXT_HTML = "text/html";
     private static final String CONNECTION_CLOSE = "Connection: close";
 
-    private void sendHTTPResponse(PrintWriter out, String result) {
+    private void sendHTTPResponse(PrintWriter out, String result)
+    {
 
         out.println(result == null ? HTTP_NO_RESPONSE : HTTP_RESPONSE);
-        if (result != null) {
+        if (result != null)
+        {
             out.print(CONTENT_TYPE + CONTENT_TYPE_TEXT_HTML);
             out.print(CRNL);
             out.print(CONTENT_LENGTH + (result.length()));
@@ -225,21 +301,28 @@ public class CommandListener implements Runnable {
         out.close();
     }
 
-    private void closeSockets() {
-        if (clientSocket != null) {
-            try {
+    private void closeSockets()
+    {
+        if (clientSocket != null)
+        {
+            try
+            {
                 clientSocket.close();
                 clientSocket = null;
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 log.error("Error closing clientSocket", e);
             }
         }
 
-        if (serverSocket != null) {
-            try {
+        if (serverSocket != null)
+        {
+            try
+            {
                 serverSocket.close();
                 serverSocket = null;
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 log.error("Error closing server socket", e);
             }
         }
@@ -250,24 +333,31 @@ public class CommandListener implements Runnable {
      * Process an http get request.
      */
 
-    private void processGet(String command, Map<String, String> params, CommandExecutor cmdExe, PrintWriter out) throws IOException {
+    private void processGet(String command, Map<String, String> params, CommandExecutor cmdExe, PrintWriter out) throws IOException
+    {
 
-        final Frame mainFrame = AppFrame.instance();
+        final Frame mainFrame = AppFrame.get();
 
         // Trick to force window to front, the setAlwaysOnTop works on a Mac,  toFront() does nothing.
         mainFrame.toFront();
         mainFrame.setAlwaysOnTop(true);
         mainFrame.setAlwaysOnTop(false);
 
-        if (command.equals("/load")) {
+        if (command.equals("/load"))
+        {
             String file = params.get("file");
 
-            if (file != null) {
-                cmdExe.execute(new String[] { "load" , file }, out);
-            } else {
+            if (file != null)
+            {
+                cmdExe.execute(new String[]{"load", file}, out);
+            }
+            else
+            {
                 out.println("ERROR Parameter \"file\" is required");
             }
-        } else {
+        }
+        else
+        {
             out.println("ERROR Unknown command: " + command);
         }
         out.flush();
@@ -280,19 +370,24 @@ public class CommandListener implements Runnable {
      * @param parameterString
      * @return
      */
-    private Map<String, String> parseParameters(String parameterString) {
+    private Map<String, String> parseParameters(String parameterString)
+    {
 
         // Do a partial decoding now (ampersands only)
         parameterString = parameterString.replace("&amp;", "&");
 
         HashMap<String, String> params = new HashMap();
         String[] kvPairs = parameterString.split("&");
-        for (String kvString : kvPairs) {
+        for (String kvString : kvPairs)
+        {
             // Split on the first "=",  all others are part of the parameter value
             String[] kv = kvString.split("=", 2);
-            if (kv.length == 1) {
+            if (kv.length == 1)
+            {
                 params.put(kv[0], null);
-            } else {
+            }
+            else
+            {
                 String key = decodeURL(kv[0]);
                 String value = decodeURL(kv[1]);
                 params.put(kv[0], value);
@@ -311,13 +406,17 @@ public class CommandListener implements Runnable {
      * @param s
      * @return
      */
-    public static String decodeURL(String s) {
-        if(s == null) {
+    public static String decodeURL(String s)
+    {
+        if (s == null)
+        {
             return null;
         }
-        try {
+        try
+        {
             return URLDecoder.decode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             return URLDecoder.decode(s);
         }
     }
@@ -327,25 +426,31 @@ public class CommandListener implements Runnable {
      *
      * @param port the port to check for availability
      */
-    private static boolean available(int port) {
+    private static boolean available(int port)
+    {
         Socket s = null;
-        try {
+        try
+        {
             s = new Socket("localhost", port);
             return false;
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return true;
-        } finally {
-            if( s != null){
-                try {
+        } finally
+        {
+            if (s != null)
+            {
+                try
+                {
                     s.close();
-                } catch (IOException e) {
+                } catch (IOException e)
+                {
                     e.printStackTrace();
                     System.exit(1);
                 }
             }
         }
     }
-
 
 
 }

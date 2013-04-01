@@ -1,153 +1,184 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDim;
-
-import java.awt.*;
+import org.gitools.matrix.model.AnnotationMatrix;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.gitools.matrix.model.AnnotationMatrix;
+import java.awt.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapTextLabelsHeader extends HeatmapHeader {
+public class HeatmapTextLabelsHeader extends HeatmapHeader
+{
 
-	private static final long serialVersionUID = -2580139666999968074L;
-	
-	public static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
-	public static final String LINK_NAME_CHANGED = "linkNameChanged";
-	public static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
+    private static final long serialVersionUID = -2580139666999968074L;
 
-	public enum LabelSource {
-		ID, ANNOTATION, PATTERN
-	}
+    public static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
+    public static final String LINK_NAME_CHANGED = "linkNameChanged";
+    public static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
 
-	protected LabelSource labelSource;
-	protected String labelAnnotation;
-	protected String labelPattern;
-	
-	@Deprecated protected String linkName;
-	@Deprecated protected String linkPattern;
+    public enum LabelSource
+    {
+        ID, ANNOTATION, PATTERN
+    }
 
-	public HeatmapTextLabelsHeader() {
-		this(null);
-	}
+    protected LabelSource labelSource;
+    protected String labelAnnotation;
+    protected String labelPattern;
 
-	public HeatmapTextLabelsHeader(HeatmapDim hdim) {
-		super(hdim);
+    @Deprecated
+    protected String linkName;
+    @Deprecated
+    protected String linkPattern;
 
-		size = 80;
-		labelColor = Color.BLACK;
-		backgroundColor = Color.WHITE;
-		font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
-		AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
-		if (am != null && am.getColumnCount() > 0) {
-			labelSource = LabelSource.ANNOTATION;
-			labelAnnotation = am.getColumnLabel(0);
-		}
-		else {
-			labelSource = LabelSource.ID;
-			labelAnnotation = "";
-		}
-		
-		labelPattern = "${id}";
-		linkName = "Google";
-		linkPattern = "http://www.google.com/search?q=${url:id}";
-	}
+    public HeatmapTextLabelsHeader()
+    {
+        this(null);
+    }
 
-	@Override
-	public String getTitle() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Text: ");
-		switch (labelSource) {
-			case ID: sb.append("ID"); break;
-			case ANNOTATION: sb.append(labelAnnotation); break;
-			case PATTERN: sb.append(labelPattern); break;
-		}
-		return sb.toString();
-	}
+    public HeatmapTextLabelsHeader(HeatmapDim hdim)
+    {
+        super(hdim);
 
-	public Font getFont() {
-		return font;
-	}
+        size = 80;
+        labelColor = Color.BLACK;
+        backgroundColor = Color.WHITE;
+        font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+        AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
+        if (am != null && am.getColumnCount() > 0)
+        {
+            labelSource = LabelSource.ANNOTATION;
+            labelAnnotation = am.getColumnLabel(0);
+        }
+        else
+        {
+            labelSource = LabelSource.ID;
+            labelAnnotation = "";
+        }
 
-	public void setFont(Font font) {
-		Font old = this.font;
-		this.font = font;
-		firePropertyChange(LABEL_FONT_CHANGED, old, font);
-	}
+        labelPattern = "${id}";
+        linkName = "Google";
+        linkPattern = "http://www.google.com/search?q=${url:id}";
+    }
 
     @Override
-    protected void updateLargestLabelLength(Component component) {
+    public String getTitle()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Text: ");
+        switch (labelSource)
+        {
+            case ID:
+                sb.append("ID");
+                break;
+            case ANNOTATION:
+                sb.append(labelAnnotation);
+                break;
+            case PATTERN:
+                sb.append(labelPattern);
+                break;
+        }
+        return sb.toString();
+    }
+
+    public Font getFont()
+    {
+        return font;
+    }
+
+    public void setFont(Font font)
+    {
+        Font old = this.font;
+        this.font = font;
+        firePropertyChange(LABEL_FONT_CHANGED, old, font);
+    }
+
+    @Override
+    protected void updateLargestLabelLength(Component component)
+    {
         this.largestLabelLength = 0;
     }
 
-    public LabelSource getLabelSource() {
-		return labelSource;
-	}
+    public LabelSource getLabelSource()
+    {
+        return labelSource;
+    }
 
-	public void setLabelSource(LabelSource labelSource) {
-		this.labelSource = labelSource;
-	}
+    public void setLabelSource(LabelSource labelSource)
+    {
+        this.labelSource = labelSource;
+    }
 
-	public String getLabelAnnotation() {
-		return labelAnnotation;
-	}
+    public String getLabelAnnotation()
+    {
+        return labelAnnotation;
+    }
 
-	public void setLabelAnnotation(String labelAnnotation) {
-		this.labelAnnotation = labelAnnotation;
-	}
+    public void setLabelAnnotation(String labelAnnotation)
+    {
+        this.labelAnnotation = labelAnnotation;
+    }
 
-	public String getLabelPattern() {
-		return labelPattern;
-	}
+    public String getLabelPattern()
+    {
+        return labelPattern;
+    }
 
-	public void setLabelPattern(String pattern) {
-		String old = this.labelPattern;
-		this.labelPattern = pattern;
-		firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
-	}
+    public void setLabelPattern(String pattern)
+    {
+        String old = this.labelPattern;
+        this.labelPattern = pattern;
+        firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
+    }
 
-	@Deprecated
-	public String getLinkName() {
-		return linkName;
-	}
+    @Deprecated
+    public String getLinkName()
+    {
+        return linkName;
+    }
 
-	@Deprecated
-	public void setLinkName(String linkName) {
-		String old = this.linkName;
-		this.linkName = linkName;
-		firePropertyChange(LINK_NAME_CHANGED, old, linkName);
-	}
+    @Deprecated
+    public void setLinkName(String linkName)
+    {
+        String old = this.linkName;
+        this.linkName = linkName;
+        firePropertyChange(LINK_NAME_CHANGED, old, linkName);
+    }
 
-	@Deprecated
-	public String getLinkPattern() {
-		return linkPattern;
-	}
+    @Deprecated
+    public String getLinkPattern()
+    {
+        return linkPattern;
+    }
 
-	@Deprecated
-	public void setLinkPattern(String linkPattern) {
-		String old = this.linkPattern;
-		this.linkPattern = linkPattern;
-		firePropertyChange(LINK_PATTERN_CHANGED, old, linkPattern);
-	}
+    @Deprecated
+    public void setLinkPattern(String linkPattern)
+    {
+        String old = this.linkPattern;
+        this.linkPattern = linkPattern;
+        firePropertyChange(LINK_PATTERN_CHANGED, old, linkPattern);
+    }
 }

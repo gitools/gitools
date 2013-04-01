@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
@@ -48,69 +52,76 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
-public class Heatmap extends Figure	implements Serializable, IResource {
+public class Heatmap extends Figure implements Serializable, IResource
+{
 
-	private static final long serialVersionUID = 325437934312047512L;
+    private static final long serialVersionUID = 325437934312047512L;
 
-	public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
+    public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
     public static final String VALUE_DIMENSION_SWITCHED = "valueDimensionSwitched";
-	public static final String MATRIX_VIEW_CHANGED = "matrixView";
-	public static final String CELL_SIZE_CHANGED = "cellSize";
-	public static final String ROW_DIMENSION_CHANGED = "rowDim";
-	public static final String COLUMN_DIMENSION_CHANGED = "columnDim";
-	
-	@Deprecated public static final String ROW_LABELS_HEADER_CHANGED = "rowDecorator";
-	@Deprecated public static final String COLUMN_LABELS_HEADER_CHANGED = "columnDecorator";
-	@Deprecated public static final String GRID_PROPERTY_CHANGED = "gridProperty";
+    public static final String MATRIX_VIEW_CHANGED = "matrixView";
+    public static final String CELL_SIZE_CHANGED = "cellSize";
+    public static final String ROW_DIMENSION_CHANGED = "rowDim";
+    public static final String COLUMN_DIMENSION_CHANGED = "columnDim";
 
-	@XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
-	private IMatrixView matrixView;
+    @Deprecated
+    public static final String ROW_LABELS_HEADER_CHANGED = "rowDecorator";
+    @Deprecated
+    public static final String COLUMN_LABELS_HEADER_CHANGED = "columnDecorator";
+    @Deprecated
+    public static final String GRID_PROPERTY_CHANGED = "gridProperty";
 
-	// Cells
+    @XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
+    private IMatrixView matrixView;
 
-	@XmlTransient
-	private ElementDecorator[] cellDecorators;
-	private int cellWidth;
-	private int cellHeight;
+    // Cells
 
-	//@XmlTransient
-	private HeatmapDim rowDim;
+    @XmlTransient
+    private ElementDecorator[] cellDecorators;
+    private int cellWidth;
+    private int cellHeight;
 
-	@XmlTransient
-	private HeatmapDim columnDim;
+    //@XmlTransient
+    private HeatmapDim rowDim;
 
-	// Other
+    @XmlTransient
+    private HeatmapDim columnDim;
 
-	@XmlTransient
-	private boolean showBorders;
+    // Other
 
-	@XmlTransient
-	PropertyChangeListener propertyListener;
+    @XmlTransient
+    private boolean showBorders;
+
+    @XmlTransient
+    PropertyChangeListener propertyListener;
 
     @XmlTransient
     private IResourceLocator locator;
 
-    public Heatmap() {
-         this(
-                 null,
-                 new ElementDecorator[0],  //FIXME will cause null pointer exception but is unused ?
-                 new HeatmapTextLabelsHeader(),
-                 new HeatmapTextLabelsHeader());
-	}
+    public Heatmap()
+    {
+        this(
+                null,
+                new ElementDecorator[0],  //FIXME will cause null pointer exception but is unused ?
+                new HeatmapTextLabelsHeader(),
+                new HeatmapTextLabelsHeader());
+    }
 
-	public Heatmap(IMatrixView matrixView) {
-		this(
-				matrixView,
-				cellDecoratorFromMatrix(matrixView),
-				new HeatmapTextLabelsHeader(),
-				new HeatmapTextLabelsHeader());
-	}
-    
-    public Heatmap (
+    public Heatmap(IMatrixView matrixView)
+    {
+        this(
+                matrixView,
+                cellDecoratorFromMatrix(matrixView),
+                new HeatmapTextLabelsHeader(),
+                new HeatmapTextLabelsHeader());
+    }
+
+    public Heatmap(
             IMatrixView matrixView,
             ElementDecorator cellDecorator,
             HeatmapTextLabelsHeader rowsLabelsHeader,
-            HeatmapTextLabelsHeader columnLabelsHeader) {
+            HeatmapTextLabelsHeader columnLabelsHeader)
+    {
 
         this(
                 matrixView,
@@ -121,267 +132,314 @@ public class Heatmap extends Figure	implements Serializable, IResource {
     }
 
     public Heatmap(
-			IMatrixView matrixView,
-			ElementDecorator[] cellDecorators,
-			HeatmapTextLabelsHeader rowsLabelsHeader,
-			HeatmapTextLabelsHeader columnLabelsHeader) {
+            IMatrixView matrixView,
+            ElementDecorator[] cellDecorators,
+            HeatmapTextLabelsHeader rowsLabelsHeader,
+            HeatmapTextLabelsHeader columnLabelsHeader)
+    {
 
-		propertyListener = new PropertyChangeListener() {
-			@Override public void propertyChange(PropertyChangeEvent evt) {
-				firePropertyChange(evt); } };
+        propertyListener = new PropertyChangeListener()
+        {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                firePropertyChange(evt);
+            }
+        };
 
-		this.matrixView = matrixView;
-		this.matrixView.addPropertyChangeListener(propertyListener);
+        this.matrixView = matrixView;
+        this.matrixView.addPropertyChangeListener(propertyListener);
 
         this.cellDecorators = cellDecorators;
         getActiveCellDecorator().addPropertyChangeListener(propertyListener);
 
-		this.cellWidth = 14;
-		this.cellHeight = 14;
-		this.showBorders = false;
-				
-		this.rowDim = new HeatmapDim();
-		this.rowDim.addHeader(rowsLabelsHeader);
-		this.rowDim.addPropertyChangeListener(propertyListener);
+        this.cellWidth = 14;
+        this.cellHeight = 14;
+        this.showBorders = false;
 
-		this.columnDim = new HeatmapDim();
-		this.columnDim.addHeader(columnLabelsHeader);
-		this.columnDim.addPropertyChangeListener(propertyListener);
-	}
+        this.rowDim = new HeatmapDim();
+        this.rowDim.addHeader(rowsLabelsHeader);
+        this.rowDim.addPropertyChangeListener(propertyListener);
 
-    public IResourceLocator getLocator() {
+        this.columnDim = new HeatmapDim();
+        this.columnDim.addHeader(columnLabelsHeader);
+        this.columnDim.addPropertyChangeListener(propertyListener);
+    }
+
+    public IResourceLocator getLocator()
+    {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator) {
+    public void setLocator(IResourceLocator locator)
+    {
         this.locator = locator;
     }
 
-    private static ElementDecorator[] getCellDecoratorsFromDecorator(ElementDecorator cellDecorator, int attributesNb) {
+    private static ElementDecorator[] getCellDecoratorsFromDecorator(ElementDecorator cellDecorator, int attributesNb)
+    {
         ElementDecorator[] cellDecorators = new ElementDecorator[attributesNb];
-        for (int i = 0; i < attributesNb; i++) {
-            ElementDecoratorDescriptor descriptor =  ElementDecoratorFactory.getDescriptor(cellDecorator.getClass());
+        for (int i = 0; i < attributesNb; i++)
+        {
+            ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(cellDecorator.getClass());
             cellDecorators[i] = ElementDecoratorFactory.create(descriptor, cellDecorator.getAdapter());
         }
         return cellDecorators;
     }
 
-	private static ElementDecorator[] cellDecoratorFromMatrix(
-			IMatrixView matrixView) {
-		
-		ElementDecorator decorator = null;
-		
-		IElementAdapter adapter = matrixView.getCellAdapter();
-		List<IElementAttribute> attributes = matrixView.getCellAttributes();
-		
-		int attrIndex = matrixView.getSelectedPropertyIndex();
-		if (attrIndex >= 0 && attrIndex < attributes.size()) {
-			Class<?> elementClass = attributes.get(attrIndex).getValueClass();
+    private static ElementDecorator[] cellDecoratorFromMatrix(
+            IMatrixView matrixView)
+    {
+
+        ElementDecorator decorator = null;
+
+        IElementAdapter adapter = matrixView.getCellAdapter();
+        List<IElementAttribute> attributes = matrixView.getCellAttributes();
+
+        int attrIndex = matrixView.getSelectedPropertyIndex();
+        if (attrIndex >= 0 && attrIndex < attributes.size())
+        {
+            Class<?> elementClass = attributes.get(attrIndex).getValueClass();
 
             Class<?> c = adapter.getElementClass();
-            
-            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c){
+
+            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c)
+            {
                 decorator = ElementDecoratorFactory.create(
                         ElementDecoratorNames.ZSCORE, adapter);
-            } else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c){
+            }
+            else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c)
+            {
                 decorator = ElementDecoratorFactory.create(
                         ElementDecoratorNames.PVALUE, adapter);
             }
-			else if (elementClass == double.class 	//FIXME No funciona
-					|| double.class.isInstance(elementClass))
-				decorator = ElementDecoratorFactory.create(
-						ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
-		}
-		
-		if (decorator == null)
-			decorator = ElementDecoratorFactory.create(
-					ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+            else if (elementClass == double.class     //FIXME No funciona
+                    || double.class.isInstance(elementClass))
+            {
+                decorator = ElementDecoratorFactory.create(
+                        ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+            }
+        }
 
-		return getCellDecoratorsFromDecorator(decorator, matrixView.getCellAttributes().size());
-	}
+        if (decorator == null)
+        {
+            decorator = ElementDecoratorFactory.create(
+                    ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
+        }
 
-	// Matrix View
+        return getCellDecoratorsFromDecorator(decorator, matrixView.getCellAttributes().size());
+    }
 
-	public final IMatrixView getMatrixView() {
-		return matrixView;
-	}
+    // Matrix View
 
-	public final void setMatrixView(IMatrixView matrixView) {
-		this.matrixView.removePropertyChangeListener(propertyListener);
-		matrixView.addPropertyChangeListener(propertyListener);
-		final IMatrixView old = this.matrixView;
-		this.matrixView = matrixView;
-		firePropertyChange(MATRIX_VIEW_CHANGED, old, matrixView);
-	}
+    public final IMatrixView getMatrixView()
+    {
+        return matrixView;
+    }
 
-	// Cells
+    public final void setMatrixView(IMatrixView matrixView)
+    {
+        this.matrixView.removePropertyChangeListener(propertyListener);
+        matrixView.addPropertyChangeListener(propertyListener);
+        final IMatrixView old = this.matrixView;
+        this.matrixView = matrixView;
+        firePropertyChange(MATRIX_VIEW_CHANGED, old, matrixView);
+    }
 
-	public final ElementDecorator getActiveCellDecorator() {
+    // Cells
+
+    public final ElementDecorator getActiveCellDecorator()
+    {
         // returns the active ElementDecorator
-        
-		int propIndex = getMatrixView().getSelectedPropertyIndex();
-		return cellDecorators[propIndex];
-	}
 
-	public final void switchActiveCellDecorator(int newindex) {
+        int propIndex = getMatrixView().getSelectedPropertyIndex();
+        return cellDecorators[propIndex];
+    }
+
+    public final void switchActiveCellDecorator(int newindex)
+    {
         // switches from active ElementDecorator to ElementDecorator
         // of same type, but for another propertyIndex (data dimension)
         // no new ElementDecorator has been created and none will be removed
-        
-		final int oldindex = getMatrixView().getSelectedPropertyIndex();
-		getMatrixView().setSelectedPropertyIndex(newindex);
-		this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
-		this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
+
+        final int oldindex = getMatrixView().getSelectedPropertyIndex();
+        getMatrixView().setSelectedPropertyIndex(newindex);
+        this.cellDecorators[oldindex].removePropertyChangeListener(propertyListener);
+        this.cellDecorators[newindex].addPropertyChangeListener(propertyListener);
         firePropertyChange(VALUE_DIMENSION_SWITCHED, this.cellDecorators[oldindex], this.cellDecorators[newindex]);
-	}
-    
-    public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception {
+    }
+
+    public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception
+    {
         // removes the actual ElementDecorator for the propertyIndex displayed 
         // and puts the new one. Needs to have proper propertyIndex set!
-        
+
         int propIndex = getMatrixView().getSelectedPropertyIndex();
         this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
-		newDecorator.addPropertyChangeListener(propertyListener);
+        newDecorator.addPropertyChangeListener(propertyListener);
         ElementDecorator old = this.cellDecorators[propIndex];
         if (old.getAdapter().getElementClass().equals(
-                newDecorator.getAdapter().getElementClass())) {
+                newDecorator.getAdapter().getElementClass()))
+        {
             this.cellDecorators[propIndex] = newDecorator;
             firePropertyChange(CELL_DECORATOR_CHANGED, old, newDecorator);
-        } else {
+        }
+        else
+        {
             throw new Exception("Substituting decorator not of same class");
         }
     }
 
-	public final void setCellDecorators(ElementDecorator[] decorators) {
+    public final void setCellDecorators(ElementDecorator[] decorators)
+    {
         // The ElementDecorator Type has been changed and thus a new
         // set of ElementDecorators has to be put in place (for each
         // propertyIndex one.
 
-		int propIndex = getMatrixView().getSelectedPropertyIndex();
-		ElementDecorator old = null;
-		if (this.cellDecorators != null) {
-			this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
-			old = this.cellDecorators[propIndex];
-		}
+        int propIndex = getMatrixView().getSelectedPropertyIndex();
+        ElementDecorator old = null;
+        if (this.cellDecorators != null)
+        {
+            this.cellDecorators[propIndex].removePropertyChangeListener(propertyListener);
+            old = this.cellDecorators[propIndex];
+        }
 
         //a new data dimension has been added
-        if (decorators.length > this.cellDecorators.length) {
-            propIndex = decorators.length-1;
+        if (decorators.length > this.cellDecorators.length)
+        {
+            propIndex = decorators.length - 1;
             matrixView.setSelectedPropertyIndex(propIndex);
         }
 
 
-        if (decorators[propIndex].getValueIndex() != propIndex) {
+        if (decorators[propIndex].getValueIndex() != propIndex)
+        {
             // the new decorator forces a new a ValueIndex different to the
             // one that was selected
             propIndex = decorators[propIndex].getValueIndex();
             matrixView.setSelectedPropertyIndex(propIndex);
         }
-		decorators[propIndex].addPropertyChangeListener(propertyListener);
+        decorators[propIndex].addPropertyChangeListener(propertyListener);
 
-		this.cellDecorators = decorators;
-		firePropertyChange(CELL_DECORATOR_CHANGED, old, decorators[propIndex]);
-	}
+        this.cellDecorators = decorators;
+        firePropertyChange(CELL_DECORATOR_CHANGED, old, decorators[propIndex]);
+    }
 
-	public final ElementDecorator[] getCellDecorators() {
-		return this.cellDecorators;
-	}
+    public final ElementDecorator[] getCellDecorators()
+    {
+        return this.cellDecorators;
+    }
 
-	public int getCellWidth() {
-		return cellWidth;
-	}
+    public int getCellWidth()
+    {
+        return cellWidth;
+    }
 
-	public void setCellWidth(int cellWidth) {
-		int old = this.cellWidth;
-		this.cellWidth = cellWidth;
-		firePropertyChange(CELL_SIZE_CHANGED, old, cellWidth);
-	}
+    public void setCellWidth(int cellWidth)
+    {
+        int old = this.cellWidth;
+        this.cellWidth = cellWidth;
+        firePropertyChange(CELL_SIZE_CHANGED, old, cellWidth);
+    }
 
-	public int getCellHeight() {
-		return cellHeight;
-	}
+    public int getCellHeight()
+    {
+        return cellHeight;
+    }
 
-	public void setCellHeight(int cellHeight) {
-		int old = this.cellHeight;
-		this.cellHeight = cellHeight;
-		firePropertyChange(CELL_SIZE_CHANGED, old, cellHeight);
-	}
+    public void setCellHeight(int cellHeight)
+    {
+        int old = this.cellHeight;
+        this.cellHeight = cellHeight;
+        firePropertyChange(CELL_SIZE_CHANGED, old, cellHeight);
+    }
 
-	// Dimensions
+    // Dimensions
 
-	public HeatmapDim getRowDim() {
-		return rowDim;
-	}
+    public HeatmapDim getRowDim()
+    {
+        return rowDim;
+    }
 
-	public void setRowDim(HeatmapDim rowDim) {
-		this.rowDim.removePropertyChangeListener(propertyListener);
-		rowDim.addPropertyChangeListener(propertyListener);
-		HeatmapDim old = this.rowDim;
-		this.rowDim = rowDim;
-		firePropertyChange(ROW_DIMENSION_CHANGED, old, rowDim);
-	}
+    public void setRowDim(HeatmapDim rowDim)
+    {
+        this.rowDim.removePropertyChangeListener(propertyListener);
+        rowDim.addPropertyChangeListener(propertyListener);
+        HeatmapDim old = this.rowDim;
+        this.rowDim = rowDim;
+        firePropertyChange(ROW_DIMENSION_CHANGED, old, rowDim);
+    }
 
-	public HeatmapDim getColumnDim() {
-		return columnDim;
-	}
+    public HeatmapDim getColumnDim()
+    {
+        return columnDim;
+    }
 
-	public void setColumnDim(HeatmapDim columnDim) {
-		this.columnDim.removePropertyChangeListener(propertyListener);
-		columnDim.addPropertyChangeListener(propertyListener);
-		HeatmapDim old = this.columnDim;
-		this.columnDim = columnDim;
-		firePropertyChange(COLUMN_DIMENSION_CHANGED, old, columnDim);
-	}
+    public void setColumnDim(HeatmapDim columnDim)
+    {
+        this.columnDim.removePropertyChangeListener(propertyListener);
+        columnDim.addPropertyChangeListener(propertyListener);
+        HeatmapDim old = this.columnDim;
+        this.columnDim = columnDim;
+        firePropertyChange(COLUMN_DIMENSION_CHANGED, old, columnDim);
+    }
 
-	// Other
+    // Other
 
-	public boolean isShowBorders() {
-		return showBorders;
-	}
+    public boolean isShowBorders()
+    {
+        return showBorders;
+    }
 
-	public void setShowBorders(boolean showBorders) {
-		this.showBorders = showBorders;
-	}
+    public void setShowBorders(boolean showBorders)
+    {
+        this.showBorders = showBorders;
+    }
 
-	// Generated values
+    // Generated values
 
-	@Deprecated //FIXME
-	public String getColumnLabel(int index) {
-		String label = matrixView.getColumnLabel(index);
-		return label;
-		/*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+    @Deprecated //FIXME
+    public String getColumnLabel(int index)
+    {
+        String label = matrixView.getColumnLabel(index);
+        return label;
+        /*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		columnDim.getLabelsHeader().decorate(decoration, label);
 		return decoration.getText();*/
-	}
+    }
 
-	@Deprecated //FIXME
-	public String getRowLabel(int index) {
-		String label = matrixView.getRowLabel(index);
-		return label;
+    @Deprecated //FIXME
+    public String getRowLabel(int index)
+    {
+        String label = matrixView.getRowLabel(index);
+        return label;
 		/*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		rowDim.getLabelsHeader().decorate(decoration, label);
 		return decoration.getText();*/
-	}
+    }
 
-	@Deprecated //FIXME
-	public String getColumnLinkUrl(int index) {
-		return "";
+    @Deprecated //FIXME
+    public String getColumnLinkUrl(int index)
+    {
+        return "";
 		/*String header = matrixView.getColumnLabel(index);
 		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		columnDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getUrl();*/
-	}
+    }
 
-	@Deprecated //FIXME
-	public String getRowLinkUrl(int index) {
-		return "";
+    @Deprecated //FIXME
+    public String getRowLinkUrl(int index)
+    {
+        return "";
 		/*String header = matrixView.getRowLabel(index);
 		HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		rowDim.getLabelsHeader().decorate(decoration, header);
 		return decoration.getUrl();*/
-	}
+    }
 
-    public void detach() {
+    public void detach()
+    {
         this.matrixView = null;
     }
 }

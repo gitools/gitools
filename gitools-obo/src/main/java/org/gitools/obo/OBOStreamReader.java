@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-obo
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.obo;
 
 import java.io.BufferedReader;
@@ -26,147 +30,206 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OBOStreamReader implements OBOEventTypes {
+public class OBOStreamReader implements OBOEventTypes
+{
 
-	private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[(.*)\\][ \\t]*(?:!(.*))?$");
-	private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\s*!(.*)$");
-	private static final Pattern TAG_NAME_PATTERN = Pattern.compile("^[0-9a-zA-Z_]$");
+    private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[(.*)\\][ \\t]*(?:!(.*))?$");
+    private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\s*!(.*)$");
+    private static final Pattern TAG_NAME_PATTERN = Pattern.compile("^[0-9a-zA-Z_]$");
 
-	private OBOStream stream;
-	private Stack<OBOStream> streamStack;
+    private OBOStream stream;
+    private Stack<OBOStream> streamStack;
 
-	private LinkedList<OBOEvent> tokens;
+    private LinkedList<OBOEvent> tokens;
 
-	private boolean headerStarted;
-	private boolean headerEnded;
-	private boolean documentEnded;
+    private boolean headerStarted;
+    private boolean headerEnded;
+    private boolean documentEnded;
 
-	private String stanzaName;
-	private String tagName;
+    private String stanzaName;
+    private String tagName;
 
-	public OBOStreamReader(Reader reader) {
-		this(new OBOStream(new BufferedReader(reader)));
-	}
+    public OBOStreamReader(Reader reader)
+    {
+        this(new OBOStream(new BufferedReader(reader)));
+    }
 
-	public OBOStreamReader(URL baseUrl) throws IOException {
-		this(new OBOStream(baseUrl));
-	}
+    public OBOStreamReader(URL baseUrl) throws IOException
+    {
+        this(new OBOStream(baseUrl));
+    }
 
-	private OBOStreamReader(OBOStream stream) {
-		this.stream = stream;
-		streamStack = new Stack<OBOStream>();
+    private OBOStreamReader(OBOStream stream)
+    {
+        this.stream = stream;
+        streamStack = new Stack<OBOStream>();
 
-		tokens = new LinkedList<OBOEvent>();
-		tokens.offer(new OBOEvent(DOCUMENT_START, 0));
+        tokens = new LinkedList<OBOEvent>();
+        tokens.offer(new OBOEvent(DOCUMENT_START, 0));
 
-		headerStarted = false;
-		headerEnded = false;
-		documentEnded = false;
-		stanzaName = null;
-	}
+        headerStarted = false;
+        headerEnded = false;
+        documentEnded = false;
+        stanzaName = null;
+    }
 
-	public OBOEvent nextEvent() throws IOException {
-		if (tokens.size() > 0)
-			return tokens.poll();
+    public OBOEvent nextEvent() throws IOException
+    {
+        if (tokens.size() > 0)
+        {
+            return tokens.poll();
+        }
 
-		while (tokens.size() == 0) {
-			String line = stream.nextLine();
-			int pos = stream.getLinePos();
+        while (tokens.size() == 0)
+        {
+            String line = stream.nextLine();
+            int pos = stream.getLinePos();
 
-			if (line == null) {
-				if (!documentEnded) {
-					documentEnded = true;
-					tokens.offer(new OBOEvent(DOCUMENT_END, pos));
-					break;
-				}
-				else
-					return null;
-			}
+            if (line == null)
+            {
+                if (!documentEnded)
+                {
+                    documentEnded = true;
+                    tokens.offer(new OBOEvent(DOCUMENT_END, pos));
+                    break;
+                }
+                else
+                {
+                    return null;
+                }
+            }
 
-			Matcher stanzaMatcher = STANZA_NAME_PATTERN.matcher(line);
-			Matcher commentMatcher = LINE_COMMENT_PATTERN.matcher(line);
+            Matcher stanzaMatcher = STANZA_NAME_PATTERN.matcher(line);
+            Matcher commentMatcher = LINE_COMMENT_PATTERN.matcher(line);
 
-			if (stanzaMatcher.matches()) {
-				if (stanzaName == null) {
-					if (!headerEnded) {
-						tokens.offer(new OBOEvent(HEADER_END, pos));
-						headerEnded = true;
-					}
-				}
+            if (stanzaMatcher.matches())
+            {
+                if (stanzaName == null)
+                {
+                    if (!headerEnded)
+                    {
+                        tokens.offer(new OBOEvent(HEADER_END, pos));
+                        headerEnded = true;
+                    }
+                }
 
-				String stzName = stanzaMatcher.group(1);
-				//String stzName = line.substring(1, line.length() - 1);
-				tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
-				stanzaName = stzName;
-			}
-			else if (commentMatcher.matches()) {
-				tokens.offer(new OBOEvent(COMMENT, pos));
-			}
-			else {
-				if (stanzaName == null && !headerStarted) {
-					tokens.offer(new OBOEvent(HEADER_START, pos));
-					headerStarted = true;
-				}
+                String stzName = stanzaMatcher.group(1);
+                //String stzName = line.substring(1, line.length() - 1);
+                tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
+                stanzaName = stzName;
+            }
+            else if (commentMatcher.matches())
+            {
+                tokens.offer(new OBOEvent(COMMENT, pos));
+            }
+            else
+            {
+                if (stanzaName == null && !headerStarted)
+                {
+                    tokens.offer(new OBOEvent(HEADER_START, pos));
+                    headerStarted = true;
+                }
 
-				nextTag(line, pos);
-			}
-		}
+                nextTag(line, pos);
+            }
+        }
 
-		return tokens.poll();
-	}
+        return tokens.poll();
+    }
 
-	public void close() throws IOException {
-		stream.close();
-		// TODO streamStack
-	}
+    public void close() throws IOException
+    {
+        stream.close();
+        // TODO streamStack
+    }
 
-	private void nextTag(String line, int linepos) {
-		int pos = line.indexOf(':');
-		if (pos < 0) {
-			tokens.offer(new OBOEvent(UNKNOWN, linepos));
-			return;
-		}
+    private void nextTag(String line, int linepos)
+    {
+        int pos = line.indexOf(':');
+        if (pos < 0)
+        {
+            tokens.offer(new OBOEvent(UNKNOWN, linepos));
+            return;
+        }
 
-		tagName = line.substring(0, pos);
-		String content = line.substring(pos + 1);
-		StringBuilder sb = new StringBuilder();
+        tagName = line.substring(0, pos);
+        String content = line.substring(pos + 1);
+        StringBuilder sb = new StringBuilder();
 
-		//TODO parse contents and generate events
-		escapeCharsAndRemoveComments(content, sb);
-		content = sb.toString().trim();
-		tokens.offer(new OBOEvent(TAG_START, linepos, stanzaName, tagName, content));
-		tokens.offer(new OBOEvent(TAG_END, linepos, stanzaName, tagName, content));
-	}
+        //TODO parse contents and generate events
+        escapeCharsAndRemoveComments(content, sb);
+        content = sb.toString().trim();
+        tokens.offer(new OBOEvent(TAG_START, linepos, stanzaName, tagName, content));
+        tokens.offer(new OBOEvent(TAG_END, linepos, stanzaName, tagName, content));
+    }
 
-	/** replace escape characters and remove comments */
-	private void escapeCharsAndRemoveComments(String line, StringBuilder sb) {
-		int len = line.length();
-		int pos = 0;
-		while (pos < len) {
-			char c = line.charAt(pos++);
-			if (c == '!')
-				pos = len;
-			else if (c != '\\' || (c == '\\' && pos == len - 1))
-				sb.append(c);
-			else {
-				c = line.charAt(pos++);
-				switch (c) {
-					case 'n': sb.append('\n'); break;
-					case 'W': sb.append(' '); break;
-					case 't': sb.append('\t'); break;
-					case ':': sb.append(':'); break;
-					case ',': sb.append(','); break;
-					case '"': sb.append('"'); break;
-					case '\\': sb.append('\\'); break;
-					case '(': sb.append('('); break;
-					case ')': sb.append(')'); break;
-					case '[': sb.append('['); break;
-					case ']': sb.append(']'); break;
-					case '{': sb.append('{'); break;
-					case '}': sb.append('}'); break;
-					default: sb.append(c); break;
-				}
-			}
-		}
-	}
+    /**
+     * replace escape characters and remove comments
+     */
+    private void escapeCharsAndRemoveComments(String line, StringBuilder sb)
+    {
+        int len = line.length();
+        int pos = 0;
+        while (pos < len)
+        {
+            char c = line.charAt(pos++);
+            if (c == '!')
+            {
+                pos = len;
+            }
+            else if (c != '\\' || (c == '\\' && pos == len - 1))
+            {
+                sb.append(c);
+            }
+            else
+            {
+                c = line.charAt(pos++);
+                switch (c)
+                {
+                    case 'n':
+                        sb.append('\n');
+                        break;
+                    case 'W':
+                        sb.append(' ');
+                        break;
+                    case 't':
+                        sb.append('\t');
+                        break;
+                    case ':':
+                        sb.append(':');
+                        break;
+                    case ',':
+                        sb.append(',');
+                        break;
+                    case '"':
+                        sb.append('"');
+                        break;
+                    case '\\':
+                        sb.append('\\');
+                        break;
+                    case '(':
+                        sb.append('(');
+                        break;
+                    case ')':
+                        sb.append(')');
+                        break;
+                    case '[':
+                        sb.append('[');
+                        break;
+                    case ']':
+                        sb.append(']');
+                        break;
+                    case '{':
+                        sb.append('{');
+                        break;
+                    case '}':
+                        sb.append('}');
+                        break;
+                    default:
+                        sb.append(c);
+                        break;
+                }
+            }
+        }
+    }
 }

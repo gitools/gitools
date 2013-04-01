@@ -1,26 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.groupcomparison;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestProcessor;
@@ -32,145 +32,170 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
-public class GroupComparisonProcessor extends HtestProcessor {
+public class GroupComparisonProcessor extends HtestProcessor
+{
 
-	private GroupComparisonAnalysis analysis;
+    private GroupComparisonAnalysis analysis;
 
-	public GroupComparisonProcessor(GroupComparisonAnalysis analysis) {
-		this.analysis = analysis;
-	}
-	
-	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
+    public GroupComparisonProcessor(GroupComparisonAnalysis analysis)
+    {
+        this.analysis = analysis;
+    }
 
-		Date startTime = new Date();
+    @Override
+    public void run(IProgressMonitor monitor) throws AnalysisException
+    {
 
-		// Prepare data
-		IMatrix data = analysis.getData();
-		if (analysis.isTransposeData())
-			data = new TransposedMatrixView(data);
+        Date startTime = new Date();
 
-		final int numRows = data.getRowCount();
+        // Prepare data
+        IMatrix data = analysis.getData();
+        if (analysis.isTransposeData())
+        {
+            data = new TransposedMatrixView(data);
+        }
 
-
-		// Prepare results matrix
-		final ObjectMatrix resultsMatrix = new ObjectMatrix();
-
-		String[] columnLabels = new String[1];
-		columnLabels[0] = analysis.getTest().getName();
-		String[] rlabels = new String[numRows];
-		for (int i = 0; i < numRows; i++)
-			rlabels[i] = data.getRowLabel(i);
-
-		resultsMatrix.setColumns(columnLabels);
-		resultsMatrix.setRows(rlabels);
-		resultsMatrix.makeCells();
-
-		resultsMatrix.setCellAdapter(
-				new BeanElementAdapter(GroupComparisonResult.class));
-
-		
-
-		// Run group comparison
-
-		monitor.begin("Running group comparison analysis ...", numRows);
-
-		int attrIndex = analysis.getAttributeIndex();
-
-		Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
-		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+        final int numRows = data.getRowCount();
 
 
-		for (int column = 0; column < columnLabels.length; column++) {
-			for (int row = 0; row < numRows; row++) {
+        // Prepare results matrix
+        final ObjectMatrix resultsMatrix = new ObjectMatrix();
 
-				int[] group1 = getColumnIndices(data,
-												analysis.getGroups1(),
-												row);
-				int[] group2 = getColumnIndices(data,
-												analysis.getGroups2(),
-												row);
+        String[] columnLabels = new String[1];
+        columnLabels[0] = analysis.getTest().getName();
+        String[] rlabels = new String[numRows];
+        for (int i = 0; i < numRows; i++)
+            rlabels[i] = data.getRowLabel(i);
+
+        resultsMatrix.setColumns(columnLabels);
+        resultsMatrix.setRows(rlabels);
+        resultsMatrix.makeCells();
+
+        resultsMatrix.setCellAdapter(
+                new BeanElementAdapter(GroupComparisonResult.class));
 
 
-				double[] groupVals1 = new double[group1.length];
-				double[] groupVals2 = new double[group2.length];				
-				for (int gi = 0; gi < group1.length; gi++) {
-					Object value = data.getCellValue(row, group1[gi], attrIndex);
-					Double v = cast.getDoubleValue(value);
-					if (v == null || Double.isNaN(v)) 
-						v = Double.NaN;
-					groupVals1[gi] = v;
-				}
-				for (int gi = 0; gi < group2.length; gi++) {
-					Object value = data.getCellValue(row, group2[gi], attrIndex);
-					Double v = cast.getDoubleValue(value);
-					if (v == null || Double.isNaN(v))
-						v = Double.NaN;
-					groupVals2[gi] = v;
-				}
+        // Run group comparison
 
-				MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
-				GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
+        monitor.begin("Running group comparison analysis ...", numRows);
 
-				resultsMatrix.setCell(row, column, r);
+        int attrIndex = analysis.getAttributeIndex();
 
-				monitor.worked(1);
-			}
-		}
+        Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
+        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
-		analysis.setResults(resultsMatrix);
-		analysis.setStartTime(startTime);
-		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+
+        for (int column = 0; column < columnLabels.length; column++)
+        {
+            for (int row = 0; row < numRows; row++)
+            {
+
+                int[] group1 = getColumnIndices(data,
+                        analysis.getGroups1(),
+                        row);
+                int[] group2 = getColumnIndices(data,
+                        analysis.getGroups2(),
+                        row);
+
+
+                double[] groupVals1 = new double[group1.length];
+                double[] groupVals2 = new double[group2.length];
+                for (int gi = 0; gi < group1.length; gi++)
+                {
+                    Object value = data.getCellValue(row, group1[gi], attrIndex);
+                    Double v = cast.getDoubleValue(value);
+                    if (v == null || Double.isNaN(v))
+                    {
+                        v = Double.NaN;
+                    }
+                    groupVals1[gi] = v;
+                }
+                for (int gi = 0; gi < group2.length; gi++)
+                {
+                    Object value = data.getCellValue(row, group2[gi], attrIndex);
+                    Double v = cast.getDoubleValue(value);
+                    if (v == null || Double.isNaN(v))
+                    {
+                        v = Double.NaN;
+                    }
+                    groupVals2[gi] = v;
+                }
+
+                MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
+                GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
+
+                resultsMatrix.setCell(row, column, r);
+
+                monitor.worked(1);
+            }
+        }
+
+        analysis.setResults(resultsMatrix);
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
 				/* Multiple test correction */
 
-		MTC mtc = analysis.getMtc();
+        MTC mtc = analysis.getMtc();
 
-		multipleTestCorrection(
-				resultsMatrix,
-				mtc,
-				monitor.subtask());
+        multipleTestCorrection(
+                resultsMatrix,
+                mtc,
+                monitor.subtask());
 
-		analysis.setStartTime(startTime);
-		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-		analysis.setResults(resultsMatrix);
+        analysis.setResults(resultsMatrix);
 
-		monitor.end();
+        monitor.end();
 
-	}
+    }
 
-	private int[] getColumnIndices(IMatrix data, ColumnGroup group, int row) {
-		if (group.getColumns() != null && group.getColumns().length > 0)
-			return group.getColumns();
+    private int[] getColumnIndices(IMatrix data, ColumnGroup group, int row)
+    {
+        if (group.getColumns() != null && group.getColumns().length > 0)
+        {
+            return group.getColumns();
+        }
 
-		int attrIndex = group.getCutoffAttributeIndex();
-		Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
-		final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
-		//TODO: place the cast in a different place: inside Group??
+        int attrIndex = group.getCutoffAttributeIndex();
+        Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
+        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+        //TODO: place the cast in a different place: inside Group??
 
-		BinaryCutoff binaryCutoff = group.getBinaryCutoff();
+        BinaryCutoff binaryCutoff = group.getBinaryCutoff();
 
-		List<Integer> columnIndicesList = new ArrayList<Integer>();
-		for (int col = 0; col < data.getColumnCount(); col++) {
-			Object value = data.getCellValue(row, col, attrIndex);
-			Double v = cast.getDoubleValue(value);
-			if (v == null || Double.isNaN(v)) {
-				continue;
-			}
-			else  {
-				double compliesCutoff = binaryCutoff.apply(v);
-				if (compliesCutoff == 1.0)
-					columnIndicesList.add(col);
-			}
-		}
+        List<Integer> columnIndicesList = new ArrayList<Integer>();
+        for (int col = 0; col < data.getColumnCount(); col++)
+        {
+            Object value = data.getCellValue(row, col, attrIndex);
+            Double v = cast.getDoubleValue(value);
+            if (v == null || Double.isNaN(v))
+            {
+                continue;
+            }
+            else
+            {
+                double compliesCutoff = binaryCutoff.apply(v);
+                if (compliesCutoff == 1.0)
+                {
+                    columnIndicesList.add(col);
+                }
+            }
+        }
 
-		Integer[] columnIndices = new Integer[columnIndicesList.size()];
-		return	ArrayUtils.toPrimitive(columnIndicesList.toArray(columnIndices));
-		//return columnIndicesPrimitive;
+        Integer[] columnIndices = new Integer[columnIndicesList.size()];
+        return ArrayUtils.toPrimitive(columnIndicesList.toArray(columnIndices));
+        //return columnIndicesPrimitive;
 
-	}
+    }
 
 }

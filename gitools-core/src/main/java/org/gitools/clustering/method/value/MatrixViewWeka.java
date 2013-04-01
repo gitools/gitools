@@ -1,23 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.clustering.method.value;
 
-import java.io.IOException;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.matrix.MatrixUtils;
 import weka.core.Attribute;
@@ -25,190 +28,230 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+import java.io.IOException;
+
 /**
  * This class is an adapter for Weka Instances class
  * and ImatrixView class
- *
  */
-public class MatrixViewWeka extends Instances {
+public class MatrixViewWeka extends Instances
+{
 
-	private ClusteringData matrixView;
+    private ClusteringData matrixView;
 
-	private Instances structure;
+    private Instances structure;
 
-	private int[] indexes; //selected attributes from preprocessing
+    private int[] indexes; //selected attributes from preprocessing
 
-	private int dimMatrix;//the dimension of the matrix for obtaining the value
+    private int dimMatrix;//the dimension of the matrix for obtaining the value
 
-	private int initClassIndex;
+    private int initClassIndex;
 
-	public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex) {
-		super(ds);
+    public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex)
+    {
+        super(ds);
 
-		initClassIndex = m_ClassIndex = classIndex;
+        initClassIndex = m_ClassIndex = classIndex;
 
-		structure = new Instances("matrixToCluster", m_Attributes, 0);
+        structure = new Instances("matrixToCluster", m_Attributes, 0);
 
-		indexes = null;
+        indexes = null;
 
-		matrixView = matrix;
-	}
+        matrixView = matrix;
+    }
 
-	//Adding attributes (rows name)
-	public FastVector addAttributes(int numAttributes) {
+    //Adding attributes (rows name)
+    public FastVector addAttributes(int numAttributes)
+    {
 
-		FastVector attr = new FastVector();
+        FastVector attr = new FastVector();
 
-		for (int rows = 0; rows < numAttributes; rows ++)
-			attr.addElement(new Attribute("a" + rows));
+        for (int rows = 0; rows < numAttributes; rows++)
+            attr.addElement(new Attribute("a" + rows));
 
-		return attr;
-	}
+        return attr;
+    }
 
-	public Instances getStructure() throws IOException {
+    public Instances getStructure() throws IOException
+    {
 
-		return structure;
-	}
+        return structure;
+    }
 
-	public void setDataSet(Instances mergeInstances) { }
+    public void setDataSet(Instances mergeInstances)
+    {
+    }
 
-	public Instances getDataSet() throws IOException {
+    public Instances getDataSet() throws IOException
+    {
 
-		Instance current = null;
+        Instance current = null;
 
-		Instances dataSet = new Instances("matrixToCluster", m_Attributes, 0);
+        Instances dataSet = new Instances("matrixToCluster", m_Attributes, 0);
 
-		try {
-			for (int i = 0; i < matrixView.getSize(); i++) {
-				current = get(i);
-				dataSet.add(current);
-			}
-		} catch (Exception ex) {
-			throw new IOException("Error retrieving Weka dataset");
-		}
-		return dataSet;
-	}
+        try
+        {
+            for (int i = 0; i < matrixView.getSize(); i++)
+            {
+                current = get(i);
+                dataSet.add(current);
+            }
+        } catch (Exception ex)
+        {
+            throw new IOException("Error retrieving Weka dataset");
+        }
+        return dataSet;
+    }
 
-	/**
-	 * Given an index (col,row) from the matrix we retrieve the instance
-	 *
-	 */
-	public Instance get(int index) throws Exception {
+    /**
+     * Given an index (col,row) from the matrix we retrieve the instance
+     */
+    public Instance get(int index) throws Exception
+    {
 
-		if (index > matrixView.getSize() - 1) 	return null;
+        if (index > matrixView.getSize() - 1)
+        {
+            return null;
+        }
 
-		double[] values = null;
+        double[] values = null;
 
-		int row;
+        int row;
 
-		final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-				matrixView.getInstance(index).getValueClass(0));
+        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
+                matrixView.getInstance(index).getValueClass(0));
 
-		if (indexes == null) {
+        if (indexes == null)
+        {
 
-			values = new double[matrixView.getInstance(index).getNumAttributes()];
+            values = new double[matrixView.getInstance(index).getNumAttributes()];
 
-			for (row = 0; row < matrixView.getInstance(index).getNumAttributes(); row++) {
-				try {
-					values[row] = valueCast.getDoubleValue(
-							matrixView.getInstance(index).getValue(row));
-				} catch (Exception e) {
-					values[row] = Double.NaN;
-				}
-			}
-		} else {
+            for (row = 0; row < matrixView.getInstance(index).getNumAttributes(); row++)
+            {
+                try
+                {
+                    values[row] = valueCast.getDoubleValue(
+                            matrixView.getInstance(index).getValue(row));
+                } catch (Exception e)
+                {
+                    values[row] = Double.NaN;
+                }
+            }
+        }
+        else
+        {
 
-			values = new double[indexes.length];
+            values = new double[indexes.length];
 
-			for (int i = 0; i < indexes.length; i++) {
-				try{
-					row = indexes[i];
-					values[i] = valueCast.getDoubleValue(
-							matrixView.getInstance(index).getValue(row));
-				} catch (Exception e) {
-					values[i] = Double.NaN;
-				}
-			}
-		}
+            for (int i = 0; i < indexes.length; i++)
+            {
+                try
+                {
+                    row = indexes[i];
+                    values[i] = valueCast.getDoubleValue(
+                            matrixView.getInstance(index).getValue(row));
+                } catch (Exception e)
+                {
+                    values[i] = Double.NaN;
+                }
+            }
+        }
 
-		//Instance is created once data in array values. This improves time performance
-		Instance current = new Instance(1, values);
+        //Instance is created once data in array values. This improves time performance
+        Instance current = new Instance(1, values);
 
-		//The dataset for the instance
-		Instances dataset = new Instances("matrixToCluster", m_Attributes, 0);
+        //The dataset for the instance
+        Instances dataset = new Instances("matrixToCluster", m_Attributes, 0);
 
-		dataset.setClassIndex(m_ClassIndex);
+        dataset.setClassIndex(m_ClassIndex);
 
-		current.setDataset(dataset);
+        current.setDataset(dataset);
 
-		dataset.add(current);
+        dataset.add(current);
 
-		return current;
-	}
+        return current;
+    }
 
-	void setFilteredAttributes(int[] selectedAttributes) {
+    void setFilteredAttributes(int[] selectedAttributes)
+    {
 
-		indexes = selectedAttributes;
+        indexes = selectedAttributes;
 
-		m_Attributes = addAttributes(selectedAttributes.length);
+        m_Attributes = addAttributes(selectedAttributes.length);
 
-		structure = new Instances("matrixToCluster", m_Attributes, 0);
+        structure = new Instances("matrixToCluster", m_Attributes, 0);
 
-		m_ClassIndex = initClassIndex;
-	}
+        m_ClassIndex = initClassIndex;
+    }
 
-	void resetFilteredAttributes(){
+    void resetFilteredAttributes()
+    {
 
-		indexes = null;
+        indexes = null;
 
-		m_Attributes = addAttributes(matrixView.getSize());
+        m_Attributes = addAttributes(matrixView.getSize());
 
-		structure = new Instances("matrixToCluster", m_Attributes, 0);
-	}
+        structure = new Instances("matrixToCluster", m_Attributes, 0);
+    }
 
-	@Override
-	public int numInstances(){		
-		return matrixView.getSize();
-	}
+    @Override
+    public int numInstances()
+    {
+        return matrixView.getSize();
+    }
 
-	@Override
-	public Instance instance(int i) {
-		try {
-			return get(i);
+    @Override
+    public Instance instance(int i)
+    {
+        try
+        {
+            return get(i);
 
-		} catch (Exception ex) {
-			return null;
-		}
-	}
+        } catch (Exception ex)
+        {
+            return null;
+        }
+    }
 
-	@Override
-	public int numAttributes() {
+    @Override
+    public int numAttributes()
+    {
 
-		if (matrixView.getInstance(0) == null)
-			return 0;
-		
-		if (indexes == null)
-			return matrixView.getInstance(0).getNumAttributes();
-		else
-			return indexes.length;
+        if (matrixView.getInstance(0) == null)
+        {
+            return 0;
+        }
 
-	}
+        if (indexes == null)
+        {
+            return matrixView.getInstance(0).getNumAttributes();
+        }
+        else
+        {
+            return indexes.length;
+        }
 
-	public Attribute attribute(Integer index) {
+    }
 
-		return (Attribute) m_Attributes.elements(index);
-	}
+    public Attribute attribute(Integer index)
+    {
 
-	@Override
-	public int classIndex(){
-		return m_ClassIndex;
-	}
+        return (Attribute) m_Attributes.elements(index);
+    }
 
-	public ClusteringData getMatrixView() {
-		return matrixView;
-	}
+    @Override
+    public int classIndex()
+    {
+        return m_ClassIndex;
+    }
 
-	public void setClassIndex(int index) {
-		m_ClassIndex = index;
-	}
+    public ClusteringData getMatrixView()
+    {
+        return matrixView;
+    }
+
+    public void setClassIndex(int index)
+    {
+        m_ClassIndex = index;
+    }
 }

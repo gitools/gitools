@@ -1,149 +1,188 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-utils
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.utils.textpatt;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TextPattern {
+public class TextPattern
+{
 
-	public static interface VariableValueResolver {
-		String resolveValue(String variableName);
-	}
+    public static interface VariableValueResolver
+    {
+        String resolveValue(String variableName);
+    }
 
-	private static interface Token {
-		void generate(VariableValueResolver resolver, StringBuilder sb);
-	}
+    private static interface Token
+    {
+        void generate(VariableValueResolver resolver, StringBuilder sb);
+    }
 
-	private static class TextToken implements Token {
-		private String text;
+    private static class TextToken implements Token
+    {
+        private String text;
 
-		public TextToken(String text) {
-			this.text = text;
-		}
+        public TextToken(String text)
+        {
+            this.text = text;
+        }
 
-		@Override
-		public void generate(VariableValueResolver resolver, StringBuilder sb) {
-			sb.append(text);
-		}
-	}
+        @Override
+        public void generate(VariableValueResolver resolver, StringBuilder sb)
+        {
+            sb.append(text);
+        }
+    }
 
-	private static class VariableToken implements Token {
-		private String variableName;
+    private static class VariableToken implements Token
+    {
+        private String variableName;
 
-		public VariableToken(String variableName) {
-			this.variableName = variableName;
-		}
+        public VariableToken(String variableName)
+        {
+            this.variableName = variableName;
+        }
 
-		@Override
-		public void generate(VariableValueResolver resolver, StringBuilder sb) {
-			sb.append(resolver.resolveValue(variableName));
-		}
-	}
+        @Override
+        public void generate(VariableValueResolver resolver, StringBuilder sb)
+        {
+            sb.append(resolver.resolveValue(variableName));
+        }
+    }
 
-	private static List<Token> internalCompile(String pattern) {
-		List<Token> tokens = new ArrayList<Token>();
+    private static List<Token> internalCompile(String pattern)
+    {
+        List<Token> tokens = new ArrayList<Token>();
 
-		if (pattern == null)
-			return tokens;
-		
-		final StringBuilder buff = new StringBuilder();
-		final StringBuilder varBuff = new StringBuilder();
+        if (pattern == null)
+        {
+            return tokens;
+        }
 
-		char state = 'C';
+        final StringBuilder buff = new StringBuilder();
+        final StringBuilder varBuff = new StringBuilder();
 
-		int pos = 0;
+        char state = 'C';
 
-		while (pos < pattern.length()) {
+        int pos = 0;
 
-			char ch = pattern.charAt(pos++);
+        while (pos < pattern.length())
+        {
 
-			switch (state) {
-			case 'C': // copying normal characters
-				if (ch == '$')
-					state = '$';
-				else
-					buff.append(ch);
-				break;
+            char ch = pattern.charAt(pos++);
 
-			case '$': // start of variable
-				if (ch == '{') {
-					state = 'V';
-					tokens.add(new TextToken(buff.toString()));
-					buff.setLength(0);
-				}
-				else {
-					buff.append('$').append(ch);
-					state = 'C';
-				}
-				break;
+            switch (state)
+            {
+                case 'C': // copying normal characters
+                    if (ch == '$')
+                    {
+                        state = '$';
+                    }
+                    else
+                    {
+                        buff.append(ch);
+                    }
+                    break;
 
-			case 'V': // reading name of variable
-				if (ch == '}')
-					state = 'X';
-				else
-					varBuff.append(ch);
-				break;
+                case '$': // start of variable
+                    if (ch == '{')
+                    {
+                        state = 'V';
+                        tokens.add(new TextToken(buff.toString()));
+                        buff.setLength(0);
+                    }
+                    else
+                    {
+                        buff.append('$').append(ch);
+                        state = 'C';
+                    }
+                    break;
 
-			case 'X': // expand variable
-				tokens.add(new VariableToken(varBuff.toString()));
-				varBuff.setLength(0);
-				pos--;
-				state = 'C';
-				break;
-			}
-		}
+                case 'V': // reading name of variable
+                    if (ch == '}')
+                    {
+                        state = 'X';
+                    }
+                    else
+                    {
+                        varBuff.append(ch);
+                    }
+                    break;
 
-		switch (state) {
-		case '$': buff.append('$'); break;
-		case 'V': buff.append("${").append(varBuff); break;
-		case 'X':
-			tokens.add(new VariableToken(varBuff.toString()));
-			varBuff.setLength(0);
-			break;
-		}
+                case 'X': // expand variable
+                    tokens.add(new VariableToken(varBuff.toString()));
+                    varBuff.setLength(0);
+                    pos--;
+                    state = 'C';
+                    break;
+            }
+        }
 
-		if (buff.length() > 0)
-			tokens.add(new TextToken(buff.toString()));
+        switch (state)
+        {
+            case '$':
+                buff.append('$');
+                break;
+            case 'V':
+                buff.append("${").append(varBuff);
+                break;
+            case 'X':
+                tokens.add(new VariableToken(varBuff.toString()));
+                varBuff.setLength(0);
+                break;
+        }
 
-		return tokens;
-	}
+        if (buff.length() > 0)
+        {
+            tokens.add(new TextToken(buff.toString()));
+        }
 
-	public static TextPattern compile(String pattern) {
-		return new TextPattern(pattern);
-	}
+        return tokens;
+    }
 
-	private String text;
-	private List<Token> tokens;
+    public static TextPattern compile(String pattern)
+    {
+        return new TextPattern(pattern);
+    }
 
-	public TextPattern(String pattern) {
-		this.tokens = internalCompile(pattern);
-	}
+    private String text;
+    private List<Token> tokens;
 
-	public String getText() {
-		return text;
-	}
+    public TextPattern(String pattern)
+    {
+        this.tokens = internalCompile(pattern);
+    }
 
-	public String generate(VariableValueResolver resolver) {
-		StringBuilder sb = new StringBuilder();
-		for (Token token : tokens)
-			token.generate(resolver, sb);
-		return sb.toString();
-	}
+    public String getText()
+    {
+        return text;
+    }
+
+    public String generate(VariableValueResolver resolver)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Token token : tokens)
+            token.generate(resolver, sb);
+        return sb.toString();
+    }
 }

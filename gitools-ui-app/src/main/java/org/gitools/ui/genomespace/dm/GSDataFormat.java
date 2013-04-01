@@ -24,26 +24,31 @@ import java.net.URL;
  * @author Jim Robinson
  * @date 8/12/11
  */
-public class GSDataFormat {
+public class GSDataFormat
+{
     private String name;
     private String version;
     private URL url;
 
-    public GSDataFormat(String name, String version, URL url) {
+    public GSDataFormat(String name, String version, URL url)
+    {
         this.name = name;
         this.version = version;
         this.url = url;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public String getVersion() {
+    public String getVersion()
+    {
         return version;
     }
 
-    public URL getUrl() {
+    public URL getUrl()
+    {
         return url;
     }
 }

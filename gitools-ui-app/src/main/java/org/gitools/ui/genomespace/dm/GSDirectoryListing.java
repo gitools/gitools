@@ -18,7 +18,6 @@
 
 package org.gitools.ui.genomespace.dm;
 
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -27,20 +26,24 @@ import java.util.List;
  * @author Jim Robinson
  * @date Aug 2, 2011
  */
-public class GSDirectoryListing {
+public class GSDirectoryListing
+{
 
     private GSFileMetadata directory;
 
     private List<GSFileMetadata> contents;
 
-    public GSDirectoryListing(String url, List<GSFileMetadata> contents) {
+    public GSDirectoryListing(String url, List<GSFileMetadata> contents)
+    {
 
         // Parse URL to get components.
         //URL u = new URL(url);
         String path = null;
-        try {
+        try
+        {
             path = (new URL(url)).getPath();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
 
         }
         String name = (new File(path)).getName();
@@ -51,11 +54,13 @@ public class GSDirectoryListing {
         this.contents = contents;
     }
 
-    public GSFileMetadata getDirectory() {
+    public GSFileMetadata getDirectory()
+    {
         return directory;
     }
 
-    public List<GSFileMetadata> getContents() {
+    public List<GSFileMetadata> getContents()
+    {
         return contents;
     }
 }

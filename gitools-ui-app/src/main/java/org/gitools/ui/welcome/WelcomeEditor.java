@@ -1,32 +1,36 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.welcome;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.editor.Html4Editor;
+import org.gitools.ui.platform.editor.HtmlEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
@@ -42,189 +46,229 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 
-public class WelcomeEditor extends Html4Editor {
+public class WelcomeEditor extends HtmlEditor
+{
 
-	private static final long serialVersionUID = 6851947500231401412L;
+    private static final long serialVersionUID = 6851947500231401412L;
 
-	public WelcomeEditor() {
-		super("Welcome");
+    public WelcomeEditor()
+    {
+        super("Welcome");
 
-		try {
-			URL url = getClass().getResource("/html/welcome.html");
-			navigate(url);
-		} catch (Exception e) {
-			ExceptionDialog.show(AppFrame.instance(), e);
-		}
-	}
+        try
+        {
+            URL url = getClass().getResource("/html/welcome.html");
+            navigate(url);
+        } catch (Exception e)
+        {
+            ExceptionDialog.show(AppFrame.get(), e);
+        }
+    }
 
-	@Override
-	protected void performUrlAction(String name, Map<String, String> params) {
-		if (name.equals("goHome")) {
-			try {
-				Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
-			}
-			catch (Exception ex) {
-				ExceptionDialog.show(AppFrame.instance(), ex);
-			}
-		}
-		else if (name.equals("importIntogen")) {
-			IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.instance());
-			dlg.setVisible(true);
-			if (!dlg.isCancelled()) {
-				switch (dlg.getSelection()) {
-					case IntogenTypeDialog.MATRIX:
-						new ImportIntogenMatrixAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
+    @Override
+    protected void performUrlAction(String name, Map<String, String> params)
+    {
+        if (name.equals("goHome"))
+        {
+            try
+            {
+                Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
+            } catch (Exception ex)
+            {
+                ExceptionDialog.show(AppFrame.get(), ex);
+            }
+        }
+        else if (name.equals("importIntogen"))
+        {
+            IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.get());
+            dlg.setVisible(true);
+            if (!dlg.isCancelled())
+            {
+                switch (dlg.getSelection())
+                {
+                    case IntogenTypeDialog.MATRIX:
+                        new ImportIntogenMatrixAction()
+                                .actionPerformed(new ActionEvent(this, 0, name));
+                        break;
 
-					case IntogenTypeDialog.ONCOMODULES:
-						new ImportIntogenOncomodulesAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
-				}
-			}
-		}
-		else if (name.equals("importGo")) {
-			new ImportGoModulesAction()
-					.actionPerformed(new ActionEvent(this, 0, name));
-		}
-		else if (name.equals("importKegg")) {
-			new ImportKeggModulesAction()
-					.actionPerformed(new ActionEvent(this, 0, name));
-		}
-		else if (name.equals("importBiomart")) {
-			BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.instance());
-			dlg.setVisible(true);
-			if (!dlg.isCancelled()) {
-				switch (dlg.getSelection()) {
-					case BiomartTypeDialog.TABLE:
-						new ImportBiomartTableAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
+                    case IntogenTypeDialog.ONCOMODULES:
+                        new ImportIntogenOncomodulesAction()
+                                .actionPerformed(new ActionEvent(this, 0, name));
+                        break;
+                }
+            }
+        }
+        else if (name.equals("importGo"))
+        {
+            new ImportGoModulesAction()
+                    .actionPerformed(new ActionEvent(this, 0, name));
+        }
+        else if (name.equals("importKegg"))
+        {
+            new ImportKeggModulesAction()
+                    .actionPerformed(new ActionEvent(this, 0, name));
+        }
+        else if (name.equals("importBiomart"))
+        {
+            BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.get());
+            dlg.setVisible(true);
+            if (!dlg.isCancelled())
+            {
+                switch (dlg.getSelection())
+                {
+                    case BiomartTypeDialog.TABLE:
+                        new ImportBiomartTableAction()
+                                .actionPerformed(new ActionEvent(this, 0, name));
+                        break;
 
-					case BiomartTypeDialog.MODULES:
-						new ImportBiomartModulesAction()
-								.actionPerformed(new ActionEvent(this, 0, name));
-						break;
-				}
-			}
-		}
-        else if (name.equals("importExcel")) {
+                    case BiomartTypeDialog.MODULES:
+                        new ImportBiomartModulesAction()
+                                .actionPerformed(new ActionEvent(this, 0, name));
+                        break;
+                }
+            }
+        }
+        else if (name.equals("importExcel"))
+        {
             new ImportExcelMatrixAction()
                     .actionPerformed(new ActionEvent(this, 0, name));
         }
-		else if (name.equals("analysis")) {
-			final Map<String, Class<? extends BaseAction>> actions =
-					new HashMap<String, Class<? extends BaseAction>>();
-			
-			actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
-			actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
-			actions.put("Correlations", NewCorrelationAnalysisAction.class);
-			actions.put("Overlapping", NewOverlappingAnalysisAction.class);
-			actions.put("Combination", NewCombinationAnalysisAction.class);
-			
-			String ref = params.get("ref");
-			Class<? extends BaseAction> actionClass = actions.get(ref);
-			if (actionClass != null) {
-				try {
-					ActionEvent event = new ActionEvent(this, 0, name);
-					actionClass.newInstance().actionPerformed(event);
-				} catch (Exception ex) {
-					ExceptionDialog.show(AppFrame.instance(), ex);
-				}
-			}
-			else {
-				UnimplementedDialog.show(AppFrame.instance());
-			}
-		}
-		else if (name.equals("open")) {
-			String ref = params.get("ref");
-			if (ref.equals("Analysis"))
-				new OpenAnalysisAction().actionPerformed(new ActionEvent(this, 0, name));
-			else if (ref.equals("DataHeatmap"))
-				new OpenHeatmapAction().actionPerformed(new ActionEvent(this, 0, name));
+        else if (name.equals("analysis"))
+        {
+            final Map<String, Class<? extends BaseAction>> actions =
+                    new HashMap<String, Class<? extends BaseAction>>();
+
+            actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
+            actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
+            actions.put("Correlations", NewCorrelationAnalysisAction.class);
+            actions.put("Overlapping", NewOverlappingAnalysisAction.class);
+            actions.put("Combination", NewCombinationAnalysisAction.class);
+
+            String ref = params.get("ref");
+            Class<? extends BaseAction> actionClass = actions.get(ref);
+            if (actionClass != null)
+            {
+                try
+                {
+                    ActionEvent event = new ActionEvent(this, 0, name);
+                    actionClass.newInstance().actionPerformed(event);
+                } catch (Exception ex)
+                {
+                    ExceptionDialog.show(AppFrame.get(), ex);
+                }
+            }
+            else
+            {
+                UnimplementedDialog.show(AppFrame.get());
+            }
+        }
+        else if (name.equals("open"))
+        {
+            String ref = params.get("ref");
+            if (ref.equals("Analysis"))
+            {
+                new OpenAnalysisAction().actionPerformed(new ActionEvent(this, 0, name));
+            }
+            else if (ref.equals("DataHeatmap"))
+            {
+                new OpenHeatmapAction().actionPerformed(new ActionEvent(this, 0, name));
+            }
             else if (ref.equals("DataHeatmapGS"))
+            {
                 new OpenGenomeSpaceMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-		}
-		else if (name.equals("example")) {
-			LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
-		}
-		else if (name.equals("downloadExamples")) {
-			DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.instance());
-			dlg.setPath(Settings.getDefault().getLastWorkPath());
-			dlg.setVisible(true);
-			downloadExamples(dlg.getPath());
-		}
-		else if (name.equals("dataMatrices")
-				|| name.equals("dataModules")
-				|| name.equals("dataTables")) {
-				DataHelpDialog dlg = new DataHelpDialog(AppFrame.instance());
-				dlg.setVisible(true);
-		}
-	}
+            }
+        }
+        else if (name.equals("example"))
+        {
+            LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
+        }
+        else if (name.equals("downloadExamples"))
+        {
+            DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.get());
+            dlg.setPath(Settings.getDefault().getLastWorkPath());
+            dlg.setVisible(true);
+            downloadExamples(dlg.getPath());
+        }
+        else if (name.equals("dataMatrices")
+                || name.equals("dataModules")
+                || name.equals("dataTables"))
+        {
+            DataHelpDialog dlg = new DataHelpDialog(AppFrame.get());
+            dlg.setVisible(true);
+        }
+    }
 
-	@Override
-	public void doVisible() {
-		AppFrame.instance().setLeftPanelVisible(false);
-	}
+    @Override
+    public void doVisible()
+    {
+    }
 
-	private void downloadExamples(final String path) {
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Connecting ...", 1);
+    private void downloadExamples(final String path)
+    {
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    monitor.begin("Connecting ...", 1);
 
-					URL url = new URL("http://webstart.gitools.org/examples.zip");
+                    URL url = new URL("http://webstart.gitools.org/examples.zip");
 
-					ZipInputStream zin = new ZipInputStream(url.openStream());
+                    ZipInputStream zin = new ZipInputStream(url.openStream());
 
-					File pathFile = new File(path);
+                    File pathFile = new File(path);
 
-					monitor.end();
-					
-					monitor.begin("Downloading ...", 1);
+                    monitor.end();
 
-					ZipEntry ze;
-					while ((ze = zin.getNextEntry()) != null) {
-						IProgressMonitor mnt = monitor.subtask();
+                    monitor.begin("Downloading ...", 1);
 
-						long totalKb = ze.getSize() / 1024;
+                    ZipEntry ze;
+                    while ((ze = zin.getNextEntry()) != null)
+                    {
+                        IProgressMonitor mnt = monitor.subtask();
 
-						String name = ze.getName();
+                        long totalKb = ze.getSize() / 1024;
 
-						mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
+                        String name = ze.getName();
 
-						File outFile = new File(pathFile, name);
-						if (!outFile.getParentFile().exists())
-							outFile.getParentFile().mkdirs();
+                        mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
 
-						OutputStream fout = new FileOutputStream(outFile);
+                        File outFile = new File(pathFile, name);
+                        if (!outFile.getParentFile().exists())
+                        {
+                            outFile.getParentFile().mkdirs();
+                        }
 
-						final int BUFFER_SIZE = 4 * 1024;
-						byte[] data = new byte[BUFFER_SIZE];
-						int partial = 0;
-						int count;
-						while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
-							fout.write(data, 0, count);
-							partial += count;
-							mnt.info((partial / 1024) + " Kb read");
-							mnt.worked(count);
-						}
+                        OutputStream fout = new FileOutputStream(outFile);
 
-						zin.closeEntry();
-						fout.close();
+                        final int BUFFER_SIZE = 4 * 1024;
+                        byte[] data = new byte[BUFFER_SIZE];
+                        int partial = 0;
+                        int count;
+                        while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1)
+                        {
+                            fout.write(data, 0, count);
+                            partial += count;
+                            mnt.info((partial / 1024) + " Kb read");
+                            mnt.worked(count);
+                        }
 
-						mnt.end();
-					}
+                        zin.closeEntry();
+                        fout.close();
 
-					zin.close();
-					
-					monitor.end();
-				}
-				catch (Exception ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-	}
+                        mnt.end();
+                    }
+
+                    zin.close();
+
+                    monitor.end();
+                } catch (Exception ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+    }
 }

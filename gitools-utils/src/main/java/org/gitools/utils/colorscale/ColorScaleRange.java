@@ -1,7 +1,28 @@
+/*
+ * #%L
+ * gitools-utils
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.utils.colorscale;
 
-
-public class ColorScaleRange {
+public class ColorScaleRange
+{
 
     public static String CONSTANT_TYPE = "constant";
     public static String EMPTY_TYPE = "empty";
@@ -18,15 +39,18 @@ public class ColorScaleRange {
 
     private boolean borderEnabled = true;
 
-    public ColorScaleRange() {
+    public ColorScaleRange()
+    {
         super();
     }
 
-    public ColorScaleRange(double minValue, double maxValue, double width) {
+    public ColorScaleRange(double minValue, double maxValue, double width)
+    {
         this(minValue, maxValue, width, null, null, null, LINEAR_TYPE);
     }
 
-    public ColorScaleRange(double minValue, double maxValue, double width, Object leftLabel, Object centerLabel, Object rightLabel, String type) {
+    public ColorScaleRange(double minValue, double maxValue, double width, Object leftLabel, Object centerLabel, Object rightLabel, String type)
+    {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.width = width;
@@ -37,67 +61,83 @@ public class ColorScaleRange {
 
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type)
+    {
         this.type = type;
     }
 
-    public Object getLeftLabel() {
+    public Object getLeftLabel()
+    {
         return leftLabel;
     }
 
-    public void setLeftLabel(Object leftLabel) {
+    public void setLeftLabel(Object leftLabel)
+    {
         this.leftLabel = leftLabel;
     }
 
-    public Object getCenterLabel() {
+    public Object getCenterLabel()
+    {
         return centerLabel;
     }
 
-    public void setCenterLabel(Object centerLabel) {
+    public void setCenterLabel(Object centerLabel)
+    {
         this.centerLabel = centerLabel;
     }
 
-    public Object getRightLabel() {
+    public Object getRightLabel()
+    {
         return rightLabel;
     }
 
-    public void setRightLabel(Object rightLabel) {
+    public void setRightLabel(Object rightLabel)
+    {
         this.rightLabel = rightLabel;
     }
 
-    public double getWidth() {
+    public double getWidth()
+    {
         return width;
     }
 
-    public void setWidth(double width) {
+    public void setWidth(double width)
+    {
         this.width = width;
     }
 
-    public double getMinValue() {
+    public double getMinValue()
+    {
         return minValue;
     }
 
-    public void setMinValue(double minValue) {
+    public void setMinValue(double minValue)
+    {
         this.minValue = minValue;
     }
 
-    public double getMaxValue() {
+    public double getMaxValue()
+    {
         return maxValue;
     }
 
-    public void setMaxValue(double maxValue) {
+    public void setMaxValue(double maxValue)
+    {
         this.maxValue = maxValue;
     }
 
-    public boolean isBorderEnabled() {
+    public boolean isBorderEnabled()
+    {
         return borderEnabled;
     }
 
-    public void setBorderEnabled(boolean borderEnabled) {
+    public void setBorderEnabled(boolean borderEnabled)
+    {
         this.borderEnabled = borderEnabled;
     }
 }

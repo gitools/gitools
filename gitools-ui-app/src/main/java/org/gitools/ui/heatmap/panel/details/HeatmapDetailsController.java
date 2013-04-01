@@ -1,27 +1,26 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.heatmap.panel.details;
 
-import org.gitools.utils.colorscale.impl.PValueColorScale;
-import org.gitools.utils.colorscale.impl.ZScoreColorScale;
-import org.gitools.utils.formatter.GenericFormatter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.textpatt.TextPattern;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationResult;
 import org.gitools.analysis.correlation.CorrelationResult;
@@ -45,6 +44,11 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.view.entity.EntityController;
+import org.gitools.utils.colorscale.impl.PValueColorScale;
+import org.gitools.utils.colorscale.impl.ZScoreColorScale;
+import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.textpatt.TextPattern;
 
 import javax.swing.*;
 import java.io.*;
@@ -53,7 +57,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.*;
 
-public class HeatmapDetailsController implements EntityController {
+public class HeatmapDetailsController implements EntityController
+{
 
     private static final String defaultTemplateName = "/vm/details/noselection.vm";
     private static final String headerTemplateName = "/vm/details/header.vm";
@@ -61,13 +66,17 @@ public class HeatmapDetailsController implements EntityController {
 
     private TemplatePanel templatePanel;
 
-    protected TemplatePanel getTemplatePanel() {
-        if (templatePanel == null) {
+    protected TemplatePanel getTemplatePanel()
+    {
+        if (templatePanel == null)
+        {
             Properties props = new Properties();
             //props.put(VelocityEngine.VM_LIBRARY, "/vm/details/common.vm");
-            templatePanel = new TemplatePanel(props) {
+            templatePanel = new TemplatePanel(props)
+            {
                 @Override
-                protected void performUrlAction(String name, Map<String, String> params) {
+                protected void performUrlAction(String name, Map<String, String> params)
+                {
                     HeatmapDetailsController.this.performUrlAction(name, params);
                 }
             };
@@ -75,18 +84,21 @@ public class HeatmapDetailsController implements EntityController {
         return templatePanel;
     }
 
-    private void performUrlAction(String name, Map<String, String> params) {
+    private void performUrlAction(String name, Map<String, String> params)
+    {
 
         // Open IGV
-        if ("action:igv".equals(name)) {
+        if ("action:igv".equals(name))
+        {
             IgvCommand igv = new IgvCommand(params);
-            JobThread.execute(AppFrame.instance(), igv);
+            JobThread.execute(AppFrame.get(), igv);
         }
 
     }
 
     @Override
-    public JComponent getComponent(Object ctx) {
+    public JComponent getComponent(Object ctx)
+    {
         TemplatePanel panel = getTemplatePanel();
 
         final Heatmap heatmap = (Heatmap) ctx;
@@ -97,12 +109,16 @@ public class HeatmapDetailsController implements EntityController {
         int column = matrixView.getLeadSelectionColumn();
         int columns[] = matrixView.getSelectedColumns();
         int columnCount = matrixView.getColumnCount();
-        
+
         if (rows.length == 0 && row >= 0)
-            rows = new int[] {row};
-        
+        {
+            rows = new int[]{row};
+        }
+
         if (columns.length == 0 && column >= 0)
-            columns = new int[] {column};
+        {
+            columns = new int[]{column};
+        }
 
         VelocityContext context = new VelocityContext();
         context.put("fmt", new GenericFormatter());
@@ -121,7 +137,8 @@ public class HeatmapDetailsController implements EntityController {
         String igvColumnLabel = null;
         String igvRowLabel = null;
 
-        if (column >= 0 && column < columnCount && row >= 0 && row < rowCount) {
+        if (column >= 0 && column < columnCount && row >= 0 && row < rowCount)
+        {
 
             final Object columnId = matrixView.getColumnLabel(column);
             final Object columnLabel = heatmap.getColumnLabel(column);
@@ -134,7 +151,8 @@ public class HeatmapDetailsController implements EntityController {
 
             templateName = getTemplateNameFromObject(cellElement);
 
-            if (templateName != null) {
+            if (templateName != null)
+            {
                 context.put("zscoreScale", new ZScoreColorScale()); //FIXME
                 context.put("pvalueScale", new PValueColorScale()); //FIXME
 
@@ -157,7 +175,8 @@ public class HeatmapDetailsController implements EntityController {
                 final Map<String, IElementAttribute> attrMap =
                         new HashMap<String, IElementAttribute>();
 
-                for (int index = 0; index < properties.size(); index++) {
+                for (int index = 0; index < properties.size(); index++)
+                {
                     final IElementAttribute prop = properties.get(index);
                     cellMap.put(prop.getId(),
                             cellAdapter.getValue(cellElement, index));
@@ -177,8 +196,10 @@ public class HeatmapDetailsController implements EntityController {
         Map<String, String> links = new LinkedHashMap<String, String>();
 
         // Add IGV link
-        if (Settings.getDefault().isShowIGVLink()) {
-            if (rows.length > 0 || columns.length > 0) {
+        if (Settings.getDefault().isShowIGVLink())
+        {
+            if (rows.length > 0 || columns.length > 0)
+            {
 
                 igvRowLabel = "";
                 igvColumnLabel = "";
@@ -187,18 +208,21 @@ public class HeatmapDetailsController implements EntityController {
                     igvRowLabel = igvRowLabel + heatmap.getMatrixView().getRowLabel(i) + " ";
 
                 for (int i : columns)
-                    igvColumnLabel = igvColumnLabel +  heatmap.getMatrixView().getColumnLabel(i) + " ";
-                
+                    igvColumnLabel = igvColumnLabel + heatmap.getMatrixView().getColumnLabel(i) + " ";
+
                 String id = (rows.length > 1 || columns.length > 1) ? "Ids" : "Id";
 
-                final String rowLink = "action:igv?" + (row>=0 ? "row=" +  igvRowLabel + "&" : "");
+                final String rowLink = "action:igv?" + (row >= 0 ? "row=" + igvRowLabel + "&" : "");
                 final String completeLink = rowLink; /* + (column>=0 ? "column=" + igvColumnLabel : "");*/
                 if (row >= 0)
-                    links.put("Locate "+ id + " in genomic viewer (IGV)", completeLink);
+                {
+                    links.put("Locate " + id + " in genomic viewer (IGV)", completeLink);
+                }
             }
         }
 
-        if (row >= 0 && row < rowCount) {
+        if (row >= 0 && row < rowCount)
+        {
             HeatmapDim rowDim = heatmap.getRowDim();
 
             name = heatmap.getRowLabel(row);
@@ -207,14 +231,18 @@ public class HeatmapDetailsController implements EntityController {
 
             AnnotationMatrix annMatrix = rowDim.getAnnotations();
             if (annMatrix != null)
+            {
                 annotations = annMatrix.getAnnotations(label);
+            }
 
             IdType idType = rowDim.getIdType();
-            if (idType != null) {
+            if (idType != null)
+            {
                 String idTypeKey = idType.getKey();
                 List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
                 AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
-                for (UrlLink link : tlinks) {
+                for (UrlLink link : tlinks)
+                {
                     TextPattern pat = link.getPattern();
                     String url = pat.generate(resolver);
                     links.put(link.getName() + " (" + label + ")", url);
@@ -222,21 +250,26 @@ public class HeatmapDetailsController implements EntityController {
             }
         }
 
-        if (column >= 0 && column < columnCount) {
+        if (column >= 0 && column < columnCount)
+        {
             HeatmapDim colDim = heatmap.getColumnDim();
 
             name = heatmap.getColumnLabel(column);
             String label = heatmap.getMatrixView().getColumnLabel(column);
             AnnotationMatrix annMatrix = colDim.getAnnotations();
             if (annMatrix != null)
+            {
                 annotations = annMatrix.getAnnotations(label);
+            }
 
             IdType idType = colDim.getIdType();
-            if (idType != null) {
+            if (idType != null)
+            {
                 String idTypeKey = idType.getKey();
                 List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
                 AnnotationResolver resolver = new AnnotationResolver(annMatrix, label);
-                for (UrlLink link : tlinks) {
+                for (UrlLink link : tlinks)
+                {
                     TextPattern pat = link.getPattern();
                     String url = pat.generate(resolver);
                     links.put(link.getName() + " (" + label + ")", url);
@@ -250,13 +283,15 @@ public class HeatmapDetailsController implements EntityController {
         context.put("links", links);
 
 
-        try {
+        try
+        {
             panel.setTemplateFromResource(templateName);
             panel.setContext(context);
             panel.render();
 
 
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
@@ -267,39 +302,57 @@ public class HeatmapDetailsController implements EntityController {
         return panel;
     }
 
-    private String getTemplateNameFromObject(Object object) {
+    private String getTemplateNameFromObject(Object object)
+    {
         String templateName = "generic.vm";
-        if (object != null) {
+        if (object != null)
+        {
             if (object instanceof BinomialResult)
+            {
                 templateName = "binomial.vm";
+            }
             else if (object instanceof FisherResult)
+            {
                 templateName = "fisher.vm";
+            }
             else if (object instanceof ZScoreResult)
+            {
                 templateName = "zscore.vm";
+            }
             else if (object instanceof CorrelationResult)
+            {
                 templateName = "correlation.vm";
+            }
             else if (object instanceof CombinationResult)
+            {
                 templateName = "combination.vm";
+            }
             else if (object instanceof OverlappingResult)
+            {
                 templateName = "overlapping.vm";
+            }
         }
         return "/vm/details/" + templateName;
     }
 
 
-    private class IgvCommand implements JobRunnable {
+    private class IgvCommand implements JobRunnable
+    {
 
         private Map<String, String> params;
 
-        private IgvCommand(Map<String, String> params) {
+        private IgvCommand(Map<String, String> params)
+        {
             this.params = params;
         }
 
         @Override
-        public void run(IProgressMonitor monitor) {
+        public void run(IProgressMonitor monitor)
+        {
 
             Socket socket = null;
-            try {
+            try
+            {
 
                 monitor.title("Connecting with Integrative Genomics Viewer");
 
@@ -312,14 +365,16 @@ public class HeatmapDetailsController implements EntityController {
                 InputStream in = socket.getInputStream();
 
                 String cmd;
-                if (params.containsKey("column")) {
+                if (params.containsKey("column"))
+                {
                     monitor.info("Locating " + params.get("column"));
                     cmd = "goto " + params.get("column");
                     out.println(cmd);
                     waitServerResponse(in, monitor);
                 }
 
-                if (params.containsKey("row")) {
+                if (params.containsKey("row"))
+                {
                     monitor.info("Locating " + params.get("row"));
                     cmd = "goto " + params.get("row");
                     out.println(cmd);
@@ -327,24 +382,32 @@ public class HeatmapDetailsController implements EntityController {
                 }
 
 
-            } catch (ConnectException e) {
+            } catch (ConnectException e)
+            {
                 monitor.end();
                 showMessage("Unable to connect with Integrative Genomics Viewer (IGV). " +
                         "\n It must be running on '" + Settings.getDefault().getIgvUrl() + "'. " +
                         "\n Install or launch it from 'http://www.broadinstitute.org/igv'.");
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException e)
+            {
                 monitor.end();
                 showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 monitor.end();
                 showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
-            } catch (UnsupportedOperationException e) {
-            } finally {
+            } catch (UnsupportedOperationException e)
+            {
+            } finally
+            {
                 monitor.end();
-                if (socket != null) {
-                    try {
+                if (socket != null)
+                {
+                    try
+                    {
                         socket.close();
-                    } catch (IOException e) {
+                    } catch (IOException e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -353,10 +416,18 @@ public class HeatmapDetailsController implements EntityController {
 
         }
 
-        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException {
-            while (in.available() == 0) {
-                try{Thread.sleep(1000);}catch(Exception ee){}
-                if (monitor.isCancelled()) {
+        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException
+        {
+            while (in.available() == 0)
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                } catch (Exception ee)
+                {
+                }
+                if (monitor.isCancelled())
+                {
                     throw new UnsupportedOperationException("User cancel");
                 }
             }
@@ -364,8 +435,9 @@ public class HeatmapDetailsController implements EntityController {
             reader.readLine();
         }
 
-        private void showMessage(String msg) {
-            AppFrame frame = AppFrame.instance();
+        private void showMessage(String msg)
+        {
+            AppFrame frame = AppFrame.get();
             JOptionPane.showMessageDialog(frame, msg);
         }
     }

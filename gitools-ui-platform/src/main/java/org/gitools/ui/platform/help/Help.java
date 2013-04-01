@@ -1,21 +1,27 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.help;
+
+import org.gitools.ui.platform.PropertiesExpansion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,150 +34,189 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.gitools.ui.platform.PropertiesExpansion;
 
-public abstract class Help {
+public abstract class Help
+{
 
-	private static Help instance;
+    private static Help instance;
 
-	public static class UrlMap {
-		private Pattern pattern;
-		private String url;
+    public static class UrlMap
+    {
+        private Pattern pattern;
+        private String url;
 
-		public UrlMap(Pattern pattern, String url) {
-			this.pattern = pattern;
-			this.url = url;
-		}
+        public UrlMap(Pattern pattern, String url)
+        {
+            this.pattern = pattern;
+            this.url = url;
+        }
 
-		public Pattern getPattern() {
-			return pattern;
-		}
+        public Pattern getPattern()
+        {
+            return pattern;
+        }
 
-		public String getUrl() {
-			return url;
-		}
-	}
+        public String getUrl()
+        {
+            return url;
+        }
+    }
 
-	protected PropertiesExpansion properties;
-	protected List<UrlMap> urlMap;
+    protected PropertiesExpansion properties;
+    protected List<UrlMap> urlMap;
 
-	public Help() {
-		this(new Properties(), new ArrayList<UrlMap>());
-	}
+    public Help()
+    {
+        this(new Properties(), new ArrayList<UrlMap>());
+    }
 
-	protected Help(Properties properties, List<UrlMap> urlMap) {
-		this.properties = new PropertiesExpansion(properties);
-		this.urlMap = urlMap;
-	}
+    protected Help(Properties properties, List<UrlMap> urlMap)
+    {
+        this.properties = new PropertiesExpansion(properties);
+        this.urlMap = urlMap;
+    }
 
-	public static Help getDefault() {
-		if (instance == null)
-			instance = new DesktopNavigatorHelp();
-		
-		return instance;
-	}
+    public static Help getDefault()
+    {
+        if (instance == null)
+        {
+            instance = new DesktopNavigatorHelp();
+        }
 
-	public void loadProperties(InputStream in) throws IOException {
-		properties.load(in);
-		in.close();
-	}
+        return instance;
+    }
 
-	public void loadUrlMap(InputStream in) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String line;
-		int lineNum = 1;
-		while ((line = br.readLine()) != null) {
-			line = line.trim();
-			if (!line.isEmpty()) {
-				String[] fields = line.split("\t");
+    public void loadProperties(InputStream in) throws IOException
+    {
+        properties.load(in);
+        in.close();
+    }
 
-				if (fields.length == 2)
-					urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
-				else
-					throw new Exception("Error reading help url mappings:" +
-							" Two columns expected at line " + lineNum);
-			}
-			lineNum++;
-		}
-		br.close();
-	}
+    public void loadUrlMap(InputStream in) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String line;
+        int lineNum = 1;
+        while ((line = br.readLine()) != null)
+        {
+            line = line.trim();
+            if (!line.isEmpty())
+            {
+                String[] fields = line.split("\t");
 
-	protected URL getHelpUrl(HelpContext context) throws MalformedURLException {
-		String id = context.getId();
-		String urlStr = null; // FIXME Use a default url
-		for (UrlMap map : urlMap) {
-			Matcher matcher = map.getPattern().matcher(id);
-			if (matcher.matches()) {
-				Properties p = new Properties(properties);
-				for (int i = 0; i < matcher.groupCount(); i++)
-					p.setProperty("" + i, matcher.group(i));
-				urlStr = expandPattern(properties, map.getUrl());
-				//System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
-				break;
-			}
-		}
+                if (fields.length == 2)
+                {
+                    urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
+                }
+                else
+                {
+                    throw new Exception("Error reading help url mappings:" +
+                            " Two columns expected at line " + lineNum);
+                }
+            }
+            lineNum++;
+        }
+        br.close();
+    }
 
-		return new URL(urlStr);
-	}
+    protected URL getHelpUrl(HelpContext context) throws MalformedURLException
+    {
+        String id = context.getId();
+        String urlStr = null; // FIXME Use a default url
+        for (UrlMap map : urlMap)
+        {
+            Matcher matcher = map.getPattern().matcher(id);
+            if (matcher.matches())
+            {
+                Properties p = new Properties(properties);
+                for (int i = 0; i < matcher.groupCount(); i++)
+                    p.setProperty("" + i, matcher.group(i));
+                urlStr = expandPattern(properties, map.getUrl());
+                //System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
+                break;
+            }
+        }
 
-	public abstract void showHelp(HelpContext context) throws HelpException;
+        return new URL(urlStr);
+    }
 
-	private String expandPattern(
-			Properties properties,
-			String pattern) {
+    public abstract void showHelp(HelpContext context) throws HelpException;
 
-		final StringBuilder output = new StringBuilder();
-		final StringBuilder var = new StringBuilder();
+    private String expandPattern(
+            Properties properties,
+            String pattern)
+    {
 
-		char state = 'C';
+        final StringBuilder output = new StringBuilder();
+        final StringBuilder var = new StringBuilder();
 
-		int pos = 0;
+        char state = 'C';
 
-		while (pos < pattern.length()) {
+        int pos = 0;
 
-			char ch = pattern.charAt(pos++);
+        while (pos < pattern.length())
+        {
 
-			switch (state) {
-			case 'C': // copying normal characters
-				if (ch == '$')
-					state = '$';
-				else
-					output.append(ch);
-				break;
+            char ch = pattern.charAt(pos++);
 
-			case '$': // start of variable
-				if (ch == '{')
-					state = 'V';
-				else {
-					output.append('$').append(ch);
-					state = 'C';
-				}
-				break;
+            switch (state)
+            {
+                case 'C': // copying normal characters
+                    if (ch == '$')
+                    {
+                        state = '$';
+                    }
+                    else
+                    {
+                        output.append(ch);
+                    }
+                    break;
 
-			case 'V': // reading name of variable
-				if (ch == '}')
-					state = 'X';
-				else
-					var.append(ch);
-				break;
+                case '$': // start of variable
+                    if (ch == '{')
+                    {
+                        state = 'V';
+                    }
+                    else
+                    {
+                        output.append('$').append(ch);
+                        state = 'C';
+                    }
+                    break;
 
-			case 'X': // expand variable
-				output.append(properties.getProperty(var.toString()));
-				var.setLength(0);
-				pos--;
-				state = 'C';
-				break;
-			}
-		}
+                case 'V': // reading name of variable
+                    if (ch == '}')
+                    {
+                        state = 'X';
+                    }
+                    else
+                    {
+                        var.append(ch);
+                    }
+                    break;
 
-		switch (state) {
-		case '$': output.append('$'); break;
-		case 'V': output.append("${").append(var); break;
-		case 'X':
-			output.append(properties.getProperty(var.toString()));
-			break;
-		}
+                case 'X': // expand variable
+                    output.append(properties.getProperty(var.toString()));
+                    var.setLength(0);
+                    pos--;
+                    state = 'C';
+                    break;
+            }
+        }
 
-		return output.toString();
-	}
+        switch (state)
+        {
+            case '$':
+                output.append('$');
+                break;
+            case 'V':
+                output.append("${").append(var);
+                break;
+            case 'X':
+                output.append(properties.getProperty(var.toString()));
+                break;
+        }
+
+        return output.toString();
+    }
 }

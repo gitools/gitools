@@ -1,27 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.htest.editor;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JSplitPane;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
@@ -32,44 +31,53 @@ import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromColumnAct
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public class OncodriveResultsEditor extends HeatmapEditor {
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-	protected OncodriveAnalysis analysis;
+public class OncodriveResultsEditor extends HeatmapEditor
+{
 
-	protected AbstractTablesPanel tablesPanel;
+    protected OncodriveAnalysis analysis;
 
-	protected static Heatmap createHeatmap(OncodriveAnalysis analysis) {
-		IMatrixView dataTable = new MatrixView(analysis.getResults());
-		Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-		heatmap.setTitle(analysis.getTitle() + " (results)");
-		return heatmap;
-	}
+    protected AbstractTablesPanel tablesPanel;
 
-	protected static List<BaseAction> createToolBar(OncodriveAnalysis analysis) {
-		ViewRelatedDataFromColumnAction action =
-				new ViewRelatedDataFromColumnAction(
-					analysis.getTitle(),
-					analysis.getData(),
-					analysis.getModuleMap());
-		List<BaseAction> tb = new ArrayList<BaseAction>();
-		tb.add(action);
-		return tb;
-	}
+    protected static Heatmap createHeatmap(OncodriveAnalysis analysis)
+    {
+        IMatrixView dataTable = new MatrixView(analysis.getResults());
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        return heatmap;
+    }
 
-	public OncodriveResultsEditor(OncodriveAnalysis analysis) {
-		super(createHeatmap(analysis), createToolBar(analysis), true);
+    protected static List<BaseAction> createToolBar(OncodriveAnalysis analysis)
+    {
+        ViewRelatedDataFromColumnAction action =
+                new ViewRelatedDataFromColumnAction(
+                        analysis.getTitle(),
+                        analysis.getData(),
+                        analysis.getModuleMap());
+        List<BaseAction> tb = new ArrayList<BaseAction>();
+        tb.add(action);
+        return tb;
+    }
 
-		tablesPanel = new OncodriveTablesPanel(analysis, heatmap);
-		tablesPanel.setMinimumSize(new Dimension(140, 140));
+    public OncodriveResultsEditor(OncodriveAnalysis analysis)
+    {
+        super(createHeatmap(analysis), createToolBar(analysis), true);
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setContinuousLayout(true);
-		splitPane.setResizeWeight(1);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setTopComponent(embeddedContainer);
-		splitPane.setBottomComponent(tablesPanel);
+        tablesPanel = new OncodriveTablesPanel(analysis, heatmap);
+        tablesPanel.setMinimumSize(new Dimension(140, 140));
 
-		setLayout(new BorderLayout());
-		add(splitPane);
-	}
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setContinuousLayout(true);
+        splitPane.setResizeWeight(1);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setTopComponent(embeddedContainer);
+        splitPane.setBottomComponent(tablesPanel);
+
+        setLayout(new BorderLayout());
+        add(splitPane);
+    }
 }

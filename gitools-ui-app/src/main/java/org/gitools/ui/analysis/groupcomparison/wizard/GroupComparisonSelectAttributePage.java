@@ -1,31 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * OverlappingPage.java
- *
- * Created on 25-mar-2010, 17:40:59
- */
-
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
@@ -37,110 +32,141 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
+import javax.swing.*;
+import java.util.List;
 
-	
-	private static class TestElement {
-		public Test test;
-		public TestElement(Test test) {
-			this.test = test;
-		}
-		@Override
-		public String toString() {
-			return this.test.getName();
-		}
+public class GroupComparisonSelectAttributePage extends AbstractWizardPage
+{
 
-		public Test getTest() {
-			return this.test;
-		}
-	};
 
-	private static class MTCElement {
-		public MTC mtc;
-		public MTCElement(MTC mtc) {
-			this.mtc = mtc;
-		}
-		@Override
-		public String toString() {
-			return this.mtc.getName();
-		}
+    private static class TestElement
+    {
+        public Test test;
 
-		public MTC getMTC() {
-			return this.mtc;
-		}
-	};
+        public TestElement(Test test)
+        {
+            this.test = test;
+        }
 
-		public class AttrOption {
-		private String name;
-		private IElementAttribute attr;
+        @Override
+        public String toString()
+        {
+            return this.test.getName();
+        }
 
-		public AttrOption(String name) {
-			this.name = name;
-		}
+        public Test getTest()
+        {
+            return this.test;
+        }
+    }
 
-		public AttrOption(IElementAttribute attr) {
-			this.attr = attr;
-		}
+    ;
 
-		public IElementAttribute getAttr() {
-			return attr;
-		}
+    private static class MTCElement
+    {
+        public MTC mtc;
 
-		@Override
-		public String toString() {
-			return attr != null ? attr.getName() : name;
-		}
-	}
+        public MTCElement(MTC mtc)
+        {
+            this.mtc = mtc;
+        }
 
-    public GroupComparisonSelectAttributePage() {
-		super();
+        @Override
+        public String toString()
+        {
+            return this.mtc.getName();
+        }
 
-		initComponents();
+        public MTC getMTC()
+        {
+            return this.mtc;
+        }
+    }
 
-		setTitle("Select data and statistical test");
+    ;
 
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
+    public class AttrOption
+    {
+        private String name;
+        private IElementAttribute attr;
 
-		setComplete(true);
+        public AttrOption(String name)
+        {
+            this.name = name;
+        }
 
-		testCbox.setModel(new DefaultComboBoxModel(new TestElement[] {
-			new TestElement(new MannWhitneyWilxoxonTest())
-		}));
+        public AttrOption(IElementAttribute attr)
+        {
+            this.attr = attr;
+        }
 
-		mtcCb.setModel(new DefaultComboBoxModel(new MTCElement[]{
-			new MTCElement(new BenjaminiHochbergFdr()),
-			new MTCElement(new Bonferroni())
-		}));
+        public IElementAttribute getAttr()
+        {
+            return attr;
+        }
 
-		columnGroupingCb.setModel(
-				new DefaultComboBoxModel(
-					GroupComparisonAnalysis.getColumnGroupingMethods()
-				)
-		);
-	}
+        @Override
+        public String toString()
+        {
+            return attr != null ? attr.getName() : name;
+        }
+    }
 
-	public Test getTest() {
-		TestElement testElement = (TestElement) testCbox.getModel().getSelectedItem();
-		return testElement.getTest();
-	}
+    public GroupComparisonSelectAttributePage()
+    {
+        super();
 
-	public MTC getMtc() {
-		MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
-		return mtcElement.getMTC();
-	}
+        initComponents();
 
-	public String getColumnGrouping () {
-		return (String) columnGroupingCb.getSelectedItem();
-	}
+        setTitle("Select data and statistical test");
 
-    /** This method is called from within the constructor to
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
+
+        setComplete(true);
+
+        testCbox.setModel(new DefaultComboBoxModel(new TestElement[]{
+                new TestElement(new MannWhitneyWilxoxonTest())
+        }));
+
+        mtcCb.setModel(new DefaultComboBoxModel(new MTCElement[]{
+                new MTCElement(new BenjaminiHochbergFdr()),
+                new MTCElement(new Bonferroni())
+        }));
+
+        columnGroupingCb.setModel(
+                new DefaultComboBoxModel(
+                        GroupComparisonAnalysis.getColumnGroupingMethods()
+                )
+        );
+    }
+
+    public Test getTest()
+    {
+        TestElement testElement = (TestElement) testCbox.getModel().getSelectedItem();
+        return testElement.getTest();
+    }
+
+    public MTC getMtc()
+    {
+        MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
+        return mtcElement.getMTC();
+    }
+
+    public String getColumnGrouping()
+    {
+        return (String) columnGroupingCb.getSelectedItem();
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         applyGroup = new javax.swing.ButtonGroup();
         attributeLabel = new javax.swing.JLabel();
@@ -157,9 +183,11 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 
         attributeLabel.setText("Take values to compare from:");
 
-        testCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mann-Whitney-Wilcoxon" }));
-        testCbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        testCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Mann-Whitney-Wilcoxon"}));
+        testCbox.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 testCboxActionPerformed(evt);
             }
         });
@@ -168,7 +196,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 
         jLabel1.setText("Multiple test correction");
 
-        mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bonferroni", "Benjamini Hochberg FDR" }));
+        mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);
 
         attributeLabel2.setText("Group columns by:");
@@ -180,94 +208,101 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(attributeLabel2)
-                            .addComponent(attributeLabel))
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(columnGroupingCb, 0, 275, Short.MAX_VALUE)
-                            .addComponent(attributeCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 275, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(attributeLabel1))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(testCbox, 0, 349, Short.MAX_VALUE)
-                            .addComponent(mtcCb, 0, 349, Short.MAX_VALUE)))
-                    .addComponent(attributeLabel4)
-                    .addComponent(attributeLabel3))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(attributeLabel2)
+                                                        .addComponent(attributeLabel))
+                                                .addGap(45, 45, 45)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(columnGroupingCb, 0, 275, Short.MAX_VALUE)
+                                                        .addComponent(attributeCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 275, Short.MAX_VALUE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(attributeLabel1))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(testCbox, 0, 349, Short.MAX_VALUE)
+                                                        .addComponent(mtcCb, 0, 349, Short.MAX_VALUE)))
+                                        .addComponent(attributeLabel4)
+                                        .addComponent(attributeLabel3))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(attributeLabel3)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(attributeLabel)
-                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(attributeLabel2)
-                    .addComponent(columnGroupingCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(attributeLabel4)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(attributeLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(attributeLabel3)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(attributeLabel)
+                                        .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(attributeLabel2)
+                                        .addComponent(columnGroupingCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(attributeLabel4)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(attributeLabel1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void testCboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testCboxActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_testCboxActionPerformed
+    private void testCboxActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_testCboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_testCboxActionPerformed
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    @Override
+    public JComponent createControls()
+    {
+        return this;
+    }
 
 
-	public void setAttributes(List<IElementAttribute> attrs) {
+    public void setAttributes(List<IElementAttribute> attrs)
+    {
 
-		if (attrs != null) {
-			AttrOption[] attrOptions = new AttrOption[attrs.size()];
+        if (attrs != null)
+        {
+            AttrOption[] attrOptions = new AttrOption[attrs.size()];
 
-			for (int i = 0; i < attrs.size(); i++)
-				attrOptions[i] = new AttrOption(attrs.get(i));
+            for (int i = 0; i < attrs.size(); i++)
+                attrOptions[i] = new AttrOption(attrs.get(i));
 
-			attributeCb.setModel(new DefaultComboBoxModel(attrOptions));
-			attributeCb.setSelectedIndex(0);
-			attributeCb.setEnabled(true);
-			attributeCb.setVisible(true);
-			attributeLabel.setVisible(true);
-		}
-		else
-			dissableAttrCb();
-	}
+            attributeCb.setModel(new DefaultComboBoxModel(attrOptions));
+            attributeCb.setSelectedIndex(0);
+            attributeCb.setEnabled(true);
+            attributeCb.setVisible(true);
+            attributeLabel.setVisible(true);
+        }
+        else
+        {
+            dissableAttrCb();
+        }
+    }
 
-	private void dissableAttrCb() {
-		attributeCb.setModel(new DefaultComboBoxModel());
-		attributeCb.setEnabled(false);
-		attributeCb.setVisible(false);
-		attributeLabel.setVisible(false);
-	}
+    private void dissableAttrCb()
+    {
+        attributeCb.setModel(new DefaultComboBoxModel());
+        attributeCb.setEnabled(false);
+        attributeCb.setVisible(false);
+        attributeLabel.setVisible(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup applyGroup;
@@ -284,8 +319,9 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
     public javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables
 
-	public int getAttributeIndex() {
-		return attributeCb.getSelectedIndex();
-	}
+    public int getAttributeIndex()
+    {
+        return attributeCb.getSelectedIndex();
+    }
 
 }

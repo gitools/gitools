@@ -1,140 +1,162 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-biomart
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.biomart.idmapper;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
-import org.gitools.biomart.queryhandler.BiomartQueryHandler;
-import org.gitools.idmapper.AbstractMapper;
-import org.gitools.idmapper.MappingContext;
-import org.gitools.idmapper.MappingData;
-import org.gitools.idmapper.MappingException;
-import org.gitools.idmapper.MappingNode;
+import org.gitools.idmapper.*;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+
+import java.util.*;
 
 
-public class EnsemblMapper extends AbstractMapper implements AllIds {
+public class EnsemblMapper extends AbstractMapper implements AllIds
+{
 
-	private BiomartService service;
-	private String dataset;
+    private BiomartService service;
+    private String dataset;
 
-	public EnsemblMapper(BiomartService service, String dataset) {
-		super("Ensembl", false, true);
+    public EnsemblMapper(BiomartService service, String dataset)
+    {
+        super("Ensembl", false, true);
 
-		this.service = service;
-		this.dataset = dataset;
-	}
+        this.service = service;
+        this.dataset = dataset;
+    }
 
-	@Override
-	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
-		String srcInternalName = getInternalName(src.getId());
-		String dstInternalName = getInternalName(dst.getId());
-		if (srcInternalName == null || dstInternalName == null)
-			throw new MappingException("Unsupported mapping from " + src + " to " + dst);
+    @Override
+    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException
+    {
+        String srcInternalName = getInternalName(src.getId());
+        String dstInternalName = getInternalName(dst.getId());
+        if (srcInternalName == null || dstInternalName == null)
+        {
+            throw new MappingException("Unsupported mapping from " + src + " to " + dst);
+        }
 
-		monitor.begin("Getting mappings from Ensembl ...", 1);
+        monitor.begin("Getting mappings from Ensembl ...", 1);
 
-		final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
-		Query q = createQuery(dataset, srcInternalName, dstInternalName);
-		try {
-			service.queryModule(q, new BiomartQueryHandler() {
-				@Override public void begin() throws Exception { }
-				@Override public void end() { }
+        Query q = createQuery(dataset, srcInternalName, dstInternalName);
+        try
+        {
+            service.queryModule(q, new BiomartQueryHandler()
+            {
+                @Override
+                public void begin() throws Exception
+                {
+                }
 
-				@Override public void line(String[] rowFields) throws Exception {
-					String srcf = rowFields[0];
-					String dstf = rowFields[1];
-					Set<String> items = map.get(srcf);
-					if (items == null) {
-						items = new HashSet<String>();
-						map.put(srcf, items);
-					}
-					items.add(dstf);
-				}
-			}, monitor);
-		}
-		catch (Exception ex) {
-			throw new MappingException(ex);
-		}
+                @Override
+                public void end()
+                {
+                }
 
-		monitor.end();
+                @Override
+                public void line(String[] rowFields) throws Exception
+                {
+                    String srcf = rowFields[0];
+                    String dstf = rowFields[1];
+                    Set<String> items = map.get(srcf);
+                    if (items == null)
+                    {
+                        items = new HashSet<String>();
+                        map.put(srcf, items);
+                    }
+                    items.add(dstf);
+                }
+            }, monitor);
+        } catch (Exception ex)
+        {
+            throw new MappingException(ex);
+        }
 
-		monitor.begin("Mapping Ensembl IDs...", 1);
+        monitor.end();
 
-		if (data.isEmpty())
-			data.identity(map.keySet());
+        monitor.begin("Mapping Ensembl IDs...", 1);
 
-		data.map(map);
+        if (data.isEmpty())
+        {
+            data.identity(map.keySet());
+        }
 
-		monitor.end();
+        data.map(map);
 
-		return data;
-	}
+        monitor.end();
 
-	private static final Map<String, String> inameMap = new HashMap<String, String>();
-	static {
-		inameMap.put(ENSEMBL_GENES, "ensembl_gene_id");
-		inameMap.put(ENSEMBL_TRANSCRIPTS, "ensembl_transcript_id");
-		inameMap.put(ENSEMBL_PROTEINS, "ensembl_peptide_id");
+        return data;
+    }
 
-		inameMap.put(PDB, "pdb");
-		inameMap.put(NCBI_REFSEQ, "embl");
-		inameMap.put(NCBI_GENES, "entrezgene");
-		inameMap.put(NCBI_UNIGENE, "unigene");
-		inameMap.put(UNIPROT, "uniprot_swissprot_accession");
+    private static final Map<String, String> inameMap = new HashMap<String, String>();
 
-		inameMap.put(GO_BP, "go_biological_process_id");
-		inameMap.put(GO_MF, "go_molecular_function_id");
-		inameMap.put(GO_CL, "go_cellular_component_id");
-		inameMap.put(GO_ID, "go_id");
-	}
+    static
+    {
+        inameMap.put(ENSEMBL_GENES, "ensembl_gene_id");
+        inameMap.put(ENSEMBL_TRANSCRIPTS, "ensembl_transcript_id");
+        inameMap.put(ENSEMBL_PROTEINS, "ensembl_peptide_id");
 
-	public static String getInternalName(String id) {
-		String iname = inameMap.get(id);
-		if (iname == null && id.startsWith("ensembl:"))
-			return id.substring(8);
-		return iname;
-	}
+        inameMap.put(PDB, "pdb");
+        inameMap.put(NCBI_REFSEQ, "embl");
+        inameMap.put(NCBI_GENES, "entrezgene");
+        inameMap.put(NCBI_UNIGENE, "unigene");
+        inameMap.put(UNIPROT, "uniprot_swissprot_accession");
 
-	public static Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
-		Query q = new Query();
-		q.setVirtualSchemaName("default");
-		q.setUniqueRows(1);
-		Dataset ds = new Dataset();
-		ds.setName(dataset);
-		List<Attribute> attrs = ds.getAttribute();
-		Attribute srcAttr = new Attribute();
-		srcAttr.setName(srcInternalName);
-		attrs.add(srcAttr);
-		Attribute dstAttr = new Attribute();
-		dstAttr.setName(dstInternalName);
-		attrs.add(dstAttr);
+        inameMap.put(GO_BP, "go_biological_process_id");
+        inameMap.put(GO_MF, "go_molecular_function_id");
+        inameMap.put(GO_CL, "go_cellular_component_id");
+        inameMap.put(GO_ID, "go_id");
+    }
 
-		q.getDatasets().add(ds);
+    public static String getInternalName(String id)
+    {
+        String iname = inameMap.get(id);
+        if (iname == null && id.startsWith("ensembl:"))
+        {
+            return id.substring(8);
+        }
+        return iname;
+    }
 
-		return q;
-	}
+    public static Query createQuery(String dataset, String srcInternalName, String dstInternalName)
+    {
+        Query q = new Query();
+        q.setVirtualSchemaName("default");
+        q.setUniqueRows(1);
+        Dataset ds = new Dataset();
+        ds.setName(dataset);
+        List<Attribute> attrs = ds.getAttribute();
+        Attribute srcAttr = new Attribute();
+        srcAttr.setName(srcInternalName);
+        attrs.add(srcAttr);
+        Attribute dstAttr = new Attribute();
+        dstAttr.setName(dstInternalName);
+        attrs.add(dstAttr);
+
+        q.getDatasets().add(ds);
+
+        return q;
+    }
 }

@@ -1,189 +1,229 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * ColoredClustersAnnotationsPage.java
- *
- * Created on 02-mar-2011, 8:08:28
- */
-
 package org.gitools.ui.wizard.common;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class PatternSourcePage extends AbstractWizardPage {
+import javax.swing.*;
+import javax.swing.event.*;
 
-	private AnnotationMatrix am;
+public class PatternSourcePage extends AbstractWizardPage
+{
 
-	private boolean idOptVisible;
+    private AnnotationMatrix am;
 
-	public PatternSourcePage(boolean idOptVisible) {
-		this(null, idOptVisible);
-	}
+    private boolean idOptVisible;
 
-	public PatternSourcePage(AnnotationMatrix am, boolean idOptVisible) {
-		this.am = am;
-		this.idOptVisible = idOptVisible;
-		
-		initComponents();
+    public PatternSourcePage(boolean idOptVisible)
+    {
+        this(null, idOptVisible);
+    }
 
-		ChangeListener optListener = new ChangeListener() {
-			@Override public void stateChanged(ChangeEvent e) {
-				sourceChanged(); }
-		};
+    public PatternSourcePage(AnnotationMatrix am, boolean idOptVisible)
+    {
+        this.am = am;
+        this.idOptVisible = idOptVisible;
 
-		idOpt.addChangeListener(optListener);
-		annOpt.addChangeListener(optListener);
-		patOpt.addChangeListener(optListener);
-		
-		annList.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent e) {
-				annListChanged(); }
-		});
-		
-		annSepCb.setModel(new DefaultComboBoxModel(
-				new String[] {", ", "-", " | ", " / ", " > ", "::"}));
-		annSepCb.setSelectedIndex(0);
+        initComponents();
 
-		patText.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				updateComplete(); }
-		});
+        ChangeListener optListener = new ChangeListener()
+        {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+                sourceChanged();
+            }
+        };
 
-		setTitle("Annotations selection");
-		setComplete(true);
-	}
+        idOpt.addChangeListener(optListener);
+        annOpt.addChangeListener(optListener);
+        patOpt.addChangeListener(optListener);
 
-	@Override
-	public void updateControls() {
-		super.updateControls();
+        annList.addListSelectionListener(new ListSelectionListener()
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                annListChanged();
+            }
+        });
 
-		if (am != null && am.getColumnCount() > 0) {
-			annOpt.setSelected(true);
-			DefaultListModel model = new DefaultListModel();
-			if (idOptVisible)
-				model.addElement("id");
-			for (int i = 0; i < am.getColumnCount(); i++)
-				model.addElement(am.getColumnLabel(i));
-			annList.setModel(model);
-			annList.setSelectedIndex(0);
-		}
-		else {
-			if (idOptVisible)
-				idOpt.setSelected(true);
-			else
-				patOpt.setSelected(true);
-			annOpt.setEnabled(false);
-		}
-	}
+        annSepCb.setModel(new DefaultComboBoxModel(
+                new String[]{", ", "-", " | ", " / ", " > ", "::"}));
+        annSepCb.setSelectedIndex(0);
 
-	private void updateComplete() {
-		setComplete(
-			annOpt.isSelected() && annList.getSelectedIndices().length > 0
-			|| patOpt.isSelected() && patText.getDocument().getLength() > 0);
-	}
+        patText.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                updateComplete();
+            }
+        });
 
-	private void sourceChanged() {
-		boolean annSel = annOpt.isSelected();
-		annList.setEnabled(annSel);
-		annSepLabel.setEnabled(annSel);
-		annSepCb.setEnabled(annSel);
-		patText.setEnabled(patOpt.isSelected());
-	}
+        setTitle("Annotations selection");
+        setComplete(true);
+    }
 
-	private void annListChanged() {
-		patText.setText(getPattern());
-		updateComplete();
-	}
+    @Override
+    public void updateControls()
+    {
+        super.updateControls();
 
-	public String getPattern() {
-		if (idOpt.isSelected())
-			return "${id}";
-		else if(patOpt.isSelected())
-			return patText.getText();
+        if (am != null && am.getColumnCount() > 0)
+        {
+            annOpt.setSelected(true);
+            DefaultListModel model = new DefaultListModel();
+            if (idOptVisible)
+            {
+                model.addElement("id");
+            }
+            for (int i = 0; i < am.getColumnCount(); i++)
+                model.addElement(am.getColumnLabel(i));
+            annList.setModel(model);
+            annList.setSelectedIndex(0);
+        }
+        else
+        {
+            if (idOptVisible)
+            {
+                idOpt.setSelected(true);
+            }
+            else
+            {
+                patOpt.setSelected(true);
+            }
+            annOpt.setEnabled(false);
+        }
+    }
 
-		StringBuilder sb = new StringBuilder();
-		Object[] values = annList.getSelectedValues();
-		if (values.length == 0)
-			return "";
+    private void updateComplete()
+    {
+        setComplete(
+                annOpt.isSelected() && annList.getSelectedIndices().length > 0
+                        || patOpt.isSelected() && patText.getDocument().getLength() > 0);
+    }
 
-		sb.append("${");
-		sb.append(values[0]);
-		sb.append("}");
-		for (int i = 1; i < values.length; i++) {
-			sb.append(annSepCb.getSelectedItem());
-			sb.append("${");
-			sb.append(values[i]);
-			sb.append("}");
-		}
+    private void sourceChanged()
+    {
+        boolean annSel = annOpt.isSelected();
+        annList.setEnabled(annSel);
+        annSepLabel.setEnabled(annSel);
+        annSepCb.setEnabled(annSel);
+        patText.setEnabled(patOpt.isSelected());
+    }
 
-		return sb.toString();
-	}
+    private void annListChanged()
+    {
+        patText.setText(getPattern());
+        updateComplete();
+    }
 
-	public String getPatternTitle() {
-		if (idOpt.isSelected())
-			return "id";
-		else if(patOpt.isSelected())
-			return patText.getText();
+    public String getPattern()
+    {
+        if (idOpt.isSelected())
+        {
+            return "${id}";
+        }
+        else if (patOpt.isSelected())
+        {
+            return patText.getText();
+        }
 
-		StringBuilder sb = new StringBuilder();
-		Object[] values = annList.getSelectedValues();
+        StringBuilder sb = new StringBuilder();
+        Object[] values = annList.getSelectedValues();
+        if (values.length == 0)
+        {
+            return "";
+        }
 
-		sb.append(values[0]);
-		for (int i = 1; i < values.length; i++) {
-			sb.append(annSepCb.getSelectedItem());
-			sb.append(values[i]);
-		}
+        sb.append("${");
+        sb.append(values[0]);
+        sb.append("}");
+        for (int i = 1; i < values.length; i++)
+        {
+            sb.append(annSepCb.getSelectedItem());
+            sb.append("${");
+            sb.append(values[i]);
+            sb.append("}");
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	public void setAnnotationMatrix(AnnotationMatrix am) {
-		this.am = am;
-		updateControls();
-	}
+    public String getPatternTitle()
+    {
+        if (idOpt.isSelected())
+        {
+            return "id";
+        }
+        else if (patOpt.isSelected())
+        {
+            return patText.getText();
+        }
 
-	public boolean isIdOptVisible() {
-		return idOptVisible;
-	}
+        StringBuilder sb = new StringBuilder();
+        Object[] values = annList.getSelectedValues();
 
-	public void setIdOptVisible(boolean idOptVisible) {
-		this.idOptVisible = idOptVisible;
-		idOpt.setVisible(idOptVisible);
-		invalidate();
-	}
+        sb.append(values[0]);
+        for (int i = 1; i < values.length; i++)
+        {
+            sb.append(annSepCb.getSelectedItem());
+            sb.append(values[i]);
+        }
 
-    /** This method is called from within the constructor to
+        return sb.toString();
+    }
+
+    public void setAnnotationMatrix(AnnotationMatrix am)
+    {
+        this.am = am;
+        updateControls();
+    }
+
+    public boolean isIdOptVisible()
+    {
+        return idOptVisible;
+    }
+
+    public void setIdOptVisible(boolean idOptVisible)
+    {
+        this.idOptVisible = idOptVisible;
+        idOpt.setVisible(idOptVisible);
+        invalidate();
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         optGroup = new javax.swing.ButtonGroup();
         annOpt = new javax.swing.JRadioButton();
@@ -206,7 +246,7 @@ public class PatternSourcePage extends AbstractWizardPage {
 
         patText.setText("${id}");
 
-        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-2f));
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize() - 2f));
         jLabel1.setText("Press Ctrl key to select for multiple annotations");
 
         annSepLabel.setText("Separator");
@@ -219,54 +259,54 @@ public class PatternSourcePage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(annSepLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(patOpt))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(idOpt))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(annOpt))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(annSepLabel)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(patOpt))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(idOpt))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(annOpt))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(idOpt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(annOpt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(annSepLabel)
-                    .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(patOpt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(idOpt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(annOpt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(annSepLabel)
+                                        .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(patOpt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

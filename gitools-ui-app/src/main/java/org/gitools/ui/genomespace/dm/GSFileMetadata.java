@@ -27,7 +27,8 @@ import org.json.JSONObject;
  * @author Jim Robinson
  * @date Aug 2, 2011
  */
-public class GSFileMetadata {
+public class GSFileMetadata
+{
     private boolean isDirectory;
     private String name;
     private String path;
@@ -35,7 +36,8 @@ public class GSFileMetadata {
     private String format;
     private String size;
 
-    public GSFileMetadata(String name, String path, String url, String format, String size, boolean isDirectory) {
+    public GSFileMetadata(String name, String path, String url, String format, String size, boolean isDirectory)
+    {
         this.isDirectory = isDirectory;
         this.name = name;
         this.path = path;
@@ -44,45 +46,54 @@ public class GSFileMetadata {
         this.size = size;
     }
 
-    public GSFileMetadata(JSONObject o) throws JSONException {
+    public GSFileMetadata(JSONObject o) throws JSONException
+    {
         name = (String) o.get("name");
         path = (String) o.get("path");
         url = (String) o.get("url");
         isDirectory = (Boolean) o.get("isDirectory");
-        if (o.has("dataFormat")) {
+        if (o.has("dataFormat"))
+        {
             JSONObject dataFormat = o.has("dataFormat") ? (JSONObject) o.get("dataFormat") : null;
             format = dataFormat == null ? "" : dataFormat.getString("name");
-            size =  o.get("size").toString();
+            size = o.get("size").toString();
         }
 
     }
 
-    public String toString() {
+    public String toString()
+    {
         return getName();
     }
 
-    public boolean isDirectory() {
+    public boolean isDirectory()
+    {
         return isDirectory;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public String getPath() {
+    public String getPath()
+    {
         return path;
     }
 
 
-    public String getUrl() {
+    public String getUrl()
+    {
         return url;
     }
 
-    public String getFormat() {
+    public String getFormat()
+    {
         return format;
     }
 
-    public String getSize() {
+    public String getSize()
+    {
         return size;
     }
 }

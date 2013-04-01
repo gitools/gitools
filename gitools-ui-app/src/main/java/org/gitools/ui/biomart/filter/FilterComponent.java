@@ -1,47 +1,55 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.filter;
 
-import java.util.List;
-import javax.swing.JPanel;
 import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.biomart.restful.model.Option;
 
-public abstract class FilterComponent extends JPanel implements IFilterComponent {
+import javax.swing.*;
+import java.util.List;
+
+public abstract class FilterComponent extends JPanel implements IFilterComponent
+{
 
     protected FilterComponent childComponent;
 
-	protected FilterDescriptionPanel parentPanel;
+    protected FilterDescriptionPanel parentPanel;
 
-	protected FilterDescription filterDescription;
+    protected FilterDescription filterDescription;
 
-    protected Option filterOptions; 
+    protected Option filterOptions;
 
-	protected Integer currentHeight;
+    protected Integer currentHeight;
 
 
-    FilterComponent(FilterDescription d, FilterDescriptionPanel parent) {
+    FilterComponent(FilterDescription d, FilterDescriptionPanel parent)
+    {
         filterDescription = d;
         parentPanel = parent;
         filterOptions = null;
     }
 
-    FilterComponent(Option option) {
+    FilterComponent(Option option)
+    {
         filterDescription = null;
         parentPanel = null;
         filterOptions = option;
@@ -50,38 +58,44 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
 
 
     @Override
-    public Boolean hasChild() {
+    public Boolean hasChild()
+    {
         return (childComponent != null);
     }
 
     @Override
-    public FilterComponent getChildComponent() {
+    public FilterComponent getChildComponent()
+    {
         return childComponent;
     }
 
     @Override
-    public void addChildComponent(FilterComponent childComponent) {
+    public void addChildComponent(FilterComponent childComponent)
+    {
         this.childComponent = childComponent;
     }
 
     @Override
-    public FilterDescriptionPanel getDescriptionPanel() {
+    public FilterDescriptionPanel getDescriptionPanel()
+    {
         return parentPanel;
     }
-	
-	@Override
-	public Integer getCurrentHeight() {
-		return currentHeight;
-	}
 
-	public FilterDescription getFilterDescription() {
-		return filterDescription;
-	}
+    @Override
+    public Integer getCurrentHeight()
+    {
+        return currentHeight;
+    }
 
-	/**
-	 * Set options model of a comboBox component.
-	 * This operation is used for implement the PushAction
-	 * mechanism
-	 */
-	public abstract void setListOptions(List<Option> optionList);
+    public FilterDescription getFilterDescription()
+    {
+        return filterDescription;
+    }
+
+    /**
+     * Set options model of a comboBox component.
+     * This operation is used for implement the PushAction
+     * mechanism
+     */
+    public abstract void setListOptions(List<Option> optionList);
 }

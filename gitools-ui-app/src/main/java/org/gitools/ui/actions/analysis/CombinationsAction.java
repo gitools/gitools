@@ -1,23 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.heatmap.Heatmap;
@@ -36,98 +39,118 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class CombinationsAction extends BaseAction {
+public class CombinationsAction extends BaseAction
+{
 
-	public CombinationsAction() {
-		super("Combinations");
-		setDesc("Combinations");
-	}
+    public CombinationsAction()
+    {
+        super("Combinations");
+        setDesc("Combinations");
+    }
 
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
-	}
+    @Override
+    public boolean isEnabledByModel(Object model)
+    {
+        return model instanceof Heatmap
+                || model instanceof IMatrixView;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-		final IEditor currentEditor = editorPanel.getSelectedEditor();
+        final IEditor currentEditor = editorPanel.getSelectedEditor();
 
-		IMatrixView matrixView = ActionUtils.getMatrixView();
+        IMatrixView matrixView = ActionUtils.getMatrixView();
 
-		if (matrixView == null)
-			return;
+        if (matrixView == null)
+        {
+            return;
+        }
 
-		final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
-		wizard.setExamplePageEnabled(false);
-		wizard.setDataFromMemory(true);
-		wizard.setAttributes(matrixView.getCellAttributes());
-		wizard.setSaveFilePageEnabled(false);
+        final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
+        wizard.setExamplePageEnabled(false);
+        wizard.setDataFromMemory(true);
+        wizard.setAttributes(matrixView.getCellAttributes());
+        wizard.setSaveFilePageEnabled(false);
 
-		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
+        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
-		wizDlg.open();
+        wizDlg.open();
 
-		if (wizDlg.isCancelled())
-			return;
+        if (wizDlg.isCancelled())
+        {
+            return;
+        }
 
-		final CombinationAnalysis analysis = wizard.getAnalysis();
-		analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
-		
-		File columnSetsFile = wizard.getColumnSetsPage().getFile();
-		String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-		String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getMime() : null;
+        final CombinationAnalysis analysis = wizard.getAnalysis();
+        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
 
-		final CombinationCommand cmd = new CombinationCommand(
-				analysis,
-				null, null,
-				columnSetsMime,
-				columnSetsPath,
-				null, null);
-		cmd.setStoreAnalysis(false);
+        File columnSetsFile = wizard.getColumnSetsPage().getFile();
+        String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
+        String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getMime() : null;
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					cmd.run(monitor);
+        final CombinationCommand cmd = new CombinationCommand(
+                analysis,
+                null, null,
+                columnSetsMime,
+                columnSetsPath,
+                null, null);
+        cmd.setStoreAnalysis(false);
 
-					if (monitor.isCancelled())
-						return;
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    cmd.run(monitor);
 
-					final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
+                    if (monitor.isCancelled())
+                    {
+                        return;
+                    }
 
-					String ext = PersistenceUtils.getExtension(currentEditor.getName());
+                    final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
+
+                    String ext = PersistenceUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals(""))
+                    {
                         editor.setName(analysis.getTitle() + "." + FileSuffixes.COMBINATION);
+                    }
                     else
+                    {
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.COMBINATION));
+                    }
 
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							AppFrame.instance().getEditorsPanel().addEditor(editor);
-							AppFrame.instance().refresh();
-						}
-					});
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            AppFrame.get().getEditorsPanel().addEditor(editor);
+                            AppFrame.get().refresh();
+                        }
+                    });
 
-					monitor.end();
+                    monitor.end();
 
-					AppFrame.instance().setStatusText("Done.");
-				}
-				catch (Throwable ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-	}
+                    AppFrame.get().setStatusText("Done.");
+                } catch (Throwable ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+    }
 }

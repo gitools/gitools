@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-utils
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.utils.colorscale.impl;
 
 import org.gitools.utils.aggregation.IAggregator;
@@ -22,48 +26,52 @@ import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
-
-import java.awt.Color;
-import java.util.ArrayList;
-
 import org.gitools.utils.colorscale.util.ColorConstants;
 
-public class PValueColorScale extends NumericColorScale {
-	
-	public static final double defaultLogFactor = 0.25;
+import java.awt.*;
+import java.util.ArrayList;
 
-	private double significanceLevel;
+public class PValueColorScale extends NumericColorScale
+{
+
+    public static final double defaultLogFactor = 0.25;
+
+    private double significanceLevel;
 
     private Color minColor;
     private Color maxColor;
     private Color nonSignificantColor;
-	
-	public PValueColorScale(
-			double significanceLevel, 
-			Color minColor, 
-			Color maxColor,
-			Color nonSignificantColor) {
-		
-		super();
-		
-		this.significanceLevel = significanceLevel;
+
+    public PValueColorScale(
+            double significanceLevel,
+            Color minColor,
+            Color maxColor,
+            Color nonSignificantColor)
+    {
+
+        super();
+
+        this.significanceLevel = significanceLevel;
         this.maxColor = maxColor;
         this.minColor = minColor;
         this.nonSignificantColor = nonSignificantColor;
-	}
-	
-	public PValueColorScale() {
-		this(0.05, 
-				ColorConstants.minColor,
-				ColorConstants.maxColor,
-				ColorConstants.nonSignificantColor);
+    }
+
+    public PValueColorScale()
+    {
+        this(0.05,
+                ColorConstants.minColor,
+                ColorConstants.maxColor,
+                ColorConstants.nonSignificantColor);
         updateRangesList();
-	}
+    }
 
     @Override
-    protected Color colorOf(double value) {
+    protected Color colorOf(double value)
+    {
 
-        if (value > significanceLevel || value < 0) {
+        if (value > significanceLevel || value < 0)
+        {
             return nonSignificantColor;
         }
 
@@ -74,53 +82,65 @@ public class PValueColorScale extends NumericColorScale {
     }
 
     @Override
-    public double[] getPoints() {
-        return new double[] { 0, significanceLevel, 1 } ;
+    public double[] getPoints()
+    {
+        return new double[]{0, significanceLevel, 1};
     }
 
-    public double getSignificanceLevel() {
+    public double getSignificanceLevel()
+    {
         return significanceLevel;
     }
 
-    public void setSignificanceLevel(double significanceLevel) {
+    public void setSignificanceLevel(double significanceLevel)
+    {
         this.significanceLevel = significanceLevel;
 
-        if (significanceLevel > 1) {
+        if (significanceLevel > 1)
+        {
             this.significanceLevel = 1;
         }
 
-        if (significanceLevel < 0) {
+        if (significanceLevel < 0)
+        {
             this.significanceLevel = 0;
         }
         updateRangesList();
     }
 
-    public Color getMinColor() {
+    public Color getMinColor()
+    {
         return minColor;
     }
 
-    public void setMinColor(Color minColor) {
+    public void setMinColor(Color minColor)
+    {
         this.minColor = minColor;
     }
 
-    public Color getMaxColor() {
+    public Color getMaxColor()
+    {
         return maxColor;
     }
 
-    public void setMaxColor(Color maxColor) {
+    public void setMaxColor(Color maxColor)
+    {
         this.maxColor = maxColor;
     }
 
-    public Color getNonSignificantColor() {
+    public Color getNonSignificantColor()
+    {
         return nonSignificantColor;
     }
 
-    public void setNonSignificantColor(Color nonSignificantColor) {
+    public void setNonSignificantColor(Color nonSignificantColor)
+    {
         this.nonSignificantColor = nonSignificantColor;
     }
 
     @Override
-    protected void updateRangesList() {
+    protected void updateRangesList()
+    {
 
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
@@ -131,16 +151,17 @@ public class PValueColorScale extends NumericColorScale {
         double mid = getSignificanceLevel();
 
         rangesList.add(new ColorScaleRange(
-                min,mid,20,min,null,mid,ColorScaleRange.LOGARITHMIC_TYPE)
+                min, mid, 20, min, null, mid, ColorScaleRange.LOGARITHMIC_TYPE)
         );
         rangesList.add(new ColorScaleRange(
-                mid,max,10,null,null,max,ColorScaleRange.LOGARITHMIC_TYPE)
+                mid, max, 10, null, null, max, ColorScaleRange.LOGARITHMIC_TYPE)
         );
 
     }
 
     @Override
-    public IAggregator defaultAggregator() {
+    public IAggregator defaultAggregator()
+    {
         return MultAggregator.INSTANCE;
     }
 }

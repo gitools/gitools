@@ -1,24 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.htest.editor;
 
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
@@ -29,8 +31,8 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
@@ -39,19 +41,24 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis> {
+public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAnalysis>
+{
 
-    public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {
+    public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis)
+    {
         super(analysis, "/vm/analysis/enrichment/analysis_details.vm", null);
     }
 
     @Override
-    protected void prepareContext(VelocityContext context) {
+    protected void prepareContext(VelocityContext context)
+    {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -59,16 +66,22 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                 fileRef != null ? fileRef.getName() : "Not defined");
 
         ToolConfig testConfig = analysis.getTestConfig();
-        if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "") {
+        if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "")
+        {
             context.put("test", WordUtils.capitalize(testConfig.get(TestFactory.TEST_NAME_PROPERTY)));
             HashMap<String, Object> testAttributes = new HashMap<String, Object>();
-            for (String key : testConfig.getConfiguration().keySet()) {
+            for (String key : testConfig.getConfiguration().keySet())
+            {
                 if (!key.equals(TestFactory.TEST_NAME_PROPERTY))
+                {
                     testAttributes.put(WordUtils.capitalize(key),
                             WordUtils.capitalize(testConfig.get(key)));
+                }
             }
             if (testAttributes.size() > 0)
+            {
                 context.put("testAttributes", testAttributes);
+            }
 
         }
 
@@ -90,20 +103,27 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         context.put("moduleMaxSize", maxSize != Integer.MAX_VALUE ? maxSize : "No limit");
 
         if (analysis.getMtc().equals("bh"))
+        {
             context.put("mtc", "Benjamini Hochberg FDR");
+        }
         else if (analysis.getMtc().equals("bonferroni"))
+        {
             context.put("mtc", "Bonferroni");
+        }
 
-        if (analysis.getResults() != null) {
+        if (analysis.getResults() != null)
+        {
             fileRef = analysis.getResults().getLocator();
             context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
         }
 
         fileRef = analysis.getLocator();
-        if (fileRef != null) {
+        if (fileRef != null)
+        {
             context.put("analysisLocation", fileRef.getURL());
 
-            if (fileRef.isWritable()) {
+            if (fileRef.isWritable())
+            {
                 setSaveAllowed(true);
             }
         }
@@ -112,33 +132,45 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params) {
+    protected void performUrlAction(String name, Map<String, String> params)
+    {
         if ("NewDataHeatmap".equals(name))
+        {
             newDataHeatmap();
+        }
         else if ("ViewModuleMap".equals(name))
+        {
             viewModuleMap();
+        }
         else if ("NewResultsHeatmap".equals(name))
+        {
             newResultsHeatmap();
+        }
     }
 
-    private void newDataHeatmap() {
-        if (analysis.getData() == null) {
-            AppFrame.instance().setStatusText("Analysis doesn't contain data.");
+    private void newDataHeatmap()
+    {
+        if (analysis.getData() == null)
+        {
+            AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.instance(), new JobRunnable() {
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
             @Override
-            public void run(IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor)
+            {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 IMatrixView dataTable = new MatrixView(analysis.getData());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
-                if (testName != TestFactory.ZSCORE_TEST) {
+                if (testName != TestFactory.ZSCORE_TEST)
+                {
                     //entry data is binary
                     ElementDecorator[] decorators = new ElementDecorator[1];
                     decorators[0] = new BinaryElementDecorator(heatmap.getActiveCellDecorator().getAdapter());
@@ -152,32 +184,39 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                         getName(), FileSuffixes.ENRICHMENT,
                         "-data", ""));
 
-                SwingUtilities.invokeLater(new Runnable() {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         editorPanel.addEditor(editor);
-                        AppFrame.instance().setStatusText("New heatmap created.");
+                        AppFrame.get().setStatusText("New heatmap created.");
                     }
                 });
             }
         });
     }
 
-    private void viewModuleMap() {
-        UnimplementedDialog.show(AppFrame.instance());
+    private void viewModuleMap()
+    {
+        UnimplementedDialog.show(AppFrame.get());
     }
 
-    private void newResultsHeatmap() {
-        if (analysis.getResults() == null) {
-            AppFrame.instance().setStatusText("Analysis doesn't contain results.");
+    private void newResultsHeatmap()
+    {
+        if (analysis.getResults() == null)
+        {
+            AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.instance(), new JobRunnable() {
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
             @Override
-            public void run(IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor)
+            {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 IMatrixView dataTable = new MatrixView(analysis.getResults());
@@ -188,11 +227,13 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                         getName(), FileSuffixes.ENRICHMENT,
                         "-results", ""));
 
-                SwingUtilities.invokeLater(new Runnable() {
+                SwingUtilities.invokeLater(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         editorPanel.addEditor(editor);
-                        AppFrame.instance().setStatusText("Heatmap for enrichment results created.");
+                        AppFrame.get().setStatusText("Heatmap for enrichment results created.");
                     }
                 });
             }

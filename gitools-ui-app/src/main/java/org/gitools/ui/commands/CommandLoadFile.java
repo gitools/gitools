@@ -1,7 +1,26 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.commands;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
@@ -16,7 +35,10 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.*;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
+import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
@@ -31,6 +53,8 @@ import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import javax.swing.*;
 import java.io.File;
@@ -39,26 +63,31 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class CommandLoadFile extends AbstractCommand {
+public class CommandLoadFile extends AbstractCommand
+{
 
     private String file;
     private String mime;
     private String rowsAnnotations;
     private String columnsAnnotations;
 
-    public CommandLoadFile(String file) {
+    public CommandLoadFile(String file)
+    {
         this(file, null);
     }
 
-    public CommandLoadFile(String file, String mime) {
+    public CommandLoadFile(String file, String mime)
+    {
         this(file, mime, null, null);
     }
 
-    public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations) {
+    public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations)
+    {
         this(file, null, rowsAnnotations, columnsAnnotations);
     }
 
-    public CommandLoadFile(String file, String mime, String rowsAnnotations, String columnsAnnotations) {
+    public CommandLoadFile(String file, String mime, String rowsAnnotations, String columnsAnnotations)
+    {
         this.file = file;
         this.mime = mime;
         this.rowsAnnotations = rowsAnnotations;
@@ -66,28 +95,33 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     @Override
-    public void execute(IProgressMonitor monitor) throws CommandException {
+    public void execute(IProgressMonitor monitor) throws CommandException
+    {
 
         monitor.begin("Loading ...", 1);
 
         IResourceLocator resourceLocator;
         final IResource resource;
-        try {
+        try
+        {
             resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
             resource = PersistenceManager.get().load(resourceLocator, IResource.class, monitor);
-        } catch (Exception e) {
-            MessageUtils.showErrorMessage(AppFrame.instance(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
+        } catch (Exception e)
+        {
+            MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
             return;
         }
 
         final AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(resourceLocator.getName());
 
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
-                AppFrame.instance().getEditorsPanel().addEditor(editor);
-                AppFrame.instance().refresh();
+            public void run()
+            {
+                AppFrame.get().getEditorsPanel().addEditor(editor);
+                AppFrame.get().refresh();
             }
         });
 
@@ -98,35 +132,51 @@ public class CommandLoadFile extends AbstractCommand {
 
     }
 
-    private AbstractEditor createEditor(IResource resource, IProgressMonitor progressMonitor) throws CommandException {
+    private AbstractEditor createEditor(IResource resource, IProgressMonitor progressMonitor) throws CommandException
+    {
 
         if (resource instanceof EnrichmentAnalysis)
+        {
             return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
+        }
         else if (resource instanceof OncodriveAnalysis)
+        {
             return new OncodriveAnalysisEditor((OncodriveAnalysis) resource);
+        }
         else if (resource instanceof CorrelationAnalysis)
+        {
             return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
+        }
         else if (resource instanceof CombinationAnalysis)
+        {
             return new CombinationAnalysisEditor((CombinationAnalysis) resource);
+        }
         else if (resource instanceof OverlappingAnalysis)
+        {
             return new OverlappingAnalysisEditor((OverlappingAnalysis) resource);
+        }
         else if (resource instanceof GroupComparisonAnalysis)
+        {
             return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
+        }
 
         return createHeatmapEditor((IMatrix) resource, progressMonitor);
     }
 
-    private AbstractEditor createHeatmapEditor(IMatrix resource, IProgressMonitor progressMonitor) throws CommandException {
+    private AbstractEditor createHeatmapEditor(IMatrix resource, IProgressMonitor progressMonitor) throws CommandException
+    {
 
         final IMatrixView matrixView = new MatrixView(resource);
         Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
 
-        if (rowsAnnotations != null) {
+        if (rowsAnnotations != null)
+        {
             File rowsFile = download(rowsAnnotations, progressMonitor);
             loadAnnotations(rowsFile, figure.getRowDim());
         }
 
-        if (columnsAnnotations != null) {
+        if (columnsAnnotations != null)
+        {
             File colsFile = download(columnsAnnotations, progressMonitor);
             loadAnnotations(colsFile, figure.getColumnDim());
 
@@ -135,36 +185,48 @@ public class CommandLoadFile extends AbstractCommand {
         return new HeatmapEditor(figure);
     }
 
-    private static File download(String file, IProgressMonitor monitor) throws CommandException {
+    private static File download(String file, IProgressMonitor monitor) throws CommandException
+    {
 
         URL url = null;
-        try {
+        try
+        {
             url = new URL(file);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             // Try to load as a file
-            try {
+            try
+            {
                 url = (new File(file)).getAbsoluteFile().toURI().toURL();
-            } catch (MalformedURLException e1) {
+            } catch (MalformedURLException e1)
+            {
                 throw new CommandException(e1);
             }
         }
         File resultFile;
         String fileName = FilenameUtils.getName(url.getFile());
-        if (url.getProtocol().equals("file")) {
+        if (url.getProtocol().equals("file"))
+        {
             monitor.info("File: " + fileName);
-            try {
+            try
+            {
                 resultFile = new File(url.toURI());
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException e)
+            {
                 throw new CommandException(e);
             }
-        } else {
-            try {
+        }
+        else
+        {
+            try
+            {
                 resultFile = File.createTempFile("gitools", fileName);
                 monitor.info("Downloading " + url.toString());
 
                 HttpUtils.getInstance().downloadFile(url.toString(), resultFile);
 
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 throw new CommandException(e);
             }
         }
@@ -172,17 +234,21 @@ public class CommandLoadFile extends AbstractCommand {
         return resultFile;
     }
 
-    private static void loadAnnotations(File file, HeatmapDim hdim) throws CommandException {
+    private static void loadAnnotations(File file, HeatmapDim hdim) throws CommandException
+    {
 
-        if (file != null) {
+        if (file != null)
+        {
             AnnotationMatrix annMatrix =
                     null;
-            try {
+            try
+            {
                 annMatrix = (AnnotationMatrix) PersistenceManager.get().load(
                         file, MimeTypes.ANNOTATION_MATRIX,
                         new NullProgressMonitor());
                 annMatrix.setTitle(file.getName());
-            } catch (PersistenceException e) {
+            } catch (PersistenceException e)
+            {
                 throw new CommandException(e);
             }
 

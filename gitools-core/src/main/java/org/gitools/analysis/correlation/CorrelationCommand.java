@@ -1,76 +1,86 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.correlation;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.File;
 
-public class CorrelationCommand extends AnalysisCommand {
+public class CorrelationCommand extends AnalysisCommand
+{
 
-	protected CorrelationAnalysis analysis;
-	protected String dataMime;
-	protected String dataPath;
+    protected CorrelationAnalysis analysis;
+    protected String dataMime;
+    protected String dataPath;
 
-	public CorrelationCommand(
-			CorrelationAnalysis analysis,
-			String dataMime, String dataPath,
-			String workdir, String fileName) {
+    public CorrelationCommand(
+            CorrelationAnalysis analysis,
+            String dataMime, String dataPath,
+            String workdir, String fileName)
+    {
 
-		super(workdir, fileName);
-		
-		this.analysis = analysis;
-		this.dataMime = dataMime;
-		this.dataPath = dataPath;
-	}
+        super(workdir, fileName);
 
-	@Override
-	public void run(IProgressMonitor progressMonitor) throws AnalysisException {
+        this.analysis = analysis;
+        this.dataMime = dataMime;
+        this.dataPath = dataPath;
+    }
 
-		try {
-			BaseMatrix data = loadDataMatrix(
+    @Override
+    public void run(IProgressMonitor progressMonitor) throws AnalysisException
+    {
+
+        try
+        {
+            BaseMatrix data = loadDataMatrix(
                     new UrlResourceLocator(new File(dataPath)),
                     progressMonitor);
 
-			analysis.setData(data);
+            analysis.setData(data);
 
-			CorrelationProcessor proc = new CorrelationProcessor(analysis);
+            CorrelationProcessor proc = new CorrelationProcessor(analysis);
 
-			proc.run(progressMonitor);
+            proc.run(progressMonitor);
 
-			File workdirFile = new File(workdir);
-			if (!workdirFile.exists())
-				workdirFile.mkdirs();
+            File workdirFile = new File(workdir);
+            if (!workdirFile.exists())
+            {
+                workdirFile.mkdirs();
+            }
 
-			IResourceLocator resourceLocator = new UrlResourceLocator(
+            IResourceLocator resourceLocator = new UrlResourceLocator(
                     new File(workdirFile, fileName)
-                    );
-			PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
-		}
-		catch (Throwable cause) {
-			throw new AnalysisException(cause);
-		}
-	}
+            );
+            PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
+        } catch (Throwable cause)
+        {
+            throw new AnalysisException(cause);
+        }
+    }
 
 }

@@ -1,30 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * IntogenImportSaveDialog.java
- *
- * Created on 05-mar-2010, 12:28:41
- */
-
 package org.gitools.ui.intogen.dialog;
 
-import java.io.File;
-import javax.swing.event.DocumentEvent;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
@@ -33,81 +29,106 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 
-public class IntogenImportDownloadDialog extends javax.swing.JDialog {
+import javax.swing.event.DocumentEvent;
+import java.io.File;
 
-	private String overwritenFiles;
+public class IntogenImportDownloadDialog extends javax.swing.JDialog
+{
 
-    /** A return status code - returned if Cancel button has been pressed */
+    private String overwritenFiles;
+
+    /**
+     * A return status code - returned if Cancel button has been pressed
+     */
     public static final int RET_CANCEL = 0;
-    /** A return status code - returned if OK button has been pressed */
+    /**
+     * A return status code - returned if OK button has been pressed
+     */
     public static final int RET_OK = 1;
 
-    /** Creates new form IntogenImportSaveDialog */
-    public IntogenImportDownloadDialog(java.awt.Window parent) {
+    /**
+     * Creates new form IntogenImportSaveDialog
+     */
+    public IntogenImportDownloadDialog(java.awt.Window parent)
+    {
         super(parent);
 
-		setModal(true);
-		
+        setModal(true);
+
         initComponents();
 
-		headerPanel.setTitle("Select name prefix and folder");
-		headerPanel.setLeftLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
-		headerPanel.setLeftLogoLink("http://www.intogen.org");
-		headerPanel.setRightLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_INTOGEN_IMPORT, 96));
+        headerPanel.setTitle("Select name prefix and folder");
+        headerPanel.setLeftLogo(IconUtils.getIconResource(IconNames.LOGO_INTOGEN));
+        headerPanel.setLeftLogoLink("http://www.intogen.org");
+        headerPanel.setRightLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_INTOGEN_IMPORT, 96));
 
-		namePrefix.setText("unnamed");
-		namePrefix.setSelectionStart(0);
-		namePrefix.setSelectionEnd(namePrefix.getDocument().getLength());
-		namePrefix.requestFocusInWindow();
-		folder.setText(Settings.getDefault().getLastExportPath());
+        namePrefix.setText("unnamed");
+        namePrefix.setSelectionStart(0);
+        namePrefix.setSelectionEnd(namePrefix.getDocument().getLength());
+        namePrefix.requestFocusInWindow();
+        folder.setText(Settings.getDefault().getLastExportPath());
 
-		DocumentChangeListener documentListener = new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				boolean exists = checkFileExists();
-				if (exists) {
-					headerPanel.setMessageStatus(MessageStatus.WARN);
-					headerPanel.setMessage("Files already exist and will be overwriten: " + getOverwritenFiles());
-				}
-			}
-		};
+        DocumentChangeListener documentListener = new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                boolean exists = checkFileExists();
+                if (exists)
+                {
+                    headerPanel.setMessageStatus(MessageStatus.WARN);
+                    headerPanel.setMessage("Files already exist and will be overwriten: " + getOverwritenFiles());
+                }
+            }
+        };
 
-		namePrefix.getDocument().addDocumentListener(documentListener);
-		folder.getDocument().addDocumentListener(documentListener);
+        namePrefix.getDocument().addDocumentListener(documentListener);
+        folder.getDocument().addDocumentListener(documentListener);
     }
 
-	public DialogHeaderPanel getHeaderPanel() {
-		return headerPanel;
-	}
+    public DialogHeaderPanel getHeaderPanel()
+    {
+        return headerPanel;
+    }
 
-	public String getOverwritenFiles() {
-		return overwritenFiles;
-	}
+    public String getOverwritenFiles()
+    {
+        return overwritenFiles;
+    }
 
-	public void setOverwritenFiles(String overwritenFiles) {
-		this.overwritenFiles = overwritenFiles;
-	}
+    public void setOverwritenFiles(String overwritenFiles)
+    {
+        this.overwritenFiles = overwritenFiles;
+    }
 
-	public boolean checkFileExists() {
-		return false;
-	}
-	
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
-    public int getReturnStatus() {
+    public boolean checkFileExists()
+    {
+        return false;
+    }
+
+    /**
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
+    public int getReturnStatus()
+    {
         return returnStatus;
     }
 
-	public boolean isCancelled() {
-		return returnStatus == RET_CANCEL;
-	}
+    public boolean isCancelled()
+    {
+        return returnStatus == RET_CANCEL;
+    }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -121,22 +142,28 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 
         setTitle("Download...");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosing(java.awt.event.WindowEvent evt)
+            {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        okButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cancelButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -144,8 +171,10 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
         jLabel1.setText("Name prefix");
 
         folderBtn.setText("Browse...");
-        folderBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        folderBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 folderBtnActionPerformed(evt);
             }
         });
@@ -157,80 +186,88 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
-                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton)
-                .addContainerGap())
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(namePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
-                    .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(folderBtn)
-                .addGap(9, 9, 9))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap(564, Short.MAX_VALUE)
+                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cancelButton)
+                                .addContainerGap())
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                        .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(namePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                                        .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(folderBtn)
+                                .addGap(9, 9, 9))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{cancelButton, okButton});
 
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(namePrefix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(folderBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(namePrefix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(folderBtn))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cancelButton)
+                                        .addComponent(okButton))
+                                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
+    /**
+     * Closes the dialog
+     */
+    private void closeDialog(java.awt.event.WindowEvent evt)
+    {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-	private void folderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folderBtnActionPerformed
-		File selPath = FileChooserUtils.selectPath(
-				"Select folder", folder.getText());
+    private void folderBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_folderBtnActionPerformed
+        File selPath = FileChooserUtils.selectPath(
+                "Select folder", folder.getText());
 
-		if (selPath != null) {
-			folder.setText(selPath.getAbsolutePath());
-			Settings.getDefault().setLastExportPath(selPath.getAbsolutePath());
-		}
-}//GEN-LAST:event_folderBtnActionPerformed
+        if (selPath != null)
+        {
+            folder.setText(selPath.getAbsolutePath());
+            Settings.getDefault().setLastExportPath(selPath.getAbsolutePath());
+        }
+    }//GEN-LAST:event_folderBtnActionPerformed
 
-    private void doClose(int retStatus) {
+    private void doClose(int retStatus)
+    {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -250,11 +287,13 @@ public class IntogenImportDownloadDialog extends javax.swing.JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-	public String getNamePrefix() {
-		return namePrefix.getText();
-	}
+    public String getNamePrefix()
+    {
+        return namePrefix.getText();
+    }
 
-	public String getFolder() {
-		return folder.getText();
-	}
+    public String getFolder()
+    {
+        return folder.getText();
+    }
 }

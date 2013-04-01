@@ -26,22 +26,27 @@ import java.io.IOException;
  * @author Jim Robinson
  * @date Jul 27, 2011
  */
-public class HttpResponseException extends IOException {
+public class HttpResponseException extends IOException
+{
 
     int statusCode;
 
-    public HttpResponseException(int statusCode) {
+    public HttpResponseException(int statusCode)
+    {
         this.statusCode = statusCode;
     }
 
-    public int getStatusCode() {
+    public int getStatusCode()
+    {
         return statusCode;
     }
 
     @Override
-    public String getMessage() {
+    public String getMessage()
+    {
 
-        switch (statusCode) {
+        switch (statusCode)
+        {
             case 407:
                 return "Proxy authentication required (status code " + statusCode + ")";
             case 403:

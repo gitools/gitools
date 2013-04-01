@@ -1,32 +1,25 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.file;
-
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
@@ -37,152 +30,179 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.common.ExportHeatmapLabelsWizard;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class ExportHeatmapLabelsAction extends BaseAction {
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
-	private static final long serialVersionUID = -7288045475037410310L;
+public class ExportHeatmapLabelsAction extends BaseAction
+{
 
-	public ExportHeatmapLabelsAction() {
-		super("Export labels ...");
-		
-		setDesc("Export row or column labels");
-		setMnemonic(KeyEvent.VK_N);
-	}
-	
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
-	}
+    private static final long serialVersionUID = -7288045475037410310L;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    public ExportHeatmapLabelsAction()
+    {
+        super("Export labels ...");
 
-		IEditor editor = AppFrame.instance()
-			.getEditorsPanel()
-			.getSelectedEditor();
+        setDesc("Export row or column labels");
+        setMnemonic(KeyEvent.VK_N);
+    }
 
-		Object model = editor != null ? editor.getModel() : null;
-		if (model == null || !(model instanceof Heatmap))
-			return;
+    @Override
+    public boolean isEnabledByModel(Object model)
+    {
+        return model instanceof Heatmap
+                || model instanceof IMatrixView;
+    }
 
-		final Heatmap hm = (Heatmap) model;
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
 
-		final ExportHeatmapLabelsWizard wiz = new ExportHeatmapLabelsWizard(hm);
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), wiz);
-		dlg.setVisible(true);
+        IEditor editor = AppFrame.get()
+                .getEditorsPanel()
+                .getSelectedEditor();
 
-		if (dlg.isCancelled())
-			return;
+        Object model = editor != null ? editor.getModel() : null;
+        if (model == null || !(model instanceof Heatmap))
+        {
+            return;
+        }
 
-		final IMatrixView matrixView = hm.getMatrixView();
+        final Heatmap hm = (Heatmap) model;
 
-		final File file = wiz.getSavePage().getPathAsFile();
+        final ExportHeatmapLabelsWizard wiz = new ExportHeatmapLabelsWizard(hm);
+        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        dlg.setVisible(true);
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Exporting labels ...", 1);
-					monitor.info("File: " + file.getName());
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-					PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        final IMatrixView matrixView = hm.getMatrixView();
 
-					LabelProvider labelProvider = null;
-					AnnotationMatrix annMatrix = null;
+        final File file = wiz.getSavePage().getPathAsFile();
 
-					switch (wiz.getWhichLabels()) {
-						case VISIBLE_ROWS:
-							labelProvider = new MatrixRowsLabelProvider(matrixView);
-							annMatrix = hm.getRowDim().getAnnotations();
-							break;
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    monitor.begin("Exporting labels ...", 1);
+                    monitor.info("File: " + file.getName());
 
-						case VISIBLE_COLUMNS:
-							labelProvider = new MatrixColumnsLabelProvider(matrixView);
-							annMatrix = hm.getColumnDim().getAnnotations();
-							break;
+                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 
-						case HIDDEN_ROWS:
-							labelProvider = hiddenRowsLabelProvider(matrixView);
-							annMatrix = hm.getRowDim().getAnnotations();
-							break;
+                    LabelProvider labelProvider = null;
+                    AnnotationMatrix annMatrix = null;
 
-						case HIDDEN_COLUMNS:
-							labelProvider = hiddenColumnsLabelProvider(matrixView);
-							annMatrix = hm.getColumnDim().getAnnotations();
-							break;
-					}
+                    switch (wiz.getWhichLabels())
+                    {
+                        case VISIBLE_ROWS:
+                            labelProvider = new MatrixRowsLabelProvider(matrixView);
+                            annMatrix = hm.getRowDim().getAnnotations();
+                            break;
 
-					String pattern = wiz.getPattern();
-					if (!pattern.equalsIgnoreCase("${id}"))
-						labelProvider = new AnnotationsPatternProvider(
-								labelProvider, annMatrix, pattern);
+                        case VISIBLE_COLUMNS:
+                            labelProvider = new MatrixColumnsLabelProvider(matrixView);
+                            annMatrix = hm.getColumnDim().getAnnotations();
+                            break;
 
-					for (int i = 0; i < labelProvider.getCount(); i++)
-						pw.println(labelProvider.getLabel(i));
+                        case HIDDEN_ROWS:
+                            labelProvider = hiddenRowsLabelProvider(matrixView);
+                            annMatrix = hm.getRowDim().getAnnotations();
+                            break;
 
-					pw.close();
+                        case HIDDEN_COLUMNS:
+                            labelProvider = hiddenColumnsLabelProvider(matrixView);
+                            annMatrix = hm.getColumnDim().getAnnotations();
+                            break;
+                    }
 
-					monitor.end();
-				}
-				catch (IOException ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+                    String pattern = wiz.getPattern();
+                    if (!pattern.equalsIgnoreCase("${id}"))
+                    {
+                        labelProvider = new AnnotationsPatternProvider(
+                                labelProvider, annMatrix, pattern);
+                    }
 
-		AppFrame.instance().setStatusText("Labels exported.");
-	}
+                    for (int i = 0; i < labelProvider.getCount(); i++)
+                        pw.println(labelProvider.getLabel(i));
 
-	private LabelProvider hiddenRowsLabelProvider(IMatrixView matrixView) {
-		int[] visibleIndices = matrixView.getVisibleRows();
-		Set<Integer> visibleSet = new HashSet<Integer>();
-		for (int i = 0; i < visibleIndices.length; i++)
-			visibleSet.add(visibleIndices[i]);
+                    pw.close();
 
-		IMatrix contents = matrixView.getContents();
+                    monitor.end();
+                } catch (IOException ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
 
-		int j = 0;
-		int count = contents.getRowCount();
-		int[] hiddenIndices = new int[count - visibleIndices.length];
-		for (int i = 0; i < count; i++)
-			if (!visibleSet.contains(i))
-				hiddenIndices[j++] = i;
+        AppFrame.get().setStatusText("Labels exported.");
+    }
 
-		IMatrixView hiddenView = new MatrixView(matrixView);
-		hiddenView.setVisibleRows(hiddenIndices);
-		return new MatrixRowsLabelProvider(hiddenView);
-	}
+    private LabelProvider hiddenRowsLabelProvider(IMatrixView matrixView)
+    {
+        int[] visibleIndices = matrixView.getVisibleRows();
+        Set<Integer> visibleSet = new HashSet<Integer>();
+        for (int i = 0; i < visibleIndices.length; i++)
+            visibleSet.add(visibleIndices[i]);
 
-	private LabelProvider hiddenColumnsLabelProvider(IMatrixView matrixView) {
-		int[] visibleIndices = matrixView.getVisibleColumns();
-		Set<Integer> visibleSet = new HashSet<Integer>();
-		for (int i = 0; i < visibleIndices.length; i++)
-			visibleSet.add(visibleIndices[i]);
+        IMatrix contents = matrixView.getContents();
 
-		IMatrix contents = matrixView.getContents();
+        int j = 0;
+        int count = contents.getRowCount();
+        int[] hiddenIndices = new int[count - visibleIndices.length];
+        for (int i = 0; i < count; i++)
+            if (!visibleSet.contains(i))
+            {
+                hiddenIndices[j++] = i;
+            }
 
-		int j = 0;
-		int count = contents.getColumnCount();
-		int[] hiddenIndices = new int[count - visibleIndices.length];
-		for (int i = 0; i < count; i++)
-			if (!visibleSet.contains(i))
-				hiddenIndices[j++] = i;
+        IMatrixView hiddenView = new MatrixView(matrixView);
+        hiddenView.setVisibleRows(hiddenIndices);
+        return new MatrixRowsLabelProvider(hiddenView);
+    }
 
-		IMatrixView hiddenView = new MatrixView(matrixView);
-		hiddenView.setVisibleColumns(hiddenIndices);
-		return new MatrixColumnsLabelProvider(hiddenView);
-	}
+    private LabelProvider hiddenColumnsLabelProvider(IMatrixView matrixView)
+    {
+        int[] visibleIndices = matrixView.getVisibleColumns();
+        Set<Integer> visibleSet = new HashSet<Integer>();
+        for (int i = 0; i < visibleIndices.length; i++)
+            visibleSet.add(visibleIndices[i]);
+
+        IMatrix contents = matrixView.getContents();
+
+        int j = 0;
+        int count = contents.getColumnCount();
+        int[] hiddenIndices = new int[count - visibleIndices.length];
+        for (int i = 0; i < count; i++)
+            if (!visibleSet.contains(i))
+            {
+                hiddenIndices[j++] = i;
+            }
+
+        IMatrixView hiddenView = new MatrixView(matrixView);
+        hiddenView.setVisibleColumns(hiddenIndices);
+        return new MatrixColumnsLabelProvider(hiddenView);
+    }
 
 	/*@Override
-	public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
 
 		final String visibleRows = "Visible row names";
 		final String visibleCols = "Visible column names";

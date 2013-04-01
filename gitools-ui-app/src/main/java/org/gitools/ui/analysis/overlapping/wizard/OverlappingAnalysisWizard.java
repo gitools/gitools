@@ -1,30 +1,32 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
@@ -40,242 +42,283 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
-public class OverlappingAnalysisWizard extends AbstractWizard {
+public class OverlappingAnalysisWizard extends AbstractWizard
+{
 
-	private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
-	private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
+    private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
-	private static final FileFormat[] dataFormats = new FileFormat[] {
-			FileFormats.MULTIVALUE_DATA_MATRIX,
-			FileFormats.GENE_MATRIX,
-			FileFormats.GENE_MATRIX_TRANSPOSED,
-			FileFormats.DOUBLE_MATRIX,
-			FileFormats.DOUBLE_BINARY_MATRIX,
-			FileFormats.MODULES_2C_MAP,
-			FileFormats.MODULES_INDEXED_MAP
-	};
-	
-	private ExamplePage examplePage;
-	private DataFilePage dataPage;
-	private DataFilterPage dataFilterPage;
-	private OverlappingAnalysisWizardPage overlappingPage;
-	private SaveFilePage saveFilePage;
-	private AnalysisDetailsPage analysisDetailsPage;
+    private static final FileFormat[] dataFormats = new FileFormat[]{
+            FileFormats.MULTIVALUE_DATA_MATRIX,
+            FileFormats.GENE_MATRIX,
+            FileFormats.GENE_MATRIX_TRANSPOSED,
+            FileFormats.DOUBLE_MATRIX,
+            FileFormats.DOUBLE_BINARY_MATRIX,
+            FileFormats.MODULES_2C_MAP,
+            FileFormats.MODULES_INDEXED_MAP
+    };
 
-	private boolean examplePageEnabled;
-	private boolean dataFromMemory;
-	private List<IElementAttribute> attributes;
-	private boolean saveFilePageEnabled;
+    private ExamplePage examplePage;
+    private DataFilePage dataPage;
+    private DataFilterPage dataFilterPage;
+    private OverlappingAnalysisWizardPage overlappingPage;
+    private SaveFilePage saveFilePage;
+    private AnalysisDetailsPage analysisDetailsPage;
 
-
-	public OverlappingAnalysisWizard() {
-		super();
-
-		examplePageEnabled = true;
-		dataFromMemory = false;
-		saveFilePageEnabled = true;
-
-		setTitle("Overlapping analysis");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
-		setHelpContext("analysis_overlapping");
-	}
-
-	@Override
-	public void addPages() {
-		// Example
-		if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
-			examplePage = new ExamplePage("an overlapping analysis");
-			examplePage.setTitle("Overlapping analysis");
-			addPage(examplePage);
-		}
-		
-		// Data
-		if (!dataFromMemory) {
-			dataPage = new DataFilePage(dataFormats);
-			addPage(dataPage);
-		}
-		
-		// Data filters
-		dataFilterPage = new DataFilterPage();
-		dataFilterPage.setRowsFilterFileVisible(false);
-		dataFilterPage.setBinaryCutoffCmp(CutoffCmp.LT);
-		dataFilterPage.setBinaryCutoffValue(0.05);
-		dataFilterPage.setBinaryCutoffEnabled(true);
-		addPage(dataFilterPage);		
-
-		// Overlapping parameters
-		overlappingPage = new OverlappingAnalysisWizardPage();
-		overlappingPage.setAttributes(attributes);
-		addPage(overlappingPage);
-
-		// Destination
-		if (saveFilePageEnabled) {
-			saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
-			saveFilePage.setTitle("Select destination file");
-			saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-			saveFilePage.setFormats(new FileFormat[] {
-				FileFormats.OVERLAPPING });
-			saveFilePage.setFormatsVisible(false);
-			addPage(saveFilePage);
-		}
-
-		// Analysis details
-		analysisDetailsPage = new AnalysisDetailsPage();
-		addPage(analysisDetailsPage);
-	}
+    private boolean examplePageEnabled;
+    private boolean dataFromMemory;
+    private List<IElementAttribute> attributes;
+    private boolean saveFilePageEnabled;
 
 
-	@Override
-	public void pageLeft(IWizardPage currentPage) {
-		if (currentPage == examplePage) {
-			Settings.getDefault().setShowCombinationExamplePage(
-					examplePage.isShowAgain());
+    public OverlappingAnalysisWizard()
+    {
+        super();
 
-			if (examplePage.isExampleEnabled()) {
-				JobThread.execute(AppFrame.instance(), new JobRunnable() {
-					@Override public void run(IProgressMonitor monitor) {
+        examplePageEnabled = true;
+        dataFromMemory = false;
+        saveFilePageEnabled = true;
 
-						final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
+        setTitle("Overlapping analysis");
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
+        setHelpContext("analysis_overlapping");
+    }
 
-						if (basePath == null)
-							throw new RuntimeException("Unexpected error: There are no examples available");
+    @Override
+    public void addPages()
+    {
+        // Example
+        if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage())
+        {
+            examplePage = new ExamplePage("an overlapping analysis");
+            examplePage.setTitle("Overlapping analysis");
+            addPage(examplePage);
+        }
 
-						File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-						Properties props = new Properties();
-						props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
-						try {
-							monitor.begin("Loading example parameters ...", 1);
+        // Data
+        if (!dataFromMemory)
+        {
+            dataPage = new DataFilePage(dataFormats);
+            addPage(dataPage);
+        }
 
-							final OverlappingAnalysis a = PersistenceManager.get()
-									.load(analysisFile,OverlappingAnalysis.class, props, monitor);
+        // Data filters
+        dataFilterPage = new DataFilterPage();
+        dataFilterPage.setRowsFilterFileVisible(false);
+        dataFilterPage.setBinaryCutoffCmp(CutoffCmp.LT);
+        dataFilterPage.setBinaryCutoffValue(0.05);
+        dataFilterPage.setBinaryCutoffEnabled(true);
+        addPage(dataFilterPage);
 
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override public void run() {
-									setAnalysis(a);
+        // Overlapping parameters
+        overlappingPage = new OverlappingAnalysisWizardPage();
+        overlappingPage.setAttributes(attributes);
+        addPage(overlappingPage);
 
-									dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
-									saveFilePage.setFileNameWithoutExtension("example");
-								}
-							});
+        // Destination
+        if (saveFilePageEnabled)
+        {
+            saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
+            saveFilePage.setTitle("Select destination file");
+            saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+            saveFilePage.setFormats(new FileFormat[]{
+                    FileFormats.OVERLAPPING});
+            saveFilePage.setFormatsVisible(false);
+            addPage(saveFilePage);
+        }
 
-							monitor.end();
-						}
-						catch (Exception ex) {
-							monitor.exception(ex);
-						}
-					}
-				});
-			}
-		}
-	}
+        // Analysis details
+        analysisDetailsPage = new AnalysisDetailsPage();
+        addPage(analysisDetailsPage);
+    }
 
-	@Override
-	public boolean canFinish() {
-		IWizardPage page = getCurrentPage();
 
-		boolean canFinish = super.canFinish();
-		canFinish |= page == saveFilePage && page.isComplete();
+    @Override
+    public void pageLeft(IWizardPage currentPage)
+    {
+        if (currentPage == examplePage)
+        {
+            Settings.getDefault().setShowCombinationExamplePage(
+                    examplePage.isShowAgain());
 
-		return canFinish;
-	}
+            if (examplePage.isExampleEnabled())
+            {
+                JobThread.execute(AppFrame.get(), new JobRunnable()
+                {
+                    @Override
+                    public void run(IProgressMonitor monitor)
+                    {
 
-	public boolean isExamplePageEnabled() {
-		return examplePageEnabled;
-	}
+                        final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
 
-	public void setExamplePageEnabled(boolean examplePageEnabled) {
-		this.examplePageEnabled = examplePageEnabled;
-	}
+                        if (basePath == null)
+                        {
+                            throw new RuntimeException("Unexpected error: There are no examples available");
+                        }
 
-	public boolean isDataFromMemory() {
-		return dataFromMemory;
-	}
+                        File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
+                        Properties props = new Properties();
+                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
+                        try
+                        {
+                            monitor.begin("Loading example parameters ...", 1);
 
-	public void setDataFromMemory(boolean dataFromMemory) {
-		this.dataFromMemory = dataFromMemory;
-	}
+                            final OverlappingAnalysis a = PersistenceManager.get()
+                                    .load(analysisFile, OverlappingAnalysis.class, props, monitor);
 
-	public List<IElementAttribute> getAttributes() {
-		return attributes;
-	}
+                            SwingUtilities.invokeLater(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    setAnalysis(a);
 
-	public void setAttributes(List<IElementAttribute> attributes) {
-		this.attributes = attributes;
-	}
+                                    dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
+                                    saveFilePage.setFileNameWithoutExtension("example");
+                                }
+                            });
 
-	public boolean isSaveFilePageEnabled() {
-		return saveFilePageEnabled;
-	}
+                            monitor.end();
+                        } catch (Exception ex)
+                        {
+                            monitor.exception(ex);
+                        }
+                    }
+                });
+            }
+        }
+    }
 
-	public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
-		this.saveFilePageEnabled = saveFilePageEnabled;
-	}
+    @Override
+    public boolean canFinish()
+    {
+        IWizardPage page = getCurrentPage();
 
-	public OverlappingAnalysis getAnalysis() {
-		OverlappingAnalysis a = new OverlappingAnalysis();
+        boolean canFinish = super.canFinish();
+        canFinish |= page == saveFilePage && page.isComplete();
 
-		a.setTitle(analysisDetailsPage.getAnalysisTitle());
-		a.setDescription(analysisDetailsPage.getAnalysisNotes());
-		a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+        return canFinish;
+    }
 
-		a.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
-		a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
-		a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
+    public boolean isExamplePageEnabled()
+    {
+        return examplePageEnabled;
+    }
 
-		//Verify: a.setAttributeIndex(overlappingPage.getAttributeIndex());
-		a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ?
-				overlappingPage.getReplaceNanValue() : null);
-		a.setTransposeData(overlappingPage.isTransposeEnabled());
+    public void setExamplePageEnabled(boolean examplePageEnabled)
+    {
+        this.examplePageEnabled = examplePageEnabled;
+    }
 
-		return a;
-	}
+    public boolean isDataFromMemory()
+    {
+        return dataFromMemory;
+    }
 
-	private void setAnalysis(OverlappingAnalysis a) {
-		analysisDetailsPage.setAnalysisTitle(a.getTitle());
-		analysisDetailsPage.setAnalysisNotes(a.getDescription());
-		analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+    public void setDataFromMemory(boolean dataFromMemory)
+    {
+        this.dataFromMemory = dataFromMemory;
+    }
 
-		dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
-		dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
-		dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
+    public List<IElementAttribute> getAttributes()
+    {
+        return attributes;
+    }
 
-		overlappingPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
-		if (a.getReplaceNanValue() != null)
-			overlappingPage.setReplaceNanValue(a.getReplaceNanValue());
+    public void setAttributes(List<IElementAttribute> attributes)
+    {
+        this.attributes = attributes;
+    }
 
-		overlappingPage.setTransposeEnabled(a.isTransposeData());
-	}
+    public boolean isSaveFilePageEnabled()
+    {
+        return saveFilePageEnabled;
+    }
 
-	public DataFilePage getDataFilePage() {
-		return dataPage;
-	}
+    public void setSaveFilePageEnabled(boolean saveFilePageEnabled)
+    {
+        this.saveFilePageEnabled = saveFilePageEnabled;
+    }
 
-	public SaveFilePage getSaveFilePage() {
-		return saveFilePage;
-	}
-	public String getWorkdir() {
-		return saveFilePage.getFolder();
-	}
+    public OverlappingAnalysis getAnalysis()
+    {
+        OverlappingAnalysis a = new OverlappingAnalysis();
 
-	public String getFileName() {
-		return saveFilePage.getFileName();
-	}
+        a.setTitle(analysisDetailsPage.getAnalysisTitle());
+        a.setDescription(analysisDetailsPage.getAnalysisNotes());
+        a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
-	public String getDataFileMime() {
-		return dataPage.getFileFormat().getMime();
-	}
+        a.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
+        a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
+        a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
 
-	public File getDataFile() {
-		return dataPage.getFile();
-	}
+        //Verify: a.setAttributeIndex(overlappingPage.getAttributeIndex());
+        a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ?
+                overlappingPage.getReplaceNanValue() : null);
+        a.setTransposeData(overlappingPage.isTransposeEnabled());
 
-	public File getPopulationFile() {
-		return dataFilterPage.getRowsFilterFile();
-	}
+        return a;
+    }
+
+    private void setAnalysis(OverlappingAnalysis a)
+    {
+        analysisDetailsPage.setAnalysisTitle(a.getTitle());
+        analysisDetailsPage.setAnalysisNotes(a.getDescription());
+        analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+
+        dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
+        dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
+        dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
+
+        overlappingPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
+        if (a.getReplaceNanValue() != null)
+        {
+            overlappingPage.setReplaceNanValue(a.getReplaceNanValue());
+        }
+
+        overlappingPage.setTransposeEnabled(a.isTransposeData());
+    }
+
+    public DataFilePage getDataFilePage()
+    {
+        return dataPage;
+    }
+
+    public SaveFilePage getSaveFilePage()
+    {
+        return saveFilePage;
+    }
+
+    public String getWorkdir()
+    {
+        return saveFilePage.getFolder();
+    }
+
+    public String getFileName()
+    {
+        return saveFilePage.getFileName();
+    }
+
+    public String getDataFileMime()
+    {
+        return dataPage.getFileFormat().getMime();
+    }
+
+    public File getDataFile()
+    {
+        return dataPage.getFile();
+    }
+
+    public File getPopulationFile()
+    {
+        return dataFilterPage.getRowsFilterFile();
+    }
 }

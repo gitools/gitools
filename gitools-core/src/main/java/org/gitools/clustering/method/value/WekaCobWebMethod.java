@@ -1,152 +1,182 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.clustering.method.value;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import weka.clusterers.Cobweb;
 import weka.core.Instance;
 import weka.core.Instances;
 
-public class WekaCobWebMethod extends AbstractClusteringValueMethod {
-	
-	private float acuity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-	private float cutoff;
-	
-	private int seed;
-	
-	public WekaCobWebMethod() {
-		classIndex = 0; // especial initialization value for weka's cobweb
-	}
+public class WekaCobWebMethod extends AbstractClusteringValueMethod
+{
 
-	@Override
-	public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
-		try {
-			
-			Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
+    private float acuity;
 
-			List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
+    private float cutoff;
 
-			MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
+    private int seed;
 
-			if (preprocess)
-				ClusterUtils.dataReductionProcess(clusterWekaData, monitor);			
-			
-			Cobweb clusterer = new Cobweb();
+    public WekaCobWebMethod()
+    {
+        classIndex = 0; // especial initialization value for weka's cobweb
+    }
 
-			configure(clusterer);
+    @Override
+    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException
+    {
+        try
+        {
 
-			clusterer.buildClusterer(clusterWekaData.getStructure());
+            Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
 
-			monitor.begin("Creating clustering model ...", clusterWekaData.getMatrixView().getSize() + 1);
-			
-			ClusteringResults results = null;
-			Instance current = null;
-			int j = 0;
+            List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
 
-			while ((j < clusterWekaData.getMatrixView().getSize()) && !monitor.isCancelled()) {
-				if ((current = clusterWekaData.get(j)) != null) {
-					clusterer.updateClusterer(current);
-				}
-				monitor.worked(1);
-				j++;
-			}
+            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
-			if (!monitor.isCancelled()) {
+            if (preprocess)
+            {
+                ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
+            }
 
-				clusterer.updateFinished();
+            Cobweb clusterer = new Cobweb();
 
-				monitor.end();
-				monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
+            configure(clusterer);
 
-				Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();
+            clusterer.buildClusterer(clusterWekaData.getStructure());
 
-				Integer cluster;
+            monitor.begin("Creating clustering model ...", clusterWekaData.getMatrixView().getSize() + 1);
 
-				HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
+            ClusteringResults results = null;
+            Instance current = null;
+            int j = 0;
 
-				for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++) {
-					if ((current = clusterWekaData.get(i)) != null) {
+            while ((j < clusterWekaData.getMatrixView().getSize()) && !monitor.isCancelled())
+            {
+                if ((current = clusterWekaData.get(j)) != null)
+                {
+                    clusterer.updateClusterer(current);
+                }
+                monitor.worked(1);
+                j++;
+            }
 
-						cluster = clusterer.clusterInstance(current);
+            if (!monitor.isCancelled())
+            {
 
-						List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
+                clusterer.updateFinished();
 
-						if (instancesCluster == null) 
-							instancesCluster = new ArrayList<Integer>();
-						
-						instancesCluster.add(i);
+                monitor.end();
+                monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
 
-						clusterResults.put(ClusterUtils.valueToString(cluster, maxLength), instancesCluster);
-					} 
-					monitor.worked(1);
-				}
+                Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();
 
-				results = new GenericClusteringResults(labels.toArray(new String[0]), clusterResults);
-			}
-			return results;
+                Integer cluster;
 
-		} catch (Throwable ex) {
-			if (ex instanceof OutOfMemoryError)
-				throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
-			else
-				throw new ClusteringException(ex);
-		}
-	}
+                HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
-	public float getAcuity() {
-		return acuity;
-	}
+                for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++)
+                {
+                    if ((current = clusterWekaData.get(i)) != null)
+                    {
 
-	public void setAcuity(float acuity) {
-		this.acuity = acuity;
-	}
+                        cluster = clusterer.clusterInstance(current);
 
-	public float getCutoff() {
-		return cutoff;
-	}
+                        List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
 
-	public void setCutoff(float cutoff) {
-		this.cutoff = cutoff;
-	}
+                        if (instancesCluster == null)
+                        {
+                            instancesCluster = new ArrayList<Integer>();
+                        }
 
-	public int getSeed() {
-		return seed;
-	}
+                        instancesCluster.add(i);
 
-	public void setSeed(int seed) {
-		this.seed = seed;
-	}
+                        clusterResults.put(ClusterUtils.valueToString(cluster, maxLength), instancesCluster);
+                    }
+                    monitor.worked(1);
+                }
 
-	private void configure(Cobweb clusterer) {
-		
-		clusterer.setAcuity(acuity);
+                results = new GenericClusteringResults(labels.toArray(new String[0]), clusterResults);
+            }
+            return results;
 
-		clusterer.setCutoff(cutoff);
-		
-		clusterer.setSeed(seed);
-	}
+        } catch (Throwable ex)
+        {
+            if (ex instanceof OutOfMemoryError)
+            {
+                throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
+            }
+            else
+            {
+                throw new ClusteringException(ex);
+            }
+        }
+    }
+
+    public float getAcuity()
+    {
+        return acuity;
+    }
+
+    public void setAcuity(float acuity)
+    {
+        this.acuity = acuity;
+    }
+
+    public float getCutoff()
+    {
+        return cutoff;
+    }
+
+    public void setCutoff(float cutoff)
+    {
+        this.cutoff = cutoff;
+    }
+
+    public int getSeed()
+    {
+        return seed;
+    }
+
+    public void setSeed(int seed)
+    {
+        this.seed = seed;
+    }
+
+    private void configure(Cobweb clusterer)
+    {
+
+        clusterer.setAcuity(acuity);
+
+        clusterer.setCutoff(cutoff);
+
+        clusterer.setSeed(seed);
+    }
 
 }

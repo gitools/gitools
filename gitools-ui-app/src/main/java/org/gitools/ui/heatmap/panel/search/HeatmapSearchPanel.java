@@ -1,24 +1,23 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-/*
- * HetamapSearchPanel.java
- *
- * Created on 23-feb-2011, 9:07:45
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.heatmap.panel.search;
 
@@ -39,7 +38,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class HeatmapSearchPanel extends javax.swing.JPanel {
+public class HeatmapSearchPanel extends javax.swing.JPanel
+{
 
     private static Highlighter.HighlightPainter redHighlightPainter =
             new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
@@ -51,7 +51,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     private Color defaultSearchTextBgColor;
     private Color defaultSearchTextFgColor;
 
-    public HeatmapSearchPanel(Heatmap hm) {
+    public HeatmapSearchPanel(Heatmap hm)
+    {
         this.hm = hm;
 
         initComponents();
@@ -59,83 +60,106 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         defaultSearchTextBgColor = searchText.getBackground();
         defaultSearchTextFgColor = searchText.getForeground();
 
-        addComponentListener(new ComponentListener() {
+        addComponentListener(new ComponentListener()
+        {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(ComponentEvent e)
+            {
             }
 
             @Override
-            public void componentMoved(ComponentEvent e) {
+            public void componentMoved(ComponentEvent e)
+            {
             }
 
             @Override
-            public void componentHidden(ComponentEvent e) {
+            public void componentHidden(ComponentEvent e)
+            {
             }
 
             @Override
-            public void componentShown(ComponentEvent e) {
+            public void componentShown(ComponentEvent e)
+            {
                 searchText.requestFocus();
             }
         });
 
-        searchText.getDocument().addDocumentListener(new DocumentChangeListener() {
+        searchText.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
             @Override
-            protected void update(DocumentEvent e) {
+            protected void update(DocumentEvent e)
+            {
                 updateSearch();
             }
         });
-        searchText.addActionListener(new ActionListener() {
+        searchText.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 searchNext();
             }
         });
 
-        prevBtn.addActionListener(new ActionListener() {
+        prevBtn.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 searchPrev();
             }
         });
 
-        nextBtn.addActionListener(new ActionListener() {
+        nextBtn.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 searchNext();
             }
         });
 
-        highlightAllChk.addActionListener(new ActionListener() {
+        highlightAllChk.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent ae)
+            {
                 updateHighlight();
             }
         });
 
-        matchCaseChk.addActionListener(new ActionListener() {
+        matchCaseChk.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 updateSearch();
             }
         });
 
-        anyWordChk.addActionListener(new ActionListener() {
+        anyWordChk.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 updateSearch();
             }
         });
 
-        rowsButton.addActionListener(new ActionListener() {
+        rowsButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 updateSearch();
             }
         });
 
-        columnsButton.addActionListener(new ActionListener() {
+        columnsButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 updateSearch();
             }
         });
@@ -144,33 +168,45 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
     }
 
-    private void setNotFound(boolean b) {
-        if (b) {
+    private void setNotFound(boolean b)
+    {
+        if (b)
+        {
             //searchText.setBackground(Color.RED);
             searchText.setForeground(Color.RED);
             textNotFoundLabel.setVisible(true);
-        } else {
+        }
+        else
+        {
             //searchText.setBackground(defaultSearchTextColor);
             searchText.setForeground(defaultSearchTextFgColor);
             textNotFoundLabel.setVisible(false);
         }
     }
 
-    private boolean checkMatch(IMatrixView mv, AnnotationMatrix am, String label) {
+    private boolean checkMatch(IMatrixView mv, AnnotationMatrix am, String label)
+    {
 
-        if (searchPat == null) {
+        if (searchPat == null)
+        {
             return false;
         }
 
         if (searchPat.matcher(label).find())
+        {
             return true;
+        }
 
         if (am == null)
+        {
             return false;
+        }
 
         int annRow = am.getRowIndex(label);
         if (annRow == -1)
+        {
             return false;
+        }
 
         boolean found = false;
         for (int i = 0; i < am.getColumnCount() && !found; i++)
@@ -179,24 +215,37 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         return found;
     }
 
-    private void updateSearch() {
+    private void updateSearch()
+    {
         StringBuilder sb = new StringBuilder();
-        if (!searchText.getText().isEmpty()) {
-            if (anyWordChk.isSelected()) {
+        if (!searchText.getText().isEmpty())
+        {
+            if (anyWordChk.isSelected())
+            {
                 String[] tokens = searchText.getText().split(" ");
-                if (tokens.length > 0) {
+                if (tokens.length > 0)
+                {
                     sb.append(Pattern.quote(tokens[0].trim()));
                     for (int i = 1; i < tokens.length; i++)
                         sb.append("|").append(Pattern.quote(tokens[i].trim()));
                 }
-            } else
+            }
+            else
+            {
                 sb.append(Pattern.quote(searchText.getText()));
+            }
 
             if (matchCaseChk.isSelected())
+            {
                 searchPat = Pattern.compile(sb.toString());
+            }
             else
+            {
                 searchPat = Pattern.compile(sb.toString(), Pattern.CASE_INSENSITIVE);
-        } else {
+            }
+        }
+        else
+        {
             searchPat = null;
         }
 
@@ -205,7 +254,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         updateHighlight();
     }
 
-    private void updateHighlight() {
+    private void updateHighlight()
+    {
 
         IMatrixView mv = hm.getMatrixView();
         Set<String> highlighted = new HashSet<String>();
@@ -213,43 +263,59 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         boolean searchRows = searchRows();
         boolean found = false;
 
-        if (searchRows) {
+        if (searchRows)
+        {
 
             // Search rows
-            if (highlightAllChk.isSelected()) {
+            if (highlightAllChk.isSelected())
+            {
                 AnnotationMatrix am = hm.getRowDim().getAnnotations();
 
                 int rowCount = mv.getRowCount();
-                for (int index = 0; index < rowCount; index++) {
+                for (int index = 0; index < rowCount; index++)
+                {
                     String label = mv.getRowLabel(index);
                     if (checkMatch(mv, am, label))
+                    {
                         highlighted.add(label);
+                    }
                 }
                 hm.getRowDim().setHighlightedLabels(highlighted);
-            } else {
+            }
+            else
+            {
                 hm.getRowDim().clearHighlightedLabels();
             }
 
-        } else {
+        }
+        else
+        {
 
             // Column search
-            if (highlightAllChk.isSelected()) {
+            if (highlightAllChk.isSelected())
+            {
                 AnnotationMatrix am = hm.getColumnDim().getAnnotations();
 
                 int colCount = mv.getColumnCount();
-                for (int index = 0; index < colCount; index++) {
+                for (int index = 0; index < colCount; index++)
+                {
                     String label = mv.getColumnLabel(index);
                     if (checkMatch(mv, am, label))
+                    {
                         highlighted.add(label);
+                    }
                 }
                 hm.getColumnDim().setHighlightedLabels(highlighted);
-            } else {
+            }
+            else
+            {
                 hm.getColumnDim().clearHighlightedLabels();
             }
         }
     }
 
-    private void searchPrev() {
+    private void searchPrev()
+    {
         IMatrixView mv = hm.getMatrixView();
         int leadRow = mv.getLeadSelectionRow();
         int leadCol = mv.getLeadSelectionColumn();
@@ -259,30 +325,43 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
         int rowCount = mv.getRowCount();
         if (searchRows && leadRow == -1)
+        {
             leadRow = rowCount - 1;
+        }
 
-        if (searchRows && leadRow != -1) {
+        if (searchRows && leadRow != -1)
+        {
 
             // Row search
             AnnotationMatrix am = hm.getRowDim().getAnnotations();
 
             int index = leadRow - 1;
             if (index < 0)
+            {
                 index = rowCount - 1;
-            while (index != leadRow) {
+            }
+            while (index != leadRow)
+            {
                 found = checkMatch(mv, am, mv.getRowLabel(index));
                 if (found)
+                {
                     break;
+                }
                 index--;
                 if (index < 0)
+                {
                     index = rowCount - 1;
+                }
             }
-            if (index == leadRow) {
+            if (index == leadRow)
+            {
                 found = checkMatch(mv, am, mv.getRowLabel(index));
             }
             mv.setLeadSelection(index, leadCol);
 
-        } else if (!searchRows && leadCol != -1) {
+        }
+        else if (!searchRows && leadCol != -1)
+        {
 
             // Column search
             AnnotationMatrix am = hm.getColumnDim().getAnnotations();
@@ -290,24 +369,34 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             int colCount = mv.getColumnCount();
             int index = leadCol - 1;
             if (index < 0)
+            {
                 index = colCount - 1;
-            while (index != leadCol) {
+            }
+            while (index != leadCol)
+            {
                 found = checkMatch(mv, am, mv.getColumnLabel(index));
                 if (found)
+                {
                     break;
+                }
                 index--;
                 if (index < 0)
+                {
                     index = colCount - 1;
+                }
             }
             if (index == leadCol)
+            {
                 found = checkMatch(mv, am, mv.getColumnLabel(index));
+            }
             mv.setLeadSelection(leadRow, index);
         }
 
         setNotFound(!found);
     }
 
-    private void searchNext() {
+    private void searchNext()
+    {
         IMatrixView mv = hm.getMatrixView();
         int leadRow = mv.getLeadSelectionRow();
         int leadCol = mv.getLeadSelectionColumn();
@@ -315,15 +404,18 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         boolean searchRows = searchRows();
         boolean found = false;
 
-        if (searchRows && leadRow == -1) {
+        if (searchRows && leadRow == -1)
+        {
             leadRow = 0;
         }
 
-        if (!searchRows && leadCol == -1) {
+        if (!searchRows && leadCol == -1)
+        {
             leadCol = 0;
         }
 
-        if (searchRows) {
+        if (searchRows)
+        {
 
             // Row search
             AnnotationMatrix am = hm.getRowDim().getAnnotations();
@@ -331,19 +423,30 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             int rowCount = mv.getRowCount();
             int index = leadRow + 1;
             if (index >= rowCount)
+            {
                 index = 0;
-            while (index != leadRow) {
+            }
+            while (index != leadRow)
+            {
                 found = checkMatch(mv, am, mv.getRowLabel(index));
                 if (found)
+                {
                     break;
+                }
                 index++;
                 if (index >= rowCount)
+                {
                     index = 0;
+                }
             }
             if (index == leadRow)
+            {
                 found = checkMatch(mv, am, mv.getRowLabel(index));
+            }
             mv.setLeadSelection(index, leadCol);
-        } else if (!searchRows && leadCol != -1) {
+        }
+        else if (!searchRows && leadCol != -1)
+        {
 
             // Column search
             AnnotationMatrix am = hm.getColumnDim().getAnnotations();
@@ -351,24 +454,34 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             int colCount = mv.getColumnCount();
             int index = leadCol + 1;
             if (index >= colCount)
+            {
                 index = 0;
-            while (index != leadCol) {
+            }
+            while (index != leadCol)
+            {
                 found = checkMatch(mv, am, mv.getColumnLabel(index));
                 if (found)
+                {
                     break;
+                }
                 index++;
                 if (index >= colCount)
+                {
                     index = 0;
+                }
             }
             if (index == leadCol)
+            {
                 found = checkMatch(mv, am, mv.getColumnLabel(index));
+            }
             mv.setLeadSelection(leadRow, index);
         }
 
         setNotFound(!found);
     }
 
-    private boolean searchRows() {
+    private boolean searchRows()
+    {
         return rowsOrColumns.isSelected(rowsButton.getModel());
     }
 
@@ -380,7 +493,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         rowsOrColumns = new javax.swing.ButtonGroup();
         closeBtn = new javax.swing.JButton();
@@ -399,8 +513,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
         closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchClose.png"))); // NOI18N
         closeBtn.setFocusable(false);
-        closeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        closeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 closeBtnActionPerformed(evt);
             }
         });
@@ -433,8 +549,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         rowsOrColumns.add(rowsButton);
         rowsButton.setSelected(true);
         rowsButton.setText("Rows");
-        rowsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rowsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rowsButtonActionPerformed(evt);
             }
         });
@@ -445,50 +563,52 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(closeBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(prevBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nextBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(textNotFoundLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rowsButton)
-                .addGap(8, 8, 8)
-                .addComponent(columnsButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(highlightAllChk)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(matchCaseChk)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(anyWordChk)
-                .addContainerGap(16, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(closeBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(prevBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nextBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textNotFoundLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rowsButton)
+                                .addGap(8, 8, 8)
+                                .addComponent(columnsButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(highlightAllChk)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(matchCaseChk)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(anyWordChk)
+                                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(closeBtn)
-                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(prevBtn)
-                .addComponent(nextBtn)
-                .addComponent(highlightAllChk)
-                .addComponent(textNotFoundLabel)
-                .addComponent(matchCaseChk)
-                .addComponent(anyWordChk)
-                .addComponent(rowsButton)
-                .addComponent(columnsButton))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(closeBtn)
+                                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(prevBtn)
+                                .addComponent(nextBtn)
+                                .addComponent(highlightAllChk)
+                                .addComponent(textNotFoundLabel)
+                                .addComponent(matchCaseChk)
+                                .addComponent(anyWordChk)
+                                .addComponent(rowsButton)
+                                .addComponent(columnsButton))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_closeBtnActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_closeBtnActionPerformed
 
-    private void rowsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rowsButtonActionPerformed
+    private void rowsButtonActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_rowsButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rowsButtonActionPerformed
 

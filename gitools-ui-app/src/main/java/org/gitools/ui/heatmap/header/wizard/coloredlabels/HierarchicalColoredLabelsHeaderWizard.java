@@ -1,108 +1,128 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard {
+public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
+{
 
-	private Heatmap heatmap;
-	private HeatmapDim hdim;
+    private Heatmap heatmap;
+    private HeatmapDim hdim;
 
-	private HeatmapHierarchicalColoredLabelsHeader header;
-	private int previousLevel;
-	
-	private ColoredLabelsConfigPage headerPage;
-	private ColoredLabelsGroupsPage clustersPage;
-	private HclLevelPage hclPage;
+    private HeatmapHierarchicalColoredLabelsHeader header;
+    private int previousLevel;
 
-	public HierarchicalColoredLabelsHeaderWizard(
-			Heatmap heatmap, HeatmapDim hdim,
-			HeatmapHierarchicalColoredLabelsHeader header) {
+    private ColoredLabelsConfigPage headerPage;
+    private ColoredLabelsGroupsPage clustersPage;
+    private HclLevelPage hclPage;
 
-		super();
+    public HierarchicalColoredLabelsHeaderWizard(
+            Heatmap heatmap, HeatmapDim hdim,
+            HeatmapHierarchicalColoredLabelsHeader header)
+    {
 
-		this.heatmap = heatmap;
-		this.hdim = hdim;
+        super();
 
-		this.header = header;
-		previousLevel = header.getTreeLevel();
-	}
+        this.heatmap = heatmap;
+        this.hdim = hdim;
 
-	@Override
-	public void addPages() {
-		headerPage = new ColoredLabelsConfigPage(header);
-		addPage(headerPage);
+        this.header = header;
+        previousLevel = header.getTreeLevel();
+    }
 
-		hclPage = new HclLevelPage(header);
-		addPage(hclPage);
+    @Override
+    public void addPages()
+    {
+        headerPage = new ColoredLabelsConfigPage(header);
+        addPage(headerPage);
 
-		clustersPage = new ColoredLabelsGroupsPage(header.getClusters());
-		addPage(clustersPage);
-	}
+        hclPage = new HclLevelPage(header);
+        addPage(hclPage);
 
-	@Override
-	public boolean canFinish() {
-		return true;
-	}
+        clustersPage = new ColoredLabelsGroupsPage(header.getClusters());
+        addPage(clustersPage);
+    }
 
-	@Override
-	public void performCancel() {
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				try {
-					header.setTreeLevel(previousLevel);
-				}
-				catch (Throwable ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-	}
+    @Override
+    public boolean canFinish()
+    {
+        return true;
+    }
 
-	@Override
-	public void pageLeft(IWizardPage currentPage) {	
-		super.pageLeft(currentPage);
+    @Override
+    public void performCancel()
+    {
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    header.setTreeLevel(previousLevel);
+                } catch (Throwable ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+    }
 
-		if (currentPage == hclPage) {
-			JobThread.execute(AppFrame.instance(), new JobRunnable() {
-				@Override public void run(IProgressMonitor monitor) {
-					try {
-						header.setTreeLevel(hclPage.getLevel());
-					}
-					catch (Throwable ex) {
-						monitor.exception(ex);
-					}
-				}
-			});
-		}
-	}
+    @Override
+    public void pageLeft(IWizardPage currentPage)
+    {
+        super.pageLeft(currentPage);
 
-	public HeatmapColoredLabelsHeader getHeader() {
-		return header;
-	}
+        if (currentPage == hclPage)
+        {
+            JobThread.execute(AppFrame.get(), new JobRunnable()
+            {
+                @Override
+                public void run(IProgressMonitor monitor)
+                {
+                    try
+                    {
+                        header.setTreeLevel(hclPage.getLevel());
+                    } catch (Throwable ex)
+                    {
+                        monitor.exception(ex);
+                    }
+                }
+            });
+        }
+    }
+
+    public HeatmapColoredLabelsHeader getHeader()
+    {
+        return header;
+    }
 }

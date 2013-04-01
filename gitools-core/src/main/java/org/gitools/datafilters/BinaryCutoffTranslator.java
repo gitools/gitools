@@ -1,55 +1,69 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.datafilters;
 
 import cern.colt.function.DoubleFunction;
 
-public class BinaryCutoffTranslator	implements ValueTranslator<Double> {
+public class BinaryCutoffTranslator implements ValueTranslator<Double>
+{
 
-	private static final long serialVersionUID = 4964176171201274622L;
+    private static final long serialVersionUID = 4964176171201274622L;
 
-	protected DoubleFunction filter;
-	
-	public BinaryCutoffTranslator(DoubleFunction filter) {
-		this.filter = filter;
-	}
-	
-	@Override
-	public Double stringToValue(String str) {
-		double value = Double.NaN;
-		try {
-			value = Double.parseDouble(str);
-			value = filter.apply(value);
-		}
-		catch (NumberFormatException e) {}
-		return value;
-	}
+    protected DoubleFunction filter;
 
-	@Override
-	public String valueToString(Double value) {
-		if (Double.isNaN(value))
-			return "-";
+    public BinaryCutoffTranslator(DoubleFunction filter)
+    {
+        this.filter = filter;
+    }
 
-		String str = String.valueOf(value);
-		double frac = value - Math.floor(value);
-		if (frac == 0.0)
-			str = str.substring(0, str.length() - 2);
-		return str;
-	}
+    @Override
+    public Double stringToValue(String str)
+    {
+        double value = Double.NaN;
+        try
+        {
+            value = Double.parseDouble(str);
+            value = filter.apply(value);
+        } catch (NumberFormatException e)
+        {
+        }
+        return value;
+    }
+
+    @Override
+    public String valueToString(Double value)
+    {
+        if (Double.isNaN(value))
+        {
+            return "-";
+        }
+
+        String str = String.valueOf(value);
+        double frac = value - Math.floor(value);
+        if (frac == 0.0)
+        {
+            str = str.substring(0, str.length() - 2);
+        }
+        return str;
+    }
 
 }

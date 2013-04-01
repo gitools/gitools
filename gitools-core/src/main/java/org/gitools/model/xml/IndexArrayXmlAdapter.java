@@ -1,59 +1,68 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.model.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]> {
+public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
+{
 
-	private static final String elemSeparator = ",";
+    private static final String elemSeparator = ",";
 
-	@Override
-	public String marshal(int[] v) throws Exception {
+    @Override
+    public String marshal(int[] v) throws Exception
+    {
 
-		String output = "";
+        String output = "";
 
-		if (v.length > 0) {
-		
-			int i = 0;
+        if (v.length > 0)
+        {
 
-			while (i < v.length - 1) {
-				output = output + Integer.toString(v[i]) + elemSeparator;
-				i++;
-			}
-			output = output + Integer.toString(v[i]);
-		}
-		return output;
-	}
+            int i = 0;
 
-	@Override
-	public int[] unmarshal(String v) throws Exception {
+            while (i < v.length - 1)
+            {
+                output = output + Integer.toString(v[i]) + elemSeparator;
+                i++;
+            }
+            output = output + Integer.toString(v[i]);
+        }
+        return output;
+    }
 
-		String[] elems = v.split(elemSeparator);
+    @Override
+    public int[] unmarshal(String v) throws Exception
+    {
 
-		int elemsSize = elems.length;
+        String[] elems = v.split(elemSeparator);
 
-		int[] output = new int[elemsSize];
+        int elemsSize = elems.length;
 
-		for (int i = 0; i < elemsSize; i++)
-			output[i] = Integer.parseInt(elems[i]);
+        int[] output = new int[elemsSize];
 
-		return output;
-	}
+        for (int i = 0; i < elemsSize; i++)
+            output[i] = Integer.parseInt(elems[i]);
+
+        return output;
+    }
 
 }

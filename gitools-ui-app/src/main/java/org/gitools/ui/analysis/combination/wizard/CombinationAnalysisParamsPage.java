@@ -1,164 +1,188 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * CombinationAnalysisParamsPage.java
- *
- * Created on Oct 8, 2010, 4:29:30 PM
- */
-
 package org.gitools.ui.analysis.combination.wizard;
 
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class CombinationAnalysisParamsPage extends AbstractWizardPage {
+import javax.swing.*;
+import java.util.List;
 
-	private List<IElementAttribute> attrs;
+public class CombinationAnalysisParamsPage extends AbstractWizardPage
+{
 
-	private static class AttrOption {
-		private String name;
-		private IElementAttribute attr;
+    private List<IElementAttribute> attrs;
 
-		public AttrOption(String name) {
-			this.name = name;
-		}
+    private static class AttrOption
+    {
+        private String name;
+        private IElementAttribute attr;
 
-		public AttrOption(IElementAttribute attr) {
-			this.attr = attr;
-		}
+        public AttrOption(String name)
+        {
+            this.name = name;
+        }
 
-		public IElementAttribute getAttr() {
-			return attr;
-		}
+        public AttrOption(IElementAttribute attr)
+        {
+            this.attr = attr;
+        }
 
-		@Override
-		public String toString() {
-			return attr != null ? attr.getName() : name;
-		}
-	}
+        public IElementAttribute getAttr()
+        {
+            return attr;
+        }
 
-	private String preferredSizeAttr;
-	private String preferredPvalueAttr;
-
-    public CombinationAnalysisParamsPage() {
-        initComponents();
-
-		dissableAttrCb();
-
-		setTitle("Configure combination options");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
-
-		setComplete(true);
+        @Override
+        public String toString()
+        {
+            return attr != null ? attr.getName() : name;
+        }
     }
 
-	private void dissableAttrCb() {
-		sizeAttrCb.setModel(new DefaultComboBoxModel());
-		sizeAttrLabel.setEnabled(false);
-		sizeAttrCb.setEnabled(false);
-		pvalueAttrCb.setModel(new DefaultComboBoxModel());
-		pvalueAttrLabel.setEnabled(false);
-		pvalueAttrCb.setEnabled(false);
-	}
+    private String preferredSizeAttr;
+    private String preferredPvalueAttr;
 
-	public void setAttributes(List<IElementAttribute> attrs) {
-		this.attrs = attrs;
+    public CombinationAnalysisParamsPage()
+    {
+        initComponents();
 
-		if (attrs != null) {
-			AttrOption[] sizeAttrs = new AttrOption[attrs.size() + 1];
-			sizeAttrs[0] = new AttrOption("All columns with the same weight");
-			for (int i = 0; i < attrs.size(); i++)
-				sizeAttrs[i + 1] = new AttrOption(attrs.get(i));
-			sizeAttrCb.setModel(new DefaultComboBoxModel(sizeAttrs));
+        dissableAttrCb();
 
-			AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
-			for (int i = 0; i < attrs.size(); i++)
-				pvalueAttrs[i] = new AttrOption(attrs.get(i));
-			pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
+        setTitle("Configure combination options");
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
-			int sizeIndex = -1;
-			int pvalueIndex = -1;
-			int i = 0;
-			for (IElementAttribute a : attrs) {
-				String aid = a.getId();
-				if (sizeIndex == -1
-						&& (aid.equals(preferredSizeAttr)
-							|| aid.matches("^(n|N)$")))
-					sizeIndex = i;
+        setComplete(true);
+    }
 
-				if (pvalueIndex == -1
-						&& (aid.equals(preferredPvalueAttr)
-							|| aid.matches("^(right-|.*)p-value$")))
-					pvalueIndex = i;
-				
-				i++;
-			}
+    private void dissableAttrCb()
+    {
+        sizeAttrCb.setModel(new DefaultComboBoxModel());
+        sizeAttrLabel.setEnabled(false);
+        sizeAttrCb.setEnabled(false);
+        pvalueAttrCb.setModel(new DefaultComboBoxModel());
+        pvalueAttrLabel.setEnabled(false);
+        pvalueAttrCb.setEnabled(false);
+    }
 
-			sizeIndex = sizeIndex == -1 ? 0 : sizeIndex + 1;
-			pvalueIndex = pvalueIndex == -1 ? 0 : pvalueIndex + 1;
-			sizeAttrCb.setSelectedIndex(sizeIndex);
-			pvalueAttrCb.setSelectedIndex(pvalueIndex);
-			sizeAttrLabel.setEnabled(true);
-			sizeAttrCb.setEnabled(true);
-			pvalueAttrLabel.setEnabled(true);
-			pvalueAttrCb.setEnabled(true);
-		}
-		else
-			dissableAttrCb();
-	}
+    public void setAttributes(List<IElementAttribute> attrs)
+    {
+        this.attrs = attrs;
 
-	public void setPreferredSizeAttr(String preferredSizeAttr) {
-		this.preferredSizeAttr = preferredSizeAttr;
-	}
+        if (attrs != null)
+        {
+            AttrOption[] sizeAttrs = new AttrOption[attrs.size() + 1];
+            sizeAttrs[0] = new AttrOption("All columns with the same weight");
+            for (int i = 0; i < attrs.size(); i++)
+                sizeAttrs[i + 1] = new AttrOption(attrs.get(i));
+            sizeAttrCb.setModel(new DefaultComboBoxModel(sizeAttrs));
 
-	public void setPreferredPvalueAttr(String preferredPvalueAttr) {
-		this.preferredPvalueAttr = preferredPvalueAttr;
-	}
+            AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
+            for (int i = 0; i < attrs.size(); i++)
+                pvalueAttrs[i] = new AttrOption(attrs.get(i));
+            pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
 
-	public IElementAttribute getSizeAttribute() {
-		AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
-		return option != null ? option.getAttr() : null;
-	}
+            int sizeIndex = -1;
+            int pvalueIndex = -1;
+            int i = 0;
+            for (IElementAttribute a : attrs)
+            {
+                String aid = a.getId();
+                if (sizeIndex == -1
+                        && (aid.equals(preferredSizeAttr)
+                        || aid.matches("^(n|N)$")))
+                {
+                    sizeIndex = i;
+                }
 
-	public IElementAttribute getPvalueAttribute() {
-		AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
-		return option != null ? option.getAttr() : null;
-	}
+                if (pvalueIndex == -1
+                        && (aid.equals(preferredPvalueAttr)
+                        || aid.matches("^(right-|.*)p-value$")))
+                {
+                    pvalueIndex = i;
+                }
 
-	public boolean isTransposeEnabled() {
-		return applyToRowsRb.isSelected();
-	}
+                i++;
+            }
 
-	public void setTransposeEnabled(boolean transpose) {
-		applyToColumnsRb.setSelected(!transpose);
-	}
+            sizeIndex = sizeIndex == -1 ? 0 : sizeIndex + 1;
+            pvalueIndex = pvalueIndex == -1 ? 0 : pvalueIndex + 1;
+            sizeAttrCb.setSelectedIndex(sizeIndex);
+            pvalueAttrCb.setSelectedIndex(pvalueIndex);
+            sizeAttrLabel.setEnabled(true);
+            sizeAttrCb.setEnabled(true);
+            pvalueAttrLabel.setEnabled(true);
+            pvalueAttrCb.setEnabled(true);
+        }
+        else
+        {
+            dissableAttrCb();
+        }
+    }
 
-    /** This method is called from within the constructor to
+    public void setPreferredSizeAttr(String preferredSizeAttr)
+    {
+        this.preferredSizeAttr = preferredSizeAttr;
+    }
+
+    public void setPreferredPvalueAttr(String preferredPvalueAttr)
+    {
+        this.preferredPvalueAttr = preferredPvalueAttr;
+    }
+
+    public IElementAttribute getSizeAttribute()
+    {
+        AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
+        return option != null ? option.getAttr() : null;
+    }
+
+    public IElementAttribute getPvalueAttribute()
+    {
+        AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
+        return option != null ? option.getAttr() : null;
+    }
+
+    public boolean isTransposeEnabled()
+    {
+        return applyToRowsRb.isSelected();
+    }
+
+    public void setTransposeEnabled(boolean transpose)
+    {
+        applyToColumnsRb.setSelected(!transpose);
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         applyButtonGroup = new javax.swing.ButtonGroup();
         sizeAttrLabel = new javax.swing.JLabel();
@@ -185,41 +209,41 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sizeAttrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pvalueAttrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(sizeAttrCb, 0, 304, Short.MAX_VALUE)
-                            .addComponent(pvalueAttrCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 304, Short.MAX_VALUE)))
-                    .addComponent(jLabel2)
-                    .addComponent(applyToColumnsRb)
-                    .addComponent(applyToRowsRb))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(sizeAttrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(pvalueAttrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(sizeAttrCb, 0, 304, Short.MAX_VALUE)
+                                                        .addComponent(pvalueAttrCb, javax.swing.GroupLayout.Alignment.LEADING, 0, 304, Short.MAX_VALUE)))
+                                        .addComponent(jLabel2)
+                                        .addComponent(applyToColumnsRb)
+                                        .addComponent(applyToRowsRb))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sizeAttrLabel)
-                    .addComponent(sizeAttrCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pvalueAttrLabel)
-                    .addComponent(pvalueAttrCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(applyToColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applyToRowsRb)
-                .addContainerGap(125, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(sizeAttrLabel)
+                                        .addComponent(sizeAttrCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(pvalueAttrLabel)
+                                        .addComponent(pvalueAttrCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(applyToColumnsRb)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(applyToRowsRb)
+                                .addContainerGap(125, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

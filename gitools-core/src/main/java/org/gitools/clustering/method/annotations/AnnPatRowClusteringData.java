@@ -1,93 +1,111 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.clustering.method.annotations;
 
-import org.gitools.utils.textpatt.TextPattern;
-import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.AnnotationResolver;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.utils.textpatt.TextPattern;
+import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 
-public class AnnPatRowClusteringData implements ClusteringData {
+public class AnnPatRowClusteringData implements ClusteringData
+{
 
-	public class Instance implements ClusteringDataInstance {
+    public class Instance implements ClusteringDataInstance
+    {
 
-		private VariableValueResolver resolver;
+        private VariableValueResolver resolver;
 
-		public Instance(VariableValueResolver resolver) {
-			this.resolver = resolver;
-		}
+        public Instance(VariableValueResolver resolver)
+        {
+            this.resolver = resolver;
+        }
 
-		@Override
-		public int getNumAttributes() {
-			return 1;
-		}
+        @Override
+        public int getNumAttributes()
+        {
+            return 1;
+        }
 
-		@Override
-		public String getAttributeName(int attribute) {
-			return "value";
-		}
+        @Override
+        public String getAttributeName(int attribute)
+        {
+            return "value";
+        }
 
-		@Override
-		public Class<?> getValueClass(int attribute) {
-			return String.class;
-		}
+        @Override
+        public Class<?> getValueClass(int attribute)
+        {
+            return String.class;
+        }
 
-		@Override
-		public Object getValue(int attribute) {
-			return pat.generate(resolver);
-		}
+        @Override
+        public Object getValue(int attribute)
+        {
+            return pat.generate(resolver);
+        }
 
-		@Override
-		public <T> T getTypedValue(int attribute, Class<T> valueClass) {
-			if (!String.class.equals(valueClass))
-				throw new RuntimeException("Unsupported value class: " + valueClass.getName());
+        @Override
+        public <T> T getTypedValue(int attribute, Class<T> valueClass)
+        {
+            if (!String.class.equals(valueClass))
+            {
+                throw new RuntimeException("Unsupported value class: " + valueClass.getName());
+            }
 
-			return (T) getValue(attribute);
-		}
-	}
+            return (T) getValue(attribute);
+        }
+    }
 
-	private IMatrix matrix;
-	private AnnotationMatrix am;
-	private TextPattern pat;
+    private IMatrix matrix;
+    private AnnotationMatrix am;
+    private TextPattern pat;
 
-	public AnnPatRowClusteringData(IMatrix matrix, AnnotationMatrix am, String pattern) {
-		this.matrix = matrix;
-		this.am = am;
-		this.pat = new TextPattern(pattern);
-	}
+    public AnnPatRowClusteringData(IMatrix matrix, AnnotationMatrix am, String pattern)
+    {
+        this.matrix = matrix;
+        this.am = am;
+        this.pat = new TextPattern(pattern);
+    }
 
-	@Override
-	public int getSize() {
-		return matrix.getRowCount();
-	}
+    @Override
+    public int getSize()
+    {
+        return matrix.getRowCount();
+    }
 
-	@Override
-	public String getLabel(int index) {
-		return matrix.getRowLabel(index);
-	}
+    @Override
+    public String getLabel(int index)
+    {
+        return matrix.getRowLabel(index);
+    }
 
-	@Override
-	public ClusteringDataInstance getInstance(int index) {
-		return new Instance(
-				new AnnotationResolver(
-					am, matrix.getRowLabel(index), "N/A"));
-	}
+    @Override
+    public ClusteringDataInstance getInstance(int index)
+    {
+        return new Instance(
+                new AnnotationResolver(
+                        am, matrix.getRowLabel(index), "N/A"));
+    }
 }

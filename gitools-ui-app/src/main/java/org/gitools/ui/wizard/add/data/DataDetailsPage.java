@@ -1,28 +1,26 @@
 /*
- *  Copyright 2011 cperez.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-/*
- * LabelFilterPage.java
- *
- * Created on 22-mar-2011, 15:54:05
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.wizard.add.data;
 
-import javax.swing.event.DocumentEvent;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
@@ -30,34 +28,42 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
-public class DataDetailsPage extends AbstractWizardPage {
+import javax.swing.event.DocumentEvent;
+
+public class DataDetailsPage extends AbstractWizardPage
+{
 
     private Heatmap hm;
     private String dimensionName;
     private String message;
 
-    public DataDetailsPage(Heatmap hm) {
-            this.hm = hm;
+    public DataDetailsPage(Heatmap hm)
+    {
+        this.hm = hm;
 
-            initComponents();
-            setComplete(false);
+        initComponents();
+        setComplete(false);
 
-            setTitle("Data Dimension Integration");
-            this.message =  "Choose a name for the new data value dimension";
-            setMessage(message);
+        setTitle("Data Dimension Integration");
+        this.message = "Choose a name for the new data value dimension";
+        setMessage(message);
 
-            nameField.getDocument().addDocumentListener(new DocumentChangeListener() {
+        nameField.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
 
-                    @Override
-                    protected void update(DocumentEvent e) {
-                        nameChanged();
-                    }
-             });
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                nameChanged();
+            }
+        });
     }
 
 
-    private void nameChanged() {
-        if (nameField.getText().length() > 0) {
+    private void nameChanged()
+    {
+        if (nameField.getText().length() > 0)
+        {
 
             boolean everythingIsOk = true;
             String existingName;
@@ -65,38 +71,46 @@ public class DataDetailsPage extends AbstractWizardPage {
             String wantedName = originalWantedName.toLowerCase().trim();
             IElementAdapter adapter = hm.getMatrixView().getCellAdapter();
             int c = 0;
-            for (IElementAttribute iElementAttribute : adapter.getProperties()) {
+            for (IElementAttribute iElementAttribute : adapter.getProperties())
+            {
                 existingName = iElementAttribute.getName().toLowerCase();
-                if (existingName.equals(wantedName)) {
-                    setMessage(MessageStatus.ERROR, "Data dimension with name '"+originalWantedName+"' already exists");
+                if (existingName.equals(wantedName))
+                {
+                    setMessage(MessageStatus.ERROR, "Data dimension with name '" + originalWantedName + "' already exists");
                     everythingIsOk = false;
                     break;
                 }
             }
-            
-            if (everythingIsOk)    {
+
+            if (everythingIsOk)
+            {
                 setComplete(true);
-                setMessage(MessageStatus.INFO,message);
+                setMessage(MessageStatus.INFO, message);
                 dimensionName = nameField.getText();
             }
-        } else {
+        }
+        else
+        {
             setComplete(false);
             dimensionName = "";
         }
     }
 
-    public String getDimensionName() {
+    public String getDimensionName()
+    {
         return dimensionName;
     }
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -109,25 +123,24 @@ public class DataDetailsPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(384, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1))
+                                .addContainerGap(384, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(408, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(408, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -135,7 +148,6 @@ public class DataDetailsPage extends AbstractWizardPage {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField nameField;
     // End of variables declaration//GEN-END:variables
-
 
 
 }

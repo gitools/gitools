@@ -1,79 +1,88 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.heatmap.drawer;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import org.gitools.heatmap.Heatmap;
 
-public abstract class AbstractHeatmapDrawer {
+import java.awt.*;
 
-	protected Heatmap heatmap;
-	
-	protected boolean pictureMode;
+public abstract class AbstractHeatmapDrawer
+{
 
-	public AbstractHeatmapDrawer(Heatmap heatmap) {
-		this.heatmap = heatmap;
-		this.pictureMode = false;
-	}
+    protected Heatmap heatmap;
 
-	public Heatmap getHeatmap() {
-		return heatmap;
-	}
+    protected boolean pictureMode;
 
-	public void setHeatmap(Heatmap heatmap) {
-		this.heatmap = heatmap;
-	}
+    public AbstractHeatmapDrawer(Heatmap heatmap)
+    {
+        this.heatmap = heatmap;
+        this.pictureMode = false;
+    }
+
+    public Heatmap getHeatmap()
+    {
+        return heatmap;
+    }
+
+    public void setHeatmap(Heatmap heatmap)
+    {
+        this.heatmap = heatmap;
+    }
 
 	/*protected int getRowsGridSize() {
-		return heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0;
+        return heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0;
 	}
 
 	protected int getColumnsGridSize() {
 		return heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0;
 	}*/
 
-	protected int getBorderSize() {
-		return heatmap.isShowBorders() ? 1 : 0;
-	}
+    protected int getBorderSize()
+    {
+        return heatmap.isShowBorders() ? 1 : 0;
+    }
 
-	public boolean isPictureMode() {
-		return pictureMode;
-	}
+    public boolean isPictureMode()
+    {
+        return pictureMode;
+    }
 
-	public void setPictureMode(boolean pictureMode) {
-		this.pictureMode = pictureMode;
-	}
+    public void setPictureMode(boolean pictureMode)
+    {
+        this.pictureMode = pictureMode;
+    }
 
-	public abstract Dimension getSize();
+    public abstract Dimension getSize();
 
-	/**
-	 * Draw contents on the rectangle delimited by box using the clip.
-	 *
-	 * @param g Drawing device
-	 * @param box The bounds of the total canvas
-	 * @param clip The clip (inside the box)
-	 */
-	public abstract void draw(Graphics2D g, Rectangle box, Rectangle clip);
+    /**
+     * Draw contents on the rectangle delimited by box using the clip.
+     *
+     * @param g    Drawing device
+     * @param box  The bounds of the total canvas
+     * @param clip The clip (inside the box)
+     */
+    public abstract void draw(Graphics2D g, Rectangle box, Rectangle clip);
 
-	public abstract HeatmapPosition getPosition(Point p);
+    public abstract HeatmapPosition getPosition(Point p);
 
-	public abstract Point getPoint(HeatmapPosition p);
+    public abstract Point getPoint(HeatmapPosition p);
 }

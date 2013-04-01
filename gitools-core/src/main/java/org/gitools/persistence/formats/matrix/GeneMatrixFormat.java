@@ -1,49 +1,56 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.persistence.formats.matrix;
 
 import cern.colt.matrix.ObjectFactory1D;
-import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.*;
 import java.util.*;
 
+public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
+{
 
-public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
-
-    public GeneMatrixFormat() {
+    public GeneMatrixFormat()
+    {
         super(FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX, DoubleBinaryMatrix.class);
     }
 
     @Override
-    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    {
         progressMonitor.begin("Reading ...", 1);
 
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
 
-        try {
+        try
+        {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -62,16 +69,22 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             for (int i = 0; i < columnNames.length; i++)
                 indices.add(new HashSet<Integer>());
 
-            while ((fields = parser.readNext()) != null) {
+            while ((fields = parser.readNext()) != null)
+            {
 
                 if (fields.length > columnNames.length)
+                {
                     throw new PersistenceException("Row with more columns than expected at line " + parser.getLineNumber());
+                }
 
-                for (int i = 0; i < fields.length; i++) {
+                for (int i = 0; i < fields.length; i++)
+                {
                     String name = fields[i];
-                    if (!name.isEmpty()) {
+                    if (!name.isEmpty())
+                    {
                         Integer rowIndex = rowIndices.get(name);
-                        if (rowIndex == null) {
+                        if (rowIndex == null)
+                        {
                             rowIndex = rowIndices.size();
                             rowIndices.put(name, rowIndex);
                         }
@@ -83,11 +96,15 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             // incorporate population labels
 
             String[] populationLabels = getPopulationLabels();
-            if (populationLabels != null) {
-                for (String name : populationLabels) {
+            if (populationLabels != null)
+            {
+                for (String name : populationLabels)
+                {
                     Integer index = rowIndices.get(name);
                     if (index == null)
+                    {
                         rowIndices.put(name, rowIndices.size());
+                    }
                 }
             }
 
@@ -114,7 +131,8 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
             // set cell values
 
-            for (int col = 0; col < columnNames.length; col++) {
+            for (int col = 0; col < columnNames.length; col++)
+            {
                 Set<Integer> colIndices = indices.get(col);
                 for (Integer index : colIndices)
                     matrix.setCellValue(index, col, 0, 1.0);
@@ -125,7 +143,8 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             progressMonitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
 
             progressMonitor.end();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new PersistenceException(e);
         }
 
@@ -134,10 +153,12 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException
+    {
         progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
 
-        try {
+        try
+        {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
@@ -160,37 +181,48 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
             int finishedColumns = 0;
             int[] positions = new int[numColumns];
-            while (finishedColumns < numColumns) {
+            while (finishedColumns < numColumns)
+            {
                 boolean validLine = false;
-                for (int col = 0; col < numColumns; col++) {
+                for (int col = 0; col < numColumns; col++)
+                {
                     if (col != 0)
+                    {
                         line.append('\t');
+                    }
 
                     int row = positions[col];
-                    if (row < numRows) {
+                    if (row < numRows)
+                    {
                         double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
                         while (value != 1.0 && (row < numRows - 1))
                             value = MatrixUtils.doubleValue(matrix.getCellValue(++row, col, 0));
 
-                        if (value == 1.0) {
+                        if (value == 1.0)
+                        {
                             line.append(matrix.getRowLabel(row));
                             validLine = true;
                         }
 
                         positions[col] = row + 1;
                         if (positions[col] >= numRows)
+                        {
                             finishedColumns++;
+                        }
                     }
                 }
 
                 if (validLine)
+                {
                     pw.append(line).append('\n');
+                }
 
                 line.setLength(0);
             }
 
             out.close();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new PersistenceException(e);
         }
 

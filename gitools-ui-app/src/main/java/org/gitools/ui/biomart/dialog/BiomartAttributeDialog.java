@@ -1,107 +1,120 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * BiomartAttributeDialog.java
- *
- * Created on 18-dic-2009, 22:11:43
- */
-
 package org.gitools.ui.biomart.dialog;
 
-import java.util.List;
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributePage;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
-
 import org.gitools.ui.biomart.panel.BiomartAttributePanel.AttributeSelectionListener;
 
-public class BiomartAttributeDialog extends javax.swing.JDialog {
+import java.util.List;
 
-	boolean cancelled;
+public class BiomartAttributeDialog extends javax.swing.JDialog
+{
 
-	public BiomartAttributeDialog(
-			java.awt.Frame parent, List<AttributePage> attrPages) {
+    boolean cancelled;
 
-		super(parent, true);
+    public BiomartAttributeDialog(
+            java.awt.Frame parent, List<AttributePage> attrPages)
+    {
+
+        super(parent, true);
 
         initComponents();
 
-		setTitle("Select attributes");
+        setTitle("Select attributes");
 
-		updateButtons();
+        updateButtons();
 
-		biomartAttrPanel.addAttributeSelectionListener(new AttributeSelectionListener() {
-			@Override public void selectionChanged() {
-				updateButtons(); }
-		});
+        biomartAttrPanel.addAttributeSelectionListener(new AttributeSelectionListener()
+        {
+            @Override
+            public void selectionChanged()
+            {
+                updateButtons();
+            }
+        });
 
-		cancelled = false;
+        cancelled = false;
 
-		biomartAttrPanel.setAttributePages(attrPages);
-	}
-	
-	public void open() {
-		setVisible(true);
-	}
+        biomartAttrPanel.setAttributePages(attrPages);
+    }
 
-	public boolean isCancelled() {
-		return cancelled;
-	}
+    public void open()
+    {
+        setVisible(true);
+    }
 
-	public List<AttributeDescription> getSelectedAttributes() {
-		return biomartAttrPanel.getSelectedAttributes();
-	}
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
 
-	public List<String> getSelectedAttributeNames() {
-		return biomartAttrPanel.getSelectedAttributeNames();
-	}
+    public List<AttributeDescription> getSelectedAttributes()
+    {
+        return biomartAttrPanel.getSelectedAttributes();
+    }
 
-	protected void updateButtons() {
-		acceptBtn.setEnabled(
-				biomartAttrPanel.getSelectedAttributes().size() > 0);
-	}
-/*
-	public void setBiomartParameters(
-			MartServiceSoap port,
-			Mart mart,
-			DatasetInfo dataset) {
-		
-		biomartAttrPanel.setBiomartParameters(port, mart, dataset);
-	}
-*/
-	public void setBiomartParameters(
-			BiomartService port,
-			MartLocation mart,
-			DatasetInfo dataset) {
+    public List<String> getSelectedAttributeNames()
+    {
+        return biomartAttrPanel.getSelectedAttributeNames();
+    }
 
-		biomartAttrPanel.setBiomartParameters(port, mart, dataset);
-	}
+    protected void updateButtons()
+    {
+        acceptBtn.setEnabled(
+                biomartAttrPanel.getSelectedAttributes().size() > 0);
+    }
 
-    /** This method is called from within the constructor to
+    /*
+        public void setBiomartParameters(
+                MartServiceSoap port,
+                Mart mart,
+                DatasetInfo dataset) {
+
+            biomartAttrPanel.setBiomartParameters(port, mart, dataset);
+        }
+    */
+    public void setBiomartParameters(
+            BiomartService port,
+            MartLocation mart,
+            DatasetInfo dataset)
+    {
+
+        biomartAttrPanel.setBiomartParameters(port, mart, dataset);
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         biomartAttrPanel = new org.gitools.ui.biomart.panel.BiomartAttributePanel();
         cancelBtn = new javax.swing.JButton();
@@ -111,15 +124,19 @@ public class BiomartAttributeDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cancelBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cancelBtnActionPerformed(evt);
             }
         });
 
         acceptBtn.setText("Accept");
-        acceptBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        acceptBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 acceptBtnActionPerformed(evt);
             }
         });
@@ -127,42 +144,44 @@ public class BiomartAttributeDialog extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(389, Short.MAX_VALUE)
-                .addComponent(acceptBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelBtn)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(389, Short.MAX_VALUE)
+                                .addComponent(acceptBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cancelBtn)
+                                .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                                .addContainerGap())
+                        .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelBtn)
-                    .addComponent(acceptBtn))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cancelBtn)
+                                        .addComponent(acceptBtn))
+                                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
-		setVisible(false);
-	}//GEN-LAST:event_acceptBtnActionPerformed
+    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_acceptBtnActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_acceptBtnActionPerformed
 
-	private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-		cancelled = true;
-		setVisible(false);
-	}//GEN-LAST:event_cancelBtnActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_cancelBtnActionPerformed
+        cancelled = true;
+        setVisible(false);
+    }//GEN-LAST:event_cancelBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptBtn;

@@ -1,24 +1,23 @@
 /*
- *  Copyright 2011 cperez.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-/*
- * SortPage.java
- *
- * Created on 21-mar-2011, 10:22:15
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.sort;
 
@@ -35,149 +34,190 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LabelSortPage extends AbstractWizardPage {
+public class LabelSortPage extends AbstractWizardPage
+{
 
-	private Heatmap hm;
+    private Heatmap hm;
 
-	private String rowsPat;
-	private String colsPat;
+    private String rowsPat;
+    private String colsPat;
 
-	public LabelSortPage(Heatmap hm) {
-		this.hm = hm;
-		
-		initComponents();
+    public LabelSortPage(Heatmap hm)
+    {
+        this.hm = hm;
 
-		rowsLabelFld.setText("id");
-		rowsPat = "${id}";
+        initComponents();
 
-		colsLabelFld.setText("id");
-		colsPat = "${id}";
+        rowsLabelFld.setText("id");
+        rowsPat = "${id}";
 
-		ActionListener dimListener = new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				dimChanged(); }
-		};
+        colsLabelFld.setText("id");
+        colsPat = "${id}";
 
-		rowsChk.addActionListener(dimListener);
-		colsChk.addActionListener(dimListener);
+        ActionListener dimListener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                dimChanged();
+            }
+        };
 
-		rowsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				updateComplete(); }
-		});
+        rowsChk.addActionListener(dimListener);
+        colsChk.addActionListener(dimListener);
 
-		rowsLabelBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				selectRowsPattern(); }
-		});
+        rowsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                updateComplete();
+            }
+        });
 
-		rowsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
+        rowsLabelBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                selectRowsPattern();
+            }
+        });
 
-		colsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				updateComplete(); }
-		});
+        rowsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-		colsLabelBtn.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent ae) {
-				selectColsPattern(); }
-		});
+        colsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                updateComplete();
+            }
+        });
 
-		colsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
-		
-		setTitle("Sort by label");
-		updateComplete();
-	}
+        colsLabelBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                selectColsPattern();
+            }
+        });
 
-	@Override
-	public void updateControls() {
-		dimChanged();
-	}
+        colsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-	private void updateComplete() {
-		setComplete((rowsChk.isSelected() || colsChk.isSelected())
-				&& !((rowsChk.isSelected() && rowsLabelFld.getText().isEmpty())
-					|| (colsChk.isSelected() && colsLabelFld.getText().isEmpty())));
-	}
+        setTitle("Sort by label");
+        updateComplete();
+    }
 
-	private void dimChanged() {
-		boolean rs = rowsChk.isSelected();
-		rowsLabelFld.setEnabled(rs);
-		rowsLabelBtn.setEnabled(rs);
-		rowsDirCb.setEnabled(rs);
+    @Override
+    public void updateControls()
+    {
+        dimChanged();
+    }
+
+    private void updateComplete()
+    {
+        setComplete((rowsChk.isSelected() || colsChk.isSelected())
+                && !((rowsChk.isSelected() && rowsLabelFld.getText().isEmpty())
+                || (colsChk.isSelected() && colsLabelFld.getText().isEmpty())));
+    }
+
+    private void dimChanged()
+    {
+        boolean rs = rowsChk.isSelected();
+        rowsLabelFld.setEnabled(rs);
+        rowsLabelBtn.setEnabled(rs);
+        rowsDirCb.setEnabled(rs);
         numericRowsCb.setEnabled(rs);
 
-		boolean cs = colsChk.isSelected();
-		colsLabelFld.setEnabled(cs);
-		colsLabelBtn.setEnabled(cs);
-		colsDirCb.setEnabled(cs);
+        boolean cs = colsChk.isSelected();
+        colsLabelFld.setEnabled(cs);
+        colsLabelBtn.setEnabled(cs);
+        colsDirCb.setEnabled(cs);
         numericColumnsCb.setEnabled(cs);
 
-		updateComplete();
-	}
+        updateComplete();
+    }
 
-	private void selectRowsPattern() {
-		PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
-		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+    private void selectRowsPattern()
+    {
+        PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        dlg.setVisible(true);
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-		rowsPat = page.getPattern();
-		rowsLabelFld.setText(page.getPatternTitle());
-	}
+        rowsPat = page.getPattern();
+        rowsLabelFld.setText(page.getPatternTitle());
+    }
 
-	private void selectColsPattern() {
-		PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
-		PageDialog dlg = new PageDialog(AppFrame.instance(), page);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+    private void selectColsPattern()
+    {
+        PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        dlg.setVisible(true);
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-		colsPat = page.getPattern();
-		colsLabelFld.setText(page.getPatternTitle());
-	}
+        colsPat = page.getPattern();
+        colsLabelFld.setText(page.getPatternTitle());
+    }
 
-	public boolean isApplyToRowsSelected() {
-		return rowsChk.isSelected();
-	}
+    public boolean isApplyToRowsSelected()
+    {
+        return rowsChk.isSelected();
+    }
 
-	public String getRowsPattern() {
-		return rowsPat;
-	}
+    public String getRowsPattern()
+    {
+        return rowsPat;
+    }
 
-	public SortDirection getRowsDirection() {
-		return (SortDirection) rowsDirCb.getSelectedItem();
-	}
+    public SortDirection getRowsDirection()
+    {
+        return (SortDirection) rowsDirCb.getSelectedItem();
+    }
 
-    public boolean getRowsNumeric() {
+    public boolean getRowsNumeric()
+    {
         return numericRowsCb.isSelected() && rowsChk.isSelected();
     }
 
-	public boolean isApplyToColumnsSelected() {
-		return colsChk.isSelected();
-	}
+    public boolean isApplyToColumnsSelected()
+    {
+        return colsChk.isSelected();
+    }
 
-	public String getColumnsPattern() {
-		return colsPat;
-	}
+    public String getColumnsPattern()
+    {
+        return colsPat;
+    }
 
-	public SortDirection getColumnsDirection() {
-		return (SortDirection) colsDirCb.getSelectedItem();
-	}
+    public SortDirection getColumnsDirection()
+    {
+        return (SortDirection) colsDirCb.getSelectedItem();
+    }
 
-    public boolean getColumnsNumeric() {
+    public boolean getColumnsNumeric()
+    {
         return numericColumnsCb.isSelected() && colsChk.isSelected();
     }
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jLabel1 = new javax.swing.JLabel();
         rowsDirCb = new javax.swing.JComboBox();
@@ -217,15 +257,19 @@ public class LabelSortPage extends AbstractWizardPage {
 
         jLabel4.setText("Direction");
 
-        numericColumnsCb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        numericColumnsCb.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 numericColumnsCbActionPerformed(evt);
             }
         });
 
         numericRowsCb.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        numericRowsCb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        numericRowsCb.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 numericRowsCbActionPerformed(evt);
             }
         });
@@ -322,13 +366,15 @@ public class LabelSortPage extends AbstractWizardPage {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-        private void numericRowsCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numericRowsCbActionPerformed
-            // TODO add your handling code here:
-        }//GEN-LAST:event_numericRowsCbActionPerformed
+    private void numericRowsCbActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_numericRowsCbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numericRowsCbActionPerformed
 
-        private void numericColumnsCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numericColumnsCbActionPerformed
-            // TODO add your handling code here:
-        }//GEN-LAST:event_numericColumnsCbActionPerformed
+    private void numericColumnsCbActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_numericColumnsCbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numericColumnsCbActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox colsChk;

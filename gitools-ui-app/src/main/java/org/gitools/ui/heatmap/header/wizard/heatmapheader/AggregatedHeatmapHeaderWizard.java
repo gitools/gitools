@@ -1,26 +1,28 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import org.gitools.utils.aggregation.IAggregator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
@@ -43,16 +45,20 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
+public class AggregatedHeatmapHeaderWizard extends AbstractWizard
+{
 
-    public enum DataSourceEnum {
+    public enum DataSourceEnum
+    {
         aggregatedData,
         annotation
-    };
+    }
 
     private DataSourceEnum dataSource;
 
@@ -73,7 +79,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
     private HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
-    public AggregatedHeatmapHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows) {
+    public AggregatedHeatmapHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows)
+    {
         super();
 
         this.heatmap = heatmap;
@@ -85,9 +92,12 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
     }
 
     @Override
-    public void addPages() {
-        if (!editionMode) {
-            if (dataSource == DataSourceEnum.aggregatedData) {
+    public void addPages()
+    {
+        if (!editionMode)
+        {
+            if (dataSource == DataSourceEnum.aggregatedData)
+            {
                 dataSourceAggregationPage = new AggregationDataSourcePage(heatmap, applyToRows);
                 addPage(dataSourceAggregationPage);
 
@@ -96,7 +106,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                         "distinct value of the chosen annotation individually");
                 addPage(dataSourceAnnotationPage);
             }
-            else if (dataSource == DataSourceEnum.annotation)  {
+            else if (dataSource == DataSourceEnum.annotation)
+            {
                 heatmapDim = applyToRows ? heatmap.getRowDim() : heatmap.getColumnDim();
                 dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The annotation column must not contain " +
                         "numeric values");
@@ -115,41 +126,60 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
 
     }
 
-    public boolean isLastPage(IWizardPage page) {
-        if (page == this.colorScalePage) {
+    public boolean isLastPage(IWizardPage page)
+    {
+        if (page == this.colorScalePage)
+        {
             if (!header.isLabelVisible() && page == this.colorScalePage)
+            {
                 return true;
+            }
             else
+            {
                 return false;
-        } else {
+            }
+        }
+        else
+        {
             return super.isLastPage(page);
         }
     }
 
     @Override
-    public IWizardPage getNextPage(IWizardPage page) {
+    public IWizardPage getNextPage(IWizardPage page)
+    {
         IWizardPage nextPage;
-        if (page == this.dataSourceAggregationPage) {
+        if (page == this.dataSourceAggregationPage)
+        {
 
-            if (!this.dataSourceAggregationPage.aggregateAnnotationsSeparately()) {
+            if (!this.dataSourceAggregationPage.aggregateAnnotationsSeparately())
+            {
                 generateHeaderHeatmap();
                 nextPage = configPage;
-            } else {
+            }
+            else
+            {
                 nextPage = super.getNextPage(page);
             }
-            
-        } else if(dataSource == DataSourceEnum.aggregatedData && page == this.dataSourceAnnotationPage) {
+
+        }
+        else if (dataSource == DataSourceEnum.aggregatedData && page == this.dataSourceAnnotationPage)
+        {
             generateHeaderHeatmap();
             nextPage = super.getNextPage(page);
 
-        } else if (dataSource == DataSourceEnum.annotation && page == this.dataSourceAnnotationPage) {
-            try {
+        }
+        else if (dataSource == DataSourceEnum.annotation && page == this.dataSourceAnnotationPage)
+        {
+            try
+            {
                 headerValueHeatmap = annotationToHeatmap();
-            } catch (Exception  e) {
-                dataSourceAnnotationPage.setMessage(MessageStatus.ERROR,"The selected annotation doesn't contain any numeric values.");
+            } catch (Exception e)
+            {
+                dataSourceAnnotationPage.setMessage(MessageStatus.ERROR, "The selected annotation doesn't contain any numeric values.");
                 return page;
             }
-            dataSourceAnnotationPage.setMessage(MessageStatus.INFO,dataSourceAnnotationPage.infoMessage);
+            dataSourceAnnotationPage.setMessage(MessageStatus.INFO, dataSourceAnnotationPage.infoMessage);
             header.setHeaderHeatmap(headerValueHeatmap);
 
             //generate Label to id map
@@ -160,48 +190,65 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             header.setTitle("Data: " + dataSourceAnnotationPage.getSelectedAnnotation());
 
             nextPage = super.getNextPage(page);
-            
-        } else if (page == this.configPage) {
+
+        }
+        else if (page == this.configPage)
+        {
 
             textConfigPage.setFgColorEnabled(header.isForceLabelColor() ||
                     header.getLabelPosition() != HeatmapDataHeatmapHeader.LabelPositionEnum.inside);
             nextPage = super.getNextPage(page);
-            
-        } else {
+
+        }
+        else
+        {
             nextPage = super.getNextPage(page);
         }
         return nextPage;
     }
 
-    private void generateHeaderHeatmap() {
+    private void generateHeaderHeatmap()
+    {
         boolean useAll = dataSourceAggregationPage.useAllColumnsOrRows();
 
-        if (dataSourceAggregationPage.aggregateAnnotationsSeparately()) {
+        if (dataSourceAggregationPage.aggregateAnnotationsSeparately())
+        {
             getIndecesByAnnotation();
-        } else {
+        }
+        else
+        {
             //get all indices
             setAggregationTitles(new String[]{"All Cols"});
-            Map<String,int[]> indicesMap = new HashMap<String,int[]>();
+            Map<String, int[]> indicesMap = new HashMap<String, int[]>();
             int[] aggregationGroups = new int[0];
 
-            if (applyToRows) {
-                if (useAll) {
+            if (applyToRows)
+            {
+                if (useAll)
+                {
                     aggregationGroups = new int[heatmap.getMatrixView().getColumnCount()];
                     for (int i = 0; i < heatmap.getMatrixView().getColumnCount(); i++)
                         aggregationGroups[i] = i;
-                } else {
+                }
+                else
+                {
                     aggregationGroups = heatmap.getMatrixView().getSelectedColumns();
                 }
-            } else {
-                 if (useAll) {
-                     aggregationGroups = new int[heatmap.getMatrixView().getRowCount()];
-                     for (int i = 0; i < heatmap.getMatrixView().getRowCount(); i++)
-                         aggregationGroups[i] = i;
-                 } else {
-                     aggregationGroups = heatmap.getMatrixView().getSelectedRows();
-                 }
             }
-            indicesMap.put(aggregationTitles[0],aggregationGroups);
+            else
+            {
+                if (useAll)
+                {
+                    aggregationGroups = new int[heatmap.getMatrixView().getRowCount()];
+                    for (int i = 0; i < heatmap.getMatrixView().getRowCount(); i++)
+                        aggregationGroups[i] = i;
+                }
+                else
+                {
+                    aggregationGroups = heatmap.getMatrixView().getSelectedRows();
+                }
+            }
+            indicesMap.put(aggregationTitles[0], aggregationGroups);
             setDataIndicesToAggregateByTitle(indicesMap);
             headerValueHeatmap = aggregateToHeatmap();
             header.setHeaderHeatmap(headerValueHeatmap);
@@ -218,20 +265,25 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         header.setTitle(sb.toString());
     }
 
-    private Map<String, Integer> generateMap(IMatrixView data) {
-        Map<String,Integer> map = new HashMap<String, Integer>();
-        if (applyToRows) {
+    private Map<String, Integer> generateMap(IMatrixView data)
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        if (applyToRows)
+        {
             for (int i : data.getVisibleRows())
-                map.put(data.getRowLabel(i),i);
-        } else {
+                map.put(data.getRowLabel(i), i);
+        }
+        else
+        {
             for (int i : data.getVisibleColumns())
-                map.put(data.getColumnLabel(i),i);
+                map.put(data.getColumnLabel(i), i);
         }
         return map;
     }
 
 
-    private Heatmap aggregateToHeatmap() {
+    private Heatmap aggregateToHeatmap()
+    {
 
 
         int elementsToAggregate;
@@ -241,20 +293,23 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         int valueIndex = dataSourceAggregationPage.getSelectedDataValueIndex();
         DoubleMatrix2D valueMatrix;
 
-        if (applyToRows) {
+        if (applyToRows)
+        {
 
             int[] rows = heatmap.getMatrixView().getVisibleRows();
             valueMatrix = DoubleFactory2D.dense.make(rows.length, aggregationTitles.length, 0.0);
 
-            for (int i = 0; i < aggregationTitles.length; i++) {
+            for (int i = 0; i < aggregationTitles.length; i++)
+            {
                 int[] columns = dataIndicesToAggregateByTitle.get(aggregationTitles[i]);
 
                 elementsToAggregate = columns.length;
                 final double[] valueBuffer = new double[elementsToAggregate];
-    
-                for (int j = 0; j < rows.length; j++) {
-                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(),columns,j,valueIndex,aggregator,valueBuffer);
-                    valueMatrix.set(j,i,aggregatedValue);
+
+                for (int j = 0; j < rows.length; j++)
+                {
+                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(), columns, j, valueIndex, aggregator, valueBuffer);
+                    valueMatrix.set(j, i, aggregatedValue);
                 }
             }
 
@@ -263,24 +318,27 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 rowNames[i] = heatmap.getMatrixView().getRowLabel(i);
 
             columnNames = aggregationTitles;
-                
 
 
-        } else {
+        }
+        else
+        {
 
             int[] columns = heatmap.getMatrixView().getVisibleColumns();
             valueMatrix = DoubleFactory2D.dense.make(aggregationTitles.length, columns.length, 0.0);
 
 
-            for (int i = 0; i < aggregationTitles.length; i++) {
+            for (int i = 0; i < aggregationTitles.length; i++)
+            {
                 int[] rows = dataIndicesToAggregateByTitle.get(aggregationTitles[i]);
 
                 elementsToAggregate = rows.length;
                 final double[] valueBuffer = new double[elementsToAggregate];
 
-                for (int j = 0; j < columns.length; j++) {
-                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(),rows,j,valueIndex,aggregator,valueBuffer);
-                    valueMatrix.set(i,j,aggregatedValue);
+                for (int j = 0; j < columns.length; j++)
+                {
+                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(), rows, j, valueIndex, aggregator, valueBuffer);
+                    valueMatrix.set(i, j, aggregatedValue);
                 }
             }
 
@@ -301,7 +359,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 ));
     }
 
-    private void getIndecesByAnnotation() {
+    private void getIndecesByAnnotation()
+    {
         IMatrixView mv = heatmap.getMatrixView();
         AnnotationMatrix am = heatmapDim.getAnnotations();
         String pattern = dataSourceAnnotationPage.getSelectedPattern();
@@ -312,10 +371,13 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 new AnnPatColumnClusteringData(mv, am, pattern)
                 : new AnnPatRowClusteringData(mv, am, pattern);
 
-        JobThread.execute(AppFrame.instance(), new JobRunnable() {
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
             @Override
-            public void run(IProgressMonitor monitor) {
-                try {
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
                     ClusteringMethod clusteringMethod = new AnnPatClusteringMethod();
 
                     ClusteringResults results =
@@ -330,20 +392,23 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                     Map<String, Integer> map = generateMap(headerValueHeatmap.getMatrixView());
                     header.setLabelIndexMap(map);
 
-                } catch (Throwable ex) {
+                } catch (Throwable ex)
+                {
                     monitor.exception(ex);
                 }
             }
         });
     }
 
-    private Heatmap annotationToHeatmap() throws Exception {
+    private Heatmap annotationToHeatmap() throws Exception
+    {
 
         String[] columnNames;
         String[] rowNames;
         DoubleMatrix2D valueMatrix;
 
-        if (applyToRows) {
+        if (applyToRows)
+        {
 
             AnnotationMatrix annotations = heatmap.getRowDim().getAnnotations();
             int annColIdx = annotations.getColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
@@ -355,28 +420,36 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             rowNames = new String[rows.length];
             boolean containsNumericValue = false;
 
-            for (int i = 0; i < rows.length; i++) {
+            for (int i = 0; i < rows.length; i++)
+            {
                 String rowLabel = heatmap.getMatrixView().getRowLabel(i);
                 rowNames[i] = rowLabel;
                 int annRowIdx = -1;
                 annRowIdx = annotations.getRowIndex(rowLabel);
                 Double v = Double.NaN;
-                if (annRowIdx >= 0 && annColIdx >= 0) {
+                if (annRowIdx >= 0 && annColIdx >= 0)
+                {
                     String value = annotations.getCell(annRowIdx, annColIdx);
-                    v = doubleTranslator.stringToValue(value,false);
+                    v = doubleTranslator.stringToValue(value, false);
                 }
-                valueMatrix.set(i,0,v);
+                valueMatrix.set(i, 0, v);
                 if (!containsNumericValue && !v.isNaN())
+                {
                     containsNumericValue = true;
+                }
             }
 
             if (!containsNumericValue)
+            {
                 throw new Exception("No numeric values parsed");
+            }
 
             columnNames = new String[1];
             columnNames[0] = dataSourceAnnotationPage.getSelectedAnnotation();
 
-        } else {
+        }
+        else
+        {
 
             AnnotationMatrix annotations = heatmap.getColumnDim().getAnnotations();
             int annColIdx = annotations.getColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
@@ -385,20 +458,22 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             valueMatrix = DoubleFactory2D.dense.make(1, columns.length, 0.0);
 
             columnNames = new String[columns.length];
-            for (int i = 0; i < columnNames.length; i++) {
+            for (int i = 0; i < columnNames.length; i++)
+            {
                 String colLabel = heatmap.getMatrixView().getColumnLabel(i);
                 columnNames[i] = colLabel;
                 int annRowIdx = -1;
                 annRowIdx = annotations.getRowIndex(colLabel);
                 Double v = Double.NaN;
-                if (annColIdx >= 0 && annRowIdx >= 0) {
-                    v = Double.parseDouble(annotations.getCell(annRowIdx,annColIdx));
+                if (annColIdx >= 0 && annRowIdx >= 0)
+                {
+                    v = Double.parseDouble(annotations.getCell(annRowIdx, annColIdx));
                 }
-                valueMatrix.set(0,i,v);
+                valueMatrix.set(0, i, v);
             }
 
             rowNames = new String[1];
-            rowNames[0] =  dataSourceAnnotationPage.getSelectedAnnotation();
+            rowNames[0] = dataSourceAnnotationPage.getSelectedAnnotation();
 
         }
 
@@ -413,53 +488,70 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 ));
     }
 
-    public void setAggregationTitles(String[] aggregationTitles) {
+    public void setAggregationTitles(String[] aggregationTitles)
+    {
         this.aggregationTitles = aggregationTitles;
     }
 
-    public void setDataIndicesToAggregateByTitle(Map<String, int[]> dataIndicesToAggregateByTitle) {
+    public void setDataIndicesToAggregateByTitle(Map<String, int[]> dataIndicesToAggregateByTitle)
+    {
         this.dataIndicesToAggregateByTitle = dataIndicesToAggregateByTitle;
     }
 
     @Override
-    public boolean canFinish() {
+    public boolean canFinish()
+    {
         return currentPage != dataSourceAggregationPage;
     }
 
     @Override
-    public void performFinish() {
-        if (!editionMode || header.isLabelVisible() != this.labelVisible) {
+    public void performFinish()
+    {
+        if (!editionMode || header.isLabelVisible() != this.labelVisible)
+        {
             int elements = this.applyToRows ?
-                        header.getHeaderHeatmap().getMatrixView().getVisibleColumns().length :
-                        header.getHeaderHeatmap().getMatrixView().getVisibleRows().length ;
+                    header.getHeaderHeatmap().getMatrixView().getVisibleColumns().length :
+                    header.getHeaderHeatmap().getMatrixView().getVisibleRows().length;
             int minLabelLenght = header.getLargestLabelLength() * elements;
-            if (header.isLabelVisible()) {
+            if (header.isLabelVisible())
+            {
                 if (HeatmapDataHeatmapHeader.LabelPositionEnum.inside == header.getLabelPosition())
+                {
                     header.setSize(minLabelLenght + 5 * elements);
+                }
                 else
+                {
                     header.setSize(minLabelLenght + 14 * elements);
+                }
 
-            } else 
+            }
+            else
+            {
                 header.setSize(14 * elements);
+            }
         }
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage) {
+    public void pageLeft(IWizardPage currentPage)
+    {
         super.pageLeft(currentPage);
 
         if (currentPage != dataSourceAggregationPage || editionMode)
+        {
             return;
+        }
 
     }
 
 
-
-    public HeatmapDataHeatmapHeader getHeader() {
+    public HeatmapDataHeatmapHeader getHeader()
+    {
         return header;
     }
 
-    public void setEditionMode(boolean editionMode) {
+    public void setEditionMode(boolean editionMode)
+    {
         this.editionMode = editionMode;
     }
 
@@ -470,21 +562,28 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
             int idx,
             int valueIndex,
             IAggregator aggregator,
-            double[] valueBuffer) {
+            double[] valueBuffer)
+    {
 
-        for (int i = 0; i < selectedIndices.length; i++) {
+        for (int i = 0; i < selectedIndices.length; i++)
+        {
             Object valueObject;
             if (applyToRows)
+            {
                 valueObject = matrixView.getCellValue(idx, selectedIndices[i], valueIndex);
+            }
             else
+            {
                 valueObject = matrixView.getCellValue(selectedIndices[i], idx, valueIndex);
+            }
             valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
         }
 
         return aggregator.aggregate(valueBuffer);
     }
 
-    public void setDataSource (DataSourceEnum dataSource) {
+    public void setDataSource(DataSourceEnum dataSource)
+    {
         this.dataSource = dataSource;
     }
 

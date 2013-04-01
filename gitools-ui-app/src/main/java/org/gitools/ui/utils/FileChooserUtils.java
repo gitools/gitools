@@ -1,233 +1,292 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.utils;
-
-import java.awt.Dimension;
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
-public class FileChooserUtils {
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.io.File;
 
-	public static final int MODE_SAVE = 1;
-	public static final int MODE_OPEN = 2;
+public class FileChooserUtils
+{
 
-	public final static String jpeg = "jpeg";
+    public static final int MODE_SAVE = 1;
+    public static final int MODE_OPEN = 2;
+
+    public final static String jpeg = "jpeg";
     public final static String jpg = "jpg";
     public final static String gif = "gif";
     public final static String tiff = "tiff";
     public final static String tif = "tif";
     public final static String png = "png";
-	public final static String pdf = "pdf";
+    public final static String pdf = "pdf";
 
-	public static class FileAndFilter {
-		private File file;
-		private FileFilter filter;
+    public static class FileAndFilter
+    {
+        private File file;
+        private FileFilter filter;
 
-		public FileAndFilter(File file, FileFilter filter) {
-			this.file = file;
-			this.filter = filter;
-		}
+        public FileAndFilter(File file, FileFilter filter)
+        {
+            this.file = file;
+            this.filter = filter;
+        }
 
-		public File getFile() {
-			return file;
-		}
+        public File getFile()
+        {
+            return file;
+        }
 
-		public FileFilter getFilter() {
-			return filter;
-		}
-	}
+        public FileFilter getFilter()
+        {
+            return filter;
+        }
+    }
 
-	private static FileFilter imageFileFilter = new FileFilter() {
-		@Override
-		public boolean accept(File f) {
-			if (f.isDirectory())
-				return true;
+    private static FileFilter imageFileFilter = new FileFilter()
+    {
+        @Override
+        public boolean accept(File f)
+        {
+            if (f.isDirectory())
+            {
+                return true;
+            }
 
-			String extension = getExtension(f);
-			if (extension != null)
-				return isImageExtension(extension);
+            String extension = getExtension(f);
+            if (extension != null)
+            {
+                return isImageExtension(extension);
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		@Override
-		public String getDescription() {
-			return "Image files (*.png, *.jpg, *.jpeg, *.gif)";
-		}
-	};
+        @Override
+        public String getDescription()
+        {
+            return "Image files (*.png, *.jpg, *.jpeg, *.gif)";
+        }
+    };
 
-	private static FileFilter pdfFileFilter = new FileFilter() {
-		@Override
-		public boolean accept(File f) {
-			if (f.isDirectory())
-				return true;
+    private static FileFilter pdfFileFilter = new FileFilter()
+    {
+        @Override
+        public boolean accept(File f)
+        {
+            if (f.isDirectory())
+            {
+                return true;
+            }
 
-			String extension = getExtension(f);
-			if (extension != null) {
-				if (extension.equals(pdf))
-					return true;
-				else
-					return false;
-			}
+            String extension = getExtension(f);
+            if (extension != null)
+            {
+                if (extension.equals(pdf))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		@Override
-		public String getDescription() {
-			return "Image files (*.pdf)";
-		}
-	};
+        @Override
+        public String getDescription()
+        {
+            return "Image files (*.pdf)";
+        }
+    };
 
-	public static File selectFile(String title, int mode) {
-		return selectFile(title, Settings.getDefault().getLastPath(), mode);
-	}
+    public static File selectFile(String title, int mode)
+    {
+        return selectFile(title, Settings.getDefault().getLastPath(), mode);
+    }
 
-	public static File selectFile(String title, String currentPath, int mode) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
+    public static File selectFile(String title, String currentPath, int mode)
+    {
+        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
 
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fileChooser.setPreferredSize(new Dimension(640, 480));
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
 
-		int retval = JFileChooser.CANCEL_OPTION;
+        int retval = JFileChooser.CANCEL_OPTION;
 
-		if (mode == FileChooserUtils.MODE_SAVE)
-			retval = fileChooser.showSaveDialog(AppFrame.instance());
-		else if (mode == FileChooserUtils.MODE_OPEN)
-			retval = fileChooser.showOpenDialog(AppFrame.instance());
-		
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
-		}
+        if (mode == FileChooserUtils.MODE_SAVE)
+        {
+            retval = fileChooser.showSaveDialog(AppFrame.get());
+        }
+        else if (mode == FileChooserUtils.MODE_OPEN)
+        {
+            retval = fileChooser.showOpenDialog(AppFrame.get());
+        }
 
-		return null;
-	}
+        if (retval == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            return file;
+        }
 
-	public static FileAndFilter selectFile(String title, int mode, FileFilter[] filters) {
-		return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
-	}
+        return null;
+    }
 
-	/** Select a file taking into account a set of file filters.
-	 *
-	 * @param title
-	 * @param currentPath
-	 * @param mode
-	 * @param filters
-	 * @return {file, filter}
-	 */
-	public static FileAndFilter selectFile(String title, String currentPath, int mode, FileFilter[] filters) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
+    public static FileAndFilter selectFile(String title, int mode, FileFilter[] filters)
+    {
+        return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
+    }
 
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fileChooser.setPreferredSize(new Dimension(640, 480));
+    /**
+     * Select a file taking into account a set of file filters.
+     *
+     * @param title
+     * @param currentPath
+     * @param mode
+     * @param filters
+     * @return {file, filter}
+     */
+    public static FileAndFilter selectFile(String title, String currentPath, int mode, FileFilter[] filters)
+    {
+        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
 
-		if (filters != null) {
-			fileChooser.setAcceptAllFileFilterUsed(false);
-			for (FileFilter filter : filters)
-				fileChooser.addChoosableFileFilter(filter);
-			
-			if (filters.length > 0)
-				fileChooser.setFileFilter(filters[0]);
-		}
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
 
-		int retval = JFileChooser.CANCEL_OPTION;
+        if (filters != null)
+        {
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            for (FileFilter filter : filters)
+                fileChooser.addChoosableFileFilter(filter);
 
-		if (mode == FileChooserUtils.MODE_SAVE)
-			retval = fileChooser.showSaveDialog(AppFrame.instance());
-		else if (mode == FileChooserUtils.MODE_OPEN)
-			retval = fileChooser.showOpenDialog(AppFrame.instance());
+            if (filters.length > 0)
+            {
+                fileChooser.setFileFilter(filters[0]);
+            }
+        }
 
-		if (retval == JFileChooser.APPROVE_OPTION)
-			return new FileAndFilter(
-					fileChooser.getSelectedFile(),
-					fileChooser.getFileFilter());
+        int retval = JFileChooser.CANCEL_OPTION;
 
-		return null;
-	}
+        if (mode == FileChooserUtils.MODE_SAVE)
+        {
+            retval = fileChooser.showSaveDialog(AppFrame.get());
+        }
+        else if (mode == FileChooserUtils.MODE_OPEN)
+        {
+            retval = fileChooser.showOpenDialog(AppFrame.get());
+        }
 
-	public static File selectPath(String title) {
-		return selectPath(title, Settings.getDefault().getLastPath());
-	}
+        if (retval == JFileChooser.APPROVE_OPTION)
+        {
+            return new FileAndFilter(
+                    fileChooser.getSelectedFile(),
+                    fileChooser.getFileFilter());
+        }
 
-	public static File selectPath(String title, String currentPath) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
+        return null;
+    }
 
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fileChooser.setPreferredSize(new Dimension(640, 480));
+    public static File selectPath(String title)
+    {
+        return selectPath(title, Settings.getDefault().getLastPath());
+    }
 
-		int retval = fileChooser.showOpenDialog(AppFrame.instance());
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
-		}
+    public static File selectPath(String title, String currentPath)
+    {
+        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
 
-		return null;
-	}
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
 
-	public static File selectImageFile(String title, String currentPath, int mode) {
-		JFileChooser fileChooser = new JFileChooser(currentPath);
+        int retval = fileChooser.showOpenDialog(AppFrame.get());
+        if (retval == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            return file;
+        }
 
-		fileChooser.setDialogTitle(title);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fileChooser.addChoosableFileFilter(imageFileFilter);
-		fileChooser.setPreferredSize(new Dimension(640, 480));
+        return null;
+    }
 
-		int retval = JFileChooser.CANCEL_OPTION;
+    public static File selectImageFile(String title, String currentPath, int mode)
+    {
+        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
 
-		if (mode == FileChooserUtils.MODE_SAVE)
-			retval = fileChooser.showSaveDialog(AppFrame.instance());
-		else if (mode == FileChooserUtils.MODE_OPEN)
-			retval = fileChooser.showOpenDialog(AppFrame.instance());
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.addChoosableFileFilter(imageFileFilter);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
 
-		if (retval == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
-		}
+        int retval = JFileChooser.CANCEL_OPTION;
 
-		return null;
-	}
+        if (mode == FileChooserUtils.MODE_SAVE)
+        {
+            retval = fileChooser.showSaveDialog(AppFrame.get());
+        }
+        else if (mode == FileChooserUtils.MODE_OPEN)
+        {
+            retval = fileChooser.showOpenDialog(AppFrame.get());
+        }
 
-	public static String getExtension(File file) {
-		return getExtension(file.getName());
-	}
+        if (retval == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            return file;
+        }
 
-	public static String getExtension(String fileName) {
-		String ext = null;
-		int i = fileName.lastIndexOf('.');
+        return null;
+    }
 
-		if (i > 0 && i < fileName.length() - 1)
-			ext = fileName.substring(i + 1).toLowerCase();
-		return ext;
-	}
+    public static String getExtension(File file)
+    {
+        return getExtension(file.getName());
+    }
 
-	public static boolean isImageExtension(String extension) {
-		return extension.equals(tif)
-				|| extension.equals(gif)
-				|| extension.equals(jpeg)
-				|| extension.equals(jpg)
-				|| extension.equals(png);
-	}
+    public static String getExtension(String fileName)
+    {
+        String ext = null;
+        int i = fileName.lastIndexOf('.');
+
+        if (i > 0 && i < fileName.length() - 1)
+        {
+            ext = fileName.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
+
+    public static boolean isImageExtension(String extension)
+    {
+        return extension.equals(tif)
+                || extension.equals(gif)
+                || extension.equals(jpeg)
+                || extension.equals(jpg)
+                || extension.equals(png);
+    }
 }

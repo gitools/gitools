@@ -1,74 +1,88 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.correlation;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
 
-public class CorrelationResult {
+public class CorrelationResult
+{
 
-	protected int n;
-	protected double score;
-	protected double pvalue;
-	protected double standardError;
+    protected int n;
+    protected double score;
+    protected double pvalue;
+    protected double standardError;
 
-	public CorrelationResult() {
-	}
+    public CorrelationResult()
+    {
+    }
 
-	public CorrelationResult(int n, double score, double pvalue, double standardError) {
-		this.score = score;
-		this.pvalue = pvalue;
-		this.standardError = standardError;
-	}
+    public CorrelationResult(int n, double score, double pvalue, double standardError)
+    {
+        this.score = score;
+        this.pvalue = pvalue;
+        this.standardError = standardError;
+    }
 
-	@AttributeDef(id = "n", name = "Observations", description = "Number of observations")
-	public int getN() {
-		return n;
-	}
+    @AttributeDef(id = "n", name = "Observations", description = "Number of observations")
+    public int getN()
+    {
+        return n;
+    }
 
-	public void setN(int n) {
-		this.n = n;
-	}
+    public void setN(int n)
+    {
+        this.n = n;
+    }
 
-	@AttributeDef(id = "score", name = "Correlation", description = "Correlation score")
-	public double getScore() {
-		return score;
-	}
+    @AttributeDef(id = "score", name = "Correlation", description = "Correlation score")
+    public double getScore()
+    {
+        return score;
+    }
 
-	public void setScore(double score) {
-		this.score = score;
-	}
+    public void setScore(double score)
+    {
+        this.score = score;
+    }
 
 	/*@AttributeDef(id = "p-value", name = "P-Value", description = "P-Value for two-tail null hipothesis")
-	public double getPvalue() {
+    public double getPvalue() {
 		return pvalue;
 	}*/
 
-	public void setPvalue(double pvalue) {
-		this.pvalue = pvalue;
-	}
+    public void setPvalue(double pvalue)
+    {
+        this.pvalue = pvalue;
+    }
 
-	@AttributeDef(id = "se", name = "Standard Error", description = "Standard Error")
-	public double getStandardError() {
-		return standardError;
-	}
+    @AttributeDef(id = "se", name = "Standard Error", description = "Standard Error")
+    public double getStandardError()
+    {
+        return standardError;
+    }
 
-	public void setStandardError(double standardError) {
-		this.standardError = standardError;
-	}
+    public void setStandardError(double standardError)
+    {
+        this.standardError = standardError;
+    }
 }

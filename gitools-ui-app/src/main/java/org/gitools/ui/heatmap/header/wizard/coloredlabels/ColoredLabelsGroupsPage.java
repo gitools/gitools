@@ -1,71 +1,79 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * ColoredClustersPage.java
- *
- * Created on 03-mar-2011, 18:51:34
- */
-
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import java.awt.*;
-import java.awt.event.*;
+import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
+public class ColoredLabelsGroupsPage extends AbstractWizardPage
+{
 
-public class ColoredLabelsGroupsPage extends AbstractWizardPage {
-
-    class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
+    class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor
+    {
 
         private JButton delegate = new JButton();
 
         Color savedColor;
 
-        public ColorChooserEditor() {
+        public ColorChooserEditor()
+        {
             delegate.setFocusPainted(false);
             delegate.setContentAreaFilled(false);
             delegate.setFocusable(false);
             delegate.setOpaque(true);
 
 
-            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+            {
                 @Override
-                public void valueChanged(ListSelectionEvent e) {
+                public void valueChanged(ListSelectionEvent e)
+                {
                     updateButtons();
                 }
             });
 
-            MouseInputListener mouseInputListener = new MouseInputListener() {
+            MouseInputListener mouseInputListener = new MouseInputListener()
+            {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mouseClicked(MouseEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mousePressed(MouseEvent e) {
+                public void mousePressed(MouseEvent e)
+                {
                     Component c = e.getComponent();
-                    Point p = new Point(c.getX(),c.getY());
+                    Point p = new Point(c.getX(), c.getY());
                     int clickedRowIndex = table.rowAtPoint(p);
                     int clickedColIndex = table.columnAtPoint(p);
                     Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
@@ -73,61 +81,74 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                 }
 
                 @Override
-                public void mouseReleased(MouseEvent e) {
+                public void mouseReleased(MouseEvent e)
+                {
 
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e) {
+                public void mouseEntered(MouseEvent e)
+                {
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
+                public void mouseExited(MouseEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mouseDragged(MouseEvent e) {
+                public void mouseDragged(MouseEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mouseMoved(MouseEvent e) {
+                public void mouseMoved(MouseEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
             };
 
-            KeyListener keyListener = new KeyListener() {
+            KeyListener keyListener = new KeyListener()
+            {
                 @Override
-                public void keyTyped(KeyEvent e) {
+                public void keyTyped(KeyEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void keyPressed(KeyEvent e) {
+                public void keyPressed(KeyEvent e)
+                {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {
-                   if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                       int row = table.getSelectedRow();
-                       int col = table.getSelectedColumn();
-                       Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
-                       ColorChooserEditor.this.changeColor(color, row, col);
-                   }
+                public void keyReleased(KeyEvent e)
+                {
+                    if (e.getKeyCode() == KeyEvent.VK_SPACE)
+                    {
+                        int row = table.getSelectedRow();
+                        int col = table.getSelectedColumn();
+                        Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
+                        ColorChooserEditor.this.changeColor(color, row, col);
+                    }
                 }
-            };        
+            };
             delegate.addMouseListener(mouseInputListener);
             delegate.addKeyListener(keyListener);
         }
 
-        public Object getCellEditorValue() {
+        public Object getCellEditorValue()
+        {
             return savedColor;
         }
 
-        private void changeColor(Color color, int row, int col) {
-            if (color != null) {
+        private void changeColor(Color color, int row, int col)
+        {
+            if (color != null)
+            {
                 savedColor = color;
                 delegate.setBackground(color);
                 table.getModel().setValueAt(color, row, col);
@@ -136,19 +157,23 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         }
 
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
-                                                     int row, int column) {
+                                                     int row, int column)
+        {
             changeColor((Color) value, row, column);
             return delegate;
         }
     }
 
-    private static class ColorCellRenderer extends DefaultTableCellRenderer {
-        public ColorCellRenderer() {
+    private static class ColorCellRenderer extends DefaultTableCellRenderer
+    {
+        public ColorCellRenderer()
+        {
             super();
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+        {
             Color c = (Color) value;
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             component.setBackground(c);
@@ -158,20 +183,23 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     }
 
 
-	private ColoredLabel[] coloredLabels;
+    private ColoredLabel[] coloredLabels;
 
-    public ColoredLabelsGroupsPage(ColoredLabel[] coloredLabels) {
+    public ColoredLabelsGroupsPage(ColoredLabel[] coloredLabels)
+    {
 
         this.coloredLabels = coloredLabels;
-		
+
         initComponents();
 
         ColoredLabelsTableModel tm = new ColoredLabelsTableModel(coloredLabels);
         table.setModel(tm);
 
-        tm.addTableModelListener(new TableModelListener() {
+        tm.addTableModelListener(new TableModelListener()
+        {
             @Override
-            public void tableChanged(TableModelEvent e) {
+            public void tableChanged(TableModelEvent e)
+            {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
@@ -181,64 +209,74 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         columnModel.getColumn(1).setCellEditor(new DefaultCellEditor(new JTextField()));
         columnModel.getColumn(2).setCellEditor(new ColorChooserEditor());
         columnModel.getColumn(2).setCellRenderer(new ColorCellRenderer());
-                
+
         setTitle("Labels configuration");
         updateButtons();
     }
 
-    public void setColoredLabels(ColoredLabel[] coloredLabels) {
+    public void setColoredLabels(ColoredLabel[] coloredLabels)
+    {
         this.coloredLabels = coloredLabels;
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.addAllLabels(coloredLabels);
     }
-    
-    public ColoredLabel[] getColoredLabels() {
+
+    public ColoredLabel[] getColoredLabels()
+    {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         ColoredLabel[] coloredLabels = new ColoredLabel[model.getList().size()];
         model.getList().toArray(coloredLabels);
         return coloredLabels;
     }
-    
-    public void setValueEditable(boolean editable) {
+
+    public void setValueEditable(boolean editable)
+    {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.setValueEditable(editable);
     }
 
-    public boolean isValueEditable() {
+    public boolean isValueEditable()
+    {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         return model.isValueEditable();
     }
 
-    public boolean isValueMustBeNumeric() {
+    public boolean isValueMustBeNumeric()
+    {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         return model.isValueMustBeNumeric();
     }
 
-    public void setValueMustBeNumeric(boolean valueMustBeNumeric) {
+    public void setValueMustBeNumeric(boolean valueMustBeNumeric)
+    {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.setValueMustBeNumeric(valueMustBeNumeric);
     }
 
     @Override
-    public void updateControls() {
-            super.updateControls();
+    public void updateControls()
+    {
+        super.updateControls();
     }
 
-    private void updateButtons() {
+    private void updateButtons()
+    {
         int rowNb = table.getRowCount();
         removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
         setComplete(rowNb > 0);
     }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -255,16 +293,20 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         jScrollPane2.setViewportView(table);
 
         tableAddBtn.setText("Add");
-        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 tableAddBtnActionPerformed(evt);
             }
         });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
-        removeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeBtnActionPerformed(evt);
             }
         });
@@ -272,49 +314,51 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(removeBtn))))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                                                .addGap(3, 3, 3)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(removeBtn))))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeBtn)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
-                        .addGap(58, 58, 58))))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(tableAddBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(removeBtn)
+                                                .addContainerGap())
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                                                .addGap(58, 58, 58))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_tableAddBtnActionPerformed
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
-        model.addLabel(new ColoredLabel("0.0",Color.GRAY));
+        model.addLabel(new ColoredLabel("0.0", Color.GRAY));
 
         updateButtons();
-}//GEN-LAST:event_tableAddBtnActionPerformed
+    }//GEN-LAST:event_tableAddBtnActionPerformed
 
-    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
-       ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
-       model.removeLabel(table.getSelectedRows());
-       updateButtons();
-}//GEN-LAST:event_removeBtnActionPerformed
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_removeBtnActionPerformed
+        ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
+        model.removeLabel(table.getSelectedRows());
+        updateButtons();
+    }//GEN-LAST:event_removeBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

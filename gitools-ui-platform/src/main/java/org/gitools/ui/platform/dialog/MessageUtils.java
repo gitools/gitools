@@ -1,17 +1,23 @@
 /*
- * Copyright (c) 2007-2012 The Broad Institute, Inc.
- * SOFTWARE COPYRIGHT NOTICE
- * This software and its documentation are the copyright of the Broad Institute, Inc. All rights are reserved.
- *
- * This software is supplied without any warranty or guaranteed support whatsoever. The Broad Institute is not responsible for its use, misuse, or functionality.
- *
- * This software is licensed under the terms of the GNU Lesser General Public License (LGPL),
- * Version 2.1 which is available at http://www.opensource.org/licenses/lgpl-2.1.php.
- */
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.platform.dialog;
 
@@ -22,12 +28,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
-public class MessageUtils {
+public class MessageUtils
+{
 
     private static Logger log = Logger.getLogger(MessageUtils.class);
 
     // Somewhat silly class, needed to pass values between threads
-    static class ValueHolder {
+    static class ValueHolder
+    {
         Object value;
     }
 
@@ -37,16 +45,19 @@ public class MessageUtils {
      * @param e
      * @param message
      */
-    public static void showErrorMessage(final Frame parent, String message, Exception e) {
+    public static void showErrorMessage(final Frame parent, String message, Exception e)
+    {
         log.error(message, e);
         showMessage(parent, Level.ERROR, message);
     }
 
-    public static void showMessage(final Frame parent, String message) {
+    public static void showMessage(final Frame parent, String message)
+    {
         showMessage(parent, Level.INFO, message);
     }
 
-    public static synchronized void showMessage(final Frame parent, Level level, String message) {
+    public static synchronized void showMessage(final Frame parent, Level level, String message)
+    {
 
         log.log(level, message);
         // Always use HTML for message displays, but first remove any embedded <html> tags.
@@ -67,26 +78,35 @@ public class MessageUtils {
      * @param message
      * @return
      */
-    public static synchronized boolean confirm(final Component component, final String message) {
+    public static synchronized boolean confirm(final Component component, final String message)
+    {
 
 
-        if (SwingUtilities.isEventDispatchThread()) {
+        if (SwingUtilities.isEventDispatchThread())
+        {
             int opt = JOptionPane.showConfirmDialog(component, message, "Confirm", JOptionPane.YES_NO_OPTION);
             return opt == JOptionPane.YES_OPTION;
-        } else {
+        }
+        else
+        {
             final ValueHolder returnValue = new ValueHolder();
-            Runnable runnable = new Runnable() {
-                public void run() {
+            Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
                     int opt = JOptionPane.showConfirmDialog(component, message, "Confirm", JOptionPane.YES_NO_OPTION);
                     returnValue.value = (opt == JOptionPane.YES_OPTION);
                 }
             };
-            try {
+            try
+            {
                 SwingUtilities.invokeAndWait(runnable);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
+            } catch (InvocationTargetException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e.getCause());
             }
@@ -96,25 +116,34 @@ public class MessageUtils {
         }
     }
 
-    public static String showInputDialog(final Frame parent, final String message, final String defaultValue) {
+    public static String showInputDialog(final Frame parent, final String message, final String defaultValue)
+    {
 
-        if (SwingUtilities.isEventDispatchThread()) {
+        if (SwingUtilities.isEventDispatchThread())
+        {
             String val = JOptionPane.showInputDialog(parent, message, defaultValue);
             return val;
-        } else {
+        }
+        else
+        {
             final ValueHolder returnValue = new ValueHolder();
-            Runnable runnable = new Runnable() {
-                public void run() {
+            Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
                     String val = JOptionPane.showInputDialog(parent, message, defaultValue);
                     returnValue.value = val;
                 }
             };
-            try {
+            try
+            {
                 SwingUtilities.invokeAndWait(runnable);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
+            } catch (InvocationTargetException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e.getCause());
             }
@@ -123,26 +152,35 @@ public class MessageUtils {
         }
     }
 
-    public static String showInputDialog(final Frame parent, final String message) {
+    public static String showInputDialog(final Frame parent, final String message)
+    {
 
 
-        if (SwingUtilities.isEventDispatchThread()) {
+        if (SwingUtilities.isEventDispatchThread())
+        {
             String val = JOptionPane.showInputDialog(parent, message);
             return val;
-        } else {
+        }
+        else
+        {
             final ValueHolder returnValue = new ValueHolder();
-            Runnable runnable = new Runnable() {
-                public void run() {
+            Runnable runnable = new Runnable()
+            {
+                public void run()
+                {
                     String val = JOptionPane.showInputDialog(parent, message);
                     returnValue.value = val;
                 }
             };
-            try {
+            try
+            {
                 SwingUtilities.invokeAndWait(runnable);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
+            } catch (InvocationTargetException e)
+            {
                 log.error("Error in showMessage", e);
                 throw new RuntimeException(e.getCause());
             }

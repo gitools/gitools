@@ -1,33 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.editor;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.net.URL;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import org.apache.velocity.VelocityContext;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixView;
@@ -47,230 +40,306 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractTablesPanel<A> extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.net.URL;
 
-	private static Logger log = LoggerFactory.getLogger(AbstractTablesPanel.class);
+public abstract class AbstractTablesPanel<A> extends JPanel
+{
 
-	protected static final boolean DEFAULT_AUTOMATIC_UPDATE = false;
+    private static Logger log = LoggerFactory.getLogger(AbstractTablesPanel.class);
 
-	protected static final int DATA_VIEW_MODE = 1;
-	protected static final int RESULTS_VIEW_MODE = 2;
+    protected static final boolean DEFAULT_AUTOMATIC_UPDATE = false;
 
-	private static abstract class DataAction extends BaseAction {
-		public DataAction() {
-			super("Data", true, true, "template");
-		}
-	}
+    protected static final int DATA_VIEW_MODE = 1;
+    protected static final int RESULTS_VIEW_MODE = 2;
 
-	private static abstract class ResultsAction extends BaseAction {
-		public ResultsAction() {
-			super("Results", true, false, "template");
-		}
-	}
+    private static abstract class DataAction extends BaseAction
+    {
+        public DataAction()
+        {
+            super("Data", true, true, "template");
+        }
+    }
 
-	private static abstract class ExportHtmlAction extends BaseAction {
-		public ExportHtmlAction() {
-			super("Export html...");
+    private static abstract class ResultsAction extends BaseAction
+    {
+        public ResultsAction()
+        {
+            super("Results", true, false, "template");
+        }
+    }
 
-			setDesc("Export html");
-			setLargeIconFromResource(IconNames.save24);
-			setSmallIconFromResource(IconNames.save16);
-		}
-	}
+    private static abstract class ExportHtmlAction extends BaseAction
+    {
+        public ExportHtmlAction()
+        {
+            super("Export html...");
 
-	private static abstract class AutomaticUpdateAction extends BaseAction {
-		public AutomaticUpdateAction() {
-			super("Automatic update", true, DEFAULT_AUTOMATIC_UPDATE, null);
+            setDesc("Export html");
+            setLargeIconFromResource(IconNames.save24);
+            setSmallIconFromResource(IconNames.save16);
+        }
+    }
 
-			setDesc("The tables are automatically updated when heatmap cursor changes");
-			//setLargeIconFromResource(IconNames.save24);
-			//setSmallIconFromResource(IconNames.save16);
-		}
-	}
+    private static abstract class AutomaticUpdateAction extends BaseAction
+    {
+        public AutomaticUpdateAction()
+        {
+            super("Automatic update", true, DEFAULT_AUTOMATIC_UPDATE, null);
 
-	private static abstract class ForceUpdateAction extends BaseAction {
-		public ForceUpdateAction() {
-			super("Update");
+            setDesc("The tables are automatically updated when heatmap cursor changes");
+            //setLargeIconFromResource(IconNames.save24);
+            //setSmallIconFromResource(IconNames.save16);
+        }
+    }
 
-			setDesc("Update tables");
-			//setLargeIconFromResource(IconNames.save24);
-			//setSmallIconFromResource(IconNames.save16);
-		}
-	}
+    private static abstract class ForceUpdateAction extends BaseAction
+    {
+        public ForceUpdateAction()
+        {
+            super("Update");
 
-	protected A analysis;
+            setDesc("Update tables");
+            //setLargeIconFromResource(IconNames.save24);
+            //setSmallIconFromResource(IconNames.save16);
+        }
+    }
 
-	protected Heatmap heatmap;
+    protected A analysis;
 
-	protected int viewMode;
+    protected Heatmap heatmap;
 
-	protected boolean automaticUpdate;
-	protected boolean forceUpdate;
+    protected int viewMode;
 
-	private TemplatePanel templatePanel;
+    protected boolean automaticUpdate;
+    protected boolean forceUpdate;
 
-	public AbstractTablesPanel(A analysis, Heatmap heatmap) {
-		this.analysis = analysis;
-		this.heatmap = heatmap;
+    private TemplatePanel templatePanel;
 
-		this.viewMode = DATA_VIEW_MODE;
+    public AbstractTablesPanel(A analysis, Heatmap heatmap)
+    {
+        this.analysis = analysis;
+        this.heatmap = heatmap;
 
-		this.automaticUpdate = DEFAULT_AUTOMATIC_UPDATE;
-		this.forceUpdate = false;
+        this.viewMode = DATA_VIEW_MODE;
 
-		createComponents();
+        this.automaticUpdate = DEFAULT_AUTOMATIC_UPDATE;
+        this.forceUpdate = false;
 
-		heatmap.getMatrixView().addPropertyChangeListener(new PropertyChangeListener() {
-			@Override public void propertyChange(PropertyChangeEvent evt) {
-				AbstractTablesPanel.this.propertyChange(evt); } });
-	}
+        createComponents();
 
-	private void createComponents() {
-		JToolBar toolBar = createToolBar();
+        heatmap.getMatrixView().addPropertyChangeListener(new PropertyChangeListener()
+        {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                AbstractTablesPanel.this.propertyChange(evt);
+            }
+        });
+    }
 
-		templatePanel = new TemplatePanel();
+    private void createComponents()
+    {
+        JToolBar toolBar = createToolBar();
 
-		setLayout(new BorderLayout());
-		add(toolBar, BorderLayout.NORTH);
-		add(templatePanel, BorderLayout.CENTER);
-	}
+        templatePanel = new TemplatePanel();
 
-	private JToolBar createToolBar() {
-		return ActionSetUtils.createToolBar(new ActionSet(new BaseAction[] {
-			new DataAction() {
-				@Override public void actionPerformed(ActionEvent e) {
-					setViewMode(DATA_VIEW_MODE); } },
-			new ResultsAction() {
-				@Override public void actionPerformed(ActionEvent e) {
-					setViewMode(RESULTS_VIEW_MODE); } },
-			new ExportHtmlAction() {
-				@Override public void actionPerformed(ActionEvent e) {
-					saveHtml(); } },
-			new AutomaticUpdateAction() {
-				@Override public void actionPerformed(ActionEvent e) {
-					setAutomaticUpdate(!isAutomaticUpdate());
-					updateContents(); } },
-			new ForceUpdateAction() {
-				@Override public void actionPerformed(ActionEvent e) {
-					forceUpdate(); } }
-		}));
-	}
+        setLayout(new BorderLayout());
+        add(toolBar, BorderLayout.NORTH);
+        add(templatePanel, BorderLayout.CENTER);
+    }
 
-	public void propertyChange(PropertyChangeEvent evt) {
-		String name = evt.getPropertyName();
-		if (evt.getSource() == heatmap.getMatrixView()) {
-			if (MatrixView.SELECTED_LEAD_CHANGED.equals(name)) {
-				updateContents();
-			}
-		}
-	}
+    private JToolBar createToolBar()
+    {
+        return ActionSetUtils.createToolBar(new ActionSet(new BaseAction[]{
+                new DataAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        setViewMode(DATA_VIEW_MODE);
+                    }
+                },
+                new ResultsAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        setViewMode(RESULTS_VIEW_MODE);
+                    }
+                },
+                new ExportHtmlAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        saveHtml();
+                    }
+                },
+                new AutomaticUpdateAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        setAutomaticUpdate(!isAutomaticUpdate());
+                        updateContents();
+                    }
+                },
+                new ForceUpdateAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        forceUpdate();
+                    }
+                }
+        }));
+    }
 
-	private void updateContents() {
-		if (!automaticUpdate && !forceUpdate)
-			return;
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        String name = evt.getPropertyName();
+        if (evt.getSource() == heatmap.getMatrixView())
+        {
+            if (MatrixView.SELECTED_LEAD_CHANGED.equals(name))
+            {
+                updateContents();
+            }
+        }
+    }
 
-		forceUpdate = false;
-		
-		VelocityContext context = createModel();
-		context.put("exporting", false);
-		String template = context.get("__template__").toString();
+    private void updateContents()
+    {
+        if (!automaticUpdate && !forceUpdate)
+        {
+            return;
+        }
 
-		try {
-			URL url = getClass().getResource(template);
-			templatePanel.setTemplateFromResource(template, url);
-			templatePanel.render(context);
-		}
-		catch (Exception ex) {
-			LogUtils.logException(ex, log);
-		}
-	}
+        forceUpdate = false;
 
-	protected abstract VelocityContext createModel();
+        VelocityContext context = createModel();
+        context.put("exporting", false);
+        String template = context.get("__template__").toString();
 
-	public int getViewMode() {
-		return viewMode;
-	}
+        try
+        {
+            URL url = getClass().getResource(template);
+            templatePanel.setTemplateFromResource(template, url);
+            templatePanel.render(context);
+        } catch (Exception ex)
+        {
+            LogUtils.logException(ex, log);
+        }
+    }
 
-	public void setViewMode(int viewMode) {
-		this.viewMode = viewMode;
-		updateContents();
-	}
+    protected abstract VelocityContext createModel();
 
-	public boolean isAutomaticUpdate() {
-		return automaticUpdate;
-	}
+    public int getViewMode()
+    {
+        return viewMode;
+    }
 
-	public void setAutomaticUpdate(boolean automaticUpdate) {
-		this.automaticUpdate = automaticUpdate;
-	}
+    public void setViewMode(int viewMode)
+    {
+        this.viewMode = viewMode;
+        updateContents();
+    }
 
-	public void forceUpdate() {
-		this.forceUpdate = true;
-		updateContents();
-	}
-	
-	protected void saveHtml() {
-		AbstractEditor editor = AppFrame.instance().getEditorsPanel()
-				.getSelectedEditor();
+    public boolean isAutomaticUpdate()
+    {
+        return automaticUpdate;
+    }
 
-		if (editor == null)
-			return;
+    public void setAutomaticUpdate(boolean automaticUpdate)
+    {
+        this.automaticUpdate = automaticUpdate;
+    }
 
-		SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-				"Export html ...",
-				PersistenceUtils.getFileName(editor.getName()),
-				Settings.getDefault().getLastExportPath(),
-				new FileFormat[] {
-					FileFormats.HTML
-				});
+    public void forceUpdate()
+    {
+        this.forceUpdate = true;
+        updateContents();
+    }
 
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), saveWiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+    protected void saveHtml()
+    {
+        AbstractEditor editor = AppFrame.get().getEditorsPanel()
+                .getSelectedEditor();
 
-		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+        if (editor == null)
+        {
+            return;
+        }
 
-		final File file = saveWiz.getPathAsFile();
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple(
+                "Export html ...",
+                PersistenceUtils.getFileName(editor.getName()),
+                Settings.getDefault().getLastExportPath(),
+                new FileFormat[]{
+                        FileFormats.HTML
+                });
 
-		final String formatExtension = saveWiz.getFormat().getExtension();
+        WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
+        dlg.setVisible(true);
+        if (dlg.isCancelled())
+        {
+            return;
+        }
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Exporting html ...", 1);
-					monitor.info("File: " + file.getName());
+        Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-					VelocityContext context = createModel();
-					context.put("exporting", true);
-					String template = context.get("__template__").toString();
+        final File file = saveWiz.getPathAsFile();
 
-					try {
-						URL url = getClass().getResource(template);
-						templatePanel.setTemplateFromResource(template, url);
-						templatePanel.render(context);
-					}
-					catch (Exception ex) {
-						LogUtils.logException(ex, log);
-					}
+        final String formatExtension = saveWiz.getFormat().getExtension();
 
-					Writer writer = new FileWriter(file);
-					templatePanel.merge(context, writer);
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    monitor.begin("Exporting html ...", 1);
+                    monitor.info("File: " + file.getName());
 
-					writer.close();
+                    VelocityContext context = createModel();
+                    context.put("exporting", true);
+                    String template = context.get("__template__").toString();
 
-					monitor.end();
-				}
-				catch (Exception ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+                    try
+                    {
+                        URL url = getClass().getResource(template);
+                        templatePanel.setTemplateFromResource(template, url);
+                        templatePanel.render(context);
+                    } catch (Exception ex)
+                    {
+                        LogUtils.logException(ex, log);
+                    }
 
-		AppFrame.instance().setStatusText("Ok.");
-	}
+                    Writer writer = new FileWriter(file);
+                    templatePanel.merge(context, writer);
+
+                    writer.close();
+
+                    monitor.end();
+                } catch (Exception ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+
+        AppFrame.get().setStatusText("Ok.");
+    }
 }

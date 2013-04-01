@@ -1,92 +1,106 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.model;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlType;
-
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "title", "description", "attributes" })
-public class Artifact extends AbstractModel {
+@XmlType(propOrder = {"title", "description", "attributes"})
+public class Artifact extends AbstractModel
+{
 
-	private static final long serialVersionUID = 5752318457428475330L;
+    private static final long serialVersionUID = 5752318457428475330L;
 
-	public static final String TITLE_CHANGED = "titleChanged";
-	public static final String DESC_CHANGED = "descChanged";
-	public static final String ATTRIBUTES_CHANGED = "attributesChanged";
+    public static final String TITLE_CHANGED = "titleChanged";
+    public static final String DESC_CHANGED = "descChanged";
+    public static final String ATTRIBUTES_CHANGED = "attributesChanged";
 
-	/** short description **/
-	protected String title;
+    /**
+     * short description *
+     */
+    protected String title;
 
-	/** long description **/
-	protected String description;
+    /**
+     * long description *
+     */
+    protected String description;
 
-	/** Extra attributes **/
-	@XmlElementWrapper(name = "attributes")
-	@XmlElement(name = "attribute")
-	protected List<Attribute> attributes = new ArrayList<Attribute>(0);
+    /**
+     * Extra attributes *
+     */
+    @XmlElementWrapper(name = "attributes")
+    @XmlElement(name = "attribute")
+    protected List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
-	public Artifact() {
-	}
+    public Artifact()
+    {
+    }
 
-	public Artifact(Artifact artifact) {
-		this.title = artifact.getTitle();
-		this.description = artifact.getDescription();
-		this.attributes = (List<Attribute>) ((ArrayList<Attribute>) artifact.getAttributes()).clone();
-	}
+    public Artifact(Artifact artifact)
+    {
+        this.title = artifact.getTitle();
+        this.description = artifact.getDescription();
+        this.attributes = (List<Attribute>) ((ArrayList<Attribute>) artifact.getAttributes()).clone();
+    }
 
 	/* getters and setters */
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle()
+    {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		String oldValue = this.title;
-		this.title = title;
-		firePropertyChange(TITLE_CHANGED, oldValue, title);
-	}
+    public void setTitle(String title)
+    {
+        String oldValue = this.title;
+        this.title = title;
+        firePropertyChange(TITLE_CHANGED, oldValue, title);
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		String oldValue = this.description;
-		this.description = description;
-		firePropertyChange(DESC_CHANGED, oldValue, description);
-	}
+    public void setDescription(String description)
+    {
+        String oldValue = this.description;
+        this.description = description;
+        firePropertyChange(DESC_CHANGED, oldValue, description);
+    }
 
-	public List<Attribute> getAttributes() {
-		return attributes;
-	}
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
 
-	public void setAttributes(List<Attribute> attributes) {
-		List<Attribute> oldValue = this.attributes;
-		this.attributes = attributes;
-		firePropertyChange(ATTRIBUTES_CHANGED, oldValue, attributes);
-	}
+    public void setAttributes(List<Attribute> attributes)
+    {
+        List<Attribute> oldValue = this.attributes;
+        this.attributes = attributes;
+        firePropertyChange(ATTRIBUTES_CHANGED, oldValue, attributes);
+    }
 }

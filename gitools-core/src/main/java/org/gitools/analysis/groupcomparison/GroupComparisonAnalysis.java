@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.datafilters.BinaryCutoff;
@@ -41,213 +45,260 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class GroupComparisonAnalysis extends Analysis implements Serializable {
+public class GroupComparisonAnalysis extends Analysis implements Serializable
+{
 
 
     protected String sizeAttrName;
-	//protected int sizeAttrIndex;
+    //protected int sizeAttrIndex;
 
-	protected String pvalueAttrName;
-	//protected int pvalueAttrIndex;
+    protected String pvalueAttrName;
+    //protected int pvalueAttrIndex;
 
-	protected boolean transposeData;
-	
-	protected int attributeIndex;
-	//which attribute of the matrix should be taken as value
+    protected boolean transposeData;
 
-	public static String COLUMN_GROUPING_BY_VALUE = "Group by value";
-	public static String COLUMN_GROUPING_BY_LABEL = "Group by label";
+    protected int attributeIndex;
+    //which attribute of the matrix should be taken as value
 
-	protected String columnGrouping = null;
+    public static String COLUMN_GROUPING_BY_VALUE = "Group by value";
+    public static String COLUMN_GROUPING_BY_LABEL = "Group by label";
 
-	protected String dataFile = "";
+    protected String columnGrouping = null;
+
+    protected String dataFile = "";
 
     @XmlTransient
     protected AnnotationMatrix rowAnnotations;
 
     @XmlTransient
-	protected List<HeatmapHeader> rowHeaders;
+    protected List<HeatmapHeader> rowHeaders;
 
     @XmlTransient
-	protected List<HeatmapHeader> columnHeaders;
+    protected List<HeatmapHeader> columnHeaders;
 
     @XmlTransient
-	protected AnnotationMatrix columnAnnotations;
+    protected AnnotationMatrix columnAnnotations;
 
     @XmlTransient
-	protected ColumnGroup group1;
+    protected ColumnGroup group1;
     @XmlTransient
-	protected ColumnGroup group2;
+    protected ColumnGroup group2;
 
-    /** Test name */
+    /**
+     * Test name
+     */
     protected ToolConfig testConfig;
     protected String mtc;
 
 
-	/** Data */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix data;
+    /**
+     * Data
+     */
+    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+    protected IMatrix data;
 
-	/** Results */
-	@XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-	protected IMatrix results;
+    /**
+     * Results
+     */
+    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
+    protected IMatrix results;
 
-	public MTC getMtc() {
+    public MTC getMtc()
+    {
         MTC mtcObj = MTCFactory.createFromName(mtc);
         String name = mtcObj.toString();
-		return mtcObj;
-	}
-
-	public void setMtc(String mtc) {
-		this.mtc = mtc;
-	}
-
-    public void setToolConfig(ToolConfig testConfig) {
-        this.testConfig =  testConfig;
+        return mtcObj;
     }
 
-	public Test getTest() {
+    public void setMtc(String mtc)
+    {
+        this.mtc = mtc;
+    }
+
+    public void setToolConfig(ToolConfig testConfig)
+    {
+        this.testConfig = testConfig;
+    }
+
+    public Test getTest()
+    {
         TestFactory tf = TestFactory.createFactory(testConfig);
-		return tf.create();
-	}
+        return tf.create();
+    }
 
-	public GroupComparisonAnalysis() {
-		this.transposeData = false;
-        group1  = new ColumnGroup("Group 1");
-        group2  = new ColumnGroup("Group 2");
-	}
+    public GroupComparisonAnalysis()
+    {
+        this.transposeData = false;
+        group1 = new ColumnGroup("Group 1");
+        group2 = new ColumnGroup("Group 2");
+    }
 
-	public String getSizeAttrName() {
-		return sizeAttrName;
-	}
-
-
-	public void setAttributeIndex(int attributeIndex) {
-		this.attributeIndex = attributeIndex;
-	}
-
-	public int getAttributeIndex() {
-		return attributeIndex;
-	}
-
-	public void setSizeAttrName(String sizeAttrName) {
-		this.sizeAttrName = sizeAttrName;
-	}
-
-	public String getPvalueAttrName() {
-		return pvalueAttrName;
-	}
-
-	public void setPvalueAttrName(String pvalueAttrName) {
-		this.pvalueAttrName = pvalueAttrName;
-	}
-
-	public boolean isTransposeData() {
-		return transposeData;
-	}
-
-	public void setTransposeData(boolean transposeData) {
-		this.transposeData = transposeData;
-	}
-	
-	public String getColumnGrouping() {
-		return columnGrouping;
-	}
-
-	public static String[] getColumnGroupingMethods() {
-		return new String[]{
-			COLUMN_GROUPING_BY_LABEL,
-			COLUMN_GROUPING_BY_VALUE
-		};
-	}
-
-	public void setColumnGrouping(String columnGrouping) {
-		this.columnGrouping = columnGrouping;
-	}
-
-	public ColumnGroup getGroups1() {
-		return group1;
-	}
-
-	public ColumnGroup getGroups2() {
-		return group2;
-	}
-
-	public void setGroup1(int[] group1) {
-		this.group1.setColumns(group1);
-	}
-
-	public void setGroup2(int[] group2) {
-		this.group2.setColumns(group2);
-	}
-
-	public void setGroup1(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
-		this.group1.setBinaryCutoff(binaryCutoff);
-		this.group1.setCutoffAttributeIndex(cutoffAttrIndex);
-	}
-
-	public void setGroup2(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
-		this.group2.setBinaryCutoff(binaryCutoff);
-		this.group2.setCutoffAttributeIndex(cutoffAttrIndex);
-	}
-
-	public void setGroup1(ColumnGroup group1) {
-		this.group1 = group1;
-	}
-
-	public void setGroup2(ColumnGroup group2) {
-		this.group2 = group2;
-	}
-
-	public IMatrix getData() {
-		return data;
-	}
+    public String getSizeAttrName()
+    {
+        return sizeAttrName;
+    }
 
 
-	public void setData(IMatrix data) {
-        if(data instanceof IMatrixView)
+    public void setAttributeIndex(int attributeIndex)
+    {
+        this.attributeIndex = attributeIndex;
+    }
+
+    public int getAttributeIndex()
+    {
+        return attributeIndex;
+    }
+
+    public void setSizeAttrName(String sizeAttrName)
+    {
+        this.sizeAttrName = sizeAttrName;
+    }
+
+    public String getPvalueAttrName()
+    {
+        return pvalueAttrName;
+    }
+
+    public void setPvalueAttrName(String pvalueAttrName)
+    {
+        this.pvalueAttrName = pvalueAttrName;
+    }
+
+    public boolean isTransposeData()
+    {
+        return transposeData;
+    }
+
+    public void setTransposeData(boolean transposeData)
+    {
+        this.transposeData = transposeData;
+    }
+
+    public String getColumnGrouping()
+    {
+        return columnGrouping;
+    }
+
+    public static String[] getColumnGroupingMethods()
+    {
+        return new String[]{
+                COLUMN_GROUPING_BY_LABEL,
+                COLUMN_GROUPING_BY_VALUE
+        };
+    }
+
+    public void setColumnGrouping(String columnGrouping)
+    {
+        this.columnGrouping = columnGrouping;
+    }
+
+    public ColumnGroup getGroups1()
+    {
+        return group1;
+    }
+
+    public ColumnGroup getGroups2()
+    {
+        return group2;
+    }
+
+    public void setGroup1(int[] group1)
+    {
+        this.group1.setColumns(group1);
+    }
+
+    public void setGroup2(int[] group2)
+    {
+        this.group2.setColumns(group2);
+    }
+
+    public void setGroup1(BinaryCutoff binaryCutoff, int cutoffAttrIndex)
+    {
+        this.group1.setBinaryCutoff(binaryCutoff);
+        this.group1.setCutoffAttributeIndex(cutoffAttrIndex);
+    }
+
+    public void setGroup2(BinaryCutoff binaryCutoff, int cutoffAttrIndex)
+    {
+        this.group2.setBinaryCutoff(binaryCutoff);
+        this.group2.setCutoffAttributeIndex(cutoffAttrIndex);
+    }
+
+    public void setGroup1(ColumnGroup group1)
+    {
+        this.group1 = group1;
+    }
+
+    public void setGroup2(ColumnGroup group2)
+    {
+        this.group2 = group2;
+    }
+
+    public IMatrix getData()
+    {
+        return data;
+    }
+
+
+    public void setData(IMatrix data)
+    {
+        if (data instanceof IMatrixView)
+        {
             this.data = MatrixFactory.create((IMatrixView) data);
-		else
+        }
+        else
+        {
             this.data = data;
-	}
+        }
+    }
 
-	public IMatrix getResults() {
-		return results;
-	}
+    public IMatrix getResults()
+    {
+        return results;
+    }
 
-	public void setResults(IMatrix results) {
-		this.results = results;
-	}
+    public void setResults(IMatrix results)
+    {
+        this.results = results;
+    }
 
-	public void setRowAnnotations(AnnotationMatrix annotations) {
-		this.rowAnnotations = annotations;
-	}
+    public void setRowAnnotations(AnnotationMatrix annotations)
+    {
+        this.rowAnnotations = annotations;
+    }
 
-	public AnnotationMatrix getRowAnnotations() {
-		return this.rowAnnotations;
-	}
-	
-	public AnnotationMatrix getColumnAnnotations() {
-		return columnAnnotations;
-	}
+    public AnnotationMatrix getRowAnnotations()
+    {
+        return this.rowAnnotations;
+    }
 
-	public void setColumnAnnotations(AnnotationMatrix columnAnnotations) {
-		this.columnAnnotations = columnAnnotations;
-	}
+    public AnnotationMatrix getColumnAnnotations()
+    {
+        return columnAnnotations;
+    }
 
-	public List<HeatmapHeader> getRowHeaders() {
-		return rowHeaders;
-	}
+    public void setColumnAnnotations(AnnotationMatrix columnAnnotations)
+    {
+        this.columnAnnotations = columnAnnotations;
+    }
 
-	public void setRowHeaders(List<HeatmapHeader> rowHeaders) {
-		this.rowHeaders = rowHeaders;
-	}
-	
-	public List<HeatmapHeader> getColumnHeaders() {
-		return columnHeaders;
-	}
+    public List<HeatmapHeader> getRowHeaders()
+    {
+        return rowHeaders;
+    }
 
-	public void setColumnHeaders(List<HeatmapHeader> columnHeaders) {
-		this.columnHeaders = columnHeaders;
-	}
+    public void setRowHeaders(List<HeatmapHeader> rowHeaders)
+    {
+        this.rowHeaders = rowHeaders;
+    }
+
+    public List<HeatmapHeader> getColumnHeaders()
+    {
+        return columnHeaders;
+    }
+
+    public void setColumnHeaders(List<HeatmapHeader> columnHeaders)
+    {
+        this.columnHeaders = columnHeaders;
+    }
 }

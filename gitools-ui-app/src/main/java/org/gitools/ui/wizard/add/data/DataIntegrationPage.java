@@ -1,161 +1,179 @@
 /*
- *  Copyright 2011 cperez.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-/*
- * LabelFilterPage.java
- *
- * Created on 22-mar-2011, 15:54:05
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.operators.Operator;
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
 
-public class DataIntegrationPage extends AbstractWizardPage {
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-        private static class DataIntegrationCriteriaListCellRender extends JTextArea implements TableCellRenderer {
-            public DataIntegrationCriteriaListCellRender() {
-                setLineWrap(true);
-                setWrapStyleWord(true);
-                //setOpaque(true);
-            }
+public class DataIntegrationPage extends AbstractWizardPage
+{
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) value;
-                String intend = "    ";
-                String rendering = "";
-                for (DataIntegrationCriteria c : criteriaList) {
-                    Operator op = c.getOperator();
-                    intend = (!op.equals(Operator.OR)) ?
+    private static class DataIntegrationCriteriaListCellRender extends JTextArea implements TableCellRenderer
+    {
+        public DataIntegrationCriteriaListCellRender()
+        {
+            setLineWrap(true);
+            setWrapStyleWord(true);
+            //setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+        {
+            List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) value;
+            String intend = "    ";
+            String rendering = "";
+            for (DataIntegrationCriteria c : criteriaList)
+            {
+                Operator op = c.getOperator();
+                intend = (!op.equals(Operator.OR)) ?
                         "    " : "";
-                    if (!op.equals(Operator.EMPTY))
-                        rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
-                    
-                    rendering = rendering + "    " + c.getAttributeName() + " "
-                            + c.getComparator().getLongName() +" "
-                            + Double.toString(c.getCutoffValue()) + "\n";
-                    
-
+                if (!op.equals(Operator.EMPTY))
+                {
+                    rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
                 }
-                setText(rendering);
-                return this;
+
+                rendering = rendering + "    " + c.getAttributeName() + " "
+                        + c.getComparator().getLongName() + " "
+                        + Double.toString(c.getCutoffValue()) + "\n";
+
+
             }
+            setText(rendering);
+            return this;
         }
+    }
 
-        private String[] attrNames;
-        DefaultTableModel model;
+    private String[] attrNames;
+    DefaultTableModel model;
 
-	public DataIntegrationPage(Heatmap hm) {
-		
-		initComponents();
-		setComplete(false);
+    public DataIntegrationPage(Heatmap hm)
+    {
 
-		setTitle("Data Dimension Integration");
-		setMessage("Choose which data dimensions and what cut-offs"
-                        + " to integrate");
-                
-               	List<IElementAttribute> attributes = hm.getMatrixView().getContents().getCellAdapter().getProperties();
+        initComponents();
+        setComplete(false);
 
-                this.attrNames = new String[attributes.size()];
-		for (int i = 0; i < attributes.size(); i++) {
-			this.attrNames[i] = attributes.get(i).getName();
-		}
-                //this.model = new DefaultTableModel();
-                model = (DefaultTableModel) table.getModel();
-                
-                //table.setModel(model);
-                table.getColumnModel().getColumn(0).setMaxWidth(65);
-                table.getColumnModel().getColumn(1).setMaxWidth(100);
-                table.getColumnModel().getColumn(2).setCellRenderer(
-                        new DataIntegrationCriteriaListCellRender());
-                table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        updateButtons();
-                    }
-                });
-	}
+        setTitle("Data Dimension Integration");
+        setMessage("Choose which data dimensions and what cut-offs"
+                + " to integrate");
 
-        public double[] getValues () {
-            double values[] = new double[table.getRowCount()];
-            for (int i = 0; i < table.getRowCount(); i++) {
-                values[i] = Double.parseDouble((String) table.getValueAt(i, 1));
+        List<IElementAttribute> attributes = hm.getMatrixView().getContents().getCellAdapter().getProperties();
+
+        this.attrNames = new String[attributes.size()];
+        for (int i = 0; i < attributes.size(); i++)
+        {
+            this.attrNames[i] = attributes.get(i).getName();
+        }
+        //this.model = new DefaultTableModel();
+        model = (DefaultTableModel) table.getModel();
+
+        //table.setModel(model);
+        table.getColumnModel().getColumn(0).setMaxWidth(65);
+        table.getColumnModel().getColumn(1).setMaxWidth(100);
+        table.getColumnModel().getColumn(2).setCellRenderer(
+                new DataIntegrationCriteriaListCellRender());
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                updateButtons();
             }
-            return values;
+        });
+    }
+
+    public double[] getValues()
+    {
+        double values[] = new double[table.getRowCount()];
+        for (int i = 0; i < table.getRowCount(); i++)
+        {
+            values[i] = Double.parseDouble((String) table.getValueAt(i, 1));
         }
+        return values;
+    }
 
-        public List<ArrayList<DataIntegrationCriteria>> getCriteria() {
-            ArrayList<ArrayList<DataIntegrationCriteria>> criteria =
-                    new ArrayList<ArrayList<DataIntegrationCriteria>>();
-            for (int i = 0; i < table.getRowCount(); i++) {
-                ArrayList<DataIntegrationCriteria> c =
-                        (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
-                criteria.add(c);
-            }
-            return criteria;
+    public List<ArrayList<DataIntegrationCriteria>> getCriteria()
+    {
+        ArrayList<ArrayList<DataIntegrationCriteria>> criteria =
+                new ArrayList<ArrayList<DataIntegrationCriteria>>();
+        for (int i = 0; i < table.getRowCount(); i++)
+        {
+            ArrayList<DataIntegrationCriteria> c =
+                    (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
+            criteria.add(c);
         }
+        return criteria;
+    }
 
 
-        private void updateButtons() {
-            int rowNb = table.getRowCount();
-            removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
-            upBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
-            downBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
-            editBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
-            setComplete(rowNb > 0);
+    private void updateButtons()
+    {
+        int rowNb = table.getRowCount();
+        removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
+        upBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
+        downBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
+        editBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
+        setComplete(rowNb > 0);
+    }
+
+    private void updateRowHeightsAndPriorities()
+    {
+        for (int i = 0; i < table.getRowCount(); i++)
+        {
+            table.setValueAt(i + 1, i, 0);
+
+            List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) table.getValueAt(i, 2);
+            int lines = criteriaList.size() * 2 - 1;
+            table.setRowHeight(i, table.getRowHeight() * lines);
+
+
         }
-
-        private void updateRowHeightsAndPriorities() {
-            for (int i = 0; i < table.getRowCount(); i++) {
-                table.setValueAt(i+1, i, 0);
-
-                List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) table.getValueAt(i, 2);
-                int lines = criteriaList.size()*2-1;
-                table.setRowHeight(i, table.getRowHeight()*lines);
-
-                
-            }
-        }
+    }
 
 
-
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -170,50 +188,60 @@ public class DataIntegrationPage extends AbstractWizardPage {
         jLabel1.setText("Add integration rules according to their priorities");
 
         tableAddBtn.setText("Add");
-        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 tableAddBtnActionPerformed(evt);
             }
         });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
-        removeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeBtnActionPerformed(evt);
             }
         });
 
         upBtn.setText("Up");
         upBtn.setEnabled(false);
-        upBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        upBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 upBtnActionPerformed(evt);
             }
         });
 
         downBtn.setText("Down");
         downBtn.setEnabled(false);
-        downBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        downBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 downBtnActionPerformed(evt);
             }
         });
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][]{
 
-            },
-            new String [] {
-                "Priority","Value", "Criteria"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class
+                },
+                new String[]{
+                        "Priority", "Value", "Criteria"
+                }
+        )
+        {
+            Class[] types = new Class[]{
+                    java.lang.String.class, java.lang.Object.class
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public Class getColumnClass(int columnIndex)
+            {
+                return types[columnIndex];
             }
 
             public boolean isCellEditable(int row, int column)
@@ -229,8 +257,10 @@ public class DataIntegrationPage extends AbstractWizardPage {
 
         editBtn.setText("Edit");
         editBtn.setEnabled(false);
-        editBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 editBtnActionPerformed(evt);
             }
         });
@@ -238,115 +268,121 @@ public class DataIntegrationPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(downBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(upBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(downBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(upBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(upBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(downBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(tableAddBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(removeBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(upBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(downBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(editBtn))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-        private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-            String[] ops = new String[] {Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-            final DataIntegrationCriteriaDialog dlg =
-                        new DataIntegrationCriteriaDialog(AppFrame.instance(),
-                                                        attrNames,
-                                                        CutoffCmp.comparators,
-                                                        ops,
-                                                        null,
-                                                        "1");
-            	dlg.setVisible(true);
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_tableAddBtnActionPerformed
+        String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
+        final DataIntegrationCriteriaDialog dlg =
+                new DataIntegrationCriteriaDialog(AppFrame.get(),
+                        attrNames,
+                        CutoffCmp.comparators,
+                        ops,
+                        null,
+                        "1");
+        dlg.setVisible(true);
 
-		if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
-			return;
-		}
-                List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
-                String setToValue = dlg.getSetToValue();
-                model.addRow(new Object[]{table.getRowCount(),setToValue, criteriaList});
-                updateRowHeightsAndPriorities();
-                updateButtons();
-}//GEN-LAST:event_tableAddBtnActionPerformed
+        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)
+        {
+            return;
+        }
+        List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
+        String setToValue = dlg.getSetToValue();
+        model.addRow(new Object[]{table.getRowCount(), setToValue, criteriaList});
+        updateRowHeightsAndPriorities();
+        updateButtons();
+    }//GEN-LAST:event_tableAddBtnActionPerformed
 
-        private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
-            model.removeRow(table.getSelectedRow());
-            updateRowHeightsAndPriorities();
-            updateButtons();
-}//GEN-LAST:event_removeBtnActionPerformed
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_removeBtnActionPerformed
+        model.removeRow(table.getSelectedRow());
+        updateRowHeightsAndPriorities();
+        updateButtons();
+    }//GEN-LAST:event_removeBtnActionPerformed
 
-        private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
-            int selectedPosition = table.getSelectedRow();
-            int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ?
-                                selectedPosition : selectedPosition+1;
-            model.moveRow(selectedPosition, selectedPosition , wantedPosition);
-            updateRowHeightsAndPriorities();
-            table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
-        }//GEN-LAST:event_downBtnActionPerformed
+    private void downBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_downBtnActionPerformed
+        int selectedPosition = table.getSelectedRow();
+        int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ?
+                selectedPosition : selectedPosition + 1;
+        model.moveRow(selectedPosition, selectedPosition, wantedPosition);
+        updateRowHeightsAndPriorities();
+        table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
+    }//GEN-LAST:event_downBtnActionPerformed
 
-        private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
-            int selectedPosition = table.getSelectedRow();
-            int wantedPosition = (selectedPosition == 0) ?
-                                selectedPosition : selectedPosition-1;
-            model.moveRow(selectedPosition, selectedPosition , wantedPosition);
-            updateRowHeightsAndPriorities();
-            table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
-        }//GEN-LAST:event_upBtnActionPerformed
+    private void upBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_upBtnActionPerformed
+        int selectedPosition = table.getSelectedRow();
+        int wantedPosition = (selectedPosition == 0) ?
+                selectedPosition : selectedPosition - 1;
+        model.moveRow(selectedPosition, selectedPosition, wantedPosition);
+        updateRowHeightsAndPriorities();
+        table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
+    }//GEN-LAST:event_upBtnActionPerformed
 
-        private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-            String[] ops = new String[] {Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-            List<DataIntegrationCriteria> criteria =
-                    (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
-            String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
-            final DataIntegrationCriteriaDialog dlg =
-                        new DataIntegrationCriteriaDialog(AppFrame.instance(),
-                                                        attrNames,
-                                                        CutoffCmp.comparators,
-                                                        ops,
-                                                        criteria,
-                                                        setToValue);
-            	dlg.setVisible(true);
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_editBtnActionPerformed
+        String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
+        List<DataIntegrationCriteria> criteria =
+                (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
+        String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
+        final DataIntegrationCriteriaDialog dlg =
+                new DataIntegrationCriteriaDialog(AppFrame.get(),
+                        attrNames,
+                        CutoffCmp.comparators,
+                        ops,
+                        criteria,
+                        setToValue);
+        dlg.setVisible(true);
 
-		if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
-			return;
-		}
-                int selectedRow = table.getSelectedRow();
-                List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
-                setToValue = dlg.getSetToValue();
-                model.removeRow(selectedRow);
-                model.insertRow(selectedRow, new Object[]{selectedRow+1,setToValue, criteriaList});
-                updateRowHeightsAndPriorities();
-                updateButtons();
-        }//GEN-LAST:event_editBtnActionPerformed
-
+        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)
+        {
+            return;
+        }
+        int selectedRow = table.getSelectedRow();
+        List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
+        setToValue = dlg.getSetToValue();
+        model.removeRow(selectedRow);
+        model.insertRow(selectedRow, new Object[]{selectedRow + 1, setToValue, criteriaList});
+        updateRowHeightsAndPriorities();
+        updateButtons();
+    }//GEN-LAST:event_editBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -360,7 +396,6 @@ public class DataIntegrationPage extends AbstractWizardPage {
     private javax.swing.JButton tableAddBtn;
     private javax.swing.JButton upBtn;
     // End of variables declaration//GEN-END:variables
-
 
 
 }

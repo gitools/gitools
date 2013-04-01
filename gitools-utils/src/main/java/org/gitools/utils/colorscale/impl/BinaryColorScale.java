@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-utils
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.utils.colorscale.impl;
 
 import org.gitools.utils.aggregation.IAggregator;
@@ -29,26 +33,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BinaryColorScale extends NumericColorScale {
+public class BinaryColorScale extends NumericColorScale
+{
 
-	private String comparator;
+    private String comparator;
     private double cutoff;
-    
+
     private Color minColor;
     private Color maxColor;
 
     private static List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
-    static {
+
+    static
+    {
         equalCmp.add(CutoffCmp.EQ);
         equalCmp.add(CutoffCmp.ABS_EQ);
     }
-private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+
+    private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+
     {
         notequalCmp.add(CutoffCmp.NE);
         notequalCmp.add(CutoffCmp.ABS_NE);
     }
 
     private static List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
+
     {
         absoluteCmp.add(CutoffCmp.ABS_GE);
         absoluteCmp.add(CutoffCmp.ABS_LE);
@@ -58,35 +68,41 @@ private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
         absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
-	public BinaryColorScale(double cutoff, CutoffCmp cmp) {
+    public BinaryColorScale(double cutoff, CutoffCmp cmp)
+    {
         super();
 
         this.comparator = cmp.getShortName();
         this.cutoff = cutoff;
 
-	}
+    }
 
-    public BinaryColorScale() {
+    public BinaryColorScale()
+    {
         this(1.0, CutoffCmp.EQ);
     }
 
     @Override
-    protected Color colorOf(double value) {
+    protected Color colorOf(double value)
+    {
         boolean satisfies = CutoffCmp.getFromName(comparator).compare(value, cutoff);
         return satisfies ? getMaxColor() : getMinColor();
     }
 
     @Override
-    public double[] getPoints() {
+    public double[] getPoints()
+    {
         double edge = Math.abs(cutoff) * 1.5;
-        if (edge < 0.5) {
+        if (edge < 0.5)
+        {
             edge = 0.5;
         }
-        return new double[] { -edge, cutoff, edge };
+        return new double[]{-edge, cutoff, edge};
     }
 
     @Override
-    protected void updateRangesList() {
+    protected void updateRangesList()
+    {
 
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
@@ -99,60 +115,77 @@ private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
         double insideRange;
         double cutoffForRanges;
 
-        if (absoluteCmp.contains(positiveCmp)) {
+        if (absoluteCmp.contains(positiveCmp))
+        {
             cutoffForRanges = Math.abs(cutoff);
-        } else {
+        }
+        else
+        {
             cutoffForRanges = cutoff;
         }
 
-        if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY){
+        if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY)
+        {
             outsideRange = (cutoffForRanges == 0.0) ?
-                                    Math.abs(cutoffForRanges) +  0.5:
-                                    cutoffForRanges * 2.5;
+                    Math.abs(cutoffForRanges) + 0.5 :
+                    cutoffForRanges * 2.5;
 
 
             if (cutoffForRanges == 0.0)
+            {
                 insideRange = -0.8;
+            }
             else
+            {
                 insideRange = cutoffForRanges - cutoffForRanges * 0.5;
+            }
 
 
-        } else if (cutoffForRanges == Double.POSITIVE_INFINITY) {
+        }
+        else if (cutoffForRanges == Double.POSITIVE_INFINITY)
+        {
             outsideRange = 0.0;
             insideRange = Double.POSITIVE_INFINITY;
-        } else {
+        }
+        else
+        {
             outsideRange = 0.0;
             insideRange = Double.NEGATIVE_INFINITY;
         }
 
 
-
         double positiveValue = 0.0;
         double negativeValue = 0.0;
 
-        if (positiveCmp.compare(outsideRange,cutoffForRanges)) {
+        if (positiveCmp.compare(outsideRange, cutoffForRanges))
+        {
             negativeValue = insideRange;
             positiveValue = outsideRange;
-        } else {
+        }
+        else
+        {
             negativeValue = outsideRange;
             positiveValue = insideRange;
         }
 
-        if (!positiveCmp.compare(insideRange,cutoffForRanges) && equalCmp.contains(positiveCmp) ) {
+        if (!positiveCmp.compare(insideRange, cutoffForRanges) && equalCmp.contains(positiveCmp))
+        {
             positiveValue = cutoffForRanges;
-        } else if (positiveCmp.compare(negativeValue,cutoffForRanges) && notequalCmp.contains(positiveCmp)) {
+        }
+        else if (positiveCmp.compare(negativeValue, cutoffForRanges) && notequalCmp.contains(positiveCmp))
+        {
             negativeValue = cutoffForRanges;
         }
 
-        ColorScaleRange positiveRange = new ColorScaleRange(positiveValue,positiveValue,3);
+        ColorScaleRange positiveRange = new ColorScaleRange(positiveValue, positiveValue, 3);
         positiveRange.setType(ColorScaleRange.CONSTANT_TYPE);
         positiveRange.setCenterLabel(positiveCmp.getShortName() + " " + Double.toString(cutoffForRanges));
 
-        ColorScaleRange empty = new ColorScaleRange(0,0,1);
+        ColorScaleRange empty = new ColorScaleRange(0, 0, 1);
         empty.setType(ColorScaleRange.EMPTY_TYPE);
         empty.setBorderEnabled(false);
 
-        ColorScaleRange negativeRange = new ColorScaleRange(negativeValue,negativeValue,3);
+        ColorScaleRange negativeRange = new ColorScaleRange(negativeValue, negativeValue, 3);
         negativeRange.setType(ColorScaleRange.CONSTANT_TYPE);
         negativeRange.setCenterLabel(negativeCmp.getShortName() + " " + Double.toString(cutoffForRanges));
 
@@ -164,49 +197,60 @@ private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
 
     }
 
-    public Color getMinColor() {
-        if (minColor == null) {
+    public Color getMinColor()
+    {
+        if (minColor == null)
+        {
             return ColorConstants.binaryMinColor;
         }
         return minColor;
     }
 
-    public void setMinColor(Color minColor) {
+    public void setMinColor(Color minColor)
+    {
         this.minColor = minColor;
     }
 
-    public Color getMaxColor() {
-        if (maxColor == null) {
+    public Color getMaxColor()
+    {
+        if (maxColor == null)
+        {
             return ColorConstants.binaryMaxColor;
         }
         return maxColor;
     }
 
-    public void setMaxColor(Color maxColor) {
+    public void setMaxColor(Color maxColor)
+    {
         this.maxColor = maxColor;
     }
 
-    public String getComparator() {
+    public String getComparator()
+    {
         return comparator;
     }
 
-    public void setComparator(String comparator) {
+    public void setComparator(String comparator)
+    {
         this.comparator = comparator;
         updateRangesList();
     }
 
-    public double getCutoff() {
+    public double getCutoff()
+    {
         return cutoff;
     }
 
-    public void setCutoff(double cutoff) {
+    public void setCutoff(double cutoff)
+    {
         this.cutoff = cutoff;
         updateRangesList();
     }
 
 
     @Override
-    public IAggregator defaultAggregator() {
+    public IAggregator defaultAggregator()
+    {
         return SumAggregator.INSTANCE;
     }
 }

@@ -1,42 +1,49 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.persistence.formats.analysis.adapter;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.ResourceReference;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference> {
+public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference>
+{
 
     private IProgressMonitor progressMonitor;
     private IResourceLocator resourceLocator;
 
-    public ResourceReferenceXmlAdapter(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) {
+    public ResourceReferenceXmlAdapter(IResourceLocator resourceLocator, IProgressMonitor progressMonitor)
+    {
         super();
         this.resourceLocator = resourceLocator;
         this.progressMonitor = progressMonitor;
     }
 
     @Override
-    public ResourceReference unmarshal(ResourceReferenceXmlElement resourceReference) throws Exception {
+    public ResourceReference unmarshal(ResourceReferenceXmlElement resourceReference) throws Exception
+    {
 
         String referenceName = resourceReference.getPath();
         IResourceLocator referenceLocator = resourceLocator.getReferenceLocator(referenceName);
@@ -45,19 +52,22 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
     }
 
     @Override
-    public ResourceReferenceXmlElement marshal(ResourceReference resourceReference) throws Exception {
+    public ResourceReferenceXmlElement marshal(ResourceReference resourceReference) throws Exception
+    {
 
         PersistenceManager pm = PersistenceManager.get();
 
         // It's a memory instance. Change the resource locator.
-        if (resourceReference.getLocator() == null) {
+        if (resourceReference.getLocator() == null)
+        {
             String parentName = resourceLocator.getBaseName();
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
-            resourceReference.setLocator( resourceLocator.getReferenceLocator( parentName + "-" + resourceReference.getBaseName() + "." + extension + ".gz"));
+            resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension + ".gz"));
         }
 
         IResourceLocator referenceLocator = resourceReference.getLocator();
-        if (referenceLocator.isWritable()) {
+        if (referenceLocator.isWritable())
+        {
             PersistenceManager.get().store(referenceLocator, resourceReference.get(), progressMonitor);
         }
 

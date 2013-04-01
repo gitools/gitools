@@ -1,27 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.data;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
@@ -39,97 +38,126 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class ClusteringByValueAction extends BaseAction {
+import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
-	public ClusteringByValueAction() {
-		super("Clustering");
-		setDesc("Cluster by values");
-	}
+public class ClusteringByValueAction extends BaseAction
+{
 
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap
-			|| model instanceof IMatrixView;
-	}
+    public ClusteringByValueAction()
+    {
+        super("Clustering");
+        setDesc("Cluster by values");
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public boolean isEnabledByModel(Object model)
+    {
+        return model instanceof Heatmap
+                || model instanceof IMatrixView;
+    }
 
-		final Heatmap heatmap = ActionUtils.getHeatmap();
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
 
-		if (heatmap == null)
-			return;
+        final Heatmap heatmap = ActionUtils.getHeatmap();
 
-		final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
-		WizardDialog wdlg = new WizardDialog(AppFrame.instance(), wiz);
-		wdlg.setVisible(true);
-		if (wdlg.isCancelled())
-			return;
+        if (heatmap == null)
+        {
+            return;
+        }
 
-		final ClusteringMethod method = wiz.getMethod();
+        final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
+        WizardDialog wdlg = new WizardDialog(AppFrame.get(), wiz);
+        wdlg.setVisible(true);
+        if (wdlg.isCancelled())
+        {
+            return;
+        }
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Clustering  ...", 1);
+        final ClusteringMethod method = wiz.getMethod();
 
-					ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    monitor.begin("Clustering  ...", 1);
 
-					if (wiz.isSortDataSelected()) {
-						if (wiz.isApplyToRows()) {
-							TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap.getMatrixView());
-							ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
-						}
-						else
-							ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
-					}
+                    ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
-					if (wiz.isNewickExportSelected()) {
-							File path = wiz.getSaveFilePage().getPathAsFile();
-							BufferedWriter out = new BufferedWriter(new FileWriter(path));
-							out.write(((HierarchicalClusteringResults) results).getTree().toString());
-							out.flush();
-							out.close();
-					}
+                    if (wiz.isSortDataSelected())
+                    {
+                        if (wiz.isApplyToRows())
+                        {
+                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap.getMatrixView());
+                            ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
+                        }
+                        else
+                        {
+                            ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
+                        }
+                    }
 
-					if (wiz.isHeaderSelected()) {
-						boolean hcl = results instanceof HierarchicalClusteringResults;
+                    if (wiz.isNewickExportSelected())
+                    {
+                        File path = wiz.getSaveFilePage().getPathAsFile();
+                        BufferedWriter out = new BufferedWriter(new FileWriter(path));
+                        out.write(((HierarchicalClusteringResults) results).getTree().toString());
+                        out.flush();
+                        out.close();
+                    }
 
-						HeatmapDim hdim = wiz.isApplyToRows() ?
-							heatmap.getRowDim() : heatmap.getColumnDim();
+                    if (wiz.isHeaderSelected())
+                    {
+                        boolean hcl = results instanceof HierarchicalClusteringResults;
 
-						HeatmapColoredLabelsHeader header = hcl ?
-							new HeatmapHierarchicalColoredLabelsHeader(hdim)
-							: new HeatmapColoredLabelsHeader(hdim);
+                        HeatmapDim hdim = wiz.isApplyToRows() ?
+                                heatmap.getRowDim() : heatmap.getColumnDim();
 
-						header.setTitle("Clustering: " + wiz.getMethodName());
+                        HeatmapColoredLabelsHeader header = hcl ?
+                                new HeatmapHierarchicalColoredLabelsHeader(hdim)
+                                : new HeatmapColoredLabelsHeader(hdim);
 
-						if (hcl) {
-							HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;
-							HierarchicalClusteringResults hclResults = (HierarchicalClusteringResults) results;
+                        header.setTitle("Clustering: " + wiz.getMethodName());
 
-							hclHeader.setClusteringResults(hclResults);
-							int level = hclResults.getTree().getDepth() / 2;
-							hclHeader.setTreeLevel(level);
-						}
+                        if (hcl)
+                        {
+                            HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;
+                            HierarchicalClusteringResults hclResults = (HierarchicalClusteringResults) results;
 
-						header.updateFromClusterResults(results);
+                            hclHeader.setClusteringResults(hclResults);
+                            int level = hclResults.getTree().getDepth() / 2;
+                            hclHeader.setTreeLevel(level);
+                        }
 
-						if (wiz.isApplyToRows())
-							heatmap.getRowDim().addHeader(header);
-						else
-							heatmap.getColumnDim().addHeader(header);
-					}
+                        header.updateFromClusterResults(results);
 
-					monitor.end();
-				}
-				catch (Throwable ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+                        if (wiz.isApplyToRows())
+                        {
+                            heatmap.getRowDim().addHeader(header);
+                        }
+                        else
+                        {
+                            heatmap.getColumnDim().addHeader(header);
+                        }
+                    }
 
-		AppFrame.instance().setStatusText("Clusters created");
-	}
+                    monitor.end();
+                } catch (Throwable ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+
+        AppFrame.get().setStatusText("Clusters created");
+    }
 }

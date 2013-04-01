@@ -1,203 +1,216 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.wizard;
+
+import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.restful.model.*;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.wizard.common.SaveFilePage;
 
 import java.io.File;
 import java.util.List;
 
-import org.gitools.biomart.restful.model.Attribute;
-import org.gitools.biomart.restful.model.Dataset;
-import org.gitools.biomart.restful.model.Query;
+public class BiomartTableWizard extends AbstractWizard
+{
 
-import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.AttributeDescription;
-import org.gitools.biomart.restful.model.DatasetConfig;
-import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.model.Filter;
-import org.gitools.biomart.restful.model.MartLocation;
+    private SaveFilePage saveFilePage;
 
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.wizard.common.SaveFilePage;
+    private BiomartService biomartService;
 
-public class BiomartTableWizard extends AbstractWizard {
+    private DatasetConfig biomartConfig;
 
-	private SaveFilePage saveFilePage;
+    private BiomartAttributeListPage attrListPage;
 
-	private BiomartService biomartService;
+    private BiomartTableFilteringPage filteringPage;
 
-	private DatasetConfig biomartConfig;
+    private BiomartFilterConfigurationPage filterListPage;
 
-	private BiomartAttributeListPage attrListPage;
+    private BiomartSourcePage sourcePage;
 
-	private BiomartTableFilteringPage filteringPage;
+    private MartLocation Database;
 
-	private BiomartFilterConfigurationPage filterListPage;
+    private DatasetInfo Dataset;
 
-	private BiomartSourcePage sourcePage;
+    public static final String FORMAT_PLAIN = "TSV";
+    public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
-	private MartLocation Database;
+    private FileFormat[] supportedFormats = new FileFormat[]{
+            new FileFormat("Tab Separated Fields", "tsv", FORMAT_PLAIN, true, false),
+            new FileFormat("Tab Separated Fields compressed", "tsv.gz", FORMAT_COMPRESSED_GZ, true, false)
+    };
 
-	private DatasetInfo Dataset;
+    public BiomartTableWizard()
+    { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
 
-	public static final String FORMAT_PLAIN = "TSV";
-	public static final String FORMAT_COMPRESSED_GZ = "GZ";
+        setTitle("Import table ...");
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
+        setHelpContext("import_biomart");
+    }
 
-	private FileFormat[] supportedFormats = new FileFormat[] {
-		new FileFormat("Tab Separated Fields", "tsv", FORMAT_PLAIN, true, false),
-		new FileFormat("Tab Separated Fields compressed", "tsv.gz", FORMAT_COMPRESSED_GZ, true, false)
-	};
+    @Override
+    public void addPages()
+    {
 
-	public BiomartTableWizard() { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
+        // Source
+        sourcePage = new BiomartSourcePage();
+        addPage(sourcePage);
 
-		setTitle("Import table ...");
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
-		setHelpContext("import_biomart");
-	}
+        // Attribute list
+        attrListPage = new BiomartAttributeListPage();
+        attrListPage.setTitle("Select attributes");
+        addPage(attrListPage);
 
-	@Override
-	public void addPages() {
+        // Advance filtering
+        filterListPage = new BiomartFilterConfigurationPage();
+        filterListPage.setTitle("Select filters");
+        addPage(filterListPage);
 
-		// Source
-		sourcePage = new BiomartSourcePage();
-		addPage(sourcePage);
+        // Filtering
+        filteringPage = new BiomartTableFilteringPage();
+        addPage(filteringPage);
 
-		// Attribute list
-		attrListPage = new BiomartAttributeListPage();
-		attrListPage.setTitle("Select attributes");
-		addPage(attrListPage);
+        // Destination
+        saveFilePage = new SaveFilePage();
+        saveFilePage.setTitle("Select destination file");
+        saveFilePage.setFolder(Settings.getDefault().getLastDataPath());
+        saveFilePage.setFormats(supportedFormats);
+        addPage(saveFilePage);
+    }
 
-		// Advance filtering
-		filterListPage = new BiomartFilterConfigurationPage();
-		filterListPage.setTitle("Select filters");
-		addPage(filterListPage);
-		
-		// Filtering
-		filteringPage = new BiomartTableFilteringPage();
-		addPage(filteringPage);
+    @Override
+    public IWizardPage getNextPage(IWizardPage page)
+    {
+        IWizardPage nextPage = super.getNextPage(page);
 
-		// Destination
-		saveFilePage = new SaveFilePage();
-		saveFilePage.setTitle("Select destination file");
-		saveFilePage.setFolder(Settings.getDefault().getLastDataPath());
-		saveFilePage.setFormats(supportedFormats);
-		addPage(saveFilePage);
-	}
+        if (nextPage == attrListPage)
+        {
+            biomartService = sourcePage.getBiomartService();
+            Database = sourcePage.getDataBase();
+            Dataset = sourcePage.getDataset();
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		IWizardPage nextPage = super.getNextPage(page);
+            attrListPage.setSource(
+                    biomartService,
+                    Database,
+                    Dataset);
+        }
+        else if (nextPage == filterListPage)
+        {
+            biomartConfig = attrListPage.getBiomartConfig();
+            filterListPage.setSource(biomartService, biomartConfig);
+        }
 
-		if (nextPage == attrListPage) {
-			biomartService = sourcePage.getBiomartService();
-			Database = sourcePage.getDataBase();
-			Dataset = sourcePage.getDataset();
+        return nextPage;
+    }
 
-			attrListPage.setSource(
-					biomartService,
-					Database,
-					Dataset);
-		}	
-		else if (nextPage == filterListPage) {
-			biomartConfig = attrListPage.getBiomartConfig();
-			filterListPage.setSource(biomartService,biomartConfig);
-		}
-		
-		return nextPage;
-	}
+    @Override
+    public boolean canFinish()
+    {
+        boolean canFinish = super.canFinish();
 
-	@Override
-	public boolean canFinish() {
-		boolean canFinish = super.canFinish();
+        IWizardPage page = getCurrentPage();
 
-		IWizardPage page = getCurrentPage();
+        canFinish |= page == attrListPage && page.isComplete();
 
-		canFinish |= page == attrListPage && page.isComplete();
+        return canFinish;
+    }
 
-		return canFinish;
-	}
+    @Override
+    public void performFinish()
+    {
+        super.performFinish();
 
-	@Override
-	public void performFinish() {
-		super.performFinish();
+        Settings.getDefault().setLastDataPath(saveFilePage.getFolder());
+        Settings.getDefault().save();
+    }
 
-		Settings.getDefault().setLastDataPath(saveFilePage.getFolder());
-		Settings.getDefault().save();
-	}
+    public File getSelectedFile()
+    {
+        return saveFilePage.getPathAsFile();
+    }
 
-	public File getSelectedFile() {
-		return saveFilePage.getPathAsFile();
-	}
+    public List<AttributeDescription> getAttributeList()
+    {
+        return attrListPage.getAttributeList();
+    }
 
-	public List<AttributeDescription> getAttributeList() {
-		return attrListPage.getAttributeList();
-	}
+    public Query getQuery()
+    {
 
-	public Query getQuery() {
+        MartLocation mart = getDatabase();
+        Dataset ds = new Dataset();
+        ds.setName(getDataset().getName());
+        List<Attribute> dsattrs = ds.getAttribute();
+        for (AttributeDescription attrInfo : attrListPage.getAttributeList())
+        {
+            Attribute attr = new Attribute();
+            attr.setName(attrInfo.getInternalName());
+            dsattrs.add(attr);
+        }
+        //Add filters into dataset
+        List<Filter> dsFilters = ds.getFilter();
+        dsFilters.addAll(filterListPage.getFilters());
 
-			MartLocation mart = getDatabase();
-			Dataset ds = new Dataset();
-			ds.setName(getDataset().getName());
-			List<Attribute> dsattrs = ds.getAttribute();
-			for (AttributeDescription attrInfo : attrListPage.getAttributeList()) {
-				Attribute attr = new Attribute();
-				attr.setName(attrInfo.getInternalName());
-				dsattrs.add(attr);
-			}
-			//Add filters into dataset
-			List<Filter> dsFilters = ds.getFilter();
-			dsFilters.addAll(filterListPage.getFilters());
+        Query query = new Query();
+        query.setVirtualSchemaName(mart.getServerVirtualSchema());
+        query.setHeader(1);
+        query.setCount(0);
+        query.setUniqueRows(1);
+        query.getDatasets().add(ds);
 
-			Query query = new Query();
-			query.setVirtualSchemaName(mart.getServerVirtualSchema());
-			query.setHeader(1);
-			query.setCount(0);
-			query.setUniqueRows(1);
-			query.getDatasets().add(ds);
+        return query;
+    }
 
-		return query;
-	}
+    public FileFormat getFormat()
+    {
+        return saveFilePage.getFormat();
+    }
 
-	public FileFormat getFormat() {
-		return saveFilePage.getFormat();
-	}
+    public boolean isSkipRowsWithEmptyValuesEnabled()
+    {
+        return filteringPage.isSkipRowsWithEmptyValuesEnabled();
+    }
 
-	public boolean isSkipRowsWithEmptyValuesEnabled() {
-		return filteringPage.isSkipRowsWithEmptyValuesEnabled();
-	}
+    public String emptyValuesReplacement()
+    {
+        return filteringPage.emptyValuesReplacement();
+    }
 
-	public String emptyValuesReplacement() {
-		return filteringPage.emptyValuesReplacement();
-	}
+    public MartLocation getDatabase()
+    {
+        return Database;
+    }
 
-	public MartLocation getDatabase() {
-		return Database;
-	}
+    public DatasetInfo getDataset()
+    {
+        return Dataset;
+    }
 
-	public DatasetInfo getDataset() {
-		return Dataset;
-	}
-
-	public BiomartService getService() {
-		return biomartService;
-	}
+    public BiomartService getService()
+    {
+        return biomartService;
+    }
 }

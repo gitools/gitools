@@ -1,257 +1,326 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.panels.decorator;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.component.ColorChooserLabel;
+import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel
+{
 
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.ui.platform.component.ColorChooserLabel;
-import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
-import org.gitools.ui.platform.AppFrame;
+    private static final long serialVersionUID = 8422331422677024364L;
 
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAdapter;
+    private LinearTwoSidedElementDecorator decorator;
 
-public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel {
+    private JComboBox valueCb;
 
-	private static final long serialVersionUID = 8422331422677024364L;
-	
-	private LinearTwoSidedElementDecorator decorator;
+    private JTextField minValTxt;
+    private JTextField maxValTxt;
+    private JTextField midValTxt;
 
-	private JComboBox valueCb;
+    private ColorChooserLabel minColorCc;
+    private ColorChooserLabel midColorCc;
+    private ColorChooserLabel maxColorCc;
+    private ColorChooserLabel emptyCc;
 
-	private JTextField minValTxt;
-	private JTextField maxValTxt;
-	private JTextField midValTxt;
+    public LinearTwoSidedElementDecoratorPanel(Heatmap model)
+    {
+        super(model);
 
-	private ColorChooserLabel minColorCc;
-	private ColorChooserLabel midColorCc;
-	private ColorChooserLabel maxColorCc;
-	private ColorChooserLabel emptyCc;
-	
-	public LinearTwoSidedElementDecoratorPanel(Heatmap model) {
-		super(model);
-	
-		this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
+        this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
 
-		final IElementAdapter adapter = decorator.getAdapter();
-		
-		valueProperties = new ArrayList<IndexedProperty>();
-		loadAllProperties(valueProperties, adapter);
-		
-		createComponents();
-	}
+        final IElementAdapter adapter = decorator.getAdapter();
 
-	private void createComponents() {
-		valueCb = new JComboBox(new DefaultComboBoxModel(valueProperties.toArray()));
-		
-		valueCb.addItemListener(new ItemListener() {
-			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					valueChanged();
-				}
-			}
-		});
-		
-		minValTxt = new JTextField(Double.toString(decorator.getMinValue()));
-		minValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				minValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				minValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				minValueChanged(); }
-		});
-		
-		minColorCc = new ColorChooserLabel(decorator.getMinColor());
-		minColorCc.setToolTipText("Minimum value color");
-		minColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMinColor(color); }
-		});
-		
-		midValTxt = new JTextField(Double.toString(decorator.getMidValue()));
-		midValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				midValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				midValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				midValueChanged(); }
-		});
-		
-		midColorCc = new ColorChooserLabel(decorator.getMidColor());
-		midColorCc.setToolTipText("Middle value color");
-		midColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMidColor(color); }
-		});
-		
-		maxValTxt = new JTextField(Double.toString(decorator.getMaxValue()));
-		maxValTxt.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void changedUpdate(DocumentEvent e) {
-				maxValueChanged(); }
-			@Override public void insertUpdate(DocumentEvent e) {	
-				maxValueChanged(); }
-			@Override public void removeUpdate(DocumentEvent e) { 
-				maxValueChanged(); }
-		});
-		
-		maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
-		maxColorCc.setToolTipText("Maximum value color");
-		maxColorCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setMaxColor(color); }
-		});
+        valueProperties = new ArrayList<IndexedProperty>();
+        loadAllProperties(valueProperties, adapter);
 
-		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
-		emptyCc.setToolTipText("Empty cell color");
-		emptyCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setEmptyColor(color); }
-		});
+        createComponents();
+    }
 
-		refresh();
+    private void createComponents()
+    {
+        valueCb = new JComboBox(new DefaultComboBoxModel(valueProperties.toArray()));
 
-		Dimension boxSpace = new Dimension(3, 3);
+        valueCb.addItemListener(new ItemListener()
+        {
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                {
+                    valueChanged();
+                }
+            }
+        });
 
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(new JLabel("Value"));
-		add(valueCb);
+        minValTxt = new JTextField(Double.toString(decorator.getMinValue()));
+        minValTxt.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                minValueChanged();
+            }
 
-		Box box01 = new Box(BoxLayout.X_AXIS);
-		box01.add(new JLabel(" Min"));
-		box01.add(Box.createRigidArea(boxSpace));
-		box01.add(minValTxt);
-		box01.add(Box.createRigidArea(boxSpace));
-		box01.add(minColorCc);
-		add(box01);
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                minValueChanged();
+            }
 
-		Box box02 = new Box(BoxLayout.LINE_AXIS);
-		box02.add(new JLabel(" Mid"));
-		box02.add(Box.createRigidArea(boxSpace));
-		box02.add(midValTxt);
-		box02.add(Box.createRigidArea(boxSpace));
-		box02.add(midColorCc);
-		add(box02);
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                minValueChanged();
+            }
+        });
 
-		Box box03 = new Box(BoxLayout.LINE_AXIS);
-		box03.add(new JLabel(" Max"));
-		box03.add(Box.createRigidArea(boxSpace));
-		box03.add(maxValTxt);
-		box03.add(Box.createRigidArea(boxSpace));
-		box03.add(maxColorCc);
-		add(box03);
+        minColorCc = new ColorChooserLabel(decorator.getMinColor());
+        minColorCc.setToolTipText("Minimum value color");
+        minColorCc.addColorChangeListener(new ColorChangeListener()
+        {
+            @Override
+            public void colorChanged(Color color)
+            {
+                decorator.setMinColor(color);
+            }
+        });
 
-		Box box04 = new Box(BoxLayout.LINE_AXIS);
-		box04.add(new JLabel(" Empty"));
-		box04.add(Box.createRigidArea(boxSpace));
-		box04.add(emptyCc);
-		add(box04);
-	}
+        midValTxt = new JTextField(Double.toString(decorator.getMidValue()));
+        midValTxt.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                midValueChanged();
+            }
 
-	private void refresh() {
-		for (int i = 0; i < valueProperties.size(); i++)
-			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
-				valueCb.setSelectedIndex(i);
-		
-		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
-	}
-	
-	private void valueChanged() {
-		IndexedProperty propAdapter = 
-			(IndexedProperty) valueCb.getSelectedItem();
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                midValueChanged();
+            }
 
-		model.switchActiveCellDecorator(propAdapter.getIndex());
-		changeDecorator();
-		
-		decorator.setValueIndex(propAdapter.getIndex());
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                midValueChanged();
+            }
+        });
 
-		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
-	}
+        midColorCc = new ColorChooserLabel(decorator.getMidColor());
+        midColorCc.setToolTipText("Middle value color");
+        midColorCc.addColorChangeListener(new ColorChangeListener()
+        {
+            @Override
+            public void colorChanged(Color color)
+            {
+                decorator.setMidColor(color);
+            }
+        });
 
-	private void changeDecorator() {
+        maxValTxt = new JTextField(Double.toString(decorator.getMaxValue()));
+        maxValTxt.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                maxValueChanged();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e)
+            {
+                maxValueChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                maxValueChanged();
+            }
+        });
+
+        maxColorCc = new ColorChooserLabel(decorator.getMaxColor());
+        maxColorCc.setToolTipText("Maximum value color");
+        maxColorCc.addColorChangeListener(new ColorChangeListener()
+        {
+            @Override
+            public void colorChanged(Color color)
+            {
+                decorator.setMaxColor(color);
+            }
+        });
+
+        emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+        emptyCc.setToolTipText("Empty cell color");
+        emptyCc.addColorChangeListener(new ColorChangeListener()
+        {
+            @Override
+            public void colorChanged(Color color)
+            {
+                decorator.setEmptyColor(color);
+            }
+        });
+
+        refresh();
+
+        Dimension boxSpace = new Dimension(3, 3);
+
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        add(new JLabel("Value"));
+        add(valueCb);
+
+        Box box01 = new Box(BoxLayout.X_AXIS);
+        box01.add(new JLabel(" Min"));
+        box01.add(Box.createRigidArea(boxSpace));
+        box01.add(minValTxt);
+        box01.add(Box.createRigidArea(boxSpace));
+        box01.add(minColorCc);
+        add(box01);
+
+        Box box02 = new Box(BoxLayout.LINE_AXIS);
+        box02.add(new JLabel(" Mid"));
+        box02.add(Box.createRigidArea(boxSpace));
+        box02.add(midValTxt);
+        box02.add(Box.createRigidArea(boxSpace));
+        box02.add(midColorCc);
+        add(box02);
+
+        Box box03 = new Box(BoxLayout.LINE_AXIS);
+        box03.add(new JLabel(" Max"));
+        box03.add(Box.createRigidArea(boxSpace));
+        box03.add(maxValTxt);
+        box03.add(Box.createRigidArea(boxSpace));
+        box03.add(maxColorCc);
+        add(box03);
+
+        Box box04 = new Box(BoxLayout.LINE_AXIS);
+        box04.add(new JLabel(" Empty"));
+        box04.add(Box.createRigidArea(boxSpace));
+        box04.add(emptyCc);
+        add(box04);
+    }
+
+    private void refresh()
+    {
+        for (int i = 0; i < valueProperties.size(); i++)
+            if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
+            {
+                valueCb.setSelectedIndex(i);
+            }
+
+        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+    }
+
+    private void valueChanged()
+    {
+        IndexedProperty propAdapter =
+                (IndexedProperty) valueCb.getSelectedItem();
+
+        model.switchActiveCellDecorator(propAdapter.getIndex());
+        changeDecorator();
+
+        decorator.setValueIndex(propAdapter.getIndex());
+
+        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+    }
+
+    private void changeDecorator()
+    {
 
         ElementDecorator elementDecorator = model.getActiveCellDecorator();
-        if (elementDecorator instanceof  LinearTwoSidedElementDecorator)
-    		this.decorator = (LinearTwoSidedElementDecorator) elementDecorator;
+        if (elementDecorator instanceof LinearTwoSidedElementDecorator)
+        {
+            this.decorator = (LinearTwoSidedElementDecorator) elementDecorator;
+        }
         else
+        {
             return;
+        }
 
-		minColorCc.setColor(decorator.getMinColor());
-		midColorCc.setColor(decorator.getMidColor());
-		maxColorCc.setColor(decorator.getMaxColor());
-		emptyCc.setColor(decorator.getEmptyColor());
+        minColorCc.setColor(decorator.getMinColor());
+        midColorCc.setColor(decorator.getMidColor());
+        maxColorCc.setColor(decorator.getMaxColor());
+        emptyCc.setColor(decorator.getEmptyColor());
 
-		minValTxt.setText(Double.toString(decorator.getMinValue()));
-		midValTxt.setText(Double.toString(decorator.getMidValue()));
-		maxValTxt.setText(Double.toString(decorator.getMaxValue()));
+        minValTxt.setText(Double.toString(decorator.getMinValue()));
+        midValTxt.setText(Double.toString(decorator.getMidValue()));
+        maxValTxt.setText(Double.toString(decorator.getMaxValue()));
 
-	}
-		
-	protected void minValueChanged() {
-		try {
-			double value = Double.parseDouble(minValTxt.getText());
-			decorator.setMinValue(value);
-			
-			AppFrame.instance().setStatusText("Minimum value changed to " + value);
-		}
-		catch (Exception e) { 
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}
-	
-	protected void midValueChanged() {
-		try {
-			double value = Double.parseDouble(midValTxt.getText());
-			decorator.setMidValue(value);
-			
-			AppFrame.instance().setStatusText("Middle value changed to " + value);
-		}
-		catch (Exception e) { 
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}
-	
-	protected void maxValueChanged() {
-		try {
-			double value = Double.parseDouble(maxValTxt.getText());
-			decorator.setMaxValue(value);
-			
-			AppFrame.instance().setStatusText("Maximum value changed to " + value);
-		}
-		catch (Exception e) { 
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}
+    }
+
+    protected void minValueChanged()
+    {
+        try
+        {
+            double value = Double.parseDouble(minValTxt.getText());
+            decorator.setMinValue(value);
+
+            AppFrame.get().setStatusText("Minimum value changed to " + value);
+        } catch (Exception e)
+        {
+            AppFrame.get().setStatusText("Invalid value.");
+        }
+    }
+
+    protected void midValueChanged()
+    {
+        try
+        {
+            double value = Double.parseDouble(midValTxt.getText());
+            decorator.setMidValue(value);
+
+            AppFrame.get().setStatusText("Middle value changed to " + value);
+        } catch (Exception e)
+        {
+            AppFrame.get().setStatusText("Invalid value.");
+        }
+    }
+
+    protected void maxValueChanged()
+    {
+        try
+        {
+            double value = Double.parseDouble(maxValTxt.getText());
+            decorator.setMaxValue(value);
+
+            AppFrame.get().setStatusText("Maximum value changed to " + value);
+        } catch (Exception e)
+        {
+            AppFrame.get().setStatusText("Invalid value.");
+        }
+    }
 }

@@ -1,59 +1,66 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * ColoredClustersConfigPage.java
- *
- * Created on 02-mar-2011, 8:27:23
- */
-
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class HeatmapHeaderConfigPage extends AbstractWizardPage {
+public class HeatmapHeaderConfigPage extends AbstractWizardPage
+{
 
-	private HeatmapDataHeatmapHeader header;
+    private HeatmapDataHeatmapHeader header;
 
-	public HeatmapHeaderConfigPage() {
-		this(new HeatmapDataHeatmapHeader(null));
-	}
+    public HeatmapHeaderConfigPage()
+    {
+        this(new HeatmapDataHeatmapHeader(null));
+    }
 
-    /** Creates new form ColoredClustersConfigPage */
-    public HeatmapHeaderConfigPage(HeatmapDataHeatmapHeader header) {
-		super();
+    /**
+     * Creates new form ColoredClustersConfigPage
+     */
+    public HeatmapHeaderConfigPage(HeatmapDataHeatmapHeader header)
+    {
+        super();
 
-		this.header = header;
+        this.header = header;
 
         initComponents();
 
-		labelVisibleChk.addChangeListener(new ChangeListener() {
-			@Override public void stateChanged(ChangeEvent e) {
-				labelVisibleChanged(); }
-		});
+        labelVisibleChk.addChangeListener(new ChangeListener()
+        {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+                labelVisibleChanged();
+            }
+        });
 
 
-        switch (header.getLabelPosition()) {
+        switch (header.getLabelPosition())
+        {
             case rightOf:
                 rightOf.setSelected(true);
                 break;
@@ -67,58 +74,69 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
         forceLabelColor.setSelected(header.isForceLabelColor());
 
-		setTitle("Header configuration");
-		setComplete(true);
+        setTitle("Header configuration");
+        setComplete(true);
     }
 
-	@Override
-	public void updateControls() {
-		super.updateControls();
+    @Override
+    public void updateControls()
+    {
+        super.updateControls();
 
-		titleField.setText(header.getTitle());
-		marginSpin.setValue(header.getMargin());
+        titleField.setText(header.getTitle());
+        marginSpin.setValue(header.getMargin());
 
-		labelVisibleChk.setSelected(header.isLabelVisible());
+        labelVisibleChk.setSelected(header.isLabelVisible());
         switchLabelPositionUI();
         labelVisibleChanged();
 
-	}
+    }
 
-	private void labelVisibleChanged() {
-		boolean e = labelVisibleChk.isSelected() && inside.isSelected();
-		forceLabelColor.setEnabled(e);
+    private void labelVisibleChanged()
+    {
+        boolean e = labelVisibleChk.isSelected() && inside.isSelected();
+        forceLabelColor.setEnabled(e);
 
-        if (labelVisibleChk.isSelected()) {
+        if (labelVisibleChk.isSelected())
+        {
             if (leftOf.isSelected())
+            {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.leftOf);
+            }
             else if (rightOf.isSelected())
+            {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.rightOf);
-            else if (inside.isSelected()) {
+            }
+            else if (inside.isSelected())
+            {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.inside);
             }
             setForceLabelColor();
         }
         header.updateLargestLabelLength(new Label("text"));
-	}
+    }
 
 
-	@Override
-	public void updateModel() {
-		super.updateModel();
+    @Override
+    public void updateModel()
+    {
+        super.updateModel();
 
         header.setTitle(titleField.getText());
         header.setMargin((Integer) marginSpin.getValue());
-		header.setLabelVisible(labelVisibleChk.isSelected());
-	}
+        header.setLabelVisible(labelVisibleChk.isSelected());
+    }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         labelPositionBtnGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -135,8 +153,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         jLabel1.setText("Title");
 
         labelVisibleChk.setText("Show value labels");
-        labelVisibleChk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        labelVisibleChk.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 labelVisibleChkActionPerformed(evt);
             }
         });
@@ -146,8 +166,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         forceLabelColor.setText("Show same color for all labels in colored area");
-        forceLabelColor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        forceLabelColor.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 forceLabelColorActionPerformed(evt);
             }
         });
@@ -155,8 +177,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         labelPositionBtnGroup.add(leftOf);
         leftOf.setText("left of");
         leftOf.setEnabled(false);
-        leftOf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        leftOf.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 leftOfActionPerformed(evt);
             }
         });
@@ -164,8 +188,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         labelPositionBtnGroup.add(rightOf);
         rightOf.setText("right of");
         rightOf.setEnabled(false);
-        rightOf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rightOf.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rightOfActionPerformed(evt);
             }
         });
@@ -173,8 +199,10 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         labelPositionBtnGroup.add(inside);
         inside.setText("inside");
         inside.setEnabled(false);
-        inside.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        inside.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 insideActionPerformed(evt);
             }
         });
@@ -185,74 +213,79 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelVisibleChk)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(forceLabelColor)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(leftOf)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rightOf)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inside)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(coloredArea)))))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(labelVisibleChk)
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(forceLabelColor)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(leftOf)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(rightOf)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(inside)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(coloredArea)))))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelVisibleChk)
-                    .addComponent(leftOf)
-                    .addComponent(rightOf)
-                    .addComponent(inside)
-                    .addComponent(coloredArea))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(forceLabelColor)
-                .addContainerGap(153, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelVisibleChk)
+                                        .addComponent(leftOf)
+                                        .addComponent(rightOf)
+                                        .addComponent(inside)
+                                        .addComponent(coloredArea))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(forceLabelColor)
+                                .addContainerGap(153, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void leftOfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftOfActionPerformed
+    private void leftOfActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_leftOfActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_leftOfActionPerformed
 
-    private void rightOfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightOfActionPerformed
+    private void rightOfActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_rightOfActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_rightOfActionPerformed
 
-    private void insideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insideActionPerformed
+    private void insideActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_insideActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_insideActionPerformed
 
-    private void labelVisibleChkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelVisibleChkActionPerformed
+    private void labelVisibleChkActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_labelVisibleChkActionPerformed
         switchLabelPositionUI();
     }//GEN-LAST:event_labelVisibleChkActionPerformed
 
-    private void forceLabelColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceLabelColorActionPerformed
+    private void forceLabelColorActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_forceLabelColorActionPerformed
         setForceLabelColor();
     }//GEN-LAST:event_forceLabelColorActionPerformed
 
@@ -272,15 +305,18 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
-	public HeatmapDataHeatmapHeader getHeader() {
-		return header;
-	}
+    public HeatmapDataHeatmapHeader getHeader()
+    {
+        return header;
+    }
 
-	public void setHeader(HeatmapDataHeatmapHeader header) {
-		this.header = header;
-	}
+    public void setHeader(HeatmapDataHeatmapHeader header)
+    {
+        this.header = header;
+    }
 
-    private void switchLabelPositionUI() {
+    private void switchLabelPositionUI()
+    {
         boolean enabled = labelVisibleChk.isSelected() ? true : false;
         header.setLabelVisible(enabled);
         leftOf.setEnabled(enabled);
@@ -289,7 +325,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
         coloredArea.setEnabled(enabled);
     }
 
-    private void setForceLabelColor() {
+    private void setForceLabelColor()
+    {
         header.setForceLabelColor(forceLabelColor.isEnabled() && forceLabelColor.isSelected());
     }
 }

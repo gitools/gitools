@@ -1,173 +1,219 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * SaveFilePage.java
- *
- * Created on Dec 18, 2009, 5:49:09 PM
- */
-
 package org.gitools.ui.wizard.common;
 
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.filechooser.FileFilter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class SaveFilePage extends AbstractWizardPage {
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.filechooser.FileFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
-	private FileFormat[] formats;
+public class SaveFilePage extends AbstractWizardPage
+{
 
-    /** Creates new form SaveFilePage */
-    public SaveFilePage() {
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
+    private FileFormat[] formats;
+
+    /**
+     * Creates new form SaveFilePage
+     */
+    public SaveFilePage()
+    {
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
 
         initComponents();
 
-		fileName.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				setComplete(!fileName.getText().isEmpty());
-				updateGeneratedFile();
-			}
-		});
+        fileName.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                setComplete(!fileName.getText().isEmpty());
+                updateGeneratedFile();
+            }
+        });
 
-		folder.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				updateGeneratedFile(); }
-		});
+        folder.getDocument().addDocumentListener(new DocumentChangeListener()
+        {
+            @Override
+            protected void update(DocumentEvent e)
+            {
+                updateGeneratedFile();
+            }
+        });
 
-		format.addActionListener(new ActionListener() {
-			@Override public void actionPerformed(ActionEvent e) {
-				updateGeneratedFile(); }
-		});
+        format.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                updateGeneratedFile();
+            }
+        });
     }
 
-	private void updateGeneratedFile() {
-		File file = getPathAsFile();
-		String fn = file.getAbsolutePath();
-		path.setText(fn);
-		if (isComplete() && file.exists())
-			setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
-		else
-			setMessage(MessageStatus.INFO, "");
+    private void updateGeneratedFile()
+    {
+        File file = getPathAsFile();
+        String fn = file.getAbsolutePath();
+        path.setText(fn);
+        if (isComplete() && file.exists())
+        {
+            setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
+        }
+        else
+        {
+            setMessage(MessageStatus.INFO, "");
+        }
 
-		//fn = fn.toLowerCase();
-		FileFormat fmt = getFormat();
-		if (formats != null && formats.length > 1
-				&& fmt != null && !fmt.checkExtension(fn))
-			setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
-		/*final String ext = fmt != null ? fmt.getExtension().toLowerCase() : "";
+        //fn = fn.toLowerCase();
+        FileFormat fmt = getFormat();
+        if (formats != null && formats.length > 1
+                && fmt != null && !fmt.checkExtension(fn))
+        {
+            setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
+        }
+        /*final String ext = fmt != null ? fmt.getExtension().toLowerCase() : "";
 		final String extgz = ext + ".gz";
 		if (formats != null && formats.length > 1
 				&& fmt != null && !(fn.endsWith(ext) || fn.endsWith(extgz)))
 			setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");*/
-	}
+    }
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    @Override
+    public JComponent createControls()
+    {
+        return this;
+    }
 
-	/** Return only the file name */
-	public String getFileNameWithoutExtension() {
-		return fileName.getText();
-	}
+    /**
+     * Return only the file name
+     */
+    public String getFileNameWithoutExtension()
+    {
+        return fileName.getText();
+    }
 
-	public void setFileNameWithoutExtension(String name) {
-		fileName.setText(name);
-	}
+    public void setFileNameWithoutExtension(String name)
+    {
+        fileName.setText(name);
+    }
 
-	/** Return only the folder */
-	public String getFolder() {
-		return folder.getText();
-	}
+    /**
+     * Return only the folder
+     */
+    public String getFolder()
+    {
+        return folder.getText();
+    }
 
-	public void setFolder(String folderPath) {
-		folder.setText(folderPath);
-	}
+    public void setFolder(String folderPath)
+    {
+        folder.setText(folderPath);
+    }
 
-	public void setFormats(FileFormat[] formats) {
+    public void setFormats(FileFormat[] formats)
+    {
 		/*boolean active = formats != null && formats.length > 0;
 		formatLabel.setVisible(active);
 		format.setVisible(active);*/
-		this.formats = formats;
-		format.setModel(new DefaultComboBoxModel(formats));
-		updateGeneratedFile();
-	}
+        this.formats = formats;
+        format.setModel(new DefaultComboBoxModel(formats));
+        updateGeneratedFile();
+    }
 
-	public FileFormat getFormat() {
-		return (FileFormat) format.getSelectedItem();
-	}
+    public FileFormat getFormat()
+    {
+        return (FileFormat) format.getSelectedItem();
+    }
 
-	public void setFormatsVisible(boolean visible) {
-		formatLabel.setVisible(visible);
-		format.setVisible(visible);
-	}
+    public void setFormatsVisible(boolean visible)
+    {
+        formatLabel.setVisible(visible);
+        format.setVisible(visible);
+    }
 
-	/* Returns the file name with extension appended */
-	public String getFileName() {
-		StringBuilder sb = new StringBuilder();
-		String name = getFileNameWithoutExtension();
-		sb.append(name);
-		File file = new File(name);
+    /* Returns the file name with extension appended */
+    public String getFileName()
+    {
+        StringBuilder sb = new StringBuilder();
+        String name = getFileNameWithoutExtension();
+        sb.append(name);
+        File file = new File(name);
 
-		String ext = FileChooserUtils.getExtension(file);
-		if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0) {
-			FileFormat fmt = (FileFormat) format.getSelectedItem();
-			if (!name.endsWith("."))
-				sb.append('.');
-			sb.append(fmt.getExtension());
-		}
+        String ext = FileChooserUtils.getExtension(file);
+        if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0)
+        {
+            FileFormat fmt = (FileFormat) format.getSelectedItem();
+            if (!name.endsWith("."))
+            {
+                sb.append('.');
+            }
+            sb.append(fmt.getExtension());
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	/** Returns the full path: folder + file + ext */
-	public String getPath() {
-		return getPathAsFile().getAbsolutePath();
-	}
+    /**
+     * Returns the full path: folder + file + ext
+     */
+    public String getPath()
+    {
+        return getPathAsFile().getAbsolutePath();
+    }
 
-	/** Returns the full path as a file */
-	public File getPathAsFile() {
-		String folderName = folder.getText();
-		if (folderName.isEmpty())
-			folderName = System.getProperty("user.dir");
+    /**
+     * Returns the full path as a file
+     */
+    public File getPathAsFile()
+    {
+        String folderName = folder.getText();
+        if (folderName.isEmpty())
+        {
+            folderName = System.getProperty("user.dir");
+        }
 
-		return new File(folderName, getFileName());
-	}
+        return new File(folderName, getFileName());
+    }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jLabel1 = new javax.swing.JLabel();
         fileName = new javax.swing.JTextField();
@@ -185,8 +231,10 @@ public class SaveFilePage extends AbstractWizardPage {
         fileName.setFocusCycleRoot(true);
 
         browseFolderBtn.setText("Browse...");
-        browseFolderBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseFolderBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 browseFolderBtnActionPerformed(evt);
             }
         });
@@ -200,8 +248,10 @@ public class SaveFilePage extends AbstractWizardPage {
         path.setEditable(false);
 
         browseFileBtn.setText("Browse...");
-        browseFileBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseFileBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 browseFileBtnActionPerformed(evt);
             }
         });
@@ -209,103 +259,120 @@ public class SaveFilePage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(formatLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(format, 0, 396, Short.MAX_VALUE)
-                            .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
-                            .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(browseFolderBtn)
-                            .addComponent(browseFileBtn)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(formatLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(format, 0, 396, Short.MAX_VALUE)
+                                                        .addComponent(fileName, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+                                                        .addComponent(folder, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(browseFolderBtn)
+                                                        .addComponent(browseFileBtn)))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(path, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseFileBtn))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(browseFolderBtn))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(formatLabel)
-                    .addComponent(format, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(241, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(browseFileBtn))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(browseFolderBtn))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(formatLabel)
+                                        .addComponent(format, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(241, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
-		File selPath = FileChooserUtils.selectPath(
-				"Select folder", folder.getText());
+    private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_browseFolderBtnActionPerformed
+        File selPath = FileChooserUtils.selectPath(
+                "Select folder", folder.getText());
 
-		if (selPath != null)
-			folder.setText(selPath.getAbsolutePath());
-	}//GEN-LAST:event_browseFolderBtnActionPerformed
+        if (selPath != null)
+        {
+            folder.setText(selPath.getAbsolutePath());
+        }
+    }//GEN-LAST:event_browseFolderBtnActionPerformed
 
-	private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFileBtnActionPerformed
-		FileFilter ff = new FileFilter() {
-			@Override public boolean accept(File f) {
-				if (f.isDirectory())
-					return true;
+    private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {//GEN-FIRST:event_browseFileBtnActionPerformed
+        FileFilter ff = new FileFilter()
+        {
+            @Override
+            public boolean accept(File f)
+            {
+                if (f.isDirectory())
+                {
+                    return true;
+                }
 
-				for (FileFormat fmt : formats)
-					if (fmt.checkExtension(f.getName()))
-						return true;
+                for (FileFormat fmt : formats)
+                    if (fmt.checkExtension(f.getName()))
+                    {
+                        return true;
+                    }
 
-				return false;
-			}
+                return false;
+            }
 
-			@Override public String getDescription() {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Supported formats");
-				if (formats != null && formats.length > 0) {
-					sb.append(" (*.").append(formats[0].getExtension());
-					for (int i = 1; i < formats.length; i++)
-						sb.append(", *.").append(formats[i].getExtension());
-					sb.append(')');
-				}
-				return sb.toString();
-			}
-		};
+            @Override
+            public String getDescription()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Supported formats");
+                if (formats != null && formats.length > 0)
+                {
+                    sb.append(" (*.").append(formats[0].getExtension());
+                    for (int i = 1; i < formats.length; i++)
+                        sb.append(", *.").append(formats[i].getExtension());
+                    sb.append(')');
+                }
+                return sb.toString();
+            }
+        };
 
-		FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile(
-				"Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFilter[] {ff});
+        FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile(
+                "Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFilter[]{ff});
 
-		if (sel != null) {
-			File selFile = sel.getFile();
-		
-			String fn = selFile.getName();
-			fileName.setText(fn);
-			folder.setText(selFile.getParentFile().getAbsolutePath());
-			for (FileFormat f : formats)
-				if (f.checkExtension(fn))
-					format.setSelectedItem(f);
-		}
-	}//GEN-LAST:event_browseFileBtnActionPerformed
+        if (sel != null)
+        {
+            File selFile = sel.getFile();
+
+            String fn = selFile.getName();
+            fileName.setText(fn);
+            folder.setText(selFile.getParentFile().getAbsolutePath());
+            for (FileFormat f : formats)
+                if (f.checkExtension(fn))
+                {
+                    format.setSelectedItem(f);
+                }
+        }
+    }//GEN-LAST:event_browseFileBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseFileBtn;

@@ -1,61 +1,82 @@
+<!--
+  #%L
+  gitools
+  %%
+  Copyright (C) 2013 Biomedical Genomics Lab
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
 <assembly>
-	<id>bin</id>
+    <id>bin</id>
 
-	<formats>
-		<format>zip</format>
-	</formats>
+    <formats>
+        <format>zip</format>
+    </formats>
 
-	<includeSiteDirectory>false</includeSiteDirectory>
+    <includeSiteDirectory>false</includeSiteDirectory>
 
-	<fileSets>
+    <fileSets>
 
-		<fileSet>
-			<directory>gitools-cli/src/main/command</directory>
-			<includes>
-				<include>*</include>
-			</includes>
-			<outputDirectory>bin</outputDirectory>
-			<fileMode>0770</fileMode>
-			<filtered>true</filtered>
-		</fileSet>
+        <fileSet>
+            <directory>gitools-cli/src/main/command</directory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0770</fileMode>
+            <filtered>true</filtered>
+        </fileSet>
 
-		<fileSet>
-			<directory>examples</directory>
-			<includes>
-				<include>**/*</include>
-			</includes>
-			<outputDirectory>examples</outputDirectory>
-		</fileSet>
+        <fileSet>
+            <directory>examples</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>examples</outputDirectory>
+        </fileSet>
 
-		<fileSet>
-			<directory>gitools-ui-app/src/main/resources/img</directory>
-			<includes>
-				<include>LogoMini.png</include>
-			</includes>
-			<outputDirectory></outputDirectory>
-		</fileSet>
+        <fileSet>
+            <directory>gitools-ui-app/src/main/resources/img</directory>
+            <includes>
+                <include>LogoMini.png</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
 
-		<fileSet>
-			<includes>
-				<include>LICENSE-2.0.txt</include>
-			</includes>
-			<outputDirectory></outputDirectory>
-		</fileSet>
+        <fileSet>
+            <includes>
+                <include>LICENSE.txt</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
 
-	</fileSets>
+    </fileSets>
 
-	<moduleSets>
-		<moduleSet>
+    <moduleSets>
+        <moduleSet>
             <binaries>
                 <outputDirectory>lib</outputDirectory>
-				<unpack>false</unpack>
+                <unpack>false</unpack>
                 <dependencySets>
                     <dependencySet>
                         <unpack>false</unpack>
                         <scope>runtime</scope>
                     </dependencySet>
                 </dependencySets>
-			</binaries>
-		</moduleSet>
-	</moduleSets>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
 </assembly>

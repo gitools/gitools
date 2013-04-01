@@ -1,113 +1,129 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.file;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.swing.SwingUtilities;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
-
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.analysis.htest.wizard.OncodriveAnalysisWizard;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public class NewOncodriveAnalysisAction extends BaseAction {
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
-	private static final long serialVersionUID = -8592231961109105958L;
+public class NewOncodriveAnalysisAction extends BaseAction
+{
 
-	public NewOncodriveAnalysisAction() {
-		super("OncoDrive analysis ...");
+    private static final long serialVersionUID = -8592231961109105958L;
 
-		setDesc("Run an oncodrive analysis");
-		setMnemonic(KeyEvent.VK_O);
-		
-		setDefaultEnabled(true);
-	}
+    public NewOncodriveAnalysisAction()
+    {
+        super("OncoDrive analysis ...");
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+        setDesc("Run an oncodrive analysis");
+        setMnemonic(KeyEvent.VK_O);
 
-		//UnimplementedDialog.show(AppFrame.instance());
-		//if (true) return;
+        setDefaultEnabled(true);
+    }
 
-		final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
 
-		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
+        //UnimplementedDialog.show(AppFrame.instance());
+        //if (true) return;
 
-		wizDlg.open();
+        final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
 
-		if (wizDlg.isCancelled())
-			return;
+        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
-		final OncodriveAnalysis analysis = wizard.getAnalysis();
+        wizDlg.open();
 
-		File populationFile = wizard.getPopulationFile();
-		File modulesFile = wizard.getModulesFile();
+        if (wizDlg.isCancelled())
+        {
+            return;
+        }
 
-		final OncodriveCommand cmd = new OncodriveCommand(
-				analysis,
-				wizard.getDataFileMime(),
-				wizard.getDataFile().getAbsolutePath(),
+        final OncodriveAnalysis analysis = wizard.getAnalysis();
+
+        File populationFile = wizard.getPopulationFile();
+        File modulesFile = wizard.getModulesFile();
+
+        final OncodriveCommand cmd = new OncodriveCommand(
+                analysis,
+                wizard.getDataFileMime(),
+                wizard.getDataFile().getAbsolutePath(),
                 wizard.getSelectedValueIndex(),
-				populationFile != null ? populationFile.getAbsolutePath() : null,
-				wizard.getPopulationDefaultValue(),
-				wizard.getModulesFileMime(),
-				modulesFile != null ? modulesFile.getAbsolutePath() : null,
-				wizard.getWorkdir(),
-				wizard.getFileName());
+                populationFile != null ? populationFile.getAbsolutePath() : null,
+                wizard.getPopulationDefaultValue(),
+                wizard.getModulesFileMime(),
+                modulesFile != null ? modulesFile.getAbsolutePath() : null,
+                wizard.getWorkdir(),
+                wizard.getFileName());
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					cmd.run(monitor);
+        JobThread.execute(AppFrame.get(), new JobRunnable()
+        {
+            @Override
+            public void run(IProgressMonitor monitor)
+            {
+                try
+                {
+                    cmd.run(monitor);
 
-					if (monitor.isCancelled())
-						return;
+                    if (monitor.isCancelled())
+                    {
+                        return;
+                    }
 
-					final OncodriveAnalysisEditor editor = new OncodriveAnalysisEditor(analysis);
+                    final OncodriveAnalysisEditor editor = new OncodriveAnalysisEditor(analysis);
 
-					editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
+                    editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							AppFrame.instance().getEditorsPanel().addEditor(editor);
-							AppFrame.instance().refresh();
-						}
-					});
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            AppFrame.get().getEditorsPanel().addEditor(editor);
+                            AppFrame.get().refresh();
+                        }
+                    });
 
-					monitor.end();
+                    monitor.end();
 
-					AppFrame.instance().setStatusText("Done.");
-				}
-				catch (Throwable ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-	}
+                    AppFrame.get().setStatusText("Done.");
+                } catch (Throwable ex)
+                {
+                    monitor.exception(ex);
+                }
+            }
+        });
+    }
 }

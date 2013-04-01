@@ -1,30 +1,36 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.persistence._DEPRECATED;
 
 import java.io.File;
 import java.util.regex.Pattern;
 
 @Deprecated
-public class PersistenceUtils {
+public class PersistenceUtils
+{
 
     // Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls
-    public static String getRelativePath(String basePath, String targetPath) {
+    public static String getRelativePath(String basePath, String targetPath)
+    {
 
         final String pathSeparator = File.separator;
 
@@ -44,16 +50,21 @@ public class PersistenceUtils {
         //  and also count how many of them there are.
         String common = "";
         int commonIndex = 0;
-        for (int i = 0; i < target.length && i < base.length; i++) {
-            if (target[i].equals(base[i])) {
+        for (int i = 0; i < target.length && i < base.length; i++)
+        {
+            if (target[i].equals(base[i]))
+            {
                 common += target[i] + pathSeparator;
                 commonIndex++;
-            } else {
+            }
+            else
+            {
                 break;
             }
         }
 
-        if (commonIndex == 0) {
+        if (commonIndex == 0)
+        {
             //  Whoops -- not even a single common path element. This most
             //  likely indicates differing drive letters, like C: and D:.
             //  These paths cannot be relativized. Return the target path.
@@ -63,20 +74,25 @@ public class PersistenceUtils {
         }
 
         String relative = "";
-        if (base.length == commonIndex) {
+        if (base.length == commonIndex)
+        {
             //  Comment this out if you prefer that a relative path not start with ./
             //relative = "." + pathSeparator;
-        } else {
+        }
+        else
+        {
             int numDirsUp = base.length - commonIndex; /*- (isDir ? 0 : 1); /* only subtract 1 if it  is a file. */
             //  The number of directories we have to backtrack is the length of
             //  the base path MINUS the number of common path elements, minus
             //  one because the last element in the path isn't a directory.
-            for (int i = 1; i <= (numDirsUp); i++) {
+            for (int i = 1; i <= (numDirsUp); i++)
+            {
                 relative += ".." + pathSeparator;
             }
         }
         //if we are comparing directories then we
-        if (targetPath.length() > common.length()) {
+        if (targetPath.length() > common.length())
+        {
             //it's OK, it isn't a directory
             relative += targetPath.substring(common.length());
         }
@@ -87,7 +103,8 @@ public class PersistenceUtils {
     /**
      * Returns file name (including extension) without path
      */
-    public static String getBaseName(String path) {
+    public static String getBaseName(String path)
+    {
         int sep = path.lastIndexOf(File.separatorChar);
         return path.substring(sep + 1);
     }
@@ -96,10 +113,13 @@ public class PersistenceUtils {
      * Returns the file name without extension.
      * It takes into account composed extension for .gz
      */
-    public static String getFileName(String path) {
+    public static String getFileName(String path)
+    {
         int dot = path.lastIndexOf('.');
         if (dot > 0 && path.substring(dot).equalsIgnoreCase(".gz"))
+        {
             dot = path.substring(0, dot - 1).lastIndexOf('.');
+        }
 
         int sep = path.lastIndexOf(File.separatorChar);
         return dot != -1 ? path.substring(sep + 1, dot) : path.substring(sep + 1);
@@ -109,19 +129,20 @@ public class PersistenceUtils {
      * Returns only the extension of the file.
      * It takes into account composed extension for .gz
      */
-    public static String getExtension(String path) {
+    public static String getExtension(String path)
+    {
         int dot = path.lastIndexOf('.');
         String ext = dot != -1 ? path.substring(dot + 1) : "";
-        if (ext.equalsIgnoreCase("gz")) {
+        if (ext.equalsIgnoreCase("gz"))
+        {
             String[] e = path.split("[.]");
             if (e.length >= 2)
+            {
                 ext = e[e.length - 2] + "." + e[e.length - 1];
+            }
         }
         return ext;
     }
-
-
-
 
 
 }

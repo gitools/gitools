@@ -1,156 +1,182 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JComponent;
-
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.MartLocation;
-
 import org.gitools.biomart.restful.model.DatasetInfo;
+import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.wizard.common.FilteredListPanel;
 
-public class BiomartDatasetPage extends AbstractWizardPage {
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-	private static class DatasetListWrapper {
+public class BiomartDatasetPage extends AbstractWizardPage
+{
 
-		private DatasetInfo dataset;
+    private static class DatasetListWrapper
+    {
 
-		public DatasetListWrapper(DatasetInfo dataset) {
-			this.dataset = dataset;
-		}
+        private DatasetInfo dataset;
 
-		public DatasetInfo getDataset() {
-			return dataset;
-		}
+        public DatasetListWrapper(DatasetInfo dataset)
+        {
+            this.dataset = dataset;
+        }
 
-		@Override
-		public String toString() {
-			return dataset.getDisplayName();
-		}
-	}
+        public DatasetInfo getDataset()
+        {
+            return dataset;
+        }
 
-	private final BiomartService biomartService;
+        @Override
+        public String toString()
+        {
+            return dataset.getDisplayName();
+        }
+    }
 
-	private MartLocation mart;
+    private final BiomartService biomartService;
 
-	private FilteredListPanel panelDataset;
+    private MartLocation mart;
 
-	private boolean updated;
+    private FilteredListPanel panelDataset;
 
-	public BiomartDatasetPage(BiomartService biomartService /*IBiomartService biomartService*/) {
-		super();
+    private boolean updated;
 
-		this.biomartService = biomartService;
+    public BiomartDatasetPage(BiomartService biomartService /*IBiomartService biomartService*/)
+    {
+        super();
 
-		this.mart = null;
-		updated = false;
+        this.biomartService = biomartService;
 
-		setTitle("Select dataset");
-	}
+        this.mart = null;
+        updated = false;
 
-	@Override
-	public JComponent createControls() {
-		panelDataset = new FilteredListPanel();
+        setTitle("Select dataset");
+    }
 
-		panelDataset.list.addListSelectionListener(new ListSelectionListener() {
+    @Override
+    public JComponent createControls()
+    {
+        panelDataset = new FilteredListPanel();
 
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				selectionChangeActionPerformed();
-			}
-		});
+        panelDataset.list.addListSelectionListener(new ListSelectionListener()
+        {
 
-		return panelDataset;
-	}
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                selectionChangeActionPerformed();
+            }
+        });
 
-	@Override
-	public void updateControls() {
+        return panelDataset;
+    }
 
-		if (mart == null) {
-			return;
-		}
+    @Override
+    public void updateControls()
+    {
 
-		if (updated) {
-			return;
-		}
+        if (mart == null)
+        {
+            return;
+        }
 
-		setStatus(MessageStatus.PROGRESS);
-		setMessage("Retrieving datasets for " + mart.getDisplayName() + " ...");
+        if (updated)
+        {
+            return;
+        }
 
-		panelDataset.setListData(new Object[]{});
+        setStatus(MessageStatus.PROGRESS);
+        setMessage("Retrieving datasets for " + mart.getDisplayName() + " ...");
 
-		new Thread(new Runnable() {
+        panelDataset.setListData(new Object[]{});
 
-			@Override
-			public void run() {
-				try {
-					List<DatasetInfo> dataSets = biomartService.getDatasets(mart);
-					final List<DatasetListWrapper> visibleDataSets = new ArrayList<DatasetListWrapper>();
-					for (DatasetInfo ds : dataSets) {
-						if (ds.getVisible() != 0) {
-							visibleDataSets.add(new DatasetListWrapper(ds));
-						}
-					}
+        new Thread(new Runnable()
+        {
 
-					SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    List<DatasetInfo> dataSets = biomartService.getDatasets(mart);
+                    final List<DatasetListWrapper> visibleDataSets = new ArrayList<DatasetListWrapper>();
+                    for (DatasetInfo ds : dataSets)
+                    {
+                        if (ds.getVisible() != 0)
+                        {
+                            visibleDataSets.add(new DatasetListWrapper(ds));
+                        }
+                    }
 
-						@Override
-						public void run() {
-							panelDataset.setListData(visibleDataSets.toArray(
-									new DatasetListWrapper[visibleDataSets.size()]));
+                    SwingUtilities.invokeAndWait(new Runnable()
+                    {
 
-							setMessage(MessageStatus.INFO, "");
-						}
-					});
+                        @Override
+                        public void run()
+                        {
+                            panelDataset.setListData(visibleDataSets.toArray(
+                                    new DatasetListWrapper[visibleDataSets.size()]));
 
-					updated = true;
-				} catch (Exception e) {
-					setStatus(MessageStatus.ERROR);
-					setMessage(e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}).start();
-	}
+                            setMessage(MessageStatus.INFO, "");
+                        }
+                    });
 
-	public void setMart(MartLocation mart) {
-		if (this.mart != mart) {
-			updated = false;
-		}
+                    updated = true;
+                } catch (Exception e)
+                {
+                    setStatus(MessageStatus.ERROR);
+                    setMessage(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
-		this.mart = mart;
-	}
+    public void setMart(MartLocation mart)
+    {
+        if (this.mart != mart)
+        {
+            updated = false;
+        }
 
-	public DatasetInfo getDataset() {
-		DatasetListWrapper wrapper = (DatasetListWrapper) panelDataset.getSelectedValue();
-		return wrapper.getDataset();
-	}
+        this.mart = mart;
+    }
 
-	private void selectionChangeActionPerformed() {
-		Object value = panelDataset.list.getSelectedValue();
-		setComplete(value != null);
-	}
+    public DatasetInfo getDataset()
+    {
+        DatasetListWrapper wrapper = (DatasetListWrapper) panelDataset.getSelectedValue();
+        return wrapper.getDataset();
+    }
+
+    private void selectionChangeActionPerformed()
+    {
+        Object value = panelDataset.list.getSelectedValue();
+        setComplete(value != null);
+    }
 }

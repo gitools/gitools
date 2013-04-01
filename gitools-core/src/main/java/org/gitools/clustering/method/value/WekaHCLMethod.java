@@ -1,150 +1,177 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.clustering.method.value;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import java.util.List;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.newick.NewickParser;
 import org.gitools.newick.NewickTree;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import weka.core.Instances;
 import weka.core.NormalizableDistance;
 import weka.core.SelectedTag;
 
+import java.util.List;
 
-public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
-	private SelectedTag linkType;
+public class WekaHCLMethod extends AbstractClusteringValueMethod
+{
 
-	private boolean distanceIsBranchLength;
+    private SelectedTag linkType;
 
-	private int numClusters;
+    private boolean distanceIsBranchLength;
 
-	private boolean printNewick;
-	
-	private NormalizableDistance distanceFunction;
+    private int numClusters;
 
-	public WekaHCLMethod() {
-		classIndex = -1;
-	}
+    private boolean printNewick;
 
-	@Override
-	public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
+    private NormalizableDistance distanceFunction;
 
-		try {
-			Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
+    public WekaHCLMethod()
+    {
+        classIndex = -1;
+    }
 
-			MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
+    @Override
+    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException
+    {
 
-			List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
+        try
+        {
+            Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
 
-			if (preprocess)
-				ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
+            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
-			WekaHierarchicalClusterer clusterer = new WekaHierarchicalClusterer();
+            List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
 
-			configure(clusterer);
+            if (preprocess)
+            {
+                ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
+            }
 
-			clusterer.buildClusterer(clusterWekaData);
+            WekaHierarchicalClusterer clusterer = new WekaHierarchicalClusterer();
 
-			ClusteringResults results = null;
+            configure(clusterer);
 
-			if (!monitor.isCancelled()) {
+            clusterer.buildClusterer(clusterWekaData);
 
-				monitor.end();
+            ClusteringResults results = null;
 
-				// Identify cluster by instance
-				monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
+            if (!monitor.isCancelled())
+            {
 
-				NewickParser newickParser = new NewickParser(clusterer.graph() + ";");
-				NewickTree tree = newickParser.parse();
+                monitor.end();
 
-				results = new HierarchicalClusteringResults(
-						labels.toArray(new String[labels.size()]),
-						tree, 0);
-			
-			}
+                // Identify cluster by instance
+                monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
 
-			return results;
+                NewickParser newickParser = new NewickParser(clusterer.graph() + ";");
+                NewickTree tree = newickParser.parse();
 
-		}
-		catch (Throwable ex) {
-			if (ex instanceof OutOfMemoryError)
-				throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
-			else
-				throw new ClusteringException(ex);
-		}
-	}
+                results = new HierarchicalClusteringResults(
+                        labels.toArray(new String[labels.size()]),
+                        tree, 0);
 
-	public NormalizableDistance getDistanceFunction() {
-		return distanceFunction;
-	}
+            }
 
-	public void setDistanceFunction(NormalizableDistance distanceFunction) {
-		this.distanceFunction = distanceFunction;
-	}
+            return results;
 
-	public boolean isDistanceIsBranchLength() {
-		return distanceIsBranchLength;
-	}
+        } catch (Throwable ex)
+        {
+            if (ex instanceof OutOfMemoryError)
+            {
+                throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
+            }
+            else
+            {
+                throw new ClusteringException(ex);
+            }
+        }
+    }
 
-	public void setDistanceIsBranchLength(boolean distanceIsBranchLength) {
-		this.distanceIsBranchLength = distanceIsBranchLength;
-	}
+    public NormalizableDistance getDistanceFunction()
+    {
+        return distanceFunction;
+    }
 
-	public SelectedTag getLinkType() {
-		return linkType;
-	}
+    public void setDistanceFunction(NormalizableDistance distanceFunction)
+    {
+        this.distanceFunction = distanceFunction;
+    }
 
-	public void setLinkType(SelectedTag linkType) {
-		this.linkType = linkType;
-	}
+    public boolean isDistanceIsBranchLength()
+    {
+        return distanceIsBranchLength;
+    }
 
-	public int getNumClusters() {
-		return numClusters;
-	}
+    public void setDistanceIsBranchLength(boolean distanceIsBranchLength)
+    {
+        this.distanceIsBranchLength = distanceIsBranchLength;
+    }
 
-	public void setNumClusters(int numClusters) {
-		this.numClusters = numClusters;
-	}
+    public SelectedTag getLinkType()
+    {
+        return linkType;
+    }
 
-	public boolean isPrintNewick() {
-		return printNewick;
-	}
+    public void setLinkType(SelectedTag linkType)
+    {
+        this.linkType = linkType;
+    }
 
-	public void setPrintNewick(boolean printNewick) {
-		this.printNewick = printNewick;
-	}
+    public int getNumClusters()
+    {
+        return numClusters;
+    }
 
-	private void configure(WekaHierarchicalClusterer clusterer) {
-		
-		clusterer.setDistanceFunction(distanceFunction);
+    public void setNumClusters(int numClusters)
+    {
+        this.numClusters = numClusters;
+    }
 
-		clusterer.setPrintNewick(printNewick);
+    public boolean isPrintNewick()
+    {
+        return printNewick;
+    }
 
-		clusterer.setNumClusters(numClusters);
+    public void setPrintNewick(boolean printNewick)
+    {
+        this.printNewick = printNewick;
+    }
 
-		clusterer.setLinkType(linkType);
+    private void configure(WekaHierarchicalClusterer clusterer)
+    {
 
-		clusterer.setDistanceIsBranchLength(distanceIsBranchLength);
-	}
+        clusterer.setDistanceFunction(distanceFunction);
+
+        clusterer.setPrintNewick(printNewick);
+
+        clusterer.setNumClusters(numClusters);
+
+        clusterer.setLinkType(linkType);
+
+        clusterer.setDistanceIsBranchLength(distanceIsBranchLength);
+    }
 
 }

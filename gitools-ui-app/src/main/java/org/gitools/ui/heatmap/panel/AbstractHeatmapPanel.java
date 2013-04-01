@@ -1,124 +1,150 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.heatmap.panel;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import javax.swing.JPanel;
-import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.matrix.model.IMatrixView;
 
-public class AbstractHeatmapPanel extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-	protected Heatmap heatmap;
+public class AbstractHeatmapPanel extends JPanel
+{
 
-	protected AbstractHeatmapDrawer drawer;
-	private final PropertyChangeListener heatmapListener;
+    protected Heatmap heatmap;
 
-	public AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer) {
-		this.heatmap = heatmap;
-		this.drawer = drawer;
+    protected AbstractHeatmapDrawer drawer;
+    private final PropertyChangeListener heatmapListener;
 
-		heatmapListener = new PropertyChangeListener() {
-			@Override public void propertyChange(PropertyChangeEvent evt) {
-				heatmapPropertyChanged(evt); } };
+    public AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer)
+    {
+        this.heatmap = heatmap;
+        this.drawer = drawer;
 
-		updateSubscriptions(null);
+        heatmapListener = new PropertyChangeListener()
+        {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                heatmapPropertyChanged(evt);
+            }
+        };
 
-		setPreferredSize(drawer.getSize());
+        updateSubscriptions(null);
 
-		setBorder(null);
-	}
+        setPreferredSize(drawer.getSize());
 
-	public Heatmap getHeatmap() {
-		return heatmap;
-	}
-	
-	public void setHeatmap(Heatmap heatmap) {
-		Heatmap old = this.heatmap;
-		this.heatmap = heatmap;
-		this.drawer.setHeatmap(heatmap);
-		updateSubscriptions(old);
-		setPreferredSize(drawer.getSize());
-	}
+        setBorder(null);
+    }
 
-	public AbstractHeatmapDrawer getDrawer() {
-		return drawer;
-	}
+    public Heatmap getHeatmap()
+    {
+        return heatmap;
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		Dimension size = drawer.getSize();
-		Rectangle box = new Rectangle(0, 0, size.width, size.height);
-		Rectangle clip = g.getClipBounds();
-		drawer.draw((Graphics2D) g, box, clip);
-	}
+    public void setHeatmap(Heatmap heatmap)
+    {
+        Heatmap old = this.heatmap;
+        this.heatmap = heatmap;
+        this.drawer.setHeatmap(heatmap);
+        updateSubscriptions(old);
+        setPreferredSize(drawer.getSize());
+    }
 
-	private void updateSubscriptions(Heatmap old) {
-		if (old != null) {
-			old.removePropertyChangeListener(heatmapListener);
-			/*old.getColumnLabelsHeader().removePropertyChangeListener(heatmapListener);
+    public AbstractHeatmapDrawer getDrawer()
+    {
+        return drawer;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        Dimension size = drawer.getSize();
+        Rectangle box = new Rectangle(0, 0, size.width, size.height);
+        Rectangle clip = g.getClipBounds();
+        drawer.draw((Graphics2D) g, box, clip);
+    }
+
+    private void updateSubscriptions(Heatmap old)
+    {
+        if (old != null)
+        {
+            old.removePropertyChangeListener(heatmapListener);
+            /*old.getColumnLabelsHeader().removePropertyChangeListener(heatmapListener);
 			old.getRowLabelsHeader().removePropertyChangeListener(heatmapListener);
 			old.getCellDecorator().removePropertyChangeListener(heatmapListener);
 			old.getMatrixView().removePropertyChangeListener(heatmapListener);*/
-		}
+        }
 
-		heatmap.addPropertyChangeListener(heatmapListener);
+        heatmap.addPropertyChangeListener(heatmapListener);
 		/*heatmap.getColumnLabelsHeader().addPropertyChangeListener(heatmapListener);
 		heatmap.getRowLabelsHeader().addPropertyChangeListener(heatmapListener);
 		heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
 		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);*/
-	}
+    }
 
-	protected void heatmapPropertyChanged(PropertyChangeEvent evt) {
-		String pname = evt.getPropertyName();
-		Object src = evt.getSource();
+    protected void heatmapPropertyChanged(PropertyChangeEvent evt)
+    {
+        String pname = evt.getPropertyName();
+        Object src = evt.getSource();
 
-		//System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
+        //System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
-		if (src.equals(heatmap)) {
-			if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
-				updateSize();
-		}
-		else if (src.equals(heatmap.getMatrixView())) {
-			if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
-					|| IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
-				updateSize();
-		}
-		else if (src.equals(heatmap.getRowDim())
-				|| src.equals(heatmap.getColumnDim())) {
-			
-			if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)
-					|| HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
-				updateSize();
-		}
+        if (src.equals(heatmap))
+        {
+            if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
+            {
+                updateSize();
+            }
+        }
+        else if (src.equals(heatmap.getMatrixView()))
+        {
+            if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
+                    || IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
+            {
+                updateSize();
+            }
+        }
+        else if (src.equals(heatmap.getRowDim())
+                || src.equals(heatmap.getColumnDim()))
+        {
 
-		repaint();
-	}
+            if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)
+                    || HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
+            {
+                updateSize();
+            }
+        }
 
-	public void updateSize() {
-		setPreferredSize(drawer.getSize());
-		revalidate();
-	}
+        repaint();
+    }
+
+    public void updateSize()
+    {
+        setPreferredSize(drawer.getSize());
+        revalidate();
+    }
 }

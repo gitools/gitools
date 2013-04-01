@@ -1,28 +1,32 @@
 /*
- *  Copyright 2012 michi.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
-import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 import org.apache.commons.io.FileUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.*;
+import org.gitools.utils.colorscale.NumericColorScale;
+import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 
 import java.awt.*;
 import java.io.*;
@@ -32,7 +36,8 @@ import java.util.regex.Pattern;
 /**
  * @author michi
  */
-public class DecoratorArchivePersistance {
+public class DecoratorArchivePersistance
+{
 
     private transient static XStream xstream;
 
@@ -47,7 +52,8 @@ public class DecoratorArchivePersistance {
     private static final String configFile =
             CONFIG_PATH + File.separator + configFileName;
 
-    public DecoratorArchivePersistance() {
+    public DecoratorArchivePersistance()
+    {
         xstream = new XStream();
 
         xstream.alias("decoratorArchive", DecoratorArchive.class);
@@ -85,31 +91,39 @@ public class DecoratorArchivePersistance {
         xstream.setMode(XStream.NO_REFERENCES);
     }
 
-    public void save(DecoratorArchive archive) {
+    public void save(DecoratorArchive archive)
+    {
         File path = new File(CONFIG_PATH);
         if (!path.exists())
+        {
             path.mkdirs();
+        }
 
-        try {
+        try
+        {
             FileWriter writer = new FileWriter(configFile);
 
             writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
             xstream.toXML(archive, writer);
             writer.close();
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public DecoratorArchive load() {
+    public DecoratorArchive load()
+    {
         DecoratorArchive decoratorArchive;
-        try {
+        try
+        {
             BufferedReader reader = new BufferedReader(new FileReader(configFile));
 
             String firstLine = reader.readLine();
 
-            if (!firstLine.matches("(.*)" + Pattern.quote("version " + DecoratorArchive.VERSION) + "(.*)")) {
+            if (!firstLine.matches("(.*)" + Pattern.quote("version " + DecoratorArchive.VERSION) + "(.*)"))
+            {
                 System.err.println("Current scales.xml file not compatible with current version.");
                 reader.close();
                 FileUtils.copyFile(new File(configFile), new File(configFile + ".backup"));
@@ -118,19 +132,23 @@ public class DecoratorArchivePersistance {
                 save(decoratorArchive);
                 System.err.println("Created scales file with defaults and there is a backup copy on " + configFileName + ".backup");
 
-            } else {
+            }
+            else
+            {
                 decoratorArchive = (DecoratorArchive) xstream.fromXML(reader, new DecoratorArchive());
                 reader.close();
             }
 
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             System.err.println("Settings file doesn't exist: " + configFile);
             System.err.println("Created scales file with defaults.");
             decoratorArchive = new DecoratorArchive();
             decoratorArchive.add(decoratorArchive.getDefaultElementDecoratros());
             save(decoratorArchive);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             decoratorArchive = new DecoratorArchive();
             e.printStackTrace();
         }

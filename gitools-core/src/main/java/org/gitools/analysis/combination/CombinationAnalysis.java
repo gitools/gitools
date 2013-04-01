@@ -1,20 +1,24 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.combination;
 
 import org.gitools.matrix.model.IMatrix;
@@ -25,72 +29,92 @@ import org.gitools.persistence.ResourceReference;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class CombinationAnalysis extends Analysis {
+public class CombinationAnalysis extends Analysis
+{
 
-	protected String sizeAttrName;
+    protected String sizeAttrName;
 
-	protected String pvalueAttrName;
+    protected String pvalueAttrName;
 
-	protected boolean transposeData;
+    protected boolean transposeData;
 
-	/** Modules */
-	protected ResourceReference<ModuleMap> groupsMap;
+    /**
+     * Modules
+     */
+    protected ResourceReference<ModuleMap> groupsMap;
 
-	/** Data */
-	protected ResourceReference<IMatrix> data;
+    /**
+     * Data
+     */
+    protected ResourceReference<IMatrix> data;
 
-	/** Results */
-	protected ResourceReference<IMatrix> results;
+    /**
+     * Results
+     */
+    protected ResourceReference<IMatrix> results;
 
-	public CombinationAnalysis() {
-		this.transposeData = false;
-	}
+    public CombinationAnalysis()
+    {
+        this.transposeData = false;
+    }
 
-	public String getSizeAttrName() {
-		return sizeAttrName;
-	}
+    public String getSizeAttrName()
+    {
+        return sizeAttrName;
+    }
 
-	public void setSizeAttrName(String sizeAttrName) {
-		this.sizeAttrName = sizeAttrName;
-	}
+    public void setSizeAttrName(String sizeAttrName)
+    {
+        this.sizeAttrName = sizeAttrName;
+    }
 
-	public String getPvalueAttrName() {
-		return pvalueAttrName;
-	}
+    public String getPvalueAttrName()
+    {
+        return pvalueAttrName;
+    }
 
-	public void setPvalueAttrName(String pvalueAttrName) {
-		this.pvalueAttrName = pvalueAttrName;
-	}
+    public void setPvalueAttrName(String pvalueAttrName)
+    {
+        this.pvalueAttrName = pvalueAttrName;
+    }
 
-	public boolean isTransposeData() {
-		return transposeData;
-	}
+    public boolean isTransposeData()
+    {
+        return transposeData;
+    }
 
-	public void setTransposeData(boolean transposeData) {
-		this.transposeData = transposeData;
-	}
+    public void setTransposeData(boolean transposeData)
+    {
+        this.transposeData = transposeData;
+    }
 
-	public ResourceReference<ModuleMap> getGroupsMap() {
-		return groupsMap;
-	}
+    public ResourceReference<ModuleMap> getGroupsMap()
+    {
+        return groupsMap;
+    }
 
-	public void setGroupsMap(ResourceReference<ModuleMap> groupsMap) {
-		this.groupsMap = groupsMap;
-	}
+    public void setGroupsMap(ResourceReference<ModuleMap> groupsMap)
+    {
+        this.groupsMap = groupsMap;
+    }
 
-	public ResourceReference<IMatrix> getData() {
-		return data;
-	}
+    public ResourceReference<IMatrix> getData()
+    {
+        return data;
+    }
 
-	public void setData(ResourceReference<IMatrix> data) {
-		this.data = data;
-	}
+    public void setData(ResourceReference<IMatrix> data)
+    {
+        this.data = data;
+    }
 
-	public ResourceReference<IMatrix> getResults() {
-		return results;
-	}
+    public ResourceReference<IMatrix> getResults()
+    {
+        return results;
+    }
 
-	public void setResults(ResourceReference<IMatrix> results) {
-		this.results = results;
-	}
+    public void setResults(ResourceReference<IMatrix> results)
+    {
+        this.results = results;
+    }
 }

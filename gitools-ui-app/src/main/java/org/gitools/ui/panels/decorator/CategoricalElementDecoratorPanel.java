@@ -1,24 +1,26 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.panels.decorator;
 
-import org.gitools.utils.colorscale.ColorScalePoint;
-import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.matrix.model.element.IElementAdapter;
@@ -29,6 +31,8 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.AbstractDialog;
+import org.gitools.utils.colorscale.ColorScalePoint;
+import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,67 +42,80 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPanel {
+public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPanel
+{
 
-	private static final long serialVersionUID = 8422331422677024364L;
+    private static final long serialVersionUID = 8422331422677024364L;
 
-	private CategoricalElementDecorator decorator;
+    private CategoricalElementDecorator decorator;
 
-	private JComboBox valueCb;
+    private JComboBox valueCb;
 
-	private ColorChooserLabel emptyCc;
-    
+    private ColorChooserLabel emptyCc;
+
     private String categoriesLabelText = " Categories:";
     private JLabel categoriesLabel = new JLabel(categoriesLabelText);
 
-	public CategoricalElementDecoratorPanel(Heatmap model) {
-		super(model);
-	
-		this.decorator = (CategoricalElementDecorator) model.getActiveCellDecorator();
+    public CategoricalElementDecoratorPanel(Heatmap model)
+    {
+        super(model);
 
-		final IElementAdapter adapter = decorator.getAdapter();
-		
-		valueProperties = new ArrayList<IndexedProperty>();
-		loadAllProperties(valueProperties, adapter);
-		
-		createComponents();
-	}
+        this.decorator = (CategoricalElementDecorator) model.getActiveCellDecorator();
 
-	private void createComponents() {
-		valueCb = new JComboBox(new DefaultComboBoxModel(valueProperties.toArray()));
-		
-		valueCb.addItemListener(new ItemListener() {
-			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					valueChanged();
-				}
-			}
-		});
-	
+        final IElementAdapter adapter = decorator.getAdapter();
 
-		emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
-		emptyCc.setToolTipText("Empty cell color");
-		emptyCc.addColorChangeListener(new ColorChangeListener() {
-			@Override public void colorChanged(Color color) {
-				decorator.setEmptyColor(color); }
-		});
+        valueProperties = new ArrayList<IndexedProperty>();
+        loadAllProperties(valueProperties, adapter);
 
-		refresh();
+        createComponents();
+    }
 
-		Dimension boxSpace = new Dimension(3, 3);
+    private void createComponents()
+    {
+        valueCb = new JComboBox(new DefaultComboBoxModel(valueProperties.toArray()));
 
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		add(new JLabel("Value"));
-		add(valueCb);
-        
+        valueCb.addItemListener(new ItemListener()
+        {
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                {
+                    valueChanged();
+                }
+            }
+        });
+
+
+        emptyCc = new ColorChooserLabel(decorator.getEmptyColor());
+        emptyCc.setToolTipText("Empty cell color");
+        emptyCc.addColorChangeListener(new ColorChangeListener()
+        {
+            @Override
+            public void colorChanged(Color color)
+            {
+                decorator.setEmptyColor(color);
+            }
+        });
+
+        refresh();
+
+        Dimension boxSpace = new Dimension(3, 3);
+
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        add(new JLabel("Value"));
+        add(valueCb);
+
         int catCount = decorator.getCategoriesCount();
         categoriesLabel.setText(catCount + categoriesLabelText);
         Box box02 = new Box(BoxLayout.LINE_AXIS);
         box02.add(categoriesLabel);
         JButton categoryEditBtn = new JButton("edit");
-        categoryEditBtn.addActionListener(new ActionListener() {
+        categoryEditBtn.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 editCategoricalColorScale();
             }
         });
@@ -106,15 +123,15 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
         add(box02);
 
 
-
         Box box01 = new Box(BoxLayout.LINE_AXIS);
         box01.add(new JLabel(" Empty"));
         box01.add(Box.createRigidArea(boxSpace));
         box01.add(emptyCc);
         add(box01);
-	}
+    }
 
-    private void editCategoricalColorScale() {
+    private void editCategoricalColorScale()
+    {
 
 
         CategoricalElementDecorator elementDecorator = (CategoricalElementDecorator) model.getActiveCellDecorator();
@@ -124,23 +141,26 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
         ColoredLabel[] coloredLabels = new ColoredLabel[scalePoints.length];
         int index = 0;
-        for (ColorScalePoint sp : scalePoints) {
-            coloredLabels[index] = new ColoredLabel(sp.getValue(),sp.getName(),sp.getColor());
+        for (ColorScalePoint sp : scalePoints)
+        {
+            coloredLabels[index] = new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor());
             index++;
         }
 
-        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.instance(), coloredLabels);
+        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.get(), coloredLabels);
         dialog.getPage().setValueMustBeNumeric(true);
         dialog.setVisible(true);
-        if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {
+        if (dialog.getReturnStatus() == AbstractDialog.RET_OK)
+        {
             coloredLabels = dialog.getPage().getColoredLabels();
 
             ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.length];
             index = 0;
-            for (ColoredLabel cl : coloredLabels) {
-                newScalePoints[index] = new ColorScalePoint( Double.parseDouble(cl.getValue()),
-                                                             cl.getColor(),
-                                                             cl.getDisplayedLabel());
+            for (ColoredLabel cl : coloredLabels)
+            {
+                newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()),
+                        cl.getColor(),
+                        cl.getDisplayedLabel());
                 index++;
             }
 
@@ -149,46 +169,56 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
         }
     }
 
-    private void updateCategoriesLabel() {
+    private void updateCategoriesLabel()
+    {
         int catCount = decorator.getCategoriesCount();
         categoriesLabel.setText(catCount + categoriesLabelText);
     }
 
-    private void refresh() {
-		for (int i = 0; i < valueProperties.size(); i++)
-			if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
-				valueCb.setSelectedIndex(i);
-		
-		getTable().setSelectedPropertyIndex(decorator.getValueIndex());
-	}
-	
-	private void valueChanged() {
-		IndexedProperty propAdapter = 
-			(IndexedProperty) valueCb.getSelectedItem();
+    private void refresh()
+    {
+        for (int i = 0; i < valueProperties.size(); i++)
+            if (valueProperties.get(i).getIndex() == decorator.getValueIndex())
+            {
+                valueCb.setSelectedIndex(i);
+            }
 
-		model.switchActiveCellDecorator(propAdapter.getIndex());
-		changeDecorator();
-		
-		decorator.setValueIndex(propAdapter.getIndex());
+        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+    }
+
+    private void valueChanged()
+    {
+        IndexedProperty propAdapter =
+                (IndexedProperty) valueCb.getSelectedItem();
+
+        model.switchActiveCellDecorator(propAdapter.getIndex());
+        changeDecorator();
+
+        decorator.setValueIndex(propAdapter.getIndex());
         updateCategoriesLabel();
-		getTable().setSelectedPropertyIndex(propAdapter.getIndex());
-	}
+        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+    }
 
-	private void changeDecorator() {
+    private void changeDecorator()
+    {
 
         ElementDecorator elementDecorator = model.getActiveCellDecorator();
-        if (elementDecorator instanceof  CategoricalElementDecorator)
-    		this.decorator = (CategoricalElementDecorator) elementDecorator;
+        if (elementDecorator instanceof CategoricalElementDecorator)
+        {
+            this.decorator = (CategoricalElementDecorator) elementDecorator;
+        }
         else
+        {
             return;
+        }
 
-		emptyCc.setColor(decorator.getEmptyColor());
+        emptyCc.setColor(decorator.getEmptyColor());
 
-	}
+    }
 
 
 	/*protected void maxValueChanged() {
-		try {
+        try {
 			double value = Double.parseDouble(maxValTxt.getText());
 			//decorator.setMaxValue(value);
 

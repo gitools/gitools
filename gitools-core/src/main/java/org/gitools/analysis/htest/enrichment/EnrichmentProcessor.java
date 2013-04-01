@@ -1,231 +1,261 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.analysis.htest.enrichment;
 
 import cern.colt.function.DoubleFunction;
-import java.util.Date;
+import cern.colt.matrix.DoubleFactory1D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectFactory1D;
+import cern.colt.matrix.ObjectMatrix1D;
+import cern.jet.math.Functions;
+import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.htest.HtestProcessor;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
-
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.model.ModuleMap;
 import org.gitools.stats.mtc.MTC;
+import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.threads.ThreadManager;
 import org.gitools.threads.ThreadQueue;
 import org.gitools.threads.ThreadSlot;
-
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectMatrix1D;
-import cern.jet.math.Functions;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.htest.HtestProcessor;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.ModuleMap;
-import org.gitools.stats.mtc.MTCFactory;
+
+import java.util.Date;
 
 /* Notes:
  * 'cond' is an abbreviation for condition.
  */
 
-public class EnrichmentProcessor extends HtestProcessor {
+public class EnrichmentProcessor extends HtestProcessor
+{
 
-	private class RunSlot extends ThreadSlot {
-		public DoubleMatrix1D population;
-		public Test test;
-		
-		public RunSlot(ThreadQueue threadQueue) {
-			super(threadQueue);
-			population = null;
-			test = null;
-		}
-	}
+    private class RunSlot extends ThreadSlot
+    {
+        public DoubleMatrix1D population;
+        public Test test;
 
-	private EnrichmentAnalysis analysis;
-	
-	public EnrichmentProcessor(EnrichmentAnalysis analysis) {
-		
-		this.analysis = analysis;
-	}
-	
-	@Override
-	public void run(IProgressMonitor monitor) throws AnalysisException {
-		
-		Date startTime = new Date();
-		
-		TestFactory testFactory = 
-			TestFactory.createFactory(analysis.getTestConfig());
+        public RunSlot(ThreadQueue threadQueue)
+        {
+            super(threadQueue);
+            population = null;
+            test = null;
+        }
+    }
 
-		IMatrix dataMatrix = analysis.getData();
+    private EnrichmentAnalysis analysis;
 
-		final int numConditions = dataMatrix.getColumnCount();
-		final int numRows = dataMatrix.getRowCount();
+    public EnrichmentProcessor(EnrichmentAnalysis analysis)
+    {
 
-		String[] labels = new String[numRows];
-		for (int i = 0; i < labels.length; i++)
-			labels[i] = dataMatrix.getRowLabel(i);
+        this.analysis = analysis;
+    }
 
-		ModuleMap mmap = analysis.getModuleMap();
-		mmap = mmap.remap(labels,
-				analysis.getMinModuleSize(),
-				analysis.getMaxModuleSize());
+    @Override
+    public void run(IProgressMonitor monitor) throws AnalysisException
+    {
 
-		//DoubleMatrix2D data = null;
-		ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumnCount());
-		for (int i = 0; i < numConditions; i++)
-			conditions.setQuick(i, dataMatrix.getColumnLabel(i));
+        Date startTime = new Date();
 
-		ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
-		
-		int[][] moduleItemIndices = mmap.getAllItemIndices();
-		
-		final int numModules = modules.size();
-		
-		monitor.begin("Running enrichment analysis...", numConditions);
-		
-		Test test = testFactory.create();
-		
-		final ObjectMatrix resultsMatrix = new ObjectMatrix();
-		
-		resultsMatrix.setColumns(conditions);
-		resultsMatrix.setRows(modules);
-		resultsMatrix.makeCells();
-		
-		resultsMatrix.setCellAdapter(
-				new BeanElementAdapter(test.getResultClass()));
-		
-		int numProcs = ThreadManager.getNumThreads();
-		
-		ThreadQueue threadQueue = new ThreadQueue(numProcs);
-		
-		for (int i = 0; i < numProcs; i++)
-			try {
-				threadQueue.put(new RunSlot(threadQueue));
-			} catch (InterruptedException e) {
-				monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
-			}
+        TestFactory testFactory =
+                TestFactory.createFactory(analysis.getTestConfig());
 
-		final int minModuleSize = analysis.getMinModuleSize();
-		final int maxModuleSize = analysis.getMaxModuleSize();
+        IMatrix dataMatrix = analysis.getData();
+
+        final int numConditions = dataMatrix.getColumnCount();
+        final int numRows = dataMatrix.getRowCount();
+
+        String[] labels = new String[numRows];
+        for (int i = 0; i < labels.length; i++)
+            labels[i] = dataMatrix.getRowLabel(i);
+
+        ModuleMap mmap = analysis.getModuleMap();
+        mmap = mmap.remap(labels,
+                analysis.getMinModuleSize(),
+                analysis.getMaxModuleSize());
+
+        //DoubleMatrix2D data = null;
+        ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumnCount());
+        for (int i = 0; i < numConditions; i++)
+            conditions.setQuick(i, dataMatrix.getColumnLabel(i));
+
+        ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
+
+        int[][] moduleItemIndices = mmap.getAllItemIndices();
+
+        final int numModules = modules.size();
+
+        monitor.begin("Running enrichment analysis...", numConditions);
+
+        Test test = testFactory.create();
+
+        final ObjectMatrix resultsMatrix = new ObjectMatrix();
+
+        resultsMatrix.setColumns(conditions);
+        resultsMatrix.setRows(modules);
+        resultsMatrix.makeCells();
+
+        resultsMatrix.setCellAdapter(
+                new BeanElementAdapter(test.getResultClass()));
+
+        int numProcs = ThreadManager.getNumThreads();
+
+        ThreadQueue threadQueue = new ThreadQueue(numProcs);
+
+        for (int i = 0; i < numProcs; i++)
+            try
+            {
+                threadQueue.put(new RunSlot(threadQueue));
+            } catch (InterruptedException e)
+            {
+                monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
+            }
+
+        final int minModuleSize = analysis.getMinModuleSize();
+        final int maxModuleSize = analysis.getMaxModuleSize();
 
 		/* Test analysis */
-		
-		for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++) {
-			
-			//final String condName = conditions.getQuick(condIndex).toString();
-			final String condName = dataMatrix.getColumnLabel(condIndex);
-			
-			//final DoubleMatrix1D condItems = data.viewRow(condIndex);
-			final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
-			for (int i = 0; i < numRows; i++) {
-				double value = MatrixUtils.doubleValue(
-						dataMatrix.getCellValue(i, condIndex, 0));
 
-				condItems.setQuick(i, value);
-			}
+        for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++)
+        {
 
-			DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
-			
-			final IProgressMonitor condMonitor = monitor.subtask();
-			
-			condMonitor.begin("Condition " + condName + "...", numModules);
-			
-			for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
+            //final String condName = conditions.getQuick(condIndex).toString();
+            final String condName = dataMatrix.getColumnLabel(condIndex);
 
-				final String moduleName = modules.getQuick(moduleIndex).toString();
-				final int[] itemIndices = moduleItemIndices[moduleIndex];
-				
-				final RunSlot slot;
-				try {
-					slot = (RunSlot) threadQueue.take();
-				} catch (InterruptedException ex) {
-					throw new AnalysisException(ex);
-				}
-				
-				if (slot.population != population) {
-					slot.population = population;
-					slot.test = testFactory.create();
-					slot.test.processPopulation(condName, population);
-				}
-				
-				final int condIdx = condIndex;
-				final int moduleIdx = moduleIndex;
-				
-				slot.execute(new Runnable() {
-					@Override public void run() {
-						CommonResult result = null;
-						try {
-							int moduleSize = (int) condItems
-									.viewSelection(itemIndices)
-									.aggregate(
-										Functions.plus,
-										new DoubleFunction() {
-											@Override public double apply(double d) {
-												return Double.isNaN(d) ? 0 : 1; } });
+            //final DoubleMatrix1D condItems = data.viewRow(condIndex);
+            final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
+            for (int i = 0; i < numRows; i++)
+            {
+                double value = MatrixUtils.doubleValue(
+                        dataMatrix.getCellValue(i, condIndex, 0));
 
-							if (moduleSize >= minModuleSize	&& moduleSize <= maxModuleSize)
-								result = slot.test.processTest(
-										condName, condItems,
-										moduleName, itemIndices);
-						}
-						catch (Throwable cause) {
-							cause.printStackTrace();
-						}
+                condItems.setQuick(i, value);
+            }
 
-						try {
-							resultsMatrix.setCell(moduleIdx, condIdx, result);
-						}
-						catch (Throwable cause) {
-							cause.printStackTrace();
-						}
-					}
-				});
-				
-				condMonitor.worked(1);
-			}
+            DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
 
-			condMonitor.end();
-			monitor.worked(1);
-		}
-		
-		ThreadManager.shutdown(monitor);
+            final IProgressMonitor condMonitor = monitor.subtask();
 
-		if (monitor.isCancelled())
-			return;
+            condMonitor.begin("Condition " + condName + "...", numModules);
+
+            for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++)
+            {
+
+                final String moduleName = modules.getQuick(moduleIndex).toString();
+                final int[] itemIndices = moduleItemIndices[moduleIndex];
+
+                final RunSlot slot;
+                try
+                {
+                    slot = (RunSlot) threadQueue.take();
+                } catch (InterruptedException ex)
+                {
+                    throw new AnalysisException(ex);
+                }
+
+                if (slot.population != population)
+                {
+                    slot.population = population;
+                    slot.test = testFactory.create();
+                    slot.test.processPopulation(condName, population);
+                }
+
+                final int condIdx = condIndex;
+                final int moduleIdx = moduleIndex;
+
+                slot.execute(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        CommonResult result = null;
+                        try
+                        {
+                            int moduleSize = (int) condItems
+                                    .viewSelection(itemIndices)
+                                    .aggregate(
+                                            Functions.plus,
+                                            new DoubleFunction()
+                                            {
+                                                @Override
+                                                public double apply(double d)
+                                                {
+                                                    return Double.isNaN(d) ? 0 : 1;
+                                                }
+                                            });
+
+                            if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize)
+                            {
+                                result = slot.test.processTest(
+                                        condName, condItems,
+                                        moduleName, itemIndices);
+                            }
+                        } catch (Throwable cause)
+                        {
+                            cause.printStackTrace();
+                        }
+
+                        try
+                        {
+                            resultsMatrix.setCell(moduleIdx, condIdx, result);
+                        } catch (Throwable cause)
+                        {
+                            cause.printStackTrace();
+                        }
+                    }
+                });
+
+                condMonitor.worked(1);
+            }
+
+            condMonitor.end();
+            monitor.worked(1);
+        }
+
+        ThreadManager.shutdown(monitor);
+
+        if (monitor.isCancelled())
+        {
+            return;
+        }
 
 		/* Multiple test correction */
-		
-		MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-		multipleTestCorrection(
-				resultsMatrix, 
-				mtc,
-				monitor.subtask());
+        MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-		analysis.setStartTime(startTime);
-		analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-		
-		analysis.setResults(resultsMatrix);
-		
-		monitor.end();
-	}
+        multipleTestCorrection(
+                resultsMatrix,
+                mtc,
+                monitor.subtask());
+
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
+
+        analysis.setResults(resultsMatrix);
+
+        monitor.end();
+    }
 }

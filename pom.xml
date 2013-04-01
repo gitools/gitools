@@ -11,17 +11,10 @@
     <url>https://bg.upf.edu/forge/projects/gitools</url>
 
     <organization>
-        <name>Biomedical Genomics Lab</name>
+        <name>Universitat Pompeu Fabra - Biomedical Genomics group</name>
         <url>http://bg.upf.edu</url>
     </organization>
 
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>manual</distribution>
-        </license>
-    </licenses>
 
     <issueManagement>
         <system>Github</system>
@@ -48,6 +41,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <license.licenseName>gpl_v3</license.licenseName>
+        <license.inceptionYear>2013</license.inceptionYear>
     </properties>
 
     <repositories>
@@ -215,6 +210,12 @@
                 <version>3.8</version>
             </dependency>
 
+            <dependency>
+                <groupId>weblookandfeel</groupId>
+                <artifactId>weblookandfeel</artifactId>
+                <version>1.5.beta</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -263,6 +264,36 @@
                     </descriptors>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <verbose>false</verbose>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                    <roots>
+                        <root>src/main/java</root>
+                        <root>src/test/java</root>
+                    </roots>
+                    <excludes>
+                        <exclude>org/gitools/ui/genomespace/dm/*.java</exclude>
+                        <exclude>org/gitools/ui/genomespace/GS*.java</exclude>
+                        <exclude>org/gitools/utils/csv/CSVParser.java</exclude>
+                        <exclude>org/gitools/utils/csv/CSVReader.java</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
 
         <pluginManagement>
@@ -275,7 +306,7 @@
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <classpathPrefix />
+                                <classpathPrefix/>
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             </manifest>

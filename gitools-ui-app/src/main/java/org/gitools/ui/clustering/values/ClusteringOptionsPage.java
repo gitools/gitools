@@ -1,116 +1,140 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.clustering.values;
 
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-public class ClusteringOptionsPage extends AbstractWizardPage {
+import javax.swing.*;
+import java.util.List;
 
-	// model wrapper
-	private static class MatrixAttributeWrapper {
+public class ClusteringOptionsPage extends AbstractWizardPage
+{
 
-		private IElementAttribute attribute;
+    // model wrapper
+    private static class MatrixAttributeWrapper
+    {
 
-		public MatrixAttributeWrapper(IElementAttribute a) {
-			this.attribute = a;
-		}
+        private IElementAttribute attribute;
 
-		public IElementAttribute getMatrixAttribute() {
-			return attribute;
-		}
+        public MatrixAttributeWrapper(IElementAttribute a)
+        {
+            this.attribute = a;
+        }
 
-		public void setMatrixAttribute(IElementAttribute a) {
-			this.attribute = a;
-		}
+        public IElementAttribute getMatrixAttribute()
+        {
+            return attribute;
+        }
 
-		@Override
-		public String toString() {
-			return attribute.getName();
-		}
-	}
+        public void setMatrixAttribute(IElementAttribute a)
+        {
+            this.attribute = a;
+        }
 
-	public ClusteringOptionsPage(List<IElementAttribute> cellAttributes, int index) {
-		
-		initComponents();
+        @Override
+        public String toString()
+        {
+            return attribute.getName();
+        }
+    }
 
-		DefaultComboBoxModel model = new DefaultComboBoxModel();
-		MatrixAttributeWrapper attrWrapper = null;
-		for (IElementAttribute attr : cellAttributes) {
-			attrWrapper = new MatrixAttributeWrapper(attr);
-			model.addElement(attrWrapper);
-		}
+    public ClusteringOptionsPage(List<IElementAttribute> cellAttributes, int index)
+    {
 
-		attributeCb.setModel(model);
-		attributeCb.setSelectedIndex(index);
+        initComponents();
 
-		newickChk.setVisible(false);
-		
-		setTitle("Clustering options");
-		setComplete(true);
-	}
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        MatrixAttributeWrapper attrWrapper = null;
+        for (IElementAttribute attr : cellAttributes)
+        {
+            attrWrapper = new MatrixAttributeWrapper(attr);
+            model.addElement(attrWrapper);
+        }
 
-	public int getDataAttribute() {
-		return attributeCb.getSelectedIndex();
-	}
+        attributeCb.setModel(model);
+        attributeCb.setSelectedIndex(index);
 
-	public boolean isApplyToRows() {
-		return rowsRadio.isSelected();
-	}
+        newickChk.setVisible(false);
 
-	public boolean isPreprocessing() {
-		return preprocessingChk.isSelected();
-	}
+        setTitle("Clustering options");
+        setComplete(true);
+    }
 
-	public boolean isSort() {
-		return sortChk.isSelected();
-	}
+    public int getDataAttribute()
+    {
+        return attributeCb.getSelectedIndex();
+    }
 
-	public boolean isHeaderSelected() {
-		return headerChk.isSelected();
-	}
+    public boolean isApplyToRows()
+    {
+        return rowsRadio.isSelected();
+    }
 
-	public void setHeaderEnabled(boolean res) {
-		headerChk.setEnabled(res);
-	}
+    public boolean isPreprocessing()
+    {
+        return preprocessingChk.isSelected();
+    }
 
-	public boolean isNewickExportVisible() {
-		return newickChk.isVisible();
-	}
+    public boolean isSort()
+    {
+        return sortChk.isSelected();
+    }
 
-	public void setNewickExportVisible(boolean enabled) {
-		newickChk.setVisible(enabled);
-	}
+    public boolean isHeaderSelected()
+    {
+        return headerChk.isSelected();
+    }
 
-	public boolean isNewickExportSelected() {
-		return newickChk.isVisible() && newickChk.isSelected();
-	}
-	
-    /** This method is called from within the constructor to
+    public void setHeaderEnabled(boolean res)
+    {
+        headerChk.setEnabled(res);
+    }
+
+    public boolean isNewickExportVisible()
+    {
+        return newickChk.isVisible();
+    }
+
+    public void setNewickExportVisible(boolean enabled)
+    {
+        newickChk.setVisible(enabled);
+    }
+
+    public boolean isNewickExportSelected()
+    {
+        return newickChk.isVisible() && newickChk.isSelected();
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         optGroup = new javax.swing.ButtonGroup();
         jLabel5 = new javax.swing.JLabel();
@@ -147,51 +171,51 @@ public class ClusteringOptionsPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(columnsRadio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rowsRadio)
-                        .addGap(307, 307, 307))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributeCb, 0, 418, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(preprocessingChk)
-                            .addComponent(sortChk))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(headerChk)
-                    .addComponent(newickChk))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(columnsRadio)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(rowsRadio)
+                                                .addGap(307, 307, 307))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(attributeCb, 0, 418, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(preprocessingChk)
+                                                        .addComponent(sortChk))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(headerChk)
+                                        .addComponent(newickChk))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(columnsRadio)
-                    .addComponent(rowsRadio))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(preprocessingChk)
-                .addGap(18, 18, 18)
-                .addComponent(sortChk)
-                .addGap(18, 18, 18)
-                .addComponent(headerChk)
-                .addGap(18, 18, 18)
-                .addComponent(newickChk)
-                .addContainerGap(74, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(columnsRadio)
+                                        .addComponent(rowsRadio))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(preprocessingChk)
+                                .addGap(18, 18, 18)
+                                .addComponent(sortChk)
+                                .addGap(18, 18, 18)
+                                .addComponent(headerChk)
+                                .addGap(18, 18, 18)
+                                .addComponent(newickChk)
+                                .addContainerGap(74, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -1,34 +1,39 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.model.decorator.impl;
 
-import org.gitools.utils.colorscale.IColorScale;
-import org.gitools.utils.colorscale.impl.BinaryColorScale;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.impl.BinaryColorScale;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.formatter.GenericFormatter;
 
 import java.awt.*;
 
-public class BinaryElementDecorator extends ElementDecorator {
+public class BinaryElementDecorator extends ElementDecorator
+{
 
     private static final long serialVersionUID = 8832886601133057329L;
 
@@ -38,11 +43,13 @@ public class BinaryElementDecorator extends ElementDecorator {
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
 
-    public BinaryElementDecorator() {
+    public BinaryElementDecorator()
+    {
         this(null);
     }
 
-    public BinaryElementDecorator(IElementAdapter adapter) {
+    public BinaryElementDecorator(IElementAdapter adapter)
+    {
         super(adapter);
 
         valueIndex = getPropertyIndex(new String[]{"value"});
@@ -50,61 +57,73 @@ public class BinaryElementDecorator extends ElementDecorator {
         this.scale = new BinaryColorScale();
     }
 
-    public int getValueIndex() {
+    public int getValueIndex()
+    {
         return valueIndex;
     }
 
-    public void setValueIndex(int valueIndex) {
+    public void setValueIndex(int valueIndex)
+    {
         int old = this.valueIndex;
         this.valueIndex = valueIndex;
         firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
     }
 
-    public CutoffCmp getCutoffCmp() {
+    public CutoffCmp getCutoffCmp()
+    {
         return CutoffCmp.getFromName(scale.getComparator());
     }
 
-    public void setCutoffCmp(CutoffCmp cutoffCmp) {
+    public void setCutoffCmp(CutoffCmp cutoffCmp)
+    {
         CutoffCmp old = getCutoffCmp();
         this.scale.setComparator(cutoffCmp.getShortName());
         firePropertyChange(PROPERTY_CHANGED, old, cutoffCmp);
     }
 
-    public double getCutoff() {
+    public double getCutoff()
+    {
         return scale.getCutoff();
     }
 
-    public void setCutoff(double cutoff) {
+    public void setCutoff(double cutoff)
+    {
         double old = scale.getCutoff();
         this.scale.setCutoff(cutoff);
         firePropertyChange(PROPERTY_CHANGED, old, cutoff);
     }
 
-    public Color getColor() {
+    public Color getColor()
+    {
         return scale.getMaxColor();
     }
 
-    public void setColor(Color color) {
+    public void setColor(Color color)
+    {
         Color old = scale.getMaxColor();
         this.scale.setMaxColor(color);
         firePropertyChange(PROPERTY_CHANGED, old, color);
     }
 
-    public Color getNonSignificantColor() {
+    public Color getNonSignificantColor()
+    {
         return scale.getMinColor();
     }
 
-    public void setNonSignificantColor(Color color) {
+    public void setNonSignificantColor(Color color)
+    {
         Color old = scale.getMinColor();
         this.scale.setMinColor(color);
         firePropertyChange(PROPERTY_CHANGED, old, color);
     }
 
-    public Color getEmptyColor() {
+    public Color getEmptyColor()
+    {
         return scale.getEmptyColor();
     }
 
-    public void setEmptyColor(Color color) {
+    public void setEmptyColor(Color color)
+    {
         Color old = scale.getEmptyColor();
         scale.setEmptyColor(color);
         firePropertyChange(PROPERTY_CHANGED, old, color);
@@ -113,7 +132,8 @@ public class BinaryElementDecorator extends ElementDecorator {
     @Override
     public void decorate(
             ElementDecoration decoration,
-            Object element) {
+            Object element)
+    {
 
         decoration.reset();
 
@@ -121,7 +141,8 @@ public class BinaryElementDecorator extends ElementDecorator {
 
         double v = MatrixUtils.doubleValue(value);
 
-        if (element == null || Double.isNaN(v)) {
+        if (element == null || Double.isNaN(v))
+        {
             decoration.setBgColor(scale.getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;
@@ -144,7 +165,8 @@ public class BinaryElementDecorator extends ElementDecorator {
     }
 
     @Override
-    public IColorScale getScale() {
+    public IColorScale getScale()
+    {
         return scale;
     }
 }

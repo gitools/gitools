@@ -1,78 +1,88 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.idtype;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IdType {
+public class IdType
+{
 
-	@XmlAttribute
-	protected String key;
-	
-	@XmlElement
-	protected String title;
+    @XmlAttribute
+    protected String key;
 
-	@XmlElement(name = "link")
-	protected List<UrlLink> links = new ArrayList<UrlLink>(0);
+    @XmlElement
+    protected String title;
 
-	public IdType() {
-		this(null, null);
-	}
+    @XmlElement(name = "link")
+    protected List<UrlLink> links = new ArrayList<UrlLink>(0);
 
-	public IdType(String key, String title) {
-		this.key = key;
-		this.title = title;
-	}
+    public IdType()
+    {
+        this(null, null);
+    }
 
-	public String getKey() {
-		return key;
-	}
+    public IdType(String key, String title)
+    {
+        this.key = key;
+        this.title = title;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public String getKey()
+    {
+        return key;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setKey(String key)
+    {
+        this.key = key;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getTitle()
+    {
+        return title;
+    }
 
-	public List<UrlLink> getLinks() {
-		return links;
-	}
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
 
-	public void setLinks(List<UrlLink> links) {
-		this.links = links;
-	}
+    public List<UrlLink> getLinks()
+    {
+        return links;
+    }
 
-	@Override
-	public String toString() {
-		return title;
-	}
+    public void setLinks(List<UrlLink> links)
+    {
+        this.links = links;
+    }
+
+    @Override
+    public String toString()
+    {
+        return title;
+    }
 }

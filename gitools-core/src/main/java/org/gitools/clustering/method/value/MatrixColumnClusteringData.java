@@ -1,108 +1,131 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.clustering.method.value;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.IMatrix;
 
-public class MatrixColumnClusteringData implements ClusteringData {
+public class MatrixColumnClusteringData implements ClusteringData
+{
 
-	public class Instance implements ClusteringDataInstance {
+    public class Instance implements ClusteringDataInstance
+    {
 
-		private int index;
+        private int index;
 
-		public Instance(int index) {
-			this.index = index;
-		}
+        public Instance(int index)
+        {
+            this.index = index;
+        }
 
-		@Override
-		public int getNumAttributes() {
-			return matrix.getRowCount();
-		}
+        @Override
+        public int getNumAttributes()
+        {
+            return matrix.getRowCount();
+        }
 
-		@Override
-		public String getAttributeName(int attribute) {
-			return matrix.getRowLabel(attribute);
-		}
+        @Override
+        public String getAttributeName(int attribute)
+        {
+            return matrix.getRowLabel(attribute);
+        }
 
-		@Override
-		public Class<?> getValueClass(int attribute) {
-			return attributeClass;
-		}
+        @Override
+        public Class<?> getValueClass(int attribute)
+        {
+            return attributeClass;
+        }
 
-		@Override
-		public Object getValue(int attribute) {
-			return matrix.getCellValue(attribute, index, matrixAttribute);
-		}
+        @Override
+        public Object getValue(int attribute)
+        {
+            return matrix.getCellValue(attribute, index, matrixAttribute);
+        }
 
-		@Override
-		public <T> T getTypedValue(int attribute, Class<T> valueClass) {
-			if (!valueClass.equals(getValueClass(attribute)))
-				throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
+        @Override
+        public <T> T getTypedValue(int attribute, Class<T> valueClass)
+        {
+            if (!valueClass.equals(getValueClass(attribute)))
+            {
+                throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
+            }
 
-			return (T) matrix.getCellValue(attribute, index, matrixAttribute);
-		}
-	}
+            return (T) matrix.getCellValue(attribute, index, matrixAttribute);
+        }
+    }
 
-	private IMatrix matrix;
-	private int matrixAttribute;
-	private Class<?> attributeClass;
+    private IMatrix matrix;
+    private int matrixAttribute;
+    private Class<?> attributeClass;
 
-	public MatrixColumnClusteringData(IMatrix matrix, int matrixAttribute) {
-		this.matrix = matrix;
-		this.matrixAttribute = matrixAttribute;
-		this.attributeClass = matrix.getCellAttributes().get(matrixAttribute).getValueClass();
-	}
+    public MatrixColumnClusteringData(IMatrix matrix, int matrixAttribute)
+    {
+        this.matrix = matrix;
+        this.matrixAttribute = matrixAttribute;
+        this.attributeClass = matrix.getCellAttributes().get(matrixAttribute).getValueClass();
+    }
 
-	@Override
-	public int getSize() {
-		return matrix.getColumnCount();
-	}
+    @Override
+    public int getSize()
+    {
+        return matrix.getColumnCount();
+    }
 
-	@Override
-	public String getLabel(int index) {
-		return matrix.getColumnLabel(index);
-	}
+    @Override
+    public String getLabel(int index)
+    {
+        return matrix.getColumnLabel(index);
+    }
 
-	@Override
-	public ClusteringDataInstance getInstance(int index) {
-		return new Instance(index);
-	}
+    @Override
+    public ClusteringDataInstance getInstance(int index)
+    {
+        return new Instance(index);
+    }
 
-	public Class<?> getAttributeClass() {
-		return attributeClass;
-	}
+    public Class<?> getAttributeClass()
+    {
+        return attributeClass;
+    }
 
-	public void setAttributeClass(Class<?> attributeClass) {
-		this.attributeClass = attributeClass;
-	}
+    public void setAttributeClass(Class<?> attributeClass)
+    {
+        this.attributeClass = attributeClass;
+    }
 
-	public IMatrix getMatrix() {
-		return matrix;
-	}
+    public IMatrix getMatrix()
+    {
+        return matrix;
+    }
 
-	public void setMatrix(IMatrix matrix) {
-		this.matrix = matrix;
-	}
-	
-	public int getNumAttributes() {
-		return matrix.getRowCount();
-	}
+    public void setMatrix(IMatrix matrix)
+    {
+        this.matrix = matrix;
+    }
+
+    public int getNumAttributes()
+    {
+        return matrix.getRowCount();
+    }
 
 }

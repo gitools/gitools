@@ -1,49 +1,57 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.persistence.formats.matrix;
 
-import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.*;
 import java.util.*;
 
-public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
+public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
+{
 
-    public GeneMatrixTransposedFormat() {
+    public GeneMatrixTransposedFormat()
+    {
         super(FileSuffixes.GENE_MATRIX_TRANSPOSED, MimeTypes.GENE_MATRIX_TRANSPOSED, DoubleBinaryMatrix.class);
     }
 
     @Override
-    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    {
 
         progressMonitor.begin("Reading names ...", 1);
 
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
 
 
-        try {
+        try
+        {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -55,10 +63,13 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
 
             Map<String, Integer> rowIndices = new HashMap<String, Integer>();
 
-            while ((fields = parser.readNext()) != null) {
+            while ((fields = parser.readNext()) != null)
+            {
 
                 if (fields.length < 2)
+                {
                     throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
+                }
 
                 colNames.add(fields[0]);
 
@@ -67,9 +78,11 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
                 int[] rows = new int[fields.length - 2];
                 colRowIndices.add(rows);
 
-                for (int i = 2; i < fields.length; i++) {
+                for (int i = 2; i < fields.length; i++)
+                {
                     Integer rowIndex = rowIndices.get(fields[i]);
-                    if (rowIndex == null) {
+                    if (rowIndex == null)
+                    {
                         rowIndex = rowIndices.size();
                         rowIndices.put(fields[i], rowIndex);
                     }
@@ -81,11 +94,15 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             // incorporate population labels
 
             String[] populationLabels = getPopulationLabels();
-            if (populationLabels != null) {
-                for (String name : populationLabels) {
+            if (populationLabels != null)
+            {
+                for (String name : populationLabels)
+                {
                     Integer index = rowIndices.get(name);
                     if (index == null)
+                    {
                         rowIndices.put(name, rowIndices.size());
+                    }
                 }
             }
 
@@ -112,7 +129,8 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             Iterator<String> colNameIt = colNames.iterator();
             Iterator<int[]> colRowsIt = colRowIndices.iterator();
 
-            while (colNameIt.hasNext()) {
+            while (colNameIt.hasNext())
+            {
                 matrix.setColumn(colIndex, colNameIt.next());
                 int[] rows = colRowsIt.next();
                 for (int row : rows)
@@ -125,7 +143,8 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             progressMonitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
 
             progressMonitor.end();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new PersistenceException(e);
         }
 
@@ -133,29 +152,36 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException
+    {
         progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
 
-        try {
+        try
+        {
 
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             final int rowCount = matrix.getRowCount();
 
-            for (int ci = 0; ci < matrix.getColumnCount(); ci++) {
+            for (int ci = 0; ci < matrix.getColumnCount(); ci++)
+            {
                 pw.append(matrix.getColumnLabel(ci));
                 pw.append('\t'); // description, but currently not used
-                for (int ri = 0; ri < rowCount; ri++) {
+                for (int ri = 0; ri < rowCount; ri++)
+                {
                     Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
                     if (value == 1.0)
+                    {
                         pw.append('\t').append(matrix.getRowLabel(ri));
+                    }
                 }
                 pw.println();
             }
 
             out.close();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new PersistenceException(e);
         }
 
