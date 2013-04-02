@@ -22,35 +22,14 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-
-import javax.xml.bind.Marshaller;
 
 public class CorrelationAnalysisXmlFormat extends AbstractXmlFormat<CorrelationAnalysis>
 {
-
     public CorrelationAnalysisXmlFormat()
     {
         super(FileSuffixes.CORRELATIONS, MimeTypes.CORRELATIONS_ANALYSIS, CorrelationAnalysis.class);
-    }
-
-    @Override
-    protected void beforeWrite(IResourceLocator resourceLocator, CorrelationAnalysis resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-
-        String baseName = resourceLocator.getBaseName();
-        PersistenceReferenceXmlAdapter adapter = new PersistenceReferenceXmlAdapter(resourceLocator, progressMonitor);
-
-        addReference(adapter, resource.getData(), baseName + "-data");
-        addReference(adapter, resource.getResults(), baseName + "-results");
-
-        marshaller.setAdapter(adapter);
-
     }
 
 }

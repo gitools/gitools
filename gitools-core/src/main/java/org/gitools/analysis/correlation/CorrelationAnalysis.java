@@ -24,10 +24,9 @@ package org.gitools.analysis.correlation;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Properties;
 
 @XmlRootElement
@@ -44,18 +43,13 @@ public class CorrelationAnalysis extends Analysis
 
     protected int attributeIndex;
 
-    /**
-     * Data
-     */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected IMatrix data;
+    protected ResourceReference<IMatrix> data;
+
+    protected ResourceReference<IMatrix> results;
 
     /**
-     * Results
+     *
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected IMatrix results;
-
     public CorrelationAnalysis()
     {
         this.method = PearsonCorrelationMethod.ID;
@@ -65,6 +59,10 @@ public class CorrelationAnalysis extends Analysis
         this.attributeIndex = 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMethod()
     {
         return method;
@@ -120,22 +118,22 @@ public class CorrelationAnalysis extends Analysis
         this.attributeIndex = attributeIndex;
     }
 
-    public IMatrix getData()
+    public ResourceReference<IMatrix> getData()
     {
         return data;
     }
 
-    public void setData(IMatrix data)
+    public void setData(ResourceReference<IMatrix> data)
     {
         this.data = data;
     }
 
-    public IMatrix getResults()
+    public ResourceReference<IMatrix> getResults()
     {
         return results;
     }
 
-    public void setResults(IMatrix results)
+    public void setResults(ResourceReference<IMatrix> results)
     {
         this.results = results;
     }

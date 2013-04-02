@@ -44,7 +44,7 @@ public class CorrelationResultsEditor extends HeatmapEditor
 
     protected static Heatmap createHeatmap(CorrelationAnalysis analysis)
     {
-        IMatrixView results = new DiagonalMatrixView(analysis.getResults());
+        IMatrixView results = new DiagonalMatrixView(analysis.getResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         IElementAdapter cellAdapter = results.getCellAdapter();

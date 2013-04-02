@@ -36,7 +36,6 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.util.Arrays;
 import java.util.Date;
 
-
 public class CombinationProcessor implements AnalysisProcessor
 {
 

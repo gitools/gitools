@@ -79,9 +79,21 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
         configureResource(resourceLocator, properties, progressMonitor);
     }
 
+    /**
+     * Override this methos and {@link #isConfigurable()} if you want to configure the format before calling read
+     * write.
+     *
+     * This give you a change to read the resource two times (one on configure and the other on reading). But be
+     * careful because the resource can be in a remote and slow location.
+     *
+     * @param resourceLocator the resource locator
+     * @param properties the config properties
+     * @param progressMonitor the progress monitor
+     * @throws PersistenceException the persistence exception
+     */
     protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
-        // Override this method and isConfigurable if you want to configure the format before calling read or write
+        // Nothing
     }
 
     @Override
@@ -90,6 +102,14 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
         return readResource(resourceLocator, progressMonitor);
     }
 
+    /**
+     * You must override this method if you are implementing a readable format.
+     *
+     * @param resourceLocator the resource locator
+     * @param progressMonitor the progress monitor
+     * @return the resource
+     * @throws PersistenceException the persistence exception
+     */
     protected R readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
         throw new UnsupportedOperationException("This format don't support reading");

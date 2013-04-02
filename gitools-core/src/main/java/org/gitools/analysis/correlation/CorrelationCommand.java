@@ -23,9 +23,10 @@ package org.gitools.analysis.correlation;
 
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
@@ -57,14 +58,16 @@ public class CorrelationCommand extends AnalysisCommand
 
         try
         {
-            BaseMatrix data = loadDataMatrix(
-                    new UrlResourceLocator(new File(dataPath)),
-                    progressMonitor);
 
-            analysis.setData(data);
+            ResourceReference<IMatrix> dataReference = new ResourceReference<IMatrix>(
+                    new UrlResourceLocator(new File(dataPath)),
+                    IMatrix.class
+            );
+
+            analysis.setData(dataReference);
+            dataReference.load(progressMonitor);
 
             CorrelationProcessor proc = new CorrelationProcessor(analysis);
-
             proc.run(progressMonitor);
 
             File workdirFile = new File(workdir);

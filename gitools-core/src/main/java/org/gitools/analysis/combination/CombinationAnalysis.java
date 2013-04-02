@@ -28,6 +28,9 @@ import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ */
 @XmlRootElement
 public class CombinationAnalysis extends Analysis
 {
@@ -38,9 +41,6 @@ public class CombinationAnalysis extends Analysis
 
     protected boolean transposeData;
 
-    /**
-     * Modules
-     */
     protected ResourceReference<ModuleMap> groupsMap;
 
     /**

@@ -57,10 +57,15 @@ public class PersistenceManager implements Serializable
     {
 
         // Use only the first part of a composed extension to check the format.
-        int composedExtension = extension.indexOf(".");
+        int composedExtension = extension.lastIndexOf(".");
         if (composedExtension != -1)
         {
             extension = extension.substring(0, composedExtension);
+
+            composedExtension = extension.lastIndexOf(".");
+            if (composedExtension != -1) {
+                extension = extension.substring(composedExtension + 1);
+            }
         }
 
         Map<String, IResourceFormat> extensions = formats.get(resourceClass);

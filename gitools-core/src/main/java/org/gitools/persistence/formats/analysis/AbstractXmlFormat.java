@@ -27,6 +27,7 @@ import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.xml.bind.JAXBContext;
@@ -68,9 +69,19 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     protected void beforeRead(IResourceLocator resourceLocator, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
         unmarshaller.setAdapter(new PersistenceReferenceXmlAdapter(resourceLocator, progressMonitor, loadReferences));
+        unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
     }
 
-    protected void afterRead(IResourceLocator resourceLocator, R entity, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    /**
+     * Override this method if you want to modify the resource after reading it.
+     *
+     * @param resourceLocator the resource locator
+     * @param resource the entity
+     * @param unmarshaller the unmarshaller
+     * @param progressMonitor the progress monitor
+     * @throws PersistenceException the persistence exception
+     */
+    protected void afterRead(IResourceLocator resourceLocator, R resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
     }
 
@@ -103,6 +114,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 
     protected void beforeWrite(IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
+        marshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
     }
 
     protected void afterWrite(IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException

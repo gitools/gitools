@@ -30,6 +30,7 @@ import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Date;
@@ -53,7 +54,7 @@ public class CorrelationProcessor implements AnalysisProcessor
         CorrelationMethod method = CorrelationMethodFactory.createMethod(
                 analysis.getMethod(), analysis.getMethodProperties());
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
         int attributeIndex = analysis.getAttributeIndex();
 
         if (analysis.isTransposeData())
@@ -73,7 +74,7 @@ public class CorrelationProcessor implements AnalysisProcessor
             labels[i] = data.getColumnLabel(i);
 
         final ObjectMatrix results = new ObjectMatrix();
-        analysis.setResults(results);
+        analysis.setResults(new ResourceReference<IMatrix>("results", results));
 
         results.setColumns(labels);
         results.setRows(labels);

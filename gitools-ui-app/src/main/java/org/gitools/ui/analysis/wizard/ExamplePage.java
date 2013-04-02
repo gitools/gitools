@@ -43,8 +43,10 @@ public class ExamplePage extends AbstractWizardPage
             TemplatePanel panel = new TemplatePanel();
             panel.setTemplateFromResource("/vm/new_analysis_intro.vm", url);
             panel.render(context);
+            panel.setPreferredSize(new Dimension(494, 231));
             textPanel.setLayout(new BorderLayout());
             textPanel.add(panel, BorderLayout.CENTER);
+
         } catch (Exception ex)
         {
         }

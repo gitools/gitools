@@ -24,9 +24,11 @@ package org.gitools.ui.actions.analysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.ui.actions.ActionUtils;
@@ -110,7 +112,7 @@ public class CorrelationsAction extends BaseAction
             }
         }
 
-        analysis.setData(matrixView);
+        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
@@ -159,31 +161,5 @@ public class CorrelationsAction extends BaseAction
                 }
             }
         });
-
-		/*IMatrixView results = new MatrixView(analysis.getResults());
-        Heatmap heatmap = new Heatmap(results);
-		IElementAdapter cellAdapter = results.getCellAdapter();
-		LinearTwoSidedElementDecorator dec = new LinearTwoSidedElementDecorator(cellAdapter);
-		dec.setMinColor(Color.GREEN);
-		dec.setMidColor(Color.WHITE);
-		dec.setMaxColor(new Color(255, 0, 255));
-		int valueIndex = cellAdapter.getPropertyIndex("score");
-		dec.setValueIndex(valueIndex != -1 ? valueIndex : 0);
-		dec.setMinValue(-1);
-		dec.setMaxValue(1);
-		heatmap.setCellDecorator(dec);
-
-		heatmap.setTitle(analysis.getTitle());
-
-		HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-		String ext = PersistenceUtils.getExtension(currentEditor.getName());
-		editor.setName(editorPanel.deriveName(
-				currentEditor.getName(), ext,
-				"-correlation", FileSuffixes.HEATMAP));
-
-		editorPanel.addEditor(editor);
-
-		AppFrame.instance().setStatusText("Done.");*/
     }
 }

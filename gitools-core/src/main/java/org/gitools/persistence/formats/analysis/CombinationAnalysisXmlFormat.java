@@ -22,15 +22,8 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
-import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 public class CombinationAnalysisXmlFormat extends AbstractXmlFormat<CombinationAnalysis>
 {
@@ -40,14 +33,4 @@ public class CombinationAnalysisXmlFormat extends AbstractXmlFormat<CombinationA
         super(FileSuffixes.COMBINATION, MimeTypes.COMBINATION_ANALYSIS, CombinationAnalysis.class);
     }
 
-    protected void beforeRead(IResourceLocator resourceLocator, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
-    }
-
-    @Override
-    protected void beforeWrite(IResourceLocator resourceLocator, CombinationAnalysis resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        marshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
-    }
 }

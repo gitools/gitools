@@ -57,7 +57,7 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         super(analysis, heatmap);
 
         // TODO transpose ???
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
         final int numRows = data.getRowCount();
         final int numCols = data.getColumnCount();
 
@@ -79,7 +79,7 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         int row = mv.getLeadSelectionRow();
         int col = mv.getLeadSelectionColumn();
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
 
         String template = DATA_TEMPLATE;
         VelocityContext context = new VelocityContext();

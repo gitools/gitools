@@ -119,7 +119,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData());
+                IMatrixView dataTable = new MatrixView(analysis.getData().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (data)");
@@ -160,7 +160,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getResults());
+                IMatrixView dataTable = new MatrixView(analysis.getResults().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (results)");
