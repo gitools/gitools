@@ -21,6 +21,9 @@
  */
 package org.gitools.biomart.idmapper;
 
+/**
+ *
+ */
 public interface EnsemblIds
 {
     public static final String ENSEMBL_GENES = "ensembl:gene";

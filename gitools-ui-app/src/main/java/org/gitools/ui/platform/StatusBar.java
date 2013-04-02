@@ -83,7 +83,7 @@ public class StatusBar extends WebStatusBar
 
         // Memory bar
         memoryBar = new WebMemoryBar();
-        memoryBar.setShowMaximumMemory(false);
+        memoryBar.setShowMaximumMemory(true);
         memoryBar.setPreferredWidth(memoryBar.getPreferredSize().width + 20);
         addToEnd(memoryBar);
     }

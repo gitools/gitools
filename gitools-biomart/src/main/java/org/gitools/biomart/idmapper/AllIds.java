@@ -23,6 +23,9 @@ package org.gitools.biomart.idmapper;
 
 import org.gitools.idmapper.Ids;
 
+/**
+ *
+ */
 public interface AllIds extends Ids, EnsemblIds
 {
 

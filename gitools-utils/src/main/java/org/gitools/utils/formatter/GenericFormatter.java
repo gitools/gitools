@@ -105,7 +105,7 @@ public class GenericFormatter implements Serializable
     {
         if (value == null)
         {
-            return "null";
+            return "None";
         }
 
         String format = customFormatMap.get(value.getClass());

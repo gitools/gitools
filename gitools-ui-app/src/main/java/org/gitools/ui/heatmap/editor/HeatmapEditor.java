@@ -21,8 +21,11 @@
  */
 package org.gitools.ui.heatmap.editor;
 
+import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.panel.GroupingType;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebAccordionStyle;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
@@ -45,6 +48,8 @@ import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.actions.HeatmapActions;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
+import org.gitools.ui.heatmap.panel.details.AbstractDetailsPanel;
+import org.gitools.ui.heatmap.panel.details.GenericDetailsPanel;
 import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesCellsPanel;
 import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesDocumentPanel;
 import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesHeaderPanel;
@@ -58,12 +63,12 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.view.details.DetailsView;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.colorscale.drawer.ColorScalePanel;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -103,7 +108,7 @@ public class HeatmapEditor extends AbstractEditor
 
     private HeatmapSearchPanel searchPanel;
 
-    private DetailsView detailsView;
+    private AbstractDetailsPanel detailsView;
 
     protected boolean blockSelectionUpdate;
 
@@ -118,7 +123,7 @@ public class HeatmapEditor extends AbstractEditor
 
     protected final JPanel embeddedContainer;
 
-    private static int DEFAULT_ACCORDION_WIDTH = 320;
+    private static int DEFAULT_ACCORDION_WIDTH = 270;
 
     public HeatmapEditor(Heatmap heatmap)
     {
@@ -275,7 +280,7 @@ public class HeatmapEditor extends AbstractEditor
 
     private void refreshCellDetails()
     {
-        detailsView.updateContext(heatmap);
+        //detailsView.updateContext(heatmap);
     }
 
     private void createComponents(JComponent container)
@@ -284,19 +289,23 @@ public class HeatmapEditor extends AbstractEditor
         WebAccordion leftPanel = new WebAccordion(WebAccordionStyle.accordionStyle);
         leftPanel.setMultiplySelectionAllowed(false);
         leftPanel.setAnimate(true);
+        leftPanel.setUndecorated(true);
 
-        detailsView = new DetailsView();
-        detailsView.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 200));
-        leftPanel.addPane("Details", detailsView);
-
+        detailsView = new GenericDetailsPanel(heatmap);
+        //detailsView.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 300));
         colorScalePanel = new ColorScalePanel(heatmap.getActiveCellDecorator().getScale());
-        colorScalePanel.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 150));
-        leftPanel.addPane("Color scale", new JScrollPane(colorScalePanel));
+        //colorScalePanel.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 100));
 
-        leftPanel.addPane("Document", new JScrollPane(new HeatmapPropertiesDocumentPanel(heatmap)));
+        WebPanel emptyPanel = new WebPanel();
+        emptyPanel.setBackground(Color.WHITE);
+        GroupPanel details = new GroupPanel(GroupingType.fillMiddle, false, detailsView, emptyPanel, colorScalePanel);
+        details.setUndecorated(true);
+        details.setBackground(Color.WHITE);
+        leftPanel.addPane("Details", details);
         leftPanel.addPane("Rows", new JScrollPane(new HeatmapPropertiesHeaderPanel(true, heatmap)));
         leftPanel.addPane("Columns", new JScrollPane(new HeatmapPropertiesHeaderPanel(false, heatmap)));
         leftPanel.addPane("Cells", new JScrollPane(new HeatmapPropertiesCellsPanel(heatmap)));
+        leftPanel.addPane("Document", new JScrollPane(new HeatmapPropertiesDocumentPanel(heatmap)));
 
         List<BaseAction> actions = new ArrayList<BaseAction>(toolBarAS.getActions());
         if (externalToolbarActions != null)
@@ -329,12 +338,19 @@ public class HeatmapEditor extends AbstractEditor
                 JSplitPane.HORIZONTAL_SPLIT,
                 leftPanel,
                 heatmapPanel
-
         );
 
+        heatmapPanel.setBorder(
+                new CompoundBorder(
+                        BorderFactory.createEmptyBorder(20, 20, 20, 20),
+                        BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)
+                ));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);
+        splitPane.setDividerSize(4);
+        splitPane.setBackground(Color.WHITE);
+        splitPane.setForeground(Color.WHITE);
 
         container.setLayout(new BorderLayout());
         container.add(searchPanel, BorderLayout.NORTH);
