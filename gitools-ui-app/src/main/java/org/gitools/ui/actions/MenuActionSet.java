@@ -37,7 +37,6 @@ public class MenuActionSet extends ActionSet
         super(new BaseAction[]{
                 new ActionSet("File", new BaseAction[]{
                         new ActionSet("New", new BaseAction[]{
-                                //FileActionSet.newProjectAction,
                                 new ActionSet("Analysis", new BaseAction[]{
                                         FileActions.newEnrichmentAnalysisAction,
                                         FileActions.newOncozAnalysisAction,
@@ -47,7 +46,6 @@ public class MenuActionSet extends ActionSet
                                 })
                         }),
                         new ActionSet("Open", new BaseAction[]{
-                                //FileActions.openProjectAction,
                                 FileActions.openEnrichmentAnalysisAction,
                                 FileActions.openHeatmapFromMatrixAction,
                                 FileActions.openGenomeSpaceMatrixAction
@@ -72,18 +70,7 @@ public class MenuActionSet extends ActionSet
                                 new ActionSet("Annotations", new BaseAction[]{
                                         FileActions.importBioMartTableAction
                                 })
-                    /*new ActionSet("IntOGen", IconUtils.getImageIconResource(IconNames.intogen16), new BaseAction[] {
-						FileActions.importIntogenTableAction,
-						FileActions.importIntogenOncomodulesAction,
-						//FileActions.importIntogenHeatmapAction
-					}),
-					new ActionSet("BioMart", IconUtils.getImageIconResource(IconNames.biomart16), new BaseAction[] {
-						FileActions.importBioMartTableAction,
-						FileActions.importBioMartModulesAction
-						//FileActions.importBioMartMatrixAction
-					})*/
                         }),
-                        //FileActionSet.exportWizardAction,
                         new ActionSet("Export", new BaseAction[]{
                                 FileActions.exportLabelNamesAction,
                                 FileActions.exportMatrixAction,
@@ -123,22 +110,13 @@ public class MenuActionSet extends ActionSet
                                 DataActions.showAllColumnsAction,
                                 DataActions.hideSelectedColumnsAction
                         }),
-                        //new ActionSet("Clustering", new BaseAction[] {
-                        //	DataActions.clusteringByAnnotationsAction,
                         DataActions.clusteringByValueAction,
-                        //})
-                /*new ActionSet("Add data", new BaseAction[] {
-                        DataActions.integrateDataDimensionsAction
-                }),*/
                 }),
                 new ActionSet("Analysis", new BaseAction[]{
                         AnalysisActions.correlations,
                         AnalysisActions.combinations,
                         AnalysisActions.overlapping,
                         AnalysisActions.groupComparison,
-                        //				new ActionSet("Clustering", new BaseAction[] {
-                        //					AnalysisActions.clusteringAction
-                        //				}),
                         new ActionSet("MTC", new BaseAction[]{
                                 AnalysisActions.mtcBonferroniAction,
                                 AnalysisActions.mtcBenjaminiHochbergFdrAction,

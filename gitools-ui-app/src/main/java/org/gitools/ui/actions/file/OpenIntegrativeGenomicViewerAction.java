@@ -42,15 +42,34 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+/**
+ * This actions sends a command to IGV (Integrative Genomic Viewer) to do a search
+ * of the current selected row identifiers. The user must have IGV running and a
+ * track with the row identifiers loaded.
+ */
 public class OpenIntegrativeGenomicViewerAction extends BaseAction
 {
 
+    /**
+     * Instantiates a new Open integrative genomic viewer action.
+     */
     public OpenIntegrativeGenomicViewerAction()
     {
         super("open current selection in IGV");
         setLargeIconFromResource(IconNames.igv24);
         setSmallIconFromResource(IconNames.igv16);
         setDefaultEnabled(Settings.getDefault().isShowIGVLink());
+    }
+
+    /**
+     * Show a popup dialog with an informative message
+     *
+     * @param message the message
+     */
+    private static void showMessage(String message)
+    {
+        AppFrame frame = AppFrame.get();
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     @Override
@@ -76,8 +95,11 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
             return;
         }
 
-        if (rows.length == 0) {
-            rows = new int[] { matrixView.getLeadSelectionRow() };
+        // If there are no rows selected use the row of the current
+        // cell selection
+        if (rows.length == 0)
+        {
+            rows = new int[]{matrixView.getLeadSelectionRow()};
         }
 
         String rowQuery = "";
@@ -86,26 +108,30 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
             rowQuery = rowQuery + heatmap.getMatrixView().getRowLabel(i) + " ";
         }
 
+        // Execute the command
         JobRunnable loadFile = new IgvCommand(rowQuery);
         JobThread.execute(AppFrame.get(), loadFile);
         AppFrame.get().setStatusText("Done.");
 
     }
 
-
-    private class IgvCommand extends AbstractCommand {
+    private class IgvCommand extends AbstractCommand
+    {
 
         private String rowQuery;
 
-        private IgvCommand(String rowQuery) {
+        private IgvCommand(String rowQuery)
+        {
             this.rowQuery = rowQuery;
         }
 
         @Override
-        public void execute(IProgressMonitor monitor) {
+        public void execute(IProgressMonitor monitor)
+        {
 
             Socket socket = null;
-            try {
+            try
+            {
 
                 monitor.title("Connecting with Integrative Genomics Viewer");
 
@@ -123,24 +149,32 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
                 out.println(cmd);
                 waitServerResponse(in, monitor);
 
-            } catch (ConnectException e) {
+            } catch (ConnectException e)
+            {
                 monitor.end();
                 showMessage("Unable to connect with Integrative Genomics Viewer (IGV). " +
                         "\n It must be running on '" + Settings.getDefault().getIgvUrl() + "'. " +
                         "\n Install or launch it from 'http://www.broadinstitute.org/igv'.");
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException e)
+            {
                 monitor.end();
                 showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 monitor.end();
                 showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
-            } catch (UnsupportedOperationException e) {
-            } finally {
+            } catch (UnsupportedOperationException e)
+            {
+            } finally
+            {
                 monitor.end();
-                if (socket != null) {
-                    try {
+                if (socket != null)
+                {
+                    try
+                    {
                         socket.close();
-                    } catch (IOException e) {
+                    } catch (IOException e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -149,21 +183,24 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
 
         }
 
-        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException {
-            while (in.available() == 0) {
-                try{Thread.sleep(1000);}catch(Exception ee){}
-                if (monitor.isCancelled()) {
+        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException
+        {
+            while (in.available() == 0)
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                } catch (Exception ee)
+                {
+                }
+                if (monitor.isCancelled())
+                {
                     throw new UnsupportedOperationException("User cancel");
                 }
             }
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             reader.readLine();
         }
-    }
-
-    private static void showMessage(String msg) {
-        AppFrame frame = AppFrame.get();
-        JOptionPane.showMessageDialog(frame, msg);
     }
 
 }
