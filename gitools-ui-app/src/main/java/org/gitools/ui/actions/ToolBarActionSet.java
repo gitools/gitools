@@ -37,7 +37,9 @@ public final class ToolBarActionSet extends ActionSet
         super(new BaseAction[]{
                 FileActions.openEnrichmentAnalysisAction,
                 FileActions.openHeatmapFromMatrixAction,
-                FileActions.saveAction
+                FileActions.saveAction,
+                BaseAction.separator,
+                FileActions.openIntegrativeGenomicViewerAction
         });
     }
 

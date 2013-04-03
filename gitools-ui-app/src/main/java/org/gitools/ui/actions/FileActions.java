@@ -66,4 +66,7 @@ public class FileActions
     public static final BaseAction exportHeatmapHtmlAction = new ExportHeatmapHtmlAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
     public static final BaseAction exportPdfReportAction = new ExportPdfReportAction();
+
+    // Other
+    public static final BaseAction openIntegrativeGenomicViewerAction = new OpenIntegrativeGenomicViewerAction();
 }
