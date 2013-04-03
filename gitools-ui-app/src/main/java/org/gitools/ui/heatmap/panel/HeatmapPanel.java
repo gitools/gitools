@@ -176,27 +176,12 @@ public class HeatmapPanel extends JPanel
         add(rowSB);
         add(intersectVP);
 
-        addComponentListener(new ComponentListener()
+        addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentResized(ComponentEvent e)
             {
                 updateScrolls();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e)
-            {
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e)
-            {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e)
-            {
             }
         });
 
@@ -420,8 +405,6 @@ public class HeatmapPanel extends JPanel
             revalidate();
             repaint();
         }
-
-        //System.out.println(getClass().getSimpleName() + " " + src + " " + pname + " update: " + updateAll);
     }
 
     @Override

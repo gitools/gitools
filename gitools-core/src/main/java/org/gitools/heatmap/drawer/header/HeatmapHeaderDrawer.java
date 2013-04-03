@@ -201,7 +201,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
                 x += sz.width;
             }
         }
-        return new HeatmapPosition(0, 0);
+        return new HeatmapPosition(-1, -1);
     }
 
     @Override
