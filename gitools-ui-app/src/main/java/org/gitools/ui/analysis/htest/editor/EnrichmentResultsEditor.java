@@ -51,6 +51,7 @@ public class EnrichmentResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
+    //TODO
     protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis)
     {
         ViewRelatedDataFromRowAction action =
@@ -65,7 +66,7 @@ public class EnrichmentResultsEditor extends HeatmapEditor
 
     public EnrichmentResultsEditor(EnrichmentAnalysis analysis)
     {
-        super(createHeatmap(analysis), createToolBar(analysis), true);
+        super(createHeatmap(analysis), true);
 
         tablesPanel = new EnrichmentTablesPanel(analysis, heatmap);
         tablesPanel.setMinimumSize(new Dimension(140, 140));

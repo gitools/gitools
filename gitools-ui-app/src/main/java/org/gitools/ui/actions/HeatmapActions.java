@@ -31,5 +31,7 @@ public final class HeatmapActions
 
     public static final BaseAction cloneAction = new CloneHeatmapAction();
 
-    public static final BaseAction searchAction = new HeatmapSearchAction();
+    public static final BaseAction searchRowsAction = new HeatmapSearchAction(false);
+
+    public static final BaseAction searchColumnsAction = new HeatmapSearchAction(true);
 }

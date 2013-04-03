@@ -39,7 +39,8 @@ public final class ToolBarActionSet extends ActionSet
                 FileActions.openHeatmapFromMatrixAction,
                 FileActions.saveAction,
                 BaseAction.separator,
-                FileActions.openIntegrativeGenomicViewerAction
+                FileActions.openIntegrativeGenomicViewerAction,
+                HeatmapActions.cloneAction
         });
     }
 

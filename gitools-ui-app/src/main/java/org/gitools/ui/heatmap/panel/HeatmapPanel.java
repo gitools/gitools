@@ -27,9 +27,8 @@ import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +51,8 @@ public class HeatmapPanel extends JPanel
     private HeatmapHeaderPanel rowHeaderPanel;
     private HeatmapHeaderIntersectionPanel headerIntersectPanel;
 
-    private JPopupMenu popupMenu;
+    private JPopupMenu popupMenuRows;
+    private JPopupMenu popupMenuColumns;
 
     private JViewport bodyVP;
     private JViewport colVP;
@@ -64,12 +64,9 @@ public class HeatmapPanel extends JPanel
 
     private List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
-    private List<BaseAction> popupMenuActions;
-
-    public HeatmapPanel(Heatmap heatmap, List<BaseAction> popupMenuActions)
+    public HeatmapPanel(Heatmap heatmap)
     {
         this.heatmap = heatmap;
-        this.popupMenuActions = popupMenuActions;
 
         heatmapListener = new PropertyChangeListener()
         {
@@ -197,7 +194,8 @@ public class HeatmapPanel extends JPanel
             }
         });
 
-        popupMenu = ActionSetUtils.createPopupMenu(new ActionSet(popupMenuActions));
+        popupMenuRows = ActionSetUtils.createPopupMenu(HeatmapPopupmenus.ROWS);
+        popupMenuColumns = ActionSetUtils.createPopupMenu(HeatmapPopupmenus.COLUMNS);
     }
 
     private void updateScrolls()
@@ -437,16 +435,16 @@ public class HeatmapPanel extends JPanel
 
     private void showPopup(MouseEvent e)
     {
-        if (popupMenu != null)
+        if (e.getComponent() == this.rowVP)
         {
-            configurePopupMenu(popupMenu);
-            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+            popupMenuRows.show(e.getComponent(), e.getX(), e.getY());
+        }
+
+        if (e.getComponent() == this.colVP) {
+            popupMenuColumns.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
-    protected void configurePopupMenu(JPopupMenu popupMenu)
-    {
-        // Configure before display
-    }
+
 
 }

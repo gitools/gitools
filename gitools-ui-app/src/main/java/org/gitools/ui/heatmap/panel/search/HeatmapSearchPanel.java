@@ -624,5 +624,13 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
     private javax.swing.ButtonGroup rowsOrColumns;
     private javax.swing.JTextField searchText;
     private javax.swing.JLabel textNotFoundLabel;
+
+    public void searchOnColumns(boolean searchColumns)
+    {
+        rowsOrColumns.clearSelection();
+        rowsOrColumns.setSelected(columnsButton.getModel(), searchColumns);
+        rowsOrColumns.setSelected(rowsButton.getModel(), !searchColumns);
+
+    }
     // End of variables declaration//GEN-END:variables
 }

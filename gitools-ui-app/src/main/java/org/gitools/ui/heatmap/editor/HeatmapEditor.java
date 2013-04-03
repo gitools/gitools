@@ -43,9 +43,6 @@ import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.DataActions;
-import org.gitools.ui.actions.EditActions;
-import org.gitools.ui.actions.HeatmapActions;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.heatmap.panel.details.AbstractDetailsPanel;
@@ -56,8 +53,6 @@ import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesHeaderPanel;
 import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -74,27 +69,10 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HeatmapEditor extends AbstractEditor
 {
-
-    private static final ActionSet toolBarAS = new ActionSet(new BaseAction[]{
-            EditActions.selectAllAction,
-            EditActions.unselectAllAction,
-            BaseAction.separator,
-            DataActions.hideSelectedColumnsAction,
-            DataActions.showAllColumnsAction,
-            DataActions.hideSelectedRowsAction,
-            DataActions.showAllRowsAction,
-            BaseAction.separator,
-            DataActions.fastSortRowsAction,
-            BaseAction.separator,
-            HeatmapActions.cloneAction,
-            HeatmapActions.searchAction
-    });
-
     protected Heatmap heatmap;
 
     private HeatmapPanel heatmapPanel;
@@ -106,8 +84,6 @@ public class HeatmapEditor extends AbstractEditor
     private AbstractDetailsPanel detailsView;
 
     protected boolean blockSelectionUpdate;
-
-    protected List<BaseAction> externalToolbarActions;
 
     private PropertyChangeListener heatmapListener;
     private PropertyChangeListener cellDecoratorListener;
@@ -122,24 +98,12 @@ public class HeatmapEditor extends AbstractEditor
 
     public HeatmapEditor(Heatmap heatmap)
     {
-        this(heatmap, null, false);
-    }
-
-    public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions)
-    {
-        this(heatmap, externalToolbarActions, false);
+        this(heatmap, false);
     }
 
     public HeatmapEditor(Heatmap heatmap, boolean embedded)
     {
-        this(heatmap, toolBarAS.getActions(), embedded);
-    }
-
-    public HeatmapEditor(Heatmap heatmap, List<BaseAction> externalToolbarActions, boolean embedded)
-    {
-
         this.heatmap = heatmap;
-        this.externalToolbarActions = externalToolbarActions;
 
         if (heatmap.getCellDecorators()[0].getAdapter() instanceof BeanElementAdapter)
         {
@@ -302,14 +266,8 @@ public class HeatmapEditor extends AbstractEditor
         leftPanel.addPane("Cells", new JScrollPane(new HeatmapPropertiesCellsPanel(heatmap)));
         leftPanel.addPane("Document", new JScrollPane(new HeatmapPropertiesDocumentPanel(heatmap)));
 
-        List<BaseAction> actions = new ArrayList<BaseAction>(toolBarAS.getActions());
-        if (externalToolbarActions != null)
-        {
-            actions.add(BaseAction.separator);
-            actions.addAll(externalToolbarActions);
-        }
 
-        heatmapPanel = new HeatmapPanel(heatmap, actions);
+        heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
         heatmapPanel.addHeatmapMouseListener(new HeatmapMouseListener()
         {
@@ -351,11 +309,6 @@ public class HeatmapEditor extends AbstractEditor
         container.add(searchPanel, BorderLayout.NORTH);
         container.add(splitPane, BorderLayout.CENTER);
 
-    }
-
-    public List<BaseAction> getExternalToolbarActions()
-    {
-        return externalToolbarActions;
     }
 
     protected IMatrixView getMatrixView()
@@ -477,9 +430,10 @@ public class HeatmapEditor extends AbstractEditor
         return true;
     }
 
-    public void setSearchVisible(boolean b)
+    public void showSearch(boolean searchColumns)
     {
-        searchPanel.setVisible(b);
+        searchPanel.searchOnColumns(searchColumns);
+        searchPanel.setVisible(true);
     }
 
     private int lastMouseRow = -1;

@@ -74,6 +74,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        // Skip right click
+        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
+        {
+            return;
+        }
+
         panel.requestFocusInWindow();
 
         int index = convertToIndex(e);
@@ -102,6 +108,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     @Override
     public void mousePressed(MouseEvent e)
     {
+        // Skip right click
+        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
+        {
+            return;
+        }
 
         // check if it's a already selected
         int index = convertToIndex(e);
@@ -272,8 +283,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             return;
         }
 
-        setLeading(e);
-
         if (!dragging)
         {
             selectionMoveLastIndex = index;
@@ -321,6 +330,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 }
             }
         }
+
+        setLeading(e);
     }
 
     private void updateSelection(MouseEvent e, boolean dragging)
@@ -333,7 +344,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
 
         boolean indexChanged = (selLast != index);
-        if (indexChanged) {
+        if (indexChanged)
+        {
             setLeading(e);
         }
         selLast = index;

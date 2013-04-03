@@ -51,6 +51,7 @@ public class OncodriveResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
+    //TODO
     protected static List<BaseAction> createToolBar(OncodriveAnalysis analysis)
     {
         ViewRelatedDataFromColumnAction action =
@@ -65,7 +66,7 @@ public class OncodriveResultsEditor extends HeatmapEditor
 
     public OncodriveResultsEditor(OncodriveAnalysis analysis)
     {
-        super(createHeatmap(analysis), createToolBar(analysis), true);
+        super(createHeatmap(analysis), true);
 
         tablesPanel = new OncodriveTablesPanel(analysis, heatmap);
         tablesPanel.setMinimumSize(new Dimension(140, 140));

@@ -29,11 +29,9 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class CorrelationResultsEditor extends HeatmapEditor
 {
@@ -63,14 +61,9 @@ public class CorrelationResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
-    protected static List<BaseAction> createToolBar(CorrelationAnalysis analysis)
-    {
-        return null;
-    }
-
     public CorrelationResultsEditor(CorrelationAnalysis analysis)
     {
-        super(createHeatmap(analysis), createToolBar(analysis), true);
+        super(createHeatmap(analysis), true);
 
         tablesPanel = new CorrelationTablesPanel(analysis, heatmap);
         tablesPanel.setMinimumSize(new Dimension(140, 140));

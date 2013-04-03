@@ -33,9 +33,14 @@ import java.awt.event.KeyEvent;
 public class HeatmapSearchAction extends BaseAction
 {
 
-    public HeatmapSearchAction()
+    private boolean searchColumns;
+
+    public HeatmapSearchAction(boolean searchColumns)
     {
         super("Search");
+
+        this.searchColumns = searchColumns;
+
         setDesc("Search for a text in rows or columns");
         setSmallIconFromResource(IconNames.SEARCH16);
         setLargeIconFromResource(IconNames.SEARCH24);
@@ -56,7 +61,8 @@ public class HeatmapSearchAction extends BaseAction
 
         HeatmapEditor hmEditor = (HeatmapEditor) currentEditor;
 
-        hmEditor.setSearchVisible(true);
+
+        hmEditor.showSearch(searchColumns);
     }
 
 }

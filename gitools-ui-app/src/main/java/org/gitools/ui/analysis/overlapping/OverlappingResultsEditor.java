@@ -29,11 +29,9 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 
 public class OverlappingResultsEditor extends HeatmapEditor
@@ -73,14 +71,9 @@ public class OverlappingResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
-    protected static List<BaseAction> createToolBar(OverlappingAnalysis analysis)
-    {
-        return null;
-    }
-
     public OverlappingResultsEditor(OverlappingAnalysis analysis)
     {
-        super(createHeatmap(analysis), createToolBar(analysis), true);
+        super(createHeatmap(analysis), true);
 
         tablesPanel = new OverlappingTablesPanel(analysis, heatmap);
         tablesPanel.setMinimumSize(new Dimension(140, 140));

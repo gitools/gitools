@@ -47,6 +47,13 @@ public class CloneHeatmapAction extends BaseAction
     }
 
     @Override
+    public boolean updateEnabledByEditor(IEditor editor)
+    {
+        setEnabled(editor instanceof HeatmapEditor);
+        return isEnabled();
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e)
     {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
@@ -83,7 +90,7 @@ public class CloneHeatmapAction extends BaseAction
         clone.setColumnDim(SerialClone.xclone(hm.getColumnDim()));
         clone.setRowDim(SerialClone.xclone(hm.getRowDim()));
 
-        HeatmapEditor editor = new HeatmapEditor(clone, currentEditor.getExternalToolbarActions());
+        HeatmapEditor editor = new HeatmapEditor(clone);
 
         editor.setName(editorPanel.deriveName(
                 currentEditor.getName(), FileSuffixes.HEATMAP,
