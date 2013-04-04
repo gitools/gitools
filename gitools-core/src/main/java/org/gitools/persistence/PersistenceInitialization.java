@@ -26,6 +26,7 @@ import org.gitools.persistence.formats.matrix.*;
 import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
 import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
 import org.gitools.persistence.formats.text.GeneSetFormat;
+import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
 import org.jetbrains.annotations.NotNull;
 
 public class PersistenceInitialization
@@ -56,6 +57,8 @@ public class PersistenceInitialization
         pm.registerFormat(new AnnotationMatrixFormat());
         pm.registerFormat(new TwoColumnModuleMapFormat());
         pm.registerFormat(new IndexedModuleMapFormat());
+
+        pm.registerResourceFilter(new GzResourceFilter());
     }
 
 

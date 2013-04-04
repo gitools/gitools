@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.persistence.locators.filters.adapters;
+package org.gitools.persistence.locators.filters.gz;
 
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
@@ -39,28 +39,7 @@ public class GzResourceLocatorAdapter implements IResourceLocator
     private String extension;
     private IResourceLocator resourceLocator;
 
-    public static boolean isAdaptable(@NotNull String resourceExtension)
-    {
-        return resourceExtension.endsWith(".gz");
-    }
-
-    public static String removeExtension(@NotNull String resourceExtension)
-    {
-        if (isAdaptable(resourceExtension))
-        {
-            return resourceExtension.substring(0, resourceExtension.length() - 3);
-        }
-
-        return resourceExtension;
-    }
-
-    @NotNull
-    public static IResourceLocator getAdaptor(@NotNull IResourceLocator resourceLocator)
-    {
-        return new GzResourceLocatorAdapter(resourceLocator);
-    }
-
-    private GzResourceLocatorAdapter(@NotNull IResourceLocator resourceLocator)
+    GzResourceLocatorAdapter(@NotNull IResourceLocator resourceLocator)
     {
         this.resourceLocator = resourceLocator;
         this.name = resourceLocator.getName().replace(".gz", "");

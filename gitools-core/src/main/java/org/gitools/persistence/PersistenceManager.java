@@ -25,15 +25,13 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.persistence.locators.filters.adapters.GzResourceLocatorAdapter;
+import org.gitools.persistence.locators.filters.IResourceFilter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class PersistenceManager implements Serializable
 {
@@ -47,6 +45,7 @@ public class PersistenceManager implements Serializable
         return defaultManager;
     }
 
+    private List<IResourceFilter> filters = new ArrayList<IResourceFilter>();
     private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
     private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<Class<? extends IResource>, String>();
 
@@ -140,7 +139,7 @@ public class PersistenceManager implements Serializable
     public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
-        // Apply compression filters if it's required
+        // Add filters
         IResourceLocator filteredResourceLocator = applyFilters(resourceLocator);
 
         // Configure the format
@@ -172,7 +171,7 @@ public class PersistenceManager implements Serializable
             resource = (R) MatrixFactory.create((IMatrixView) resource);
         }
 
-        // Apply compression adapters if it's required
+        // Add filters
         resourceLocator = applyFilters(resourceLocator);
 
         // Write the resource
@@ -191,6 +190,7 @@ public class PersistenceManager implements Serializable
         Map<String, IResourceFormat> extensions = formats.get(resourceFormat.getResourceClass());
         extensions.put(resourceFormat.getExtension(), resourceFormat);
 
+        //TODO use filters interface or register at PersistenceInitialization
         if (resourceFormat instanceof AbstractXmlFormat)
         {
             registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension());
@@ -206,13 +206,16 @@ public class PersistenceManager implements Serializable
         classToDefaultExtension.put(resourceClass, extension);
     }
 
+    void registerResourceFilter(IResourceFilter resourceFilter) {
+        filters.add(resourceFilter);
+    }
+
     @NotNull
     private IResourceLocator applyFilters(@NotNull IResourceLocator resourceLocator)
     {
-
-        if (GzResourceLocatorAdapter.isAdaptable(resourceLocator.getExtension()))
+        for (IResourceFilter filter : filters)
         {
-            resourceLocator = GzResourceLocatorAdapter.getAdaptor(resourceLocator);
+            resourceLocator = filter.apply(resourceLocator);
         }
 
         return resourceLocator;
@@ -220,10 +223,12 @@ public class PersistenceManager implements Serializable
 
     private String removeFiltersExtensions(String extension)
     {
-        extension = GzResourceLocatorAdapter.removeExtension(extension);
+        for (IResourceFilter filter : filters)
+        {
+            extension = filter.removeExtension(extension);
+        }
 
         return extension;
     }
-
 
 }

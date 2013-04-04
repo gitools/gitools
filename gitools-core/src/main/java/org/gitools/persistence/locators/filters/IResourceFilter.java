@@ -24,16 +24,14 @@ package org.gitools.persistence.locators.filters;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
-public interface IResourceLocatorFilter
+public interface IResourceFilter
 {
+    boolean isFiltered(String extension);
 
-    boolean isFilterable(IResourceLocator resourceLocator);
-
-    boolean isFiltered(IResourceLocator resourceLocator);
-
-    @NotNull
-    IResourceLocator getUnfilteredLocator(IResourceLocator resourceLocator);
+    String removeExtension(String extension);
 
     @NotNull
-    IResourceLocator getFilteredLocator(IResourceLocator resourceLocator);
+    IResourceLocator apply(IResourceLocator resourceLocator);
+
+
 }
