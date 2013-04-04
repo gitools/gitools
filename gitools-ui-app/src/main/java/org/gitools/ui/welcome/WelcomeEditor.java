@@ -166,17 +166,13 @@ public class WelcomeEditor extends HtmlEditor
         else if (name.equals("open"))
         {
             String ref = params.get("ref");
-            if (ref.equals("Analysis"))
+            if (ref.equals("DataHeatmap"))
             {
-                new OpenAnalysisAction().actionPerformed(new ActionEvent(this, 0, name));
-            }
-            else if (ref.equals("DataHeatmap"))
-            {
-                new OpenHeatmapAction().actionPerformed(new ActionEvent(this, 0, name));
+                new OpenAction().actionPerformed(new ActionEvent(this, 0, name));
             }
             else if (ref.equals("DataHeatmapGS"))
             {
-                new OpenGenomeSpaceMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
+                new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
             }
         }
         else if (name.equals("example"))

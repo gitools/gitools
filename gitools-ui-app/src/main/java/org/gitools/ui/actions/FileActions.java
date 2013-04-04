@@ -35,9 +35,8 @@ public class FileActions
     public static final BaseAction newOverlapAnalysisAction = new NewOverlappingAnalysisAction();
 
     // Open
-    public static final BaseAction openEnrichmentAnalysisAction = new OpenAnalysisAction();
-    public static final BaseAction openHeatmapFromMatrixAction = new OpenHeatmapAction();
-    public static final BaseAction openGenomeSpaceMatrixAction = new OpenGenomeSpaceMatrixAction();
+    public static final BaseAction openAction = new OpenAction();
+    public static final BaseAction openGenomeSpaceAction = new OpenGenomeSpaceAction();
 
     // Save
     public static final BaseAction saveAction = new SaveAction();

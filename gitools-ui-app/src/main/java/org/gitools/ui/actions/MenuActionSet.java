@@ -37,24 +37,19 @@ public class MenuActionSet extends ActionSet
         super(new BaseAction[]{
                 new ActionSet("File", new BaseAction[]{
                         new ActionSet("New", new BaseAction[]{
-                                new ActionSet("Analysis", new BaseAction[]{
-                                        FileActions.newEnrichmentAnalysisAction,
-                                        FileActions.newOncozAnalysisAction,
-                                        FileActions.newCorrelationAnalysisAction,
-                                        FileActions.newOverlapAnalysisAction,
-                                        FileActions.newCombinationAnalysisAction
-                                })
+                                FileActions.newEnrichmentAnalysisAction,
+                                FileActions.newOncozAnalysisAction,
+                                FileActions.newCorrelationAnalysisAction,
+                                FileActions.newOverlapAnalysisAction,
+                                FileActions.newCombinationAnalysisAction
                         }),
                         new ActionSet("Open", new BaseAction[]{
-                                FileActions.openEnrichmentAnalysisAction,
-                                FileActions.openHeatmapFromMatrixAction,
-                                FileActions.openGenomeSpaceMatrixAction
+                                FileActions.openAction,
+                                FileActions.openGenomeSpaceAction
                         }),
                         BaseAction.separator,
                         FileActions.saveAction,
                         FileActions.saveAsAction,
-                        BaseAction.separator,
-                        FileActions.closeAction,
                         BaseAction.separator,
                         new ActionSet("Import", new BaseAction[]{
                                 new ActionSet("Matrix", new BaseAction[]{

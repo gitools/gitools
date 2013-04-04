@@ -51,15 +51,6 @@ public class IconNames
     public static final String save16 = "/img/Save16.gif";
     public static final String save24 = "/img/Save24.gif";
 
-    public static final String columnSelection16 = "/img/ColumnSelection16.gif";
-    public static final String columnSelection24 = "/img/ColumnSelection24.gif";
-
-    public static final String rowSelection16 = "/img/RowSelection16.gif";
-    public static final String rowSelection24 = "/img/RowSelection24.gif";
-
-    public static final String cellSelection16 = "/img/CellSelection16.gif";
-    public static final String cellSelection24 = "/img/CellSelection24.gif";
-
     public static final String columnShowAll16 = "/img/ColumnShowAll16.gif";
     public static final String columnShowAll24 = "/img/ColumnShowAll24.gif";
 

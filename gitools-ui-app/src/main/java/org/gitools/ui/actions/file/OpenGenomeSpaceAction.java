@@ -34,14 +34,15 @@ import org.json.JSONException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-public class OpenGenomeSpaceMatrixAction extends BaseAction
+public class OpenGenomeSpaceAction extends BaseAction
 {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public OpenGenomeSpaceMatrixAction()
+    public OpenGenomeSpaceAction()
     {
         super("from Genomespace ...");
+        setDesc("Open a heatmap or an analysis from Genomespace");
         setLargeIconFromResource(IconNames.gs24);
         setSmallIconFromResource(IconNames.gs16);
         setDefaultEnabled(true);

@@ -129,6 +129,16 @@ public abstract class BaseAction extends AbstractAction
         setSmallIcon(getIconResource(name));
     }
 
+    protected String getDesc() {
+        Object desc = getValue(SHORT_DESCRIPTION);
+
+        if (desc == null) {
+            return getName();
+        }
+
+        return String.valueOf(desc);
+    }
+
     @NotNull
     protected ImageIcon getLargeIcon()
     {

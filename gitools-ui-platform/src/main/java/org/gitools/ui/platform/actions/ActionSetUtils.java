@@ -70,7 +70,7 @@ public class ActionSetUtils
         WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
         tool.setAction(a);
         tool.setHideActionText(true);
-        TooltipManager.setTooltip(tool, a.getName(), TooltipWay.down, 0);
+        TooltipManager.setTooltip(tool, a.getDesc(), TooltipWay.down, 0);
         tool.setFocusable(false);
         tool.setRequestFocusEnabled(false);
         return tool;

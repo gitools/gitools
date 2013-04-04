@@ -23,6 +23,7 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.persistence.formats.analysis.*;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;
@@ -38,15 +39,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-public class OpenHeatmapAction extends BaseAction
+public class OpenAction extends BaseAction
 {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public OpenHeatmapAction()
+    public OpenAction()
     {
-        super("Heatmap ...");
-        setDesc("Open a heatmap from a file");
+        super("from filesystem...");
+        setDesc("Open a heatmap or an analysis from the filesystem");
         setSmallIconFromResource(IconNames.openMatrix16);
         setLargeIconFromResource(IconNames.openMatrix24);
         setMnemonic(KeyEvent.VK_M);
@@ -57,8 +58,22 @@ public class OpenHeatmapAction extends BaseAction
     public void actionPerformed(ActionEvent e)
     {
         FileFilter[] filters = new FileFilter[]{
-                // TODO new FileFormatFilter(FileFormats.HEATMAP),
-                new FileFormatFilter("Known formats", new FileFormat[]{
+
+                new FileFormatFilter("All known formats", new FileFormat[]{
+                        FileFormats.MULTIVALUE_DATA_MATRIX,
+                        FileFormats.DOUBLE_MATRIX,
+                        FileFormats.DOUBLE_BINARY_MATRIX,
+                        FileFormats.GENE_CLUSTER_TEXT,
+                        FileFormats.GENE_MATRIX,
+                        FileFormats.GENE_MATRIX_TRANSPOSED,
+                        EnrichmentAnalysisXmlFormat.FILE_FORMAT,
+                        OncodriveAnalysisXmlFormat.FILE_FORMAT,
+                        CorrelationAnalysisXmlFormat.FILE_FORMAT,
+                        CombinationAnalysisXmlFormat.COMBINATION,
+                        OverlappingAnalysisXmlFormat.OVERLAPPING,
+                        GroupComparisonAnalysisXmlFormat.FILE_FORMAT
+                }),
+                new FileFormatFilter("Heatmaps", new FileFormat[]{
                         FileFormats.MULTIVALUE_DATA_MATRIX,
                         FileFormats.DOUBLE_MATRIX,
                         FileFormats.DOUBLE_BINARY_MATRIX,
@@ -66,6 +81,17 @@ public class OpenHeatmapAction extends BaseAction
                         FileFormats.GENE_MATRIX,
                         FileFormats.GENE_MATRIX_TRANSPOSED
                 }),
+
+                new FileFormatFilter("Analysis", new FileFormat[]{
+                        EnrichmentAnalysisXmlFormat.FILE_FORMAT,
+                        OncodriveAnalysisXmlFormat.FILE_FORMAT,
+                        CorrelationAnalysisXmlFormat.FILE_FORMAT,
+                        CombinationAnalysisXmlFormat.COMBINATION,
+                        OverlappingAnalysisXmlFormat.OVERLAPPING,
+                        GroupComparisonAnalysisXmlFormat.FILE_FORMAT
+                }),
+
+                // Heatmaps
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)"),
                 new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
@@ -73,7 +99,15 @@ public class OpenHeatmapAction extends BaseAction
                 new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
                 new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
                 new FileFormatFilter(FileFormats.GENE_MATRIX),
-                new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED)
+                new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED),
+
+                // Analysis
+                new FileFormatFilter(EnrichmentAnalysisXmlFormat.FILE_FORMAT),
+                new FileFormatFilter(OncodriveAnalysisXmlFormat.FILE_FORMAT),
+                new FileFormatFilter(CorrelationAnalysisXmlFormat.FILE_FORMAT),
+                new FileFormatFilter(OverlappingAnalysisXmlFormat.OVERLAPPING),
+                new FileFormatFilter(GroupComparisonAnalysisXmlFormat.FILE_FORMAT),
+                new FileFormatFilter(CombinationAnalysisXmlFormat.COMBINATION)
         };
 
         final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
@@ -90,8 +124,6 @@ public class OpenHeatmapAction extends BaseAction
         {
             return;
         }
-
-        final FileFormatFilter ff = (FileFormatFilter) ret.getFilter();
 
         Settings.getDefault().setLastPath(file.getParent());
         Settings.getDefault().save();
