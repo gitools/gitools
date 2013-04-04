@@ -95,18 +95,12 @@ public class SaveFilePage extends AbstractWizardPage
             setMessage(MessageStatus.INFO, "");
         }
 
-        //fn = fn.toLowerCase();
         FileFormat fmt = getFormat();
         if (formats != null && formats.length > 1
                 && fmt != null && !fmt.checkExtension(fn))
         {
             setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
         }
-        /*final String ext = fmt != null ? fmt.getExtension().toLowerCase() : "";
-        final String extgz = ext + ".gz";
-		if (formats != null && formats.length > 1
-				&& fmt != null && !(fn.endsWith(ext) || fn.endsWith(extgz)))
-			setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");*/
     }
 
     @NotNull

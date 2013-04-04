@@ -23,22 +23,21 @@ package org.gitools.persistence.formats.analysis.adapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.persistence.*;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.List;
 
 public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference>
 {
-
-    private IProgressMonitor progressMonitor;
     private IResourceLocator resourceLocator;
+    private List<ResourceReference> dependencies;
 
-    public ResourceReferenceXmlAdapter(IResourceLocator resourceLocator, IProgressMonitor progressMonitor)
+    public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator)
     {
         super();
         this.resourceLocator = resourceLocator;
-        this.progressMonitor = progressMonitor;
+        this.dependencies = dependencies;
     }
 
     @NotNull
@@ -58,7 +57,10 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
         PersistenceManager pm = PersistenceManager.get();
         IResourceFormat resourceFormat = pm.getFormat(extension, IResource.class);
 
-        return new ResourceReference(referenceLocator, resourceFormat);
+        ResourceReference dependency = new ResourceReference(referenceLocator, resourceFormat);
+        dependencies.add(dependency);
+
+        return dependency;
     }
 
     @Override
@@ -79,12 +81,9 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension));
         }
 
-        IResourceLocator referenceLocator = resourceReference.getLocator();
-        if (referenceLocator.isWritable())
-        {
-            PersistenceManager.get().store(referenceLocator, resourceReference.get(), progressMonitor);
-        }
+        dependencies.add(resourceReference);
 
+        IResourceLocator referenceLocator = resourceReference.getLocator();
         return new ResourceReferenceXmlElement(null, referenceLocator.getName());
     }
 

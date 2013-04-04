@@ -26,6 +26,8 @@ import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.persistence.locators.filters.IResourceFilter;
+import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
+import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -193,11 +195,11 @@ public class PersistenceManager implements Serializable
         //TODO use filters interface or register at PersistenceInitialization
         if (resourceFormat instanceof AbstractXmlFormat)
         {
-            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension());
+            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
         }
         else
         {
-            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + ".gz");
+            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + GzResourceFilter.SUFFIX);
         }
     }
 

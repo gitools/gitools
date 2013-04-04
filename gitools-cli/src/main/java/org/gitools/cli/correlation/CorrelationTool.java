@@ -28,7 +28,7 @@ import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -128,7 +128,7 @@ public class CorrelationTool extends AnalysisTool
         CorrelationCommand cmd = new CorrelationCommand(
                 analysis,
                 dataFormat, args.dataFile,
-                args.workdir, args.analysisName + "." + CorrelationAnalysisXmlFormat.EXTENSION);
+                args.workdir, args.analysisName + "." + CorrelationAnalysisFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

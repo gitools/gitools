@@ -30,7 +30,7 @@ import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -113,7 +113,7 @@ public class CombinationTool extends AnalysisTool
                 analysis,
                 dataMime, args.dataFile,
                 columnsMime, args.columnsFile,
-                args.workdir, args.analysisName + "." + CombinationAnalysisXmlFormat.EXTENSION);
+                args.workdir, args.analysisName + "." + CombinationAnalysisFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

@@ -41,7 +41,7 @@ import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
@@ -350,7 +350,7 @@ public class HeatmapEditor extends AbstractEditor
                     "Save heatmap",
                     getName(),
                     Settings.getDefault().getLastPath(),
-                    new FileFormat[]{new FileFormat("Heatmap", HeatmapXmlFormat.EXTENSION)});
+                    new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
             WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
             dlg.setVisible(true);
@@ -402,7 +402,7 @@ public class HeatmapEditor extends AbstractEditor
                         "Save heatmap",
                         getName(),
                         Settings.getDefault().getLastPath(),
-                        new FileFormat[]{new FileFormat("Heatmap", HeatmapXmlFormat.EXTENSION)});
+                        new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
                 dlg.setVisible(true);

@@ -21,20 +21,19 @@
  */
 package org.gitools.persistence.formats.analysis;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class OncodriveAnalysisXmlFormat extends AbstractXmlFormat<OncodriveAnalysis>
+public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnalysis>
 {
 
-    public static final String EXTENSION = "oncodrive";
-    public static final Class<OncodriveAnalysis> RESOURCE_CLASS = OncodriveAnalysis.class;
+    public static final String EXTENSION = "combination";
+    public static final Class<CombinationAnalysis> RESOURCE_CLASS = CombinationAnalysis.class;
+    public static final FileFormat FILE_FORMAT = new FileFormat("Combination analysis", EXTENSION);
 
-    public static final FileFormat FILE_FORMAT = new FileFormat("Oncodrive analysis", EXTENSION);
-
-
-    public OncodriveAnalysisXmlFormat()
+    public CombinationAnalysisFormat()
     {
         super(EXTENSION, RESOURCE_CLASS);
     }
+
 }

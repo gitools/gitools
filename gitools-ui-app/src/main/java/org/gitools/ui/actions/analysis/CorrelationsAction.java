@@ -30,7 +30,7 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
@@ -136,11 +136,11 @@ public class CorrelationsAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + CorrelationAnalysisXmlFormat.EXTENSION);
+                        editor.setName(analysis.getTitle() + "." + CorrelationAnalysisFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CorrelationAnalysisXmlFormat.EXTENSION));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CorrelationAnalysisFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable()

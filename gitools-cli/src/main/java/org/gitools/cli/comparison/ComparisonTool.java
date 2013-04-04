@@ -28,7 +28,7 @@ import org.gitools.cli.AnalysisTool;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.Test;
@@ -220,7 +220,7 @@ public class ComparisonTool extends AnalysisTool
         GroupComparisonCommand cmd = new GroupComparisonCommand(
                 analysis,
                 dataFormat, args.dataFile,
-                args.workdir, args.analysisName + "." + GroupComparisonAnalysisXmlFormat.EXTENSION,
+                args.workdir, args.analysisName + "." + GroupComparisonAnalysisFormat.EXTENSION,
                 args.grouping, this.groups, groupDescriptions);
 
         IProgressMonitor monitor = !args.quiet ?

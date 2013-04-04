@@ -27,7 +27,7 @@ import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -107,7 +107,7 @@ public class OncodriveTool extends HtestTool
                 args.populationFile,
                 populationDefaultValue,
                 setsMime, args.setsFile,
-                args.workdir, args.analysisName + "." + OncodriveAnalysisXmlFormat.EXTENSION);
+                args.workdir, args.analysisName + "." + OncodriveAnalysisFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

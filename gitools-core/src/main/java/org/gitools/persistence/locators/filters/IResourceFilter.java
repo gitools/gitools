@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IResourceFilter
 {
+    String getSuffix();
+
     boolean isFiltered(String extension);
 
     String removeExtension(String extension);

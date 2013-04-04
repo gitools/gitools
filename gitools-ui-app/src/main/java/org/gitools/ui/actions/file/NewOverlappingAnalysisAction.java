@@ -26,7 +26,7 @@ import org.gitools.analysis.overlapping.OverlappingCommand;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
@@ -100,7 +100,7 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
                     final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapXmlFormat.EXTENSION);
+                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable()
                     {

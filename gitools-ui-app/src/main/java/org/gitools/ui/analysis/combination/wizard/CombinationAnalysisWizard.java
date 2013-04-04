@@ -29,8 +29,7 @@ import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
@@ -59,7 +58,7 @@ import java.util.Properties;
 public class CombinationAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisXmlFormat.EXTENSION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
     private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
@@ -160,7 +159,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
             saveFilePage.setFormats(new FileFormat[]{
-                    CombinationAnalysisXmlFormat.COMBINATION});
+                    CombinationAnalysisFormat.FILE_FORMAT});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -235,7 +234,6 @@ public class CombinationAnalysisWizard extends AbstractWizard
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
                         try
                         {
                             final CombinationAnalysis a = PersistenceManager.get()

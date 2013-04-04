@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
@@ -120,11 +120,11 @@ public class GroupComparisonAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + GroupComparisonAnalysisXmlFormat.EXTENSION);
+                        editor.setName(analysis.getTitle() + "." + GroupComparisonAnalysisFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", GroupComparisonAnalysisXmlFormat.EXTENSION));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", GroupComparisonAnalysisFormat.EXTENSION));
                     }
 
 

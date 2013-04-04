@@ -21,18 +21,16 @@
  */
 package org.gitools.persistence.formats.analysis;
 
-import org.gitools.heatmap.Heatmap;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class HeatmapXmlFormat extends AbstractXmlFormat<Heatmap>
+public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnalysis>
 {
+    public static final String EXTENSION = "overlapping";
+    public static final Class<OverlappingAnalysis> RESOURCE_CLASS = OverlappingAnalysis.class;
+    public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
-    public static final String EXTENSION = "heatmap";
-    public static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
-    public static final FileFormat HEATMAP = new FileFormat("Heatmap", EXTENSION);
-
-
-    public HeatmapXmlFormat()
+    public OverlappingAnalysisFormat()
     {
         super(EXTENSION, RESOURCE_CLASS);
     }

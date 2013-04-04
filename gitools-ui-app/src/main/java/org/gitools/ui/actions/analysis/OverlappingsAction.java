@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
@@ -136,11 +136,11 @@ public class OverlappingsAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + OverlappingAnalysisXmlFormat.EXTENSION);
+                        editor.setName(analysis.getTitle() + "." + OverlappingAnalysisFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", OverlappingAnalysisXmlFormat.EXTENSION));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", OverlappingAnalysisFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable()

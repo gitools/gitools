@@ -26,8 +26,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -52,7 +51,7 @@ import java.util.Properties;
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CorrelationAnalysisXmlFormat.EXTENSION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CorrelationAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
     private ExamplePage examplePage;
@@ -100,8 +99,10 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
         saveFilePage.setFormats(new FileFormat[]{
-                CorrelationAnalysisXmlFormat.FILE_FORMAT});
-        saveFilePage.setFormatsVisible(false);
+                CorrelationAnalysisFormat.FILE_FORMAT,
+                new FileFormat("Correlations analysis (ZIP)", CorrelationAnalysisFormat.EXTENSION + ".zip")
+        });
+        saveFilePage.setFormatsVisible(true);
         addPage(saveFilePage);
 
         // Analysis details
@@ -134,7 +135,6 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
                         try
                         {
                             monitor.begin("Loading example parameters ...", 1);

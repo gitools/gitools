@@ -30,7 +30,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -93,8 +93,8 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     public void doSave(IProgressMonitor progressMonitor)
     {
 
-        xmlPersistance = new OverlappingAnalysisXmlFormat();
-        fileformat = OverlappingAnalysisXmlFormat.OVERLAPPING;
+        xmlPersistance = new OverlappingAnalysisFormat();
+        fileformat = OverlappingAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -136,7 +136,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), OverlappingAnalysisXmlFormat.EXTENSION,
+                        getName(), OverlappingAnalysisFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -177,7 +177,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 final OverlappingResultsEditor editor = new OverlappingResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), OverlappingAnalysisXmlFormat.EXTENSION,
+                        getName(), OverlappingAnalysisFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

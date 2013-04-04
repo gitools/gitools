@@ -28,7 +28,7 @@ import org.gitools.cli.AnalysisTool;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -153,7 +153,7 @@ public class OverlappingTool extends AnalysisTool
             analysis.setBinaryCutoffCmp(binaryCutoffCmp);
             analysis.setBinaryCutoffValue(binaryCutoffValue);
 
-            OverlappingCommand cmd = new OverlappingCommand(analysis, args.workdir, args.analysisName + "." + OverlappingAnalysisXmlFormat.EXTENSION);
+            OverlappingCommand cmd = new OverlappingCommand(analysis, args.workdir, args.analysisName + "." + OverlappingAnalysisFormat.EXTENSION);
 
 
             cmd.run(monitor);

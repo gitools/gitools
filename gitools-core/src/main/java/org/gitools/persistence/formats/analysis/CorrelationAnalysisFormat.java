@@ -19,15 +19,21 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.workspace;
+package org.gitools.persistence.formats.analysis;
 
-public class WorkspaceManagerException extends Exception
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.persistence._DEPRECATED.FileFormat;
+
+public class CorrelationAnalysisFormat extends AbstractXmlFormat<CorrelationAnalysis>
 {
+    public static final String EXTENSION = "correlations";
+    public static final Class<CorrelationAnalysis> RESOURCE_CLASS = CorrelationAnalysis.class;
+    public static final FileFormat FILE_FORMAT = new FileFormat("Correlations analysis", EXTENSION);
 
-    private static final long serialVersionUID = -1870980128337215909L;
 
-    public WorkspaceManagerException(Throwable cause)
+    public CorrelationAnalysisFormat()
     {
-        super(cause);
+        super(EXTENSION, RESOURCE_CLASS);
     }
+
 }

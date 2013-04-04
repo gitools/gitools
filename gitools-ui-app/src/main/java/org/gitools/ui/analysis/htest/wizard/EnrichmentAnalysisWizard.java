@@ -26,8 +26,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
@@ -49,7 +48,7 @@ import java.util.Properties;
 public class EnrichmentAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + EnrichmentAnalysisXmlFormat.EXTENSION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + EnrichmentAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "20_tumor_types_upreg_annot.cdm.gz";
     private static final String EXAMPLE_MODULES_FILE = "KEGG_pathways_descr__ensembl_gene.tcm";
 
@@ -104,8 +103,8 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
         saveFilePage.setFormats(new FileFormat[]{
                 new FileFormat("Enrichment analysis (*."
-                        + EnrichmentAnalysisXmlFormat.EXTENSION + ")",
-                        EnrichmentAnalysisXmlFormat.EXTENSION)});
+                        + EnrichmentAnalysisFormat.EXTENSION + ")",
+                        EnrichmentAnalysisFormat.EXTENSION)});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -139,7 +138,6 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
                         try
                         {
                             monitor.begin("Loading example parameters ...", 1);

@@ -26,8 +26,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
@@ -50,7 +49,7 @@ import java.util.Properties;
 public class OncodriveAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OncodriveAnalysisXmlFormat.EXTENSION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OncodriveAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_annot.cdm.gz";
     private static final String EXAMPLE_COLUMN_SETS_FILE = "TCGA_gbm_sample_subtypes.tcm";
 
@@ -107,7 +106,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
         saveFilePage.setFormats(new FileFormat[]{
-                OncodriveAnalysisXmlFormat.FILE_FORMAT});
+                OncodriveAnalysisFormat.FILE_FORMAT});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -141,7 +140,6 @@ public class OncodriveAnalysisWizard extends AbstractWizard
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
                         try
                         {
                             monitor.begin("Loading example parameters ...", 1);

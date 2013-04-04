@@ -27,6 +27,7 @@ import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
 import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
 import org.gitools.persistence.formats.text.GeneSetFormat;
 import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
+import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
 import org.jetbrains.annotations.NotNull;
 
 public class PersistenceInitialization
@@ -40,13 +41,13 @@ public class PersistenceInitialization
 
     public static void registerFormats(@NotNull PersistenceManager pm)
     {
-        pm.registerFormat(new EnrichmentAnalysisXmlFormat());
-        pm.registerFormat(new OncodriveAnalysisXmlFormat());
-        pm.registerFormat(new CorrelationAnalysisXmlFormat());
-        pm.registerFormat(new CombinationAnalysisXmlFormat());
-        pm.registerFormat(new OverlappingAnalysisXmlFormat());
-        pm.registerFormat(new GroupComparisonAnalysisXmlFormat());
-        pm.registerFormat(new HeatmapXmlFormat());
+        pm.registerFormat(new EnrichmentAnalysisFormat());
+        pm.registerFormat(new OncodriveAnalysisFormat());
+        pm.registerFormat(new CorrelationAnalysisFormat());
+        pm.registerFormat(new CombinationAnalysisFormat());
+        pm.registerFormat(new OverlappingAnalysisFormat());
+        pm.registerFormat(new GroupComparisonAnalysisFormat());
+        pm.registerFormat(new HeatmapFormat());
         pm.registerFormat(new GeneSetFormat());
         pm.registerFormat(new GeneMatrixFormat());
         pm.registerFormat(new GeneMatrixTransposedFormat());
@@ -59,6 +60,7 @@ public class PersistenceInitialization
         pm.registerFormat(new IndexedModuleMapFormat());
 
         pm.registerResourceFilter(new GzResourceFilter());
+        pm.registerResourceFilter(new ZipResourceFilter());
     }
 
 

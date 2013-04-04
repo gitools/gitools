@@ -66,12 +66,12 @@ public class OpenAction extends BaseAction
                         FileFormats.GENE_CLUSTER_TEXT,
                         FileFormats.GENE_MATRIX,
                         FileFormats.GENE_MATRIX_TRANSPOSED,
-                        EnrichmentAnalysisXmlFormat.FILE_FORMAT,
-                        OncodriveAnalysisXmlFormat.FILE_FORMAT,
-                        CorrelationAnalysisXmlFormat.FILE_FORMAT,
-                        CombinationAnalysisXmlFormat.COMBINATION,
-                        OverlappingAnalysisXmlFormat.OVERLAPPING,
-                        GroupComparisonAnalysisXmlFormat.FILE_FORMAT
+                        EnrichmentAnalysisFormat.FILE_FORMAT,
+                        OncodriveAnalysisFormat.FILE_FORMAT,
+                        CorrelationAnalysisFormat.FILE_FORMAT,
+                        CombinationAnalysisFormat.FILE_FORMAT,
+                        OverlappingAnalysisFormat.FILE_FORMAT,
+                        GroupComparisonAnalysisFormat.FILE_FORMAT
                 }),
                 new FileFormatFilter("Heatmaps", new FileFormat[]{
                         FileFormats.MULTIVALUE_DATA_MATRIX,
@@ -83,12 +83,12 @@ public class OpenAction extends BaseAction
                 }),
 
                 new FileFormatFilter("Analysis", new FileFormat[]{
-                        EnrichmentAnalysisXmlFormat.FILE_FORMAT,
-                        OncodriveAnalysisXmlFormat.FILE_FORMAT,
-                        CorrelationAnalysisXmlFormat.FILE_FORMAT,
-                        CombinationAnalysisXmlFormat.COMBINATION,
-                        OverlappingAnalysisXmlFormat.OVERLAPPING,
-                        GroupComparisonAnalysisXmlFormat.FILE_FORMAT
+                        EnrichmentAnalysisFormat.FILE_FORMAT,
+                        OncodriveAnalysisFormat.FILE_FORMAT,
+                        CorrelationAnalysisFormat.FILE_FORMAT,
+                        CombinationAnalysisFormat.FILE_FORMAT,
+                        OverlappingAnalysisFormat.FILE_FORMAT,
+                        GroupComparisonAnalysisFormat.FILE_FORMAT
                 }),
 
                 // Heatmaps
@@ -102,12 +102,12 @@ public class OpenAction extends BaseAction
                 new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED),
 
                 // Analysis
-                new FileFormatFilter(EnrichmentAnalysisXmlFormat.FILE_FORMAT),
-                new FileFormatFilter(OncodriveAnalysisXmlFormat.FILE_FORMAT),
-                new FileFormatFilter(CorrelationAnalysisXmlFormat.FILE_FORMAT),
-                new FileFormatFilter(OverlappingAnalysisXmlFormat.OVERLAPPING),
-                new FileFormatFilter(GroupComparisonAnalysisXmlFormat.FILE_FORMAT),
-                new FileFormatFilter(CombinationAnalysisXmlFormat.COMBINATION)
+                new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT),
+                new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT),
+                new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT),
+                new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT),
+                new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT),
+                new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
         };
 
         final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(

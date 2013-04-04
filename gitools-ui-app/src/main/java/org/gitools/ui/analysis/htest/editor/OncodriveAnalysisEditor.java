@@ -32,7 +32,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
@@ -178,7 +178,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), OncodriveAnalysisXmlFormat.EXTENSION,
+                        getName(), OncodriveAnalysisFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -219,7 +219,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
                 final OncodriveResultsEditor editor = new OncodriveResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), OncodriveAnalysisXmlFormat.EXTENSION,
+                        getName(), OncodriveAnalysisFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

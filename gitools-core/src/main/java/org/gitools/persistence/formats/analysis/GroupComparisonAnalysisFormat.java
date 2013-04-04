@@ -21,17 +21,18 @@
  */
 package org.gitools.persistence.formats.analysis;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class CorrelationAnalysisXmlFormat extends AbstractXmlFormat<CorrelationAnalysis>
+public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupComparisonAnalysis>
 {
-    public static final String EXTENSION = "correlations";
-    public static final Class<CorrelationAnalysis> RESOURCE_CLASS = CorrelationAnalysis.class;
-    public static final FileFormat FILE_FORMAT = new FileFormat("Correlations analysis", EXTENSION);
+
+    public static final String EXTENSION = "comparison";
+    public static final Class<GroupComparisonAnalysis> RESOURCE_CLASS = GroupComparisonAnalysis.class;
+    public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
 
-    public CorrelationAnalysisXmlFormat()
+    public GroupComparisonAnalysisFormat()
     {
         super(EXTENSION, RESOURCE_CLASS);
     }

@@ -21,9 +21,7 @@
  */
 package org.gitools.persistence.formats.analysis;
 
-import org.gitools.persistence.IResource;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.*;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -34,23 +32,17 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractXmlFormat<R extends IResource> extends AbstractResourceFormat<R>
 {
-
-    public static final String LOAD_REFERENCES_PROP = "load_references";
-
-    private boolean loadReferences;
+    private List<ResourceReference> dependencies;
 
     public AbstractXmlFormat(String extension, Class<R> resourceClass)
     {
         super(extension, resourceClass);
-    }
-
-    protected boolean isLoadReferences()
-    {
-        return loadReferences;
     }
 
     @Override
@@ -62,24 +54,26 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     @Override
     protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
-        this.loadReferences = Boolean.parseBoolean(properties.getProperty(LOAD_REFERENCES_PROP, "true"));
     }
 
-    protected void beforeRead(IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void beforeRead(InputStream in, IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
-        unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
+        dependencies = new ArrayList<ResourceReference>();
+        unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 
     /**
-     * Override this method if you want to modify the resource after reading it.
+     * Override this method if you want to modify the resource after reading it, just
+     * before to close the stream.
      *
+     * @param inputStream     the open input stream
      * @param resourceLocator the resource locator
      * @param resource        the entity
      * @param unmarshaller    the unmarshaller
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
-    protected void afterRead(IResourceLocator resourceLocator, R resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void afterRead(InputStream inputStream, IResourceLocator resourceLocator, R resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
     }
 
@@ -93,13 +87,14 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             JAXBContext context = JAXBContext.newInstance(getResourceClass());
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
-            beforeRead(resourceLocator, unmarshaller, progressMonitor);
 
             InputStream in = resourceLocator.openInputStream();
-            entity = (R) unmarshaller.unmarshal(in);
-            in.close();
 
-            afterRead(resourceLocator, entity, unmarshaller, progressMonitor);
+            beforeRead(in, resourceLocator, unmarshaller, progressMonitor);
+            entity = (R) unmarshaller.unmarshal(in);
+            afterRead(in, resourceLocator, entity, unmarshaller, progressMonitor);
+
+            in.close();
 
         } catch (Exception e)
         {
@@ -110,13 +105,20 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         return entity;
     }
 
-    protected void beforeWrite(IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
-        marshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
+        dependencies = new ArrayList<ResourceReference>();
+        marshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 
-    protected void afterWrite(IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void afterWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
+        // Force write the dependencies
+        for (ResourceReference dependency : dependencies)
+        {
+            IResourceLocator dependencyLocator = dependency.getLocator();
+            PersistenceManager.get().store(dependencyLocator, dependency.get(), progressMonitor);
+        }
     }
 
     @Override
@@ -130,13 +132,11 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-            beforeWrite(resourceLocator, resource, marshaller, monitor);
-
             OutputStream out = resourceLocator.openOutputStream();
+            beforeWrite(out, resourceLocator, resource, marshaller, monitor);
             marshaller.marshal(resource, out);
+            afterWrite(out, resourceLocator, resource, marshaller, monitor);
             out.close();
-
-            afterWrite(resourceLocator, resource, marshaller, monitor);
 
         } catch (Exception e)
         {

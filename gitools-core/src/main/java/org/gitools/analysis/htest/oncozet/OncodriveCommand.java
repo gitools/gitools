@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.*;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.persistence.formats.matrix.AbstractMatrixFormat;
 import org.gitools.persistence.formats.matrix.AbstractTextMatrixFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
@@ -188,7 +188,7 @@ public class OncodriveCommand extends HtestCommand
         }
 
         File file = new File(workdirFile, fileName);
-        OncodriveAnalysisXmlFormat p = new OncodriveAnalysisXmlFormat();
+        OncodriveAnalysisFormat p = new OncodriveAnalysisFormat();
         p.write(new UrlResourceLocator(file), analysis, monitor);
     }
 }

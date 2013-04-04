@@ -24,25 +24,14 @@ package org.gitools.persistence._DEPRECATED;
 @Deprecated
 public class FileSuffixes
 {
-
-    public static final String WORKSPACE = "workspace.xml";
-
-    public static final String PROJECT = "project.xml";
-    public static final String CONTENT = "contents.xml";
-
-    public static final String TABLE_FIGURE = "table";
-
     public static final String GENE_SET = "grp";
-
     public static final String GENE_MATRIX = "gmx";
     public static final String GENE_MATRIX_TRANSPOSED = "gmt";
-
     public static final String OBJECT_MATRIX = "tdm";
     public static final String DOUBLE_MATRIX = "cdm";
     public static final String GENE_CLUSTER_TEXT = "gct";
     public static final String DOUBLE_BINARY_MATRIX = "bdm";
     public static final String ANNOTATION_MATRIX = "tsv";
-
     public static final String MODULES_INDEXED_MAP = "ixm";
     public static final String MODULES_2C_MAP = "tcm";
 }

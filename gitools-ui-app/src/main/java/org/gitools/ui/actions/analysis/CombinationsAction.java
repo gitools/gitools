@@ -30,7 +30,7 @@ import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
@@ -129,11 +129,11 @@ public class CombinationsAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + CombinationAnalysisXmlFormat.EXTENSION);
+                        editor.setName(analysis.getTitle() + "." + CombinationAnalysisFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CombinationAnalysisXmlFormat.EXTENSION));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CombinationAnalysisFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable()

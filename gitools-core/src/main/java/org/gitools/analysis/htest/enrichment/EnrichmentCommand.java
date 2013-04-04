@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.*;
-import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.persistence.formats.matrix.AbstractMatrixFormat;
 import org.gitools.persistence.formats.matrix.AbstractTextMatrixFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
@@ -116,7 +116,7 @@ public class EnrichmentCommand extends HtestCommand
         }
 
         File file = new File(workdirFile, fileName);
-        EnrichmentAnalysisXmlFormat p = new EnrichmentAnalysisXmlFormat();
+        EnrichmentAnalysisFormat p = new EnrichmentAnalysisFormat();
         p.write(new UrlResourceLocator(file), analysis, monitor);
     }
 

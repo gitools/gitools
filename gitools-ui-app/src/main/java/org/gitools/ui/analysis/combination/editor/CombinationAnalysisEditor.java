@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -106,8 +106,8 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     @Override
     public void doSave(IProgressMonitor progressMonitor)
     {
-        xmlPersistance = new CombinationAnalysisXmlFormat();
-        fileformat = CombinationAnalysisXmlFormat.COMBINATION;
+        xmlPersistance = new CombinationAnalysisFormat();
+        fileformat = CombinationAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -155,7 +155,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                     editor.setName(editorPanel.deriveName(
-                            getName(), CombinationAnalysisXmlFormat.EXTENSION,
+                            getName(), CombinationAnalysisFormat.EXTENSION,
                             "-data", ""));
 
                     SwingUtilities.invokeLater(new Runnable()
@@ -209,7 +209,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
 
                     editor.setName(editorPanel.deriveName(
-                            getName(), CombinationAnalysisXmlFormat.EXTENSION,
+                            getName(), CombinationAnalysisFormat.EXTENSION,
                             "-results", ""));
 
                     SwingUtilities.invokeLater(new Runnable()

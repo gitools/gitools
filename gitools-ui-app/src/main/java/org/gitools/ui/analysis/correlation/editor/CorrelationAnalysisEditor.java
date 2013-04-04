@@ -28,7 +28,7 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -83,8 +83,8 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     @Override
     public void doSave(IProgressMonitor progressMonitor)
     {
-        xmlPersistance = new CorrelationAnalysisXmlFormat();
-        fileformat = CorrelationAnalysisXmlFormat.FILE_FORMAT;
+        xmlPersistance = new CorrelationAnalysisFormat();
+        fileformat = CorrelationAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -126,7 +126,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), CorrelationAnalysisXmlFormat.EXTENSION,
+                        getName(), CorrelationAnalysisFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -167,7 +167,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
                 final CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), CorrelationAnalysisXmlFormat.EXTENSION,
+                        getName(), CorrelationAnalysisFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

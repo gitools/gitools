@@ -26,8 +26,7 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -54,7 +53,7 @@ import java.util.Properties;
 public class OverlappingAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisXmlFormat.EXTENSION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
     private static final FileFormat[] dataFormats = new FileFormat[]{
@@ -131,7 +130,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
             saveFilePage.setFormats(new FileFormat[]{
-                    OverlappingAnalysisXmlFormat.OVERLAPPING});
+                    OverlappingAnalysisFormat.FILE_FORMAT});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -167,7 +166,6 @@ public class OverlappingAnalysisWizard extends AbstractWizard
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        props.setProperty(AbstractXmlFormat.LOAD_REFERENCES_PROP, "false");
                         try
                         {
                             monitor.begin("Loading example parameters ...", 1);

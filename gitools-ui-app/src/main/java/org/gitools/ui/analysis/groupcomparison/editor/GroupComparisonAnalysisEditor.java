@@ -35,7 +35,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -86,8 +86,8 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     @Override
     public void doSave(IProgressMonitor progressMonitor)
     {
-        xmlPersistance = new GroupComparisonAnalysisXmlFormat();
-        fileformat = GroupComparisonAnalysisXmlFormat.FILE_FORMAT;
+        xmlPersistance = new GroupComparisonAnalysisFormat();
+        fileformat = GroupComparisonAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -141,7 +141,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), GroupComparisonAnalysisXmlFormat.EXTENSION,
+                        getName(), GroupComparisonAnalysisFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -262,7 +262,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), GroupComparisonAnalysisXmlFormat.EXTENSION,
+                        getName(), GroupComparisonAnalysisFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

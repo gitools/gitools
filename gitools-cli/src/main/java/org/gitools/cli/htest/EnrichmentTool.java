@@ -27,7 +27,7 @@ import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -120,7 +120,7 @@ public class EnrichmentTool extends HtestTool
                 args.populationFile,
                 populationDefaultValue,
                 modulesMime, args.modulesFile,
-                args.workdir, args.analysisName + "." + EnrichmentAnalysisXmlFormat.EXTENSION);
+                args.workdir, args.analysisName + "." + EnrichmentAnalysisFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

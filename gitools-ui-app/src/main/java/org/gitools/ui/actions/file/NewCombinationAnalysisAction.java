@@ -28,7 +28,7 @@ import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -108,7 +108,7 @@ public class NewCombinationAnalysisAction extends BaseAction
 
                     final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(analysisPath) + "." + HeatmapXmlFormat.EXTENSION);
+                    editor.setName(PersistenceUtils.getFileName(analysisPath) + "." + HeatmapFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable()
                     {
