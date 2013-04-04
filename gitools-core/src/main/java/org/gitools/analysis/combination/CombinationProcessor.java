@@ -32,6 +32,7 @@ import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class CombinationProcessor implements AnalysisProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         Date startTime = new Date();
@@ -102,7 +103,7 @@ public class CombinationProcessor implements AnalysisProcessor
         int sizeIndex = -1;
         String sizeAttrName = analysis.getSizeAttrName();
         /*if (sizeAttrName == null || sizeAttrName.isEmpty())
-			sizeIndex = analysis.getSizeAttrIndex();*/
+            sizeIndex = analysis.getSizeAttrIndex();*/
         if (sizeAttrName != null && !sizeAttrName.isEmpty())
         {
             sizeIndex = data.getCellAdapter().getPropertyIndex(sizeAttrName);
@@ -110,7 +111,7 @@ public class CombinationProcessor implements AnalysisProcessor
 
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
-		/*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
+        /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
 			pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
         {

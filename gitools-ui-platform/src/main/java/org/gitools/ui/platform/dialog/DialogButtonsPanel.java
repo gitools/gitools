@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -32,6 +34,7 @@ public class DialogButtonsPanel extends JPanel
 
     public static final JButton SEPARATOR = new JButton();
 
+    @Nullable
     protected List<JButton> buttons;
     private JPanel buttonsPanel;
 
@@ -48,12 +51,13 @@ public class DialogButtonsPanel extends JPanel
         add(buttonsPanel, BorderLayout.CENTER);
     }
 
+    @Nullable
     public List<JButton> getButtons()
     {
         return buttons;
     }
 
-    public void setButtons(List<JButton> buttons)
+    public void setButtons(@Nullable List<JButton> buttons)
     {
         this.buttons = buttons;
         buttonsPanel.removeAll();

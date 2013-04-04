@@ -26,6 +26,7 @@ import org.gitools.clustering.ClusteringMethodFactory;
 import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
 
@@ -177,6 +178,7 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
         return true;
     }
 
+    @Nullable
     @Override
     public AbstractClusteringValueMethod getMethod()
     {
@@ -206,6 +208,7 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
     }
 
 
+    @Nullable
     public ClusteringMethodDescriptor getMethodDescriptor()
     {
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();

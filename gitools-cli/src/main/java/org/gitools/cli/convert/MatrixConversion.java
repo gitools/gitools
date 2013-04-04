@@ -26,13 +26,16 @@ import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class MatrixConversion implements ConversionDelegate
 {
 
+    @Nullable
     @Override
-    public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception
+    public Object convert(String srcFormat, @NotNull Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception
     {
         BaseMatrix srcMatrix = (BaseMatrix) src;
 
@@ -40,25 +43,25 @@ public class MatrixConversion implements ConversionDelegate
 
         Class<? extends BaseMatrix> cls = null;
 
-        if (MimeTypes.DOUBLE_MATRIX.equals(dstMime))
+        if (MimeTypes.DOUBLE_MATRIX.equals(dstFormat))
         {
             cls = DoubleMatrix.class;
         }
-        else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstMime)
-                || MimeTypes.GENE_MATRIX.equals(dstMime)
-                || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstMime))
+        else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat)
+                || MimeTypes.GENE_MATRIX.equals(dstFormat)
+                || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat))
         {
             cls = DoubleBinaryMatrix.class;
         }
         else
         {
-            throw new Exception("Unsupported mime type for destination matrix: " + dstMime);
+            throw new Exception("Unsupported mime type for destination matrix: " + dstFormat);
         }
 
         int numCols = srcMatrix.getColumnCount();
         int numRows = srcMatrix.getRowCount();
 
-        monitor.begin("Converting matrix ...", numRows);
+        progressMonitor.begin("Converting matrix ...", numRows);
 
         if (!cls.equals(src.getClass()))
         {
@@ -72,7 +75,7 @@ public class MatrixConversion implements ConversionDelegate
                     dstMatrix.setCellValue(row, col, 0, value);
                 }
 
-                monitor.worked(1);
+                progressMonitor.worked(1);
             }
 
             dstMatrix.setColumns(srcMatrix.getColumns());
@@ -83,7 +86,7 @@ public class MatrixConversion implements ConversionDelegate
             dstMatrix = srcMatrix;
         }
 
-        monitor.end();
+        progressMonitor.end();
 
         return dstMatrix;
     }

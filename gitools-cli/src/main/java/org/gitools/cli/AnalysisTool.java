@@ -21,15 +21,19 @@
  */
 package org.gitools.cli;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.model.Analysis;
 import org.gitools.model.Attribute;
 import org.gitools.model.KeyValue;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ public class AnalysisTool extends AbstractTool
     protected static final String LIST_S_FMT = "\t* %-16s%s";
     protected static final String LIST_L_FMT = "\t* %-48s%s";
 
+    @NotNull
     protected List<Attribute> analysisAttributes = new ArrayList<Attribute>(0);
 
     @Override
@@ -72,33 +77,20 @@ public class AnalysisTool extends AbstractTool
         }
     }
 
-    protected String mimeFromFormat(String format, String fileName, String defaultMime)
+    protected IResourceFormat getResourceFormat(String extension, String fileName, Class<? extends IResource> resourceClass)
     {
-        String mime = null;
-        if (fileName == null)
+
+        if (StringUtils.isEmpty(extension))
         {
-            return null;
+            // Use the fileName if the user has not specify any format
+            extension = fileName;
         }
 
-        if (format != null)
-        {
-            // Try with file extension first
-            mime = PersistenceManager.get().getMimeFromFile("fake." + format);
-            if (mime == null)
-            {
-                mime = format; // it should be mime type then
-            }
-            //TODO check valid mime
-        }
-        else
-        {
-            mime = PersistenceManager.get().getMimeFromFile(fileName);
-        }
-
-        return mime != null ? mime : defaultMime;
+        return PersistenceManager.get().getFormat(extension, resourceClass);
     }
 
-    protected List<KeyValue> parseConfiguration(List<String> config) throws ToolValidationException
+    @NotNull
+    protected List<KeyValue> parseConfiguration(@NotNull List<String> config) throws ToolValidationException
     {
         List<KeyValue> kv = new ArrayList<KeyValue>(config.size());
         for (String conf : config)
@@ -113,7 +105,8 @@ public class AnalysisTool extends AbstractTool
         return kv;
     }
 
-    protected Properties parseProperties(List<String> config) throws ToolValidationException
+    @NotNull
+    protected Properties parseProperties(@NotNull List<String> config) throws ToolValidationException
     {
         Properties properties = new Properties();
         for (String conf : config)
@@ -128,14 +121,14 @@ public class AnalysisTool extends AbstractTool
         return properties;
     }
 
-    protected void prepareGeneralAnalysisAttributes(Analysis analysis, AnalysisArguments args)
+    protected void prepareGeneralAnalysisAttributes(@NotNull Analysis analysis, @NotNull AnalysisArguments args)
     {
         analysis.setTitle(args.analysisTitle);
         analysis.setDescription(args.analysisNotes);
         analysis.setAttributes(analysisAttributes);
     }
 
-    protected void printDataFormats(PrintStream out)
+    protected void printDataFormats(@NotNull PrintStream out)
     {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{
@@ -147,21 +140,20 @@ public class AnalysisTool extends AbstractTool
         };
 
         for (FileFormat f : formats)
-            out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
+            out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 
-    protected void printModulesFormats(PrintStream out)
+    protected void printModulesFormats(@NotNull PrintStream out)
     {
         out.println("Supported modules formats:");
         FileFormat[] formats = new FileFormat[]{
                 FileFormats.GENE_MATRIX,
                 FileFormats.GENE_MATRIX_TRANSPOSED,
                 FileFormats.MODULES_2C_MAP,
-                //FileFormats.DOUBLE_MATRIX,
                 FileFormats.DOUBLE_BINARY_MATRIX
         };
 
         for (FileFormat f : formats)
-            out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
+            out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 }

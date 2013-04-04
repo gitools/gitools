@@ -24,6 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.matrix.model.IMatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +39,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private final Heatmap heatmap;
     private final JViewport viewPort;
     private final HeatmapHeaderPanel headerPanel;
+    @NotNull
     private final HeatmapPanel panel;
     private final boolean horizontal;
     private Mode mode;
@@ -48,10 +50,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int selLast;
     private Point startPoint;
     private Point startScrollValue;
+    @NotNull
     private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
 
-    public HeatmapHeaderMouseController(HeatmapPanel panel, boolean horizontal)
+    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel, boolean horizontal)
     {
         this.heatmap = panel.getHeatmap();
         this.viewPort = horizontal ? panel.getColumnViewPort() : panel.getRowViewPort();
@@ -72,7 +75,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseClicked(MouseEvent e)
+    public void mouseClicked(@NotNull MouseEvent e)
     {
         // Skip right click
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
@@ -95,7 +98,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             l.mouseClicked(row, col, e);
     }
 
-    private int convertToIndex(MouseEvent e)
+    private int convertToIndex(@NotNull MouseEvent e)
     {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
@@ -106,7 +109,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mousePressed(MouseEvent e)
+    public void mousePressed(@NotNull MouseEvent e)
     {
         // Skip right click
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
@@ -165,7 +168,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseReleased(MouseEvent e)
+    public void mouseReleased(@NotNull MouseEvent e)
     {
         panel.mouseReleased(e);
 
@@ -173,7 +176,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         mode = Mode.none;
     }
 
-    private void setLeading(MouseEvent e)
+    private void setLeading(@NotNull MouseEvent e)
     {
         int index = convertToIndex(e);
         if (isValidIndex(index))
@@ -201,7 +204,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseDragged(MouseEvent e)
+    public void mouseDragged(@NotNull MouseEvent e)
     {
         switch (mode)
         {
@@ -218,7 +221,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseMoved(MouseEvent e)
+    public void mouseMoved(@NotNull MouseEvent e)
     {
         int index = convertToIndex(e);
         if (!isValidIndex(index))
@@ -234,7 +237,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e)
+    public void mouseWheelMoved(@NotNull MouseWheelEvent e)
     {
         int rotation = e.getWheelRotation();
 
@@ -274,7 +277,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
     }
 
-    private void updateSelectionMove(MouseEvent e, boolean dragging)
+    private void updateSelectionMove(@NotNull MouseEvent e, boolean dragging)
     {
         int index = convertToIndex(e);
 
@@ -334,7 +337,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         setLeading(e);
     }
 
-    private void updateSelection(MouseEvent e, boolean dragging)
+    private void updateSelection(@NotNull MouseEvent e, boolean dragging)
     {
         int index = convertToIndex(e);
 
@@ -452,7 +455,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         return true;
     }
 
-    private void updateScroll(MouseEvent e, boolean dragging)
+    private void updateScroll(@NotNull MouseEvent e, boolean dragging)
     {
         point = e.getPoint();
 

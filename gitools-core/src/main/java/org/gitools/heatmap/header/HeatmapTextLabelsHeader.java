@@ -23,6 +23,8 @@ package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -59,7 +61,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         this(null);
     }
 
-    public HeatmapTextLabelsHeader(HeatmapDim hdim)
+    public HeatmapTextLabelsHeader(@Nullable HeatmapDim hdim)
     {
         super(hdim);
 
@@ -84,6 +86,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         linkPattern = "http://www.google.com/search?q=${url:id}";
     }
 
+    @NotNull
     @Override
     public String getTitle()
     {

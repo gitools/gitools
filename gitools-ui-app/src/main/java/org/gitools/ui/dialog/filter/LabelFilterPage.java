@@ -31,6 +31,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -114,6 +115,7 @@ public class LabelFilterPage extends AbstractWizardPage
         colsPattBtn.setEnabled(cs);
     }
 
+    @NotNull
     protected String readNamesFromFile(File file) throws IOException
     {
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -160,6 +162,7 @@ public class LabelFilterPage extends AbstractWizardPage
         colsPattFld.setText(page.getPatternTitle());
     }
 
+    @NotNull
     public FilterDimension getFilterDimension()
     {
         if (rowsRb.isSelected())
@@ -184,6 +187,7 @@ public class LabelFilterPage extends AbstractWizardPage
         }
     }
 
+    @NotNull
     public List<String> getValues()
     {
         List<String> values = new ArrayList<String>();

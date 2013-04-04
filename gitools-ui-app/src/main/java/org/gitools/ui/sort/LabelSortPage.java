@@ -28,6 +28,7 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -178,6 +179,7 @@ public class LabelSortPage extends AbstractWizardPage
         return rowsPat;
     }
 
+    @NotNull
     public SortDirection getRowsDirection()
     {
         return (SortDirection) rowsDirCb.getSelectedItem();
@@ -198,6 +200,7 @@ public class LabelSortPage extends AbstractWizardPage
         return colsPat;
     }
 
+    @NotNull
     public SortDirection getColumnsDirection()
     {
         return (SortDirection) colsDirCb.getSelectedItem();

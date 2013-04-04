@@ -41,7 +41,7 @@ public class Actions
         am.addRootAction(toolBarActionSet);
 
 		/*am.addActionsFromClass(FileActions.class);
-		am.addActionsFromClass(EditActions.class);
+        am.addActionsFromClass(EditActions.class);
 		am.addActionsFromClass(DataActions.class);
 		am.addActionsFromClass(MtcActions.class);
 		am.addActionsFromClass(HeatmapActions.class);*/

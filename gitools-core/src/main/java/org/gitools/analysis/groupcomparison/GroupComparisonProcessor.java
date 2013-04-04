@@ -30,9 +30,11 @@ import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,13 +52,13 @@ public class GroupComparisonProcessor extends HtestProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         Date startTime = new Date();
 
         // Prepare data
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
         if (analysis.isTransposeData())
         {
             data = new TransposedMatrixView(data);
@@ -137,7 +139,7 @@ public class GroupComparisonProcessor extends HtestProcessor
             }
         }
 
-        analysis.setResults(resultsMatrix);
+        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
@@ -153,13 +155,13 @@ public class GroupComparisonProcessor extends HtestProcessor
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(resultsMatrix);
+        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
 
         monitor.end();
 
     }
 
-    private int[] getColumnIndices(IMatrix data, ColumnGroup group, int row)
+    private int[] getColumnIndices(@NotNull IMatrix data, @NotNull ColumnGroup group, int row)
     {
         if (group.getColumns() != null && group.getColumns().length > 0)
         {

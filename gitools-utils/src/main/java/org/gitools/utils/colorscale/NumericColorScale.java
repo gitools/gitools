@@ -23,6 +23,8 @@ package org.gitools.utils.colorscale;
 
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         rangesList = new ArrayList<ColorScaleRange>();
     }
 
+    @Nullable
     @Override
     public Color valueColor(double value)
     {
@@ -57,6 +60,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
 
     protected abstract Color colorOf(double value);
 
+    @NotNull
     public abstract double[] getPoints();
 
     public double getMinValue()
@@ -69,6 +73,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         return getPoints()[getPoints().length - 1];
     }
 
+    @NotNull
     @Override
     public String valueRGBHtmlColor(double value)
     {
@@ -76,6 +81,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         return ColorUtils.colorToRGBHtml(color);
     }
 
+    @NotNull
     @Override
     public String valueHexHtmlColor(double value)
     {
@@ -83,6 +89,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         return ColorUtils.colorToHexHtml(color);
     }
 
+    @Nullable
     public Color limitsColor(double value)
     {
         if (Double.isNaN(value))

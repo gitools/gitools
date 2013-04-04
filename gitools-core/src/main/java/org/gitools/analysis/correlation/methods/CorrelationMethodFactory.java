@@ -23,6 +23,7 @@ package org.gitools.analysis.correlation.methods;
 
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.correlation.CorrelationMethod;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Properties;
 
@@ -30,6 +31,7 @@ import java.util.Properties;
 public class CorrelationMethodFactory
 {
 
+    @NotNull
     public static CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException
     {
         if (PearsonCorrelationMethod.ID.equalsIgnoreCase(methodId))

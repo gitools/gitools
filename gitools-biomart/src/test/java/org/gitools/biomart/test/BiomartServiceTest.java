@@ -29,6 +29,8 @@ import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,7 @@ import static org.junit.Assert.*;
 public class BiomartServiceTest
 {
 
+    @Nullable
     private BiomartService bs;
     private static final Logger log = LoggerFactory.getLogger(BiomartServiceTest.class.getName());
 
@@ -59,6 +62,7 @@ public class BiomartServiceTest
 
     }
 
+    @Nullable
     private BiomartService defaultConnexionTest()
     {
         BiomartService srv = null;
@@ -257,7 +261,8 @@ public class BiomartServiceTest
 
     }
 
-    private Query createSimpleQuery(List<FilterPage> lf, List<AttributePage> dsattrs, MartLocation mart, DatasetInfo d) throws BiomartServiceException
+    @NotNull
+    private Query createSimpleQuery(@NotNull List<FilterPage> lf, @NotNull List<AttributePage> dsattrs, @NotNull MartLocation mart, @NotNull DatasetInfo d) throws BiomartServiceException
     {
 
         Attribute a = new Attribute();

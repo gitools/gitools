@@ -23,6 +23,7 @@ package org.gitools.ui.clustering.values;
 
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -58,7 +59,7 @@ public class ClusteringOptionsPage extends AbstractWizardPage
         }
     }
 
-    public ClusteringOptionsPage(List<IElementAttribute> cellAttributes, int index)
+    public ClusteringOptionsPage(@NotNull List<IElementAttribute> cellAttributes, int index)
     {
 
         initComponents();

@@ -21,6 +21,8 @@
  */
 package org.gitools.utils.csv;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.List;
@@ -64,7 +66,7 @@ public class RawCsvWriter
         out.println();
     }
 
-    public void writePropertyList(String name, String[] values)
+    public void writePropertyList(String name, @NotNull String[] values)
     {
         out.print(name);
         if (values.length > 0)
@@ -78,7 +80,7 @@ public class RawCsvWriter
         out.println();
     }
 
-    public void writePropertyList(String name, List<String> values)
+    public void writePropertyList(String name, @NotNull List<String> values)
     {
         out.print(name);
         if (values.size() > 0)

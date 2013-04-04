@@ -22,6 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Absolute Sum
@@ -36,7 +37,7 @@ public class SumAbsAggregator extends AbstractAggregator
     }
 
     @Override
-    public double aggregate(double[] data)
+    public double aggregate(@NotNull double[] data)
     {
         int nanValue = 0;
         if (data.length == 1)
@@ -49,6 +50,7 @@ public class SumAbsAggregator extends AbstractAggregator
         }
     }
 
+    @NotNull
     @Override
     public String toString()
     {

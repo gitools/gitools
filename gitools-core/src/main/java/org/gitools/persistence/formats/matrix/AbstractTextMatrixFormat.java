@@ -27,6 +27,8 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -40,14 +42,14 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
     private R matrix;
 
-    public AbstractTextMatrixFormat(String extension, String mime, Class<R> resourceClass)
+    public AbstractTextMatrixFormat(String extension, Class<R> resourceClass)
     {
-        this(extension, mime, resourceClass, 0);
+        this(extension, resourceClass, 0);
     }
 
-    public AbstractTextMatrixFormat(String extension, String mime, Class<R> resourceClass, int skipLines, Integer... skipColumns)
+    public AbstractTextMatrixFormat(String extension, Class<R> resourceClass, int skipLines, Integer... skipColumns)
     {
-        super(extension, mime, resourceClass);
+        super(extension, resourceClass);
         this.skipLines = skipLines;
         this.skipColumns = new HashSet<Integer>(Arrays.asList(skipColumns));
     }
@@ -64,10 +66,11 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         }
     }
 
+    @NotNull
     protected abstract R createEntity();
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void configureResource(@NotNull IResourceLocator resourceLocator, @NotNull Properties properties, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
         super.configureResource(resourceLocator, properties, progressMonitor);
 
@@ -76,7 +79,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         readMetadata(resourceLocator, matrix, progressMonitor);
     }
 
-    protected R read(IResourceLocator resourceLocator, ValueTranslator valueTranslator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected R read(@NotNull IResourceLocator resourceLocator, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         progressMonitor.begin("Loading matrix...", 1);
@@ -88,7 +91,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         return matrix;
     }
 
-    private void readMetadata(IResourceLocator resourceLocator, R matrix, IProgressMonitor progressMonitor) throws PersistenceException
+    private void readMetadata(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         progressMonitor.begin("Reading names ...", 1);
@@ -170,7 +173,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         progressMonitor.end();
     }
 
-    private void readData(IResourceLocator resourceLocator, R matrix, ValueTranslator valueTranslator, int[] columnsOrder, int[] rowsOrder, IProgressMonitor progressMonitor) throws PersistenceException
+    private void readData(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @Nullable int[] columnsOrder, @Nullable int[] rowsOrder, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         progressMonitor.begin("Reading data ...", 1);
@@ -274,7 +277,8 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         progressMonitor.end();
     }
 
-    private String[] skipColumns(String[] columns)
+    @Nullable
+    private String[] skipColumns(@Nullable String[] columns)
     {
         if (skipColumns.isEmpty())
         {
@@ -305,7 +309,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         return result;
     }
 
-    protected void write(IResourceLocator resourceLocator, R matrix, ValueTranslator valueTranslator, IProgressMonitor monitor) throws PersistenceException
+    protected void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
 
         monitor.begin("Saving matrix...", matrix.getColumnCount());

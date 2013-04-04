@@ -32,6 +32,7 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -46,7 +47,7 @@ public class CorrelationProcessor implements AnalysisProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         Date startTime = new Date();

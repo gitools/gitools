@@ -28,6 +28,8 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -141,6 +143,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
         return cutoffAttributeSelect.getSelectedItem().toString();
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -258,6 +261,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
     // End of variables declaration//GEN-END:variables
 
 
+    @NotNull
     public CutoffCmp[] getGroupCutoffCmps()
     {
         return new CutoffCmp[]{
@@ -270,6 +274,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
         cutoffCmpGroup1Cb.setSelectedItem(cmp.getLongName());
 	}*/
 
+    @NotNull
     public double[] getGroupCutoffValues()
     {
         return new double[]{
@@ -278,7 +283,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
         };
     }
 
-    public void setAttributes(List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable List<IElementAttribute> attrs)
     {
 
         if (attrs != null)
@@ -309,7 +314,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
     }
 
 	/*public void setBinaryCutoffValue(double value) {
-		cutoffValueGroup1.setText(Double.toString(value));
+        cutoffValueGroup1.setText(Double.toString(value));
 	}*/
 
 }

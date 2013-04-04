@@ -22,6 +22,8 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -158,7 +160,8 @@ public class FilteredListPanel extends javax.swing.JPanel
         filterField.requestFocusInWindow();
     }
 
-    private ListModel createListModel(Object[] listData, String filterText)
+    @NotNull
+    private ListModel createListModel(@NotNull Object[] listData, @Nullable String filterText)
     {
         final DefaultListModel model = new DefaultListModel();
 
@@ -187,7 +190,7 @@ public class FilteredListPanel extends javax.swing.JPanel
     {
     }
 
-    public void setListData(Object[] listData)
+    public void setListData(@NotNull Object[] listData)
     {
         this.listData = listData;
         ListModel model = createListModel(listData, getFilterText());

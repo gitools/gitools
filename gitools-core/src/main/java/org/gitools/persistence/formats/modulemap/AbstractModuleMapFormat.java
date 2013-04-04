@@ -26,6 +26,8 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Properties;
 
@@ -49,9 +51,9 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
     private boolean itemNamesFilterEnabled;
     private String[] itemNames;
 
-    protected AbstractModuleMapFormat(String extension, String mime, Class<R> resourceClass)
+    protected AbstractModuleMapFormat(String extension, Class<R> resourceClass)
     {
-        super(extension, mime, resourceClass);
+        super(extension, resourceClass);
     }
 
     @Override
@@ -61,7 +63,7 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties p, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties p, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         this.minSize = defaultValue(p.get(MIN_SIZE), DEFAULT_MIN_SIZE);
@@ -71,7 +73,8 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
 
     }
 
-    private static <T> T defaultValue(Object value, T defaultValue)
+    @Nullable
+    private static <T> T defaultValue(@Nullable Object value, T defaultValue)
     {
         if (value == null)
         {

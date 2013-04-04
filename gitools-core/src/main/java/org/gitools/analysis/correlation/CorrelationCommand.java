@@ -24,11 +24,13 @@ package org.gitools.analysis.correlation;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -36,33 +38,30 @@ public class CorrelationCommand extends AnalysisCommand
 {
 
     protected CorrelationAnalysis analysis;
-    protected String dataMime;
+    protected IResourceFormat dataFormat;
     protected String dataPath;
 
     public CorrelationCommand(
             CorrelationAnalysis analysis,
-            String dataMime, String dataPath,
+            IResourceFormat dataFormat, String dataPath,
             String workdir, String fileName)
     {
 
         super(workdir, fileName);
 
         this.analysis = analysis;
-        this.dataMime = dataMime;
+        this.dataFormat = dataFormat;
         this.dataPath = dataPath;
     }
 
     @Override
-    public void run(IProgressMonitor progressMonitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor progressMonitor) throws AnalysisException
     {
 
         try
         {
 
-            ResourceReference<IMatrix> dataReference = new ResourceReference<IMatrix>(
-                    new UrlResourceLocator(new File(dataPath)),
-                    IMatrix.class
-            );
+            ResourceReference<IMatrix> dataReference = new ResourceReference<IMatrix>(new UrlResourceLocator(new File(dataPath)), dataFormat);
 
             analysis.setData(dataReference);
             dataReference.load(progressMonitor);

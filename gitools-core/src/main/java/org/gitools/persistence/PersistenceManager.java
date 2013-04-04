@@ -23,9 +23,11 @@ package org.gitools.persistence;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixFactory;
+import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.persistence.locators.filters.adapters.GzResourceLocatorAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.Serializable;
@@ -36,37 +38,25 @@ import java.util.Properties;
 public class PersistenceManager implements Serializable
 {
 
+    @NotNull
     private static PersistenceManager defaultManager = new PersistenceManager();
 
+    @NotNull
     public static PersistenceManager get()
     {
         return defaultManager;
     }
 
     private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
-
-    private final Map<String, String> extensionToMime = new HashMap<String, String>();
-    private final Map<String, IResourceFormat> mimeToFormat = new HashMap<String, IResourceFormat>();
-    private final Map<Class<? extends IResource>, String> classToExtension = new HashMap<Class<? extends IResource>, String>();
+    private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<Class<? extends IResource>, String>();
 
     private PersistenceManager()
     {
     }
 
-    public <R extends IResource> IResourceFormat<R> getFormat(String extension, Class<R> resourceClass) throws PersistenceException
+    public <R extends IResource> IResourceFormat<R> getFormat(String fileNameOrExtension, @NotNull Class<R> resourceClass)
     {
-
-        // Use only the first part of a composed extension to check the format.
-        int composedExtension = extension.lastIndexOf(".");
-        if (composedExtension != -1)
-        {
-            extension = extension.substring(0, composedExtension);
-
-            composedExtension = extension.lastIndexOf(".");
-            if (composedExtension != -1) {
-                extension = extension.substring(composedExtension + 1);
-            }
-        }
+        String extension = getFormatExtension(fileNameOrExtension);
 
         Map<String, IResourceFormat> extensions = formats.get(resourceClass);
 
@@ -82,69 +72,72 @@ public class PersistenceManager implements Serializable
                 }
             }
 
-            throw new PersistenceException("Unknow resource: '" + resourceClass.getName() + "'");
+            throw new PersistenceException("Unknow resource class: '" + resourceClass.getName() + "'");
         }
 
         IResourceFormat resourceFormat = extensions.get(extension);
 
         if (resourceFormat == null)
         {
-            throw new PersistenceException("Invalid file extension '" + extension + "' for a resource of type '" + resourceClass.getName());
+            // Return the default format for the given resource class
+            String defaultExtension = getDefaultExtension(resourceClass);
+
+            resourceFormat = extensions.get(defaultExtension);
         }
 
         return resourceFormat;
     }
 
-    /**
-     * @param mime
-     * @return
-     * @deprecated Use {@link #getClassFromLocator(IResourceLocator)} instead.
-     */
-    public IResourceFormat getFormatByMime(String mime)
+    public String getFormatExtension(String fileNameOrExtension)
     {
-        return mimeToFormat.get(mime);
-    }
+        String extension = removeFiltersExtensions(fileNameOrExtension);
 
-    /**
-     * @param name
-     * @return
-     * @deprecated Use {@link #getClassFromLocator(IResourceLocator)} instead.
-     */
-    public String getMimeFromFile(String name)
-    {
-        String extension = name.substring(name.indexOf(".") + 1);
-        extension = extension.replace(".gz", "");
-        return extensionToMime.get(extension);
-    }
+        int dot = extension.lastIndexOf(".");
+        if (dot != -1)
+        {
+            extension = extension.substring(dot + 1);
+        }
 
-    public <R extends IResource> Class<R> getClassFromLocator(IResourceLocator resourceLocator)
-    {
-        return getFormatByMime(getMimeFromFile(resourceLocator.getName())).getResourceClass();
-    }
-
-
-    public String getDefaultExtension(IResource resource)
-    {
-        return getDefaultExtension(resource.getClass());
+        return extension;
     }
 
     public String getDefaultExtension(Class<? extends IResource> resourceClass)
     {
-        return classToExtension.get(resourceClass);
+        if (classToDefaultExtension.containsKey(resourceClass))
+        {
+            return classToDefaultExtension.get(resourceClass);
+        }
+
+        // Look for a class high in the hierarchy
+        for (Class<? extends IResource> keyClass : classToDefaultExtension.keySet())
+        {
+
+            if (keyClass.isAssignableFrom(resourceClass))
+            {
+                return classToDefaultExtension.get(keyClass);
+            }
+        }
+
+        throw new PersistenceException("Class '" + resourceClass + "' is not registered");
     }
 
-
-    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, IProgressMonitor progressMonitor) throws PersistenceException
+    @Deprecated
+    public <R extends IResource> R load(@NotNull File file, @NotNull Class<R> resourceClass, @NotNull Properties properties, IProgressMonitor progressMonitor)
     {
-        return load(resourceLocator, resourceClass, new Properties(), progressMonitor);
+        return load(new UrlResourceLocator(file), getFormat(file.getName(), resourceClass), properties, progressMonitor);
     }
 
-    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull Class<R> resourceClass, IProgressMonitor progressMonitor)
     {
-        return load(resourceLocator, resourceClass, getFormat(resourceLocator.getExtension(), resourceClass), properties, progressMonitor);
+        return load(resourceLocator, getFormat(resourceLocator.getExtension(), resourceClass), progressMonitor);
     }
 
-    public <R extends IResource> R load(IResourceLocator resourceLocator, Class<R> resourceClass, IResourceFormat<R> resourceFormat, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
+    {
+        return load(resourceLocator, resourceFormat, new Properties(), progressMonitor);
+    }
+
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         // Apply compression filters if it's required
@@ -153,11 +146,11 @@ public class PersistenceManager implements Serializable
         // Configure the format
         if (resourceFormat.isConfigurable())
         {
-            resourceFormat.configure(filteredResourceLocator, resourceClass, properties, progressMonitor);
+            resourceFormat.configure(filteredResourceLocator, properties, progressMonitor);
         }
 
         // Build the resource
-        R resource = resourceFormat.read(filteredResourceLocator, resourceClass, progressMonitor);
+        R resource = resourceFormat.read(filteredResourceLocator, progressMonitor);
 
         // Set the original locator without the filters.
         resource.setLocator(resourceLocator);
@@ -165,27 +158,12 @@ public class PersistenceManager implements Serializable
         return resource;
     }
 
-    @Deprecated
-    public <R extends IResource> R load(File file, String mime, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        IResourceLocator resourceLocator = new UrlResourceLocator(file);
-        IResourceFormat<R> resourceFormat = getFormatByMime(mime);
-
-        return load(resourceLocator, resourceFormat.getResourceClass(), resourceFormat, new Properties(), progressMonitor);
-    }
-
-    @Deprecated
-    public <R extends IResource> R load(File file, Class<R> resourceClass, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        return load(new UrlResourceLocator(file), resourceClass, properties, progressMonitor);
-    }
-
-    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException
+    public <R extends IResource> void store(@NotNull IResourceLocator resourceLocator, @NotNull R resource, IProgressMonitor progressMonitor) throws PersistenceException
     {
         store(resourceLocator, resource, (IResourceFormat<R>) getFormat(resourceLocator.getExtension(), resource.getClass()), progressMonitor);
     }
 
-    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
+    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         //TODO Look for another way to manage this singular case
@@ -202,24 +180,7 @@ public class PersistenceManager implements Serializable
 
     }
 
-
-    @Deprecated
-    public <R extends IResource> void store(File file, R resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        store(new UrlResourceLocator(file), resource, progressMonitor);
-    }
-
-    @Deprecated
-    public <R extends IResource> void store(File file, String mime, R resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-
-        IResourceLocator resourceLocator = new UrlResourceLocator(file);
-        IResourceFormat<R> resourceFormat = getFormatByMime(mime);
-
-        store(resourceLocator, resource, resourceFormat, progressMonitor);
-    }
-
-    void registerFormat(IResourceFormat resourceFormat)
+    void registerFormat(@NotNull IResourceFormat resourceFormat)
     {
 
         if (!formats.containsKey(resourceFormat.getResourceClass()))
@@ -228,17 +189,25 @@ public class PersistenceManager implements Serializable
         }
 
         Map<String, IResourceFormat> extensions = formats.get(resourceFormat.getResourceClass());
-        for (String extension : resourceFormat.getExtensions())
-        {
-            extensions.put(extension, resourceFormat);
-        }
+        extensions.put(resourceFormat.getExtension(), resourceFormat);
 
-        extensionToMime.put(resourceFormat.getDefaultExtension(), resourceFormat.getMime());
-        mimeToFormat.put(resourceFormat.getMime(), resourceFormat);
-        classToExtension.put(resourceFormat.getResourceClass(), resourceFormat.getDefaultExtension());
+        if (resourceFormat instanceof AbstractXmlFormat)
+        {
+            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension());
+        }
+        else
+        {
+            registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + ".gz");
+        }
     }
 
-    private IResourceLocator applyFilters(IResourceLocator resourceLocator)
+    void registerDefaultExtension(Class<? extends IResource> resourceClass, String extension)
+    {
+        classToDefaultExtension.put(resourceClass, extension);
+    }
+
+    @NotNull
+    private IResourceLocator applyFilters(@NotNull IResourceLocator resourceLocator)
     {
 
         if (GzResourceLocatorAdapter.isAdaptable(resourceLocator.getExtension()))
@@ -248,4 +217,13 @@ public class PersistenceManager implements Serializable
 
         return resourceLocator;
     }
+
+    private String removeFiltersExtensions(String extension)
+    {
+        extension = GzResourceLocatorAdapter.removeExtension(extension);
+
+        return extension;
+    }
+
+
 }

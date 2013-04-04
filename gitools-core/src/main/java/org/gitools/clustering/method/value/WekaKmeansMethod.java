@@ -26,6 +26,8 @@ import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -51,8 +53,9 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
         classIndex = -1;
     }
 
+    @Nullable
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException
+    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
     {
         try
         {
@@ -171,7 +174,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
         this.numClusters = numClusters;
     }
 
-    private void configure(SimpleKMeans clusterer) throws Exception
+    private void configure(@NotNull SimpleKMeans clusterer) throws Exception
     {
 
         clusterer.setMaxIterations(iterations);

@@ -34,6 +34,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -84,7 +85,7 @@ public class FilterByLabelAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Filtering ...", 1);
 

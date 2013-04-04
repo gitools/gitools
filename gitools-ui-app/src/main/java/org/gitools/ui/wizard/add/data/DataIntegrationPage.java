@@ -28,6 +28,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -50,6 +51,7 @@ public class DataIntegrationPage extends AbstractWizardPage
             //setOpaque(true);
         }
 
+        @NotNull
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
@@ -80,7 +82,7 @@ public class DataIntegrationPage extends AbstractWizardPage
     private String[] attrNames;
     DefaultTableModel model;
 
-    public DataIntegrationPage(Heatmap hm)
+    public DataIntegrationPage(@NotNull Heatmap hm)
     {
 
         initComponents();
@@ -115,6 +117,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         });
     }
 
+    @NotNull
     public double[] getValues()
     {
         double values[] = new double[table.getRowCount()];
@@ -125,6 +128,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         return values;
     }
 
+    @NotNull
     public List<ArrayList<DataIntegrationCriteria>> getCriteria()
     {
         ArrayList<ArrayList<DataIntegrationCriteria>> criteria =
@@ -235,6 +239,7 @@ public class DataIntegrationPage extends AbstractWizardPage
                 }
         )
         {
+            @NotNull
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.Object.class
             };

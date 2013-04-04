@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.textpatt;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +41,7 @@ public class BeanResolver implements TextPattern.VariableValueResolver
             this.m = m;
         }
 
+        @Nullable
         public Object get(Object beanInstance)
         {
             try
@@ -55,7 +59,7 @@ public class BeanResolver implements TextPattern.VariableValueResolver
 
     private Map<String, BeanProperty> beanProperties;
 
-    public BeanResolver(Class<?> beanClass)
+    public BeanResolver(@NotNull Class<?> beanClass)
     {
         this.beanClass = beanClass;
         this.beanProperties = readProperties(beanClass);
@@ -76,8 +80,9 @@ public class BeanResolver implements TextPattern.VariableValueResolver
         this.beanInstance = beanInstance;
     }
 
+    @Nullable
     @Override
-    public String resolveValue(String variableName)
+    public String resolveValue(@NotNull String variableName)
     {
         BeanProperty p = beanProperties.get(variableName.toLowerCase());
         if (p == null)
@@ -94,7 +99,8 @@ public class BeanResolver implements TextPattern.VariableValueResolver
         return value.toString();
     }
 
-    private Map<String, BeanProperty> readProperties(Class<?> beanClass)
+    @NotNull
+    private Map<String, BeanProperty> readProperties(@NotNull Class<?> beanClass)
     {
         Map<String, BeanProperty> map = new HashMap<String, BeanResolver.BeanProperty>();
 

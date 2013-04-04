@@ -23,8 +23,12 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -33,6 +37,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,13 +78,16 @@ public class NewCombinationAnalysisAction extends BaseAction
         final String analysisPath = wizard.getSaveFilePage().getFileName();
         File columnSetsFile = wizard.getColumnSetsPage().getFile();
         String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-        String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getMime() : null;
+        String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getExtension() : null;
+
+        IResourceFormat columnSetsFormat = PersistenceManager.get().getFormat(columnSetsMime, ModuleMap.class);
+        IResourceFormat dataFormat = PersistenceManager.get().getFormat(wizard.getDataFilePage().getFileFormat().getExtension(), IMatrix.class);
 
         final CombinationCommand cmd = new CombinationCommand(
                 analysis,
-                wizard.getDataFilePage().getFileFormat().getMime(),
+                dataFormat,
                 wizard.getDataFilePage().getFile().getAbsolutePath(),
-                columnSetsMime,
+                columnSetsFormat,
                 columnSetsPath,
                 wizard.getSaveFilePage().getFolder(),
                 analysisPath);
@@ -87,7 +95,7 @@ public class NewCombinationAnalysisAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -100,7 +108,7 @@ public class NewCombinationAnalysisAction extends BaseAction
 
                     final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(analysisPath) + "." + FileSuffixes.HEATMAP);
+                    editor.setName(PersistenceUtils.getFileName(analysisPath) + "." + HeatmapXmlFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable()
                     {

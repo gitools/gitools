@@ -26,6 +26,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.utils.color.utils.ColorUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -38,7 +39,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     }
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
 
         int borderSize = getBorderSize();
@@ -145,6 +146,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         }
     }
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -160,8 +162,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
                 cellHeight * rowCount + extBorder);
     }
 
+    @NotNull
     @Override
-    public HeatmapPosition getPosition(Point p)
+    public HeatmapPosition getPosition(@NotNull Point p)
     {
         int rowsGridSize = heatmap.getRowDim().isGridEnabled() ? heatmap.getRowDim().getGridSize() : 0;
         int columnsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;
@@ -181,8 +184,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         return new HeatmapPosition(row, column);
     }
 
+    @NotNull
     @Override
-    public Point getPoint(HeatmapPosition p)
+    public Point getPoint(@NotNull HeatmapPosition p)
     {
         int rowsGridSize = heatmap.getRowDim().isGridEnabled() ? heatmap.getRowDim().getGridSize() : 0;
         int columnsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;

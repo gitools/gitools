@@ -21,6 +21,8 @@
  */
 package org.gitools.clustering;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Map;
 
 public interface ClusteringResults
@@ -66,8 +68,10 @@ public interface ClusteringResults
     /**
      * Returns the data labels for a given cluster
      */
+    @NotNull
     String[] getDataLabels(int clusterIndex);
 
+    @NotNull
     String[] getDataLabels(String clusterTitle);
 
     /**
@@ -80,10 +84,12 @@ public interface ClusteringResults
     /**
      * Returns a map from cluster title to an array of data indices included in the cluster
      */
+    @NotNull
     Map<String, int[]> getDataIndicesByClusterTitle();
 
     /**
      * Returns a map from the data label to the cluster index the data belongs to
      */
+    @NotNull
     Map<String, Integer> getClusterIndexByDataLabel();
 }

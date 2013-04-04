@@ -23,6 +23,7 @@ package org.gitools.ui.platform.dialog;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +57,7 @@ public class MessageUtils
         showMessage(parent, Level.INFO, message);
     }
 
-    public static synchronized void showMessage(final Frame parent, Level level, String message)
+    public static synchronized void showMessage(@Nullable final Frame parent, Level level, String message)
     {
 
         log.log(level, message);

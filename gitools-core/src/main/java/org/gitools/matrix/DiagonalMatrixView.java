@@ -27,6 +27,8 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -41,16 +43,17 @@ public class DiagonalMatrixView implements IMatrixView
 
     private PropertyChangeListener listener;
 
+    @NotNull
     private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
     private IResourceLocator locator;
 
-    public DiagonalMatrixView(IMatrix m)
+    public DiagonalMatrixView(@NotNull IMatrix m)
     {
         listener = new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 DiagonalMatrixView.this.propertyChange(evt);
             }
@@ -59,12 +62,12 @@ public class DiagonalMatrixView implements IMatrixView
         setMatrix(m);
     }
 
-    public DiagonalMatrixView(IMatrixView mv)
+    public DiagonalMatrixView(@NotNull IMatrixView mv)
     {
         listener = new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 DiagonalMatrixView.this.propertyChange(evt);
             }
@@ -83,14 +86,14 @@ public class DiagonalMatrixView implements IMatrixView
         this.locator = locator;
     }
 
-    public final void setMatrix(IMatrix matrix)
+    public final void setMatrix(@NotNull IMatrix matrix)
     {
         IMatrixView mview = matrix instanceof IMatrixView ?
                 (IMatrixView) matrix : new MatrixView(matrix);
         setMatrixView(mview);
     }
 
-    private void setMatrixView(IMatrixView mv)
+    private void setMatrixView(@NotNull IMatrixView mv)
     {
         if (this.mv != null)
         {
@@ -292,6 +295,12 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
+    public int getRowIndex(String label)
+    {
+        return mv.getRowIndex(label);
+    }
+
+    @Override
     public int getColumnCount()
     {
         return mv.getColumnCount();
@@ -304,17 +313,26 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
+    public int getColumnIndex(String label)
+    {
+        return mv.getColumnIndex(label);
+    }
+
+    @Nullable
+    @Override
     public Object getCell(int row, int column)
     {
         return column >= row ? mv.getCell(row, column) : null;
     }
 
+    @Nullable
     @Override
     public Object getCellValue(int row, int column, int index)
     {
         return column >= row ? mv.getCellValue(row, column, index) : null;
     }
 
+    @Nullable
     @Override
     public Object getCellValue(int row, int column, String id)
     {
@@ -352,7 +370,7 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener)
+    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener)
     {
         if (listener != null)
         {
@@ -361,7 +379,7 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener)
+    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener)
     {
         if (listener != null)
         {
@@ -369,7 +387,7 @@ public class DiagonalMatrixView implements IMatrixView
         }
     }
 
-    private void propertyChange(PropertyChangeEvent evt)
+    private void propertyChange(@NotNull PropertyChangeEvent evt)
     {
         PropertyChangeEvent evt2 = new PropertyChangeEvent(this,
                 evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());

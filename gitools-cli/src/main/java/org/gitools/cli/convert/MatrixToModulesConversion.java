@@ -25,6 +25,7 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,8 +36,9 @@ import java.util.Set;
 public class MatrixToModulesConversion implements ConversionDelegate
 {
 
+    @NotNull
     @Override
-    public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception
+    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception
     {
         final int attrIndex = 0; // TODO get from configuration
 

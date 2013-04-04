@@ -22,11 +22,12 @@
 package org.gitools.ui.analysis.htest.wizard;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
@@ -40,6 +41,7 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
@@ -48,7 +50,7 @@ import java.util.Properties;
 public class OncodriveAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.ONCODRIVE;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OncodriveAnalysisXmlFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_annot.cdm.gz";
     private static final String EXAMPLE_COLUMN_SETS_FILE = "TCGA_gbm_sample_subtypes.tcm";
 
@@ -105,7 +107,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
         saveFilePage.setFormats(new FileFormat[]{
-                FileFormats.ONCODRIVE});
+                OncodriveAnalysisXmlFormat.FILE_FORMAT});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -127,7 +129,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("oncodrive", monitor);
@@ -204,9 +206,9 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         return saveFilePage.getFileName();
     }
 
-    public String getDataFileMime()
+    public IResourceFormat getDataFileFormat()
     {
-        return dataPage.getFileFormat().getMime();
+        return dataPage.getFileFormat().getFormat(IMatrix.class);
     }
 
     public File getDataFile()
@@ -229,9 +231,9 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         return dataFilterPage.getPopulationDefaultValue();
     }
 
-    public String getModulesFileMime()
+    public IResourceFormat getModulesFileFormat()
     {
-        return modulesPage.getFileMime();
+        return modulesPage.getFileResourceFormat();
     }
 
     public File getModulesFile()
@@ -239,6 +241,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         return modulesPage.getSelectedFile();
     }
 
+    @NotNull
     public OncodriveAnalysis getAnalysis()
     {
         OncodriveAnalysis analysis = new OncodriveAnalysis();
@@ -258,7 +261,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         return analysis;
     }
 
-    private void setAnalysis(OncodriveAnalysis a)
+    private void setAnalysis(@NotNull OncodriveAnalysis a)
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());

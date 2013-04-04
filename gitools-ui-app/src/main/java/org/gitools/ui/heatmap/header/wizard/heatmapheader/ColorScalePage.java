@@ -34,6 +34,7 @@ import org.gitools.ui.settings.decorators.DecoratorArchive;
 import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
 import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +85,7 @@ public class ColorScalePage extends AbstractWizardPage
         setComplete(true);
     }
 
-    public void setHeatmap(Heatmap heatmap)
+    public void setHeatmap(@NotNull Heatmap heatmap)
     {
         this.heatmap = heatmap;
         ElementDecoratorDescriptor d =
@@ -94,7 +95,7 @@ public class ColorScalePage extends AbstractWizardPage
     }
 
 
-    private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor)
+    private void changeDecoratorPanel(@NotNull ElementDecoratorDescriptor descriptor)
     {
 
         ElementDecorator[] decorators = new ElementDecorator[1];
@@ -104,7 +105,7 @@ public class ColorScalePage extends AbstractWizardPage
         createNewDecoratorPanel(descriptor);
     }
 
-    private void createNewDecoratorPanel(ElementDecoratorDescriptor descriptor)
+    private void createNewDecoratorPanel(@NotNull ElementDecoratorDescriptor descriptor)
     {
         final JPanel confPanel = new JPanel();
         confPanel.setLayout(new BorderLayout());

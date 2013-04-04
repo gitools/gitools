@@ -33,6 +33,8 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,15 +53,17 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     protected Map<String, Integer> dataRowIndices;
     protected Map<String, Integer> dataColIndices;
 
+    @Nullable
     protected ModuleMap mmap;
 
+    @Nullable
     protected IColorScale dataScale;
 
-    public OncodriveTablesPanel(OncodriveAnalysis analysis, Heatmap heatmap)
+    public OncodriveTablesPanel(@NotNull OncodriveAnalysis analysis, @NotNull Heatmap heatmap)
     {
         super(analysis, heatmap);
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
         final int numRows = data.getRowCount();
         final int numCols = data.getColumnCount();
 
@@ -78,7 +82,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         for (int i = 0; i < labels.length; i++)
             labels[i] = data.getColumnLabel(i);
 
-        mmap = analysis.getModuleMap();
+        mmap = analysis.getModuleMap().get();
         if (mmap != null)
         {
             mmap = mmap.remap(labels);
@@ -107,6 +111,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         dataScale = MatrixUtils.inferScale(data, 0);
     }
 
+    @NotNull
     @Override
     protected VelocityContext createModel()
     {
@@ -114,7 +119,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         int row = mv.getLeadSelectionRow();
         int col = mv.getLeadSelectionColumn();
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
 
         String template = DATA_TEMPLATE;
         VelocityContext context = new VelocityContext();
@@ -170,8 +175,9 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
+    @NotNull
     private List<VelocityContext> createDataElements(
-            IMatrixView mv, int row, int col, final IMatrix data, ModuleMap mmap)
+            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
     {
 
         final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
@@ -222,7 +228,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return elements;
     }
 
-    private VelocityContext createDataTableElements(IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataTableElements(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements =
@@ -235,8 +242,9 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return table;
     }
 
-    private VelocityContext createDataCellModel(VelocityContext context,
-                                                IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
+                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         VelocityContext table = createDataTableElements(mv, row, col, data, mmap);
@@ -254,8 +262,9 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createDataColumnModel(VelocityContext context,
-                                                  IMatrixView mv, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
+                                                  @NotNull IMatrixView mv, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -290,8 +299,9 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createDataRowModel(VelocityContext context,
-                                               IMatrixView mv, int row, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
+                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> tables = new ArrayList<VelocityContext>();
@@ -337,7 +347,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createResultsElement(IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsElement(@NotNull IMatrixView mv, int row, int col)
     {
 
         GenericFormatter fmt = new GenericFormatter();
@@ -363,7 +374,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return e;
     }
 
-    private VelocityContext createResultsCellModel(VelocityContext context, IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col)
     {
         VelocityContext e = createResultsElement(mv, row, col);
         e.put("name", mv.getRowLabel(row));
@@ -390,7 +402,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createResultsColumnModel(VelocityContext context, IMatrixView mv, int col)
+    @NotNull
+    private VelocityContext createResultsColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -419,7 +432,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createResultsRowModel(VelocityContext context, IMatrixView mv, int row)
+    @NotNull
+    private VelocityContext createResultsRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row)
     {
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)

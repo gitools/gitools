@@ -25,6 +25,8 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.utils.colorscale.IColorScale;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.IllegalFormatException;
 
@@ -34,6 +36,7 @@ public class FormattedTextElementDecorator extends ElementDecorator
     private static final long serialVersionUID = -8595819997133940913L;
 
     private int valueIndex = -1;
+    @Nullable
     private String formatString = null;
 
     public FormattedTextElementDecorator()
@@ -47,8 +50,9 @@ public class FormattedTextElementDecorator extends ElementDecorator
         this.formatString = "%1$s";
     }
 
+    @Nullable
     @Override
-    public Object clone()
+    public Object clone() throws CloneNotSupportedException
     {
         FormattedTextElementDecorator obj = null;
         try
@@ -65,6 +69,7 @@ public class FormattedTextElementDecorator extends ElementDecorator
         this.formatString = formatString;
     }
 
+    @Nullable
     public String getFormatString()
     {
         return formatString;
@@ -83,7 +88,7 @@ public class FormattedTextElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(ElementDecoration decoration, Object element)
+    public void decorate(@NotNull ElementDecoration decoration, @NotNull Object element)
     {
         String cellText;
         try
@@ -106,6 +111,7 @@ public class FormattedTextElementDecorator extends ElementDecorator
         decoration.setToolTip(cellText);
     }
 
+    @Nullable
     @Override
     public IColorScale getScale()
     {

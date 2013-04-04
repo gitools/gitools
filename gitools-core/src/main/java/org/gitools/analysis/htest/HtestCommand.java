@@ -23,7 +23,9 @@ package org.gitools.analysis.htest;
 
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.model.ToolConfig;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.stats.test.factory.TestFactory;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class HtestCommand extends AnalysisCommand
 {
@@ -33,7 +35,7 @@ public abstract class HtestCommand extends AnalysisCommand
 
     protected HtestAnalysis analysis;
 
-    protected String dataMime;
+    protected IResourceFormat dataFormat;
     protected String dataPath;
     protected int valueIndex;
 
@@ -42,7 +44,8 @@ public abstract class HtestCommand extends AnalysisCommand
 
     public HtestCommand(
             HtestAnalysis analysis,
-            String dataMime, String dataPath,
+            IResourceFormat dataFormat,
+            String dataPath,
             int valueIndex,
             String populationPath,
             Double populationDefaultValue,
@@ -52,7 +55,7 @@ public abstract class HtestCommand extends AnalysisCommand
         super(workdir, fileName);
 
         this.analysis = analysis;
-        this.dataMime = dataMime;
+        this.dataFormat = dataFormat;
         this.dataPath = dataPath;
         this.valueIndex = valueIndex;
         this.populationPath = populationPath;
@@ -69,14 +72,14 @@ public abstract class HtestCommand extends AnalysisCommand
         this.analysis = analysis;
     }
 
-    public String getDataMime()
+    public IResourceFormat getDataFormat()
     {
-        return dataMime;
+        return dataFormat;
     }
 
-    public void setDataMime(String dataMime)
+    public void setDataFormat(IResourceFormat dataFormat)
     {
-        this.dataMime = dataMime;
+        this.dataFormat = dataFormat;
     }
 
     public String getDataPath()
@@ -109,6 +112,7 @@ public abstract class HtestCommand extends AnalysisCommand
         this.populationPath = populationPath;
     }
 
+    @Nullable
     protected TestFactory createTestFactory(String toolName, String configName)
     {
         ToolConfig toolConfig =

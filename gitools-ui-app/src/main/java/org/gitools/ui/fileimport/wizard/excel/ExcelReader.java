@@ -23,6 +23,8 @@ package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,8 +39,11 @@ public class ExcelReader
 
     private File file;
 
+    @Nullable
     private Sheet sheet = null;
+    @Nullable
     private DataFormatter formatter = null;
+    @Nullable
     private FormulaEvaluator evaluator = null;
     private List<ExcelHeader> headers;
 
@@ -62,7 +67,7 @@ public class ExcelReader
 
     }
 
-    private void openWorkbook(File file) throws FileNotFoundException, IOException, InvalidFormatException
+    private void openWorkbook(@NotNull File file) throws FileNotFoundException, IOException, InvalidFormatException
     {
         FileInputStream fis = null;
         try
@@ -86,7 +91,7 @@ public class ExcelReader
     }
 
 
-    private String cellToString(Cell cell)
+    private String cellToString(@NotNull Cell cell)
     {
         if (cell.getCellType() != Cell.CELL_TYPE_FORMULA)
         {
@@ -98,7 +103,8 @@ public class ExcelReader
         }
     }
 
-    private List<ExcelHeader> rowToHeader(Row header, Row firstRow)
+    @NotNull
+    private List<ExcelHeader> rowToHeader(@Nullable Row header, @NotNull Row firstRow)
     {
 
         Cell cell = null;
@@ -130,6 +136,7 @@ public class ExcelReader
         return headers;
     }
 
+    @Nullable
     public String getValue(int rowPos, int colPos)
     {
 

@@ -25,6 +25,8 @@ import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.method.value.WekaCobWebMethod;
 import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaKmeansMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -82,7 +84,8 @@ public class ClusteringMethodFactory
         this.descriptors.addAll(Arrays.asList(descriptors));
     }
 
-    public ClusteringMethod create(ClusteringMethodDescriptor descriptor)
+    @Nullable
+    public ClusteringMethod create(@NotNull ClusteringMethodDescriptor descriptor)
     {
         Class<? extends ClusteringMethod> methodClass = descriptor.getMethodClass();
 

@@ -28,6 +28,7 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,8 @@ public class CombinationResultsEditor extends HeatmapEditor
 
     protected CombinationTablesPanel tablesPanel;
 
-    protected static Heatmap createHeatmap(CombinationAnalysis analysis)
+    @NotNull
+    protected static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
     {
         IMatrixView dataTable = new MatrixView(analysis.getResults().get());
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
@@ -47,7 +49,7 @@ public class CombinationResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
-    public CombinationResultsEditor(CombinationAnalysis analysis)
+    public CombinationResultsEditor(@NotNull CombinationAnalysis analysis)
     {
         super(createHeatmap(analysis), true);
 

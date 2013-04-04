@@ -25,9 +25,10 @@ import org.gitools.analysis.correlation.GroupComparisonCommand;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.Test;
@@ -41,6 +42,8 @@ import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -59,8 +62,8 @@ public class ComparisonTool extends AnalysisTool
     public static class ComparisonArguments extends AnalysisArguments
     {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
-                usage = "Data file format (MIME type or file extension).")
-        public String dataMime;
+                usage = "Data file format (reference extension).")
+        public String dataFormat;
 
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
@@ -85,12 +88,14 @@ public class ComparisonTool extends AnalysisTool
                         "agt (abs greatar than), age (abs greater equal than)")
         public String groupCutoffs;
 
+        @NotNull
         @Option(name = "-gd", aliases = "-group-descriptions", metaVar = "<DESC 1,DESC 2>",
                 usage = "Add a short description for each group seperated by commas. If not \n" +
                         "supplied, an automatically generated description will be added \n" +
                         "Example: \"With disease,Without disease\"")
         public String groupDescriptions = "";
 
+        @NotNull
         @Option(name = "-mtc", metaVar = "<name>",
                 usage = "Multiple test correxction method.\n" +
                         "Available: bonferroni, bh. (default: bh)")
@@ -106,6 +111,7 @@ public class ComparisonTool extends AnalysisTool
 
     }
 
+    @NotNull
     protected Properties methodProperties = new Properties();
 
     @Override
@@ -160,6 +166,7 @@ public class ComparisonTool extends AnalysisTool
         }
     }
 
+    @Nullable
     public static String[] readHeader(File file)
             throws PersistenceException
     {
@@ -203,7 +210,7 @@ public class ComparisonTool extends AnalysisTool
         analysis.setMtc(args.mtc);
         analysis.setToolConfig(TestFactory.createToolConfig("group comparison", t.getName()));
 
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
 
         analysis.setAttributeIndex(args.attrIndex);
 
@@ -212,8 +219,8 @@ public class ComparisonTool extends AnalysisTool
 
         GroupComparisonCommand cmd = new GroupComparisonCommand(
                 analysis,
-                dataMime, args.dataFile,
-                args.workdir, args.analysisName + "." + FileSuffixes.GROUP_COMPARISON,
+                dataFormat, args.dataFile,
+                args.workdir, args.analysisName + "." + GroupComparisonAnalysisXmlFormat.EXTENSION,
                 args.grouping, this.groups, groupDescriptions);
 
         IProgressMonitor monitor = !args.quiet ?
@@ -235,7 +242,7 @@ public class ComparisonTool extends AnalysisTool
     }
 
     @Override
-    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
     {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
@@ -248,7 +255,7 @@ public class ComparisonTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printMethods(PrintStream o)
+    private void printMethods(@NotNull PrintStream o)
     {
         o.println("Available comparison methods:");
         o.println(String.format(LIST_S_FMT, "mann-whitney-wilcoxon", "Mann-Whitney-Wilcoxon"));

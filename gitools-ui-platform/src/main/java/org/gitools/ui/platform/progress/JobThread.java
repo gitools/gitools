@@ -23,6 +23,7 @@ package org.gitools.ui.platform.progress;
 
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -173,6 +174,7 @@ public class JobThread implements JobRunnable
         thread.start();
     }
 
+    @Nullable
     private Runnable newRunnable()
     {
         return new Runnable()

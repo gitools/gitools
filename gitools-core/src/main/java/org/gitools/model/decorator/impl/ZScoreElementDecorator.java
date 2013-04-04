@@ -30,6 +30,8 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -230,7 +232,7 @@ public class ZScoreElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(ElementDecoration decoration, Object element)
+    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
     {
         decoration.reset();
 

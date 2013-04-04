@@ -21,31 +21,29 @@
  */
 package org.gitools.persistence._DEPRECATED;
 
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.jetbrains.annotations.NotNull;
+
 @Deprecated
 public class FileFormat
 {
 
     private String title;
     private String extension;
-    private String mime;
     private boolean titleWithExtension;
     private boolean allowGzExtension;
 
     public FileFormat(String title, String extension)
     {
-        this(title, extension, null);
+        this(title, extension, true, true);
     }
 
-    public FileFormat(String title, String extension, String mime)
-    {
-        this(title, extension, mime, true, true);
-    }
-
-    public FileFormat(String title, String extension, String mime, boolean titleWithExtension, boolean allowGzExtension)
+    public FileFormat(String title, String extension, boolean titleWithExtension, boolean allowGzExtension)
     {
         this.title = title;
         this.extension = extension;
-        this.mime = mime;
         this.titleWithExtension = titleWithExtension;
         this.allowGzExtension = allowGzExtension;
     }
@@ -55,6 +53,7 @@ public class FileFormat
         return title;
     }
 
+    @NotNull
     public String getTitleWithExtension()
     {
         StringBuilder sb = new StringBuilder();
@@ -72,11 +71,6 @@ public class FileFormat
         return extension;
     }
 
-    public String getMime()
-    {
-        return mime;
-    }
-
     public boolean checkExtension(String fileName)
     {
         fileName = fileName.toLowerCase();
@@ -85,6 +79,12 @@ public class FileFormat
                 || (allowGzExtension && fileName.endsWith(ext + ".gz"));
     }
 
+    public <R extends IResource> IResourceFormat<? extends R> getFormat(@NotNull Class<R> resourceClass)
+    {
+        return PersistenceManager.get().getFormat(getExtension(), resourceClass);
+    }
+
+    @NotNull
     @Override
     public String toString()
     {

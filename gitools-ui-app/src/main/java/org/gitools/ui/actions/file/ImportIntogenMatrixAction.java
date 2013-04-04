@@ -45,7 +45,7 @@ public class ImportIntogenMatrixAction extends BaseAction
     public void actionPerformed(ActionEvent e)
     {
         /*WizardDialog wizDlg = new WizardDialog(
-				AppFrame.instance(),
+                AppFrame.instance(),
 				new IntogenDataWizard());
 		
 		wizDlg.open();*/

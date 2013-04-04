@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.listenerproxy;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,6 +33,7 @@ import java.util.List;
 public class ListenerProxy<L> implements InvocationHandler
 {
 
+    @NotNull
     private List<L> listeners = new ArrayList<L>();
 
     public void addListener(L listener)
@@ -37,8 +41,9 @@ public class ListenerProxy<L> implements InvocationHandler
         listeners.add(listener);
     }
 
+    @Nullable
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+    public Object invoke(Object proxy, @NotNull Method method, Object[] args) throws Throwable
     {
         for (L listener : listeners)
         {

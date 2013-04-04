@@ -21,6 +21,8 @@
  */
 package org.gitools.model.decorator;
 
+import org.jetbrains.annotations.Nullable;
+
 public class ElementDecoratorDescriptor
 {
 
@@ -59,7 +61,7 @@ public class ElementDecoratorDescriptor
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(@Nullable Object obj)
     {
         if (obj == null)
         {

@@ -28,8 +28,6 @@ import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -38,6 +36,7 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     @Override
-    protected void prepareContext(VelocityContext context)
+    protected void prepareContext(@NotNull VelocityContext context)
     {
 
         IResourceLocator dataLocator = analysis.getData().getLocator();
@@ -85,7 +84,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     public void doSave(IProgressMonitor progressMonitor)
     {
         xmlPersistance = new CorrelationAnalysisXmlFormat();
-        fileformat = FileFormats.CORRELATIONS;
+        fileformat = CorrelationAnalysisXmlFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -115,7 +114,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
@@ -127,7 +126,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.CORRELATIONS,
+                        getName(), CorrelationAnalysisXmlFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -156,7 +155,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
@@ -168,7 +167,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
                 final CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.CORRELATIONS,
+                        getName(), CorrelationAnalysisXmlFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

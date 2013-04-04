@@ -22,10 +22,12 @@
 package org.gitools.stats.calc;
 
 import cern.colt.matrix.DoubleMatrix1D;
+import org.jetbrains.annotations.NotNull;
 
 public class PropStatisticCalc implements Statistic
 {
 
+    @NotNull
     @Override
     public String getName()
     {
@@ -33,7 +35,7 @@ public class PropStatisticCalc implements Statistic
     }
 
     @Override
-    public double calc(DoubleMatrix1D values)
+    public double calc(@NotNull DoubleMatrix1D values)
     {
 
         int size = values.size();

@@ -22,6 +22,8 @@
 package org.gitools.ui.biomart.filter;
 
 import org.gitools.biomart.restful.model.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -68,7 +70,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
                 buildPointerFilterComponents(configuration);
 
                 renderPanel = true;
-            } catch (final Exception ex)
+            } catch (@NotNull final Exception ex)
             {
 
                 System.out.println("Pointer dataset :" + filterDescription.getPointerDataset() + " has not been found");
@@ -90,7 +92,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
      * @param configuration
      * @param DefaultOptions
      */
-    private void buildPointerFilterComponents(DatasetConfig configuration)
+    private void buildPointerFilterComponents(@NotNull DatasetConfig configuration)
     {
 
         for (FilterPage page : configuration.getFilterPages())
@@ -297,6 +299,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
         this.filterComponent = components;
     }
 
+    @Nullable
     public Boolean isChild()
     {
         return (filterDescription == null);

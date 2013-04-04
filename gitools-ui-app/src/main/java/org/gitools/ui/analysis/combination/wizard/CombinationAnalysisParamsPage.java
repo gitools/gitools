@@ -25,6 +25,7 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.List;
 public class CombinationAnalysisParamsPage extends AbstractWizardPage
 {
 
+    @Nullable
     private List<IElementAttribute> attrs;
 
     private static class AttrOption
@@ -86,7 +88,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable List<IElementAttribute> attrs)
     {
         this.attrs = attrs;
 
@@ -151,12 +153,14 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         this.preferredPvalueAttr = preferredPvalueAttr;
     }
 
+    @Nullable
     public IElementAttribute getSizeAttribute()
     {
         AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
+    @Nullable
     public IElementAttribute getPvalueAttribute()
     {
         AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();

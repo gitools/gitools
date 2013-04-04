@@ -24,6 +24,8 @@ package org.gitools.ui.wizard.add.data;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -42,20 +44,22 @@ class DataIntegrationCriteriaTableModel implements TableModel
     private static final Class<?>[] columnClass = new Class<?>[]{
             String.class, CutoffCmp.class, String.class, Operator.class};
 
+    @NotNull
     private Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
 
     private List<DataIntegrationCriteria> criteriaList;
 
+    @NotNull
     private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, String[] attributeNames)
+    public DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, @NotNull String[] attributeNames)
     {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)
             attrIndexMap.put(attributeNames[i], i);
     }
 
-    public DataIntegrationCriteriaTableModel(String[] attributeNames)
+    public DataIntegrationCriteriaTableModel(@NotNull String[] attributeNames)
     {
         this(new ArrayList<DataIntegrationCriteria>(), attributeNames);
     }
@@ -90,6 +94,7 @@ class DataIntegrationCriteriaTableModel implements TableModel
         return true;
     }
 
+    @Nullable
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
@@ -151,14 +156,14 @@ class DataIntegrationCriteriaTableModel implements TableModel
         fireCriteriaChanged();
     }
 
-    void addAllCriteria(List<DataIntegrationCriteria> list)
+    void addAllCriteria(@NotNull List<DataIntegrationCriteria> list)
     {
         int initialRow = criteriaList.size();
         criteriaList.addAll(list);
         fireCriteriaChanged();
     }
 
-    void removeCriteria(int[] selectedRows)
+    void removeCriteria(@NotNull int[] selectedRows)
     {
         List<Object> objects = new ArrayList<Object>(selectedRows.length);
         for (int index : selectedRows)

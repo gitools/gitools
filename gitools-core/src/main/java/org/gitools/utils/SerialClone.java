@@ -22,6 +22,7 @@
 package org.gitools.utils;
 
 import com.thoughtworks.xstream.XStream;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ import java.util.Queue;
 public class SerialClone
 {
 
+    @NotNull
     public static <T> T clone(T x)
     {
         try
@@ -47,6 +49,7 @@ public class SerialClone
         }
     }
 
+    @NotNull
     private static <T> T cloneX(T x) throws IOException, ClassNotFoundException
     {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -64,6 +67,7 @@ public class SerialClone
     private static class CloneOutput extends ObjectOutputStream
     {
 
+        @NotNull
         Queue<Class<?>> classQueue = new LinkedList<Class<?>>();
 
         CloneOutput(OutputStream out) throws IOException
@@ -96,7 +100,7 @@ public class SerialClone
         }
 
         @Override
-        protected Class<?> resolveClass(ObjectStreamClass osc)
+        protected Class<?> resolveClass(@NotNull ObjectStreamClass osc)
                 throws IOException, ClassNotFoundException
         {
             Class<?> c = output.classQueue.poll();

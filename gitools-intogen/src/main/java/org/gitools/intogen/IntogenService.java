@@ -23,6 +23,7 @@ package org.gitools.intogen;
 
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -59,9 +60,9 @@ public class IntogenService
     public void queryFromPOST(
             File folder,
             String prefix,
-            URL action,
-            List<String[]> properties,
-            IProgressMonitor monitor) throws IntogenServiceException
+            @NotNull URL action,
+            @NotNull List<String[]> properties,
+            @NotNull IProgressMonitor monitor) throws IntogenServiceException
     {
 
         try

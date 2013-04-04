@@ -21,6 +21,9 @@
  */
 package org.gitools.stats.mtc;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +45,7 @@ public class MTCFactory
             classMap.put(e.getValue(), e.getKey());
     }
 
+    @NotNull
     public static String[] getAvailableMtcNames()
     {
         String[] names = new String[nameMap.size()];
@@ -49,6 +53,7 @@ public class MTCFactory
         return names;
     }
 
+    @Nullable
     public static MTC createFromName(String name)
     {
         MTC mtc = null;

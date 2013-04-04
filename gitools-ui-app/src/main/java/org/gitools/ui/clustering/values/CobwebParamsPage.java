@@ -26,6 +26,7 @@ import org.gitools.clustering.ClusteringMethodFactory;
 import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.clustering.method.value.WekaCobWebMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -192,6 +193,7 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
         return true;
     }
 
+    @Nullable
     @Override
     public AbstractClusteringValueMethod getMethod()
     {
@@ -210,6 +212,7 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
         return cobweb;
     }
 
+    @Nullable
     @Override
     public ClusteringMethodDescriptor getMethodDescriptor()
     {

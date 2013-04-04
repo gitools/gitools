@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.heatmap.panel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class HeatmapLayout implements LayoutManager
@@ -38,8 +40,9 @@ public class HeatmapLayout implements LayoutManager
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @NotNull
     @Override
-    public Dimension preferredLayoutSize(Container parent)
+    public Dimension preferredLayoutSize(@NotNull Container parent)
     {
         Dimension colPsz = parent.getComponent(0).getPreferredSize();
         Dimension rowPsz = parent.getComponent(1).getPreferredSize();
@@ -51,6 +54,7 @@ public class HeatmapLayout implements LayoutManager
                 colPsz.height + rowPsz.height + clsPsz.height);
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize(Container parent)
     {
@@ -58,7 +62,7 @@ public class HeatmapLayout implements LayoutManager
     }
 
     @Override
-    public void layoutContainer(Container parent)
+    public void layoutContainer(@NotNull Container parent)
     {
         Insets insets = parent.getInsets();
         Dimension size = parent.getSize();

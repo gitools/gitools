@@ -24,6 +24,7 @@ package org.gitools.ui.actions.file;
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.Query;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
 import org.gitools.ui.biomart.wizard.BiomartTableWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -31,6 +32,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -71,11 +73,12 @@ public class ImportBiomartTableAction extends BaseAction
         {
 
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Downloading data...", 1);
                 Query query = wizard.getQuery();
-                String format = (String) wizard.getFormat().getMime();
+                String format = (String) wizard.getFormat().getExtension();
+                format = (format.endsWith("gz") ? BiomartModulesWizard.FORMAT_COMPRESSED_GZ : BiomartModulesWizard.FORMAT_PLAIN);
                 BiomartService service = wizard.getService();
                 try
                 {

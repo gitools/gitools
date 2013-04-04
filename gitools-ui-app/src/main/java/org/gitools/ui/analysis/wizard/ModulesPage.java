@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.analysis.wizard;
 
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.IconNames;
@@ -30,6 +32,8 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -111,6 +115,7 @@ public class ModulesPage extends AbstractWizardPage
         maxSizeValueCb.addActionListener(al);
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -313,23 +318,25 @@ public class ModulesPage extends AbstractWizardPage
     public javax.swing.JComboBox minSizeValueCb;
     // End of variables declaration//GEN-END:variables
 
+    @NotNull
     protected FileFormat getFileFormat()
     {
         return (FileFormat) fileFormatCb.getSelectedItem();
     }
 
-    public String getFileMime()
+    public IResourceFormat getFileResourceFormat()
     {
-        return ((FileFormat) fileFormatCb.getSelectedItem()).getMime();
+        return ((FileFormat) fileFormatCb.getSelectedItem()).getFormat(ModuleMap.class);
     }
 
+    @Nullable
     public File getSelectedFile()
     {
         String path = filePath.getText();
         return path.isEmpty() ? null : new File(path);
     }
 
-    public void setSelectedFile(File file)
+    public void setSelectedFile(@NotNull File file)
     {
         String fileName = file.getName();
         for (FileFormat ff : formats)

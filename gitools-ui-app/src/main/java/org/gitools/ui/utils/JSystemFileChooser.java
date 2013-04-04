@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import sun.swing.FilePane;
 
 import javax.swing.*;
@@ -67,7 +69,8 @@ public class JSystemFileChooser extends JFileChooser
     }
 
 
-    private static FilePane findFilePane(Container parent)
+    @Nullable
+    private static FilePane findFilePane(@NotNull Container parent)
     {
         for (Component comp : parent.getComponents())
         {

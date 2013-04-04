@@ -23,7 +23,6 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;
@@ -59,7 +58,7 @@ public class OpenHeatmapAction extends BaseAction
     {
         FileFilter[] filters = new FileFilter[]{
                 // TODO new FileFormatFilter(FileFormats.HEATMAP),
-                new FileFormatFilter("Known formats", null, new FileFormat[]{
+                new FileFormatFilter("Known formats", new FileFormat[]{
                         FileFormats.MULTIVALUE_DATA_MATRIX,
                         FileFormats.DOUBLE_MATRIX,
                         FileFormats.DOUBLE_BINARY_MATRIX,
@@ -68,9 +67,9 @@ public class OpenHeatmapAction extends BaseAction
                         FileFormats.GENE_MATRIX_TRANSPOSED
                 }),
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
-                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)", MimeTypes.OBJECT_MATRIX),
+                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)"),
                 new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
-                new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)", MimeTypes.DOUBLE_MATRIX),
+                new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)"),
                 new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
                 new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
                 new FileFormatFilter(FileFormats.GENE_MATRIX),
@@ -97,7 +96,7 @@ public class OpenHeatmapAction extends BaseAction
         Settings.getDefault().setLastPath(file.getParent());
         Settings.getDefault().save();
 
-        JobRunnable loadFile = new CommandLoadFile(file.getAbsolutePath(), ff.getMime());
+        JobRunnable loadFile = new CommandLoadFile(file.getAbsolutePath());
         JobThread.execute(AppFrame.get(), loadFile);
 
         AppFrame.get().setStatusText("Done.");

@@ -31,6 +31,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
@@ -66,7 +67,7 @@ public class WelcomeEditor extends HtmlEditor
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
+    protected void performUrlAction(@NotNull String name, @NotNull Map<String, String> params)
     {
         if (name.equals("goHome"))
         {
@@ -208,7 +209,7 @@ public class WelcomeEditor extends HtmlEditor
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {

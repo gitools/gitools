@@ -21,6 +21,7 @@
  */
 package org.gitools.cli.convert;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
 import org.gitools.persistence.*;
@@ -34,6 +35,7 @@ import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;
+import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -41,7 +43,6 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class ConvertTool extends AbstractTool
 {
@@ -85,8 +86,7 @@ public class ConvertTool extends AbstractTool
 
         if (args.inputFileFormat == null)
         {
-            args.inputFileFormat = PersistenceManager.get()
-                    .getMimeFromFile(args.inputFileName);
+            args.inputFileFormat = PersistenceManager.get().getFormatExtension(args.inputFileName);
 
             if (args.inputFileFormat == null)
             {
@@ -102,8 +102,7 @@ public class ConvertTool extends AbstractTool
 
         if (args.outputFileFormat == null)
         {
-            args.outputFileFormat = PersistenceManager.get()
-                    .getMimeFromFile(args.outputFileName);
+            args.outputFileFormat = PersistenceManager.get().getFormatExtension(args.outputFileName);
 
             if (args.outputFileFormat == null)
             {
@@ -151,8 +150,8 @@ public class ConvertTool extends AbstractTool
         try
         {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.inputFileName));
-            IResourceFormat format = PersistenceManager.get().getFormatByMime(inputMime);
-            resource = PersistenceManager.get().load(resourceLocator, IResource.class, format, new Properties(), monitor.subtask());
+            IResourceFormat format = PersistenceManager.get().getFormat(inputMime, IResource.class);
+            resource = PersistenceManager.get().load(resourceLocator, format, monitor.subtask());
         } catch (PersistenceException ex)
         {
             monitor.exception(ex);
@@ -182,7 +181,7 @@ public class ConvertTool extends AbstractTool
         try
         {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.outputFileName));
-            IResourceFormat format = PersistenceManager.get().getFormatByMime(outputMime);
+            IResourceFormat format = PersistenceManager.get().getFormat(outputMime, IResource.class);
             PersistenceManager.get().store(resourceLocator, dstObject, format, monitor.subtask());
         } catch (PersistenceException ex)
         {
@@ -193,7 +192,7 @@ public class ConvertTool extends AbstractTool
         monitor.end();
     }
 
-    private void initConversionList(List<Conversion> vc)
+    private void initConversionList(@NotNull List<Conversion> vc)
     {
         vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
         vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
@@ -234,32 +233,16 @@ public class ConvertTool extends AbstractTool
 
     protected String mimeFromFormat(String format, String fileName)
     {
-        String mime = null;
-        if (fileName == null)
+        if (StringUtils.isEmpty(format))
         {
-            return null;
+            format = fileName;
         }
 
-        if (format != null)
-        {
-            // Try with file extension first
-            mime = PersistenceManager.get().getMimeFromFile("fake." + format);
-            if (mime == null)
-            {
-                mime = format; // it should be mime type then
-            }
-            //TODO check valid mime
-        }
-        else
-        {
-            mime = PersistenceManager.get().getMimeFromFile(fileName);
-        }
-
-        return mime;
+        return PersistenceManager.get().getFormatExtension(format);
     }
 
     @Override
-    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
     {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
@@ -275,6 +258,6 @@ public class ConvertTool extends AbstractTool
         };
 
         for (FileFormat f : formats)
-            outputStream.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
+            outputStream.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 }

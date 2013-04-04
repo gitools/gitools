@@ -23,9 +23,11 @@ package org.gitools.cli.htest;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -41,8 +43,8 @@ public class OncodriveTool extends HtestTool
     public static class OncodriveArguments extends HtestArguments
     {
         @Option(name = "-sf", aliases = "-sets-format", metaVar = "<format>",
-                usage = "Column sets file format (MIME type or file extension).")
-        public String setsMime;
+                usage = "Column sets file format (reference file extension).")
+        public String setsFormat;
 
         @Option(name = "-s", aliases = {"-sets"}, metaVar = "<file>",
                 usage = "File with mappings for column sets.")
@@ -95,9 +97,9 @@ public class OncodriveTool extends HtestTool
         analysis.setMinModuleSize(args.minSetSize);
         analysis.setMaxModuleSize(args.maxSetSize);
 
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
 
-        String setsMime = mimeFromFormat(args.setsMime, args.setsFile, MimeTypes.MODULES_2C_MAP);
+        IResourceFormat setsMime = getResourceFormat(args.setsFormat, args.setsFile, ModuleMap.class);
 
         OncodriveCommand cmd = new OncodriveCommand(
                 analysis, dataMime, args.dataFile,
@@ -105,7 +107,7 @@ public class OncodriveTool extends HtestTool
                 args.populationFile,
                 populationDefaultValue,
                 setsMime, args.setsFile,
-                args.workdir, args.analysisName + "." + FileSuffixes.ONCODRIVE);
+                args.workdir, args.analysisName + "." + OncodriveAnalysisXmlFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

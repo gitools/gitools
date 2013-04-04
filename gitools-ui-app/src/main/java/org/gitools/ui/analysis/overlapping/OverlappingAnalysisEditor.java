@@ -25,12 +25,11 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.model.ResourceRef;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -40,6 +39,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Map;
@@ -54,12 +54,12 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Override
-    protected void prepareContext(VelocityContext context)
+    protected void prepareContext(@NotNull VelocityContext context)
     {
 
 
-        ResourceRef resourceRef = analysis.getFilteredDataResource();
-        context.put("filteredDataFile", (resourceRef != null ? resourceRef.getPath() : "Not defined"));
+        ResourceReference<IMatrix> resourceRef = analysis.getFilteredData();
+        context.put("filteredDataFile", (resourceRef != null ? resourceRef.getLocator().getURL() : "Not defined"));
 
         String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
         context.put("appliedTo", appliedTo);
@@ -72,8 +72,8 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 + analysis.getBinaryCutoffValue();
         context.put("filterDesc", filterDesc);
 
-        resourceRef = analysis.getCellResultsResource();
-        context.put("resultsFile", resourceRef != null ? resourceRef.getPath() : "Not defined");
+        resourceRef = analysis.getCellResults();
+        context.put("resultsFile", resourceRef != null ? resourceRef.getLocator().getURL() : "Not defined");
 
         IResourceLocator analysisLocator = analysis.getLocator();
 
@@ -94,7 +94,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     {
 
         xmlPersistance = new OverlappingAnalysisXmlFormat();
-        fileformat = FileFormats.OVERLAPPING;
+        fileformat = OverlappingAnalysisXmlFormat.OVERLAPPING;
         super.doSave(progressMonitor);
     }
 
@@ -113,7 +113,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
     private void newDataHeatmap()
     {
-        if (analysis.getData() == null)
+        if (analysis.getSourceData() == null)
         {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -124,11 +124,11 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData());
+                IMatrixView dataTable = new MatrixView(analysis.getSourceData().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (data)");
@@ -136,7 +136,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.OVERLAPPING,
+                        getName(), OverlappingAnalysisXmlFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -165,11 +165,11 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getCellResults());
+                IMatrixView dataTable = new MatrixView(analysis.getCellResults().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (results)");
@@ -177,7 +177,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 final OverlappingResultsEditor editor = new OverlappingResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.OVERLAPPING,
+                        getName(), OverlappingAnalysisXmlFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

@@ -29,6 +29,7 @@ import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -36,7 +37,8 @@ import java.util.List;
 public class ActionSetUtils
 {
 
-    public static JToolBar createToolBar(ActionSet actionSet)
+    @NotNull
+    public static JToolBar createToolBar(@NotNull ActionSet actionSet)
     {
         WebToolBar toolBar = new WebToolBar(WebToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
@@ -44,7 +46,8 @@ public class ActionSetUtils
         return createToolBar(toolBar, actionSet);
     }
 
-    public static JToolBar createToolBar(JToolBar toolBar, ActionSet actionSet)
+    @NotNull
+    public static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet)
     {
 
         for (BaseAction a : actionSet.getActions())
@@ -62,7 +65,7 @@ public class ActionSetUtils
         return toolBar;
     }
 
-    private static JComponent createTool(BaseAction a)
+    private static JComponent createTool(@NotNull BaseAction a)
     {
         WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
         tool.setAction(a);
@@ -73,7 +76,8 @@ public class ActionSetUtils
         return tool;
     }
 
-    public static JPopupMenu createPopupMenu(ActionSet actionSet)
+    @NotNull
+    public static JPopupMenu createPopupMenu(@NotNull ActionSet actionSet)
     {
         JPopupMenu popupMenu = new JPopupMenu();
 
@@ -93,6 +97,7 @@ public class ActionSetUtils
 
     }
 
+    @NotNull
     private static JMenuItem createPopupMenuItem(Action a)
     {
         JMenuItem item = new JMenuItem(a)
@@ -107,7 +112,8 @@ public class ActionSetUtils
         return item;
     }
 
-    public static JMenuBar createMenuBar(ActionSet actionSet)
+    @NotNull
+    public static JMenuBar createMenuBar(@NotNull ActionSet actionSet)
     {
         WebMenuBar menuBar = new WebMenuBar();
         for (BaseAction a : actionSet.getActions())
@@ -115,7 +121,8 @@ public class ActionSetUtils
         return menuBar;
     }
 
-    public static JMenu createMenu(BaseAction action)
+    @NotNull
+    public static JMenu createMenu(@NotNull BaseAction action)
     {
         WebMenu menu = new WebMenu(action);
 

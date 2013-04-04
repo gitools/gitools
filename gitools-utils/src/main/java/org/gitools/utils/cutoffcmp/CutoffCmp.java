@@ -22,6 +22,7 @@
 package org.gitools.utils.cutoffcmp;
 
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -207,6 +208,7 @@ public abstract class CutoffCmp implements Serializable
         return longName;
     }
 
+    @NotNull
     public static CutoffCmp getOpposite(CutoffCmp key)
     {
         if (opposite.get(key) == null)

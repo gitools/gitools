@@ -21,6 +21,8 @@
  */
 package org.gitools.model.xml;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -63,6 +65,7 @@ public class ConfigurationXmlElement
         }
     }
 
+    @NotNull
     @XmlElement(name = "property")
     private List<ConfigurationXmlEntry> configuration =
             new ArrayList<ConfigurationXmlElement.ConfigurationXmlEntry>();
@@ -71,6 +74,7 @@ public class ConfigurationXmlElement
     {
     }
 
+    @NotNull
     public List<ConfigurationXmlEntry> getConfiguration()
     {
         return configuration;

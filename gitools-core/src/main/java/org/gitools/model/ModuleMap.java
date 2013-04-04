@@ -24,6 +24,8 @@ package org.gitools.model;
 import cern.colt.bitvector.BitMatrix;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -49,7 +51,9 @@ public class ModuleMap extends Artifact implements IResource
 
     protected int[][] moduleTreeIndices;
 
+    @NotNull
     protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
+    @NotNull
     protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 
     public ModuleMap()
@@ -61,7 +65,7 @@ public class ModuleMap extends Artifact implements IResource
         this.moduleTreeIndices = new int[0][];
     }
 
-    public ModuleMap(String[] moduleNames, String[] itemNames,
+    public ModuleMap(@NotNull String[] moduleNames, @NotNull String[] itemNames,
                      int[][] itemIndices)
     {
 
@@ -71,7 +75,7 @@ public class ModuleMap extends Artifact implements IResource
         this.itemIndices = itemIndices;
     }
 
-    public ModuleMap(String moduleName, String[] itemNames)
+    public ModuleMap(String moduleName, @NotNull String[] itemNames)
     {
         setModuleNames(new String[]{moduleName});
         setItemNames(itemNames);
@@ -81,20 +85,20 @@ public class ModuleMap extends Artifact implements IResource
         setAllItemIndices(new int[][]{indices});
     }
 
-    public ModuleMap(Map<String, Set<String>> map)
+    public ModuleMap(@NotNull Map<String, Set<String>> map)
     {
         this(map, new HashMap<String, String>());
     }
 
-    public ModuleMap(Map<String, Set<String>> map, Map<String, String> desc)
+    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc)
     {
         this(map, desc, new HashMap<String, Set<String>>());
     }
 
     public ModuleMap(
-            Map<String, Set<String>> map,
-            Map<String, String> desc,
-            Map<String, Set<String>> tree)
+            @NotNull Map<String, Set<String>> map,
+            @NotNull Map<String, String> desc,
+            @NotNull Map<String, Set<String>> tree)
     {
 
         int modCount = map.keySet().size();
@@ -224,7 +228,7 @@ public class ModuleMap extends Artifact implements IResource
         return moduleNames;
     }
 
-    public final void setModuleNames(String[] moduleNames)
+    public final void setModuleNames(@NotNull String[] moduleNames)
     {
         this.moduleNames = moduleNames;
 
@@ -294,7 +298,7 @@ public class ModuleMap extends Artifact implements IResource
         return itemNames;
     }
 
-    public final void setItemNames(String[] itemNames)
+    public final void setItemNames(@NotNull String[] itemNames)
     {
         this.itemNames = itemNames;
 
@@ -347,12 +351,14 @@ public class ModuleMap extends Artifact implements IResource
         this.moduleTreeIndices = moduleTreeIndices;
     }
 
-    public final ModuleMap remap(String[] names)
+    @NotNull
+    public final ModuleMap remap(@NotNull String[] names)
     {
         return remap(names, 1, Integer.MAX_VALUE);
     }
 
-    public final ModuleMap remap(String[] names, int minSize, int maxSize)
+    @NotNull
+    public final ModuleMap remap(@NotNull String[] names, int minSize, int maxSize)
     {
 
         // prepare a item name to index map for input names
@@ -419,6 +425,7 @@ public class ModuleMap extends Artifact implements IResource
         return mmap;
     }
 
+    @NotNull
     public Map<String, Set<String>> getMap()
     {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
@@ -439,6 +446,7 @@ public class ModuleMap extends Artifact implements IResource
         return map;
     }
 
+    @NotNull
     public Map<String, Set<String>> getTree()
     {
         Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
@@ -459,6 +467,7 @@ public class ModuleMap extends Artifact implements IResource
         return tree;
     }
 
+    @NotNull
     public ModuleMap plain()
     {
         Map<String, Set<String>> map = getMap();
@@ -487,10 +496,10 @@ public class ModuleMap extends Artifact implements IResource
     }
 
     private void plainModule(String id,
-                             Set<String> path,
-                             Set<String> dstIds,
-                             Map<String, Set<String>> map,
-                             Map<String, Set<String>> childrenTree)
+                             @NotNull Set<String> path,
+                             @NotNull Set<String> dstIds,
+                             @NotNull Map<String, Set<String>> map,
+                             @NotNull Map<String, Set<String>> childrenTree)
     {
 
         if (path.contains(id))
@@ -519,6 +528,7 @@ public class ModuleMap extends Artifact implements IResource
         }
     }
 
+    @NotNull
     public BitMatrix createBitMatrix()
     {
         int mc = getModuleCount();
@@ -551,6 +561,7 @@ public class ModuleMap extends Artifact implements IResource
         }
     }
 
+    @Nullable
     public int[] getItemIndices(String modName)
     {
         Integer modIndex = moduleIndexMap.get(modName);
@@ -562,6 +573,7 @@ public class ModuleMap extends Artifact implements IResource
         return itemIndices[modIndex];
     }
 
+    @NotNull
     @Override
     public String toString()
     {

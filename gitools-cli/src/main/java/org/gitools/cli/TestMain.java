@@ -21,8 +21,9 @@
  */
 package org.gitools.cli;
 
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.utils.tools.exception.ToolException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,9 @@ public class TestMain
         String cmd = "enrichment -t binomial-exact" +
                 " -tc sample-size=100 -tc aproximation=none" +
                 " -d " + stuff + "/d1.tsv" +
-                " -df " + MimeTypes.DOUBLE_BINARY_MATRIX +
+                " -df " + FileSuffixes.DOUBLE_BINARY_MATRIX +
                 " -m " + stuff + "/m1.tsv" +
-                " -mf " + MimeTypes.MODULES_2C_MAP +
+                " -mf " + FileSuffixes.MODULES_2C_MAP +
                 " -min 0" +
                 " -w " + temp + "/test -N test" +
                 " -title 'Test Analysis'" +
@@ -63,13 +64,13 @@ public class TestMain
 				" -verbose -debug -err-log -";*/
 
 		/*cmd = "oncodrive" +
-				" -d " + stuff + "/GAFtargets_upDownGeneslog5.bdm" +
+                " -d " + stuff + "/GAFtargets_upDownGeneslog5.bdm" +
 				" -min 0" +
 				" -w " + temp +
 				" -t binomial";*/
 
 		/*cmd = "correlation" +
-				" -d " + stuff + "/real/data.tsv" +
+                " -d " + stuff + "/real/data.tsv" +
 				" -dm " + MimeTypes.DOUBLE_MATRIX +
 				" -w "+ temp + "/test -N test_cor" +
 				" -verbose -debug -err-log -";*/
@@ -96,7 +97,7 @@ public class TestMain
 
         cmd = "overlapping" +
                 " -d " + temp + "/test/data.cdm.gz" +
-                " -df " + MimeTypes.DOUBLE_MATRIX +
+                " -df " + FileSuffixes.DOUBLE_MATRIX +
                 " -b lt,0.05" +
                 " -w " + temp + "/test -N test_ovl" +
                 " -verbose -debug -err-log -";
@@ -111,8 +112,9 @@ public class TestMain
         Main.main(args);
     }
 
+    @NotNull
     @SuppressWarnings("empty-statement")
-    private static String[] cmdLineSplit(String cmd)
+    private static String[] cmdLineSplit(@NotNull String cmd)
     {
         List<String> args = new ArrayList<String>();
 

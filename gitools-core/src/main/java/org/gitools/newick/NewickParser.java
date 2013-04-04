@@ -21,6 +21,9 @@
  */
 package org.gitools.newick;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -127,6 +130,7 @@ public class NewickParser<VT>
         }
     }
 
+    @Nullable
     public NewickTree<VT> parse() throws NewickParserException
     {
         Token token = null;
@@ -308,7 +312,8 @@ public class NewickParser<VT>
         return tree;
     }
 
-    private Token parseNodeName(NewickNode node, Token token, Set<String> names) throws NewickParserException
+    @NotNull
+    private Token parseNodeName(@NotNull NewickNode node, @NotNull Token token, @NotNull Set<String> names) throws NewickParserException
     {
         if (token.getType() == TokenType.NAME
                 || token.getType() == TokenType.NUMBER)
@@ -342,6 +347,7 @@ public class NewickParser<VT>
         throw new NewickParserException("Line " + lastRow + " column " + lastCol + " -> " + msg);
     }
 
+    @Nullable
     private Token nextTokenNoSpace() throws NewickParserException
     {
         Token token = nextToken();
@@ -350,6 +356,7 @@ public class NewickParser<VT>
         return token;
     }
 
+    @Nullable
     private Token nextToken() throws NewickParserException
     {
         sb.setLength(0);

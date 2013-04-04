@@ -31,6 +31,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.Reader;
@@ -96,6 +97,7 @@ public class DataFilePage extends SelectFilePage
         }
     }
 
+    @Nullable
     public static String[] readHeader(File file)
             throws PersistenceException
     {

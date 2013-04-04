@@ -23,6 +23,7 @@ package org.gitools.threads;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,11 +32,12 @@ import java.util.concurrent.TimeUnit;
 public class ThreadManager
 {
 
+    @NotNull
     protected static ExecutorService executor = createExecutor();
 
     protected static int nThreads = getAvailableProcessors();
 
-    public static void shutdown(IProgressMonitor monitor)
+    public static void shutdown(@NotNull IProgressMonitor monitor)
     {
         executor.shutdown();
         try
@@ -50,12 +52,14 @@ public class ThreadManager
         executor = createExecutor();
     }
 
+    @NotNull
     private static ExecutorService createExecutor()
     {
         return Executors.newCachedThreadPool();
         //new BlockingThreadPoolExecutor(nThreads);
     }
 
+    @NotNull
     public static ExecutorService getExecutor()
     {
         return executor;

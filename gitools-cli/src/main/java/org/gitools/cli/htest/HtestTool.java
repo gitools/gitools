@@ -29,6 +29,8 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -48,19 +50,21 @@ public abstract class HtestTool extends AnalysisTool
                 usage = "Statistical test to use.")
         public String testName;
 
+        @NotNull
         @Option(name = "-tc", aliases = "-test-conf", metaVar = "<param=value>",
                 usage = "Define a test configuration parameter." +
                         " This allows to configure the behaviour of the test.")
         public List<String> testConf = new ArrayList<String>(0);
 
+        @NotNull
         @Option(name = "-mtc", metaVar = "<name>",
                 usage = "Multiple test correxction method.\n" +
                         "Available: bonferroni, bh. (default: bh)")
         public String mtc = "bh";
 
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
-                usage = "Data file format (MIME type or file extension).")
-        public String dataMime;
+                usage = "Data file format (reference file extension).")
+        public String dataFormat;
 
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
@@ -74,6 +78,7 @@ public abstract class HtestTool extends AnalysisTool
                 usage = "File with background population elements.")
         public String populationFile;
 
+        @NotNull
         @Option(name = "-Pv", aliases = "-population-default-value", metaVar = "<value>",
                 usage = "Default value to use when a population element"
                         + "\ndoesn't exist in the data.\nIt can be a number, 'empty' or 'nan'. (default: 0)")
@@ -97,9 +102,11 @@ public abstract class HtestTool extends AnalysisTool
     protected CutoffCmp binaryCutoffCmp;
     protected double binaryCutoffValue;
 
+    @Nullable
     protected Double populationDefaultValue;
 
     protected ToolConfig testConfig;
+    @NotNull
     protected List<String[]> testConfigParams = new ArrayList<String[]>(0);
 
     @Override
@@ -173,7 +180,7 @@ public abstract class HtestTool extends AnalysisTool
         }
     }
 
-    protected void prepareAnalysis(HtestAnalysis analysis, HtestArguments args)
+    protected void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args)
     {
         prepareGeneralAnalysisAttributes(analysis, args);
 
@@ -190,7 +197,7 @@ public abstract class HtestTool extends AnalysisTool
     }
 
     @Override
-    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
     {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
@@ -206,7 +213,7 @@ public abstract class HtestTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printTests(PrintStream o)
+    private void printTests(@NotNull PrintStream o)
     {
         o.println("Available tests:");
         o.println(String.format(LIST_S_FMT, "zscore", "Z-score test"));

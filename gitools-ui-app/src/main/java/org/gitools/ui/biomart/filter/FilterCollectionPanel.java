@@ -25,6 +25,7 @@ import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.FilterCollection;
 import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.ui.biomart.wizard.BiomartFilterConfigurationPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,7 @@ public class FilterCollectionPanel extends JPanel
     private BiomartFilterConfigurationPage filterConfigurationPage;
 
     private Integer currentHeight = 0;
+    @NotNull
     private Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
 
     private Boolean rendered; //Controls if collectionPanel contains any component
@@ -44,7 +46,7 @@ public class FilterCollectionPanel extends JPanel
     /**
      * Creates new form FilterCollectionPanel1
      */
-    public FilterCollectionPanel(FilterCollection fc, BiomartFilterConfigurationPage parent)
+    public FilterCollectionPanel(@NotNull FilterCollection fc, BiomartFilterConfigurationPage parent)
     {
 
         initComponents();
@@ -57,7 +59,7 @@ public class FilterCollectionPanel extends JPanel
 
     }
 
-    private void buildDescriptions(FilterCollection fc)
+    private void buildDescriptions(@NotNull FilterCollection fc)
     {
 
         collectionCheckBox.setText(fc.getDisplayName());
@@ -99,7 +101,8 @@ public class FilterCollectionPanel extends JPanel
      * @param fc
      * @return
      */
-    private Boolean renderLabelDescription(FilterCollection fc)
+    @NotNull
+    private Boolean renderLabelDescription(@NotNull FilterCollection fc)
     {
         Integer components = 0;
 
@@ -125,11 +128,13 @@ public class FilterCollectionPanel extends JPanel
         initComponents();
     }
 
+    @NotNull
     public Integer getCurrentHeigh()
     {
         return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
     }
 
+    @NotNull
     public List<Filter> getFilters()
     {
 

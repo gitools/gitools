@@ -28,6 +28,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -43,7 +44,7 @@ public class ShowAllAction extends BaseAction
 
     private ElementType type;
 
-    public ShowAllAction(ElementType type)
+    public ShowAllAction(@NotNull ElementType type)
     {
         super(null);
 

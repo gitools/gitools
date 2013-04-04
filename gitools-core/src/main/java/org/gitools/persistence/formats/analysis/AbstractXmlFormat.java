@@ -24,11 +24,10 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.formats.AbstractResourceFormat;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -44,9 +43,9 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 
     private boolean loadReferences;
 
-    public AbstractXmlFormat(String extension, String mime, Class<R> resourceClass)
+    public AbstractXmlFormat(String extension, Class<R> resourceClass)
     {
-        super(extension, mime, resourceClass);
+        super(extension, resourceClass);
     }
 
     protected boolean isLoadReferences()
@@ -61,14 +60,13 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
         this.loadReferences = Boolean.parseBoolean(properties.getProperty(LOAD_REFERENCES_PROP, "true"));
     }
 
-    protected void beforeRead(IResourceLocator resourceLocator, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void beforeRead(IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
-        unmarshaller.setAdapter(new PersistenceReferenceXmlAdapter(resourceLocator, progressMonitor, loadReferences));
         unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
     }
 
@@ -76,8 +74,8 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
      * Override this method if you want to modify the resource after reading it.
      *
      * @param resourceLocator the resource locator
-     * @param resource the entity
-     * @param unmarshaller the unmarshaller
+     * @param resource        the entity
+     * @param unmarshaller    the unmarshaller
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
@@ -86,7 +84,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     @Override
-    protected R readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected R readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
         R entity;
 
@@ -112,7 +110,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         return entity;
     }
 
-    protected void beforeWrite(IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void beforeWrite(IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
         marshaller.setAdapter(new ResourceReferenceXmlAdapter(resourceLocator, progressMonitor));
     }
@@ -122,7 +120,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, R resource, IProgressMonitor monitor) throws PersistenceException
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, R resource, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
         monitor.begin("Saving " + resourceLocator.getName(), 1);
 
@@ -146,13 +144,6 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         }
 
         monitor.end();
-    }
-
-    @Deprecated
-    protected static void addReference(PersistenceReferenceXmlAdapter adapter, IResource resource, String fieldName)
-    {
-        String defaultExtension = PersistenceManager.get().getDefaultExtension(resource);
-        adapter.addReference(resource, fieldName + "." + defaultExtension + ".gz");
     }
 
 }

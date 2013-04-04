@@ -33,6 +33,8 @@ import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.utils.color.utils.ColorUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.font.LineMetrics;
@@ -45,11 +47,12 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     {
 
         private LabelProvider labelProvider;
+        @Nullable
         private AnnotationMatrix am;
         private String name;
         private int column;
 
-        public AnnotationProvider(LabelProvider labelProvider, AnnotationMatrix am, String name)
+        public AnnotationProvider(LabelProvider labelProvider, @Nullable AnnotationMatrix am, String name)
         {
             this.labelProvider = labelProvider;
             this.am = am;
@@ -98,7 +101,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     }
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
 
         // Clear background
@@ -235,6 +238,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         }
     }
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -260,8 +264,9 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         }
     }
 
+    @NotNull
     @Override
-    public HeatmapPosition getPosition(Point p)
+    public HeatmapPosition getPosition(@NotNull Point p)
     {
         HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
@@ -291,8 +296,9 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         return new HeatmapPosition(row, col);
     }
 
+    @NotNull
     @Override
-    public Point getPoint(HeatmapPosition p)
+    public Point getPoint(@NotNull HeatmapPosition p)
     {
         HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;

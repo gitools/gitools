@@ -21,6 +21,7 @@
  */
 package org.gitools.biomart.settings;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,7 @@ public class BiomartSourceManager
     private static final String configFile = configPath + File.separator + configFileName;
 
     private static BiomartSourceManager instance;
+    @NotNull
     private static BiomartSources biomartSources = new BiomartSources();
 
     public static BiomartSourceManager getDefault()
@@ -83,7 +85,8 @@ public class BiomartSourceManager
         return instance;
     }
 
-    private static BiomartSourceManager load(Reader reader)
+    @NotNull
+    private static BiomartSourceManager load(@NotNull Reader reader)
     {
         BiomartSourceManager settings = new BiomartSourceManager();
         try
@@ -150,7 +153,7 @@ public class BiomartSourceManager
         biomartSources.getSources().add(source);
     }
 
-    private void addSources(BiomartSources sources)
+    private void addSources(@NotNull BiomartSources sources)
     {
         biomartSources.getSources().addAll(sources.getSources());
     }

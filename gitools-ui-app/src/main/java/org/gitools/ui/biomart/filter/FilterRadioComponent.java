@@ -24,6 +24,8 @@ package org.gitools.ui.biomart.filter;
 import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.FilterDescription;
 import org.gitools.biomart.restful.model.Option;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,6 +112,7 @@ public class FilterRadioComponent extends FilterComponent
 
     }
 
+    @NotNull
     @Override
     // FIXME : Check if get filter from radio value/s is correct
     public List<Filter> getFilters()
@@ -160,6 +163,7 @@ public class FilterRadioComponent extends FilterComponent
 
     }
 
+    @NotNull
     @Override
     //Always render filter from select component filter
     public Boolean hasChanged()
@@ -175,6 +179,7 @@ public class FilterRadioComponent extends FilterComponent
      * @param child
      * @return
      */
+    @Nullable
     private String[] getListTextOptions()
     {
         String res[] = null;

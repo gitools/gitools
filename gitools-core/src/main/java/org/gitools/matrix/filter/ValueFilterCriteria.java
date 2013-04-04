@@ -22,6 +22,7 @@
 package org.gitools.matrix.filter;
 
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
 
 public class ValueFilterCriteria
 {
@@ -79,6 +80,7 @@ public class ValueFilterCriteria
         this.value = value;
     }
 
+    @NotNull
     @Override
     public String toString()
     {

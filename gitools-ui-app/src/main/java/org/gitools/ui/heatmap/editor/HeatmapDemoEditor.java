@@ -31,6 +31,8 @@ import org.gitools.matrix.model.element.ArrayElementAdapter;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
+import org.gitools.persistence.ResourceReference;
+import org.jetbrains.annotations.NotNull;
 
 public class HeatmapDemoEditor extends HeatmapEditor
 {
@@ -44,6 +46,7 @@ public class HeatmapDemoEditor extends HeatmapEditor
         setName("Demo");
     }
 
+    @NotNull
     private static Heatmap createModel(int rows, int cols)
     {
         MatrixView matrixView = createTable(rows, cols);
@@ -55,6 +58,7 @@ public class HeatmapDemoEditor extends HeatmapEditor
                 new HeatmapTextLabelsHeader());
     }
 
+    @NotNull
     private static MatrixView createTable(int rows, int cols)
     {
         int k = 0;
@@ -89,7 +93,7 @@ public class HeatmapDemoEditor extends HeatmapEditor
                 new ArrayElementAdapter(new String[]{"p-value", "corrected-p-value"}));
 
         HtestAnalysis analysis = new HtestAnalysis();
-        analysis.setResults(resultsMatrix);
+        analysis.setResults(new ResourceReference<ObjectMatrix>("results", resultsMatrix));
 
         return new MatrixView(resultsMatrix);
     }

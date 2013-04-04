@@ -30,10 +30,12 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+import org.jetbrains.annotations.NotNull;
 
 public class ModulesImportWizard extends AbstractWizard
 {
 
+    @NotNull
     private FileFormat[] supportedFormats = new FileFormat[]{
             FileFormats.MODULES_2C_MAP,
             FileFormats.GENE_MATRIX,
@@ -95,7 +97,8 @@ public class ModulesImportWizard extends AbstractWizard
         }
     }
 
-    private String automaticFileName(ModulesImporter importer)
+    @NotNull
+    private String automaticFileName(@NotNull ModulesImporter importer)
     {
         StringBuilder sb = new StringBuilder();
         sb.append(importer.getOrganism().getName().replace(' ', '_'));

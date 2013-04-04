@@ -21,6 +21,8 @@
  */
 package org.gitools.stats;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Fisher's Exact Test
  * <p/>
@@ -44,6 +46,7 @@ public class FisherExactTest
     protected double rightPValue;
     protected double twoTailPValue;
 
+    @NotNull
     protected HyperGeometric hyper = new HyperGeometric();
 
     /**

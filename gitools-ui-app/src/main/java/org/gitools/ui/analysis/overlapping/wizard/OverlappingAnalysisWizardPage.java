@@ -27,6 +27,8 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -36,6 +38,7 @@ import java.util.List;
 
 public class OverlappingAnalysisWizardPage extends AbstractWizardPage
 {
+    @Nullable
     private List<IElementAttribute> attrs;
 
     private static class AttrOption
@@ -195,6 +198,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -214,7 +218,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
     }
 
 
-    public void setAttributes(List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable List<IElementAttribute> attrs)
     {
         this.attrs = attrs;
 

@@ -23,6 +23,8 @@ package org.gitools.ui.dialog.filter;
 
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -51,9 +53,10 @@ public class ValueFilterDialog extends javax.swing.JDialog
             super(values);
         }
 
+        @NotNull
         @Override
         public Component getTableCellRendererComponent(
-                JTable table, Object value,
+                @NotNull JTable table, Object value,
                 boolean isSelected, boolean hasFocus,
                 int row, int column)
         {
@@ -93,7 +96,7 @@ public class ValueFilterDialog extends javax.swing.JDialog
      */
     public ValueFilterDialog(java.awt.Frame parent,
                              String[] attributeNames, CutoffCmp[] comparators,
-                             List<ValueFilterCriteria> initialCriteriaList)
+                             @Nullable List<ValueFilterCriteria> initialCriteriaList)
     {
 
         super(parent, true);
@@ -201,6 +204,7 @@ public class ValueFilterDialog extends javax.swing.JDialog
                 }
         )
         {
+            @NotNull
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.Object.class, java.lang.Double.class
             };

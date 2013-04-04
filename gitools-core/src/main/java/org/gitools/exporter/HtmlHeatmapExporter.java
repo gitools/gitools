@@ -24,6 +24,7 @@ package org.gitools.exporter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter
         super();
     }
 
-    public void exportHeatmap(Heatmap figure)
+    public void exportHeatmap(@NotNull Heatmap figure)
     {
 
         File templatePath = getTemplatePath();

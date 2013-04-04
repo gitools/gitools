@@ -33,6 +33,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.SumAbsAggregator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -42,10 +44,10 @@ public abstract class MatrixViewSorter
 {
 
 
-    public static void sortByMutualExclusion(final IMatrixView matrixView,
+    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView,
                                              String pattern,
                                              AnnotationMatrix am,
-                                             List<String> values,
+                                             @NotNull List<String> values,
                                              boolean regExChecked,
                                              boolean applyToRows,
                                              boolean applyToColumns)
@@ -61,10 +63,10 @@ public abstract class MatrixViewSorter
         }
     }
 
-    protected static void sortRowsByMutualExclusion(final IMatrixView matrixView,
+    protected static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView,
                                                     String pattern,
                                                     AnnotationMatrix am,
-                                                    List<String> values,
+                                                    @NotNull List<String> values,
                                                     boolean regExChecked)
     {
 
@@ -125,11 +127,11 @@ public abstract class MatrixViewSorter
             }
 
             private double aggregateValue(
-                    IMatrixView matrixView,
-                    int[] selectedColumns,
+                    @NotNull IMatrixView matrixView,
+                    @NotNull int[] selectedColumns,
                     int idx,
                     int propIndex,
-                    IAggregator aggregator,
+                    @NotNull IAggregator aggregator,
                     double[] valueBuffer)
             {
 
@@ -196,7 +198,7 @@ public abstract class MatrixViewSorter
     }
 
 
-    public static void sortByValue(IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns)
+    public static void sortByValue(@NotNull IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns)
     {
         if (applyToRows)
         {
@@ -209,7 +211,7 @@ public abstract class MatrixViewSorter
         }
     }
 
-    protected static void sortRowsByValue(final IMatrixView matrixView, int[] selColumns, int[] selRows, final ValueSortCriteria[] criteriaArray)
+    protected static void sortRowsByValue(@NotNull final IMatrixView matrixView, @Nullable int[] selColumns, @Nullable int[] selRows, @Nullable final ValueSortCriteria[] criteriaArray)
     {
 
         if (criteriaArray == null || criteriaArray.length == 0)
@@ -269,11 +271,11 @@ public abstract class MatrixViewSorter
             }
 
             private double aggregateValue(
-                    IMatrixView matrixView,
-                    int[] selectedColumns,
+                    @NotNull IMatrixView matrixView,
+                    @NotNull int[] selectedColumns,
                     int idx,
                     int propIndex,
-                    IAggregator aggregator,
+                    @NotNull IAggregator aggregator,
                     double[] valueBuffer)
             {
 
@@ -302,7 +304,7 @@ public abstract class MatrixViewSorter
         matrixView.setVisibleRows(sortedVisibleRows);
     }
 
-    protected static void sortColumnsByValue(final IMatrixView matrixView, int[] selColumns, int[] selRows, final ValueSortCriteria[] criteriaArray)
+    protected static void sortColumnsByValue(@NotNull final IMatrixView matrixView, @Nullable int[] selColumns, @Nullable int[] selRows, @Nullable final ValueSortCriteria[] criteriaArray)
     {
 
         if (criteriaArray == null || criteriaArray.length == 0)
@@ -359,11 +361,11 @@ public abstract class MatrixViewSorter
             }
 
             private double aggregateValue(
-                    IMatrixView matrixView,
-                    int[] selectedRows,
+                    @NotNull IMatrixView matrixView,
+                    @NotNull int[] selectedRows,
                     int idx,
                     int propIndex,
-                    IAggregator aggregator,
+                    @NotNull IAggregator aggregator,
                     double[] valueBuffer)
             {
 
@@ -392,7 +394,7 @@ public abstract class MatrixViewSorter
         matrixView.setVisibleColumns(sortedVisibleColumns);
     }
 
-    public static void sortByLabel(IMatrixView matrixView,
+    public static void sortByLabel(@NotNull IMatrixView matrixView,
                                    boolean sortRows,
                                    SortDirection rowsDirection,
                                    boolean rowsNumeric,
@@ -408,14 +410,14 @@ public abstract class MatrixViewSorter
 
     //TODO: sort by label with all selected properties!
     public static void sortByLabel(
-            IMatrixView matrixView,
+            @NotNull IMatrixView matrixView,
             boolean sortRows,
-            String rowsPattern,
+            @NotNull String rowsPattern,
             AnnotationMatrix rowsAnnMatrix,
             SortDirection rowsDirection,
             boolean rowsNumeric,
             boolean sortCols,
-            String colsPattern,
+            @NotNull String colsPattern,
             AnnotationMatrix colsAnnMatrix,
             SortDirection colsDirection,
             boolean colsNumeric)
@@ -456,8 +458,9 @@ public abstract class MatrixViewSorter
         }
     }
 
+    @NotNull
     public static int[] sortLabels(
-            final LabelProvider labelProvider,
+            @NotNull final LabelProvider labelProvider,
             SortDirection direction,
             int[] visibleIndices,
             boolean numeric)

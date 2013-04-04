@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.panel.properties;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.DocumentEvent;
 
@@ -32,7 +33,7 @@ public class HeatmapPropertiesDocumentPanel extends HeatmapPropertiesAbstractPan
     /**
      * Creates new form HeaderPropertiesDetailsPanel
      */
-    public HeatmapPropertiesDocumentPanel(Heatmap heatmap)
+    public HeatmapPropertiesDocumentPanel(@NotNull Heatmap heatmap)
     {
         super(heatmap);
         initComponents();

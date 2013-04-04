@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.platform.panel;
 
+import org.jetbrains.annotations.NotNull;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -56,7 +57,7 @@ public class Html4Panel extends JPanel
         }
 
         @Override
-        public void onMouseOver(HTMLElement element, MouseEvent event)
+        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event)
         {
             super.onMouseOver(element, event);
 
@@ -82,7 +83,7 @@ public class Html4Panel extends JPanel
         }
 
         @Override
-        public boolean onMouseClick(HTMLElement element, MouseEvent event)
+        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event)
         {
 
             if ("a".equalsIgnoreCase(element.getTagName()))
@@ -132,7 +133,7 @@ public class Html4Panel extends JPanel
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void linkClicked(HTMLElement linkNode) throws LinkVetoException
+    protected void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException
     {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");

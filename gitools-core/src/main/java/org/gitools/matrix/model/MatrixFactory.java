@@ -23,6 +23,8 @@ package org.gitools.matrix.model;
 
 import org.gitools.matrix.DiagonalMatrix;
 import org.gitools.matrix.DiagonalMatrixView;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class MatrixFactory
@@ -34,7 +36,8 @@ public class MatrixFactory
     visibleColumns(). A diagonal matrix will be converted
     in a non-diagonal matrix
      */
-    public static IMatrix create(IMatrixView matrixView)
+    @Nullable
+    public static IMatrix create(@NotNull IMatrixView matrixView)
     {
 
         IMatrix contents = matrixView.getContents();

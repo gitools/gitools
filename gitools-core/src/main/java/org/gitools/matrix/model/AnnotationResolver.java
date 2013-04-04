@@ -22,6 +22,8 @@
 package org.gitools.matrix.model;
 
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AnnotationResolver implements VariableValueResolver
 {
@@ -45,7 +47,7 @@ public class AnnotationResolver implements VariableValueResolver
         this(am, label, DEFAULT_NA);
     }
 
-    public AnnotationResolver(AnnotationMatrix am, String label, String na)
+    public AnnotationResolver(AnnotationMatrix am, @Nullable String label, String na)
     {
         this.am = am;
         if (label != null)
@@ -66,7 +68,7 @@ public class AnnotationResolver implements VariableValueResolver
     }
 
     @Override
-    public String resolveValue(String variableName)
+    public String resolveValue(@NotNull String variableName)
     {
         if (variableName.equalsIgnoreCase("id"))
         {

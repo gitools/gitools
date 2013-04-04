@@ -23,6 +23,8 @@ package org.gitools.clustering.method.value;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.matrix.MatrixUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
@@ -41,6 +43,7 @@ public class MatrixViewWeka extends Instances
 
     private Instances structure;
 
+    @Nullable
     private int[] indexes; //selected attributes from preprocessing
 
     private int dimMatrix;//the dimension of the matrix for obtaining the value
@@ -61,6 +64,7 @@ public class MatrixViewWeka extends Instances
     }
 
     //Adding attributes (rows name)
+    @NotNull
     public FastVector addAttributes(int numAttributes)
     {
 
@@ -82,6 +86,7 @@ public class MatrixViewWeka extends Instances
     {
     }
 
+    @NotNull
     public Instances getDataSet() throws IOException
     {
 
@@ -106,6 +111,7 @@ public class MatrixViewWeka extends Instances
     /**
      * Given an index (col,row) from the matrix we retrieve the instance
      */
+    @Nullable
     public Instance get(int index) throws Exception
     {
 
@@ -172,7 +178,7 @@ public class MatrixViewWeka extends Instances
         return current;
     }
 
-    void setFilteredAttributes(int[] selectedAttributes)
+    void setFilteredAttributes(@NotNull int[] selectedAttributes)
     {
 
         indexes = selectedAttributes;
@@ -200,6 +206,7 @@ public class MatrixViewWeka extends Instances
         return matrixView.getSize();
     }
 
+    @Nullable
     @Override
     public Instance instance(int i)
     {
@@ -233,6 +240,7 @@ public class MatrixViewWeka extends Instances
 
     }
 
+    @NotNull
     public Attribute attribute(Integer index)
     {
 

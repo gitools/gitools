@@ -23,6 +23,8 @@ package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.net.URL;
@@ -39,7 +41,7 @@ public abstract class BaseAction extends AbstractAction
     private boolean defaultEnabled;
 
 
-    public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic, boolean checkMode, boolean selected, String actionGroup)
+    public BaseAction(String name, ImageIcon icon, @Nullable String desc, @Nullable Integer mnemonic, boolean checkMode, boolean selected, String actionGroup)
     {
         super(name, icon);
 
@@ -111,6 +113,7 @@ public abstract class BaseAction extends AbstractAction
         putValue(MNEMONIC_KEY, vk);
     }
 
+    @Nullable
     protected ImageIcon getSmallIcon()
     {
         return (ImageIcon) getValue(SMALL_ICON);
@@ -126,6 +129,7 @@ public abstract class BaseAction extends AbstractAction
         setSmallIcon(getIconResource(name));
     }
 
+    @NotNull
     protected ImageIcon getLargeIcon()
     {
         return (ImageIcon) getValue(LARGE_ICON_KEY);
@@ -141,6 +145,7 @@ public abstract class BaseAction extends AbstractAction
         setLargeIcon(getIconResource(name));
     }
 
+    @NotNull
     private ImageIcon getIconResource(String name)
     {
         URL url = getClass().getResource(name);
@@ -170,7 +175,7 @@ public abstract class BaseAction extends AbstractAction
         return en;
     }
 
-    public boolean isEnabledByEditor(IEditor editor)
+    public boolean isEnabledByEditor(@Nullable IEditor editor)
     {
         if (editor != null)
         {

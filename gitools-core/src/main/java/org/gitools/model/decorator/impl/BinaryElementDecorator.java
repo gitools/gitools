@@ -29,6 +29,8 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.BinaryColorScale;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -74,7 +76,7 @@ public class BinaryElementDecorator extends ElementDecorator
         return CutoffCmp.getFromName(scale.getComparator());
     }
 
-    public void setCutoffCmp(CutoffCmp cutoffCmp)
+    public void setCutoffCmp(@NotNull CutoffCmp cutoffCmp)
     {
         CutoffCmp old = getCutoffCmp();
         this.scale.setComparator(cutoffCmp.getShortName());
@@ -131,8 +133,8 @@ public class BinaryElementDecorator extends ElementDecorator
 
     @Override
     public void decorate(
-            ElementDecoration decoration,
-            Object element)
+            @NotNull ElementDecoration decoration,
+            @Nullable Object element)
     {
 
         decoration.reset();

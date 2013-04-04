@@ -29,6 +29,7 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
         }
     }
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -124,7 +126,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
     protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
         g.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
@@ -169,7 +171,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
     }
 
     @Override
-    public HeatmapPosition getPosition(Point p)
+    public HeatmapPosition getPosition(@NotNull Point p)
     {
         int x = 0;
         int y = 0;
@@ -204,6 +206,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
         return new HeatmapPosition(-1, -1);
     }
 
+    @NotNull
     @Override
     public Point getPoint(HeatmapPosition p)
     {

@@ -28,8 +28,11 @@ import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.BitSet;
 import java.util.Date;
@@ -46,11 +49,11 @@ public class OverlappingProcessor implements AnalysisProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
         Date startTime = new Date();
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getSourceData().get();
 
         int attrIndex = 0;
         String attrName = analysis.getAttributeName();
@@ -76,7 +79,7 @@ public class OverlappingProcessor implements AnalysisProcessor
             labels[i] = data.getColumnLabel(i);
 
         final ObjectMatrix results = new ObjectMatrix();
-        analysis.setCellResults(results);
+        analysis.setCellResults(new ResourceReference<IMatrix>("results", results));
 
         results.setColumns(labels);
         results.setRows(labels);
@@ -160,10 +163,11 @@ public class OverlappingProcessor implements AnalysisProcessor
         monitor.end();
     }
 
+    @Nullable
     private Double transformValue(
-            Double v, double replaceNanValue,
+            @Nullable Double v, double replaceNanValue,
             boolean binaryCutoffEnabled,
-            CutoffCmp cutoffCmp, Double cutoffValue,
+            @NotNull CutoffCmp cutoffCmp, Double cutoffValue,
             int row, int column) throws AnalysisException
     {
 

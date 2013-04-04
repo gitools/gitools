@@ -21,6 +21,9 @@
  */
 package org.gitools.clustering;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,17 +37,20 @@ public class GenericClusteringResults implements ClusteringResults
 
     private int[][] clusterDataIndices;
 
+    @Nullable
     private int[] dataClusterIndex;
 
+    @Nullable
     private Map<String, Integer> clusterTitlesIndex;
+    @Nullable
     private Map<String, Integer> dataLabelsIndex;
 
-    public GenericClusteringResults(String[] dataLabels, Map<String, List<Integer>> clusters)
+    public GenericClusteringResults(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
     {
         init(dataLabels, clusters);
     }
 
-    protected final void init(String[] dataLabels, Map<String, List<Integer>> clusters)
+    protected final void init(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
     {
         this.dataClusterIndex = null;
         this.clusterTitlesIndex = null;
@@ -182,6 +188,7 @@ public class GenericClusteringResults implements ClusteringResults
         return getDataIndices(getClusterIndex(clusterTitle));
     }
 
+    @NotNull
     @Override
     public String[] getDataLabels(int clusterIndex)
     {
@@ -192,6 +199,7 @@ public class GenericClusteringResults implements ClusteringResults
         return labels;
     }
 
+    @NotNull
     @Override
     public String[] getDataLabels(String clusterTitle)
     {
@@ -215,6 +223,7 @@ public class GenericClusteringResults implements ClusteringResults
         return getClusterIndex(getDataLabelIndex(dataLabel));
     }
 
+    @NotNull
     @Override
     public Map<String, int[]> getDataIndicesByClusterTitle()
     {
@@ -230,6 +239,7 @@ public class GenericClusteringResults implements ClusteringResults
         return map;
     }
 
+    @NotNull
     @Override
     public Map<String, Integer> getClusterIndexByDataLabel()
     {

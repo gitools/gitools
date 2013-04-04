@@ -26,6 +26,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -33,12 +35,14 @@ import java.util.List;
 public class HeatmapAnnotatedMatrixView implements IMatrixView
 {
 
+    @NotNull
     private final Heatmap hm;
+    @Nullable
     private final IMatrixView mv;
 
     private IResourceLocator locator;
 
-    public HeatmapAnnotatedMatrixView(Heatmap hm)
+    public HeatmapAnnotatedMatrixView(@NotNull Heatmap hm)
     {
         this.hm = hm;
         this.mv = hm.getMatrixView();
@@ -231,6 +235,12 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView
     }
 
     @Override
+    public int getRowIndex(String label)
+    {
+        return mv.getRowIndex(label);
+    }
+
+    @Override
     public int getColumnCount()
     {
         return mv.getColumnCount();
@@ -240,6 +250,12 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView
     public String getColumnLabel(int index)
     {
         return hm.getColumnLabel(index);
+    }
+
+    @Override
+    public int getColumnIndex(String label)
+    {
+        return mv.getColumnIndex(label);
     }
 
     @Override

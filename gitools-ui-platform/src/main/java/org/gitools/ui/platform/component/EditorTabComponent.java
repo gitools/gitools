@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -43,13 +44,15 @@ public class EditorTabComponent extends JPanel
     public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
     private final EditorsPanel editorPanel;
+    @NotNull
     private final AbstractEditor editor;
 
+    @NotNull
     private final JLabel label;
 
     public EditorTabComponent(
             EditorsPanel editorPanel,
-            AbstractEditor editor)
+            @NotNull AbstractEditor editor)
     {
 
         this.editorPanel = editorPanel;
@@ -182,7 +185,7 @@ public class EditorTabComponent extends JPanel
 
         //paint the cross
         @Override
-        protected void paintComponent(Graphics g)
+        protected void paintComponent(@NotNull Graphics g)
         {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
@@ -208,7 +211,7 @@ public class EditorTabComponent extends JPanel
     {
 
         @Override
-        public void mouseEntered(MouseEvent e)
+        public void mouseEntered(@NotNull MouseEvent e)
         {
             Component component = e.getComponent();
             if (component instanceof AbstractButton)
@@ -219,7 +222,7 @@ public class EditorTabComponent extends JPanel
         }
 
         @Override
-        public void mouseExited(MouseEvent e)
+        public void mouseExited(@NotNull MouseEvent e)
         {
             Component component = e.getComponent();
             if (component instanceof AbstractButton)

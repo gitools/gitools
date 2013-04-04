@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.formatter;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -36,9 +39,11 @@ public class GenericFormatter implements Serializable
     private static final long oneHour = 60 * oneMinute;
     private static final long oneDay = 24 * oneHour;
 
+    @NotNull
     private static Map<Class<?>, String> defaultGenericFormatMap =
             new HashMap<Class<?>, String>();
 
+    @NotNull
     private Map<Class<?>, String> customFormatMap =
             new HashMap<Class<?>, String>();
 
@@ -72,6 +77,7 @@ public class GenericFormatter implements Serializable
         customFormatMap.put(c, s);
     }
 
+    @NotNull
     public String pvalue(double value)
     {
         if (value < 1e-16)
@@ -84,16 +90,19 @@ public class GenericFormatter implements Serializable
         return sb.toString();
     }
 
+    @NotNull
     public String percentage(double value)
     {
         return format("%.2g%%", value * 100.0);
     }
 
+    @NotNull
     public String elapsedTime(Long elapsedTime)
     {
         return elapsedTime + " ns";
     }
 
+    @NotNull
     public String format(String format, Object... args)
     {
         sb.setLength(0);
@@ -101,7 +110,8 @@ public class GenericFormatter implements Serializable
         return sb.toString();
     }
 
-    public String format(Object value)
+    @NotNull
+    public String format(@Nullable Object value)
     {
         if (value == null)
         {

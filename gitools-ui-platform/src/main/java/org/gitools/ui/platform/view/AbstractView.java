@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.view;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 
 public abstract class AbstractView extends JPanel implements IView
@@ -39,6 +41,7 @@ public abstract class AbstractView extends JPanel implements IView
         this.icon = icon;
     }
 
+    @NotNull
     @Override
     public JPanel getPanel()
     {

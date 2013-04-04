@@ -24,6 +24,7 @@ package org.gitools.model.xml;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -40,10 +41,12 @@ public class AbstractModelDecoratorElement
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     private int order[];
 
+    @NotNull
     @XmlElementWrapper(name = "headerDecoratorType")
     @XmlElement(name = "headerDecorator")
     private List<HeatmapTextLabelsHeader> headerDecorators = new ArrayList<HeatmapTextLabelsHeader>();
 
+    @NotNull
     @XmlElementWrapper(name = "elementDecoratorType")
     @XmlElement(name = "elementDecorator")
     private List<ElementDecorator> elementDecorators = new ArrayList<ElementDecorator>();
@@ -53,7 +56,7 @@ public class AbstractModelDecoratorElement
 
     }
 
-    public AbstractModelDecoratorElement(List<AbstractModel> elems)
+    public AbstractModelDecoratorElement(@NotNull List<AbstractModel> elems)
     {
         int size = elems.size();
         order = new int[size];
@@ -79,6 +82,7 @@ public class AbstractModelDecoratorElement
         }
     }
 
+    @NotNull
     public List<AbstractModel> getList()
     {
         List<AbstractModel> decorators = new ArrayList<AbstractModel>();

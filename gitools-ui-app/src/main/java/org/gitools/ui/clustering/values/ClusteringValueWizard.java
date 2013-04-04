@@ -33,6 +33,8 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ClusteringValueWizard extends AbstractWizard
 {
@@ -110,6 +112,7 @@ public class ClusteringValueWizard extends AbstractWizard
                 || currentPage == kmeansPage;
     }
 
+    @Nullable
     @Override
     public IWizardPage getNextPage(IWizardPage currentPage)
     {
@@ -142,7 +145,7 @@ public class ClusteringValueWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
+    public void pageLeft(@NotNull IWizardPage currentPage)
     {
         if (currentPage == methodPage)
         {
@@ -160,6 +163,7 @@ public class ClusteringValueWizard extends AbstractWizard
         }
     }
 
+    @Nullable
     private IWizardPage getMethodConfigPage()
     {
         ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
@@ -180,6 +184,7 @@ public class ClusteringValueWizard extends AbstractWizard
         return null;
     }
 
+    @NotNull
     public ClusteringData getClusterData()
     {
         int attr = optionsPage.getDataAttribute();

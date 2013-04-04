@@ -21,6 +21,8 @@
  */
 package org.gitools.idmapper;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class MappingData
@@ -56,6 +58,7 @@ public class MappingData
         this.dstNode = dstNode;
     }
 
+    @NotNull
     public Set<String> getSrcIds()
     {
         return map.keySet();
@@ -104,7 +107,7 @@ public class MappingData
         return map;
     }
 
-    public void map(Map<String, Set<String>> dstmap)
+    public void map(@NotNull Map<String, Set<String>> dstmap)
     {
         clearDstIds();
 
@@ -134,7 +137,7 @@ public class MappingData
         return map.keySet().isEmpty();
     }
 
-    public void identity(Set<String> set)
+    public void identity(@NotNull Set<String> set)
     {
         clear();
 
@@ -155,6 +158,7 @@ public class MappingData
             map.remove(k);
     }
 
+    @NotNull
     @Override
     public String toString()
     {

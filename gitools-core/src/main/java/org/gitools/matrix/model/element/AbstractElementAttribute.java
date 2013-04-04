@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
@@ -76,6 +78,7 @@ public abstract class AbstractElementAttribute
         return valueClass;
     }
 
+    @NotNull
     @Override
     public String toString()
     {

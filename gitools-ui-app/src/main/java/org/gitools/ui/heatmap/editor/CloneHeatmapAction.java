@@ -25,7 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -93,8 +93,8 @@ public class CloneHeatmapAction extends BaseAction
         HeatmapEditor editor = new HeatmapEditor(clone);
 
         editor.setName(editorPanel.deriveName(
-                currentEditor.getName(), FileSuffixes.HEATMAP,
-                "", FileSuffixes.HEATMAP));
+                currentEditor.getName(), HeatmapXmlFormat.EXTENSION,
+                "", HeatmapXmlFormat.EXTENSION));
 
         editorPanel.addEditor(editor);
     }

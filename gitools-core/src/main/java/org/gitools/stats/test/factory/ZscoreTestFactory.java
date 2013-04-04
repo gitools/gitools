@@ -27,6 +27,7 @@ import org.gitools.stats.calc.MedianStatistic;
 import org.gitools.stats.calc.Statistic;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.ZscoreWithSamplingTest;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public final class ZscoreTestFactory extends TestFactory
     private int numSamples;
     private Statistic statCalc;
 
-    public ZscoreTestFactory(ToolConfig config)
+    public ZscoreTestFactory(@NotNull ToolConfig config)
     {
         super(config);
 
@@ -74,6 +75,7 @@ public final class ZscoreTestFactory extends TestFactory
         }
     }
 
+    @NotNull
     @Override
     public Test create()
     {

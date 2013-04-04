@@ -23,6 +23,8 @@ package org.gitools.ui.batch;
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.platform.AppFrame;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.*;
@@ -38,10 +40,13 @@ public class CommandListener implements Runnable
 
     private static Logger log = Logger.getLogger(CommandListener.class);
 
+    @Nullable
     private static CommandListener listener;
 
     private int port = -1;
+    @Nullable
     private ServerSocket serverSocket = null;
+    @Nullable
     private Socket clientSocket = null;
     private Thread listenerThread;
     boolean halt = false;
@@ -51,7 +56,7 @@ public class CommandListener implements Runnable
         start(port, null);
     }
 
-    public static synchronized void start(int port, String[] args)
+    public static synchronized void start(int port, @Nullable String[] args)
     {
         if (args != null && args.length > 0)
         {
@@ -182,7 +187,7 @@ public class CommandListener implements Runnable
      * @param cmdExe
      * @throws IOException
      */
-    private void processClientSession(CommandExecutor cmdExe) throws IOException
+    private void processClientSession(@NotNull CommandExecutor cmdExe) throws IOException
     {
         PrintWriter out = null;
         BufferedReader in = null;
@@ -282,7 +287,7 @@ public class CommandListener implements Runnable
     private static final String CONTENT_TYPE_TEXT_HTML = "text/html";
     private static final String CONNECTION_CLOSE = "Connection: close";
 
-    private void sendHTTPResponse(PrintWriter out, String result)
+    private void sendHTTPResponse(@NotNull PrintWriter out, @Nullable String result)
     {
 
         out.println(result == null ? HTTP_NO_RESPONSE : HTTP_RESPONSE);
@@ -333,7 +338,7 @@ public class CommandListener implements Runnable
      * Process an http get request.
      */
 
-    private void processGet(String command, Map<String, String> params, CommandExecutor cmdExe, PrintWriter out) throws IOException
+    private void processGet(@NotNull String command, @NotNull Map<String, String> params, @NotNull CommandExecutor cmdExe, @NotNull PrintWriter out) throws IOException
     {
 
         final Frame mainFrame = AppFrame.get();
@@ -370,6 +375,7 @@ public class CommandListener implements Runnable
      * @param parameterString
      * @return
      */
+    @NotNull
     private Map<String, String> parseParameters(String parameterString)
     {
 
@@ -406,7 +412,8 @@ public class CommandListener implements Runnable
      * @param s
      * @return
      */
-    public static String decodeURL(String s)
+    @Nullable
+    public static String decodeURL(@Nullable String s)
     {
         if (s == null)
         {

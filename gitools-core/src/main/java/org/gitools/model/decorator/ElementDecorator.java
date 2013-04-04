@@ -25,6 +25,7 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.impl.*;
 import org.gitools.utils.colorscale.IColorScale;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.*;
 
@@ -106,7 +107,7 @@ public abstract class ElementDecorator extends AbstractModel
 	@Deprecated
 	public abstract void setConfiguration(Map<String, String> configuration);*/
 
-    protected int getPropertyIndex(String[] names)
+    protected int getPropertyIndex(@NotNull String[] names)
     {
         int index = -1;
         int nameIndex = 0;

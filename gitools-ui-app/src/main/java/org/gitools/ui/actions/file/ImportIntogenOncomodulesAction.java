@@ -45,13 +45,13 @@ public class ImportIntogenOncomodulesAction extends BaseAction
     public void actionPerformed(ActionEvent e)
     {
         /*WizardDialog wizDlg = new WizardDialog(
-				AppFrame.instance(),
+                AppFrame.instance(),
 				new IntogenOncomodulesWizard());
 		
 		wizDlg.open();*/
 
 		/*IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
-		AppFrame.instance().getEditorsPanel().addEditor(editor);*/
+        AppFrame.instance().getEditorsPanel().addEditor(editor);*/
 
         IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(),
                 IntogenImportDialog.ImportType.ONCOMODULES);

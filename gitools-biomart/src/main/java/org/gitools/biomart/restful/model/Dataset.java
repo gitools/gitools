@@ -21,6 +21,8 @@
  */
 package org.gitools.biomart.restful.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -39,12 +41,15 @@ public class Dataset
     @XmlAttribute(name = "interface")
     protected String _interface;
 
+    @NotNull
     @XmlElement(name = "Filter")
     protected List<Filter> filter = new ArrayList<Filter>(0);
 
+    @NotNull
     @XmlElement(name = "ValueFilter")
     protected List<Filter> valueFilter = new ArrayList<Filter>(0);
 
+    @NotNull
     @XmlElement(name = "Attribute", required = true)
     protected List<Attribute> attribute = new ArrayList<Attribute>(0);
 
@@ -68,16 +73,19 @@ public class Dataset
         this._interface = _interface;
     }
 
+    @NotNull
     public List<Filter> getFilter()
     {
         return this.filter;
     }
 
+    @NotNull
     public List<Filter> getValueFilter()
     {
         return valueFilter;
     }
 
+    @NotNull
     public List<Attribute> getAttribute()
     {
         return this.attribute;

@@ -23,11 +23,14 @@ package org.gitools.analysis.overlapping;
 
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
-import org.gitools.model.ResourceRef;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
@@ -66,35 +69,53 @@ public class OverlappingAnalysis extends Analysis
      */
     protected Double binaryCutoffValue;
 
+    public ResourceReference<IMatrix> getCellResults()
+    {
+        return cellResults;
+    }
+
+    public void setCellResults(ResourceReference<IMatrix> cellResults)
+    {
+        this.cellResults = cellResults;
+    }
+
+    public ResourceReference<IMatrix> getFilteredData()
+    {
+        return filteredData;
+    }
+
+    public void setFilteredData(ResourceReference<IMatrix> filteredData)
+    {
+        this.filteredData = filteredData;
+    }
+
+    public ResourceReference<IMatrix> getSourceData()
+    {
+        return sourceData;
+    }
+
+    public void setSourceData(ResourceReference<IMatrix> sourceData)
+    {
+        this.sourceData = sourceData;
+    }
+
     /**
      * Data source file
      */
-    @XmlElement(name = "sourceData")
-    protected ResourceRef sourceDataResource;
+    @XmlElement
+    protected ResourceReference<IMatrix> sourceData;
 
     /**
      * Filtered data file
      */
-    @XmlElement(name = "filteredData")
-    protected ResourceRef filteredDataResource;
-
-    /**
-     * Data
-     */
-    @XmlTransient
-    protected IMatrix data;
-
-    /**
-     * Cell Results file
-     */
-    @XmlElement(name = "cellResults")
-    protected ResourceRef cellResultsResource;
+    @XmlElement
+    protected ResourceReference<IMatrix> filteredData;
 
     /**
      * Results
      */
-    @XmlTransient
-    protected IMatrix cellResults;
+    @XmlElement
+    protected ResourceReference<IMatrix> cellResults;
 
     public OverlappingAnalysis()
     {
@@ -161,59 +182,4 @@ public class OverlappingAnalysis extends Analysis
         this.binaryCutoffValue = binaryCutoffValue;
     }
 
-    public ResourceRef getSourceDataResource()
-    {
-        return sourceDataResource;
-    }
-
-    public void setSourceDataResource(ResourceRef sourceDataResource)
-    {
-        this.sourceDataResource = sourceDataResource;
-    }
-
-    public ResourceRef getFilteredDataResource()
-    {
-        return filteredDataResource;
-    }
-
-    public void setFilteredDataResource(ResourceRef filteredDataResource)
-    {
-        this.filteredDataResource = filteredDataResource;
-    }
-
-    public IMatrix getData()
-    {
-        return data;
-    }
-
-    public void setData(IMatrix data)
-    {
-        this.data = data;
-    }
-
-    public ResourceRef getCellResultsResource()
-    {
-        return cellResultsResource;
-    }
-
-    public void setCellResultsResource(ResourceRef cellResultsResource)
-    {
-        this.cellResultsResource = cellResultsResource;
-    }
-
-    @Deprecated
-    public IMatrix getCellResults()
-    {
-        return cellResults;
-    }
-
-    public IMatrix getResult()
-    {
-        return cellResults;
-    }
-
-    public void setCellResults(IMatrix results)
-    {
-        this.cellResults = results;
-    }
 }

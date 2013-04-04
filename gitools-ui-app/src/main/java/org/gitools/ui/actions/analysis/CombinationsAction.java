@@ -26,9 +26,11 @@ import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
@@ -40,6 +42,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -95,12 +98,12 @@ public class CombinationsAction extends BaseAction
 
         File columnSetsFile = wizard.getColumnSetsPage().getFile();
         String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-        String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getMime() : null;
+        IResourceFormat columnSetsFormat = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getFormat(ModuleMap.class) : null;
 
         final CombinationCommand cmd = new CombinationCommand(
                 analysis,
                 null, null,
-                columnSetsMime,
+                columnSetsFormat,
                 columnSetsPath,
                 null, null);
         cmd.setStoreAnalysis(false);
@@ -108,7 +111,7 @@ public class CombinationsAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -126,11 +129,11 @@ public class CombinationsAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + FileSuffixes.COMBINATION);
+                        editor.setName(analysis.getTitle() + "." + CombinationAnalysisXmlFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.COMBINATION));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CombinationAnalysisXmlFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable()

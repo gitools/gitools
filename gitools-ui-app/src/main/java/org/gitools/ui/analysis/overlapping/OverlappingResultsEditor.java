@@ -29,6 +29,8 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,9 +43,10 @@ public class OverlappingResultsEditor extends HeatmapEditor
 
     protected AbstractTablesPanel tablesPanel;
 
-    protected static Heatmap createHeatmap(OverlappingAnalysis analysis)
+    @Nullable
+    protected static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis)
     {
-        IMatrixView results = new DiagonalMatrixView(analysis.getCellResults());
+        IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         IElementAdapter cellAdapter = results.getCellAdapter();
@@ -71,7 +74,7 @@ public class OverlappingResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
-    public OverlappingResultsEditor(OverlappingAnalysis analysis)
+    public OverlappingResultsEditor(@NotNull OverlappingAnalysis analysis)
     {
         super(createHeatmap(analysis), true);
 

@@ -22,6 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Mean
@@ -36,12 +37,13 @@ public class MeanAggregator extends AbstractAggregator
     }
 
     @Override
-    public double aggregate(double[] data)
+    public double aggregate(@NotNull double[] data)
     {
         double sum = aggregate(data, Functions.plus, 0);
         return sum / data.length; //FIXME should have into account NaN values ???
     }
 
+    @NotNull
     @Override
     public String toString()
     {

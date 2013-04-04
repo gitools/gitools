@@ -21,6 +21,8 @@
  */
 package org.gitools.workspace;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class Workspace
     @XmlTransient
     protected File xmlPath;
 
+    @NotNull
     @XmlElementWrapper(name = "projects")
     @XmlElement(name = "project")
     protected List<WorkspaceProjectRef> projectRefs = new ArrayList<WorkspaceProjectRef>();

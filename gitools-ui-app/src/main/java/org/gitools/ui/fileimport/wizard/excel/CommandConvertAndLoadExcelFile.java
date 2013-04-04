@@ -22,10 +22,10 @@
 package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,9 +40,9 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile
     private List<Integer> values;
     private ExcelReader reader;
 
-    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, ExcelReader reader)
+    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, @NotNull ExcelReader reader)
     {
-        super(createTdmFile(reader).getAbsolutePath(), FileFormats.MULTIVALUE_DATA_MATRIX.getMime());
+        super(createTdmFile(reader).getAbsolutePath());
 
         this.columns = columns;
         this.rows = rows;
@@ -50,14 +50,15 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile
         this.reader = reader;
     }
 
-    private static File createTdmFile(ExcelReader reader)
+    @NotNull
+    private static File createTdmFile(@NotNull ExcelReader reader)
     {
         File excelFile = reader.getFile();
         return new File(excelFile.getParent(), FilenameUtils.getBaseName(excelFile.getName()) + ".tdm");
     }
 
     @Override
-    public void execute(IProgressMonitor monitor) throws CommandException
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException
     {
 
         monitor.begin("Converting excel file", reader.getLastRowNum());

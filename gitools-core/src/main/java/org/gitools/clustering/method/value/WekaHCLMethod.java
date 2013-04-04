@@ -28,6 +28,8 @@ import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.newick.NewickParser;
 import org.gitools.newick.NewickTree;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import weka.core.Instances;
 import weka.core.NormalizableDistance;
 import weka.core.SelectedTag;
@@ -53,8 +55,9 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
         classIndex = -1;
     }
 
+    @Nullable
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException
+    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
     {
 
         try
@@ -160,7 +163,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
         this.printNewick = printNewick;
     }
 
-    private void configure(WekaHierarchicalClusterer clusterer)
+    private void configure(@NotNull WekaHierarchicalClusterer clusterer)
     {
 
         clusterer.setDistanceFunction(distanceFunction);

@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -28,9 +30,9 @@ import java.lang.annotation.RetentionPolicy;
 public @interface AttributeDef
 {
 
-    String id();
+    @NotNull String id();
 
-    String name();
+    @NotNull String name();
 
-    String description();
+    @NotNull String description();
 }

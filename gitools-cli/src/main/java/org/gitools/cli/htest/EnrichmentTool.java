@@ -23,9 +23,11 @@ package org.gitools.cli.htest;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -41,8 +43,8 @@ public class EnrichmentTool extends HtestTool
     public static class EnrichmentArguments extends HtestArguments
     {
         @Option(name = "-mf", aliases = "-modules-format", metaVar = "<format>",
-                usage = "Modules file format (MIME type or file extension).")
-        public String modulesMime;
+                usage = "Modules file format (reference file extension).")
+        public String modulesFormat;
 
         @Option(name = "-m", aliases = "-modules", metaVar = "<file>",
                 usage = "File with mappings between items and modules.")
@@ -107,9 +109,9 @@ public class EnrichmentTool extends HtestTool
 
         analysis.setDiscardNonMappedRows(args.discardNonMappedRows);
 
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
 
-        String modulesMime = mimeFromFormat(args.modulesMime, args.modulesFile, MimeTypes.MODULES_2C_MAP);
+        IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, ModuleMap.class);
 
         EnrichmentCommand cmd = new EnrichmentCommand(
                 analysis,
@@ -118,7 +120,7 @@ public class EnrichmentTool extends HtestTool
                 args.populationFile,
                 populationDefaultValue,
                 modulesMime, args.modulesFile,
-                args.workdir, args.analysisName + "." + FileSuffixes.ENRICHMENT);
+                args.workdir, args.analysisName + "." + EnrichmentAnalysisXmlFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)

@@ -24,6 +24,7 @@ package org.gitools.ui.platform.editor;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.view.AbstractView;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
     private boolean saveAsAllowed = false;
     private boolean saveAllowed = false;
 
+    @NotNull
     private List<EditorListener> listeners = new ArrayList<EditorListener>();
 
     @Override
@@ -83,7 +85,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         return file;
     }
 
-    public void setFile(File file)
+    public void setFile(@NotNull File file)
     {
         if (this.file != file || !this.file.equals(file))
         {

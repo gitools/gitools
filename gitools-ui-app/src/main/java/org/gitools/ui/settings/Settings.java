@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.settings;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -56,8 +58,10 @@ public class Settings
     private static final String defaultWorkspacePath =
             CONFIG_PATH + File.separator + "workspace";
 
+    @Nullable
     private static Settings instance;
 
+    @Nullable
     public static Settings getDefault()
     {
         if (instance == null)
@@ -67,6 +71,7 @@ public class Settings
         return instance;
     }
 
+    @Nullable
     private static Settings load()
     {
         Settings settings = null;

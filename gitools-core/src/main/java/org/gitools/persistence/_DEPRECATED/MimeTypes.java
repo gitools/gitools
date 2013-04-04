@@ -28,14 +28,6 @@ public class MimeTypes
     public static final String PROJECT = "application/gitools-project";
     public static final String CONTENT = "application/gitools-contents";
 
-    public static final String ENRICHMENT_ANALYSIS = "application/gitools-analysis-enrichment";
-    public static final String ONCODRIVE_ANALYSIS = "application/gitools-analysis-oncodrive";
-    public static final String CORRELATIONS_ANALYSIS = "application/gitools-analysis-correlations";
-    public static final String COMBINATION_ANALYSIS = "application/gitools-analysis-combination";
-    public static final String OVERLAPPING_ANALYSIS = "application/gitools-analysis-overlapping";
-    public static final String GROUPCOMPARISON_ANALYSIS = "application/gitools-analysis-groupcomparison";
-
-    public static final String HEATMAP = "application/gitools-heatmap";
     public static final String TABLE = "application/gitools-table";
 
     public static final String OBJECT_MATRIX = "application/gitools-matrix-object";

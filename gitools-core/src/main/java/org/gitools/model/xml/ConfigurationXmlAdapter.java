@@ -22,6 +22,7 @@
 package org.gitools.model.xml;
 
 import org.gitools.model.xml.ConfigurationXmlElement.ConfigurationXmlEntry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.HashMap;
@@ -31,8 +32,9 @@ import java.util.Map;
 public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement, Map<String, String>>
 {
 
+    @NotNull
     @Override
-    public Map<String, String> unmarshal(ConfigurationXmlElement v) throws Exception
+    public Map<String, String> unmarshal(@NotNull ConfigurationXmlElement v) throws Exception
     {
         Map<String, String> map = new HashMap<String, String>();
         for (ConfigurationXmlElement.ConfigurationXmlEntry entry : v.getConfiguration())
@@ -40,8 +42,9 @@ public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement,
         return map;
     }
 
+    @NotNull
     @Override
-    public ConfigurationXmlElement marshal(Map<String, String> v) throws Exception
+    public ConfigurationXmlElement marshal(@NotNull Map<String, String> v) throws Exception
     {
         ConfigurationXmlElement e = new ConfigurationXmlElement();
         List<ConfigurationXmlEntry> conf = e.getConfiguration();

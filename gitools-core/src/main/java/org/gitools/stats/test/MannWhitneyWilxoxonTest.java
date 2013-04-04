@@ -26,6 +26,7 @@ import jsc.independentsamples.MannWhitneyTest;
 import jsc.tests.H1;
 import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.stats.test.results.CommonResult;
+import org.jetbrains.annotations.NotNull;
 
 public class MannWhitneyWilxoxonTest extends AbstractTest
 {
@@ -34,6 +35,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
     {
     }
 
+    @NotNull
     @Override
     public String getName()
     {
@@ -41,6 +43,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
     }
 
 
+    @NotNull
     @Override
     public Class<? extends GroupComparisonResult> getResultClass()
     {
@@ -53,8 +56,9 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
     }
 
 
+    @NotNull
     public GroupComparisonResult processTest(
-            double[] group1, double[] group2)
+            @NotNull double[] group1, @NotNull double[] group2)
     {
 
         int g1Nans = 0;
@@ -132,6 +136,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
 
     }
 
+    @NotNull
     @Override
     public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
     {

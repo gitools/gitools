@@ -25,10 +25,12 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -36,6 +38,7 @@ import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
+import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -48,16 +51,16 @@ public class CombinationTool extends AnalysisTool
     public static class CombinationArguments extends AnalysisArguments
     {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
-                usage = "Data file format (MIME type or file extension).")
-        public String dataMime;
+                usage = "Data file format (reference file extension).")
+        public String dataFormat;
 
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
         public String dataFile;
 
         @Option(name = "-cf", aliases = "-columns-format", metaVar = "<format>",
-                usage = "Columns file format (MIME type or file extension).")
-        public String columnsMime;
+                usage = "Columns file format (reference file extension).")
+        public String columnsFormat;
 
         @Option(name = "-c", aliases = "-columns", metaVar = "<file>",
                 usage = "File specifying how to group columns to combine.\nAny modules file can be used.\n(default: all columns combined)")
@@ -71,17 +74,10 @@ public class CombinationTool extends AnalysisTool
                 usage = "Attribute name for size.\n(default: if not specified a constant value of 1 will be used)")
         public String sizeName;
 
-		/*@Option(name = "-pi", aliases = "-pvalue-index", metaVar = "<index>",
-                usage = "Attribute index having the pvalue. (default: 0)")
-		public int weightIndex = 0;*/
-
         @Option(name = "-pn", aliases = "-pvalue-name", metaVar = "<name>",
                 usage = "Attribute name having the pvalue.\n(default: use the first one)")
         public String pvalueName;
 
-		/*@Option(name = "-pi", aliases = "-pvalue-index", metaVar = "<index>",
-				usage = "Attribute index having the pvalue. (default: 0)")
-		public int pvalueIndex = 0;*/
     }
 
     @Override
@@ -110,14 +106,14 @@ public class CombinationTool extends AnalysisTool
         analysis.setSizeAttrName(args.sizeName);
         analysis.setPvalueAttrName(args.pvalueName);
 
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
-        String columnsMime = mimeFromFormat(args.columnsMime, args.columnsFile, MimeTypes.MODULES_2C_MAP);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, ModuleMap.class);
 
         CombinationCommand cmd = new CombinationCommand(
                 analysis,
                 dataMime, args.dataFile,
                 columnsMime, args.columnsFile,
-                args.workdir, args.analysisName + "." + FileSuffixes.COMBINATION);
+                args.workdir, args.analysisName + "." + CombinationAnalysisXmlFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)
@@ -138,7 +134,7 @@ public class CombinationTool extends AnalysisTool
     }
 
     @Override
-    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
     {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
@@ -152,7 +148,7 @@ public class CombinationTool extends AnalysisTool
     }
 
     @Override
-    protected void printDataFormats(PrintStream out)
+    protected void printDataFormats(@NotNull PrintStream out)
     {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{
@@ -165,6 +161,6 @@ public class CombinationTool extends AnalysisTool
         };
 
         for (FileFormat f : formats)
-            out.println(String.format(LIST_L_FMT, f.getExtension() + " (" + f.getMime() + ")", f.getTitle()));
+            out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 }

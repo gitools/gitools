@@ -27,6 +27,7 @@ import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -48,7 +49,7 @@ public class MatrixViewLabelFilter
     {
         private Map<String, Integer> values;
 
-        public StringFilter(List<String> values)
+        public StringFilter(@NotNull List<String> values)
         {
             this.values = new HashMap<String, Integer>();
             for (int i = 0; i < values.size(); i++)
@@ -73,7 +74,7 @@ public class MatrixViewLabelFilter
     {
         private List<Pattern> patterns;
 
-        public RegexFilter(List<String> values)
+        public RegexFilter(@NotNull List<String> values)
         {
             patterns = new ArrayList<Pattern>(values.size());
             for (String value : values)
@@ -99,11 +100,11 @@ public class MatrixViewLabelFilter
     }
 
     public static void filter(
-            IMatrixView matrixView,
-            FilterDimension dim,
-            String pattern,
+            @NotNull IMatrixView matrixView,
+            @NotNull FilterDimension dim,
+            @NotNull String pattern,
             AnnotationMatrix annMatrix,
-            List<String> values,
+            @NotNull List<String> values,
             boolean useRegex)
     {
 
@@ -145,9 +146,10 @@ public class MatrixViewLabelFilter
         }
     }
 
+    @NotNull
     public static int[] filterLabels(
-            LabelProvider labelProvider,
-            List<String> values,
+            @NotNull LabelProvider labelProvider,
+            @NotNull List<String> values,
             boolean useRegex,
             int[] visibleIndices)
     {

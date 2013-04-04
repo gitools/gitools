@@ -26,6 +26,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.decorator.ElementDecorator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public abstract class AbstractElementDecoratorPanel extends JPanel
         this.model = model;
     }
 
+    @Nullable
     protected IMatrixView getTable()
     {
         return model.getMatrixView();
@@ -55,7 +58,8 @@ public abstract class AbstractElementDecoratorPanel extends JPanel
         return model.getActiveCellDecorator();
     }
 
-    protected List<IndexedProperty> loadAllProperties(List<IndexedProperty> properties, IElementAdapter adapter)
+    @Nullable
+    protected List<IndexedProperty> loadAllProperties(@Nullable List<IndexedProperty> properties, @NotNull IElementAdapter adapter)
     {
         int numProps = adapter.getPropertyCount();
 

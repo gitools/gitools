@@ -25,6 +25,7 @@ import org.gitools.biomart.restful.model.AttributeCollection;
 import org.gitools.biomart.restful.model.AttributeDescription;
 import org.gitools.biomart.restful.model.AttributeGroup;
 import org.gitools.biomart.restful.model.AttributePage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -58,6 +59,7 @@ public class AttributesTreeModel extends DefaultTreeModel
             }
         }
 
+        @NotNull
         private NodeType nodeType(Object o)
         {
             if (o == this)
@@ -79,7 +81,7 @@ public class AttributesTreeModel extends DefaultTreeModel
             return NodeType.ATTRIBUTE;
         }
 
-        private String nodeName(Object o, NodeType type)
+        private String nodeName(Object o, @NotNull NodeType type)
         {
             String nodeName = "unknown type";
             switch (type)
@@ -176,12 +178,12 @@ public class AttributesTreeModel extends DefaultTreeModel
         }
     }
 
-    public AttributesTreeModel(List<AttributePage> pages)
+    public AttributesTreeModel(@NotNull List<AttributePage> pages)
     {
         this(pages, "");
     }
 
-    public AttributesTreeModel(List<AttributePage> pages, String filterText)
+    public AttributesTreeModel(@NotNull List<AttributePage> pages, String filterText)
     {
         super(new DefaultMutableTreeNode("root"));
 
@@ -207,8 +209,8 @@ public class AttributesTreeModel extends DefaultTreeModel
     }
 
     private int populatePage(
-            DefaultMutableTreeNode node,
-            List<AttributeGroup> groups, String filterText)
+            @NotNull DefaultMutableTreeNode node,
+            @NotNull List<AttributeGroup> groups, @NotNull String filterText)
     {
 
         for (AttributeGroup group : groups)
@@ -226,8 +228,8 @@ public class AttributesTreeModel extends DefaultTreeModel
     }
 
     private int populateGroup(
-            DefaultMutableTreeNode node,
-            List<AttributeCollection> collections, String filterText)
+            @NotNull DefaultMutableTreeNode node,
+            @NotNull List<AttributeCollection> collections, @NotNull String filterText)
     {
 
         for (AttributeCollection coll : collections)
@@ -245,8 +247,8 @@ public class AttributesTreeModel extends DefaultTreeModel
     }
 
     private int populateCollection(
-            DefaultMutableTreeNode node,
-            List<AttributeDescription> attrs, String filterText)
+            @NotNull DefaultMutableTreeNode node,
+            @NotNull List<AttributeDescription> attrs, @NotNull String filterText)
     {
 
         for (AttributeDescription attr : attrs)

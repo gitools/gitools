@@ -25,9 +25,11 @@ import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.model.ResourceRef;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -46,8 +48,8 @@ public class OverlappingTool extends AnalysisTool
     public static class OverlappingArguments extends AnalysisArguments
     {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
-                usage = "Data file format (MIME type or file extension).")
-        public String dataMime;
+                usage = "Data file format (Reference file extension).")
+        public String dataFormat;
 
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
@@ -128,22 +130,8 @@ public class OverlappingTool extends AnalysisTool
     @Override
     public void run(Object argsObject) throws ToolException
     {
+
         OverlappingArguments args = (OverlappingArguments) argsObject;
-
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
-
-        OverlappingAnalysis analysis = new OverlappingAnalysis();
-        prepareGeneralAnalysisAttributes(analysis, args);
-        analysis.setTransposeData(args.applyToRows);
-        analysis.setReplaceNanValue(args.replaceValue);
-        analysis.setSourceDataResource(new ResourceRef(dataMime, args.dataFile));
-        analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
-        analysis.setBinaryCutoffCmp(binaryCutoffCmp);
-        analysis.setBinaryCutoffValue(binaryCutoffValue);
-
-        OverlappingCommand cmd = new OverlappingCommand(
-                analysis,
-                args.workdir, args.analysisName + "." + FileSuffixes.OVERLAPPING);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)
@@ -153,6 +141,21 @@ public class OverlappingTool extends AnalysisTool
 
         try
         {
+
+            IResourceFormat resourceFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
+
+            OverlappingAnalysis analysis = new OverlappingAnalysis();
+            prepareGeneralAnalysisAttributes(analysis, args);
+            analysis.setTransposeData(args.applyToRows);
+            analysis.setReplaceNanValue(args.replaceValue);
+            analysis.setSourceData(new ResourceReference<IMatrix>(new UrlResourceLocator(args.dataFile), resourceFormat));
+            analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
+            analysis.setBinaryCutoffCmp(binaryCutoffCmp);
+            analysis.setBinaryCutoffValue(binaryCutoffValue);
+
+            OverlappingCommand cmd = new OverlappingCommand(analysis, args.workdir, args.analysisName + "." + OverlappingAnalysisXmlFormat.EXTENSION);
+
+
             cmd.run(monitor);
         } catch (Exception e)
         {

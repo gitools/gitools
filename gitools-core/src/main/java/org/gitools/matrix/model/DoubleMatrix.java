@@ -25,6 +25,8 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import org.gitools.matrix.model.element.DoubleElementAdapter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DoubleMatrix extends BaseMatrix
 {
@@ -56,8 +58,8 @@ public class DoubleMatrix extends BaseMatrix
 
     public DoubleMatrix(
             String title,
-            String[] colNames,
-            String[] rowNames)
+            @NotNull String[] colNames,
+            @NotNull String[] rowNames)
     {
 
         super(
@@ -108,7 +110,7 @@ public class DoubleMatrix extends BaseMatrix
     }
 
     @Override
-    public void setCellValue(int row, int column, int index, Object value)
+    public void setCellValue(int row, int column, int index, @Nullable Object value)
     {
         // FIXME null and NaN are different things
         cells.set(row, column, value != null ? (Double) value : Double.NaN);
@@ -121,7 +123,7 @@ public class DoubleMatrix extends BaseMatrix
     }
 
 	/*@Override
-	public String toString() {
+    public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(name).append('\n');

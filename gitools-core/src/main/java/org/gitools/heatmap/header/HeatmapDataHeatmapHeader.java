@@ -25,6 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Map;
@@ -102,7 +103,7 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
     }
 
     @Override
-    public void updateLargestLabelLength(Component component)
+    public void updateLargestLabelLength(@NotNull Component component)
     {
         // Get largest label:
         if (headerHeatmap == null)

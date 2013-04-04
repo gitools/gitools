@@ -42,6 +42,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.add.data.DataIntegrationDimensionsWizard;
 import org.gitools.utils.operators.Operator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class IntegrateDataDimensionsAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
 
                 IElementAdapter adapter = heatmap.getMatrixView().getCellAdapter();
@@ -201,7 +202,7 @@ public class IntegrateDataDimensionsAction extends BaseAction
         });
     }
 
-    private boolean evaluateCriteria(int column, int row, ObjectMatrix objectMatrix, MatrixUtils.DoubleCast doubleCast, List<DataIntegrationCriteria> criteria)
+    private boolean evaluateCriteria(int column, int row, @NotNull ObjectMatrix objectMatrix, @NotNull MatrixUtils.DoubleCast doubleCast, @NotNull List<DataIntegrationCriteria> criteria)
     {
         ArrayList<Boolean> ORs = new ArrayList<Boolean>();
         for (DataIntegrationCriteria dic : criteria)

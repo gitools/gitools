@@ -22,6 +22,7 @@
 package org.gitools.matrix.sort;
 
 import org.gitools.utils.aggregation.IAggregator;
+import org.jetbrains.annotations.NotNull;
 
 public final class ValueSortCriteria
 {
@@ -119,6 +120,7 @@ public final class ValueSortCriteria
         this.aggregator = aggregator;
     }
 
+    @NotNull
     @Override
     public String toString()
     {

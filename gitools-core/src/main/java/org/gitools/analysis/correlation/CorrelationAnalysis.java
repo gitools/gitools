@@ -25,6 +25,7 @@ import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.persistence.ResourceReference;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Properties;
@@ -37,6 +38,7 @@ public class CorrelationAnalysis extends Analysis
 
     protected Properties methodProperties;
 
+    @Nullable
     protected Double replaceNanValue;
 
     protected boolean transposeData;
@@ -60,7 +62,6 @@ public class CorrelationAnalysis extends Analysis
     }
 
     /**
-     *
      * @return
      */
     public String getMethod()
@@ -88,6 +89,7 @@ public class CorrelationAnalysis extends Analysis
         return replaceNanValue != null && !Double.isNaN(replaceNanValue);
     }
 
+    @Nullable
     public Double getReplaceNanValue()
     {
         return replaceNanValue;

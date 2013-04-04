@@ -21,6 +21,8 @@
  */
 package org.gitools.utils.progressmonitor;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface IProgressMonitor
 {
 
@@ -42,6 +44,7 @@ public interface IProgressMonitor
 
     //public int getWorked();
 
+    @NotNull
     public IProgressMonitor subtask();
 
     public void info(String msg);

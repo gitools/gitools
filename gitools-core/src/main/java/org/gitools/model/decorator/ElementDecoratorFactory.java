@@ -23,6 +23,8 @@ package org.gitools.model.decorator;
 
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,7 @@ public class ElementDecoratorFactory
 
     }
 
+    @Nullable
     public static ElementDecorator create(
             String name,
             IElementAdapter adapter)
@@ -73,8 +76,9 @@ public class ElementDecoratorFactory
         return null;
     }
 
+    @Nullable
     public static ElementDecorator create(
-            ElementDecoratorDescriptor descriptor,
+            @NotNull ElementDecoratorDescriptor descriptor,
             IElementAdapter adapter)
     {
 
@@ -93,6 +97,7 @@ public class ElementDecoratorFactory
         return decorator;
     }
 
+    @Nullable
     public static ElementDecoratorDescriptor getDescriptor(
             Class<? extends ElementDecorator> decoratorClass)
     {
@@ -106,6 +111,7 @@ public class ElementDecoratorFactory
         return null;
     }
 
+    @NotNull
     public static List<ElementDecoratorDescriptor> getDescriptors()
     {
         return descriptors;

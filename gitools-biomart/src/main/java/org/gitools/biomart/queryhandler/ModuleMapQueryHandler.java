@@ -22,6 +22,7 @@
 package org.gitools.biomart.queryhandler;
 
 import org.gitools.model.ModuleMap;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,8 +32,10 @@ import java.util.Set;
 public class ModuleMapQueryHandler implements BiomartQueryHandler
 {
 
+    @Nullable
     private ModuleMap mmap;
 
+    @Nullable
     private Map<String, Set<String>> map;
 
     @Override
@@ -63,6 +66,7 @@ public class ModuleMapQueryHandler implements BiomartQueryHandler
         map = null;
     }
 
+    @Nullable
     public ModuleMap getModuleMap()
     {
         return mmap;

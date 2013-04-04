@@ -26,6 +26,7 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.matrix.model.element.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -60,8 +61,8 @@ public class ObjectMatrix extends BaseMatrix
 
     public ObjectMatrix(
             String title,
-            String[] rowNames,
-            String[] columnNames,
+            @NotNull String[] rowNames,
+            @NotNull String[] columnNames,
             IElementAdapter cellAdapter)
     {
 

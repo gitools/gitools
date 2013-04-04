@@ -24,10 +24,12 @@ package org.gitools.ui.actions.analysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
@@ -40,6 +42,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -92,12 +95,12 @@ public class GroupComparisonAction extends BaseAction
 
         final GroupComparisonAnalysis analysis = wiz.getAnalysis();
 
-        analysis.setData(matrixView);
+        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -117,11 +120,11 @@ public class GroupComparisonAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + FileSuffixes.GROUP_COMPARISON);
+                        editor.setName(analysis.getTitle() + "." + GroupComparisonAnalysisXmlFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.GROUP_COMPARISON));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", GroupComparisonAnalysisXmlFormat.EXTENSION));
                     }
 
 

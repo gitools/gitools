@@ -22,15 +22,18 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public class CombinationAnalysisXmlFormat extends AbstractXmlFormat<CombinationAnalysis>
 {
 
+    public static final String EXTENSION = "combination";
+    public static final Class<CombinationAnalysis> RESOURCE_CLASS = CombinationAnalysis.class;
+    public static final FileFormat COMBINATION = new FileFormat("Combination analysis", EXTENSION);
+
     public CombinationAnalysisXmlFormat()
     {
-        super(FileSuffixes.COMBINATION, MimeTypes.COMBINATION_ANALYSIS, CombinationAnalysis.class);
+        super(EXTENSION, RESOURCE_CLASS);
     }
 
 }

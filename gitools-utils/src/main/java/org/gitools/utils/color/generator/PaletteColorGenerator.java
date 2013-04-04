@@ -21,6 +21,8 @@
  */
 package org.gitools.utils.color.generator;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class PaletteColorGenerator implements ColorGenerator
@@ -47,7 +49,7 @@ public class PaletteColorGenerator implements ColorGenerator
         this(DEFAULT_PALETTE);
     }
 
-    public PaletteColorGenerator(int[] palette)
+    public PaletteColorGenerator(@NotNull int[] palette)
     {
         this.palette = new Color[palette.length];
         for (int i = 0; i < palette.length; i++)

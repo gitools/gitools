@@ -22,6 +22,7 @@
 package org.gitools.utils.colorscale;
 
 import org.gitools.utils.aggregation.IAggregator;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -30,6 +31,7 @@ public interface IColorScale
 
     Color valueColor(double value);
 
+    @NotNull
     IAggregator defaultAggregator();
 
 

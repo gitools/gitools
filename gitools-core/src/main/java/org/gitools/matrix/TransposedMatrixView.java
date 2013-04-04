@@ -27,6 +27,7 @@ import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -47,12 +48,12 @@ public class TransposedMatrixView implements IMatrixView
         this.mv = mv;
     }
 
-    public TransposedMatrixView(IMatrix mv)
+    public TransposedMatrixView(@NotNull IMatrix mv)
     {
         setMatrix(mv);
     }
 
-    public final void setMatrix(IMatrix matrix)
+    public final void setMatrix(@NotNull IMatrix matrix)
     {
         this.mv = matrix instanceof IMatrixView ?
                 (IMatrixView) matrix : new MatrixView(matrix);
@@ -249,9 +250,21 @@ public class TransposedMatrixView implements IMatrixView
     }
 
     @Override
+    public int getRowIndex(String label)
+    {
+        return mv.getRowIndex(label);
+    }
+
+    @Override
     public String getColumnLabel(int index)
     {
         return mv.getRowLabel(index);
+    }
+
+    @Override
+    public int getColumnIndex(String label)
+    {
+        return mv.getColumnIndex(label);
     }
 
     @Override

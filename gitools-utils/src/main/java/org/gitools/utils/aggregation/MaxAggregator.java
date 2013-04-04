@@ -22,6 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Multiplication
@@ -36,11 +37,12 @@ public class MaxAggregator extends AbstractAggregator
     }
 
     @Override
-    public double aggregate(double[] data)
+    public double aggregate(@NotNull double[] data)
     {
         return aggregate(data, Functions.max, Double.MIN_VALUE);
     }
 
+    @NotNull
     @Override
     public String toString()
     {

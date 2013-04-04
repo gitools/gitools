@@ -25,6 +25,7 @@ import org.gitools.modules.importer.ModuleCategory;
 import org.gitools.modules.importer.ModulesImporter;
 import org.gitools.modules.importer.Version;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -37,7 +38,7 @@ public class ModulesSourcePage extends AbstractWizardPage
     /**
      * Creates new form ModulesSourcePage
      */
-    public ModulesSourcePage(ModulesImporter importer)
+    public ModulesSourcePage(@NotNull ModulesImporter importer)
     {
         this.importer = importer;
 

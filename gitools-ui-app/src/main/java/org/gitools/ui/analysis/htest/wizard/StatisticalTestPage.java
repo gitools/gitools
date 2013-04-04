@@ -28,6 +28,7 @@ import org.gitools.stats.test.factory.ZscoreTestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -103,6 +104,7 @@ public class StatisticalTestPage extends AbstractWizardPage
         }));
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -204,6 +206,7 @@ public class StatisticalTestPage extends AbstractWizardPage
     public javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables
 
+    @NotNull
     public ToolConfig getTestConfig()
     {
         ToolConfig config = new ToolConfig(ToolConfig.ENRICHMENT);
@@ -241,7 +244,7 @@ public class StatisticalTestPage extends AbstractWizardPage
         return config;
     }
 
-    public void setTestConfig(ToolConfig testConfig)
+    public void setTestConfig(@NotNull ToolConfig testConfig)
     {
         Map<String, String> cfg = testConfig.getConfiguration();
         String testName = cfg.get(TestFactory.TEST_NAME_PROPERTY);
@@ -270,6 +273,7 @@ public class StatisticalTestPage extends AbstractWizardPage
     }
 
     // FIXME
+    @NotNull
     public String getMtc()
     {
         switch (mtcCb.getSelectedIndex())
@@ -283,7 +287,7 @@ public class StatisticalTestPage extends AbstractWizardPage
     }
 
     // FIXME
-    public void setMtc(String mtc)
+    public void setMtc(@NotNull String mtc)
     {
         if (mtc.equals("bonferroni"))
         {

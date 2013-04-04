@@ -22,14 +22,18 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public class CorrelationAnalysisXmlFormat extends AbstractXmlFormat<CorrelationAnalysis>
 {
+    public static final String EXTENSION = "correlations";
+    public static final Class<CorrelationAnalysis> RESOURCE_CLASS = CorrelationAnalysis.class;
+    public static final FileFormat FILE_FORMAT = new FileFormat("Correlations analysis", EXTENSION);
+
+
     public CorrelationAnalysisXmlFormat()
     {
-        super(FileSuffixes.CORRELATIONS, MimeTypes.CORRELATIONS_ANALYSIS, CorrelationAnalysis.class);
+        super(EXTENSION, RESOURCE_CLASS);
     }
 
 }

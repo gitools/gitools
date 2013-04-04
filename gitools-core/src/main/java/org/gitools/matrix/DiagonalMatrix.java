@@ -63,6 +63,12 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
+    public int getRowIndex(String label)
+    {
+        return m.getRowIndex(label);
+    }
+
+    @Override
     public int getColumnCount()
     {
         return m.getColumnCount();
@@ -72,6 +78,12 @@ public class DiagonalMatrix implements IMatrix
     public String getColumnLabel(int index)
     {
         return m.getColumnLabel(index);
+    }
+
+    @Override
+    public int getColumnIndex(String label)
+    {
+        return m.getColumnIndex(label);
     }
 
     @Override

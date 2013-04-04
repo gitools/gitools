@@ -28,6 +28,8 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -113,8 +115,10 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
 
     private BiomartService biomartService;
 
+    @Nullable
     private FilterGroup lastGroupSelected;
 
+    @Nullable
     private FilterPage lastPageSelected;
 
     private HashMap<String, Filter> filters;
@@ -128,6 +132,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     public static class CollectionsPanelsCache
     {
 
+        @NotNull
         public HashMap<FilterGroup, List<FilterCollectionPanel>> collections = new HashMap<FilterGroup, List<FilterCollectionPanel>>();
 
     }
@@ -157,7 +162,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
         filterPageCombo.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {
@@ -316,6 +321,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     private javax.swing.JScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -374,7 +380,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
 
                         reloadData = false;
 
-                    } catch (final Exception ex)
+                    } catch (@NotNull final Exception ex)
                     {
 
                         SwingUtilities.invokeLater(new Runnable()
@@ -417,7 +423,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
         this.filterPageCombo.setModel(model);
     }
 
-    private void updateGroupFilterList(FilterPage page)
+    private void updateGroupFilterList(@NotNull FilterPage page)
     {
 
         // Avoid update process when null value or unaltered filter group selection
@@ -458,7 +464,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
      * @param page
      * @param group
      */
-    private void updateCollectionsCache(FilterPage page, FilterGroup group)
+    private void updateCollectionsCache(FilterPage page, @NotNull FilterGroup group)
     {
 
         FilterCollectionPanel collectionPanel = null;
@@ -487,7 +493,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
      * @param page
      * @param group
      */
-    private void updateCollectionControls(FilterPage page, FilterGroup group)
+    private void updateCollectionControls(FilterPage page, @NotNull FilterGroup group)
     {
 
         // Avoid update process when null value or unaltered filter group selection
@@ -536,6 +542,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
      *
      * @return
      */
+    @NotNull
     public Collection<Filter> getFilters()
     {
 
@@ -558,7 +565,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
      * @param service
      * @param dataset
      */
-    public void setSource(BiomartService service, DatasetConfig config)
+    public void setSource(BiomartService service, @NotNull DatasetConfig config)
     {
 
         if (this.biomartConfig != null && this.biomartConfig.getDataset().equals(config.getDataset()))
@@ -622,7 +629,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
         filters.put(name, f);
     }
 
-    public void setFilters(HashMap<String, Filter> filters)
+    public void setFilters(@NotNull HashMap<String, Filter> filters)
     {
         filters.putAll(filters);
     }
@@ -632,7 +639,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
         filters.remove(name);
     }
 
-    public void deleteFilters(HashMap<String, Filter> delFilters)
+    public void deleteFilters(@NotNull HashMap<String, Filter> delFilters)
     {
 
         for (String name : delFilters.keySet())
@@ -665,7 +672,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     }
 
 
-    public void storeSelecComponentsDefaultData(HashMap<String, List<Option>> data)
+    public void storeSelecComponentsDefaultData(@NotNull HashMap<String, List<Option>> data)
     {
 
         if (data.size() > 0)
@@ -676,7 +683,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     }
 
 	/*
-	public void resetCollectionCache() {
+    public void resetCollectionCache() {
 
 		if (collectionsCache == null) return;
 

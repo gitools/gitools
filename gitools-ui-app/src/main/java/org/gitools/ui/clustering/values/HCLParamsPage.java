@@ -27,6 +27,7 @@ import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.clustering.method.value.WekaHCLMethod;
 import org.gitools.clustering.method.value.WekaHierarchicalClusterer;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
 import weka.core.SelectedTag;
@@ -122,6 +123,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
     private javax.swing.ButtonGroup optGroup;
     // End of variables declaration//GEN-END:variables
 
+    @Nullable
     @Override
     public AbstractClusteringValueMethod getMethod()
     {
@@ -150,6 +152,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
         return method;
     }
 
+    @Nullable
     @Override
     public ClusteringMethodDescriptor getMethodDescriptor()
     {

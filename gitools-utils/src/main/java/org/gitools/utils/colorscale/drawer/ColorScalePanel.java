@@ -22,6 +22,7 @@
 package org.gitools.utils.colorscale.drawer;
 
 import org.gitools.utils.colorscale.IColorScale;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +62,7 @@ public class ColorScalePanel extends JPanel
     }
 
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(@NotNull Graphics g)
     {
         super.paintComponent(g);
 

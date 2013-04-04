@@ -22,6 +22,7 @@
 package org.gitools.persistence.locators.filters;
 
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
 
 public interface IResourceLocatorFilter
 {
@@ -30,7 +31,9 @@ public interface IResourceLocatorFilter
 
     boolean isFiltered(IResourceLocator resourceLocator);
 
+    @NotNull
     IResourceLocator getUnfilteredLocator(IResourceLocator resourceLocator);
 
+    @NotNull
     IResourceLocator getFilteredLocator(IResourceLocator resourceLocator);
 }

@@ -40,6 +40,7 @@ import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
 import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,16 +56,19 @@ import java.util.logging.Logger;
 public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 {
 
+    @NotNull
     private Map<Integer, Object[]> decorationCache =
             new HashMap<Integer, Object[]>();
 
+    @NotNull
     private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorMap =
             new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
 
+    @NotNull
     private Map<String, ElementDecoratorDescriptor> descriptorMap =
             new HashMap<String, ElementDecoratorDescriptor>();
 
-    public HeatmapPropertiesCellsPanel(Heatmap heatmap)
+    public HeatmapPropertiesCellsPanel(@NotNull Heatmap heatmap)
     {
         super(heatmap);
         initComponents();
@@ -115,7 +119,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         cellDecorator.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (!updatingControls)
                 {
@@ -163,7 +167,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     }
 
     @Override
-    protected void heatmapPropertyChange(PropertyChangeEvent evt)
+    protected void heatmapPropertyChange(@NotNull PropertyChangeEvent evt)
     {
         String pname = evt.getPropertyName();
         if (evt.getSource().equals(getHeatmap()))
@@ -201,7 +205,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         }
     }
 
-    private void cellDecoratorChanged(ItemEvent evt)
+    private void cellDecoratorChanged(@NotNull ItemEvent evt)
     {
 
         if (evt.getStateChange() == ItemEvent.DESELECTED)
@@ -234,7 +238,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         decoratorMap.put(descriptor, getHeatmap().getCellDecorators());
     }
 
-    private ElementDecorator[] getDecoratorsForDescriptor(ElementDecoratorDescriptor descriptor)
+    private ElementDecorator[] getDecoratorsForDescriptor(@NotNull ElementDecoratorDescriptor descriptor)
     {
         ElementDecorator[] decorators = decoratorMap.get(descriptor);
 
@@ -269,7 +273,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     }
 
 
-    private ElementDecorator setValueIndex(ElementDecorator decorator, IElementAdapter cellAdapter, int currentValueIndex)
+    @NotNull
+    private ElementDecorator setValueIndex(@NotNull ElementDecorator decorator, @NotNull IElementAdapter cellAdapter, int currentValueIndex)
     {
 
         if (decorator instanceof ZScoreElementDecorator)
@@ -292,7 +297,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         return decorator;
     }
 
-    private void changeDecoratorPanel(ElementDecoratorDescriptor descriptor)
+    private void changeDecoratorPanel(@NotNull ElementDecoratorDescriptor descriptor)
     {
         final JPanel confPanel = new JPanel();
         confPanel.setLayout(new BorderLayout());

@@ -23,9 +23,11 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingCommand;
-import org.gitools.model.ResourceRef;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -34,6 +36,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -70,11 +73,11 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
         final OverlappingAnalysis analysis = wizard.getAnalysis();
 
-        ResourceRef sourceDataResource = new ResourceRef(
-                wizard.getDataFilePage().getFileFormat().getMime(),
-                wizard.getDataFilePage().getFile().getAbsolutePath());
+        ResourceReference<IMatrix> sourceData = new ResourceReference<IMatrix>(
+                new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()),
+                wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
 
-        analysis.setSourceDataResource(sourceDataResource);
+        analysis.setSourceData(sourceData);
 
         final OverlappingCommand cmd = new OverlappingCommand(
                 analysis,
@@ -84,7 +87,7 @@ public class NewOverlappingAnalysisAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -97,7 +100,7 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
                     final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + FileSuffixes.HEATMAP);
+                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapXmlFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable()
                     {

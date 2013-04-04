@@ -22,6 +22,9 @@
 package org.gitools.matrix.model.element;
 
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,7 @@ public class ArrayElementAdapter
     {
     }
 
-    public ArrayElementAdapter(String[] ids)
+    public ArrayElementAdapter(@NotNull String[] ids)
     {
         super(double[].class);
 
@@ -64,14 +67,15 @@ public class ArrayElementAdapter
         setProperties(properties);
     }
 
+    @Nullable
     @Override
-    public Object getValue(Object element, int index)
+    public Object getValue(@Nullable Object element, int index)
     {
         return element != null ? ((double[]) element)[index] : null;
     }
 
     @Override
-    public void setValue(Object element, int index, Object value)
+    public void setValue(@Nullable Object element, int index, Object value)
     {
         if (element != null)
         {

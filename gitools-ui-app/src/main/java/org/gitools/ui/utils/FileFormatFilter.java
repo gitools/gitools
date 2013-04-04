@@ -22,6 +22,7 @@
 package org.gitools.ui.utils;
 
 import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
@@ -30,32 +31,30 @@ public class FileFormatFilter extends FileFilter
 {
 
     private String description;
-    private String mime;
 
     private FileFormat format;
 
     private FileFormat[] formats;
 
-    public FileFormatFilter(String description, String mime)
+    public FileFormatFilter(String description)
     {
         this.description = description;
-        this.mime = mime;
     }
 
-    public FileFormatFilter(String description, String mime, FileFormat[] formats)
+    public FileFormatFilter(String description, FileFormat[] formats)
     {
-        this(description, mime);
+        this(description);
         this.formats = formats;
     }
 
-    public FileFormatFilter(FileFormat format)
+    public FileFormatFilter(@NotNull FileFormat format)
     {
-        this(format.getTitleWithExtension(), format.getMime());
+        this(format.getTitleWithExtension());
         this.format = format;
     }
 
     @Override
-    public boolean accept(File f)
+    public boolean accept(@NotNull File f)
     {
         if (f.isDirectory())
         {
@@ -83,11 +82,6 @@ public class FileFormatFilter extends FileFilter
     public String getDescription()
     {
         return description;
-    }
-
-    public String getMime()
-    {
-        return mime;
     }
 
     public FileFormat getFormat()

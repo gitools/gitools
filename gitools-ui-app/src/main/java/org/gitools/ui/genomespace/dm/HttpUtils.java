@@ -14,6 +14,8 @@ package org.gitools.ui.genomespace.dm;
 import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.GSUtils;
 import org.gitools.ui.platform.AppFrame;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -49,7 +51,9 @@ public class HttpUtils
 
     private final int MAX_REDIRECTS = 5;
 
+    @Nullable
     private String defaultUserName = null;
+    @Nullable
     private char[] defaultPassword = null;
     private static Pattern URLmatcher = Pattern.compile(".{1,8}://.*");
 
@@ -82,7 +86,7 @@ public class HttpUtils
     }
 
 
-    public static boolean isRemoteURL(String string)
+    public static boolean isRemoteURL(@NotNull String string)
     {
         String lcString = string.toLowerCase();
         return lcString.startsWith("http://") || lcString.startsWith("https://") || lcString.startsWith("ftp://");
@@ -113,7 +117,7 @@ public class HttpUtils
      * @param joiner
      * @return
      */
-    public static String buildURLString(Iterable<String> elements, String joiner)
+    public static String buildURLString(@NotNull Iterable<String> elements, String joiner)
     {
 
         Iterator<String> iter = elements.iterator();
@@ -144,7 +148,8 @@ public class HttpUtils
      * @return
      * @throws IOException
      */
-    public String getContentsAsString(URL url) throws IOException
+    @NotNull
+    public String getContentsAsString(@NotNull URL url) throws IOException
     {
 
         InputStream is = null;
@@ -163,7 +168,8 @@ public class HttpUtils
         }
     }
 
-    public String getContentsAsJSON(URL url) throws IOException
+    @NotNull
+    public String getContentsAsJSON(@NotNull URL url) throws IOException
     {
 
         InputStream is = null;
@@ -191,12 +197,14 @@ public class HttpUtils
      * @return
      * @throws IOException
      */
-    public InputStream openConnectionStream(URL url) throws IOException
+    @Nullable
+    public InputStream openConnectionStream(@NotNull URL url) throws IOException
     {
         return openConnectionStream(url, null);
     }
 
-    public InputStream openConnectionStream(URL url, Map<String, String> requestProperties) throws IOException
+    @Nullable
+    public InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException
     {
 
         HttpURLConnection conn = openConnection(url, requestProperties);
@@ -213,7 +221,7 @@ public class HttpUtils
     }
 
 
-    public boolean resourceAvailable(URL url)
+    public boolean resourceAvailable(@NotNull URL url)
     {
         try
         {
@@ -226,7 +234,8 @@ public class HttpUtils
         }
     }
 
-    public String getHeaderField(URL url, String key) throws IOException
+    @Nullable
+    public String getHeaderField(@NotNull URL url, String key) throws IOException
     {
         HttpURLConnection conn = openConnection(url, null, "HEAD");
         if (conn == null)
@@ -236,7 +245,7 @@ public class HttpUtils
         return conn.getHeaderField(key);
     }
 
-    public long getContentLength(URL url) throws IOException
+    public long getContentLength(@NotNull URL url) throws IOException
     {
 
         String contentLengthString = getHeaderField(url, "Content-Length");
@@ -250,7 +259,7 @@ public class HttpUtils
         }
     }
 
-    public boolean downloadFile(String url, File outputFile) throws IOException
+    public boolean downloadFile(String url, @NotNull File outputFile) throws IOException
     {
 
         log.info("Downloading " + url + " to " + outputFile.getAbsolutePath());
@@ -302,7 +311,7 @@ public class HttpUtils
     }
 
 
-    public void uploadGenomeSpaceFile(String uri, File file, Map<String, String> headers) throws IOException
+    public void uploadGenomeSpaceFile(String uri, @NotNull File file, Map<String, String> headers) throws IOException
     {
 
         HttpURLConnection urlconnection = null;
@@ -333,7 +342,8 @@ public class HttpUtils
     }
 
 
-    public String createGenomeSpaceDirectory(URL url, String body) throws IOException
+    @NotNull
+    public String createGenomeSpaceDirectory(@NotNull URL url, @NotNull String body) throws IOException
     {
 
         HttpURLConnection urlconnection = null;
@@ -392,6 +402,7 @@ public class HttpUtils
         TrustManager[] trustAllCerts = new TrustManager[]{
                 new X509TrustManager()
                 {
+                    @NotNull
                     public java.security.cert.X509Certificate[] getAcceptedIssuers()
                     {
                         return new java.security.cert.X509Certificate[0];
@@ -423,6 +434,7 @@ public class HttpUtils
 
     }
 
+    @NotNull
     private String readContents(InputStream is) throws IOException
     {
         BufferedInputStream bis = new BufferedInputStream(is);
@@ -435,7 +447,8 @@ public class HttpUtils
         return new String(bos.toByteArray());
     }
 
-    private String readErrorStream(HttpURLConnection connection) throws IOException
+    @Nullable
+    private String readErrorStream(@NotNull HttpURLConnection connection) throws IOException
     {
         InputStream inputStream = null;
 
@@ -458,12 +471,14 @@ public class HttpUtils
 
     }
 
-    private HttpURLConnection openConnection(URL url, Map<String, String> requestProperties) throws IOException
+    @Nullable
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties) throws IOException
     {
         return openConnection(url, requestProperties, "GET");
     }
 
-    private HttpURLConnection openConnection(URL url, Map<String, String> requestProperties, String method) throws IOException
+    @Nullable
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties, @NotNull String method) throws IOException
     {
         return openConnection(url, requestProperties, method, 0);
     }
@@ -477,8 +492,9 @@ public class HttpUtils
      * @return
      * @throws IOException
      */
+    @Nullable
     private HttpURLConnection openConnection(
-            URL url, Map<String, String> requestProperties, String method, int redirectCount) throws IOException
+            @NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException
     {
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -570,7 +586,7 @@ public class HttpUtils
         return conn;
     }
 
-    public void setDefaultPassword(String defaultPassword)
+    public void setDefaultPassword(@NotNull String defaultPassword)
     {
         this.defaultPassword = defaultPassword.toCharArray();
     }
@@ -592,7 +608,9 @@ public class HttpUtils
     public class IGVAuthenticator extends Authenticator
     {
 
+        @NotNull
         Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
+        @NotNull
         HashSet<String> cacheAttempts = new HashSet<String>();
 
         /**
@@ -600,6 +618,7 @@ public class HttpUtils
          *
          * @return
          */
+        @Nullable
         @Override
         protected synchronized PasswordAuthentication getPasswordAuthentication()
         {
@@ -692,7 +711,7 @@ public class HttpUtils
 
 
         @Override
-        public void put(URI uri, Map<String, List<String>> stringListMap) throws IOException
+        public void put(@NotNull URI uri, @NotNull Map<String, List<String>> stringListMap) throws IOException
         {
             if (uri.toString().startsWith(GSUtils.DEFAULT_GS_IDENTITY_SERVER))
             {

@@ -21,17 +21,27 @@
  */
 package org.gitools.utils.colorscale;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class ColorScaleRange
 {
 
+    @NotNull
     public static String CONSTANT_TYPE = "constant";
+    @NotNull
     public static String EMPTY_TYPE = "empty";
+    @NotNull
     public static String LINEAR_TYPE = "linear";
+    @NotNull
     public static String LOGARITHMIC_TYPE = "logarithmic";
 
     private String type = "";
+    @Nullable
     private Object leftLabel = null;
+    @Nullable
     private Object centerLabel = null;
+    @Nullable
     private Object rightLabel = null;
     private double width;
     private double minValue;
@@ -71,6 +81,7 @@ public class ColorScaleRange
         this.type = type;
     }
 
+    @Nullable
     public Object getLeftLabel()
     {
         return leftLabel;
@@ -81,6 +92,7 @@ public class ColorScaleRange
         this.leftLabel = leftLabel;
     }
 
+    @Nullable
     public Object getCenterLabel()
     {
         return centerLabel;
@@ -91,6 +103,7 @@ public class ColorScaleRange
         this.centerLabel = centerLabel;
     }
 
+    @Nullable
     public Object getRightLabel()
     {
         return rightLabel;

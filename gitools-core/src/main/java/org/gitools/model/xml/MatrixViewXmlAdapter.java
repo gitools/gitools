@@ -23,14 +23,16 @@ package org.gitools.model.xml;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class MatrixViewXmlAdapter extends XmlAdapter<MatrixView, IMatrixView>
 {
 
+    @NotNull
     @Override
-    public MatrixView marshal(IMatrixView matrixView) throws Exception
+    public MatrixView marshal(@NotNull IMatrixView matrixView) throws Exception
     {
         return (MatrixView) matrixView;
     }

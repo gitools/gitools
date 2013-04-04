@@ -25,19 +25,23 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ConvertModuleMapToMatrixResourceReference extends ResourceReference<IMatrix>
 {
 
-    public ConvertModuleMapToMatrixResourceReference(IResourceLocator locator)
+    public ConvertModuleMapToMatrixResourceReference(IResourceLocator locator, IResourceFormat resourceFormat)
     {
-        super(locator);
+        super(locator, resourceFormat);
     }
 
+    @NotNull
     @Override
-    protected IMatrix onAfterLoad(IResource resource)
+    protected IMatrix onAfterLoad(@Nullable IResource resource)
     {
 
         if (resource != null && resource instanceof ModuleMap)

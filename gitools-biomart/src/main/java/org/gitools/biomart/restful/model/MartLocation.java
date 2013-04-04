@@ -21,6 +21,8 @@
  */
 package org.gitools.biomart.restful.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -69,7 +71,7 @@ public class MartLocation
     {
     }
 
-    public MartLocation(Mart mart)
+    public MartLocation(@NotNull Mart mart)
     {
         this.database = mart.getDatabase();
         this.isdefault = mart.getDefault();

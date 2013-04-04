@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,7 @@ public class DoubleElementAdapter extends AbstractElementAdapter
                 getClass().getSimpleName() + " doesn't support change string value.");
     }
 
+    @NotNull
     private List<IElementAttribute> getPropertyList()
     {
         final List<IElementAttribute> properties = new ArrayList<IElementAttribute>();

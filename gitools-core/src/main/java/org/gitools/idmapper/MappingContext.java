@@ -22,12 +22,15 @@
 package org.gitools.idmapper;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 
 
 public class MappingContext extends HashMap<String, Object>
 {
 
+    @NotNull
     public String getString(String key)
     {
         return (String) get(key);
@@ -38,6 +41,7 @@ public class MappingContext extends HashMap<String, Object>
         put(key, value);
     }
 
+    @NotNull
     public Integer getInteger(String key)
     {
         return (Integer) get(key);

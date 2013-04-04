@@ -25,6 +25,7 @@ import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -38,25 +39,25 @@ public class CombinationCommand extends AnalysisCommand
 
     protected CombinationAnalysis analysis;
 
-    protected String dataMime;
+    protected IResourceFormat dataFormat;
     protected String dataPath;
 
-    protected String columnsMime;
+    protected IResourceFormat columnsFormat;
     protected String columnsPath;
 
     public CombinationCommand(
             CombinationAnalysis analysis,
-            String dataMime, String dataPath,
-            String columnsMime, String columnsPath,
+            IResourceFormat dataFormat, String dataPath,
+            IResourceFormat columnsFormat, String columnsPath,
             String workdir, String fileName)
     {
 
         super(workdir, fileName);
 
         this.analysis = analysis;
-        this.dataMime = dataMime;
+        this.dataFormat = dataFormat;
         this.dataPath = dataPath;
-        this.columnsMime = columnsMime;
+        this.columnsFormat = columnsFormat;
         this.columnsPath = columnsPath;
 
         this.storeAnalysis = true;
@@ -69,14 +70,14 @@ public class CombinationCommand extends AnalysisCommand
         {
             if (analysis.getData() == null)
             {
-                ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)));
+                ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)), dataFormat);
                 analysis.setData(data);
                 data.load(progressMonitor);
             }
 
             if (columnsPath != null)
             {
-                ResourceReference<ModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)));
+                ResourceReference<ModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
                 analysis.setGroupsMap(columnsMap);
                 columnsMap.load(progressMonitor);
             }

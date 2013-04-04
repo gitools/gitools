@@ -26,17 +26,18 @@ import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 public class DoubleBinaryMatrixFormat extends AbstractTextMatrixFormat<DoubleBinaryMatrix>
 {
 
     public DoubleBinaryMatrixFormat()
     {
-        super(FileSuffixes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class);
+        super(FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class);
     }
 
+    @NotNull
     @Override
     protected DoubleBinaryMatrix createEntity()
     {

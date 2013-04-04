@@ -33,6 +33,8 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
@@ -61,6 +63,7 @@ public class IntogenImportDialog extends JDialog
     private DialogHeaderPanel headerPanel;
 
     private HtmlPanel htmlPanel;
+    @Nullable
     private SimpleHtmlRendererContext rcontext;
 
     public IntogenImportDialog(Window parent, final ImportType type)
@@ -89,7 +92,7 @@ public class IntogenImportDialog extends JDialog
         rcontext = new SimpleHtmlRendererContext(htmlPanel, uagent)
         {
             @Override
-            public void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs)
+            public void submitForm(@NotNull String method, @NotNull final URL action, String target, String enctype, @Nullable FormInput[] formInputs)
             {
 
                 boolean startDownload = false;
@@ -130,7 +133,7 @@ public class IntogenImportDialog extends JDialog
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
                         try
                         {
@@ -237,6 +240,7 @@ public class IntogenImportDialog extends JDialog
         pack();
     }
 
+    @Nullable
     private String getUrl()
     {
         switch (type)

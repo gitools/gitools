@@ -23,8 +23,8 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationCommand;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -33,6 +33,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -71,7 +72,7 @@ public class NewCorrelationAnalysisAction extends BaseAction
 
         final CorrelationCommand cmd = new CorrelationCommand(
                 analysis,
-                wizard.getDataFileMime(),
+                wizard.getDataFileFormat(),
                 wizard.getDataFile().getAbsolutePath(),
                 wizard.getWorkdir(),
                 wizard.getFileName());
@@ -79,7 +80,7 @@ public class NewCorrelationAnalysisAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -92,7 +93,7 @@ public class NewCorrelationAnalysisAction extends BaseAction
 
                     final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + FileSuffixes.HEATMAP);
+                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapXmlFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable()
                     {

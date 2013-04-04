@@ -27,7 +27,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
@@ -141,8 +141,8 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         HeatmapEditor editor = new HeatmapEditor(heatmap);
 
         editor.setName(editorPanel.deriveName(
-                currentEditor.getName(), FileSuffixes.HEATMAP,
-                "-data", FileSuffixes.HEATMAP));
+                currentEditor.getName(), HeatmapXmlFormat.EXTENSION,
+                "-data", HeatmapXmlFormat.EXTENSION));
 
         editorPanel.addEditor(editor);
 

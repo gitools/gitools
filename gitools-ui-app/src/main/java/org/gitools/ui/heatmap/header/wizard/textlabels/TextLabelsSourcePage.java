@@ -25,6 +25,7 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -109,6 +110,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         header.setLabelPattern(getPattern());
     }
 
+    @NotNull
     public HeatmapTextLabelsHeader.LabelSource getLabelSource()
     {
         if (idOpt.isSelected())
@@ -132,6 +134,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         pattText.setEnabled(patOpt.isSelected());
     }
 
+    @NotNull
     public String getAnnotation()
     {
         if (annList.getSelectedIndex() != -1)

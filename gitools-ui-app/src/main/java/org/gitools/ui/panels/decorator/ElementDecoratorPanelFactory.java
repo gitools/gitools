@@ -24,12 +24,14 @@ package org.gitools.ui.panels.decorator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
 public class ElementDecoratorPanelFactory
 {
 
+    @NotNull
     public static JComponent create(Class<? extends ElementDecorator> decoratorClass, Heatmap model)
     {
 

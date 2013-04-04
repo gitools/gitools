@@ -25,6 +25,8 @@ import org.gitools.model.Attribute;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -43,7 +45,9 @@ public class AnalysisDetailsPage extends AbstractWizardPage
     private static class AttributesModel implements TableModel
     {
 
+        @Nullable
         private List<Attribute> attrs;
+        @NotNull
         private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         public AttributesModel()
@@ -51,7 +55,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
             attrs = new ArrayList<Attribute>();
         }
 
-        public AttributesModel(List<Attribute> attrs)
+        public AttributesModel(@Nullable List<Attribute> attrs)
         {
             this.attrs = attrs != null ? attrs : new ArrayList<Attribute>();
         }
@@ -68,12 +72,14 @@ public class AnalysisDetailsPage extends AbstractWizardPage
             return 2;
         }
 
+        @NotNull
         @Override
         public String getColumnName(int columnIndex)
         {
             return columnIndex == 0 ? "Name" : "Value";
         }
 
+        @NotNull
         @Override
         public Class<?> getColumnClass(int columnIndex)
         {
@@ -111,6 +117,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
             listeners.remove(l);
         }
 
+        @Nullable
         public List<Attribute> getAttributes()
         {
             return attrs;
@@ -128,7 +135,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
                 l.tableChanged(new TableModelEvent(this));
         }
 
-        private void modifyAttribute(int index, Attribute attribute)
+        private void modifyAttribute(int index, @NotNull Attribute attribute)
         {
             Attribute attr = getAttribute(index);
             attr.setName(attribute.getName());
@@ -174,6 +181,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
         });
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -200,6 +208,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
         notesArea.setText(notes);
     }
 
+    @Nullable
     public List<Attribute> getAnalysisAttributes()
     {
         return attrModel.getAttributes();
@@ -255,6 +264,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
                 }
         )
         {
+            @NotNull
             Class[] types = new Class[]{
                     java.lang.String.class, java.lang.String.class
             };

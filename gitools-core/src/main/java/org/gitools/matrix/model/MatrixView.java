@@ -27,12 +27,11 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -49,8 +48,8 @@ public class MatrixView
 
     private static final int INT_BIT_SIZE = 32;
 
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected IMatrix contents;
+    @XmlElement
+    protected ResourceReference<IMatrix> contents;
 
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     protected int[] visibleRows;
@@ -94,16 +93,16 @@ public class MatrixView
         selectionLeadRow = selectionLeadColumn = -1;
     }
 
-    public MatrixView(IMatrix contents)
+    public MatrixView(@NotNull IMatrix contents)
     {
         initFromMatrix(contents);
     }
 
-    public MatrixView(IMatrixView matrixView)
+    public MatrixView(@NotNull IMatrixView matrixView)
     {
         if (matrixView instanceof MatrixView)
         {
-            this.contents = matrixView.getContents();
+            this.contents = new ResourceReference<IMatrix>("contents", matrixView.getContents());
             this.visibleRows = ArrayUtils.clone(matrixView.getVisibleRows());
             this.visibleColumns = ArrayUtils.clone(matrixView.getVisibleColumns());
             this.selectedRows = ArrayUtils.clone(matrixView.getSelectedRows());
@@ -117,8 +116,8 @@ public class MatrixView
             initFromMatrix(matrixView.getContents());
         }
 
-        selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
-        selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
+        selectedColumnsBitmap = newSelectionBitmap(contents.get().getColumnCount());
+        selectedRowsBitmap = newSelectionBitmap(contents.get().getRowCount());
     }
 
     public IResourceLocator getLocator()
@@ -131,9 +130,9 @@ public class MatrixView
         this.locator = locator;
     }
 
-    private void initFromMatrix(IMatrix contents)
+    private void initFromMatrix(@NotNull IMatrix contents)
     {
-        this.contents = contents;
+        this.contents = new ResourceReference<IMatrix>("contents", contents);
 
         // initialize visible rows and columns
 
@@ -175,7 +174,7 @@ public class MatrixView
     @Override
     public IMatrix getContents()
     {
-        return contents;
+        return contents.get();
     }
 
     @Override
@@ -185,12 +184,12 @@ public class MatrixView
     }
 
     @Override
-    public void setVisibleRows(int[] indices)
+    public void setVisibleRows(@NotNull int[] indices)
     {
         setVisibleRows(indices, true);
     }
 
-    public void setVisibleRows(int[] indices, boolean updateLead)
+    public void setVisibleRows(@NotNull int[] indices, boolean updateLead)
     {
         // update selection according to new visibility
         int[] selection = selectionFromVisible(selectedRowsBitmap, indices);
@@ -225,12 +224,12 @@ public class MatrixView
     }
 
     @Override
-    public void setVisibleColumns(int[] indices)
+    public void setVisibleColumns(@NotNull int[] indices)
     {
         setVisibleColumns(indices, true);
     }
 
-    public void setVisibleColumns(int[] indices, boolean updateLead)
+    public void setVisibleColumns(@NotNull int[] indices, boolean updateLead)
     {
         // update selection according to new visibility
         int[] selection = selectionFromVisible(selectedColumnsBitmap, indices);
@@ -259,7 +258,7 @@ public class MatrixView
     }
 
     @Override
-    public void moveRowsUp(int[] indices)
+    public void moveRowsUp(@Nullable int[] indices)
     {
         if (indices != null && indices.length > 0)
         {
@@ -277,12 +276,12 @@ public class MatrixView
     }
 
     @Override
-    public void moveRowsDown(int[] indices)
+    public void moveRowsDown(@Nullable int[] indices)
     {
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < contents.getRowCount() - 1
+            if (indices[indices.length - 1] < contents.get().getRowCount() - 1
                     && Arrays.binarySearch(indices, selectionLeadRow) >= 0)
             {
                 selectionLeadRow++;
@@ -295,7 +294,7 @@ public class MatrixView
     }
 
     @Override
-    public void moveColumnsLeft(int[] indices)
+    public void moveColumnsLeft(@Nullable int[] indices)
     {
         if (indices != null && indices.length > 0)
         {
@@ -313,12 +312,12 @@ public class MatrixView
     }
 
     @Override
-    public void moveColumnsRight(int[] indices)
+    public void moveColumnsRight(@Nullable int[] indices)
     {
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < contents.getColumnCount() - 1
+            if (indices[indices.length - 1] < contents.get().getColumnCount() - 1
                     && Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
             {
                 selectionLeadColumn++;
@@ -457,7 +456,7 @@ public class MatrixView
     }
 
     @Override
-    public void setSelectedRows(int[] indices)
+    public void setSelectedRows(@NotNull int[] indices)
     {
         this.selectedRows = indices;
         updateSelectionBitmap(selectedRowsBitmap, indices, visibleRows);
@@ -484,7 +483,7 @@ public class MatrixView
     }
 
     @Override
-    public void setSelectedColumns(int[] indices)
+    public void setSelectedColumns(@NotNull int[] indices)
     {
         this.selectedColumns = indices;
         updateSelectionBitmap(selectedColumnsBitmap, indices, visibleColumns);
@@ -611,7 +610,13 @@ public class MatrixView
     @Override
     public String getRowLabel(int index)
     {
-        return contents.getRowLabel(visibleRows[index]);
+        return contents.get().getRowLabel(visibleRows[index]);
+    }
+
+    @Override
+    public int getRowIndex(String label)
+    {
+        return contents.get().getRowIndex(label);
     }
 
     @Override
@@ -623,19 +628,25 @@ public class MatrixView
     @Override
     public String getColumnLabel(int index)
     {
-        return contents.getColumnLabel(visibleColumns[index]);
+        return contents.get().getColumnLabel(visibleColumns[index]);
+    }
+
+    @Override
+    public int getColumnIndex(String label)
+    {
+        return contents.get().getColumnIndex(label);
     }
 
     @Override
     public Object getCell(int row, int column)
     {
-        return contents.getCell(visibleRows[row], visibleColumns[column]);
+        return contents.get().getCell(visibleRows[row], visibleColumns[column]);
     }
 
     @Override
     public Object getCellValue(int row, int column, int index)
     {
-        return contents.getCellValue(
+        return contents.get().getCellValue(
                 visibleRows[row],
                 visibleColumns[column],
                 index);
@@ -644,7 +655,7 @@ public class MatrixView
     @Override
     public Object getCellValue(int row, int column, String id)
     {
-        return contents.getCellValue(
+        return contents.get().getCellValue(
                 visibleRows[row],
                 visibleColumns[column],
                 id);
@@ -653,7 +664,7 @@ public class MatrixView
     @Override
     public void setCellValue(int row, int column, int index, Object value)
     {
-        contents.setCellValue(
+        contents.get().setCellValue(
                 visibleRows[row],
                 visibleColumns[column],
                 index, value);
@@ -662,7 +673,7 @@ public class MatrixView
     @Override
     public void setCellValue(int row, int column, String id, Object value)
     {
-        contents.setCellValue(
+        contents.get().setCellValue(
                 visibleRows[row],
                 visibleColumns[column],
                 id, value);
@@ -671,25 +682,25 @@ public class MatrixView
     @Override
     public IElementAdapter getCellAdapter()
     {
-        return contents.getCellAdapter();
+        return contents.get().getCellAdapter();
     }
 
     @Override
     public List<IElementAttribute> getCellAttributes()
     {
-        return contents.getCellAttributes();
+        return contents.get().getCellAttributes();
     }
 
     @Override
     public int getCellAttributeIndex(String id)
     {
-        return contents.getCellAttributeIndex(id);
+        return contents.get().getCellAttributeIndex(id);
     }
 
     // internal operations
 
     private void arrayMoveLeft(
-            int[] array, int[] indices, int[] selection)
+            int[] array, @NotNull int[] indices, @NotNull int[] selection)
     {
 
         if (indices.length == 0 || indices[0] == 0)
@@ -711,7 +722,7 @@ public class MatrixView
     }
 
     private void arrayMoveRight(
-            int[] array, int[] indices, int[] selection)
+            @NotNull int[] array, @NotNull int[] indices, @NotNull int[] selection)
     {
 
         if (indices.length == 0
@@ -734,7 +745,8 @@ public class MatrixView
             selection[i]++;
     }
 
-    private int[] invertSelectionArray(int[] array, int count)
+    @NotNull
+    private int[] invertSelectionArray(@NotNull int[] array, int count)
     {
         int size = count - array.length;
         int[] invArray = new int[size];
@@ -753,7 +765,8 @@ public class MatrixView
         return invArray;
     }
 
-    private int[] selectionFromVisible(int[] bitmap, int[] visible)
+    @NotNull
+    private int[] selectionFromVisible(int[] bitmap, @NotNull int[] visible)
     {
         int selectionCount = 0;
         int[] selectionBuffer = new int[visible.length];
@@ -768,6 +781,7 @@ public class MatrixView
         return selection;
     }
 
+    @NotNull
     private int[] newSelectionBitmap(int size)
     {
         int[] a = new int[(size + INT_BIT_SIZE - 1) / INT_BIT_SIZE];
@@ -775,7 +789,7 @@ public class MatrixView
         return a;
     }
 
-    private void updateSelectionBitmap(int[] bitmap, int[] indices, int[] visible)
+    private void updateSelectionBitmap(@NotNull int[] bitmap, @NotNull int[] indices, int[] visible)
     {
         Arrays.fill(bitmap, 0);
         for (int visibleIndex : indices)

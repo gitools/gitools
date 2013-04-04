@@ -30,6 +30,7 @@ import org.gitools.model.decorator.impl.ZScoreElementDecorator;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -64,7 +65,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel
     private ColorChooserLabel nsigColorCc;
     private ColorChooserLabel emptyCc;
 
-    public ZScoreElementDecoratorPanel(Heatmap model)
+    public ZScoreElementDecoratorPanel(@NotNull Heatmap model)
     {
         super(model);
 
@@ -113,7 +114,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel
         valueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {
@@ -142,7 +143,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel
         corrValueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {
@@ -176,7 +177,7 @@ public class ZScoreElementDecoratorPanel extends AbstractElementDecoratorPanel
         });
 
 		/*sigLevelColorCc = new ColorChooserLabel(decorator.getColor());
-		sigLevelColorCc.addColorChangeListener(new ColorChangeListener() {
+        sigLevelColorCc.addColorChangeListener(new ColorChangeListener() {
 			@Override public void colorChanged(Color color) {
 				decorator.setNonSigColor(color); }
 		});*/

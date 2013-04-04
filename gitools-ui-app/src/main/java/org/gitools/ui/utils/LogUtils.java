@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.PrintWriter;
@@ -29,7 +30,7 @@ import java.io.StringWriter;
 public class LogUtils
 {
 
-    public static void logException(Exception e, Logger logger)
+    public static void logException(@NotNull Exception e, @NotNull Logger logger)
     {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

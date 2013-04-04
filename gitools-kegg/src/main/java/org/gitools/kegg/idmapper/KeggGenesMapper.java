@@ -28,6 +28,7 @@ import org.gitools.idmapper.MappingNode;
 import org.gitools.kegg.service.KeggService;
 import org.gitools.kegg.service.domain.IdConversion;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -54,8 +55,9 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds
         super("KeggGenes", false, true, service, organismId);
     }
 
+    @NotNull
     @Override
-    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException
     {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 

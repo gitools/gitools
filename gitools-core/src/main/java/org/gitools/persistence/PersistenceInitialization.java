@@ -26,6 +26,7 @@ import org.gitools.persistence.formats.matrix.*;
 import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
 import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
 import org.gitools.persistence.formats.text.GeneSetFormat;
+import org.jetbrains.annotations.NotNull;
 
 public class PersistenceInitialization
 {
@@ -36,10 +37,8 @@ public class PersistenceInitialization
                 PersistenceManager.get());
     }
 
-    public static void registerFormats(PersistenceManager pm)
+    public static void registerFormats(@NotNull PersistenceManager pm)
     {
-        pm.registerFormat(new ProjectXmlFormat());
-        pm.registerFormat(new TableFigureXmlFormat());
         pm.registerFormat(new EnrichmentAnalysisXmlFormat());
         pm.registerFormat(new OncodriveAnalysisXmlFormat());
         pm.registerFormat(new CorrelationAnalysisXmlFormat());
@@ -58,5 +57,6 @@ public class PersistenceInitialization
         pm.registerFormat(new TwoColumnModuleMapFormat());
         pm.registerFormat(new IndexedModuleMapFormat());
     }
+
 
 }

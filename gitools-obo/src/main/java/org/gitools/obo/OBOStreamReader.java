@@ -21,6 +21,9 @@
  */
 package org.gitools.obo;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -46,6 +49,7 @@ public class OBOStreamReader implements OBOEventTypes
     private boolean headerEnded;
     private boolean documentEnded;
 
+    @Nullable
     private String stanzaName;
     private String tagName;
 
@@ -73,6 +77,7 @@ public class OBOStreamReader implements OBOEventTypes
         stanzaName = null;
     }
 
+    @Nullable
     public OBOEvent nextEvent() throws IOException
     {
         if (tokens.size() > 0)
@@ -143,7 +148,7 @@ public class OBOStreamReader implements OBOEventTypes
         // TODO streamStack
     }
 
-    private void nextTag(String line, int linepos)
+    private void nextTag(@NotNull String line, int linepos)
     {
         int pos = line.indexOf(':');
         if (pos < 0)
@@ -166,7 +171,7 @@ public class OBOStreamReader implements OBOEventTypes
     /**
      * replace escape characters and remove comments
      */
-    private void escapeCharsAndRemoveComments(String line, StringBuilder sb)
+    private void escapeCharsAndRemoveComments(@NotNull String line, @NotNull StringBuilder sb)
     {
         int len = line.length();
         int pos = 0;

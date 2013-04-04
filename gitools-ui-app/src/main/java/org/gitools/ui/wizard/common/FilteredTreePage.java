@@ -22,6 +22,7 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.tree.TreeModel;
@@ -29,13 +30,16 @@ import javax.swing.tree.TreeModel;
 public abstract class FilteredTreePage extends AbstractWizardPage
 {
 
+    @Nullable
     protected FilteredTreePanel panel;
 
+    @Nullable
     @Override
     public JComponent createControls()
     {
         panel = new FilteredTreePanel()
         {
+            @Nullable
             @Override
             protected TreeModel updateModel(String filterText)
             {
@@ -46,13 +50,16 @@ public abstract class FilteredTreePage extends AbstractWizardPage
         return panel;
     }
 
+    @Nullable
     protected abstract TreeModel createModel(String filterText);
 
+    @Nullable
     protected TreeModel pageCreateModel(String filterText)
     {
         return createModel(filterText);
     }
 
+    @Nullable
     public FilteredTreePanel getPanel()
     {
         return panel;

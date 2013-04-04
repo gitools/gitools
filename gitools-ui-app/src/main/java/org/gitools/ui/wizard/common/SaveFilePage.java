@@ -28,6 +28,8 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -101,12 +103,13 @@ public class SaveFilePage extends AbstractWizardPage
             setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
         }
         /*final String ext = fmt != null ? fmt.getExtension().toLowerCase() : "";
-		final String extgz = ext + ".gz";
+        final String extgz = ext + ".gz";
 		if (formats != null && formats.length > 1
 				&& fmt != null && !(fn.endsWith(ext) || fn.endsWith(extgz)))
 			setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");*/
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -141,7 +144,7 @@ public class SaveFilePage extends AbstractWizardPage
 
     public void setFormats(FileFormat[] formats)
     {
-		/*boolean active = formats != null && formats.length > 0;
+        /*boolean active = formats != null && formats.length > 0;
 		formatLabel.setVisible(active);
 		format.setVisible(active);*/
         this.formats = formats;
@@ -149,6 +152,7 @@ public class SaveFilePage extends AbstractWizardPage
         updateGeneratedFile();
     }
 
+    @Nullable
     public FileFormat getFormat()
     {
         return (FileFormat) format.getSelectedItem();
@@ -161,6 +165,7 @@ public class SaveFilePage extends AbstractWizardPage
     }
 
     /* Returns the file name with extension appended */
+    @NotNull
     public String getFileName()
     {
         StringBuilder sb = new StringBuilder();
@@ -193,6 +198,7 @@ public class SaveFilePage extends AbstractWizardPage
     /**
      * Returns the full path as a file
      */
+    @NotNull
     public File getPathAsFile()
     {
         String folderName = folder.getText();
@@ -324,7 +330,7 @@ public class SaveFilePage extends AbstractWizardPage
         FileFilter ff = new FileFilter()
         {
             @Override
-            public boolean accept(File f)
+            public boolean accept(@NotNull File f)
             {
                 if (f.isDirectory())
                 {
@@ -340,6 +346,7 @@ public class SaveFilePage extends AbstractWizardPage
                 return false;
             }
 
+            @NotNull
             @Override
             public String getDescription()
             {

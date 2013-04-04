@@ -41,6 +41,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +128,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel
 
     private TemplatePanel templatePanel;
 
-    public AbstractTablesPanel(A analysis, Heatmap heatmap)
+    public AbstractTablesPanel(A analysis, @NotNull Heatmap heatmap)
     {
         this.analysis = analysis;
         this.heatmap = heatmap;
@@ -142,7 +143,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel
         heatmap.getMatrixView().addPropertyChangeListener(new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 AbstractTablesPanel.this.propertyChange(evt);
             }
@@ -207,7 +208,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel
         }));
     }
 
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(@NotNull PropertyChangeEvent evt)
     {
         String name = evt.getPropertyName();
         if (evt.getSource() == heatmap.getMatrixView())
@@ -306,7 +307,7 @@ public abstract class AbstractTablesPanel<A> extends JPanel
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {

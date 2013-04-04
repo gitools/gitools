@@ -34,6 +34,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
@@ -43,6 +44,8 @@ import org.gitools.threads.ThreadManager;
 import org.gitools.threads.ThreadQueue;
 import org.gitools.threads.ThreadSlot;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -55,7 +58,9 @@ public class EnrichmentProcessor extends HtestProcessor
 
     private class RunSlot extends ThreadSlot
     {
+        @Nullable
         public DoubleMatrix1D population;
+        @Nullable
         public Test test;
 
         public RunSlot(ThreadQueue threadQueue)
@@ -75,7 +80,7 @@ public class EnrichmentProcessor extends HtestProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         Date startTime = new Date();
@@ -83,7 +88,7 @@ public class EnrichmentProcessor extends HtestProcessor
         TestFactory testFactory =
                 TestFactory.createFactory(analysis.getTestConfig());
 
-        IMatrix dataMatrix = analysis.getData();
+        IMatrix dataMatrix = analysis.getData().get();
 
         final int numConditions = dataMatrix.getColumnCount();
         final int numRows = dataMatrix.getRowCount();
@@ -92,7 +97,7 @@ public class EnrichmentProcessor extends HtestProcessor
         for (int i = 0; i < labels.length; i++)
             labels[i] = dataMatrix.getRowLabel(i);
 
-        ModuleMap mmap = analysis.getModuleMap();
+        ModuleMap mmap = analysis.getModuleMap().get();
         mmap = mmap.remap(labels,
                 analysis.getMinModuleSize(),
                 analysis.getMaxModuleSize());
@@ -254,7 +259,7 @@ public class EnrichmentProcessor extends HtestProcessor
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(resultsMatrix);
+        analysis.setResults(new ResourceReference<ObjectMatrix>("results", resultsMatrix));
 
         monitor.end();
     }

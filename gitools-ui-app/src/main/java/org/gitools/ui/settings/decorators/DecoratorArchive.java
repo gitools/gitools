@@ -24,6 +24,8 @@ package org.gitools.ui.settings.decorators;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,6 +43,7 @@ public class DecoratorArchive
 
     public transient final static String VERSION = "2.0";
 
+    @NotNull
     private List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
 
     private transient final String DEFAULT = "Default";
@@ -49,7 +52,7 @@ public class DecoratorArchive
     {
     }
 
-    public void add(ElementDecorator[] decorators)
+    public void add(@NotNull ElementDecorator[] decorators)
     {
         for (ElementDecorator d : decorators)
         {
@@ -57,7 +60,7 @@ public class DecoratorArchive
         }
     }
 
-    public void add(ElementDecorator decorator)
+    public void add(@NotNull ElementDecorator decorator)
     {
         String name = decorator.getName();
         Set<String> map = getDecorators().keySet();
@@ -72,7 +75,7 @@ public class DecoratorArchive
         }
     }
 
-    private void remove(List<ElementDecorator> scaleDecorators, String name)
+    private void remove(@NotNull List<ElementDecorator> scaleDecorators, String name)
     {
         for (ElementDecorator d : scaleDecorators)
         {
@@ -84,6 +87,7 @@ public class DecoratorArchive
         }
     }
 
+    @NotNull
     public Map<String, ElementDecorator> getDecorators()
     {
         Map<String, ElementDecorator> decoratorMap = new HashMap<String, ElementDecorator>();
@@ -95,6 +99,7 @@ public class DecoratorArchive
         return decoratorMap;
     }
 
+    @Nullable
     public ElementDecorator[] getDefaultElementDecoratros()
     {
         List<ElementDecoratorDescriptor> descriptors = ElementDecoratorFactory.getDescriptors();

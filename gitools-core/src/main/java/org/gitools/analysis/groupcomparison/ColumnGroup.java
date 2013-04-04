@@ -22,12 +22,14 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.datafilters.BinaryCutoff;
+import org.jetbrains.annotations.Nullable;
 
 public class ColumnGroup
 {
 
     protected String name = "";
     protected int[] columns = new int[0];
+    @Nullable
     protected BinaryCutoff binaryCutoff = null;
     protected int cutoffAttributeIndex = -1;
 
@@ -47,6 +49,7 @@ public class ColumnGroup
         this.cutoffAttributeIndex = cutoffAttributeIndex;
     }
 
+    @Nullable
     public BinaryCutoff getBinaryCutoff()
     {
         return binaryCutoff;

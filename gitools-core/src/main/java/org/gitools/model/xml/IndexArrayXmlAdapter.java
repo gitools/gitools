@@ -21,6 +21,8 @@
  */
 package org.gitools.model.xml;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
@@ -28,8 +30,9 @@ public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
 
     private static final String elemSeparator = ",";
 
+    @NotNull
     @Override
-    public String marshal(int[] v) throws Exception
+    public String marshal(@NotNull int[] v) throws Exception
     {
 
         String output = "";
@@ -49,8 +52,9 @@ public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
         return output;
     }
 
+    @NotNull
     @Override
-    public int[] unmarshal(String v) throws Exception
+    public int[] unmarshal(@NotNull String v) throws Exception
     {
 
         String[] elems = v.split(elemSeparator);

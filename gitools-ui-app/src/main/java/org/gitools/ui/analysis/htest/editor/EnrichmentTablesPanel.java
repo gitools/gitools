@@ -34,6 +34,8 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,13 +54,14 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
 
     protected ModuleMap mmap;
 
+    @Nullable
     protected IColorScale dataScale;
 
-    public EnrichmentTablesPanel(EnrichmentAnalysis analysis, Heatmap heatmap)
+    public EnrichmentTablesPanel(@NotNull EnrichmentAnalysis analysis, Heatmap heatmap)
     {
         super(analysis, heatmap);
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
         final int numRows = data.getRowCount();
         final int numCols = data.getColumnCount();
 
@@ -77,13 +80,14 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         for (int i = 0; i < labels.length; i++)
             labels[i] = data.getRowLabel(i);
 
-        this.mmap = analysis.getModuleMap().remap(labels);
+        this.mmap = analysis.getModuleMap().get().remap(labels);
 
         // Guess what kind of color scale to use
 
         dataScale = MatrixUtils.inferScale(data, 0);
     }
 
+    @NotNull
     @Override
     protected VelocityContext createModel()
     {
@@ -91,7 +95,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         int row = mv.getLeadSelectionRow();
         int col = mv.getLeadSelectionColumn();
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getData().get();
 
         String template = DATA_TEMPLATE;
         VelocityContext context = new VelocityContext();
@@ -147,8 +151,9 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
+    @NotNull
     private List<VelocityContext> createDataElements(
-            IMatrixView mv, int row, int col, final IMatrix data, ModuleMap mmap)
+            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
     {
 
         final int valueIndex = 0;
@@ -200,7 +205,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return elements;
     }
 
-    private VelocityContext createDataTableElements(IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataTableElements(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements =
@@ -213,8 +219,9 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return table;
     }
 
-    private VelocityContext createDataCellModel(VelocityContext context,
-                                                IMatrixView mv, int row, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
+                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         VelocityContext table = createDataTableElements(mv, row, col, data, mmap);
@@ -232,8 +239,9 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createDataColumnModel(VelocityContext context,
-                                                  IMatrixView mv, int col, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
+                                                  @NotNull IMatrixView mv, int col, IMatrix data, ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -265,8 +273,9 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createDataRowModel(VelocityContext context,
-                                               IMatrixView mv, int row, IMatrix data, ModuleMap mmap)
+    @NotNull
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
+                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -309,7 +318,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createHeader(IMatrixView mv)
+    @NotNull
+    private VelocityContext createHeader(@NotNull IMatrixView mv)
     {
         List<String> headerIds = new ArrayList<String>();
         List<String> headerNames = new ArrayList<String>();
@@ -340,7 +350,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return header;
     }
 
-    private VelocityContext createResultsElement(IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsElement(@NotNull IMatrixView mv, int row, int col)
     {
 
         GenericFormatter fmt = new GenericFormatter();
@@ -372,7 +383,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return e;
     }
 
-    private VelocityContext createResultsCellModel(VelocityContext context, IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col)
     {
         VelocityContext e = createResultsElement(mv, row, col);
         e.put("name", mv.getRowLabel(row));
@@ -402,7 +414,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createResultsColumnModel(VelocityContext context, IMatrixView mv, int col)
+    @NotNull
+    private VelocityContext createResultsColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -434,7 +447,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createResultsRowModel(VelocityContext context, IMatrixView mv, int row)
+    @NotNull
+    private VelocityContext createResultsRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row)
     {
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)

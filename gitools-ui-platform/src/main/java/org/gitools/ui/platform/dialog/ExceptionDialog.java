@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -32,7 +34,7 @@ public class ExceptionDialog extends javax.swing.JDialog
 
     private Throwable cause;
 
-    public static void show(Window parent, Throwable cause)
+    public static void show(Window parent, @NotNull Throwable cause)
     {
         ExceptionDialog dlg = new ExceptionDialog(parent, cause);
         dlg.setVisible(true);
@@ -41,7 +43,7 @@ public class ExceptionDialog extends javax.swing.JDialog
     /**
      * Creates new form ExceptionDialog
      */
-    public ExceptionDialog(Window parent, Throwable cause)
+    public ExceptionDialog(Window parent, @NotNull Throwable cause)
     {
         super(parent);
         setModal(true);

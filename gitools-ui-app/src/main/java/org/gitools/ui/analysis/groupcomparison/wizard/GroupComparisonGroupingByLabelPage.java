@@ -37,6 +37,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -104,6 +105,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
+    @NotNull
     protected String readNamesFromFile(File file) throws IOException
     {
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -138,6 +140,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
+    @NotNull
     public FilterDimension getFilterDimension()
     {
         return FilterDimension.COLUMNS;
@@ -153,17 +156,20 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         return colsPatt;
     }
 
+    @NotNull
     public int[] getGroup1()
     {
         return getGroupIndices(patterns1);
     }
 
+    @NotNull
     public int[] getGroup2()
     {
         return getGroupIndices(patterns2);
     }
 
-    private int[] getGroupIndices(JTextArea patterns)
+    @NotNull
+    private int[] getGroupIndices(@NotNull JTextArea patterns)
     {
         List<String> values = new ArrayList<String>();
         StringReader sr = new StringReader(patterns.getText());
@@ -203,6 +209,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         return groupColIndices;
     }
 
+    @NotNull
     private ArrayList<String> getSelectedColumns()
     {
         ArrayList<String> selected = new ArrayList<String>();
@@ -223,7 +230,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
-    public void setValues(List<String> values, JTextArea patterns)
+    public void setValues(@NotNull List<String> values, @NotNull JTextArea patterns)
     {
         Iterator<String> it = values.iterator();
         while (it.hasNext())
@@ -233,6 +240,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
     }
 
+    @NotNull
     private ArrayList<String> getUnselectedColumns()
     {
         ArrayList<String> unselected = new ArrayList<String>();
@@ -248,7 +256,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
         int visibleColumnsCount = hm.getMatrixView().getColumnCount();
             /*for (int i=0; i < selectedIndices.length; i++) {
-				visibleIndices = ArrayUtils.removeElement(visibleIndices, selectedIndices[i]);
+                visibleIndices = ArrayUtils.removeElement(visibleIndices, selectedIndices[i]);
 			}*/
         int[] unselectedIndices = new int[visibleColumnsCount - selectedIndices.length];
         int count = 0;

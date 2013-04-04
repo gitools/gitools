@@ -22,16 +22,17 @@
 package org.gitools.cli.convert;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 
 public class ModulesConversion implements ConversionDelegate
 {
 
     @Override
-    public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception
+    public Object convert(String srcFormat, Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception
     {
-        monitor.begin("Converting modules ...", 1);
-        monitor.end();
+        progressMonitor.begin("Converting modules ...", 1);
+        progressMonitor.end();
 
         return src;
     }

@@ -16,6 +16,9 @@
 
 package org.gitools.utils.csv;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -190,6 +193,7 @@ public class CSVReader implements Closeable
      *         file.
      * @throws IOException if bad things happen during the read
      */
+    @NotNull
     public List<String[]> readAll() throws IOException
     {
 
@@ -213,6 +217,7 @@ public class CSVReader implements Closeable
      *         entry.
      * @throws IOException if bad things happen during the read
      */
+    @Nullable
     public String[] readNext() throws IOException
     {
 
@@ -249,6 +254,7 @@ public class CSVReader implements Closeable
      * @return the next line from the file without trailing newline
      * @throws IOException if bad things happen during the read
      */
+    @Nullable
     private String getNextLine() throws IOException
     {
         if (!this.linesSkiped)

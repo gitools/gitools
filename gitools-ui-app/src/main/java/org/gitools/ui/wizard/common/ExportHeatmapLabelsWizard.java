@@ -27,10 +27,12 @@ import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
+import org.jetbrains.annotations.NotNull;
 
 public class ExportHeatmapLabelsWizard extends AbstractWizard
 {
 
+    @NotNull
     private FileFormat[] supportedFormats = new FileFormat[]{
             FileFormats.TEXT
     };
@@ -91,6 +93,7 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
         }
     }
 
+    @NotNull
     public ExportHeatmapLabelsPage.WhichLabels getWhichLabels()
     {
         return sourcePage.getWhichLabels();

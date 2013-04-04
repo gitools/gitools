@@ -33,6 +33,8 @@ import org.gitools.utils.colorscale.impl.*;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +46,11 @@ public class MatrixUtils
 
     public static interface DoubleCast
     {
+        @Nullable
         Double getDoubleValue(Object value);
     }
 
-    public static int intValue(Object value)
+    public static int intValue(@Nullable Object value)
     {
         int v = 0;
         if (value != null)
@@ -75,7 +78,7 @@ public class MatrixUtils
     }
 
     @Deprecated // Better use createDoubleCast() when accessing multiple values
-    public static double doubleValue(Object value)
+    public static double doubleValue(@Nullable Object value)
     {
         if (value == null)
         {
@@ -95,21 +98,23 @@ public class MatrixUtils
             } catch (Exception e2)
             {
                 /*try { v = Double.parseDouble((String) value); }
-				catch (Exception e3) { }*/
+                catch (Exception e3) { }*/
             }
         }
 
         return v;
     }
 
-    public static DoubleCast createDoubleCast(Class cls)
+    @Nullable
+    public static DoubleCast createDoubleCast(@NotNull Class cls)
     {
         if (cls.equals(Double.class) || cls.equals(double.class))
         {
             return new DoubleCast()
             {
+                @Nullable
                 @Override
-                public Double getDoubleValue(Object value)
+                public Double getDoubleValue(@Nullable Object value)
                 {
                     return value != null ? ((Double) value).doubleValue() : null;
                 }
@@ -119,8 +124,9 @@ public class MatrixUtils
         {
             return new DoubleCast()
             {
+                @Nullable
                 @Override
-                public Double getDoubleValue(Object value)
+                public Double getDoubleValue(@Nullable Object value)
                 {
                     return value != null ? ((Float) value).doubleValue() : null;
                 }
@@ -130,8 +136,9 @@ public class MatrixUtils
         {
             return new DoubleCast()
             {
+                @Nullable
                 @Override
-                public Double getDoubleValue(Object value)
+                public Double getDoubleValue(@Nullable Object value)
                 {
                     return value != null ? ((Integer) value).doubleValue() : null;
                 }
@@ -141,8 +148,9 @@ public class MatrixUtils
         {
             return new DoubleCast()
             {
+                @Nullable
                 @Override
-                public Double getDoubleValue(Object value)
+                public Double getDoubleValue(@Nullable Object value)
                 {
                     return value != null ? ((Long) value).doubleValue() : null;
                 }
@@ -151,15 +159,17 @@ public class MatrixUtils
 
         return new DoubleCast()
         {
+            @Nullable
             @Override
-            public Double getDoubleValue(Object value)
+            public Double getDoubleValue(@Nullable Object value)
             {
                 return value != null ? Double.NaN : null;
             }
         };
     }
 
-    public static IColorScale inferScale(IMatrix data, int valueIndex)
+    @Nullable
+    public static IColorScale inferScale(@NotNull IMatrix data, int valueIndex)
     {
 
         double min = Double.POSITIVE_INFINITY;
@@ -222,7 +232,7 @@ public class MatrixUtils
         return scale;
     }
 
-    public static int correctedValueIndex(IElementAdapter adapter, IElementAttribute prop)
+    public static int correctedValueIndex(@NotNull IElementAdapter adapter, @NotNull IElementAttribute prop)
     {
         int numProps = adapter.getPropertyCount();
 
@@ -237,7 +247,8 @@ public class MatrixUtils
         return -1;
     }
 
-    public static BaseMatrix moduleMapToMatrix(ModuleMap mmap)
+    @NotNull
+    public static BaseMatrix moduleMapToMatrix(@NotNull ModuleMap mmap)
     {
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
         String[] columns = mmap.getModuleNames();
@@ -251,7 +262,8 @@ public class MatrixUtils
         return matrix;
     }
 
-    public static ModuleMap matrixToModuleMap(IMatrix matrix)
+    @NotNull
+    public static ModuleMap matrixToModuleMap(@NotNull IMatrix matrix)
     {
         String[] itemNames = new String[matrix.getRowCount()];
         for (int i = 0; i < matrix.getRowCount(); i++)
@@ -288,18 +300,18 @@ public class MatrixUtils
         return map;
     }
 
-    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor)
+    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor)
     {
         return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
-    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension)
+    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension)
     {
         return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
 
-    public static double[] getUniquedValuesFromMatrix(IMatrix data, IElementAdapter cellAdapter, int valueDimension, int maxUnique, IProgressMonitor monitor)
+    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
     {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too man (50), it returns
         * an equally distributed array values from min to max*/

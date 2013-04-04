@@ -25,9 +25,9 @@ import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.*;
@@ -44,11 +44,12 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
     public TwoColumnModuleMapFormat()
     {
-        super(FileSuffixes.MODULES_2C_MAP, MimeTypes.MODULES_2C_MAP, ModuleMap.class);
+        super(FileSuffixes.MODULES_2C_MAP, ModuleMap.class);
     }
 
+    @NotNull
     @Override
-    protected ModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         // map between the item names and its index
@@ -167,7 +168,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         return mmap;
     }
 
-    protected void readModuleMappings(CSVReader parser, boolean filterRows, Map<String, Integer> itemNameToRowMapping, Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException
+    protected void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException
     {
 
         try
@@ -212,7 +213,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, ModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         final String[] moduleNames = moduleMap.getModuleNames();

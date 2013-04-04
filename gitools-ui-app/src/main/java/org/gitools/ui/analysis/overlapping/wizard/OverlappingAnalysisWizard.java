@@ -26,8 +26,8 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -44,6 +44,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
@@ -53,7 +54,7 @@ import java.util.Properties;
 public class OverlappingAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.OVERLAPPING;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisXmlFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
     private static final FileFormat[] dataFormats = new FileFormat[]{
@@ -130,7 +131,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
             saveFilePage.setFormats(new FileFormat[]{
-                    FileFormats.OVERLAPPING});
+                    OverlappingAnalysisXmlFormat.OVERLAPPING});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -154,7 +155,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
@@ -248,6 +249,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
         this.saveFilePageEnabled = saveFilePageEnabled;
     }
 
+    @NotNull
     public OverlappingAnalysis getAnalysis()
     {
         OverlappingAnalysis a = new OverlappingAnalysis();
@@ -268,7 +270,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
         return a;
     }
 
-    private void setAnalysis(OverlappingAnalysis a)
+    private void setAnalysis(@NotNull OverlappingAnalysis a)
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
@@ -292,11 +294,6 @@ public class OverlappingAnalysisWizard extends AbstractWizard
         return dataPage;
     }
 
-    public SaveFilePage getSaveFilePage()
-    {
-        return saveFilePage;
-    }
-
     public String getWorkdir()
     {
         return saveFilePage.getFolder();
@@ -307,18 +304,4 @@ public class OverlappingAnalysisWizard extends AbstractWizard
         return saveFilePage.getFileName();
     }
 
-    public String getDataFileMime()
-    {
-        return dataPage.getFileFormat().getMime();
-    }
-
-    public File getDataFile()
-    {
-        return dataPage.getFile();
-    }
-
-    public File getPopulationFile()
-    {
-        return dataFilterPage.getRowsFilterFile();
-    }
 }

@@ -21,6 +21,8 @@
  */
 package org.gitools.utils.color.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.color.ColorSpace;
 
 public class HLSColorSpace extends ColorSpace
@@ -32,6 +34,7 @@ public class HLSColorSpace extends ColorSpace
         super(ColorSpace.TYPE_HLS, 3);
     }
 
+    @NotNull
     @Override
     public float[] toRGB(float[] colorvalue)
     {
@@ -112,18 +115,21 @@ public class HLSColorSpace extends ColorSpace
         return new float[]{R, G, B};
     }
 
+    @NotNull
     @Override
     public float[] fromRGB(float[] rgbvalue)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @NotNull
     @Override
     public float[] toCIEXYZ(float[] colorvalue)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @NotNull
     @Override
     public float[] fromCIEXYZ(float[] colorvalue)
     {

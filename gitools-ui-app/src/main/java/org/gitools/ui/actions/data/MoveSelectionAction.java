@@ -26,6 +26,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -42,7 +43,7 @@ public class MoveSelectionAction extends BaseAction
 
     protected MoveDirection dir;
 
-    public MoveSelectionAction(MoveDirection dir)
+    public MoveSelectionAction(@NotNull MoveDirection dir)
     {
         super(null);
 

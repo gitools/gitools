@@ -27,6 +27,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -43,7 +44,7 @@ public class HideSelectionAction extends BaseAction
 
     private ElementType type;
 
-    public HideSelectionAction(ElementType type)
+    public HideSelectionAction(@NotNull ElementType type)
     {
         super(null);
 
@@ -92,13 +93,13 @@ public class HideSelectionAction extends BaseAction
                 msg = "Selected rows hidden.";
                 matrixView.hideRows(matrixView.getSelectedRows());
             /*matrixView.setVisibleRows(arrayRemove(
-					matrixView.getVisibleRows(), 
+                    matrixView.getVisibleRows(),
 					matrixView.getSelectedRows()));*/
                 break;
             case COLUMNS:
                 msg = "Selected columns hidden.";
                 matrixView.hideColumns(matrixView.getSelectedColumns());
-			/*matrixView.setVisibleColumns(arrayRemove(
+            /*matrixView.setVisibleColumns(arrayRemove(
 					matrixView.getVisibleColumns(), 
 					matrixView.getSelectedColumns()));*/
                 break;

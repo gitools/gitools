@@ -24,6 +24,7 @@ package org.gitools.clustering.method.value;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.IMatrix;
+import org.jetbrains.annotations.NotNull;
 
 public class MatrixColumnClusteringData implements ClusteringData
 {
@@ -62,8 +63,9 @@ public class MatrixColumnClusteringData implements ClusteringData
             return matrix.getCellValue(attribute, index, matrixAttribute);
         }
 
+        @NotNull
         @Override
-        public <T> T getTypedValue(int attribute, Class<T> valueClass)
+        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass)
         {
             if (!valueClass.equals(getValueClass(attribute)))
             {
@@ -78,7 +80,7 @@ public class MatrixColumnClusteringData implements ClusteringData
     private int matrixAttribute;
     private Class<?> attributeClass;
 
-    public MatrixColumnClusteringData(IMatrix matrix, int matrixAttribute)
+    public MatrixColumnClusteringData(@NotNull IMatrix matrix, int matrixAttribute)
     {
         this.matrix = matrix;
         this.matrixAttribute = matrixAttribute;
@@ -97,6 +99,7 @@ public class MatrixColumnClusteringData implements ClusteringData
         return matrix.getColumnLabel(index);
     }
 
+    @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index)
     {

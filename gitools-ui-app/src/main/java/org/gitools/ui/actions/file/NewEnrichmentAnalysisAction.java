@@ -32,6 +32,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,12 +74,12 @@ public class NewEnrichmentAnalysisAction extends BaseAction
 
         final EnrichmentCommand cmd = new EnrichmentCommand(
                 analysis,
-                wizard.getDataFileMime(),
+                wizard.getDataFileFormat(),
                 wizard.getDataFile().getAbsolutePath(),
                 wizard.getSelectedValueIndex(),
                 populationFile != null ? populationFile.getAbsolutePath() : null,
                 wizard.getPopulationDefaultValue(),
-                wizard.getModulesFileMime(),
+                wizard.getModulesFileFormat(),
                 wizard.getModulesFile().getAbsolutePath(),
                 wizard.getWorkdir(),
                 wizard.getFileName());
@@ -86,7 +87,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {

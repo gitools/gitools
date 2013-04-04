@@ -39,6 +39,7 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 public class ColoredLabelsHeaderWizard extends AbstractWizard
 {
@@ -124,7 +125,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {

@@ -25,6 +25,8 @@ import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.component.EditorTabComponent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -39,6 +41,7 @@ public class EditorsPanel extends WebTabbedPane
 
     public static final String DEFAULT_NAME_PREFIX = "unnamed";
 
+    @NotNull
     private Map<String, Integer> nameCounts = new HashMap<String, Integer>();
 
     public EditorsPanel()
@@ -68,7 +71,7 @@ public class EditorsPanel extends WebTabbedPane
 
     }
 
-    public void addEditor(AbstractEditor editor)
+    public void addEditor(@Nullable AbstractEditor editor)
     {
         if (editor == null)
         {
@@ -96,7 +99,7 @@ public class EditorsPanel extends WebTabbedPane
         setSelectedComponent(editor);
     }
 
-    public void removeEditor(AbstractEditor editor)
+    public void removeEditor(@Nullable AbstractEditor editor)
     {
         if (editor == null)
         {
@@ -115,6 +118,7 @@ public class EditorsPanel extends WebTabbedPane
         }
     }
 
+    @NotNull
     public AbstractEditor getSelectedEditor()
     {
         return (AbstractEditor) getSelectedComponent();
@@ -126,11 +130,13 @@ public class EditorsPanel extends WebTabbedPane
         ActionManager.getDefault().updateEnabledByEditor(editor);
     }
 
+    @NotNull
     public String createName()
     {
         return createName(DEFAULT_NAME_PREFIX, "");
     }
 
+    @NotNull
     public String createName(String prefix, String suffix)
     {
         Set<String> names = new HashSet<String>();
@@ -157,7 +163,8 @@ public class EditorsPanel extends WebTabbedPane
         return name;
     }
 
-    public String deriveName(String name, String removeExtension, String prefixAdd, String newExtension)
+    @NotNull
+    public String deriveName(@NotNull String name, @NotNull String removeExtension, @NotNull String prefixAdd, @NotNull String newExtension)
     {
         if (!removeExtension.isEmpty() && name.endsWith(removeExtension))
         {

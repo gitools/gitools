@@ -33,6 +33,8 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
 import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +54,10 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
     protected Map<String, Integer> dataRowIndices;
     protected Map<String, Integer> dataColIndices;
 
+    @Nullable
     protected ModuleMap gmap;
 
-    public CombinationTablesPanel(CombinationAnalysis analysis, Heatmap heatmap)
+    public CombinationTablesPanel(@NotNull CombinationAnalysis analysis, @NotNull Heatmap heatmap)
     {
         super(analysis, heatmap);
 
@@ -105,6 +108,7 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         }
     }
 
+    @NotNull
     @Override
     protected VelocityContext createModel()
     {
@@ -183,12 +187,13 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
     // Data model
 
-    private List<VelocityContext> createDataElements(IMatrixView mv, int row, int col, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private List<VelocityContext> createDataElements(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @Nullable ModuleMap gmap)
     {
         int sizeIndex = -1;
         String sizeAttrName = analysis.getSizeAttrName();
         /*if (sizeAttrName == null || sizeAttrName.isEmpty())
-			sizeIndex = analysis.getSizeAttrIndex();*/
+            sizeIndex = analysis.getSizeAttrIndex();*/
         if (sizeAttrName != null && !sizeAttrName.isEmpty())
         {
             sizeIndex = data.getCellAdapter().getPropertyIndex(sizeAttrName);
@@ -196,7 +201,7 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
-		/*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
+        /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
 			pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
         {
@@ -260,7 +265,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return elements;
     }
 
-    private VelocityContext createDataElementsCombination(IMatrixView mv, int row, int col, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private VelocityContext createDataElementsCombination(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, ModuleMap gmap)
     {
 
         GenericFormatter fmt = new GenericFormatter();
@@ -284,7 +290,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return combination;
     }
 
-    private List<VelocityContext> createDataCellModel(IMatrixView mv, int row, int col, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private List<VelocityContext> createDataCellModel(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, ModuleMap gmap)
     {
         VelocityContext combination = createDataElementsCombination(mv, row, col, data, gmap);
         List<VelocityContext> combinations = new ArrayList<VelocityContext>();
@@ -297,7 +304,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createDataColumnModel(IMatrixView mv, int col, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private List<VelocityContext> createDataColumnModel(@NotNull IMatrixView mv, int col, @NotNull IMatrix data, ModuleMap gmap)
     {
         List<VelocityContext> combinations = new ArrayList<VelocityContext>();
         for (int ri = 0; ri < mv.getRowCount(); ri++)
@@ -313,7 +321,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createDataRowModel(IMatrixView mv, int row, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private List<VelocityContext> createDataRowModel(@NotNull IMatrixView mv, int row, @NotNull IMatrix data, ModuleMap gmap)
     {
         List<VelocityContext> columns = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)
@@ -330,7 +339,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createDataAllModel(IMatrixView mv, IMatrix data, ModuleMap gmap)
+    @NotNull
+    private List<VelocityContext> createDataAllModel(@NotNull IMatrixView mv, @NotNull IMatrix data, ModuleMap gmap)
     {
         List<VelocityContext> columns = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)
@@ -352,7 +362,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
     // Results model
 
-    private VelocityContext createResultsCombinationModel(IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsCombinationModel(@NotNull IMatrixView mv, int row, int col)
     {
 
         GenericFormatter fmt = new GenericFormatter();
@@ -377,7 +388,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return combination;
     }
 
-    private List<VelocityContext> createResultsCellModel(IMatrixView mv, int row, int col)
+    @NotNull
+    private List<VelocityContext> createResultsCellModel(@NotNull IMatrixView mv, int row, int col)
     {
         List<VelocityContext> combinations = new ArrayList<VelocityContext>();
         VelocityContext combination = createResultsCombinationModel(mv, row, col);
@@ -392,7 +404,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createResultsColumnModel(IMatrixView mv, int col)
+    @NotNull
+    private List<VelocityContext> createResultsColumnModel(@NotNull IMatrixView mv, int col)
     {
         List<VelocityContext> combinations = new ArrayList<VelocityContext>();
         for (int ri = 0; ri < mv.getRowCount(); ri++)
@@ -410,7 +423,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createResultsRowModel(IMatrixView mv, int row)
+    @NotNull
+    private List<VelocityContext> createResultsRowModel(@NotNull IMatrixView mv, int row)
     {
         List<VelocityContext> columns = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)
@@ -428,7 +442,8 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         return columns;
     }
 
-    private List<VelocityContext> createResultsAllModel(IMatrixView mv)
+    @NotNull
+    private List<VelocityContext> createResultsAllModel(@NotNull IMatrixView mv)
     {
         List<VelocityContext> columns = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)

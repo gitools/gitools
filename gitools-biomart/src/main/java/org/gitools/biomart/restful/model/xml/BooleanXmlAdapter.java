@@ -21,18 +21,23 @@
  */
 package org.gitools.biomart.restful.model.xml;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
 public class BooleanXmlAdapter extends XmlAdapter<Integer, Boolean>
 {
 
+    @Nullable
     @Override
-    public Boolean unmarshal(Integer v) throws Exception
+    public Boolean unmarshal(@Nullable Integer v) throws Exception
     {
         return v != null && v.intValue() == 1;
     }
 
+    @NotNull
     @Override
     public Integer marshal(Boolean v) throws Exception
     {

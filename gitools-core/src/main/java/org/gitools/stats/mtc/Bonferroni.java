@@ -23,18 +23,22 @@ package org.gitools.stats.mtc;
 
 import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;
+import org.jetbrains.annotations.NotNull;
 
 public class Bonferroni implements MTC
 {
 
+    @NotNull
     public static String SHORT_NAME = "bonferroni";
 
+    @NotNull
     @Override
     public String getName()
     {
         return "Bonferroni";
     }
 
+    @NotNull
     @Override
     public String getShortName()
     {
@@ -42,7 +46,7 @@ public class Bonferroni implements MTC
     }
 
     @Override
-    public void correct(DoubleMatrix1D values)
+    public void correct(@NotNull DoubleMatrix1D values)
     {
         final int n = values.size();
 

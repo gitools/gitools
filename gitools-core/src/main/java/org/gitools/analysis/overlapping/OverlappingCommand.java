@@ -23,8 +23,6 @@ package org.gitools.analysis.overlapping;
 
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.model.ResourceRef;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -49,20 +47,6 @@ public class OverlappingCommand extends AnalysisCommand
     {
         try
         {
-            if (analysis.getData() == null)
-            {
-                ResourceRef res = analysis.getSourceDataResource();
-                String dataPath = res.getPath();
-                String dataMime = res.getMime();
-
-                BaseMatrix data = loadDataMatrix(
-                        new UrlResourceLocator(new File(dataPath)),
-                        progressMonitor
-                );
-
-                analysis.setData(data);
-            }
-
             OverlappingProcessor proc = new OverlappingProcessor(analysis);
 
             proc.run(progressMonitor);

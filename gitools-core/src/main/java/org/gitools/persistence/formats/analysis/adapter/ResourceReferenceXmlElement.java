@@ -32,7 +32,7 @@ public class ResourceReferenceXmlElement
 {
 
     @XmlAttribute
-    private String mime;
+    private String format;
 
     @XmlAttribute
     private String path;
@@ -41,20 +41,20 @@ public class ResourceReferenceXmlElement
     {
     }
 
-    public ResourceReferenceXmlElement(String mime, String path)
+    public ResourceReferenceXmlElement(String format, String path)
     {
-        this.mime = mime;
+        this.format = format;
         this.path = path;
     }
 
-    public String getMime()
+    public String getFormat()
     {
-        return mime;
+        return format;
     }
 
-    public void setMime(String mime)
+    public void setFormat(String format)
     {
-        this.mime = mime;
+        this.format = format;
     }
 
     public String getPath()
@@ -66,4 +66,5 @@ public class ResourceReferenceXmlElement
     {
         this.path = path;
     }
+
 }

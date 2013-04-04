@@ -26,6 +26,7 @@ import org.gitools.datafilters.ValueTranslatorFactory;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.utils.fileutils.IOUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import java.util.List;
 public class TextMatrixViewExporter
 {
 
-    public static void exportMatrix(IMatrixView matrixView, int propIndex, File file) throws IOException
+    public static void exportMatrix(@NotNull IMatrixView matrixView, int propIndex, File file) throws IOException
     {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
@@ -69,7 +70,7 @@ public class TextMatrixViewExporter
         pw.close();
     }
 
-    public static void exportTable(IMatrixView matrixView, int[] propIndices, File file) throws IOException
+    public static void exportTable(@NotNull IMatrixView matrixView, @NotNull int[] propIndices, File file) throws IOException
     {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 

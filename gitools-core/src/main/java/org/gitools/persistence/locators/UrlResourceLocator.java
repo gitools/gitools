@@ -23,6 +23,8 @@ package org.gitools.persistence.locators;
 
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -37,9 +39,10 @@ public class UrlResourceLocator implements IResourceLocator
     private static Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+:\\/\\/.*");
 
     private URL url;
+    @Nullable
     private File file;
 
-    public UrlResourceLocator(File file) throws PersistenceException
+    public UrlResourceLocator(@NotNull File file) throws PersistenceException
     {
         this.file = file;
         try
@@ -121,6 +124,7 @@ public class UrlResourceLocator implements IResourceLocator
         return file != null;
     }
 
+    @NotNull
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException
     {
@@ -149,6 +153,7 @@ public class UrlResourceLocator implements IResourceLocator
         return new UrlResourceLocator(new File(file.getParentFile(), referenceName));
     }
 
+    @Nullable
     @Override
     public InputStream openInputStream() throws IOException
     {
@@ -161,6 +166,7 @@ public class UrlResourceLocator implements IResourceLocator
         return new FileInputStream(file);
     }
 
+    @Nullable
     @Override
     public OutputStream openOutputStream() throws IOException
     {

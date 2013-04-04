@@ -21,6 +21,8 @@
  */
 package org.gitools.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -42,7 +44,7 @@ public class Figure extends Artifact
         super();
     }
 
-    public Figure(Figure figure)
+    public Figure(@NotNull Figure figure)
     {
         super(figure);
 

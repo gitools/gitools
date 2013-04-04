@@ -30,6 +30,8 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;
@@ -39,6 +41,7 @@ public class BiomartTableWizard extends AbstractWizard
 
     private SaveFilePage saveFilePage;
 
+    @Nullable
     private BiomartService biomartService;
 
     private DatasetConfig biomartConfig;
@@ -51,16 +54,19 @@ public class BiomartTableWizard extends AbstractWizard
 
     private BiomartSourcePage sourcePage;
 
+    @Nullable
     private MartLocation Database;
 
+    @Nullable
     private DatasetInfo Dataset;
 
     public static final String FORMAT_PLAIN = "TSV";
     public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
+    @NotNull
     private FileFormat[] supportedFormats = new FileFormat[]{
-            new FileFormat("Tab Separated Fields", "tsv", FORMAT_PLAIN, true, false),
-            new FileFormat("Tab Separated Fields compressed", "tsv.gz", FORMAT_COMPRESSED_GZ, true, false)
+            new FileFormat("Tab Separated Fields", "tsv", true, false),
+            new FileFormat("Tab Separated Fields compressed", "tsv.gz", true, false)
     };
 
     public BiomartTableWizard()
@@ -157,6 +163,7 @@ public class BiomartTableWizard extends AbstractWizard
         return attrListPage.getAttributeList();
     }
 
+    @NotNull
     public Query getQuery()
     {
 
@@ -199,16 +206,19 @@ public class BiomartTableWizard extends AbstractWizard
         return filteringPage.emptyValuesReplacement();
     }
 
+    @Nullable
     public MartLocation getDatabase()
     {
         return Database;
     }
 
+    @Nullable
     public DatasetInfo getDataset()
     {
         return Dataset;
     }
 
+    @Nullable
     public BiomartService getService()
     {
         return biomartService;

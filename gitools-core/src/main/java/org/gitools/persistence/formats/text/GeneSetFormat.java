@@ -25,10 +25,10 @@ import org.gitools.model.GeneSet;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.HashMap;
@@ -39,11 +39,12 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
 
     public GeneSetFormat()
     {
-        super(FileSuffixes.GENE_SET, MimeTypes.GENE_SET, GeneSet.class);
+        super(FileSuffixes.GENE_SET, GeneSet.class);
     }
 
+    @NotNull
     @Override
-    protected GeneSet readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected GeneSet readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
         progressMonitor.begin("Reading ...", 1);
 
@@ -93,7 +94,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, GeneSet resource, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull GeneSet resource, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
         progressMonitor.begin("Saving matrix...", resource.size());
 

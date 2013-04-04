@@ -22,6 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Sum of logarithms
@@ -36,11 +37,12 @@ public class LogSumAggregator extends AbstractAggregator
     }
 
     @Override
-    public double aggregate(double[] data)
+    public double aggregate(@NotNull double[] data)
     {
         return aggregate(data, Functions.plus, Functions.log, 0);
     }
 
+    @NotNull
     @Override
     public String toString()
     {

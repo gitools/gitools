@@ -22,6 +22,7 @@
 package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -59,7 +60,7 @@ public class ActionManager
         return actionMap.get(id);
     }
 
-    public void addAction(BaseAction action)
+    public void addAction(@NotNull BaseAction action)
     {
         baseActions.add(action);
         actionMap.put(action.getClass().getName(), action);
@@ -71,7 +72,7 @@ public class ActionManager
         actionMap.put(id, action);
     }
 
-    public void addActionsFromClass(Class<?> cls)
+    public void addActionsFromClass(@NotNull Class<?> cls)
     {
         for (Field field : cls.getDeclaredFields())
         {

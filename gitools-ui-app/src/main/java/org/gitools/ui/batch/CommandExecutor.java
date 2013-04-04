@@ -24,6 +24,7 @@ package org.gitools.ui.batch;
 import org.gitools.ui.batch.tools.ITool;
 import org.gitools.ui.batch.tools.LoadTool;
 import org.gitools.ui.batch.tools.VersionTool;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -40,12 +41,12 @@ public class CommandExecutor
         addTool(new VersionTool());
     }
 
-    private static void addTool(ITool tool)
+    private static void addTool(@NotNull ITool tool)
     {
         TOOLS.put(tool.getName().toLowerCase(), tool);
     }
 
-    public boolean checkArguments(String[] args, PrintWriter out)
+    public boolean checkArguments(@NotNull String[] args, @NotNull PrintWriter out)
     {
 
         if (args.length == 0)
@@ -71,12 +72,13 @@ public class CommandExecutor
         return tool.check(toolArgs, out);
     }
 
+    @NotNull
     public String printUsage()
     {
         return errorMsg();
     }
 
-    public void execute(String[] args, PrintWriter out)
+    public void execute(@NotNull String[] args, @NotNull PrintWriter out)
     {
 
         if (args.length == 0)
@@ -108,6 +110,7 @@ public class CommandExecutor
 
     }
 
+    @NotNull
     private static String errorMsg()
     {
         StringBuilder msg = new StringBuilder();

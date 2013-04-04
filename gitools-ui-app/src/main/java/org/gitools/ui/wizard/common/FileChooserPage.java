@@ -22,6 +22,7 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -50,6 +51,7 @@ public class FileChooserPage extends AbstractWizardPage
         this.selectionMode = selectionMode;
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -72,7 +74,7 @@ public class FileChooserPage extends AbstractWizardPage
         fileChooser.addPropertyChangeListener(new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())
                         || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName()))

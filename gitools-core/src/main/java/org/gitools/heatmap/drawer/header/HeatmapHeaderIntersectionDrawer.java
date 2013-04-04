@@ -31,6 +31,7 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;
@@ -51,6 +52,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     /* Map that contains the header that are responsible for drawing the
     * legend of a header from the other dimension (row,cols) as for example:
     * HeatmapColoredLabelsHeader --> draws for --> HeatmapDataHeatmapHeader */
+    @NotNull
     private static Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
 
     static
@@ -71,7 +73,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         updateDrawers(null);
     }
 
-    private boolean isCompatiblePair(HeatmapHeader thisHeader, HeatmapHeader oppositeHeader)
+    private boolean isCompatiblePair(@NotNull HeatmapHeader thisHeader, @NotNull HeatmapHeader oppositeHeader)
     {
         boolean answer = false;
         if (headerRelationsMap.get(thisHeader.getClass()) == oppositeHeader.getClass())
@@ -149,6 +151,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     }
 
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -156,7 +159,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     }
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(Graphics2D g, @NotNull Rectangle box, Rectangle clip)
     {
 
         Dimension d = getSize();
@@ -171,12 +174,14 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 
     }
 
+    @NotNull
     @Override
     public HeatmapPosition getPosition(Point p)
     {
         return new HeatmapPosition(colDrawer.getSize().width, 0);
     }
 
+    @NotNull
     @Override
     public Point getPoint(HeatmapPosition p)
     {
@@ -184,7 +189,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     }
 
 
-    public void drawHeaderIntersection(Graphics2D g, Rectangle headerIntersection)
+    public void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection)
     {
 
         getHeaderDrawers();

@@ -27,6 +27,7 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Artifact;
 import org.gitools.persistence.IResourceLocator;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.List;
@@ -93,6 +94,7 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         return rows;
     }
 
+    @NotNull
     @Deprecated
     public String[] getRowStrings()
     {
@@ -116,12 +118,14 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         return rows.get(index);
     }
 
+    @NotNull
     @Deprecated // Use getRowLabel() instead
     public String getRowString(int index)
     {
         return (String) rows.get(index);
     }
 
+    @NotNull
     @Override
     public String getRowLabel(int index)
     {
@@ -140,6 +144,7 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         return columns;
     }
 
+    @NotNull
     @Deprecated
     public String[] getColumnStrings()
     {
@@ -163,12 +168,14 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         return columns.get(index);
     }
 
+    @NotNull
     @Deprecated // Use getColumnLabel() instead
     public String getColumnString(int index)
     {
         return (String) columns.get(index);
     }
 
+    @NotNull
     @Override
     public String getColumnLabel(int index)
     {
@@ -208,7 +215,6 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
     }
 
     // attributes
-
     @Override
     public List<IElementAttribute> getCellAttributes()
     {
@@ -227,6 +233,37 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         return index.intValue();
     }
 
+    @Override
+    public int getRowIndex(String label)
+    {
+        Object[] rows = getRows().toArray();
+        for (int i = 0; i < rows.length; i++)
+        {
+            String s = (String) rows[i];
+            if (s.equals(label))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int getColumnIndex(String label)
+    {
+        Object[] cols = getColumns().toArray();
+        for (int i = 0; i < cols.length; i++)
+        {
+            String s = (String) cols[i];
+            if (s.equals(label))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @NotNull
     @Override
     public String toString()
     {

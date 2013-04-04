@@ -31,6 +31,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
 {
@@ -47,7 +48,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
 
     public HierarchicalColoredLabelsHeaderWizard(
             Heatmap heatmap, HeatmapDim hdim,
-            HeatmapHierarchicalColoredLabelsHeader header)
+            @NotNull HeatmapHierarchicalColoredLabelsHeader header)
     {
 
         super();
@@ -84,7 +85,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -107,7 +108,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
             JobThread.execute(AppFrame.get(), new JobRunnable()
             {
                 @Override
-                public void run(IProgressMonitor monitor)
+                public void run(@NotNull IProgressMonitor monitor)
                 {
                     try
                     {

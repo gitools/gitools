@@ -24,12 +24,13 @@ package org.gitools.ui.analysis.combination.wizard;
 
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
 import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
@@ -47,6 +48,8 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
@@ -56,7 +59,7 @@ import java.util.Properties;
 public class CombinationAnalysisWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.COMBINATION;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisXmlFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
     private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
@@ -88,6 +91,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
 
     private boolean examplePageEnabled;
     private boolean dataFromMemory;
+    @Nullable
     private List<IElementAttribute> attributes;
     private boolean saveFilePageEnabled;
 
@@ -156,7 +160,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
             saveFilePage.setFormats(new FileFormat[]{
-                    FileFormats.COMBINATION});
+                    CombinationAnalysisXmlFormat.COMBINATION});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -176,7 +180,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
                         monitor.begin("Reading data header ...", 1);
 
@@ -184,8 +188,8 @@ public class CombinationAnalysisWizard extends AbstractWizard
                         {
                             dataFile = dataPage.getFile();
 
-                            String mime = PersistenceManager.get().getMimeFromFile(dataFile.getName());
-                            if (MimeTypes.OBJECT_MATRIX.equals(mime))
+                            IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
+                            if (dataFormat instanceof MultiValueMatrixFormat)
                             {
                                 attributes = MultiValueMatrixFormat.readMetaAttributes(dataFile, monitor);
                             }
@@ -219,7 +223,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("combination", monitor);
@@ -290,6 +294,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         this.dataFromMemory = dataFromMemory;
     }
 
+    @Nullable
     public List<IElementAttribute> getAttributes()
     {
         return attributes;
@@ -310,6 +315,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         this.saveFilePageEnabled = saveFilePageEnabled;
     }
 
+    @NotNull
     public CombinationAnalysis getAnalysis()
     {
         CombinationAnalysis a = new CombinationAnalysis();
@@ -331,7 +337,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         return a;
     }
 
-    private void setAnalysis(CombinationAnalysis a)
+    private void setAnalysis(@NotNull CombinationAnalysis a)
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());

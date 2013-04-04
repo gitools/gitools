@@ -28,6 +28,8 @@ import org.gitools.idmapper.MappingNode;
 import org.gitools.kegg.service.KeggService;
 import org.gitools.kegg.service.domain.KeggPathway;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -39,8 +41,9 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds
         super("KeggPathways", false, true, service, organismId);
     }
 
+    @Nullable
     @Override
-    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException
     {
         if (!KEGG_PATHWAYS.equals(src.getId()))
         {

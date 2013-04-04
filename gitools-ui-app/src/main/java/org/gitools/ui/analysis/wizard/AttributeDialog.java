@@ -22,6 +22,7 @@
 package org.gitools.ui.analysis.wizard;
 
 import org.gitools.model.Attribute;
+import org.jetbrains.annotations.NotNull;
 
 public class AttributeDialog extends javax.swing.JDialog
 {
@@ -45,12 +46,13 @@ public class AttributeDialog extends javax.swing.JDialog
         initComponents();
     }
 
-    public void setAttribute(Attribute attr)
+    public void setAttribute(@NotNull Attribute attr)
     {
         name.setText(attr.getName());
         value.setText(attr.getValue());
     }
 
+    @NotNull
     public Attribute getAttribute()
     {
         return new Attribute(name.getText(), value.getText());

@@ -24,6 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 
@@ -34,13 +35,14 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel
 
     private HeatmapDim hdim;
 
-    public HeatmapHeaderPanel(Heatmap heatmap, boolean horizontal)
+    public HeatmapHeaderPanel(@NotNull Heatmap heatmap, boolean horizontal)
     {
         super(heatmap, new HeatmapHeaderDrawer(heatmap, horizontal));
 
         this.hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
     }
 
+    @NotNull
     public HeatmapHeaderDrawer getHeaderDrawer()
     {
         return (HeatmapHeaderDrawer) getDrawer();

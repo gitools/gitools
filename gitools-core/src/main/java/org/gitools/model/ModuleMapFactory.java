@@ -21,6 +21,8 @@
  */
 package org.gitools.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class ModuleMapFactory
@@ -37,12 +39,13 @@ public class ModuleMapFactory
      * @param itemsOrder            Order in which rows should be loaded, it should have the same size as itemNames
      * @return module map
      */
+    @NotNull
     public static ModuleMap create(
-            String[] itemNames,
-            Map<String, SortedSet<Integer>> moduleItemsMap,
+            @NotNull String[] itemNames,
+            @NotNull Map<String, SortedSet<Integer>> moduleItemsMap,
             boolean includeNonMappedItems,
             int minModuleSize, int maxModuleSize,
-            int[] itemsOrder)
+            @NotNull int[] itemsOrder)
     {
 
         // create a map between the item names and its row position

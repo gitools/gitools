@@ -27,6 +27,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -144,6 +145,7 @@ public class CorrelationFromFilePage extends AbstractWizardPage
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @NotNull
     @Override
     public JComponent createControls()
     {

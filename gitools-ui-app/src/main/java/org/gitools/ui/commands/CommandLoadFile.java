@@ -37,9 +37,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -54,7 +53,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
@@ -67,35 +66,23 @@ public class CommandLoadFile extends AbstractCommand
 {
 
     private String file;
-    private String mime;
     private String rowsAnnotations;
     private String columnsAnnotations;
 
     public CommandLoadFile(String file)
     {
-        this(file, null);
-    }
-
-    public CommandLoadFile(String file, String mime)
-    {
-        this(file, mime, null, null);
+        this(file, null, null);
     }
 
     public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations)
     {
-        this(file, null, rowsAnnotations, columnsAnnotations);
-    }
-
-    public CommandLoadFile(String file, String mime, String rowsAnnotations, String columnsAnnotations)
-    {
         this.file = file;
-        this.mime = mime;
         this.rowsAnnotations = rowsAnnotations;
         this.columnsAnnotations = columnsAnnotations;
     }
 
     @Override
-    public void execute(IProgressMonitor monitor) throws CommandException
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException
     {
 
         monitor.begin("Loading ...", 1);
@@ -132,7 +119,8 @@ public class CommandLoadFile extends AbstractCommand
 
     }
 
-    private AbstractEditor createEditor(IResource resource, IProgressMonitor progressMonitor) throws CommandException
+    @NotNull
+    private AbstractEditor createEditor(IResource resource, @NotNull IProgressMonitor progressMonitor) throws CommandException
     {
 
         if (resource instanceof EnrichmentAnalysis)
@@ -163,7 +151,8 @@ public class CommandLoadFile extends AbstractCommand
         return createHeatmapEditor((IMatrix) resource, progressMonitor);
     }
 
-    private AbstractEditor createHeatmapEditor(IMatrix resource, IProgressMonitor progressMonitor) throws CommandException
+    @NotNull
+    private AbstractEditor createHeatmapEditor(@NotNull IMatrix resource, @NotNull IProgressMonitor progressMonitor) throws CommandException
     {
 
         final IMatrixView matrixView = new MatrixView(resource);
@@ -185,7 +174,7 @@ public class CommandLoadFile extends AbstractCommand
         return new HeatmapEditor(figure);
     }
 
-    private static File download(String file, IProgressMonitor monitor) throws CommandException
+    private static File download(String file, @NotNull IProgressMonitor monitor) throws CommandException
     {
 
         URL url = null;
@@ -234,25 +223,8 @@ public class CommandLoadFile extends AbstractCommand
         return resultFile;
     }
 
-    private static void loadAnnotations(File file, HeatmapDim hdim) throws CommandException
+    private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDim hdim)
     {
-
-        if (file != null)
-        {
-            AnnotationMatrix annMatrix =
-                    null;
-            try
-            {
-                annMatrix = (AnnotationMatrix) PersistenceManager.get().load(
-                        file, MimeTypes.ANNOTATION_MATRIX,
-                        new NullProgressMonitor());
-                annMatrix.setTitle(file.getName());
-            } catch (PersistenceException e)
-            {
-                throw new CommandException(e);
-            }
-
-            hdim.setAnnotations(annMatrix);
-        }
+        hdim.setAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class));
     }
 }

@@ -21,6 +21,8 @@
  */
 package org.gitools.newick;
 
+import org.jetbrains.annotations.NotNull;
+
 public class NewickTree<VT>
 {
 
@@ -50,6 +52,7 @@ public class NewickTree<VT>
         return root.getMaxDepth(0);
     }
 
+    @NotNull
     @Override
     public String toString()
     {

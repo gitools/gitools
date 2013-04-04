@@ -28,6 +28,7 @@ import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -55,7 +56,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
     private ColorChooserLabel maxColorCc;
     private ColorChooserLabel emptyCc;
 
-    public LinearTwoSidedElementDecoratorPanel(Heatmap model)
+    public LinearTwoSidedElementDecoratorPanel(@NotNull Heatmap model)
     {
         super(model);
 
@@ -76,7 +77,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
         valueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {

@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.Nullable;
+
 public class BeanElementFactory implements IElementFactory
 {
 
@@ -31,6 +33,7 @@ public class BeanElementFactory implements IElementFactory
         this.elementClass = elementClass;
     }
 
+    @Nullable
     @Override
     public Object create()
     {

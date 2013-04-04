@@ -23,6 +23,8 @@ package org.gitools.ui.utils;
 
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -65,10 +67,11 @@ public class FileChooserUtils
         }
     }
 
+    @NotNull
     private static FileFilter imageFileFilter = new FileFilter()
     {
         @Override
-        public boolean accept(File f)
+        public boolean accept(@NotNull File f)
         {
             if (f.isDirectory())
             {
@@ -84,6 +87,7 @@ public class FileChooserUtils
             return false;
         }
 
+        @NotNull
         @Override
         public String getDescription()
         {
@@ -91,10 +95,11 @@ public class FileChooserUtils
         }
     };
 
+    @NotNull
     private static FileFilter pdfFileFilter = new FileFilter()
     {
         @Override
-        public boolean accept(File f)
+        public boolean accept(@NotNull File f)
         {
             if (f.isDirectory())
             {
@@ -117,6 +122,7 @@ public class FileChooserUtils
             return false;
         }
 
+        @NotNull
         @Override
         public String getDescription()
         {
@@ -124,11 +130,13 @@ public class FileChooserUtils
         }
     };
 
+    @Nullable
     public static File selectFile(String title, int mode)
     {
         return selectFile(title, Settings.getDefault().getLastPath(), mode);
     }
 
+    @Nullable
     public static File selectFile(String title, String currentPath, int mode)
     {
         JFileChooser fileChooser = new JSystemFileChooser(currentPath);
@@ -157,6 +165,7 @@ public class FileChooserUtils
         return null;
     }
 
+    @Nullable
     public static FileAndFilter selectFile(String title, int mode, FileFilter[] filters)
     {
         return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
@@ -171,7 +180,8 @@ public class FileChooserUtils
      * @param filters
      * @return {file, filter}
      */
-    public static FileAndFilter selectFile(String title, String currentPath, int mode, FileFilter[] filters)
+    @Nullable
+    public static FileAndFilter selectFile(String title, String currentPath, int mode, @Nullable FileFilter[] filters)
     {
         JFileChooser fileChooser = new JSystemFileChooser(currentPath);
 
@@ -212,11 +222,13 @@ public class FileChooserUtils
         return null;
     }
 
+    @Nullable
     public static File selectPath(String title)
     {
         return selectPath(title, Settings.getDefault().getLastPath());
     }
 
+    @Nullable
     public static File selectPath(String title, String currentPath)
     {
         JFileChooser fileChooser = new JSystemFileChooser(currentPath);
@@ -235,6 +247,7 @@ public class FileChooserUtils
         return null;
     }
 
+    @Nullable
     public static File selectImageFile(String title, String currentPath, int mode)
     {
         JFileChooser fileChooser = new JSystemFileChooser(currentPath);
@@ -264,12 +277,14 @@ public class FileChooserUtils
         return null;
     }
 
-    public static String getExtension(File file)
+    @Nullable
+    public static String getExtension(@NotNull File file)
     {
         return getExtension(file.getName());
     }
 
-    public static String getExtension(String fileName)
+    @Nullable
+    public static String getExtension(@NotNull String fileName)
     {
         String ext = null;
         int i = fileName.lastIndexOf('.');
@@ -281,7 +296,7 @@ public class FileChooserUtils
         return ext;
     }
 
-    public static boolean isImageExtension(String extension)
+    public static boolean isImageExtension(@NotNull String extension)
     {
         return extension.equals(tif)
                 || extension.equals(gif)

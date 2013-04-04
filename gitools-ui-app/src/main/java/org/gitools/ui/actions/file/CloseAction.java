@@ -27,6 +27,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -62,7 +63,7 @@ public class CloseAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByEditor(IEditor editor)
+    public boolean isEnabledByEditor(@Nullable IEditor editor)
     {
         return editor != null;
     }

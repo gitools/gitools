@@ -31,19 +31,20 @@ public interface IMatrix extends IResource
 {
 
     // rows
-
     int getRowCount();
 
     String getRowLabel(int index);
 
-    // columns
+    int getRowIndex(String label);
 
+    // columns
     int getColumnCount();
 
     String getColumnLabel(int index);
 
-    // cells
+    int getColumnIndex(String label);
 
+    // cells
     @Deprecated
     Object getCell(int row, int column);
 
@@ -61,4 +62,5 @@ public interface IMatrix extends IResource
     List<IElementAttribute> getCellAttributes();
 
     int getCellAttributeIndex(String id);
+
 }

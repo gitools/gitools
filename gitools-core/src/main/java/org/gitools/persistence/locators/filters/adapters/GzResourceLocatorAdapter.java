@@ -23,6 +23,7 @@ package org.gitools.persistence.locators.filters.adapters;
 
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,17 +39,28 @@ public class GzResourceLocatorAdapter implements IResourceLocator
     private String extension;
     private IResourceLocator resourceLocator;
 
-    public static boolean isAdaptable(String resourceExtension)
+    public static boolean isAdaptable(@NotNull String resourceExtension)
     {
         return resourceExtension.endsWith(".gz");
     }
 
-    public static IResourceLocator getAdaptor(IResourceLocator resourceLocator)
+    public static String removeExtension(@NotNull String resourceExtension)
+    {
+        if (isAdaptable(resourceExtension))
+        {
+            return resourceExtension.substring(0, resourceExtension.length() - 3);
+        }
+
+        return resourceExtension;
+    }
+
+    @NotNull
+    public static IResourceLocator getAdaptor(@NotNull IResourceLocator resourceLocator)
     {
         return new GzResourceLocatorAdapter(resourceLocator);
     }
 
-    private GzResourceLocatorAdapter(IResourceLocator resourceLocator)
+    private GzResourceLocatorAdapter(@NotNull IResourceLocator resourceLocator)
     {
         this.resourceLocator = resourceLocator;
         this.name = resourceLocator.getName().replace(".gz", "");
@@ -91,12 +103,14 @@ public class GzResourceLocatorAdapter implements IResourceLocator
         return resourceLocator.isWritable();
     }
 
+    @NotNull
     @Override
     public InputStream openInputStream() throws IOException
     {
         return new GZIPInputStream(resourceLocator.openInputStream());
     }
 
+    @NotNull
     @Override
     public OutputStream openOutputStream() throws IOException
     {

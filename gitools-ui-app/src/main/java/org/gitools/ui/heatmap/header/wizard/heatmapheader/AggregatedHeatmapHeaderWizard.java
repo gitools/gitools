@@ -47,6 +47,7 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     private HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
-    public AggregatedHeatmapHeaderWizard(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean applyToRows)
+    public AggregatedHeatmapHeaderWizard(Heatmap heatmap, @NotNull HeatmapDataHeatmapHeader header, boolean applyToRows)
     {
         super();
 
@@ -265,7 +266,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         header.setTitle(sb.toString());
     }
 
-    private Map<String, Integer> generateMap(IMatrixView data)
+    @NotNull
+    private Map<String, Integer> generateMap(@NotNull IMatrixView data)
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
         if (applyToRows)
@@ -282,6 +284,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     }
 
 
+    @NotNull
     private Heatmap aggregateToHeatmap()
     {
 
@@ -374,7 +377,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -400,6 +403,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         });
     }
 
+    @NotNull
     private Heatmap annotationToHeatmap() throws Exception
     {
 
@@ -557,11 +561,11 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
 
     private double aggregateValue(
-            IMatrixView matrixView,
-            int[] selectedIndices,
+            @NotNull IMatrixView matrixView,
+            @NotNull int[] selectedIndices,
             int idx,
             int valueIndex,
-            IAggregator aggregator,
+            @NotNull IAggregator aggregator,
             double[] valueBuffer)
     {
 

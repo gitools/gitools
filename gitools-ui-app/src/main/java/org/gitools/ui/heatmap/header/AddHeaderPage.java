@@ -28,6 +28,8 @@ import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +44,7 @@ public class AddHeaderPage extends AbstractWizardPage
             extends DefaultListCellRenderer
     {
 
+        @Nullable
         private Map<Object, ImageIcon> icons = null;
 
         public IconListRenderer(Map<Object, ImageIcon> icons)
@@ -49,9 +52,10 @@ public class AddHeaderPage extends AbstractWizardPage
             this.icons = icons;
         }
 
+        @NotNull
         @Override
         public Component getListCellRendererComponent(
-                JList list, Object value, int index,
+                JList list, @NotNull Object value, int index,
                 boolean isSelected, boolean cellHasFocus)
         {
 
@@ -101,9 +105,13 @@ public class AddHeaderPage extends AbstractWizardPage
         }
     }
 
+    @NotNull
     public static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    @NotNull
     public static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    @NotNull
     public static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    @NotNull
     public static String ANNOTATION_HEATMAP = "Heatmap from annotation";
 
 

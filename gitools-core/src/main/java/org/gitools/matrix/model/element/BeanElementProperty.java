@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -61,8 +63,9 @@ public class BeanElementProperty extends AbstractElementAttribute
     static class MethodAdapter extends XmlAdapter<String, Method>
     {
 
+        @NotNull
         @Override
-        public String marshal(Method v) throws Exception
+        public String marshal(@NotNull Method v) throws Exception
         {
             final String className = v.getDeclaringClass().getCanonicalName();
             Class<?> returnType = v.getReturnType();
@@ -73,7 +76,7 @@ public class BeanElementProperty extends AbstractElementAttribute
         }
 
         @Override
-        public Method unmarshal(String v) throws Exception
+        public Method unmarshal(@NotNull String v) throws Exception
         {
             final String[] names = v.split(":");
             final String className = names[0];

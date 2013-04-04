@@ -27,6 +27,7 @@ import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class BinaryColorScale extends NumericColorScale
     private Color minColor;
     private Color maxColor;
 
+    @NotNull
     private static List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
 
     static
@@ -50,6 +52,7 @@ public class BinaryColorScale extends NumericColorScale
         equalCmp.add(CutoffCmp.ABS_EQ);
     }
 
+    @NotNull
     private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
 
     {
@@ -57,6 +60,7 @@ public class BinaryColorScale extends NumericColorScale
         notequalCmp.add(CutoffCmp.ABS_NE);
     }
 
+    @NotNull
     private static List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
 
     {
@@ -68,7 +72,7 @@ public class BinaryColorScale extends NumericColorScale
         absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
-    public BinaryColorScale(double cutoff, CutoffCmp cmp)
+    public BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp)
     {
         super();
 
@@ -89,6 +93,7 @@ public class BinaryColorScale extends NumericColorScale
         return satisfies ? getMaxColor() : getMinColor();
     }
 
+    @NotNull
     @Override
     public double[] getPoints()
     {
@@ -248,6 +253,7 @@ public class BinaryColorScale extends NumericColorScale
     }
 
 
+    @NotNull
     @Override
     public IAggregator defaultAggregator()
     {

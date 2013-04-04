@@ -21,6 +21,8 @@
  */
 package org.gitools.idmapper;
 
+import org.jetbrains.annotations.Nullable;
+
 public class StringMappingNode implements MappingNode
 {
 
@@ -51,7 +53,7 @@ public class StringMappingNode implements MappingNode
     }
 
     @Override
-    public boolean equals(Object obj)
+    public boolean equals(@Nullable Object obj)
     {
         if (obj == null || !(obj instanceof MappingNode))
         {

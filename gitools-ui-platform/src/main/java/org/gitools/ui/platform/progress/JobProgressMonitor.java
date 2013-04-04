@@ -23,6 +23,7 @@ package org.gitools.ui.platform.progress;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.PrintStream;
@@ -143,6 +144,7 @@ public class JobProgressMonitor extends StreamProgressMonitor
         //TODO dlg.append(text);
     }
 
+    @NotNull
     @Override
     protected IProgressMonitor createSubtaskMonitor(
             IProgressMonitor parentMonitor,

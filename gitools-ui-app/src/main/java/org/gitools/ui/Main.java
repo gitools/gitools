@@ -29,6 +29,7 @@ import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.settings.Settings;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -37,7 +38,7 @@ import java.util.logging.Logger;
 public class Main
 {
 
-    public static void main(String[] args)
+    public static void main(@NotNull String[] args)
     {
 
         CommandExecutor cmdExecutor = new CommandExecutor();

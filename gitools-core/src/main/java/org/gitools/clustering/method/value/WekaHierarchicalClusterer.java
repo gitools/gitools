@@ -21,6 +21,7 @@
  */
 package org.gitools.clustering.method.value;
 
+import org.jetbrains.annotations.NotNull;
 import weka.clusterers.AbstractClusterer;
 import weka.core.*;
 import weka.core.Capabilities.Capability;
@@ -146,7 +147,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      */
     class TupleComparator implements Comparator<Tuple>
     {
-        public int compare(Tuple o1, Tuple o2)
+        public int compare(@NotNull Tuple o1, @NotNull Tuple o2)
         {
             if (o1.m_fDist < o2.m_fDist)
             {
@@ -200,7 +201,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         m_bPrintNewick = bPrintNewick;
     }
 
-    public void setLinkType(SelectedTag newLinkType)
+    public void setLinkType(@NotNull SelectedTag newLinkType)
     {
         if (newLinkType.getTags() == TAGS_LINK_TYPE)
         {
@@ -208,6 +209,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         }
     }
 
+    @NotNull
     public SelectedTag getLinkType()
     {
         return new SelectedTag(m_nLinkType, TAGS_LINK_TYPE);
@@ -227,6 +229,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         double m_fRightLength = 0;
         double m_fHeight = 0;
 
+        @NotNull
         public String toString(int attIndex)
         {
             DecimalFormat myFormatter = new DecimalFormat("#.#####");
@@ -258,6 +261,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             }
         }
 
+        @NotNull
         public String toString2(int attIndex)
         {
 
@@ -333,7 +337,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
 
     @Override
-    public void buildClusterer(Instances data) throws Exception
+    public void buildClusterer(@NotNull Instances data) throws Exception
     {
         //		/System.err.println("Method " + m_nLinkType);
         m_instances = data;
@@ -721,7 +725,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * calculate distance the first time when setting up the distance matrix *
      */
-    double getDistance0(Vector<Integer> cluster1, Vector<Integer> cluster2)
+    double getDistance0(@NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2)
     {
         double fBestDist = Double.MAX_VALUE;
         switch (m_nLinkType)
@@ -763,7 +767,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @param cluster2 dito for second cluster
      * @return distance between clusters based on link type
      */
-    double getDistance(double[][] fDistance, Vector<Integer> cluster1, Vector<Integer> cluster2)
+    double getDistance(double[][] fDistance, @NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2)
     {
         double fBestDist = Double.MAX_VALUE;
         switch (m_nLinkType)
@@ -928,7 +932,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * calculated error sum-of-squares for instances wrt centroid *
      */
-    double calcESS(Vector<Integer> cluster)
+    double calcESS(@NotNull Vector<Integer> cluster)
     {
         double[] fValues1 = new double[m_instances.numAttributes()];
         for (int i = 0; i < cluster.size(); i++)
@@ -983,6 +987,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         return m_nClusterNr[iBestInstance];
     }
 
+    @NotNull
     @Override
     /** create distribution with all clusters having zero probability, except the
      * cluster the instance is assigned to.
@@ -1000,6 +1005,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         return p;
     }
 
+    @NotNull
     @Override
     public Capabilities getCapabilities()
     {
@@ -1153,6 +1159,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return an array of strings suitable for passing to setOptions()
      */
+    @NotNull
     public String[] getOptions()
     {
 
@@ -1215,6 +1222,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         return options;
     }
 
+    @NotNull
     public String toString()
     {
         StringBuffer buf = new StringBuffer();
@@ -1292,6 +1300,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         m_bDistanceIsBranchLength = bDistanceIsHeight;
     }
 
+    @NotNull
     public String distanceIsBranchLengthTipText()
     {
         return "If set to false, the distance between clusters is interpreted " +
@@ -1307,6 +1316,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return tip text for this property suitable for
      *         displaying in the explorer/experimenter gui
      */
+    @NotNull
     public String debugTipText()
     {
         return "If set to true, classifier may output additional info to " +
@@ -1316,6 +1326,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * @return a string to describe the NumClusters
      */
+    @NotNull
     public String numClustersTipText()
     {
         return "Sets the number of clusters. " +
@@ -1325,6 +1336,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * @return a string to describe the print Newick flag
      */
+    @NotNull
     public String printNewickTipText()
     {
         return "Flag to indicate whether the cluster should be print in Newick format." +
@@ -1336,6 +1348,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * @return a string to describe the distance function
      */
+    @NotNull
     public String distanceFunctionTipText()
     {
         return "Sets the distance function, which measures the distance between two individual. " +
@@ -1346,6 +1359,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * @return a string to describe the Link type
      */
+    @NotNull
     public String linkTypeTipText()
     {
         return "Sets the method used to measure the distance between two clusters.\n" +
@@ -1377,6 +1391,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return The string.
      */
+    @NotNull
     public String globalInfo()
     {
         return

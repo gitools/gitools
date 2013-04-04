@@ -21,6 +21,8 @@
  */
 package org.gitools.newick;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -30,11 +32,12 @@ class ReverseListIterator<T> implements Iterable<T>, Iterator<T>
 
     private ListIterator<T> iterator;
 
-    public ReverseListIterator(List<T> list)
+    public ReverseListIterator(@NotNull List<T> list)
     {
         this.iterator = list.listIterator(list.size());
     }
 
+    @NotNull
     @Override
     public Iterator<T> iterator()
     {

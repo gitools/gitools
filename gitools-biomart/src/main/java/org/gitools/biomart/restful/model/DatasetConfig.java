@@ -21,6 +21,7 @@
  */
 package org.gitools.biomart.restful.model;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
@@ -120,6 +121,7 @@ public class DatasetConfig
     @XmlElement(name = "AttributePage")
     private List<AttributePage> attributePages = new ArrayList<AttributePage>();
 
+    @Nullable
     public static DatasetConfig load(Reader reader)
     {
         DatasetConfig config = null;

@@ -29,10 +29,10 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,11 +45,12 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
     public AnnotationMatrixFormat()
     {
-        super(FileSuffixes.ANNOTATION_MATRIX, MimeTypes.ANNOTATION_MATRIX, AnnotationMatrix.class);
+        super(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
     }
 
+    @NotNull
     @Override
-    protected AnnotationMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected AnnotationMatrix readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         AnnotationMatrix matrix = new AnnotationMatrix();

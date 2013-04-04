@@ -27,6 +27,7 @@ import org.gitools.newick.NewickNode;
 import org.gitools.newick.NewickParserException;
 import org.gitools.newick.NewickTree;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.attributeSelection.GreedyStepwise;
@@ -72,7 +73,7 @@ public class ClusterUtils
      * from one side to the other and recording the order that attributes
      * are selected.
      */
-    public static void dataReductionProcess(MatrixViewWeka data, IProgressMonitor monitor) throws Exception, IOException
+    public static void dataReductionProcess(@NotNull MatrixViewWeka data, @NotNull IProgressMonitor monitor) throws Exception, IOException
     {
 
         if (data.numAttributes() > MAX_ATTR || data.numAttributes() < MIN_ATTR)
@@ -106,6 +107,7 @@ public class ClusterUtils
      * @param name
      * @return
      */
+    @NotNull
     public static FastVector addAttributes(Integer numAttributes)
     {
 
@@ -123,7 +125,7 @@ public class ClusterUtils
      * @param matrixView
      * @param clusterResults
      */
-    public static void updateVisibility(IMatrixView matrixView, Map<String, int[]> clusterResults)
+    public static void updateVisibility(@NotNull IMatrixView matrixView, @NotNull Map<String, int[]> clusterResults)
     {
 
         int[] visibleData = matrixView.getVisibleColumns();
@@ -153,8 +155,9 @@ public class ClusterUtils
      * @param clusterParameters
      * @return
      */
+    @NotNull
     @Deprecated // It is not necessary to check for transposed !!!
-    public static Instances buildInstanceStructure(ClusteringData clusterData, boolean transposed)
+    public static Instances buildInstanceStructure(@NotNull ClusteringData clusterData, boolean transposed)
     {
 
         FastVector attr = null;
@@ -171,8 +174,9 @@ public class ClusterUtils
         return new Instances("matrixToCluster", attr, 0);
     }
 
+    @NotNull
     @Deprecated // It is not necessary to check for transposed !!!
-    public static List<String> getLabels(ClusteringData clusterData, boolean transpose)
+    public static List<String> getLabels(@NotNull ClusteringData clusterData, boolean transpose)
     {
 
         List<String> labels = new ArrayList<String>();
@@ -194,7 +198,7 @@ public class ClusterUtils
      (i.e: 3, 2, 10  -> 02, 03, 10)
      */
     @Deprecated // Use a Java Formatter and or StringBuilder !!!
-    public static String valueToString(Integer value, Integer maxLength)
+    public static String valueToString(@NotNull Integer value, Integer maxLength)
     {
         String num = value.toString();
         int numLenght = num.length();
@@ -236,7 +240,8 @@ public class ClusterUtils
 	}
 	 */
 
-    public static List<Integer> getTreeLeaves(NewickTree tree) throws NumberFormatException, IOException, NewickParserException
+    @NotNull
+    public static List<Integer> getTreeLeaves(@NotNull NewickTree tree) throws NumberFormatException, IOException, NewickParserException
     {
 
         List<Integer> instancesCluster = new ArrayList<Integer>();
@@ -250,7 +255,7 @@ public class ClusterUtils
     }
 
 /*
-	public void dataReductionProcess2(MatrixViewWeka data) throws Exception, IOException {
+    public void dataReductionProcess2(MatrixViewWeka data) throws Exception, IOException {
 
 		if (data.numAttributes() > MAX_ATTR) return;
 

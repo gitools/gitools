@@ -22,6 +22,7 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -34,12 +35,12 @@ public class FilteredListPage extends AbstractWizardPage
     {
     }
 
-    public FilteredListPage(Object[] listData)
+    public FilteredListPage(@NotNull Object[] listData)
     {
         panel.setListData(listData);
     }
 
-    public FilteredListPage(Object[] listData, int selectionMode)
+    public FilteredListPage(@NotNull Object[] listData, int selectionMode)
     {
         panel.setListData(listData);
         panel.setSelectionMode(selectionMode);
@@ -76,7 +77,7 @@ public class FilteredListPage extends AbstractWizardPage
         return panel.getFilterText();
     }
 
-    protected void setListData(Object[] listData)
+    protected void setListData(@NotNull Object[] listData)
     {
         panel.setListData(listData);
     }

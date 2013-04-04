@@ -26,6 +26,7 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 
@@ -41,13 +42,14 @@ public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel
     }
 
 
+    @NotNull
     private HeatmapHeaderIntersectionDrawer getHeaderDrawer()
     {
         return (HeatmapHeaderIntersectionDrawer) getDrawer();
     }
 
     @Override
-    protected void heatmapPropertyChanged(PropertyChangeEvent evt)
+    protected void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
     {
         super.heatmapPropertyChanged(evt);
 

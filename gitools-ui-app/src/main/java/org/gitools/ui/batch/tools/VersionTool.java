@@ -22,6 +22,7 @@
 package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.Main;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 
@@ -33,6 +34,7 @@ public class VersionTool implements ITool
         super();
     }
 
+    @NotNull
     @Override
     public String getName()
     {
@@ -40,7 +42,7 @@ public class VersionTool implements ITool
     }
 
     @Override
-    public boolean run(String[] args, PrintWriter out)
+    public boolean run(String[] args, @NotNull PrintWriter out)
     {
         out.println("Gitools " + Main.class.getPackage().getImplementationVersion());
         return true;

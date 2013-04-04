@@ -21,6 +21,8 @@
  */
 package org.gitools.utils.colorscale;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import java.io.Serializable;
 
@@ -76,7 +78,7 @@ public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint
     }
 
     @Override
-    public int compareTo(ColorScalePoint o)
+    public int compareTo(@NotNull ColorScalePoint o)
     {
         if (this.value < o.getValue())
         {

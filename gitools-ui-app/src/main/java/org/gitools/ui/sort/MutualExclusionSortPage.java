@@ -37,6 +37,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -123,6 +124,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         colsPattBtn.setEnabled(cs);
     }
 
+    @NotNull
     protected String readNamesFromFile(File file) throws IOException
     {
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -169,6 +171,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         colsPattFld.setText(page.getPatternTitle());
     }
 
+    @NotNull
     public FilterDimension getFilterDimension()
     {
         if (rowsRb.isSelected())
@@ -181,7 +184,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         }
     }
 
-    public void setFilterDimension(FilterDimension fd)
+    public void setFilterDimension(@NotNull FilterDimension fd)
     {
         if (fd.equals(FilterDimension.COLUMNS))
         {
@@ -208,6 +211,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         }
     }
 
+    @NotNull
     private ArrayList<String> getSelected()
     {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
@@ -235,6 +239,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         return selected;
     }
 
+    @NotNull
     private ArrayList<String> getUnselected()
     {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
@@ -277,7 +282,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         return unselected;
     }
 
-    public void setValues(List<String> values)
+    public void setValues(@NotNull List<String> values)
     {
         Iterator<String> it = values.iterator();
         while (it.hasNext())
@@ -287,6 +292,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
 
     }
 
+    @NotNull
     public List<String> getValues()
     {
         List<String> values = new ArrayList<String>();

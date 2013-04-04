@@ -34,6 +34,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -126,7 +127,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
         }
 
         @Override
-        public void execute(IProgressMonitor monitor)
+        public void execute(@NotNull IProgressMonitor monitor)
         {
 
             Socket socket = null;
@@ -183,7 +184,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
 
         }
 
-        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException
+        private void waitServerResponse(@NotNull InputStream in, @NotNull IProgressMonitor monitor) throws UnsupportedOperationException, IOException
         {
             while (in.available() == 0)
             {

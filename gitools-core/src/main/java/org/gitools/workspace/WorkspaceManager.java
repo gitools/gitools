@@ -28,6 +28,7 @@ import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -57,7 +58,8 @@ public class WorkspaceManager
         instance = ws;
     }
 
-    public static final WorkspaceManager createManager(File xmlPath)
+    @NotNull
+    public static final WorkspaceManager createManager(@NotNull File xmlPath)
     {
         File basePath = xmlPath.getParentFile();
         if (!basePath.exists())
@@ -115,6 +117,7 @@ public class WorkspaceManager
         return workspace;
     }
 
+    @NotNull
     public Workspace loadWorkspace(File file) throws WorkspaceManagerException
     {
         try
@@ -135,7 +138,7 @@ public class WorkspaceManager
         saveWorkspace(new Workspace(path));
     }
 
-    public void saveWorkspace(Workspace workspace)
+    public void saveWorkspace(@NotNull Workspace workspace)
     {
         try
         {
@@ -156,7 +159,7 @@ public class WorkspaceManager
         }
     }
 
-    public Project createProject(File basePath, Project project) throws PersistenceException
+    public Project createProject(@NotNull File basePath, Project project) throws PersistenceException
     {
         if (!basePath.exists())
         {
@@ -168,7 +171,7 @@ public class WorkspaceManager
         return project;
     }
 
-    public Project createProject(File basePath) throws PersistenceException
+    public Project createProject(@NotNull File basePath) throws PersistenceException
     {
         return createProject(basePath, new Project());
     }

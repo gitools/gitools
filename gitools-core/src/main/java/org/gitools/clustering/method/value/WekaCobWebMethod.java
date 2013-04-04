@@ -26,6 +26,8 @@ import org.gitools.clustering.ClusteringException;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import weka.clusterers.Cobweb;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -48,8 +50,9 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
         classIndex = 0; // especial initialization value for weka's cobweb
     }
 
+    @Nullable
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException
+    public ClusteringResults cluster(ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
     {
         try
         {
@@ -169,7 +172,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
         this.seed = seed;
     }
 
-    private void configure(Cobweb clusterer)
+    private void configure(@NotNull Cobweb clusterer)
     {
 
         clusterer.setAcuity(acuity);

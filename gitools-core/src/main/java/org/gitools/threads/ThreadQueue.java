@@ -22,6 +22,8 @@
 package org.gitools.threads;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -54,7 +56,7 @@ public class ThreadQueue
 
     public void execute(
             final ThreadSlot threadSlot,
-            final Runnable runnable)
+            @NotNull final Runnable runnable)
     {
 
         executor.execute(new Runnable()

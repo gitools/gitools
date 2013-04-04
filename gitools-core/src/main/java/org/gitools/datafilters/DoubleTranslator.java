@@ -21,16 +21,20 @@
  */
 package org.gitools.datafilters;
 
+import org.jetbrains.annotations.Nullable;
+
 public class DoubleTranslator implements ValueTranslator<Double>
 {
 
+    @Nullable
     @Override
     public Double stringToValue(String str)
     {
         return stringToValue(str, true);
     }
 
-    public Double stringToValue(String str, boolean allowNull)
+    @Nullable
+    public Double stringToValue(@Nullable String str, boolean allowNull)
     {
         if (allowNull)
         {
@@ -51,7 +55,7 @@ public class DoubleTranslator implements ValueTranslator<Double>
     }
 
     @Override
-    public String valueToString(Double value)
+    public String valueToString(@Nullable Double value)
     {
         if (value == null)
         {

@@ -33,6 +33,8 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,17 +62,18 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 
     protected Map<String, Integer> dataColIndices;
 
+    @Nullable
     protected IColorScale dataScale;
 
     protected CutoffCmp cutoffCmp;
     protected double cutoffValue;
 
-    public OverlappingTablesPanel(OverlappingAnalysis analysis, Heatmap heatmap)
+    public OverlappingTablesPanel(@NotNull OverlappingAnalysis analysis, Heatmap heatmap)
     {
         super(analysis, heatmap);
 
         // TODO transpose ???
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getSourceData().get();
         final int numRows = data.getRowCount();
         final int numCols = data.getColumnCount();
 
@@ -95,6 +98,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         }
     }
 
+    @NotNull
     @Override
     protected VelocityContext createModel()
     {
@@ -102,7 +106,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         int row = mv.getLeadSelectionRow();
         int col = mv.getLeadSelectionColumn();
 
-        IMatrix data = analysis.getData();
+        IMatrix data = analysis.getSourceData().get();
 
         String template = DATA_TEMPLATE;
         VelocityContext context = new VelocityContext();
@@ -158,8 +162,9 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
+    @NotNull
     private List<VelocityContext> createDataCellElements(
-            IMatrixView mv, int row, int col, final IMatrix data)
+            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data)
     {
 
         final int valueIndex = 0;
@@ -237,8 +242,9 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return elements;
     }
 
+    @NotNull
     private List<VelocityContext> createDataColumnElements(
-            IMatrixView mv, String colName, final IMatrix data)
+            IMatrixView mv, String colName, @NotNull final IMatrix data)
     {
 
         final int valueIndex = 0;
@@ -297,8 +303,9 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return elements;
     }
 
-    private VelocityContext createDataCellModel(VelocityContext context,
-                                                IMatrixView mv, int row, int col, IMatrix data)
+    @NotNull
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
+                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -323,8 +330,9 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
-    private VelocityContext createDataColumnModel(VelocityContext context,
-                                                  IMatrixView mv, int col, IMatrix data)
+    @NotNull
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
+                                                  @NotNull IMatrixView mv, int col, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -349,8 +357,9 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
-    private VelocityContext createDataRowModel(VelocityContext context,
-                                               IMatrixView mv, int row, IMatrix data)
+    @NotNull
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
+                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -381,6 +390,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
+    @NotNull
     private VelocityContext createResultsElement(IMatrixView mv, int row, int col)
     {
 
@@ -395,7 +405,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
 
         //TODO
         /*int n = MatrixUtils.intValue(mv.getCellValue(row, col, "n"));
-		double score = MatrixUtils.doubleValue(mv.getCellValue(row, col, "score"));
+        double score = MatrixUtils.doubleValue(mv.getCellValue(row, col, "score"));
 		double se = MatrixUtils.doubleValue(mv.getCellValue(row, col, "se"));*/
 
         // LinearColorScale scale = new LinearColorScale();
@@ -403,14 +413,15 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         VelocityContext e = new VelocityContext();
 
 		/*e.put("n", n);
-		e.put("score", fmt.format(score));
+        e.put("score", fmt.format(score));
 		e.put("score_color", ColorUtils.colorToRGBHtml(scale.valueColor(score)));
 		e.put("se", fmt.format(se));*/
 
         return e;
     }
 
-    private VelocityContext createResultsCellModel(VelocityContext context, IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col)
     {
         VelocityContext e = createResultsElement(mv, row, col);
         e.put("name", mv.getRowLabel(row));
@@ -435,7 +446,8 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
-    private VelocityContext createResultsColumnModel(VelocityContext context, IMatrixView mv, int col)
+    @NotNull
+    private VelocityContext createResultsColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -463,7 +475,8 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
-    private VelocityContext createResultsRowModel(VelocityContext context, IMatrixView mv, int row)
+    @NotNull
+    private VelocityContext createResultsRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row)
     {
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)
@@ -495,7 +508,7 @@ public class OverlappingTablesPanel extends AbstractTablesPanel<OverlappingAnaly
         return context;
     }
 
-    private String truncateString(String s, int len)
+    private String truncateString(@NotNull String s, int len)
     {
         return s.substring(0, Math.min(s.length(), len));
     }

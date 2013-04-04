@@ -28,8 +28,11 @@ import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
@@ -42,7 +45,8 @@ import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -67,7 +71,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
     private boolean updatingModel = false;
 
-    public HeatmapPropertiesHeaderPanel(boolean rowMode, Heatmap heatmap)
+    public HeatmapPropertiesHeaderPanel(boolean rowMode, @NotNull Heatmap heatmap)
     {
         super(heatmap);
         this.rowMode = rowMode;
@@ -247,7 +251,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     }
 
     @Override
-    protected void heatmapPropertyChange(PropertyChangeEvent evt)
+    protected void heatmapPropertyChange(@NotNull PropertyChangeEvent evt)
     {
         if (updatingModel)
         {
@@ -273,6 +277,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         }
     }
 
+    @Nullable
     private File getSelectedPath()
     {
         JFileChooser fileChooser = new JFileChooser(
@@ -580,12 +585,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
             if (file != null)
             {
-                AnnotationMatrix annMatrix =
-                        (AnnotationMatrix) PersistenceManager.get().load(
-                                file, MimeTypes.ANNOTATION_MATRIX,
-                                new NullProgressMonitor());
-
-                hdim.setAnnotations(annMatrix);
+                IResourceLocator annotationsLocator = new UrlResourceLocator(file);
+                IResourceFormat annotationsFormat = PersistenceManager.get().getFormat(file.getName(), AnnotationMatrix.class);
+                hdim.setAnnotations(new ResourceReference<AnnotationMatrix>(annotationsLocator, annotationsFormat));
 
                 annFile.setText(file.getName());
             }
@@ -658,6 +660,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             return name;
         }
 
+        @NotNull
         public String getPattern()
         {
             return "${" + name + "}";

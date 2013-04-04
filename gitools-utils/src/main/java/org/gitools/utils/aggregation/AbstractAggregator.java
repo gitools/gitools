@@ -23,11 +23,12 @@ package org.gitools.utils.aggregation;
 
 import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.function.DoubleFunction;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractAggregator implements IAggregator
 {
 
-    protected double aggregate(double[] data, DoubleDoubleFunction reduceFunc, DoubleFunction mapFunc, double nanValue)
+    protected double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue)
     {
         if (data.length == 0)
         {
@@ -48,7 +49,7 @@ public abstract class AbstractAggregator implements IAggregator
         return value;
     }
 
-    protected double aggregate(double[] data, DoubleDoubleFunction reduceFunc, double nanValue)
+    protected double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue)
     {
         if (data.length == 0)
         {

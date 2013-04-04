@@ -27,11 +27,14 @@ import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.IdTypeXmlAdapter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.model.AbstractModel;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
@@ -50,7 +53,6 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
     public static final String IDTYPE_CHANGED = "idType";
     public static final String HEADERS_CHANGED = "headers";
     public static final String HEADER_SIZE_CHANGED = "headerSize";
-    public static final String CLUSTER_SETS_CHANGED = "clusterSets";
     public static final String GRID_PROPERTY_CHANGED = "gridProperty";
     public static final String ANNOTATIONS_CHANGED = "annotations";
     public static final String HIGHLIGHTING_CHANGED = "highlighting";
@@ -58,8 +60,8 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
     protected IdType idType;
 
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected AnnotationMatrix annotations;
+    @XmlElement
+    protected ResourceReference<AnnotationMatrix> annotations;
 
     @XmlTransient
     protected List<HeatmapHeader> headers;
@@ -88,7 +90,7 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
         highlightedLabels = new HashSet<String>();
     }
 
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(@NotNull PropertyChangeEvent evt)
     {
         Object src = evt.getSource();
         String pname = evt.getPropertyName();
@@ -122,7 +124,7 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
         return Collections.unmodifiableList(headers);
     }
 
-    public void addHeader(HeatmapHeader header)
+    public void addHeader(@NotNull HeatmapHeader header)
     {
         if (header.getHeatmapDim() == null)
         {
@@ -213,14 +215,15 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
         firePropertyChange(GRID_PROPERTY_CHANGED, old, gridColor);
     }
 
+    @Nullable
     public AnnotationMatrix getAnnotations()
     {
-        return annotations;
+        return (annotations == null) ? null : annotations.get();
     }
 
-    public void setAnnotations(AnnotationMatrix annotations)
+    public void setAnnotations(ResourceReference<AnnotationMatrix> annotations)
     {
-        AnnotationMatrix old = this.annotations;
+        ResourceReference<AnnotationMatrix> old = this.annotations;
         this.annotations = annotations;
         firePropertyChange(ANNOTATIONS_CHANGED, old, annotations);
     }

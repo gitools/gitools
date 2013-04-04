@@ -21,6 +21,8 @@
  */
 package org.gitools.heatmap.drawer;
 
+import org.jetbrains.annotations.NotNull;
+
 public class HeatmapPosition
 {
 
@@ -37,7 +39,7 @@ public class HeatmapPosition
         this.column = column;
     }
 
-    HeatmapPosition(HeatmapPosition pos)
+    HeatmapPosition(@NotNull HeatmapPosition pos)
     {
         this.row = pos.row;
         this.column = pos.column;

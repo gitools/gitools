@@ -23,12 +23,14 @@ package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public interface IWizardPage
 {
 
+    @Nullable
     String getId();
 
     void setId(String id);
@@ -39,6 +41,7 @@ public interface IWizardPage
 
     boolean isComplete();
 
+    @Nullable
     JComponent createControls();
 
     void updateControls();

@@ -25,9 +25,12 @@ import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.go.wizard.GoModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -37,6 +40,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -72,30 +76,35 @@ public class ImportGoModulesAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
                     ModuleMap mmap = importer.importMap(monitor);
                     if (!monitor.isCancelled())
                     {
-                        String mime = wz.getSaveFilePage().getFormat().getMime();
+                        String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
-                        if (MimeTypes.GENE_MATRIX.equals(mime)
-                                || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(mime))
+                        IResourceLocator resourceLocator = new UrlResourceLocator(file);
+                        if (FileSuffixes.GENE_MATRIX.equals(extension)
+                                || FileSuffixes.GENE_MATRIX_TRANSPOSED.equals(extension))
                         {
 
                             BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
-                            PersistenceManager.get().store(file, mime, mat, monitor);
+
+                            IResourceFormat format = PersistenceManager.get().getFormat(extension, mat.getClass());
+
+                            PersistenceManager.get().store(resourceLocator, mat, format, monitor);
                         }
                         else
                         {
-                            PersistenceManager.get().store(file, mime, mmap, monitor);
+                            IResourceFormat format = PersistenceManager.get().getFormat(extension, mmap.getClass());
+                            PersistenceManager.get().store(resourceLocator, mmap, format, monitor);
                         }
 
-                        // FIXME Put this in other place !!!
-                        String prefix = PersistenceUtils.getFileName(file.getName());
-                        file = new File(file.getParentFile(), prefix + "_annotations.tsv");
+                        //TODO Use PersistenceManager to save this file
+                        String prefix = PersistenceUtils.getFileName(resourceLocator.getName());
+                        File annotations = new File(file.getParentFile(), prefix + "_annotations.tsv");
                         monitor.begin("Saving module annotations ...", mmap.getModuleCount());
                         PrintWriter pw = new PrintWriter(file);
                         pw.println("id\tname");

@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.dialog.attributes;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -38,7 +40,7 @@ public class AttributesSelectionModel<T> implements ListModel
 
     private List<ListDataListener> listeners;
 
-    public AttributesSelectionModel(T[] attributes)
+    public AttributesSelectionModel(@NotNull T[] attributes)
     {
         this.attributes = attributes;
         this.selectedAttributes = new ArrayList<Integer>();
@@ -83,7 +85,7 @@ public class AttributesSelectionModel<T> implements ListModel
         return Collections.unmodifiableList(selectedAttributes);
     }
 
-    public void setSelectedIndices(List<Integer> indices)
+    public void setSelectedIndices(@NotNull List<Integer> indices)
     {
         List<Integer> unselectAttributes = new ArrayList<Integer>(selectedAttributes);
         unselect(unselectAttributes);
@@ -95,6 +97,7 @@ public class AttributesSelectionModel<T> implements ListModel
         return Collections.unmodifiableList(unselectedAttributes);
     }
 
+    @NotNull
     public List<T> getSelectedAttributes()
     {
         List<T> attr = new ArrayList<T>(selectedAttributes.size());
@@ -104,6 +107,7 @@ public class AttributesSelectionModel<T> implements ListModel
         return attr;
     }
 
+    @NotNull
     public List<T> getUnselectedAttributes()
     {
         List<T> attr = new ArrayList<T>(unselectedAttributes.size());
@@ -113,7 +117,7 @@ public class AttributesSelectionModel<T> implements ListModel
         return attr;
     }
 
-    public void select(List<Integer> indices)
+    public void select(@NotNull List<Integer> indices)
     {
         for (Integer i : indices)
         {
@@ -126,7 +130,7 @@ public class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void unselect(List<Integer> indices)
+    public void unselect(@NotNull List<Integer> indices)
     {
         for (Integer i : indices)
         {
@@ -139,7 +143,7 @@ public class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void moveUp(List<Integer> indices)
+    public void moveUp(@NotNull List<Integer> indices)
     {
 
         for (Integer index : indices)
@@ -157,7 +161,7 @@ public class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void moveDown(List<Integer> indices)
+    public void moveDown(@NotNull List<Integer> indices)
     {
 
         for (Integer index : indices)

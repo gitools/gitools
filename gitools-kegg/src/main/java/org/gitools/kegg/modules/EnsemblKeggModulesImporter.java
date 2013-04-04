@@ -43,6 +43,8 @@ import org.gitools.obo.OBOEvent;
 import org.gitools.obo.OBOEventTypes;
 import org.gitools.obo.OBOStreamReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,10 +107,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     private EnsemblKeggVersion version;
 
+    @Nullable
     private EnsemblKeggOrganism organism;
 
     private EnsemblKeggModuleCategory modCategory;
 
+    @Nullable
     private EnsemblKeggFeatureCategory featCategory;
 
     private boolean keggEnabled;
@@ -117,16 +121,20 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     // internal state
 
+    @Nullable
     private BiomartService biomartService;
 
+    @Nullable
     private MartLocation martLocation;
 
     private KeggService keggService;
 
+    @Nullable
     private Organism[] cachedOrganisms;
 
     private ModuleCategory[] moduleCategories;
 
+    @Nullable
     private FeatureCategory[] cachedFeatures;
 
     private Map<String, EnsemblKeggFeatureCategory> keggFeatMap;
@@ -152,6 +160,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         moduleCategories = mc.toArray(new ModuleCategory[mc.size()]);
     }
 
+    @Nullable
     private BiomartService getBiomartService() throws BiomartServiceException, ModulesImporterException
     {
         if (biomartService != null)
@@ -168,6 +177,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 BiomartServiceFactory.createService(version.getSource());
     }
 
+    @Nullable
     private MartLocation getMart() throws BiomartServiceException, ModulesImporterException
     {
         BiomartService bs = getBiomartService();
@@ -187,6 +197,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return martLocation;
     }
 
+    @NotNull
     @Override
     public Version[] getVersions()
     {
@@ -216,6 +227,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return sources.toArray(new Version[sources.size()]);
     }
 
+    @Nullable
     @Override
     public Organism[] getOrganisms() throws ModulesImporterException
     {
@@ -301,6 +313,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return moduleCategories;
     }
 
+    @Nullable
     @Override
     public FeatureCategory[] getFeatureCategories() throws ModulesImporterException
     {
@@ -484,6 +497,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         cachedFeatures = null;
     }
 
+    @Nullable
     @Override
     public Organism getOrganism()
     {
@@ -498,6 +512,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         cachedFeatures = null;
     }
 
+    @Nullable
     @Override
     public FeatureCategory getFeatureCategory()
     {
@@ -512,7 +527,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     // Import
 
-    public ModuleMap importMap(IProgressMonitor monitor) throws ModulesImporterException
+    @Nullable
+    public ModuleMap importMap(@NotNull IProgressMonitor monitor) throws ModulesImporterException
     {
         ModuleMap mmap = null;
 
@@ -708,7 +724,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
 
-    private Map<String, String> retrieveKeggsModules(final String src, IProgressMonitor monitor) throws ModulesImporterException
+    @NotNull
+    private Map<String, String> retrieveKeggsModules(final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
     {
         final Map<String, String> desc = new HashMap<String, String>();
         monitor.begin("Getting KEGG pathways ...", 1);
@@ -729,7 +746,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return desc;
     }
 
-    private Map<String, String> retrieveGoModulesEns62(final String src, IProgressMonitor monitor) throws ModulesImporterException
+    @NotNull
+    private Map<String, String> retrieveGoModulesEns62(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
     {
         final Map<String, String> desc = new HashMap<String, String>();
 
@@ -756,7 +774,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 }
 
                 @Override
-                public void line(String[] fields) throws Exception
+                public void line(@NotNull String[] fields) throws Exception
                 {
                     if (fields.length == 3)
                     {
@@ -783,7 +801,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return desc;
     }
 
-    private Map<String, String> retrieveGoModules(final String src, IProgressMonitor monitor) throws ModulesImporterException
+    @NotNull
+    private Map<String, String> retrieveGoModules(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
     {
         final Map<String, String> desc = new HashMap<String, String>();
 
@@ -806,7 +825,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 }
 
                 @Override
-                public void line(String[] fields) throws Exception
+                public void line(@NotNull String[] fields) throws Exception
                 {
                     if (fields.length == 2)
                     {
@@ -829,7 +848,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return desc;
     }
 
-    private boolean isCategory(String src, EnsemblKeggModuleCategory[] categories)
+    private boolean isCategory(String src, @NotNull EnsemblKeggModuleCategory[] categories)
     {
         for (EnsemblKeggModuleCategory c : categories)
             if (c.getId().equals(src))
@@ -840,7 +859,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return false;
     }
 
-    private Map<String, Set<String>> retrieveGoTree(IProgressMonitor monitor) throws MalformedURLException, IOException
+    @NotNull
+    private Map<String, Set<String>> retrieveGoTree(@NotNull IProgressMonitor monitor) throws MalformedURLException, IOException
     {
         monitor.begin("Reading Gene Ontology graph ...", 1);
 
@@ -924,12 +944,13 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return tree;
     }
 
-    private MappingData plainGoData(MappingData data, Map<String, Set<String>> tree, IProgressMonitor monitor) throws MalformedURLException, IOException
+    @NotNull
+    private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws MalformedURLException, IOException
     {
         monitor.begin("Plaining Gene Ontology hierarchy ...", 1);
 
 		/*Map<String, Set<String>> m = data.getMap();
-		for (String key : m.keySet()) {
+        for (String key : m.keySet()) {
 			System.out.print(key + " --> ");
 			for (String v : m.get(key))
 				System.out.print(v + ", ");
@@ -955,10 +976,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     private void plainGoTerm(String id,
-                             Set<String> path,
-                             Set<String> dstIds,
-                             Map<String, Set<String>> map,
-                             Map<String, Set<String>> childrenTree)
+                             @NotNull Set<String> path,
+                             @NotNull Set<String> dstIds,
+                             @NotNull Map<String, Set<String>> map,
+                             @NotNull Map<String, Set<String>> childrenTree)
     {
 
         if (path.contains(id))

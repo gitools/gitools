@@ -34,6 +34,7 @@ import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -51,7 +52,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     }
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
 
         // Clear background
@@ -208,7 +209,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
     }
 
-    private void paintLegend(Graphics2D g, FontMetrics fm, AffineTransform fontAT, GenericFormatter gf, Color labelColor, int clusterYStart, int clusterYEnd, String legend, int fontOffset, int x)
+    private void paintLegend(@NotNull Graphics2D g, @NotNull FontMetrics fm, AffineTransform fontAT, @NotNull GenericFormatter gf, Color labelColor, int clusterYStart, int clusterYEnd, String legend, int fontOffset, int x)
     {
         String formattedLegend = gf.format(legend);
         int stringWidth = fm.stringWidth(formattedLegend);
@@ -222,6 +223,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
     }
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -249,8 +251,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
     }
 
+    @NotNull
     @Override
-    public HeatmapPosition getPosition(Point p)
+    public HeatmapPosition getPosition(@NotNull Point p)
     {
         HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
@@ -280,8 +283,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         return new HeatmapPosition(row, col);
     }
 
+    @NotNull
     @Override
-    public Point getPoint(HeatmapPosition p)
+    public Point getPoint(@NotNull HeatmapPosition p)
     {
         HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
@@ -314,7 +318,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     }
 
     @Override
-    public void drawHeaderLegend(Graphics2D g, Rectangle rect, HeatmapHeader oppositeHeatmapHeader)
+    public void drawHeaderLegend(@NotNull Graphics2D g, @NotNull Rectangle rect, @NotNull HeatmapHeader oppositeHeatmapHeader)
     {
         int gridSize;
         int height;

@@ -27,6 +27,7 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class PValueColorScale extends NumericColorScale
 
     }
 
+    @NotNull
     @Override
     public double[] getPoints()
     {
@@ -159,6 +161,7 @@ public class PValueColorScale extends NumericColorScale
 
     }
 
+    @NotNull
     @Override
     public IAggregator defaultAggregator()
     {

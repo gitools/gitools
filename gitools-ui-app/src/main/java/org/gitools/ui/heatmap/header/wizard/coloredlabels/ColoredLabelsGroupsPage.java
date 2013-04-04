@@ -23,6 +23,8 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -40,8 +42,10 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
     class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor
     {
 
+        @NotNull
         private JButton delegate = new JButton();
 
+        @Nullable
         Color savedColor;
 
         public ColorChooserEditor()
@@ -70,7 +74,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
                 }
 
                 @Override
-                public void mousePressed(MouseEvent e)
+                public void mousePressed(@NotNull MouseEvent e)
                 {
                     Component c = e.getComponent();
                     Point p = new Point(c.getX(), c.getY());
@@ -125,7 +129,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e)
+                public void keyReleased(@NotNull KeyEvent e)
                 {
                     if (e.getKeyCode() == KeyEvent.VK_SPACE)
                     {
@@ -140,12 +144,13 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
             delegate.addKeyListener(keyListener);
         }
 
+        @Nullable
         public Object getCellEditorValue()
         {
             return savedColor;
         }
 
-        private void changeColor(Color color, int row, int col)
+        private void changeColor(@Nullable Color color, int row, int col)
         {
             if (color != null)
             {
@@ -156,6 +161,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
             }
         }
 
+        @NotNull
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
                                                      int row, int column)
         {
@@ -185,7 +191,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
 
     private ColoredLabel[] coloredLabels;
 
-    public ColoredLabelsGroupsPage(ColoredLabel[] coloredLabels)
+    public ColoredLabelsGroupsPage(@NotNull ColoredLabel[] coloredLabels)
     {
 
         this.coloredLabels = coloredLabels;
@@ -214,13 +220,14 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         updateButtons();
     }
 
-    public void setColoredLabels(ColoredLabel[] coloredLabels)
+    public void setColoredLabels(@NotNull ColoredLabel[] coloredLabels)
     {
         this.coloredLabels = coloredLabels;
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.addAllLabels(coloredLabels);
     }
 
+    @NotNull
     public ColoredLabel[] getColoredLabels()
     {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();

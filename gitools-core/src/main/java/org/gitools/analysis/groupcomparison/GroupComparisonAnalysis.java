@@ -25,21 +25,20 @@ import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
 import org.gitools.stats.test.factory.TestFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
@@ -47,24 +46,24 @@ import java.util.List;
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis implements Serializable
 {
-
-
     protected String sizeAttrName;
-    //protected int sizeAttrIndex;
 
     protected String pvalueAttrName;
-    //protected int pvalueAttrIndex;
 
     protected boolean transposeData;
 
     protected int attributeIndex;
     //which attribute of the matrix should be taken as value
 
+    @NotNull
     public static String COLUMN_GROUPING_BY_VALUE = "Group by value";
+    @NotNull
     public static String COLUMN_GROUPING_BY_LABEL = "Group by label";
 
+    @Nullable
     protected String columnGrouping = null;
 
+    @NotNull
     protected String dataFile = "";
 
     @XmlTransient
@@ -94,15 +93,14 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
     /**
      * Data
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected IMatrix data;
+    protected ResourceReference<IMatrix> data;
 
     /**
      * Results
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected IMatrix results;
+    protected ResourceReference<IMatrix> results;
 
+    @Nullable
     public MTC getMtc()
     {
         MTC mtcObj = MTCFactory.createFromName(mtc);
@@ -174,11 +172,13 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
         this.transposeData = transposeData;
     }
 
+    @Nullable
     public String getColumnGrouping()
     {
         return columnGrouping;
     }
 
+    @NotNull
     public static String[] getColumnGroupingMethods()
     {
         return new String[]{
@@ -234,30 +234,23 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
         this.group2 = group2;
     }
 
-    public IMatrix getData()
+    public ResourceReference<IMatrix> getData()
     {
         return data;
     }
 
 
-    public void setData(IMatrix data)
+    public void setData(ResourceReference<IMatrix> data)
     {
-        if (data instanceof IMatrixView)
-        {
-            this.data = MatrixFactory.create((IMatrixView) data);
-        }
-        else
-        {
-            this.data = data;
-        }
+        this.data = data;
     }
 
-    public IMatrix getResults()
+    public ResourceReference<IMatrix> getResults()
     {
         return results;
     }
 
-    public void setResults(IMatrix results)
+    public void setResults(ResourceReference<IMatrix> results)
     {
         this.results = results;
     }

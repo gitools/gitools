@@ -35,6 +35,8 @@ import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.ZScoreResult;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -71,6 +73,7 @@ public class Heatmap extends Figure implements Serializable, IResource
     @Deprecated
     public static final String GRID_PROPERTY_CHANGED = "gridProperty";
 
+    @Nullable
     @XmlJavaTypeAdapter(HeatmapMatrixViewXmlAdapter.class)
     private IMatrixView matrixView;
 
@@ -107,7 +110,7 @@ public class Heatmap extends Figure implements Serializable, IResource
                 new HeatmapTextLabelsHeader());
     }
 
-    public Heatmap(IMatrixView matrixView)
+    public Heatmap(@NotNull IMatrixView matrixView)
     {
         this(
                 matrixView,
@@ -117,8 +120,8 @@ public class Heatmap extends Figure implements Serializable, IResource
     }
 
     public Heatmap(
-            IMatrixView matrixView,
-            ElementDecorator cellDecorator,
+            @NotNull IMatrixView matrixView,
+            @NotNull ElementDecorator cellDecorator,
             HeatmapTextLabelsHeader rowsLabelsHeader,
             HeatmapTextLabelsHeader columnLabelsHeader)
     {
@@ -176,7 +179,8 @@ public class Heatmap extends Figure implements Serializable, IResource
         this.locator = locator;
     }
 
-    private static ElementDecorator[] getCellDecoratorsFromDecorator(ElementDecorator cellDecorator, int attributesNb)
+    @NotNull
+    private static ElementDecorator[] getCellDecoratorsFromDecorator(@NotNull ElementDecorator cellDecorator, int attributesNb)
     {
         ElementDecorator[] cellDecorators = new ElementDecorator[attributesNb];
         for (int i = 0; i < attributesNb; i++)
@@ -187,8 +191,9 @@ public class Heatmap extends Figure implements Serializable, IResource
         return cellDecorators;
     }
 
+    @NotNull
     private static ElementDecorator[] cellDecoratorFromMatrix(
-            IMatrixView matrixView)
+            @NotNull IMatrixView matrixView)
     {
 
         ElementDecorator decorator = null;
@@ -232,12 +237,13 @@ public class Heatmap extends Figure implements Serializable, IResource
 
     // Matrix View
 
+    @Nullable
     public final IMatrixView getMatrixView()
     {
         return matrixView;
     }
 
-    public final void setMatrixView(IMatrixView matrixView)
+    public final void setMatrixView(@NotNull IMatrixView matrixView)
     {
         this.matrixView.removePropertyChangeListener(propertyListener);
         matrixView.addPropertyChangeListener(propertyListener);
@@ -269,7 +275,7 @@ public class Heatmap extends Figure implements Serializable, IResource
         firePropertyChange(VALUE_DIMENSION_SWITCHED, this.cellDecorators[oldindex], this.cellDecorators[newindex]);
     }
 
-    public void replaceActiveDecorator(ElementDecorator newDecorator) throws Exception
+    public void replaceActiveDecorator(@NotNull ElementDecorator newDecorator) throws Exception
     {
         // removes the actual ElementDecorator for the propertyIndex displayed 
         // and puts the new one. Needs to have proper propertyIndex set!
@@ -290,7 +296,7 @@ public class Heatmap extends Figure implements Serializable, IResource
         }
     }
 
-    public final void setCellDecorators(ElementDecorator[] decorators)
+    public final void setCellDecorators(@NotNull ElementDecorator[] decorators)
     {
         // The ElementDecorator Type has been changed and thus a new
         // set of ElementDecorators has to be put in place (for each
@@ -361,7 +367,7 @@ public class Heatmap extends Figure implements Serializable, IResource
         return rowDim;
     }
 
-    public void setRowDim(HeatmapDim rowDim)
+    public void setRowDim(@NotNull HeatmapDim rowDim)
     {
         this.rowDim.removePropertyChangeListener(propertyListener);
         rowDim.addPropertyChangeListener(propertyListener);
@@ -375,7 +381,7 @@ public class Heatmap extends Figure implements Serializable, IResource
         return columnDim;
     }
 
-    public void setColumnDim(HeatmapDim columnDim)
+    public void setColumnDim(@NotNull HeatmapDim columnDim)
     {
         this.columnDim.removePropertyChangeListener(propertyListener);
         columnDim.addPropertyChangeListener(propertyListener);
@@ -404,7 +410,7 @@ public class Heatmap extends Figure implements Serializable, IResource
         String label = matrixView.getColumnLabel(index);
         return label;
         /*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
-		columnDim.getLabelsHeader().decorate(decoration, label);
+        columnDim.getLabelsHeader().decorate(decoration, label);
 		return decoration.getText();*/
     }
 
@@ -413,11 +419,12 @@ public class Heatmap extends Figure implements Serializable, IResource
     {
         String label = matrixView.getRowLabel(index);
         return label;
-		/*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
+        /*HeatmapLabelsDecoration decoration = new HeatmapLabelsDecoration();
 		rowDim.getLabelsHeader().decorate(decoration, label);
 		return decoration.getText();*/
     }
 
+    @NotNull
     @Deprecated //FIXME
     public String getColumnLinkUrl(int index)
     {
@@ -428,6 +435,7 @@ public class Heatmap extends Figure implements Serializable, IResource
 		return decoration.getUrl();*/
     }
 
+    @NotNull
     @Deprecated //FIXME
     public String getRowLinkUrl(int index)
     {

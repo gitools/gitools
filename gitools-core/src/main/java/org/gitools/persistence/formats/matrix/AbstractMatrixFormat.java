@@ -28,6 +28,8 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Properties;
@@ -43,12 +45,13 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
     private Properties properties;
     private String[] populationLabels;
     private Double backgroundValue;
+    @Nullable
     private Map<Integer, ValueTranslator> valueTranslatorMap;
 
 
-    public AbstractMatrixFormat(String extension, String mime, Class<T> resourceClass)
+    public AbstractMatrixFormat(String extension, Class<T> resourceClass)
     {
-        super(extension, mime, resourceClass);
+        super(extension, resourceClass);
     }
 
     @Override
@@ -58,7 +61,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         // Save properties
@@ -121,6 +124,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return value translator
      */
+    @Nullable
     protected ValueTranslator getValueTranslator()
     {
         return getValueTranslator(0);
@@ -132,6 +136,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return value translator
      */
+    @Nullable
     @Deprecated
     protected ValueTranslator getValueTranslator(int i)
     {

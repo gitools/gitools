@@ -31,6 +31,7 @@ import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.workspace.Workspace;
 import org.gitools.workspace.WorkspaceManager;
 import org.gitools.workspace.WorkspaceProjectRef;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,6 +99,7 @@ public class WorkspaceManagerTest extends TestCase
         WorkspaceManager.getDefault().saveWorkspace(ws);
     }
 
+    @Nullable
     protected File openResourceFile(String resourceName)
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

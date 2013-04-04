@@ -25,6 +25,7 @@ import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,6 +69,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog
     }
 
 
+    @NotNull
     @Override
     protected List<JButton> createButtons()
     {

@@ -25,11 +25,10 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.*;
 import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
 import org.gitools.persistence.formats.matrix.AbstractMatrixFormat;
 import org.gitools.persistence.formats.matrix.AbstractTextMatrixFormat;
@@ -37,6 +36,8 @@ import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.persistence.formats.modulemap.AbstractModuleMapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -44,32 +45,32 @@ import java.util.*;
 public class EnrichmentCommand extends HtestCommand
 {
 
-    protected String modulesMime;
+    protected IResourceFormat modulesFormat;
     protected String modulesPath;
 
     public EnrichmentCommand(
             EnrichmentAnalysis analysis,
-            String dataMime,
+            IResourceFormat dataFormat,
             String dataFile,
             int valueIndex,
             String populationPath,
             Double populationDefaultValue,
-            String modulesMime,
+            IResourceFormat modulesFormat,
             String modulesFile,
             String workdir,
             String fileName)
     {
 
-        super(analysis, dataMime, dataFile, valueIndex,
+        super(analysis, dataFormat, dataFile, valueIndex,
                 populationPath, populationDefaultValue,
                 workdir, fileName);
 
-        this.modulesMime = modulesMime;
+        this.modulesFormat = modulesFormat;
         this.modulesPath = modulesFile;
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         try
@@ -83,10 +84,10 @@ public class EnrichmentCommand extends HtestCommand
             monitor.info("Modules: " + modulesPath);
 
             loadDataAndModules(
-                    dataMime, dataPath,
+                    dataFormat, dataPath,
                     valueIndex,
                     populationPath,
-                    modulesMime, modulesPath,
+                    modulesFormat, modulesPath,
                     enrichAnalysis,
                     monitor.subtask());
 
@@ -122,23 +123,23 @@ public class EnrichmentCommand extends HtestCommand
     /**
      * Loads data and modules taking into account filtering
      *
-     * @param dataFileMime
+     * @param dataFormat
      * @param dataFileName
      * @param valueIndex
-     * @param modulesFileMime
+     * @param modulesFormat
      * @param modulesFileName
      * @param analysis
      * @param monitor
      * @throws PersistenceException
      */
     private void loadDataAndModules(
-            String dataFileMime,
+            IResourceFormat dataFormat,
             String dataFileName,
             int valueIndex,
-            String populationFileName,
-            String modulesFileMime,
+            @Nullable String populationFileName,
+            IResourceFormat modulesFormat,
             String modulesFileName,
-            EnrichmentAnalysis analysis,
+            @NotNull EnrichmentAnalysis analysis,
             IProgressMonitor monitor)
             throws PersistenceException
     {
@@ -151,7 +152,8 @@ public class EnrichmentCommand extends HtestCommand
         {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(populationFileName));
 
-            GeneSet popLabels = PersistenceManager.get().load(resourceLocator, GeneSet.class, monitor);
+            IResourceFormat<GeneSet> resourceFormat = PersistenceManager.get().getFormat(populationFileName, GeneSet.class);
+            GeneSet popLabels = PersistenceManager.get().load(resourceLocator, resourceFormat, monitor);
 
             populationLabels = popLabels.toArray(new String[popLabels.size()]);
         }
@@ -178,19 +180,22 @@ public class EnrichmentCommand extends HtestCommand
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
 
-        BaseMatrix dataMatrix = loadDataMatrix(dataLocator, dataProps, monitor);
+        ResourceReference<BaseMatrix> dataMatrix = new ResourceReference<BaseMatrix>(dataLocator, this.dataFormat);
+        dataMatrix.setProperties(dataProps);
+        dataMatrix.load(monitor);
 
         // Load modules
-
         IResourceLocator modLocator = new UrlResourceLocator(new File(modulesFileName));
 
         Properties modProps = new Properties();
         modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-        modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.getRowStrings());
+        modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.get().getRowStrings());
         modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
         modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
 
-        ModuleMap moduleMap = loadModuleMap(modLocator, modProps, monitor);
+        ResourceReference<ModuleMap> moduleMap = new ResourceReference<ModuleMap>(modLocator, this.modulesFormat);
+        moduleMap.setProperties(modProps);
+        moduleMap.load(monitor);
 
         // Filter rows if DiscardNonMappedRows is enabled
         if (analysis.isDiscardNonMappedRows())
@@ -199,8 +204,8 @@ public class EnrichmentCommand extends HtestCommand
             BaseMatrix fmatrix = null;
             try
             {
-                fmatrix = dataMatrix.getClass().newInstance();
-                fmatrix.setCellAdapter(dataMatrix.getCellAdapter());
+                fmatrix = dataMatrix.get().getClass().newInstance();
+                fmatrix.setCellAdapter(dataMatrix.get().getCellAdapter());
             } catch (Exception ex)
             {
                 throw new PersistenceException("Error filtering data matrix.", ex);
@@ -208,37 +213,40 @@ public class EnrichmentCommand extends HtestCommand
 
             List<Integer> rows = new ArrayList<Integer>();
 
-            String[] names = moduleMap.getItemNames();
+            String[] names = moduleMap.get().getItemNames();
             Set<String> backgroundNames = new HashSet<String>();
             backgroundNames.addAll(Arrays.asList(names));
 
-            for (int i = 0; i < dataMatrix.getRowCount(); i++)
-                if (backgroundNames.contains(dataMatrix.getRowLabel(i)))
+            for (int i = 0; i < dataMatrix.get().getRowCount(); i++)
+                if (backgroundNames.contains(dataMatrix.get().getRowLabel(i)))
                 {
                     rows.add(i);
                 }
 
             int numRows = rows.size();
-            int numColumns = dataMatrix.getColumnCount();
+            int numColumns = dataMatrix.get().getColumnCount();
 
             fmatrix.make(numRows, numColumns);
-            fmatrix.setColumns(dataMatrix.getColumns());
+            fmatrix.setColumns(dataMatrix.get().getColumns());
 
             for (int ri = 0; ri < numRows; ri++)
             {
                 int srcRow = rows.get(ri);
-                fmatrix.setRow(ri, dataMatrix.getRowLabel(srcRow));
+                fmatrix.setRow(ri, dataMatrix.get().getRowLabel(srcRow));
                 for (int ci = 0; ci < numColumns; ci++)
                 {
-                    Object value = dataMatrix.getCellValue(srcRow, ci, 0);
+                    Object value = dataMatrix.get().getCellValue(srcRow, ci, 0);
                     fmatrix.setCellValue(ri, ci, 0, value);
                 }
             }
 
-            dataMatrix = fmatrix;
+            analysis.setData(new ResourceReference<IMatrix>("data", fmatrix));
+        }
+        else
+        {
+            analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
         }
 
-        analysis.setData(dataMatrix);
-        analysis.setModuleMap(moduleMap);
+        analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", moduleMap.get()));
     }
 }

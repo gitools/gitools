@@ -24,6 +24,7 @@ package org.gitools.heatmap.xml;
 
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -37,8 +38,9 @@ public class HeatmapMatrixViewXmlAdapter extends XmlAdapter<MatrixView, IMatrixV
         return v;
     }
 
+    @NotNull
     @Override
-    public MatrixView marshal(IMatrixView v) throws Exception
+    public MatrixView marshal(@NotNull IMatrixView v) throws Exception
     {
         return new MatrixView(v);
     }

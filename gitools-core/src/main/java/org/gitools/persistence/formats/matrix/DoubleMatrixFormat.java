@@ -25,22 +25,23 @@ import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 public class DoubleMatrixFormat extends AbstractTextMatrixFormat<DoubleMatrix>
 {
 
     public DoubleMatrixFormat()
     {
-        super(FileSuffixes.DOUBLE_MATRIX, MimeTypes.DOUBLE_MATRIX, DoubleMatrix.class);
+        super(FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class);
     }
 
     public DoubleMatrixFormat(String extension, int skipLines, Integer... skipColumns)
     {
-        super(extension, MimeTypes.DOUBLE_MATRIX, DoubleMatrix.class, skipLines, skipColumns);
+        super(extension, DoubleMatrix.class, skipLines, skipColumns);
     }
 
+    @NotNull
     @Override
     protected DoubleMatrix createEntity()
     {

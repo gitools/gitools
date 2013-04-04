@@ -30,7 +30,7 @@ public class ModulesToMatrixConversion implements ConversionDelegate
 {
 
     @Override
-    public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception
+    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception
     {
         return MatrixUtils.moduleMapToMatrix((ModuleMap) src);
     }

@@ -26,6 +26,7 @@ import cern.jet.stat.Probability;
 import org.gitools.stats.calc.Statistic;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.ZScoreResult;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class ZscoreTest extends AbstractTest
 {
@@ -45,12 +46,14 @@ public abstract class ZscoreTest extends AbstractTest
         this.statCalc = statCalc;
     }
 
+    @NotNull
     @Override
     public String getName()
     {
         return "zscore-" + statCalc.getName();
     }
 
+    @NotNull
     @Override
     public Class<? extends CommonResult> getResultClass()
     {
@@ -63,9 +66,10 @@ public abstract class ZscoreTest extends AbstractTest
         this.population = population;
     }
 
+    @NotNull
     @Override
     public CommonResult processTest(
-            String condName, DoubleMatrix1D condItems,
+            String condName, @NotNull DoubleMatrix1D condItems,
             String groupName, int[] groupItemIndices)
     {
 

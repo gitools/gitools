@@ -34,6 +34,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +164,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
         return canFinish;
     }
 
+    @NotNull
     public GroupComparisonAnalysis getAnalysis()
     {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();

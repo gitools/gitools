@@ -27,12 +27,14 @@ import org.gitools.model.decorator.ElementDecoratorFactory;
 import org.gitools.model.decorator.ElementDecoratorNames;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
 
 
 public class HeatmapUtil
 {
 
-    public static Heatmap createFromMatrixView(IMatrixView matrixView)
+    @NotNull
+    public static Heatmap createFromMatrixView(@NotNull IMatrixView matrixView)
     {
         final Heatmap figure = new Heatmap(matrixView);
         final int propertiesNb = figure.getMatrixView().getCellAdapter().getPropertyCount();
@@ -65,7 +67,7 @@ public class HeatmapUtil
             figure.getColumnDim().setGridEnabled(false);
         }
         /*else if (matrix instanceof ObjectMatrix) {
-		}*/
+        }*/
 
         return figure;
     }

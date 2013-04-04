@@ -21,9 +21,12 @@
  */
 package org.gitools.datafilters;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface ValueTranslator<T>
 {
 
+    @Nullable
     T stringToValue(String str);
 
     String valueToString(T value);

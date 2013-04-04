@@ -26,6 +26,8 @@ import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -72,21 +74,22 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
     private static IElementAdapter adapter;
 
+    @NotNull
     private List<T> listObjects = new ArrayList<T>();
 
     private DefaultListModel model;
 
     public LoadDecoratorDialog(java.awt.Window parent,
                                IElementAdapter adapter,
-                               T[] objects)
+                               @NotNull T[] objects)
     {
         this(parent, adapter, objects, null);
     }
 
     public LoadDecoratorDialog(java.awt.Window parent,
                                IElementAdapter adapter,
-                               T[] objects,
-                               Class<? extends ElementDecorator> decoratorClass)
+                               @NotNull T[] objects,
+                               @Nullable Class<? extends ElementDecorator> decoratorClass)
     {
 
 
@@ -184,6 +187,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         return headerPanel;
     }
 
+    @NotNull
     public ElementDecorator getSelectedDecorator()
     {
         ElementDecorator d = (ElementDecorator) list.getSelectedValue();
@@ -191,7 +195,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         return d;
     }
 
-    private int resetList(String filter)
+    private int resetList(@NotNull String filter)
     {
         model.clear();
         for (T o : listObjects)

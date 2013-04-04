@@ -26,6 +26,8 @@ import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.GenericClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,8 +56,9 @@ public class AnnPatClusteringMethod implements ClusteringMethod
     /**
      * Execute the clustering and return the results
      */
+    @Nullable
     @Override
-    public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor)
+    public ClusteringResults cluster(@NotNull ClusteringData data, @NotNull IProgressMonitor monitor)
     {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
 

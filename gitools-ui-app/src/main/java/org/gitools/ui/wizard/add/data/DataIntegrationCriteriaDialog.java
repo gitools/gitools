@@ -25,6 +25,8 @@ import org.gitools.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -87,7 +89,7 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog
                                          String[] attributeNames,
                                          CutoffCmp[] comparators,
                                          String[] operators,
-                                         List<DataIntegrationCriteria> initialCriteriaList,
+                                         @Nullable List<DataIntegrationCriteria> initialCriteriaList,
                                          String setToValue)
     {
 
@@ -223,6 +225,7 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog
                 }
         )
         {
+            @NotNull
             Class[] types = new Class[]{
                     java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class
             };

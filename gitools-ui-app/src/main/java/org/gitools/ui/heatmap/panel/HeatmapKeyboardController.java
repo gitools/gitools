@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
@@ -39,7 +40,7 @@ public class HeatmapKeyboardController extends KeyAdapter
     private int selEnd;
     private int selLast;
 
-    HeatmapKeyboardController(HeatmapPanel panel)
+    HeatmapKeyboardController(@NotNull HeatmapPanel panel)
     {
         this.panel = panel;
         this.hm = panel.getHeatmap();
@@ -50,7 +51,7 @@ public class HeatmapKeyboardController extends KeyAdapter
     }
 
     @Override
-    public void keyPressed(KeyEvent e)
+    public void keyPressed(@NotNull KeyEvent e)
     {
         IMatrixView mv = hm.getMatrixView();
 
@@ -106,7 +107,7 @@ public class HeatmapKeyboardController extends KeyAdapter
     }
 
     //TODO shift selection
-    private void changeLead(KeyEvent e)
+    private void changeLead(@NotNull KeyEvent e)
     {
 
         int modifiers = e.getModifiers();
@@ -293,7 +294,7 @@ public class HeatmapKeyboardController extends KeyAdapter
         }
     }
 
-    private void moveLead(KeyEvent e)
+    private void moveLead(@NotNull KeyEvent e)
     {
         IMatrixView mv = hm.getMatrixView();
         int row = mv.getLeadSelectionRow();
@@ -328,7 +329,7 @@ public class HeatmapKeyboardController extends KeyAdapter
         }
     }
 
-    private void moveSelection(KeyEvent e)
+    private void moveSelection(@NotNull KeyEvent e)
     {
         IMatrixView mv = hm.getMatrixView();
         int row = mv.getLeadSelectionRow();
@@ -371,7 +372,7 @@ public class HeatmapKeyboardController extends KeyAdapter
         }
     }
 
-    private void selectLead(KeyEvent e)
+    private void selectLead(@NotNull KeyEvent e)
     {
         IMatrixView mv = hm.getMatrixView();
         int row = mv.getLeadSelectionRow();

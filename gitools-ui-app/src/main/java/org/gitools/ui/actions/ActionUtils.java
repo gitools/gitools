@@ -27,6 +27,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.Nullable;
 
 @Deprecated // TODO we should find a better place/way to do this
 public class ActionUtils
@@ -39,6 +40,7 @@ public class ActionUtils
                 .getSelectedEditor();
     }
 
+    @Nullable
     public static IMatrixView getMatrixView()
     {
         AbstractEditor editor = getSelectedEditor();
@@ -62,6 +64,7 @@ public class ActionUtils
         return matrixView;
     }
 
+    @Nullable
     public static IMatrixView getHeatmapMatrixView()
     {
         IMatrixView matrixView = null;
@@ -78,6 +81,7 @@ public class ActionUtils
         return matrixView;
     }
 
+    @Nullable
     public static Heatmap getHeatmap()
     {
         AbstractEditor editor = getSelectedEditor();

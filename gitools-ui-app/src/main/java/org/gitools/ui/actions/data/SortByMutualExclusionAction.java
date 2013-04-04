@@ -37,6 +37,7 @@ import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -109,7 +110,7 @@ public class SortByMutualExclusionAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Sorting ...", 1);
 

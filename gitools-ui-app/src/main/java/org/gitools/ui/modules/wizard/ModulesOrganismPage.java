@@ -30,6 +30,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -62,7 +63,7 @@ public class ModulesOrganismPage extends FilteredListPage
             JobThread.execute(AppFrame.get(), new JobRunnable()
             {
                 @Override
-                public void run(IProgressMonitor monitor)
+                public void run(@NotNull IProgressMonitor monitor)
                 {
                     try
                     {
@@ -102,6 +103,7 @@ public class ModulesOrganismPage extends FilteredListPage
         importer.setOrganism(getOrganism());
     }
 
+    @NotNull
     private Organism getOrganism()
     {
         return (Organism) getSelectedValue();

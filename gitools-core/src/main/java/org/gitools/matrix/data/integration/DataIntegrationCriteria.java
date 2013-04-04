@@ -23,6 +23,7 @@ package org.gitools.matrix.data.integration;
 
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
+import org.jetbrains.annotations.NotNull;
 
 public class DataIntegrationCriteria
 {
@@ -109,6 +110,7 @@ public class DataIntegrationCriteria
         this.operator = operator;
     }
 
+    @NotNull
     @Override
     public String toString()
     {

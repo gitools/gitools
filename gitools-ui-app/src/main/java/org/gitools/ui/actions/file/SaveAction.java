@@ -29,6 +29,7 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -49,7 +50,7 @@ public class SaveAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByEditor(IEditor editor)
+    public boolean isEnabledByEditor(@Nullable IEditor editor)
     {
 
         if (editor == null)

@@ -38,6 +38,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.common.ExportHeatmapLabelsWizard;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -97,7 +98,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -155,7 +156,8 @@ public class ExportHeatmapLabelsAction extends BaseAction
         AppFrame.get().setStatusText("Labels exported.");
     }
 
-    private LabelProvider hiddenRowsLabelProvider(IMatrixView matrixView)
+    @NotNull
+    private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView)
     {
         int[] visibleIndices = matrixView.getVisibleRows();
         Set<Integer> visibleSet = new HashSet<Integer>();
@@ -178,7 +180,8 @@ public class ExportHeatmapLabelsAction extends BaseAction
         return new MatrixRowsLabelProvider(hiddenView);
     }
 
-    private LabelProvider hiddenColumnsLabelProvider(IMatrixView matrixView)
+    @NotNull
+    private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView)
     {
         int[] visibleIndices = matrixView.getVisibleColumns();
         Set<Integer> visibleSet = new HashSet<Integer>();

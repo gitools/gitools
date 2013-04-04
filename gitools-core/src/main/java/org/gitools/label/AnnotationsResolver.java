@@ -23,6 +23,7 @@ package org.gitools.label;
 
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.utils.textpatt.TextPattern;
+import org.jetbrains.annotations.NotNull;
 
 public class AnnotationsResolver implements TextPattern.VariableValueResolver
 {
@@ -43,7 +44,7 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver
     }
 
     @Override
-    public String resolveValue(String variableName)
+    public String resolveValue(@NotNull String variableName)
     {
         String label = labelProvider.getLabel(index);
         if (variableName.equalsIgnoreCase("id"))

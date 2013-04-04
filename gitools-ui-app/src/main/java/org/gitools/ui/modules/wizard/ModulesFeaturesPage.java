@@ -30,6 +30,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -56,7 +57,7 @@ public class ModulesFeaturesPage extends FilteredListPage
             JobThread.execute(AppFrame.get(), new JobRunnable()
             {
                 @Override
-                public void run(IProgressMonitor monitor)
+                public void run(@NotNull IProgressMonitor monitor)
                 {
                     try
                     {
@@ -95,6 +96,7 @@ public class ModulesFeaturesPage extends FilteredListPage
         importer.setFeatCategory(getFeatureCategory());
     }
 
+    @NotNull
     private FeatureCategory getFeatureCategory()
     {
         return (FeatureCategory) getSelectedValue();

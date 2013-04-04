@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ArrayElementFactory implements IElementFactory
 {
 
@@ -31,6 +33,7 @@ public class ArrayElementFactory implements IElementFactory
         this.length = length;
     }
 
+    @NotNull
     @Override
     public Object create()
     {

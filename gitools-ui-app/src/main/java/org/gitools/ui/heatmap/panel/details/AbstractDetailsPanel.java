@@ -38,6 +38,7 @@ import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -55,6 +56,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
 {
 
     private static final GenericFormatter FORMATTER = new GenericFormatter();
+    @NotNull
     private final Heatmap heatmap;
 
     /**
@@ -73,7 +75,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
         heatmap.addPropertyChangeListener(new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 if ("selectionLead" == evt.getPropertyName())
                 {
@@ -145,6 +147,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      *
      * @return the selected cell
      */
+    @Nullable
     protected final Cell getSelectedCell()
     {
 
@@ -166,11 +169,13 @@ public abstract class AbstractDetailsPanel extends WebPanel
         );
     }
 
+    @Nullable
     private IMatrixView getMatrixView()
     {
         return heatmap.getMatrixView();
     }
 
+    @NotNull
     @Deprecated
     private Collection<PropertyItem> getProperties(int row, int column)
     {
@@ -203,7 +208,8 @@ public abstract class AbstractDetailsPanel extends WebPanel
         return values;
     }
 
-    private String getLink(String value, HeatmapDim dim)
+    @Nullable
+    private String getLink(String value, @NotNull HeatmapDim dim)
     {
         IdType idType = dim.getIdType();
         if (idType != null)

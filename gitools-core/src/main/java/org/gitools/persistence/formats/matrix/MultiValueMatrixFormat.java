@@ -34,7 +34,6 @@ import org.gitools.matrix.model.element.*;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.FisherResult;
 import org.gitools.stats.test.results.ZScoreResult;
@@ -42,6 +41,8 @@ import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -74,7 +75,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
     public MultiValueMatrixFormat()
     {
-        super(FileSuffixes.OBJECT_MATRIX, MimeTypes.OBJECT_MATRIX, ObjectMatrix.class);
+        super(FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class);
     }
 
     /* This information will be used to infer the element class
@@ -105,7 +106,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         }
     }
 
-    private static String getElementClassId(List<IElementAttribute> properties)
+    @NotNull
+    private static String getElementClassId(@NotNull List<IElementAttribute> properties)
     {
         String[] ids = new String[properties.size()];
         for (int i = 0; i < properties.size(); i++)
@@ -114,7 +116,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         return getElementClassId(ids);
     }
 
-    private static String getElementClassId(String[] ids)
+    @NotNull
+    private static String getElementClassId(@NotNull String[] ids)
     {
         String[] ids2 = new String[ids.length];
         System.arraycopy(ids, 0, ids2, 0, ids.length);
@@ -129,7 +132,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     private Map<String, String> meta;
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void configureResource(@NotNull IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
         super.configureResource(resourceLocator, properties, progressMonitor);
 
@@ -167,8 +170,9 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
     }
 
+    @NotNull
     @Override
-    protected ObjectMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor monitor) throws PersistenceException
+    protected ObjectMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
 
         ObjectMatrix resultsMatrix = new ObjectMatrix();
@@ -392,7 +396,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         return resultsMatrix;
     }
 
-    private Object parsePropertyValue(IElementAttribute property, String string)
+    @Nullable
+    private Object parsePropertyValue(@NotNull IElementAttribute property, String string)
     {
 
         final Class<?> propertyClass = property.getValueClass();
@@ -464,7 +469,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, ObjectMatrix results, IProgressMonitor monitor) throws PersistenceException
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ObjectMatrix results, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
 
         boolean orderByColumn = true;
@@ -496,7 +501,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         }
     }
 
-    private void writeCells(Writer writer, ObjectMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor progressMonitor)
+    private void writeCells(Writer writer, @NotNull ObjectMatrix resultsMatrix, boolean orderByColumn, @NotNull IProgressMonitor progressMonitor)
     {
 
         RawCsvWriter out = new RawCsvWriter(writer, '\t', '"');
@@ -531,7 +536,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         }
     }
 
-    private void writeLine(RawCsvWriter out, ObjectMatrix resultsMatrix, int colIndex, int rowIndex, IProgressMonitor progressMonitor)
+    private void writeLine(@NotNull RawCsvWriter out, @NotNull ObjectMatrix resultsMatrix, int colIndex, int rowIndex, @NotNull IProgressMonitor progressMonitor)
     {
 
         Object element = resultsMatrix.getCell(rowIndex, colIndex);
@@ -635,6 +640,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         return elementAdapter.getProperties();
     }
 
+    @NotNull
     @Deprecated
     private static Map<String, String> readFormatAttributes(File file, IProgressMonitor monitor) throws PersistenceException
     {

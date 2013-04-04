@@ -21,6 +21,8 @@
  */
 package org.gitools.clustering;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Generic data interface for clustering methods
  */
@@ -40,5 +42,6 @@ public interface ClusteringData
     /**
      * Returns an instance of the data
      */
+    @NotNull
     ClusteringDataInstance getInstance(int index);
 }

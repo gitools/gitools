@@ -24,6 +24,8 @@ package org.gitools.matrix.filter;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,8 @@ public class MatrixViewValueFilter
 {
 
     public static void filter(
-            IMatrixView matrixView,
-            List<ValueFilterCriteria> criteriaList,
+            @NotNull IMatrixView matrixView,
+            @NotNull List<ValueFilterCriteria> criteriaList,
             boolean allCriteria,        // For a given cell all criteria should match
             boolean allElements,        // All cells in a row/column should match
             boolean invertCriteria,
@@ -56,9 +58,9 @@ public class MatrixViewValueFilter
     }
 
     public static void filterRows(
-            IMatrixView matrixView,
-            int[] selection,
-            List<ValueFilterCriteria> criteriaList,
+            @NotNull IMatrixView matrixView,
+            @Nullable int[] selection,
+            @NotNull List<ValueFilterCriteria> criteriaList,
             boolean allCriteria,        // For a given cell all criteria should match
             boolean allElements,        // All cells in a row/column should match
             boolean invertCriteria
@@ -120,7 +122,7 @@ public class MatrixViewValueFilter
     public static void filterColumns(
             IMatrixView matrixView,
             int[] selection,
-            List<ValueFilterCriteria> criteriaList,
+            @NotNull List<ValueFilterCriteria> criteriaList,
             boolean allCriteria,        // For a given cell all criteria should match
             boolean allElements,        // All cells in a row/column should match
             boolean invertCriteria

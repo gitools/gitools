@@ -26,6 +26,7 @@ import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import org.gitools.ui.IconNames;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -93,6 +94,7 @@ public class StatusBar extends WebStatusBar
         statusLabel.setText(text);
     }
 
+    @Nullable
     private DisplayMode dispModeOld = null;
 
     private void updateFullscreen()

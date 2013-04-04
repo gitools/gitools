@@ -24,6 +24,7 @@ package org.gitools.stats.test.factory;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.Test;
+import org.jetbrains.annotations.NotNull;
 
 public final class MannWhitneyWilcoxonTestFactory extends TestFactory
 {
@@ -33,6 +34,7 @@ public final class MannWhitneyWilcoxonTestFactory extends TestFactory
         super(config);
     }
 
+    @NotNull
     @Override
     public Test create()
     {

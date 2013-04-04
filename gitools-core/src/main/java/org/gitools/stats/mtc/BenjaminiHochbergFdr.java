@@ -22,18 +22,22 @@
 package org.gitools.stats.mtc;
 
 import cern.colt.matrix.DoubleMatrix1D;
+import org.jetbrains.annotations.NotNull;
 
 public class BenjaminiHochbergFdr implements MTC
 {
 
+    @NotNull
     public static String SHORT_NAME = "bh";
 
+    @NotNull
     @Override
     public String getName()
     {
         return "Benjamini Hochberg FDR";
     }
 
+    @NotNull
     @Override
     public String getShortName()
     {
@@ -41,7 +45,7 @@ public class BenjaminiHochbergFdr implements MTC
     }
 
     @Override
-    public void correct(final DoubleMatrix1D values)
+    public void correct(@NotNull final DoubleMatrix1D values)
     {
 
         DoubleMatrix1D sortedValues = values.viewSorted();

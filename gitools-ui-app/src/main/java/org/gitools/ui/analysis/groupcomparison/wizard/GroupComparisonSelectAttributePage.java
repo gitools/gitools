@@ -31,6 +31,8 @@ import org.gitools.stats.test.Test;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -152,6 +154,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
         return mtcElement.getMTC();
     }
 
+    @NotNull
     public String getColumnGrouping()
     {
         return (String) columnGroupingCb.getSelectedItem();
@@ -267,6 +270,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
         // TODO add your handling code here:
     }//GEN-LAST:event_testCboxActionPerformed
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -274,7 +278,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
     }
 
 
-    public void setAttributes(List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable List<IElementAttribute> attrs)
     {
 
         if (attrs != null)

@@ -27,6 +27,7 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.help.HelpException;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class PageDialog extends AbstractDialog
 
     protected JPanel pagePanel;
 
-    public PageDialog(Window owner, IWizardPage page)
+    public PageDialog(Window owner, @NotNull IWizardPage page)
     {
         super(owner, page.getTitle(), page.getLogo());
 
@@ -86,6 +87,7 @@ public class PageDialog extends AbstractDialog
         return pagePanel;
     }
 
+    @NotNull
     @Override
     protected List<JButton> createButtons()
     {

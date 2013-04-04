@@ -24,17 +24,21 @@ package org.gitools.analysis.correlation;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.combination.ConvertModuleMapToMatrixResourceReference;
 import org.gitools.analysis.groupcomparison.ColumnGroup;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Attribute;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,7 +56,7 @@ public class GroupComparisonCommand extends AnalysisCommand
     public static final String GROUP_BY_VALUE = "value";
     public static final String GROUP_BY_LABELS = "labels";
     protected GroupComparisonAnalysis analysis;
-    protected String dataMime;
+    protected IResourceFormat dataFormat;
     protected String dataPath;
     private String groupingMethod;
     private String groups;
@@ -60,7 +64,7 @@ public class GroupComparisonCommand extends AnalysisCommand
 
     public GroupComparisonCommand(
             GroupComparisonAnalysis analysis,
-            String dataMime, String dataPath,
+            IResourceFormat dataFormat, String dataPath,
             String workdir, String fileName,
             String groupingMethod, String groups, String[] groupDescriptions)
     {
@@ -68,7 +72,7 @@ public class GroupComparisonCommand extends AnalysisCommand
         super(workdir, fileName);
 
         this.analysis = analysis;
-        this.dataMime = dataMime;
+        this.dataFormat = dataFormat;
         this.dataPath = dataPath;
         this.groupingMethod = groupingMethod;
         this.groups = groups;
@@ -77,7 +81,8 @@ public class GroupComparisonCommand extends AnalysisCommand
     }
 
 
-    private ColumnGroup[] getGrouping(String groupingMethod, String groups, BaseMatrix data) throws IOException
+    @NotNull
+    private ColumnGroup[] getGrouping(@NotNull String groupingMethod, @NotNull String groups, @NotNull IMatrix data) throws IOException
     {
 
         ColumnGroup[] columnGroups = new ColumnGroup[0];
@@ -99,7 +104,7 @@ public class GroupComparisonCommand extends AnalysisCommand
                     String line = null;
                     while ((line = bufferedReader.readLine()) != null)
                     {
-                        int i = getColumnIndex(data, line);
+                        int i = data.getColumnIndex(line);
                         if (i != -1)
                         {
                             colIndices.add(i);
@@ -171,7 +176,8 @@ public class GroupComparisonCommand extends AnalysisCommand
         return columnGroups;
     }
 
-    private List<Attribute> getGroupAttributes(ColumnGroup[] groups)
+    @NotNull
+    private List<Attribute> getGroupAttributes(@NotNull ColumnGroup[] groups)
     {
         List<Attribute> analysisAttributes = new ArrayList<Attribute>();
         if (groupDescriptions.length > 1)
@@ -191,38 +197,19 @@ public class GroupComparisonCommand extends AnalysisCommand
         return analysisAttributes;
     }
 
-    private int getColumnIndex(BaseMatrix data, String line)
-    {
-        Object[] cols = data.getColumns().toArray();
-        for (int i = 0; i < cols.length; i++)
-        {
-            String s = (String) cols[i];
-            if (s.equals(line))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     @Override
     public void run(IProgressMonitor progressMonitor) throws AnalysisException
     {
 
         try
         {
-
-            BaseMatrix data = loadDataMatrix(
-                    new UrlResourceLocator(new File(dataPath)),
-                    progressMonitor
-            );
-
+            ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)), dataFormat);
             analysis.setData(data);
-
+            data.load(progressMonitor);
 
             try
             {
-                ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data);
+                ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data.get());
                 List<Attribute> attributes = getGroupAttributes(columnGroups);
                 analysis.setGroup1(columnGroups[0]);
                 analysis.setGroup2(columnGroups[1]);

@@ -32,7 +32,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisXmlFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
@@ -43,6 +43,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     }
 
     @Override
-    protected void prepareContext(VelocityContext context)
+    protected void prepareContext(@NotNull VelocityContext context)
     {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
@@ -161,11 +162,11 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData());
+                IMatrixView dataTable = new MatrixView(analysis.getData().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
@@ -181,7 +182,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.ENRICHMENT,
+                        getName(), EnrichmentAnalysisXmlFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -215,16 +216,14 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
-
-                IMatrixView dataTable = new MatrixView(analysis.getResults());
 
                 final EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.ENRICHMENT,
+                        getName(), EnrichmentAnalysisXmlFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

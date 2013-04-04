@@ -22,6 +22,7 @@
 package org.gitools.utils.tools;
 
 import org.gitools.utils.tools.exception.ToolException;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -39,6 +40,7 @@ public class XmlToolSetResource
         this.file = file;
     }
 
+    @Nullable
     public ToolSet load() throws ToolException
     {
         try
@@ -61,6 +63,7 @@ public class XmlToolSetResource
         }
     }
 
+    @Nullable
     public static ToolSet load(Reader reader) throws ToolException
     {
         ToolSet toolSet = null;

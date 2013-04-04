@@ -22,34 +22,19 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-
-import javax.xml.bind.Marshaller;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public class OncodriveAnalysisXmlFormat extends AbstractXmlFormat<OncodriveAnalysis>
 {
 
+    public static final String EXTENSION = "oncodrive";
+    public static final Class<OncodriveAnalysis> RESOURCE_CLASS = OncodriveAnalysis.class;
+
+    public static final FileFormat FILE_FORMAT = new FileFormat("Oncodrive analysis", EXTENSION);
+
+
     public OncodriveAnalysisXmlFormat()
     {
-        super(FileSuffixes.ONCODRIVE, MimeTypes.ONCODRIVE_ANALYSIS, OncodriveAnalysis.class);
-    }
-
-    @Override
-    protected void beforeWrite(IResourceLocator resourceLocator, OncodriveAnalysis resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-
-        String baseName = resourceLocator.getBaseName();
-        PersistenceReferenceXmlAdapter adapter = new PersistenceReferenceXmlAdapter(resourceLocator, progressMonitor);
-
-        addReference(adapter, resource.getData(), baseName + "-data");
-        addReference(adapter, resource.getModuleMap(), baseName + "-modules");
-        addReference(adapter, resource.getResults(), baseName + "-results");
-
-        marshaller.setAdapter(adapter);
+        super(EXTENSION, RESOURCE_CLASS);
     }
 }

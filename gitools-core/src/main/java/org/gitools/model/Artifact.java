@@ -21,6 +21,8 @@
  */
 package org.gitools.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class Artifact extends AbstractModel
     {
     }
 
-    public Artifact(Artifact artifact)
+    public Artifact(@NotNull Artifact artifact)
     {
         this.title = artifact.getTitle();
         this.description = artifact.getDescription();

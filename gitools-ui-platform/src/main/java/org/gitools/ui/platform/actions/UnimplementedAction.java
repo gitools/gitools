@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.actions;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,6 +57,7 @@ public class UnimplementedAction extends BaseAction
                         "Be patient my friend.");
     }
 
+    @Nullable
     protected Window getParent()
     {
         return null;

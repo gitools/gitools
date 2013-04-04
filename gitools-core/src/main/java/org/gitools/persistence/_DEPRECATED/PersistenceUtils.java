@@ -21,6 +21,8 @@
  */
 package org.gitools.persistence._DEPRECATED;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.regex.Pattern;
 
@@ -29,7 +31,7 @@ public class PersistenceUtils
 {
 
     // Copied from http://stackoverflow.com/questions/204784/how-to-construct-a-relative-path-in-java-from-two-absolute-paths-or-urls
-    public static String getRelativePath(String basePath, String targetPath)
+    public static String getRelativePath(@NotNull String basePath, @NotNull String targetPath)
     {
 
         final String pathSeparator = File.separator;
@@ -103,7 +105,7 @@ public class PersistenceUtils
     /**
      * Returns file name (including extension) without path
      */
-    public static String getBaseName(String path)
+    public static String getBaseName(@NotNull String path)
     {
         int sep = path.lastIndexOf(File.separatorChar);
         return path.substring(sep + 1);
@@ -113,7 +115,7 @@ public class PersistenceUtils
      * Returns the file name without extension.
      * It takes into account composed extension for .gz
      */
-    public static String getFileName(String path)
+    public static String getFileName(@NotNull String path)
     {
         int dot = path.lastIndexOf('.');
         if (dot > 0 && path.substring(dot).equalsIgnoreCase(".gz"))
@@ -129,7 +131,8 @@ public class PersistenceUtils
      * Returns only the extension of the file.
      * It takes into account composed extension for .gz
      */
-    public static String getExtension(String path)
+    @NotNull
+    public static String getExtension(@NotNull String path)
     {
         int dot = path.lastIndexOf('.');
         String ext = dot != -1 ? path.substring(dot + 1) : "";

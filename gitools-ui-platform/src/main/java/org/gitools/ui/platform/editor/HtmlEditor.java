@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.editor;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -56,7 +58,7 @@ public class HtmlEditor extends AbstractEditor
         }
 
         @Override
-        public void onMouseOver(HTMLElement element, MouseEvent event)
+        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event)
         {
             super.onMouseOver(element, event);
 
@@ -82,7 +84,7 @@ public class HtmlEditor extends AbstractEditor
         }
 
         @Override
-        public void linkClicked(HTMLElement linkNode, URL url, String target)
+        public void linkClicked(@NotNull HTMLElement linkNode, URL url, String target)
         {
             try
             {
@@ -134,6 +136,7 @@ public class HtmlEditor extends AbstractEditor
         this.title = title;
     }
 
+    @Nullable
     @Override
     public Object getModel()
     {
@@ -149,7 +152,7 @@ public class HtmlEditor extends AbstractEditor
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void linkClicked(HTMLElement linkNode, URL url, String target) throws LinkVetoException
+    protected void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException
     {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
@@ -206,7 +209,7 @@ public class HtmlEditor extends AbstractEditor
     protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
     {
         /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-		if (formInputs != null)
+        if (formInputs != null)
 			for (FormInput fi : formInputs)
 				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
     }

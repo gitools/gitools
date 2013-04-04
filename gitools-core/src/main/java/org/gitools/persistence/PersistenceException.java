@@ -21,7 +21,7 @@
  */
 package org.gitools.persistence;
 
-public class PersistenceException extends Exception
+public class PersistenceException extends RuntimeException
 {
 
     private static final long serialVersionUID = -3292740209879198812L;

@@ -37,6 +37,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -48,7 +49,7 @@ public class MtcAction extends BaseAction
 
     protected MTC mtc;
 
-    public MtcAction(MTC mtc)
+    public MtcAction(@NotNull MTC mtc)
     {
         super(mtc.getName());
 
@@ -93,7 +94,7 @@ public class MtcAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
 
                 IMatrix contents = matrixView.getContents();

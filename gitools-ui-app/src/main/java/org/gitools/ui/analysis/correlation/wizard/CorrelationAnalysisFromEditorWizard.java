@@ -27,6 +27,7 @@ import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
 {
@@ -70,6 +71,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
         return canFinish;
     }
 
+    @NotNull
     public CorrelationAnalysis getAnalysis()
     {
         CorrelationAnalysis a = new CorrelationAnalysis();

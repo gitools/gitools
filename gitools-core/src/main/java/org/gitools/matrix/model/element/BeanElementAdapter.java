@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -109,6 +111,7 @@ public class BeanElementAdapter extends AbstractElementAdapter
         setProperties(properties);
     }
 
+    @Nullable
     @Override
     public Object getValue(Object element, int index)
     {

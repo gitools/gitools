@@ -25,6 +25,7 @@ import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -120,7 +121,7 @@ public class ColorScaleDrawer
         this.barSize = barSize;
     }
 
-    public void draw(Graphics2D g, Rectangle bounds, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle bounds, Rectangle clip)
     {
 
         g.setColor(bgColor);
@@ -220,7 +221,7 @@ public class ColorScaleDrawer
         }
     }
 
-    private double getValueForX(int x, String type, int minX, int maxX, double minValue, double maxValue)
+    private double getValueForX(int x, @NotNull String type, int minX, int maxX, double minValue, double maxValue)
     {
         if (type.equals(ColorScaleRange.LINEAR_TYPE))
         {
@@ -247,7 +248,7 @@ public class ColorScaleDrawer
         return 0;
     }
 
-    private void adjustRangeWidths(int scaleWidth, ArrayList<ColorScaleRange> ranges)
+    private void adjustRangeWidths(int scaleWidth, @NotNull ArrayList<ColorScaleRange> ranges)
     {
         double rangesWidth = 0;
         for (ColorScaleRange r : ranges)
@@ -267,6 +268,7 @@ public class ColorScaleDrawer
         }
     }
 
+    @NotNull
     public Dimension getSize()
     {
         int height = heightPadding * 2 + barSize;

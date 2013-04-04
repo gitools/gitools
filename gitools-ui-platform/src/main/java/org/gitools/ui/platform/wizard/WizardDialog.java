@@ -28,6 +28,8 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.help.HelpException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +59,7 @@ public class WizardDialog extends AbstractDialog
 
     protected boolean cancelled;
 
-    public WizardDialog(Window owner, IWizard wizard)
+    public WizardDialog(Window owner, @NotNull IWizard wizard)
     {
 
         super(owner, wizard.getTitle(), wizard.getLogo());
@@ -91,6 +93,7 @@ public class WizardDialog extends AbstractDialog
         cancelled = true;
     }
 
+    @Nullable
     public IWizard getWizard()
     {
         return currentPage != null ? currentPage.getWizard() : null;
@@ -101,12 +104,12 @@ public class WizardDialog extends AbstractDialog
         return currentPage;
     }
 
-    protected final void setCurrentPage(IWizardPage page)
+    protected final void setCurrentPage(@NotNull IWizardPage page)
     {
         setCurrentPage(page, true);
     }
 
-    protected final void setCurrentPage(IWizardPage page, boolean updateHistory)
+    protected final void setCurrentPage(@NotNull IWizardPage page, boolean updateHistory)
     {
         if (currentPage != null)
         {
@@ -176,6 +179,7 @@ public class WizardDialog extends AbstractDialog
         return pagePanel;
     }
 
+    @NotNull
     @Override
     protected List<JButton> createButtons()
     {

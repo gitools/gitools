@@ -21,6 +21,8 @@
  */
 package org.gitools.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -49,7 +51,7 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener)
+    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener)
     {
         if (listener != null)
         {
@@ -58,7 +60,7 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener)
+    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener)
     {
         if (listener != null)
         {
@@ -89,7 +91,7 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
     }
 
     protected void firePropertyChange(
-            String propName, Object oldValue, Object newValue)
+            String propName, @Nullable Object oldValue, @Nullable Object newValue)
     {
 
         if ((oldValue != null && !oldValue.equals(newValue)) ||

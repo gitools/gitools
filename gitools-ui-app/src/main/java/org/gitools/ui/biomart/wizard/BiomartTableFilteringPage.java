@@ -22,6 +22,7 @@
 package org.gitools.ui.biomart.wizard;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -107,6 +108,7 @@ public class BiomartTableFilteringPage extends AbstractWizardPage
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
+    @NotNull
     @Override
     public JComponent createControls()
     {

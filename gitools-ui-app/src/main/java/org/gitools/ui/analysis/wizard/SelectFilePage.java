@@ -29,6 +29,8 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -42,15 +44,16 @@ public class SelectFilePage extends AbstractWizardPage
 
     private static final long serialVersionUID = 3840797252370672587L;
 
-    private static final FileFormat anyFileFormat = new FileFormat("Any file format", "", "", false, false);
+    private static final FileFormat anyFileFormat = new FileFormat("Any file format", "", false, false);
 
     private static final FileFormat[] defaultFormats = new FileFormat[]{anyFileFormat};
 
+    @Nullable
     private FileFormat[] formats;
     private boolean blankFileAllowed;
     private String lastPath;
 
-    public SelectFilePage(FileFormat[] formats)
+    public SelectFilePage(@Nullable FileFormat[] formats)
     {
         setTitle("Select file");
 
@@ -119,6 +122,7 @@ public class SelectFilePage extends AbstractWizardPage
         setComplete(complete);
     }
 
+    @NotNull
     @Override
     public JComponent createControls()
     {
@@ -256,7 +260,7 @@ public class SelectFilePage extends AbstractWizardPage
         {
             filters = new FileFilter[formats.length + 2];
             filters[0] = any;
-            filters[1] = new FileFormatFilter("Known formats", null, formats);
+            filters[1] = new FileFormatFilter("Known formats", formats);
             for (int i = 0; i < formats.length; i++)
                 filters[i + 2] = new FileFormatFilter(formats[i]);
         }
@@ -270,32 +274,7 @@ public class SelectFilePage extends AbstractWizardPage
         if (sel != null)
         {
             File selPath = sel.getFile();
-            //FileFilter filt = sel.getFilter();
-
-			/*if (filt == filters[0] || filt == filters[1]) {
-                String fileName = selPath.getName();
-				for (FileFormat f : formats)
-					if (f.checkExtension(fileName)) {
-						formatCb.setSelectedItem(f);
-						break;
-					}
-			}
-			else {
-				FileFormat ff = ((FileFormatFilter) filt).getFormat();
-				formatCb.setSelectedItem(ff);
-			}*/
-
             setFile(selPath);
-
-			/*String fileName = selPath.getName().toLowerCase();
-			for (FileFormat ff : formats) {
-				if (ff.checkExtension(fileName)) {
-					formatCb.setSelectedItem(ff);
-					break;
-				}
-			}*/
-
-            //filePath.setText(selPath.getAbsolutePath());
             setLastPath(selPath.getAbsolutePath());
         }
     }//GEN-LAST:event_fileBrowseBtnActionPerformed
@@ -311,18 +290,20 @@ public class SelectFilePage extends AbstractWizardPage
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 
+    @NotNull
     public FileFormat getFileFormat()
     {
         return (FileFormat) formatCb.getSelectedItem();
     }
 
+    @Nullable
     public File getFile()
     {
         String path = filePath.getText();
         return path.isEmpty() ? null : new File(path);
     }
 
-    public void setFile(File file)
+    public void setFile(@NotNull File file)
     {
         String fileName = file.getName();
         for (FileFormat f : formats)
@@ -370,6 +351,7 @@ public class SelectFilePage extends AbstractWizardPage
         }
     }
 
+    @NotNull
     public String[] getValues()
     {
         //if (valueCb.isEnabled() == true)

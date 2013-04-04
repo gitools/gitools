@@ -27,6 +27,8 @@ package org.gitools.ui.dialog;
  * Created on Jan 21, 2010, 12:44:50 PM
  */
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -47,7 +49,7 @@ public class ListDialog<T> extends javax.swing.JDialog
     /**
      * Creates new form ListDialog
      */
-    public ListDialog(java.awt.Window parent, boolean modal, T[] objects)
+    public ListDialog(java.awt.Window parent, boolean modal, @NotNull T[] objects)
     {
         super(parent);
         setModal(modal);
@@ -213,6 +215,7 @@ public class ListDialog<T> extends javax.swing.JDialog
         return list.getSelectedValues();
     }
 
+    @NotNull
     public T getSelectedObject()
     {
         return (T) (list.getSelectedValues()[0]);

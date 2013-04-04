@@ -25,6 +25,7 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -72,6 +73,7 @@ public class AnnotationSourcePage extends AbstractWizardPage
         super.updateModel();
     }
 
+    @NotNull
     public String getSelectedPattern()
     {
 
@@ -89,6 +91,7 @@ public class AnnotationSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
+    @NotNull
     public String getSelectedAnnotation()
     {
         if (annList.getSelectedIndex() != -1)

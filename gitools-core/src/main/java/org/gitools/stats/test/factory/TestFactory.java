@@ -23,6 +23,8 @@ package org.gitools.stats.test.factory;
 
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.Test;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +66,7 @@ public abstract class TestFactory
         hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
     }
 
+    @NotNull
     private static Map<String, TestConfigEnum> testAliases =
             new HashMap<String, TestConfigEnum>();
 
@@ -84,7 +87,8 @@ public abstract class TestFactory
         testAliases.put("mannWhitneyWilcoxon", TestConfigEnum.mannWhitneyWilcoxon);
     }
 
-    public static TestFactory createFactory(ToolConfig config)
+    @Nullable
+    public static TestFactory createFactory(@NotNull ToolConfig config)
     {
 
         final String testName = config.get(TEST_NAME_PROPERTY);
@@ -120,6 +124,7 @@ public abstract class TestFactory
         return testFactory;
     }
 
+    @NotNull
     public static ToolConfig createToolConfig(String toolName, String configName)
     {
 

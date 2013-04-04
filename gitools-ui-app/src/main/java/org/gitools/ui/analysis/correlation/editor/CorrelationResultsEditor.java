@@ -29,6 +29,8 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +42,8 @@ public class CorrelationResultsEditor extends HeatmapEditor
 
     protected AbstractTablesPanel tablesPanel;
 
-    protected static Heatmap createHeatmap(CorrelationAnalysis analysis)
+    @Nullable
+    protected static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis)
     {
         IMatrixView results = new DiagonalMatrixView(analysis.getResults().get());
         Heatmap heatmap = new Heatmap(results);
@@ -61,7 +64,7 @@ public class CorrelationResultsEditor extends HeatmapEditor
         return heatmap;
     }
 
-    public CorrelationResultsEditor(CorrelationAnalysis analysis)
+    public CorrelationResultsEditor(@NotNull CorrelationAnalysis analysis)
     {
         super(createHeatmap(analysis), true);
 

@@ -25,6 +25,8 @@ import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -43,20 +45,22 @@ class ValueSortCriteriaTableModel implements TableModel
     private static final Class<?>[] columnClass = new Class<?>[]{
             String.class, CutoffCmp.class, SortDirection.class};
 
+    @NotNull
     private Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
 
     private List<ValueSortCriteria> criteriaList;
 
+    @NotNull
     private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public ValueSortCriteriaTableModel(List<ValueSortCriteria> criteriaList, String[] attributeNames)
+    public ValueSortCriteriaTableModel(List<ValueSortCriteria> criteriaList, @NotNull String[] attributeNames)
     {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)
             attrIndexMap.put(attributeNames[i], i);
     }
 
-    public ValueSortCriteriaTableModel(String[] attributeNames)
+    public ValueSortCriteriaTableModel(@NotNull String[] attributeNames)
     {
         this(new ArrayList<ValueSortCriteria>(), attributeNames);
     }
@@ -91,6 +95,7 @@ class ValueSortCriteriaTableModel implements TableModel
         return true;
     }
 
+    @Nullable
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
@@ -139,14 +144,14 @@ class ValueSortCriteriaTableModel implements TableModel
         fireCriteriaChanged();
     }
 
-    void addAllCriteria(List<ValueSortCriteria> list)
+    void addAllCriteria(@NotNull List<ValueSortCriteria> list)
     {
         //int initialRow = criteriaList.size();
         criteriaList.addAll(list);
         fireCriteriaChanged();
     }
 
-    void removeCriteria(int[] selectedRows)
+    void removeCriteria(@NotNull int[] selectedRows)
     {
         List<Object> objects = new ArrayList<Object>(selectedRows.length);
         for (int index : selectedRows)

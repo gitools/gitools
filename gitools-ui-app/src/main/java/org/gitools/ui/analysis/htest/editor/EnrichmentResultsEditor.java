@@ -30,6 +30,7 @@ import org.gitools.ui.analysis.editor.AbstractTablesPanel;
 import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,28 +44,30 @@ public class EnrichmentResultsEditor extends HeatmapEditor
 
     protected AbstractTablesPanel tablesPanel;
 
-    protected static Heatmap createHeatmap(EnrichmentAnalysis analysis)
+    @NotNull
+    protected static Heatmap createHeatmap(@NotNull EnrichmentAnalysis analysis)
     {
-        IMatrixView dataTable = new MatrixView(analysis.getResults());
+        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
     }
 
     //TODO
-    protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis)
+    @NotNull
+    protected static List<BaseAction> createToolBar(@NotNull EnrichmentAnalysis analysis)
     {
         ViewRelatedDataFromRowAction action =
                 new ViewRelatedDataFromRowAction(
                         analysis.getTitle(),
-                        analysis.getData(),
-                        analysis.getModuleMap());
+                        analysis.getData().get(),
+                        analysis.getModuleMap().get());
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);
         return tb;
     }
 
-    public EnrichmentResultsEditor(EnrichmentAnalysis analysis)
+    public EnrichmentResultsEditor(@NotNull EnrichmentAnalysis analysis)
     {
         super(createHeatmap(analysis), true);
 

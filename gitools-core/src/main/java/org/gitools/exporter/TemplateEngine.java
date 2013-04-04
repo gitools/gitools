@@ -29,6 +29,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.gitools.utils.fileutils.IOUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class TemplateEngine
     private Template template;
     private VelocityContext context;
 
-    public TemplateEngine(Properties props)
+    public TemplateEngine(@NotNull Properties props)
     {
         velocityEngine = new VelocityEngine();
 
@@ -70,7 +71,7 @@ public class TemplateEngine
         this(new Properties());
     }
 
-    public void setFileLoaderPath(File file)
+    public void setFileLoaderPath(@NotNull File file)
     {
         velocityEngine.setProperty(
                 VelocityEngine.FILE_RESOURCE_LOADER_PATH,

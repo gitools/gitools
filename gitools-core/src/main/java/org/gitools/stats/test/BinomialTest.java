@@ -27,6 +27,7 @@ import org.gitools.stats.calc.OnesCountStatistic;
 import org.gitools.stats.calc.Statistic;
 import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CommonResult;
+import org.jetbrains.annotations.NotNull;
 
 public class BinomialTest extends AbstractTest
 {
@@ -42,6 +43,7 @@ public class BinomialTest extends AbstractTest
 
     private abstract class BinomialAproximation
     {
+        @NotNull
         public abstract CommonResult getResult(
                 int observed, int n, double p,
                 double expectedMean, double expectedStdev, double expectedVar);
@@ -57,7 +59,7 @@ public class BinomialTest extends AbstractTest
 
     private BinomialAproximation aprox;
 
-    public BinomialTest(AproximationMode aproxMode)
+    public BinomialTest(@NotNull AproximationMode aproxMode)
     {
         this.statCalc = new OnesCountStatistic();
         this.aproxMode = aproxMode;
@@ -67,6 +69,7 @@ public class BinomialTest extends AbstractTest
             case onlyExact:
                 this.aprox = new BinomialAproximation()
                 {
+                    @NotNull
                     @Override
                     public CommonResult getResult(
                             int observed, int n, double p,
@@ -80,6 +83,7 @@ public class BinomialTest extends AbstractTest
             case onlyNormal:
                 this.aprox = new BinomialAproximation()
                 {
+                    @NotNull
                     @Override
                     public CommonResult getResult(
                             int observed, int n, double p,
@@ -93,6 +97,7 @@ public class BinomialTest extends AbstractTest
             case onlyPoisson:
                 this.aprox = new BinomialAproximation()
                 {
+                    @NotNull
                     @Override
                     public CommonResult getResult(
                             int observed, int n, double p,
@@ -106,6 +111,7 @@ public class BinomialTest extends AbstractTest
             case automatic:
                 this.aprox = new BinomialAproximation()
                 {
+                    @NotNull
                     @Override
                     public CommonResult getResult(
                             int observed, int n, double p,
@@ -134,6 +140,7 @@ public class BinomialTest extends AbstractTest
         }
     }
 
+    @NotNull
     @Override
     public String getName()
     {
@@ -161,6 +168,7 @@ public class BinomialTest extends AbstractTest
 		return new BinomialResult().getNames();
 	}*/
 
+    @NotNull
     @Override
     public Class<? extends CommonResult> getResultClass()
     {
@@ -168,14 +176,15 @@ public class BinomialTest extends AbstractTest
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population)
+    public void processPopulation(String name, @NotNull DoubleMatrix1D population)
     {
         p = statCalc.calc(population) / population.size();
     }
 
+    @NotNull
     @Override
     public CommonResult processTest(
-            String condName, DoubleMatrix1D condItems,
+            String condName, @NotNull DoubleMatrix1D condItems,
             String groupName, int[] groupItemIndices)
     {
 
@@ -199,6 +208,7 @@ public class BinomialTest extends AbstractTest
         return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
     }
 
+    @NotNull
     public final CommonResult resultWithExact(
             int observed, int n, double p,
             double expectedMean, double expectedStdev)
@@ -228,6 +238,7 @@ public class BinomialTest extends AbstractTest
                 observed, expectedMean, expectedStdev, p);
     }
 
+    @NotNull
     public final CommonResult resultWithNormal(
             int observed, int n, double p,
             double expectedMean, double expectedStdev)
@@ -252,6 +263,7 @@ public class BinomialTest extends AbstractTest
                 observed, expectedMean, expectedStdev, p);
     }
 
+    @NotNull
     public final CommonResult resultWithPoisson(
             int observed, int n, double p,
             double expectedMean, double expectedStdev)
@@ -282,7 +294,7 @@ public class BinomialTest extends AbstractTest
     }
 
 	/*private double filterPvalue(double pvalue) {
-		if (pvalue < 0.0)
+        if (pvalue < 0.0)
 			pvalue = 0.0;
 		else if (pvalue > 1.0)
 			pvalue = 1.0;

@@ -26,6 +26,7 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +43,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
     private boolean applyToRows;
 
 
-    public AggregationDataSourcePage(Heatmap heatmap, boolean applyToRows)
+    public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows)
     {
         this.heatmap = heatmap;
 

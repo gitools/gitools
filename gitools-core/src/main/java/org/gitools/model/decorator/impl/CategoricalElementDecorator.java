@@ -29,6 +29,8 @@ import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -118,7 +120,7 @@ public class CategoricalElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(ElementDecoration decoration, Object element)
+    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
     {
         decoration.reset();
 

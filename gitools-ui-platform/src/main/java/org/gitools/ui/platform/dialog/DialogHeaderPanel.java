@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -34,7 +37,9 @@ public class DialogHeaderPanel extends javax.swing.JPanel
     private static final Color PROGRESS_COLOR = new Color(100, 180, 250);
 
     private MessageStatus messageStatus;
+    @Nullable
     private String leftLogoLink;
+    @Nullable
     private String rightLogoLink;
 
     public DialogHeaderPanel()
@@ -53,7 +58,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
     public DialogHeaderPanel(
             String header,
             String message,
-            MessageStatus status,
+            @NotNull MessageStatus status,
             Icon logo)
     {
         this();
@@ -230,7 +235,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         return messageStatus;
     }
 
-    public void setMessageStatus(MessageStatus status)
+    public void setMessageStatus(@NotNull MessageStatus status)
     {
         this.messageStatus = status;
         //TODO status icon
@@ -261,12 +266,13 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         this.rightLogo.setIcon(logo);
     }
 
+    @Nullable
     public String getRightLogoLink()
     {
         return rightLogoLink;
     }
 
-    public void setRightLogoLink(String logoLink)
+    public void setRightLogoLink(@Nullable String logoLink)
     {
         this.rightLogoLink = logoLink;
         if (logoLink == null)
@@ -284,19 +290,20 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         return leftLogo.getIcon();
     }
 
-    public void setLeftLogo(Icon logo)
+    public void setLeftLogo(@Nullable Icon logo)
     {
         leftLogo.setIcon(logo);
         leftLogo.setVisible(logo != null);
 
     }
 
+    @Nullable
     public String getLeftLogoLink()
     {
         return leftLogoLink;
     }
 
-    public void setLeftLogoLink(String logoLink)
+    public void setLeftLogoLink(@Nullable String logoLink)
     {
         this.leftLogoLink = logoLink;
         if (logoLink == null)

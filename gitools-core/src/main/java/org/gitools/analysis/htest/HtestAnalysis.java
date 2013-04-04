@@ -28,7 +28,7 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
@@ -72,8 +72,7 @@ public class HtestAnalysis extends Analysis
     /**
      * Modules
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    protected ModuleMap moduleMap;
+    protected ResourceReference<ModuleMap> moduleMap;
 
     /**
      * Minimum module size
@@ -88,9 +87,7 @@ public class HtestAnalysis extends Analysis
     /**
      * Data
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    //@XmlElement(name = "dataMatrix")
-    protected IMatrix data;
+    protected ResourceReference<IMatrix> data;
 
     /**
      * Multiple test correction
@@ -100,9 +97,7 @@ public class HtestAnalysis extends Analysis
     /**
      * Results
      */
-    @XmlJavaTypeAdapter(PersistenceReferenceXmlAdapter.class)
-    //@XmlElement(name = "resultsMatrix")
-    protected ObjectMatrix results; //FIXME Should it be a BaseMatrix or IMatrix instead ?
+    protected ResourceReference<ObjectMatrix> results;
 
     public HtestAnalysis()
     {
@@ -148,12 +143,12 @@ public class HtestAnalysis extends Analysis
         this.testConfig = testConfig;
     }
 
-    public ModuleMap getModuleMap()
+    public ResourceReference<ModuleMap> getModuleMap()
     {
         return moduleMap;
     }
 
-    public void setModuleMap(ModuleMap moduleMap)
+    public void setModuleMap(ResourceReference<ModuleMap> moduleMap)
     {
         this.moduleMap = moduleMap;
     }
@@ -178,12 +173,12 @@ public class HtestAnalysis extends Analysis
         this.maxModuleSize = maxModuleSize;
     }
 
-    public IMatrix getData()
+    public ResourceReference<IMatrix> getData()
     {
         return data;
     }
 
-    public void setData(IMatrix data)
+    public void setData(ResourceReference<IMatrix> data)
     {
         this.data = data;
     }
@@ -198,12 +193,12 @@ public class HtestAnalysis extends Analysis
         this.mtc = mtc;
     }
 
-    public ObjectMatrix getResults()
+    public ResourceReference<ObjectMatrix> getResults()
     {
         return results;
     }
 
-    public void setResults(ObjectMatrix results)
+    public void setResults(ResourceReference<ObjectMatrix> results)
     {
         this.results = results;
     }

@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.fileutils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -33,7 +36,8 @@ import java.util.zip.GZIPOutputStream;
 public class IOUtils
 {
 
-    public static Reader openReader(File path) throws IOException
+    @Nullable
+    public static Reader openReader(@Nullable File path) throws IOException
     {
         if (path == null)
         {
@@ -55,12 +59,14 @@ public class IOUtils
         }
     }
 
+    @Nullable
     public static Writer openWriter(File path) throws IOException
     {
         return openWriter(path, false);
     }
 
-    public static Writer openWriter(File path, boolean append) throws IOException
+    @Nullable
+    public static Writer openWriter(@Nullable File path, boolean append) throws IOException
     {
         if (path == null)
         {
@@ -82,12 +88,14 @@ public class IOUtils
         }
     }
 
+    @Nullable
     public static OutputStream openOutputStream(File path) throws IOException
     {
         return openOutputStream(path, false);
     }
 
-    public static OutputStream openOutputStream(File path, boolean append) throws IOException
+    @Nullable
+    public static OutputStream openOutputStream(@Nullable File path, boolean append) throws IOException
     {
         if (path == null)
         {
@@ -108,7 +116,7 @@ public class IOUtils
         }
     }
 
-    public static void copyFile(File sourceFile, File destFile) throws IOException
+    public static void copyFile(File sourceFile, @NotNull File destFile) throws IOException
     {
         if (!destFile.exists())
         {
@@ -157,7 +165,7 @@ public class IOUtils
         }
     }
 
-    private static void copyChannel(ReadableByteChannel src, WritableByteChannel dest) throws IOException
+    private static void copyChannel(@NotNull ReadableByteChannel src, @NotNull WritableByteChannel dest) throws IOException
     {
         final ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
         while (src.read(buffer) != -1)

@@ -32,6 +32,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -78,12 +79,12 @@ public class NewOncodriveAnalysisAction extends BaseAction
 
         final OncodriveCommand cmd = new OncodriveCommand(
                 analysis,
-                wizard.getDataFileMime(),
+                wizard.getDataFileFormat(),
                 wizard.getDataFile().getAbsolutePath(),
                 wizard.getSelectedValueIndex(),
                 populationFile != null ? populationFile.getAbsolutePath() : null,
                 wizard.getPopulationDefaultValue(),
-                wizard.getModulesFileMime(),
+                wizard.getModulesFileFormat(),
                 modulesFile != null ? modulesFile.getAbsolutePath() : null,
                 wizard.getWorkdir(),
                 wizard.getFileName());
@@ -91,7 +92,7 @@ public class NewOncodriveAnalysisAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {

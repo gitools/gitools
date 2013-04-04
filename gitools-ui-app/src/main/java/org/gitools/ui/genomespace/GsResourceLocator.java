@@ -24,6 +24,8 @@ package org.gitools.ui.genomespace;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.ui.genomespace.dm.HttpUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,6 +67,7 @@ public class GsResourceLocator implements IResourceLocator
         return resourceLocator.getName();
     }
 
+    @NotNull
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException
     {
@@ -77,6 +80,7 @@ public class GsResourceLocator implements IResourceLocator
         return resourceLocator.isWritable();
     }
 
+    @Nullable
     @Override
     public InputStream openInputStream() throws IOException
     {

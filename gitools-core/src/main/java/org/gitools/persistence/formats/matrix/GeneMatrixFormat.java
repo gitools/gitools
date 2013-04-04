@@ -27,9 +27,9 @@ import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.*;
@@ -39,11 +39,12 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
     public GeneMatrixFormat()
     {
-        super(FileSuffixes.GENE_MATRIX, MimeTypes.GENE_MATRIX, DoubleBinaryMatrix.class);
+        super(FileSuffixes.GENE_MATRIX, DoubleBinaryMatrix.class);
     }
 
+    @NotNull
     @Override
-    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
         progressMonitor.begin("Reading ...", 1);
 
@@ -153,7 +154,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
         progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
 

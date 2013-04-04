@@ -33,6 +33,8 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.GenericFormatter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,9 +52,10 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
 
     protected Map<String, Integer> dataColIndices;
 
+    @Nullable
     protected IColorScale dataScale;
 
-    public CorrelationTablesPanel(CorrelationAnalysis analysis, Heatmap heatmap)
+    public CorrelationTablesPanel(@NotNull CorrelationAnalysis analysis, @NotNull Heatmap heatmap)
     {
         super(analysis, heatmap);
 
@@ -72,6 +75,7 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         dataScale = MatrixUtils.inferScale(data, 0);
     }
 
+    @NotNull
     @Override
     protected VelocityContext createModel()
     {
@@ -135,8 +139,9 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
+    @NotNull
     private List<VelocityContext> createDataCellElements(
-            IMatrixView mv, int row, int col, final IMatrix data)
+            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data)
     {
 
         final int valueIndex = 0;
@@ -210,8 +215,9 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return elements;
     }
 
+    @NotNull
     private List<VelocityContext> createDataColumnElements(
-            IMatrixView mv, String colName, final IMatrix data)
+            IMatrixView mv, String colName, @NotNull final IMatrix data)
     {
 
         final int valueIndex = 0;
@@ -268,8 +274,9 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return elements;
     }
 
-    private VelocityContext createDataCellModel(VelocityContext context,
-                                                IMatrixView mv, int row, int col, IMatrix data)
+    @NotNull
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
+                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -294,8 +301,9 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private VelocityContext createDataColumnModel(VelocityContext context,
-                                                  IMatrixView mv, int col, IMatrix data)
+    @NotNull
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
+                                                  @NotNull IMatrixView mv, int col, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -320,8 +328,9 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private VelocityContext createDataRowModel(VelocityContext context,
-                                               IMatrixView mv, int row, IMatrix data)
+    @NotNull
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
+                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data)
     {
 
         List<VelocityContext> elements =
@@ -352,7 +361,8 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private VelocityContext createResultsElement(IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsElement(@NotNull IMatrixView mv, int row, int col)
     {
 
         GenericFormatter fmt = new GenericFormatter();
@@ -380,7 +390,8 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return e;
     }
 
-    private VelocityContext createResultsCellModel(VelocityContext context, IMatrixView mv, int row, int col)
+    @NotNull
+    private VelocityContext createResultsCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col)
     {
         VelocityContext e = createResultsElement(mv, row, col);
         e.put("name", mv.getRowLabel(row));
@@ -405,7 +416,8 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private VelocityContext createResultsColumnModel(VelocityContext context, IMatrixView mv, int col)
+    @NotNull
+    private VelocityContext createResultsColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -433,7 +445,8 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private VelocityContext createResultsRowModel(VelocityContext context, IMatrixView mv, int row)
+    @NotNull
+    private VelocityContext createResultsRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row)
     {
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
         for (int ci = 0; ci < mv.getColumnCount(); ci++)
@@ -465,7 +478,7 @@ public class CorrelationTablesPanel extends AbstractTablesPanel<CorrelationAnaly
         return context;
     }
 
-    private String truncateString(String s, int len)
+    private String truncateString(@NotNull String s, int len)
     {
         return s.substring(0, Math.min(s.length(), len));
     }

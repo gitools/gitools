@@ -25,6 +25,7 @@ import org.gitools.clustering.ClusteringMethodDescriptor;
 import org.gitools.clustering.ClusteringMethodFactory;
 import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -81,6 +82,7 @@ public class ClusteringMethodsPage extends AbstractWizardPage
 
     }
 
+    @Nullable
     public ClusteringMethodDescriptor getMethodDescriptor()
     {
         int indice = annList.getSelectedIndex();

@@ -24,6 +24,7 @@ package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,7 +106,7 @@ public class SelectColumnsPage extends AbstractWizardPage
             // Add a mouse listener to handle changing selection
             valueCellsList.addMouseListener(new MouseAdapter()
             {
-                public void mouseClicked(MouseEvent event)
+                public void mouseClicked(@NotNull MouseEvent event)
                 {
                     JList list = (JList) event.getSource();
 
@@ -144,7 +145,7 @@ public class SelectColumnsPage extends AbstractWizardPage
 
     }
 
-    private void createCheckListItems(List<ExcelHeader> headers)
+    private void createCheckListItems(@NotNull List<ExcelHeader> headers)
     {
         values = new CheckListItem[headers.size()];
         for (int i = 0; i < headers.size(); i++)
@@ -195,6 +196,7 @@ public class SelectColumnsPage extends AbstractWizardPage
         return row.getPos();
     }
 
+    @NotNull
     public List<Integer> getSelectedValues()
     {
 
@@ -246,7 +248,8 @@ public class SelectColumnsPage extends AbstractWizardPage
     private class CheckListRenderer extends JCheckBox implements ListCellRenderer
     {
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus)
+        @NotNull
+        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value, int index, boolean isSelected, boolean hasFocus)
         {
 
             setEnabled(list.isEnabled());

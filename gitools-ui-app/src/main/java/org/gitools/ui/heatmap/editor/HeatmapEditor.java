@@ -41,7 +41,8 @@ import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.formats.analysis.HeatmapXmlFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
@@ -61,6 +62,8 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.colorscale.drawer.ColorScalePanel;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -92,16 +95,17 @@ public class HeatmapEditor extends AbstractEditor
 
     private PropertyChangeListener colDecoratorListener;
 
+    @NotNull
     protected final JPanel embeddedContainer;
 
     private static int DEFAULT_ACCORDION_WIDTH = 270;
 
-    public HeatmapEditor(Heatmap heatmap)
+    public HeatmapEditor(@NotNull Heatmap heatmap)
     {
         this(heatmap, false);
     }
 
-    public HeatmapEditor(Heatmap heatmap, boolean embedded)
+    public HeatmapEditor(@NotNull Heatmap heatmap, boolean embedded)
     {
         this.heatmap = heatmap;
 
@@ -125,7 +129,7 @@ public class HeatmapEditor extends AbstractEditor
         heatmapListener = new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 heatmapPropertyChange(evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
             }
@@ -165,7 +169,7 @@ public class HeatmapEditor extends AbstractEditor
         matrixView.addPropertyChangeListener(new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
             }
@@ -175,7 +179,7 @@ public class HeatmapEditor extends AbstractEditor
         setSaveAsAllowed(true);
     }
 
-    protected void heatmapPropertyChange(Object src, String pname, Object oldValue, Object newValue)
+    protected void heatmapPropertyChange(@NotNull Object src, String pname, Object oldValue, Object newValue)
     {
 
         if (src.equals(heatmap))
@@ -206,7 +210,7 @@ public class HeatmapEditor extends AbstractEditor
         setDirty(true);
     }
 
-    protected void matrixPropertyChange(String propertyName, Object oldValue, Object newValue)
+    protected void matrixPropertyChange(String propertyName, @Nullable Object oldValue, @NotNull Object newValue)
     {
 
         if (IMatrixView.SELECTED_LEAD_CHANGED.equals(propertyName))
@@ -242,7 +246,7 @@ public class HeatmapEditor extends AbstractEditor
         //detailsView.updateContext(heatmap);
     }
 
-    private void createComponents(JComponent container)
+    private void createComponents(@NotNull JComponent container)
     {
 
         WebAccordion leftPanel = new WebAccordion(WebAccordionStyle.accordionStyle);
@@ -311,6 +315,7 @@ public class HeatmapEditor extends AbstractEditor
 
     }
 
+    @Nullable
     protected IMatrixView getMatrixView()
     {
         return heatmap.getMatrixView();
@@ -336,7 +341,7 @@ public class HeatmapEditor extends AbstractEditor
     }
 
     @Override
-    public void doSave(IProgressMonitor monitor)
+    public void doSave(@NotNull IProgressMonitor monitor)
     {
         File file = getFile();
         if (file == null)
@@ -345,7 +350,7 @@ public class HeatmapEditor extends AbstractEditor
                     "Save heatmap",
                     getName(),
                     Settings.getDefault().getLastPath(),
-                    new FileFormat[]{new FileFormat("Heatmap", FileSuffixes.HEATMAP)});
+                    new FileFormat[]{new FileFormat("Heatmap", HeatmapXmlFormat.EXTENSION)});
 
             WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
             dlg.setVisible(true);
@@ -362,7 +367,7 @@ public class HeatmapEditor extends AbstractEditor
 
         try
         {
-            PersistenceManager.get().store(file, getModel(), monitor);
+            PersistenceManager.get().store(new UrlResourceLocator(file), getModel(), monitor);
         } catch (PersistenceException ex)
         {
             monitor.exception(ex);
@@ -397,7 +402,7 @@ public class HeatmapEditor extends AbstractEditor
                         "Save heatmap",
                         getName(),
                         Settings.getDefault().getLastPath(),
-                        new FileFormat[]{new FileFormat("Heatmap", FileSuffixes.HEATMAP)});
+                        new FileFormat[]{new FileFormat("Heatmap", HeatmapXmlFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
                 dlg.setVisible(true);
@@ -413,7 +418,7 @@ public class HeatmapEditor extends AbstractEditor
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
                         doSave(monitor);
                     }

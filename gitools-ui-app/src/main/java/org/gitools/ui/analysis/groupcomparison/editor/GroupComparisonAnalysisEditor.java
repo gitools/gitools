@@ -30,11 +30,11 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.util.HeatmapUtil;
+import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -44,6 +44,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.SerialClone;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -60,22 +61,20 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 
     @Override
-    protected void prepareContext(VelocityContext context)
+    protected void prepareContext(@NotNull VelocityContext context)
     {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
-        context.put("dataFile",
-                fileRef != null ? fileRef.getName() : "Not defined");
+        context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         context.put("mtc", analysis.getMtc().getName());
 
         fileRef = analysis.getResults().getLocator();
-        context.put("resultsFile",
-                fileRef != null ? fileRef.getName() : "Not defined");
+        context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         fileRef = analysis.getLocator();
-        context.put("analysisLocation", fileRef.getURL());
+        context.put("analysisLocation", fileRef != null ? fileRef.getURL() : "Not defined");
 
         if (fileRef == null || fileRef.isWritable())
         {
@@ -88,7 +87,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     public void doSave(IProgressMonitor progressMonitor)
     {
         xmlPersistance = new GroupComparisonAnalysisXmlFormat();
-        fileformat = FileFormats.GROUP_COMPARISON;
+        fileformat = GroupComparisonAnalysisXmlFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
@@ -118,23 +117,23 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData());
+                IMatrixView dataTable = new MatrixView(analysis.getData().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 if (analysis.getRowHeaders() != null)
                 {
-                    heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
+                    heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
                     copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
                 }
                 if (analysis.getColumnHeaders() != null)
                 {
-                    heatmap.getColumnDim().setAnnotations(analysis.getColumnAnnotations());
+                    heatmap.getColumnDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
                     copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
                 }
 
@@ -142,7 +141,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.GROUP_COMPARISON,
+                        getName(), GroupComparisonAnalysisXmlFormat.EXTENSION,
                         "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
@@ -159,7 +158,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
 
-    private void copyHeaders(HeatmapDim dim, List<HeatmapHeader> headers)
+    private void copyHeaders(@NotNull HeatmapDim dim, @NotNull List<HeatmapHeader> headers)
     {
 
         dim.removeHeader(0);
@@ -237,18 +236,22 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getResults());
+                IMatrixView dataTable = new MatrixView(analysis.getResults().get());
 
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 if (analysis.getRowHeaders() != null)
                 {
-                    heatmap.getRowDim().setAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
+                    if (analysis.getRowAnnotations() != null)
+                    {
+                        heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
+                    }
+
                     heatmap.getRowDim().removeHeader(0);
                     for (HeatmapHeader hh : analysis.getRowHeaders())
                     {
@@ -259,7 +262,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(
-                        getName(), FileSuffixes.GROUP_COMPARISON,
+                        getName(), GroupComparisonAnalysisXmlFormat.EXTENSION,
                         "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()

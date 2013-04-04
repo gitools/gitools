@@ -21,6 +21,8 @@
  */
 package org.gitools.newick;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +123,7 @@ public class NewickNode<VT>
         return res;
     }
 
-    protected void leaves(List<NewickNode> leaves, int maxLevel, Order order)
+    protected void leaves(@NotNull List<NewickNode> leaves, int maxLevel, @NotNull Order order)
     {
         if (children.isEmpty() || maxLevel == 0)
         {
@@ -144,23 +146,27 @@ public class NewickNode<VT>
         }
     }
 
-    public List<NewickNode> getLeaves(int maxLevel, Order order)
+    @NotNull
+    public List<NewickNode> getLeaves(int maxLevel, @NotNull Order order)
     {
         List<NewickNode> leaves = new ArrayList<NewickNode>();
         leaves(leaves, maxLevel, order);
         return leaves;
     }
 
+    @NotNull
     public List<NewickNode> getLeaves(int maxLevel)
     {
         return getLeaves(maxLevel, Order.PRE_ORDER);
     }
 
+    @NotNull
     public List<NewickNode> getLeaves()
     {
         return getLeaves(Integer.MAX_VALUE);
     }
 
+    @NotNull
     @Override
     public String toString()
     {

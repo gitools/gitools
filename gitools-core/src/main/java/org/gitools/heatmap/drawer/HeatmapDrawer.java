@@ -24,6 +24,7 @@ package org.gitools.heatmap.drawer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -32,11 +33,14 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
 {
 
     private HeatmapBodyDrawer body;
+    @NotNull
     private final HeatmapHeaderDrawer rowsHeader;
+    @NotNull
     private final HeatmapHeaderDrawer colsHeader;
+    @NotNull
     private final HeatmapHeaderIntersectionDrawer headerIntersection;
     /*private HeatmapLabelsDrawer rows;
-	private HeatmapLabelsDrawer columns;
+    private HeatmapLabelsDrawer columns;
 	private HeatmapColoredClustersDrawer rowsClusterSet;
 	private HeatmapColoredClustersDrawer columnsClusterSet;*/
 
@@ -50,13 +54,13 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap, colsHeader, rowsHeader);
 
 		/*rows = new HeatmapLabelsDrawer(heatmap, false);
-		columns = new HeatmapLabelsDrawer(heatmap, true);
+        columns = new HeatmapLabelsDrawer(heatmap, true);
 		rowsClusterSet = new HeatmapColoredClustersDrawer(heatmap, false);
 		columnsClusterSet = new HeatmapColoredClustersDrawer(heatmap, true);*/
     }
 
     @Override
-    public void draw(Graphics2D g, Rectangle box, Rectangle clip)
+    public void draw(@NotNull Graphics2D g, Rectangle box, Rectangle clip)
     {
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
@@ -93,6 +97,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         g.setTransform(at); */
     }
 
+    @NotNull
     @Override
     public Dimension getSize()
     {
@@ -104,12 +109,14 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         return new Dimension(bodySize.width + rowsSize.width, bodySize.height + columnsSize.height);
     }
 
+    @NotNull
     @Override
     public HeatmapPosition getPosition(Point p)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @NotNull
     @Override
     public Point getPoint(HeatmapPosition p)
     {

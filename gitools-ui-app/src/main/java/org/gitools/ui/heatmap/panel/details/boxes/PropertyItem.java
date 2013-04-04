@@ -40,31 +40,33 @@ public class PropertyItem implements Serializable
     /**
      * Instantiates a new Property item.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      */
-    public PropertyItem(@NotNull String name, @NotNull String value) {
+    public PropertyItem(@NotNull String name, @NotNull String value)
+    {
         this(name, null, value);
     }
 
     /**
      * Instantiates a new Property item.
      *
-     * @param name the name
+     * @param name        the name
      * @param description the description
-     * @param value the value
+     * @param value       the value
      */
-    public PropertyItem(@NotNull String name, String description, @NotNull String value) {
+    public PropertyItem(@NotNull String name, String description, @NotNull String value)
+    {
         this(name, description, value, null);
     }
 
     /**
      * Instantiates a new Property item.
      *
-     * @param name the name
+     * @param name        the name
      * @param description the description
-     * @param value the value
-     * @param valueLink the value link
+     * @param value       the value
+     * @param valueLink   the value link
      */
     public PropertyItem(@NotNull String name, String description, @NotNull String value, String valueLink)
     {
@@ -124,6 +126,7 @@ public class PropertyItem implements Serializable
         return color;
     }
 
+    @NotNull
     public PropertyItem setColor(Color color)
     {
         this.color = color;

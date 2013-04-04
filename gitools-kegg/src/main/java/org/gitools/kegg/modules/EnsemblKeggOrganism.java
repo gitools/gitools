@@ -25,6 +25,7 @@ import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.kegg.service.domain.KeggOrganism;
 import org.gitools.modules.importer.Organism;
 import org.gitools.modules.importer.RefImpl;
+import org.jetbrains.annotations.NotNull;
 
 public class EnsemblKeggOrganism extends RefImpl implements Organism
 {
@@ -64,6 +65,7 @@ public class EnsemblKeggOrganism extends RefImpl implements Organism
         this.keggDef = keggDef;
     }
 
+    @NotNull
     @Override
     public String getRef()
     {

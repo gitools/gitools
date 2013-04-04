@@ -30,6 +30,7 @@ import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -113,7 +114,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
         valueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {
@@ -142,7 +143,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
         corrValueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {
@@ -324,8 +325,8 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
 
     private void showCorrectionChecked()
     {
-		/*IndexedProperty propAdapter = 
-			(IndexedProperty) valueCb.getSelectedItem();
+        /*IndexedProperty propAdapter =
+            (IndexedProperty) valueCb.getSelectedItem();
 		
 		if (propAdapter != null) {
 			int corrIndex = TableUtils.correctedValueIndex(

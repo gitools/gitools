@@ -25,6 +25,7 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.model.AbstractModel;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -85,6 +86,7 @@ public abstract class HeatmapHeader extends AbstractModel
 
     /* If the header is referring to annotation from
     * the other dimension, the pattern is stored here*/
+    @Nullable
     protected String annotationPattern;
 
     protected String[] annotationValues;
@@ -302,6 +304,7 @@ public abstract class HeatmapHeader extends AbstractModel
         firePropertyChange(LARGEST_LABEL_LENGTH_CHANGED, old, largestLabelLength);
     }
 
+    @Nullable
     public String getAnnotationPattern()
     {
         return annotationPattern;

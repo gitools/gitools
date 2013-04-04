@@ -21,6 +21,8 @@
  */
 package org.gitools.workspace;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -56,6 +58,7 @@ public class WorkspaceProjectRef
         this.url = url;
     }
 
+    @NotNull
     public File getPath()
     {
         if (url.startsWith(File.pathSeparator))

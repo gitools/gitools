@@ -23,6 +23,7 @@ package org.gitools.ui.biomart.filter;
 
 import org.gitools.biomart.restful.model.*;
 import org.gitools.ui.biomart.wizard.BiomartFilterConfigurationPage.CollectionsPanelsCache;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,7 +92,7 @@ public class FilterSelectComponent extends FilterComponent
             comboComponent.addItemListener(new ItemListener()
             {
                 @Override
-                public void itemStateChanged(ItemEvent e)
+                public void itemStateChanged(@NotNull ItemEvent e)
                 {
                     if (e.getStateChange() == ItemEvent.SELECTED)
                     {
@@ -262,6 +263,7 @@ public class FilterSelectComponent extends FilterComponent
     }
 
 
+    @NotNull
     private List<OptionListWrapper> InitListOptions()
     {
 
@@ -317,6 +319,7 @@ public class FilterSelectComponent extends FilterComponent
 
     }
 
+    @NotNull
     @Override
     // FIXME : get Filter for selected value/s in list
     public List<Filter> getFilters()
@@ -393,6 +396,7 @@ public class FilterSelectComponent extends FilterComponent
         return filters;
     }
 
+    @NotNull
     @Override
     //Always render filter from select component filter
     public Boolean hasChanged()
@@ -401,7 +405,7 @@ public class FilterSelectComponent extends FilterComponent
     }
 
     @Override
-    public void setListOptions(List<Option> optionList)
+    public void setListOptions(@NotNull List<Option> optionList)
     {
 
         if (this.component.equals("ComboBox"))

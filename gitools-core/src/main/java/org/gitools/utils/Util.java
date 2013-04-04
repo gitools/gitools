@@ -22,6 +22,8 @@
 package org.gitools.utils;
 
 import cern.jet.stat.Probability;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Util
 {
@@ -65,7 +67,8 @@ public class Util
         return zscore;
     }
 
-    public static String notNullString(String string)
+    @NotNull
+    public static String notNullString(@Nullable String string)
     {
         return string == null ? "" : string;
     }

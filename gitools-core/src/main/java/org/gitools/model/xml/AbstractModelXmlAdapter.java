@@ -22,6 +22,7 @@
 package org.gitools.model.xml;
 
 import org.gitools.model.AbstractModel;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.List;
@@ -30,15 +31,17 @@ import java.util.List;
 public class AbstractModelXmlAdapter extends XmlAdapter<AbstractModelDecoratorElement, List<AbstractModel>>
 {
 
+    @NotNull
     @Override
-    public AbstractModelDecoratorElement marshal(List<AbstractModel> elems)
+    public AbstractModelDecoratorElement marshal(@NotNull List<AbstractModel> elems)
             throws Exception
     {
         return new AbstractModelDecoratorElement(elems);
     }
 
+    @NotNull
     @Override
-    public List<AbstractModel> unmarshal(AbstractModelDecoratorElement v)
+    public List<AbstractModel> unmarshal(@NotNull AbstractModelDecoratorElement v)
             throws Exception
     {
         return v.getList();

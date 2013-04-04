@@ -22,6 +22,8 @@
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.heatmap.header.ColoredLabel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -41,11 +43,12 @@ class ColoredLabelsTableModel implements TableModel
 
     private List<ColoredLabel> labelList;
 
+    @NotNull
     private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
     private boolean valueEditable = true;
     private boolean valueMustBeNumeric = false;
 
-    public ColoredLabelsTableModel(ColoredLabel[] coloredLabels)
+    public ColoredLabelsTableModel(@NotNull ColoredLabel[] coloredLabels)
     {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
@@ -117,6 +120,7 @@ class ColoredLabelsTableModel implements TableModel
         return true;
     }
 
+    @Nullable
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
@@ -174,14 +178,14 @@ class ColoredLabelsTableModel implements TableModel
         fireContentChanged();
     }
 
-    void addAllLabels(List<ColoredLabel> list)
+    void addAllLabels(@NotNull List<ColoredLabel> list)
     {
         int initialRow = labelList.size();
         labelList.addAll(list);
         fireContentChanged();
     }
 
-    void addAllLabels(ColoredLabel[] coloredLabels)
+    void addAllLabels(@NotNull ColoredLabel[] coloredLabels)
     {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
@@ -190,7 +194,7 @@ class ColoredLabelsTableModel implements TableModel
         fireContentChanged();
     }
 
-    void removeLabel(int[] rowsToRemove)
+    void removeLabel(@NotNull int[] rowsToRemove)
     {
         List<Object> objects = new ArrayList<Object>(rowsToRemove.length);
         for (int index : rowsToRemove)

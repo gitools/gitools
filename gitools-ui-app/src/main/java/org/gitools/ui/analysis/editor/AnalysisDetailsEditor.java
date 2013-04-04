@@ -41,6 +41,7 @@ import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,10 +60,12 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
 
     protected String template;
 
+    @Nullable
     protected ActionSet toolBar = null;
 
     protected TemplatePanel templatePanel;
 
+    @Nullable
     protected AbstractXmlFormat xmlPersistance = null;
 
     protected FileFormat fileformat;

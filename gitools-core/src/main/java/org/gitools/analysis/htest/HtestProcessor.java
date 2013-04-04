@@ -29,6 +29,7 @@ import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class HtestProcessor implements AnalysisProcessor
 {
@@ -44,9 +45,9 @@ public abstract class HtestProcessor implements AnalysisProcessor
             };
 
     protected void multipleTestCorrection(
-            ObjectMatrix res,
-            MTC mtc,
-            IProgressMonitor monitor)
+            @NotNull ObjectMatrix res,
+            @NotNull MTC mtc,
+            @NotNull IProgressMonitor monitor)
     {
 
         monitor.begin(mtc.getName() + " correction...", 1);

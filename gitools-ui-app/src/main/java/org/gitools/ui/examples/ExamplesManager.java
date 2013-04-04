@@ -23,6 +23,8 @@ package org.gitools.ui.examples;
 
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URL;
@@ -52,7 +54,8 @@ public class ExamplesManager
     {
     }
 
-    public File resolvePath(String exampleId, IProgressMonitor monitor)
+    @Nullable
+    public File resolvePath(String exampleId, @NotNull IProgressMonitor monitor)
     {
         File file = null;
 
@@ -116,7 +119,8 @@ public class ExamplesManager
 
     private static final String EXAMPLES_BASE_URL = "http://webstart.gitools.org/default/examples";
 
-    private File resolveDownloadedPath(String exampleId, IProgressMonitor monitor)
+    @NotNull
+    private File resolveDownloadedPath(String exampleId, @NotNull IProgressMonitor monitor)
     {
         File dstBasePath = new File(Settings.CONFIG_PATH + File.separator + "examples");
         if (!dstBasePath.exists())
@@ -162,7 +166,7 @@ public class ExamplesManager
         }
     }
 
-    private void downloadExample(File dstBasePath, String exampleId, IProgressMonitor monitor)
+    private void downloadExample(File dstBasePath, String exampleId, @NotNull IProgressMonitor monitor)
     {
         try
         {

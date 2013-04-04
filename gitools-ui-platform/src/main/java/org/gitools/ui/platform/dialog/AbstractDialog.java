@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -48,7 +50,7 @@ public abstract class AbstractDialog extends JDialog
     public AbstractDialog(
             Window owner,
             String title, String header,
-            String message, MessageStatus status,
+            String message, @NotNull MessageStatus status,
             Icon logo)
     {
 
@@ -87,7 +89,7 @@ public abstract class AbstractDialog extends JDialog
     protected void createComponents(
             String header,
             String message,
-            MessageStatus status,
+            @NotNull MessageStatus status,
             Icon logo)
     {
 

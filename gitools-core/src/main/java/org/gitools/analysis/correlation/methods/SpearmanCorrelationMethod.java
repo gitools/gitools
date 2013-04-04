@@ -25,6 +25,7 @@ import org.gitools.analysis.AbstractMethod;
 import org.gitools.analysis.MethodException;
 import org.gitools.analysis.correlation.CorrelationMethod;
 import org.gitools.analysis.correlation.CorrelationResult;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Properties;
 
@@ -46,6 +47,7 @@ public class SpearmanCorrelationMethod extends AbstractMethod implements Correla
                 CorrelationResult.class, properties);
     }
 
+    @Nullable
     @Override
     public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException
     {

@@ -28,6 +28,7 @@ import org.gitools.matrix.model.AnnotationResolver;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
+import org.jetbrains.annotations.NotNull;
 
 public class AnnPatColumnClusteringData implements ClusteringData
 {
@@ -48,12 +49,14 @@ public class AnnPatColumnClusteringData implements ClusteringData
             return 1;
         }
 
+        @NotNull
         @Override
         public String getAttributeName(int attribute)
         {
             return "value";
         }
 
+        @NotNull
         @Override
         public Class<?> getValueClass(int attribute)
         {
@@ -66,8 +69,9 @@ public class AnnPatColumnClusteringData implements ClusteringData
             return pat.generate(resolver);
         }
 
+        @NotNull
         @Override
-        public <T> T getTypedValue(int attribute, Class<T> valueClass)
+        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass)
         {
             if (!String.class.equals(valueClass))
             {
@@ -101,6 +105,7 @@ public class AnnPatColumnClusteringData implements ClusteringData
         return matrix.getColumnLabel(index);
     }
 
+    @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index)
     {

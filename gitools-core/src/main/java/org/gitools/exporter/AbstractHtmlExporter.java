@@ -21,6 +21,9 @@
  */
 package org.gitools.exporter;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -60,6 +63,7 @@ public class AbstractHtmlExporter
     }
 
     // FIXME
+    @Nullable
     protected File getTemplatePath()
     {
         File templatePath = null;
@@ -87,7 +91,7 @@ public class AbstractHtmlExporter
         return templatePath;
     }
 
-    protected void copy(File src, File dst) throws IOException
+    protected void copy(@NotNull File src, File dst) throws IOException
     {
         File[] list = src.listFiles(new FilenameFilter()
         {

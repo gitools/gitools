@@ -25,6 +25,7 @@ import org.gitools.clustering.*;
 import org.gitools.matrix.TransposedMatrixView;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
 import weka.core.SelectedTag;
@@ -35,7 +36,7 @@ import java.util.Properties;
 public class Clusterer
 {
 
-    public static ClusteringResults matrixClustering(IMatrixView matrixView, Properties clusterParameters, IProgressMonitor monitor, boolean sortMatrix) throws Exception
+    public static ClusteringResults matrixClustering(@NotNull IMatrixView matrixView, @NotNull Properties clusterParameters, @NotNull IProgressMonitor monitor, boolean sortMatrix) throws Exception
     {
 
         ClusteringMethodDescriptor descriptor = null;

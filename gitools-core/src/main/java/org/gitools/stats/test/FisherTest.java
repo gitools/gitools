@@ -25,6 +25,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.stats.FisherExactTest;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.FisherResult;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -35,12 +36,14 @@ public class FisherTest extends AbstractTest
     {
     }
 
+    @NotNull
     @Override
     public String getName()
     {
         return "fisher";
     }
 
+    @NotNull
     @Override
     public Class<? extends CommonResult> getResultClass()
     {
@@ -52,10 +55,11 @@ public class FisherTest extends AbstractTest
     {
     }
 
+    @NotNull
     @Override
     public CommonResult processTest(
-            String condName, DoubleMatrix1D condItems,
-            String groupName, int[] groupItemIndices)
+            String condName, @NotNull DoubleMatrix1D condItems,
+            String groupName, @NotNull int[] groupItemIndices)
     {
 
         int[] ctable = new int[4];
@@ -95,8 +99,8 @@ public class FisherTest extends AbstractTest
      * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      */
     private void calcContingencyTable(
-            DoubleMatrix1D condItems,
-            int[] groupItems,
+            @NotNull DoubleMatrix1D condItems,
+            @NotNull int[] groupItems,
             int[] ctable)
     {
 

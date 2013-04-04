@@ -21,10 +21,10 @@
  */
 package org.gitools.persistence.formats.analysis.adapter;
 
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.ResourceReference;
+import org.apache.commons.lang.StringUtils;
+import org.gitools.persistence.*;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -41,19 +41,33 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
         this.progressMonitor = progressMonitor;
     }
 
+    @NotNull
     @Override
-    public ResourceReference unmarshal(ResourceReferenceXmlElement resourceReference) throws Exception
+    public ResourceReference unmarshal(@NotNull ResourceReferenceXmlElement resourceReference) throws Exception
     {
 
         String referenceName = resourceReference.getPath();
         IResourceLocator referenceLocator = resourceLocator.getReferenceLocator(referenceName);
 
-        return new ResourceReference(referenceLocator);
+        String extension = resourceReference.getFormat();
+        if (StringUtils.isEmpty(extension))
+        {
+            extension = referenceLocator.getExtension();
+        }
+
+        PersistenceManager pm = PersistenceManager.get();
+        IResourceFormat resourceFormat = pm.getFormat(extension, IResource.class);
+
+        return new ResourceReference(referenceLocator, resourceFormat);
     }
 
     @Override
     public ResourceReferenceXmlElement marshal(ResourceReference resourceReference) throws Exception
     {
+        if (resourceReference == null)
+        {
+            return null;
+        }
 
         PersistenceManager pm = PersistenceManager.get();
 
@@ -62,7 +76,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
         {
             String parentName = resourceLocator.getBaseName();
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
-            resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension + ".gz"));
+            resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension));
         }
 
         IResourceLocator referenceLocator = resourceReference.getLocator();

@@ -29,8 +29,6 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.analysis.CombinationAnalysisXmlFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.dialog.UnimplementedDialog;
@@ -40,6 +38,7 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -54,7 +53,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     @Override
-    protected void prepareContext(VelocityContext context)
+    protected void prepareContext(@NotNull VelocityContext context)
     {
         String combOf = "columns";
         if (analysis.isTransposeData())
@@ -108,7 +107,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     public void doSave(IProgressMonitor progressMonitor)
     {
         xmlPersistance = new CombinationAnalysisXmlFormat();
-        fileformat = FileFormats.COMBINATION;
+        fileformat = CombinationAnalysisXmlFormat.COMBINATION;
         super.doSave(progressMonitor);
     }
 
@@ -142,7 +141,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -156,7 +155,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                     editor.setName(editorPanel.deriveName(
-                            getName(), FileSuffixes.COMBINATION,
+                            getName(), CombinationAnalysisXmlFormat.EXTENSION,
                             "-data", ""));
 
                     SwingUtilities.invokeLater(new Runnable()
@@ -196,7 +195,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
@@ -210,7 +209,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
 
                     editor.setName(editorPanel.deriveName(
-                            getName(), FileSuffixes.COMBINATION,
+                            getName(), CombinationAnalysisXmlFormat.EXTENSION,
                             "-results", ""));
 
                     SwingUtilities.invokeLater(new Runnable()

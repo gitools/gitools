@@ -29,6 +29,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +46,7 @@ public class HeatmapPanel extends JPanel
     private static final long serialVersionUID = 5817479437770943868L;
 
     private Heatmap heatmap;
+    @NotNull
     private final PropertyChangeListener heatmapListener;
 
     private HeatmapBodyPanel bodyPanel;
@@ -62,6 +65,7 @@ public class HeatmapPanel extends JPanel
     private JScrollBar colSB;
     private JScrollBar rowSB;
 
+    @NotNull
     private List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
     public HeatmapPanel(Heatmap heatmap)
@@ -71,7 +75,7 @@ public class HeatmapPanel extends JPanel
         heatmapListener = new PropertyChangeListener()
         {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
+            public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
                 heatmapPropertyChanged(evt);
             }
@@ -331,6 +335,7 @@ public class HeatmapPanel extends JPanel
         return bodyPanel.getDrawer().getPosition(pos);
     }
 
+    @NotNull
     public Point getScrollValue()
     {
         return new Point(
@@ -362,7 +367,7 @@ public class HeatmapPanel extends JPanel
         rowSB.setValue(value);
     }
 
-    private void heatmapChanged(Heatmap old)
+    private void heatmapChanged(@Nullable Heatmap old)
     {
 
         if (old != null)
@@ -373,7 +378,7 @@ public class HeatmapPanel extends JPanel
         heatmap.addPropertyChangeListener(heatmapListener);
     }
 
-    private void heatmapPropertyChanged(PropertyChangeEvent evt)
+    private void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
     {
         String pname = evt.getPropertyName();
         Object src = evt.getSource();
@@ -406,7 +411,7 @@ public class HeatmapPanel extends JPanel
     }
 
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(@NotNull Graphics g)
     {
         super.paintComponent(g);
         Dimension sz = getSize();
@@ -425,7 +430,7 @@ public class HeatmapPanel extends JPanel
         mouseListeners.remove(listener);
     }
 
-    public void mouseReleased(MouseEvent e)
+    public void mouseReleased(@NotNull MouseEvent e)
     {
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
         {
@@ -433,18 +438,18 @@ public class HeatmapPanel extends JPanel
         }
     }
 
-    private void showPopup(MouseEvent e)
+    private void showPopup(@NotNull MouseEvent e)
     {
         if (e.getComponent() == this.rowVP)
         {
             popupMenuRows.show(e.getComponent(), e.getX(), e.getY());
         }
 
-        if (e.getComponent() == this.colVP) {
+        if (e.getComponent() == this.colVP)
+        {
             popupMenuColumns.show(e.getComponent(), e.getX(), e.getY());
         }
     }
-
 
 
 }

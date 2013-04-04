@@ -21,6 +21,8 @@
  */
 package org.gitools.biomart.restful.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.XmlRegistry;
 
 
@@ -56,6 +58,7 @@ public class ObjectFactory
     /**
      * Create an instance of {@link DatasetConfig }
      */
+    @NotNull
     public DatasetConfig createDatasetConfig()
     {
         return new DatasetConfig();

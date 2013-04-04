@@ -22,11 +22,12 @@
 package org.gitools.ui.analysis.correlation.wizard;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -42,6 +43,7 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
@@ -50,7 +52,7 @@ import java.util.Properties;
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard
 {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + FileSuffixes.CORRELATIONS;
+    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CorrelationAnalysisXmlFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
     private ExamplePage examplePage;
@@ -98,7 +100,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
         saveFilePage.setFormats(new FileFormat[]{
-                FileFormats.CORRELATIONS});
+                CorrelationAnalysisXmlFormat.FILE_FORMAT});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -120,7 +122,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
                 JobThread.execute(AppFrame.get(), new JobRunnable()
                 {
                     @Override
-                    public void run(IProgressMonitor monitor)
+                    public void run(@NotNull IProgressMonitor monitor)
                     {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("correlations", monitor);
@@ -191,9 +193,9 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         return saveFilePage.getFileName();
     }
 
-    public String getDataFileMime()
+    public IResourceFormat<? extends IMatrix> getDataFileFormat()
     {
-        return dataPage.getFileFormat().getMime();
+        return dataPage.getFileFormat().getFormat(IMatrix.class);
     }
 
     public File getDataFile()
@@ -206,6 +208,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         return dataFilterPage.getRowsFilterFile();
     }
 
+    @NotNull
     public CorrelationAnalysis getAnalysis()
     {
         CorrelationAnalysis a = new CorrelationAnalysis();
@@ -222,7 +225,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         return a;
     }
 
-    private void setAnalysis(CorrelationAnalysis a)
+    private void setAnalysis(@NotNull CorrelationAnalysis a)
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());

@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -41,7 +42,7 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
     /**
      * Creates new form ColoredClustersConfigPage
      */
-    public HeatmapHeaderConfigPage(HeatmapDataHeatmapHeader header)
+    public HeatmapHeaderConfigPage(@NotNull HeatmapDataHeatmapHeader header)
     {
         super();
 

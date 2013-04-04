@@ -32,21 +32,13 @@ import java.util.Properties;
 public abstract class AbstractResourceFormat<R extends IResource> implements IResourceFormat<R>
 {
 
-    private String mime;
     private String extension;
     private Class<R> resourceClass;
 
-    protected AbstractResourceFormat(String extension, String mime, Class<R> resourceClass)
+    protected AbstractResourceFormat(String extension, Class<R> resourceClass)
     {
         this.extension = extension;
-        this.mime = mime;
         this.resourceClass = resourceClass;
-    }
-
-    @Override
-    public String getMime()
-    {
-        return mime;
     }
 
     @Override
@@ -56,16 +48,11 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     }
 
     @Override
-    public String getDefaultExtension()
+    public String getExtension()
     {
         return extension;
     }
 
-    @Override
-    public String[] getExtensions()
-    {
-        return new String[]{extension};
-    }
 
     @Override
     public boolean isConfigurable()
@@ -74,7 +61,7 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     }
 
     @Override
-    public final void configure(IResourceLocator resourceLocator, Class<R> resourceClass, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
+    public final void configure(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
     {
         configureResource(resourceLocator, properties, progressMonitor);
     }
@@ -82,12 +69,12 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     /**
      * Override this methos and {@link #isConfigurable()} if you want to configure the format before calling read
      * write.
-     *
+     * <p/>
      * This give you a change to read the resource two times (one on configure and the other on reading). But be
      * careful because the resource can be in a remote and slow location.
      *
      * @param resourceLocator the resource locator
-     * @param properties the config properties
+     * @param properties      the config properties
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
@@ -97,7 +84,7 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     }
 
     @Override
-    public final R read(IResourceLocator resourceLocator, Class<R> resourceClass, IProgressMonitor progressMonitor) throws PersistenceException
+    public final R read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
         return readResource(resourceLocator, progressMonitor);
     }

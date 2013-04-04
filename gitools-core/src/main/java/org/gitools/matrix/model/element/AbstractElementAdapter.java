@@ -21,6 +21,9 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -39,6 +42,7 @@ public abstract class AbstractElementAdapter
 
     protected Class<?> elementClass;
 
+    @NotNull
     private /*transient*/ List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
 
     private /*transient*/ Map<String, Integer> propIdToIndexMap;
@@ -83,7 +87,7 @@ public abstract class AbstractElementAdapter
         return Collections.unmodifiableList(properties);
     }
 
-    protected final void setProperties(List<IElementAttribute> properties)
+    protected final void setProperties(@NotNull List<IElementAttribute> properties)
     {
         this.properties = properties;
         propIdToIndexMap = new HashMap<String, Integer>();
@@ -107,6 +111,7 @@ public abstract class AbstractElementAdapter
         return index.intValue();
     }
 
+    @Nullable
     @Override
     public abstract Object getValue(Object element, int index);
 

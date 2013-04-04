@@ -26,8 +26,9 @@ import org.gitools.analysis.correlation.CorrelationCommand;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.persistence.IResourceFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
 import org.gitools.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -35,6 +36,7 @@ import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
+import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -49,8 +51,8 @@ public class CorrelationTool extends AnalysisTool
     public static class CorrelationArguments extends AnalysisArguments
     {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
-                usage = "Data file format (MIME type or file extension).")
-        public String dataMime;
+                usage = "Data file format (reference file extension).")
+        public String dataFormat;
 
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
@@ -64,6 +66,7 @@ public class CorrelationTool extends AnalysisTool
                 usage = "Correlation method to use. (default: pearson)")
         public String method = PearsonCorrelationMethod.ID;
 
+        @NotNull
         @Option(name = "-M", aliases = "-method-conf", metaVar = "<param=value>",
                 usage = "Define a method configuration parameter.\n" +
                         " This allows to configure the behaviour of the method.")
@@ -120,12 +123,12 @@ public class CorrelationTool extends AnalysisTool
         analysis.setTransposeData(args.applyToRows);
         analysis.setReplaceNanValue(args.replaceValue);
 
-        String dataMime = mimeFromFormat(args.dataMime, args.dataFile, MimeTypes.DOUBLE_MATRIX);
+        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
 
         CorrelationCommand cmd = new CorrelationCommand(
                 analysis,
-                dataMime, args.dataFile,
-                args.workdir, args.analysisName + "." + FileSuffixes.CORRELATIONS);
+                dataFormat, args.dataFile,
+                args.workdir, args.analysisName + "." + CorrelationAnalysisXmlFormat.EXTENSION);
 
         IProgressMonitor monitor = !args.quiet ?
                 new StreamProgressMonitor(System.out, args.verbose, args.debug)
@@ -146,7 +149,7 @@ public class CorrelationTool extends AnalysisTool
     }
 
     @Override
-    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
     {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
@@ -159,7 +162,7 @@ public class CorrelationTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printMethods(PrintStream o)
+    private void printMethods(@NotNull PrintStream o)
     {
         o.println("Available correlation methods:");
         o.println(String.format(LIST_S_FMT, "pearson", "Pearson's correlation"));

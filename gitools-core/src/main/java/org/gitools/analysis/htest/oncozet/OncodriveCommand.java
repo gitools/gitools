@@ -25,11 +25,10 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.*;
 import org.gitools.persistence.formats.analysis.OncodriveAnalysisXmlFormat;
 import org.gitools.persistence.formats.matrix.AbstractMatrixFormat;
 import org.gitools.persistence.formats.matrix.AbstractTextMatrixFormat;
@@ -37,6 +36,8 @@ import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.persistence.formats.modulemap.AbstractModuleMapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.HashMap;
@@ -46,17 +47,17 @@ import java.util.Properties;
 public class OncodriveCommand extends HtestCommand
 {
 
-    protected String modulesMime;
+    protected IResourceFormat modulesFormat;
     protected String modulesPath;
 
     public OncodriveCommand(
             OncodriveAnalysis analysis,
-            String dataMime,
+            IResourceFormat dataMime,
             String dataPath,
             int valueIndex,
             String populationPath,
             Double populationDefaultValue,
-            String modulesMime,
+            IResourceFormat modulesFormat,
             String modulesFile,
             String workdir,
             String fileName)
@@ -66,12 +67,12 @@ public class OncodriveCommand extends HtestCommand
                 populationPath, populationDefaultValue,
                 workdir, fileName);
 
-        this.modulesMime = modulesMime;
+        this.modulesFormat = modulesFormat;
         this.modulesPath = modulesFile;
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         try
@@ -85,10 +86,10 @@ public class OncodriveCommand extends HtestCommand
             monitor.info("Columns: " + modulesPath);
 
             loadDataAndModules(
-                    dataMime, dataPath,
+                    dataFormat, dataPath,
                     valueIndex,
                     populationPath,
-                    modulesMime, modulesPath,
+                    modulesFormat, modulesPath,
                     oncozAnalysis,
                     monitor.subtask());
 
@@ -108,13 +109,13 @@ public class OncodriveCommand extends HtestCommand
     }
 
     private void loadDataAndModules(
-            String dataFileMime,
+            IResourceFormat dataFormat,
             String dataFileName,
             int valueIndex,
-            String populationFileName,
-            String modulesFileMime,
-            String modulesFileName,
-            OncodriveAnalysis analysis,
+            @Nullable String populationFileName,
+            IResourceFormat modulesFormat,
+            @Nullable String modulesFileName,
+            @NotNull OncodriveAnalysis analysis,
             IProgressMonitor progressMonitor) throws PersistenceException
     {
 
@@ -126,7 +127,8 @@ public class OncodriveCommand extends HtestCommand
         {
             IResourceLocator bgLocator = new UrlResourceLocator(new File(populationFileName));
 
-            GeneSet popLabels = PersistenceManager.get().load(bgLocator, GeneSet.class, progressMonitor);
+            IResourceFormat<GeneSet> bgFormat = PersistenceManager.get().getFormat(populationFileName, GeneSet.class);
+            GeneSet popLabels = PersistenceManager.get().load(bgLocator, bgFormat, progressMonitor);
             populationLabels = popLabels.toArray(new String[popLabels.size()]);
         }
 
@@ -151,8 +153,10 @@ public class OncodriveCommand extends HtestCommand
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
 
-        BaseMatrix dataMatrix = loadDataMatrix(dataLocator, dataProps, progressMonitor);
-        analysis.setData(dataMatrix);
+        ResourceReference<BaseMatrix> dataMatrix = new ResourceReference<BaseMatrix>(dataLocator, dataFormat);
+        dataMatrix.setProperties(dataProps);
+        dataMatrix.load(progressMonitor);
+        analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
 
         // Load modules
 
@@ -162,13 +166,15 @@ public class OncodriveCommand extends HtestCommand
 
             Properties modProps = new Properties();
             modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-            modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.getColumnStrings());
+            modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.get().getColumnStrings());
             modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
             modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
 
-            ModuleMap moduleMap = loadModuleMap(modulesLocator, modProps, progressMonitor);
+            ResourceReference<ModuleMap> moduleMap = new ResourceReference<ModuleMap>(modulesLocator, modulesFormat);
+            moduleMap.setProperties(modProps);
+            moduleMap.load(progressMonitor);
 
-            analysis.setModuleMap(moduleMap);
+            analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", moduleMap.get()));
         }
     }
 

@@ -33,6 +33,7 @@ import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,10 +54,12 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
     private ColorChooserLabel emptyCc;
 
+    @NotNull
     private String categoriesLabelText = " Categories:";
+    @NotNull
     private JLabel categoriesLabel = new JLabel(categoriesLabelText);
 
-    public CategoricalElementDecoratorPanel(Heatmap model)
+    public CategoricalElementDecoratorPanel(@NotNull Heatmap model)
     {
         super(model);
 
@@ -77,7 +80,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
         valueCb.addItemListener(new ItemListener()
         {
             @Override
-            public void itemStateChanged(ItemEvent e)
+            public void itemStateChanged(@NotNull ItemEvent e)
             {
                 if (e.getStateChange() == ItemEvent.SELECTED)
                 {

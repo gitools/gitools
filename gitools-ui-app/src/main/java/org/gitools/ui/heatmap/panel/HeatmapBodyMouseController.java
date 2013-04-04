@@ -24,6 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.matrix.model.IMatrixView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +43,7 @@ public class HeatmapBodyMouseController
 
     private final Heatmap heatmap;
     private final JViewport viewPort;
+    @NotNull
     private final HeatmapPanel panel;
     private final HeatmapBodyPanel bodyPanel;
 
@@ -52,9 +54,10 @@ public class HeatmapBodyMouseController
     private Point startPoint;
     private Point startScrollValue;
 
+    @NotNull
     private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
-    public HeatmapBodyMouseController(HeatmapPanel panel)
+    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel)
     {
         this.heatmap = panel.getHeatmap();
         this.viewPort = panel.getBodyViewPort();
@@ -80,7 +83,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mouseClicked(MouseEvent e)
+    public void mouseClicked(@NotNull MouseEvent e)
     {
         panel.requestFocusInWindow();
 
@@ -94,7 +97,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mousePressed(MouseEvent e)
+    public void mousePressed(@NotNull MouseEvent e)
     {
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
@@ -115,7 +118,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mouseReleased(MouseEvent e)
+    public void mouseReleased(@NotNull MouseEvent e)
     {
         panel.mouseReleased(e);
         mode = Mode.none;
@@ -134,7 +137,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mouseDragged(MouseEvent e)
+    public void mouseDragged(@NotNull MouseEvent e)
     {
         //System.out.println("dragged");
         switch (mode)
@@ -149,7 +152,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mouseMoved(MouseEvent e)
+    public void mouseMoved(@NotNull MouseEvent e)
     {
         //System.out.println("moved");
 
@@ -163,7 +166,7 @@ public class HeatmapBodyMouseController
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e)
+    public void mouseWheelMoved(@NotNull MouseWheelEvent e)
     {
         int rotation = e.getWheelRotation();
 
@@ -195,7 +198,7 @@ public class HeatmapBodyMouseController
         }
     }
 
-    private void updateSelection(MouseEvent e)
+    private void updateSelection(@NotNull MouseEvent e)
     {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
@@ -210,7 +213,7 @@ public class HeatmapBodyMouseController
         //System.out.println(mode + " " + point + " -> " + coord);
     }
 
-    private void updateScroll(MouseEvent e, boolean dragging)
+    private void updateScroll(@NotNull MouseEvent e, boolean dragging)
     {
         point = e.getPoint();
 

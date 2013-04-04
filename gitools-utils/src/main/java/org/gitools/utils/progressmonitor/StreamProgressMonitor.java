@@ -22,6 +22,7 @@
 package org.gitools.utils.progressmonitor;
 
 import cern.colt.Timer;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 
@@ -80,12 +81,13 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     {
         super.worked(workInc);
         /*int progress = (worked * 100 / totalWork);
-		if (lastprogress != progress) {
+        if (lastprogress != progress) {
 			lastprogress = progress;
 			out.println(tabbulate(title + " " + progress + "%", level));
 		}*/
     }
 
+    @NotNull
     @Override
     public IProgressMonitor subtask()
     {
@@ -96,6 +98,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
         return subtask;
     }
 
+    @NotNull
     protected IProgressMonitor createSubtaskMonitor(
             IProgressMonitor parentMonitor,
             PrintStream out,
@@ -141,7 +144,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     }
 
     @Override
-    public void exception(Throwable cause)
+    public void exception(@NotNull Throwable cause)
     {
         super.exception(cause);
 
@@ -177,6 +180,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
         out.print(text);
     }
 
+    @NotNull
     private String tabbulate(int level)
     {
         StringBuilder sb = new StringBuilder();

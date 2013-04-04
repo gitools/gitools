@@ -27,6 +27,8 @@ import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,13 +53,13 @@ public class CategoricalColorScale extends NumericColorScale
         this.points = points;
     }
 
-    public CategoricalColorScale(double pointValues[])
+    public CategoricalColorScale(@NotNull double pointValues[])
     {
 
         setValues(pointValues);
     }
 
-    public void setValues(double[] pointValues)
+    public void setValues(@NotNull double[] pointValues)
     {
         Arrays.sort(pointValues);
         this.points = new ColorScalePoint[pointValues.length];
@@ -73,6 +75,7 @@ public class CategoricalColorScale extends NumericColorScale
         updateRangesList();
     }
 
+    @NotNull
     public Color[] generateColors(int n)
     {
         Color[] cols = new Color[n];
@@ -98,6 +101,7 @@ public class CategoricalColorScale extends NumericColorScale
         return cols;
     }
 
+    @Nullable
     public ColorScalePoint getColorScalePoint(double value)
     {
         for (ColorScalePoint p : points)
@@ -146,6 +150,7 @@ public class CategoricalColorScale extends NumericColorScale
         return c;
     }
 
+    @NotNull
     @Override
     public double[] getPoints()
     {
@@ -196,7 +201,7 @@ public class CategoricalColorScale extends NumericColorScale
         return this.points;
     }
 
-    public void setPointObjects(ColorScalePoint[] points)
+    public void setPointObjects(@NotNull ColorScalePoint[] points)
     {
         Arrays.sort(points);
         this.points = points;
@@ -234,6 +239,7 @@ public class CategoricalColorScale extends NumericColorScale
         }
     }
 
+    @NotNull
     @Override
     public IAggregator defaultAggregator()
     {

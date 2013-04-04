@@ -25,6 +25,7 @@ import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.BinomialTest;
 import org.gitools.stats.test.BinomialTest.AproximationMode;
 import org.gitools.stats.test.Test;
+import org.jetbrains.annotations.NotNull;
 
 public class BinomialTestFactory extends TestFactory
 {
@@ -38,7 +39,7 @@ public class BinomialTestFactory extends TestFactory
 
     private AproximationMode aproxMode;
 
-    public BinomialTestFactory(ToolConfig config)
+    public BinomialTestFactory(@NotNull ToolConfig config)
     {
         super(config);
 
@@ -67,9 +68,10 @@ public class BinomialTestFactory extends TestFactory
     }
 
 	/*public BinomialTestFactory(AproximationMode aproxMode) {
-		this.aproxMode = aproxMode;
+        this.aproxMode = aproxMode;
 	}*/
 
+    @NotNull
     @Override
     public Test create()
     {

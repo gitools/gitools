@@ -22,35 +22,19 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
-import org.gitools.persistence.formats.analysis.adapter.PersistenceReferenceXmlAdapter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-
-import javax.xml.bind.Marshaller;
+import org.gitools.persistence._DEPRECATED.FileFormat;
 
 public class HeatmapXmlFormat extends AbstractXmlFormat<Heatmap>
 {
 
+    public static final String EXTENSION = "heatmap";
+    public static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
+    public static final FileFormat HEATMAP = new FileFormat("Heatmap", EXTENSION);
+
+
     public HeatmapXmlFormat()
     {
-        super(FileSuffixes.HEATMAP, MimeTypes.HEATMAP, Heatmap.class);
+        super(EXTENSION, RESOURCE_CLASS);
     }
 
-    @Override
-    protected void beforeWrite(IResourceLocator resourceLocator, Heatmap resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-
-        String baseName = resourceLocator.getBaseName();
-        PersistenceReferenceXmlAdapter adapter = new PersistenceReferenceXmlAdapter(resourceLocator, progressMonitor);
-
-        addReference(adapter, resource.getMatrixView().getContents(), baseName + "-data");
-        addReference(adapter, resource.getRowDim().getAnnotations(), baseName + "-rows");
-        addReference(adapter, resource.getColumnDim().getAnnotations(), baseName + "-columns");
-
-        marshaller.setAdapter(adapter);
-
-    }
 }

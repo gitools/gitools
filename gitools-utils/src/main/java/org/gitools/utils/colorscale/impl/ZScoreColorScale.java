@@ -27,6 +27,7 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -98,6 +99,7 @@ public class ZScoreColorScale extends NumericColorScale
 
     }
 
+    @NotNull
     @Override
     public double[] getPoints()
     {
@@ -217,6 +219,7 @@ public class ZScoreColorScale extends NumericColorScale
         this.nonSignificantColor = nonSignificantColor;
     }
 
+    @NotNull
     @Override
     public IAggregator defaultAggregator()
     {

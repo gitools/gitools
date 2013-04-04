@@ -21,6 +21,7 @@
  */
 package org.gitools.idtype;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
@@ -39,6 +40,7 @@ public class IdTypeManager
     @XmlRootElement(name = "idTypes")
     private static class Document
     {
+        @NotNull
         @XmlElement(name = "idType")
         public List<IdType> idTypes = new ArrayList<IdType>(0);
     }
@@ -54,6 +56,7 @@ public class IdTypeManager
         return instance;
     }
 
+    @NotNull
     private static IdTypeManager createDefaultInstance()
     {
         List<IdType> idTypes = new ArrayList<IdType>();
@@ -91,7 +94,7 @@ public class IdTypeManager
     private Map<String, IdType> idTypesMap;
     private IdType defaultIdType;
 
-    private IdTypeManager(List<IdType> idTypes)
+    private IdTypeManager(@NotNull List<IdType> idTypes)
     {
         this.idTypes = idTypes;
 

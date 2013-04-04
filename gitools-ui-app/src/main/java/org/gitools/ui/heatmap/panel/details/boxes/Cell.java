@@ -39,11 +39,11 @@ public class Cell implements Serializable
     /**
      * Instantiates a new Cell.
      *
-     * @param row the row
+     * @param row    the row
      * @param column the column
      * @param values the values
      */
-    public Cell(@NotNull PropertyItem row,@NotNull PropertyItem column,@NotNull Collection<PropertyItem> values)
+    public Cell(@NotNull PropertyItem row, @NotNull PropertyItem column, @NotNull Collection<PropertyItem> values)
     {
         this.row = row;
         this.column = column;
@@ -75,7 +75,8 @@ public class Cell implements Serializable
      *
      * @return the values
      */
-    public Collection<PropertyItem> getValues() {
+    public Collection<PropertyItem> getValues()
+    {
         return values;
     }
 

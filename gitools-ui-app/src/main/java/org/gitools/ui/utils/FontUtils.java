@@ -21,12 +21,15 @@
  */
 package org.gitools.ui.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class FontUtils
 {
 
-    public static String fontText(Font font)
+    @NotNull
+    public static String fontText(@NotNull Font font)
     {
         StringBuilder sb = new StringBuilder();
         sb.append(font.getFontName());

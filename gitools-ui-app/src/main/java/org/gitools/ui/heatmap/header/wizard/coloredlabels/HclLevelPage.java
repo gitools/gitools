@@ -25,6 +25,7 @@ import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.newick.NewickTree;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class HclLevelPage extends AbstractWizardPage
 
     private HeatmapHierarchicalColoredLabelsHeader header;
 
-    public HclLevelPage(HeatmapHierarchicalColoredLabelsHeader header)
+    public HclLevelPage(@NotNull HeatmapHierarchicalColoredLabelsHeader header)
     {
         this.header = header;
 

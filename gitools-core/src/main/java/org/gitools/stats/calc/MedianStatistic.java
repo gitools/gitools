@@ -22,12 +22,14 @@
 package org.gitools.stats.calc;
 
 import cern.colt.matrix.DoubleMatrix1D;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class MedianStatistic implements Statistic
 {
 
+    @NotNull
     @Override
     public String getName()
     {
@@ -35,7 +37,7 @@ public class MedianStatistic implements Statistic
     }
 
     @Override
-    public double calc(DoubleMatrix1D values)
+    public double calc(@NotNull DoubleMatrix1D values)
     {
 
         final int size = values.size();

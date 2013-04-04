@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.help;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import java.net.URL;
 
@@ -34,7 +36,7 @@ public class DesktopNavigatorHelp extends Help
     }
 
     @Override
-    public void showHelp(HelpContext context) throws HelpException
+    public void showHelp(@NotNull HelpContext context) throws HelpException
     {
         try
         {

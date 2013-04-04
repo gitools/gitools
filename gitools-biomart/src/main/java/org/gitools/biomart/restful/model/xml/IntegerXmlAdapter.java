@@ -21,14 +21,17 @@
  */
 package org.gitools.biomart.restful.model.xml;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
 public class IntegerXmlAdapter extends XmlAdapter<String, Integer>
 {
 
+    @Nullable
     @Override
-    public Integer unmarshal(String v) throws Exception
+    public Integer unmarshal(@Nullable String v) throws Exception
     {
         if (v == null || v.isEmpty())
         {

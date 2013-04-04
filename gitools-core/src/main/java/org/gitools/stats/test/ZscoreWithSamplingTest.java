@@ -26,6 +26,7 @@ import cern.jet.random.engine.MersenneTwister;
 import cern.jet.random.engine.RandomEngine;
 import cern.jet.random.sampling.RandomSampler;
 import org.gitools.stats.calc.Statistic;
+import org.jetbrains.annotations.NotNull;
 
 public class ZscoreWithSamplingTest extends ZscoreTest
 {
@@ -40,7 +41,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
 
     @Override
     protected void infereMeanAndStdev(
-            DoubleMatrix1D population, DoubleMatrix1D groupItems, PopulationStatistics expected)
+            @NotNull DoubleMatrix1D population, @NotNull DoubleMatrix1D groupItems, @NotNull PopulationStatistics expected)
     {
 
         final int sampleSize = groupItems.size();
@@ -76,7 +77,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
         //Math.sqrt((sx2 - N * (expectedMean * expectedMean)) / (N - 1));
     }
 
-    private final void copyIndices(long[] lindices, int[] indices)
+    private final void copyIndices(@NotNull long[] lindices, int[] indices)
     {
         for (int j = 0; j < lindices.length; j++)
             indices[j] = (int) lindices[j];

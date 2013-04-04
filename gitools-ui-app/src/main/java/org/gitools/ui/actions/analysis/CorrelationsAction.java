@@ -29,8 +29,8 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisXmlFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
@@ -42,6 +42,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -117,7 +118,7 @@ public class CorrelationsAction extends BaseAction
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {
             @Override
-            public void run(IProgressMonitor monitor)
+            public void run(@NotNull IProgressMonitor monitor)
             {
                 try
                 {
@@ -135,11 +136,11 @@ public class CorrelationsAction extends BaseAction
 
                     if (!analysisTitle.equals(""))
                     {
-                        editor.setName(analysis.getTitle() + "." + FileSuffixes.CORRELATIONS);
+                        editor.setName(analysis.getTitle() + "." + CorrelationAnalysisXmlFormat.EXTENSION);
                     }
                     else
                     {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", FileSuffixes.CORRELATIONS));
+                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CorrelationAnalysisXmlFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable()

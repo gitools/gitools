@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -35,7 +38,7 @@ public class FontChooserDialog extends javax.swing.JDialog
 
     private boolean cancelled = true;
 
-    public FontChooserDialog(Font font)
+    public FontChooserDialog(@NotNull Font font)
     {
         this(null, font);
     }
@@ -43,7 +46,7 @@ public class FontChooserDialog extends javax.swing.JDialog
     /**
      * Creates new form FontChooserDialog
      */
-    public FontChooserDialog(java.awt.Frame parent, Font font)
+    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font)
     {
         super(parent, true);
 
@@ -76,6 +79,7 @@ public class FontChooserDialog extends javax.swing.JDialog
         }
     }
 
+    @Nullable
     public Font getFont()
     {
         try

@@ -21,6 +21,8 @@
  */
 package org.gitools.idtype;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class IdTypeXmlAdapter extends XmlAdapter<String, IdType>
@@ -33,7 +35,7 @@ public class IdTypeXmlAdapter extends XmlAdapter<String, IdType>
     }
 
     @Override
-    public String marshal(IdType v) throws Exception
+    public String marshal(@NotNull IdType v) throws Exception
     {
         return v.getKey();
     }

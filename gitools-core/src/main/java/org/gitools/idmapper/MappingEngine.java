@@ -22,6 +22,8 @@
 package org.gitools.idmapper;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +63,7 @@ public class MappingEngine
         }
 
         @Override
-        public boolean equals(Object obj)
+        public boolean equals(@Nullable Object obj)
         {
             if (obj == null || !(obj instanceof Edge))
             {
@@ -81,6 +83,7 @@ public class MappingEngine
             return hash;
         }
 
+        @NotNull
         @Override
         public String toString()
         {
@@ -91,7 +94,9 @@ public class MappingEngine
     private static class Path
     {
 
+        @NotNull
         private LinkedList<Step> steps = new LinkedList<Step>();
+        @NotNull
         private Set<MappingNode> visited = new HashSet<MappingNode>();
 
         public Path()
@@ -103,7 +108,7 @@ public class MappingEngine
             steps.add(new Step(node));
         }
 
-        private Path(Path path, Step step)
+        private Path(@NotNull Path path, Step step)
         {
             steps.addAll(path.getSteps());
             steps.add(step);
@@ -114,7 +119,7 @@ public class MappingEngine
             return steps.getLast().getNode();
         }
 
-        public void addStep(Step step)
+        public void addStep(@NotNull Step step)
         {
             steps.add(step);
             visited.add(step.getNode());
@@ -125,6 +130,7 @@ public class MappingEngine
             return steps.size() - 1;
         }
 
+        @NotNull
         public LinkedList<Step> getSteps()
         {
             return steps;
@@ -135,6 +141,7 @@ public class MappingEngine
             return visited.contains(node);
         }
 
+        @NotNull
         @Override
         public String toString()
         {
@@ -181,6 +188,7 @@ public class MappingEngine
             return mapper;
         }
 
+        @NotNull
         @Override
         public String toString()
         {
@@ -213,7 +221,7 @@ public class MappingEngine
         edges.add(new Edge(src, dst, proc));
     }
 
-    public MappingData run(String[] ids, String src, String dst, IProgressMonitor monitor) throws MappingException
+    public MappingData run(@Nullable String[] ids, String src, String dst, @NotNull IProgressMonitor monitor) throws MappingException
     {
         monitor.begin("Mapping from " + src + " to " + dst + " ...", 4);
 
@@ -275,11 +283,12 @@ public class MappingEngine
         return data;
     }
 
-    public MappingData run(String src, String dst, IProgressMonitor monitor) throws MappingException
+    public MappingData run(String src, String dst, @NotNull IProgressMonitor monitor) throws MappingException
     {
         return run(null, src, dst, monitor);
     }
 
+    @Nullable
     private Path findPath(String src, String dst, IProgressMonitor monitor)
     {
         StringMappingNode dstNode = new StringMappingNode(dst);
@@ -318,6 +327,7 @@ public class MappingEngine
         return bestPath;
     }
 
+    @NotNull
     private List<Step> getSteps(MappingNode snode, boolean generatorRequired)
     {
         List<Step> steps = new ArrayList<Step>();

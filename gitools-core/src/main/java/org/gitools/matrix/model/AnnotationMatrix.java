@@ -23,6 +23,7 @@ package org.gitools.matrix.model;
 
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -116,6 +117,7 @@ public class AnnotationMatrix extends StringMatrix
         return index;
     }
 
+    @NotNull
     public List<Annotation> getAnnotations(String label)
     {
         List<Annotation> ann = new ArrayList<Annotation>();

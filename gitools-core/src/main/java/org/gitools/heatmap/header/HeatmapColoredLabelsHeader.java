@@ -25,6 +25,8 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.heatmap.HeatmapDim;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -132,6 +134,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
     /**
      * Return the corresponding matrix row/column cluster. Null if there is not cluster assigned.
      */
+    @Nullable
     public ColoredLabel getAssignedColoredLabel(String id)
     {
         Integer index = dataColoredLabelIndices.get(id);
@@ -194,7 +197,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
         firePropertyChange(FORCE_LABEL_COLOR, old, forceLabelColor);
     }
 
-    public void updateFromClusterResults(ClusteringResults results)
+    public void updateFromClusterResults(@NotNull ClusteringResults results)
     {
         ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
 

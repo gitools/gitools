@@ -21,12 +21,15 @@
  */
 package org.gitools.utils.color.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class ColorUtils
 {
 
-    public static Color mix(Color src, Color dst, double factor)
+    @NotNull
+    public static Color mix(@NotNull Color src, @NotNull Color dst, double factor)
     {
 
         double fs = factor / 255.0;
@@ -43,7 +46,8 @@ public class ColorUtils
         return new Color(ir, ig, ib);
     }
 
-    public static String colorToRGBHtml(Color color)
+    @NotNull
+    public static String colorToRGBHtml(@NotNull Color color)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -55,12 +59,14 @@ public class ColorUtils
         return sb.toString();
     }
 
-    public static String colorToHexHtml(Color color)
+    @NotNull
+    public static String colorToHexHtml(@NotNull Color color)
     {
         return "#" + Integer.toHexString((color.getRGB() & 0xffffff) | 0x1000000).substring(1);
     }
 
-    public static Color invert(Color color)
+    @NotNull
+    public static Color invert(@NotNull Color color)
     {
         int r = 255 - color.getRed();
         int g = 255 - color.getGreen();
@@ -72,7 +78,7 @@ public class ColorUtils
         return Color.WHITE;*/
 
 		/*
-		// calculate a color with the hsl color wheel
+        // calculate a color with the hsl color wheel
 		// imagine 10 equally distributed points on the color wheel
 		// with a given saturation and lightness. They will be
 		// generated 5 and 5 at a time, and after 10 colors

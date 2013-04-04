@@ -32,6 +32,7 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.BeanElementAdapter;
 import org.gitools.model.ModuleMap;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.mtc.MTCFactory;
 import org.gitools.stats.test.Test;
@@ -41,6 +42,8 @@ import org.gitools.threads.ThreadManager;
 import org.gitools.threads.ThreadQueue;
 import org.gitools.threads.ThreadSlot;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -49,7 +52,9 @@ public class OncodriveProcessor extends HtestProcessor
 
     private class RunSlot extends ThreadSlot
     {
+        @Nullable
         public DoubleMatrix1D population;
+        @Nullable
         public Test test;
 
         public RunSlot(ThreadQueue threadQueue)
@@ -69,21 +74,20 @@ public class OncodriveProcessor extends HtestProcessor
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
     {
 
         Date startTime = new Date();
 
-        TestFactory testFactory =
-                TestFactory.createFactory(analysis.getTestConfig());
+        TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
 
-        IMatrix dataMatrix = analysis.getData();
+        IMatrix dataMatrix = analysis.getData().get();
 
         String[] labels = new String[dataMatrix.getColumnCount()];
         for (int i = 0; i < labels.length; i++)
             labels[i] = dataMatrix.getColumnLabel(i);
 
-        ModuleMap csmap = analysis.getModuleMap();
+        ModuleMap csmap = analysis.getModuleMap().get();
         if (csmap != null)
         {
             csmap = csmap.remap(labels,
@@ -95,7 +99,7 @@ public class OncodriveProcessor extends HtestProcessor
             csmap = new ModuleMap("All data columns", labels);
         }
 
-        analysis.setModuleMap(csmap);
+        analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", csmap));
 
         final int numRows = dataMatrix.getRowCount();
         ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);
@@ -258,7 +262,7 @@ public class OncodriveProcessor extends HtestProcessor
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(resultsMatrix);
+        analysis.setResults(new ResourceReference<ObjectMatrix>("results", resultsMatrix));
 
         monitor.end();
     }
