@@ -77,7 +77,7 @@ public class NewOverlappingAnalysisAction extends BaseAction
                 new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()),
                 wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
 
-        analysis.setSourceData(sourceData);
+        analysis.setSourceData(new ResourceReference<IMatrix>("source-data", sourceData.get()));
 
         final OverlappingCommand cmd = new OverlappingCommand(
                 analysis,

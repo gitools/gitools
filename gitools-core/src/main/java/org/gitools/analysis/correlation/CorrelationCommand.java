@@ -63,7 +63,7 @@ public class CorrelationCommand extends AnalysisCommand
 
             ResourceReference<IMatrix> dataReference = new ResourceReference<IMatrix>(new UrlResourceLocator(new File(dataPath)), dataFormat);
 
-            analysis.setData(dataReference);
+            analysis.setData(new ResourceReference<IMatrix>("data", dataReference.get()));
             dataReference.load(progressMonitor);
 
             CorrelationProcessor proc = new CorrelationProcessor(analysis);
